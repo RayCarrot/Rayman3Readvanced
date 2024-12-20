@@ -46,6 +46,7 @@ public class Scene2D
     public Scene2D(GameCubeMap map, Func<Scene2D, CameraActor> createCameraFunc, int layersCount, int actorDrawPriority)
     {
         LayersCount = layersCount;
+        ActorDrawPriority = actorDrawPriority;
         Camera = createCameraFunc(this);
         HudCamera = new HudCamera(Engine.GameViewPort);
 
