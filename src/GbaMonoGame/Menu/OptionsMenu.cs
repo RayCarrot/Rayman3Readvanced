@@ -109,7 +109,7 @@ public class OptionsMenu : Menu
                 items:
                 [
                     new MultiSelectionMenuOption<Point?>.Item($"Original ({originalRes.X} x {originalRes.Y})", null),
-                    new MultiSelectionMenuOption<Point?>.Item("Widescreen (288 x 162)", new Point(288, 162)), // 16:9
+                    new MultiSelectionMenuOption<Point?>.Item("Widescreen (384 x 216)", new Point(384, 216)), // 16:9
                 ],
                 getData: _ => Engine.Config.InternalGameResolution,
                 setData: data =>
