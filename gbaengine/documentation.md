@@ -105,6 +105,8 @@ Initially this port was set up to emulate the PPU on the GBA, and thus manually 
 
 Certain effects might not be replicated exactly the same as on a GBA, such as affine sprite rendering and alpha blending, but the goal is to have it appear as similar as possible. In some cases, like when rotating sprites, this has the advantage of making them appear much clearer in higher resolutions.
 
+Another example where there is a difference is for animations with palette cycling. Since the original game only has a single global palette in VRAM it means that multiple animations of the same type will share the same palette, and thus also modify the same one. Having multiple animations playing will then result in the palette cycling appear to animate faster since it shifts it multiple times per frame. This is most notable for the blue lum bar where the filled parts consists of several animations. In this port each animation is self-contained and modifies its own palette, resulting in the animations always modifying the palette at a constant rate.
+
 ### V-SYNC
 In the original GBA version the game calls `vsync` whenever it waits for the frame to finish drawing on screen. This can be done at any point, but is in the majority of cases done inside of the Frame classes' `Init` and `Step` functions.
 

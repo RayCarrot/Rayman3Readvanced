@@ -44,13 +44,14 @@ Potential resources:
 - Have option presets, such as "Modern" and "Original".
 - Show a tooltip for each option when it is selected. Some say "A custom value can be set in the config.json file" as to make that more clear.
 - Option to enable debug features. This allows you to toggle the debug mode, use debug cheats etc. The collision tileset should only be loaded if this option is enabled.
-- Potentially simply resolution settings by removing the scale options and only having internal resolution options. Then the HUD scale can be a toggle between using the original or new resolution? Also make clear internal resolution is not the resolution the game renders at. We use high res rotation, subpixel positions etc. which means the game takes advantage of a higher rendering resolution. It also doesn't effect menus and such which are forced to the original resolution.
+- Make clear internal resolution is not the resolution the game renders at. We use high res rotation, subpixel positions etc. which means the game takes advantage of a higher rendering resolution. It also doesn't effect menus and such which are forced to the original resolution.
 
 ### ⌚ Performance
 - Option not to clear cache between Frame instances.
 - Option to pre-load all textures in animations and tiles when initializing a new Frame instance.
 - Option not to cache serialized data from the ROM. Currently it always does that.
 - Option to pre-load all levels asynchronously during intro sequence.
+- Use single texture sheets for AnimatedObject and maybe tiles too as to avoid creating too many textures.
 
 ### ✨ Optional improvements
 The following are ideas for optional improvements which the player can toggle on to enhance/modernize the game experience:
