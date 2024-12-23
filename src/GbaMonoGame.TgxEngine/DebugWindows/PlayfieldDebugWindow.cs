@@ -1,4 +1,4 @@
-﻿using ImGuiNET;
+using ImGuiNET;
 using System.Linq;
 using System;
 using Microsoft.Xna.Framework;
@@ -25,10 +25,6 @@ public class PlayfieldDebugWindow : DebugWindow
             playfield2D.Camera.Position = pos;
 
         ImGui.Spacing();
-
-        ImGui.Text($"Resolution: {playfield2D.Camera.Resolution.X} x {playfield2D.Camera.Resolution.Y}");
-
-        ImGui.Spacing();
         ImGui.Spacing();
         ImGui.SeparatorText("Clusters");
 
@@ -40,7 +36,7 @@ public class PlayfieldDebugWindow : DebugWindow
             ImGui.TableSetupColumn("Max position");
             ImGui.TableSetupColumn("Scroll factor");
             ImGui.TableSetupColumn("Type");
-            ImGui.TableSetupColumn("Camera");
+            ImGui.TableSetupColumn("Render context");
             ImGui.TableHeadersRow();
 
             int i = 0;
@@ -67,7 +63,7 @@ public class PlayfieldDebugWindow : DebugWindow
                 ImGui.Text($"{(cluster.Stationary ? "Stationary" : "Scrollable")}");
 
                 ImGui.TableNextColumn();
-                ImGui.Text($"{cluster.Camera.GetType().Name}");
+                ImGui.Text($"{cluster.RenderContext.GetType().Name}");
 
                 i++;
             }

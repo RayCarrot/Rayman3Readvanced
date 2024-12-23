@@ -598,7 +598,7 @@ public class Rayman3 : GbaGame
                     return Vector2.Zero;
 
                 TgxCamera cam = obj.Scene.Playfield.Camera;
-                return new Vector2(cam.Position.X + cam.Resolution.X / 2, 0);
+                return new Vector2(cam.Position.X + obj.Scene.Resolution.X / 2, 0);
             },
             getSwitchIndex: () => 0));
 

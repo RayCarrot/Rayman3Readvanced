@@ -33,7 +33,7 @@ public class BlueLumBar : Bar
             VerticalAnchor = VerticalAnchorMode.Bottom,
             BgPriority = 0,
             ObjPriority = 2,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         Outline = new AnimatedObject(resource, false)
@@ -44,7 +44,7 @@ public class BlueLumBar : Bar
             VerticalAnchor = VerticalAnchorMode.Bottom,
             BgPriority = 0,
             ObjPriority = 0,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         Fill1 = new AnimatedObject(resource, false)
@@ -55,7 +55,7 @@ public class BlueLumBar : Bar
             VerticalAnchor = VerticalAnchorMode.Bottom,
             BgPriority = 0,
             ObjPriority = 1,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         Fill2 = new AnimatedObject(resource, false)
@@ -66,7 +66,7 @@ public class BlueLumBar : Bar
             VerticalAnchor = VerticalAnchorMode.Bottom,
             BgPriority = 0,
             ObjPriority = 1,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         Fill3 = new AnimatedObject(resource, false)
@@ -77,7 +77,7 @@ public class BlueLumBar : Bar
             VerticalAnchor = VerticalAnchorMode.Bottom,
             BgPriority = 0,
             ObjPriority = 1,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         ScaledFill = new AnimatedObject(resource, false)
@@ -90,7 +90,7 @@ public class BlueLumBar : Bar
             ObjPriority = 1,
             IsDoubleAffine = true,
             AffineMatrix = new AffineMatrix(0, 2, 1),
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
     }
 

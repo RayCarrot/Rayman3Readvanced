@@ -129,12 +129,13 @@ public class KnotManager
             // TODO: Offset position if Mode7
 
             TgxGameLayer physicalLayer = playfield.PhysicalLayer;
+            Vector2 res = playfield.RenderContext.Resolution;
 
-            if (physicalLayer.PixelWidth - playfield.Camera.Resolution.X <= camPos.X)
-                camPos.X = physicalLayer.PixelWidth - playfield.Camera.Resolution.X - 1;
+            if (physicalLayer.PixelWidth - res.X <= camPos.X)
+                camPos.X = physicalLayer.PixelWidth - res.X - 1;
 
-            if (physicalLayer.PixelHeight - playfield.Camera.Resolution.Y <= camPos.Y)
-                camPos.Y = physicalLayer.PixelHeight - playfield.Camera.Resolution.Y - 1;
+            if (physicalLayer.PixelHeight - res.Y <= camPos.Y)
+                camPos.Y = physicalLayer.PixelHeight - res.Y - 1;
 
             int knotX = (int)(camPos.X / Engine.GameViewPort.OriginalGameResolution.X);
             int knotY = (int)(camPos.Y / Engine.GameViewPort.OriginalGameResolution.Y);

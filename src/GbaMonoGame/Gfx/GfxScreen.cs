@@ -39,9 +39,9 @@ public class GfxScreen
     public Vector2 Offset { get; set; }
 
     /// <summary>
-    /// The camera to render the screen to.
+    /// The render context to use when rendering.
     /// </summary>
-    public GfxCamera Camera { get; set; } = Engine.ScreenCamera;
+    public RenderContext RenderContext { get; set; } = Engine.GameRenderContext;
 
     public bool IsAlphaBlendEnabled { get; set; }
     public float Alpha { get; set; }
@@ -82,8 +82,8 @@ public class GfxScreen
             // Get the camera bounds
             const float camMinX = 0;
             const float camMinY = 0;
-            float camMaxX = Camera.Resolution.X;
-            float camMaxY = Camera.Resolution.Y;
+            float maxResX = RenderContext.Resolution.X;
+            float maxResY = RenderContext.Resolution.Y;
 
             // Get the background position and wrap it
             Vector2 wrappedPos = new(MathHelpers.Mod(-Offset.X, size.X), MathHelpers.Mod(-Offset.Y, size.Y));
@@ -92,20 +92,20 @@ public class GfxScreen
             float startX = camMinX - size.X + (wrappedPos.X == 0 ? size.X : wrappedPos.X);
             float startY = camMinY - size.Y + (wrappedPos.Y == 0 ? size.Y : wrappedPos.Y);
 
-            float fullWidth = startX + camMaxX;
-            float fullHeight = startY + camMaxY;
+            float fullWidth = startX + maxResX;
+            float fullHeight = startY + maxResY;
 
             Vector2 wrappedEnd = new(fullWidth % size.X, fullHeight % size.Y);
-            float endX = camMaxX + size.X - (wrappedEnd.X == 0 ? size.X : wrappedEnd.X);
-            float endY = camMaxY + size.Y - (wrappedEnd.Y == 0 ? size.Y : wrappedEnd.Y);
+            float endX = maxResX + size.X - (wrappedEnd.X == 0 ? size.X : wrappedEnd.X);
+            float endY = maxResY + size.Y - (wrappedEnd.Y == 0 ? size.Y : wrappedEnd.Y);
 
             // Extend for the visible area if needed.
             // NOTE: This only accounts for if the render box is bigger than then the size, which we do to prevent pop-in.
             //       But it does not account for if it's smaller. If it's smaller, then this isn't fully optimized as we might
             //       be performing unnecessary draw calls.
-            if (renderBox.MinX < 0 && endX + renderBox.MinX < camMaxX)
+            if (renderBox.MinX < 0 && endX + renderBox.MinX < maxResX)
                 endX += size.X;
-            if (renderBox.MinY < 0 && endY + renderBox.MinY < camMaxY)
+            if (renderBox.MinY < 0 && endY + renderBox.MinY < maxResY)
                 endY += size.Y;
             if (renderBox.MaxX > size.X && startX + renderBox.MaxX > camMinX)
                 startX -= size.X;

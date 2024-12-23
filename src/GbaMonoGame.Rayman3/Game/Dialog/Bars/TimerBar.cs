@@ -24,7 +24,7 @@ public class TimerBar : Bar
             HorizontalAnchor = HorizontalAnchorMode.Scale,
             BgPriority = 0,
             ObjPriority = 0,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         Digits = new AnimatedObject[6];
@@ -46,7 +46,7 @@ public class TimerBar : Bar
                 HorizontalAnchor = HorizontalAnchorMode.Scale,
                 BgPriority = 0,
                 ObjPriority = 0,
-                Camera = Scene.HudCamera,
+                RenderContext = Scene.HudRenderContext,
             };
         }
     }

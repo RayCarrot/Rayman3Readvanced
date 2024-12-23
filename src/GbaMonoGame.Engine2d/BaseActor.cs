@@ -25,7 +25,7 @@ public abstract class BaseActor : GameObject
         animatedObject.CurrentAnimation = 0;
         animatedObject.BgPriority = scene.ActorDrawPriority;
         animatedObject.ObjPriority = 32;
-        animatedObject.Camera = scene.Playfield.Camera;
+        animatedObject.RenderContext = scene.RenderContext;
 
         _viewBox = new Box(ActorModel.ViewBox);
     }

@@ -33,7 +33,7 @@ public class CavesOfBadDreams : FrameSideScroller
             skullScreen.IsEnabled = true;
 
         if (!ScaleSkulls)
-            skullScreen.Camera = Scene.Playfield.Camera;
+            skullScreen.RenderContext = Scene.RenderContext;
 
         // TODO: Add config option for sine wave on N-Gage
         if (Engine.Settings.Platform == Platform.GBA)
@@ -69,7 +69,7 @@ public class CavesOfBadDreams : FrameSideScroller
         if (ScaleSkulls)
         {
             TgxCluster skullScreenCluster = ((TgxCamera2D)Scene.Playfield.Camera).GetCluster(2);
-            camPos *= skullScreenCluster.Camera.Resolution / Scene.Resolution;
+            camPos *= skullScreenCluster.RenderContext.Resolution / Scene.Resolution;
         }
 
         skullScreen.Offset = new Vector2(camPos.X % 256, camPos.Y % 256) + Offset;

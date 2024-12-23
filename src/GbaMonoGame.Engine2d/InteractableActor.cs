@@ -16,12 +16,12 @@ public abstract class InteractableActor : ActionActor
         _debugAttackBoxAObject = new DebugBoxAObject()
         {
             Color = DebugBoxColor.AttackBox,
-            Camera = Scene.Playfield.Camera
+            RenderContext = Scene.RenderContext
         };
         _debugVulnerabilityBoxAObject = new DebugBoxAObject()
         {
             Color = DebugBoxColor.VulnerabilityBox,
-            Camera = Scene.Playfield.Camera
+            RenderContext = Scene.RenderContext
         };
     }
 

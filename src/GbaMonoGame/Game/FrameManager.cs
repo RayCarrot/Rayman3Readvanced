@@ -49,6 +49,9 @@ public static class FrameManager
             Gfx.ClearScreenEffect();
             Gfx.Color = Color.White;
 
+            // Remove the resolution bounds
+            Engine.GameViewPort.SetResolutionBounds(null, null);
+
             // TODO: Add option not to clear cache? Makes loading faster, but uses more memory.
             // Clear cache if loading a new frame
             if (CurrentFrame != NextFrame)

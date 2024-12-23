@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System;
 using ImGuiNET;
 
@@ -16,42 +16,20 @@ public class GfxDebugWindow : DebugWindow
             {
                 ImGui.SeparatorText("Resolution");
 
-                float playfieldCameraScale = Engine.Config.PlayfieldCameraScale;
-                if (ImGui.SliderFloat("Playfield camera scale", ref playfieldCameraScale, 0.5f, 2))
-                {
-                    Engine.Config.PlayfieldCameraScale = playfieldCameraScale;
-                    Engine.SaveConfig();
-                }
-
-                ImGui.SameLine();
-                if (ImGui.Button("Reset##Playfield"))
-                {
-                    Engine.Config.PlayfieldCameraScale = 1;
-                    Engine.SaveConfig();
-                }
-
-                float hudCameraScale = Engine.Config.HudCameraScale;
-                if (ImGui.SliderFloat("HUD camera scale", ref hudCameraScale, 0.5f, 2))
-                {
-                    Engine.Config.HudCameraScale = hudCameraScale;
-                    Engine.SaveConfig();
-                }
-
-                ImGui.SameLine();
-                if (ImGui.Button("Reset##HUD"))
-                {
-                    Engine.Config.HudCameraScale = 1;
-                    Engine.SaveConfig();
-                }
-
-                ImGui.Spacing();
-
                 ImGui.Text($"Original resolution: {Engine.GameViewPort.OriginalGameResolution.X} x {Engine.GameViewPort.OriginalGameResolution.Y}");
-                ImGui.Text($"Resolution: {Engine.GameViewPort.GameResolution.X} x {Engine.GameViewPort.GameResolution.Y}");
+                ImGui.Text($"Game Resolution: {Engine.GameViewPort.GameResolution.X} x {Engine.GameViewPort.GameResolution.Y}");
+                ImGui.Text($"Original game resolution: {Engine.OriginalGameRenderContext.Resolution.X} x {Engine.OriginalGameRenderContext.Resolution.Y}");
 
                 System.Numerics.Vector2 res = new(Engine.GameViewPort.RequestedGameResolution.X, Engine.GameViewPort.RequestedGameResolution.Y);
                 if (ImGui.InputFloat2("Requested resolution", ref res))
                     Engine.GameViewPort.SetRequestedResolution(new Vector2(res.X, res.Y));
+
+                float resScale = res.X / Engine.OriginalGameRenderContext.Resolution.X;
+                if (ImGui.SliderFloat("Requested resolution", ref resScale, 0.5f, 2))
+                {
+                    Engine.GameViewPort.SetRequestedResolution(Engine.OriginalGameRenderContext.Resolution * resScale);
+                    Engine.SaveConfig();
+                }
 
                 ImGui.Spacing();
                 ImGui.SeparatorText("Fade");
@@ -91,7 +69,7 @@ public class GfxDebugWindow : DebugWindow
                     ImGui.TableSetupColumn("Offset", ImGuiTableColumnFlags.WidthFixed);
                     ImGui.TableSetupColumn("Size", ImGuiTableColumnFlags.WidthFixed);
                     ImGui.TableSetupColumn("Bpp", ImGuiTableColumnFlags.WidthFixed);
-                    ImGui.TableSetupColumn("Camera");
+                    ImGui.TableSetupColumn("Render context");
                     ImGui.TableSetupColumn("Renderer");
                     ImGui.TableHeadersRow();
 
@@ -126,7 +104,7 @@ public class GfxDebugWindow : DebugWindow
                         });
 
                         ImGui.TableNextColumn();
-                        ImGui.Text($"{screen.Camera.GetType().Name}");
+                        ImGui.Text($"{screen.RenderContext.GetType().Name}");
 
                         ImGui.TableNextColumn();
                         ImGui.Text($"{screen.Renderer?.GetType().Name}");
@@ -147,7 +125,7 @@ public class GfxDebugWindow : DebugWindow
                     ImGui.TableSetupColumn("Position", ImGuiTableColumnFlags.WidthFixed, 120);
                     ImGui.TableSetupColumn("Affine", ImGuiTableColumnFlags.WidthFixed);
                     ImGui.TableSetupColumn("Palette", ImGuiTableColumnFlags.WidthFixed);
-                    ImGui.TableSetupColumn("Camera");
+                    ImGui.TableSetupColumn("Render context");
                     ImGui.TableHeadersRow();
 
                     foreach (Sprite sprite in Gfx.Sprites)
@@ -167,7 +145,7 @@ public class GfxDebugWindow : DebugWindow
                         ImGui.Text(sprite.PaletteTexture != null ? "true" : "false");
 
                         ImGui.TableNextColumn();
-                        ImGui.Text(sprite.Camera.GetType().Name);
+                        ImGui.Text(sprite.RenderContext.GetType().Name);
                     }
                     ImGui.EndTable();
                 }

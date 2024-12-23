@@ -19,7 +19,7 @@ public sealed partial class MechanicalPlatform : MovableActor
             BgPriority = 1,
             ObjPriority = 49,
             AffineMatrix = new AffineMatrix(190, 1, 1),
-            Camera = AnimatedObject.Camera,
+            RenderContext = AnimatedObject.RenderContext,
         };
 
         MechModel.Speed = Vector2.Zero;

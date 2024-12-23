@@ -82,7 +82,7 @@ public class AObjectFog : AObject
             Center = true,
             AffineMatrix = null,
             Alpha = IsAlphaBlendEnabled ? Alpha : null,
-            Camera = Camera
+            RenderContext = RenderContext
         };
 
         Gfx.AddSprite(sprite);
@@ -96,7 +96,7 @@ public class AObjectFog : AObject
     {
         Vector2 pos = GetAnchoredPosition();
 
-        float camWidth = Camera.Resolution.X;
+        float camWidth = RenderContext.Resolution.X;
         for (int i = 0; i < camWidth / SpriteWidth + SpritesCount; i++)
             DrawSprite(SpriteChannels[i % SpritesCount], pos + new Vector2(SpriteWidth * i, 0));
     }

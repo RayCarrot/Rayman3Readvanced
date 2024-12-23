@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine;
 using Microsoft.Xna.Framework;
@@ -111,7 +111,7 @@ public class OptionsMenu : Menu
                     new MultiSelectionMenuOption<Point?>.Item($"Original ({originalRes.X} x {originalRes.Y})", null),
                     new MultiSelectionMenuOption<Point?>.Item("Widescreen (288 x 162)", new Point(288, 162)), // 16:9
                 ],
-                getData: _ => Engine.Config.InternalResolution,
+                getData: _ => Engine.Config.InternalGameResolution,
                 setData: data =>
                 {
                     Rectangle originalWindowBounds = Engine.Settings.Platform switch
@@ -123,8 +123,8 @@ public class OptionsMenu : Menu
 
                     float originalWindowScale = originalWindowBounds.Size.ToVector2().X / Engine.GameViewPort.RequestedGameResolution.X;
 
-                    Engine.Config.InternalResolution = data;
-                    Engine.GameViewPort.SetRequestedResolution(Engine.Config.InternalResolution?.ToVector2());
+                    Engine.Config.InternalGameResolution = data;
+                    Engine.GameViewPort.SetRequestedResolution(Engine.Config.InternalGameResolution?.ToVector2());
 
                     Point newWindowRes = (Engine.GameViewPort.RequestedGameResolution * originalWindowScale).ToPoint();
 
@@ -146,34 +146,6 @@ public class OptionsMenu : Menu
                     Game.SaveWindowState();
                 },
                 getCustomName: data => data == null ? null : $"{data.Value.X} x {data.Value.Y}"),
-
-            // Camera scale
-            new MultiSelectionMenuOption<float>(
-                name: "Camera scale",
-                items:
-                [
-                    new MultiSelectionMenuOption<float>.Item("Original (1.00)", 1.00f),
-                    new MultiSelectionMenuOption<float>.Item("Low (1.15)", 1.15f),
-                    new MultiSelectionMenuOption<float>.Item("Medium (1.35)", 1.35f),
-                    new MultiSelectionMenuOption<float>.Item("High (1.50)", 1.50f),
-                ],
-                getData: _ => Engine.Config.PlayfieldCameraScale,
-                setData: data => Engine.Config.PlayfieldCameraScale = data,
-                getCustomName: data => $"{data:0.00}"),
-
-            // HUD scale
-            new MultiSelectionMenuOption<float>(
-                name: "HUD scale",
-                items:
-                [
-                    new MultiSelectionMenuOption<float>.Item("Original (1.00)", 1.00f),
-                    new MultiSelectionMenuOption<float>.Item("Low (1.15)", 1.15f),
-                    new MultiSelectionMenuOption<float>.Item("Medium (1.35)", 1.35f),
-                    new MultiSelectionMenuOption<float>.Item("High (1.50)", 1.50f),
-                ],
-                getData: _ => Engine.Config.HudCameraScale,
-                setData: data => Engine.Config.HudCameraScale = data,
-                getCustomName: data => $"{data:0.00}"),
 
             #endregion
 

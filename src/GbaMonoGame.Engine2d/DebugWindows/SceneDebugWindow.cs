@@ -34,9 +34,9 @@ public class SceneDebugWindow : DebugWindow
 
     private void UpdateMouseDetection(Scene2D scene)
     {
-        Vector2 mousePos = InputManager.GetMousePosition(scene.Playfield.Camera);
+        Vector2 mousePos = InputManager.GetMousePosition(scene.RenderContext);
 
-        if (!InputManager.IsMouseOnScreen(scene.Playfield.Camera))
+        if (!InputManager.IsMouseOnScreen(scene.RenderContext))
             return;
         
         HighlightedGameObject = null;
@@ -151,7 +151,7 @@ public class SceneDebugWindow : DebugWindow
         if (Frame.Current is not IHasScene { Scene: { } scene2D }) 
             return;
 
-        renderer.BeginRender(new RenderOptions(false, null, scene2D.Playfield.Camera));
+        renderer.BeginRender(new RenderOptions(false, null, scene2D.RenderContext));
 
         if (HighlightedGameObject != null)
             DrawBox(renderer, scene2D.Playfield, GetObjBox(HighlightedGameObject), Color.Orange);

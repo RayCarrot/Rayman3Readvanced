@@ -192,7 +192,7 @@ public partial class PauseDialog : Dialog
                 _ => throw new UnsupportedPlatformException()
             }, 80),
             HorizontalAnchor = HorizontalAnchorMode.Scale,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
         Cursor = new AnimatedObject(canvasResource, false)
         {
@@ -205,7 +205,7 @@ public partial class PauseDialog : Dialog
                 _ => throw new UnsupportedPlatformException()
             }, 88),
             HorizontalAnchor = HorizontalAnchorMode.Scale,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         CursorOffset = 0;
@@ -224,7 +224,7 @@ public partial class PauseDialog : Dialog
                 _ => throw new UnsupportedPlatformException()
             }, 90),
             HorizontalAnchor = HorizontalAnchorMode.Scale,
-            Camera = Scene.HudCamera
+            RenderContext = Scene.HudRenderContext
         };
 
         if (Engine.Settings.Platform == Platform.GBA)
@@ -241,9 +241,10 @@ public partial class PauseDialog : Dialog
                     ObjPriority = 0,
                     Color = TextColor.SleepMode,
                     FontSize = FontSize.Font16,
+                    RenderContext = Engine.OriginalGameRenderContext,
                 };
 
-                SleepModeTexts[i].ScreenPos = new Vector2(Engine.ScreenCamera.Resolution.X / 2 - SleepModeTexts[i].GetStringWidth() / 2f, i * 16 + 50);
+                SleepModeTexts[i].ScreenPos = new Vector2(Engine.OriginalGameRenderContext.Resolution.X / 2 - SleepModeTexts[i].GetStringWidth() / 2f, i * 16 + 50);
             }
         }
         else if (Engine.Settings.Platform == Platform.NGage)
@@ -255,7 +256,7 @@ public partial class PauseDialog : Dialog
                 CurrentAnimation = Localization.LanguageUiIndex,
                 ScreenPos = new Vector2(-1, -18),
                 VerticalAnchor = VerticalAnchorMode.Bottom,
-                Camera = Scene.HudCamera,
+                RenderContext = Scene.HudRenderContext,
             };
             BackSymbol = new AnimatedObject(symbolsResource, false)
             {
@@ -264,7 +265,7 @@ public partial class PauseDialog : Dialog
                 ScreenPos = new Vector2(-1, -18), // Set X when drawing
                 HorizontalAnchor = HorizontalAnchorMode.Right,
                 VerticalAnchor = VerticalAnchorMode.Bottom,
-                Camera = Scene.HudCamera,
+                RenderContext = Scene.HudRenderContext,
             };
 
             MusicVolume = new AnimatedObject(selectionsResource, true)
@@ -273,7 +274,7 @@ public partial class PauseDialog : Dialog
                 CurrentAnimation = 30,
                 ScreenPos = new Vector2(130, 91),
                 HorizontalAnchor = HorizontalAnchorMode.Scale,
-                Camera = Scene.HudCamera,
+                RenderContext = Scene.HudRenderContext,
             };
             SfxVolume = new AnimatedObject(selectionsResource, true)
             {
@@ -281,7 +282,7 @@ public partial class PauseDialog : Dialog
                 CurrentAnimation = 30,
                 ScreenPos = new Vector2(130, 109),
                 HorizontalAnchor = HorizontalAnchorMode.Scale,
-                Camera = Scene.HudCamera,
+                RenderContext = Scene.HudRenderContext,
             };
 
             SetMusicVolumeAnimation();

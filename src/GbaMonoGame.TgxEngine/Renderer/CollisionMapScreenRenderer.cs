@@ -6,9 +6,8 @@ namespace GbaMonoGame.TgxEngine;
 
 public class CollisionMapScreenRenderer : IScreenRenderer
 {
-    public CollisionMapScreenRenderer(GfxCamera camera, int width, int height, byte[] collisionMap)
+    public CollisionMapScreenRenderer(int width, int height, byte[] collisionMap)
     {
-        Camera = camera;
         Width = width;
         Height = height;
         CollisionMap = collisionMap;
@@ -19,7 +18,6 @@ public class CollisionMapScreenRenderer : IScreenRenderer
 
     private static readonly Texture2D _tex = Engine.ContentManager.Load<Texture2D>("CollisionTileSet");
 
-    public GfxCamera Camera { get; }
     public int Width { get; }
     public int Height { get; }
     public byte[] CollisionMap { get; }
@@ -30,8 +28,8 @@ public class CollisionMapScreenRenderer : IScreenRenderer
 
         int xStart = (Math.Max(0, rect.Left) - rect.X) / Tile.Size;
         int yStart = (Math.Max(0, rect.Top) - rect.Y) / Tile.Size;
-        int xEnd = (int)Math.Ceiling((Math.Min(Camera.Resolution.X, rect.Right) - rect.X) / Tile.Size);
-        int yEnd = (int)Math.Ceiling((Math.Min(Camera.Resolution.Y, rect.Bottom) - rect.Y) / Tile.Size);
+        int xEnd = (int)Math.Ceiling((Math.Min(screen.RenderContext.Resolution.X, rect.Right) - rect.X) / Tile.Size);
+        int yEnd = (int)Math.Ceiling((Math.Min(screen.RenderContext.Resolution.Y, rect.Bottom) - rect.Y) / Tile.Size);
 
         return new Rectangle(xStart, yStart, xEnd - xStart, yEnd - yStart);
     }
@@ -40,7 +38,7 @@ public class CollisionMapScreenRenderer : IScreenRenderer
 
     public void Draw(GfxRenderer renderer, GfxScreen screen, Vector2 position, Color color)
     {
-        renderer.BeginRender(new RenderOptions(screen.IsAlphaBlendEnabled, null, screen.Camera));
+        renderer.BeginRender(new RenderOptions(screen.IsAlphaBlendEnabled, null, screen.RenderContext));
 
         Rectangle visibleTilesArea = GetVisibleTilesArea(position, screen);
 

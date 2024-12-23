@@ -51,7 +51,7 @@ public class SpriteTextObject : AObject
                 affineMatrix: AffineMatrix, 
                 alpha: IsAlphaBlendEnabled ? Alpha : null, 
                 color: Color, 
-                camera: Camera));
+                renderContext: RenderContext));
         }
     }
 }

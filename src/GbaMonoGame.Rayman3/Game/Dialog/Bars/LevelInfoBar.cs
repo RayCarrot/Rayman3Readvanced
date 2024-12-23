@@ -98,7 +98,7 @@ public class LevelInfoBar : Bar
             HorizontalAnchor = HorizontalAnchorMode.Scale,
             VerticalAnchor = VerticalAnchorMode.Bottom,
             CurrentAnimation = 10,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         CollectedLumsDigit1 = new AnimatedObject(resource, false)
@@ -115,7 +115,7 @@ public class LevelInfoBar : Bar
             HorizontalAnchor = HorizontalAnchorMode.Scale,
             VerticalAnchor = VerticalAnchorMode.Bottom,
             CurrentAnimation = 0,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         CollectedLumsDigit2 = new AnimatedObject(resource, false)
@@ -132,7 +132,7 @@ public class LevelInfoBar : Bar
             HorizontalAnchor = HorizontalAnchorMode.Scale,
             VerticalAnchor = VerticalAnchorMode.Bottom,
             CurrentAnimation = 0,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         TotalLumsDigit1 = new AnimatedObject(resource, false)
@@ -149,7 +149,7 @@ public class LevelInfoBar : Bar
             HorizontalAnchor = HorizontalAnchorMode.Scale,
             VerticalAnchor = VerticalAnchorMode.Bottom,
             CurrentAnimation = 0,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         TotalLumsDigit2 = new AnimatedObject(resource, false)
@@ -166,7 +166,7 @@ public class LevelInfoBar : Bar
             HorizontalAnchor = HorizontalAnchorMode.Scale,
             VerticalAnchor = VerticalAnchorMode.Bottom,
             CurrentAnimation = 0,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         CollectedCagesDigit = new AnimatedObject(resource, false)
@@ -183,7 +183,7 @@ public class LevelInfoBar : Bar
             HorizontalAnchor = HorizontalAnchorMode.Scale,
             VerticalAnchor = VerticalAnchorMode.Bottom,
             CurrentAnimation = 0,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         TotalCagesDigit = new AnimatedObject(resource, false)
@@ -200,7 +200,7 @@ public class LevelInfoBar : Bar
             HorizontalAnchor = HorizontalAnchorMode.Scale,
             VerticalAnchor = VerticalAnchorMode.Bottom,
             CurrentAnimation = 0,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         LevelName = new SpriteTextObject()
@@ -210,7 +210,7 @@ public class LevelInfoBar : Bar
             ScreenPos = new Vector2(0, -32),
             HorizontalAnchor = HorizontalAnchorMode.Center,
             VerticalAnchor = VerticalAnchorMode.Bottom,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
     }
 

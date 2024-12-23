@@ -3,24 +3,25 @@ using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.TgxEngine;
 
-public class ParallaxClusterCamera : GfxCamera
+public class ParallaxClusterRenderContext : RenderContext
 {
-    public ParallaxClusterCamera(GameViewPort gameViewPort, TgxCluster cluster) : base(gameViewPort)
+    public ParallaxClusterRenderContext(TgxCluster cluster)
     {
         Cluster = cluster;
     }
 
     public TgxCluster Cluster { get; }
 
-    protected override Vector2 GetResolution(GameViewPort gameViewPort)
+    protected override Vector2 GetResolution()
     {
         // We want the parallax backgrounds to target the screen resolution since that
         // most closely matches how they were meant to be rendered. But since you can
         // play in higher internal resolution (like for widescreen) we have to make
         // sure it doesn't exceed the size of the smallest tile layer.
-        Vector2 res = Engine.GameViewPort.GameResolution;
+        Vector2 ogRes = Engine.OriginalGameRenderContext.Resolution;
+        Vector2 res = ogRes;
 
-        if (Engine.GameViewPort.GameResolution == Engine.GameViewPort.OriginalGameResolution)
+        if (res == Engine.GameViewPort.OriginalGameResolution)
             return res;
 
         float maxX = Cluster.Layers.Min(x => x.PixelWidth);
@@ -43,8 +44,8 @@ public class ParallaxClusterCamera : GfxCamera
                 res = new Vector2(maxY * res.X / res.Y, maxY);
         }
 
-        if (res != Engine.GameViewPort.GameResolution)
-            Logger.Debug("Set cluster with size {0} camera resolution to {1}", Cluster.Size, res);
+        if (res != ogRes)
+            Logger.Debug("Set cluster with size {0} render context resolution to {1}", Cluster.Size, res);
 
         return res;
     }

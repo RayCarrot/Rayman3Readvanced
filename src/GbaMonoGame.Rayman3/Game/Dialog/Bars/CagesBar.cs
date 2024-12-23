@@ -34,7 +34,7 @@ public class CagesBar : Bar
             HorizontalAnchor = HorizontalAnchorMode.Right,
             BgPriority = 0,
             ObjPriority = 0,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         CollectedCagesDigit = new AnimatedObject(resource, false)
@@ -45,7 +45,7 @@ public class CagesBar : Bar
             HorizontalAnchor = HorizontalAnchorMode.Right,
             BgPriority = 0,
             ObjPriority = 0,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         TotalCagesDigit = new AnimatedObject(resource, false)
@@ -56,7 +56,7 @@ public class CagesBar : Bar
             HorizontalAnchor = HorizontalAnchorMode.Right,
             BgPriority = 0,
             ObjPriority = 0,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
     }
 

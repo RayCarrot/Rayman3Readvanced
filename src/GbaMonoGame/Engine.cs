@@ -52,9 +52,14 @@ public static class Engine
     public static ContentManager ContentManager { get; private set; }
 
     /// <summary>
-    /// The screen camera to use when rendering the game.
+    /// The primary render context using the current game resolution.
     /// </summary>
-    public static ScreenCamera ScreenCamera { get; private set; }
+    public static GameRenderContext GameRenderContext { get; private set; }
+
+    /// <summary>
+    /// The render context for the original game resolution with the screen aspect ratio.
+    /// </summary>
+    public static OriginalGameRenderContext OriginalGameRenderContext { get; private set; }
 
     public static GameViewPort GameViewPort { get; private set; }
 
@@ -202,12 +207,13 @@ public static class Engine
         LoadSaveGame();
     }
 
-    internal static void LoadMonoGame(GraphicsDevice graphicsDevice, ContentManager contentManager, ScreenCamera screenCamera, GameViewPort gameViewPort)
+    internal static void LoadMonoGame(GraphicsDevice graphicsDevice, ContentManager contentManager, GameViewPort gameViewPort)
     {
         GraphicsDevice = graphicsDevice;
         ContentManager = contentManager;
-        ScreenCamera = screenCamera;
         GameViewPort = gameViewPort;
+        GameRenderContext = new GameRenderContext();
+        OriginalGameRenderContext = new OriginalGameRenderContext();
     }
 
     internal static void Unload()

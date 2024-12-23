@@ -358,7 +358,6 @@ public partial class MenuAll : Frame, IHasPlayfield
         PlayfieldResource menuPlayField = Storage.LoadResource<PlayfieldResource>(GameResource.MenuPlayfield);
         Playfield = TgxPlayfield.Load<TgxPlayfield2D>(menuPlayField);
         Engine.GameViewPort.SetResolutionBoundsToOriginalResolution();
-        Playfield.Camera.FixedResolution = true;
 
         Gfx.ClearColor = Color.Black;
 

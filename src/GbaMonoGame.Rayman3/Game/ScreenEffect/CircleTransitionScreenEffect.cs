@@ -68,7 +68,7 @@ public class CircleTransitionScreenEffect : ScreenEffect
     
     public override void Draw(GfxRenderer renderer)
     {
-        renderer.BeginRender(new RenderOptions(false, null, Camera));
+        renderer.BeginRender(new RenderOptions(false, null, RenderContext));
 
         Vector2 pos = CirclePosition;
 
@@ -84,7 +84,7 @@ public class CircleTransitionScreenEffect : ScreenEffect
             DrawCirclePart(renderer, tex, pos + new Vector2(Radius, Radius), true, true); // Bottom-right
         }
 
-        Vector2 res = Camera.Resolution;
+        Vector2 res = RenderContext.Resolution;
 
         // Draw black around circle to fill screen
         renderer.DrawFilledRectangle(Vector2.Zero, new Vector2(res.X, pos.Y), Color.Black); // Top

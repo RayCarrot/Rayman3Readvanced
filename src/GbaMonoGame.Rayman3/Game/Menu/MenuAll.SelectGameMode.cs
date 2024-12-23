@@ -239,13 +239,13 @@ public partial class MenuAll
     {
         TransitionValue += 4;
 
-        if (TransitionValue <= Engine.ScreenCamera.Resolution.Y)
+        if (TransitionValue <= Playfield.RenderContext.Resolution.Y)
         {
             TgxCluster cluster = Playfield.Camera.GetCluster(1);
             cluster.Position -= new Vector2(0, 4);
             Data.GameLogo.ScreenPos = Data.GameLogo.ScreenPos with { Y = 16 - TransitionValue / 2f };
         }
-        else if (TransitionValue >= Engine.ScreenCamera.Resolution.Y + 60)
+        else if (TransitionValue >= Playfield.RenderContext.Resolution.Y + 60)
         {
             TransitionValue = 0;
             CurrentStepAction = NextStepAction;

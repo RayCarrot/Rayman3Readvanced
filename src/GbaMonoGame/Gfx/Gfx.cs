@@ -91,7 +91,7 @@ public static class Gfx
         // TODO: Add config option to use GBA fading on N-Gage
         if (Engine.Settings.Platform == Platform.GBA && FadeControl.Mode != FadeMode.None && Fade is > 0 and <= 1)
         {
-            renderer.BeginRender(new RenderOptions(false, null, Engine.ScreenCamera));
+            renderer.BeginRender(new RenderOptions(false, null, Engine.GameRenderContext));
 
             switch (FadeControl.Mode)
             {
@@ -99,11 +99,11 @@ public static class Gfx
                     throw new NotImplementedException();
 
                 case FadeMode.BrightnessIncrease:
-                    renderer.DrawFilledRectangle(Vector2.Zero, Engine.ScreenCamera.Resolution, Color.White * Fade);
+                    renderer.DrawFilledRectangle(Vector2.Zero, Engine.GameRenderContext.Resolution, Color.White * Fade);
                     break;
 
                 case FadeMode.BrightnessDecrease:
-                    renderer.DrawFilledRectangle(Vector2.Zero, Engine.ScreenCamera.Resolution, Color.Black * Fade);
+                    renderer.DrawFilledRectangle(Vector2.Zero, Engine.GameRenderContext.Resolution, Color.Black * Fade);
                     break;
             }
         }
@@ -134,8 +134,8 @@ public static class Gfx
         // Draw clear color on GBA
         if (Engine.Settings.Platform == Platform.GBA)
         {
-            renderer.BeginRender(new RenderOptions(false, null, Engine.ScreenCamera));
-            renderer.DrawFilledRectangle(Vector2.Zero, Engine.ScreenCamera.Resolution, ClearColor);
+            renderer.BeginRender(new RenderOptions(false, null, Engine.GameRenderContext));
+            renderer.DrawFilledRectangle(Vector2.Zero, Engine.GameRenderContext.Resolution, ClearColor);
         }
 
         // Draw each game layer (3-0)

@@ -6,8 +6,7 @@ namespace GbaMonoGame.TgxEngine;
 
 public class TgxPlayfield2D : TgxPlayfield
 {
-    public TgxPlayfield2D(Playfield2DResource playfieldResource) 
-        : base(new TgxCamera2D(Engine.GameViewPort), playfieldResource.TileKit)
+    public TgxPlayfield2D(Playfield2DResource playfieldResource) : base(new TgxCamera2D(Engine.GameRenderContext), playfieldResource.TileKit)
     {
         List<TgxTileLayer> tileLayers = new();
 
@@ -33,7 +32,7 @@ public class TgxPlayfield2D : TgxPlayfield
 
                 // Set if the layer is scaled. The game doesn't do this as it has no concept of scaling.
                 TgxCluster cluster = Camera.GetCluster(gameLayerResource.TileLayer.ClusterIndex);
-                layer.Screen.Camera = cluster.Camera;
+                layer.Screen.RenderContext = cluster.RenderContext;
 
                 // Add the renderer to the animated tile kit manager
                 if (layer.Screen.Renderer is TileMapScreenRenderer renderer)
@@ -41,7 +40,8 @@ public class TgxPlayfield2D : TgxPlayfield
             }
             else if (gameLayerResource.Type == GameLayerType.PhysicalLayer)
             {
-                PhysicalLayer = new TgxTilePhysicalLayer(gameLayerResource, Camera);
+                PhysicalLayer = new TgxTilePhysicalLayer(gameLayerResource);
+                PhysicalLayer.DebugScreen.RenderContext = RenderContext;
 
                 // We want the debug collision map to scroll with the main cluster
                 Camera.AddLayer(0, PhysicalLayer);

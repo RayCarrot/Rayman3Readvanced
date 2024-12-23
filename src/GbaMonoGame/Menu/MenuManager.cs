@@ -21,7 +21,7 @@ public class MenuManager
     private const int LineHeight = 40;
     private const float TransitionTextStep = 1 / 8f;
 
-    private MenuCamera Camera { get; } = new(Engine.GameViewPort);
+    private MenuRenderContext RenderContext { get; } = new();
     private List<Sprite> Sprites { get; } = new();
     private Vector2 Margin { get; } = new(250, 80);
     private Color DisabledColor { get; } = new(0.4f, 0.4f, 0.4f);
@@ -89,7 +89,7 @@ public class MenuManager
         AffineMatrix? matrix = animate ? new AffineMatrix(0, new Vector2(1, TransitionTextValue)) : null;
         foreach (byte b in text)
         {
-            Sprite sprite = FontManager.GetCharacterSprite(b, fontSize, ref position, 0, matrix, null, color, Camera);
+            Sprite sprite = FontManager.GetCharacterSprite(b, fontSize, ref position, 0, matrix, null, color, RenderContext);
             Sprites.Add(sprite);
         }
     }
@@ -153,7 +153,7 @@ public class MenuManager
 
     public void Update()
     {
-        FullRenderBox = new Box(Margin.X, Margin.Y, Camera.Resolution.X - Margin.X, Camera.Resolution.Y - Margin.Y);
+        FullRenderBox = new Box(Margin.X, Margin.Y, RenderContext.Resolution.X - Margin.X, RenderContext.Resolution.Y - Margin.Y);
         Position = new Vector2(FullRenderBox.MinX, FullRenderBox.MinY);
         CurrentColumnIndex = 0;
 
@@ -230,7 +230,7 @@ public class MenuManager
         }
 
         // Draw engine version in the corner
-        Vector2 versionPos = new(Camera.Resolution.X - 12, Camera.Resolution.Y - 37);
+        Vector2 versionPos = new(RenderContext.Resolution.X - 12, RenderContext.Resolution.Y - 37);
         DrawText(
             text: $"Version {Engine.Version.ToString(3)}",
             position: ref versionPos,
@@ -459,10 +459,9 @@ public class MenuManager
             }
         }
 
-        renderer.BeginRender(new RenderOptions(false, null, Engine.ScreenCamera));
-
         // Fade out the game
-        renderer.DrawFilledRectangle(Vector2.Zero, Engine.GameViewPort.GameResolution, Color.Black * MathHelper.Lerp(0.0f, 0.7f, TransitionValue));
+        renderer.BeginRender(new RenderOptions(false, null, Engine.GameRenderContext));
+        renderer.DrawFilledRectangle(Vector2.Zero, Engine.GameRenderContext.Resolution, Color.Black * MathHelper.Lerp(0.0f, 0.7f, TransitionValue));
 
         // Draw the sprites
         foreach (Sprite sprite in Sprites)
@@ -480,12 +479,10 @@ public class MenuManager
         Right,
     }
 
-    private class MenuCamera : GfxCamera
+    private class MenuRenderContext : RenderContext
     {
-        public MenuCamera(GameViewPort gameViewPort) : base(gameViewPort) { }
-
         // Scale by 5 to fit more text on screen
-        protected override Vector2 GetResolution(GameViewPort gameViewPort) => gameViewPort.GameResolution * 5f;
+        protected override Vector2 GetResolution() => Engine.GameViewPort.GameResolution * 5f;
     }
 
     private class MenuState

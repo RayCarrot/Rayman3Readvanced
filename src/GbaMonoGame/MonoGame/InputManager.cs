@@ -91,10 +91,13 @@ public static class InputManager
         return inputs;
     }
 
-    public static bool IsMouseOnScreen(GfxCamera camera) => camera.IsVisible(GetMousePosition(camera));
-    public static Vector2 GetMousePosition(GfxCamera camera) => camera.ToWorldPosition(_mouseState.Position.ToVector2() + MouseOffset);
-    public static Vector2 GetMousePositionDelta(GfxCamera camera) => camera.ToWorldPosition(_mouseState.Position.ToVector2()) -
-                                                                     camera.ToWorldPosition(_previousMouseState.Position.ToVector2());
+    public static bool IsMouseOnScreen(RenderContext renderContext) => 
+        renderContext.IsVisible(GetMousePosition(renderContext));
+    public static Vector2 GetMousePosition(RenderContext renderContext) => 
+        renderContext.ToWorldPosition(_mouseState.Position.ToVector2() + MouseOffset);
+    public static Vector2 GetMousePositionDelta(RenderContext renderContext) => 
+        renderContext.ToWorldPosition(_mouseState.Position.ToVector2()) -
+        renderContext.ToWorldPosition(_previousMouseState.Position.ToVector2());
     public static int GetMouseWheelDelta() => _mouseState.ScrollWheelValue - _previousMouseState.ScrollWheelValue;
     public static MouseState GetMouseState() => _mouseState;
 

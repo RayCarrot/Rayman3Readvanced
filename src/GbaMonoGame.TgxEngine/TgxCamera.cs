@@ -1,22 +1,16 @@
-using System;
 using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.TgxEngine;
 
-public abstract class TgxCamera : GfxCamera
+public abstract class TgxCamera
 {
-    protected TgxCamera(GameViewPort gameViewPort) : base(gameViewPort)
+    protected TgxCamera(RenderContext renderContext)
     {
-        Engine.Config.ConfigChanged += Config_ConfigChanged;
+        RenderContext = renderContext;
     }
 
+    public RenderContext RenderContext { get; }
     public abstract Vector2 Position { get; set; }
 
-    private void Config_ConfigChanged(object sender, EventArgs e) => UpdateResolution();
-
-    public override void UnInit()
-    {
-        base.UnInit();
-        Engine.Config.ConfigChanged -= Config_ConfigChanged;
-    }
+    public virtual void UnInit() { }
 }

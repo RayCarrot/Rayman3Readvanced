@@ -70,7 +70,7 @@ public class WorldNameBar : Bar
             HorizontalAnchor = HorizontalAnchorMode.Center,
             VerticalAnchor = VerticalAnchorMode.Bottom,
             CurrentAnimation = 0,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         WorldName = new SpriteTextObject()
@@ -80,7 +80,7 @@ public class WorldNameBar : Bar
             ScreenPos = new Vector2(0, -16),
             HorizontalAnchor = HorizontalAnchorMode.Center,
             VerticalAnchor = VerticalAnchorMode.Bottom,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         SetWorld(0);

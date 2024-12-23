@@ -65,7 +65,7 @@ public class GfxRenderer
                     AlphaSourceBlend = Blend.One,
                     AlphaDestinationBlend = Blend.InverseSourceAlpha,
                 } : null,
-                transformMatrix: options.Camera.Matrix,
+                transformMatrix: options.RenderContext.Matrix,
                 rasterizerState: RasterizerState);
         }
     }

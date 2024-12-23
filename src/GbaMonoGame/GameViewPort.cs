@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using BinarySerializer.Ubisoft.GbaEngine;
 using Microsoft.Xna.Framework;
 
@@ -23,12 +23,10 @@ public class GameViewPort
     public Vector2? MaxGameResolution { get; private set; }
     public Vector2 RequestedGameResolution { get; private set; }
     public Vector2 GameResolution { get; private set; }
-    public float AspectRatio => GameResolution.X / GameResolution.Y;
 
     public Box ScreenBox { get; private set; }
     public Rectangle ScreenRectangle { get; private set; }
-    public Vector2 ScreenSizeVector { get; private set; }
-    public Point ScreenSizePoint { get; private set; }
+    public Vector2 ScreenSize { get; private set; }
 
     private void UpdateGameResolution()
     {
@@ -50,12 +48,19 @@ public class GameViewPort
                 newGameResolution = new Vector2(newGameResolution.X, min.Y);
         }
 
+        // If the new resolution is wider than the requested resolution then we crop it down to the same aspect ratio. This
+        // is to avoid big black bars on the top and bottom in wider maps such as the worldmap.
+        float requestedGameRatio = RequestedGameResolution.X / RequestedGameResolution.Y;
+        float newGameRatio = newGameResolution.X / newGameResolution.Y;
+        if (newGameRatio > requestedGameRatio)
+            newGameResolution = new Vector2(newGameResolution.Y * requestedGameRatio, newGameResolution.Y);
+
         GameResolution = newGameResolution;
 
         if (GameResolution != originalGameResolution)
         {
             OnGameResolutionChanged();
-            Resize(ScreenSizeVector);
+            Resize(ScreenSize);
         }
     }
 
@@ -63,7 +68,8 @@ public class GameViewPort
     {
         Resized?.Invoke(this, EventArgs.Empty);
     }
-    protected virtual void OnGameResolutionChanged()
+
+    private void OnGameResolutionChanged()
     {
         GameResolutionChanged?.Invoke(this, EventArgs.Empty);
     }
@@ -109,8 +115,7 @@ public class GameViewPort
         if (maintainScreenRatio)
             changeScreenSizeCallback?.Invoke(newScreenSize);
 
-        ScreenSizeVector = newScreenSize;
-        ScreenSizePoint = newScreenSize.ToRoundedPoint();
+        ScreenSize = newScreenSize;
         ScreenBox = new Box(screenPos, screenSize);
         ScreenRectangle = new Rectangle(
             (int)MathF.Ceiling(ScreenBox.MinX), 
@@ -129,7 +134,7 @@ public class GameViewPort
 
     public void SetResolutionBoundsToOriginalResolution()
     {
-        SetResolutionBounds(Engine.GameViewPort.OriginalGameResolution, Engine.GameViewPort.OriginalGameResolution);
+        SetResolutionBounds(OriginalGameResolution, OriginalGameResolution);
     }
 
     public void SetResolutionBounds(Vector2? minResolution, Vector2? maxResolution)
@@ -137,27 +142,6 @@ public class GameViewPort
         MinGameResolution = minResolution;
         MaxGameResolution = maxResolution;
         UpdateGameResolution();
-    }
-
-    public void SetAspectRatio(float aspectRatio, bool crop)
-    {
-        if ((crop && aspectRatio < 1) || (!crop && aspectRatio > 1))
-        {
-            float height = OriginalGameResolution.Y;
-            float width = height * aspectRatio;
-
-            GameResolution = new Vector2(width, height);
-        }
-        else
-        {
-            float width = OriginalGameResolution.X;
-            float height = width / aspectRatio;
-
-            GameResolution = new Vector2(width, height);
-        }
-
-        OnGameResolutionChanged();
-        Resize(ScreenSizeVector);
     }
 
     public event EventHandler Resized;

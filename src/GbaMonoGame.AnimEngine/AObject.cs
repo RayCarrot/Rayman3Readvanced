@@ -57,7 +57,7 @@ public abstract class AObject
     public HorizontalAnchorMode HorizontalAnchor { get; set; }
     public VerticalAnchorMode VerticalAnchor { get; set; }
 
-    public GfxCamera Camera { get; set; } = Engine.ScreenCamera;
+    public RenderContext RenderContext { get; set; } = Engine.GameRenderContext;
 
     public Vector2 GetAnchoredPosition()
     {
@@ -71,15 +71,15 @@ public abstract class AObject
                 break;
 
             case HorizontalAnchorMode.Center:
-                pos.X += Camera.Resolution.X / 2;
+                pos.X += RenderContext.Resolution.X / 2;
                 break;
             
             case HorizontalAnchorMode.Right:
-                pos.X += Camera.Resolution.X;
+                pos.X += RenderContext.Resolution.X;
                 break;
             
             case HorizontalAnchorMode.Scale:
-                pos.X += (Camera.Resolution.X - Engine.GameViewPort.OriginalGameResolution.X) / 2;
+                pos.X += (RenderContext.Resolution.X - Engine.GameViewPort.OriginalGameResolution.X) / 2;
                 break;
         }
 
@@ -91,15 +91,15 @@ public abstract class AObject
                 break;
 
             case VerticalAnchorMode.Center:
-                pos.Y += Camera.Resolution.Y / 2;
+                pos.Y += RenderContext.Resolution.Y / 2;
                 break;
 
             case VerticalAnchorMode.Bottom:
-                pos.Y += Camera.Resolution.Y;
+                pos.Y += RenderContext.Resolution.Y;
                 break;
 
             case VerticalAnchorMode.Scale:
-                pos.Y += (Camera.Resolution.Y - Engine.GameViewPort.OriginalGameResolution.Y) / 2;
+                pos.Y += (RenderContext.Resolution.Y - Engine.GameViewPort.OriginalGameResolution.Y) / 2;
                 break;
         }
 

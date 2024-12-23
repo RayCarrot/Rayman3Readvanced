@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using BinarySerializer;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
@@ -113,8 +113,8 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
     {
         GfxScreen spikyBagScreen = Gfx.GetScreen(3);
 
-        // Since it scrolls with the camera we want to use the normal playfield camera instead of a parallax background one
-        spikyBagScreen.Camera = Scene.Playfield.Camera;
+        // Since it scrolls with the camera we want to use the normal render context instead of a scaled parallax background one
+        spikyBagScreen.RenderContext = Scene.RenderContext;
 
         float offsetX = Engine.Settings.Platform switch
         {
@@ -662,7 +662,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
         GameCubeTransitionScreenEffect = new SquareTransitionScreenEffect()
         {
-            Square = new Box(Vector2.Zero, Engine.ScreenCamera.Resolution)
+            Square = new Box(Vector2.Zero, Engine.GameRenderContext.Resolution),
         };
         Gfx.SetScreenEffect(GameCubeTransitionScreenEffect);
 
@@ -722,8 +722,8 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         Scene = new Scene2D((int)GameInfo.MapId, x => new CameraWorldMap(x), 3, 1);
 
         // For some reason this playfield has 8 pixels of blank space on the bottom, so we have to limit the vertical resolution
-        TgxCamera2D cam = (TgxCamera2D)Scene.Playfield.Camera;
-        cam.MaxResolution = new Vector2(cam.GetMainCluster().Size.X, Engine.GameViewPort.OriginalGameResolution.Y);
+        Vector2 maxRes = new(((TgxPlayfield2D)Scene.Playfield).Size.X, Engine.GameViewPort.OriginalGameResolution.Y);
+        Engine.GameViewPort.SetResolutionBounds(null, maxRes);
 
         // Create pause dialog, but don't add yet
         PauseDialog = new PauseDialog(Scene);
@@ -747,7 +747,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             BgPriority = 1,
             ObjPriority = 0,
             ScreenPos = BaseObjPos - new Vector2(ScrollX, 0),
-            Camera = Scene.Playfield.Camera,
+            RenderContext = Scene.RenderContext,
         };
 
         AnimatedObjectResource worldPathsResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.WorldMapPathAnimations);
@@ -759,7 +759,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                 IsFramed = true,
                 BgPriority = 1,
                 ObjPriority = 32,
-                Camera = Scene.Playfield.Camera,
+                RenderContext = Scene.RenderContext,
             };
         }
 
@@ -781,7 +781,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                 ObjPriority = 32,
                 CurrentAnimation = 7,
                 ScreenPos = BaseObjPos - new Vector2(ScrollX, 0),
-                Camera = Scene.Playfield.Camera,
+                RenderContext = Scene.RenderContext,
             };
         }
 
@@ -793,7 +793,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             HorizontalAnchor = HorizontalAnchorMode.Center,
             Text = "",
             IsAlphaBlendEnabled = true,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         Rayman.CurrentAnimation = WorldId switch
@@ -1385,14 +1385,14 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         {
             // Scale for widescreen
             Vector2 max = new(120, 8);
-            Vector2 range = Engine.ScreenCamera.Resolution - max;
+            Vector2 range = GameCubeTransitionScreenEffect.RenderContext.Resolution - max;
             Vector2 scale = range / (Engine.GameViewPort.OriginalGameResolution - max);
 
             GameCubeTransitionScreenEffect.Square = new Box(
                 minX: Timer * 8 / 120f,
                 minY: Timer * 72 / 120f,
-                maxX: Engine.ScreenCamera.Resolution.X - Timer * scale.X,
-                maxY: Engine.ScreenCamera.Resolution.Y - Timer * 8 / 120f * scale.Y);
+                maxX: GameCubeTransitionScreenEffect.RenderContext.Resolution.X - Timer * scale.X,
+                maxY: GameCubeTransitionScreenEffect.RenderContext.Resolution.Y - Timer * 8 / 120f * scale.Y);
 
             if (Timer < 120)
             {

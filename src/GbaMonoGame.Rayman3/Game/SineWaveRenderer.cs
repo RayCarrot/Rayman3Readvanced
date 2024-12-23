@@ -44,7 +44,7 @@ public class SineWaveRenderer : IScreenRenderer
     // TODO: Can be optimized. First x number of lines are blank. And also we could add culling for off-screen lines.
     public void Draw(GfxRenderer renderer, GfxScreen screen, Vector2 position, Color color)
     {
-        renderer.BeginRender(new RenderOptions(screen.IsAlphaBlendEnabled, PaletteTexture, screen.Camera));
+        renderer.BeginRender(new RenderOptions(screen.IsAlphaBlendEnabled, PaletteTexture, screen.RenderContext));
 
         float phase = Phase;
         for (int i = 0; i < Lines.Length; i++)

@@ -18,7 +18,7 @@ public class EditableScene2D
         Scene2DResource sceneResource = Storage.LoadResource<Scene2DResource>(id);
         ClusterResource mainClusterResource = sceneResource.Playfield.Playfield2D.Clusters[0];
         MapSize = new Vector2(mainClusterResource.SizeX * Tile.Size, mainClusterResource.SizeY * Tile.Size);
-        Camera = new EditorCamera(Engine.GameViewPort, MapSize);
+        Camera = new EditorCamera(MapSize);
 
         Engine.GameViewPort.SetResolutionBounds(null, MapSize);
 
@@ -33,18 +33,18 @@ public class EditableScene2D
 
         HoverBoxAObject = new DebugBoxAObject
         {
-            Camera = Camera,
+            RenderContext = Camera.RenderContext,
             Color = new Color(0xFF, 0xEB, 0x3B),
         };
         SelectionBoxAObject = new DebugBoxAObject
         {
-            Camera = Camera,
+            RenderContext = Camera.RenderContext,
             Color = new Color(0xf4, 0x43, 0x36),
         };
     }
 
     public Vector2 MapSize { get; }
-    public EditorCamera Camera { get; }
+    public EditorCamera Camera { get; } // TODO: Change
     public AnimationPlayer AnimationPlayer { get; }
     public EditablePlayfield2D Playfield { get; }
 
@@ -72,7 +72,7 @@ public class EditableScene2D
 
     public void UnInit()
     {
-        Camera.UnInit();
+        Camera.RenderContext.UnInit();
     }
 
     public void Step()
@@ -84,7 +84,7 @@ public class EditableScene2D
 
     public void StepGameObjects()
     {
-        Vector2 mousePos = InputManager.GetMousePosition(Camera) + Camera.Position;
+        Vector2 mousePos = InputManager.GetMousePosition(Camera.RenderContext) + Camera.Position;
 
         // Hover over object
         HoverGameObject = null;
@@ -113,7 +113,7 @@ public class EditableScene2D
             }
 
             if (IsDraggingObject && SelectedGameObject != null)
-                SelectedGameObject.Position += InputManager.GetMousePositionDelta(Camera);
+                SelectedGameObject.Position += InputManager.GetMousePositionDelta(Camera.RenderContext);
         }
         else
         {

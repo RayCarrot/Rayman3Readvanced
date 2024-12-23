@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using GbaMonoGame.AnimEngine;
 using Microsoft.Xna.Framework;
 
@@ -29,7 +29,7 @@ public class DebugBoxAObject : AObject
             Center = false,
             AffineMatrix = new AffineMatrix(angle, new Vector2(distance, thickness)),
             Color = Color,
-            Camera = Camera,
+            RenderContext = RenderContext,
         });
     }
 
@@ -47,7 +47,7 @@ public class DebugBoxAObject : AObject
                 Center = false,
                 AffineMatrix = new AffineMatrix(0, Size),
                 Color = new Color(Color, alpha),
-                Camera = Camera,
+                RenderContext = RenderContext,
             });
         }
         else

@@ -35,7 +35,7 @@ public class SwitchBar : Bar
             VerticalAnchor = VerticalAnchorMode.Bottom,
             BgPriority = 0,
             ObjPriority = 0,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         // The original game dynamically modifies the loaded palette in the Draw method to make

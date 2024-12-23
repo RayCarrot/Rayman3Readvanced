@@ -6,17 +6,17 @@ namespace GbaMonoGame.TgxEngine;
 
 public class TgxCluster
 {
-    public TgxCluster(ClusterResource cluster, TgxCamera2D tgxCamera)
+    public TgxCluster(ClusterResource cluster, RenderContext camRenderContext)
     {
         ScrollFactor = new Vector2(cluster.ScrollFactor.X, cluster.ScrollFactor.Y);
         Layers = new List<TgxGameLayer>();
         Size = new Vector2(cluster.SizeX * Tile.Size, cluster.SizeY * Tile.Size);
         Stationary = cluster.Stationary;
 
-        // Render parallax backgrounds to a separate camera
-        Camera = !Stationary && ScrollFactor == Vector2.One 
-            ? tgxCamera 
-            : new ParallaxClusterCamera(Engine.GameViewPort, this);
+        // Render parallax backgrounds using a separate render context so we can scale them
+        RenderContext = !Stationary && ScrollFactor == Vector2.One 
+            ? camRenderContext
+            : new ParallaxClusterRenderContext(this);
     }
 
     private Vector2 _position;
@@ -37,12 +37,12 @@ public class TgxCluster
         }
     }
 
-    public Vector2 MaxPosition => GetMaxPosition(Camera.Resolution);
+    public Vector2 MaxPosition => GetMaxPosition(RenderContext.Resolution);
 
     public Vector2 ScrollFactor { get; set; }
 
     public bool Stationary { get; }
-    public GfxCamera Camera { get; }
+    public RenderContext RenderContext { get; }
 
     public Vector2 GetMaxPosition(Vector2 resolution) => new(Math.Max(0, Size.X - resolution.X), Math.Max(0, Size.Y - resolution.Y));
 

@@ -7,41 +7,10 @@ namespace GbaMonoGame.TgxEngine;
 
 public class TgxCamera2D : TgxCamera
 {
-    public TgxCamera2D(GameViewPort gameViewPort) : base(gameViewPort) { }
-
-    private bool _fixedResolution;
-    private Vector2? _maxResolution;
+    public TgxCamera2D(RenderContext renderContext) : base(renderContext) { }
 
     private TgxCluster _mainCluster;
     private readonly List<TgxCluster> _clusters = [];
-
-    /// <summary>
-    /// Indicates if the resolution is fixed to the original screen resolution. This is
-    /// needed for certain playfields, such as the menu and intro.
-    /// </summary>
-    public bool FixedResolution
-    {
-        get => _fixedResolution;
-        set
-        {
-            _fixedResolution = value;
-            UpdateResolution();
-        }
-    }
-
-    /// <summary>
-    /// Defines a custom maximum resolution. This is needed for the worldmap which has
-    /// 8 pixels of blank space on the bottom.
-    /// </summary>
-    public Vector2? MaxResolution
-    {
-        get => _maxResolution;
-        set
-        {
-            _maxResolution = value;
-            UpdateResolution();
-        }
-    }
 
     public override Vector2 Position
     {
@@ -60,22 +29,23 @@ public class TgxCamera2D : TgxCamera
                 //                       mainCluster.GetMaxPosition(Engine.GameViewPort.OriginalGameResolution);
                 Vector2 scrollFactor;
 
-                // If it's not scaled to the main playfield camera we have to update the scroll factor
-                if (cluster.Camera != this && Engine.GameViewPort.GameResolution != Engine.GameViewPort.OriginalGameResolution)
+                // If it's scaled then we have to update the scroll factor
+                if (cluster.RenderContext != RenderContext &&
+                    RenderContext.Resolution != Engine.GameViewPort.OriginalGameResolution)
                 {
                     // Determine if the cluster wraps horizontally. We assume that none of them wrap vertically.
                     bool wrapX = cluster.Layers.Any(x => x.PixelWidth < cluster.Size.X);
 
                     if (wrapX)
                     {
-                        // If the cluster wraps we use the original scroll factor (scaling it by the different camera resolutions)
-                        scrollFactor = cluster.ScrollFactor * cluster.Camera.Resolution / Resolution;
+                        // If the cluster wraps we use the original scroll factor (scaling it by the different resolutions)
+                        scrollFactor = cluster.ScrollFactor * cluster.RenderContext.Resolution / RenderContext.Resolution;
                     }
                     else if (mainCluster.MaxPosition.X != 0)
                     {
                         // If the cluster does not wrap we want it to scroll evenly through the width of the level
                         scrollFactor = new Vector2(
-                            cluster.GetMaxPosition(cluster.Camera.Resolution).X / mainCluster.MaxPosition.X,
+                            cluster.GetMaxPosition(cluster.RenderContext.Resolution).X / mainCluster.MaxPosition.X,
                             cluster.ScrollFactor.Y);
                     }
                     else
@@ -90,43 +60,6 @@ public class TgxCamera2D : TgxCamera
 
                 cluster.Position = mainCluster.Position * scrollFactor;
             }
-        }
-    }
-
-    protected override Vector2 GetResolution(GameViewPort gameViewPort)
-    {
-        // If fixed resolution we always use the original resolution
-        if (FixedResolution)
-        {
-            return Engine.GameViewPort.OriginalGameResolution;
-        }
-        // If not fixed we attempt to confine it to the main cluster size
-        else
-        {
-            Vector2 newGameResolution = gameViewPort.GameResolution * Engine.Config.PlayfieldCameraScale;
-
-            Vector2? maxRes = MaxResolution ?? _mainCluster?.Size;
-            if (maxRes is { } max)
-            {
-                if (newGameResolution.X > newGameResolution.Y)
-                {
-                    if (newGameResolution.Y > max.Y)
-                        newGameResolution = new Vector2(max.Y * newGameResolution.X / newGameResolution.Y, max.Y);
-
-                    if (newGameResolution.X > max.X)
-                        newGameResolution = new Vector2(max.X, max.X * newGameResolution.Y / newGameResolution.X);
-                }
-                else
-                {
-                    if (newGameResolution.X > max.X)
-                        newGameResolution = new Vector2(max.X, max.X * newGameResolution.Y / newGameResolution.X);
-
-                    if (newGameResolution.Y > max.Y)
-                        newGameResolution = new Vector2(max.Y * newGameResolution.X / newGameResolution.Y, max.Y);
-                }
-            }
-
-            return newGameResolution;
         }
     }
 
@@ -152,16 +85,9 @@ public class TgxCamera2D : TgxCamera
     public void AddCluster(ClusterResource clusterResource)
     {
         if (_mainCluster == null)
-        {
-            _mainCluster = new TgxCluster(clusterResource, this);
-
-            if (!FixedResolution)
-                UpdateResolution();
-        }
+            _mainCluster = new TgxCluster(clusterResource, RenderContext);
         else
-        {
-            _clusters.Add(new TgxCluster(clusterResource, this));
-        }
+            _clusters.Add(new TgxCluster(clusterResource, RenderContext));
     }
 
     public void AddLayer(int clusterId, TgxGameLayer layer)
@@ -172,13 +98,11 @@ public class TgxCamera2D : TgxCamera
 
     public override void UnInit()
     {
-        base.UnInit();
-
-        // Make sure to uninit the parallax cameras
+        // Make sure to uninit the parallax render contexts
         foreach (TgxCluster cluster in GetClusters(true))
         {
-            if (cluster.Camera != this)
-                cluster.Camera.UnInit();
+            if (cluster.RenderContext != Engine.GameRenderContext)
+                cluster.RenderContext.UnInit();
         }
     }
 }

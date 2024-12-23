@@ -409,7 +409,7 @@ public class AnimatedObject : AObject
                         AffineMatrix = affineMatrix,
                         OverrideGfxColor = OverrideGfxColor,
                         Alpha = IsAlphaBlendEnabled ? Alpha : null,
-                        Camera = Camera
+                        RenderContext = RenderContext
                     };
 
                     if (IsBackSprite)

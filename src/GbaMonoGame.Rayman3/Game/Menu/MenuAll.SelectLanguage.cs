@@ -204,12 +204,12 @@ public partial class MenuAll
         {
             TransitionValue += 4;
 
-            if (TransitionValue <= Engine.ScreenCamera.Resolution.Y)
+            if (TransitionValue <= Playfield.RenderContext.Resolution.Y)
             {
                 TgxCluster cluster = Playfield.Camera.GetCluster(1);
                 cluster.Position -= new Vector2(0, 4);
             }
-            else if (TransitionValue >= Engine.ScreenCamera.Resolution.Y + 60)
+            else if (TransitionValue >= Playfield.RenderContext.Resolution.Y + 60)
             {
                 TransitionValue = 0;
                 NextStepAction = Step_InitializeTransitionToOptions;

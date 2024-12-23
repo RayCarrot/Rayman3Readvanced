@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,9 +22,7 @@ public class GameConfig
         IsFullscreen = true;
         GbaWindowBounds = new Rectangle(0, 0, 240 * 4, 160 * 4);
         NGageWindowBounds = new Rectangle(0, 0, 176 * 4, 208 * 4);
-        InternalResolution = null;
-        PlayfieldCameraScale = 1;
-        HudCameraScale = 1;
+        InternalGameResolution = null;
         Controls = new Dictionary<Input, Keys>();
         SfxVolume = 1;
         MusicVolume = 1;
@@ -48,9 +46,7 @@ public class GameConfig
     [JsonProperty("nGageWindowBounds")] public Rectangle NGageWindowBounds { get; set; }
     
     // Game
-    [JsonProperty("internalResolution")] public Point? InternalResolution { get; set; }
-    [JsonProperty("playfieldCameraScale")] public float PlayfieldCameraScale { get; set; }
-    [JsonProperty("hudCameraScale")] public float HudCameraScale { get; set; }
+    [JsonProperty("internalGameResolution")] public Point? InternalGameResolution { get; set; }
 
     // Controls
     [JsonProperty("controls")] public Dictionary<Input, Keys> Controls { get; set; }

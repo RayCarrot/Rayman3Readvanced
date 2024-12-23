@@ -9,12 +9,14 @@ public abstract class TgxPlayfield
     protected TgxPlayfield(TgxCamera camera, TileKit tileKit)
     {
         Camera = camera;
+        RenderContext = camera.RenderContext;
 
         if (tileKit.AnimatedTileKits != null)
             AnimatedTilekitManager = new AnimatedTilekitManager(tileKit.AnimatedTileKits);
     }
 
     public TgxCamera Camera { get; }
+    public RenderContext RenderContext { get; }
     public AnimatedTilekitManager AnimatedTilekitManager { get; }
     public TgxTilePhysicalLayer PhysicalLayer { get; set; }
 

@@ -46,8 +46,8 @@ public class TileMapScreenRenderer : IScreenRenderer
 
         int xStart = (int)((Math.Max(0, renderBox.MinX) - renderBox.MinX) / Tile.Size);
         int yStart = (int)((Math.Max(0, renderBox.MinY) - renderBox.MinY) / Tile.Size);
-        int xEnd = (int)Math.Ceiling((Math.Min(screen.Camera.Resolution.X, renderBox.MaxX) - renderBox.MinX) / Tile.Size);
-        int yEnd = (int)Math.Ceiling((Math.Min(screen.Camera.Resolution.Y, renderBox.MaxY) - renderBox.MinY) / Tile.Size);
+        int xEnd = (int)Math.Ceiling((Math.Min(screen.RenderContext.Resolution.X, renderBox.MaxX) - renderBox.MinX) / Tile.Size);
+        int yEnd = (int)Math.Ceiling((Math.Min(screen.RenderContext.Resolution.Y, renderBox.MaxY) - renderBox.MinY) / Tile.Size);
 
         // Make sure we don't go out of bounds. Only needed if the camera shows more than the actual map, which isn't usually the case.
         xEnd = Math.Min(xEnd, Width);
@@ -65,7 +65,7 @@ public class TileMapScreenRenderer : IScreenRenderer
 
     public void Draw(GfxRenderer renderer, GfxScreen screen, Vector2 position, Color color)
     {
-        renderer.BeginRender(new RenderOptions(screen.IsAlphaBlendEnabled, PaletteTexture, screen.Camera));
+        renderer.BeginRender(new RenderOptions(screen.IsAlphaBlendEnabled, PaletteTexture, screen.RenderContext));
 
         Rectangle visibleTilesArea = GetVisibleTilesArea(position, screen);
 

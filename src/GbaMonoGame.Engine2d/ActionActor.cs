@@ -24,12 +24,12 @@ public abstract class ActionActor : BaseActor
         _debugDetectionBoxAObject = new DebugBoxAObject()
         {
             Color = DebugBoxColor.DetectionBox,
-            Camera = Scene.Playfield.Camera
+            RenderContext = Scene.RenderContext,
         };
         _debugActionBoxAObject = new DebugBoxAObject()
         {
             Color = DebugBoxColor.ActionBox,
-            Camera = Scene.Playfield.Camera
+            RenderContext = Scene.RenderContext,
         };
     }
 

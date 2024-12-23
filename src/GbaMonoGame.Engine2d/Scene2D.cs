@@ -15,7 +15,6 @@ public class Scene2D
         LayersCount = layersCount;
         ActorDrawPriority = actorDrawPriority;
         Camera = createCameraFunc(this);
-        HudCamera = new HudCamera(Engine.GameViewPort);
 
         AllowModalDialogs = true;
         AnimationPlayer = new AnimationPlayer(false, SoundEventsManager.ProcessEvent);
@@ -25,6 +24,7 @@ public class Scene2D
         Scene2DResource scene = Storage.LoadResource<Scene2DResource>(id);
 
         Playfield = TgxPlayfield.Load(scene.Playfield);
+        HudRenderContext = Playfield.RenderContext;
 
         // TODO: Set bounds if Mode7
         if (Playfield is TgxPlayfield2D playfield2D)
@@ -48,7 +48,6 @@ public class Scene2D
         LayersCount = layersCount;
         ActorDrawPriority = actorDrawPriority;
         Camera = createCameraFunc(this);
-        HudCamera = new HudCamera(Engine.GameViewPort);
 
         AllowModalDialogs = true;
         AnimationPlayer = new AnimationPlayer(false, SoundEventsManager.ProcessEvent);
@@ -56,6 +55,7 @@ public class Scene2D
         DialogModalFlags = new List<bool>(layersCount);
 
         Playfield = TgxPlayfield.Load<TgxPlayfield2D>(map.Playfield);
+        HudRenderContext = Playfield.RenderContext;
 
         // TODO: Set bounds if Mode7
         if (Playfield is TgxPlayfield2D playfield2D)
@@ -69,7 +69,7 @@ public class Scene2D
     }
 
     public CameraActor Camera { get; }
-    public HudCamera HudCamera { get; }
+    public RenderContext HudRenderContext { get; }
     public List<Dialog> Dialogs { get; }
     public List<bool> DialogModalFlags { get; }
     public AnimationPlayer AnimationPlayer { get; }
@@ -89,7 +89,8 @@ public class Scene2D
     public bool ReloadPlayfield { get; set; }
     public bool NGage_Flag_6 { get; set; }
 
-    public Vector2 Resolution => Playfield.Camera.Resolution;
+    public RenderContext RenderContext => Playfield.RenderContext;
+    public Vector2 Resolution => RenderContext.Resolution;
 
     public MovableActor MainActor => (MovableActor)(RSMultiplayer.IsActive ? GetGameObject(RSMultiplayer.MachineId) : GetGameObject(0));
 
@@ -97,7 +98,7 @@ public class Scene2D
     //       Perhaps we should still use knots to handle game logic, but still draw and step all actors in the scene?
     // If we're playing in a different resolution than the original we can't use
     // the knots (object sectors). Instead we keep all objects active at all times.
-    public bool KeepAllObjectsActive => Playfield.Camera.Resolution != Engine.GameViewPort.OriginalGameResolution;
+    public bool KeepAllObjectsActive => Resolution != Engine.GameViewPort.OriginalGameResolution;
 
     public void Init()
     {

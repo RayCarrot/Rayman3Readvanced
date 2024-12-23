@@ -209,8 +209,8 @@ public static class FontManager
         int priority, 
         AffineMatrix? affineMatrix, 
         float? alpha, 
-        Color color, 
-        GfxCamera camera)
+        Color color,
+        RenderContext renderContext)
     {
         LoadedFont loadedFont = fontSize switch
         {
@@ -230,7 +230,7 @@ public static class FontManager
             AffineMatrix = affineMatrix,
             Alpha = alpha,
             Color = color,
-            Camera = camera
+            RenderContext = renderContext
         };
 
         position += new Vector2(loadedFont.Font.CharacterWidths[c], 0);

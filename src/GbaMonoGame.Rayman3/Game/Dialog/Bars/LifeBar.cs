@@ -35,7 +35,7 @@ public class LifeBar : Bar
             ScreenPos = new Vector2(-4, 0),
             BgPriority = 0,
             ObjPriority = 0,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
         
         LifeDigit1 = new AnimatedObject(resource, false)
@@ -45,7 +45,7 @@ public class LifeBar : Bar
             ScreenPos = new Vector2(49, 20),
             BgPriority = 0,
             ObjPriority = 0,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
         
         LifeDigit2 = new AnimatedObject(resource, false)
@@ -55,7 +55,7 @@ public class LifeBar : Bar
             ScreenPos = new Vector2(61, 20),
             BgPriority = 0,
             ObjPriority = 0,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
     }
 

@@ -5,15 +5,20 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GbaMonoGame.Editor;
 
-public class EditorCamera : GfxCamera
+public class EditorCamera
 {
-    public EditorCamera(GameViewPort gameViewPort, Vector2 mapSize) : base(gameViewPort)
+    public EditorCamera(Vector2 mapSize)
     {
         ScrollBounds = new Box(
             minX: 0 - ScrollMargin,
             minY: 0 - ScrollMargin,
             maxX: mapSize.X + ScrollMargin,
             maxY: mapSize.Y + ScrollMargin);
+        RenderContext = new EditorRenderContext
+        {
+            Scale = Scale,
+            MaxResolution = ScrollBounds.Size
+        };
 
         GameLayers = new List<TgxGameLayer>();
     }
@@ -25,13 +30,14 @@ public class EditorCamera : GfxCamera
     private Vector2 _position;
 
     public Box ScrollBounds { get; }
+    public EditorRenderContext RenderContext { get; }
     public Vector2 Position
     {
         get => _position;
         set
         {
             Vector2 minPos = ScrollBounds.Position;
-            Vector2 maxPos = new(Math.Max(minPos.X, ScrollBounds.MaxX - Resolution.X), Math.Max(minPos.Y, ScrollBounds.MaxY - Resolution.Y));
+            Vector2 maxPos = new(Math.Max(minPos.X, ScrollBounds.MaxX - RenderContext.Resolution.X), Math.Max(minPos.Y, ScrollBounds.MaxY - RenderContext.Resolution.Y));
 
             _position = Vector2.Clamp(value, minPos, maxPos);
 
@@ -43,36 +49,10 @@ public class EditorCamera : GfxCamera
 
     public float Scale { get; set; } = DefaultScale;
 
-    protected override Vector2 GetResolution(GameViewPort gameViewPort)
-    {
-        Vector2 newGameResolution = gameViewPort.GameResolution * Scale;
-
-        Vector2 max = ScrollBounds.Size;
-
-        if (newGameResolution.X > newGameResolution.Y)
-        {
-            if (newGameResolution.Y > max.Y)
-                newGameResolution = new Vector2(max.Y * newGameResolution.X / newGameResolution.Y, max.Y);
-
-            if (newGameResolution.X > max.X)
-                newGameResolution = new Vector2(max.X, max.X * newGameResolution.Y / newGameResolution.X);
-        }
-        else
-        {
-            if (newGameResolution.X > max.X)
-                newGameResolution = new Vector2(max.X, max.X * newGameResolution.Y / newGameResolution.X);
-
-            if (newGameResolution.Y > max.Y)
-                newGameResolution = new Vector2(max.Y * newGameResolution.X / newGameResolution.Y, max.Y);
-        }
-
-        return newGameResolution;
-    }
-
     public bool IsActorFramed(EditableActor actor)
     {
         Box viewBox = actor.GetViewBox();
-        Box camBox = new(Position, Resolution);
+        Box camBox = new(Position, RenderContext.Resolution);
 
         bool isFramed = viewBox.Intersects(camBox);
 
@@ -94,16 +74,18 @@ public class EditorCamera : GfxCamera
         if (wheelDelta < 0)
         {
             Scale += MouseWheelZoomSpeed;
-            UpdateResolution();
+            RenderContext.Scale = Scale;
+            RenderContext.UpdateResolution();
         }
         else if (wheelDelta > 0)
         {
             Scale -= MouseWheelZoomSpeed;
-            UpdateResolution();
+            RenderContext.Scale = Scale;
+            RenderContext.UpdateResolution();
         }
 
         // Scroll
         if (InputManager.GetMouseState().RightButton == ButtonState.Pressed)
-            Position += InputManager.GetMousePositionDelta(this) * -1;
+            Position += InputManager.GetMousePositionDelta(RenderContext) * -1;
     }
 }

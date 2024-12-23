@@ -5,8 +5,7 @@ namespace GbaMonoGame.TgxEngine;
 
 public class TgxPlayfieldMode7 : TgxPlayfield
 {
-    public TgxPlayfieldMode7(PlayfieldMode7Resource playfieldResource)
-        : base(new TgxCameraMode7(Engine.GameViewPort), playfieldResource.TileKit)
+    public TgxPlayfieldMode7(PlayfieldMode7Resource playfieldResource) : base(new TgxCameraMode7(Engine.GameRenderContext), playfieldResource.TileKit)
     {
         List<TgxRotscaleLayerMode7> rotScaleLayers = new();
 
@@ -23,7 +22,7 @@ public class TgxPlayfieldMode7 : TgxPlayfield
 
                 layer.LoadRenderer(playfieldResource.TileKit, Vram);
 
-                layer.Screen.Camera = Camera;
+                layer.Screen.RenderContext = RenderContext;
 
                 // Add the renderer to the animated tile kit manager
                 if (layer.Screen.Renderer is TileMapScreenRenderer renderer)
@@ -35,7 +34,8 @@ public class TgxPlayfieldMode7 : TgxPlayfield
             }
             else if (gameLayerResource.Type == GameLayerType.PhysicalLayer)
             {
-                PhysicalLayer = new TgxTilePhysicalLayer(gameLayerResource, Camera);
+                PhysicalLayer = new TgxTilePhysicalLayer(gameLayerResource);
+                PhysicalLayer.DebugScreen.RenderContext = RenderContext;
 
                 // TODO: Somehow add layer to camera so we can display it in debug mode
             }

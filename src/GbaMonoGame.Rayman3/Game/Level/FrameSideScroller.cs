@@ -101,7 +101,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SlideOut_Mix01);
         }
 
-        CircleTransitionScreenEffect.Camera = Scene.Playfield.Camera;
+        CircleTransitionScreenEffect.RenderContext = Scene.RenderContext;
         CircleTransitionScreenEffect.Init(CircleTransitionValue, Scene.MainActor.ScreenPosition - new Vector2(0, 32));
         Gfx.SetScreenEffect(CircleTransitionScreenEffect);
     }

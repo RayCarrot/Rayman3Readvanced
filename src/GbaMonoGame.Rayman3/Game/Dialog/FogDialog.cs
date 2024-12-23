@@ -1,7 +1,6 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
-using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -30,7 +29,7 @@ public class FogDialog : Dialog
             ObjPriority = 63,
             IsAlphaBlendEnabled = true,
             GbaAlpha = 6,
-            Camera = Scene.Playfield.Camera
+            RenderContext = Scene.RenderContext
         };
 
         ScrollX = 0;
@@ -47,7 +46,7 @@ public class FogDialog : Dialog
         Vector2 camPos = Scene.Playfield.Camera.Position;
         int height = Scene.Playfield.PhysicalLayer.PixelHeight;
 
-        if (height - 32 < camPos.Y + Scene.Playfield.Camera.Resolution.Y)
+        if (height - 32 < camPos.Y + Scene.Resolution.Y)
         {
             // What the game does:
             // Fog.ScreenPos = new Vector2(512 - (camPos.X + ScrollX) % 512, height - camPos.Y - 32);

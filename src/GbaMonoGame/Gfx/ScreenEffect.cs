@@ -2,7 +2,7 @@
 
 public abstract class ScreenEffect
 {
-    public GfxCamera Camera { get; set; } = Engine.ScreenCamera;
+    public RenderContext RenderContext { get; set; } = Engine.GameRenderContext;
 
     public abstract void Draw(GfxRenderer renderer);
 }

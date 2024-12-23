@@ -22,7 +22,7 @@ public class Captor : GameObject
             Size = _captorBox.Size,
             Color = DebugBoxColor.CaptorBox,
             IsFilled = true,
-            Camera = Scene.Playfield.Camera
+            RenderContext = Scene.RenderContext
         };
     }
 

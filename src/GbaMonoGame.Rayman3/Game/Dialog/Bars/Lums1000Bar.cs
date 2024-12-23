@@ -32,7 +32,7 @@ public class Lums1000Bar : Bar
             HorizontalAnchor = HorizontalAnchorMode.Right,
             BgPriority = 0,
             ObjPriority = 0,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         CollectedLumsDigit1 = new AnimatedObject(resource, false)
@@ -42,7 +42,7 @@ public class Lums1000Bar : Bar
             HorizontalAnchor = HorizontalAnchorMode.Right,
             BgPriority = 0,
             ObjPriority = 0,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         CollectedLumsDigit2 = new AnimatedObject(resource, false)
@@ -52,7 +52,7 @@ public class Lums1000Bar : Bar
             HorizontalAnchor = HorizontalAnchorMode.Right,
             BgPriority = 0,
             ObjPriority = 0,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         CollectedLumsDigit3 = new AnimatedObject(resource, false)
@@ -62,7 +62,7 @@ public class Lums1000Bar : Bar
             HorizontalAnchor = HorizontalAnchorMode.Right,
             BgPriority = 0,
             ObjPriority = 0,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
     }
 

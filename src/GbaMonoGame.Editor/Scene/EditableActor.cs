@@ -16,7 +16,7 @@ public class EditableActor : EditableGameObject
             CurrentAnimation = actorResource.Model.Actions.ElementAtOrDefault(actorResource.FirstActionId)?.AnimationIndex ?? actorResource.FirstActionId,
             BgPriority = 1,
             ObjPriority = 32,
-            Camera = scene.Camera
+            RenderContext = scene.Camera.RenderContext
         };
 
         _viewBox = new Box(ActorModel.ViewBox);

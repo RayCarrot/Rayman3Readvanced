@@ -24,7 +24,7 @@ public class EditablePlayfield2D
                 tileLayers.Add(layer);
 
                 layer.LoadRenderer(playfieldResource.TileKit, Vram);
-                layer.Screen.Camera = camera;
+                layer.Screen.RenderContext = camera.RenderContext;
                 layer.Screen.Wrap = false;
 
                 camera.AddGameLayer(layer);

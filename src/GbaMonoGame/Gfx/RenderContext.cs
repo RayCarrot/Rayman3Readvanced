@@ -3,23 +3,18 @@ using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame;
 
-// The follow base class is custom and not in the original GBA engine. We use this for cameras responsible for rendering graphics.
-public abstract class GfxCamera
+public abstract class RenderContext
 {
-    protected GfxCamera(GameViewPort gameViewPort)
+    protected RenderContext()
     {
-        GameViewPort = gameViewPort;
-
-        gameViewPort.GameResolutionChanged += GameViewPort_GameResolutionChanged;
-        gameViewPort.Resized += GameViewPort_Resized;
+        Engine.GameViewPort.GameResolutionChanged += GameViewPort_GameResolutionChanged;
+        Engine.GameViewPort.Resized += GameViewPort_Resized;
     }
 
     private bool _hasSetResolution;
     private Vector2 _resolution;
     private Matrix _matrix;
     private Box _visibleArea;
-
-    private GameViewPort GameViewPort { get; }
 
     public Vector2 Resolution
     {
@@ -73,27 +68,27 @@ public abstract class GfxCamera
 
     private Matrix CreateRenderMatrix(Vector2 resolution)
     {
-        float screenRatio = GameViewPort.ScreenSizeVector.X / GameViewPort.ScreenSizeVector.Y;
-        float gameRatio = GameViewPort.GameResolution.X / GameViewPort.GameResolution.Y;
+        float screenRatio = Engine.GameViewPort.ScreenSize.X / Engine.GameViewPort.ScreenSize.Y;
+        float gameRatio = Resolution.X / Resolution.Y;
 
         float worldScale;
 
         if (screenRatio > gameRatio)
-            worldScale = GameViewPort.ScreenSizeVector.Y / resolution.Y;
+            worldScale = Engine.GameViewPort.ScreenSize.Y / resolution.Y;
         else
-            worldScale = GameViewPort.ScreenSizeVector.X / resolution.X;
+            worldScale = Engine.GameViewPort.ScreenSize.X / resolution.X;
 
         return Matrix.CreateScale(worldScale) *
-               Matrix.CreateTranslation(GameViewPort.ScreenBox.MinX, GameViewPort.ScreenBox.MinY, 0);
+               Matrix.CreateTranslation(Engine.GameViewPort.ScreenBox.MinX, Engine.GameViewPort.ScreenBox.MinY, 0);
     }
 
     private Box GetVisibleArea(Matrix matrix)
     {
         Matrix inverseViewMatrix = Matrix.Invert(matrix);
         Vector2 tl = Vector2.Transform(Vector2.Zero, inverseViewMatrix);
-        Vector2 tr = Vector2.Transform(new Vector2(GameViewPort.ScreenBox.Width, 0), inverseViewMatrix);
-        Vector2 bl = Vector2.Transform(new Vector2(0, GameViewPort.ScreenBox.Height), inverseViewMatrix);
-        Vector2 br = Vector2.Transform(GameViewPort.ScreenBox.Size, inverseViewMatrix);
+        Vector2 tr = Vector2.Transform(new Vector2(Engine.GameViewPort.ScreenBox.Width, 0), inverseViewMatrix);
+        Vector2 bl = Vector2.Transform(new Vector2(0, Engine.GameViewPort.ScreenBox.Height), inverseViewMatrix);
+        Vector2 br = Vector2.Transform(Engine.GameViewPort.ScreenBox.Size, inverseViewMatrix);
         Vector2 min = new(
             MathHelper.Min(tl.X, MathHelper.Min(tr.X, MathHelper.Min(bl.X, br.X))),
             MathHelper.Min(tl.Y, MathHelper.Min(tr.Y, MathHelper.Min(bl.Y, br.Y))));
@@ -103,11 +98,11 @@ public abstract class GfxCamera
         return new Box(0, 0, max.X - min.X, max.Y - min.Y);
     }
 
-    protected abstract Vector2 GetResolution(GameViewPort gameViewPort);
+    protected abstract Vector2 GetResolution();
 
-    protected void UpdateResolution()
+    public void UpdateResolution()
     {
-        Resolution = GetResolution(GameViewPort);
+        Resolution = GetResolution();
     }
 
     public Vector2 ToWorldPosition(Vector2 pos) => Vector2.Transform(pos, Matrix.Invert(Matrix));
@@ -119,7 +114,7 @@ public abstract class GfxCamera
 
     public virtual void UnInit()
     {
-        GameViewPort.GameResolutionChanged -= GameViewPort_GameResolutionChanged;
-        GameViewPort.Resized -= GameViewPort_Resized;
+        Engine.GameViewPort.GameResolutionChanged -= GameViewPort_GameResolutionChanged;
+        Engine.GameViewPort.Resized -= GameViewPort_Resized;
     }
 }

@@ -214,7 +214,7 @@ public partial class TextBoxDialog : Dialog
             CurrentAnimation = 0,
             ScreenPos = new Vector2(0, -OffsetY),
             HorizontalAnchor = HorizontalAnchorMode.Scale,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         AnimatedObjectResource raymanIconResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.TextBoxRaymanIconAnimations);
@@ -224,7 +224,7 @@ public partial class TextBoxDialog : Dialog
             CurrentAnimation = 0,
             ScreenPos = new Vector2(8, 8 - OffsetY),
             HorizontalAnchor = HorizontalAnchorMode.Scale,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         int textsCount = Engine.Settings.Platform switch
@@ -244,7 +244,7 @@ public partial class TextBoxDialog : Dialog
                 HorizontalAnchor = HorizontalAnchorMode.Scale,
                 FontSize = FontSize.Font16,
                 Color = TextColor.TextBox,
-                Camera = Scene.HudCamera,
+                RenderContext = Scene.HudRenderContext,
             };
         }
 
@@ -255,7 +255,7 @@ public partial class TextBoxDialog : Dialog
             CurrentAnimation = 0,
             ScreenPos = new Vector2(8, 8 - OffsetY),
             HorizontalAnchor = HorizontalAnchorMode.Scale,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         // NOTE: The game only creates the two icons below if map id is not certain levels. We can ignore that as it's probably for vram allocation.
@@ -266,7 +266,7 @@ public partial class TextBoxDialog : Dialog
             CurrentAnimation = 0,
             ScreenPos = new Vector2(8, 8 - OffsetY),
             HorizontalAnchor = HorizontalAnchorMode.Scale,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
 
         AnimatedObjectResource teensiesIconResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.TextBoxTeensiesIconAnimations);
@@ -276,7 +276,7 @@ public partial class TextBoxDialog : Dialog
             CurrentAnimation = 0,
             ScreenPos = new Vector2(8, 8 - OffsetY),
             HorizontalAnchor = HorizontalAnchorMode.Scale,
-            Camera = Scene.HudCamera,
+            RenderContext = Scene.HudRenderContext,
         };
     }
 

@@ -121,7 +121,6 @@ public class Intro : Frame, IHasPlayfield
         PlayfieldResource introPlayfield = Storage.LoadResource<PlayfieldResource>(GameResource.IntroPlayfield);
         Playfield = TgxPlayfield.Load<TgxPlayfield2D>(introPlayfield);
         Engine.GameViewPort.SetResolutionBoundsToOriginalResolution();
-        Playfield.Camera.FixedResolution = true;
 
         Gfx.ClearColor = Color.Black;
 

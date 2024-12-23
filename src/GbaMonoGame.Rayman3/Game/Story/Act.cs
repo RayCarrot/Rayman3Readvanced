@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
@@ -267,8 +267,6 @@ public abstract class Act : Frame
         {
             IsEnabled = true,
             Priority = 1,
-            // Center the screen
-            Offset = -(Engine.GameViewPort.GameResolution - Engine.GameViewPort.OriginalGameResolution) / 2,
         };
         Gfx.AddScreen(BitmapScreen);
 
