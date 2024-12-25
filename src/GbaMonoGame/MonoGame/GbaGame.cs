@@ -614,11 +614,11 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
         switch (Engine.Settings.Platform)
         {
             case Platform.GBA:
-                Engine.Config.GbaWindowBounds = Window.ClientBounds;
+                Engine.Config.GbaWindowBounds = new Rectangle(Window.Position, GetResolution());
                 break;
 
             case Platform.NGage:
-                Engine.Config.NGageWindowBounds = Window.ClientBounds;
+                Engine.Config.NGageWindowBounds = new Rectangle(Window.Position, GetResolution());
                 break;
 
             default:
