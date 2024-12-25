@@ -482,7 +482,18 @@ public class MenuManager
     private class MenuRenderContext : RenderContext
     {
         // Scale by 5 to fit more text on screen
-        protected override Vector2 GetResolution() => Engine.GameViewPort.GameResolution * 5f;
+        protected override Vector2 GetResolution()
+        {
+            float ratio = Engine.GameViewPort.GameResolution.X / Engine.GameViewPort.GameResolution.Y;
+
+            Vector2 res;
+            if (ratio > 1)
+                res = new Vector2(ratio * Engine.GameViewPort.RequestedGameResolution.Y, Engine.GameViewPort.RequestedGameResolution.Y);
+            else
+                res = new Vector2(Engine.GameViewPort.RequestedGameResolution.X, 1 / ratio * Engine.GameViewPort.RequestedGameResolution.X);
+
+            return res * 5f;
+        }
     }
 
     private class MenuState
