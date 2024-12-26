@@ -101,4 +101,3 @@ The actors could be selected from a list, where each actor has a list of valid i
 
 ## 🐞 Bugs
 - Is keg collision wrong when flying? See Mega Havoc 2. It seems more strict than the original game.
-- Fix window and resolution issues which happened after switching from OpenGL to DirectX.

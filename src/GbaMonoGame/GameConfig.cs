@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -16,13 +15,17 @@ public class GameConfig
 
     public GameConfig()
     {
-        DisplayMode defaultDisplayMode = GraphicsAdapter.DefaultAdapter.SupportedDisplayModes.Last();
+        DisplayMode defaultDisplayMode = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode;
+        Point defaultResolution = new(384, 216);
+        const int defaultWindowScale = 4;
 
+        WindowPosition = new Point(0, 0);
+        WindowResolution = defaultResolution * new Point(defaultWindowScale);
+        WindowIsMaximized = false;
+        LockWindowAspectRatio = true;
         FullscreenResolution = new Point(defaultDisplayMode.Width, defaultDisplayMode.Height);
         IsFullscreen = true;
-        GbaWindowBounds = new Rectangle(0, 0, 240 * 4, 160 * 4);
-        NGageWindowBounds = new Rectangle(0, 0, 176 * 4, 208 * 4);
-        InternalGameResolution = null;
+        InternalGameResolution = defaultResolution;
         Controls = new Dictionary<Input, Keys>();
         SfxVolume = 1;
         MusicVolume = 1;
@@ -40,13 +43,15 @@ public class GameConfig
     #region Public Properties
 
     // Display
+    [JsonProperty("windowPosition")] public Point WindowPosition { get; set; }
+    [JsonProperty("windowResolution")] public Point WindowResolution { get; set; }
+    [JsonProperty("windowIsMaximized")] public bool WindowIsMaximized { get; set; }
+    [JsonProperty("lockWindowAspectRatio")] public bool LockWindowAspectRatio { get; set; }
     [JsonProperty("fullscreenResolution")] public Point FullscreenResolution { get; set; }
     [JsonProperty("isFullscreen")] public bool IsFullscreen { get; set; }
-    [JsonProperty("gbaWindowBounds")] public Rectangle GbaWindowBounds { get; set; }
-    [JsonProperty("nGageWindowBounds")] public Rectangle NGageWindowBounds { get; set; }
     
     // Game
-    [JsonProperty("internalGameResolution")] public Point? InternalGameResolution { get; set; }
+    [JsonProperty("internalGameResolution")] public Point InternalGameResolution { get; set; }
 
     // Controls
     [JsonProperty("controls")] public Dictionary<Input, Keys> Controls { get; set; }

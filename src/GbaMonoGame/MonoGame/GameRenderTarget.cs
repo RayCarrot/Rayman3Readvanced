@@ -6,7 +6,7 @@ namespace GbaMonoGame;
 
 public class GameRenderTarget
 {
-    public GameRenderTarget(GraphicsDevice graphicsDevice, GameViewPort gameViewPort)
+    public GameRenderTarget(GraphicsDevice graphicsDevice, GbaGameViewPort gameViewPort)
     {
         GraphicsDevice = graphicsDevice;
         GameViewPort = gameViewPort;
@@ -15,7 +15,7 @@ public class GameRenderTarget
     private Point? _pendingResize;
 
     public GraphicsDevice GraphicsDevice { get; }
-    public GameViewPort GameViewPort { get; }
+    public GbaGameViewPort GameViewPort { get; }
     public RenderTarget2D RenderTarget { get; private set; }
 
     public void ResizeGame(Point newSize)

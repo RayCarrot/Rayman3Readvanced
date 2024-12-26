@@ -63,8 +63,6 @@ The button mapping will be made customizable in the future, along with controlle
 | Scroll camera            | Right mouse button |
 | Toggle fullscreen        | Alt+Enter          |
 
-Besides these you can also hold down `left shift` while resizing the window to maintain the aspect ratio.
-
 You can also launch the game with a BizHawk .bk2 TAS file which will have it play the button inputs from that.
 
 ## Debug mode

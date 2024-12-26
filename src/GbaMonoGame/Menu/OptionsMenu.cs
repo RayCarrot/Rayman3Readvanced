@@ -32,13 +32,8 @@ public class OptionsMenu : Menu
                     new MultiSelectionMenuOption<bool>.Item("Windowed", false),
                     new MultiSelectionMenuOption<bool>.Item("Fullscreen", true)
                 ],
-                getData: _ => Engine.Config.IsFullscreen,
-                setData: data =>
-                {
-                    Engine.Config.IsFullscreen = data;
-                    Game.SaveWindowState();
-                    Game.ApplyDisplayConfig();
-                },
+                getData: _ => Engine.GameWindow.IsFullscreen,
+                setData: data => Engine.GameWindow.IsFullscreen = data,
                 getCustomName: _ => null),
 
             // TODO: Don't auto-apply
@@ -48,53 +43,31 @@ public class OptionsMenu : Menu
                 items: adapter.SupportedDisplayModes.
                     Select(x => new MultiSelectionMenuOption<Point>.Item($"{x.Width} x {x.Height}", new Point(x.Width, x.Height))).
                     ToArray(),
-                getData: _ => Engine.Config.FullscreenResolution,
-                setData: data =>
-                {
-                    Engine.Config.FullscreenResolution = data;
-                    Game.ApplyDisplayConfig();
-                },
+                getData: _ => Engine.GameWindow.FullscreenResolution,
+                setData: data => Engine.GameWindow.FullscreenResolution = data,
                 getCustomName: data => $"{data.X} x {data.Y}"),
 
             // Window resolution
-            new MultiSelectionMenuOption<float>(
+            WindowResolutionMenuOption = new MultiSelectionMenuOption<float>(
                 name: "Window resolution",
                 items: Enumerable.Range(1, windowResCount).
                     Select(x => new MultiSelectionMenuOption<float>.Item($"{x}x", x)).
                     ToArray(),
-                getData: _ =>
-                {
-                    Rectangle windowBounds = Engine.Settings.Platform switch
-                    {
-                        Platform.GBA => Engine.Config.GbaWindowBounds,
-                        Platform.NGage => Engine.Config.NGageWindowBounds,
-                        _ => throw new UnsupportedPlatformException()
-                    };
-
-                    return windowBounds.Size.ToVector2().X / Engine.GameViewPort.RequestedGameResolution.X;
-                },
-                setData: data =>
-                {
-                    Point windowRes = (Engine.GameViewPort.RequestedGameResolution * data).ToPoint();
-
-                    switch (Engine.Settings.Platform)
-                    {
-                        case Platform.GBA:
-                            Engine.Config.GbaWindowBounds = Engine.Config.GbaWindowBounds with { Size = windowRes };
-                            break;
-
-                        case Platform.NGage:
-                            Engine.Config.NGageWindowBounds = Engine.Config.NGageWindowBounds with { Size = windowRes };
-                            break;
-
-                        default:
-                            throw new UnsupportedPlatformException();
-                    }
-
-                    Game.ApplyDisplayConfig();
-                    Game.SaveWindowState();
-                },
+                getData: _ => Engine.GameWindow.WindowResolution.ToVector2().X / Engine.GameViewPort.RequestedGameResolution.X,
+                setData: data => Engine.GameWindow.WindowResolution = (Engine.GameViewPort.RequestedGameResolution * data).ToPoint(),
                 getCustomName: data => $"{data:0.00}x"),
+
+            // Window resolution
+            new MultiSelectionMenuOption<bool>(
+                name: "Lock window aspect ratio",
+                items:
+                [
+                    new MultiSelectionMenuOption<bool>.Item("Off", false),
+                    new MultiSelectionMenuOption<bool>.Item("On", true)
+                ],
+                getData: _ => Engine.Config.LockWindowAspectRatio,
+                setData: data => Engine.Config.LockWindowAspectRatio = data,
+                getCustomName: _ => null),
 
             #endregion
 
@@ -104,48 +77,25 @@ public class OptionsMenu : Menu
             new HeaderMenuOption("Game"),
 
             // Internal resolution
-            new MultiSelectionMenuOption<Point?>(
+            new MultiSelectionMenuOption<Point>(
                 name: "Internal resolution",
                 items:
                 [
-                    new MultiSelectionMenuOption<Point?>.Item($"Original ({originalRes.X} x {originalRes.Y})", null),
-                    new MultiSelectionMenuOption<Point?>.Item("Widescreen (384 x 216)", new Point(384, 216)), // 16:9
+                    new MultiSelectionMenuOption<Point>.Item($"Original ({originalRes.X} x {originalRes.Y})", originalRes.ToPoint()),
+                    new MultiSelectionMenuOption<Point>.Item("Modern (384 x 216)", new Point(384, 216)), // 16:9
                 ],
                 getData: _ => Engine.Config.InternalGameResolution,
                 setData: data =>
                 {
-                    Rectangle originalWindowBounds = Engine.Settings.Platform switch
-                    {
-                        Platform.GBA => Engine.Config.GbaWindowBounds,
-                        Platform.NGage => Engine.Config.NGageWindowBounds,
-                        _ => throw new UnsupportedPlatformException()
-                    };
-
-                    float originalWindowScale = originalWindowBounds.Size.ToVector2().X / Engine.GameViewPort.RequestedGameResolution.X;
+                    float originalWindowScale = Engine.GameWindow.WindowResolution.ToVector2().X / Engine.GameViewPort.RequestedGameResolution.X;
 
                     Engine.Config.InternalGameResolution = data;
-                    Engine.GameViewPort.SetRequestedResolution(Engine.Config.InternalGameResolution?.ToVector2());
+                    Engine.GameViewPort.SetRequestedResolution(Engine.Config.InternalGameResolution.ToVector2());
 
-                    Point newWindowRes = (Engine.GameViewPort.RequestedGameResolution * originalWindowScale).ToPoint();
-
-                    switch (Engine.Settings.Platform)
-                    {
-                        case Platform.GBA:
-                            Engine.Config.GbaWindowBounds = Engine.Config.GbaWindowBounds with { Size = newWindowRes };
-                            break;
-
-                        case Platform.NGage:
-                            Engine.Config.NGageWindowBounds = Engine.Config.NGageWindowBounds with { Size = newWindowRes };
-                            break;
-
-                        default:
-                            throw new UnsupportedPlatformException();
-                    }
-
-                    Game.ApplyDisplayConfig();
-                    Game.SaveWindowState();
+                    Engine.GameWindow.WindowResolution = (Engine.GameViewPort.RequestedGameResolution * originalWindowScale).ToPoint();
+                    WindowResolutionMenuOption.Init();
                 },
-                getCustomName: data => data == null ? null : $"{data.Value.X} x {data.Value.Y}"),
+                getCustomName: data => $"{data.X} x {data.Y}"),
 
             #endregion
 
@@ -200,6 +150,8 @@ public class OptionsMenu : Menu
 
     private GbaGame Game { get; }
     private MenuOption[] Options { get; }
+
+    private MultiSelectionMenuOption<float> WindowResolutionMenuOption { get; }
 
     public override void OnExit()
     {

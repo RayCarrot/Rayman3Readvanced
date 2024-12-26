@@ -61,7 +61,9 @@ public static class Engine
     /// </summary>
     public static OriginalGameRenderContext OriginalGameRenderContext { get; private set; }
 
-    public static GameViewPort GameViewPort { get; private set; }
+    public static GbaGameViewPort GameViewPort { get; private set; }
+
+    public static GbaGameWindow GameWindow { get; private set; }
 
     #endregion
 
@@ -207,11 +209,12 @@ public static class Engine
         LoadSaveGame();
     }
 
-    internal static void LoadMonoGame(GraphicsDevice graphicsDevice, ContentManager contentManager, GameViewPort gameViewPort)
+    internal static void LoadMonoGame(GraphicsDevice graphicsDevice, ContentManager contentManager, GbaGameViewPort gameViewPort, GbaGameWindow gameWindow)
     {
         GraphicsDevice = graphicsDevice;
         ContentManager = contentManager;
         GameViewPort = gameViewPort;
+        GameWindow = gameWindow;
         GameRenderContext = new GameRenderContext();
         OriginalGameRenderContext = new OriginalGameRenderContext();
     }

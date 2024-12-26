@@ -8,7 +8,7 @@ public class GfxRenderer
 {
     #region Constructor
 
-    public GfxRenderer(SpriteBatch spriteBatch, GameViewPort gameViewPort)
+    public GfxRenderer(SpriteBatch spriteBatch, GbaGameViewPort gameViewPort)
     {
         SpriteBatch = spriteBatch;
         GameViewPort = gameViewPort;
@@ -21,7 +21,7 @@ public class GfxRenderer
     #region Private Properties
 
     private SpriteBatch SpriteBatch { get; }
-    private GameViewPort GameViewPort { get; }
+    private GbaGameViewPort GameViewPort { get; }
     private RasterizerState RasterizerState { get; }
     private RenderOptions? RenderOptions { get; set; }
 

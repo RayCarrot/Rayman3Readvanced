@@ -4,9 +4,9 @@ using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame;
 
-public class GameViewPort
+public class GbaGameViewPort
 {
-    public GameViewPort(GbaEngineSettings settings)
+    public GbaGameViewPort(GbaEngineSettings settings)
     {
         OriginalGameResolution = settings.Platform switch
         {
@@ -76,9 +76,7 @@ public class GameViewPort
 
     public void Resize(
         Vector2 newScreenSize,
-        bool maintainScreenRatio = false,
-        bool centerGame = true,
-        Action<Vector2> changeScreenSizeCallback = null)
+        bool centerGame = true)
     {
         float screenRatio = newScreenSize.X / newScreenSize.Y;
         float gameRatio = GameResolution.X / GameResolution.Y;
@@ -91,9 +89,6 @@ public class GameViewPort
         {
             screenScale = newScreenSize.Y / GameResolution.Y;
 
-            if (maintainScreenRatio)
-                newScreenSize = new Vector2(GameResolution.X * screenScale, GameResolution.Y * screenScale);
-
             if (centerGame)
                 screenPos = new Vector2((newScreenSize.X - GameResolution.X * screenScale) / 2, 0);
 
@@ -103,17 +98,11 @@ public class GameViewPort
         {
             screenScale = newScreenSize.X / GameResolution.X;
 
-            if (maintainScreenRatio)
-                newScreenSize = new Vector2(GameResolution.X * screenScale, GameResolution.Y * screenScale);
-
             if (centerGame)
                 screenPos = new Vector2(0, (newScreenSize.Y - GameResolution.Y * screenScale) / 2);
 
             screenSize = new Vector2(newScreenSize.X, GameResolution.Y * screenScale);
         }
-
-        if (maintainScreenRatio)
-            changeScreenSizeCallback?.Invoke(newScreenSize);
 
         ScreenSize = newScreenSize;
         ScreenBox = new Box(screenPos, screenSize);
