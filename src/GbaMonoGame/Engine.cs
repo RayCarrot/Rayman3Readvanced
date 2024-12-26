@@ -14,7 +14,7 @@ public static class Engine
     #region Paths
 
     public const string InstalledGamesDirName = "Games";
-    public static string ConfigFileName => "Config.json";
+    public static string ConfigFileName => "Config.ini";
     public static string ImgGuiConfigFileName => "imgui.ini";
     public static string SerializerLogFileName => "SerializerLog.txt";
 
@@ -185,12 +185,18 @@ public static class Engine
 
     internal static void LoadConfig()
     {
-        Config = GameConfig.Load(FileManager.GetDataFile(ConfigFileName));
+        string filePath = FileManager.GetDataFile(ConfigFileName);
+        GameConfig config = new();
+        config.Serialize(new IniDeserializer(filePath));
+        Config = config;
     }
 
     internal static void SaveConfig()
     {
-        Config.Save(FileManager.GetDataFile(ConfigFileName));
+        string filePath = FileManager.GetDataFile(ConfigFileName);
+        IniSerializer serializer = new();
+        Config.Serialize(serializer);
+        serializer.Save(filePath);
     }
 
     internal static void LoadGameInstallation(GameInstallation gameInstallation)
