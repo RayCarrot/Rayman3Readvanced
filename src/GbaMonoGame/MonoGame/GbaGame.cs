@@ -332,7 +332,13 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
 
         // Toggle full-screen
         if (InputManager.IsButtonPressed(Keys.LeftAlt) && InputManager.IsButtonJustPressed(Keys.Enter))
-            Engine.GameWindow.IsFullscreen = !Engine.GameWindow.IsFullscreen;
+            Engine.GameWindow.DisplayMode = Engine.GameWindow.DisplayMode switch
+            {
+                DisplayMode.Windowed => DisplayMode.Fullscreen,
+                DisplayMode.Fullscreen => DisplayMode.Windowed,
+                DisplayMode.Borderless => DisplayMode.Windowed,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
         // Update mouse visibility
         IsMouseVisible = !_graphics.IsFullScreen || DebugMode;

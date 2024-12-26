@@ -15,7 +15,7 @@ public class GameConfig
 
     public GameConfig()
     {
-        DisplayMode defaultDisplayMode = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode;
+        Microsoft.Xna.Framework.Graphics.DisplayMode defaultDisplayMode = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode;
         Point defaultResolution = new(384, 216);
         const int defaultWindowScale = 4;
 
@@ -24,7 +24,7 @@ public class GameConfig
         WindowIsMaximized = false;
         LockWindowAspectRatio = true;
         FullscreenResolution = new Point(defaultDisplayMode.Width, defaultDisplayMode.Height);
-        IsFullscreen = true;
+        DisplayMode = DisplayMode.Fullscreen;
         InternalGameResolution = defaultResolution;
         Controls = new Dictionary<Input, Keys>();
         SfxVolume = 1;
@@ -48,7 +48,7 @@ public class GameConfig
     [JsonProperty("windowIsMaximized")] public bool WindowIsMaximized { get; set; }
     [JsonProperty("lockWindowAspectRatio")] public bool LockWindowAspectRatio { get; set; }
     [JsonProperty("fullscreenResolution")] public Point FullscreenResolution { get; set; }
-    [JsonProperty("isFullscreen")] public bool IsFullscreen { get; set; }
+    [JsonProperty("displayMode")] public DisplayMode DisplayMode { get; set; }
     
     // Game
     [JsonProperty("internalGameResolution")] public Point InternalGameResolution { get; set; }

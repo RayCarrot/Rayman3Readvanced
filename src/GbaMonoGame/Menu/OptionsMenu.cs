@@ -25,15 +25,16 @@ public class OptionsMenu : Menu
             new HeaderMenuOption("Display"),
 
             // Display mode
-            new MultiSelectionMenuOption<bool>(
+            new MultiSelectionMenuOption<DisplayMode>(
                 name: "Display mode",
                 items:
                 [
-                    new MultiSelectionMenuOption<bool>.Item("Windowed", false),
-                    new MultiSelectionMenuOption<bool>.Item("Fullscreen", true)
+                    new MultiSelectionMenuOption<DisplayMode>.Item("Windowed", DisplayMode.Windowed),
+                    new MultiSelectionMenuOption<DisplayMode>.Item("Fullscreen", DisplayMode.Fullscreen),
+                    new MultiSelectionMenuOption<DisplayMode>.Item("Borderless", DisplayMode.Borderless)
                 ],
-                getData: _ => Engine.GameWindow.IsFullscreen,
-                setData: data => Engine.GameWindow.IsFullscreen = data,
+                getData: _ => Engine.GameWindow.DisplayMode,
+                setData: data => Engine.GameWindow.DisplayMode = data,
                 getCustomName: _ => null),
 
             // TODO: Don't auto-apply

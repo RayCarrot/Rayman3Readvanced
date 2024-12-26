@@ -1,6 +1,8 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Point = Microsoft.Xna.Framework.Point;
 
 namespace GbaMonoGame;
@@ -22,17 +24,17 @@ public class GbaGameWindow
     {
         get
         {
-            if (_graphics.IsFullScreen)
-                return Engine.Config.WindowResolution;
-            else
+            if (DisplayMode == DisplayMode.Windowed)
                 return GetResolution();
+            else
+                return Engine.Config.WindowResolution;
         }
         set
         {
             Engine.Config.WindowResolution = value;
             Engine.Config.WindowIsMaximized = false;
 
-            if (!_graphics.IsFullScreen)
+            if (DisplayMode == DisplayMode.Windowed)
                 ApplyState();
         }
     }
@@ -41,34 +43,66 @@ public class GbaGameWindow
     {
         get
         {
-            if (_graphics.IsFullScreen)
-                return Engine.Config.FullscreenResolution;
-            else
+            if (DisplayMode == DisplayMode.Fullscreen)
                 return GetResolution();
+            else
+                return Engine.Config.FullscreenResolution;
         }
         set
         {
             Engine.Config.FullscreenResolution = value;
 
-            if (_graphics.IsFullScreen)
+            if (DisplayMode == DisplayMode.Fullscreen)
                 ApplyState();
         }
     }
 
-    public bool IsFullscreen
+    public DisplayMode DisplayMode
     {
-        get => _graphics.IsFullScreen;
+        get
+        {
+            if (_graphics.IsFullScreen)
+            {
+                if (_graphics.HardwareModeSwitch)
+                    return DisplayMode.Fullscreen;
+                else
+                    return DisplayMode.Borderless;
+            }
+            else
+            {
+                return DisplayMode.Windowed;
+            }
+        }
         set
         {
             SaveState();
-            Engine.Config.IsFullscreen = value;
+            Engine.Config.DisplayMode = value;
             ApplyState();
         }
     }
 
-    private void SetResolution(Point size, bool isFullscreen)
+    private void SetResolution(Point size, DisplayMode displayMode)
     {
-        _graphics.IsFullScreen = isFullscreen;
+        switch (displayMode)
+        {
+            case DisplayMode.Windowed:
+                _graphics.IsFullScreen = false;
+                break;
+
+            case DisplayMode.Fullscreen:
+                _graphics.IsFullScreen = true;
+                _graphics.HardwareModeSwitch = true;
+                break;
+
+            case DisplayMode.Borderless:
+                _graphics.IsFullScreen = true;
+                _graphics.HardwareModeSwitch = false;
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException(nameof(displayMode), displayMode, null);
+        }
+
         _graphics.PreferredBackBufferWidth = size.X;
         _graphics.PreferredBackBufferHeight = size.Y;
         _graphics.ApplyChanges();
@@ -100,12 +134,19 @@ public class GbaGameWindow
     {
         if (_graphics.IsFullScreen)
         {
-            Engine.Config.IsFullscreen = true;
-            Engine.Config.FullscreenResolution = GetResolution();
+            if (_graphics.HardwareModeSwitch)
+            {
+                Engine.Config.DisplayMode = DisplayMode.Fullscreen;
+                Engine.Config.FullscreenResolution = GetResolution();
+            }
+            else
+            {
+                Engine.Config.DisplayMode = DisplayMode.Borderless;
+            }
         }
         else
         {
-            Engine.Config.IsFullscreen = false;
+            Engine.Config.DisplayMode = DisplayMode.Windowed;
             Engine.Config.WindowPosition = _window.Position;
             Engine.Config.WindowResolution = GetResolution();
             Engine.Config.WindowIsMaximized = _form.WindowState == FormWindowState.Maximized;
@@ -114,18 +155,28 @@ public class GbaGameWindow
 
     public void ApplyState()
     {
-        if (Engine.Config.IsFullscreen)
+        switch (Engine.Config.DisplayMode)
         {
-            SetResolution(Engine.Config.FullscreenResolution, true);
-        }
-        else
-        {
-            SetResolution(Engine.Config.WindowResolution, false);
+            case DisplayMode.Windowed:
+                SetResolution(Engine.Config.WindowResolution, DisplayMode.Windowed);
 
-            if (Engine.Config.WindowPosition != Point.Zero)
-                _window.Position = Engine.Config.WindowPosition;
+                if (Engine.Config.WindowPosition != Point.Zero)
+                    _window.Position = Engine.Config.WindowPosition;
 
-            _form.WindowState = Engine.Config.WindowIsMaximized ? FormWindowState.Maximized : FormWindowState.Normal;
+                _form.WindowState = Engine.Config.WindowIsMaximized ? FormWindowState.Maximized : FormWindowState.Normal;
+                break;
+
+            case DisplayMode.Fullscreen:
+                SetResolution(Engine.Config.FullscreenResolution, DisplayMode.Fullscreen);
+                break;
+
+            case DisplayMode.Borderless:
+                GraphicsAdapter adapter = _graphics.GraphicsDevice.Adapter;
+                SetResolution(new Point(adapter.CurrentDisplayMode.Width, adapter.CurrentDisplayMode.Height), DisplayMode.Borderless);
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
 }

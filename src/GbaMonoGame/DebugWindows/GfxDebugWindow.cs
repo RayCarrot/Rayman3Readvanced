@@ -1,6 +1,7 @@
 using System.Linq;
 using System;
 using ImGuiNET;
+using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame;
 
@@ -16,9 +17,10 @@ public class GfxDebugWindow : DebugWindow
             {
                 ImGui.SeparatorText("Resolution");
 
-                ImGui.Text($"Original resolution: {Engine.GameViewPort.OriginalGameResolution.X} x {Engine.GameViewPort.OriginalGameResolution.Y}");
+                Point displayRes = Engine.GameWindow.GetResolution();
+                ImGui.Text($"Display resolution: {displayRes.X} x {displayRes.Y}");
+                ImGui.Text($"Original game resolution: {Engine.GameViewPort.OriginalGameResolution.X} x {Engine.GameViewPort.OriginalGameResolution.Y}");
                 ImGui.Text($"Game Resolution: {Engine.GameViewPort.GameResolution.X} x {Engine.GameViewPort.GameResolution.Y}");
-                ImGui.Text($"Original game resolution: {Engine.OriginalGameRenderContext.Resolution.X} x {Engine.OriginalGameRenderContext.Resolution.Y}");
 
                 System.Numerics.Vector2 res = new(Engine.GameViewPort.RequestedGameResolution.X, Engine.GameViewPort.RequestedGameResolution.Y);
                 if (ImGui.InputFloat2("Requested resolution", ref res))
