@@ -581,14 +581,14 @@ public static class GameInfo
 
             case MapId.GbaMulti_MissileRace:
             case MapId.GbaMulti_MissileArena:
-            case MapId.GbaMulti_RayTag1:
-            case MapId.GbaMulti_RayTag2:
-            case MapId.GbaMulti_CatAndMouse1:
-            case MapId.GbaMulti_CatAndMouse2:
-            case MapId.NGageMulti_RayTag1:
-            case MapId.NGageMulti_RayTag2:
-            case MapId.NGageMulti_CatAndMouse1:
-            case MapId.NGageMulti_CatAndMouse2:
+            case MapId.GbaMulti_TagWeb:
+            case MapId.GbaMulti_TagSlide:
+            case MapId.GbaMulti_CatAndMouseSlide:
+            case MapId.GbaMulti_CatAndMouseSpider:
+            case MapId.NGageMulti_TagWeb:
+            case MapId.NGageMulti_TagSlide:
+            case MapId.NGageMulti_CatAndMouseSlide:
+            case MapId.NGageMulti_CatAndMouseSpider:
                 WorldId = WorldId.Special;
                 break;
 

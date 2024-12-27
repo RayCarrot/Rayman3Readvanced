@@ -89,18 +89,18 @@ public partial class MenuAll
                 MultiplayerInfo.SetGameType(MultiplayerGameType.RayTag);
 
                 if (MultiplayerMapId == 0)
-                    FrameManager.SetNextFrame(new FrameMultiTag(MapId.GbaMulti_RayTag1));
+                    FrameManager.SetNextFrame(new FrameMultiTag(MapId.GbaMulti_TagWeb));
                 else if (MultiplayerMapId == 1)
-                    FrameManager.SetNextFrame(new FrameMultiTag(MapId.GbaMulti_RayTag2));
+                    FrameManager.SetNextFrame(new FrameMultiTag(MapId.GbaMulti_TagSlide));
                 break;
 
             case MultiplayerGameType.CatAndMouse:
                 MultiplayerInfo.SetGameType(MultiplayerGameType.CatAndMouse);
 
                 if (MultiplayerMapId == 0)
-                    FrameManager.SetNextFrame(new FrameMultiCatAndMouse(MapId.GbaMulti_CatAndMouse1));
+                    FrameManager.SetNextFrame(new FrameMultiCatAndMouse(MapId.GbaMulti_CatAndMouseSlide));
                 else if (MultiplayerMapId == 1)
-                    FrameManager.SetNextFrame(new FrameMultiCatAndMouse(MapId.GbaMulti_CatAndMouse2));
+                    FrameManager.SetNextFrame(new FrameMultiCatAndMouse(MapId.GbaMulti_CatAndMouseSpider));
                 break;
 
             case MultiplayerGameType.Missile:

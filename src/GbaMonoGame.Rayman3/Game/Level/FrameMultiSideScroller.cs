@@ -91,7 +91,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
         Scene.Playfield.Step();
 
-        if (Engine.Settings.Platform == Platform.NGage && GameInfo.MapId == MapId.NGageMulti_CaptureTheFlag6)
+        if (Engine.Settings.Platform == Platform.NGage && GameInfo.MapId == MapId.NGageMulti_CaptureTheFlagTeamPlayer)
         {
             // TODO: Why does the game do this?
             Gfx.GetScreen(1).IsEnabled = false;

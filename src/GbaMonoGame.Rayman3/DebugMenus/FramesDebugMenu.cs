@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.Editor;
 using ImGuiNET;
 
@@ -32,11 +33,13 @@ public class FramesDebugMenu : DebugMenu
             new("Act #6", () => new Act6())
         ]),
         new("Levels", null, 
-            GameInfo.Levels.
-            Select((_, i) => new FrameMenuItem(((MapId)i).ToString(), () =>
+            Enumerable.Range(0, (int)(MapId.WorldMap + 1)).
+            Select(i => new FrameMenuItem(((MapId)i).ToString(), () =>
             {
+                MapId mapId = (MapId)i;
+
                 // New power levels have to have the previous map id set before loading
-                GameInfo.MapId = (MapId)i switch
+                GameInfo.MapId = mapId switch
                 {
                     MapId.Power1 => MapId.WoodLight_M2,
                     MapId.Power2 => MapId.BossMachine,
@@ -48,10 +51,10 @@ public class FramesDebugMenu : DebugMenu
                 };
 
                 // Create the level frame
-                Frame frame = LevelFactory.Create((MapId)i);
+                Frame frame = LevelFactory.Create(mapId);
 
                 // Set the powers
-                GameInfo.SetPowerBasedOnMap((MapId)i);
+                GameInfo.SetPowerBasedOnMap(mapId);
 
                 return frame;
             }, EndWithSeparator: (MapId)i switch
@@ -63,8 +66,76 @@ public class FramesDebugMenu : DebugMenu
                 MapId._1000Lums => true,
                 MapId.ChallengeLyGCN => true,
                 MapId.Power6 => true,
-                MapId.WorldMap => true,
                 _ => false
+            })).
+            ToArray()),
+        new("Multiplayer", null, 
+            Enumerable.Range(59, Engine.Settings.Platform == Platform.NGage ? 10 : 6).
+            Select(i => new FrameMenuItem((MapId)i switch
+            {
+                // GBA
+                MapId.GbaMulti_MissileRace when Engine.Settings.Platform == Platform.GBA => "Bumper Race",
+                MapId.GbaMulti_MissileArena when Engine.Settings.Platform == Platform.GBA => "Bumper Arena",
+                MapId.GbaMulti_TagWeb when Engine.Settings.Platform == Platform.GBA => "Web Tag",
+                MapId.GbaMulti_TagSlide when Engine.Settings.Platform == Platform.GBA => "Slide Tag",
+                MapId.GbaMulti_CatAndMouseSlide when Engine.Settings.Platform == Platform.GBA => "Steal n' Slide",
+                MapId.GbaMulti_CatAndMouseSpider when Engine.Settings.Platform == Platform.GBA => "Steal n' Spider",
+
+                // N-Gage
+                MapId.NGageMulti_CaptureTheFlagMiddleGround when Engine.Settings.Platform == Platform.NGage => "Middle Ground",
+                MapId.NGageMulti_CaptureTheFlagFloors when Engine.Settings.Platform == Platform.NGage => "Floors",
+                MapId.NGageMulti_CaptureTheFlagOneForAll when Engine.Settings.Platform == Platform.NGage => "One for All",
+                MapId.NGageMulti_CaptureTheFlagAllForOne when Engine.Settings.Platform == Platform.NGage => "All for One",
+                MapId.NGageMulti_CaptureTheFlagTeamWork when Engine.Settings.Platform == Platform.NGage => "Team Work",
+                MapId.NGageMulti_CaptureTheFlagTeamPlayer when Engine.Settings.Platform == Platform.NGage => "Team Player",
+                MapId.NGageMulti_TagWeb when Engine.Settings.Platform == Platform.NGage => "Web Tag",
+                MapId.NGageMulti_TagSlide when Engine.Settings.Platform == Platform.NGage => "Slide Tag",
+                MapId.NGageMulti_CatAndMouseSlide when Engine.Settings.Platform == Platform.NGage => "Steal n' Slide",
+                MapId.NGageMulti_CatAndMouseSpider when Engine.Settings.Platform == Platform.NGage => "Steal n' Spider",
+                
+                _ => throw new ArgumentOutOfRangeException(nameof(i), i, null)
+            }, () =>
+            {
+                MapId mapId = (MapId)i;
+
+                // Initialize multiplayer
+                MultiplayerInfo.Init();
+
+                MultiplayerInfo.MapId = (i - 1) % 2; // Hack
+
+                // Set the game type
+                MultiplayerInfo.SetGameType(mapId switch
+                {
+                    // GBA
+                    MapId.GbaMulti_MissileRace when Engine.Settings.Platform == Platform.GBA => MultiplayerGameType.Missile,
+                    MapId.GbaMulti_MissileArena when Engine.Settings.Platform == Platform.GBA => MultiplayerGameType.Missile,
+                    MapId.GbaMulti_TagWeb when Engine.Settings.Platform == Platform.GBA => MultiplayerGameType.RayTag,
+                    MapId.GbaMulti_TagSlide when Engine.Settings.Platform == Platform.GBA => MultiplayerGameType.RayTag,
+                    MapId.GbaMulti_CatAndMouseSlide when Engine.Settings.Platform == Platform.GBA => MultiplayerGameType.CatAndMouse,
+                    MapId.GbaMulti_CatAndMouseSpider when Engine.Settings.Platform == Platform.GBA => MultiplayerGameType.CatAndMouse,
+
+                    // N-Gage
+                    MapId.NGageMulti_CaptureTheFlagMiddleGround when Engine.Settings.Platform == Platform.NGage => MultiplayerGameType.CaptureTheFlag,
+                    MapId.NGageMulti_CaptureTheFlagFloors when Engine.Settings.Platform == Platform.NGage => MultiplayerGameType.CaptureTheFlag,
+                    MapId.NGageMulti_CaptureTheFlagOneForAll when Engine.Settings.Platform == Platform.NGage => MultiplayerGameType.CaptureTheFlag,
+                    MapId.NGageMulti_CaptureTheFlagAllForOne when Engine.Settings.Platform == Platform.NGage => MultiplayerGameType.CaptureTheFlag,
+                    MapId.NGageMulti_CaptureTheFlagTeamWork when Engine.Settings.Platform == Platform.NGage => MultiplayerGameType.CaptureTheFlag,
+                    MapId.NGageMulti_CaptureTheFlagTeamPlayer when Engine.Settings.Platform == Platform.NGage => MultiplayerGameType.CaptureTheFlag,
+                    MapId.NGageMulti_TagWeb when Engine.Settings.Platform == Platform.NGage => MultiplayerGameType.RayTag,
+                    MapId.NGageMulti_TagSlide when Engine.Settings.Platform == Platform.NGage => MultiplayerGameType.RayTag,
+                    MapId.NGageMulti_CatAndMouseSlide when Engine.Settings.Platform == Platform.NGage => MultiplayerGameType.CatAndMouse,
+                    MapId.NGageMulti_CatAndMouseSpider when Engine.Settings.Platform == Platform.NGage => MultiplayerGameType.CatAndMouse,
+
+                    _ => throw new ArgumentOutOfRangeException(nameof(i), i, null)
+                });
+
+                // Create the level frame
+                Frame frame = LevelFactory.Create(mapId);
+
+                // Set all powers
+                GameInfo.Powers |= Power.All;
+
+                return frame;
             })).
             ToArray()),
         new("Level Editor", null, 

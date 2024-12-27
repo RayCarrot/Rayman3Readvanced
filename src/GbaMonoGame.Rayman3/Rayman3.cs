@@ -782,10 +782,10 @@ public class Rayman3 : GbaGame
             case Platform.GBA:
                 //levelCreations.Add(MapId.GbaMulti_MissileRace, mapId => new (mapId));
                 //levelCreations.Add(MapId.GbaMulti_MissileArena, mapId => new (mapId));
-                levelCreations.Add(MapId.GbaMulti_RayTag1, mapId => new FrameMultiTag(mapId));
-                levelCreations.Add(MapId.GbaMulti_RayTag2, mapId => new FrameMultiTag(mapId));
-                levelCreations.Add(MapId.GbaMulti_CatAndMouse1, mapId => new FrameMultiCatAndMouse(mapId));
-                levelCreations.Add(MapId.GbaMulti_CatAndMouse2, mapId => new FrameMultiCatAndMouse(mapId));
+                levelCreations.Add(MapId.GbaMulti_TagWeb, mapId => new FrameMultiTag(mapId));
+                levelCreations.Add(MapId.GbaMulti_TagSlide, mapId => new FrameMultiTag(mapId));
+                levelCreations.Add(MapId.GbaMulti_CatAndMouseSlide, mapId => new FrameMultiCatAndMouse(mapId));
+                levelCreations.Add(MapId.GbaMulti_CatAndMouseSpider, mapId => new FrameMultiCatAndMouse(mapId));
                 break;
             
             case Platform.NGage:
@@ -795,10 +795,10 @@ public class Rayman3 : GbaGame
                 //levelCreations.Add(MapId.NGageMulti_CaptureTheFlag4, mapId => new (mapId));
                 //levelCreations.Add(MapId.NGageMulti_CaptureTheFlag5, mapId => new (mapId));
                 //levelCreations.Add(MapId.NGageMulti_CaptureTheFlag6, mapId => new (mapId));
-                levelCreations.Add(MapId.NGageMulti_RayTag1, mapId => new FrameMultiTag(mapId));
-                levelCreations.Add(MapId.NGageMulti_RayTag2, mapId => new FrameMultiTag(mapId));
-                levelCreations.Add(MapId.NGageMulti_CatAndMouse1, mapId => new FrameMultiCatAndMouse(mapId));
-                levelCreations.Add(MapId.NGageMulti_CatAndMouse2, mapId => new FrameMultiCatAndMouse(mapId));
+                levelCreations.Add(MapId.NGageMulti_TagWeb, mapId => new FrameMultiTag(mapId));
+                levelCreations.Add(MapId.NGageMulti_TagSlide, mapId => new FrameMultiTag(mapId));
+                levelCreations.Add(MapId.NGageMulti_CatAndMouseSlide, mapId => new FrameMultiCatAndMouse(mapId));
+                levelCreations.Add(MapId.NGageMulti_CatAndMouseSpider, mapId => new FrameMultiCatAndMouse(mapId));
                 break;
 
             default:
