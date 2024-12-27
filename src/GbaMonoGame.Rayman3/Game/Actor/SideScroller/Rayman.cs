@@ -1,4 +1,5 @@
 ﻿using System;
+using BinarySerializer;
 using BinarySerializer.Nintendo.GBA;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
@@ -57,6 +58,7 @@ public sealed partial class Rayman : MovableActor
                         Palette16 pal3 = Storage.LoadResource<Resource<Palette16>>(GameResource.Player3RaymanPalette).Value;
                         Palette16 pal4 = Storage.LoadResource<Resource<Palette16>>(GameResource.Player4RaymanPalette).Value;
 
+                        Pointer palettesPointer = AnimatedObject.Resource.Palettes.Offset;
                         AnimatedObject.Resource.PalettesCount = 2 * 4;
                         AnimatedObject.Resource.Palettes = new SpritePalettes
                         {
@@ -75,6 +77,7 @@ public sealed partial class Rayman : MovableActor
                                 pal4,
                             }
                         };
+                        AnimatedObject.Resource.Palettes.Init(palettesPointer);
                     }
 
                     AnimatedObject.BasePaletteIndex = InstanceId * 2;

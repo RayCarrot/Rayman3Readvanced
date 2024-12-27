@@ -9,7 +9,7 @@ public partial class PauseDialog : Dialog
 {
     public PauseDialog(Scene2D scene) : base(scene)
     {
-        MultiJoyPadFrame = 0xff;
+        PausedMachineId = 0xff;
     }
 
     public AnimatedObject Canvas { get; set; }
@@ -29,7 +29,7 @@ public partial class PauseDialog : Dialog
     public FadeControl SavedFadeControl { get; set; }
     public float SavedFade { get; set; }
 
-    public byte MultiJoyPadFrame { get; set; }
+    public int PausedMachineId { get; set; }
 
     public int SelectedOption { get; set; }
     public int PrevSelectedOption { get; set; }

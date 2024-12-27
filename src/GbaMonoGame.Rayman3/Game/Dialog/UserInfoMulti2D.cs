@@ -14,6 +14,13 @@ public class UserInfoMulti2D : Dialog
 
     public int WinnerId { get; set; }
     public int[] Times { get; set; }
+    public bool IsPaused { get; set; }
+    public bool IsGameOver { get; set; }
+
+    protected override bool ProcessMessageImpl(object sender, Message message, object param)
+    {
+        throw new NotImplementedException();
+    }
 
     public int GetWinnerId()
     {
@@ -46,11 +53,6 @@ public class UserInfoMulti2D : Dialog
     }
 
     public void GameOver(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {
         throw new NotImplementedException();
     }
