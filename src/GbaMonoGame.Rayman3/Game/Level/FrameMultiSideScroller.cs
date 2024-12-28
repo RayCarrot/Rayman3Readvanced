@@ -14,7 +14,12 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
     {
         GameInfo.SetNextMapId(mapId);
         PausedMachineId = 0;
-        SparkleActorId = 0;
+
+        // NOTE: In the original game this defaults to 0, which is a bug. It makes the fists have the blend flag set
+        //       when they shouldn't. In the original game this isn't noticeable because blending hasn't yet been
+        //       enabled, but in this version it is because blending is managed per object instead of globally.
+        InvisibleActorId = -1;
+        
         UserInfo = null;
     }
 
@@ -32,7 +37,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
     public PauseDialog PauseDialog { get; set; }
 
     public int PausedMachineId { get; set; }
-    public int SparkleActorId { get; set; }
+    public int InvisibleActorId { get; set; }
 
     // N-Gage exclusive
     public AnimatedObject MultiplayerBanner { get; set; }

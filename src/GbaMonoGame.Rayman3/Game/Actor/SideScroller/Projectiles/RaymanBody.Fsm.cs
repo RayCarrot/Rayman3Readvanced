@@ -107,7 +107,10 @@ public partial class RaymanBody
 
                 if (RSMultiplayer.IsActive)
                 {
-                    throw new NotImplementedException();
+                    FrameMultiSideScroller frame = (FrameMultiSideScroller)Frame.Current;
+                    GameObject sparkleActor = frame.InvisibleActorId == -1 ? null : Scene.GetGameObject(frame.InvisibleActorId);
+                    AnimatedObject.IsAlphaBlendEnabled = sparkleActor != null && Rayman == sparkleActor;
+                    ChargePower += 2;
                 }
                 break;
 

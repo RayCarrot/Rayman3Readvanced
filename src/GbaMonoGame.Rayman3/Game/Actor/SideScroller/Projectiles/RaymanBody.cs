@@ -64,6 +64,10 @@ public sealed partial class RaymanBody : MovableActor
     // retain its collision. But it seems unnecessary since ComputeNextFrame calls that as well...
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
+        // Copy over Rayman's alpha blending. The original game doesn't do this since the alpha
+        // is global, but here we have to since it's managed per object instead.
+        AnimatedObject.Alpha = Rayman.AnimatedObject.Alpha;
+
         if (Scene.Camera.IsActorFramed(this) || forceDraw)
         {
             AnimatedObject.IsFramed = true;
