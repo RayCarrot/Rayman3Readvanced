@@ -9,6 +9,8 @@ public class FiniteStateMachine
     /// </summary>
     public Fsm CurrentState { get; set; }
 
+    public bool IsSet => CurrentState != null;
+
     /// <summary>
     /// Sets the current state without uninitializing the previous one
     /// </summary>

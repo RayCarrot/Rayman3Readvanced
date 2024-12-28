@@ -23,7 +23,7 @@ public partial class Lums
                     if (ActionId == Action.BlueLum)
                         collected = CheckCollision();
                     else
-                        collected = CheckCollisionAndAttract();
+                        collected = CheckCollisionAndAttract(Scene.MainActor.GetDetectionBox());
                 }
 
                 if (GameInfo.MapId == MapId.BossRockAndLava && !collected)
@@ -147,7 +147,7 @@ public partial class Lums
             case FsmAction.Step:
                 if (IsActionFinished && ActionId == Action.BlueLum && GameInfo.MapId != MapId.BossRockAndLava)
                 {
-                    State.MoveTo(Fsm_Respawn);
+                    State.MoveTo(Fsm_Delay);
                     return false;
                 }
                 
@@ -167,7 +167,7 @@ public partial class Lums
         return true;
     }
 
-    public bool Fsm_Respawn(FsmAction action)
+    public bool Fsm_Delay(FsmAction action)
     {
         switch (action)
         {
@@ -206,8 +206,141 @@ public partial class Lums
         return true;
     }
 
-    // TODO: Implement
-    public bool FUN_0805ed40(FsmAction action) => true;
-    public bool FUN_0805e83c(FsmAction action) => true;
-    public bool FUN_0805e844(FsmAction action) => true;
+    public bool Fsm_MultiplayerIdle(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                // Do nothing
+                break;
+
+            case FsmAction.Step:
+                bool collected = false;
+
+                if (Timer == 0xFF)
+                {
+                    Box viewBox = GetViewBox();
+                    int currentFramePlayerId = (int)(MultiplayerManager.GetElapsedTime() % RSMultiplayer.MaxPlayersCount);
+
+                    if (currentFramePlayerId < MultiplayerManager.PlayersCount)
+                    {
+                        MovableActor player = Scene.GetGameObject<MovableActor>(currentFramePlayerId);
+
+                        if (player.GetDetectionBox().Intersects(viewBox))
+                        {
+                            Timer = (byte)currentFramePlayerId;
+                            collected = CheckCollisionAndAttract(player.GetDetectionBox());
+                        }
+
+                    }
+                }
+                else
+                {
+                    Box viewBox = GetViewBox();
+                    MovableActor player = Scene.GetGameObject<MovableActor>(Timer);
+
+                    if (player.GetDetectionBox().Intersects(viewBox))
+                        collected = CheckCollisionAndAttract(player.GetDetectionBox());
+                    else
+                        Timer = 0xFF;
+                }
+
+                if (IsActionFinished && ActionId == Action.BlueLum)
+                    AnimatedObject.CurrentAnimation = Random.GetNumber(3);
+
+                if (collected)
+                {
+                    State.MoveTo(Fsm_MultiplayerCollected);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
+
+        return true;
+    }
+
+    public bool Fsm_MultiplayerCollected(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                if (ActionId == Action.BlueLum)
+                {
+                    if (Timer == MultiplayerManager.MachineId)
+                    {
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumBleu_Mix02);
+                    }
+                }
+                else if (ActionId == Action.WhiteLum)
+                {
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumSlvr_Mix02);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumSlvr_Mix02);
+                }
+
+                Scene.GetGameObject(Timer).ProcessMessage(this, ActionId switch
+                {
+                    Action.YellowLum => Message.Main_CollectedYellowLum,
+                    Action.RedLum => Message.Main_CollectedRedLum,
+                    Action.GreenLum => Message.Main_CollectedGreenLum,
+                    Action.BlueLum => Message.Main_CollectedBlueLum,
+                    Action.WhiteLum => Message.Main_CollectedWhiteLum,
+                    Action.UnusedLum => Message.Main_CollectedUnusedLum,
+                    Action.BigYellowLum => Message.Main_CollectedBigYellowLum,
+                    Action.BigBlueLum => Message.Main_CollectedBigBlueLum,
+                    _ => throw new ArgumentOutOfRangeException(nameof(ActionId), ActionId, null)
+                });
+                AnimatedObject.CurrentAnimation = 9;
+                break;
+
+            case FsmAction.Step:
+                if (IsActionFinished)
+                {
+                    State.MoveTo(Fsm_MultiplayerDelay);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
+
+        return true;
+    }
+
+    public bool Fsm_MultiplayerDelay(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                Timer = 0;
+                break;
+
+            case FsmAction.Step:
+                Timer++;
+
+                if (ActionId is Action.BlueLum or Action.BigBlueLum && Timer >= 250)
+                {
+                    State.MoveTo(Fsm_MultiplayerIdle);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                Position = MultiplayerInfo.TagInfo.GetLumPosition(LumId);
+
+                // NOTE: The game also checks for big blue lum state here, but the actual animation code doesn't account for it
+                if (ActionId == Action.BlueLum)
+                    AnimatedObject.CurrentAnimation = 0;
+
+                Timer = 0xFF;
+                break;
+        }
+
+        return true;
+    }
 }

@@ -77,7 +77,7 @@ public enum Message
     Exploded = 1060,
 
     Cam_SetPosition = 1062,
-
+    Lum_ToggleVisibility = 1063,
     Main_MountWalkingShell = 1064,
     Main_UnmountWalkingShell = 1065,
 

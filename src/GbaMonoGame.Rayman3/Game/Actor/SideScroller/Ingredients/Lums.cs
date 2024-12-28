@@ -11,6 +11,9 @@ public sealed partial class Lums : BaseActor
         // NOTE: In the game it creates a special version of the AnimatedObject for this class called AObjectLum.
         //       That allows a palette to be defined, and doesn't handle things like sound events, boxes etc. We
         //       can however keep using the default AnimatedObject class here.
+        //       Also, for multiplayer it doesn't change the palette index, but instead replaced palette 1 with
+        //       palette 0, as to have to avoid two palettes when only one is used (since only blue lums appear
+        //       in the multiplayer level).
 
         LumId = 0;
         ActionId = (Action)actorResource.FirstActionId;
@@ -33,20 +36,15 @@ public sealed partial class Lums : BaseActor
                 break;
 
             case Action.BlueLum:
-                if (!RSMultiplayer.IsActive)
-                    AnimatedObject.BasePaletteIndex = 1;
-
+                AnimatedObject.BasePaletteIndex = 1;
                 AnimatedObject.CurrentAnimation = 0;
                 break;
 
             case Action.WhiteLum:
-                if (!RSMultiplayer.IsActive)
-                {
-                    AnimatedObject.BasePaletteIndex = 1;
+                AnimatedObject.BasePaletteIndex = 1;
 
-                    if (GameInfo.HasCollectedWhiteLum)
-                        ProcessMessage(this, Message.Destroy);
-                }
+                if (GameInfo.HasCollectedWhiteLum && !RSMultiplayer.IsActive)
+                    ProcessMessage(this, Message.Destroy);
 
                 AnimatedObject.CurrentAnimation = 3;
                 break;
@@ -56,9 +54,7 @@ public sealed partial class Lums : BaseActor
                 break;
 
             case Action.BigBlueLum:
-                if (!RSMultiplayer.IsActive)
-                    AnimatedObject.BasePaletteIndex = 1;
-
+                AnimatedObject.BasePaletteIndex = 1;
                 AnimatedObject.CurrentAnimation = 10;
                 break;
 
@@ -81,7 +77,7 @@ public sealed partial class Lums : BaseActor
         }
         else
         {
-            State.SetTo(FUN_0805e844);
+            State.SetTo(Fsm_MultiplayerIdle);
             Timer = 0xFF;
             LumId = instanceId;
             MultiplayerInfo.TagInfo.SaveLumPosition(instanceId, actorResource);
@@ -102,15 +98,14 @@ public sealed partial class Lums : BaseActor
         return Scene.MainActor.GetDetectionBox().Intersects(GetCollisionBox());
     }
 
-    private bool CheckCollisionAndAttract()
+    private bool CheckCollisionAndAttract(Box playerBox)
     {
-        bool collided = Scene.MainActor.GetDetectionBox().Intersects(GetCollisionBox());
+        bool collided = playerBox.Intersects(GetCollisionBox());
 
         // Move the lum towards the main actor
         if (!collided)
         {
-            Box detectionBox = Scene.MainActor.GetDetectionBox();
-            Vector2 detectionCenter = detectionBox.Center;
+            Vector2 detectionCenter = playerBox.Center;
 
             if (Position.X < detectionCenter.X)
                 Position += new Vector2(3.5f, 0);
@@ -144,9 +139,12 @@ public sealed partial class Lums : BaseActor
         // Handle messages
         switch (message)
         {
-            // TODO: Implement
-            //case 1063:
-            //    return false;
+            case Message.Lum_ToggleVisibility:
+                if (State.IsSet)
+                    State.MoveTo(null);
+                else
+                    State.MoveTo(Fsm_Idle);
+                return false;
 
             case Message.ReloadAnimation:
                 // Don't need to do anything. The original game sets the palette index again, but we're using local indexes, so it never changes.
@@ -159,7 +157,7 @@ public sealed partial class Lums : BaseActor
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
-        if (State != FUN_0805ed40 && State != Fsm_Respawn && State != FUN_0805e83c)
+        if (State != Fsm_MultiplayerDelay && State != Fsm_Delay && State.IsSet)
         {
             if (Scene.Camera.IsActorFramed(this))
             {

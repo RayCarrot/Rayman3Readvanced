@@ -11,7 +11,7 @@
 | FrameManager           | 🟩     |                                              |
 | Gfx                    | 🟩     |                                              |
 | Menu                   | 🟨     |                                              |
-| Multiplayer            | 🟥     |                                              |
+| Multiplayer            | 🟨     |                                              |
 | SoundEngine            | 🟨     |                                              |
 | AnimationPlayer        | 🟩     |                                              |
 | Scene2D                | 🟩     |                                              |
@@ -120,7 +120,7 @@
 | ---------------------- | ------- | -------------------------------------------- |
 | UserInfoSideScroller   | 🟩     |                                              |
 | UserInfoSideWorld      | 🟩     |                                              |
-| #?                     | 🟥     |                                              |
+| UserInfoMulti2D        | 🟨     |                                              |
 | #?                     | 🟥     |                                              |
 | #?                     | 🟥     |                                              |
 | #?                     | 🟥     |                                              |
@@ -163,7 +163,7 @@
 | FallingChainedPlatform | 🟩     |                                              |
 | Switch                 | 🟩     |                                              |
 | Gate                   | 🟩     |                                              |
-| Lums                   | 🟨     | Not implemented for multiplayer              |
+| Lums                   | 🟩     |                                              |
 | Cage                   | 🟩     |                                              |
 | LevelCurtain           | 🟩     |                                              |
 | FallingWoodenPlatform  | 🟩     |                                              |
