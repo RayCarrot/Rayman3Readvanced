@@ -1805,7 +1805,33 @@ public sealed partial class Rayman : MovableActor
             }
         }
 
-        // TODO: Implement
+        if (InvisibilityTimer != 0)
+        {
+            InvisibilityTimer--;
+
+            if (InstanceId == MultiplayerManager.MachineId)
+                AnimatedObject.GbaAlpha = 16 - Math.Abs(InvisibilityTimer % 20 - 10);
+            else if (InvisibilityTimer >= 424)
+                AnimatedObject.GbaAlpha = 16 - (480 - InvisibilityTimer / 4f);
+            else if (InvisibilityTimer >= 57)
+                AnimatedObject.GbaAlpha = 2;
+            else
+                AnimatedObject.GbaAlpha = 16 - InvisibilityTimer / 4f;
+
+            if (InvisibilityTimer == 0)
+            {
+                AnimatedObject.IsAlphaBlendEnabled = false;
+                ((FrameMultiSideScroller)Frame.Current).SparkleActorId = -1;
+            }
+        }
+
+        if (ReverseControlsTimer != 0)
+            ReverseControlsTimer--;
+
+        if (Engine.Settings.Platform == Platform.NGage)
+        {
+            // TODO: Implement!
+        }
     }
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
