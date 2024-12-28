@@ -35,7 +35,7 @@ public class GameObjectDebugWindow : DebugWindow
                 if (ImGui.BeginCombo("State", currentStateMethodInfo != null ? currentStateMethodInfo.Name.AsSpan()[4..] : "NULL"))
                 {
                     foreach (MethodInfo stateMethodInfo in actor.GetType().
-                                 GetMethods(BindingFlags.NonPublic | BindingFlags.Instance).
+                                 GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance).
                                  Where(x => x.Name.StartsWith("Fsm_")))
                     {
                         bool isSelected = actor.State.CurrentState?.Method == stateMethodInfo;
