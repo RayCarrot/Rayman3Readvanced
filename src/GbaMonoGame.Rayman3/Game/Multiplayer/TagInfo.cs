@@ -72,7 +72,7 @@ public class TagInfo
         if (randItemIndex >= field7_0xd)
             randItemIndex++;
 
-        ItemsMulti obj = scene.GetGameObject<ItemsMulti>(randItemIndex);
+        ItemsMulti obj = scene.GetGameObject<ItemsMulti>(ItemsIdList[randItemIndex]);
 
         if (obj.IsInvisibleItem() && Timer != 0 && GameTime.ElapsedFrames - Timer <= 600)
         {
@@ -92,7 +92,7 @@ public class TagInfo
             obj = scene.GetGameObject<ItemsMulti>(randItemIndex);
         }
 
-        obj.FUN_08075a64();
+        obj.Spawn();
         field7_0xd = randItemIndex;
     }
 
@@ -101,16 +101,16 @@ public class TagInfo
         if (Timer != 0 && GameTime.ElapsedFrames - Timer <= 600)
         {
             int rand = Random.GetNumber(2);
-            if (rand >= field8_0xe)
-                rand++;
+            if (rand == field8_0xe)
+                rand = (rand + 1) % 2;
             field7_0xd = rand;
             return rand;
         }
         else
         {
             int rand = Random.GetNumber(2);
-            if (rand == field8_0xe)
-                rand = (rand + 1) % 2;
+            if (rand >= field8_0xe)
+                rand++;
             field7_0xd = rand;
             return rand;
         }

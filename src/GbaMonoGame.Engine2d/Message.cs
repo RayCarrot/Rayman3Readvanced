@@ -81,6 +81,11 @@ public enum Message
     Main_MountWalkingShell = 1064,
     Main_UnmountWalkingShell = 1065,
 
+    Main_CollectedMultiItemGlobox = 1067,
+    Main_CollectedMultiItemReverse = 1068,
+    Main_CollectedMultiItemInvisibility = 1069,
+    Main_CollectedMultiItemFist = 1070,
+
     Main_JumpOffWalkingShell = 1077,
 
     UserInfo_Pause = 1079,

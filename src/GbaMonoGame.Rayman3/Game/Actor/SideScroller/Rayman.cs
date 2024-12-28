@@ -126,7 +126,8 @@ public sealed partial class Rayman : MovableActor
     public int PrevHitPoints { get; set; }
     public float PrevSpeedY { get; set; }
     public int CameraTargetY { get; set; }
-    public byte ReverseControlsTimer { get; set; }
+    public ushort InvisibilityTimer { get; set; }
+    public ushort ReverseControlsTimer { get; set; }
 
     public bool Debug_NoClip { get; set; } // Custom no-clip mode
 
@@ -1617,6 +1618,28 @@ public sealed partial class Rayman : MovableActor
                 }
                 return false;
 
+            case Message.Main_CollectedMultiItemGlobox:
+                ((FrameMultiSideScroller)Frame.Current).UserInfo.BeginGlobox(InstanceId);
+                PlaySound(Rayman3SoundEvent.Play__LumRed_Mix03);
+                return false;
+
+            case Message.Main_CollectedMultiItemReverse:
+                ReverseControlsTimer = 360;
+                PlaySound(Rayman3SoundEvent.Play__LumMauve_Mix02);
+                return false;
+
+            case Message.Main_CollectedMultiItemInvisibility:
+                InvisibilityTimer = 480;
+                AnimatedObject.IsAlphaBlendEnabled = true;
+                ((FrameMultiSideScroller)Frame.Current).SparkleActorId = InstanceId;
+                PlaySound(Rayman3SoundEvent.Play__LumGreen_Mix04);
+                return false;
+
+            case Message.Main_CollectedMultiItemFist:
+                ((FrameMultiSideScroller)Frame.Current).UserInfo.AddEnergyShots(InstanceId, 3);
+                PlaySound(Rayman3SoundEvent.Play__LumSlvr_Mix02);
+                return false;
+
             case Message.Main_JumpOffWalkingShell:
                 if (State == Fsm_RidingWalkingShell)
                 {
@@ -1694,7 +1717,7 @@ public sealed partial class Rayman : MovableActor
         SlideType = null;
         AttachedObject = null;
         CameraTargetY = 0;
-        //field13_0x8c = 0;
+        InvisibilityTimer = 0;
         ReverseControlsTimer = 0;
         //field25_0x9a = HitPoints;
         field23_0x98 = 0;

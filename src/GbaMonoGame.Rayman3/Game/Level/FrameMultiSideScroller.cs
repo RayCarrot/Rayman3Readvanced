@@ -32,7 +32,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
     public PauseDialog PauseDialog { get; set; }
 
     public int PausedMachineId { get; set; }
-    public byte SparkleActorId { get; set; }
+    public int SparkleActorId { get; set; }
 
     // N-Gage exclusive
     public AnimatedObject MultiplayerBanner { get; set; }

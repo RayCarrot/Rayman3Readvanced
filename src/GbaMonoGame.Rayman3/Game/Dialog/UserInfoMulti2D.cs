@@ -10,12 +10,16 @@ public class UserInfoMulti2D : Dialog
     public UserInfoMulti2D(Scene2D scene) : base(scene)
     {
         throw new NotImplementedException();
+        EnergyShots = new int[RSMultiplayer.MaxPlayersCount];
     }
 
     public int WinnerId { get; set; }
     public int[] Times { get; set; }
     public bool IsPaused { get; set; }
     public bool IsGameOver { get; set; }
+    public int[] EnergyShots { get; set; }
+    public ushort GloboxCountdown { get; set; }
+    public int GloboxMachineId { get; set; }
 
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {
@@ -55,6 +59,28 @@ public class UserInfoMulti2D : Dialog
     public void GameOver(int id)
     {
         throw new NotImplementedException();
+    }
+
+    public void BeginGlobox(int machineId)
+    {
+        GloboxCountdown = 360;
+        GloboxMachineId = machineId;
+    }
+
+    public void AddEnergyShots(int machineId, int energyShots)
+    {
+        EnergyShots[machineId] += energyShots;
+
+        if (EnergyShots[machineId] > 99)
+            EnergyShots[machineId] = 99;
+
+        if (machineId == MultiplayerManager.MachineId)
+            PrintEnergyShots(machineId);
+    }
+
+    public void PrintEnergyShots(int machineId)
+    {
+        // TODO: Implement
     }
 
     public override void Load()

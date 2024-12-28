@@ -79,6 +79,8 @@ public enum ActorType
     Machine = 84,
     Balloon = 85,
 
+    ItemsMulti = 87,
+
     Skull = 89,
 
     SpikyBag = 91,

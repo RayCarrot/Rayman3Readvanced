@@ -2,6 +2,7 @@
 
 namespace GbaMonoGame;
 
+// TODO: Update for N-Gage
 public static class MultiplayerManager
 {
     public static uint InitialGameTime { get; set; }
@@ -139,6 +140,12 @@ public static class MultiplayerManager
     public static uint GetMachineTimer()
     {
         return MachineTimers[MachineId];
+    }
+
+    public static uint GetElapsedTime()
+    {
+        // TODO: N-Gage has a separate value for this
+        return GameTime.ElapsedFrames - InitialGameTime;
     }
 
     public static void FUN_080ae49c()
