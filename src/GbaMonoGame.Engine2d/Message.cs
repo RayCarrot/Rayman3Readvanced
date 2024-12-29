@@ -33,9 +33,10 @@ public enum Message
     Main_CollectedBlueLum = 1012,
     Main_CollectedWhiteLum = 1013,
     Main_CollectedUnusedLum = 1014, // Doesn't exist
-    Main_CollectedBigYellowLum = 1015,
+    Main_CollectedBigYellowLum = 1015, // Unused
     Main_CollectedBigBlueLum = 1016,
-
+    Main_Victory = 1017, // Unused
+    Main_Determined = 1018, // Unused
     Main_LevelEnd = 1019,
     Main_PickUpObject = 1020,
     Main_CatchObject = 1021,
@@ -45,7 +46,7 @@ public enum Message
     Damaged = 1025,
     Cam_CenterPositionX = 1026,
     Cam_ResetPositionX = 1027,
-
+    Main_PreventWallJumps = 1028,
     Main_BeginHang = 1029,
     Main_EndHang = 1030,
     Main_LevelExit = 1031,
@@ -63,7 +64,8 @@ public enum Message
     Hit = 1043,
     Main_BeginSwing = 1044,
     Main_Damaged2 = 1045,
-
+    Main_DetachPlum = 1046,
+    Main_AttachPlum = 1047,
     Main_AllowCoyoteJump = 1048,
     Murfy_Spawn = 1049,
     Main_QuickFinishBodyShotAttack = 1050,
@@ -86,8 +88,12 @@ public enum Message
     Main_CollectedMultiItemInvisibility = 1069,
     Main_CollectedMultiItemFist = 1070,
 
-    Main_JumpOffWalkingShell = 1077,
+    Main_Hide = 1072, // Unused
 
+    Main_1075 = 1075, // TODO: Name
+    Main_1076 = 1076, // TODO: Name
+    Main_JumpOffWalkingShell = 1077,
+    Main_EndSuperHelico = 1078,
     UserInfo_Pause = 1079,
     UserInfo_Unpause = 1080,
     UserInfo_GameCubeLevel = 1081,
@@ -99,11 +105,23 @@ public enum Message
     Main_Damaged4 = 1086,
     ReloadAnimation = 1087,
     Main_EnterCutscene = 1088,
-
+    Main_DamagedShock = 1089,
     Cam_Lock = 1090,
     Cam_Unlock = 1091,
 
     Main_LockedLevelCurtain = 1093,
+
+    // N-Gage exclusive
+    Main_1095 = 1095, // TODO: Name
+
+    Main_1102 = 1102, // TODO: Name
+    Main_1103 = 1103, // TODO: Name
+
+    Main_1112 = 1112, // TODO: Name
+    Main_1113 = 1113, // TODO: Name
+    
+    Main_1115 = 1115, // TODO: Name
+    Main_1116 = 1116, // TODO: Name
 }
 
 /*

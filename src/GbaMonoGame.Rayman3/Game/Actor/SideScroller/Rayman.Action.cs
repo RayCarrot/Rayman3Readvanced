@@ -74,7 +74,8 @@ public partial class Rayman
         Hang_BeginMove_Left = 61,
         Hang_EndMove_Right = 62,
         Hang_EndMove_Left = 63,
-
+        Idle_VeryDetermined_Right = 64,
+        Idle_VeryDetermined_Left = 65,
         Sliding_Fast_Right = 66,
         Sliding_Fast_Left = 67,
         Sliding_Jump_Right = 68,

@@ -2381,9 +2381,9 @@ public partial class Rayman
                     return false;
                 }
 
-                if (Flag1_3)
+                if (PreventWallJumps)
                 {
-                    Flag1_3 = false;
+                    PreventWallJumps = false;
                     State.MoveTo(Fsm_WallJumpFall);
                     return false;
                 }
@@ -4396,9 +4396,85 @@ public partial class Rayman
         return true;
     }
 
+    // Unused
+    public bool Fsm_Victory(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                PlaySound(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02);
+                ActionId = IsFacingRight ? Action.Victory_Right : Action.Victory_Left;
+                NextActionId = null;
+                break;
+
+            case FsmAction.Step:
+                if (IsActionFinished)
+                {
+                    State.MoveTo(Fsm_Default);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
+
+        return true;
+    }
+
+    // Unused
+    public bool Fsm_Determined(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                ActionId = IsFacingRight ? Action.Idle_VeryDetermined_Right : Action.Idle_VeryDetermined_Left;
+                NextActionId = null;
+                break;
+
+            case FsmAction.Step:
+                if (IsActionFinished)
+                {
+                    State.MoveTo(Fsm_Default);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
+
+        return true;
+    }
+
+    // Unused
+    public bool Fsm_Hide(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                NextActionId = null;
+                ActionId = IsFacingRight ? Action.Hidden_Right : Action.Hidden_Left;
+                break;
+
+            case FsmAction.Step:
+                AnimatedObject.IsFramed = false;
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
+
+        return true;
+    }
+
     // TODO: Implement all of these
-    private bool FUN_080224f4(FsmAction action) => true;
-    private bool FUN_1005dea0(FsmAction action) => true;
-    private bool FUN_1005dfa4(FsmAction action) => true;
-    private bool FUN_1005e04c(FsmAction action) => true;
+    public bool FUN_080224f4(FsmAction action) => true; // FUN_1004d84c
+    public bool FUN_08033404(FsmAction action) => true; // FUN_1005db38
+    public bool FUN_1005dea0(FsmAction action) => true;
+    public bool FUN_1005dfa4(FsmAction action) => true;
+    public bool FUN_1005e04c(FsmAction action) => true;
 }

@@ -136,7 +136,7 @@ public sealed partial class Rayman : MovableActor
     public bool Flag1_0 { get; set; }
     public bool Flag1_1 { get; set; }
     public bool IsHanging { get; set; }
-    public bool Flag1_3 { get; set; }
+    public bool PreventWallJumps { get; set; }
     public bool Flag1_4 { get; set; }
     public bool Flag1_5 { get; set; }
     public bool IsInFrontOfLevelCurtain { get; set; }
@@ -1018,7 +1018,7 @@ public sealed partial class Rayman : MovableActor
         if (!HasPower(Power.WallJump))
             return false;
 
-        if (Flag1_3)
+        if (PreventWallJumps)
             return false;
 
         return Scene.GetPhysicalType(Position) == PhysicalTypeValue.WallJump;
@@ -1301,7 +1301,6 @@ public sealed partial class Rayman : MovableActor
         if (base.ProcessMessageImpl(sender, message, param))
             return false;
 
-        // TODO: Implement remaining messages
         switch (message)
         {
             case Message.RaymanBody_FinishedAttack:
@@ -1438,6 +1437,16 @@ public sealed partial class Rayman : MovableActor
                 MultiplayerBlueLumTimer = 1299;
                 return false;
 
+            // Unused
+            case Message.Main_Victory:
+                State.MoveTo(Fsm_Victory);
+                return false;
+
+            // Unused
+            case Message.Main_Determined:
+                State.MoveTo(Fsm_Determined);
+                return false;
+
             case Message.Main_LevelEnd:
                 FinishedMap = true;
                 State.MoveTo(Fsm_EndMap);
@@ -1502,6 +1511,10 @@ public sealed partial class Rayman : MovableActor
                 State.MoveTo(Fsm_HitKnockback);
                 return false;
 
+            case Message.Main_PreventWallJumps:
+                PreventWallJumps = true;
+                return false;
+
             case Message.Main_BeginHang:
                 IsHanging = true;
                 AttachedObject = (BaseActor)param;
@@ -1537,6 +1550,10 @@ public sealed partial class Rayman : MovableActor
                 StopFlyingWithKeg = true;
                 return false;
 
+            case Message.Hit:
+                // TODO: Implement getting hit in multiplayer
+                return false;
+
             case Message.Main_BeginSwing:
                 if (!HasPower(Power.Grab))
                 {
@@ -1562,6 +1579,23 @@ public sealed partial class Rayman : MovableActor
                 }
 
                 State.MoveTo(Fsm_Swing);
+                return false;
+
+            case Message.Main_DetachPlum:
+                if (AttachedObject is { Type: (int)ActorType.Plum })
+                {
+                    State.MoveTo(Fsm_Default);
+                    AttachedObject = null;
+                }
+                return false;
+
+            case Message.Main_AttachPlum:
+                if (State != Fsm_Dying && AttachedObject is not { Type: (int)ActorType.Plum })
+                {
+                    NextActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
+                    State.MoveTo(FUN_080224f4);
+                    AttachedObject = (BaseActor)param;
+                }
                 return false;
 
             case Message.Main_AllowCoyoteJump:
@@ -1640,12 +1674,35 @@ public sealed partial class Rayman : MovableActor
                 PlaySound(Rayman3SoundEvent.Play__LumSlvr_Mix02);
                 return false;
 
+            // Unused
+            case Message.Main_Hide:
+                State.MoveTo(Fsm_Hide);
+                return false;
+
+            case Message.Main_1075:
+                if (State != FUN_08033404)
+                    State.MoveTo(FUN_08033404);
+                return false;
+
+            case Message.Main_1076:
+                if (State == Fsm_MultiplayerDying && IsLocalPlayer)
+                {
+                    Scene.Camera.LinkedObject = Scene.GetGameObject<MovableActor>(((FrameMultiSideScroller)Frame.Current).UserInfo.WinnerId);
+                    ((CameraSideScroller)Scene.Camera).HorizontalOffset = CameraOffset.Multiplayer;
+                    Scene.Camera.ProcessMessage(this, Message.Cam_MoveToLinkedObject, true);
+                }
+                return false;
+
             case Message.Main_JumpOffWalkingShell:
                 if (State == Fsm_RidingWalkingShell)
                 {
                     ActionId = IsFacingRight ? Action.BouncyJump_Right : Action.BouncyJump_Left;
                     State.MoveTo(Fsm_Jump);
                 }
+                return false;
+
+            case Message.Main_EndSuperHelico:
+                GameInfo.BlueLumTimer = 0;
                 return false;
 
             case Message.Main_EnterLevelCurtain:
@@ -1665,9 +1722,42 @@ public sealed partial class Rayman : MovableActor
                 State.MoveTo(Fsm_Cutscene);
                 return false;
 
+            case Message.Main_DamagedShock:
+                if (ActionId is not (Action.Damage_Shock_Right or Action.Damage_Shock_Left) && State != Fsm_Climb)
+                    ActionId = IsFacingRight ? Action.Damage_Shock_Right : Action.Damage_Shock_Left;
+                return false;
+
             case Message.Main_LockedLevelCurtain:
                 if (State != Fsm_LockedLevelCurtain)
                     State.MoveTo(Fsm_LockedLevelCurtain);
+                return false;
+
+            case Message.Main_1095:
+                // TODO: Implement
+                return false;
+
+            case Message.Main_1102:
+                // TODO: Implement
+                return false;
+
+            case Message.Main_1103:
+                // TODO: Implement
+                return false;
+
+            case Message.Main_1112:
+                // TODO: Implement
+                return false;
+
+            case Message.Main_1113:
+                // TODO: Implement
+                return false;
+
+            case Message.Main_1115:
+                // TODO: Implement
+                return false;
+
+            case Message.Main_1116:
+                // TODO: Implement
                 return false;
 
             default:
@@ -1698,7 +1788,7 @@ public sealed partial class Rayman : MovableActor
         Flag1_0 = false;
         Flag1_1 = false;
         IsHanging = false;
-        Flag1_3 = false;
+        PreventWallJumps = false;
         Flag1_4 = false;
         Flag1_5 = false;
         IsInFrontOfLevelCurtain = false;
