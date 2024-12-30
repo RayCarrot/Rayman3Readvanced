@@ -140,7 +140,7 @@
 | Cages50Bar             | 🟩     |                                              |
 | LevelInfoBar           | 🟩     |                                              |
 | TimerBar               | 🟩     |                                              |
-| ScoreBar               | 🟥     |                                              |
+| ScoreBar               | 🟩     |                                              |
 | SwitchBar              | 🟩     |                                              |
 | BossFinalBar           | 🟥     |                                              |
 | BossMachineBar         | 🟩     |                                              |

@@ -590,10 +590,10 @@ public partial class Rayman
                     else
                     {
                         UserInfoMulti2D userInfo = ((FrameMultiSideScroller)Frame.Current).UserInfo;
-                        int winnerId = userInfo.GetWinnerId();
+                        int tagId = userInfo.GetTagId();
 
-                        if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == winnerId) ||
-                            (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != winnerId) ||
+                        if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == tagId) ||
+                            (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != tagId) ||
                             (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && MultiplayerData.field_00 == null))
                         {
                             ActionId = IsFacingRight ? Action.WalkFast_Right : Action.WalkFast_Left;
@@ -743,10 +743,10 @@ public partial class Rayman
                             Action.WalkFast_Right or Action.WalkFast_Left))
                         {
                             UserInfoMulti2D userInfo = ((FrameMultiSideScroller)Frame.Current).UserInfo;
-                            int winnerId = userInfo.GetWinnerId();
+                            int tagId = userInfo.GetTagId();
 
-                            if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == winnerId) ||
-                                (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != winnerId) ||
+                            if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == tagId) ||
+                                (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != tagId) ||
                                 (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && MultiplayerData.field_00 == null))
                             {
                                 ActionId = IsFacingRight ? Action.WalkFast_Right : Action.WalkFast_Left;
@@ -2484,12 +2484,12 @@ public partial class Rayman
                         else
                         {
                             UserInfoMulti2D userInfo = ((FrameMultiSideScroller)Frame.Current).UserInfo;
-                            int winnerId = userInfo.GetWinnerId();
+                            int tagId = userInfo.GetTagId();
 
-                            if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == winnerId) ||
-                                (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != winnerId) ||
-                                // NOTE: This appears to be a bug/oversight - winnerId is always -1 for capture the flag
-                                (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && InstanceId != winnerId))
+                            if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == tagId) ||
+                                (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != tagId) ||
+                                // NOTE: This appears to be a bug/oversight - tagId is always -1 for capture the flag
+                                (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && InstanceId != tagId))
                             {
                                 MechModel.Speed = MechModel.Speed with { X = -2f };
                             }
@@ -2522,12 +2522,12 @@ public partial class Rayman
                         else
                         {
                             UserInfoMulti2D userInfo = ((FrameMultiSideScroller)Frame.Current).UserInfo;
-                            int winnerId = userInfo.GetWinnerId();
+                            int tagId = userInfo.GetTagId();
 
-                            if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == winnerId) ||
-                                (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != winnerId) ||
-                                // NOTE: This appears to be a bug/oversight - winnerId is always -1 for capture the flag
-                                (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && InstanceId != winnerId))
+                            if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == tagId) ||
+                                (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != tagId) ||
+                                // NOTE: This appears to be a bug/oversight - tagId is always -1 for capture the flag
+                                (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && InstanceId != tagId))
                             {
                                 MechModel.Speed = MechModel.Speed with { X = 2f };
                             }
@@ -2561,12 +2561,12 @@ public partial class Rayman
                     else
                     {
                         UserInfoMulti2D userInfo = ((FrameMultiSideScroller)Frame.Current).UserInfo;
-                        int winnerId = userInfo.GetWinnerId();
+                        int tagId = userInfo.GetTagId();
 
-                        if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == winnerId) ||
-                            (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != winnerId) ||
-                            // NOTE: This appears to be a bug/oversight - winnerId is always -1 for capture the flag
-                            (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && InstanceId != winnerId))
+                        if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == tagId) ||
+                            (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != tagId) ||
+                            // NOTE: This appears to be a bug/oversight - tagId is always -1 for capture the flag
+                            (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && InstanceId != tagId))
                         {
                             MechModel.Speed = MechModel.Speed with { Y = -2f };
                         }
@@ -2591,12 +2591,12 @@ public partial class Rayman
                     else
                     {
                         UserInfoMulti2D userInfo = ((FrameMultiSideScroller)Frame.Current).UserInfo;
-                        int winnerId = userInfo.GetWinnerId();
+                        int tagId = userInfo.GetTagId();
 
-                        if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == winnerId) ||
-                            (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != winnerId) ||
-                            // NOTE: This appears to be a bug/oversight - winnerId is always -1 for capture the flag
-                            (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && InstanceId != winnerId))
+                        if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == tagId) ||
+                            (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != tagId) ||
+                            // NOTE: This appears to be a bug/oversight - tagId is always -1 for capture the flag
+                            (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && InstanceId != tagId))
                         {
                             MechModel.Speed = MechModel.Speed with { Y = 2f };
                         }

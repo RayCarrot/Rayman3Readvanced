@@ -5,33 +5,104 @@ using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
 
-public class UserInfoMulti2D : Dialog
+public partial class UserInfoMulti2D : Dialog
 {
     public UserInfoMulti2D(Scene2D scene) : base(scene)
     {
-        throw new NotImplementedException();
-        EnergyShots = new int[RSMultiplayer.MaxPlayersCount];
+        switch (MultiplayerInfo.GameType)
+        {
+            case MultiplayerGameType.RayTag:
+                Times = new int[RSMultiplayer.MaxPlayersCount];
+                EnergyShots = new int[RSMultiplayer.MaxPlayersCount];
+                for (int i = 0; i < RSMultiplayer.MaxPlayersCount; i++)
+                {
+                    Times[i] = 60;
+                    EnergyShots[i] = 0;
+                }
+                break;
+            
+            case MultiplayerGameType.CatAndMouse:
+                Times = new int[RSMultiplayer.MaxPlayersCount];
+                EnergyShots = new int[RSMultiplayer.MaxPlayersCount];
+                for (int i = 0; i < RSMultiplayer.MaxPlayersCount; i++)
+                {
+                    Times[i] = 0;
+                    EnergyShots[i] = 0;
+                }
+                break;
+            
+            case MultiplayerGameType.CaptureTheFlag when Engine.Settings.Platform == Platform.NGage:
+                EnergyShots = new int[RSMultiplayer.MaxPlayersCount];
+                for (int i = 0; i < RSMultiplayer.MaxPlayersCount; i++)
+                    EnergyShots[i] = 0;
+
+                throw new NotImplementedException();
+                break;
+
+            case MultiplayerGameType.Missile:
+            default:
+                throw new InvalidOperationException("Invalid game type");
+        }
+
+        if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        {
+            TagId = -1;
+            UnknownId = -1;
+        }
+        else
+        {
+            TagId = (int)(MultiplayerInfo.InitialGameTime % RSMultiplayer.PlayersCount);
+
+            if (TagId == RSMultiplayer.MachineId)
+            {
+                UnknownId = 0;
+            }
+            else
+            {
+                int id = TagId;
+                if (id <= RSMultiplayer.MachineId)
+                    id++;
+                UnknownId = id;
+            }
+        }
+
+        // TODO: Implement
+
+        ScoreBar = new ScoreBar(Scene);
+
+        State.MoveTo(FUN_08012738);
     }
 
-    public int WinnerId { get; set; }
+    public ScoreBar ScoreBar { get; set; }
+
+    public int TagId { get; set; }
+    public int UnknownId { get; set; }
     public int[] Times { get; set; }
+    public int[] EnergyShots { get; set; }
     public bool IsPaused { get; set; }
     public bool IsGameOver { get; set; }
-    public int[] EnergyShots { get; set; }
     public ushort GloboxCountdown { get; set; }
     public int GloboxMachineId { get; set; }
 
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {
-        throw new NotImplementedException();
+        return false;
     }
 
-    public int GetWinnerId()
+    public int GetTagId()
     {
         if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             return -1;
         else
-            return WinnerId;
+            return TagId;
+    }
+
+    public int GetWinnerId()
+    {
+        if (!IsGameOver)
+            throw new Exception("Can only get the winner id if the game is over");
+
+        return TagId;
     }
 
     public int GetTime(int id)
@@ -85,13 +156,13 @@ public class UserInfoMulti2D : Dialog
 
     public override void Load()
     {
-        throw new NotImplementedException();
+        // TODO: Implement
     }
 
     public override void Init() { }
 
     public override void Draw(AnimationPlayer animationPlayer)
     {
-        throw new NotImplementedException();
+        // TODO: Implement
     }
 }

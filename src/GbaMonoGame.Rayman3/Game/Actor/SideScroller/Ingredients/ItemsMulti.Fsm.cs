@@ -24,7 +24,7 @@ public partial class ItemsMulti
             FrameMultiSideScroller frame = (FrameMultiSideScroller)Frame.Current;
 
             // NOTE: Will be null first time as scene is being initialized - N-Gage has a null check and defaults to 0
-            int winnerId = frame.UserInfo?.GetWinnerId() ?? 0;
+            int tagId = frame.UserInfo?.GetTagId() ?? 0;
 
             if (ActionId != Action.Fist)
                 Timer++;
@@ -34,9 +34,10 @@ public partial class ItemsMulti
             int currentFramePlayerId = (int)(MultiplayerManager.GetElapsedTime() % RSMultiplayer.MaxPlayersCount);
             if (currentFramePlayerId < MultiplayerManager.PlayersCount)
             {
+                // The fist can only be collected by the player with the tag in tag mode or without the tag in burglar mode
                 if (ActionId != Action.Fist || 
-                    (MultiplayerInfo.GameType == MultiplayerGameType.RayTag && winnerId == currentFramePlayerId) || 
-                    (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && winnerId != currentFramePlayerId))
+                    (MultiplayerInfo.GameType == MultiplayerGameType.RayTag && tagId == currentFramePlayerId) || 
+                    (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && tagId != currentFramePlayerId))
                 {
                     MovableActor player = Scene.GetGameObject<MovableActor>(currentFramePlayerId);
 

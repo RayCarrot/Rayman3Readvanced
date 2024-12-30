@@ -244,10 +244,8 @@ public sealed partial class Rayman : MovableActor
 
     private bool CanAttackWithFist(int punchCount)
     {
-        if (RSMultiplayer.IsActive)
-        {
-            // TODO: Call FUN_0802aae4 to perform some multiplayer specific check
-        }
+        if (RSMultiplayer.IsActive && !CanAttackInMultiplayer())
+            return false;
 
         if (ActiveBodyParts[(int)RaymanBody.RaymanBodyPartType.Fist] == null)
             return true;
@@ -260,22 +258,40 @@ public sealed partial class Rayman : MovableActor
 
     private bool CanAttackWithFoot()
     {
-        if (RSMultiplayer.IsActive)
-        {
-            // TODO: Call FUN_0802aae4 to perform some multiplayer specific check
-        }
+        if (RSMultiplayer.IsActive && !CanAttackInMultiplayer())
+            return false;
 
         return ActiveBodyParts[(int)RaymanBody.RaymanBodyPartType.Foot] == null;
     }
 
     private bool CanAttackWithBody()
     {
-        if (RSMultiplayer.IsActive)
-        {
-            // TODO: Call FUN_0802aae4 to perform some multiplayer specific check
-        }
+        if (RSMultiplayer.IsActive && !CanAttackInMultiplayer())
+            return false;
 
         return ActiveBodyParts[(int)RaymanBody.RaymanBodyPartType.Torso] == null;
+    }
+
+    private bool CanAttackInMultiplayer()
+    {
+        UserInfoMulti2D userInfo = ((FrameMultiSideScroller)Frame.Current).UserInfo;
+
+        if (Engine.Settings.Platform == Platform.NGage &&
+            MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+            return true;
+
+        int tagId = userInfo.GetTagId();
+
+        if (userInfo.EnergyShots[InstanceId] == 0 || 
+            (MultiplayerInfo.GameType == MultiplayerGameType.RayTag && tagId != InstanceId) ||
+            (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && tagId == InstanceId))
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
     private bool HasPower(Power power)
@@ -1687,7 +1703,7 @@ public sealed partial class Rayman : MovableActor
             case Message.Main_1076:
                 if (State == Fsm_MultiplayerDying && IsLocalPlayer)
                 {
-                    Scene.Camera.LinkedObject = Scene.GetGameObject<MovableActor>(((FrameMultiSideScroller)Frame.Current).UserInfo.WinnerId);
+                    Scene.Camera.LinkedObject = Scene.GetGameObject<MovableActor>(((FrameMultiSideScroller)Frame.Current).UserInfo.TagId);
                     ((CameraSideScroller)Scene.Camera).HorizontalOffset = CameraOffset.Multiplayer;
                     Scene.Camera.ProcessMessage(this, Message.Cam_MoveToLinkedObject, true);
                 }
