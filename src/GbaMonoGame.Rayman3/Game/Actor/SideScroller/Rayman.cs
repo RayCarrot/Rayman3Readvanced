@@ -314,9 +314,7 @@ public sealed partial class Rayman : MovableActor
             return;
 
         if (RSMultiplayer.IsActive)
-        {
-            // TODO: Implement
-        }
+            ((FrameMultiSideScroller)Frame.Current).UserInfo.DecrementEnergyShots(InstanceId, 1);
 
         bodyPart.Rayman = this;
         bodyPart.BaseActionId = 0;
@@ -1669,7 +1667,7 @@ public sealed partial class Rayman : MovableActor
                 return false;
 
             case Message.Main_CollectedMultiItemGlobox:
-                ((FrameMultiSideScroller)Frame.Current).UserInfo.BeginGlobox(InstanceId);
+                ((FrameMultiSideScroller)Frame.Current).UserInfo.InitGlobox(InstanceId);
                 PlaySound(Rayman3SoundEvent.Play__LumRed_Mix03);
                 return false;
 

@@ -2,8 +2,29 @@
 
 public partial class UserInfoMulti2D
 {
-    // TODO: Implement and name
-    public bool FUN_08012738(FsmAction action) // FUN_1007bef8
+    // TODO: Implement
+    public bool Fsm_Play(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+
+                break;
+
+            case FsmAction.Step:
+
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
+
+        return true;
+    }
+
+    // TODO: Implement
+    public bool Fsm_GameOver(FsmAction action)
     {
         switch (action)
         {
