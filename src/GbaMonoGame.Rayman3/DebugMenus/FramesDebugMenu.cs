@@ -14,6 +14,7 @@ public class FramesDebugMenu : DebugMenu
         new("GameCubeMenu", () => new GameCubeMenu()),
         new("Game Over", () => new GameOver()),
         new("Level Select", () => new LevelSelect()),
+        new("Animation Viewer", () => new AnimationViewer()),
         new("Menu", null, 
         [
             new("Language", () => new MenuAll(MenuAll.Page.SelectLanguage)),
