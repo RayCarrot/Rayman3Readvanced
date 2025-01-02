@@ -450,11 +450,13 @@ public partial class UserInfoMulti2D : Dialog
             if (TagIdHudIndex is 0 or 3)
             {
                 PlayerArrow.ScreenPos = PlayerArrow.ScreenPos with { X = 94 };
+                PlayerArrow.FlipX = true;
             }
             else
             {
                 PlayerArrow.ScreenPos = PlayerArrow.ScreenPos with { X = -94 };
                 PlayerArrow.HorizontalAnchor = HorizontalAnchorMode.Right;
+                PlayerArrow.FlipX = false;
             }
 
             if (TagIdHudIndex is 0 or 1)
@@ -472,11 +474,13 @@ public partial class UserInfoMulti2D : Dialog
             if (TagIdHudIndex is 0 or 2)
             {
                 PlayerArrow.ScreenPos = PlayerArrow.ScreenPos with { X = 67 };
+                PlayerArrow.FlipX = true;
             }
             else
             {
                 PlayerArrow.ScreenPos = PlayerArrow.ScreenPos with { X = -67 };
                 PlayerArrow.HorizontalAnchor = HorizontalAnchorMode.Right;
+                PlayerArrow.FlipX = false;
             }
 
             if (TagIdHudIndex is 0 or 1)
@@ -702,6 +706,9 @@ public partial class UserInfoMulti2D : Dialog
         EnergyShotsCounterDigits[0].ScreenPos = EnergyShotsCounterDigits[0].ScreenPos with { X = 33 };
         EnergyShotsCounterDigits[1].ScreenPos = EnergyShotsCounterDigits[1].ScreenPos with { X = 42 };
 
+        // Hacky code, but the game uses Rayman's palettes for the icons
+        iconsResource.Palettes = Scene.MainActor.AnimatedObject.Resource.Palettes;
+
         EnergyShotsIcon = new AnimatedObject(iconsResource, iconsResource.IsDynamic)
         {
             IsFramed = true,
@@ -828,7 +835,7 @@ public partial class UserInfoMulti2D : Dialog
             },
             HorizontalAnchor = HorizontalAnchorMode.Center,
             VerticalAnchor = VerticalAnchorMode.Center,
-                RenderContext = Scene.HudRenderContext,
+            RenderContext = Scene.HudRenderContext,
         };
 
         if (StartCountdownValue != 0)
@@ -847,7 +854,7 @@ public partial class UserInfoMulti2D : Dialog
                 _ => throw new ArgumentOutOfRangeException()
             },
             HorizontalAnchor = HorizontalAnchorMode.Center,
-                RenderContext = Scene.HudRenderContext,
+            RenderContext = Scene.HudRenderContext,
         };
 
         if (Engine.Settings.Platform == Platform.NGage)
@@ -924,7 +931,86 @@ public partial class UserInfoMulti2D : Dialog
 
     public override void Draw(AnimationPlayer animationPlayer)
     {
-        // TODO: Implement
+        MoveBouncingSprites();
+
+        // Helper to make the code cleaner
+        void play(AObject obj, bool front)
+        {
+            if (front)
+                animationPlayer.PlayFront(obj);
+            else
+                animationPlayer.Play(obj);
+        }
+
+        if (Engine.Settings.Platform != Platform.NGage || MultiplayerInfo.GameType != MultiplayerGameType.CaptureTheFlag)
+        {
+            if (EnergyShotsCounterFrame.ScreenPos.Y != 0 && !IsPlayerDead && !IsGameOver)
+            {
+                play(EnergyShotsCounterFrame, Engine.Settings.Platform == Platform.GBA);
+                play(EnergyShotsIcon, Engine.Settings.Platform == Platform.GBA);
+
+                if (EnergyShotsBlinkCountdown == 0 || (EnergyShotsBlinkCountdown & 8) != 0)
+                {
+                    foreach (AnimatedObject digit in EnergyShotsCounterDigits)
+                        play(digit, Engine.Settings.Platform == Platform.GBA);
+                }
+            }
+
+            play(PlayerArrow, Engine.Settings.Platform == Platform.GBA);
+        }
+
+        int timersCount = Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag
+            ? 1
+            : MultiplayerManager.PlayersCount;
+        for (int id = 0; id < timersCount; id++)
+        {
+            play(TimerFrames[id], Engine.Settings.Platform == Platform.GBA);
+
+            if (id != TagIdHudIndex || (GameTime.ElapsedFrames & 0x20) != 0)
+                play(TimerColons[id], Engine.Settings.Platform == Platform.GBA);
+
+            foreach (AnimatedObject digit in TimerDigits[id])
+                play(digit, Engine.Settings.Platform == Platform.GBA);
+        }
+
+        for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
+            play(PlayerIcons[id], Engine.Settings.Platform == Platform.GBA);
+
+        if (GloboxCountdown != 0 && !IsPaused && GloboxMachineId != MultiplayerManager.MachineId)
+            animationPlayer.PlayFront(Globox);
+
+        if (StartCountdownValue != 0 && !IsPaused)
+            animationPlayer.PlayFront(StartCountdown);
+
+        if (GameOverSign.ScreenPos.Y != 180 && !IsPaused)
+            animationPlayer.PlayFront(GameOverSign);
+
+        if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        {
+            if (SuddenDeathSign.ScreenPos.Y != 180 && !IsPaused)
+                animationPlayer.PlayFront(SuddenDeathSign);
+        }
+
+        if (!IsPaused && (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse || Times[MultiplayerManager.MachineId] != 0))
+            DrawItemEffect();
+
+        if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+            FlagBar.Draw(animationPlayer);
+
+        if (IsGameOver)
+        {
+            if (ScoreBar.DrawStep == BarDrawStep.Hide)
+                ScoreBar.DrawStep = BarDrawStep.MoveIn;
+
+            if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+            {
+                // TODO: Implement
+            }
+            else
+            {
+                ScoreBar.DrawScore(animationPlayer, PlayerAnimations);
+            }
+        }
     }
 
     #endregion
