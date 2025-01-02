@@ -20,8 +20,8 @@ public class ScoreBar : Bar
 
     public override void Load()
     {
-        AnimatedObjectResource playerRanksResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.ScorePlayerRankAnimations);
-        AnimatedObjectResource playerIconsResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.ScorePlayerRankAnimations);
+        AnimatedObjectResource playerRanksResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerRankAnimations);
+        AnimatedObjectResource playerIconsResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerPlayerIconAnimations);
 
         const int rowHeight = 24;
 

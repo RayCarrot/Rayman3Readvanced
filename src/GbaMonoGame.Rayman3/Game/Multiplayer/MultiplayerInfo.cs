@@ -5,7 +5,7 @@ namespace GbaMonoGame.Rayman3;
 public static class MultiplayerInfo
 {
     public static MultiplayerGameType GameType { get; set; }
-    public static int CaptureTheFlag_field_04 { get; set; } // TODO: Name
+    public static CaptureTheFlagMode CaptureTheFlagMode { get; set; }
     public static int? MapId { get; set; }
     public static uint InitialGameTime { get; set; }
     public static TagInfo TagInfo { get; set; }

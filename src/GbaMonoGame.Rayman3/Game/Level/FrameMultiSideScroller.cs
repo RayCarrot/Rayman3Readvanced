@@ -40,8 +40,8 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
     public int InvisibleActorId { get; set; }
 
     // N-Gage exclusive
-    public AnimatedObject MultiplayerBanner { get; set; }
-    public bool IsShowingBanner { get; set; }
+    public AnimatedObject PauseSign { get; set; }
+    public bool IsShowingPauseSign { get; set; }
 
     #endregion
 
@@ -68,8 +68,8 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
         if (Engine.Settings.Platform == Platform.NGage)
         {
-            AnimatedObjectResource resource = Storage.LoadResource<AnimatedObjectResource>(GameResource.NGageMultiplayerBannerAnimations);
-            MultiplayerBanner = new AnimatedObject(resource, resource.IsDynamic)
+            AnimatedObjectResource resource = Storage.LoadResource<AnimatedObjectResource>(GameResource.NGageMultiplayerPauseSignAnimations);
+            PauseSign = new AnimatedObject(resource, resource.IsDynamic)
             {
                 IsFramed = true,
                 CurrentAnimation = Localization.LanguageUiIndex,
@@ -80,7 +80,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
                 RenderContext = Scene.HudRenderContext,
             };
 
-            IsShowingBanner = false;
+            IsShowingPauseSign = false;
         }
 
         UserInfo = new UserInfoMulti2D(Scene);

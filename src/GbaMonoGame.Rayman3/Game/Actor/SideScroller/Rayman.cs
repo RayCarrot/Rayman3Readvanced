@@ -41,7 +41,7 @@ public sealed partial class Rayman : MovableActor
 
                 if (Engine.Settings.Platform == Platform.NGage &&
                     MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag &&
-                    MultiplayerInfo.CaptureTheFlag_field_04 != 0)
+                    MultiplayerInfo.CaptureTheFlagMode != CaptureTheFlagMode.Solo)
                 {
                     // TODO: Implement setting palettes
                 }
@@ -1693,7 +1693,7 @@ public sealed partial class Rayman : MovableActor
                 State.MoveTo(Fsm_Hide);
                 return false;
 
-            case Message.Main_1075:
+            case Message.Main_MultiplayerGameOver:
                 if (State != FUN_08033404)
                     State.MoveTo(FUN_08033404);
                 return false;

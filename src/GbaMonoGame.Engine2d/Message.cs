@@ -90,7 +90,7 @@ public enum Message
 
     Main_Hide = 1072, // Unused
 
-    Main_1075 = 1075, // TODO: Name
+    Main_MultiplayerGameOver = 1075,
     Main_1076 = 1076, // TODO: Name
     Main_JumpOffWalkingShell = 1077,
     Main_EndSuperHelico = 1078,

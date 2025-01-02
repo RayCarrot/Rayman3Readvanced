@@ -38,7 +38,9 @@ public partial class UserInfoMulti2D : Dialog
                 for (int i = 0; i < RSMultiplayer.MaxPlayersCount; i++)
                     EnergyShots[i] = 0;
 
-                throw new NotImplementedException();
+                // TODO: Set values
+
+                FlagBar = new FlagBar(Scene);
                 break;
 
             case MultiplayerGameType.Missile:
@@ -49,26 +51,33 @@ public partial class UserInfoMulti2D : Dialog
         if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
         {
             TagId = -1;
-            UnknownId = -1;
+            TagIdHudIndex = -1;
         }
         else
         {
             TagId = (int)(MultiplayerInfo.InitialGameTime % RSMultiplayer.PlayersCount);
 
             if (TagId == RSMultiplayer.MachineId)
-            {
-                UnknownId = 0;
-            }
+                TagIdHudIndex = 0;
+            else if (TagId <= RSMultiplayer.MachineId)
+                TagIdHudIndex = TagId + 1;
             else
-            {
-                int id = TagId;
-                if (id <= RSMultiplayer.MachineId)
-                    id++;
-                UnknownId = id;
-            }
+                TagIdHudIndex = TagId;
         }
 
-        // TODO: Implement
+        LastTimeChangeTime = 0;
+        Timer = 0;
+        GloboxCountdown = 0;
+        EnergyShotsBlinkCountdown = 0;
+        Unused1 = -1;
+        IsGameOver = false;
+        IsPlayerDead = false;
+        UnknownCaptureTheFlagValue2 = false;
+        Unused2 = -1;
+        StartCountdownValue = 4;
+        IsPaused = false;
+        PlayerAnimations = [0, 1, 2, 3];
+        AlivePlayersCount = RSMultiplayer.PlayersCount;
 
         ScoreBar = new ScoreBar(Scene);
 
@@ -80,9 +89,25 @@ public partial class UserInfoMulti2D : Dialog
     #region Properties
 
     public ScoreBar ScoreBar { get; set; }
+    public FlagBar FlagBar { get; set; }
 
+    public AnimatedObject[] TimerFrames { get; set; }
+    public AnimatedObject[][] TimerDigits { get; set; }
+    public AnimatedObject[] TimerColons { get; set; }
+    public AnimatedObject[] PlayerIcons { get; set; }
+    public AnimatedObject EnergyShotsCounterFrame { get; set; }
+    public AnimatedObject[] EnergyShotsCounterDigits { get; set; }
+    public AnimatedObject StartCountdown { get; set; }
+    public AnimatedObject EnergyShotsIcon { get; set; }
+    public AnimatedObject PlayerArrow { get; set; }
+    public AnimatedObject GameOverSign { get; set; }
+    public AnimatedObject SuddenDeathSign { get; set; } // N-Gage exclusive
+    public AnimatedObject Globox { get; set; }
+    public AnimatedObject[] ItemEffects { get; set; }
+
+    public int AlivePlayersCount { get; set; }
     public int TagId { get; set; }
-    public int UnknownId { get; set; }
+    public int TagIdHudIndex { get; set; }
 
     public uint Timer { get; set; }
     public uint LastTimeChangeTime { get; set; }
@@ -90,13 +115,24 @@ public partial class UserInfoMulti2D : Dialog
     public int[] Times { get; set; }
     public int[] EnergyShots { get; set; }
 
+    public byte StartCountdownValue { get; set; }
     public bool IsPaused { get; set; }
+    public bool IsPlayerDead { get; set; }
     public bool IsGameOver { get; set; }
+
+    public ushort EnergyShotsBlinkCountdown { get; set; }
 
     public ushort GloboxCountdown { get; set; }
     public int GloboxMachineId { get; set; }
 
+    public int[] PlayerAnimations { get; set; }
+
+    public int Unused1 { get; set; }
+    public int Unused2 { get; set; }
+    public int Unused3 { get; set; }
+
     public ushort UnknownCaptureTheFlagValue1 { get; set; }
+    public bool UnknownCaptureTheFlagValue2 { get; set; }
 
     #endregion
 
@@ -141,16 +177,11 @@ public partial class UserInfoMulti2D : Dialog
         LastTimeChangeTime = Timer;
 
         if (TagId == RSMultiplayer.MachineId)
-        {
-            UnknownId = 0;
-        }
+            TagIdHudIndex = 0;
+        else if (TagId <= RSMultiplayer.MachineId)
+            TagIdHudIndex = TagId + 1;
         else
-        {
-            int id = TagId;
-            if (id <= RSMultiplayer.MachineId)
-                id++;
-            UnknownId = id;
-        }
+            TagIdHudIndex = TagId;
 
         // TODO: Set ChainedSparkle value
 
@@ -267,9 +298,99 @@ public partial class UserInfoMulti2D : Dialog
             PrintEnergyShots(machineId);
     }
 
+    public void RemovePlayer(int machineId)
+    {
+        AlivePlayersCount--;
+        PlayerAnimations[AlivePlayersCount] = machineId;
+    }
+
     public void GameOverTag(int machineId)
     {
-        throw new NotImplementedException();
+        int timedOutPlayers = 0;
+        int lastAlivePlayer = -1;
+        for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
+        {
+            if (Times[id] == 0)
+                timedOutPlayers++;
+            else
+                lastAlivePlayer = id;
+        }
+
+        int uVar9;
+        // Game over - only one player left alive
+        if (lastAlivePlayer != -1 && timedOutPlayers == MultiplayerManager.PlayersCount - 1)
+        {
+            if (lastAlivePlayer == MultiplayerManager.MachineId)
+            {
+                if (machineId > lastAlivePlayer)
+                    uVar9 = machineId;
+                else
+                    uVar9 = machineId + 1;
+                
+                TagIdHudIndex = 0;
+            }
+            else
+            {
+                if (machineId == MultiplayerManager.MachineId)
+                {
+                    IsPlayerDead = true;
+                    uVar9 = 0;
+                }
+                else
+                {
+                    if (machineId > MultiplayerManager.MachineId)
+                        uVar9 = machineId;
+                    else
+                        uVar9 = machineId + 1;
+                }
+
+                if (lastAlivePlayer <= MultiplayerManager.MachineId)
+                    machineId = lastAlivePlayer + 1;
+                else
+                    machineId = lastAlivePlayer;
+
+                TagIdHudIndex = machineId;
+            }
+
+            IsGameOver = true;
+            TagId = lastAlivePlayer;
+
+            RemovePlayer(machineId);
+            RemovePlayer(lastAlivePlayer);
+
+            // TODO: Set ChainedSparkle value
+
+            for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
+                Scene.GetGameObject(id).ProcessMessage(this, Message.Main_MultiplayerGameOver);
+        }
+        else
+        {
+            if (machineId == MultiplayerManager.MachineId)
+            {
+                IsPlayerDead = true;
+                GloboxCountdown = 0;
+                uVar9 = 0;
+            }
+            else
+            {
+                if (machineId > MultiplayerManager.MachineId)
+                    uVar9 = machineId;
+                else
+                    uVar9 = machineId + 1;
+            }
+
+            RemovePlayer(machineId);
+
+            if (TagId == MultiplayerManager.MachineId)
+                SetTagId(GetNewTagId());
+
+            Scene.GetGameObject(machineId).ProcessMessage(this, Message.Exploded);
+        }
+
+        // TODO: Set animations
+
+        if (IsGameOver)
+            State.MoveTo(Fsm_GameOver);
     }
 
     public void GameOverCatAndMouse(int machineId)
@@ -295,7 +416,7 @@ public partial class UserInfoMulti2D : Dialog
 
     public void PrintTime()
     {
-        throw new NotImplementedException();
+        // TODO: Implement
     }
 
     public void PrintEnergyShots(int machineId)
@@ -321,12 +442,482 @@ public partial class UserInfoMulti2D : Dialog
 
     public void SetArrow()
     {
-        // TODO: Implement
+        PlayerArrow.CurrentAnimation = 1;
+        PlayerArrow.BasePaletteIndex = TagId * 2 + 1;
+
+        if (Engine.Settings.Platform == Platform.GBA)
+        {
+            if (TagIdHudIndex is 0 or 3)
+            {
+                PlayerArrow.ScreenPos = PlayerArrow.ScreenPos with { X = 94 };
+            }
+            else
+            {
+                PlayerArrow.ScreenPos = PlayerArrow.ScreenPos with { X = -94 };
+                PlayerArrow.HorizontalAnchor = HorizontalAnchorMode.Right;
+            }
+
+            if (TagIdHudIndex is 0 or 1)
+            {
+                PlayerArrow.ScreenPos = PlayerArrow.ScreenPos with { Y = 20 };
+            }
+            else
+            {
+                PlayerArrow.ScreenPos = PlayerArrow.ScreenPos with { Y = -4 };
+                PlayerArrow.VerticalAnchor = VerticalAnchorMode.Bottom;
+            }
+        }
+        else if (Engine.Settings.Platform == Platform.NGage)
+        {
+            if (TagIdHudIndex is 0 or 2)
+            {
+                PlayerArrow.ScreenPos = PlayerArrow.ScreenPos with { X = 67 };
+            }
+            else
+            {
+                PlayerArrow.ScreenPos = PlayerArrow.ScreenPos with { X = -67 };
+                PlayerArrow.HorizontalAnchor = HorizontalAnchorMode.Right;
+            }
+
+            if (TagIdHudIndex is 0 or 1)
+            {
+                PlayerArrow.ScreenPos = PlayerArrow.ScreenPos with { Y = 14 };
+            }
+            else
+            {
+                PlayerArrow.ScreenPos = PlayerArrow.ScreenPos with { Y = -14 };
+                PlayerArrow.VerticalAnchor = VerticalAnchorMode.Bottom;
+            }
+        }
+        else
+        {
+            throw new UnsupportedPlatformException();
+        }
     }
 
     public override void Load()
     {
-        // TODO: Implement
+        AnimatedObjectResource timersResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerTimerAnimations);
+        AnimatedObjectResource iconsResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerIconAnimations);
+        AnimatedObjectResource playerIconsResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerPlayerIconAnimations);
+        AnimatedObjectResource countdownResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerCountdownAnimations);
+        AnimatedObjectResource gameOverSignResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerGameOverSignAnimations);
+        AnimatedObjectResource itemsResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerItemAnimations);
+
+        TimerFrames = new AnimatedObject[RSMultiplayer.MaxPlayersCount];
+        for (int i = 0; i < TimerFrames.Length; i++)
+        {
+            TimerFrames[i] = new AnimatedObject(timersResource, timersResource.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 0,
+                ObjPriority = 4,
+                RenderContext = Scene.HudRenderContext,
+            };
+        }
+
+        TimerFrames[0].CurrentAnimation = 10;
+        if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+            TimerFrames[0].ScreenPos = new Vector2(66, 18);
+        else
+            TimerFrames[0].ScreenPos = new Vector2(13, 18);
+        
+        TimerFrames[1].CurrentAnimation = 11;
+        TimerFrames[1].ScreenPos = new Vector2(-13, 18);
+        TimerFrames[1].HorizontalAnchor = HorizontalAnchorMode.Right;
+
+        // 2 and 3 have reversed positions between GBA and N-Gage
+        if (Engine.Settings.Platform == Platform.GBA)
+        {
+            TimerFrames[2].CurrentAnimation = 11;
+            TimerFrames[2].ScreenPos = new Vector2(-13, -8);
+            TimerFrames[2].HorizontalAnchor = HorizontalAnchorMode.Right;
+            TimerFrames[2].VerticalAnchor = VerticalAnchorMode.Bottom;
+
+            TimerFrames[3].CurrentAnimation = 10;
+            TimerFrames[3].ScreenPos = new Vector2(13, -8);
+            TimerFrames[3].VerticalAnchor = VerticalAnchorMode.Bottom;
+        }
+        else if (Engine.Settings.Platform == Platform.NGage)
+        {
+            TimerFrames[2].CurrentAnimation = 10;
+            TimerFrames[2].ScreenPos = new Vector2(13, -8);
+            TimerFrames[2].VerticalAnchor = VerticalAnchorMode.Bottom;
+
+            TimerFrames[3].CurrentAnimation = 11;
+            TimerFrames[3].ScreenPos = new Vector2(-13, -8);
+            TimerFrames[3].HorizontalAnchor = HorizontalAnchorMode.Right;
+            TimerFrames[3].VerticalAnchor = VerticalAnchorMode.Bottom;
+        }
+        else
+        {
+            throw new UnsupportedPlatformException();
+        }
+
+        TimerDigits = new AnimatedObject[RSMultiplayer.MaxPlayersCount][];
+        for (int i = 0; i < TimerDigits.Length; i++)
+        {
+            TimerDigits[i] = new AnimatedObject[3];
+            for (int j = 0; j < TimerDigits[i].Length; j++)
+            {
+                TimerDigits[i][j] = new AnimatedObject(timersResource, timersResource.IsDynamic)
+                {
+                    IsFramed = true,
+                    BgPriority = 0,
+                    ObjPriority = 3,
+                    RenderContext = Scene.HudRenderContext,
+                };
+
+                if (i < 2)
+                {
+                    TimerDigits[i][j].ScreenPos = TimerDigits[i][j].ScreenPos with { Y = 18 };
+                }
+                else
+                {
+                    TimerDigits[i][j].ScreenPos = TimerDigits[i][j].ScreenPos with { Y = -8 };
+                    TimerDigits[i][j].VerticalAnchor = VerticalAnchorMode.Bottom;
+                }
+            }
+        }
+
+        void setTimerDigitPositions(int i, float x, HorizontalAnchorMode anchor)
+        {
+            TimerDigits[i][0].ScreenPos = TimerDigits[i][0].ScreenPos with { X = x };
+            TimerDigits[i][1].ScreenPos = TimerDigits[i][1].ScreenPos with { X = x + 17 };
+            TimerDigits[i][2].ScreenPos = TimerDigits[i][2].ScreenPos with { X = x + 27 };
+            
+            TimerDigits[i][0].HorizontalAnchor = anchor;
+            TimerDigits[i][1].HorizontalAnchor = anchor;
+            TimerDigits[i][2].HorizontalAnchor = anchor;
+        }
+
+        if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+            setTimerDigitPositions(0, 78, HorizontalAnchorMode.Left);
+        else
+            setTimerDigitPositions(0, 25, HorizontalAnchorMode.Left);
+
+        setTimerDigitPositions(1, -58, HorizontalAnchorMode.Right);
+
+        // 2 and 3 have reversed positions between GBA and N-Gage
+        if (Engine.Settings.Platform == Platform.GBA)
+        {
+            setTimerDigitPositions(2, -58, HorizontalAnchorMode.Right);
+            setTimerDigitPositions(3, 25, HorizontalAnchorMode.Left);
+        }
+        else if (Engine.Settings.Platform == Platform.NGage)
+        {
+            setTimerDigitPositions(2, 25, HorizontalAnchorMode.Left);
+            setTimerDigitPositions(3, -58, HorizontalAnchorMode.Right);
+        }
+        else
+        {
+            throw new UnsupportedPlatformException();
+        }
+
+        TimerColons = new AnimatedObject[RSMultiplayer.MaxPlayersCount];
+        for (int i = 0; i < TimerColons.Length; i++)
+        {
+            TimerColons[i] = new AnimatedObject(timersResource, timersResource.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 0,
+                ObjPriority = 3,
+                CurrentAnimation = 16,
+                RenderContext = Scene.HudRenderContext,
+            };
+
+            if (i < 2)
+            {
+                TimerColons[i].ScreenPos = TimerColons[i].ScreenPos with { Y = 18 };
+            }
+            else
+            {
+                TimerColons[i].ScreenPos = TimerColons[i].ScreenPos with { Y = -8 };
+                TimerColons[i].VerticalAnchor = VerticalAnchorMode.Bottom;
+            }
+        }
+
+        if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+            TimerColons[0].ScreenPos = TimerColons[0].ScreenPos with { X = 86 };
+        else
+            TimerColons[0].ScreenPos = TimerColons[0].ScreenPos with { X = 33 };
+        
+        TimerColons[1].ScreenPos = TimerColons[1].ScreenPos with { X = -60 };
+        TimerColons[1].HorizontalAnchor = HorizontalAnchorMode.Right;
+
+        // 2 and 3 have reversed positions between GBA and N-Gage
+        if (Engine.Settings.Platform == Platform.GBA)
+        {
+            TimerColons[2].ScreenPos = TimerColons[1].ScreenPos with { X = -60 };
+            TimerColons[2].HorizontalAnchor = HorizontalAnchorMode.Right;
+
+            TimerColons[3].ScreenPos = TimerColons[0].ScreenPos with { X = 33 };
+        }
+        else if (Engine.Settings.Platform == Platform.NGage)
+        {
+            TimerColons[2].ScreenPos = TimerColons[0].ScreenPos with { X = 33 };
+            
+            TimerColons[3].ScreenPos = TimerColons[1].ScreenPos with { X = -60 };
+            TimerColons[3].HorizontalAnchor = HorizontalAnchorMode.Right;
+        }
+        else
+        {
+            throw new UnsupportedPlatformException();
+        }
+
+        if (Engine.Settings.Platform != Platform.NGage || MultiplayerInfo.GameType != MultiplayerGameType.CaptureTheFlag)
+        {
+            EnergyShotsCounterFrame = new AnimatedObject(timersResource, timersResource.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 0,
+                ObjPriority = 6,
+                CurrentAnimation = 12,
+                RenderContext = Scene.HudRenderContext,
+            };
+
+            if (MultiplayerInfo.GameType == MultiplayerGameType.RayTag)
+                EnergyShotsCounterFrame.ScreenPos = new Vector2(26, TagId == MultiplayerManager.MachineId ? 38 : 0);
+            else if (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse)
+                EnergyShotsCounterFrame.ScreenPos = new Vector2(26, TagId == MultiplayerManager.MachineId ? 0 : 38);
+        }
+
+        EnergyShotsCounterDigits = new AnimatedObject[2];
+        for (int i = 0; i < EnergyShotsCounterDigits.Length; i++)
+        {
+            EnergyShotsCounterDigits[i] = new AnimatedObject(timersResource, timersResource.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 0,
+                ObjPriority = 5,
+                RenderContext = Scene.HudRenderContext,
+            };
+
+            if (MultiplayerInfo.GameType == MultiplayerGameType.RayTag)
+                EnergyShotsCounterDigits[i].ScreenPos = new Vector2(0, TagId == MultiplayerManager.MachineId ? 37 : -1);
+            else if (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse)
+                EnergyShotsCounterDigits[i].ScreenPos = new Vector2(0, TagId == MultiplayerManager.MachineId ? -1 : 37);
+        }
+
+        EnergyShotsCounterDigits[0].ScreenPos = EnergyShotsCounterDigits[0].ScreenPos with { X = 33 };
+        EnergyShotsCounterDigits[1].ScreenPos = EnergyShotsCounterDigits[1].ScreenPos with { X = 42 };
+
+        EnergyShotsIcon = new AnimatedObject(iconsResource, iconsResource.IsDynamic)
+        {
+            IsFramed = true,
+            BgPriority = 0,
+            ObjPriority = 6,
+            CurrentAnimation = 0,
+            RenderContext = Scene.HudRenderContext,
+        };
+
+        if (MultiplayerInfo.GameType == MultiplayerGameType.RayTag)
+            EnergyShotsIcon.ScreenPos = new Vector2(10, TagId == MultiplayerManager.MachineId ? 38 : 0);
+        else if (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse)
+            EnergyShotsIcon.ScreenPos = new Vector2(10, TagId == MultiplayerManager.MachineId ? 0 : 38);
+
+        EnergyShotsIcon.BasePaletteIndex = MultiplayerManager.MachineId * 2 + 1;
+
+        if (Engine.Settings.Platform != Platform.NGage || MultiplayerInfo.GameType != MultiplayerGameType.CaptureTheFlag)
+        {
+            PlayerArrow = new AnimatedObject(iconsResource, iconsResource.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 0,
+                ObjPriority = 2,
+                RenderContext = Scene.HudRenderContext,
+            };
+
+            SetArrow();
+        }
+
+        PlayerIcons = new AnimatedObject[RSMultiplayer.MaxPlayersCount];
+        for (int i = 0; i < PlayerIcons.Length; i++)
+        {
+            PlayerIcons[i] = new AnimatedObject(playerIconsResource, playerIconsResource.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 0,
+                ObjPriority = 2,
+                RenderContext = Scene.HudRenderContext,
+            };
+        }
+
+        if (Engine.Settings.Platform == Platform.NGage && 
+            MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && 
+            MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Teams)
+        {
+            if (MultiplayerManager.MachineId is 0 or 1)
+            {
+                PlayerIcons[0].CurrentAnimation = 0;
+                PlayerIcons[1].CurrentAnimation = 2;
+                PlayerIcons[2].CurrentAnimation = 1;
+                PlayerIcons[3].CurrentAnimation = 3;
+            }
+            else
+            {
+                PlayerIcons[0].CurrentAnimation = 2;
+                PlayerIcons[1].CurrentAnimation = 0;
+                PlayerIcons[2].CurrentAnimation = 3;
+                PlayerIcons[3].CurrentAnimation = 1;
+            }
+
+            PlayerIcons[0].ScreenPos = new Vector2(0, 6);
+
+            PlayerIcons[1].ScreenPos = new Vector2(-17, 6);
+            PlayerIcons[1].HorizontalAnchor = HorizontalAnchorMode.Right;
+
+            PlayerIcons[2].ScreenPos = new Vector2(0, 20);
+
+            PlayerIcons[3].ScreenPos = new Vector2(-17, 20);
+            PlayerIcons[3].HorizontalAnchor = HorizontalAnchorMode.Right;
+        }
+        else
+        {
+            for (int i = 0; i < PlayerIcons.Length; i++)
+            {
+                if (i == 0)
+                    PlayerIcons[i].CurrentAnimation = MultiplayerManager.MachineId;
+                else if (i <= MultiplayerManager.MachineId)
+                    PlayerIcons[i].CurrentAnimation = i - 1;
+                else
+                    PlayerIcons[i].CurrentAnimation = i;
+            }
+
+            PlayerIcons[0].ScreenPos = new Vector2(0, 6);
+
+            PlayerIcons[1].ScreenPos = new Vector2(-17, 6);
+            PlayerIcons[1].HorizontalAnchor = HorizontalAnchorMode.Right;
+
+            // 2 and 3 have reversed positions between GBA and N-Gage
+            if (Engine.Settings.Platform == Platform.GBA)
+            {
+                PlayerIcons[2].ScreenPos = new Vector2(-17, -20);
+                PlayerIcons[2].HorizontalAnchor = HorizontalAnchorMode.Right;
+                PlayerIcons[2].VerticalAnchor = VerticalAnchorMode.Bottom;
+
+                PlayerIcons[3].ScreenPos = new Vector2(0, -20);
+                PlayerIcons[3].VerticalAnchor = VerticalAnchorMode.Bottom;
+            }
+            else if (Engine.Settings.Platform == Platform.NGage)
+            {
+                PlayerIcons[2].ScreenPos = new Vector2(0, -20);
+                PlayerIcons[2].VerticalAnchor = VerticalAnchorMode.Bottom;
+
+                PlayerIcons[3].ScreenPos = new Vector2(-17, -20);
+                PlayerIcons[3].HorizontalAnchor = HorizontalAnchorMode.Right;
+                PlayerIcons[3].VerticalAnchor = VerticalAnchorMode.Bottom;
+            }
+            else
+            {
+                throw new UnsupportedPlatformException();
+            }
+        }
+
+        // NOTE: In the original game this is set up so if Load is called again then it's reloaded rather than recreated
+        StartCountdown = new AnimatedObject(countdownResource, countdownResource.IsDynamic)
+        {
+            IsFramed = true,
+            BgPriority = 0,
+            ObjPriority = 2,
+            ScreenPos = Engine.Settings.Platform switch
+            {
+                Platform.GBA => new Vector2(0, 10),
+                Platform.NGage => new Vector2(0 ,0),
+                _ => throw new ArgumentOutOfRangeException()
+            },
+            HorizontalAnchor = HorizontalAnchorMode.Center,
+            VerticalAnchor = VerticalAnchorMode.Center,
+                RenderContext = Scene.HudRenderContext,
+        };
+
+        if (StartCountdownValue != 0)
+            StartCountdown.CurrentAnimation = StartCountdownValue - 1;
+
+        GameOverSign = new AnimatedObject(gameOverSignResource, gameOverSignResource.IsDynamic)
+        {
+            IsFramed = true,
+            BgPriority = 0,
+            ObjPriority = 2,
+            CurrentAnimation = 0,
+            ScreenPos = Engine.Settings.Platform switch
+            {
+                Platform.GBA => new Vector2(10, IsPlayerDead ? 36 : 180),
+                Platform.NGage => new Vector2(0, IsPlayerDead ? 36 : 180),
+                _ => throw new ArgumentOutOfRangeException()
+            },
+            HorizontalAnchor = HorizontalAnchorMode.Center,
+                RenderContext = Scene.HudRenderContext,
+        };
+
+        if (Engine.Settings.Platform == Platform.NGage)
+        {
+            AnimatedObjectResource suddenDeathSignResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.NGageMultiplayerSuddenDeathSignAnimations);
+
+            SuddenDeathSign = new AnimatedObject(suddenDeathSignResource, suddenDeathSignResource.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 0,
+                ObjPriority = 2,
+                CurrentAnimation = Localization.LanguageUiIndex,
+                ScreenPos = new Vector2(0, UnknownCaptureTheFlagValue2 ? 36 : 180),
+                HorizontalAnchor = HorizontalAnchorMode.Center,
+                RenderContext = Scene.HudRenderContext,
+            };
+        }
+
+        if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        {
+            FlagBar.Load();
+            FlagBar.Set();
+        }
+        else
+        {
+            Globox = new AnimatedObject(itemsResource, itemsResource.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 0,
+                ObjPriority = 2,
+                CurrentAnimation = 5,
+                ScreenPos = new Vector2(100, -9),
+                HorizontalAnchor = HorizontalAnchorMode.Right,
+                RenderContext = Scene.HudRenderContext,
+            };
+
+            ItemEffects = new AnimatedObject[3];
+            ItemEffects[0] = new AnimatedObject(itemsResource, itemsResource.IsDynamic)
+            {
+                IsFramed = true,
+                CurrentAnimation = 8,
+                BgPriority = 0,
+                ObjPriority = 16,
+                RenderContext = Scene.HudRenderContext,
+            };
+            ItemEffects[1] = new AnimatedObject(itemsResource, itemsResource.IsDynamic)
+            {
+                IsFramed = true,
+                CurrentAnimation = 9,
+                BgPriority = 0,
+                ObjPriority = 16,
+                RenderContext = Scene.HudRenderContext,
+            };
+            ItemEffects[2] = new AnimatedObject(itemsResource, itemsResource.IsDynamic)
+            {
+                IsFramed = true,
+                CurrentAnimation = 12,
+                BgPriority = 0,
+                ObjPriority = 16,
+                RenderContext = Scene.HudRenderContext,
+            };
+        }
+
+        ScoreBar.Load();
+        ScoreBar.SetToStayVisible();
+
+        if (Engine.Settings.Platform != Platform.NGage || MultiplayerInfo.GameType != MultiplayerGameType.CaptureTheFlag)
+            PrintEnergyShots(TagId);
+
+        PrintTime();
     }
 
     public override void Init() { }
