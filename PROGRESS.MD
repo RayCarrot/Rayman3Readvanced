@@ -94,10 +94,10 @@
 | WorldMap                   | 🟩     |                                              |
 | Multi_MissileRace          | 🟥     |                                              |
 | Multi_MissileArena         | 🟥     |                                              |
-| Multi_RayTag1              | 🟨     |                                              |
-| Multi_RayTag2              | 🟨     |                                              |
-| Multi_CatAndMouse1         | 🟨     |                                              |
-| Multi_CatAndMouse2         | 🟨     |                                              |
+| Multi_RayTag1              | 🟩     |                                              |
+| Multi_RayTag2              | 🟩     |                                              |
+| Multi_CatAndMouse1         | 🟩     |                                              |
+| Multi_CatAndMouse2         | 🟩     |                                              |
 | Multi_CaptureTheFlag1      | 🟨     |                                              |
 | Multi_CaptureTheFlag2      | 🟨     |                                              |
 | Multi_CaptureTheFlag3      | 🟨     |                                              |
@@ -120,7 +120,7 @@
 | ---------------------- | ------- | -------------------------------------------- |
 | UserInfoSideScroller   | 🟩     |                                              |
 | UserInfoSideWorld      | 🟩     |                                              |
-| UserInfoMulti2D        | 🟨     |                                              |
+| UserInfoMulti2D        | 🟩     |                                              |
 | #?                     | 🟥     |                                              |
 | #?                     | 🟥     |                                              |
 | #?                     | 🟥     |                                              |
