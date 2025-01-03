@@ -103,7 +103,9 @@ public partial class UserInfoMulti2D : Dialog
     public AnimatedObject GameOverSign { get; set; }
     public AnimatedObject SuddenDeathSign { get; set; } // N-Gage exclusive
     public AnimatedObject Globox { get; set; }
-    public AnimatedObject[] ItemEffects { get; set; }
+    public AnimatedObject ReverseControlsEffectIcon { get; set; }
+    public AnimatedObject InvisibilityEffectIcon { get; set; }
+    public AnimatedObject GloboxEffectIcon { get; set; }
 
     public int AlivePlayersCount { get; set; }
     public int TagId { get; set; }
@@ -131,8 +133,32 @@ public partial class UserInfoMulti2D : Dialog
     public int Unused2 { get; set; }
     public int Unused3 { get; set; }
 
-    public ushort UnknownCaptureTheFlagValue1 { get; set; }
+    public ushort CaptureTheFlagTime { get; set; }
     public bool UnknownCaptureTheFlagValue2 { get; set; }
+
+    #endregion
+
+    #region Private Methods
+
+    private int HudIndexToMachineId(int hudIndex)
+    {
+        if (hudIndex == 0)
+            return MultiplayerManager.MachineId;
+        else if (hudIndex <= MultiplayerManager.MachineId)
+            return hudIndex - 1;
+        else
+            return hudIndex;
+    }
+
+    private int MachineIdToHudIndex(int machineId)
+    {
+        if (machineId == MultiplayerManager.MachineId)
+            return 0;
+        else if (machineId <= MultiplayerManager.MachineId)
+            return machineId + 1;
+        else
+            return machineId;
+    }
 
     #endregion
 
@@ -183,14 +209,14 @@ public partial class UserInfoMulti2D : Dialog
         else
             TagIdHudIndex = TagId;
 
-        // TODO: Set ChainedSparkle value
+        ChainedSparkles.SetUnknownValue();
 
         SetArrow();
 
         for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
         {
             if (id != TagId)
-                Scene.GetGameObject(id).ProcessMessage(this, Message.Main_1076);
+                Scene.GetGameObject(id).ProcessMessage(this, Message.Main_MultiplayerTagMoved);
         }
     }
 
@@ -241,13 +267,13 @@ public partial class UserInfoMulti2D : Dialog
                 if (Times[machineId] >= 60)
                 {
                     Times[machineId] = 60;
-                    GameOverCatAndMouse(machineId);
+                    Win(machineId);
                 }
                 break;
 
             case MultiplayerGameType.CaptureTheFlag when Engine.Settings.Platform == Platform.NGage:
-                if (UnknownCaptureTheFlagValue1 > 360)
-                    UnknownCaptureTheFlagValue1 = 360;
+                if (CaptureTheFlagTime > 360)
+                    CaptureTheFlagTime = 360;
                 break;
 
             case MultiplayerGameType.Missile:
@@ -269,7 +295,7 @@ public partial class UserInfoMulti2D : Dialog
             Times[machineId] = 0;
 
             if (MultiplayerInfo.GameType == MultiplayerGameType.RayTag)
-                GameOverTag(machineId);
+                GameOver(machineId);
         }
 
         LastTimeChangeTime = Timer;
@@ -298,13 +324,7 @@ public partial class UserInfoMulti2D : Dialog
             PrintEnergyShots(machineId);
     }
 
-    public void RemovePlayer(int machineId)
-    {
-        AlivePlayersCount--;
-        PlayerAnimations[AlivePlayersCount] = machineId;
-    }
-
-    public void GameOverTag(int machineId)
+    public void GameOver(int machineId)
     {
         int timedOutPlayers = 0;
         int lastAlivePlayer = -1;
@@ -316,49 +336,21 @@ public partial class UserInfoMulti2D : Dialog
                 lastAlivePlayer = id;
         }
 
-        int uVar9;
         // Game over - only one player left alive
         if (lastAlivePlayer != -1 && timedOutPlayers == MultiplayerManager.PlayersCount - 1)
         {
-            if (lastAlivePlayer == MultiplayerManager.MachineId)
-            {
-                if (machineId > lastAlivePlayer)
-                    uVar9 = machineId;
-                else
-                    uVar9 = machineId + 1;
-                
-                TagIdHudIndex = 0;
-            }
-            else
-            {
-                if (machineId == MultiplayerManager.MachineId)
-                {
-                    IsPlayerDead = true;
-                    uVar9 = 0;
-                }
-                else
-                {
-                    if (machineId > MultiplayerManager.MachineId)
-                        uVar9 = machineId;
-                    else
-                        uVar9 = machineId + 1;
-                }
+            if (lastAlivePlayer != MultiplayerManager.MachineId && machineId == MultiplayerManager.MachineId)
+                IsPlayerDead = true;
 
-                if (lastAlivePlayer <= MultiplayerManager.MachineId)
-                    machineId = lastAlivePlayer + 1;
-                else
-                    machineId = lastAlivePlayer;
-
-                TagIdHudIndex = machineId;
-            }
+            TagIdHudIndex = MachineIdToHudIndex(lastAlivePlayer);
 
             IsGameOver = true;
             TagId = lastAlivePlayer;
 
-            RemovePlayer(machineId);
-            RemovePlayer(lastAlivePlayer);
+            removePlayer(machineId);
+            removePlayer(lastAlivePlayer);
 
-            // TODO: Set ChainedSparkle value
+            ChainedSparkles.SetUnknownValue();
 
             for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
                 Scene.GetGameObject(id).ProcessMessage(this, Message.Main_MultiplayerGameOver);
@@ -369,33 +361,63 @@ public partial class UserInfoMulti2D : Dialog
             {
                 IsPlayerDead = true;
                 GloboxCountdown = 0;
-                uVar9 = 0;
-            }
-            else
-            {
-                if (machineId > MultiplayerManager.MachineId)
-                    uVar9 = machineId;
-                else
-                    uVar9 = machineId + 1;
             }
 
-            RemovePlayer(machineId);
+            removePlayer(machineId);
 
-            if (TagId == MultiplayerManager.MachineId)
+            if (TagId == machineId)
                 SetTagId(GetNewTagId());
 
             Scene.GetGameObject(machineId).ProcessMessage(this, Message.Exploded);
         }
 
-        // TODO: Set animations
+        int hudIndex = MachineIdToHudIndex(machineId);
+
+        PlayerIcons[hudIndex].CurrentAnimation = machineId + 4;
+        foreach (AnimatedObject digit in TimerDigits[hudIndex])
+            digit.CurrentAnimation = 15;
 
         if (IsGameOver)
             State.MoveTo(Fsm_GameOver);
+
+        // Helper method
+        void removePlayer(int machineIdToRemove)
+        {
+            AlivePlayersCount--;
+            PlayerAnimations[AlivePlayersCount] = machineIdToRemove;
+        }
     }
 
-    public void GameOverCatAndMouse(int machineId)
+    public void Win(int machineId)
     {
-        throw new NotImplementedException();
+        IsGameOver = true;
+        TagId = machineId;
+
+        ChainedSparkles.SetUnknownValue();
+
+        TagIdHudIndex = MachineIdToHudIndex(machineId);
+
+        // Update the player icons
+        for (int hudIndex = 0; hudIndex < MultiplayerManager.PlayersCount; hudIndex++)
+        {
+            if (hudIndex != TagIdHudIndex)
+            {
+                PlayerIcons[hudIndex].CurrentAnimation += 4;
+
+                foreach (AnimatedObject digit in TimerDigits[hudIndex])
+                    digit.CurrentAnimation = 15;
+            }
+        }
+
+        // Sort the player animations based on the times
+        byte[] times = new byte[Times.Length];
+        Array.Copy(Times, times, Times.Length);
+        Array.Sort(times, PlayerAnimations);
+
+        for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
+            Scene.GetGameObject(id).ProcessMessage(this, Message.Main_MultiplayerGameOver);
+
+        State.MoveTo(Fsm_GameOver);
     }
 
     public void GameOverCaptureTheFlag1(int machineId)
@@ -416,18 +438,69 @@ public partial class UserInfoMulti2D : Dialog
 
     public void PrintTime()
     {
-        // TODO: Implement
+        if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        {
+            int v1 = CaptureTheFlagTime / 60;
+            int v2 = CaptureTheFlagTime + v1 * -60;
+            const int hudIndex = 0;
+
+            TimerDigits[hudIndex][0].CurrentAnimation = v1;
+
+            if (v2 < 10)
+            {
+                TimerDigits[hudIndex][1].CurrentAnimation = 0;
+                TimerDigits[hudIndex][2].CurrentAnimation = v2;
+            }
+            else
+            {
+                TimerDigits[hudIndex][1].CurrentAnimation = v2 / 10;
+                TimerDigits[hudIndex][2].CurrentAnimation = v2 % 10;
+            }
+        }
+        else
+        {
+            for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
+            {
+                if ((MultiplayerInfo.GameType != MultiplayerGameType.RayTag || Times[id] != 0) &&
+                    (MultiplayerInfo.GameType != MultiplayerGameType.CatAndMouse || !IsGameOver || Times[id] == 60))
+                {
+                    int v1 = Times[id] / 60;
+                    int v2 = Times[id] + v1 * -60;
+                    int hudIndex = MachineIdToHudIndex(id);
+
+                    TimerDigits[hudIndex][0].CurrentAnimation = v1;
+
+                    if (v2 < 10)
+                    {
+                        TimerDigits[hudIndex][1].CurrentAnimation = 0;
+                        TimerDigits[hudIndex][2].CurrentAnimation = v2;
+                    }
+                    else
+                    {
+                        TimerDigits[hudIndex][1].CurrentAnimation = v2 / 10;
+                        TimerDigits[hudIndex][2].CurrentAnimation = v2 % 10;
+                    }
+                }
+            }
+        }
     }
 
     public void PrintEnergyShots(int machineId)
     {
-        // TODO: Implement
+        EnergyShotsCounterDigits[0].CurrentAnimation = EnergyShots[machineId] / 10;
+        EnergyShotsCounterDigits[1].CurrentAnimation = EnergyShots[machineId] % 10;
     }
 
     // Unused
     public void PrintInfo(string info, int time)
     {
-        // TODO: Implement
+        Unused2 = 0;
+        Unused3 = time;
+
+        if (time == -1)
+            Unused2 = -1;
+
+        // NOTE: The rest is not implemented in the final version of the game
     }
 
     public void MoveBouncingSprites()
@@ -435,9 +508,28 @@ public partial class UserInfoMulti2D : Dialog
         // TODO: Implement
     }
 
-    public void DrawItemEffect()
+    public void DrawItemEffect(AnimationPlayer animationPlayer)
     {
-        // TODO: Implement
+        Rayman rayman = (Rayman)Scene.MainActor;
+
+        if (rayman != null)
+        {
+            Vector2 mainActorPos = rayman.ScreenPosition;
+            float offsetY = rayman.State == rayman.Fsm_Crouch ? 30 : 50;
+
+            ReverseControlsEffectIcon.ScreenPos = mainActorPos + new Vector2(-5, -offsetY);
+            InvisibilityEffectIcon.ScreenPos = mainActorPos + new Vector2(0, -offsetY - 5);
+            GloboxEffectIcon.ScreenPos = mainActorPos + new Vector2(5, -offsetY + 5);
+
+            if (rayman.ReverseControlsTimer != 0)
+                animationPlayer.Play(ReverseControlsEffectIcon);
+
+            if (rayman.InvisibilityTimer is >= 56 and <= 424)
+                animationPlayer.Play(InvisibilityEffectIcon);
+
+            if (GloboxCountdown != 0 && GloboxMachineId != MultiplayerManager.MachineId)
+                animationPlayer.Play(GloboxEffectIcon);
+        }
     }
 
     public void SetArrow()
@@ -646,22 +738,22 @@ public partial class UserInfoMulti2D : Dialog
         else
             TimerColons[0].ScreenPos = TimerColons[0].ScreenPos with { X = 33 };
         
-        TimerColons[1].ScreenPos = TimerColons[1].ScreenPos with { X = -60 };
+        TimerColons[1].ScreenPos = TimerColons[1].ScreenPos with { X = -50 };
         TimerColons[1].HorizontalAnchor = HorizontalAnchorMode.Right;
 
         // 2 and 3 have reversed positions between GBA and N-Gage
         if (Engine.Settings.Platform == Platform.GBA)
         {
-            TimerColons[2].ScreenPos = TimerColons[1].ScreenPos with { X = -60 };
+            TimerColons[2].ScreenPos = TimerColons[2].ScreenPos with { X = -50 };
             TimerColons[2].HorizontalAnchor = HorizontalAnchorMode.Right;
 
-            TimerColons[3].ScreenPos = TimerColons[0].ScreenPos with { X = 33 };
+            TimerColons[3].ScreenPos = TimerColons[3].ScreenPos with { X = 33 };
         }
         else if (Engine.Settings.Platform == Platform.NGage)
         {
-            TimerColons[2].ScreenPos = TimerColons[0].ScreenPos with { X = 33 };
+            TimerColons[2].ScreenPos = TimerColons[2].ScreenPos with { X = 33 };
             
-            TimerColons[3].ScreenPos = TimerColons[1].ScreenPos with { X = -60 };
+            TimerColons[3].ScreenPos = TimerColons[3].ScreenPos with { X = -50 };
             TimerColons[3].HorizontalAnchor = HorizontalAnchorMode.Right;
         }
         else
@@ -782,14 +874,7 @@ public partial class UserInfoMulti2D : Dialog
         else
         {
             for (int i = 0; i < PlayerIcons.Length; i++)
-            {
-                if (i == 0)
-                    PlayerIcons[i].CurrentAnimation = MultiplayerManager.MachineId;
-                else if (i <= MultiplayerManager.MachineId)
-                    PlayerIcons[i].CurrentAnimation = i - 1;
-                else
-                    PlayerIcons[i].CurrentAnimation = i;
-            }
+                PlayerIcons[i].CurrentAnimation = HudIndexToMachineId(i);
 
             PlayerIcons[0].ScreenPos = new Vector2(0, 6);
 
@@ -891,8 +976,7 @@ public partial class UserInfoMulti2D : Dialog
                 RenderContext = Scene.HudRenderContext,
             };
 
-            ItemEffects = new AnimatedObject[3];
-            ItemEffects[0] = new AnimatedObject(itemsResource, itemsResource.IsDynamic)
+            ReverseControlsEffectIcon = new AnimatedObject(itemsResource, itemsResource.IsDynamic)
             {
                 IsFramed = true,
                 CurrentAnimation = 8,
@@ -900,7 +984,7 @@ public partial class UserInfoMulti2D : Dialog
                 ObjPriority = 16,
                 RenderContext = Scene.HudRenderContext,
             };
-            ItemEffects[1] = new AnimatedObject(itemsResource, itemsResource.IsDynamic)
+            InvisibilityEffectIcon = new AnimatedObject(itemsResource, itemsResource.IsDynamic)
             {
                 IsFramed = true,
                 CurrentAnimation = 9,
@@ -908,7 +992,7 @@ public partial class UserInfoMulti2D : Dialog
                 ObjPriority = 16,
                 RenderContext = Scene.HudRenderContext,
             };
-            ItemEffects[2] = new AnimatedObject(itemsResource, itemsResource.IsDynamic)
+            GloboxEffectIcon = new AnimatedObject(itemsResource, itemsResource.IsDynamic)
             {
                 IsFramed = true,
                 CurrentAnimation = 12,
@@ -992,7 +1076,7 @@ public partial class UserInfoMulti2D : Dialog
         }
 
         if (!IsPaused && (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse || Times[MultiplayerManager.MachineId] != 0))
-            DrawItemEffect();
+            DrawItemEffect(animationPlayer);
 
         if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             FlagBar.Draw(animationPlayer);

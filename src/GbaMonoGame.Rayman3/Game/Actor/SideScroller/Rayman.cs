@@ -21,7 +21,7 @@ public sealed partial class Rayman : MovableActor
         {
             if (Engine.Settings.Platform == Platform.NGage)
             {
-                MultiplayerData = new NGageMultiplayerData()
+                FlagData = new CaptureTheFlagData()
                 {
                     field_b8 = 1,
                 };
@@ -91,7 +91,7 @@ public sealed partial class Rayman : MovableActor
 
                     for (int i = 0; i < RSMultiplayer.PlayersCount - 1; i++)
                     {
-                        MultiplayerData!.FlagArrows[i] = new AnimatedObject(arrowResource, arrowResource.IsDynamic)
+                        FlagData!.FlagArrows[i] = new AnimatedObject(arrowResource, arrowResource.IsDynamic)
                         {
                             IsFramed = true,
                             BgPriority = 0,
@@ -111,7 +111,7 @@ public sealed partial class Rayman : MovableActor
     }
 
     public ActorResource Resource { get; }
-    public NGageMultiplayerData MultiplayerData { get; }
+    public CaptureTheFlagData FlagData { get; }
     public Action? NextActionId { get; set; }
     public RaymanBody[] ActiveBodyParts { get; } = new RaymanBody[4];
     public BaseActor AttachedObject { get; set; }
@@ -128,6 +128,7 @@ public sealed partial class Rayman : MovableActor
     public int CameraTargetY { get; set; }
     public ushort InvisibilityTimer { get; set; }
     public ushort ReverseControlsTimer { get; set; }
+    public int InitialHitPoints { get; set; }
 
     public bool Debug_NoClip { get; set; } // Custom no-clip mode
 
@@ -298,7 +299,7 @@ public sealed partial class Rayman : MovableActor
     {
         if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
         {
-            return (MultiplayerData.Powers & power) != 0;
+            return (FlagData.Powers & power) != 0;
         }
         else
         {
@@ -1565,7 +1566,36 @@ public sealed partial class Rayman : MovableActor
                 return false;
 
             case Message.Hit:
-                // TODO: Implement getting hit in multiplayer
+                if (RSMultiplayer.IsActive)
+                {
+                    int tagId = ((FrameMultiSideScroller)Frame.Current).UserInfo.TagId;
+                    Rayman attacker = ((RaymanBody)param).Rayman;
+
+                    switch (MultiplayerInfo.GameType)
+                    {
+                        case MultiplayerGameType.RayTag:
+                            if (InstanceId != tagId)
+                            {
+                                ((FrameMultiSideScroller)Frame.Current).UserInfo.SetTagId(InstanceId);
+                                attacker.PlaySound(Rayman3SoundEvent.Play__SuprFist_Mix01);
+                                PlaySound(Rayman3SoundEvent.Play__Tag_Mix02);
+                            }
+                            break;
+
+                        case MultiplayerGameType.CatAndMouse:
+                            if (InstanceId == tagId)
+                            {
+                                ((FrameMultiSideScroller)Frame.Current).UserInfo.SetTagId(attacker.InstanceId);
+                                PlaySound(Rayman3SoundEvent.Play__Tag_Mix02);
+                                attacker.PlaySound(Rayman3SoundEvent.Play__SuprFist_Mix01);
+                            }
+                            break;
+
+                        case MultiplayerGameType.CaptureTheFlag when MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag:
+                            // TODO: Implement
+                            break;
+                    }
+                }
                 return false;
 
             case Message.Main_BeginSwing:
@@ -1694,11 +1724,11 @@ public sealed partial class Rayman : MovableActor
                 return false;
 
             case Message.Main_MultiplayerGameOver:
-                if (State != FUN_08033404)
-                    State.MoveTo(FUN_08033404);
+                if (State != Fsm_MultiplayerGameOver)
+                    State.MoveTo(Fsm_MultiplayerGameOver);
                 return false;
 
-            case Message.Main_1076:
+            case Message.Main_MultiplayerTagMoved:
                 if (State == Fsm_MultiplayerDying && IsLocalPlayer)
                 {
                     Scene.Camera.LinkedObject = Scene.GetGameObject<MovableActor>(((FrameMultiSideScroller)Frame.Current).UserInfo.TagId);
@@ -1823,7 +1853,7 @@ public sealed partial class Rayman : MovableActor
         CameraTargetY = 0;
         InvisibilityTimer = 0;
         ReverseControlsTimer = 0;
-        //field25_0x9a = HitPoints;
+        InitialHitPoints = HitPoints;
         field23_0x98 = 0;
         HangOnEdgeDelay = 0;
         InvulnerabilityDuration = 0;
@@ -1970,7 +2000,7 @@ public sealed partial class Rayman : MovableActor
         }
     }
 
-    public class NGageMultiplayerData
+    public class CaptureTheFlagData
     {
         // TODO: Name these properties
         public BaseActor field_00 { get; set; }

@@ -7,12 +7,12 @@ public sealed partial class RaymanBody : MovableActor
 {
     public RaymanBody(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
-        Rayman = Scene.MainActor;
+        Rayman = (Rayman)Scene.MainActor;
         AnimatedObject.ObjPriority = 18;
         State.SetTo(Fsm_Wait);
     }
 
-    public MovableActor Rayman { get; set; }
+    public Rayman Rayman { get; set; }
     public RaymanBodyPartType BodyPartType { get; set; }
     public uint ChargePower { get; set; }
     public bool HasCharged { get; set; }
