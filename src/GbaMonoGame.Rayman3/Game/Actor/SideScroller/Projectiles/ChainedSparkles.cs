@@ -11,40 +11,39 @@ public sealed partial class ChainedSparkles : BaseActor
         AnimatedObject.Init(6, Position, 0, true);
         AnimatedObject.ObjPriority = 10;
 
-        UnknownValue = false;
+        ShouldUpdateTarget = false;
 
-        MainActor1 = Scene.MainActor;
-        MainActor2 = Scene.MainActor;
+        OriginalTargetActor = Scene.MainActor;
+        TargetActor = Scene.MainActor;
 
-        if (RSMultiplayer.IsActive)
+        if (!RSMultiplayer.IsActive)
         {
-            AreSparklesFacingLeft = true;
-            field13_0x38 = 0xFFFF;
-            State.SetTo(FUN_08060f58);
+            AreSparklesFacingLeft = false;
+            TimerTarget = 360;
+            State.SetTo(Fsm_InitSwirl);
         }
         else
         {
-            AreSparklesFacingLeft = false;
-            field13_0x38 = 360;
-            State.SetTo(FUN_08060930);
+            AreSparklesFacingLeft = true;
+            TimerTarget = null;
+            State.SetTo(Fsm_Wait);
         }
     }
 
     public new AObjectChain AnimatedObject => (AObjectChain)base.AnimatedObject;
 
-    public static bool UnknownValue { get; set; } // TODO: Name
+    public static bool ShouldUpdateTarget { get; set; }
 
-    public BaseActor MainActor1 { get; set; }
-    public BaseActor MainActor2 { get; set; }
+    public BaseActor OriginalTargetActor { get; set; }
+    public BaseActor TargetActor { get; set; }
     public bool AreSparklesFacingLeft { get; set; }
     public byte SwirlValue { get; set; }
     public ushort Timer { get; set; }
-    public ushort field13_0x38 { get; set; } // TODO: Name
+    public ushort? TimerTarget { get; set; }
 
-    // TODO: Name
-    public static void SetUnknownValue()
+    public static void UpdateTarget()
     {
-        UnknownValue = true;
+        ShouldUpdateTarget = true;
     }
 
     public void InitNewPower()
@@ -54,6 +53,10 @@ public sealed partial class ChainedSparkles : BaseActor
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
+        // Copy over Rayman's alpha blending. The original game doesn't do this since the alpha
+        // is global, but here we have to since it's managed per object instead.
+        AnimatedObject.Alpha = TargetActor.AnimatedObject.Alpha;
+
         AnimatedObject.Draw(this, animationPlayer, forceDraw);
     }
 }

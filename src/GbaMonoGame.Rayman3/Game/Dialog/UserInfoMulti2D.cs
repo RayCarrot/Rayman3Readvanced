@@ -214,7 +214,7 @@ public partial class UserInfoMulti2D : Dialog
         else
             TagIdHudIndex = TagId;
 
-        ChainedSparkles.SetUnknownValue();
+        ChainedSparkles.UpdateTarget();
 
         SetArrow();
 
@@ -356,7 +356,7 @@ public partial class UserInfoMulti2D : Dialog
             removePlayer(machineId);
             removePlayer(lastAlivePlayer);
 
-            ChainedSparkles.SetUnknownValue();
+            ChainedSparkles.UpdateTarget();
 
             for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
                 Scene.GetGameObject(id).ProcessMessage(this, Message.Main_MultiplayerGameOver);
@@ -400,7 +400,7 @@ public partial class UserInfoMulti2D : Dialog
         IsGameOver = true;
         TagId = machineId;
 
-        ChainedSparkles.SetUnknownValue();
+        ChainedSparkles.UpdateTarget();
 
         TagIdHudIndex = MachineIdToHudIndex(machineId);
 

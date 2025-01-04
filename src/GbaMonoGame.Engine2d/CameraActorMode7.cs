@@ -37,7 +37,7 @@ public abstract class CameraActorMode7 : CameraActor
             // Check the distance from the camera
             if (camDist <= cam.MaxDist)
             {
-                float angle = MathHelpers.Atan2_256(posDiff.X, posDiff.Y);
+                float angle = MathHelpers.Atan2_256(posDiff);
                 actorCamAngle = angle;
 
                 float uVar5 = cam.Direction + cam.field_0xb49;

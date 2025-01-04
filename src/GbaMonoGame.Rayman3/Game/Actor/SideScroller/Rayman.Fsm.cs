@@ -2895,7 +2895,7 @@ public partial class Rayman
                 ChangeAction();
                 NextActionId = null;
 
-                Timer = (uint)MathHelpers.Atan2_256(Position.X - AttachedObject.Position.X, Position.Y - AttachedObject.Position.Y);
+                Timer = (uint)MathHelpers.Atan2_256(Position - AttachedObject.Position);
                 PreviousXSpeed = (Position - AttachedObject.Position).Length();
 
                 if (Position.X < AttachedObject.Position.X)

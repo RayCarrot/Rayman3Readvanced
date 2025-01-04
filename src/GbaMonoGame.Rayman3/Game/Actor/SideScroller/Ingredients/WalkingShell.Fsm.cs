@@ -326,7 +326,7 @@ public partial class WalkingShell
 
                     if (56 <= dist)
                     {
-                        LoopAngle = (byte)MathHelpers.Atan2_256(Position.X - LoopPosition.X, Position.Y - LoopPosition.Y);
+                        LoopAngle = (byte)MathHelpers.Atan2_256(Position - LoopPosition);
                         isLoop = true;
                     }
                 }
