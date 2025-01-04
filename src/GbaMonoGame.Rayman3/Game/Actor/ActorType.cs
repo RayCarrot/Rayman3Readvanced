@@ -99,4 +99,7 @@ public enum ActorType
     Leaf = 108,
     JanoShot = 109,
     MetalShieldedHoodboom = 110,
+
+    // N-Gage exclusive
+    RaymanCaptureTheFlag = 112,
 }

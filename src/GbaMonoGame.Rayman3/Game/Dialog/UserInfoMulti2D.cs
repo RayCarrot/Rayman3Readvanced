@@ -11,33 +11,17 @@ public partial class UserInfoMulti2D : Dialog
 
     public UserInfoMulti2D(Scene2D scene) : base(scene)
     {
+        Times = new int[RSMultiplayer.MaxPlayersCount];
+        EnergyShots = new int[RSMultiplayer.MaxPlayersCount];
+
         switch (MultiplayerInfo.GameType)
         {
             case MultiplayerGameType.RayTag:
-                Times = new int[RSMultiplayer.MaxPlayersCount];
-                EnergyShots = new int[RSMultiplayer.MaxPlayersCount];
                 for (int i = 0; i < RSMultiplayer.MaxPlayersCount; i++)
-                {
                     Times[i] = 60;
-                    EnergyShots[i] = 0;
-                }
-                break;
-            
-            case MultiplayerGameType.CatAndMouse:
-                Times = new int[RSMultiplayer.MaxPlayersCount];
-                EnergyShots = new int[RSMultiplayer.MaxPlayersCount];
-                for (int i = 0; i < RSMultiplayer.MaxPlayersCount; i++)
-                {
-                    Times[i] = 0;
-                    EnergyShots[i] = 0;
-                }
                 break;
             
             case MultiplayerGameType.CaptureTheFlag when Engine.Settings.Platform == Platform.NGage:
-                EnergyShots = new int[RSMultiplayer.MaxPlayersCount];
-                for (int i = 0; i < RSMultiplayer.MaxPlayersCount; i++)
-                    EnergyShots[i] = 0;
-
                 CaptureTheFlagTime = ((FrameMultiCaptureTheFlag)Frame.Current).Time;
                 SuddenDeathDisplayCountdown = 100;
                 FlagBar = new FlagBar(Scene);

@@ -699,6 +699,8 @@ public class Rayman3 : GbaGame
             { ActorType.Leaf, (instanceId, scene, resource) => new Leaf(instanceId, scene, resource) },
             { ActorType.JanoShot, (instanceId, scene, resource) => new JanoShot(instanceId, scene, resource) },
             { ActorType.MetalShieldedHoodboom, (instanceId, scene, resource) => new MetalShieldedHoodboom(instanceId, scene, resource) },
+
+            { ActorType.RaymanCaptureTheFlag, (instanceId, scene, resource) => new Rayman(instanceId, scene, resource) },
         }, x => ((ActorType)x).ToString());
         Dictionary<MapId, LevelFactory.CreateLevel> levelCreations = new()
         {
@@ -778,10 +780,10 @@ public class Rayman3 : GbaGame
             { MapId.WorldMap, mapId => new WorldMap(mapId) },
         };
 
-        // TODO: Create classes for multiplayer maps
         switch (Engine.Settings.Platform)
         {
             case Platform.GBA:
+                // TODO: Create classes
                 //levelCreations.Add(MapId.GbaMulti_MissileRace, mapId => new (mapId));
                 //levelCreations.Add(MapId.GbaMulti_MissileArena, mapId => new (mapId));
                 levelCreations.Add(MapId.GbaMulti_TagWeb, mapId => new FrameMultiTag(mapId));
@@ -791,12 +793,12 @@ public class Rayman3 : GbaGame
                 break;
             
             case Platform.NGage:
-                //levelCreations.Add(MapId.NGageMulti_CaptureTheFlag1, mapId => new (mapId));
-                //levelCreations.Add(MapId.NGageMulti_CaptureTheFlag2, mapId => new (mapId));
-                //levelCreations.Add(MapId.NGageMulti_CaptureTheFlag3, mapId => new (mapId));
-                //levelCreations.Add(MapId.NGageMulti_CaptureTheFlag4, mapId => new (mapId));
-                //levelCreations.Add(MapId.NGageMulti_CaptureTheFlag5, mapId => new (mapId));
-                //levelCreations.Add(MapId.NGageMulti_CaptureTheFlag6, mapId => new (mapId));
+                levelCreations.Add(MapId.NGageMulti_CaptureTheFlagMiddleGround, mapId => new FrameMultiCaptureTheFlag(mapId));
+                levelCreations.Add(MapId.NGageMulti_CaptureTheFlagFloors, mapId => new FrameMultiCaptureTheFlag(mapId));
+                levelCreations.Add(MapId.NGageMulti_CaptureTheFlagOneForAll, mapId => new FrameMultiCaptureTheFlag(mapId));
+                levelCreations.Add(MapId.NGageMulti_CaptureTheFlagAllForOne, mapId => new FrameMultiCaptureTheFlag(mapId));
+                levelCreations.Add(MapId.NGageMulti_CaptureTheFlagTeamWork, mapId => new FrameMultiCaptureTheFlag(mapId));
+                levelCreations.Add(MapId.NGageMulti_CaptureTheFlagTeamPlayer, mapId => new FrameMultiCaptureTheFlag(mapId));
                 levelCreations.Add(MapId.NGageMulti_TagWeb, mapId => new FrameMultiTag(mapId));
                 levelCreations.Add(MapId.NGageMulti_TagSlide, mapId => new FrameMultiTag(mapId));
                 levelCreations.Add(MapId.NGageMulti_CatAndMouseSlide, mapId => new FrameMultiCatAndMouse(mapId));
