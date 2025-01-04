@@ -8,7 +8,7 @@ This is not meant to be a traditional decompilation, but rather a recreation of 
 ![Title screen](img/screenshots/title_screen.png)
 *The goal is to have the game be functionally identical to the original GBA game, while modernizing the code and including optional game enhancements.*
 
-You can view the current progress of this port in [the progress document](PROGRESS.MD) as well as the currently planned features in [the todo document](TODO.MD).
+You can view the current progress of this port in [the progress document](PROGRESS.md) as well as the currently planned features in [the todo document](TODO.md).
 
 ## GbaEngine
 The original game uses [Ubisoft's GbaEngine](https://raymanpc.com/wiki/en/GbaEngine), an engine which was written in C and built from Ubisoft's Game Boy Color engine. The engine is object-oriented, which makes it work well for a C# re-creation, and consists of several, mostly independent, modules.
