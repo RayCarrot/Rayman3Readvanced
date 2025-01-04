@@ -38,8 +38,8 @@ public partial class UserInfoMulti2D : Dialog
                 for (int i = 0; i < RSMultiplayer.MaxPlayersCount; i++)
                     EnergyShots[i] = 0;
 
-                // TODO: Set values
-
+                CaptureTheFlagTime = ((FrameMultiCaptureTheFlag)Frame.Current).Time;
+                SuddenDeathDisplayCountdown = 100;
                 FlagBar = new FlagBar(Scene);
                 break;
 
@@ -72,11 +72,14 @@ public partial class UserInfoMulti2D : Dialog
         Unused1 = -1;
         IsGameOver = false;
         IsPlayerDead = false;
-        UnknownCaptureTheFlagValue2 = false;
+
+        if (Engine.Settings.Platform == Platform.NGage)
+            UnknownCaptureTheFlagValue2 = false;
+        
         Unused2 = -1;
         StartCountdownValue = 4;
         IsPaused = false;
-        PlayerAnimations = [0, 1, 2, 3];
+        PlayerRanks = [0, 1, 2, 3];
         AlivePlayersCount = RSMultiplayer.PlayersCount;
 
         ScoreBar = new ScoreBar(Scene);
@@ -127,14 +130,16 @@ public partial class UserInfoMulti2D : Dialog
     public ushort GloboxCountdown { get; set; }
     public int GloboxMachineId { get; set; }
 
-    public int[] PlayerAnimations { get; set; }
+    public int[] PlayerRanks { get; set; }
 
     public int Unused1 { get; set; }
     public int Unused2 { get; set; }
     public int Unused3 { get; set; }
 
+    // // N-Gage exclusive
     public ushort CaptureTheFlagTime { get; set; }
     public bool UnknownCaptureTheFlagValue2 { get; set; }
+    public byte SuddenDeathDisplayCountdown { get; set; }
 
     #endregion
 
@@ -324,6 +329,7 @@ public partial class UserInfoMulti2D : Dialog
             PrintEnergyShots(machineId);
     }
 
+    // Tag
     public void GameOver(int machineId)
     {
         int timedOutPlayers = 0;
@@ -384,10 +390,11 @@ public partial class UserInfoMulti2D : Dialog
         void removePlayer(int machineIdToRemove)
         {
             AlivePlayersCount--;
-            PlayerAnimations[AlivePlayersCount] = machineIdToRemove;
+            PlayerRanks[AlivePlayersCount] = machineIdToRemove;
         }
     }
 
+    // Cat and Mouse
     public void Win(int machineId)
     {
         IsGameOver = true;
@@ -410,9 +417,19 @@ public partial class UserInfoMulti2D : Dialog
         }
 
         // Sort the player animations based on the times
-        byte[] times = new byte[Times.Length];
+        int[] times = new int[Times.Length];
         Array.Copy(Times, times, Times.Length);
-        Array.Sort(times, PlayerAnimations);
+        for (int i = 0; i < MultiplayerManager.PlayersCount; i++) 
+        {
+            for (int j = 0; j < MultiplayerManager.PlayersCount - 1; j++) 
+            {
+                if (times[j] < times[j + 1])
+                {
+                    (times[j], times[j + 1]) = (times[j + 1], times[j]);
+                    (PlayerRanks[j], PlayerRanks[j + 1]) = (PlayerRanks[j + 1], PlayerRanks[j]);
+                }
+            }
+        }
 
         for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
             Scene.GetGameObject(id).ProcessMessage(this, Message.Main_MultiplayerGameOver);
@@ -505,7 +522,78 @@ public partial class UserInfoMulti2D : Dialog
 
     public void MoveBouncingSprites()
     {
-        // TODO: Implement
+        float signTargetY = Engine.Settings.Platform switch
+        {
+            Platform.GBA => 36,
+            Platform.NGage => 72,
+            _ => throw new UnsupportedPlatformException()
+        };
+
+        if (IsPlayerDead)
+        {
+            if (GameOverSign.ScreenPos.Y > signTargetY || (GameOverSign.ScreenPos.Y > -8 && IsGameOver))
+                GameOverSign.ScreenPos -= new Vector2(0, 2);
+        }
+
+        if (Engine.Settings.Platform == Platform.NGage && UnknownCaptureTheFlagValue2)
+        {
+            if (SuddenDeathSign.ScreenPos.Y > signTargetY || (SuddenDeathSign.ScreenPos.Y > -8 && SuddenDeathDisplayCountdown == 0))
+                SuddenDeathSign.ScreenPos -= new Vector2(0, 2);
+            else if (SuddenDeathSign.ScreenPos.Y > -8 && SuddenDeathDisplayCountdown != 0)
+                SuddenDeathDisplayCountdown--;
+
+        }
+
+        if (MultiplayerInfo.GameType == MultiplayerGameType.RayTag)
+        {
+            if (TagId == MultiplayerManager.MachineId)
+            {
+                // Move down
+                if (EnergyShotsCounterFrame.ScreenPos.Y < 38)
+                {
+                    EnergyShotsCounterFrame.ScreenPos += new Vector2(0, 2);
+                    foreach (AnimatedObject digit in EnergyShotsCounterDigits)
+                        digit.ScreenPos += new Vector2(0, 2);
+                    EnergyShotsIcon.ScreenPos += new Vector2(0, 2);
+                }
+            }
+            else if (Times[MultiplayerManager.MachineId] != 0)
+            {
+                // Move up
+                if (EnergyShotsCounterFrame.ScreenPos.Y > 0)
+                {
+                    EnergyShotsCounterFrame.ScreenPos -= new Vector2(0, 2);
+                    foreach (AnimatedObject digit in EnergyShotsCounterDigits)
+                        digit.ScreenPos -= new Vector2(0, 2);
+                    EnergyShotsIcon.ScreenPos -= new Vector2(0, 2);
+                }
+            }
+        }
+        else if (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse)
+        {
+            if (TagId != MultiplayerManager.MachineId)
+            {
+                // Move down
+                if (Times[TagId] != 60 && EnergyShotsCounterFrame.ScreenPos.Y < 38)
+                {
+                    EnergyShotsCounterFrame.ScreenPos += new Vector2(0, 2);
+                    foreach (AnimatedObject digit in EnergyShotsCounterDigits)
+                        digit.ScreenPos += new Vector2(0, 2);
+                    EnergyShotsIcon.ScreenPos += new Vector2(0, 2);
+                }
+            }
+            else
+            {
+                // Move up
+                if (EnergyShotsCounterFrame.ScreenPos.Y > 0)
+                {
+                    EnergyShotsCounterFrame.ScreenPos -= new Vector2(0, 2);
+                    foreach (AnimatedObject digit in EnergyShotsCounterDigits)
+                        digit.ScreenPos -= new Vector2(0, 2);
+                    EnergyShotsIcon.ScreenPos -= new Vector2(0, 2);
+                }
+            }
+        }
     }
 
     public void DrawItemEffect(AnimationPlayer animationPlayer)
@@ -915,7 +1003,7 @@ public partial class UserInfoMulti2D : Dialog
             ScreenPos = Engine.Settings.Platform switch
             {
                 Platform.GBA => new Vector2(0, 10),
-                Platform.NGage => new Vector2(0 ,0),
+                Platform.NGage => new Vector2(0, 0),
                 _ => throw new ArgumentOutOfRangeException()
             },
             HorizontalAnchor = HorizontalAnchorMode.Center,
@@ -939,6 +1027,7 @@ public partial class UserInfoMulti2D : Dialog
                 _ => throw new ArgumentOutOfRangeException()
             },
             HorizontalAnchor = HorizontalAnchorMode.Center,
+            VerticalAnchor = VerticalAnchorMode.Scale,
             RenderContext = Scene.HudRenderContext,
         };
 
@@ -954,6 +1043,7 @@ public partial class UserInfoMulti2D : Dialog
                 CurrentAnimation = Localization.LanguageUiIndex,
                 ScreenPos = new Vector2(0, UnknownCaptureTheFlagValue2 ? 36 : 180),
                 HorizontalAnchor = HorizontalAnchorMode.Center,
+                VerticalAnchor = VerticalAnchorMode.Scale,
                 RenderContext = Scene.HudRenderContext,
             };
         }
@@ -972,8 +1062,11 @@ public partial class UserInfoMulti2D : Dialog
                 ObjPriority = 2,
                 CurrentAnimation = 5,
                 ScreenPos = new Vector2(100, -9),
-                HorizontalAnchor = HorizontalAnchorMode.Right,
-                RenderContext = Scene.HudRenderContext,
+                HorizontalAnchor = HorizontalAnchorMode.Scale,
+                VerticalAnchor = VerticalAnchorMode.Bottom,
+
+                // Use the original render context as to avoid scaling this (we want it to cover the screen!)
+                RenderContext = Engine.OriginalGameRenderContext,
             };
 
             ReverseControlsEffectIcon = new AnimatedObject(itemsResource, itemsResource.IsDynamic)
@@ -1088,11 +1181,17 @@ public partial class UserInfoMulti2D : Dialog
 
             if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             {
-                // TODO: Implement
+                if (((FrameMultiCaptureTheFlag)Frame.Current).field_0x5b)
+                {
+                    if (MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Teams)
+                        ScoreBar.DrawTeamsScore(animationPlayer, PlayerRanks);
+                    else
+                        ScoreBar.DrawScore(animationPlayer, PlayerRanks);
+                }
             }
             else
             {
-                ScoreBar.DrawScore(animationPlayer, PlayerAnimations);
+                ScoreBar.DrawScore(animationPlayer, PlayerRanks);
             }
         }
     }

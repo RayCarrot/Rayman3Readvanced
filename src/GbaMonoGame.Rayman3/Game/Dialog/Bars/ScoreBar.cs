@@ -99,7 +99,7 @@ public class ScoreBar : Bar
         throw new InvalidOperationException($"Use {nameof(DrawScore)} when drawing the timer bar");
     }
 
-    public void DrawScore(AnimationPlayer animationPlayer, int[] playerAnimations)
+    public void DrawScore(AnimationPlayer animationPlayer, int[] playerRanks)
     {
         switch (DrawStep)
         {
@@ -161,7 +161,7 @@ public class ScoreBar : Bar
             PlayerRanks[3].ScreenPos = PlayerRanks[3].ScreenPos with { X = playerRanksBaseX + OffsetX };
 
             for (int i = 0; i < PlayerIcons.Length; i++)
-                PlayerIcons[i].CurrentAnimation = playerAnimations[i];
+                PlayerIcons[i].CurrentAnimation = playerRanks[i];
 
             if (Engine.Settings.Platform == Platform.GBA)
                 animationPlayer.PlayFront(Crown1);
@@ -177,7 +177,7 @@ public class ScoreBar : Bar
         }
     }
 
-    public void DrawTeamsScore(AnimationPlayer animationPlayer, int[] playerAnimations)
+    public void DrawTeamsScore(AnimationPlayer animationPlayer, int[] playerRanks)
     {
         switch (DrawStep)
         {
@@ -225,7 +225,7 @@ public class ScoreBar : Bar
             PlayerRanks[1].ScreenPos = PlayerRanks[1].ScreenPos with { X = 63 + OffsetX };
             
             for (int i = 0; i < PlayerIcons.Length; i++)
-                PlayerIcons[i].CurrentAnimation = playerAnimations[i];
+                PlayerIcons[i].CurrentAnimation = playerRanks[i];
 
             animationPlayer.PlayFront(PlayerRanks[0]);
             animationPlayer.PlayFront(PlayerRanks[1]);

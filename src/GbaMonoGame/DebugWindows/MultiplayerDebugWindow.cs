@@ -26,18 +26,31 @@ public class MultiplayerDebugWindow : DebugWindow
             ImGui.EndCombo();
         }
 
-        int playersCount = RSMultiplayer.PlayersCount;
-        if (ImGui.SliderInt("PlayersCount", ref playersCount, 0, RSMultiplayer.MaxPlayersCount))
+        ImGui.Spacing();
+
+        ImGui.Text("PlayersCount:");
+        for (int i = 0; i < RSMultiplayer.MaxPlayersCount + 1; i++)
         {
-            RSMultiplayer.PlayersCount = playersCount;
-            MultiplayerManager.PlayersCount = playersCount;
+            ImGui.SameLine();
+            if (ImGui.RadioButton($"{i}##PlayersCount", RSMultiplayer.PlayersCount == i))
+            {
+                RSMultiplayer.PlayersCount = i;
+                MultiplayerManager.PlayersCount = i;
+
+                if (RSMultiplayer.MachineId >= i)
+                    RSMultiplayer.MachineId = 0;
+            }
         }
 
-        int machineId = RSMultiplayer.MachineId;
-        if (ImGui.SliderInt("MachineId", ref machineId, 0, Math.Max(RSMultiplayer.PlayersCount - 1, 0)))
+        ImGui.Text("MachineId:");
+        for (int i = 0; i < Math.Max(RSMultiplayer.PlayersCount, 1); i++)
         {
-            RSMultiplayer.MachineId = machineId;
-            MultiplayerManager.MachineId = machineId;
+            ImGui.SameLine();
+            if (ImGui.RadioButton($"{i}##MachineId", RSMultiplayer.MachineId == i))
+            {
+                RSMultiplayer.MachineId = i;
+                MultiplayerManager.MachineId = i;
+            }
         }
 
         ImGui.EndDisabled();
