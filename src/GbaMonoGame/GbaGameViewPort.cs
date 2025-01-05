@@ -40,13 +40,6 @@ public class GbaGameViewPort
             if (newGameResolution.Y > max.Y)
                 newGameResolution = new Vector2(newGameResolution.X, max.Y);
         }
-        if (MinGameResolution is { } min)
-        {
-            if (newGameResolution.X < min.X)
-                newGameResolution = new Vector2(min.X, newGameResolution.Y);
-            if (newGameResolution.Y < min.Y)
-                newGameResolution = new Vector2(newGameResolution.X, min.Y);
-        }
 
         // If the new resolution is wider than the requested resolution then we crop it down to the same aspect ratio. This
         // is to avoid big black bars on the top and bottom in wider maps such as the worldmap.
@@ -54,6 +47,14 @@ public class GbaGameViewPort
         float newGameRatio = newGameResolution.X / newGameResolution.Y;
         if (newGameRatio > requestedGameRatio)
             newGameResolution = new Vector2(newGameResolution.Y * requestedGameRatio, newGameResolution.Y);
+
+        if (MinGameResolution is { } min)
+        {
+            if (newGameResolution.X < min.X)
+                newGameResolution = new Vector2(min.X, newGameResolution.Y);
+            if (newGameResolution.Y < min.Y)
+                newGameResolution = new Vector2(newGameResolution.X, min.Y);
+        }
 
         GameResolution = newGameResolution;
 
