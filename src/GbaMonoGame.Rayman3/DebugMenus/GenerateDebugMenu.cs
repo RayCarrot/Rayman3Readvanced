@@ -19,7 +19,7 @@ public class GenerateDebugMenu : DebugMenu
         string json = JsonConvert.SerializeObject(obj, new JsonSerializerSettings()
         {
             Formatting = Formatting.Indented,
-            Converters = { new StringEnumConverter() }
+            Converters = { new StringEnumConverter(), new ByteArrayHexConverter() }
         });
         Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
         File.WriteAllText(filePath, json);
@@ -85,9 +85,8 @@ public class GenerateDebugMenu : DebugMenu
 
     private void GenerateGameData()
     {
-        string outputDir = "GameData";
-
         List<ActorModel>[] actorModels = new List<ActorModel>[256];
+        List<AnimatedObjectResource> animatedObjects = new();
 
         for (int i = 0; i < GameInfo.Levels.Length; i++)
         {
@@ -97,18 +96,21 @@ public class GenerateDebugMenu : DebugMenu
             {
                 ActorModel model = actor.Model;
 
+                string animatedObjectOutputFile = exportAnimatedObject(model.AnimatedObject, $"{(ActorType)actor.Type}");
+
                 actorModels[actor.Type] ??= new List<ActorModel>();
 
                 if (actorModels[actor.Type].Contains(model))
                     continue;
 
                 actorModels[actor.Type].Add(model);
-                string outputFile = Path.Combine(outputDir, "Actors", $"{(ActorType)actor.Type}_{actorModels[actor.Type].Count}.json");
-                WriteJson(new
+
+                string actorOutputFile = $"Actors/{(ActorType)actor.Type}_{actorModels[actor.Type].Count}.json";
+                writeJson(new
                 {
                     ViewBox = new Box(model.ViewBox),
                     DetectionBox = new Box(model.DetectionBox),
-                    AnimatedObject = model.AnimatedObject.Offset.ToString(), // TODO: Replace with file name once that's set up
+                    AnimatedObject = animatedObjectOutputFile,
                     model.MapCollisionType,
                     model.CheckAgainstMapCollision,
                     model.CheckAgainstObjectCollision,
@@ -125,7 +127,7 @@ public class GenerateDebugMenu : DebugMenu
                         x.MechModelType,
                         MechModelParams = x.MechModel?.Params.Select(p => p.AsFloat)
                     })
-                }, outputFile);
+                }, actorOutputFile);
             }
         }
 
@@ -133,6 +135,33 @@ public class GenerateDebugMenu : DebugMenu
         //       be exported to .json and raw data, like graphics and maps, should be .dat files (with a .json for the header).
         //       Once done we can use this to load this as the game data, allowing easier edits. We can also compare data between
         //       prototypes, or even import data from prototypes into final version (like the snail actor).
+
+        string exportAnimatedObject(AnimatedObjectResource animatedObject, string name)
+        {
+            string animatedObjectOutputFile = $"Animation/{name}.json";
+
+            if (animatedObjects.Contains(animatedObject))
+                return animatedObjectOutputFile;
+
+            animatedObjects.Add(animatedObject);
+
+            writeJson(new
+            {
+                animatedObject.Is8Bit,
+                animatedObject.IsDynamic,
+                Animations = animatedObject.Animations.Select(x => new
+                {
+                    x.Speed,
+                    x.DoNotRepeat,
+                    x.ChannelsPerFrame,
+                    x.Channels
+                }),
+            }, animatedObjectOutputFile);
+
+            return animatedObjectOutputFile;
+        }
+
+        void writeJson<T>(T obj, string filePath) => WriteJson(obj, Path.Combine("GameData", filePath));
     }
 
     public override void Draw(DebugLayout debugLayout, DebugLayoutTextureManager textureManager)
