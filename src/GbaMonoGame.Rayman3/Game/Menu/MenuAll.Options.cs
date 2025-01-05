@@ -3,12 +3,18 @@ using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 
 namespace GbaMonoGame.Rayman3;
 
-// TODO: Add support for N-Gage
 public partial class MenuAll
 {
-    #region Private Properties
+    #region Properties
 
-    private bool IsLoadingCredits { get; set; }
+    public bool IsLoadingCredits { get; set; }
+
+    public int OptionsOptionsCount { get; } = Engine.Settings.Platform switch
+    {
+        Platform.GBA => 3,
+        Platform.NGage => 4,
+        _ => throw new UnsupportedPlatformException()
+    };
 
     #endregion
 
@@ -16,144 +22,201 @@ public partial class MenuAll
 
     private void UpdateMusicVolumeAnimations()
     {
-        if (IsMusicOn())
+        if (Engine.Settings.Platform == Platform.GBA)
         {
-            switch (Localization.Language)
+            if (IsMusicOn())
+            {
+                switch (Localization.Language)
+                {
+                    case 0:
+                    case 1:
+                    case 4:
+                    case 7:
+                    case 9:
+                        Data.MusicVolume.CurrentAnimation = 5;
+                        break;
+
+                    case 2:
+                        Data.MusicVolume.CurrentAnimation = 25;
+                        break;
+
+                    case 3:
+                        Data.MusicVolume.CurrentAnimation = 19;
+                        break;
+
+                    case 5:
+                        Data.MusicVolume.CurrentAnimation = 27;
+                        break;
+
+                    case 6:
+                        Data.MusicVolume.CurrentAnimation = 23;
+                        break;
+
+                    case 8:
+                        Data.MusicVolume.CurrentAnimation = 21;
+                        break;
+                }
+            }
+            else
+            {
+                switch (Localization.Language)
+                {
+                    case 0:
+                    case 1:
+                    case 4:
+                    case 7:
+                    case 9:
+                        Data.MusicVolume.CurrentAnimation = 6;
+                        break;
+
+                    case 2:
+                        Data.MusicVolume.CurrentAnimation = 24;
+                        break;
+
+                    case 3:
+                        Data.MusicVolume.CurrentAnimation = 18;
+                        break;
+
+                    case 5:
+                        Data.MusicVolume.CurrentAnimation = 26;
+                        break;
+
+                    case 6:
+                        Data.MusicVolume.CurrentAnimation = 22;
+                        break;
+
+                    case 8:
+                        Data.MusicVolume.CurrentAnimation = 20;
+                        break;
+                }
+            }
+        }
+        else if (Engine.Settings.Platform == Platform.NGage)
+        {
+            switch (((NGageSoundEventsManager)SoundEventsManager.Current).MusicVolume)
             {
                 case 0:
-                case 1:
-                case 4:
-                case 7:
-                case 9:
-                    Data.MusicOnOff.CurrentAnimation = 5;
+                    Data.MusicVolume.CurrentAnimation = 28;
                     break;
 
-                case 2:
-                    Data.MusicOnOff.CurrentAnimation = 25;
+                case 0x20:
+                    Data.MusicVolume.CurrentAnimation = 29;
                     break;
 
-                case 3:
-                    Data.MusicOnOff.CurrentAnimation = 19;
+                case 0x40:
+                    Data.MusicVolume.CurrentAnimation = 30;
                     break;
 
-                case 5:
-                    Data.MusicOnOff.CurrentAnimation = 27;
-                    break;
-
-                case 6:
-                    Data.MusicOnOff.CurrentAnimation = 23;
-                    break;
-
-                case 8:
-                    Data.MusicOnOff.CurrentAnimation = 21;
+                case 0x80:
+                    Data.MusicVolume.CurrentAnimation = 31;
                     break;
             }
         }
         else
         {
-            switch (Localization.Language)
-            {
-                case 0:
-                case 1:
-                case 4:
-                case 7:
-                case 9:
-                    Data.MusicOnOff.CurrentAnimation = 6;
-                    break;
-
-                case 2:
-                    Data.MusicOnOff.CurrentAnimation = 24;
-                    break;
-
-                case 3:
-                    Data.MusicOnOff.CurrentAnimation = 18;
-                    break;
-
-                case 5:
-                    Data.MusicOnOff.CurrentAnimation = 26;
-                    break;
-
-                case 6:
-                    Data.MusicOnOff.CurrentAnimation = 22;
-                    break;
-
-                case 8:
-                    Data.MusicOnOff.CurrentAnimation = 20;
-                    break;
-            }
+            throw new UnsupportedPlatformException();
         }
     }
 
     private void UpdateSfxVolumeAnimations()
     {
-        if (IsSfxOn())
+        if (Engine.Settings.Platform == Platform.GBA)
         {
-            switch (Localization.Language)
+            if (IsSfxOn())
+            {
+                switch (Localization.Language)
+                {
+                    case 0:
+                    case 1:
+                    case 4:
+                    case 7:
+                    case 9:
+                        Data.SfxVolume.CurrentAnimation = 5;
+                        break;
+
+                    case 2:
+                        Data.SfxVolume.CurrentAnimation = 25;
+                        break;
+
+                    case 3:
+                        Data.SfxVolume.CurrentAnimation = 19;
+                        break;
+
+                    case 5:
+                        Data.SfxVolume.CurrentAnimation = 27;
+                        break;
+
+                    case 6:
+                        Data.SfxVolume.CurrentAnimation = 23;
+                        break;
+
+                    case 8:
+                        Data.SfxVolume.CurrentAnimation = 21;
+                        break;
+                }
+            }
+            else
+            {
+                switch (Localization.Language)
+                {
+                    case 0:
+                    case 1:
+                    case 4:
+                    case 7:
+                    case 9:
+                        Data.SfxVolume.CurrentAnimation = 6;
+                        break;
+
+                    case 2:
+                        Data.SfxVolume.CurrentAnimation = 24;
+                        break;
+
+                    case 3:
+                        Data.SfxVolume.CurrentAnimation = 18;
+                        break;
+
+                    case 5:
+                        Data.SfxVolume.CurrentAnimation = 26;
+                        break;
+
+                    case 6:
+                        Data.SfxVolume.CurrentAnimation = 22;
+                        break;
+
+                    case 8:
+                        Data.SfxVolume.CurrentAnimation = 20;
+                        break;
+                }
+            }
+        }
+        else if (Engine.Settings.Platform == Platform.NGage)
+        {
+            switch (((NGageSoundEventsManager)SoundEventsManager.Current).SfxVolume)
             {
                 case 0:
-                case 1:
-                case 4:
-                case 7:
-                case 9:
-                    Data.SfxOnOff.CurrentAnimation = 5;
+                    Data.SfxVolume.CurrentAnimation = 28;
                     break;
 
-                case 2:
-                    Data.SfxOnOff.CurrentAnimation = 25;
+                case 0x20:
+                    Data.SfxVolume.CurrentAnimation = 29;
                     break;
 
-                case 3:
-                    Data.SfxOnOff.CurrentAnimation = 19;
+                case 0x40:
+                    Data.SfxVolume.CurrentAnimation = 30;
                     break;
 
-                case 5:
-                    Data.SfxOnOff.CurrentAnimation = 27;
-                    break;
-
-                case 6:
-                    Data.SfxOnOff.CurrentAnimation = 23;
-                    break;
-
-                case 8:
-                    Data.SfxOnOff.CurrentAnimation = 21;
+                case 0x80:
+                    Data.SfxVolume.CurrentAnimation = 31;
                     break;
             }
         }
         else
         {
-            switch (Localization.Language)
-            {
-                case 0:
-                case 1:
-                case 4:
-                case 7:
-                case 9:
-                    Data.SfxOnOff.CurrentAnimation = 6;
-                    break;
-
-                case 2:
-                    Data.SfxOnOff.CurrentAnimation = 24;
-                    break;
-
-                case 3:
-                    Data.SfxOnOff.CurrentAnimation = 18;
-                    break;
-
-                case 5:
-                    Data.SfxOnOff.CurrentAnimation = 26;
-                    break;
-
-                case 6:
-                    Data.SfxOnOff.CurrentAnimation = 22;
-                    break;
-
-                case 8:
-                    Data.SfxOnOff.CurrentAnimation = 20;
-                    break;
-            }
+            throw new UnsupportedPlatformException();
         }
     }
 
+    // GBA
     private void ToggleMusicOnOff()
     {
         if (SoundEventsManager.GetVolumeForType(SoundType.Music) == 0)
@@ -162,6 +225,7 @@ public partial class MenuAll
             SoundEventsManager.SetVolumeForType(SoundType.Music, 0);
     }
 
+    // GBA
     private void ToggleSfxOnOff()
     {
         if (SoundEventsManager.GetVolumeForType(SoundType.Sfx) == 0)
@@ -170,14 +234,70 @@ public partial class MenuAll
             SoundEventsManager.SetVolumeForType(SoundType.Sfx, 0);
     }
 
+    // GBA
     private bool IsMusicOn()
     {
         return SoundEventsManager.GetVolumeForType(SoundType.Music) == SoundEngineInterface.MaxVolume;
     }
 
+    // GBA
     private bool IsSfxOn()
     {
         return SoundEventsManager.GetVolumeForType(SoundType.Sfx) == SoundEngineInterface.MaxVolume;
+    }
+
+    // N-Gage
+    private void ModifyMusicVolume(int volDelta)
+    {
+        float currentVolume = ((NGageSoundEventsManager)SoundEventsManager.Current).MusicVolume;
+        float newVolume = 0;
+
+        if (0 < volDelta)
+        {
+            newVolume = (int)currentVolume << volDelta;
+
+            if (newVolume == 0)
+                newVolume = 0x20;
+
+            if (newVolume >= SoundEngineInterface.MaxVolume)
+                newVolume = SoundEngineInterface.MaxVolume;
+        }
+        else if (volDelta < 0)
+        {
+            newVolume = (int)currentVolume >> -volDelta;
+
+            if (newVolume < 0x20)
+                newVolume = 0;
+        }
+
+        ((NGageSoundEventsManager)SoundEventsManager.Current).MusicVolume = newVolume;
+    }
+
+    // N-Gage
+    private void ModifySfxVolume(int volDelta)
+    {
+        float currentVolume = ((NGageSoundEventsManager)SoundEventsManager.Current).SfxVolume;
+        float newVolume = 0;
+
+        if (0 < volDelta)
+        {
+            newVolume = (int)currentVolume << volDelta;
+
+            if (newVolume == 0)
+                newVolume = 0x20;
+
+            if (newVolume >= SoundEngineInterface.MaxVolume)
+                newVolume = SoundEngineInterface.MaxVolume;
+        }
+        else if (volDelta < 0)
+        {
+            newVolume = (int)currentVolume >> -volDelta;
+
+            if (newVolume < 0x20)
+                newVolume = 0;
+        }
+
+        ((NGageSoundEventsManager)SoundEventsManager.Current).SfxVolume = newVolume;
     }
 
     #endregion
@@ -186,13 +306,26 @@ public partial class MenuAll
 
     private void Step_InitializeTransitionToOptions()
     {
-        Data.OptionsSelection.CurrentAnimation = Localization.LanguageUiIndex * 3 + SelectedOption;
+        Data.OptionsSelection.CurrentAnimation = Localization.LanguageUiIndex * OptionsOptionsCount + SelectedOption;
         UpdateMusicVolumeAnimations();
         UpdateSfxVolumeAnimations();
 
         // Center sprites if English
         if (Localization.Language == 0)
-            Data.OptionsSelection.ScreenPos = Data.OptionsSelection.ScreenPos with { X = 86 };
+        {
+            if (Engine.Settings.Platform == Platform.GBA)
+            {
+                Data.OptionsSelection.ScreenPos = Data.OptionsSelection.ScreenPos with { X = 86 };
+            }
+            else if (Engine.Settings.Platform == Platform.NGage)
+            {
+                Data.OptionsSelection.ScreenPos = Data.OptionsSelection.ScreenPos with { X = 58 };
+            }
+            else
+            {
+                throw new UnsupportedPlatformException();
+            }
+        }
 
         if (InitialPage == Page.Options)
         {
@@ -200,18 +333,29 @@ public partial class MenuAll
             InitialPage = Page.SelectLanguage;
 
             // Center sprites if English
+            int x;
             if (Localization.Language == 0)
             {
-                Data.SoundsOnOffBase.ScreenPos = Data.SoundsOnOffBase.ScreenPos with { X = 180 };
-                Data.MusicOnOff.ScreenPos = Data.MusicOnOff.ScreenPos with { X = 180 };
-                Data.SfxOnOff.ScreenPos = Data.SfxOnOff.ScreenPos with { X = 180 };
+                x = Engine.Settings.Platform switch
+                {
+                    Platform.GBA => 180,
+                    Platform.NGage => 142,
+                    _ => throw new UnsupportedPlatformException()
+                };
             }
             else
             {
-                Data.SoundsOnOffBase.ScreenPos = Data.SoundsOnOffBase.ScreenPos with { X = 210 };
-                Data.MusicOnOff.ScreenPos = Data.MusicOnOff.ScreenPos with { X = 210 };
-                Data.SfxOnOff.ScreenPos = Data.SfxOnOff.ScreenPos with { X = 210 };
+                x = Engine.Settings.Platform switch
+                {
+                    Platform.GBA => 210,
+                    Platform.NGage => 152,
+                    _ => throw new UnsupportedPlatformException()
+                };
             }
+
+            Data.SoundsBase.ScreenPos = Data.SoundsBase.ScreenPos with { X = x };
+            Data.MusicVolume.ScreenPos = Data.MusicVolume.ScreenPos with { X = x };
+            Data.SfxVolume.ScreenPos = Data.SfxVolume.ScreenPos with { X = x };
         }
         else
         {
@@ -232,18 +376,29 @@ public partial class MenuAll
             Playfield.Camera.GetCluster(1).Position += new Vector2(0, 8);
 
         // Center sprites if English
+        int x;
         if (Localization.Language == 0)
         {
-            Data.SoundsOnOffBase.ScreenPos = Data.SoundsOnOffBase.ScreenPos with { X = 260 - TransitionValue / 2f };
-            Data.MusicOnOff.ScreenPos = Data.MusicOnOff.ScreenPos with { X = 260 - TransitionValue / 2f };
-            Data.SfxOnOff.ScreenPos = Data.SfxOnOff.ScreenPos with { X = 260 - TransitionValue / 2f };
+            x = Engine.Settings.Platform switch
+            {
+                Platform.GBA => 260,
+                Platform.NGage => 222,
+                _ => throw new UnsupportedPlatformException()
+            };
         }
         else
         {
-            Data.SoundsOnOffBase.ScreenPos = Data.SoundsOnOffBase.ScreenPos with { X = 290 - TransitionValue / 2f };
-            Data.MusicOnOff.ScreenPos = Data.MusicOnOff.ScreenPos with { X = 290 - TransitionValue / 2f };
-            Data.SfxOnOff.ScreenPos = Data.SfxOnOff.ScreenPos with { X = 290 - TransitionValue / 2f };
+            x = Engine.Settings.Platform switch
+            {
+                Platform.GBA => 290,
+                Platform.NGage => 232,
+                _ => throw new UnsupportedPlatformException()
+            };
         }
+
+        Data.SoundsBase.ScreenPos = Data.SoundsBase.ScreenPos with { X = x - TransitionValue / 2f };
+        Data.MusicVolume.ScreenPos = Data.MusicVolume.ScreenPos with { X = x - TransitionValue / 2f };
+        Data.SfxVolume.ScreenPos = Data.SfxVolume.ScreenPos with { X = x - TransitionValue / 2f };
 
         if (TransitionValue >= 160)
         {
@@ -251,10 +406,16 @@ public partial class MenuAll
             CurrentStepAction = Step_Options;
         }
 
+        if (Engine.Settings.Platform == Platform.NGage)
+        {
+            UpdateMusicVolumeAnimations();
+            UpdateSfxVolumeAnimations();
+        }
+
         AnimationPlayer.Play(Data.OptionsSelection);
-        AnimationPlayer.Play(Data.SoundsOnOffBase);
-        AnimationPlayer.PlayFront(Data.MusicOnOff);
-        AnimationPlayer.PlayFront(Data.SfxOnOff);
+        AnimationPlayer.Play(Data.SoundsBase);
+        AnimationPlayer.PlayFront(Data.MusicVolume);
+        AnimationPlayer.PlayFront(Data.SfxVolume);
     }
 
     private void Step_Options()
@@ -269,23 +430,25 @@ public partial class MenuAll
             if (JoyPad.IsButtonJustPressed(GbaInput.Up) && Data.Cursor.CurrentAnimation == 0)
             {
                 if (SelectedOption == 0)
-                    SelectOption(2, true);
+                    SelectOption(OptionsOptionsCount - 1, true);
                 else
                     SelectOption(SelectedOption - 1, true);
 
-                Data.OptionsSelection.CurrentAnimation = Localization.LanguageUiIndex * 3 + SelectedOption;
+                Data.OptionsSelection.CurrentAnimation = Localization.LanguageUiIndex * OptionsOptionsCount + SelectedOption;
             }
             else if (JoyPad.IsButtonJustPressed(GbaInput.Down) && Data.Cursor.CurrentAnimation == 0)
             {
-                if (SelectedOption == 2)
+                if (SelectedOption == OptionsOptionsCount - 1)
                     SelectOption(0, true);
                 else
                     SelectOption(SelectedOption + 1, true);
 
-                Data.OptionsSelection.CurrentAnimation = Localization.LanguageUiIndex * 3 + SelectedOption;
+                Data.OptionsSelection.CurrentAnimation = Localization.LanguageUiIndex * OptionsOptionsCount + SelectedOption;
             }
             else if (JoyPad.IsButtonJustPressed(GbaInput.B) && Data.Cursor.CurrentAnimation == 0)
             {
+                // TODO: N-Gage auto-saves the option here
+
                 NextStepAction = Step_InitializeTransitionToSelectGameMode;
                 CurrentStepAction = Step_TransitionOutOfOptions;
                 TransitionOutCursorAndStem();
@@ -295,18 +458,84 @@ public partial class MenuAll
             {
                 Data.Cursor.CurrentAnimation = 16;
 
+                // Music volume
                 if (SelectedOption == 0)
                 {
-                    ToggleMusicOnOff();
+                    if (Engine.Settings.Platform == Platform.GBA)
+                    {
+                        ToggleMusicOnOff();
+                    }
+                    else if (Engine.Settings.Platform == Platform.NGage)
+                    {
+                        if (((NGageSoundEventsManager)SoundEventsManager.Current).MusicVolume < SoundEngineInterface.MaxVolume)
+                            ModifyMusicVolume(1);
+                        else
+                            ModifyMusicVolume(-3);
+                    }
+                    else
+                    {
+                        throw new UnsupportedPlatformException();
+                    }
+
                     UpdateMusicVolumeAnimations();
                 }
+                // Sfx volume
                 else if (SelectedOption == 1)
                 {
-                    ToggleSfxOnOff();
+                    if (Engine.Settings.Platform == Platform.GBA)
+                    {
+                        ToggleSfxOnOff();
+                    }
+                    else if (Engine.Settings.Platform == Platform.NGage)
+                    {
+                        if (((NGageSoundEventsManager)SoundEventsManager.Current).SfxVolume < SoundEngineInterface.MaxVolume)
+                            ModifySfxVolume(1);
+                        else
+                            ModifySfxVolume(-3);
+                    }
+                    else
+                    {
+                        throw new UnsupportedPlatformException();
+                    }
+
                     UpdateSfxVolumeAnimations();
                 }
 
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+            }
+            else if (Engine.Settings.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(GbaInput.Left) && Data.Cursor.CurrentAnimation == 0)
+            {
+                if (SelectedOption == 0)
+                {
+                    Data.Cursor.CurrentAnimation = 16;
+                    ModifyMusicVolume(-1);
+                    UpdateMusicVolumeAnimations();
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                }
+                else if (SelectedOption == 1)
+                {
+                    Data.Cursor.CurrentAnimation = 16;
+                    ModifySfxVolume(-1);
+                    UpdateSfxVolumeAnimations();
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                }
+            }
+            else if (Engine.Settings.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(GbaInput.Right) && Data.Cursor.CurrentAnimation == 0)
+            {
+                if (SelectedOption == 0)
+                {
+                    Data.Cursor.CurrentAnimation = 16;
+                    ModifyMusicVolume(1);
+                    UpdateMusicVolumeAnimations();
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                }
+                else if (SelectedOption == 1)
+                {
+                    Data.Cursor.CurrentAnimation = 16;
+                    ModifySfxVolume(1);
+                    UpdateSfxVolumeAnimations();
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                }
             }
 
             if (Data.Cursor.CurrentAnimation == 16 && Data.Cursor.EndOfAnimation)
@@ -318,47 +547,65 @@ public partial class MenuAll
                     TransitionsFX.FadeOutInit(4 / 16f);
                     IsLoadingCredits = true;
                 }
+                else if (Engine.Settings.Platform == Platform.NGage && SelectedOption == 3)
+                {
+                    NextStepAction = Step_InitializeTransitionToSelectLanguage;
+                    CurrentStepAction = Step_TransitionOutOfOptions;
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+                    TransitionOutCursorAndStem();
+                }
             }
         }
 
         AnimationPlayer.Play(Data.OptionsSelection);
-        AnimationPlayer.Play(Data.SoundsOnOffBase);
-        AnimationPlayer.PlayFront(Data.MusicOnOff);
-        AnimationPlayer.PlayFront(Data.SfxOnOff);
+        AnimationPlayer.Play(Data.SoundsBase);
+        AnimationPlayer.PlayFront(Data.MusicVolume);
+        AnimationPlayer.PlayFront(Data.SfxVolume);
     }
 
     private void Step_TransitionOutOfOptions()
     {
         TransitionValue += 4;
 
-        if (TransitionValue <= 160)
+        if (TransitionValue <= Playfield.RenderContext.Resolution.Y)
         {
             Playfield.Camera.GetCluster(1).Position += new Vector2(0, -4);
 
             // Center sprites if English
+            int x;
             if (Localization.Language == 0)
             {
-                Data.SoundsOnOffBase.ScreenPos = Data.SoundsOnOffBase.ScreenPos with { X = 180 + TransitionValue / 2f };
-                Data.MusicOnOff.ScreenPos = Data.MusicOnOff.ScreenPos with { X = 180 + TransitionValue / 2f };
-                Data.SfxOnOff.ScreenPos = Data.SfxOnOff.ScreenPos with { X = 180 + TransitionValue / 2f };
+                x = Engine.Settings.Platform switch
+                {
+                    Platform.GBA => 180,
+                    Platform.NGage => 142,
+                    _ => throw new UnsupportedPlatformException()
+                };
             }
             else
             {
-                Data.SoundsOnOffBase.ScreenPos = Data.SoundsOnOffBase.ScreenPos with { X = 210 + TransitionValue / 2f };
-                Data.MusicOnOff.ScreenPos = Data.MusicOnOff.ScreenPos with { X = 210 + TransitionValue / 2f };
-                Data.SfxOnOff.ScreenPos = Data.SfxOnOff.ScreenPos with { X = 210 + TransitionValue / 2f };
+                x = Engine.Settings.Platform switch
+                {
+                    Platform.GBA => 210,
+                    Platform.NGage => 152,
+                    _ => throw new UnsupportedPlatformException()
+                };
             }
+
+            Data.SoundsBase.ScreenPos = Data.SoundsBase.ScreenPos with { X = x + TransitionValue / 2f };
+            Data.MusicVolume.ScreenPos = Data.MusicVolume.ScreenPos with { X = x + TransitionValue / 2f };
+            Data.SfxVolume.ScreenPos = Data.SfxVolume.ScreenPos with { X = x + TransitionValue / 2f };
         }
-        else if (TransitionValue >= 220)
+        else if (TransitionValue >= Playfield.RenderContext.Resolution.Y + 60)
         {
             TransitionValue = 0;
             CurrentStepAction = NextStepAction;
         }
 
         AnimationPlayer.Play(Data.OptionsSelection);
-        AnimationPlayer.Play(Data.SoundsOnOffBase);
-        AnimationPlayer.PlayFront(Data.MusicOnOff);
-        AnimationPlayer.PlayFront(Data.SfxOnOff);
+        AnimationPlayer.Play(Data.SoundsBase);
+        AnimationPlayer.PlayFront(Data.MusicVolume);
+        AnimationPlayer.PlayFront(Data.SfxVolume);
     }
 
     #endregion

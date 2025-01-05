@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using BinarySerializer;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
@@ -101,7 +102,6 @@ public partial class MenuAll : Frame, IHasPlayfield
 
     #region Methods
 
-    // TODO: Update for N-Gage
     public void SetText(int textId, bool blink)
     {
         ShouldTextBlink = blink;
@@ -123,13 +123,149 @@ public partial class MenuAll : Frame, IHasPlayfield
         }
     }
 
-    // TODO: Update for N-Gage
+    // N-Gage uses a more complex method for setting text, with wrapping and optional params
+    public void NGageSetText(int textId, bool blink, int? baseY, int maxLineWidth, params object[] paramsBuffer)
+    {
+        ShouldTextBlink = blink;
+
+        string[] text = Localization.GetText(11, textId);
+
+        baseY ??= text.Length * -16 + 96;
+
+        int paramIndex = 0;
+        int textIndex;
+        for (textIndex = 0; textIndex < text.Length && textIndex < Data.Texts.Length; textIndex++)
+        {
+            // Get the string
+            string str = text[textIndex];
+
+            // Get the amount of params
+            int paramsCount = str.Count(x => x == '%');
+
+            // Get the params
+            object[] strParams = new object[paramsCount];
+            Array.Copy(paramsBuffer, paramIndex, strParams, 0, paramsCount);
+
+            // Increment the param index
+            paramIndex += paramsCount;
+
+            // Replace the params in the string
+            if (paramsCount != 0)
+                str = str.sprintf(strParams);
+
+            // Single line
+            if (maxLineWidth < 1 || textIndex != text.Length - 1 || text.Length >= Data.Texts.Length)
+            {
+                drawText(textIndex, str);
+            }
+            // Wrap the string
+            else
+            {
+                // Try to wrap the string at a spaces
+                int currentLineWidth = 0;
+                int wrapIndex = 0;
+                int i = 0;
+                while (currentLineWidth < maxLineWidth)
+                {
+                    bool reachedTheEnd = false;
+
+                    i = str[i..].IndexOf(' ');
+                    if (i == -1)
+                    {
+                        i = str.Length - wrapIndex;
+                        reachedTheEnd = true;
+                    }
+
+                    currentLineWidth = FontManager.GetStringWidth(FontSize.Font16, str[..i]);
+
+                    if (currentLineWidth < maxLineWidth)
+                    {
+                        wrapIndex = i;
+                        i++;
+                    }
+
+                    if (reachedTheEnd)
+                        break;
+                }
+
+                // Wrapping at a space found
+                if (wrapIndex != 0)
+                {
+                    // Draw first line
+                    drawText(textIndex, str[..wrapIndex]);
+
+                    // Set index for second line if we end with a space (and skip the space)
+                    if (str[wrapIndex] == ' ')
+                    {
+                        // Draw second line
+                        textIndex++;
+                        drawText(textIndex, str[(wrapIndex + 1)..]);
+                    }
+                }
+                // No wrapping at a space found
+                else
+                {
+                    // Find any wrapping index
+                    currentLineWidth = 0;
+                    wrapIndex = 0;
+                    i = 0;
+                    while (currentLineWidth < maxLineWidth)
+                    {
+                        bool reachedTheEnd = false;
+
+                        i++;
+
+                        if (i == str.Length)
+                            reachedTheEnd = true;
+
+                        currentLineWidth = FontManager.GetStringWidth(FontSize.Font16, str[..i]);
+
+                        if (currentLineWidth < maxLineWidth)
+                        {
+                            wrapIndex = i;
+                            i++;
+                        }
+
+                        if (reachedTheEnd)
+                            break;
+                    }
+
+                    // Draw first line
+                    drawText(textIndex, str[..wrapIndex]);
+
+                    // Draw second line
+                    textIndex++;
+                    drawText(textIndex, str[wrapIndex..]);
+                }
+            }
+        }
+
+        // Set unused lines to be empty
+        for (; textIndex < Data.Texts.Length; textIndex++)
+            Data.Texts[textIndex].Text = "";
+
+        // Helper method for drawing text
+        void drawText(int index, string str)
+        {
+            int lineWidth = FontManager.GetStringWidth(FontSize.Font16, str);
+            Data.Texts[index].ScreenPos = new Vector2(108 - lineWidth / 2f, baseY.Value + 48 + index * 16);
+            Data.Texts[index].Text = str;
+        }
+    }
+
     public void DrawText()
     {
         if (!ShouldTextBlink || (GameTime.ElapsedFrames & 0x10) != 0)
         {
             foreach (SpriteTextObject text in Data.Texts)
-                AnimationPlayer.Play(text);
+            {
+                if (Engine.Settings.Platform == Platform.GBA)
+                    AnimationPlayer.Play(text);
+                else if (Engine.Settings.Platform == Platform.NGage)
+                    AnimationPlayer.PlayFront(text);
+                else
+                    throw new UnsupportedPlatformException();
+            }
         }
     }
 

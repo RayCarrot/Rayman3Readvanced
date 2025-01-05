@@ -119,7 +119,7 @@ public class MenuData
                 CurrentAnimation = 0,
             };
 
-            SoundsOnOffBase = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
+            SoundsBase = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
             {
                 IsFramed = true,
                 BgPriority = 1,
@@ -128,7 +128,7 @@ public class MenuData
                 CurrentAnimation = 7,
             };
 
-            MusicOnOff = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
+            MusicVolume = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
             {
                 IsFramed = true,
                 BgPriority = 1,
@@ -137,7 +137,7 @@ public class MenuData
                 CurrentAnimation = 5,
             };
 
-            SfxOnOff = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
+            SfxVolume = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
             {
                 IsFramed = true,
                 BgPriority = 1,
@@ -383,6 +383,7 @@ public class MenuData
             AnimatedObjectResource languageListAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuLanguageListAnimations);
             AnimatedObjectResource gameModeAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuGameModeAnimations);
             AnimatedObjectResource gameLogoAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuGameLogoAnimations);
+            AnimatedObjectResource optionsAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuOptionsAnimations);
 
             Wheel2 = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
             {
@@ -481,9 +482,33 @@ public class MenuData
                 CurrentAnimation = 0,
             };
 
-            // TODO: field_0xf0
-            // TODO: musicVolume
-            // TODO: sfxVolume
+            SoundsBase = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 1,
+                ObjPriority = 0,
+                ScreenPos = new Vector2(152, 75),
+                CurrentAnimation = 7,
+            };
+
+            MusicVolume = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 1,
+                ObjPriority = 0,
+                ScreenPos = new Vector2(152, 75),
+                CurrentAnimation = 28,
+            };
+
+            SfxVolume = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 1,
+                ObjPriority = 0,
+                ScreenPos = new Vector2(152, 99),
+                CurrentAnimation = 28,
+            };
+
             // TODO: field_0x2e0
             // TODO: field_0x3ac
             // TODO: field_0x268
@@ -492,7 +517,16 @@ public class MenuData
             // TODO: slotLumTexts
             // TODO: slotCageTexts
             // TODO: slotEmptyTexts
-            // TODO: optionsSelection
+
+            OptionsSelection = new AnimatedObject(optionsAnimations, optionsAnimations.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 3,
+                ObjPriority = 0,
+                ScreenPos = new Vector2(58, 62),
+                CurrentAnimation = 0,
+            };
+
             // TODO: multiplayerConnectionSelection
             // TODO: startEraseSelection
             // TODO: startEraseCursor
@@ -522,9 +556,9 @@ public class MenuData
     public AnimatedObject LanguageList { get; }
     public AnimatedObject GameModeList { get; }
     public AnimatedObject GameLogo { get; }
-    public AnimatedObject SoundsOnOffBase { get; }
-    public AnimatedObject MusicOnOff { get; }
-    public AnimatedObject SfxOnOff { get; }
+    public AnimatedObject SoundsBase { get; }
+    public AnimatedObject MusicVolume { get; }
+    public AnimatedObject SfxVolume { get; }
     public AnimatedObject[] SlotLumIcons { get; }
     public AnimatedObject[] SlotCageIcons { get; }
     public AnimatedObject[] SlotIcons { get; }
