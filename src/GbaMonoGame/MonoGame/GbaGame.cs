@@ -135,7 +135,7 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
             // Load the MonoGame part of the engine
             GbaGameViewPort gameViewPort = new(Engine.Settings);
             gameViewPort.SetRequestedResolution(Engine.Config.InternalGameResolution.ToVector2());
-            Engine.LoadMonoGame(GraphicsDevice, Content, gameViewPort, _gameWindow);
+            Engine.LoadMonoGame(this, GraphicsDevice, Content, gameViewPort, _gameWindow);
             Gfx.Load(_paletteShader);
 
             // Load engine sounds and fonts
@@ -449,7 +449,7 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
             if (!_showMenu)
             {
                 Pause();
-                _menu.Open(new MainMenu(this));
+                _menu.Open(new MainMenu());
                 _showMenu = true;
             }
             else

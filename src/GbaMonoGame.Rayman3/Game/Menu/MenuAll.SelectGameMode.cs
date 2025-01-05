@@ -211,10 +211,9 @@ public partial class MenuAll
                 1 => Step_InitializeTransitionToMultiplayerModeSelection,
                 2 => Step_InitializeTransitionToOptions,
 
-                // TODO: Implement
                 // N-Gage exclusive
-                //3 => Step_InitializeTransitionToHelp,
-                //4 => Step_InitializeTransitionToQuit,
+                3 => Step_InitializeTransitionToHelp,
+                4 => Step_InitializeTransitionToQuit,
                 
                 _ => throw new Exception("Invalid game mode")
             };

@@ -8,11 +8,9 @@ namespace GbaMonoGame;
 
 public class OptionsMenu : Menu
 {
-    public OptionsMenu(GbaGame game)
+    public OptionsMenu()
     {
-        Game = game;
-
-        GraphicsAdapter adapter = Game.GraphicsDevice.Adapter;
+        GraphicsAdapter adapter = Engine.GbaGame.GraphicsDevice.Adapter;
         Vector2 originalRes = Engine.GameViewPort.OriginalGameResolution;
         Vector2 screenRes = new(adapter.CurrentDisplayMode.Width, adapter.CurrentDisplayMode.Height);
         int windowResCount = Math.Min((int)(screenRes.X / originalRes.X), (int)(screenRes.Y / originalRes.Y));
@@ -110,7 +108,7 @@ public class OptionsMenu : Menu
             // Music volume
             new VolumeSelectionMenuOption(
                 name: "Music volume",
-                sampleSongName: game.SampleSongs[SoundType.Music],
+                sampleSongName: Engine.GbaGame.SampleSongs[SoundType.Music],
                 restart: false,
                 getVolume: () => Engine.Config.MusicVolume,
                 setVolume: data => Engine.Config.MusicVolume = data),
@@ -118,7 +116,7 @@ public class OptionsMenu : Menu
             // Sound effects volume
             new VolumeSelectionMenuOption(
                 name: "Sound effects volume",
-                sampleSongName: game.SampleSongs[SoundType.Sfx],
+                sampleSongName: Engine.GbaGame.SampleSongs[SoundType.Sfx],
                 restart: true,
                 getVolume: () => Engine.Config.SfxVolume,
                 setVolume: data => Engine.Config.SfxVolume = data),
@@ -149,7 +147,6 @@ public class OptionsMenu : Menu
             option.Init();
     }
 
-    private GbaGame Game { get; }
     private MenuOption[] Options { get; }
 
     private MultiSelectionMenuOption<float> WindowResolutionMenuOption { get; }

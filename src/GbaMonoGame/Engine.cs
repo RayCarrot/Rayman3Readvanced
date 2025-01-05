@@ -42,6 +42,11 @@ public static class Engine
     internal static bool IsLoading { get; set; }
 
     /// <summary>
+    /// The game instance.
+    /// </summary>
+    public static GbaGame GbaGame { get; private set; }
+
+    /// <summary>
     /// The graphics device to use for creating textures.
     /// </summary>
     public static GraphicsDevice GraphicsDevice { get; private set; }
@@ -215,8 +220,9 @@ public static class Engine
         LoadSaveGame();
     }
 
-    internal static void LoadMonoGame(GraphicsDevice graphicsDevice, ContentManager contentManager, GbaGameViewPort gameViewPort, GbaGameWindow gameWindow)
+    internal static void LoadMonoGame(GbaGame gbaGame, GraphicsDevice graphicsDevice, ContentManager contentManager, GbaGameViewPort gameViewPort, GbaGameWindow gameWindow)
     {
+        GbaGame = gbaGame;
         GraphicsDevice = graphicsDevice;
         ContentManager = contentManager;
         GameViewPort = gameViewPort;

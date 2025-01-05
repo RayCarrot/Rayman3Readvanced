@@ -382,8 +382,10 @@ public class MenuData
             AnimatedObjectResource symbolAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.NGageButtonSymbols);
             AnimatedObjectResource languageListAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuLanguageListAnimations);
             AnimatedObjectResource gameModeAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuGameModeAnimations);
+            AnimatedObjectResource pauseSelectionAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.PauseSelectionAnimations);
             AnimatedObjectResource gameLogoAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuGameLogoAnimations);
             AnimatedObjectResource optionsAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuOptionsAnimations);
+            AnimatedObjectResource helpArrowAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.NGageMenuHelpArrowAnimations);
 
             Wheel2 = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
             {
@@ -470,8 +472,23 @@ public class MenuData
                 CurrentAnimation = 0,
             };
 
-            // TODO: quitSelection
-            // TODO: quitHeader
+            QuitSelection = new AnimatedObject(pauseSelectionAnimations, pauseSelectionAnimations.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 3,
+                ObjPriority = 0,
+                ScreenPos = new Vector2(58, 69),
+                CurrentAnimation = 15,
+            };
+
+            QuitHeader = new AnimatedObject(pauseSelectionAnimations, pauseSelectionAnimations.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 0,
+                ObjPriority = 0,
+                ScreenPos = new Vector2(50, 20),
+                CurrentAnimation = 34,
+            };
 
             GameLogo = new AnimatedObject(gameLogoAnimations, gameLogoAnimations.IsDynamic)
             {
@@ -530,11 +547,41 @@ public class MenuData
             // TODO: multiplayerConnectionSelection
             // TODO: startEraseSelection
             // TODO: startEraseCursor
-            // TODO: texts
+
+            Texts = new SpriteTextObject[8];
+            for (int i = 0; i < Texts.Length; i++)
+            {
+                Texts[i] = new SpriteTextObject()
+                {
+                    BgPriority = 3,
+                    ObjPriority = 0,
+                    ScreenPos = new Vector2(70, 48 + i * 16),
+                    FontSize = FontSize.Font16,
+                    Color = TextColor.Menu,
+                };
+            }
+
             // TODO: field_0x8c8
             // TODO: field_0x8f0
-            // TODO: field_0x920
-            // TODO: field_0x948
+
+            HelpArrowLeft = new AnimatedObject(helpArrowAnimations, helpArrowAnimations.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 1,
+                ObjPriority = 0,
+                ScreenPos = new Vector2(68, 80),
+                CurrentAnimation = 1,
+            };
+
+            HelpArrowRight = new AnimatedObject(helpArrowAnimations, helpArrowAnimations.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 1,
+                ObjPriority = 0,
+                ScreenPos = new Vector2(152, 80),
+                CurrentAnimation = 0,
+            };
+
             // TODO: field_0x970
             // TODO: multiplayerMapSelection
             // TODO: multiplayerMapName1
@@ -587,4 +634,8 @@ public class MenuData
     // N-Gage exclusive
     public AnimatedObject SelectSymbol { get; set; }
     public AnimatedObject BackSymbol { get; set; }
+    public AnimatedObject QuitSelection { get; set; }
+    public AnimatedObject QuitHeader { get; set; }
+    public AnimatedObject HelpArrowLeft { get; set; }
+    public AnimatedObject HelpArrowRight { get; set; }
 }
