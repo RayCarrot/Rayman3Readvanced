@@ -14,22 +14,16 @@ public partial class UserInfoMulti2D : Dialog
         Times = new int[RSMultiplayer.MaxPlayersCount];
         EnergyShots = new int[RSMultiplayer.MaxPlayersCount];
 
-        switch (MultiplayerInfo.GameType)
+        if (MultiplayerInfo.GameType == MultiplayerGameType.RayTag)
         {
-            case MultiplayerGameType.RayTag:
-                for (int i = 0; i < RSMultiplayer.MaxPlayersCount; i++)
-                    Times[i] = 60;
-                break;
-            
-            case MultiplayerGameType.CaptureTheFlag when Engine.Settings.Platform == Platform.NGage:
-                CaptureTheFlagTime = ((FrameMultiCaptureTheFlag)Frame.Current).Time;
-                SuddenDeathDisplayCountdown = 100;
-                FlagBar = new FlagBar(Scene);
-                break;
-
-            case MultiplayerGameType.Missile:
-            default:
-                throw new InvalidOperationException("Invalid game type");
+            for (int i = 0; i < RSMultiplayer.MaxPlayersCount; i++)
+                Times[i] = 60;
+        }
+        else if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        {
+            CaptureTheFlagTime = ((FrameMultiCaptureTheFlag)Frame.Current).Time;
+            SuddenDeathDisplayCountdown = 100;
+            FlagBar = new FlagBar(Scene);
         }
 
         if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)

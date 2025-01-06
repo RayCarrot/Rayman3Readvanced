@@ -804,12 +804,12 @@ public partial class MenuAll
 
         Data.MultiplayerMapName1.Text = Localization.GetText(11, 9 + (int)MultiplayerGameType * 2)[0];
         Data.MultiplayerMapName1.ScreenPos = new Vector2(
-            x: Playfield.RenderContext.Resolution.X / 2 - Data.MultiplayerMapName1.GetStringWidth() / 2f,
+            x: 140 - Data.MultiplayerMapName1.GetStringWidth() / 2f,
             y: 56);
 
         Data.MultiplayerMapName2.Text = Localization.GetText(11, 10 + (int)MultiplayerGameType * 2)[0];
         Data.MultiplayerMapName2.ScreenPos = new Vector2(
-            x: Playfield.RenderContext.Resolution.X / 2 - Data.MultiplayerMapName1.GetStringWidth() / 2f,
+            x: 140 - Data.MultiplayerMapName2.GetStringWidth() / 2f,
             y: 96);
 
         CurrentStepAction = Step_TransitionToMultiplayerMapSelection;
