@@ -5,7 +5,6 @@ using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
 
-// TODO: Add support for N-Gage
 public partial class MenuAll
 {
     #region Properties
@@ -28,7 +27,12 @@ public partial class MenuAll
     {
         if (StartEraseCursorTargetIndex != StartEraseCursorCurrentIndex)
         {
-            int targetXPos = StartEraseCursorTargetIndex * 72 + 106;
+            int targetXPos = Engine.Settings.Platform switch
+            {
+                Platform.GBA => StartEraseCursorTargetIndex * 72 + 106,
+                Platform.NGage => StartEraseCursorTargetIndex * 72 + 78,
+                _ => throw new UnsupportedPlatformException()
+            };
 
             if (StartEraseCursorTargetIndex < StartEraseCursorCurrentIndex)
             {
@@ -73,7 +77,9 @@ public partial class MenuAll
             slotEmptyText.CurrentAnimation = Localization.LanguageUiIndex;
 
         Data.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 1;
-        Data.StartEraseCursor.CurrentAnimation = 40;
+
+        if (Engine.Settings.Platform == Platform.GBA)
+            Data.StartEraseCursor.CurrentAnimation = 40;
 
         for (int i = 0; i < 3; i++)
         {
@@ -91,8 +97,21 @@ public partial class MenuAll
         StartEraseCursorCurrentIndex = 0;
         StartEraseCursorTargetIndex = 0;
         EraseSaveStage = 0;
-        Data.StartEraseSelection.ScreenPos = new Vector2(80, 30);
-        Data.StartEraseCursor.ScreenPos = new Vector2(106, 12);
+
+        if (Engine.Settings.Platform == Platform.GBA)
+        {
+            Data.StartEraseSelection.ScreenPos = new Vector2(80, 30);
+            Data.StartEraseCursor.ScreenPos = new Vector2(106, 12);
+        }
+        else if (Engine.Settings.Platform == Platform.NGage)
+        {
+            Data.StartEraseSelection.ScreenPos = new Vector2(52, 30);
+            Data.StartEraseCursor.ScreenPos = new Vector2(78, 12);
+        }
+        else
+        {
+            throw new UnsupportedPlatformException();
+        }
     }
 
     private void Step_TransitionToSinglePlayer()
@@ -132,7 +151,9 @@ public partial class MenuAll
         }
 
         AnimationPlayer.Play(Data.StartEraseSelection);
-        AnimationPlayer.Play(Data.StartEraseCursor);
+
+        if (Engine.Settings.Platform == Platform.GBA)
+            AnimationPlayer.Play(Data.StartEraseCursor);
     }
 
     private void Step_SinglePlayer()
@@ -234,7 +255,14 @@ public partial class MenuAll
                     TransitionValue = 0;
                     EraseSaveStage = 2;
                     Data.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 21;
-                    Data.StartEraseSelection.ScreenPos = new Vector2(144, -80);
+
+                    if (Engine.Settings.Platform == Platform.GBA)
+                        Data.StartEraseSelection.ScreenPos = new Vector2(144, -80);
+                    else if (Engine.Settings.Platform == Platform.NGage)
+                        Data.StartEraseSelection.ScreenPos = new Vector2(104, -80);
+                    else
+                        throw new UnsupportedPlatformException();
+
                     Data.StartEraseCursor.ScreenPos = Data.StartEraseCursor.ScreenPos with { Y = -38 };
                 }
                 break;
@@ -287,6 +315,8 @@ public partial class MenuAll
                             Lums = new byte[125],
                             Cages = new byte[7],
                         };
+                        // TODO: Write save
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
                 }
                 break;
@@ -301,7 +331,14 @@ public partial class MenuAll
                     TransitionValue = 0;
                     EraseSaveStage = 5;
                     Data.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2;
-                    Data.StartEraseSelection.ScreenPos = new Vector2(80, -50);
+
+                    if (Engine.Settings.Platform == Platform.GBA)
+                        Data.StartEraseSelection.ScreenPos = new Vector2(80, -50);
+                    else if (Engine.Settings.Platform == Platform.NGage)
+                        Data.StartEraseSelection.ScreenPos = new Vector2(52, -50);
+                    else
+                        throw new UnsupportedPlatformException();
+
                     Data.StartEraseCursor.ScreenPos = Data.StartEraseCursor.ScreenPos with { Y = -68 };
                 }
                 break;
@@ -385,14 +422,14 @@ public partial class MenuAll
     {
         TransitionValue += 4;
 
-        if (TransitionValue <= 160)
+        if (TransitionValue <= Playfield.RenderContext.Resolution.Y)
         {
             TgxCluster cluster = Playfield.Camera.GetCluster(1);
             cluster.Position -= new Vector2(0, 4);
             Data.StartEraseSelection.ScreenPos = Data.StartEraseSelection.ScreenPos with { Y = 30 - TransitionValue / 2f };
             Data.StartEraseCursor.ScreenPos = Data.StartEraseCursor.ScreenPos with { Y = 12 - TransitionValue / 2f };
         }
-        else if (TransitionValue >= 220)
+        else if (TransitionValue >= Playfield.RenderContext.Resolution.Y + 60)
         {
             TransitionValue = 0;
             CurrentStepAction = NextStepAction;
