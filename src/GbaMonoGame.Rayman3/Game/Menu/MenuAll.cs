@@ -375,7 +375,7 @@ public partial class MenuAll : Frame, IHasPlayfield
             int lineHeight;
             if (CurrentStepAction == Step_SinglePlayer)
                 lineHeight = 18;
-            else if (CurrentStepAction == Step_MultiplayerMultiPakMapSelection)
+            else if (CurrentStepAction == Step_MultiplayerMapSelection)
                 lineHeight = 20;
             else
                 lineHeight = 16;
@@ -530,8 +530,8 @@ public partial class MenuAll : Frame, IHasPlayfield
                 Playfield.TileLayers[3].Screen.IsEnabled = false;
                 CurrentStepAction = Engine.Settings.Platform switch
                 {
-                    Platform.GBA => Step_InitializeTransitionToMultiplayerMultiPakPlayerSelection,
-                    Platform.NGage => Step_InitializeTransitionToMultiplayerMultiPakTypeSelection,
+                    Platform.GBA => Step_InitializeTransitionToMultiplayerPlayerSelection,
+                    Platform.NGage => Step_InitializeTransitionToMultiplayerTypeSelection,
                     _ => throw new UnsupportedPlatformException()
                 };
                 break;
