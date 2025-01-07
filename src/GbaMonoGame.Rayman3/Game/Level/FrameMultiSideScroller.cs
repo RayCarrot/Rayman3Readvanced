@@ -132,7 +132,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
             {
                 GameTime.Resume();
                 CurrentStepAction();
-                MultiplayerManager.InvalidateCurrentFrameInputs();
+                MultiplayerManager.ReleaseJoyPads();
             }
             else
             {

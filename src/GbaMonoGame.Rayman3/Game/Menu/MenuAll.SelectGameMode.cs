@@ -208,12 +208,12 @@ public partial class MenuAll
             NextStepAction = SelectedOption switch
             {
                 0 => Step_InitializeTransitionToSinglePlayer,
-                1 => Step_InitializeTransitionToMultiplayerModeSelection,
+                1 when Engine.Settings.Platform == Platform.GBA => Step_InitializeTransitionToMultiplayerModeSelection,
+                1 when Engine.Settings.Platform == Platform.NGage => Step_InitializeTransitionToMultiplayerConnectionSelection,
                 2 => Step_InitializeTransitionToOptions,
 
-                // N-Gage exclusive
-                3 => Step_InitializeTransitionToHelp,
-                4 => Step_InitializeTransitionToQuit,
+                3 when Engine.Settings.Platform == Platform.NGage => Step_InitializeTransitionToHelp,
+                4 when Engine.Settings.Platform == Platform.NGage => Step_InitializeTransitionToQuit,
                 
                 _ => throw new Exception("Invalid game mode")
             };

@@ -91,7 +91,7 @@ public static class MultiJoyPad
         return null;
     }
 
-    public static void InvalidateJoyPads(uint machineTimer)
+    public static void ReleaseJoyPads(uint machineTimer)
     {
         for (int id = 0; id < RSMultiplayer.MaxPlayersCount; id++)
             ValidFlags[id][machineTimer % BufferedFramesCount] = false;

@@ -36,7 +36,7 @@ public partial class MenuAll : Frame, IHasPlayfield
         IsMultiplayerConnected = null;
         MultiplayerConnectionTimer = 0;
         MultiplayerLostConnectionTimer = 0;
-        MultiplayerGameType = MultiplayerGameType.RayTag;
+        MultiplayerType = 0;
         MultiplayerMapId = 0;
         field_0x80 = false;
         IsLoadingMultiplayerMap = false;
@@ -169,10 +169,10 @@ public partial class MenuAll : Frame, IHasPlayfield
                 {
                     bool reachedTheEnd = false;
 
-                    i = str[i..].IndexOf(' ');
+                    i = str.IndexOf(' ', i);
                     if (i == -1)
                     {
-                        i = str.Length - wrapIndex;
+                        i = str.Length;
                         reachedTheEnd = true;
                     }
 
@@ -195,7 +195,7 @@ public partial class MenuAll : Frame, IHasPlayfield
                     drawText(textIndex, str[..wrapIndex]);
 
                     // Set index for second line if we end with a space (and skip the space)
-                    if (str[wrapIndex] == ' ')
+                    if (wrapIndex < str.Length)
                     {
                         // Draw second line
                         textIndex++;
@@ -253,18 +253,16 @@ public partial class MenuAll : Frame, IHasPlayfield
         }
     }
 
-    public void DrawText()
+    public void DrawText(bool front)
     {
         if (!ShouldTextBlink || (GameTime.ElapsedFrames & 0x10) != 0)
         {
             foreach (SpriteTextObject text in Data.Texts)
             {
-                if (Engine.Settings.Platform == Platform.GBA)
-                    AnimationPlayer.Play(text);
-                else if (Engine.Settings.Platform == Platform.NGage)
+                if (front)
                     AnimationPlayer.PlayFront(text);
                 else
-                    throw new UnsupportedPlatformException();
+                    AnimationPlayer.Play(text);
             }
         }
     }

@@ -125,10 +125,10 @@ public static class MultiplayerManager
         return false;
     }
 
-    public static void InvalidateCurrentFrameInputs()
+    public static void ReleaseJoyPads()
     {
         HasInvalidatedCurrentFrameInputs = true;
-        MultiJoyPad.InvalidateJoyPads(MachineTimers[MachineId]);
+        MultiJoyPad.ReleaseJoyPads(MachineTimers[MachineId]);
     }
 
     public static void UpdateFromRSMultiplayer()

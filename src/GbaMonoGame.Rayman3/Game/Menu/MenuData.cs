@@ -313,7 +313,7 @@ public class MenuData
                 CurrentAnimation = 2
             };
 
-            MultiplayerTypeLeftArrow = new AnimatedObject(multiplayerTypeFrameAnimations, multiplayerTypeFrameAnimations.IsDynamic)
+            ArrowLeft = new AnimatedObject(multiplayerTypeFrameAnimations, multiplayerTypeFrameAnimations.IsDynamic)
             {
                 IsFramed = true,
                 BgPriority = 1,
@@ -322,7 +322,7 @@ public class MenuData
                 CurrentAnimation = 1
             };
 
-            MultiplayerTypeRightArrow = new AnimatedObject(multiplayerTypeFrameAnimations, multiplayerTypeFrameAnimations.IsDynamic)
+            ArrowRight = new AnimatedObject(multiplayerTypeFrameAnimations, multiplayerTypeFrameAnimations.IsDynamic)
             {
                 IsFramed = true,
                 BgPriority = 1,
@@ -386,8 +386,13 @@ public class MenuData
             AnimatedObjectResource pauseSelectionAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.PauseSelectionAnimations);
             AnimatedObjectResource gameLogoAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuGameLogoAnimations);
             AnimatedObjectResource optionsAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuOptionsAnimations);
+            AnimatedObjectResource connectionAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerConnectionAnimations);
             AnimatedObjectResource slotEmptyAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuSlotEmptyAnimations);
-            AnimatedObjectResource helpArrowAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.NGageMenuHelpArrowAnimations);
+            AnimatedObjectResource multiplayerPlayersAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerPlayersAnimations);
+            AnimatedObjectResource multiplayerTypeAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerTypeAnimations);
+            AnimatedObjectResource multiplayerTypeFrameAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerTypeFrameAnimations);
+            AnimatedObjectResource multiplayerTypeIconAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerTypeIconAnimations);
+            AnimatedObjectResource multiplayerMapAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerMapAnimations);
 
             Wheel2 = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
             {
@@ -460,10 +465,46 @@ public class MenuData
             // TODO: field_0x608
             // TODO: field_0x630
             // TODO: field_0x658
-            // TODO: multiplayerPlayerSelection
-            // TODO: multiplayerPlayerNumberIcons
-            // TODO: multiplayerPlayerSelectionIcons
-            // TODO: multiplayerPlayerSelectionHighlight
+
+            MultiplayerPlayerSelection = new AnimatedObject(multiplayerPlayersAnimations, multiplayerPlayersAnimations.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 1,
+                ObjPriority = 32,
+                ScreenPos = new Vector2(113, 60 - multiplayerMultiPakPlayersOffsetY),
+                CurrentAnimation = 0
+            };
+
+            MultiplayerPlayerNumberIcons = new AnimatedObject(multiplayerPlayersAnimations, multiplayerPlayersAnimations.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 1,
+                ObjPriority = 0,
+                ScreenPos = new Vector2(70, 42 - multiplayerMultiPakPlayersOffsetY),
+                CurrentAnimation = 4
+            };
+
+            MultiplayerPlayerSelectionIcons = new AnimatedObject[4];
+            for (int i = 0; i < MultiplayerPlayerSelectionIcons.Length; i++)
+            {
+                MultiplayerPlayerSelectionIcons[i] = new AnimatedObject(multiplayerPlayersAnimations, multiplayerPlayersAnimations.IsDynamic)
+                {
+                    IsFramed = true,
+                    BgPriority = 1,
+                    ObjPriority = 16,
+                    ScreenPos = new Vector2(72 + 24 * i, 69 - multiplayerMultiPakPlayersOffsetY),
+                    CurrentAnimation = 8
+                };
+            }
+
+            MultiplayerPlayerSelectionHighlight = new AnimatedObject(multiplayerPlayersAnimations, multiplayerPlayersAnimations.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 1,
+                ObjPriority = 0,
+                ScreenPos = new Vector2(72, 46 - multiplayerMultiPakPlayersOffsetY),
+                CurrentAnimation = 10
+            };
 
             GameModeList = new AnimatedObject(gameModeAnimations, gameModeAnimations.IsDynamic)
             {
@@ -597,7 +638,14 @@ public class MenuData
                 CurrentAnimation = 0,
             };
 
-            // TODO: multiplayerConnectionSelection
+            MultiplayerConnectionSelection = new AnimatedObject(connectionAnimations, connectionAnimations.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 3,
+                ObjPriority = 0,
+                ScreenPos = new Vector2(58, 62),
+                CurrentAnimation = 0,
+            };
 
             StartEraseSelection = new AnimatedObject(startEraseAnimations, startEraseAnimations.IsDynamic)
             {
@@ -630,10 +678,25 @@ public class MenuData
                 };
             }
 
-            // TODO: field_0x8c8
-            // TODO: field_0x8f0
+            MultiplayerTypeName = new AnimatedObject(multiplayerTypeAnimations, multiplayerTypeAnimations.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 3,
+                ObjPriority = 0,
+                ScreenPos = new Vector2(110, 124),
+                CurrentAnimation = 0
+            };
 
-            HelpArrowLeft = new AnimatedObject(helpArrowAnimations, helpArrowAnimations.IsDynamic)
+            MultiplayerTypeFrame = new AnimatedObject(multiplayerTypeFrameAnimations, multiplayerTypeFrameAnimations.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 1,
+                ObjPriority = 0,
+                ScreenPos = new Vector2(108, 65),
+                CurrentAnimation = 2
+            };
+
+            ArrowLeft = new AnimatedObject(multiplayerTypeFrameAnimations, multiplayerTypeFrameAnimations.IsDynamic)
             {
                 IsFramed = true,
                 BgPriority = 1,
@@ -642,7 +705,7 @@ public class MenuData
                 CurrentAnimation = 1,
             };
 
-            HelpArrowRight = new AnimatedObject(helpArrowAnimations, helpArrowAnimations.IsDynamic)
+            ArrowRight = new AnimatedObject(multiplayerTypeFrameAnimations, multiplayerTypeFrameAnimations.IsDynamic)
             {
                 IsFramed = true,
                 BgPriority = 1,
@@ -651,10 +714,41 @@ public class MenuData
                 CurrentAnimation = 0,
             };
 
-            // TODO: field_0x970
-            // TODO: multiplayerMapSelection
-            // TODO: multiplayerMapName1
-            // TODO: multiplayerMapName2
+            MultiplayerTypeIcon = new AnimatedObject(multiplayerTypeIconAnimations, multiplayerTypeIconAnimations.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 1,
+                ObjPriority = 0,
+                ScreenPos = new Vector2(83, 54),
+                CurrentAnimation = 0
+            };
+
+            MultiplayerMapSelection = new AnimatedObject(multiplayerMapAnimations, multiplayerMapAnimations.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 3,
+                ObjPriority = 0,
+                ScreenPos = new Vector2(88, 102),
+                CurrentAnimation = 0
+            };
+
+            MultiplayerMapName1 = new SpriteTextObject()
+            {
+                BgPriority = 3,
+                ObjPriority = 0,
+                ScreenPos = new Vector2(48, 80),
+                FontSize = FontSize.Font16,
+                Color = TextColor.Menu,
+            };
+
+            MultiplayerMapName2 = new SpriteTextObject()
+            {
+                BgPriority = 3,
+                ObjPriority = 0,
+                ScreenPos = new Vector2(38, 120),
+                FontSize = FontSize.Font16,
+                Color = TextColor.Menu,
+            };
         }
         else
         {
@@ -692,8 +786,8 @@ public class MenuData
     public AnimatedObject MultiplayerPlayerSelectionHighlight { get; set; }
     public AnimatedObject MultiplayerTypeName { get; set; }
     public AnimatedObject MultiplayerTypeFrame { get; set; }
-    public AnimatedObject MultiplayerTypeLeftArrow { get; set; }
-    public AnimatedObject MultiplayerTypeRightArrow { get; set; }
+    public AnimatedObject ArrowLeft { get; set; }
+    public AnimatedObject ArrowRight { get; set; }
     public AnimatedObject MultiplayerTypeIcon { get; set; }
     public AnimatedObject MultiplayerMapSelection { get; set; }
     public SpriteTextObject MultiplayerMapName1 { get; set; }
@@ -705,6 +799,5 @@ public class MenuData
     public AnimatedObject BackSymbol { get; set; }
     public AnimatedObject QuitSelection { get; set; }
     public AnimatedObject QuitHeader { get; set; }
-    public AnimatedObject HelpArrowLeft { get; set; }
-    public AnimatedObject HelpArrowRight { get; set; }
+    public AnimatedObject MultiplayerConnectionSelection { get; }
 }
