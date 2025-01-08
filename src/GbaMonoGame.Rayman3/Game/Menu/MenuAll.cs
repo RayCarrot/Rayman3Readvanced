@@ -16,7 +16,6 @@ public partial class MenuAll : Frame, IHasPlayfield
 
     public MenuAll(Page initialPage)
     {
-        // TODO: Update for N-Gage
         WheelRotation = 0;
         SelectedOption = 0;
         PrevSelectedOption = 0;
@@ -25,7 +24,12 @@ public partial class MenuAll : Frame, IHasPlayfield
         CurrentStepAction = null;
         NextStepAction = null;
         TransitionValue = 0;
-        MultiplayerPlayersOffsetY = 70;
+        MultiplayerPlayersOffsetY = Engine.Settings.Platform switch
+        {
+            Platform.GBA => 70,
+            Platform.NGage => 100,
+            _ => throw new UnsupportedPlatformException()
+        };
         SinglePakPlayersOffsetY = 70;
         GameLogoMovementXOffset = 3;
         GameLogoMovementWidth = 6;
@@ -33,23 +37,41 @@ public partial class MenuAll : Frame, IHasPlayfield
         GameLogoMovementXCountdown = 0;
         GameLogoYOffset = 0;
         StemMode = 0;
-        IsMultiplayerConnected = null;
-        MultiplayerConnectionTimer = 0;
-        MultiplayerLostConnectionTimer = 0;
+
+        if (Engine.Settings.Platform == Platform.GBA)
+        {
+            IsMultiplayerConnected = null;
+            MultiplayerConnectionTimer = 0;
+            MultiplayerLostConnectionTimer = 0;
+        }
+
         MultiplayerType = 0;
         MultiplayerMapId = 0;
-        field_0x80 = false;
+        HasProcessedPackets = false;
         IsLoadingMultiplayerMap = false;
         ShouldTextBlink = false;
-        FinishedLyChallenge1 = false;
-        FinishedLyChallenge2 = false;
-        HasAllCages = false;
-        ReturningFromMultiplayerGame = false;
+
+        if (Engine.Settings.Platform == Platform.GBA)
+        {
+            FinishedLyChallenge1 = false;
+            FinishedLyChallenge2 = false;
+            HasAllCages = false;
+            ReturningFromMultiplayerGame = false;
+        }
+
         Slots = new Slot[3];
         HasLoadedGameInfo = false;
         IsStartingGame = false;
         InitialPage = initialPage;
         PreviousTextId = 0;
+
+        if (Engine.Settings.Platform == Platform.NGage)
+        {
+            CaptureTheFlagTargetTime = 360;
+            CaptureTheFlagTargetFlagsCount = 3;
+            CaptureTheFlagMode = CaptureTheFlagMode.Solo;
+            CaptureTheFlagSoloMode = 0;
+        }
     }
 
     #endregion
@@ -537,7 +559,7 @@ public partial class MenuAll : Frame, IHasPlayfield
             case Page.MultiplayerLostConnection:
                 IsLoadingMultiplayerMap = true;
                 Playfield.TileLayers[3].Screen.IsEnabled = false;
-                CurrentStepAction = Step_InitializeMultiplayerLostConnection;
+                CurrentStepAction = Step_InitializeTransitionToMultiplayerLostConnection;
                 break;
 
             // N-Gage exclusive

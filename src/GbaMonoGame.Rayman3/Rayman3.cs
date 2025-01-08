@@ -700,7 +700,9 @@ public class Rayman3 : GbaGame
             { ActorType.JanoShot, (instanceId, scene, resource) => new JanoShot(instanceId, scene, resource) },
             { ActorType.MetalShieldedHoodboom, (instanceId, scene, resource) => new MetalShieldedHoodboom(instanceId, scene, resource) },
 
-            { ActorType.RaymanCaptureTheFlag, (instanceId, scene, resource) => new Rayman(instanceId, scene, resource) },
+            { ActorType.RaymanCaptureTheFlagSolo, (instanceId, scene, resource) => new Rayman(instanceId, scene, resource) },
+
+            { ActorType.RaymanCaptureTheFlagTeams, (instanceId, scene, resource) => new Rayman(instanceId, scene, resource) },
         }, x => ((ActorType)x).ToString());
         Dictionary<MapId, LevelFactory.CreateLevel> levelCreations = new()
         {

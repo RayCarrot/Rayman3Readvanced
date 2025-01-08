@@ -101,5 +101,7 @@ public enum ActorType
     MetalShieldedHoodboom = 110,
 
     // N-Gage exclusive
-    RaymanCaptureTheFlag = 112,
+    RaymanCaptureTheFlagSolo = 112,
+
+    RaymanCaptureTheFlagTeams = 115,
 }

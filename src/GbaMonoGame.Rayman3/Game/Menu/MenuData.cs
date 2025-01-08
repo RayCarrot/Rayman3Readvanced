@@ -3,7 +3,6 @@ using GbaMonoGame.AnimEngine;
 
 namespace GbaMonoGame.Rayman3;
 
-// TODO: Add N-Gage support
 public class MenuData
 {
     public MenuData(int multiplayerMultiPakPlayersOffsetY, int multiplayerSinglePakPlayersOffsetY)
@@ -393,6 +392,7 @@ public class MenuData
             AnimatedObjectResource multiplayerTypeFrameAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerTypeFrameAnimations);
             AnimatedObjectResource multiplayerTypeIconAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerTypeIconAnimations);
             AnimatedObjectResource multiplayerMapAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerMapAnimations);
+            AnimatedObjectResource multiplayerCaptureTheFlagAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerCaptureTheFlagAnimations);
 
             Wheel2 = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
             {
@@ -458,13 +458,72 @@ public class MenuData
                 CurrentAnimation = 13,
             };
 
-            // TODO: field_0x568
-            // TODO: field_0x590
-            // TODO: field_0x5b8
-            // TODO: field_0x5e0
-            // TODO: field_0x608
-            // TODO: field_0x630
-            // TODO: field_0x658
+            MultiplayerCaptureTheFlagOptions = new AnimatedObject(multiplayerCaptureTheFlagAnimations, multiplayerCaptureTheFlagAnimations.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 3,
+                ObjPriority = 0,
+                ScreenPos = new Vector2(84, 104),
+                CurrentAnimation = 0,
+            };
+
+            MultiplayerCaptureTheFlagModeName = new AnimatedObject(multiplayerCaptureTheFlagAnimations, multiplayerCaptureTheFlagAnimations.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 3,
+                ObjPriority = 0,
+                ScreenPos = new Vector2(125, 76),
+                CurrentAnimation = 5,
+            };
+
+            MultiplayerCaptureTheFlagOptionsArrowLeft = new AnimatedObject(multiplayerCaptureTheFlagAnimations, multiplayerCaptureTheFlagAnimations.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 3,
+                ObjPriority = 0,
+                ScreenPos = new Vector2(117, 0),
+                CurrentAnimation = 15,
+            };
+
+            MultiplayerCaptureTheFlagOptionsArrowRight = new AnimatedObject(multiplayerCaptureTheFlagAnimations, multiplayerCaptureTheFlagAnimations.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 3,
+                ObjPriority = 0,
+                ScreenPos = new Vector2(166, 0),
+                CurrentAnimation = 16,
+            };
+
+            MultiplayerCaptureTheFlagOptionsColon = new AnimatedObject(multiplayerCaptureTheFlagAnimations, multiplayerCaptureTheFlagAnimations.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 3,
+                ObjPriority = 0,
+                ScreenPos = new Vector2(134, 140),
+                CurrentAnimation = 17,
+            };
+
+            MultiplayerCaptureTheFlagOptionsFlagsDigit = new AnimatedObject(multiplayerCaptureTheFlagAnimations, multiplayerCaptureTheFlagAnimations.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 3,
+                ObjPriority = 0,
+                ScreenPos = new Vector2(125, 109),
+                CurrentAnimation = 18,
+            };
+
+            MultiplayerCaptureTheFlagOptionsTimeDigits = new AnimatedObject[3];
+            for (int i = 0; i < MultiplayerCaptureTheFlagOptionsTimeDigits.Length; i++)
+            {
+                MultiplayerCaptureTheFlagOptionsTimeDigits[i] = new AnimatedObject(multiplayerCaptureTheFlagAnimations, multiplayerCaptureTheFlagAnimations.IsDynamic)
+                {
+                    IsFramed = true,
+                    BgPriority = 3,
+                    ObjPriority = 0,
+                    ScreenPos = new Vector2(i == 0 ? 125 : (i + 1) * 9 + 125, 140),
+                    CurrentAnimation = 18,
+                };
+            }
 
             MultiplayerPlayerSelection = new AnimatedObject(multiplayerPlayersAnimations, multiplayerPlayersAnimations.IsDynamic)
             {
@@ -800,4 +859,11 @@ public class MenuData
     public AnimatedObject QuitSelection { get; set; }
     public AnimatedObject QuitHeader { get; set; }
     public AnimatedObject MultiplayerConnectionSelection { get; }
+    public AnimatedObject MultiplayerCaptureTheFlagOptions {  get; }
+    public AnimatedObject MultiplayerCaptureTheFlagModeName { get; }
+    public AnimatedObject MultiplayerCaptureTheFlagOptionsArrowLeft { get; }
+    public AnimatedObject MultiplayerCaptureTheFlagOptionsArrowRight { get; }
+    public AnimatedObject MultiplayerCaptureTheFlagOptionsColon { get; }
+    public AnimatedObject MultiplayerCaptureTheFlagOptionsFlagsDigit { get; }
+    public AnimatedObject[] MultiplayerCaptureTheFlagOptionsTimeDigits { get; }
 }

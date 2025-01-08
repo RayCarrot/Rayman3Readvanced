@@ -25,7 +25,7 @@
 | Name                   | State   | Info                                         |
 | ---------------------- | ------- | -------------------------------------------- |
 | Intro                  | 🟩     |                                              |
-| MenuAll                | 🟨     | Not implemented on N-Gage                    |
+| MenuAll                | 🟩     |                                              |
 | GameCubeMenu           | 🟩     |                                              |
 | Act                    | 🟩     |                                              |
 | GameOver               | 🟩     |                                              |
