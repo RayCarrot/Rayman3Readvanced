@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 using BinarySerializer.Ubisoft.GbaEngine;
 using Microsoft.Xna.Framework;
@@ -9,7 +10,8 @@ namespace GbaMonoGame;
 
 public static class FontManager
 {
-    private const int CharsPerRow = 16;
+    private const int TextureWidth = 512;
+    private const int Padding = 2;
 
     private static LoadedFont _font8;
     private static LoadedFont _font16;
@@ -17,13 +19,27 @@ public static class FontManager
 
     public static Encoding Encoding { get; } = Encoding.GetEncoding(1252);
 
-    private static Texture2D CreateFontTexture(Font font, Color foreground, Color background)
+    private static Point GetCharSizeInTexture(Font font)
     {
         int charWidth = font.CharacterHeight; // Use the height as the width in the texture
         int charHeight = font.CharacterHeight;
 
+        // Apply padding so the characters don't bleed into each other when scaling
+        charWidth += Padding;
+        charHeight += Padding;
+
+        return new Point(charWidth, charHeight);
+    }
+
+    private static Texture2D CreateFontTexture(Font font, Color foreground, Color background)
+    {
+        // Get the size for each character in the font texture
+        Point charSize = GetCharSizeInTexture(font);
+
         // Use a single texture for the entire texture for better performance
-        Texture2D tex = new(Engine.GraphicsDevice, charWidth * CharsPerRow, charHeight * (Font.CharactersCount / CharsPerRow));
+        int charsPerRow = TextureWidth / charSize.X;
+        int textureHeight = (int)BitOperations.RoundUpToPowerOf2((uint)(charSize.Y * (Font.CharactersCount / charsPerRow)));
+        Texture2D tex = new(Engine.GraphicsDevice, TextureWidth, textureHeight);
         Color[] texColors = new Color[tex.Width * tex.Height];
 
         // Pad out end of array
@@ -42,8 +58,8 @@ public static class FontManager
                 continue;
 
             // Get the origin point of the character on the texture
-            int originX = (charIndex % CharsPerRow) * charWidth;
-            int originY = (charIndex / CharsPerRow) * charHeight;
+            int originX = (charIndex % charsPerRow) * charSize.X;
+            int originY = (charIndex / charsPerRow) * charSize.Y;
 
             int bitIndex = 0;
             uint value = 0;
@@ -84,16 +100,17 @@ public static class FontManager
 
     private static Rectangle[] GetFontCharacterRectangles(Font font)
     {
-        int charWidth = font.CharacterHeight; // Use the height as the width in the texture
-        int charHeight = font.CharacterHeight;
+        // Get the size for each character in the font texture
+        Point charSize = GetCharSizeInTexture(font);
 
+        int charsPerRow = TextureWidth / charSize.X;
         Rectangle[] rects = new Rectangle[Font.CharactersCount];
 
         for (int charIndex = 0; charIndex < rects.Length; charIndex++)
         {
             // Get the origin point of the character on the texture
-            int originX = (charIndex % CharsPerRow) * charWidth;
-            int originY = (charIndex / CharsPerRow) * charHeight;
+            int originX = (charIndex % charsPerRow) * charSize.X;
+            int originY = (charIndex / charsPerRow) * charSize.Y;
 
             rects[charIndex] = new Rectangle(originX, originY, font.CharacterWidths[charIndex], font.CharacterHeight);
         }
