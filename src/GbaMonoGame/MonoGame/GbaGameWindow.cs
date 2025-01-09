@@ -35,7 +35,12 @@ public class GbaGameWindow
             Engine.Config.WindowIsMaximized = false;
 
             if (DisplayMode == DisplayMode.Windowed)
-                ApplyState();
+            {
+                if (_form.WindowState != FormWindowState.Normal)
+                    _form.WindowState = FormWindowState.Normal;
+
+                SetResolution(value, DisplayMode.Windowed);
+            }
         }
     }
 
