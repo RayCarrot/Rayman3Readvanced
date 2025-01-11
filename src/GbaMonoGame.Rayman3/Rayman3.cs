@@ -2,6 +2,7 @@
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.Editor;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 using GbaMonoGame.TgxEngine;
 using Game = BinarySerializer.Ubisoft.GbaEngine.Game;
 
@@ -821,6 +822,9 @@ public class Rayman3 : GbaGame
                 new() { ActionId = 0, Name = "Default" },
             }),
         });
+
+        // Load fonts
+        ReadvancedFonts.Load(Content);
 
         // Set default language
         Localization.SetLanguage(0);
