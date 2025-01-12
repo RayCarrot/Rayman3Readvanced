@@ -2,6 +2,7 @@
 using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.Editor;
+using GbaMonoGame.Rayman3.Readvanced;
 using ImGuiNET;
 
 namespace GbaMonoGame.Rayman3;
@@ -10,6 +11,7 @@ public class FramesDebugMenu : DebugMenu
 {
     private FrameMenuItem[] Menu { get; } =
     [
+        new("Title Screen", () => new TitleScreen()),
         new("Intro", () => new Intro()),
         new("GameCubeMenu", () => new GameCubeMenu()),
         new("Game Over", () => new GameOver()),
