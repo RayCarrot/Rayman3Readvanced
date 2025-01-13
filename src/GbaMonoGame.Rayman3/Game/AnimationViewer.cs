@@ -31,7 +31,7 @@ public class AnimationViewer : Frame
 
     private void InitSelectResource()
     {
-        int resourcesCount = Engine.Loader.GameOffsetTable.Count;
+        int resourcesCount = Rom.Loader.GameOffsetTable.Count;
         SetText($"Resource {SelectedResourceIndex}/{resourcesCount - 1}");
 
         CurrentStepAction = Step_SelectResource;
@@ -39,7 +39,7 @@ public class AnimationViewer : Frame
 
     private void InitSelectAnimation()
     {
-        AnimatedObjectResource resource = Storage.LoadResource<AnimatedObjectResource>(SelectedResourceIndex);
+        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(SelectedResourceIndex);
         Animation = new AnimatedObject(resource, resource.IsDynamic)
         {
             BgPriority = 0,
@@ -101,7 +101,7 @@ public class AnimationViewer : Frame
 
     public void Step_SelectResource()
     {
-        int resourcesCount = Engine.Loader.GameOffsetTable.Count;
+        int resourcesCount = Rom.Loader.GameOffsetTable.Count;
 
         if (JoyPad.IsButtonJustPressed(GbaInput.Left))
         {

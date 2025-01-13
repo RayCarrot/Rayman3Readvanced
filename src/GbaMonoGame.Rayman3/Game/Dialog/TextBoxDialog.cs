@@ -207,7 +207,7 @@ public partial class TextBoxDialog : Dialog
         // NOTE: Game has it set up so Load can be called multiple times. Dynamic objects don't get recreated after the first time, but instead
         //       reloaded into VRAM. We don't need to do that though due to how the graphics system works here, so just always create everything.
 
-        AnimatedObjectResource canvasResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.TextBoxCanvasAnimations);
+        AnimatedObjectResource canvasResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.TextBoxCanvasAnimations);
         Canvas = new AnimatedObject(canvasResource, false)
         {
             IsFramed = true,
@@ -217,7 +217,7 @@ public partial class TextBoxDialog : Dialog
             RenderContext = Scene.HudRenderContext,
         };
 
-        AnimatedObjectResource raymanIconResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.TextBoxRaymanIconAnimations);
+        AnimatedObjectResource raymanIconResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.TextBoxRaymanIconAnimations);
         RaymanIcon = new AnimatedObject(raymanIconResource, true)
         {
             IsFramed = true,
@@ -227,7 +227,7 @@ public partial class TextBoxDialog : Dialog
             RenderContext = Scene.HudRenderContext,
         };
 
-        int textsCount = Engine.Settings.Platform switch
+        int textsCount = Rom.Platform switch
         {
             Platform.GBA => 2,
             Platform.NGage => 3,
@@ -248,7 +248,7 @@ public partial class TextBoxDialog : Dialog
             };
         }
 
-        AnimatedObjectResource murfyIconResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.TextBoxMurfyIconAnimations);
+        AnimatedObjectResource murfyIconResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.TextBoxMurfyIconAnimations);
         MurfyIcon = new AnimatedObject(murfyIconResource, true)
         {
             IsFramed = true,
@@ -259,7 +259,7 @@ public partial class TextBoxDialog : Dialog
         };
 
         // NOTE: The game only creates the two icons below if map id is not certain levels. We can ignore that as it's probably for vram allocation.
-        AnimatedObjectResource lyIconResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.TextBoxLyIconAnimations);
+        AnimatedObjectResource lyIconResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.TextBoxLyIconAnimations);
         LyIcon = new AnimatedObject(lyIconResource, true)
         {
             IsFramed = true,
@@ -269,7 +269,7 @@ public partial class TextBoxDialog : Dialog
             RenderContext = Scene.HudRenderContext,
         };
 
-        AnimatedObjectResource teensiesIconResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.TextBoxTeensiesIconAnimations);
+        AnimatedObjectResource teensiesIconResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.TextBoxTeensiesIconAnimations);
         TeensiesIcon = new AnimatedObject(teensiesIconResource, true)
         {
             IsFramed = true,

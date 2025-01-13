@@ -9,7 +9,7 @@ public partial class MenuAll
 
     public bool IsLoadingCredits { get; set; }
 
-    public int OptionsOptionsCount { get; } = Engine.Settings.Platform switch
+    public int OptionsOptionsCount { get; } = Rom.Platform switch
     {
         Platform.GBA => 3,
         Platform.NGage => 4,
@@ -22,7 +22,7 @@ public partial class MenuAll
 
     private void UpdateMusicVolumeAnimations()
     {
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             if (IsMusicOn())
             {
@@ -91,7 +91,7 @@ public partial class MenuAll
                 }
             }
         }
-        else if (Engine.Settings.Platform == Platform.NGage)
+        else if (Rom.Platform == Platform.NGage)
         {
             switch (((NGageSoundEventsManager)SoundEventsManager.Current).MusicVolume)
             {
@@ -120,7 +120,7 @@ public partial class MenuAll
 
     private void UpdateSfxVolumeAnimations()
     {
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             if (IsSfxOn())
             {
@@ -189,7 +189,7 @@ public partial class MenuAll
                 }
             }
         }
-        else if (Engine.Settings.Platform == Platform.NGage)
+        else if (Rom.Platform == Platform.NGage)
         {
             switch (((NGageSoundEventsManager)SoundEventsManager.Current).SfxVolume)
             {
@@ -313,11 +313,11 @@ public partial class MenuAll
         // Center sprites if English
         if (Localization.Language == 0)
         {
-            if (Engine.Settings.Platform == Platform.GBA)
+            if (Rom.Platform == Platform.GBA)
             {
                 Data.OptionsSelection.ScreenPos = Data.OptionsSelection.ScreenPos with { X = 86 };
             }
-            else if (Engine.Settings.Platform == Platform.NGage)
+            else if (Rom.Platform == Platform.NGage)
             {
                 Data.OptionsSelection.ScreenPos = Data.OptionsSelection.ScreenPos with { X = 58 };
             }
@@ -336,7 +336,7 @@ public partial class MenuAll
             int x;
             if (Localization.Language == 0)
             {
-                x = Engine.Settings.Platform switch
+                x = Rom.Platform switch
                 {
                     Platform.GBA => 180,
                     Platform.NGage => 142,
@@ -345,7 +345,7 @@ public partial class MenuAll
             }
             else
             {
-                x = Engine.Settings.Platform switch
+                x = Rom.Platform switch
                 {
                     Platform.GBA => 210,
                     Platform.NGage => 152,
@@ -379,7 +379,7 @@ public partial class MenuAll
         int x;
         if (Localization.Language == 0)
         {
-            x = Engine.Settings.Platform switch
+            x = Rom.Platform switch
             {
                 Platform.GBA => 260,
                 Platform.NGage => 222,
@@ -388,7 +388,7 @@ public partial class MenuAll
         }
         else
         {
-            x = Engine.Settings.Platform switch
+            x = Rom.Platform switch
             {
                 Platform.GBA => 290,
                 Platform.NGage => 232,
@@ -406,7 +406,7 @@ public partial class MenuAll
             CurrentStepAction = Step_Options;
         }
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
         {
             UpdateMusicVolumeAnimations();
             UpdateSfxVolumeAnimations();
@@ -461,11 +461,11 @@ public partial class MenuAll
                 // Music volume
                 if (SelectedOption == 0)
                 {
-                    if (Engine.Settings.Platform == Platform.GBA)
+                    if (Rom.Platform == Platform.GBA)
                     {
                         ToggleMusicOnOff();
                     }
-                    else if (Engine.Settings.Platform == Platform.NGage)
+                    else if (Rom.Platform == Platform.NGage)
                     {
                         if (((NGageSoundEventsManager)SoundEventsManager.Current).MusicVolume < SoundEngineInterface.MaxVolume)
                             ModifyMusicVolume(1);
@@ -482,11 +482,11 @@ public partial class MenuAll
                 // Sfx volume
                 else if (SelectedOption == 1)
                 {
-                    if (Engine.Settings.Platform == Platform.GBA)
+                    if (Rom.Platform == Platform.GBA)
                     {
                         ToggleSfxOnOff();
                     }
-                    else if (Engine.Settings.Platform == Platform.NGage)
+                    else if (Rom.Platform == Platform.NGage)
                     {
                         if (((NGageSoundEventsManager)SoundEventsManager.Current).SfxVolume < SoundEngineInterface.MaxVolume)
                             ModifySfxVolume(1);
@@ -503,7 +503,7 @@ public partial class MenuAll
 
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
             }
-            else if (Engine.Settings.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(GbaInput.Left) && Data.Cursor.CurrentAnimation == 0)
+            else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(GbaInput.Left) && Data.Cursor.CurrentAnimation == 0)
             {
                 if (SelectedOption == 0)
                 {
@@ -520,7 +520,7 @@ public partial class MenuAll
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                 }
             }
-            else if (Engine.Settings.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(GbaInput.Right) && Data.Cursor.CurrentAnimation == 0)
+            else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(GbaInput.Right) && Data.Cursor.CurrentAnimation == 0)
             {
                 if (SelectedOption == 0)
                 {
@@ -547,7 +547,7 @@ public partial class MenuAll
                     TransitionsFX.FadeOutInit(4 / 16f);
                     IsLoadingCredits = true;
                 }
-                else if (Engine.Settings.Platform == Platform.NGage && SelectedOption == 3)
+                else if (Rom.Platform == Platform.NGage && SelectedOption == 3)
                 {
                     NextStepAction = Step_InitializeTransitionToSelectLanguage;
                     CurrentStepAction = Step_TransitionOutOfOptions;
@@ -575,7 +575,7 @@ public partial class MenuAll
             int x;
             if (Localization.Language == 0)
             {
-                x = Engine.Settings.Platform switch
+                x = Rom.Platform switch
                 {
                     Platform.GBA => 180,
                     Platform.NGage => 142,
@@ -584,7 +584,7 @@ public partial class MenuAll
             }
             else
             {
-                x = Engine.Settings.Platform switch
+                x = Rom.Platform switch
                 {
                     Platform.GBA => 210,
                     Platform.NGage => 152,

@@ -46,14 +46,14 @@ public partial class Arrive
                 {
                     if (GameInfo.MapId == MapId.ChallengeLy1 && !GameInfo.PersistentInfo.FinishedLyChallenge1)
                     {
-                        if (Engine.Settings.Platform == Platform.GBA)
+                        if (Rom.Platform == Platform.GBA)
                             Scene.GetGameObject(LinkedActor!.Value).ProcessMessage(this, Message.Murfy_Spawn);
 
                         GameInfo.PersistentInfo.FinishedLyChallenge1 = true;
                     }
                     else if (GameInfo.MapId == MapId.ChallengeLy2 && !GameInfo.PersistentInfo.FinishedLyChallenge2)
                     {
-                        if (Engine.Settings.Platform == Platform.GBA)
+                        if (Rom.Platform == Platform.GBA)
                             Scene.GetGameObject(LinkedActor!.Value).ProcessMessage(this, Message.Murfy_Spawn);
 
                         GameInfo.PersistentInfo.FinishedLyChallenge2 = true;
@@ -78,7 +78,7 @@ public partial class Arrive
 
                 if (endLevel)
                 {
-                    if (Engine.Settings.Platform == Platform.GBA)
+                    if (Rom.Platform == Platform.GBA)
                         State.MoveTo(Fsm_Cutscene);
                     else
                         State.MoveTo(Fsm_EndLevel);
@@ -130,12 +130,12 @@ public partial class Arrive
             case FsmAction.Step:
                 if (IsActionFinished && ActionId == Action.EndingLevel)
                 {
-                    if (Engine.Settings.Platform == Platform.GBA)
+                    if (Rom.Platform == Platform.GBA)
                     {
                         if (GameInfo.MapId == MapId.ChallengeLyGCN)
                             Scene.MainActor.ProcessMessage(this, Message.Main_LevelEnd);
                     }
-                    else if (Engine.Settings.Platform == Platform.NGage)
+                    else if (Rom.Platform == Platform.NGage)
                     {
                         if (GameInfo.MapId is MapId.ChallengeLy1 or MapId.ChallengeLy2 or MapId.ChallengeLyGCN)
                             Scene.MainActor.ProcessMessage(this, Message.Main_LevelEnd);

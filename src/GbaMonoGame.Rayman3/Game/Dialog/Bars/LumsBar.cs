@@ -36,7 +36,7 @@ public class LumsBar : Bar
 
     public override void Load()
     {
-        AnimatedObjectResource resource = Storage.LoadResource<AnimatedObjectResource>(GameResource.HudAnimations);
+        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.HudAnimations);
 
         LumsIcon = new AnimatedObject(resource, false)
         {

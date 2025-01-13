@@ -7,28 +7,16 @@ public class TitleScreenGame
 {
     public TitleScreenGame(Platform platform, Cursor cursor, Vector2 position)
     {
-        string[] options =
+        Platform = platform;
+        Cursor = cursor;
+        Position = position;
+
+        SetOptions(
         [
             "CONTINUE",
             "START",
             "OPTIONS"
-        ];
-
-        Platform = platform;
-        Cursor = cursor;
-        OptionTexts = new SpriteFontTextObject[options.Length];
-        for (int i = 0; i < options.Length; i++)
-        {
-            OptionTexts[i] = new SpriteFontTextObject
-            {
-                BgPriority = 0,
-                ObjPriority = 0,
-                ScreenPos = position + new Vector2(0, 16) * i,
-                Text = options[i],
-                Font = ReadvancedFonts.MenuYellow,
-            };
-        }
-
+        ]);
         SelectedIndex = -1;
     }
 
@@ -36,7 +24,8 @@ public class TitleScreenGame
 
     public Platform Platform { get; }
     public Cursor Cursor { get; }
-    public SpriteFontTextObject[] OptionTexts { get; }
+    public Vector2 Position { get; }
+    public SpriteFontTextObject[] OptionTexts { get; set; }
 
     public int SelectedIndex
     {
@@ -51,6 +40,25 @@ public class TitleScreenGame
         }
     }
 
+    private void SetOptions(string[] options)
+    {
+        OptionTexts = new SpriteFontTextObject[options.Length];
+        for (int i = 0; i < options.Length; i++)
+        {
+            OptionTexts[i] = new SpriteFontTextObject
+            {
+                BgPriority = 0,
+                ObjPriority = 0,
+                ScreenPos = Position + new Vector2(0, 16) * i,
+                Text = options[i],
+                Font = ReadvancedFonts.MenuYellow,
+            };
+        }
+
+        if (SelectedIndex != -1)
+            SelectedIndex = 0;
+    }
+
     private void UpdateSelection()
     {
         for (int i = 0; i < OptionTexts.Length; i++)
@@ -59,7 +67,7 @@ public class TitleScreenGame
 
     public void Step()
     {
-        if (SelectedIndex != -1 && !Cursor.IsMoving)
+        if (SelectedIndex != -1)
         {
             if (JoyPad.IsButtonJustPressed(GbaInput.Down))
             {

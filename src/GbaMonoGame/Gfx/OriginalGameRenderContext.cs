@@ -10,8 +10,8 @@ public sealed class OriginalGameRenderContext : RenderContext
         float ratio = Engine.GameViewPort.GameResolution.X / Engine.GameViewPort.GameResolution.Y;
 
         if (ratio > 1)
-            return new Vector2(ratio * Engine.GameViewPort.OriginalGameResolution.Y, Engine.GameViewPort.OriginalGameResolution.Y);
+            return new Vector2(ratio * Rom.OriginalResolution.Y, Rom.OriginalResolution.Y);
         else
-            return new Vector2(Engine.GameViewPort.OriginalGameResolution.X, 1 / ratio * Engine.GameViewPort.OriginalGameResolution.X);
+            return new Vector2(Rom.OriginalResolution.X, 1 / ratio * Rom.OriginalResolution.X);
     }
 }

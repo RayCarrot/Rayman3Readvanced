@@ -22,7 +22,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         CurrentMovement = WorldMapMovement.None;
         WorldId = GameInfo.WorldId;
         SelectedWorldType = WorldType.None;
-        ScrollX = Engine.Settings.Platform switch
+        ScrollX = Rom.Platform switch
         {
             Platform.GBA => 56,
             Platform.NGage => 0,
@@ -91,7 +91,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
     public WorldId WorldId { get; set; }
     public byte CheatValue { get; set; }
 
-    public Vector2 BaseObjPos => Engine.Settings.Platform switch
+    public Vector2 BaseObjPos => Rom.Platform switch
     {
         Platform.GBA => new Vector2(246, 84),
         Platform.NGage => new Vector2(175, 114),
@@ -116,7 +116,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         // Since it scrolls with the camera we want to use the normal render context instead of a scaled parallax background one
         spikyBagScreen.RenderContext = Scene.RenderContext;
 
-        float offsetX = Engine.Settings.Platform switch
+        float offsetX = Rom.Platform switch
         {
             Platform.GBA => -16,
             Platform.NGage => -72,
@@ -124,7 +124,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         };
 
         // In the original game it keeps the wrap, but creates a window to hide the screen on the left side of the worldmap
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             spikyBagScreen.Wrap = false;
             offsetX += spikyBagScreen.Renderer.GetSize(spikyBagScreen).X;
@@ -138,7 +138,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
     private void StepSpikyBag()
     {
         GfxScreen spikyBagScreen = Gfx.GetScreen(3);
-        float offsetX = Engine.Settings.Platform switch
+        float offsetX = Rom.Platform switch
         {
             Platform.GBA => -16,
             Platform.NGage => 165,
@@ -146,7 +146,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         };
 
         // In the original game it keeps the wrap, but creates a window to hide the screen on the left side of the worldmap
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
             offsetX += spikyBagScreen.Renderer.GetSize(spikyBagScreen).X;
 
         spikyBagScreen.Offset = spikyBagScreen.Offset with { X = ScrollX - (4 * MathHelpers.Sin256(SpikyBagSinValue) + offsetX) };
@@ -232,7 +232,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         //       This however masks half tiles which would be really annoying to implement, since we'd need to clip
         //       individual tiles then, and also seems to be a miscalculation by the game since it produces graphical
         //       artifact of a few pixels that are left on both sides.
-        int lightningClip = Engine.Settings.Platform switch
+        int lightningClip = Rom.Platform switch
         {
             Platform.GBA => 416,
             Platform.NGage => 352,
@@ -242,7 +242,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         Vector2 size = lightningRenderer.GetSize(lightningLayer.Screen);
 
         // TODO: Allow this effect on N-Gage
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             // NOTE: The game only does this if ScrollX > 152, but we can ignore that
 
@@ -283,7 +283,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
             int value = LightningValue;
 
-            int max = Engine.Settings.Platform switch
+            int max = Rom.Platform switch
             {
                 Platform.GBA => LightningMaxValue,
                 Platform.NGage => LightningMaxValue + 1 * factor, // Why does it do this?
@@ -576,14 +576,14 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                     GameInfo.PersistentInfo.FinishedLyChallenge1 = true;
                     GameInfo.PersistentInfo.FinishedLyChallenge2 = true;
 
-                    if (Engine.Settings.Platform == Platform.GBA)
+                    if (Rom.Platform == Platform.GBA)
                         GameInfo.PersistentInfo.FinishedLyChallengeGCN = true;
                     
                     GameInfo.PersistentInfo.PlayedAct4 = true;
                     GameInfo.PersistentInfo.PlayedMurfyWorldHelp = true;
                     GameInfo.PersistentInfo.UnlockedFinalBoss = true;
 
-                    if (Engine.Settings.Platform == Platform.GBA)
+                    if (Rom.Platform == Platform.GBA)
                         GameInfo.PersistentInfo.CompletedGCNBonusLevels = 10;
 
                     GameInfo.SetAllCagesAsCollected();
@@ -639,7 +639,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         WorldNameAlpha = 0;
         EnterWorldStep = 0;
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
             LightningCountdown = 0;
 
         FullWorldName.GbaAlpha = WorldNameAlpha;
@@ -686,7 +686,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                 break;
 
             case WorldId.World2:
-                ScrollX = Engine.Settings.Platform switch
+                ScrollX = Rom.Platform switch
                 {
                     Platform.GBA => 128,
                     Platform.NGage => 72,
@@ -696,7 +696,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             
             case WorldId.World3:
             case WorldId.World4:
-                ScrollX = Engine.Settings.Platform switch
+                ScrollX = Rom.Platform switch
                 {
                     Platform.GBA => MathHelpers.FromFixedPoint(0xdf3544), // ???
                     Platform.NGage => 176,
@@ -722,7 +722,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         Scene = new Scene2D((int)GameInfo.MapId, x => new CameraWorldMap(x), 3, 1);
 
         // For some reason this playfield has 8 pixels of blank space on the bottom, so we have to limit the vertical resolution
-        Vector2 maxRes = new(((TgxPlayfield2D)Scene.Playfield).Size.X, Engine.GameViewPort.OriginalGameResolution.Y);
+        Vector2 maxRes = new(((TgxPlayfield2D)Scene.Playfield).Size.X, Rom.OriginalResolution.Y);
         Engine.GameViewPort.SetResolutionBounds(null, maxRes);
 
         // Create pause dialog, but don't add yet
@@ -739,7 +739,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         UserInfo = new UserInfoWorld(Scene, GameInfo.Level.HasBlueLum);
         Scene.AddDialog(UserInfo, false, false);
 
-        AnimatedObjectResource raymanResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.RaymanWorldMapAnimations);
+        AnimatedObjectResource raymanResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.RaymanWorldMapAnimations);
         Rayman = new AnimatedObject(raymanResource, raymanResource.IsDynamic)
         {
             IsFramed = true,
@@ -750,7 +750,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             RenderContext = Scene.RenderContext,
         };
 
-        AnimatedObjectResource worldPathsResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.WorldMapPathAnimations);
+        AnimatedObjectResource worldPathsResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.WorldMapPathAnimations);
         WorldPaths = new AnimatedObject[3];
         for (int i = 0; i < WorldPaths.Length; i++)
         {
@@ -772,7 +772,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         WorldPaths[2].CurrentAnimation = 5;
         WorldPaths[2].ScreenPos = BaseObjPos - new Vector2(ScrollX, 0);
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             GameCubeSparkles = new AnimatedObject(worldPathsResource, worldPathsResource.IsDynamic)
             {
@@ -830,7 +830,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
         CheatValue = 0;
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
             NGageScrollCooldown = 0;
     }
 
@@ -871,7 +871,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         Rayman.ScreenPos = Rayman.ScreenPos with { X = xPos };
         WorldPaths[0].ScreenPos = WorldPaths[0].ScreenPos with { X = xPos };
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
             GameCubeSparkles.ScreenPos = GameCubeSparkles.ScreenPos with { X = xPos };
 
         if (Timer <= 120)
@@ -899,7 +899,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
         Scene.AnimationPlayer.Play(Rayman);
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
             Scene.AnimationPlayer.Play(GameCubeSparkles);
 
         StepSpikyBag();
@@ -914,7 +914,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         WorldPaths[0].ScreenPos = WorldPaths[0].ScreenPos with { X = xPos };
         WorldPaths[1].ScreenPos = WorldPaths[1].ScreenPos with { X = xPos };
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
             GameCubeSparkles.ScreenPos = GameCubeSparkles.ScreenPos with { X = xPos };
 
         if (Timer <= 120)
@@ -943,7 +943,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         Scene.AnimationPlayer.Play(Rayman);
         Scene.AnimationPlayer.Play(WorldPaths[0]);
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
             Scene.AnimationPlayer.Play(GameCubeSparkles);
 
         StepSpikyBag();
@@ -959,7 +959,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         WorldPaths[1].ScreenPos = WorldPaths[1].ScreenPos with { X = xPos };
         WorldPaths[2].ScreenPos = WorldPaths[2].ScreenPos with { X = xPos };
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
             GameCubeSparkles.ScreenPos = GameCubeSparkles.ScreenPos with { X = xPos };
 
         if (Timer <= 120)
@@ -989,7 +989,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         Scene.AnimationPlayer.Play(WorldPaths[0]);
         Scene.AnimationPlayer.Play(WorldPaths[1]);
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
             Scene.AnimationPlayer.Play(GameCubeSparkles);
 
         StepSpikyBag();
@@ -1050,7 +1050,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                 switch (WorldId)
                 {
                     case WorldId.World1:
-                        if (Engine.Settings.Platform == Platform.GBA)
+                        if (Rom.Platform == Platform.GBA)
                         {
                             Rayman.CurrentAnimation = 22;
                             CurrentMovement = WorldMapMovement.World1ToGameCube;
@@ -1117,8 +1117,8 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                     }
                 }
 
-                if ((Engine.Settings.Platform == Platform.GBA && ScrollX < 128) ||
-                    (Engine.Settings.Platform == Platform.NGage && ScrollX < 72))
+                if ((Rom.Platform == Platform.GBA && ScrollX < 128) ||
+                    (Rom.Platform == Platform.NGage && ScrollX < 72))
                     camDelta = new Vector2(1, 0);
                 break;
 
@@ -1213,8 +1213,8 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                     }
                 }
 
-                if ((Engine.Settings.Platform == Platform.GBA && ScrollX > 128) ||
-                    (Engine.Settings.Platform == Platform.NGage && ScrollX > 72))
+                if ((Rom.Platform == Platform.GBA && ScrollX > 128) ||
+                    (Rom.Platform == Platform.NGage && ScrollX > 72))
                     camDelta = new Vector2(-1, 0);
                 break;
 
@@ -1253,7 +1253,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         if ((camDelta.X > 0 && !mainCluster.IsOnLimit(Edge.Right)) || 
             (camDelta.X < 0 && !mainCluster.IsOnLimit(Edge.Left)))
         {
-            if (Engine.Settings.Platform == Platform.NGage)
+            if (Rom.Platform == Platform.NGage)
             {
                 if (NGageScrollCooldown < 1)
                 {
@@ -1280,7 +1280,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         foreach (AnimatedObject worldPath in WorldPaths)
             worldPath.ScreenPos = worldPath.ScreenPos with { X = xPos };
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
             GameCubeSparkles.ScreenPos = GameCubeSparkles.ScreenPos with { X = xPos };
 
         if (SelectedWorldType != WorldType.GameCube)
@@ -1294,7 +1294,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         if (GameInfo.PersistentInfo.UnlockedWorld4)
             Scene.AnimationPlayer.Play(WorldPaths[2]);
         
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
             Scene.AnimationPlayer.Play(GameCubeSparkles);
 
         StepSpikyBag();
@@ -1303,7 +1303,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
         if (SelectedWorldType == WorldType.GameCube)
         {
-            if (Engine.Settings.Platform == Platform.GBA)
+            if (Rom.Platform == Platform.GBA)
                 SelectGameCube();
         }
         else if (SelectedWorldType != WorldType.None && CircleWipeTransitionMode == TransitionMode.FinishedOut)
@@ -1386,7 +1386,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             // Scale for widescreen
             Vector2 max = new(120, 8);
             Vector2 range = GameCubeTransitionScreenEffect.RenderContext.Resolution - max;
-            Vector2 scale = range / (Engine.GameViewPort.OriginalGameResolution - max);
+            Vector2 scale = range / (Rom.OriginalResolution - max);
 
             GameCubeTransitionScreenEffect.Square = new Box(
                 minX: Timer * 8 / 120f,
@@ -1581,7 +1581,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
             NGage_0x4 = false;
 
         CurrentStepAction = Step_Normal;

@@ -97,7 +97,7 @@ public class EchoingCaves_M2 : FrameSideScroller
         if (time == LightningTime)
         {
             // N-Gage doesn't hide the background due to the brightness effect not being implemented
-            if (Engine.Settings.Platform == Platform.GBA)
+            if (Rom.Platform == Platform.GBA)
                 bgScreen.IsEnabled = false;
 
             Gfx.FadeControl = new FadeControl(FadeMode.BrightnessIncrease);

@@ -38,7 +38,7 @@ public static class GameInfo
     };
 
     public static LevelInfo Level => Levels[(int)MapId];
-    public static LevelInfo[] Levels => Engine.Loader.Rayman3_LevelInfo;
+    public static LevelInfo[] Levels => Rom.Loader.Rayman3_LevelInfo;
 
     private static SaveGameSlot CloneSaveGameSlot(SaveGameSlot slot)
     {
@@ -123,23 +123,23 @@ public static class GameInfo
 
     public static void LoadOptions()
     {
-        if (Engine.Settings.Platform != Platform.NGage)
+        if (Rom.Platform != Platform.NGage)
             throw new Exception("Loading options is only supported on N-Gage");
 
         // NOTE: The game starts by validating the save data, but we skip that
 
-        ((NGageSoundEventsManager)SoundEventsManager.Current).MusicVolume = Engine.SaveGame.MusicVolume;
-        ((NGageSoundEventsManager)SoundEventsManager.Current).SfxVolume = Engine.SaveGame.SfxVolume;
+        ((NGageSoundEventsManager)SoundEventsManager.Current).MusicVolume = Rom.SaveGame.MusicVolume;
+        ((NGageSoundEventsManager)SoundEventsManager.Current).SfxVolume = Rom.SaveGame.SfxVolume;
 
         // NOTE: The game seems to ignore the saved language and use the system language each time? But we use the saved one.
-        Localization.SetLanguage(Engine.SaveGame.Language);
+        Localization.SetLanguage(Rom.SaveGame.Language);
 
         // TODO: Set multiplayer name
     }
 
     public static void Load(int saveSlot)
     {
-        PersistentInfo = CloneSaveGameSlot(Engine.SaveGame.Slots[saveSlot]);
+        PersistentInfo = CloneSaveGameSlot(Rom.SaveGame.Slots[saveSlot]);
     }
 
     public static void Save(int saveSlot)

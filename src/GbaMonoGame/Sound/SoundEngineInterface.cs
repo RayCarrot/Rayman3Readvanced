@@ -23,7 +23,7 @@ public static class SoundEngineInterface
     public static void Load()
     {
         // Load the Midi interface on GBA
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             MidiInterface.MidiParams = new MidiParams
             {
@@ -39,7 +39,7 @@ public static class SoundEngineInterface
     public static void SetNbVoices(byte newNbOfVoices)
     {
         // Only implemented on GBA
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             if (newNbOfVoices is < 1 or > 12)
                 throw new Exception("Invalid number of voices. Must be a value between 1 and 12.");

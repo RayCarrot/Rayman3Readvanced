@@ -24,7 +24,7 @@ public partial class MenuAll : Frame, IHasPlayfield
         CurrentStepAction = null;
         NextStepAction = null;
         TransitionValue = 0;
-        MultiplayerPlayersOffsetY = Engine.Settings.Platform switch
+        MultiplayerPlayersOffsetY = Rom.Platform switch
         {
             Platform.GBA => 70,
             Platform.NGage => 100,
@@ -38,7 +38,7 @@ public partial class MenuAll : Frame, IHasPlayfield
         GameLogoYOffset = 0;
         StemMode = 0;
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             IsMultiplayerConnected = null;
             MultiplayerConnectionTimer = 0;
@@ -51,7 +51,7 @@ public partial class MenuAll : Frame, IHasPlayfield
         IsLoadingMultiplayerMap = false;
         ShouldTextBlink = false;
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             FinishedLyChallenge1 = false;
             FinishedLyChallenge2 = false;
@@ -65,7 +65,7 @@ public partial class MenuAll : Frame, IHasPlayfield
         InitialPage = initialPage;
         PreviousTextId = 0;
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
         {
             CaptureTheFlagTargetTime = 360;
             CaptureTheFlagTargetFlagsCount = 3;
@@ -88,7 +88,7 @@ public partial class MenuAll : Frame, IHasPlayfield
     public Action CurrentStepAction { get; set; }
     public Action NextStepAction { get; set; }
 
-    public float CursorBaseY { get; } = Engine.Settings.Platform switch
+    public float CursorBaseY { get; } = Rom.Platform switch
     {
         Platform.GBA => 67,
         Platform.NGage => 77,
@@ -442,7 +442,7 @@ public partial class MenuAll : Frame, IHasPlayfield
 
     public void TransitionOutCursorAndStem()
     {
-        if (Engine.Settings.Platform == Platform.NGage || StemMode is 2 or 3)
+        if (Rom.Platform == Platform.NGage || StemMode is 2 or 3)
         {
             PrevSelectedOption = SelectedOption;
             SelectedOption = 0;
@@ -458,7 +458,7 @@ public partial class MenuAll : Frame, IHasPlayfield
 
     public void SelectOption(int selectedOption, bool playSound)
     {
-        if (Engine.Settings.Platform == Platform.NGage || StemMode is 2 or 3)
+        if (Rom.Platform == Platform.NGage || StemMode is 2 or 3)
         {
             PrevSelectedOption = SelectedOption;
             SelectedOption = selectedOption;
@@ -478,7 +478,7 @@ public partial class MenuAll : Frame, IHasPlayfield
 
         for (int i = 0; i < 3; i++)
         {
-            if (Engine.Settings.Platform == Platform.NGage && !Engine.SaveGame.ValidSlots[i])
+            if (Rom.Platform == Platform.NGage && !Rom.SaveGame.ValidSlots[i])
                 continue;
 
             GameInfo.Load(i);
@@ -488,7 +488,7 @@ public partial class MenuAll : Frame, IHasPlayfield
             else
                 Slots[i] = null;
 
-            if (Engine.Settings.Platform == Platform.GBA)
+            if (Rom.Platform == Platform.GBA)
             {
                 if (GameInfo.PersistentInfo.FinishedLyChallenge1)
                     FinishedLyChallenge1 = true;
@@ -511,9 +511,9 @@ public partial class MenuAll : Frame, IHasPlayfield
         Data = new MenuData(MultiplayerPlayersOffsetY, SinglePakPlayersOffsetY);
         WheelRotation = 0;
 
-        PlayfieldResource menuPlayField = Storage.LoadResource<PlayfieldResource>(GameResource.MenuPlayfield);
+        PlayfieldResource menuPlayField = Rom.LoadResource<PlayfieldResource>(GameResource.MenuPlayfield);
         Playfield = TgxPlayfield.Load<TgxPlayfield2D>(menuPlayField);
-        Engine.GameViewPort.SetResolutionBoundsToOriginalResolution();
+        Engine.GameViewPort.SetFixedResolution(Rom.OriginalResolution);
 
         Gfx.ClearColor = Color.Black;
 
@@ -526,7 +526,7 @@ public partial class MenuAll : Frame, IHasPlayfield
         switch (InitialPage)
         {
             case Page.SelectLanguage:
-                CurrentStepAction = Engine.Settings.Platform switch
+                CurrentStepAction = Rom.Platform switch
                 {
                     Platform.GBA => Step_SelectLanguage,
                     Platform.NGage => Step_InitializeTransitionToSelectLanguage,
@@ -548,7 +548,7 @@ public partial class MenuAll : Frame, IHasPlayfield
             case Page.Multiplayer:
                 IsLoadingMultiplayerMap = true;
                 Playfield.TileLayers[3].Screen.IsEnabled = false;
-                CurrentStepAction = Engine.Settings.Platform switch
+                CurrentStepAction = Rom.Platform switch
                 {
                     Platform.GBA => Step_InitializeTransitionToMultiplayerPlayerSelection,
                     Platform.NGage => Step_InitializeTransitionToMultiplayerTypeSelection,
@@ -579,7 +579,7 @@ public partial class MenuAll : Frame, IHasPlayfield
         RSMultiplayer.UnInit();
         RSMultiplayer.Init();
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
             MultiplayerInititialGameTime = GameTime.ElapsedFrames;
         
         MultiplayerInfo.Init();
@@ -615,10 +615,10 @@ public partial class MenuAll : Frame, IHasPlayfield
 
         CurrentStepAction();
 
-        if (Engine.Settings.Platform == Platform.NGage || CurrentStepAction != Step_SelectLanguage)
+        if (Rom.Platform == Platform.NGage || CurrentStepAction != Step_SelectLanguage)
             ManageCursorAndStem();
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
         {
             Data.SelectSymbol.CurrentAnimation = Localization.LanguageUiIndex;
             Data.BackSymbol.CurrentAnimation = 5 + Localization.LanguageUiIndex;
@@ -651,7 +651,7 @@ public partial class MenuAll : Frame, IHasPlayfield
         if (WheelRotation >= 2048)
             WheelRotation = 0;
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             Data.Wheel1.AffineMatrix = new AffineMatrix(WheelRotation % 256, 1, 1);
             Data.Wheel2.AffineMatrix = new AffineMatrix(255 - WheelRotation / 2f % 256, 1, 1);
@@ -680,7 +680,7 @@ public partial class MenuAll : Frame, IHasPlayfield
                 SteamTimer--;
             }
         }
-        else if (Engine.Settings.Platform == Platform.NGage)
+        else if (Rom.Platform == Platform.NGage)
         {
             Data.Wheel2.AffineMatrix = new AffineMatrix(255 - WheelRotation / 2f % 256, 1, 1);
             Data.Wheel4.AffineMatrix = new AffineMatrix(WheelRotation / 8f % 256, 1, 1);

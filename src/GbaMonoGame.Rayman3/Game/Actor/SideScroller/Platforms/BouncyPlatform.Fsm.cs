@@ -15,7 +15,7 @@ public partial class BouncyPlatform
                 if (!HasTrap)
                     ActionId = Action.Idle;
 
-                if (Engine.Settings.Platform == Platform.NGage)
+                if (Rom.Platform == Platform.NGage)
                 {
                     Array.Clear(DetectedActors);
                     TriggeredActor = null;
@@ -48,11 +48,11 @@ public partial class BouncyPlatform
                     ActionId = Action.EndTrap;
                 }
 
-                if (Engine.Settings.Platform == Platform.NGage && MultiplayerCooldown != 0)
+                if (Rom.Platform == Platform.NGage && MultiplayerCooldown != 0)
                     MultiplayerCooldown--;
 
                 bool detectedMainActor = false;
-                if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive)
+                if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive)
                 {
                     if (MultiplayerCooldown == 0 && ActionId == Action.Idle)
                     {
@@ -97,7 +97,7 @@ public partial class BouncyPlatform
             case FsmAction.Init:
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Bounce00_Mix03);
 
-                if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive)
+                if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive)
                 {
                     InitialMainActorSpeed = TriggeredActor.Speed;
                     foreach (MovableActor actor in DetectedActors)
@@ -150,7 +150,7 @@ public partial class BouncyPlatform
                         break;
                 }
 
-                if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive)
+                if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive)
                 {
                     Box box = GetActionBox();
                     for (int i = 0; i < RSMultiplayer.PlayersCount; i++)
@@ -170,7 +170,7 @@ public partial class BouncyPlatform
 
                 if (AnimatedObject.CurrentFrame > 3 && !HasTriggeredBounce)
                 {
-                    if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive)
+                    if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive)
                     {
                         foreach (MovableActor actor in DetectedActors)
                             actor?.ProcessMessage(this, Message.Main_Bounce);

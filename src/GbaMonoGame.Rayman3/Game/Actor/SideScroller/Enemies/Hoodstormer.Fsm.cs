@@ -91,9 +91,9 @@ public partial class Hoodstormer
             case FsmAction.Init:
                 ActionId = IsFacingRight ? Action.Fly_Right : Action.Fly_Left;
 
-                if (Engine.Settings.Platform == Platform.GBA)
+                if (Rom.Platform == Platform.GBA)
                     MechModel.Speed = MechModel.Speed with { X = IsFacingRight ? 1.5f : -1.5f };
-                else if (Engine.Settings.Platform == Platform.NGage)
+                else if (Rom.Platform == Platform.NGage)
                     MechModel.Speed = MechModel.Speed with { X = IsFacingRight ? 1f : -1f };
                 else
                     throw new UnsupportedPlatformException();
@@ -127,9 +127,9 @@ public partial class Hoodstormer
             case FsmAction.Init:
                 ActionId = IsFacingRight ? Action.Shoot_Right : Action.Shoot_Left;
 
-                if (Engine.Settings.Platform == Platform.GBA)
+                if (Rom.Platform == Platform.GBA)
                     MechModel.Speed = MechModel.Speed with { X = IsFacingRight ? 1.125F : -1.125F };
-                else if (Engine.Settings.Platform == Platform.NGage)
+                else if (Rom.Platform == Platform.NGage)
                     MechModel.Speed = MechModel.Speed with { X = IsFacingRight ? 0.75F : -0.75F };
                 else
                     throw new UnsupportedPlatformException();

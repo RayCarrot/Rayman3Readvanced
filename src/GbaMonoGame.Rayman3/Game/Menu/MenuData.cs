@@ -7,22 +7,22 @@ public class MenuData
 {
     public MenuData(int multiplayerMultiPakPlayersOffsetY, int multiplayerSinglePakPlayersOffsetY)
     {
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
-            AnimatedObjectResource propsAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuPropAnimations);
-            AnimatedObjectResource startEraseAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuStartEraseAnimations);
-            AnimatedObjectResource gameLogoAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuGameLogoAnimations);
-            AnimatedObjectResource gameModeAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuGameModeAnimations);
-            AnimatedObjectResource languageListAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuLanguageListAnimations);
-            AnimatedObjectResource optionsAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuOptionsAnimations);
-            AnimatedObjectResource slotEmptyAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuSlotEmptyAnimations);
-            AnimatedObjectResource multiplayerModeAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerModeAnimations);
-            AnimatedObjectResource multiplayerPlayersAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerPlayersAnimations);
-            AnimatedObjectResource multiplayerTypeAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerTypeAnimations);
-            AnimatedObjectResource multiplayerTypeFrameAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerTypeFrameAnimations);
-            AnimatedObjectResource multiplayerTypeIconAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerTypeIconAnimations);
-            AnimatedObjectResource multiplayerMapAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerMapAnimations);
-            AnimatedObjectResource steamAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuSteamAnimations);
+            AnimatedObjectResource propsAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuPropAnimations);
+            AnimatedObjectResource startEraseAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuStartEraseAnimations);
+            AnimatedObjectResource gameLogoAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuGameLogoAnimations);
+            AnimatedObjectResource gameModeAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuGameModeAnimations);
+            AnimatedObjectResource languageListAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuLanguageListAnimations);
+            AnimatedObjectResource optionsAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuOptionsAnimations);
+            AnimatedObjectResource slotEmptyAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuSlotEmptyAnimations);
+            AnimatedObjectResource multiplayerModeAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerModeAnimations);
+            AnimatedObjectResource multiplayerPlayersAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerPlayersAnimations);
+            AnimatedObjectResource multiplayerTypeAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerTypeAnimations);
+            AnimatedObjectResource multiplayerTypeFrameAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerTypeFrameAnimations);
+            AnimatedObjectResource multiplayerTypeIconAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerTypeIconAnimations);
+            AnimatedObjectResource multiplayerMapAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerMapAnimations);
+            AnimatedObjectResource steamAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuSteamAnimations);
 
             Wheel1 = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
             {
@@ -375,24 +375,24 @@ public class MenuData
                 CurrentAnimation = 11
             };
         }
-        else if (Engine.Settings.Platform == Platform.NGage)
+        else if (Rom.Platform == Platform.NGage)
         {
-            AnimatedObjectResource propsAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuPropAnimations);
-            AnimatedObjectResource startEraseAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuStartEraseAnimations);
-            AnimatedObjectResource symbolAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.NGageButtonSymbols);
-            AnimatedObjectResource languageListAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuLanguageListAnimations);
-            AnimatedObjectResource gameModeAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuGameModeAnimations);
-            AnimatedObjectResource pauseSelectionAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.PauseSelectionAnimations);
-            AnimatedObjectResource gameLogoAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuGameLogoAnimations);
-            AnimatedObjectResource optionsAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuOptionsAnimations);
-            AnimatedObjectResource connectionAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerConnectionAnimations);
-            AnimatedObjectResource slotEmptyAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuSlotEmptyAnimations);
-            AnimatedObjectResource multiplayerPlayersAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerPlayersAnimations);
-            AnimatedObjectResource multiplayerTypeAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerTypeAnimations);
-            AnimatedObjectResource multiplayerTypeFrameAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerTypeFrameAnimations);
-            AnimatedObjectResource multiplayerTypeIconAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerTypeIconAnimations);
-            AnimatedObjectResource multiplayerMapAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerMapAnimations);
-            AnimatedObjectResource multiplayerCaptureTheFlagAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerCaptureTheFlagAnimations);
+            AnimatedObjectResource propsAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuPropAnimations);
+            AnimatedObjectResource startEraseAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuStartEraseAnimations);
+            AnimatedObjectResource symbolAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.NGageButtonSymbols);
+            AnimatedObjectResource languageListAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuLanguageListAnimations);
+            AnimatedObjectResource gameModeAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuGameModeAnimations);
+            AnimatedObjectResource pauseSelectionAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.PauseSelectionAnimations);
+            AnimatedObjectResource gameLogoAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuGameLogoAnimations);
+            AnimatedObjectResource optionsAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuOptionsAnimations);
+            AnimatedObjectResource connectionAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerConnectionAnimations);
+            AnimatedObjectResource slotEmptyAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuSlotEmptyAnimations);
+            AnimatedObjectResource multiplayerPlayersAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerPlayersAnimations);
+            AnimatedObjectResource multiplayerTypeAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerTypeAnimations);
+            AnimatedObjectResource multiplayerTypeFrameAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerTypeFrameAnimations);
+            AnimatedObjectResource multiplayerTypeIconAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerTypeIconAnimations);
+            AnimatedObjectResource multiplayerMapAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerMapAnimations);
+            AnimatedObjectResource multiplayerCaptureTheFlagAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerCaptureTheFlagAnimations);
 
             Wheel2 = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
             {

@@ -13,16 +13,10 @@ namespace GbaMonoGame;
 /// </summary>
 public static class Gfx
 {
-    static Gfx()
-    {
-        Pixel = new Texture2D(Engine.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
-        Pixel.SetData([Color.White]);
-    }
-
     /// <summary>
     /// A texture which is a single uncolored 1x1 pixel. Useful for drawing shapes.
     /// </summary>
-    public static Texture2D Pixel { get; }
+    public static Texture2D Pixel { get; private set; }
 
     /// <summary>
     /// The shader to use when applying a palette to a texture.
@@ -89,7 +83,7 @@ public static class Gfx
     private static void DrawFade(GfxRenderer renderer)
     {
         // TODO: Add config option to use GBA fading on N-Gage
-        if (Engine.Settings.Platform == Platform.GBA && FadeControl.Mode != FadeMode.None && Fade is > 0 and <= 1)
+        if (Rom.IsLoaded && Rom.Platform == Platform.GBA && FadeControl.Mode != FadeMode.None && Fade is > 0 and <= 1)
         {
             renderer.BeginRender(new RenderOptions(false, null, Engine.GameRenderContext));
 
@@ -109,9 +103,12 @@ public static class Gfx
         }
     }
 
-    public static void Load(Effect paletteShader)
+    public static void Load()
     {
-        PaletteShader = paletteShader;
+        Pixel = new Texture2D(Engine.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
+        Pixel.SetData([Color.White]);
+
+        PaletteShader = Engine.ContentManager.Load<Effect>("PaletteShader");
     }
 
     public static void AddScreen(GfxScreen screen) => Screens.Add(screen.Id, screen);
@@ -132,7 +129,7 @@ public static class Gfx
     public static void Draw(GfxRenderer renderer)
     {
         // Draw clear color on GBA
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.IsLoaded && Rom.Platform == Platform.GBA)
         {
             renderer.BeginRender(new RenderOptions(false, null, Engine.GameRenderContext));
             renderer.DrawFilledRectangle(Vector2.Zero, Engine.GameRenderContext.Resolution, ClearColor);
@@ -164,7 +161,7 @@ public static class Gfx
 
         // TODO: Add option to use this on N-Gage
         // Draw the screen effect on GBA if there is one
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.IsLoaded && Rom.Platform == Platform.GBA)
             ScreenEffect?.Draw(renderer);
     }
 }

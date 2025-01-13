@@ -28,7 +28,7 @@ public partial class MenuAll
     public int MultiplayerType { get; set; } // Int instead of enum since the order is different for GBA and N-Gage
     public int MultiplayerMapId { get; set; }
 
-    public int MultiplayerTypeAnimationsCount => Engine.Settings.Platform switch
+    public int MultiplayerTypeAnimationsCount => Rom.Platform switch
     {
         Platform.GBA => 3,
         Platform.NGage => 4,
@@ -56,7 +56,7 @@ public partial class MenuAll
 
     private void CheckForStartGame()
     {
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             for (int id = 0; id < RSMultiplayer.PlayersCount; id++)
             {
@@ -93,7 +93,7 @@ public partial class MenuAll
 
             IsMultiplayerConnected = true;
         }
-        else if (Engine.Settings.Platform == Platform.NGage)
+        else if (Rom.Platform == Platform.NGage)
         {
             ushort packet = 0; // NOTE: Hardcoded for now
 
@@ -124,19 +124,19 @@ public partial class MenuAll
 
         switch (MultiplayerType)
         {
-            case 0 when Engine.Settings.Platform == Platform.GBA:
-            case 1 when Engine.Settings.Platform == Platform.NGage:
+            case 0 when Rom.Platform == Platform.GBA:
+            case 1 when Rom.Platform == Platform.NGage:
                 MultiplayerInfo.SetGameType(MultiplayerGameType.RayTag);
 
                 if (MultiplayerMapId == 0)
-                    FrameManager.SetNextFrame(new FrameMultiTag(Engine.Settings.Platform switch
+                    FrameManager.SetNextFrame(new FrameMultiTag(Rom.Platform switch
                     {
                         Platform.GBA => MapId.GbaMulti_TagWeb,
                         Platform.NGage => MapId.NGageMulti_TagWeb,
                         _ => throw new UnsupportedPlatformException()
                     }));
                 else if (MultiplayerMapId == 1)
-                    FrameManager.SetNextFrame(new FrameMultiTag(Engine.Settings.Platform switch
+                    FrameManager.SetNextFrame(new FrameMultiTag(Rom.Platform switch
                     {
                         Platform.GBA => MapId.GbaMulti_TagSlide,
                         Platform.NGage => MapId.NGageMulti_TagSlide,
@@ -144,19 +144,19 @@ public partial class MenuAll
                     }));
                 break;
 
-            case 1 when Engine.Settings.Platform == Platform.GBA:
-            case 2 when Engine.Settings.Platform == Platform.NGage:
+            case 1 when Rom.Platform == Platform.GBA:
+            case 2 when Rom.Platform == Platform.NGage:
                 MultiplayerInfo.SetGameType(MultiplayerGameType.CatAndMouse);
 
                 if (MultiplayerMapId == 0)
-                    FrameManager.SetNextFrame(new FrameMultiCatAndMouse(Engine.Settings.Platform switch
+                    FrameManager.SetNextFrame(new FrameMultiCatAndMouse(Rom.Platform switch
                     {
                         Platform.GBA => MapId.GbaMulti_CatAndMouseSlide,
                         Platform.NGage => MapId.NGageMulti_CatAndMouseSlide,
                         _ => throw new UnsupportedPlatformException()
                     }));
                 else if (MultiplayerMapId == 1)
-                    FrameManager.SetNextFrame(new FrameMultiCatAndMouse(Engine.Settings.Platform switch
+                    FrameManager.SetNextFrame(new FrameMultiCatAndMouse(Rom.Platform switch
                     {
                         Platform.GBA => MapId.GbaMulti_CatAndMouseSpider,
                         Platform.NGage => MapId.NGageMulti_CatAndMouseSpider,
@@ -164,13 +164,13 @@ public partial class MenuAll
                     }));
                 break;
 
-            case 2 when Engine.Settings.Platform == Platform.GBA:
+            case 2 when Rom.Platform == Platform.GBA:
                 MultiplayerInfo.SetGameType(MultiplayerGameType.Missile);
 
                 throw new NotImplementedException("Not implemented loading multiplayer missile maps");
                 break;
 
-            case 0 when Engine.Settings.Platform == Platform.NGage:
+            case 0 when Rom.Platform == Platform.NGage:
                 MultiplayerInfo.SetGameType(MultiplayerGameType.CaptureTheFlag);
                 MultiplayerInfo.CaptureTheFlagMode = CaptureTheFlagMode;
 
@@ -534,7 +534,7 @@ public partial class MenuAll
 
     private void Step_InitializeTransitionToMultiplayerPlayerSelection()
     {
-        AnimatedObjectResource resource = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerPlayersAnimations);
+        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerPlayersAnimations);
 
         Data.MultiplayerPlayerSelection = new AnimatedObject(resource, false)
         {
@@ -942,7 +942,7 @@ public partial class MenuAll
     {
         string hostName = "HostName"; // NOTE: Hardcoded for now
 
-        AnimatedObjectResource resource = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerPlayersAnimations);
+        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerPlayersAnimations);
 
         Data.MultiplayerPlayerSelection = new AnimatedObject(resource, false)
         {
@@ -1234,7 +1234,7 @@ public partial class MenuAll
 
     private void Step_InitializeTransitionToMultiplayerJoinedGamePlayerSelection()
     {
-        AnimatedObjectResource resource = Storage.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerPlayersAnimations);
+        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerPlayersAnimations);
 
         Data.MultiplayerPlayerSelection = new AnimatedObject(resource, false)
         {
@@ -1478,7 +1478,7 @@ public partial class MenuAll
         Data.ArrowRight.CurrentAnimation = 0;
         Data.MultiplayerTypeIcon.CurrentAnimation = MultiplayerType;
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
         {
             ShouldTextBlink = true;
             string text = Localization.GetText(11, 34)[0]; // Please wait
@@ -1512,14 +1512,14 @@ public partial class MenuAll
         if (MultiplayerPlayersOffsetY < 0)
             MultiplayerPlayersOffsetY = 0;
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             Data.MultiplayerTypeFrame.ScreenPos = Data.MultiplayerTypeFrame.ScreenPos with { Y = 35 - MultiplayerPlayersOffsetY };
             Data.ArrowLeft.ScreenPos = Data.ArrowLeft.ScreenPos with { Y = 50 - MultiplayerPlayersOffsetY };
             Data.ArrowRight.ScreenPos = Data.ArrowRight.ScreenPos with { Y = 50 - MultiplayerPlayersOffsetY };
             Data.MultiplayerTypeIcon.ScreenPos = Data.MultiplayerTypeIcon.ScreenPos with { Y = 24 - MultiplayerPlayersOffsetY };
         }
-        else if (Engine.Settings.Platform == Platform.NGage)
+        else if (Rom.Platform == Platform.NGage)
         {
             Data.MultiplayerTypeFrame.ScreenPos = Data.MultiplayerTypeFrame.ScreenPos with { Y = 65 - MultiplayerPlayersOffsetY };
             Data.ArrowLeft.ScreenPos = Data.ArrowLeft.ScreenPos with { Y = 80 - MultiplayerPlayersOffsetY };
@@ -1531,7 +1531,7 @@ public partial class MenuAll
             throw new UnsupportedPlatformException();
         }
 
-        if (Engine.Settings.Platform == Platform.GBA && TransitionValue == 152 && HasProcessedPackets)
+        if (Rom.Platform == Platform.GBA && TransitionValue == 152 && HasProcessedPackets)
         {
             MultiplayerManager.DiscardPendingPackets();
             HasProcessedPackets = false;
@@ -1540,10 +1540,10 @@ public partial class MenuAll
         AnimationPlayer.Play(Data.MultiplayerTypeName);
         
         Data.MultiplayerTypeFrame.FrameChannelSprite();
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
             AnimationPlayer.Play(Data.MultiplayerTypeFrame);
 
-        int arrowLeftPosX = Engine.Settings.Platform switch
+        int arrowLeftPosX = Rom.Platform switch
         {
             Platform.GBA => 100,
             Platform.NGage => 68,
@@ -1554,7 +1554,7 @@ public partial class MenuAll
         else
             Data.ArrowLeft.ScreenPos = Data.ArrowLeft.ScreenPos with { X = arrowLeftPosX };
 
-        int arrowRightPosX = Engine.Settings.Platform switch
+        int arrowRightPosX = Rom.Platform switch
         {
             Platform.GBA => 184,
             Platform.NGage => 152,
@@ -1570,7 +1570,7 @@ public partial class MenuAll
         AnimationPlayer.Play(Data.MultiplayerTypeIcon);
 
         // NOTE: Hard-code for now
-        if (Engine.Settings.Platform == Platform.NGage && false)
+        if (Rom.Platform == Platform.NGage && false)
         {
             if (!ShouldTextBlink || (GameTime.ElapsedFrames & 0x10) != 0)
                 AnimationPlayer.Play(Data.Texts[4]);
@@ -1606,7 +1606,7 @@ public partial class MenuAll
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
 
-                    if (Engine.Settings.Platform == Platform.NGage && MultiplayerType == 0)
+                    if (Rom.Platform == Platform.NGage && MultiplayerType == 0)
                         NextStepAction = Step_InitializeTransitionToMultiplayerFlagOptions;
                     else
                         NextStepAction = Step_InitializeTransitionToMultiplayerMapSelection;
@@ -1618,9 +1618,9 @@ public partial class MenuAll
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
 
-                    if (Engine.Settings.Platform == Platform.GBA)
+                    if (Rom.Platform == Platform.GBA)
                         NextStepAction = Step_InitializeTransitionToMultiplayerPlayerSelection;
-                    else if (Engine.Settings.Platform == Platform.NGage)
+                    else if (Rom.Platform == Platform.NGage)
                         NextStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;
                     else
                         throw new UnsupportedPlatformException();
@@ -1639,10 +1639,10 @@ public partial class MenuAll
             AnimationPlayer.Play(Data.MultiplayerTypeName);
 
             Data.MultiplayerTypeFrame.FrameChannelSprite();
-            if (Engine.Settings.Platform == Platform.GBA)
+            if (Rom.Platform == Platform.GBA)
                 AnimationPlayer.Play(Data.MultiplayerTypeFrame);
 
-            int arrowLeftPosX = Engine.Settings.Platform switch
+            int arrowLeftPosX = Rom.Platform switch
             {
                 Platform.GBA => 100,
                 Platform.NGage => 68,
@@ -1653,7 +1653,7 @@ public partial class MenuAll
             else
                 Data.ArrowLeft.ScreenPos = Data.ArrowLeft.ScreenPos with { X = arrowLeftPosX };
 
-            int arrowRightPosX = Engine.Settings.Platform switch
+            int arrowRightPosX = Rom.Platform switch
             {
                 Platform.GBA => 184,
                 Platform.NGage => 152,
@@ -1669,14 +1669,14 @@ public partial class MenuAll
             AnimationPlayer.Play(Data.MultiplayerTypeIcon);
 
             // NOTE: Hard-code for now
-            if (Engine.Settings.Platform == Platform.NGage && false)
+            if (Rom.Platform == Platform.NGage && false)
             {
                 if (!ShouldTextBlink || (GameTime.ElapsedFrames & 0x10) != 0)
                     AnimationPlayer.Play(Data.Texts[4]);
             }
 
             // NOTE: Hard-code for now
-            if (Engine.Settings.Platform == Platform.NGage && false)
+            if (Rom.Platform == Platform.NGage && false)
             {
                 NextStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;
                 CurrentStepAction = Step_TransitionOutOfMultiplayerTypeSelection;
@@ -1684,11 +1684,11 @@ public partial class MenuAll
         }
         else
         {
-            if (Engine.Settings.Platform == Platform.GBA)
+            if (Rom.Platform == Platform.GBA)
             {
                 NextStepAction = Step_InitializeTransitionToMultiplayerPlayerSelection;
             }
-            else if (Engine.Settings.Platform == Platform.NGage)
+            else if (Rom.Platform == Platform.NGage)
             {
                 GameTime.Resume();
                 NextStepAction = Step_InitializeTransitionToMultiplayerLostConnection;
@@ -1722,14 +1722,14 @@ public partial class MenuAll
         if (MultiplayerPlayersOffsetY > 112)
             MultiplayerPlayersOffsetY = 112;
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             Data.MultiplayerTypeFrame.ScreenPos = Data.MultiplayerTypeFrame.ScreenPos with { Y = 35 - MultiplayerPlayersOffsetY };
             Data.ArrowLeft.ScreenPos = Data.ArrowLeft.ScreenPos with { Y = 50 - MultiplayerPlayersOffsetY };
             Data.ArrowRight.ScreenPos = Data.ArrowRight.ScreenPos with { Y = 50 - MultiplayerPlayersOffsetY };
             Data.MultiplayerTypeIcon.ScreenPos = Data.MultiplayerTypeIcon.ScreenPos with { Y = 24 - MultiplayerPlayersOffsetY };
         }
-        else if (Engine.Settings.Platform == Platform.NGage)
+        else if (Rom.Platform == Platform.NGage)
         {
             Data.MultiplayerTypeFrame.ScreenPos = Data.MultiplayerTypeFrame.ScreenPos with { Y = 65 - MultiplayerPlayersOffsetY };
             Data.ArrowLeft.ScreenPos = Data.ArrowLeft.ScreenPos with { Y = 80 - MultiplayerPlayersOffsetY };
@@ -1744,10 +1744,10 @@ public partial class MenuAll
         AnimationPlayer.Play(Data.MultiplayerTypeName);
 
         Data.MultiplayerTypeFrame.FrameChannelSprite();
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
             AnimationPlayer.Play(Data.MultiplayerTypeFrame);
 
-        int arrowLeftPosX = Engine.Settings.Platform switch
+        int arrowLeftPosX = Rom.Platform switch
         {
             Platform.GBA => 100,
             Platform.NGage => 68,
@@ -1758,7 +1758,7 @@ public partial class MenuAll
         else
             Data.ArrowLeft.ScreenPos = Data.ArrowLeft.ScreenPos with { X = arrowLeftPosX };
 
-        int arrowRightPosX = Engine.Settings.Platform switch
+        int arrowRightPosX = Rom.Platform switch
         {
             Platform.GBA => 184,
             Platform.NGage => 152,
@@ -1774,7 +1774,7 @@ public partial class MenuAll
         AnimationPlayer.Play(Data.MultiplayerTypeIcon);
 
         // NOTE: Hard-code for now
-        if (Engine.Settings.Platform == Platform.NGage && false)
+        if (Rom.Platform == Platform.NGage && false)
         {
             if (!ShouldTextBlink || (GameTime.ElapsedFrames & 0x10) != 0)
                 AnimationPlayer.Play(Data.Texts[4]);
@@ -1789,7 +1789,7 @@ public partial class MenuAll
     {
         MultiplayerMapId = 0;
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             Data.MultiplayerMapSelection.CurrentAnimation = MultiplayerType;
 
@@ -1803,7 +1803,7 @@ public partial class MenuAll
                 x: 140 - Data.MultiplayerMapName2.GetStringWidth() / 2f,
                 y: 96);
         }
-        else if (Engine.Settings.Platform == Platform.NGage)
+        else if (Rom.Platform == Platform.NGage)
         {
             if (MultiplayerType == 0)
                 Data.MultiplayerMapSelection.CurrentAnimation = 8 + (int)CaptureTheFlagMode * 4 + CaptureTheFlagSoloMode * 2;
@@ -1853,7 +1853,7 @@ public partial class MenuAll
         ResetStem();
         MultiplayerMapHighlightValue = 0;
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             if ((MultiplayerType == 0 && !FinishedLyChallenge1) ||
                 (MultiplayerType == 1 && !FinishedLyChallenge2) ||
@@ -1875,7 +1875,7 @@ public partial class MenuAll
         {
             TransitionValue = 0;
 
-            if (Engine.Settings.Platform == Platform.NGage)
+            if (Rom.Platform == Platform.NGage)
             {
                 MultiplayerMapId = 0;
                 PrevSelectedOption = 0;
@@ -1903,7 +1903,7 @@ public partial class MenuAll
         AnimationPlayer.Play(Data.MultiplayerMapName2);
 
         // NOTE: Hard-code for now
-        if (Engine.Settings.Platform == Platform.NGage && false)
+        if (Rom.Platform == Platform.NGage && false)
         {
             if (!ShouldTextBlink || (GameTime.ElapsedFrames & 0x10) != 0)
                 AnimationPlayer.Play(Data.Texts[4]);
@@ -1922,7 +1922,7 @@ public partial class MenuAll
 
                 if (IsStartingGame)
                 {
-                    if (Engine.Settings.Platform == Platform.NGage || TransitionsFX.IsFadeOutFinished)
+                    if (Rom.Platform == Platform.NGage || TransitionsFX.IsFadeOutFinished)
                     {
                         StartMultiplayerGame();
                         IsStartingGame = false;
@@ -1930,17 +1930,17 @@ public partial class MenuAll
                 }
                 else
                 {
-                    if (MultiJoyPad.IsButtonJustPressed(0, GbaInput.Up) && (Engine.Settings.Platform == Platform.NGage || StemMode == 2))
+                    if (MultiJoyPad.IsButtonJustPressed(0, GbaInput.Up) && (Rom.Platform == Platform.NGage || StemMode == 2))
                     {
                         if (MultiplayerMapId == 1)
                         {
                             MultiplayerMapId = 0;
 
-                            if (Engine.Settings.Platform == Platform.GBA)
+                            if (Rom.Platform == Platform.GBA)
                             {
                                 Data.MultiplayerMapSelection.CurrentAnimation = MultiplayerType;
                             }
-                            else if (Engine.Settings.Platform == Platform.NGage)
+                            else if (Rom.Platform == Platform.NGage)
                             {
                                 if (MultiplayerType == 0)
                                     Data.MultiplayerMapSelection.CurrentAnimation = 8 + (int)CaptureTheFlagMode * 4 + CaptureTheFlagSoloMode * 2;
@@ -1955,9 +1955,9 @@ public partial class MenuAll
                             SelectOption(0, true);
                         }
                     }
-                    else if (MultiJoyPad.IsButtonJustPressed(0, GbaInput.Down) && (Engine.Settings.Platform == Platform.NGage || StemMode == 2))
+                    else if (MultiJoyPad.IsButtonJustPressed(0, GbaInput.Down) && (Rom.Platform == Platform.NGage || StemMode == 2))
                     {
-                        if (Engine.Settings.Platform == Platform.NGage || 
+                        if (Rom.Platform == Platform.NGage || 
                             (MultiplayerType == 0 && FinishedLyChallenge1) ||
                             (MultiplayerType == 1 && FinishedLyChallenge2) ||
                             (MultiplayerType == 2 && HasAllCages))
@@ -1966,11 +1966,11 @@ public partial class MenuAll
                             {
                                 MultiplayerMapId = 1;
 
-                                if (Engine.Settings.Platform == Platform.GBA)
+                                if (Rom.Platform == Platform.GBA)
                                 {
                                     Data.MultiplayerMapSelection.CurrentAnimation = 3 + MultiplayerType;
                                 }
-                                else if (Engine.Settings.Platform == Platform.NGage)
+                                else if (Rom.Platform == Platform.NGage)
                                 {
                                     if (MultiplayerType == 0)
                                         Data.MultiplayerMapSelection.CurrentAnimation = 9 + (int)CaptureTheFlagMode * 4 + CaptureTheFlagSoloMode * 2;
@@ -1992,7 +1992,7 @@ public partial class MenuAll
                         SoundEventsManager.ReplaceAllSongs(-1, 1);
                         IsStartingGame = true;
 
-                        if (Engine.Settings.Platform == Platform.GBA)
+                        if (Rom.Platform == Platform.GBA)
                             MultiplayerManager.FUN_080ae49c();
 
                         Gfx.FadeControl = new FadeControl(FadeMode.None);
@@ -2002,13 +2002,13 @@ public partial class MenuAll
                     {
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
 
-                        if (Engine.Settings.Platform == Platform.NGage && MultiplayerType == 0)
+                        if (Rom.Platform == Platform.NGage && MultiplayerType == 0)
                             NextStepAction = Step_InitializeTransitionToMultiplayerFlagOptions;
                         else    
                             NextStepAction = Step_InitializeTransitionToMultiplayerTypeSelection;
                         CurrentStepAction = Step_TransitionOutOfMultiplayerMapSelection;
 
-                        if (Engine.Settings.Platform == Platform.NGage)
+                        if (Rom.Platform == Platform.NGage)
                         {
                             foreach (SpriteTextObject textObj in Data.Texts)
                                 textObj.BgPriority = 3;
@@ -2035,14 +2035,14 @@ public partial class MenuAll
             AnimationPlayer.Play(Data.MultiplayerMapName2);
 
             // NOTE: Hard-code for now
-            if (Engine.Settings.Platform == Platform.NGage && false)
+            if (Rom.Platform == Platform.NGage && false)
             {
                 if (!ShouldTextBlink || (GameTime.ElapsedFrames & 0x10) != 0)
                     AnimationPlayer.Play(Data.Texts[4]);
             }
 
             // NOTE: Hard-code for now
-            if (Engine.Settings.Platform == Platform.NGage && false)
+            if (Rom.Platform == Platform.NGage && false)
             {
                 NextStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;
                 CurrentStepAction = Step_TransitionOutOfMultiplayerTypeSelection; // NOTE: This seems to be wrong? Bug?
@@ -2050,14 +2050,14 @@ public partial class MenuAll
         }
         else
         {
-            if (Engine.Settings.Platform == Platform.GBA)
+            if (Rom.Platform == Platform.GBA)
             {
                 NextStepAction = Step_InitializeTransitionToMultiplayerPlayerSelection;
                 CurrentStepAction = Step_TransitionOutOfMultiplayerMapSelection;
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                 TransitionOutCursorAndStem();
             }
-            else if (Engine.Settings.Platform == Platform.NGage)
+            else if (Rom.Platform == Platform.NGage)
             {
                 GameTime.Resume();
                 NextStepAction = Step_InitializeTransitionToMultiplayerLostConnection;
@@ -2105,7 +2105,7 @@ public partial class MenuAll
         AnimationPlayer.Play(Data.MultiplayerMapName2);
 
         // NOTE: Hard-code for now
-        if (Engine.Settings.Platform == Platform.NGage && false)
+        if (Rom.Platform == Platform.NGage && false)
         {
             if (!ShouldTextBlink || (GameTime.ElapsedFrames & 0x10) != 0)
                 AnimationPlayer.Play(Data.Texts[4]);
@@ -2321,7 +2321,7 @@ public partial class MenuAll
             AnimationPlayer.Play(Data.MultiplayerCaptureTheFlagOptions);
 
             // NOTE: Hard-code for now
-            if (Engine.Settings.Platform == Platform.NGage && false)
+            if (Rom.Platform == Platform.NGage && false)
             {
                 NextStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;
                 CurrentStepAction = Step_TransitionOutOfMultiplayerTypeSelection; // NOTE: This seems to be wrong? Bug?
@@ -2374,7 +2374,7 @@ public partial class MenuAll
 
     private void Step_InitializeTransitionToMultiplayerLostConnection()
     {
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             if (InitialPage == Page.MultiplayerLostConnection)
             {
@@ -2389,7 +2389,7 @@ public partial class MenuAll
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
             }
         }
-        else if (Engine.Settings.Platform == Platform.NGage)
+        else if (Rom.Platform == Platform.NGage)
         {
             InitialPage = Page.SelectLanguage;
             CurrentStepAction = Step_TransitionToMultiplayerLostConnection;
@@ -2427,12 +2427,12 @@ public partial class MenuAll
 
     private void Step_MultiplayerLostConnection()
     {
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             if (JoyPad.IsButtonJustPressed(GbaInput.Start))
                 CurrentStepAction = Step_TransitionOutOfMultiplayerLostConnection;
         }
-        else if (Engine.Settings.Platform == Platform.NGage)
+        else if (Rom.Platform == Platform.NGage)
         {
             if (JoyPad.IsButtonJustPressed(GbaInput.A) ||
                 JoyPad.IsButtonJustPressed(GbaInput.B) ||
@@ -2445,7 +2445,7 @@ public partial class MenuAll
             throw new UnsupportedPlatformException();
         }
 
-        DrawText(Engine.Settings.Platform == Platform.NGage);
+        DrawText(Rom.Platform == Platform.NGage);
     }
 
     private void Step_TransitionOutOfMultiplayerLostConnection()
@@ -2460,12 +2460,12 @@ public partial class MenuAll
         {
             TransitionValue = 0;
 
-            if (Engine.Settings.Platform == Platform.GBA)
+            if (Rom.Platform == Platform.GBA)
             {
                 NextStepAction = Step_InitializeTransitionToMultiplayerPlayerSelection;
                 CurrentStepAction = Step_InitializeTransitionToMultiplayerPlayerSelection;
             }
-            else if (Engine.Settings.Platform == Platform.NGage)
+            else if (Rom.Platform == Platform.NGage)
             {
                 NextStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;
                 CurrentStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;

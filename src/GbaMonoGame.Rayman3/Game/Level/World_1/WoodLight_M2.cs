@@ -14,7 +14,7 @@ public class WoodLight_M2 : FrameSideScroller
         Scene.AddDialog(new TextBoxDialog(Scene), false, false);
 
         // TODO: Add config option for scrolling on N-Gage
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             TgxTileLayer cloudsLayer = ((TgxPlayfield2D)Scene.Playfield).TileLayers[0];
             TextureScreenRenderer renderer = (TextureScreenRenderer)cloudsLayer.Screen.Renderer;

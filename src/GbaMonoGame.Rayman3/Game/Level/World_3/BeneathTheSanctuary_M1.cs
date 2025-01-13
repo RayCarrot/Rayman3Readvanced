@@ -12,7 +12,7 @@ public class BeneathTheSanctuary_M1 : FrameSideScroller
         base.Init();
 
         // Why is this here and only on GBA?
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             Scene.GetGameObject(129).ProcessMessage(this, Message.Destroy);
             Scene.GetGameObject(130).ProcessMessage(this, Message.Destroy);

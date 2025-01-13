@@ -154,13 +154,13 @@ public partial class RedShell
                     return false;
 
                 // TODO: Scale this? Check other actors with similar pos offsets.
-                float mainActorOffset = Engine.Settings.Platform switch
+                float mainActorOffset = Rom.Platform switch
                 {
                     Platform.GBA => 100,
                     Platform.NGage => 200,
                     _ => throw new ArgumentOutOfRangeException()
                 };
-                float screenOffset = Engine.Settings.Platform switch
+                float screenOffset = Rom.Platform switch
                 {
                     Platform.GBA => 20,
                     Platform.NGage => 80,

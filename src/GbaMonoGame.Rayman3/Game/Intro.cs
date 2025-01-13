@@ -66,7 +66,7 @@ public class Intro : Frame, IHasPlayfield
         SoundEngineInterface.SetNbVoices(10);
 
         // Pre-load the menu
-        Menu = new MenuAll(Engine.Settings.Platform switch
+        Menu = new MenuAll(Rom.Platform switch
         {
             Platform.GBA => MenuAll.Page.SelectLanguage,
             Platform.NGage => MenuAll.Page.NGage_FirstPage,
@@ -76,14 +76,14 @@ public class Intro : Frame, IHasPlayfield
 
         AnimationPlayer = new AnimationPlayer(true, SoundEventsManager.ProcessEvent);
 
-        AnimatedObjectResource introAnimResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.IntroAnimations);
+        AnimatedObjectResource introAnimResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.IntroAnimations);
 
         PressStartObj = new AnimatedObject(introAnimResource, false)
         {
             IsFramed = true,
             BgPriority = 0,
             ObjPriority = 0,
-            ScreenPos = Engine.Settings.Platform switch
+            ScreenPos = Rom.Platform switch
             {
                 Platform.GBA => new Vector2(120, 150),
                 Platform.NGage => new Vector2(88, 150),
@@ -92,7 +92,7 @@ public class Intro : Frame, IHasPlayfield
             CurrentAnimation = 9 + Localization.LanguageUiIndex
         };
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
         {
             GameloftLogoObj = new AnimatedObject(introAnimResource, false)
             {
@@ -109,7 +109,7 @@ public class Intro : Frame, IHasPlayfield
             IsFramed = true,
             BgPriority = 0,
             ObjPriority = 0,
-            ScreenPos = Engine.Settings.Platform switch
+            ScreenPos = Rom.Platform switch
             {
                 Platform.GBA => new Vector2(120, 128),
                 Platform.NGage => new Vector2(88, 128),
@@ -118,22 +118,22 @@ public class Intro : Frame, IHasPlayfield
             CurrentAnimation = 0
         };
 
-        PlayfieldResource introPlayfield = Storage.LoadResource<PlayfieldResource>(GameResource.IntroPlayfield);
+        PlayfieldResource introPlayfield = Rom.LoadResource<PlayfieldResource>(GameResource.IntroPlayfield);
         Playfield = TgxPlayfield.Load<TgxPlayfield2D>(introPlayfield);
-        Engine.GameViewPort.SetResolutionBoundsToOriginalResolution();
+        Engine.GameViewPort.SetFixedResolution(Rom.OriginalResolution);
 
         Gfx.ClearColor = Color.Black;
 
         Playfield.Camera.Position = Vector2.Zero;
         Playfield.Step();
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             Playfield.TileLayers[0].Screen.IsEnabled = false;
             Playfield.TileLayers[1].Screen.IsEnabled = false;
             Playfield.TileLayers[3].Screen.IsEnabled = false;
         }
-        else if (Engine.Settings.Platform == Platform.NGage)
+        else if (Rom.Platform == Platform.NGage)
         {
             Playfield.TileLayers[0].Screen.IsEnabled = true;
             Playfield.TileLayers[1].Screen.IsEnabled = true;
@@ -146,7 +146,7 @@ public class Intro : Frame, IHasPlayfield
         }
 
         // TODO: Allow scrolling on N-Gage too?
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             TextureScreenRenderer renderer = ((TextureScreenRenderer)Playfield.TileLayers[3].Screen.Renderer);
 
@@ -208,7 +208,7 @@ public class Intro : Frame, IHasPlayfield
 
     private void Step_1()
     {
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             Timer++;
 
@@ -224,7 +224,7 @@ public class Intro : Frame, IHasPlayfield
                 Playfield.TileLayers[1].Screen.IsEnabled = true;
             }
         }
-        else if (Engine.Settings.Platform == Platform.NGage)
+        else if (Rom.Platform == Platform.NGage)
         {
             CurrentStepAction = Step_2;
         }
@@ -236,7 +236,7 @@ public class Intro : Frame, IHasPlayfield
 
     private void Step_2()
     {
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             Timer++;
 
@@ -254,7 +254,7 @@ public class Intro : Frame, IHasPlayfield
                 Playfield.TileLayers[0].Screen.GbaAlpha = Timer / 4f;
             }
         }
-        else if (Engine.Settings.Platform == Platform.NGage)
+        else if (Rom.Platform == Platform.NGage)
         {
             CurrentStepAction = Step_3;
         }
@@ -281,7 +281,7 @@ public class Intro : Frame, IHasPlayfield
             Playfield.TileLayers[2].Screen.IsEnabled = false;
 
             // Only show clouds on GBA
-            if (Engine.Settings.Platform == Platform.GBA)
+            if (Rom.Platform == Platform.GBA)
                 Playfield.TileLayers[3].Screen.IsEnabled = true;
         }
         else
@@ -290,7 +290,7 @@ public class Intro : Frame, IHasPlayfield
         }
 
         // N-Gage allows the intro to be skipped from here
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
         {
             // TODO: Check every button input
             if (JoyPad.IsButtonPressed(GbaInput.Start))
@@ -327,7 +327,7 @@ public class Intro : Frame, IHasPlayfield
                 if (BlackLumAndLogoObj.CurrentAnimation < 4)
                 {
                     BlackLumAndLogoObj.CurrentAnimation++;
-                    BlackLumAndLogoObj.ScreenPos = Engine.Settings.Platform switch
+                    BlackLumAndLogoObj.ScreenPos = Rom.Platform switch
                     {
                         Platform.GBA => new Vector2(120, 128),
                         Platform.NGage => new Vector2(88, 128),
@@ -337,7 +337,7 @@ public class Intro : Frame, IHasPlayfield
                 else
                 {
                     BlackLumAndLogoObj.CurrentAnimation = 6;
-                    BlackLumAndLogoObj.ScreenPos = Engine.Settings.Platform switch
+                    BlackLumAndLogoObj.ScreenPos = Rom.Platform switch
                     {
                         Platform.GBA => new Vector2(120, 70),
                         Platform.NGage => new Vector2(88, 70),
@@ -356,12 +356,12 @@ public class Intro : Frame, IHasPlayfield
             }
         }
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             if (JoyPad.IsButtonPressed(GbaInput.Start) && ScrollY <= 863)
                 IsSkipping = true;
         }
-        else if (Engine.Settings.Platform == Platform.NGage)
+        else if (Rom.Platform == Platform.NGage)
         {
             // TODO: Check every button input
             if (JoyPad.IsButtonPressed(GbaInput.Start))
@@ -403,7 +403,7 @@ public class Intro : Frame, IHasPlayfield
         if ((GameTime.ElapsedFrames & 0x10) != 0)
             AnimationPlayer.PlayFront(PressStartObj);
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
             AnimationPlayer.PlayFront(GameloftLogoObj);
 
         BlackLumAndLogoObj.FrameChannelSprite();
@@ -430,7 +430,7 @@ public class Intro : Frame, IHasPlayfield
             Playfield.TileLayers[3].Screen.GbaAlpha = AlphaTimer / 32f;
             BlackLumAndLogoObj.CurrentAnimation = 8;
             BlackLumAndLogoObj.CurrentFrame = 5;
-            BlackLumAndLogoObj.ScreenPos = Engine.Settings.Platform switch
+            BlackLumAndLogoObj.ScreenPos = Rom.Platform switch
             {
                 Platform.GBA => new Vector2(120, 70),
                 Platform.NGage => new Vector2(88, 70),
@@ -468,7 +468,7 @@ public class Intro : Frame, IHasPlayfield
         if ((GameTime.ElapsedFrames & 0x10) != 0)
             AnimationPlayer.PlayFront(PressStartObj);
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
             AnimationPlayer.PlayFront(GameloftLogoObj);
 
         BlackLumAndLogoObj.FrameChannelSprite();

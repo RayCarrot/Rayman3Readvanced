@@ -59,7 +59,7 @@ public partial class Rayman
 
     private bool FsmStep_DoStandingOnPlum()
     {
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             CameraSideScroller cam = (CameraSideScroller)Scene.Camera;
             cam.HorizontalOffset = CameraOffset.Center;
@@ -341,7 +341,7 @@ public partial class Rayman
                     ActionId = Action.Walk_Left;
                     ChangeAction();
 
-                    if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
+                    if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
                         FlagData.field_b9 = 1;
                 }
                 else if (IsDirectionalButtonPressed(GbaInput.Right) && IsFacingLeft)
@@ -349,7 +349,7 @@ public partial class Rayman
                     ActionId = Action.Walk_Right;
                     ChangeAction();
 
-                    if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
+                    if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
                         FlagData.field_b9 = 1;
                 }
 
@@ -491,7 +491,7 @@ public partial class Rayman
                     ActionId = Action.Walk_Left;
                     ChangeAction();
 
-                    if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
+                    if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
                         FlagData.field_b9 = 1;
                 }
                 else if (IsDirectionalButtonPressed(GbaInput.Right) && IsFacingLeft)
@@ -499,7 +499,7 @@ public partial class Rayman
                     ActionId = Action.Walk_Right;
                     ChangeAction();
 
-                    if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
+                    if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
                         FlagData.field_b9 = 1;
                 }
 
@@ -594,7 +594,7 @@ public partial class Rayman
 
                         if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == tagId) ||
                             (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != tagId) ||
-                            (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && FlagData.field_00 == null))
+                            (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && FlagData.field_00 == null))
                         {
                             ActionId = IsFacingRight ? Action.WalkFast_Right : Action.WalkFast_Left;
                         }
@@ -603,7 +603,7 @@ public partial class Rayman
                             ActionId = IsFacingRight ? Action.Walk_Right : Action.Walk_Left;
                         }
 
-                        if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+                        if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
                             FlagData.field_b9 = 1;
                     }
                 }
@@ -652,7 +652,7 @@ public partial class Rayman
                         ActionId = Action.Walk_LookAround_Left;
                         ChangeAction();
 
-                        if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
+                        if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
                             FlagData.field_b9 = 1;
                     }
                     else if (IsDirectionalButtonPressed(GbaInput.Right) && IsFacingLeft)
@@ -660,7 +660,7 @@ public partial class Rayman
                         ActionId = Action.Walk_LookAround_Right;
                         ChangeAction();
 
-                        if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
+                        if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
                             FlagData.field_b9 = 1;
                     }
                 }
@@ -671,7 +671,7 @@ public partial class Rayman
                         ActionId = Action.Walk_Left;
                         ChangeAction();
 
-                        if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
+                        if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
                             FlagData.field_b9 = 1;
                     }
                     else if (IsDirectionalButtonPressed(GbaInput.Right) && IsFacingLeft)
@@ -679,7 +679,7 @@ public partial class Rayman
                         ActionId = Action.Walk_Right;
                         ChangeAction();
 
-                        if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
+                        if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
                             FlagData.field_b9 = 1;
                     }
                 }
@@ -747,7 +747,7 @@ public partial class Rayman
 
                             if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == tagId) ||
                                 (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != tagId) ||
-                                (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && FlagData.field_00 == null))
+                                (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && FlagData.field_00 == null))
                             {
                                 ActionId = IsFacingRight ? Action.WalkFast_Right : Action.WalkFast_Left;
                             }
@@ -756,7 +756,7 @@ public partial class Rayman
                                 ActionId = IsFacingRight ? Action.Walk_Right : Action.Walk_Left;
                             }
 
-                            if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+                            if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
                                 FlagData.field_b9 = 1;
                         }
                     }
@@ -1737,7 +1737,7 @@ public partial class Rayman
                     ActionId = Action.Crawl_Left;
                     ChangeAction();
 
-                    if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
+                    if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
                         FlagData.field_b9 = 1;
                 }
                 else if (IsDirectionalButtonPressed(GbaInput.Right) && IsFacingLeft)
@@ -1745,7 +1745,7 @@ public partial class Rayman
                     ActionId = Action.Crawl_Right;
                     ChangeAction();
 
-                    if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
+                    if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
                         FlagData.field_b9 = 1;
                 }
 
@@ -1839,7 +1839,7 @@ public partial class Rayman
                     ActionId = Action.Crawl_Left;
                     ChangeAction();
 
-                    if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
+                    if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
                         FlagData.field_b9 = 1;
                 }
                 else if (IsDirectionalButtonPressed(GbaInput.Right) && IsFacingLeft)
@@ -1847,7 +1847,7 @@ public partial class Rayman
                     ActionId = Action.Crawl_Right;
                     ChangeAction();
 
-                    if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
+                    if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
                         FlagData.field_b9 = 1;
                 }
 
@@ -1929,7 +1929,7 @@ public partial class Rayman
                          Action.Hang_EndMove_Right or Action.Hang_EndMove_Left)
                 {
                     // Probably a bug in the GBA code since this causes the sound to play twice. This was fixed for N-Gage.
-                    if (Engine.Settings.Platform == Platform.GBA)
+                    if (Rom.Platform == Platform.GBA)
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Charge_Mix05);
 
                     ActionId = IsFacingRight ? Action.Hang_ChargeAttack_Right : Action.Hang_ChargeAttack_Left;
@@ -1967,7 +1967,7 @@ public partial class Rayman
                     if (!FsmStep_DoStandingOnPlum())
                         return false;
 
-                    if (Engine.Settings.Platform == Platform.NGage)
+                    if (Rom.Platform == Platform.NGage)
                     {
                         CameraSideScroller cam = (CameraSideScroller)Scene.Camera;
 
@@ -2024,7 +2024,7 @@ public partial class Rayman
                         Timer = GameTime.ElapsedFrames;
                     }
 
-                    if (Engine.Settings.Platform == Platform.NGage && AttachedObject?.Type == (int)ActorType.Plum && IsLocalPlayer)
+                    if (Rom.Platform == Platform.NGage && AttachedObject?.Type == (int)ActorType.Plum && IsLocalPlayer)
                     {
                         CameraSideScroller cam = (CameraSideScroller)Scene.Camera;
                         cam.HorizontalOffset = CameraOffset.DefaultBigger;
@@ -2180,7 +2180,7 @@ public partial class Rayman
                     return false;
                 }
 
-                if (Engine.Settings.Platform == Platform.NGage &&
+                if (Rom.Platform == Platform.NGage &&
                     ActionId is Action.Damage_Shock_Right or Action.Damage_Shock_Left)
                 {
                     ActionId = IsFacingRight ? Action.Damage_Hit_Right : Action.Damage_Hit_Left;
@@ -2199,7 +2199,7 @@ public partial class Rayman
                 PlaySound(Rayman3SoundEvent.Stop__Charge_Mix05);
                 PlaySound(Rayman3SoundEvent.Stop__Charge2_Mix04);
 
-                if (IsLocalPlayer && Engine.Settings.Platform == Platform.NGage)
+                if (IsLocalPlayer && Rom.Platform == Platform.NGage)
                 {
                     CameraSideScroller cam = (CameraSideScroller)Scene.Camera;
 
@@ -2489,7 +2489,7 @@ public partial class Rayman
                             if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == tagId) ||
                                 (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != tagId) ||
                                 // NOTE: This appears to be a bug/oversight - tagId is always -1 for capture the flag
-                                (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && InstanceId != tagId))
+                                (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && InstanceId != tagId))
                             {
                                 MechModel.Speed = MechModel.Speed with { X = -2f };
                             }
@@ -2527,7 +2527,7 @@ public partial class Rayman
                             if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == tagId) ||
                                 (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != tagId) ||
                                 // NOTE: This appears to be a bug/oversight - tagId is always -1 for capture the flag
-                                (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && InstanceId != tagId))
+                                (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && InstanceId != tagId))
                             {
                                 MechModel.Speed = MechModel.Speed with { X = 2f };
                             }
@@ -2546,7 +2546,7 @@ public partial class Rayman
                 else if (Timer > 50 && !RSMultiplayer.IsActive)
                 {
                     // Center camera, only on GBA
-                    if (Engine.Settings.Platform == Platform.GBA)
+                    if (Rom.Platform == Platform.GBA)
                         cam.HorizontalOffset = CameraOffset.Center;
 
                     Timer = 0;
@@ -2566,7 +2566,7 @@ public partial class Rayman
                         if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == tagId) ||
                             (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != tagId) ||
                             // NOTE: This appears to be a bug/oversight - tagId is always -1 for capture the flag
-                            (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && InstanceId != tagId))
+                            (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && InstanceId != tagId))
                         {
                             MechModel.Speed = MechModel.Speed with { Y = -2f };
                         }
@@ -2596,7 +2596,7 @@ public partial class Rayman
                         if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == tagId) ||
                             (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != tagId) ||
                             // NOTE: This appears to be a bug/oversight - tagId is always -1 for capture the flag
-                            (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && InstanceId != tagId))
+                            (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && InstanceId != tagId))
                         {
                             MechModel.Speed = MechModel.Speed with { Y = 2f };
                         }
@@ -2748,7 +2748,7 @@ public partial class Rayman
                     ActionId = Action.Hang_Move_Left;
                     ChangeAction();
 
-                    if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
+                    if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
                         FlagData.field_b9 = 1;
                 }
                 else if (IsDirectionalButtonPressed(GbaInput.Right) && IsFacingLeft)
@@ -2756,7 +2756,7 @@ public partial class Rayman
                     ActionId = Action.Hang_Move_Right;
                     ChangeAction();
 
-                    if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
+                    if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
                         FlagData.field_b9 = 1;
                 }
 
@@ -2828,7 +2828,7 @@ public partial class Rayman
                     ActionId = Action.Hang_Move_Left;
                     ChangeAction();
 
-                    if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
+                    if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
                         FlagData.field_b9 = 1;
                 }
                 else if (IsDirectionalButtonPressed(GbaInput.Right) && IsFacingLeft)
@@ -2836,7 +2836,7 @@ public partial class Rayman
                     ActionId = Action.Hang_Move_Right;
                     ChangeAction();
 
-                    if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
+                    if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
                         FlagData.field_b9 = 1;
                 }
 
@@ -3083,7 +3083,7 @@ public partial class Rayman
                 {
                     Flag1_5 = false;
 
-                    if (Engine.Settings.Platform == Platform.NGage)
+                    if (Rom.Platform == Platform.NGage)
                         ActionId = IsFacingRight ? Action.BouncyJump_Right : Action.BouncyJump_Left;
 
                     State.MoveTo(Fsm_Jump);
@@ -3092,7 +3092,7 @@ public partial class Rayman
                 break;
 
             case FsmAction.UnInit:
-                if (Engine.Settings.Platform != Platform.NGage)
+                if (Rom.Platform != Platform.NGage)
                     ActionId = IsFacingRight ? Action.BouncyJump_Right : Action.BouncyJump_Left;
                 break;
         }
@@ -3246,7 +3246,7 @@ public partial class Rayman
                     ActionId = Action.CarryObject_Left;
                     ChangeAction();
 
-                    if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
+                    if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
                         FlagData.field_b9 = 1;
                 }
                 else if (IsDirectionalButtonPressed(GbaInput.Right) && IsFacingLeft)
@@ -3254,7 +3254,7 @@ public partial class Rayman
                     ActionId = Action.CarryObject_Right;
                     ChangeAction();
 
-                    if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
+                    if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
                         FlagData.field_b9 = 1;
                 }
 
@@ -3319,7 +3319,7 @@ public partial class Rayman
                     ActionId = Action.WalkWithObject_Left;
                     ChangeAction();
 
-                    if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
+                    if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
                         FlagData.field_b9 = 1;
                 }
                 else if (IsDirectionalButtonPressed(GbaInput.Right) && IsFacingLeft)
@@ -3327,7 +3327,7 @@ public partial class Rayman
                     ActionId = Action.WalkWithObject_Right;
                     ChangeAction();
 
-                    if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
+                    if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
                         FlagData.field_b9 = 1;
                 }
 
@@ -3789,7 +3789,7 @@ public partial class Rayman
 
                     Flag2_1 = true;
 
-                    if (Engine.Settings.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
+                    if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
                         ((FrameSideScrollerGCN)Frame.Current).FUN_0808a9f4();
 
                     switch (GameInfo.MapId)
@@ -3850,7 +3850,7 @@ public partial class Rayman
 
                 if (FinishedMap)
                 {
-                    if (Engine.Settings.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
+                    if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
                     {
                         ((FrameSideScrollerGCN)Frame.Current).RestoreMapAndPowers();
                         int gcnMapId = ((FrameSideScrollerGCN)Frame.Current).GcnMapId;
@@ -3902,7 +3902,7 @@ public partial class Rayman
                 }
                 else
                 {
-                    if (Engine.Settings.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
+                    if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
                     {
                         ((FrameSideScrollerGCN)Frame.Current).RestoreMapAndPowers();
                         FrameManager.SetNextFrame(new GameCubeMenu());
@@ -3975,7 +3975,7 @@ public partial class Rayman
                 {
                     // Due to the lack of some null checks on GBA this code works differently on GBA and N-Gage if there is no attached object
                     bool right;
-                    if (Engine.Settings.Platform == Platform.GBA)
+                    if (Rom.Platform == Platform.GBA)
                     {
                         // On GBA there is no null check making it evaluate the condition as true if so and prioritizing a knockback to the right
                         if (AttachedObject == null || Position.X - AttachedObject.Position.X >= 0)
@@ -3983,7 +3983,7 @@ public partial class Rayman
                         else
                             right = false;
                     }
-                    else if (Engine.Settings.Platform == Platform.NGage)
+                    else if (Rom.Platform == Platform.NGage)
                     {
                         // On N-Gage there's an added null check, making it prioritize a knockback to the left
                         if (AttachedObject != null && Position.X - AttachedObject.Position.X >= 0)
@@ -4405,7 +4405,7 @@ public partial class Rayman
 
                         if (IsLocalPlayer)
                         {
-                            int id = Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag 
+                            int id = Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag 
                                 ? FlagData.field_bc
                                 : userInfo.TagId;
                             Scene.Camera.LinkedObject = Scene.GetGameObject<MovableActor>(id);
@@ -4483,14 +4483,14 @@ public partial class Rayman
                     {
                         PlaySound(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02);
 
-                        if (Engine.Settings.Platform == Platform.GBA || Scene.Camera.LinkedObject == this)
+                        if (Rom.Platform == Platform.GBA || Scene.Camera.LinkedObject == this)
                             LevelMusicManager.OverrideLevelMusic(Rayman3SoundEvent.Play__win3);
                     }
                 }
                 // We are not the winner
                 else
                 {
-                    if (Engine.Settings.Platform == Platform.NGage && Scene.Camera.LinkedObject == this)
+                    if (Rom.Platform == Platform.NGage && Scene.Camera.LinkedObject == this)
                         LevelMusicManager.OverrideLevelMusic(Rayman3SoundEvent.Play__death);
 
                     // Move camera to the winner
@@ -4508,7 +4508,7 @@ public partial class Rayman
             case FsmAction.Step:
                 Timer++;
 
-                if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+                if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
                 {
                     // TODO: Implement
                 }

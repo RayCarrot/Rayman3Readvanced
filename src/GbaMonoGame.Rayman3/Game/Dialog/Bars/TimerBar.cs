@@ -15,7 +15,7 @@ public class TimerBar : Bar
 
     public override void Load()
     {
-        AnimatedObjectResource resource = Storage.LoadResource<AnimatedObjectResource>(GameResource.TimerAnimations);
+        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.TimerAnimations);
 
         TimerFrame = new AnimatedObject(resource, false)
         {
@@ -71,7 +71,7 @@ public class TimerBar : Bar
         iVar3 = iVar3 * 100 / 60;
 
         // TODO: What is this? Why is it not on GBA?
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
         {
             if (iVar1 == 0 && digit3 < 11 && digit3 != 0 && iVar3 == 0 && NGage_Value != digit3)
             {

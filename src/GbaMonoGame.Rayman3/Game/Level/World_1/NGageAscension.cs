@@ -12,7 +12,7 @@ public class NGageAscension : FrameSideScroller
         base.Init();
 
         // TODO: Add config option for scrolling on N-Gage
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             TgxTileLayer cloudsLayer = ((TgxPlayfield2D)Scene.Playfield).TileLayers[0];
             TextureScreenRenderer renderer = (TextureScreenRenderer)cloudsLayer.Screen.Renderer;

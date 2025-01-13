@@ -8,14 +8,14 @@ public partial class MenuAll
 {
     #region Properties
 
-    public int LanguagesCount { get; } = Engine.Settings.Platform switch
+    public int LanguagesCount { get; } = Rom.Platform switch
     {
         Platform.GBA => 10, // TODO: 3 for US version
         Platform.NGage => 6,
         _ => throw new UnsupportedPlatformException()
     };
 
-    public int LanguagesBaseAnimation { get; } = Engine.Settings.Platform switch
+    public int LanguagesBaseAnimation { get; } = Rom.Platform switch
     {
         Platform.GBA => 0, // TODO: 10 for US version
         Platform.NGage => 10 + 3,
@@ -59,7 +59,7 @@ public partial class MenuAll
 
     private void Step_SelectLanguage()
     {
-        if (Engine.Settings.Platform != Platform.NGage || TransitionsFX.IsFadeInFinished)
+        if (Rom.Platform != Platform.NGage || TransitionsFX.IsFadeInFinished)
         {
             if (JoyPad.IsButtonJustPressed(GbaInput.Up))
             {
@@ -69,7 +69,7 @@ public partial class MenuAll
                 else
                     selectedOption = SelectedOption - 1;
 
-                if (Engine.Settings.Platform == Platform.NGage)
+                if (Rom.Platform == Platform.NGage)
                     SelectOption(selectedOption, true);
                 else
                     SelectedOption = selectedOption;
@@ -87,7 +87,7 @@ public partial class MenuAll
                 else
                     selectedOption = SelectedOption + 1;
 
-                if (Engine.Settings.Platform == Platform.NGage)
+                if (Rom.Platform == Platform.NGage)
                     SelectOption(selectedOption, true);
                 else
                     SelectedOption = selectedOption;
@@ -101,7 +101,7 @@ public partial class MenuAll
             {
                 CurrentStepAction = Step_TransitionOutOfLanguage;
 
-                if (Engine.Settings.Platform == Platform.GBA)
+                if (Rom.Platform == Platform.GBA)
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
@@ -115,7 +115,7 @@ public partial class MenuAll
                 SelectedOption = 0;
                 PrevSelectedOption = 0;
 
-                if (Engine.Settings.Platform == Platform.GBA)
+                if (Rom.Platform == Platform.GBA)
                 {
                     GameLogoYOffset = 56;
                     OtherGameLogoValue = 12;
@@ -126,13 +126,13 @@ public partial class MenuAll
                 // Center sprites if English
                 if (Localization.Language == 0)
                 {
-                    if (Engine.Settings.Platform == Platform.GBA)
+                    if (Rom.Platform == Platform.GBA)
                     {
                         Data.GameModeList.ScreenPos = Data.GameModeList.ScreenPos with { X = 86 };
                         Data.Cursor.ScreenPos = Data.Cursor.ScreenPos with { X = 46 };
                         Data.Stem.ScreenPos = Data.Stem.ScreenPos with { X = 60 };
                     }
-                    else if (Engine.Settings.Platform == Platform.NGage)
+                    else if (Rom.Platform == Platform.NGage)
                     {
                         Data.GameModeList.ScreenPos = Data.GameModeList.ScreenPos with { X = 58 };
                         Data.Cursor.ScreenPos = Data.Cursor.ScreenPos with { X = 18 };
@@ -144,11 +144,11 @@ public partial class MenuAll
                     }
                 }
 
-                if (Engine.Settings.Platform == Platform.GBA)
+                if (Rom.Platform == Platform.GBA)
                 {
                     ResetStem();
                 }
-                else if (Engine.Settings.Platform == Platform.NGage)
+                else if (Rom.Platform == Platform.NGage)
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                     TransitionOutCursorAndStem();
@@ -158,7 +158,7 @@ public partial class MenuAll
                     throw new UnsupportedPlatformException();
                 }
             }
-            else if (Engine.Settings.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(GbaInput.B))
+            else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(GbaInput.B))
             {
                 CurrentStepAction = Step_TransitionOutOfLanguage;
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
@@ -174,7 +174,7 @@ public partial class MenuAll
 
     private void Step_TransitionOutOfLanguage()
     {
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             TgxCluster mainCluster = Playfield.Camera.GetMainCluster();
             mainCluster.Position += new Vector2(0, 3);
@@ -200,7 +200,7 @@ public partial class MenuAll
                 TransitionValue -= 3;
             }
         }
-        else if (Engine.Settings.Platform == Platform.NGage)
+        else if (Rom.Platform == Platform.NGage)
         {
             TransitionValue += 4;
 

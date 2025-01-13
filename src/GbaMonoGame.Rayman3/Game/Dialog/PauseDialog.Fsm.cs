@@ -15,7 +15,7 @@ public partial class PauseDialog
                 break;
 
             case FsmAction.Step:
-                int maxOption = Engine.Settings.Platform switch
+                int maxOption = Rom.Platform switch
                 {
                     Platform.GBA => 2,
                     Platform.NGage => 3,
@@ -34,7 +34,7 @@ public partial class PauseDialog
                     else
                         SelectedOption--;
 
-                    if (Engine.Settings.Platform == Platform.GBA)
+                    if (Rom.Platform == Platform.GBA)
                         PauseSelection.CurrentAnimation = SelectedOption switch
                         {
                             0 => 0 + Localization.LanguageUiIndex,
@@ -42,7 +42,7 @@ public partial class PauseDialog
                             2 => 20 + Localization.LanguageUiIndex,
                             _ => throw new IndexOutOfRangeException(),
                         };
-                    else if (Engine.Settings.Platform == Platform.NGage)
+                    else if (Rom.Platform == Platform.NGage)
                         PauseSelection.CurrentAnimation = SelectedOption switch
                         {
                             0 => 0 + Localization.LanguageUiIndex,
@@ -64,7 +64,7 @@ public partial class PauseDialog
                     else
                         SelectedOption++;
 
-                    if (Engine.Settings.Platform == Platform.GBA)
+                    if (Rom.Platform == Platform.GBA)
                         PauseSelection.CurrentAnimation = SelectedOption switch
                         {
                             0 => 0 + Localization.LanguageUiIndex,
@@ -72,7 +72,7 @@ public partial class PauseDialog
                             2 => 20 + Localization.LanguageUiIndex,
                             _ => throw new IndexOutOfRangeException(),
                         };
-                    else if (Engine.Settings.Platform == Platform.NGage)
+                    else if (Rom.Platform == Platform.NGage)
                         PauseSelection.CurrentAnimation = SelectedOption switch
                         {
                             0 => 0 + Localization.LanguageUiIndex,
@@ -86,7 +86,7 @@ public partial class PauseDialog
 
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
-                else if (Engine.Settings.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(GbaInput.Left))
+                else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(GbaInput.Left))
                 {
                     if (SelectedOption == 1)
                     {
@@ -99,7 +99,7 @@ public partial class PauseDialog
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
                 }
-                else if (Engine.Settings.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(GbaInput.Right))
+                else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(GbaInput.Right))
                 {
                     if (SelectedOption == 1)
                     {
@@ -118,7 +118,7 @@ public partial class PauseDialog
                     DrawStep = PauseDialogDrawStep.MoveOut;
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
 
-                    if (Engine.Settings.Platform == Platform.NGage)
+                    if (Rom.Platform == Platform.NGage)
                         ((NGageSoundEventsManager)SoundEventsManager.Current).ResumeLoopingSoundEffects();
 
                     resume = true;
@@ -134,19 +134,19 @@ public partial class PauseDialog
                             DrawStep = PauseDialogDrawStep.MoveOut;
                             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
 
-                            if (Engine.Settings.Platform == Platform.NGage)
+                            if (Rom.Platform == Platform.NGage)
                                 ((NGageSoundEventsManager)SoundEventsManager.Current).ResumeLoopingSoundEffects();
 
                             resume = true;
                             break;
 
                         // Sleep mode
-                        case 1 when Engine.Settings.Platform == Platform.GBA:
+                        case 1 when Rom.Platform == Platform.GBA:
                             sleepMode = true;
                             break;
 
                         // Music volume
-                        case 1 when Engine.Settings.Platform == Platform.NGage:
+                        case 1 when Rom.Platform == Platform.NGage:
                             if (((NGageSoundEventsManager)SoundEventsManager.Current).MusicVolume < SoundEngineInterface.MaxVolume)
                                 ModifyMusicVolume(1);
                             else
@@ -154,7 +154,7 @@ public partial class PauseDialog
                             break;
 
                         // Sfx volume
-                        case 2 when Engine.Settings.Platform == Platform.NGage:
+                        case 2 when Rom.Platform == Platform.NGage:
                             if (((NGageSoundEventsManager)SoundEventsManager.Current).SfxVolume < SoundEngineInterface.MaxVolume)
                                 ModifySfxVolume(1);
                             else
@@ -162,11 +162,11 @@ public partial class PauseDialog
                             break;
 
                         // Quit game
-                        case 2 when Engine.Settings.Platform == Platform.GBA:
-                        case 3 when Engine.Settings.Platform == Platform.NGage:
+                        case 2 when Rom.Platform == Platform.GBA:
+                        case 3 when Rom.Platform == Platform.NGage:
                             // In the original game it sets the x positions to 200 so that they're off-screen. But that
                             // won't work due to custom resolutions being possible, so we instead hide all sprite channels.
-                            if (Engine.Settings.Platform == Platform.NGage)
+                            if (Rom.Platform == Platform.NGage)
                             {
                                 MusicVolume.VisibleSpriteChannels = 0;
                                 SfxVolume.VisibleSpriteChannels = 0;
@@ -177,7 +177,7 @@ public partial class PauseDialog
                     }
                 }
 
-                if (Engine.Settings.Platform == Platform.NGage)
+                if (Rom.Platform == Platform.NGage)
                 {
                     SetMusicVolumeAnimation();
                     SetSfxVolumeAnimation();
@@ -189,7 +189,7 @@ public partial class PauseDialog
                     return false;
                 }
 
-                if (Engine.Settings.Platform == Platform.GBA && sleepMode)
+                if (Rom.Platform == Platform.GBA && sleepMode)
                 {
                     State.MoveTo(Fsm_SleepMode);
                     return false;
@@ -259,12 +259,12 @@ public partial class PauseDialog
             case FsmAction.Init:
                 PrevSelectedOption = SelectedOption;
 
-                if (Engine.Settings.Platform == Platform.GBA)
+                if (Rom.Platform == Platform.GBA)
                 {
                     SelectedOption = 1;
                     PauseSelection.CurrentAnimation = 40 + Localization.LanguageUiIndex;
                 }
-                else if (Engine.Settings.Platform == Platform.NGage)
+                else if (Rom.Platform == Platform.NGage)
                 {
                     SelectedOption = 0;
                     PauseSelection.CurrentAnimation = 15 + Localization.LanguageUiIndex;
@@ -278,13 +278,13 @@ public partial class PauseDialog
             case FsmAction.Step:
                 bool goBack = false;
 
-                int resumeOptionIndex = Engine.Settings.Platform switch
+                int resumeOptionIndex = Rom.Platform switch
                 {
                     Platform.GBA => 1,
                     Platform.NGage => 0,
                     _ => throw new UnsupportedPlatformException(),
                 };
-                int quitOptionIndex = Engine.Settings.Platform switch
+                int quitOptionIndex = Rom.Platform switch
                 {
                     Platform.GBA => 0,
                     Platform.NGage => 1,
@@ -293,14 +293,14 @@ public partial class PauseDialog
 
                 if (JoyPad.IsButtonJustPressed(GbaInput.Up) || JoyPad.IsButtonJustPressed(GbaInput.Down))
                 {
-                    if (Engine.Settings.Platform == Platform.GBA)
+                    if (Rom.Platform == Platform.GBA)
                     {
                         if (SelectedOption == 0)
                             PauseSelection.CurrentAnimation = 40 + Localization.LanguageUiIndex;
                         else
                             PauseSelection.CurrentAnimation = 30 + Localization.LanguageUiIndex;
                     }
-                    else if (Engine.Settings.Platform == Platform.NGage)
+                    else if (Rom.Platform == Platform.NGage)
                     {
                         if (SelectedOption == 0)
                             PauseSelection.CurrentAnimation = 20 + Localization.LanguageUiIndex;
@@ -320,13 +320,13 @@ public partial class PauseDialog
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
 
-                    if (Engine.Settings.Platform == Platform.GBA)
+                    if (Rom.Platform == Platform.GBA)
                     {
                         PauseSelection.CurrentAnimation = 20 + Localization.LanguageUiIndex;
                         PrevSelectedOption = SelectedOption;
                         SelectedOption = 2;
                     }
-                    else if (Engine.Settings.Platform == Platform.NGage)
+                    else if (Rom.Platform == Platform.NGage)
                     {
                         // Unhide
                         MusicVolume.VisibleSpriteChannels = UInt32.MaxValue;
@@ -347,7 +347,7 @@ public partial class PauseDialog
                 {
                     GameTime.Resume();
 
-                    if (Engine.Settings.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
+                    if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
                     {
                         SoundEventsManager.StopAllSongs();
                         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
@@ -362,7 +362,7 @@ public partial class PauseDialog
                         FrameManager.SetNextFrame(new MenuAll(MenuAll.Page.SelectGameMode));
                     }
 
-                    if (Engine.Settings.Platform == Platform.GBA)
+                    if (Rom.Platform == Platform.GBA)
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                 }
 

@@ -12,7 +12,7 @@ public class BossMachineBar : Bar
 
     public override void Load()
     {
-        AnimatedObjectResource resource = Storage.LoadResource<AnimatedObjectResource>(GameResource.BossMachineBarAnimations);
+        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.BossMachineBarAnimations);
 
         BossHealthBar = new AnimatedObject(resource, false)
         {

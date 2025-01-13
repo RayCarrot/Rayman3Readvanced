@@ -1,5 +1,4 @@
-﻿using System.IO;
-using BinarySerializer;
+﻿using BinarySerializer;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.TgxEngine;
@@ -62,15 +61,18 @@ public partial class GameCubeMenu
                 {
                     Engine.BeginLoad();
 
-                    string filePath = Path.Combine(Engine.GameInstallation.Directory, "gba.nfo");
+                    using (Rom.Context)
+                    {
+                        const string filePath = "gba.nfo";
 
-                    if (!Engine.Context.FileExists(filePath))
-                        Engine.Context.AddFile(new LinearFile(Engine.Context, filePath));
+                        if (!Rom.Context.FileExists(filePath))
+                            Rom.Context.AddFile(new LinearFile(Rom.Context, filePath));
 
-                    // TODO: Handle exception
-                    // TODO: Handle file not existing
-                    MapInfos = FileFactory.Read<GameCubeMapInfos>(Engine.Context, filePath);
-
+                        // TODO: Handle exception
+                        // TODO: Handle file not existing
+                        MapInfos = FileFactory.Read<GameCubeMapInfos>(Rom.Context, filePath);
+                    }
+                    
                     State.MoveTo(Fsm_SelectMap);
                     return false;
                 }
@@ -423,15 +425,18 @@ public partial class GameCubeMenu
                             {
                                 Engine.BeginLoad();
 
-                                string filePath = Path.Combine(Engine.GameInstallation.Directory, $"map.{SelectedMap:000}");
+                                using (Rom.Context)
+                                {
+                                    string filePath = $"map.{SelectedMap:000}";
 
-                                if (!Engine.Context.FileExists(filePath))
-                                    Engine.Context.AddFile(new LinearFile(Engine.Context, filePath));
+                                    if (!Rom.Context.FileExists(filePath))
+                                        Rom.Context.AddFile(new LinearFile(Rom.Context, filePath));
 
-                                // TODO: Handle exception
-                                // TODO: Handle file not existing
-                                Map = FileFactory.Read<GameCubeMap>(Engine.Context, filePath);
-                                
+                                    // TODO: Handle exception
+                                    // TODO: Handle file not existing
+                                    Map = FileFactory.Read<GameCubeMap>(Rom.Context, filePath);
+                                }
+
                                 FrameManager.SetNextFrame(new FrameSideScrollerGCN(MapInfos.Maps[SelectedMap], Map, SelectedMap));
                             }
 

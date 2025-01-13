@@ -19,17 +19,17 @@ public class GfxDebugWindow : DebugWindow
 
                 Point displayRes = Engine.GameWindow.GetResolution();
                 ImGui.Text($"Display resolution: {displayRes.X} x {displayRes.Y}");
-                ImGui.Text($"Original game resolution: {Engine.GameViewPort.OriginalGameResolution.X} x {Engine.GameViewPort.OriginalGameResolution.Y}");
+                ImGui.Text($"Original game resolution: {Rom.OriginalResolution.X} x {Rom.OriginalResolution.Y}");
                 ImGui.Text($"Game Resolution: {Engine.GameViewPort.GameResolution.X} x {Engine.GameViewPort.GameResolution.Y}");
 
                 System.Numerics.Vector2 res = new(Engine.GameViewPort.RequestedGameResolution.X, Engine.GameViewPort.RequestedGameResolution.Y);
                 if (ImGui.InputFloat2("Requested resolution", ref res))
                     Engine.GameViewPort.SetRequestedResolution(new Vector2(res.X, res.Y));
 
-                float resScale = res.X / Engine.OriginalGameRenderContext.Resolution.X;
+                float resScale = res.X / Rom.OriginalGameRenderContext.Resolution.X;
                 if (ImGui.SliderFloat("Requested resolution", ref resScale, 0.5f, 2))
                 {
-                    Engine.GameViewPort.SetRequestedResolution(Engine.OriginalGameRenderContext.Resolution * resScale);
+                    Engine.GameViewPort.SetRequestedResolution(Rom.OriginalGameRenderContext.Resolution * resScale);
                     Engine.SaveConfig();
                 }
 

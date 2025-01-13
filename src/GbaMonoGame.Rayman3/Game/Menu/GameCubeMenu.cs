@@ -116,7 +116,7 @@ public partial class GameCubeMenu : Frame
 
     public override void Init()
     {
-        Engine.GameViewPort.SetResolutionBoundsToOriginalResolution();
+        Engine.GameViewPort.SetFixedResolution(Rom.OriginalResolution);
 
         AnimationPlayer = new AnimationPlayer(false, null);
 
@@ -126,13 +126,13 @@ public partial class GameCubeMenu : Frame
             Priority = 1,
             Offset = Vector2.Zero,
             Renderer = new TextureScreenRenderer(Engine.TextureCache.GetOrCreateObject(
-                pointer: Engine.Loader.Rayman3_GameCubeMenuBitmap.Offset,
+                pointer: Rom.Loader.Rayman3_GameCubeMenuBitmap.Offset,
                 id: 0,
                 createObjFunc: static () => new BitmapTexture2D(
-                    width: (int)Engine.GameViewPort.OriginalGameResolution.X,
-                    height: (int)Engine.GameViewPort.OriginalGameResolution.Y,
-                    bitmap: Engine.Loader.Rayman3_GameCubeMenuBitmap.ImgData,
-                    palette: new Palette(Engine.Loader.Rayman3_GameCubeMenuPalette))))
+                    width: (int)Rom.OriginalResolution.X,
+                    height: (int)Rom.OriginalResolution.Y,
+                    bitmap: Rom.Loader.Rayman3_GameCubeMenuBitmap.ImgData,
+                    palette: new Palette(Rom.Loader.Rayman3_GameCubeMenuPalette))))
         });
 
         Data = new GameCubeMenuData();

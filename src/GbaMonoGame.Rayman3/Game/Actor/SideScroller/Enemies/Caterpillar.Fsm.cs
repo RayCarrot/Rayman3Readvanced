@@ -230,7 +230,7 @@ public partial class Caterpillar
                     return false;
                 }
 
-                if (Engine.Settings.Platform == Platform.NGage &&
+                if (Rom.Platform == Platform.NGage &&
                     Scene.GetPhysicalType(new Vector2(Position.X, GetDetectionBox().MaxY)) == PhysicalTypeValue.MoltenLava)
                 {
                     State.MoveTo(Fsm_Dying);

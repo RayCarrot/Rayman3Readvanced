@@ -50,7 +50,7 @@ public abstract class Act : Frame
         CurrentText = Localization.GetText(ActResource.TextBankId, textId);
 
         float centerX = Engine.GameViewPort.GameResolution.X / 2f;
-        float baseY = Engine.Settings.Platform switch
+        float baseY = Rom.Platform switch
         {
             Platform.GBA => 129,
             Platform.NGage => 135,
@@ -154,8 +154,8 @@ public abstract class Act : Frame
             id: 0,
             data: frame,
             createObjFunc: static frame => new BitmapTexture2D(
-                width: (int)Engine.GameViewPort.OriginalGameResolution.X,
-                height: (int)Engine.GameViewPort.OriginalGameResolution.Y,
+                width: (int)Rom.OriginalResolution.X,
+                height: (int)Rom.OriginalResolution.Y,
                 bitmap: frame.Bitmap.ImgData,
                 palette: new Palette(frame.Palette))));
 
@@ -172,7 +172,7 @@ public abstract class Act : Frame
 
     protected void Init(ActResource resource)
     {
-        Engine.GameViewPort.SetResolutionBoundsToOriginalResolution();
+        Engine.GameViewPort.SetFixedResolution(Rom.OriginalResolution);
 
         TransitionsFX = new TransitionsFX(false);
         TransitionsFX.FadeInInit(1 / 16f);
@@ -186,7 +186,7 @@ public abstract class Act : Frame
 
         AnimationPlayer = new AnimationPlayer(false, null);
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             TextObjects = new[]
             {
@@ -206,7 +206,7 @@ public abstract class Act : Frame
                 }
             };
         }
-        else if (Engine.Settings.Platform == Platform.NGage)
+        else if (Rom.Platform == Platform.NGage)
         {
             // N-Gage has 3 lines of text
             TextObjects = new[]
@@ -239,12 +239,12 @@ public abstract class Act : Frame
             throw new UnsupportedPlatformException();
         }
 
-        AnimatedObjectResource nextSymbolResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.StoryNextTextAnimations);
+        AnimatedObjectResource nextSymbolResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.StoryNextTextAnimations);
         NextTextSymbol = new AnimatedObject(nextSymbolResource, false)
         {
             IsFramed = true,
             CurrentAnimation = 0,
-            ScreenPos = Engine.Settings.Platform switch
+            ScreenPos = Rom.Platform switch
             {
                 Platform.GBA => new Vector2(230, 158),
                 Platform.NGage => new Vector2(166, 200),
@@ -252,9 +252,9 @@ public abstract class Act : Frame
             }
         };
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
         {
-            AnimatedObjectResource skipSymbolResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.NGageButtonSymbols);
+            AnimatedObjectResource skipSymbolResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.NGageButtonSymbols);
             SkipSymbol = new AnimatedObject(skipSymbolResource, false)
             {
                 IsFramed = true,
@@ -345,7 +345,7 @@ public abstract class Act : Frame
         foreach (SpriteTextObject textObj in TextObjects)
             AnimationPlayer.PlayFront(textObj);
 
-        if (!IsAutomatic && Engine.Settings.Platform == Platform.NGage)
+        if (!IsAutomatic && Rom.Platform == Platform.NGage)
             AnimationPlayer.PlayFront(SkipSymbol);
 
         AnimationPlayer.Execute();

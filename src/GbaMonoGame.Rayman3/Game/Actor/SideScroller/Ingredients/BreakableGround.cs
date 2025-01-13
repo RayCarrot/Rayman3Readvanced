@@ -46,7 +46,7 @@ public sealed partial class BreakableGround : MovableActor
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
-        if (Engine.Settings.Platform == Platform.NGage && IsDestroyed)
+        if (Rom.Platform == Platform.NGage && IsDestroyed)
             return;
 
         DrawLarge(animationPlayer, forceDraw);

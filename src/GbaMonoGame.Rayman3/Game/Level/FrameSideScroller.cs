@@ -258,7 +258,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
     {
         Scene.AddDialog(PauseDialog, true, false);
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
             NGage_0x4 = true;
 
         Scene.Step();
@@ -288,7 +288,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
     {
         Scene.RemoveLastDialog();
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
             NGage_0x4 = false;
 
         Scene.RefreshDialogs();

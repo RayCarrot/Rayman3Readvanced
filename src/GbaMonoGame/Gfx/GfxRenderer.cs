@@ -8,11 +8,10 @@ public class GfxRenderer
 {
     #region Constructor
 
-    public GfxRenderer(SpriteBatch spriteBatch, GbaGameViewPort gameViewPort)
+    public GfxRenderer(GraphicsDevice graphicsDevice, GbaGameViewPort gameViewPort)
     {
-        SpriteBatch = spriteBatch;
         GameViewPort = gameViewPort;
-
+        SpriteBatch = new SpriteBatch(graphicsDevice);
         RasterizerState = new RasterizerState() { ScissorTestEnable = true };
     }
 

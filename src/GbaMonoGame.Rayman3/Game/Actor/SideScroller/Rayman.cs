@@ -19,7 +19,7 @@ public sealed partial class Rayman : MovableActor
 
         if (RSMultiplayer.IsActive)
         {
-            if (Engine.Settings.Platform == Platform.NGage)
+            if (Rom.Platform == Platform.NGage)
             {
                 FlagData = new CaptureTheFlagData()
                 {
@@ -39,7 +39,7 @@ public sealed partial class Rayman : MovableActor
                     AnimatedObject.IsSoundEnabled = false;
                 }
 
-                if (Engine.Settings.Platform == Platform.NGage &&
+                if (Rom.Platform == Platform.NGage &&
                     MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag &&
                     MultiplayerInfo.CaptureTheFlagMode != CaptureTheFlagMode.Solo)
                 {
@@ -54,9 +54,9 @@ public sealed partial class Rayman : MovableActor
                     // is to add the palettes to the animated object resource and then just change the base pal index.
                     if (AnimatedObject.Resource.PalettesCount == 2)
                     {
-                        Palette16 pal2 = Storage.LoadResource<Resource<Palette16>>(GameResource.Player2RaymanPalette).Value;
-                        Palette16 pal3 = Storage.LoadResource<Resource<Palette16>>(GameResource.Player3RaymanPalette).Value;
-                        Palette16 pal4 = Storage.LoadResource<Resource<Palette16>>(GameResource.Player4RaymanPalette).Value;
+                        Palette16 pal2 = Rom.LoadResource<Resource<Palette16>>(GameResource.Player2RaymanPalette).Value;
+                        Palette16 pal3 = Rom.LoadResource<Resource<Palette16>>(GameResource.Player3RaymanPalette).Value;
+                        Palette16 pal4 = Rom.LoadResource<Resource<Palette16>>(GameResource.Player4RaymanPalette).Value;
 
                         Pointer palettesPointer = AnimatedObject.Resource.Palettes.Offset;
                         AnimatedObject.Resource.PalettesCount = 2 * 4;
@@ -83,11 +83,11 @@ public sealed partial class Rayman : MovableActor
                     AnimatedObject.BasePaletteIndex = InstanceId * 2;
                 }
 
-                if (Engine.Settings.Platform == Platform.NGage &&
+                if (Rom.Platform == Platform.NGage &&
                     MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag &&
                     IsLocalPlayer)
                 {
-                    AnimatedObjectResource arrowResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.CaptureTheFlagArrowAnimations);
+                    AnimatedObjectResource arrowResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.CaptureTheFlagArrowAnimations);
 
                     for (int i = 0; i < RSMultiplayer.PlayersCount - 1; i++)
                     {
@@ -277,7 +277,7 @@ public sealed partial class Rayman : MovableActor
     {
         UserInfoMulti2D userInfo = ((FrameMultiSideScroller)Frame.Current).UserInfo;
 
-        if (Engine.Settings.Platform == Platform.NGage &&
+        if (Rom.Platform == Platform.NGage &&
             MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             return true;
 
@@ -297,7 +297,7 @@ public sealed partial class Rayman : MovableActor
 
     private bool HasPower(Power power)
     {
-        if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
         {
             return (FlagData.Powers & power) != 0;
         }
@@ -392,7 +392,7 @@ public sealed partial class Rayman : MovableActor
 
         bodyPart.ActionId = bodyPart.BaseActionId + (IsFacingRight ? 1 : 2);
 
-        if (RSMultiplayer.IsActive && Engine.Settings.Platform == Platform.NGage)
+        if (RSMultiplayer.IsActive && Rom.Platform == Platform.NGage)
         {
             // TODO: Implement
         }
@@ -1374,7 +1374,7 @@ public sealed partial class Rayman : MovableActor
                 return false;
 
             case Message.Main_BeginBounce:
-                if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive)
+                if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive)
                 {
                     if (State == Fsm_Swing || 
                         State == Fsm_Dying || 
@@ -1400,7 +1400,7 @@ public sealed partial class Rayman : MovableActor
                     return false;
                 }
 
-                if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive)
+                if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive)
                 {
                     if (State == FUN_1005dea0 ||
                         State == FUN_1005dfa4 ||
@@ -1962,7 +1962,7 @@ public sealed partial class Rayman : MovableActor
         if (ReverseControlsTimer != 0)
             ReverseControlsTimer--;
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
         {
             // TODO: Implement!
         }

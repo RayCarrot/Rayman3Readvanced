@@ -7,8 +7,8 @@ public class GameCubeMenuData
 {
     public GameCubeMenuData()
     {
-        AnimatedObjectResource animations = Storage.LoadResource<AnimatedObjectResource>(GameResource.GameCubeMenuAnimations);
-        AnimatedObjectResource levelCheckAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.GameCubeMenuLevelCheckAnimations);
+        AnimatedObjectResource animations = Rom.LoadResource<AnimatedObjectResource>(GameResource.GameCubeMenuAnimations);
+        AnimatedObjectResource levelCheckAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.GameCubeMenuLevelCheckAnimations);
 
         ReusableTexts = new SpriteTextObject[4];
         for (int i = 0; i < ReusableTexts.Length; i++)

@@ -79,7 +79,7 @@ public abstract class AObject
                 break;
             
             case HorizontalAnchorMode.Scale:
-                pos.X += (RenderContext.Resolution.X - Engine.GameViewPort.OriginalGameResolution.X) / 2;
+                pos.X += (RenderContext.Resolution.X - Rom.OriginalResolution.X) / 2;
                 break;
         }
 
@@ -99,7 +99,7 @@ public abstract class AObject
                 break;
 
             case VerticalAnchorMode.Scale:
-                pos.Y += (RenderContext.Resolution.Y - Engine.GameViewPort.OriginalGameResolution.Y) / 2;
+                pos.Y += (RenderContext.Resolution.Y - Rom.OriginalResolution.Y) / 2;
                 break;
         }
 

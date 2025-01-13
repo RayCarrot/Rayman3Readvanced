@@ -23,7 +23,7 @@ public class BlueLumBar : Bar
 
     public override void Load()
     {
-        AnimatedObjectResource resource = Storage.LoadResource<AnimatedObjectResource>(GameResource.BlueLumBarAnimations);
+        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.BlueLumBarAnimations);
 
         Empty = new AnimatedObject(resource, false)
         {

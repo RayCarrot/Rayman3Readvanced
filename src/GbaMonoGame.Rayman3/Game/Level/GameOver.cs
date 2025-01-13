@@ -50,7 +50,7 @@ public class GameOver : Frame
             if (!IsCountdownFacingRight)
                 value *= -1;
 
-            Vector2 basePos = Engine.Settings.Platform switch
+            Vector2 basePos = Rom.Platform switch
             {
                 Platform.GBA => new Vector2(104, 10),
                 Platform.NGage => new Vector2(78, 10),
@@ -68,7 +68,7 @@ public class GameOver : Frame
         }
         else
         {
-            Vector2 basePos = Engine.Settings.Platform switch
+            Vector2 basePos = Rom.Platform switch
             {
                 Platform.GBA => new Vector2(104, 0),
                 Platform.NGage => new Vector2(78, 0),
@@ -109,7 +109,7 @@ public class GameOver : Frame
 
     public override void Init()
     {
-        Engine.GameViewPort.SetResolutionBoundsToOriginalResolution();
+        Engine.GameViewPort.SetFixedResolution(Rom.OriginalResolution);
 
         TransitionsFX = new TransitionsFX(true);
 
@@ -119,20 +119,20 @@ public class GameOver : Frame
             Priority = 1,
             Offset = Vector2.Zero,
             Renderer = new TextureScreenRenderer(Engine.TextureCache.GetOrCreateObject(
-                pointer: Engine.Loader.Rayman3_GameOverBitmap.Offset,
+                pointer: Rom.Loader.Rayman3_GameOverBitmap.Offset,
                 id: 0,
                 createObjFunc: static () => new BitmapTexture2D(
-                    width: (int)Engine.GameViewPort.OriginalGameResolution.X,
-                    height: (int)Engine.GameViewPort.OriginalGameResolution.Y,
-                    bitmap: Engine.Loader.Rayman3_GameOverBitmap.ImgData,
-                    palette: new Palette(Engine.Loader.Rayman3_GameOverPalette))))
+                    width: (int)Rom.OriginalResolution.X,
+                    height: (int)Rom.OriginalResolution.Y,
+                    bitmap: Rom.Loader.Rayman3_GameOverBitmap.ImgData,
+                    palette: new Palette(Rom.Loader.Rayman3_GameOverPalette))))
         });
 
         AnimationPlayer = new AnimationPlayer(false, SoundEventsManager.ProcessEvent);
 
-        AnimatedObjectResource raymanAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.GameOverRaymanAnimations);
-        AnimatedObjectResource countdownAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.GameOverCountdownAnimations);
-        AnimatedObjectResource butterflyAnimations = Storage.LoadResource<AnimatedObjectResource>(GameResource.GameOverButterflyAnimations);
+        AnimatedObjectResource raymanAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.GameOverRaymanAnimations);
+        AnimatedObjectResource countdownAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.GameOverCountdownAnimations);
+        AnimatedObjectResource butterflyAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.GameOverButterflyAnimations);
 
         Rayman = new AnimatedObject(raymanAnimations, raymanAnimations.IsDynamic)
         {
@@ -140,7 +140,7 @@ public class GameOver : Frame
             CurrentAnimation = 1,
             BgPriority = 0,
             ObjPriority = 0,
-            ScreenPos = Engine.Settings.Platform switch
+            ScreenPos = Rom.Platform switch
             {
                 Platform.GBA => new Vector2(120, 150),
                 Platform.NGage => new Vector2(90, 104),
@@ -154,7 +154,7 @@ public class GameOver : Frame
             CurrentAnimation = 9,
             BgPriority = 0,
             ObjPriority = 32,
-            ScreenPos = Engine.Settings.Platform switch
+            ScreenPos = Rom.Platform switch
             {
                 Platform.GBA => new Vector2(104, 40),
                 Platform.NGage => new Vector2(78, 40),
@@ -167,7 +167,7 @@ public class GameOver : Frame
             CurrentAnimation = 9,
             BgPriority = 0,
             ObjPriority = 32,
-            ScreenPos = Engine.Settings.Platform switch
+            ScreenPos = Rom.Platform switch
             {
                 Platform.GBA => new Vector2(104, 40),
                 Platform.NGage => new Vector2(78, 40),
@@ -182,7 +182,7 @@ public class GameOver : Frame
             CurrentAnimation = 8,
             BgPriority = 0,
             ObjPriority = 33,
-            ScreenPos = Engine.Settings.Platform switch
+            ScreenPos = Rom.Platform switch
             {
                 Platform.GBA => new Vector2(173, 41),
                 Platform.NGage => new Vector2(120, 81),
@@ -195,7 +195,7 @@ public class GameOver : Frame
             CurrentAnimation = 7,
             BgPriority = 0,
             ObjPriority = 33,
-            ScreenPos = Engine.Settings.Platform switch
+            ScreenPos = Rom.Platform switch
             {
                 Platform.GBA => new Vector2(42, 140),
                 Platform.NGage => new Vector2(30, 188),

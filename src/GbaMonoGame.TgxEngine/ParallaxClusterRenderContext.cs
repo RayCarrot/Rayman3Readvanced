@@ -18,10 +18,10 @@ public class ParallaxClusterRenderContext : RenderContext
         // most closely matches how they were meant to be rendered. But since you can
         // play in higher internal resolution (like for widescreen) we have to make
         // sure it doesn't exceed the size of the smallest tile layer.
-        Vector2 ogRes = Engine.OriginalGameRenderContext.Resolution;
+        Vector2 ogRes = Rom.OriginalGameRenderContext.Resolution;
         Vector2 res = ogRes;
 
-        if (res == Engine.GameViewPort.OriginalGameResolution)
+        if (res == Rom.OriginalResolution)
             return res;
 
         float maxX = Cluster.Layers.Min(x => x.PixelWidth);

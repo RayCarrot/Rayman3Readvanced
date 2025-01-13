@@ -14,7 +14,7 @@ public sealed partial class Murfy : MovableActor
         TargetActor = (Rayman)Scene.MainActor;
         IsForBonusInWorld1 = true;
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
             NGage_Byte_8E = 1;
 
         State.SetTo(Fsm_PreInit);

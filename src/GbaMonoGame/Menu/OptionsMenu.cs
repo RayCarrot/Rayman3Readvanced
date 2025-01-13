@@ -11,7 +11,7 @@ public class OptionsMenu : Menu
     public OptionsMenu()
     {
         GraphicsAdapter adapter = Engine.GbaGame.GraphicsDevice.Adapter;
-        Vector2 originalRes = Engine.GameViewPort.OriginalGameResolution;
+        Vector2 originalRes = Rom.OriginalResolution;
         Vector2 screenRes = new(adapter.CurrentDisplayMode.Width, adapter.CurrentDisplayMode.Height);
         int windowResCount = Math.Min((int)(screenRes.X / originalRes.X), (int)(screenRes.Y / originalRes.Y));
 

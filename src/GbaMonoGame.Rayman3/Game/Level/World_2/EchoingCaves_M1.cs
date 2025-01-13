@@ -20,7 +20,7 @@ public class EchoingCaves_M1 : FrameSideScroller
     #region Private Fields
 
     public const int GateActorId = 1;
-    private readonly int[] SwitchActorIds = Engine.Settings.Platform switch
+    private readonly int[] SwitchActorIds = Rom.Platform switch
     {
         Platform.GBA => [22, 23, 28, 50],
         Platform.NGage => [45, 46, 56, 67],

@@ -10,6 +10,8 @@ public abstract class SoundEventsManager
 {
     #region Public Properties
 
+    public static bool IsLoaded => Current != null;
+
     // Allow a separate GBA and N-Gage implementation due to them having entirely different sound code
     public static SoundEventsManager Current { get; private set; }
 

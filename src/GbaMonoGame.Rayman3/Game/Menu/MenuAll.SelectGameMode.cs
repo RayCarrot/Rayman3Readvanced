@@ -16,14 +16,14 @@ public partial class MenuAll
     public int GameLogoMovementWidth { get; set; }
     public int GameLogoMovementXCountdown { get; set; }
 
-    public float GameLogoBaseX { get; } = Engine.Settings.Platform switch
+    public float GameLogoBaseX { get; } = Rom.Platform switch
     {
         Platform.GBA => 174,
         Platform.NGage => 110,
         _ => throw new UnsupportedPlatformException()
     };
 
-    public int GameModeOptionsCount { get; } = Engine.Settings.Platform switch
+    public int GameModeOptionsCount { get; } = Rom.Platform switch
     {
         Platform.GBA => 3,
         Platform.NGage => 5,
@@ -117,13 +117,13 @@ public partial class MenuAll
         // Center sprites if English
         if (Localization.Language == 0)
         {
-            if (Engine.Settings.Platform == Platform.GBA)
+            if (Rom.Platform == Platform.GBA)
             {
                 Data.GameModeList.ScreenPos = Data.GameModeList.ScreenPos with { X = 86 };
                 Data.Cursor.ScreenPos = Data.Cursor.ScreenPos with { X = 46 };
                 Data.Stem.ScreenPos = Data.Stem.ScreenPos with { X = 60 };
             }
-            else if (Engine.Settings.Platform == Platform.NGage)
+            else if (Rom.Platform == Platform.NGage)
             {
                 Data.GameModeList.ScreenPos = Data.GameModeList.ScreenPos with { X = 58 };
                 Data.Cursor.ScreenPos = Data.Cursor.ScreenPos with { X = 18 };
@@ -208,12 +208,12 @@ public partial class MenuAll
             NextStepAction = SelectedOption switch
             {
                 0 => Step_InitializeTransitionToSinglePlayer,
-                1 when Engine.Settings.Platform == Platform.GBA => Step_InitializeTransitionToMultiplayerModeSelection,
-                1 when Engine.Settings.Platform == Platform.NGage => Step_InitializeTransitionToMultiplayerConnectionSelection,
+                1 when Rom.Platform == Platform.GBA => Step_InitializeTransitionToMultiplayerModeSelection,
+                1 when Rom.Platform == Platform.NGage => Step_InitializeTransitionToMultiplayerConnectionSelection,
                 2 => Step_InitializeTransitionToOptions,
 
-                3 when Engine.Settings.Platform == Platform.NGage => Step_InitializeTransitionToHelp,
-                4 when Engine.Settings.Platform == Platform.NGage => Step_InitializeTransitionToQuit,
+                3 when Rom.Platform == Platform.NGage => Step_InitializeTransitionToHelp,
+                4 when Rom.Platform == Platform.NGage => Step_InitializeTransitionToQuit,
                 
                 _ => throw new Exception("Invalid game mode")
             };

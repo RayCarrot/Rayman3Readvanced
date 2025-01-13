@@ -34,32 +34,32 @@ public sealed partial class Ly : MovableActor
         switch (GameInfo.MapId)
         {
             case MapId.WoodLight_M2:
-                JoyPad.SetReplayData(Engine.Loader.Rayman3_NewPower1Replay.Inputs);
+                JoyPad.SetReplayData(Rom.Loader.Rayman3_NewPower1Replay.Inputs);
                 rayman.SetPowers(Power.DoubleFist);
                 break;
 
             case MapId.BossMachine:
-                JoyPad.SetReplayData(Engine.Loader.Rayman3_NewPower2Replay.Inputs);
+                JoyPad.SetReplayData(Rom.Loader.Rayman3_NewPower2Replay.Inputs);
                 rayman.SetPowers(Power.Grab);
                 break;
 
             case MapId.EchoingCaves_M2:
-                JoyPad.SetReplayData(Engine.Loader.Rayman3_NewPower3Replay.Inputs);
+                JoyPad.SetReplayData(Rom.Loader.Rayman3_NewPower3Replay.Inputs);
                 rayman.SetPowers(Power.WallJump);
                 break;
 
             case MapId.SanctuaryOfStoneAndFire_M3:
-                JoyPad.SetReplayData(Engine.Loader.Rayman3_NewPower4Replay.Inputs);
+                JoyPad.SetReplayData(Rom.Loader.Rayman3_NewPower4Replay.Inputs);
                 rayman.SetPowers(Power.SuperHelico);
                 break;
 
             case MapId.BossRockAndLava:
-                JoyPad.SetReplayData(Engine.Loader.Rayman3_NewPower5Replay.Inputs);
+                JoyPad.SetReplayData(Rom.Loader.Rayman3_NewPower5Replay.Inputs);
                 rayman.SetPowers(Power.BodyShot);
                 break;
 
             case MapId.BossScaleMan:
-                JoyPad.SetReplayData(Engine.Loader.Rayman3_NewPower6Replay.Inputs);
+                JoyPad.SetReplayData(Rom.Loader.Rayman3_NewPower6Replay.Inputs);
                 rayman.SetPowers(Power.SuperFist);
                 break;
 

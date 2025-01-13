@@ -19,14 +19,14 @@ public partial class UserInfoMulti2D : Dialog
             for (int i = 0; i < RSMultiplayer.MaxPlayersCount; i++)
                 Times[i] = 60;
         }
-        else if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        else if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
         {
             CaptureTheFlagTime = ((FrameMultiCaptureTheFlag)Frame.Current).Time;
             SuddenDeathDisplayCountdown = 100;
             FlagBar = new FlagBar(Scene);
         }
 
-        if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
         {
             TagId = -1;
             TagIdHudIndex = -1;
@@ -51,7 +51,7 @@ public partial class UserInfoMulti2D : Dialog
         IsGameOver = false;
         IsPlayerDead = false;
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
             UnknownCaptureTheFlagValue2 = false;
         
         Unused2 = -1;
@@ -154,7 +154,7 @@ public partial class UserInfoMulti2D : Dialog
 
     public int GetTagId()
     {
-        if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             return -1;
         else
             return TagId;
@@ -162,7 +162,7 @@ public partial class UserInfoMulti2D : Dialog
 
     public void SetTagId(int machineId)
     {
-        if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             return;
 
         if (machineId == TagId || IsGameOver)
@@ -254,7 +254,7 @@ public partial class UserInfoMulti2D : Dialog
                 }
                 break;
 
-            case MultiplayerGameType.CaptureTheFlag when Engine.Settings.Platform == Platform.NGage:
+            case MultiplayerGameType.CaptureTheFlag when Rom.Platform == Platform.NGage:
                 if (CaptureTheFlagTime > 360)
                     CaptureTheFlagTime = 360;
                 break;
@@ -433,7 +433,7 @@ public partial class UserInfoMulti2D : Dialog
 
     public void PrintTime()
     {
-        if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
         {
             int v1 = CaptureTheFlagTime / 60;
             int v2 = CaptureTheFlagTime + v1 * -60;
@@ -500,7 +500,7 @@ public partial class UserInfoMulti2D : Dialog
 
     public void MoveBouncingSprites()
     {
-        float signTargetY = Engine.Settings.Platform switch
+        float signTargetY = Rom.Platform switch
         {
             Platform.GBA => 36,
             Platform.NGage => 72,
@@ -513,7 +513,7 @@ public partial class UserInfoMulti2D : Dialog
                 GameOverSign.ScreenPos -= new Vector2(0, 2);
         }
 
-        if (Engine.Settings.Platform == Platform.NGage && UnknownCaptureTheFlagValue2)
+        if (Rom.Platform == Platform.NGage && UnknownCaptureTheFlagValue2)
         {
             if (SuddenDeathSign.ScreenPos.Y > signTargetY || (SuddenDeathSign.ScreenPos.Y > -8 && SuddenDeathDisplayCountdown == 0))
                 SuddenDeathSign.ScreenPos -= new Vector2(0, 2);
@@ -603,7 +603,7 @@ public partial class UserInfoMulti2D : Dialog
         PlayerArrow.CurrentAnimation = 1;
         PlayerArrow.BasePaletteIndex = TagId * 2 + 1;
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             if (TagIdHudIndex is 0 or 3)
             {
@@ -627,7 +627,7 @@ public partial class UserInfoMulti2D : Dialog
                 PlayerArrow.VerticalAnchor = VerticalAnchorMode.Bottom;
             }
         }
-        else if (Engine.Settings.Platform == Platform.NGage)
+        else if (Rom.Platform == Platform.NGage)
         {
             if (TagIdHudIndex is 0 or 2)
             {
@@ -659,12 +659,12 @@ public partial class UserInfoMulti2D : Dialog
 
     public override void Load()
     {
-        AnimatedObjectResource timersResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerTimerAnimations);
-        AnimatedObjectResource iconsResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerIconAnimations);
-        AnimatedObjectResource playerIconsResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerPlayerIconAnimations);
-        AnimatedObjectResource countdownResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerCountdownAnimations);
-        AnimatedObjectResource gameOverSignResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerGameOverSignAnimations);
-        AnimatedObjectResource itemsResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerItemAnimations);
+        AnimatedObjectResource timersResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerTimerAnimations);
+        AnimatedObjectResource iconsResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerIconAnimations);
+        AnimatedObjectResource playerIconsResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerPlayerIconAnimations);
+        AnimatedObjectResource countdownResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerCountdownAnimations);
+        AnimatedObjectResource gameOverSignResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerGameOverSignAnimations);
+        AnimatedObjectResource itemsResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerItemAnimations);
 
         TimerFrames = new AnimatedObject[RSMultiplayer.MaxPlayersCount];
         for (int i = 0; i < TimerFrames.Length; i++)
@@ -679,7 +679,7 @@ public partial class UserInfoMulti2D : Dialog
         }
 
         TimerFrames[0].CurrentAnimation = 10;
-        if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             TimerFrames[0].ScreenPos = new Vector2(66, 18);
         else
             TimerFrames[0].ScreenPos = new Vector2(13, 18);
@@ -689,7 +689,7 @@ public partial class UserInfoMulti2D : Dialog
         TimerFrames[1].HorizontalAnchor = HorizontalAnchorMode.Right;
 
         // 2 and 3 have reversed positions between GBA and N-Gage
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             TimerFrames[2].CurrentAnimation = 11;
             TimerFrames[2].ScreenPos = new Vector2(-13, -8);
@@ -700,7 +700,7 @@ public partial class UserInfoMulti2D : Dialog
             TimerFrames[3].ScreenPos = new Vector2(13, -8);
             TimerFrames[3].VerticalAnchor = VerticalAnchorMode.Bottom;
         }
-        else if (Engine.Settings.Platform == Platform.NGage)
+        else if (Rom.Platform == Platform.NGage)
         {
             TimerFrames[2].CurrentAnimation = 10;
             TimerFrames[2].ScreenPos = new Vector2(13, -8);
@@ -753,7 +753,7 @@ public partial class UserInfoMulti2D : Dialog
             TimerDigits[i][2].HorizontalAnchor = anchor;
         }
 
-        if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             setTimerDigitPositions(0, 78, HorizontalAnchorMode.Left);
         else
             setTimerDigitPositions(0, 25, HorizontalAnchorMode.Left);
@@ -761,12 +761,12 @@ public partial class UserInfoMulti2D : Dialog
         setTimerDigitPositions(1, -58, HorizontalAnchorMode.Right);
 
         // 2 and 3 have reversed positions between GBA and N-Gage
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             setTimerDigitPositions(2, -58, HorizontalAnchorMode.Right);
             setTimerDigitPositions(3, 25, HorizontalAnchorMode.Left);
         }
-        else if (Engine.Settings.Platform == Platform.NGage)
+        else if (Rom.Platform == Platform.NGage)
         {
             setTimerDigitPositions(2, 25, HorizontalAnchorMode.Left);
             setTimerDigitPositions(3, -58, HorizontalAnchorMode.Right);
@@ -799,7 +799,7 @@ public partial class UserInfoMulti2D : Dialog
             }
         }
 
-        if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             TimerColons[0].ScreenPos = TimerColons[0].ScreenPos with { X = 86 };
         else
             TimerColons[0].ScreenPos = TimerColons[0].ScreenPos with { X = 33 };
@@ -808,14 +808,14 @@ public partial class UserInfoMulti2D : Dialog
         TimerColons[1].HorizontalAnchor = HorizontalAnchorMode.Right;
 
         // 2 and 3 have reversed positions between GBA and N-Gage
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             TimerColons[2].ScreenPos = TimerColons[2].ScreenPos with { X = -50 };
             TimerColons[2].HorizontalAnchor = HorizontalAnchorMode.Right;
 
             TimerColons[3].ScreenPos = TimerColons[3].ScreenPos with { X = 33 };
         }
-        else if (Engine.Settings.Platform == Platform.NGage)
+        else if (Rom.Platform == Platform.NGage)
         {
             TimerColons[2].ScreenPos = TimerColons[2].ScreenPos with { X = 33 };
             
@@ -827,7 +827,7 @@ public partial class UserInfoMulti2D : Dialog
             throw new UnsupportedPlatformException();
         }
 
-        if (Engine.Settings.Platform != Platform.NGage || MultiplayerInfo.GameType != MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform != Platform.NGage || MultiplayerInfo.GameType != MultiplayerGameType.CaptureTheFlag)
         {
             EnergyShotsCounterFrame = new AnimatedObject(timersResource, timersResource.IsDynamic)
             {
@@ -883,7 +883,7 @@ public partial class UserInfoMulti2D : Dialog
 
         EnergyShotsIcon.BasePaletteIndex = MultiplayerManager.MachineId * 2 + 1;
 
-        if (Engine.Settings.Platform != Platform.NGage || MultiplayerInfo.GameType != MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform != Platform.NGage || MultiplayerInfo.GameType != MultiplayerGameType.CaptureTheFlag)
         {
             PlayerArrow = new AnimatedObject(iconsResource, iconsResource.IsDynamic)
             {
@@ -908,7 +908,7 @@ public partial class UserInfoMulti2D : Dialog
             };
         }
 
-        if (Engine.Settings.Platform == Platform.NGage && 
+        if (Rom.Platform == Platform.NGage && 
             MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && 
             MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Teams)
         {
@@ -948,7 +948,7 @@ public partial class UserInfoMulti2D : Dialog
             PlayerIcons[1].HorizontalAnchor = HorizontalAnchorMode.Right;
 
             // 2 and 3 have reversed positions between GBA and N-Gage
-            if (Engine.Settings.Platform == Platform.GBA)
+            if (Rom.Platform == Platform.GBA)
             {
                 PlayerIcons[2].ScreenPos = new Vector2(-17, -20);
                 PlayerIcons[2].HorizontalAnchor = HorizontalAnchorMode.Right;
@@ -957,7 +957,7 @@ public partial class UserInfoMulti2D : Dialog
                 PlayerIcons[3].ScreenPos = new Vector2(0, -20);
                 PlayerIcons[3].VerticalAnchor = VerticalAnchorMode.Bottom;
             }
-            else if (Engine.Settings.Platform == Platform.NGage)
+            else if (Rom.Platform == Platform.NGage)
             {
                 PlayerIcons[2].ScreenPos = new Vector2(0, -20);
                 PlayerIcons[2].VerticalAnchor = VerticalAnchorMode.Bottom;
@@ -978,7 +978,7 @@ public partial class UserInfoMulti2D : Dialog
             IsFramed = true,
             BgPriority = 0,
             ObjPriority = 2,
-            ScreenPos = Engine.Settings.Platform switch
+            ScreenPos = Rom.Platform switch
             {
                 Platform.GBA => new Vector2(0, 10),
                 Platform.NGage => new Vector2(0, 0),
@@ -998,7 +998,7 @@ public partial class UserInfoMulti2D : Dialog
             BgPriority = 0,
             ObjPriority = 2,
             CurrentAnimation = 0,
-            ScreenPos = Engine.Settings.Platform switch
+            ScreenPos = Rom.Platform switch
             {
                 Platform.GBA => new Vector2(10, IsPlayerDead ? 36 : 180),
                 Platform.NGage => new Vector2(0, IsPlayerDead ? 36 : 180),
@@ -1009,9 +1009,9 @@ public partial class UserInfoMulti2D : Dialog
             RenderContext = Scene.HudRenderContext,
         };
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
         {
-            AnimatedObjectResource suddenDeathSignResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.NGageMultiplayerSuddenDeathSignAnimations);
+            AnimatedObjectResource suddenDeathSignResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.NGageMultiplayerSuddenDeathSignAnimations);
 
             SuddenDeathSign = new AnimatedObject(suddenDeathSignResource, suddenDeathSignResource.IsDynamic)
             {
@@ -1026,7 +1026,7 @@ public partial class UserInfoMulti2D : Dialog
             };
         }
 
-        if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
         {
             FlagBar.Load();
             FlagBar.Set();
@@ -1044,7 +1044,7 @@ public partial class UserInfoMulti2D : Dialog
                 VerticalAnchor = VerticalAnchorMode.Bottom,
 
                 // Use the original render context as to avoid scaling this (we want it to cover the screen!)
-                RenderContext = Engine.OriginalGameRenderContext,
+                RenderContext = Rom.OriginalGameRenderContext,
             };
 
             ReverseControlsEffectIcon = new AnimatedObject(itemsResource, itemsResource.IsDynamic)
@@ -1076,7 +1076,7 @@ public partial class UserInfoMulti2D : Dialog
         ScoreBar.Load();
         ScoreBar.SetToStayVisible();
 
-        if (Engine.Settings.Platform != Platform.NGage || MultiplayerInfo.GameType != MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform != Platform.NGage || MultiplayerInfo.GameType != MultiplayerGameType.CaptureTheFlag)
             PrintEnergyShots(TagId);
 
         PrintTime();
@@ -1097,39 +1097,39 @@ public partial class UserInfoMulti2D : Dialog
                 animationPlayer.Play(obj);
         }
 
-        if (Engine.Settings.Platform != Platform.NGage || MultiplayerInfo.GameType != MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform != Platform.NGage || MultiplayerInfo.GameType != MultiplayerGameType.CaptureTheFlag)
         {
             if (EnergyShotsCounterFrame.ScreenPos.Y != 0 && !IsPlayerDead && !IsGameOver)
             {
-                play(EnergyShotsCounterFrame, Engine.Settings.Platform == Platform.GBA);
-                play(EnergyShotsIcon, Engine.Settings.Platform == Platform.GBA);
+                play(EnergyShotsCounterFrame, Rom.Platform == Platform.GBA);
+                play(EnergyShotsIcon, Rom.Platform == Platform.GBA);
 
                 if (EnergyShotsBlinkCountdown == 0 || (EnergyShotsBlinkCountdown & 8) != 0)
                 {
                     foreach (AnimatedObject digit in EnergyShotsCounterDigits)
-                        play(digit, Engine.Settings.Platform == Platform.GBA);
+                        play(digit, Rom.Platform == Platform.GBA);
                 }
             }
 
-            play(PlayerArrow, Engine.Settings.Platform == Platform.GBA);
+            play(PlayerArrow, Rom.Platform == Platform.GBA);
         }
 
-        int timersCount = Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag
+        int timersCount = Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag
             ? 1
             : MultiplayerManager.PlayersCount;
         for (int id = 0; id < timersCount; id++)
         {
-            play(TimerFrames[id], Engine.Settings.Platform == Platform.GBA);
+            play(TimerFrames[id], Rom.Platform == Platform.GBA);
 
             if (id != TagIdHudIndex || (GameTime.ElapsedFrames & 0x20) != 0)
-                play(TimerColons[id], Engine.Settings.Platform == Platform.GBA);
+                play(TimerColons[id], Rom.Platform == Platform.GBA);
 
             foreach (AnimatedObject digit in TimerDigits[id])
-                play(digit, Engine.Settings.Platform == Platform.GBA);
+                play(digit, Rom.Platform == Platform.GBA);
         }
 
         for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
-            play(PlayerIcons[id], Engine.Settings.Platform == Platform.GBA);
+            play(PlayerIcons[id], Rom.Platform == Platform.GBA);
 
         if (GloboxCountdown != 0 && !IsPaused && GloboxMachineId != MultiplayerManager.MachineId)
             animationPlayer.PlayFront(Globox);
@@ -1140,7 +1140,7 @@ public partial class UserInfoMulti2D : Dialog
         if (GameOverSign.ScreenPos.Y != 180 && !IsPaused)
             animationPlayer.PlayFront(GameOverSign);
 
-        if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
         {
             if (SuddenDeathSign.ScreenPos.Y != 180 && !IsPaused)
                 animationPlayer.PlayFront(SuddenDeathSign);
@@ -1149,7 +1149,7 @@ public partial class UserInfoMulti2D : Dialog
         if (!IsPaused && (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse || Times[MultiplayerManager.MachineId] != 0))
             DrawItemEffect(animationPlayer);
 
-        if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             FlagBar.Draw(animationPlayer);
 
         if (IsGameOver)
@@ -1157,7 +1157,7 @@ public partial class UserInfoMulti2D : Dialog
             if (ScoreBar.DrawStep == BarDrawStep.Hide)
                 ScoreBar.DrawStep = BarDrawStep.MoveIn;
 
-            if (Engine.Settings.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+            if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             {
                 if (((FrameMultiCaptureTheFlag)Frame.Current).field_0x5b)
                 {

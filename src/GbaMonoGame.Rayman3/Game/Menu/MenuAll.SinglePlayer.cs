@@ -27,7 +27,7 @@ public partial class MenuAll
     {
         if (StartEraseCursorTargetIndex != StartEraseCursorCurrentIndex)
         {
-            int targetXPos = Engine.Settings.Platform switch
+            int targetXPos = Rom.Platform switch
             {
                 Platform.GBA => StartEraseCursorTargetIndex * 72 + 106,
                 Platform.NGage => StartEraseCursorTargetIndex * 72 + 78,
@@ -78,7 +78,7 @@ public partial class MenuAll
 
         Data.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 1;
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
             Data.StartEraseCursor.CurrentAnimation = 40;
 
         for (int i = 0; i < 3; i++)
@@ -98,12 +98,12 @@ public partial class MenuAll
         StartEraseCursorTargetIndex = 0;
         EraseSaveStage = 0;
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             Data.StartEraseSelection.ScreenPos = new Vector2(80, 30);
             Data.StartEraseCursor.ScreenPos = new Vector2(106, 12);
         }
-        else if (Engine.Settings.Platform == Platform.NGage)
+        else if (Rom.Platform == Platform.NGage)
         {
             Data.StartEraseSelection.ScreenPos = new Vector2(52, 30);
             Data.StartEraseCursor.ScreenPos = new Vector2(78, 12);
@@ -152,7 +152,7 @@ public partial class MenuAll
 
         AnimationPlayer.Play(Data.StartEraseSelection);
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
             AnimationPlayer.Play(Data.StartEraseCursor);
     }
 
@@ -256,9 +256,9 @@ public partial class MenuAll
                     EraseSaveStage = 2;
                     Data.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 21;
 
-                    if (Engine.Settings.Platform == Platform.GBA)
+                    if (Rom.Platform == Platform.GBA)
                         Data.StartEraseSelection.ScreenPos = new Vector2(144, -80);
-                    else if (Engine.Settings.Platform == Platform.NGage)
+                    else if (Rom.Platform == Platform.NGage)
                         Data.StartEraseSelection.ScreenPos = new Vector2(104, -80);
                     else
                         throw new UnsupportedPlatformException();
@@ -310,7 +310,7 @@ public partial class MenuAll
                     if (StartEraseCursorTargetIndex == 0 && Slots[SelectedOption] != null)
                     {
                         Slots[SelectedOption] = null;
-                        Engine.SaveGame.Slots[SelectedOption] = new SaveGameSlot
+                        Rom.SaveGame.Slots[SelectedOption] = new SaveGameSlot
                         {
                             Lums = new byte[125],
                             Cages = new byte[7],
@@ -332,9 +332,9 @@ public partial class MenuAll
                     EraseSaveStage = 5;
                     Data.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2;
 
-                    if (Engine.Settings.Platform == Platform.GBA)
+                    if (Rom.Platform == Platform.GBA)
                         Data.StartEraseSelection.ScreenPos = new Vector2(80, -50);
-                    else if (Engine.Settings.Platform == Platform.NGage)
+                    else if (Rom.Platform == Platform.NGage)
                         Data.StartEraseSelection.ScreenPos = new Vector2(52, -50);
                     else
                         throw new UnsupportedPlatformException();

@@ -59,7 +59,7 @@ public class World : FrameWorldSideScroller
         CurrentExStepAction = StepEx_MoveInCurtains;
         NextExStepAction = null;
 
-        Vector2 camLockOffset = Engine.Settings.Platform switch
+        Vector2 camLockOffset = Rom.Platform switch
         {
             Platform.GBA => new Vector2(110, 120),
             Platform.NGage => new Vector2(75, 120),
@@ -73,7 +73,7 @@ public class World : FrameWorldSideScroller
             MurfyId = 41;
 
             // Lock the camera on N-Gage, otherwise Murfy is off-screen
-            if (Engine.Settings.Platform == Platform.NGage)
+            if (Rom.Platform == Platform.NGage)
                 Scene.Camera.ProcessMessage(this, Message.Cam_Lock, Scene.GetGameObject(MurfyLevelCurtainTargetId).Position - camLockOffset);
 
             Scene.MainActor.ProcessMessage(this, Message.Main_EnterCutscene);
@@ -106,7 +106,7 @@ public class World : FrameWorldSideScroller
                  GameInfo.World2LumsCompleted() &&
                  !GameInfo.PersistentInfo.UnlockedBonus2)
         {
-            MurfyLevelCurtainTargetId = Engine.Settings.Platform switch
+            MurfyLevelCurtainTargetId = Rom.Platform switch
             {
                 Platform.GBA => 9,
                 Platform.NGage => 10,
@@ -127,13 +127,13 @@ public class World : FrameWorldSideScroller
                  GameInfo.World3LumsCompleted() &&
                  !GameInfo.PersistentInfo.UnlockedBonus3)
         {
-            MurfyLevelCurtainTargetId = Engine.Settings.Platform switch
+            MurfyLevelCurtainTargetId = Rom.Platform switch
             {
                 Platform.GBA => 14,
                 Platform.NGage => 18,
                 _ => throw new UnsupportedPlatformException()
             };
-            MurfyId = Engine.Settings.Platform switch
+            MurfyId = Rom.Platform switch
             {
                 Platform.GBA => 22,
                 Platform.NGage => 23,
@@ -154,7 +154,7 @@ public class World : FrameWorldSideScroller
                  !GameInfo.PersistentInfo.UnlockedBonus4)
         {
             MurfyLevelCurtainTargetId = 11;
-            MurfyId = Engine.Settings.Platform switch
+            MurfyId = Rom.Platform switch
             {
                 Platform.GBA => 22,
                 Platform.NGage => 21,
@@ -267,7 +267,7 @@ public class World : FrameWorldSideScroller
             {
                 Scene.MainActor.ProcessMessage(this, Message.Main_ExitStopOrCutscene);
                 
-                if (Engine.Settings.Platform == Platform.NGage)
+                if (Rom.Platform == Platform.NGage)
                     Scene.Camera.ProcessMessage(this, Message.Cam_Unlock);
                 
                 UserInfo.Hide = false;

@@ -1,24 +1,15 @@
 using System;
-using BinarySerializer.Ubisoft.GbaEngine;
 using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame;
 
 public class GbaGameViewPort
 {
-    public GbaGameViewPort(GbaEngineSettings settings)
+    public GbaGameViewPort(Vector2 resolution)
     {
-        OriginalGameResolution = settings.Platform switch
-        {
-            Platform.GBA => new Vector2(240, 160),
-            Platform.NGage => new Vector2(176, 208),
-            _ => throw new UnsupportedPlatformException(),
-        };
-        RequestedGameResolution = OriginalGameResolution;
-        GameResolution = OriginalGameResolution;
+        SetRequestedResolution(resolution);
     }
 
-    public Vector2 OriginalGameResolution { get; }
     public Vector2? MinGameResolution { get; private set; }
     public Vector2? MaxGameResolution { get; private set; }
     public Vector2 RequestedGameResolution { get; private set; }
@@ -116,15 +107,15 @@ public class GbaGameViewPort
         OnResized();
     }
 
-    public void SetRequestedResolution(Vector2? resolution)
+    public void SetRequestedResolution(Vector2 resolution)
     {
-        RequestedGameResolution = resolution ?? OriginalGameResolution;
+        RequestedGameResolution = resolution;
         UpdateGameResolution();
     }
 
-    public void SetResolutionBoundsToOriginalResolution()
+    public void SetFixedResolution(Vector2 resolution)
     {
-        SetResolutionBounds(OriginalGameResolution, OriginalGameResolution);
+        SetResolutionBounds(resolution, resolution);
     }
 
     public void SetResolutionBounds(Vector2? minResolution, Vector2? maxResolution)

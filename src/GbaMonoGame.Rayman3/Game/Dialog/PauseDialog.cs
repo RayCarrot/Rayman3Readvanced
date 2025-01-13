@@ -177,15 +177,15 @@ public partial class PauseDialog : Dialog
         // NOTE: Game has it set up so Load can be called multiple times. Dynamic objects don't get recreated after the first time, but instead
         //       reloaded into VRAM. We don't need to do that though due to how the graphics system works here, so just always create everything.
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
             ((NGageSoundEventsManager)SoundEventsManager.Current).PauseLoopingSoundEffects();
 
-        AnimatedObjectResource canvasResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.PauseCanvasAnimations);
+        AnimatedObjectResource canvasResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.PauseCanvasAnimations);
         Canvas = new AnimatedObject(canvasResource, false)
         {
             IsFramed = true,
             CurrentAnimation = 0,
-            ScreenPos = new Vector2(Engine.Settings.Platform switch
+            ScreenPos = new Vector2(Rom.Platform switch
             {
                 Platform.GBA => 106,
                 Platform.NGage => 76,
@@ -198,7 +198,7 @@ public partial class PauseDialog : Dialog
         {
             IsFramed = true,
             CurrentAnimation = 1,
-            ScreenPos = new Vector2(Engine.Settings.Platform switch
+            ScreenPos = new Vector2(Rom.Platform switch
             {
                 Platform.GBA => 66,
                 Platform.NGage => 36,
@@ -210,14 +210,14 @@ public partial class PauseDialog : Dialog
 
         CursorOffset = 0;
 
-        AnimatedObjectResource selectionsResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.PauseSelectionAnimations);
+        AnimatedObjectResource selectionsResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.PauseSelectionAnimations);
         PauseSelection = new AnimatedObject(selectionsResource, true)
         {
             IsFramed = true,
-            CurrentAnimation = RSMultiplayer.IsActive && Engine.Settings.Platform == Platform.GBA 
+            CurrentAnimation = RSMultiplayer.IsActive && Rom.Platform == Platform.GBA 
                 ? Localization.LanguageUiIndex + 50 
                 : Localization.LanguageUiIndex,
-            ScreenPos = new Vector2(Engine.Settings.Platform switch
+            ScreenPos = new Vector2(Rom.Platform switch
             {
                 Platform.GBA => 84,
                 Platform.NGage => 54,
@@ -227,7 +227,7 @@ public partial class PauseDialog : Dialog
             RenderContext = Scene.HudRenderContext
         };
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             string[] textLines = Localization.GetText(11, 15);
 
@@ -241,15 +241,15 @@ public partial class PauseDialog : Dialog
                     ObjPriority = 0,
                     Color = TextColor.SleepMode,
                     FontSize = FontSize.Font16,
-                    RenderContext = Engine.OriginalGameRenderContext,
+                    RenderContext = Rom.OriginalGameRenderContext,
                 };
 
-                SleepModeTexts[i].ScreenPos = new Vector2(Engine.OriginalGameRenderContext.Resolution.X / 2 - SleepModeTexts[i].GetStringWidth() / 2f, i * 16 + 50);
+                SleepModeTexts[i].ScreenPos = new Vector2(Rom.OriginalGameRenderContext.Resolution.X / 2 - SleepModeTexts[i].GetStringWidth() / 2f, i * 16 + 50);
             }
         }
-        else if (Engine.Settings.Platform == Platform.NGage)
+        else if (Rom.Platform == Platform.NGage)
         {
-            AnimatedObjectResource symbolsResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.NGageButtonSymbols);
+            AnimatedObjectResource symbolsResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.NGageButtonSymbols);
             SelectSymbol = new AnimatedObject(symbolsResource, false)
             {
                 IsFramed = true,
@@ -362,7 +362,7 @@ public partial class PauseDialog : Dialog
             SetCursorPosition();
             PauseSelection.ScreenPos = PauseSelection.ScreenPos with { Y = 90 - OffsetY };
 
-            if (Engine.Settings.Platform == Platform.NGage)
+            if (Rom.Platform == Platform.NGage)
             {
                 MusicVolume.ScreenPos = MusicVolume.ScreenPos with { Y = 91 - OffsetY };
                 SfxVolume.ScreenPos = SfxVolume.ScreenPos with { Y = 109 - OffsetY };
@@ -372,7 +372,7 @@ public partial class PauseDialog : Dialog
             animationPlayer.Play(Cursor);
             animationPlayer.Play(PauseSelection);
 
-            if (Engine.Settings.Platform == Platform.NGage)
+            if (Rom.Platform == Platform.NGage)
             {
                 animationPlayer.Play(MusicVolume);
                 animationPlayer.Play(SfxVolume);

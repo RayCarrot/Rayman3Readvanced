@@ -24,7 +24,7 @@ public class SwitchBar : Bar
 
     public override void Load()
     {
-        AnimatedObjectResource resource = Storage.LoadResource<AnimatedObjectResource>(GameResource.SwitchBarAnimations);
+        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.SwitchBarAnimations);
 
         Switches = new AnimatedObject(resource, false)
         {

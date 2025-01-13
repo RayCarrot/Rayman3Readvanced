@@ -15,7 +15,7 @@ public class Cages50Bar : Bar
 
     public override void Load()
     {
-        AnimatedObjectResource resource = Storage.LoadResource<AnimatedObjectResource>(GameResource.HudAnimations);
+        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.HudAnimations);
 
         CagesIcon = new AnimatedObject(resource, false)
         {

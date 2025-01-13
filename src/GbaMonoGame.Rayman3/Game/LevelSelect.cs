@@ -473,7 +473,7 @@ public class LevelSelect : Frame
 
     public void Step_SelectLanguage()
     {
-        string[] languageNames = Engine.Settings.Platform switch
+        string[] languageNames = Rom.Platform switch
         {
             Platform.GBA => GbaLanguageNames,
             Platform.NGage => NGageLanguageNames,

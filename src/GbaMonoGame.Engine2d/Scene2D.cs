@@ -21,7 +21,7 @@ public class Scene2D
         Dialogs = new List<Dialog>(layersCount);
         DialogModalFlags = new List<bool>(layersCount);
 
-        Scene2DResource scene = Storage.LoadResource<Scene2DResource>(id);
+        Scene2DResource scene = Rom.LoadResource<Scene2DResource>(id);
 
         Playfield = TgxPlayfield.Load(scene.Playfield);
         HudRenderContext = Playfield.RenderContext;
@@ -98,7 +98,7 @@ public class Scene2D
     //       Perhaps we should still use knots to handle game logic, but still draw and step all actors in the scene?
     // If we're playing in a different resolution than the original we can't use
     // the knots (object sectors). Instead we keep all objects active at all times.
-    public bool KeepAllObjectsActive => Resolution != Engine.GameViewPort.OriginalGameResolution;
+    public bool KeepAllObjectsActive => Resolution != Rom.OriginalResolution;
 
     public void Init()
     {
@@ -117,7 +117,7 @@ public class Scene2D
     {
         RefreshDialogs();
 
-        if (Engine.Settings.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA)
         {
             if (InDialogModalMode)
             {
@@ -135,7 +135,7 @@ public class Scene2D
                 DrawActors();
             }
         }
-        else if (Engine.Settings.Platform == Platform.NGage)
+        else if (Rom.Platform == Platform.NGage)
         {
             if (InDialogModalMode || NGage_Flag_6)
             {

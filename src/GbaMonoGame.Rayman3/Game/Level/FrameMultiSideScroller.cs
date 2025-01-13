@@ -66,9 +66,9 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
         Scene = new Scene2D((int)GameInfo.MapId, x => new CameraSideScroller(x), 3, 1);
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
         {
-            AnimatedObjectResource resource = Storage.LoadResource<AnimatedObjectResource>(GameResource.NGageMultiplayerPauseSignAnimations);
+            AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.NGageMultiplayerPauseSignAnimations);
             PauseSign = new AnimatedObject(resource, resource.IsDynamic)
             {
                 IsFramed = true,
@@ -96,7 +96,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
         Scene.Playfield.Step();
 
-        if (Engine.Settings.Platform == Platform.NGage && GameInfo.MapId == MapId.NGageMulti_CaptureTheFlagTeamPlayer)
+        if (Rom.Platform == Platform.NGage && GameInfo.MapId == MapId.NGageMulti_CaptureTheFlagTeamPlayer)
         {
             // TODO: Why does the game do this?
             Gfx.GetScreen(1).IsEnabled = false;
@@ -124,7 +124,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
     {
         MubState state = MultiplayerManager.Step();
 
-        if (state == MubState.Connected && (Engine.Settings.Platform == Platform.NGage || !EndOfFrame))
+        if (state == MubState.Connected && (Rom.Platform == Platform.NGage || !EndOfFrame))
         {
             // TODO: This code is very different on N-Gage
 
@@ -145,7 +145,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         {
             SoundEventsManager.StopAllSongs();
 
-            MenuAll.Page menuPage = Engine.Settings.Platform == Platform.GBA && EndOfFrame
+            MenuAll.Page menuPage = Rom.Platform == Platform.GBA && EndOfFrame
                 ? MenuAll.Page.Multiplayer
                 : MenuAll.Page.MultiplayerLostConnection;
             FrameManager.SetNextFrame(new MenuAll(menuPage));
@@ -172,7 +172,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
             for (int id = 0; id < RSMultiplayer.MaxPlayersCount; id++)
             {
                 if (MultiJoyPad.IsButtonJustPressed(id, GbaInput.Start) || 
-                    (Engine.Settings.Platform == Platform.NGage && MultiJoyPad.IsButtonJustPressed(id, GbaInput.Select)))
+                    (Rom.Platform == Platform.NGage && MultiJoyPad.IsButtonJustPressed(id, GbaInput.Select)))
                 {
                     PausedMachineId = id;
                     CurrentStepAction = Step_Pause_Init;
@@ -208,7 +208,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
         Scene.AddDialog(PauseDialog, true, false);
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
             NGage_0x4 = true;
 
         Scene.Step();
@@ -233,7 +233,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
     {
         Scene.RemoveLastDialog();
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
             NGage_0x4 = false;
 
         Scene.RefreshDialogs();
@@ -242,7 +242,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
         Scene.ProcessDialogs();
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
             NGage_0x4 = false;
 
         Scene.Playfield.Step();
@@ -265,7 +265,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
         UserInfo.IsPaused = false;
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
         {
             // TODO: Set user info animation
 

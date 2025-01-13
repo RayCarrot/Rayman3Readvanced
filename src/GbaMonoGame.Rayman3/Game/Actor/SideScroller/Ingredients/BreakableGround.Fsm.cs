@@ -58,7 +58,7 @@ public partial class BreakableGround
 
                 if (IsActionFinished)
                 {
-                    if (Engine.Settings.Platform == Platform.NGage && RSMultiplayer.IsActive)
+                    if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive)
                         multiplayerFinished = true;
                     else
                         ProcessMessage(this, Message.Destroy);

@@ -15,7 +15,7 @@ public class NGageSplashScreensAct : Act
     public override void Init()
     {
         GameInfo.LoadOptions();
-        Init(Engine.Loader.Rayman3_NGageSplashScreens);
+        Init(Rom.Loader.Rayman3_NGageSplashScreens);
         IsAutomatic = true;
     }
 

@@ -26,6 +26,6 @@ public static class Localization
         Language = language;
         LanguageUiIndex = language; // TODO: On N-Gage this is different!
 
-        _textBanks = Engine.Loader.Rayman3_LocalizedTextBanks.TextBanks[language].Value.Select(x => x.Value).ToArray();
+        _textBanks = Rom.Loader.Rayman3_LocalizedTextBanks.TextBanks[language].Value.Select(x => x.Value).ToArray();
     }
 }

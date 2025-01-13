@@ -21,7 +21,7 @@ public class FogDialog : Dialog
 
     public override void Load()
     {
-        AnimatedObjectResource resource = Storage.LoadResource<AnimatedObjectResource>(GameResource.FogAnimations);
+        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.FogAnimations);
 
         Fog = new AObjectFog(resource)
         {

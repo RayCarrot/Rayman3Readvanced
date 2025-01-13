@@ -8,8 +8,8 @@ public class Credits : Frame
 {
     public override void Init()
     {
-        Storage.LoadResource<AnimActor>(126);
-        Storage.LoadResource<TextureTable>(127);
+        Rom.LoadResource<AnimActor>(126);
+        Rom.LoadResource<TextureTable>(127);
     }
 
     public override void Step()

@@ -1,9 +1,4 @@
 ﻿using System;
-using System.IO;
-using BinarySerializer;
-using BinarySerializer.Nintendo.GBA;
-using BinarySerializer.Ubisoft.GbaEngine;
-using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -13,33 +8,19 @@ public static class Engine
 {
     #region Paths
 
-    public const string InstalledGamesDirName = "Games";
+    public static string AssetsDirectoryName => "Content";
     public static string ConfigFileName => "Config.ini";
     public static string ImgGuiConfigFileName => "imgui.ini";
     public static string SerializerLogFileName => "SerializerLog.txt";
 
     #endregion
 
-    #region Engine
+    #region Properties
 
     public static GameConfig Config { get; private set; }
     public static Version Version => new(0, 0, 0);
 
-    #endregion
-
-    #region Rom
-
-    public static GameInstallation GameInstallation { get; private set; }
-    public static Context Context { get; private set; }
-    public static Loader Loader { get; private set; }
-    public static SaveGame SaveGame { get; private set; }
-    public static GbaEngineSettings Settings { get; private set; }
-
-    #endregion
-
-    #region MonoGame
-
-    internal static bool IsLoading { get; set; }
+    public static bool IsLoading { get; set; }
 
     /// <summary>
     /// The game instance.
@@ -61,18 +42,9 @@ public static class Engine
     /// </summary>
     public static GameRenderContext GameRenderContext { get; private set; }
 
-    /// <summary>
-    /// The render context for the original game resolution with the screen aspect ratio.
-    /// </summary>
-    public static OriginalGameRenderContext OriginalGameRenderContext { get; private set; }
-
     public static GbaGameViewPort GameViewPort { get; private set; }
 
     public static GbaGameWindow GameWindow { get; private set; }
-
-    #endregion
-
-    #region Cache
 
     // TODO: Show cache in debug layout
     public static Cache<Texture2D> TextureCache { get; } = new();
@@ -80,115 +52,14 @@ public static class Engine
 
     #endregion
 
-    #region Private Static Methods
+    #region Methods
 
-    private static void LoadRom()
+    public static void BeginLoad()
     {
-        using Context context = Context;
-
-        if (GameInstallation.Platform == Platform.GBA)
-        {
-            GbaLoader loader = new(context);
-            loader.LoadFiles(GameInstallation.GameFilePath, cache: true);
-            loader.LoadRomHeader(GameInstallation.GameFilePath);
-
-            string gameCode = loader.RomHeader.GameCode;
-
-            context.AddPreDefinedPointers(Settings.Game switch
-            {
-                Game.Rayman3 when gameCode is "AYZP" => DefinedPointers.Rayman3_GBA_EU,
-                //Game.Rayman3 when gameCode is "AYZE" => DefinedPointers.Rayman3_GBA_US, // TODO: Support US version
-                _ => throw new Exception($"Unsupported game {Settings.Game} and/or code {gameCode}")
-            });
-
-            loader.LoadData(GameInstallation.GameFilePath);
-            Loader = loader;
-        }
-        else if (GameInstallation.Platform == Platform.NGage)
-        {
-            string dataFileName = Path.ChangeExtension(GameInstallation.GameFilePath, ".dat");
-
-            NGageLoader loader = new(context);
-            loader.LoadFiles(GameInstallation.GameFilePath, dataFileName, cache: true);
-
-            context.AddPreDefinedPointers(Settings.Game switch
-            {
-                Game.Rayman3 => DefinedPointers.Rayman3_NGage,
-                _ => throw new Exception($"Unsupported game {Settings.Game}")
-            });
-
-            loader.LoadData(GameInstallation.GameFilePath, dataFileName);
-            Loader = loader;
-        }
-        else
-        {
-            throw new UnsupportedPlatformException();
-        }
+        IsLoading = true;
     }
 
-    private static void LoadSaveGame()
-    {
-        string saveFile = GameInstallation.SaveFilePath;
-        using Context context = Context;
-
-        PhysicalFile file;
-        if (Settings.Platform == Platform.GBA)
-        {
-            EEPROMEncoder encoder = new(0x200);
-            file = context.AddFile(new EncodedLinearFile(context, saveFile, encoder)
-            {
-                IgnoreCacheOnRead = true
-            });
-        }
-        else
-        {
-            file = context.AddFile(new LinearFile(context, saveFile)
-            {
-                IgnoreCacheOnRead = true
-            });
-        }
-
-        if (file.SourceFileExists)
-        {
-            // TODO: Try/catch?
-            SaveGame = FileFactory.Read<SaveGame>(context, saveFile);
-        }
-        else
-        {
-            SaveGame = new SaveGame
-            {
-                ValidSlots = new bool[3],
-                Slots =
-                [
-                    new SaveGameSlot
-                    {
-                        Lums = new byte[125],
-                        Cages = new byte[7],
-                    },
-                    new SaveGameSlot
-                    {
-                        Lums = new byte[125],
-                        Cages = new byte[7],
-                    },
-                    new SaveGameSlot
-                    {
-                        Lums = new byte[125],
-                        Cages = new byte[7],
-                    },
-                ],
-                MusicVolume = (int)SoundEngineInterface.MaxVolume,
-                SfxVolume = (int)SoundEngineInterface.MaxVolume,
-                Language = 0,
-                MultiplayerName = "Rayman", // TODO: How is this set?
-            };
-        }
-    }
-
-    #endregion
-
-    #region Internal Static Methods
-
-    internal static void LoadConfig()
+    public static void LoadConfig()
     {
         string filePath = FileManager.GetDataFile(ConfigFileName);
         GameConfig config = new();
@@ -196,7 +67,7 @@ public static class Engine
         Config = config;
     }
 
-    internal static void SaveConfig()
+    public static void SaveConfig()
     {
         string filePath = FileManager.GetDataFile(ConfigFileName);
         IniSerializer serializer = new();
@@ -204,45 +75,23 @@ public static class Engine
         serializer.Save(filePath);
     }
 
-    internal static void LoadGameInstallation(GameInstallation gameInstallation)
-    {
-        GameInstallation = gameInstallation;
-
-        ISerializerLogger serializerLogger = Config.WriteSerializerLog
-            ? new FileSerializerLogger(FileManager.GetDataFile(SerializerLogFileName))
-            : null;
-
-        Context = new Context(String.Empty, serializerLogger: serializerLogger, systemLogger: new BinarySerializerSystemLogger());
-        Settings = new GbaEngineSettings { Game = GameInstallation.Game, Platform = GameInstallation.Platform };
-        Context.AddSettings(Settings);
-
-        LoadRom();
-        LoadSaveGame();
-    }
-
-    internal static void LoadMonoGame(GbaGame gbaGame, GraphicsDevice graphicsDevice, ContentManager contentManager, GbaGameViewPort gameViewPort, GbaGameWindow gameWindow)
+    public static void Init(GbaGame gbaGame, GbaGameWindow gameWindow, Frame initialFrame)
     {
         GbaGame = gbaGame;
-        GraphicsDevice = graphicsDevice;
-        ContentManager = contentManager;
-        GameViewPort = gameViewPort;
+        GraphicsDevice = gbaGame.GraphicsDevice;
+        ContentManager = gbaGame.Content;
         GameWindow = gameWindow;
+        GameViewPort = new GbaGameViewPort(Config.InternalGameResolution.ToVector2());
         GameRenderContext = new GameRenderContext();
-        OriginalGameRenderContext = new OriginalGameRenderContext();
+
+        Gfx.Load();
+
+        FrameManager.SetNextFrame(initialFrame);
     }
 
-    internal static void Unload()
+    public static void Step()
     {
-        Context?.Dispose();
-    }
-
-    #endregion
-
-    #region Public Static Methods
-
-    public static void BeginLoad()
-    {
-        IsLoading = true;
+        FrameManager.Step();
     }
 
     #endregion

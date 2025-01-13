@@ -9,21 +9,21 @@ public static class CameraOffset
 
     public static float WalkingShell => 30;
 
-    public static float Default => Engine.Settings.Platform switch
+    public static float Default => Rom.Platform switch
     {
         Platform.GBA => 40,
         Platform.NGage => 25,
         _ => throw new UnsupportedPlatformException()
     };
 
-    public static float DefaultReversed => Engine.GameViewPort.OriginalGameResolution.X - Default;
+    public static float DefaultReversed => Rom.OriginalResolution.X - Default;
 
-    public static float DefaultBigger => Engine.Settings.Platform switch
+    public static float DefaultBigger => Rom.Platform switch
     {
         Platform.GBA => throw new NotImplementedException(),
         Platform.NGage => 45,
         _ => throw new UnsupportedPlatformException()
     };
 
-    public static float Center => Engine.GameViewPort.OriginalGameResolution.X / 2;
+    public static float Center => Rom.OriginalResolution.X / 2;
 }

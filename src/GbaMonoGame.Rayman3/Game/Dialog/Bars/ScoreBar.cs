@@ -20,8 +20,8 @@ public class ScoreBar : Bar
 
     public override void Load()
     {
-        AnimatedObjectResource playerRanksResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerRankAnimations);
-        AnimatedObjectResource playerIconsResource = Storage.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerPlayerIconAnimations);
+        AnimatedObjectResource playerRanksResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerRankAnimations);
+        AnimatedObjectResource playerIconsResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerPlayerIconAnimations);
 
         const int rowHeight = 24;
 
@@ -32,7 +32,7 @@ public class ScoreBar : Bar
             {
                 BgPriority = 0,
                 ObjPriority = 1,
-                ScreenPos = Engine.Settings.Platform switch
+                ScreenPos = Rom.Platform switch
                 {
                     Platform.GBA => new Vector2(92, 60 + i * rowHeight),
                     Platform.NGage => new Vector2(63, 75 + i * rowHeight),
@@ -51,7 +51,7 @@ public class ScoreBar : Bar
             {
                 BgPriority = 0,
                 ObjPriority = 1,
-                ScreenPos = Engine.Settings.Platform switch
+                ScreenPos = Rom.Platform switch
                 {
                     Platform.GBA => new Vector2(122, 44 + i * rowHeight),
                     Platform.NGage => new Vector2(93, 59 + i * rowHeight),
@@ -67,7 +67,7 @@ public class ScoreBar : Bar
         {
             BgPriority = 0,
             ObjPriority = 0,
-            ScreenPos = Engine.Settings.Platform switch
+            ScreenPos = Rom.Platform switch
             {
                 Platform.GBA => new Vector2(152, 60),
                 Platform.NGage => new Vector2(103, 62),
@@ -78,7 +78,7 @@ public class ScoreBar : Bar
             RenderContext = Scene.HudRenderContext,
         };
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
         {
             Crown2 = new AnimatedObject(playerRanksResource, false)
             {
@@ -129,19 +129,19 @@ public class ScoreBar : Bar
 
         if (DrawStep != BarDrawStep.Hide)
         {
-            float crownBaseX = Engine.Settings.Platform switch
+            float crownBaseX = Rom.Platform switch
             {
                 Platform.GBA => 152,
                 Platform.NGage => 103,
                 _ => throw new UnsupportedPlatformException()
             };
-            float playerIconsBaseX = Engine.Settings.Platform switch
+            float playerIconsBaseX = Rom.Platform switch
             {
                 Platform.GBA => 122,
                 Platform.NGage => 93,
                 _ => throw new UnsupportedPlatformException()
             };
-            float playerRanksBaseX = Engine.Settings.Platform switch
+            float playerRanksBaseX = Rom.Platform switch
             {
                 Platform.GBA => 92,
                 Platform.NGage => 63,
@@ -163,7 +163,7 @@ public class ScoreBar : Bar
             for (int i = 0; i < PlayerIcons.Length; i++)
                 PlayerIcons[i].CurrentAnimation = playerRanks[i];
 
-            if (Engine.Settings.Platform == Platform.GBA)
+            if (Rom.Platform == Platform.GBA)
                 animationPlayer.PlayFront(Crown1);
 
             for (int i = 0; i < MultiplayerManager.PlayersCount; i++)
@@ -172,7 +172,7 @@ public class ScoreBar : Bar
                 animationPlayer.PlayFront(PlayerRanks[i]);
             }
 
-            if (Engine.Settings.Platform == Platform.NGage)
+            if (Rom.Platform == Platform.NGage)
                 animationPlayer.PlayFront(Crown1);
         }
     }

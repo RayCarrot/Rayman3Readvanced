@@ -25,13 +25,13 @@ public class TgxCamera2D : TgxCamera
                 if (cluster.Stationary)
                     continue;
 
-                //Vector2 scrollFactor = cluster.GetMaxPosition(Engine.GameViewPort.OriginalGameResolution) /
-                //                       mainCluster.GetMaxPosition(Engine.GameViewPort.OriginalGameResolution);
+                //Vector2 scrollFactor = cluster.GetMaxPosition(Rom.OriginalResolution) /
+                //                       mainCluster.GetMaxPosition(Rom.OriginalResolution);
                 Vector2 scrollFactor;
 
                 // If it's scaled then we have to update the scroll factor
                 if (cluster.RenderContext != RenderContext &&
-                    RenderContext.Resolution != Engine.GameViewPort.OriginalGameResolution)
+                    RenderContext.Resolution != Rom.OriginalResolution)
                 {
                     // Determine if the cluster wraps horizontally. We assume that none of them wrap vertically.
                     bool wrapX = cluster.Layers.Any(x => x.PixelWidth < cluster.Size.X);

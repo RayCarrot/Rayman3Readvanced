@@ -47,7 +47,7 @@ public partial class UserInfoMulti2D
                                     }
                                     break;
                                 
-                                case MultiplayerGameType.CaptureTheFlag when Engine.Settings.Platform == Platform.NGage:
+                                case MultiplayerGameType.CaptureTheFlag when Rom.Platform == Platform.NGage:
                                     // TODO: Implement
                                     break;
                             }
@@ -59,7 +59,7 @@ public partial class UserInfoMulti2D
                     {
                         StartCountdownValue--;
 
-                        if (Engine.Settings.Platform == Platform.NGage)
+                        if (Rom.Platform == Platform.NGage)
                             Scene.NGage_Flag_6 = false;
                     }
                     else
@@ -135,7 +135,7 @@ public partial class UserInfoMulti2D
             case FsmAction.Init:
                 GloboxCountdown = 0;
                 
-                if (Engine.Settings.Platform != Platform.NGage || MultiplayerInfo.GameType != MultiplayerGameType.CaptureTheFlag)
+                if (Rom.Platform != Platform.NGage || MultiplayerInfo.GameType != MultiplayerGameType.CaptureTheFlag)
                     SetArrow();
                 break;
 

@@ -74,7 +74,8 @@ public static class FrameManager
         }
 
         // Refresh sound events
-        SoundEventsManager.RefreshEventSet();
+        if (SoundEventsManager.IsLoaded)
+            SoundEventsManager.RefreshEventSet();
 
         // Step the currently active frame
         CurrentFrame?.Step();

@@ -101,7 +101,7 @@ public partial class CameraSideScroller
                 // Do not follow Y (unless near the edge). Used when jumping for example.
                 if (FollowYMode == FollowMode.DoNotFollow)
                 {
-                    float yOff = Scene.Resolution.Y - Engine.GameViewPort.OriginalGameResolution.Y;
+                    float yOff = Scene.Resolution.Y - Rom.OriginalResolution.Y;
 
                     if ((LinkedObject.ScreenPosition.Y < 70 + yOff / 2 && linkedObjDeltaY < 0) ||
                         (LinkedObject.ScreenPosition.Y > 130 + yOff && linkedObjDeltaY > 0))

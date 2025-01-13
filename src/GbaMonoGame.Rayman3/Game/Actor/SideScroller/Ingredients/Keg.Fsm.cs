@@ -98,9 +98,9 @@ public partial class Keg
                 AnimatedObject.BgPriority = 3;
                 ActionId = Action.Respawn;
 
-                if (Engine.Settings.Platform == Platform.GBA)
+                if (Rom.Platform == Platform.GBA)
                     Position = new Vector2(63, 86);
-                else if (Engine.Settings.Platform == Platform.NGage)
+                else if (Rom.Platform == Platform.NGage)
                     Position = new Vector2(63, 134);
                 else
                     throw new UnsupportedPlatformException();

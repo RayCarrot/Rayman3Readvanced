@@ -62,9 +62,9 @@ public sealed partial class CameraSideScroller : CameraActor2D
 
     // Handle scaling by centering the target offsets within the new scaled view area
     private float ScaleXValue(float value) => value + 
-                                              (Scene.Resolution.X - Engine.GameViewPort.OriginalGameResolution.X) / 2;
+                                              (Scene.Resolution.X - Rom.OriginalResolution.X) / 2;
     private float ScaleYValue(float value) => value +
-                                              (Scene.Resolution.Y - Engine.GameViewPort.OriginalGameResolution.Y) / 2;
+                                              (Scene.Resolution.Y - Rom.OriginalResolution.Y) / 2;
 
     private void UpdateTargetX()
     {

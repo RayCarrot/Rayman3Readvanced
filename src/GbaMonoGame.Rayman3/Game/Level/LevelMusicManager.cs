@@ -39,7 +39,7 @@ public static class LevelMusicManager
             SoundEventsManager.ReplaceAllSongs(GameInfo.GetSpecialLevelMusicSoundEvent(), 3);
         }
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
         {
             switch (GameInfo.MapId)
             {
@@ -108,7 +108,7 @@ public static class LevelMusicManager
             Rayman3SoundEvent soundEvent = GameInfo.GetLevelMusicSoundEvent();
             SoundEventsManager.ReplaceAllSongs(soundEvent, 3);
 
-            if (Engine.Settings.Platform == Platform.NGage)
+            if (Rom.Platform == Platform.NGage)
             {
                 switch (GameInfo.MapId)
                 {
@@ -211,9 +211,9 @@ public static class LevelMusicManager
     public static void PlaySpecialMusicIfDetected(GameObject obj)
     {
         Box objBox = new(
-            minX: obj.Position.X - Engine.GameViewPort.OriginalGameResolution.X,
-            minY: obj.Position.Y - Engine.GameViewPort.OriginalGameResolution.Y / 2,
-            maxX: obj.Position.X + Engine.GameViewPort.OriginalGameResolution.X,
+            minX: obj.Position.X - Rom.OriginalResolution.X,
+            minY: obj.Position.Y - Rom.OriginalResolution.Y / 2,
+            maxX: obj.Position.X + Rom.OriginalResolution.X,
             maxY: obj.Position.Y + 5);
 
         // Extend the box if playing

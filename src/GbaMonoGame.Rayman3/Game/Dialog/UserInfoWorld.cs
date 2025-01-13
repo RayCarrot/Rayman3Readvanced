@@ -116,9 +116,9 @@ public class UserInfoWorld : Dialog
         Cages50Bar.Set();
         BlueLumBar?.Set();
 
-        if (Engine.Settings.Platform == Platform.GBA && GameInfo.MapId != MapId.WorldMap)
+        if (Rom.Platform == Platform.GBA && GameInfo.MapId != MapId.WorldMap)
         {
-            AnimatedObjectResource resource = Storage.LoadResource<AnimatedObjectResource>(GameResource.WorldCurtainAnimations);
+            AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.WorldCurtainAnimations);
 
             CurtainsLeft = new AnimatedObject(resource, false)
             {
@@ -126,7 +126,7 @@ public class UserInfoWorld : Dialog
                 CurrentAnimation = ShouldPlayCurtainAnimation ? 1 : 0,
                 ScreenPos = new Vector2(120, 56),
                 OverrideGfxColor = true, // Should not be effected by the palette fading
-                RenderContext = Engine.OriginalGameRenderContext,
+                RenderContext = Rom.OriginalGameRenderContext,
             };
             CurtainsRight = new AnimatedObject(resource, false)
             {
@@ -135,7 +135,7 @@ public class UserInfoWorld : Dialog
                 ScreenPos = new Vector2(-120, 56),
                 HorizontalAnchor = HorizontalAnchorMode.Right,
                 OverrideGfxColor = true, // Should not be effected by the palette fading
-                RenderContext = Engine.OriginalGameRenderContext,
+                RenderContext = Rom.OriginalGameRenderContext,
             };
 
             for (int i = 0; i < 6; i++)
@@ -153,7 +153,7 @@ public class UserInfoWorld : Dialog
 
     public override void Draw(AnimationPlayer animationPlayer)
     {
-        if (Engine.Settings.Platform == Platform.GBA && GameInfo.MapId != MapId.WorldMap)
+        if (Rom.Platform == Platform.GBA && GameInfo.MapId != MapId.WorldMap)
         {
             animationPlayer.PlayFront(CurtainsLeft);
             animationPlayer.PlayFront(CurtainsRight);

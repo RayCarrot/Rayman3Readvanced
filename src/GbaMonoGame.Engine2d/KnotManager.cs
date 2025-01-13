@@ -137,8 +137,8 @@ public class KnotManager
             if (physicalLayer.PixelHeight - res.Y <= camPos.Y)
                 camPos.Y = physicalLayer.PixelHeight - res.Y - 1;
 
-            int knotX = (int)(camPos.X / Engine.GameViewPort.OriginalGameResolution.X);
-            int knotY = (int)(camPos.Y / Engine.GameViewPort.OriginalGameResolution.Y);
+            int knotX = (int)(camPos.X / Rom.OriginalResolution.X);
+            int knotY = (int)(camPos.Y / Rom.OriginalResolution.Y);
             knot = Knots[knotX + knotY * KnotsWidth];
         }
 

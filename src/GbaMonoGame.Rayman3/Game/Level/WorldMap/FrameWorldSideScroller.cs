@@ -145,7 +145,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
     {
         Scene.AddDialog(PauseDialog, true, false);
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
             NGage_0x4 = true;
 
         Scene.Step();
@@ -175,7 +175,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
     {
         Scene.RemoveLastDialog();
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
             NGage_0x4 = false;
 
         Scene.RefreshDialogs();
@@ -205,7 +205,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
 
-        if (Engine.Settings.Platform == Platform.NGage)
+        if (Rom.Platform == Platform.NGage)
             NGage_0x4 = false;
 
         CurrentStepAction = Step_Normal;

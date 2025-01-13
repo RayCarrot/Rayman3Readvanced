@@ -31,7 +31,7 @@ public class GenerateDebugMenu : DebugMenu
 
         for (int i = 0; i < GameInfo.Levels.Length; i++)
         {
-            Scene2DResource scene = Storage.LoadResource<Scene2DResource>(i);
+            Scene2DResource scene = Rom.LoadResource<Scene2DResource>(i);
 
             // NOTE: Some actors types have multiple models, but they all appear the same
             foreach (Actor actor in scene.Actors.Concat(scene.AlwaysActors))
@@ -90,7 +90,7 @@ public class GenerateDebugMenu : DebugMenu
 
         for (int i = 0; i < GameInfo.Levels.Length; i++)
         {
-            Scene2DResource scene = Storage.LoadResource<Scene2DResource>(i);
+            Scene2DResource scene = Rom.LoadResource<Scene2DResource>(i);
 
             foreach (Actor actor in scene.Actors.Concat(scene.AlwaysActors))
             {

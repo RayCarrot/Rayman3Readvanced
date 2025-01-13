@@ -17,7 +17,7 @@ public partial class PurpleLum
             case FsmAction.Step:
                 Box viewBox = GetViewBox();
 
-                if (RSMultiplayer.IsActive && Engine.Settings.Platform == Platform.NGage)
+                if (RSMultiplayer.IsActive && Rom.Platform == Platform.NGage)
                 {
                     throw new NotImplementedException();
                 }
