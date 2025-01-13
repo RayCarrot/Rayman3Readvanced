@@ -104,9 +104,9 @@ public static class InputManager
     public static void Update()
     {
         _previousKeyboardState = _keyboardState;
-        _keyboardState = Keyboard.GetState();
+        _keyboardState = Engine.GbaGame.IsActive ? Keyboard.GetState() : new KeyboardState();
 
         _previousMouseState = _mouseState;
-        _mouseState = Mouse.GetState();
+        _mouseState = Engine.GbaGame.IsActive ? Mouse.GetState() : new MouseState();
     }
 }
