@@ -1,4 +1,5 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using System;
+using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
@@ -11,13 +12,7 @@ public class TitleScreenGame
         Cursor = cursor;
         Position = position;
 
-        SetOptions(
-        [
-            "CONTINUE",
-            "START",
-            "OPTIONS"
-        ]);
-        SelectedIndex = -1;
+        _selectedIndex = -1;
     }
 
     private int _selectedIndex;
@@ -25,6 +20,8 @@ public class TitleScreenGame
     public Platform Platform { get; }
     public Cursor Cursor { get; }
     public Vector2 Position { get; }
+
+    public Option[] Options { get; set; }
     public SpriteFontTextObject[] OptionTexts { get; set; }
 
     public int SelectedIndex
@@ -40,8 +37,20 @@ public class TitleScreenGame
         }
     }
 
-    private void SetOptions(string[] options)
+    private void UpdateSelection()
     {
+        for (int i = 0; i < OptionTexts.Length; i++)
+            OptionTexts[i].Font = SelectedIndex == i ? ReadvancedFonts.MenuWhite : ReadvancedFonts.MenuYellow;
+    }
+
+    public void SetOptions(Option[] options)
+    {
+        Options = options;
+
+        // Center for first option
+        float width = ReadvancedFonts.MenuYellow.GetWidth(options[0].Text);
+        Vector2 basePos = Position - new Vector2(width / 2, 0);
+
         OptionTexts = new SpriteFontTextObject[options.Length];
         for (int i = 0; i < options.Length; i++)
         {
@@ -49,20 +58,14 @@ public class TitleScreenGame
             {
                 BgPriority = 0,
                 ObjPriority = 0,
-                ScreenPos = Position + new Vector2(0, 16) * i,
-                Text = options[i],
+                ScreenPos = basePos + new Vector2(0, 16) * i,
+                Text = options[i].Text,
                 Font = ReadvancedFonts.MenuYellow,
             };
         }
 
         if (SelectedIndex != -1)
             SelectedIndex = 0;
-    }
-
-    private void UpdateSelection()
-    {
-        for (int i = 0; i < OptionTexts.Length; i++)
-            OptionTexts[i].Font = SelectedIndex == i ? ReadvancedFonts.MenuWhite : ReadvancedFonts.MenuYellow;
     }
 
     public void Step()
@@ -83,6 +86,10 @@ public class TitleScreenGame
                 else
                     SelectedIndex--;
             }
+            else if (JoyPad.IsButtonJustPressed(GbaInput.A))
+            {
+                Options[SelectedIndex].Action(this);
+            }
         }
     }
 
@@ -90,5 +97,17 @@ public class TitleScreenGame
     {
         foreach (SpriteFontTextObject optionText in OptionTexts)
             animationPlayer.Play(optionText);
+    }
+
+    public class Option
+    {
+        public Option(string text, Action<TitleScreenGame> action)
+        {
+            Text = text;
+            Action = action;
+        }
+
+        public string Text { get; }
+        public Action<TitleScreenGame> Action { get; }
     }
 }

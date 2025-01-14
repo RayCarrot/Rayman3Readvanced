@@ -12,7 +12,7 @@ public static class Rom
     #region Fields
 
     private static string _gameDirectory;
-    private static string _gameFileName;
+    private static string[] _gameFileNames;
     private static string _saveFileName;
     private static Game _game;
     private static Platform _platform;
@@ -29,7 +29,7 @@ public static class Rom
     public static bool IsLoaded { get; private set; }
 
     public static string GameDirectory => IsLoaded ? _gameDirectory : throw new RomNotInitializedException();
-    public static string GameFileName => IsLoaded ? _gameFileName : throw new RomNotInitializedException();
+    public static string[] GameFileNames => IsLoaded ? _gameFileNames : throw new RomNotInitializedException();
     public static string SaveFileName => IsLoaded ? _saveFileName : throw new RomNotInitializedException();
     public static Game Game => IsLoaded ? _game : throw new RomNotInitializedException();
     public static Platform Platform => IsLoaded ? _platform : throw new RomNotInitializedException();
@@ -57,7 +57,7 @@ public static class Rom
 
         if (Platform == Platform.GBA)
         {
-            string romFileName = $"{GameFileName}.gba";
+            string romFileName = GameFileNames[0];
 
             GbaLoader loader = new(context);
             loader.LoadFiles(romFileName, cache: true);
@@ -77,8 +77,8 @@ public static class Rom
         }
         else if (Platform == Platform.NGage)
         {
-            string appFileName = $"{GameFileName}.app";
-            string dataFileName = $"{GameFileName}.dat";
+            string appFileName = GameFileNames[0];
+            string dataFileName = GameFileNames[1];
 
             NGageLoader loader = new(context);
             loader.LoadFiles(appFileName, dataFileName, cache: true);
@@ -159,7 +159,7 @@ public static class Rom
 
     #region Public Methods
 
-    public static void Init(string gameDirectory, string gameFileName, string saveFileName, Game game, Platform platform)
+    public static void Init(string gameDirectory, string[] gameFileNames, string saveFileName, Game game, Platform platform)
     {
         if (IsLoaded)
             throw new Exception("The rom is already loaded");
@@ -170,7 +170,7 @@ public static class Rom
 
             // Set properties
             _gameDirectory = gameDirectory;
-            _gameFileName = gameFileName;
+            _gameFileNames = gameFileNames;
             _saveFileName = saveFileName;
             _game = game;
             _platform = platform;

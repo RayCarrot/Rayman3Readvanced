@@ -56,7 +56,4 @@
     <Message Text="Restoring dotnet tools" Importance="High" />
     <Exec Command="dotnet tool restore" />
   </Target>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="IF NOT EXIST &quot;$(TargetDir)Data\Games\GBA&quot; mkdir &quot;$(TargetDir)Data\Games\GBA&quot;&#xD;&#xA;IF NOT EXIST &quot;$(TargetDir)Data\Games\N-Gage&quot; mkdir &quot;$(TargetDir)Data\Games\N-Gage&quot;" />
-  </Target>
 </Project>

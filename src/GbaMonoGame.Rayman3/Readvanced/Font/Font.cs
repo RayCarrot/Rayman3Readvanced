@@ -18,6 +18,28 @@ public class Font
     public Dictionary<char, Glyph> Glyphs { get; }
     public float LineHeight { get; }
 
+    public float GetWidth(string text)
+    {
+        float width = 0;
+
+        for (int charIndex = 0; charIndex < text.Length; charIndex++)
+        {
+            char c = text[charIndex];
+
+            if (!Glyphs.TryGetValue(c, out Glyph glyph))
+                throw new Exception($"The character '{c}' is not defined for this font");
+
+            Rectangle bounds = glyph.Bounds;
+
+            if (charIndex > 0 && glyph.GlyphSpecificLayoutOffsets?.TryGetValue(text[charIndex - 1], out float off) == true)
+                width += off;
+
+            width += bounds.Width + glyph.LayoutOffset;
+        }
+
+        return width;
+    }
+
     public Sprite GetCharacterSprite(
         string text,
         int charIndex,
