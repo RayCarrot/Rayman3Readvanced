@@ -49,7 +49,7 @@
 /processorParam:TextureFormat=Color
 /build:Font_MenuYellow.png
 
-#begin GBA Title Screen.png
+#begin TitleScreen.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -59,9 +59,15 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:GBA Title Screen.png
+/build:TitleScreen.png
 
-#begin N-Gage Title Screen.png
+#begin TitleScreenCloudsShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:TitleScreenCloudsShader.fx
+
+#begin TitleScreenGBAClouds.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -71,5 +77,17 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:N-Gage Title Screen.png
+/build:TitleScreenGBAClouds.png
+
+#begin TitleScreenNGageClouds.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:TitleScreenNGageClouds.png
 

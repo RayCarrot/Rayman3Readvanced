@@ -43,9 +43,11 @@ public class GfxRenderer
 
             RenderOptions = options;
 
+            // Get the shader
+            Effect shader = options.Shader;
+            
             // If we have a palette texture specified then we use the palette shader and pass in the params
-            Effect shader = null;
-            if (options.PaletteTexture != null)
+            if (shader == null && options.PaletteTexture != null)
             {
                 shader = Gfx.PaletteShader;
                 shader.Parameters["PaletteTexture"].SetValue(options.PaletteTexture.Texture);

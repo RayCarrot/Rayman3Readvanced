@@ -12,10 +12,11 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 public class TitleScreen : Frame
 {
     public AnimationPlayer AnimationPlayer { get; set; }
-    public TransitionsFX TransitionsFX { get; set; } // TODO: Fade-out while loading ROM
+    public TransitionsFX TransitionsFX { get; set; }
 
     public Task LoadRomTask { get; set; }
 
+    public Effect CloudsShader { get; set; }
     public Cursor Cursor { get; set; }
     public TitleScreenGame[] Games { get; set; }
     public int SelectedGameIndex { get; set; }
@@ -27,22 +28,37 @@ public class TitleScreen : Frame
         AnimationPlayer = new AnimationPlayer(false, null);
         TransitionsFX = new TransitionsFX(true);
 
-        Texture2D gbaBackground = Engine.ContentManager.Load<Texture2D>("GBA Title Screen");
-        Texture2D nGageBackground = Engine.ContentManager.Load<Texture2D>("N-Gage Title Screen");
+        CloudsShader = Engine.ContentManager.Load<Effect>("TitleScreenCloudsShader");
 
+        Texture2D gbaClouds = Engine.ContentManager.Load<Texture2D>("TitleScreenGBAClouds");
+        Texture2D nGageClouds = Engine.ContentManager.Load<Texture2D>("TitleScreenNGageClouds");
+        Texture2D background = Engine.ContentManager.Load<Texture2D>("TitleScreen");
+
+        CloudsShader.Parameters["SecondaryTexture"].SetValue(nGageClouds);
+
+        // Wrap horizontally twice
+        Vector2 wrap = new(2, 1);
+
+        // Center so that the blending happens in the middle
+        Vector2 cloudsPos = new((gbaClouds.Width * wrap.X - Engine.GameViewPort.GameResolution.X) / 2f, 0);
+        
         Gfx.AddScreen(new GfxScreen(0)
+        {
+            IsEnabled = true,
+            Priority = 2,
+            Offset = cloudsPos,
+            Renderer = new TextureScreenRenderer(gbaClouds)
+            {
+                Shader = CloudsShader,
+                Scale = wrap, // Scale by the wrapping and correct in shader
+            },
+        });
+        Gfx.AddScreen(new GfxScreen(1)
         {
             IsEnabled = true,
             Priority = 1,
             Offset = Vector2.Zero,
-            Renderer = new TextureScreenRenderer(gbaBackground),
-        });
-        Gfx.AddScreen(new GfxScreen(1)
-        {
-            IsEnabled = false,
-            Priority = 1,
-            Offset = Vector2.Zero,
-            Renderer = new TextureScreenRenderer(nGageBackground),
+            Renderer = new TextureScreenRenderer(background),
         });
 
         Cursor = new Cursor();
@@ -70,9 +86,6 @@ public class TitleScreen : Frame
 
                 Games[SelectedGameIndex].SelectedIndex = 0;
                 Games[prevSelectedGameIndex].SelectedIndex = -1;
-
-                Gfx.GetScreen(SelectedGameIndex).IsEnabled = true;
-                Gfx.GetScreen(prevSelectedGameIndex).IsEnabled = false;
             }
             else if (JoyPad.IsButtonJustPressed(GbaInput.A))
             {
@@ -141,5 +154,8 @@ public class TitleScreen : Frame
         Cursor.Draw(AnimationPlayer);
 
         AnimationPlayer.Execute();
+
+        // Update the time in the clouds shader for the scrolling
+        CloudsShader.Parameters["Time"].SetValue(GameTime.ElapsedFrames);
     }
 }
