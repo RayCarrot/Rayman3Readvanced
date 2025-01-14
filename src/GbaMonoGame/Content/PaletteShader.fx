@@ -19,6 +19,13 @@ extern float PaletteHeight;
 sampler2D SpriteTextureSampler = sampler_state
 {
     Texture = <SpriteTexture>;
+
+    // Do this to prevent interpolated values
+    AddressU = clamp;
+    AddressV = clamp;
+    magfilter = POINT;
+    minfilter = POINT;
+    mipfilter = POINT;
 };
 
 sampler2D PaletteTextureSampler = sampler_state
