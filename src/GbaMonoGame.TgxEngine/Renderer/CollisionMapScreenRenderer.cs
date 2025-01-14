@@ -38,7 +38,10 @@ public class CollisionMapScreenRenderer : IScreenRenderer
 
     public void Draw(GfxRenderer renderer, GfxScreen screen, Vector2 position, Color color)
     {
-        renderer.BeginRender(new RenderOptions(screen.IsAlphaBlendEnabled, null, screen.RenderContext));
+        renderer.BeginRender(new RenderOptions(screen.RenderContext)
+        {
+            Alpha = screen.IsAlphaBlendEnabled,
+        });
 
         Rectangle visibleTilesArea = GetVisibleTilesArea(position, screen);
 

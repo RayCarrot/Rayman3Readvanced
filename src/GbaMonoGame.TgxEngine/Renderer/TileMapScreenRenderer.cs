@@ -65,7 +65,11 @@ public class TileMapScreenRenderer : IScreenRenderer
 
     public void Draw(GfxRenderer renderer, GfxScreen screen, Vector2 position, Color color)
     {
-        renderer.BeginRender(new RenderOptions(screen.IsAlphaBlendEnabled, PaletteTexture, screen.RenderContext));
+        renderer.BeginRender(new RenderOptions(screen.RenderContext)
+        {
+            Alpha = screen.IsAlphaBlendEnabled,
+            PaletteTexture = PaletteTexture,
+        });
 
         Rectangle visibleTilesArea = GetVisibleTilesArea(position, screen);
 

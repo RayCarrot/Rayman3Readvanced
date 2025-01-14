@@ -25,7 +25,11 @@ public class Sprite
 
     public void Draw(GfxRenderer renderer, Color color)
     {
-        renderer.BeginRender(new RenderOptions(Alpha != null, PaletteTexture, RenderContext));
+        renderer.BeginRender(new RenderOptions(RenderContext)
+        {
+            Alpha = Alpha != null,
+            PaletteTexture = PaletteTexture,
+        });
 
         if (OverrideGfxColor)
             color = Color;

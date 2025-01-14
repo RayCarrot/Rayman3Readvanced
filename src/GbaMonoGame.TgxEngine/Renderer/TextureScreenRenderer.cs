@@ -21,9 +21,11 @@ public class TextureScreenRenderer : IScreenRenderer
 
     public void Draw(GfxRenderer renderer, GfxScreen screen, Vector2 position, Color color)
     {
-        renderer.BeginRender(new RenderOptions(screen.IsAlphaBlendEnabled, PaletteTexture, screen.RenderContext)
+        renderer.BeginRender(new RenderOptions(screen.RenderContext)
         {
-            Shader = Shader
+            Alpha = screen.IsAlphaBlendEnabled,
+            PaletteTexture = PaletteTexture,
+            Shader = Shader,
         });
 
         renderer.Draw(Texture, position, TextureRectangle, 0, Vector2.Zero, Scale, SpriteEffects.None, color);

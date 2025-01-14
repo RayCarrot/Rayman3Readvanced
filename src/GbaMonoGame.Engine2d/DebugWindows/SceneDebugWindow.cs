@@ -151,7 +151,7 @@ public class SceneDebugWindow : DebugWindow
         if (Frame.Current is not IHasScene { Scene: { } scene2D }) 
             return;
 
-        renderer.BeginRender(new RenderOptions(false, null, scene2D.RenderContext));
+        renderer.BeginRender(new RenderOptions(scene2D.RenderContext));
 
         if (HighlightedGameObject != null)
             DrawBox(renderer, scene2D.Playfield, GetObjBox(HighlightedGameObject), Color.Orange);

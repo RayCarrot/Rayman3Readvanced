@@ -85,7 +85,7 @@ public static class Gfx
         // TODO: Add config option to use GBA fading on N-Gage
         if (Rom.IsLoaded && Rom.Platform == Platform.GBA && FadeControl.Mode != FadeMode.None && Fade is > 0 and <= 1)
         {
-            renderer.BeginRender(new RenderOptions(false, null, Engine.GameRenderContext));
+            renderer.BeginRender(new RenderOptions(Engine.GameRenderContext));
 
             switch (FadeControl.Mode)
             {
@@ -131,7 +131,7 @@ public static class Gfx
         // Draw clear color on GBA
         if (Rom.IsLoaded && Rom.Platform == Platform.GBA)
         {
-            renderer.BeginRender(new RenderOptions(false, null, Engine.GameRenderContext));
+            renderer.BeginRender(new RenderOptions(Engine.GameRenderContext));
             renderer.DrawFilledRectangle(Vector2.Zero, Engine.GameRenderContext.Resolution, ClearColor);
         }
 

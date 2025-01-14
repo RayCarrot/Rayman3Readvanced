@@ -8,7 +8,7 @@ public class GameCubeMenuTransitionInScreenEffect : ScreenEffect
 
     public override void Draw(GfxRenderer renderer)
     {
-        renderer.BeginRender(new RenderOptions(false, null, RenderContext));
+        renderer.BeginRender(new RenderOptions(RenderContext));
 
         // 3 rects with heights 54, 52 and 54
         renderer.DrawFilledRectangle(Vector2.Zero, new Vector2(RenderContext.Resolution.X - Value, 54), Color.Black);

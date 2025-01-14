@@ -460,7 +460,7 @@ public class MenuManager
         }
 
         // Fade out the game
-        renderer.BeginRender(new RenderOptions(false, null, Engine.GameRenderContext));
+        renderer.BeginRender(new RenderOptions(Engine.GameRenderContext));
         renderer.DrawFilledRectangle(Vector2.Zero, Engine.GameRenderContext.Resolution, Color.Black * MathHelper.Lerp(0.0f, 0.7f, TransitionValue));
 
         // Draw the sprites
