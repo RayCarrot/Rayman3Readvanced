@@ -418,7 +418,9 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
             return;
 
         IsPaused = true;
-        SoundEventsManager.ForcePauseAllSongs();
+
+        if (SoundEventsManager.IsLoaded)
+            SoundEventsManager.ForcePauseAllSongs();
     }
 
     public void Resume()
@@ -427,7 +429,9 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
             return;
 
         IsPaused = false;
-        SoundEventsManager.ForceResumeAllSongs();
+        
+        if (SoundEventsManager.IsLoaded)
+            SoundEventsManager.ForceResumeAllSongs();
     }
 
     #endregion
