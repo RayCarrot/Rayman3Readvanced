@@ -108,7 +108,7 @@ public static class Gfx
         Pixel = new Texture2D(Engine.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
         Pixel.SetData([Color.White]);
 
-        PaletteShader = Engine.ContentManager.Load<Effect>("PaletteShader");
+        PaletteShader = Engine.FixContentManager.Load<Effect>("PaletteShader");
     }
 
     public static void AddScreen(GfxScreen screen) => Screens.Add(screen.Id, screen);

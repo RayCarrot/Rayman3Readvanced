@@ -19,11 +19,6 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
         _graphics = new GraphicsDeviceManager(this);
         _updateTimeStopWatch = new Stopwatch();
         _gameWindow = new GbaGameWindow(Window, _graphics);
-
-        Content.RootDirectory = Engine.AssetsDirectoryName;
-        IsMouseVisible = true;
-        
-        SetFramerate(Framerate);
     }
 
     #endregion
@@ -201,6 +196,9 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
     protected override void Initialize()
     {
         base.Initialize();
+
+        // Set the game's framerate
+        SetFramerate(Framerate);
 
         // Initialize the window
         _gameWindow.SetTitle(Title);
@@ -404,6 +402,12 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
         }
 
         base.Draw(gameTime);
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        Engine.UnInit();
+        base.Dispose(disposing);
     }
 
     #endregion

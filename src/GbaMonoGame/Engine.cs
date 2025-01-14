@@ -33,9 +33,14 @@ public static class Engine
     public static GraphicsDevice GraphicsDevice { get; private set; }
 
     /// <summary>
-    /// The content manager to load contents.
+    /// The fixed content manager to load contents which should stay loaded through the entire lifecycle of the game.
     /// </summary>
-    public static ContentManager ContentManager { get; private set; }
+    public static ContentManager FixContentManager { get; private set; }
+
+    /// <summary>
+    /// The frame content manager to load contents which should be unloaded when changing the current <see cref="Frame"/>.
+    /// </summary>
+    public static ContentManager FrameContentManager { get; private set; }
 
     /// <summary>
     /// The primary render context using the current game resolution.
@@ -79,7 +84,8 @@ public static class Engine
     {
         GbaGame = gbaGame;
         GraphicsDevice = gbaGame.GraphicsDevice;
-        ContentManager = gbaGame.Content;
+        FixContentManager = new ContentManager(gbaGame.Services, AssetsDirectoryName);
+        FrameContentManager = new ContentManager(gbaGame.Services, AssetsDirectoryName);
         GameWindow = gameWindow;
         GameViewPort = new GbaGameViewPort(Config.InternalGameResolution.ToVector2());
         GameRenderContext = new GameRenderContext();
@@ -87,6 +93,12 @@ public static class Engine
         Gfx.Load();
 
         FrameManager.SetNextFrame(initialFrame);
+    }
+
+    public static void UnInit()
+    {
+        FixContentManager.Dispose();
+        FrameContentManager.Dispose();
     }
 
     public static void Step()

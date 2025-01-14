@@ -16,7 +16,7 @@ public class CollisionMapScreenRenderer : IScreenRenderer
     private const int CollisionTileSize = 16;
     private const int CollisionTileSetWidth = 16;
 
-    private static readonly Texture2D _tex = Engine.ContentManager.Load<Texture2D>("CollisionTileSet");
+    private static readonly Texture2D _tex = Engine.FixContentManager.Load<Texture2D>("CollisionTileSet");
 
     public int Width { get; }
     public int Height { get; }

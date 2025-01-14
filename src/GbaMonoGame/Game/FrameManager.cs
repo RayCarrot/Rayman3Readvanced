@@ -60,6 +60,9 @@ public static class FrameManager
                 Engine.PaletteCache.Clear();
             }
 
+            // Unload contents loaded by the previous frame
+            Engine.FrameContentManager.Unload();
+
             // Initializing a new frame might take longer than 1/60th of a second, so we mark it as a load
             Engine.BeginLoad();
 

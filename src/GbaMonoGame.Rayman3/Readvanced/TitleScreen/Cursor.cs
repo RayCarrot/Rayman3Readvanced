@@ -7,7 +7,7 @@ public class Cursor
 {
     public Cursor()
     {
-        Texture2D tex = Engine.ContentManager.Load<Texture2D>("Cursor");
+        Texture2D tex = Engine.FrameContentManager.Load<Texture2D>("Cursor");
 
         CursorSprite = new SpriteObject
         {

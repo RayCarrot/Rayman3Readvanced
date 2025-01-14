@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
-// TODO: Unload textures
 // TODO: Check if roms exist, if not then prompt user to select the rom file
 // TODO: Default to select last played version
 public class TitleScreen : Frame
@@ -28,11 +27,11 @@ public class TitleScreen : Frame
         AnimationPlayer = new AnimationPlayer(false, null);
         TransitionsFX = new TransitionsFX(true);
 
-        CloudsShader = Engine.ContentManager.Load<Effect>("TitleScreenCloudsShader");
+        CloudsShader = Engine.FrameContentManager.Load<Effect>("TitleScreenCloudsShader");
 
-        Texture2D gbaClouds = Engine.ContentManager.Load<Texture2D>("TitleScreenGBAClouds");
-        Texture2D nGageClouds = Engine.ContentManager.Load<Texture2D>("TitleScreenNGageClouds");
-        Texture2D background = Engine.ContentManager.Load<Texture2D>("TitleScreen");
+        Texture2D gbaClouds = Engine.FrameContentManager.Load<Texture2D>("TitleScreenGBAClouds");
+        Texture2D nGageClouds = Engine.FrameContentManager.Load<Texture2D>("TitleScreenNGageClouds");
+        Texture2D background = Engine.FrameContentManager.Load<Texture2D>("TitleScreen");
 
         CloudsShader.Parameters["SecondaryTexture"].SetValue(nGageClouds);
 
