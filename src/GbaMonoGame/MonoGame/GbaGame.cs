@@ -82,6 +82,10 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
 
     private void Rom_Loaded(object sender, EventArgs e)
     {
+        // Load the menu
+        _menu = new MenuManager();
+        _menu.Closed += Menu_Closed;
+
         // Load the debug layout
         _debugLayout = new DebugLayout();
         _debugLayout.AddWindow(new GameDebugWindow(_debugGameRenderTarget));
@@ -223,10 +227,6 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
         // Load the renderer
         _gfxRenderer = new GfxRenderer(GraphicsDevice, Engine.GameViewPort);
         _debugGameRenderTarget = new GameRenderTarget(GraphicsDevice, Engine.GameViewPort);
-
-        // Load the menu
-        _menu = new MenuManager();
-        _menu.Closed += Menu_Closed;
     }
 
     protected override void Update(Microsoft.Xna.Framework.GameTime gameTime)
@@ -314,7 +314,7 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
             SetFramerate(Framerate);
 
         // Toggle menu
-        if (!_menu.IsTransitioningOut && InputManager.IsButtonJustPressed(Keys.Escape))
+        if (_menu is { IsTransitioningOut: false } && InputManager.IsButtonJustPressed(Keys.Escape))
         {
             if (!_showMenu)
             {
