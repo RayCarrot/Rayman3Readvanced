@@ -93,10 +93,18 @@ public class TitleScreen : Frame
                     LoadLastSave = false;
                     LoadRom(x.Platform);
                 }),
-                new TitleScreenGame.Option("OPTIONS", _ =>
-                {
+                new TitleScreenGame.Option(
+                [
+                    // TODO: Implement
+                    new TitleScreenGame.Option("MODERN", _ =>
+                    {
 
-                })
+                    }),
+                    new TitleScreenGame.Option("ORIGINAL", _ =>
+                    {
+
+                    })
+                ])
             ]);
         }
         // The rom does not exist
@@ -239,7 +247,8 @@ public class TitleScreen : Frame
         if (!Cursor.IsMoving && LoadRomTask == null)
         {
             // Change selected game
-            if (JoyPad.IsButtonJustPressed(GbaInput.Left) || JoyPad.IsButtonJustPressed(GbaInput.Right))
+            bool canPressLeftRight = Games[SelectedGameIndex].Options[Games[SelectedGameIndex].SelectedIndex].SubOptions == null;
+            if (canPressLeftRight && (JoyPad.IsButtonJustPressed(GbaInput.Left) || JoyPad.IsButtonJustPressed(GbaInput.Right)))
             {
                 int prevSelectedGameIndex = SelectedGameIndex;
                 SelectedGameIndex = SelectedGameIndex == 1 ? 0 : 1;

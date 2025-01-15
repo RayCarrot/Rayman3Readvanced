@@ -44,6 +44,16 @@ public class TitleScreenGame
             OptionTexts[i].Font = SelectedIndex == i ? ReadvancedFonts.MenuWhite : ReadvancedFonts.MenuYellow;
     }
 
+    private void SetText(int index)
+    {
+        Option option = Options[index];
+
+        if (option.SubOptions != null)
+            OptionTexts[index].Text = $"< {option.SubOptions[option.SelectedSubOptionIndex].Text} >";
+        else
+            OptionTexts[index].Text = option.Text;
+    }
+
     public void SetOptions(Option[] options)
     {
         Options = options.Where(x => x.IsAvailable).ToArray();
@@ -60,9 +70,13 @@ public class TitleScreenGame
                 BgPriority = 0,
                 ObjPriority = 0,
                 ScreenPos = basePos + new Vector2(0, 16) * i,
-                Text = Options[i].Text,
                 Font = ReadvancedFonts.MenuYellow,
             };
+
+            if (Options[i].SubOptions != null)
+                OptionTexts[i].ScreenPos -= new Vector2(ReadvancedFonts.MenuYellow.GetWidth("< "), 0);
+
+            SetText(i);
         }
 
         if (SelectedIndex != -1)
@@ -73,6 +87,8 @@ public class TitleScreenGame
     {
         if (SelectedIndex != -1)
         {
+            Option selectedOption = Options[SelectedIndex];
+
             if (JoyPad.IsButtonJustPressed(GbaInput.Down))
             {
                 if (SelectedIndex == OptionTexts.Length - 1)
@@ -87,7 +103,27 @@ public class TitleScreenGame
                 else
                     SelectedIndex--;
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.A))
+            else if ((JoyPad.IsButtonJustPressed(GbaInput.Right) || JoyPad.IsButtonJustPressed(GbaInput.A)) && selectedOption.SubOptions != null)
+            {
+                if (selectedOption.SelectedSubOptionIndex == 0)
+                    selectedOption.SelectedSubOptionIndex = selectedOption.SubOptions.Length - 1;
+                else
+                    selectedOption.SelectedSubOptionIndex--;
+
+                SetText(SelectedIndex);
+                selectedOption.SubOptions[selectedOption.SelectedSubOptionIndex].Action(this);
+            }
+            else if (JoyPad.IsButtonJustPressed(GbaInput.Left) && selectedOption.SubOptions != null)
+            {
+                if (selectedOption.SelectedSubOptionIndex == selectedOption.SubOptions.Length - 1)
+                    selectedOption.SelectedSubOptionIndex = 0;
+                else
+                    selectedOption.SelectedSubOptionIndex++;
+
+                SetText(SelectedIndex);
+                selectedOption.SubOptions[selectedOption.SelectedSubOptionIndex].Action(this);
+            }
+            else if (JoyPad.IsButtonJustPressed(GbaInput.A) && selectedOption.SubOptions == null)
             {
                 Options[SelectedIndex].Action(this);
             }
@@ -107,6 +143,7 @@ public class TitleScreenGame
             Text = text;
             IsAvailable = true;
             Action = action;
+            SubOptions = null;
         }
 
         public Option(string text, bool isAvailable, Action<TitleScreenGame> action)
@@ -114,10 +151,22 @@ public class TitleScreenGame
             Text = text;
             IsAvailable = isAvailable;
             Action = action;
+            SubOptions = null;
+        }
+
+        public Option(Option[] subOptions)
+        {
+            Text = null;
+            IsAvailable = true;
+            Action = null;
+            SubOptions = subOptions;
         }
 
         public string Text { get; }
         public bool IsAvailable { get; }
         public Action<TitleScreenGame> Action { get; }
+
+        public int SelectedSubOptionIndex { get; set; }
+        public Option[] SubOptions { get; }
     }
 }
