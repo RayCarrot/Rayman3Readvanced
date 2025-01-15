@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
@@ -11,15 +10,33 @@ public static class ReadvancedFonts
     private static readonly Dictionary<char, Font.Glyph> _menuGlyphs = new()
     {
         [' '] = new(Rectangle.Empty, layoutOffset: 5),
-
         ['!'] = new(new Rectangle(16, 8, 5, 13)),
 
         ['1'] = new(new Rectangle(6, 28, 5, 12)),
         ['2'] = new(new Rectangle(16, 28, 8, 12)),
         ['3'] = new(new Rectangle(28, 28, 8, 12)),
         ['4'] = new(new Rectangle(41, 28, 10, 12)),
+        ['5'] = new(new Rectangle(55, 28, 8, 12)),
+        ['6'] = new(new Rectangle(68, 28, 8, 12)),
+        ['7'] = new(new Rectangle(80, 28, 8, 13), renderOffset: new Vector2(0, 1)),
+        ['8'] = new(new Rectangle(93, 28, 8, 12)),
+        ['9'] = new(new Rectangle(106, 28, 8, 12)),
+        [':'] = new(new Rectangle(118, 30, 5, 10)),
+        [';'] = new(new Rectangle(127, 30, 5, 12), renderOffset: new Vector2(0, 2)),
+        ['<'] = new(new Rectangle(136, 31, 7, 8), renderOffset: new Vector2(0, -1)),
+        ['='] = new(new Rectangle(147, 31, 8, 7), renderOffset: new Vector2(0, -2)),
+        ['>'] = new(new Rectangle(160, 31, 6, 8), renderOffset: new Vector2(0, -1)),
+        ['?'] = new(new Rectangle(171, 27, 7, 13)),
+        ['@'] = new(new Rectangle(182, 28, 13, 12)),
 
-        ['A'] = new(new Rectangle(6, 47, 11, 12)),
+        ['A'] = new(new Rectangle(6, 47, 11, 12))
+        {
+            GlyphSpecificLayoutOffsets = new Dictionary<char, float>()
+            {
+                ['N'] = -1,
+                ['T'] = -2,
+            }
+        },
         ['B'] = new(new Rectangle(21, 47, 9, 12)),
         ['C'] = new(new Rectangle(35, 47, 9, 12)),
         ['D'] = new(new Rectangle(48, 47, 9, 12)),
