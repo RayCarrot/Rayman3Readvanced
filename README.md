@@ -23,23 +23,6 @@ Besides graphical enhancements there are various quality of life improvements an
 ![Zoomed out example](assets/screenshots/zoom_out.png)
 *The game can render in higher resolution and different aspect ratios.*
 
-## Playing
-*NOTE: This port is still in development which is why there are no releases published. Most levels are not yet playable.*
-
-In order to play the game you will need to place your game ROMs in the `Data/Games` folder, inside a sub-folder for each game. The name of the ROM file doesn't matter, as long as it has the correct file extension (.gba for GBA and .app for N-Gage). Additionally the N-Gage version requires a .dat file with the same name as the .app file.
-
-This is an example of a folder structure which will allow you to play both the GBA and N-Gage versions:
-
-```
-├───GBA
-│   └── ROM.gba
-└───N-Gage
-    ├── rayman3.app
-    └── rayman3.dat
-```
-
-The game saves are stored in `.sav` files with the same name as the ROM. The format is identical to that used by GBA emulators, and save files can thus be interchanged.
-
 ### Button mapping
 The button mapping will be made customizable in the future, along with controller support. As of now this is the current mapping:
 
