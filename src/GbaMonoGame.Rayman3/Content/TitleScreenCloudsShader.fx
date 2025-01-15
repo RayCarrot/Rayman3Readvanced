@@ -7,7 +7,7 @@
 #define PS_SHADERMODEL ps_4_0_level_9_1
 #endif
 
-#define CONTRAST 15
+#define CONTRAST 25
 
 #define TEX_WIDTH 256.0
 #define WRAP float2(2, 1)
