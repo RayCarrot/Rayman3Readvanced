@@ -22,6 +22,10 @@ public class IniSerializer : BaseIniSerializer
         {
             return s;
         }
+        else if (value is int i)
+        {
+            return i.ToString();
+        }
         else if (value is float f)
         {
             return f.ToString(CultureInfo.InvariantCulture);
@@ -33,6 +37,10 @@ public class IniSerializer : BaseIniSerializer
         else if (value is Point point)
         {
             return $"{point.X}x{point.Y}";
+        }
+        else if (value is null)
+        {
+            return String.Empty;
         }
         else
         {

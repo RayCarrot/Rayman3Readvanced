@@ -185,6 +185,13 @@ public partial class MenuAll
 
                         GameInfo.CurrentSlot = SelectedOption;
                         IsStartingGame = false;
+
+                        if (Rom.Platform == Platform.GBA)
+                            Engine.Config.LastPlayedGbaSaveSlot = GameInfo.CurrentSlot;
+                        else if (Rom.Platform == Platform.NGage)
+                            Engine.Config.LastPlayedNGageSaveSlot = GameInfo.CurrentSlot;
+                        else
+                            throw new UnsupportedPlatformException();
                     }
                 }
                 // Move start/erase to start

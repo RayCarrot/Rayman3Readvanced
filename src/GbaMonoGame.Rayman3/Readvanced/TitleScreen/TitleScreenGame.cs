@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 
@@ -45,21 +46,21 @@ public class TitleScreenGame
 
     public void SetOptions(Option[] options)
     {
-        Options = options;
+        Options = options.Where(x => x.IsAvailable).ToArray();
 
         // Center for first option
-        float width = ReadvancedFonts.MenuYellow.GetWidth(options[0].Text);
+        float width = ReadvancedFonts.MenuYellow.GetWidth(Options[0].Text);
         Vector2 basePos = Position - new Vector2(width / 2, 0);
 
-        OptionTexts = new SpriteFontTextObject[options.Length];
-        for (int i = 0; i < options.Length; i++)
+        OptionTexts = new SpriteFontTextObject[Options.Length];
+        for (int i = 0; i < Options.Length; i++)
         {
             OptionTexts[i] = new SpriteFontTextObject
             {
                 BgPriority = 0,
                 ObjPriority = 0,
                 ScreenPos = basePos + new Vector2(0, 16) * i,
-                Text = options[i].Text,
+                Text = Options[i].Text,
                 Font = ReadvancedFonts.MenuYellow,
             };
         }
@@ -104,10 +105,19 @@ public class TitleScreenGame
         public Option(string text, Action<TitleScreenGame> action)
         {
             Text = text;
+            IsAvailable = true;
+            Action = action;
+        }
+
+        public Option(string text, bool isAvailable, Action<TitleScreenGame> action)
+        {
+            Text = text;
+            IsAvailable = isAvailable;
             Action = action;
         }
 
         public string Text { get; }
+        public bool IsAvailable { get; }
         public Action<TitleScreenGame> Action { get; }
     }
 }

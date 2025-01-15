@@ -27,6 +27,13 @@ public class IniDeserializer : BaseIniSerializer
         {
             return (T)(object)stringValue;
         }
+        else if (typeof(T) == typeof(int?))
+        {
+            if (stringValue == String.Empty)
+                return (T)(object)null;
+            else
+                return (T)(object)Int32.Parse(stringValue);
+        }
         else if (typeof(T) == typeof(float))
         {
             return (T)(object)Single.Parse(stringValue, CultureInfo.InvariantCulture);

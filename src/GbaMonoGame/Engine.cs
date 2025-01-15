@@ -72,6 +72,7 @@ public static class Engine
         Config = config;
     }
 
+    // TODO: Maybe it's enough to only save on game exit?
     public static void SaveConfig()
     {
         string filePath = FileManager.GetDataFile(ConfigFileName);

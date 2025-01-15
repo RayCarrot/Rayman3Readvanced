@@ -72,9 +72,18 @@ public class TitleScreen : Frame
         // The rom exists!
         if (gameFileNames.All(x => File.Exists(Path.Combine(gameDirectory, x))))
         {
+            int? lastSaveSlot = game.Platform switch
+            {
+                Platform.GBA => Engine.Config.LastPlayedGbaSaveSlot,
+                Platform.NGage => Engine.Config.LastPlayedNGageSaveSlot,
+                _ => throw new UnsupportedPlatformException()
+            };
+
+            bool canContinue = lastSaveSlot != null;
+
             game.SetOptions(
             [
-                new TitleScreenGame.Option("CONTINUE", x =>
+                new TitleScreenGame.Option("CONTINUE", canContinue, x =>
                 {
                     LoadLastSave = true;
                     LoadRom(x.Platform);
@@ -250,13 +259,23 @@ public class TitleScreen : Frame
 
             // TODO: Load saved volume
 
-            // Set the initial frame
-            if (LoadLastSave)
+            int? lastSaveSlot = Games[SelectedGameIndex].Platform switch
             {
-                // TODO: Implement
+                Platform.GBA => Engine.Config.LastPlayedGbaSaveSlot,
+                Platform.NGage => Engine.Config.LastPlayedNGageSaveSlot,
+                _ => throw new UnsupportedPlatformException()
+            };
+
+            if (LoadLastSave && lastSaveSlot != null)
+            {
+                // Load the save slot
+                GameInfo.Load(lastSaveSlot.Value);
+                GameInfo.LoadLastWorld();
+                GameInfo.CurrentSlot = lastSaveSlot.Value;
             }
             else
             {
+                // Set the initial frame
                 FrameManager.SetNextFrame(Games[SelectedGameIndex].Platform switch
                 {
                     Platform.GBA => new Intro(),

@@ -16,13 +16,19 @@ public class GameConfig
         Point defaultResolution = new(384, 216);
         const int defaultWindowScale = 4;
 
+        // Display
         WindowPosition = new Point(0, 0);
         WindowResolution = defaultResolution * new Point(defaultWindowScale);
         WindowIsMaximized = false;
         LockWindowAspectRatio = true;
         FullscreenResolution = new Point(defaultDisplayMode.Width, defaultDisplayMode.Height);
         DisplayMode = DisplayMode.Fullscreen;
+        
+        // Game
         InternalGameResolution = defaultResolution;
+        Language = "en";
+        LastPlayedGbaSaveSlot = null;
+        
         Controls = new Dictionary<Input, Keys>();
         SfxVolume = 1;
         MusicVolume = 1;
@@ -54,6 +60,8 @@ public class GameConfig
     // Game
     public Point InternalGameResolution { get; set; }
     public string Language { get; set; }
+    public int? LastPlayedGbaSaveSlot { get; set; }
+    public int? LastPlayedNGageSaveSlot { get; set; }
 
     // Controls
     public Dictionary<Input, Keys> Controls { get; set; }
@@ -82,6 +90,8 @@ public class GameConfig
         // Game
         InternalGameResolution = serializer.Serialize<Point>(InternalGameResolution, GameSection, "InternalGameResolution");
         Language = serializer.Serialize<string>(Language, GameSection, "Language");
+        LastPlayedGbaSaveSlot = serializer.Serialize<int?>(LastPlayedGbaSaveSlot, GameSection, "LastPlayedGbaSaveSlot");
+        LastPlayedNGageSaveSlot = serializer.Serialize<int?>(LastPlayedNGageSaveSlot, GameSection, "LastPlayedNGageSaveSlot");
 
         // Controls
         Controls = serializer.SerializeDictionary<Input, Keys>(Controls, ControlsSection);
