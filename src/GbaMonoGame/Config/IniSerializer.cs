@@ -18,7 +18,11 @@ public class IniSerializer : BaseIniSerializer
 
     private string ValueToString<T>(T value)
     {
-        if (value is float f)
+        if (value is string s)
+        {
+            return s;
+        }
+        else if (value is float f)
         {
             return f.ToString(CultureInfo.InvariantCulture);
         }

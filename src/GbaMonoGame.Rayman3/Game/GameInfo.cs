@@ -40,42 +40,6 @@ public static class GameInfo
     public static LevelInfo Level => Levels[(int)MapId];
     public static LevelInfo[] Levels => Rom.Loader.Rayman3_LevelInfo;
 
-    private static SaveGameSlot CloneSaveGameSlot(SaveGameSlot slot)
-    {
-        byte[] lums = new byte[slot.Lums.Length];
-        Array.Copy(slot.Lums, lums, lums.Length);
-
-        byte[] cages = new byte[slot.Cages.Length];
-        Array.Copy(slot.Cages, cages, cages.Length);
-
-        return new SaveGameSlot
-        {
-            Lums = lums,
-            Cages = cages,
-            LastPlayedLevel = slot.LastPlayedLevel,
-            LastCompletedLevel = slot.LastCompletedLevel,
-            Lives = slot.Lives,
-            FinishedLyChallenge1 = slot.FinishedLyChallenge1,
-            FinishedLyChallenge2 = slot.FinishedLyChallenge2,
-            FinishedLyChallengeGCN = slot.FinishedLyChallengeGCN,
-            UnlockedBonus1 = slot.UnlockedBonus1,
-            UnlockedBonus2 = slot.UnlockedBonus2,
-            UnlockedBonus3 = slot.UnlockedBonus3,
-            UnlockedBonus4 = slot.UnlockedBonus4,
-            UnlockedWorld2 = slot.UnlockedWorld2,
-            UnlockedWorld3 = slot.UnlockedWorld3,
-            UnlockedWorld4 = slot.UnlockedWorld4,
-            PlayedWorld2Unlock = slot.PlayedWorld2Unlock,
-            PlayedWorld3Unlock = slot.PlayedWorld3Unlock,
-            PlayedWorld4Unlock = slot.PlayedWorld4Unlock,
-            PlayedAct4 = slot.PlayedAct4,
-            PlayedMurfyWorldHelp = slot.PlayedMurfyWorldHelp,
-            UnlockedFinalBoss = slot.UnlockedFinalBoss,
-            UnlockedLyChallengeGCN = slot.UnlockedLyChallengeGCN,
-            CompletedGCNBonusLevels = slot.CompletedGCNBonusLevels
-        };
-    }
-
     public static void Init()
     {
         NextMapId = null;
@@ -121,30 +85,14 @@ public static class GameInfo
         PersistentInfo.CompletedGCNBonusLevels = 0;
     }
 
-    public static void LoadOptions()
-    {
-        if (Rom.Platform != Platform.NGage)
-            throw new Exception("Loading options is only supported on N-Gage");
-
-        // NOTE: The game starts by validating the save data, but we skip that
-
-        ((NGageSoundEventsManager)SoundEventsManager.Current).MusicVolume = Rom.SaveGame.MusicVolume;
-        ((NGageSoundEventsManager)SoundEventsManager.Current).SfxVolume = Rom.SaveGame.SfxVolume;
-
-        // NOTE: The game seems to ignore the saved language and use the system language each time? But we use the saved one.
-        Localization.SetLanguage(Rom.SaveGame.Language);
-
-        // TODO: Set multiplayer name
-    }
-
     public static void Load(int saveSlot)
     {
-        PersistentInfo = CloneSaveGameSlot(Rom.SaveGame.Slots[saveSlot]);
+        PersistentInfo = SaveGameManager.LoadSlot(saveSlot);
     }
 
     public static void Save(int saveSlot)
     {
-        // TODO: Implement
+        SaveGameManager.SaveSlot(saveSlot, PersistentInfo);
     }
 
     public static void EnableCheat(Scene2D scene, Cheat cheat)

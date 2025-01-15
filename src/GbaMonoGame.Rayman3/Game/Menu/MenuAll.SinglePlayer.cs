@@ -310,12 +310,7 @@ public partial class MenuAll
                     if (StartEraseCursorTargetIndex == 0 && Slots[SelectedOption] != null)
                     {
                         Slots[SelectedOption] = null;
-                        Rom.SaveGame.Slots[SelectedOption] = new SaveGameSlot
-                        {
-                            Lums = new byte[125],
-                            Cages = new byte[7],
-                        };
-                        // TODO: Write save
+                        SaveGameManager.DeleteSlot(SelectedOption);
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
                 }

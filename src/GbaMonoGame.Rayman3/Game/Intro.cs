@@ -89,7 +89,12 @@ public class Intro : Frame, IHasPlayfield
                 Platform.NGage => new Vector2(88, 150),
                 _ => throw new UnsupportedPlatformException(),
             },
-            CurrentAnimation = 9 + Localization.LanguageUiIndex
+            CurrentAnimation = Rom.Platform switch
+            {
+                Platform.GBA => 9,
+                Platform.NGage => 9 + Localization.LanguageUiIndex,
+                _ => throw new UnsupportedPlatformException(),
+            },
         };
 
         if (Rom.Platform == Platform.NGage)

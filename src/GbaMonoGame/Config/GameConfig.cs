@@ -53,6 +53,7 @@ public class GameConfig
 
     // Game
     public Point InternalGameResolution { get; set; }
+    public string Language { get; set; }
 
     // Controls
     public Dictionary<Input, Keys> Controls { get; set; }
@@ -80,6 +81,7 @@ public class GameConfig
 
         // Game
         InternalGameResolution = serializer.Serialize<Point>(InternalGameResolution, GameSection, "InternalGameResolution");
+        Language = serializer.Serialize<string>(Language, GameSection, "Language");
 
         // Controls
         Controls = serializer.SerializeDictionary<Input, Keys>(Controls, ControlsSection);

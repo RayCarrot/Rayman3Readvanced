@@ -31,7 +31,7 @@ public partial class MenuAll
     {
         CurrentStepAction = Step_TransitionToSelectLanguage;
         SetBackgroundPalette(1);
-        SelectOption(Localization.Language, false);
+        SelectOption(Localization.LanguageId, false);
         Data.LanguageList.CurrentAnimation = LanguagesBaseAnimation + SelectedOption;
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
         ResetStem();
@@ -108,8 +108,8 @@ public partial class MenuAll
                 }
 
                 Localization.SetLanguage(SelectedOption);
-
-                // TODO: The N-Gage version saves the selected language to the save data here
+                Engine.Config.Language = Localization.Language.Locale;
+                Engine.SaveConfig();
 
                 TransitionValue = 0;
                 SelectedOption = 0;
@@ -124,7 +124,7 @@ public partial class MenuAll
                 }
 
                 // Center sprites if English
-                if (Localization.Language == 0)
+                if (Localization.LanguageId == 0)
                 {
                     if (Rom.Platform == Platform.GBA)
                     {

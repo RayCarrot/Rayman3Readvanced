@@ -23,7 +23,11 @@ public class IniDeserializer : BaseIniSerializer
 
     private T ParseValue<T>(string stringValue)
     {
-        if (typeof(T) == typeof(float))
+        if (typeof(T) == typeof(string))
+        {
+            return (T)(object)stringValue;
+        }
+        else if (typeof(T) == typeof(float))
         {
             return (T)(object)Single.Parse(stringValue, CultureInfo.InvariantCulture);
         }

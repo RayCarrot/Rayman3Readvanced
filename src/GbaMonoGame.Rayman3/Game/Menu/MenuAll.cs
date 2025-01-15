@@ -478,26 +478,29 @@ public partial class MenuAll : Frame, IHasPlayfield
 
         for (int i = 0; i < 3; i++)
         {
-            if (Rom.Platform == Platform.NGage && !Rom.SaveGame.ValidSlots[i])
-                continue;
-
-            GameInfo.Load(i);
-
-            if (GameInfo.PersistentInfo.Lives != 0)
-                Slots[i] = new Slot(GameInfo.GetTotalCollectedYellowLums(), GameInfo.GetTotalCollectedCages(), GameInfo.PersistentInfo.Lives);
-            else
-                Slots[i] = null;
-
-            if (Rom.Platform == Platform.GBA)
+            if (SaveGameManager.SlotExists(i))
             {
-                if (GameInfo.PersistentInfo.FinishedLyChallenge1)
-                    FinishedLyChallenge1 = true;
+                // Load the slot
+                GameInfo.Load(i);
 
-                if (GameInfo.PersistentInfo.FinishedLyChallenge2)
-                    FinishedLyChallenge2 = true;
+                // Get the info from the slot
+                Slots[i] = new Slot(GameInfo.GetTotalCollectedYellowLums(), GameInfo.GetTotalCollectedCages(), GameInfo.PersistentInfo.Lives);
 
-                if (Slots[i]?.CagesCount == 50)
-                    HasAllCages = true;
+                if (Rom.Platform == Platform.GBA)
+                {
+                    if (GameInfo.PersistentInfo.FinishedLyChallenge1)
+                        FinishedLyChallenge1 = true;
+
+                    if (GameInfo.PersistentInfo.FinishedLyChallenge2)
+                        FinishedLyChallenge2 = true;
+
+                    if (Slots[i]?.CagesCount == 50)
+                        HasAllCages = true;
+                }
+            }
+            else
+            {
+                Slots[i] = null;
             }
         }
     }
@@ -526,6 +529,10 @@ public partial class MenuAll : Frame, IHasPlayfield
         switch (InitialPage)
         {
             case Page.SelectLanguage:
+                // NOTE: The game doesn't do this, but this allows the saved language to be pre-selected
+                SelectedOption = Localization.LanguageId;
+                Data.LanguageList.CurrentAnimation = LanguagesBaseAnimation + SelectedOption;
+
                 CurrentStepAction = Rom.Platform switch
                 {
                     Platform.GBA => Step_SelectLanguage,

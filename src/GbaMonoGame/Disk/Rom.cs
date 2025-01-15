@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
 using BinarySerializer;
-using BinarySerializer.Nintendo.GBA;
 using BinarySerializer.Ubisoft.GbaEngine;
-using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 
 namespace GbaMonoGame;
 
@@ -13,14 +11,12 @@ public static class Rom
 
     private static string _gameDirectory;
     private static string[] _gameFileNames;
-    private static string _saveFileName;
     private static Game _game;
     private static Platform _platform;
     private static Vector2 _originalResolution;
     private static OriginalGameRenderContext _originalGameRenderContext;
     private static Context _context;
     private static Loader _loader;
-    private static SaveGame _saveGame;
 
     #endregion
 
@@ -30,7 +26,6 @@ public static class Rom
 
     public static string GameDirectory => IsLoaded ? _gameDirectory : throw new RomNotInitializedException();
     public static string[] GameFileNames => IsLoaded ? _gameFileNames : throw new RomNotInitializedException();
-    public static string SaveFileName => IsLoaded ? _saveFileName : throw new RomNotInitializedException();
     public static Game Game => IsLoaded ? _game : throw new RomNotInitializedException();
     public static Platform Platform => IsLoaded ? _platform : throw new RomNotInitializedException();
 
@@ -39,7 +34,6 @@ public static class Rom
 
     public static Context Context => IsLoaded ? _context : throw new RomNotInitializedException();
     public static Loader Loader => IsLoaded ? _loader : throw new RomNotInitializedException();
-    public static SaveGame SaveGame => IsLoaded ? _saveGame : throw new RomNotInitializedException();
 
     #endregion
 
@@ -98,68 +92,11 @@ public static class Rom
         }
     }
 
-    private static void LoadSaveGame()
-    {
-        using Context context = Context;
-
-        PhysicalFile file;
-        if (Platform == Platform.GBA)
-        {
-            EEPROMEncoder encoder = new(0x200);
-            file = context.AddFile(new EncodedLinearFile(context, SaveFileName, encoder)
-            {
-                IgnoreCacheOnRead = true
-            });
-        }
-        else
-        {
-            file = context.AddFile(new LinearFile(context, SaveFileName)
-            {
-                IgnoreCacheOnRead = true
-            });
-        }
-
-        if (file.SourceFileExists)
-        {
-            // TODO: Try/catch?
-            _saveGame = FileFactory.Read<SaveGame>(context, SaveFileName);
-        }
-        else
-        {
-            _saveGame = new SaveGame
-            {
-                ValidSlots = new bool[3],
-                Slots =
-                [
-                    new SaveGameSlot
-                    {
-                        Lums = new byte[125],
-                        Cages = new byte[7],
-                    },
-                    new SaveGameSlot
-                    {
-                        Lums = new byte[125],
-                        Cages = new byte[7],
-                    },
-                    new SaveGameSlot
-                    {
-                        Lums = new byte[125],
-                        Cages = new byte[7],
-                    },
-                ],
-                MusicVolume = (int)SoundEngineInterface.MaxVolume,
-                SfxVolume = (int)SoundEngineInterface.MaxVolume,
-                Language = 0,
-                MultiplayerName = "Rayman", // TODO: How is this set?
-            };
-        }
-    }
-
     #endregion
 
     #region Public Methods
 
-    public static void Init(string gameDirectory, string[] gameFileNames, string saveFileName, Game game, Platform platform)
+    public static void Init(string gameDirectory, string[] gameFileNames, Game game, Platform platform)
     {
         if (IsLoaded)
             throw new Exception("The rom is already loaded");
@@ -171,7 +108,6 @@ public static class Rom
             // Set properties
             _gameDirectory = gameDirectory;
             _gameFileNames = gameFileNames;
-            _saveFileName = saveFileName;
             _game = game;
             _platform = platform;
 
@@ -189,9 +125,6 @@ public static class Rom
 
             // Load the rom
             LoadRom();
-
-            // Load the save game
-            LoadSaveGame();
 
             // Set the original game resolution
             _originalResolution = Platform switch

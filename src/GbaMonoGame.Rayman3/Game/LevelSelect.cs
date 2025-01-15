@@ -48,34 +48,6 @@ public class LevelSelect : Frame
     public bool UnlockLums { get; set; }
     public bool UnlockCages { get; set; }
 
-    public string[] GbaLanguageNames { get; } =
-    [
-        "English",
-        "French",
-        "Spanish",
-        "Deutsh",
-        "Italian",
-        "Netherlands",
-        "Swedish",
-        "Finnish",
-        "Norwegian",
-        "Danish",
-    ];
-    public string[] NGageLanguageNames { get; } =
-    [
-        "English",
-        "EnglishUS",
-        "French",
-        "Italian",
-        "Spanish",
-        "Deutsh",
-        "Netherlands",
-        "Swedish",
-        "Finnish",
-        "Norwegian",
-        "Danish",
-    ];
-
     public string[] WorldNames { get; } =
     [
         "World: World 1",
@@ -473,30 +445,25 @@ public class LevelSelect : Frame
 
     public void Step_SelectLanguage()
     {
-        string[] languageNames = Rom.Platform switch
-        {
-            Platform.GBA => GbaLanguageNames,
-            Platform.NGage => NGageLanguageNames,
-            _ => throw new UnsupportedPlatformException()
-        };
+        Language[] languages = Localization.GetLanguages();
 
         if (JoyPad.IsButtonJustPressed(GbaInput.Left))
         {
             SelectedLanguageIndex--;
 
             if (SelectedLanguageIndex < 0)
-                SelectedLanguageIndex = languageNames.Length - 1;
+                SelectedLanguageIndex = languages.Length - 1;
 
-            Rows[0].Text = languageNames[SelectedLanguageIndex];
+            Rows[0].Text = languages[SelectedLanguageIndex].LevelSelectName;
         }
         else if (JoyPad.IsButtonJustPressed(GbaInput.Right))
         {
             SelectedLanguageIndex++;
 
-            if (SelectedLanguageIndex > languageNames.Length - 1)
+            if (SelectedLanguageIndex > languages.Length - 1)
                 SelectedLanguageIndex = 0;
 
-            Rows[0].Text = languageNames[SelectedLanguageIndex];
+            Rows[0].Text = languages[SelectedLanguageIndex].LevelSelectName;
         }
         else if (JoyPad.IsButtonJustPressed(GbaInput.A))
         {

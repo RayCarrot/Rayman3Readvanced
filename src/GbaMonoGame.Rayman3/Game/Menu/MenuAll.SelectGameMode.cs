@@ -115,7 +115,7 @@ public partial class MenuAll
         Data.GameModeList.CurrentAnimation = Localization.LanguageUiIndex * GameModeOptionsCount + SelectedOption;
 
         // Center sprites if English
-        if (Localization.Language == 0)
+        if (Localization.LanguageId == 0)
         {
             if (Rom.Platform == Platform.GBA)
             {

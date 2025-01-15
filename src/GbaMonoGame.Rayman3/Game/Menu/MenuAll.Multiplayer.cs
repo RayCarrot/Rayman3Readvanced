@@ -189,7 +189,7 @@ public partial class MenuAll
         Data.MultiplayerModeSelection.CurrentAnimation = Localization.LanguageUiIndex * 2;
 
         // Center sprites if English
-        if (Localization.Language == 0)
+        if (Localization.LanguageId == 0)
             Data.MultiplayerModeSelection.ScreenPos = Data.MultiplayerModeSelection.ScreenPos with { X = 86 };
 
         CurrentStepAction = Step_TransitionToMultiplayerModeSelection;
@@ -278,7 +278,7 @@ public partial class MenuAll
         Data.MultiplayerConnectionSelection.CurrentAnimation = Localization.LanguageUiIndex * 2;
 
         // Center sprites if English
-        if (Localization.Language == 0)
+        if (Localization.LanguageId == 0)
             Data.MultiplayerConnectionSelection.ScreenPos = Data.MultiplayerConnectionSelection.ScreenPos with { X = 58 };
 
         CurrentStepAction = Step_TransitionToMultiplayerConnectionSelection;

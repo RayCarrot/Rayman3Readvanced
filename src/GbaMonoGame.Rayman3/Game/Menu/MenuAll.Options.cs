@@ -26,7 +26,7 @@ public partial class MenuAll
         {
             if (IsMusicOn())
             {
-                switch (Localization.Language)
+                switch (Localization.LanguageId)
                 {
                     case 0:
                     case 1:
@@ -59,7 +59,7 @@ public partial class MenuAll
             }
             else
             {
-                switch (Localization.Language)
+                switch (Localization.LanguageId)
                 {
                     case 0:
                     case 1:
@@ -124,7 +124,7 @@ public partial class MenuAll
         {
             if (IsSfxOn())
             {
-                switch (Localization.Language)
+                switch (Localization.LanguageId)
                 {
                     case 0:
                     case 1:
@@ -157,7 +157,7 @@ public partial class MenuAll
             }
             else
             {
-                switch (Localization.Language)
+                switch (Localization.LanguageId)
                 {
                     case 0:
                     case 1:
@@ -311,7 +311,7 @@ public partial class MenuAll
         UpdateSfxVolumeAnimations();
 
         // Center sprites if English
-        if (Localization.Language == 0)
+        if (Localization.LanguageId == 0)
         {
             if (Rom.Platform == Platform.GBA)
             {
@@ -334,7 +334,7 @@ public partial class MenuAll
 
             // Center sprites if English
             int x;
-            if (Localization.Language == 0)
+            if (Localization.LanguageId == 0)
             {
                 x = Rom.Platform switch
                 {
@@ -377,7 +377,7 @@ public partial class MenuAll
 
         // Center sprites if English
         int x;
-        if (Localization.Language == 0)
+        if (Localization.LanguageId == 0)
         {
             x = Rom.Platform switch
             {
@@ -573,7 +573,7 @@ public partial class MenuAll
 
             // Center sprites if English
             int x;
-            if (Localization.Language == 0)
+            if (Localization.LanguageId == 0)
             {
                 x = Rom.Platform switch
                 {

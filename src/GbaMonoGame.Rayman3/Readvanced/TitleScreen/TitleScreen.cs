@@ -23,16 +23,15 @@ public class TitleScreen : Frame
     public TitleScreenGame[] Games { get; set; }
     public int SelectedGameIndex { get; set; }
 
-    private void GetGamePaths(Platform platform, out string gameDirectory, out string[] gameFileNames, out string saveFileName)
+    private void GetGamePaths(Platform platform, out string gameDirectory, out string[] gameFileNames)
     {
         if (platform == Platform.GBA)
         {
             gameDirectory = FileManager.GetDataDirectory("Gba");
             gameFileNames =
             [
-               "Rayman 3.gba"
+               "rayman3.gba"
             ];
-            saveFileName = "Rayman 3.sav";
         }
         else if (platform == Platform.NGage)
         {
@@ -42,7 +41,6 @@ public class TitleScreen : Frame
                 "rayman3.app",
                 "rayman3.dat",
             ];
-            saveFileName = "save.dat";
         }
         else
         {
@@ -57,10 +55,10 @@ public class TitleScreen : Frame
         LoadRomTask = Task.Run(() =>
         {
             // Get the game paths
-            GetGamePaths(platform, out string gameDirectory, out string[] gameFileNames, out string saveFileName);
+            GetGamePaths(platform, out string gameDirectory, out string[] gameFileNames);
 
             // Initialize the rom
-            Rom.Init(gameDirectory, gameFileNames, saveFileName, Game.Rayman3, platform);
+            Rom.Init(gameDirectory, gameFileNames, Game.Rayman3, platform);
         });
 
         TransitionsFX.FadeOutInit(1 / 16f);
@@ -69,7 +67,7 @@ public class TitleScreen : Frame
     private void UpdateGameOptions(TitleScreenGame game)
     {
         // Get the game paths
-        GetGamePaths(game.Platform, out string gameDirectory, out string[] gameFileNames, out string _);
+        GetGamePaths(game.Platform, out string gameDirectory, out string[] gameFileNames);
 
         // The rom exists!
         if (gameFileNames.All(x => File.Exists(Path.Combine(gameDirectory, x))))
@@ -247,9 +245,10 @@ public class TitleScreen : Frame
         }
         else if (LoadRomTask is { IsCompleted: true } && TransitionsFX.IsFadeOutFinished)
         {
-            // TODO: Load from save - normalize how that works between GBA and N-Gage
-            // Set the language
-            Localization.SetLanguage(0);
+            // Load the language
+            Localization.SetLanguage(Engine.Config.Language);
+
+            // TODO: Load saved volume
 
             // Set the initial frame
             if (LoadLastSave)
