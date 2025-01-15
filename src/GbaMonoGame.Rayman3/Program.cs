@@ -3,7 +3,9 @@ using System.Text;
 
 internal class Program
 {
+#if DIRECTX
     [STAThread] // Required to use Windows Forms dialogs
+#endif
     public static void Main(string[] args)
     {
         // Register encoding provider to be able to use Windows 1252

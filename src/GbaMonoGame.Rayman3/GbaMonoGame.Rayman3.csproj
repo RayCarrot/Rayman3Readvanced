@@ -12,6 +12,10 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <!-- TODO: Use this when we eventually add support for cross-platform with OpenGL -->
+    <DefineConstants>DIRECTX</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
