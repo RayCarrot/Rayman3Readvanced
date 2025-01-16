@@ -275,7 +275,7 @@ public class TitleScreen : Frame
                 _ => throw new UnsupportedPlatformException()
             };
 
-            if (LoadLastSave && lastSaveSlot != null)
+            if (LoadLastSave && lastSaveSlot != null && SaveGameManager.SlotExists(lastSaveSlot.Value))
             {
                 // Load the save slot
                 GameInfo.Load(lastSaveSlot.Value);

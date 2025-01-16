@@ -93,6 +93,13 @@ public static class GameInfo
     public static void Save(int saveSlot)
     {
         SaveGameManager.SaveSlot(saveSlot, PersistentInfo);
+
+        if (Rom.Platform == Platform.GBA)
+            Engine.Config.LastPlayedGbaSaveSlot = CurrentSlot;
+        else if (Rom.Platform == Platform.NGage)
+            Engine.Config.LastPlayedNGageSaveSlot = CurrentSlot;
+        else
+            throw new UnsupportedPlatformException();
     }
 
     public static void EnableCheat(Scene2D scene, Cheat cheat)
