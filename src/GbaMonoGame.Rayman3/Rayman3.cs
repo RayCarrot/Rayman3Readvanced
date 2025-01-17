@@ -27,9 +27,11 @@ public class Rayman3 : GbaGame
 
     #endregion
 
-    #region Event Handlers
+    #region Protected Methods
 
-    private void Rom_Loaded(object sender, System.EventArgs e)
+    protected override Frame CreateInitialFrame() => new TitleScreen();
+
+    protected override void LoadGame()
     {
         // Load sound manager
         SoundEventsManager.Load(Rom.Platform switch
@@ -274,18 +276,12 @@ public class Rayman3 : GbaGame
         // TODO: Fill out definitions for every actor so they can be used in the editor
         EditorData.Init(
         [
-            new ActorDefinition(ActorType.Rayman, "Rayman", 
+            new ActorDefinition(ActorType.Rayman, "Rayman",
             [
                 new ActorActionDefinition { ActionId = 0, Name = "Default" }
             ])
         ]);
     }
-
-    #endregion
-
-    #region Protected Methods
-
-    protected override Frame CreateInitialFrame() => new TitleScreen();
 
     protected override void Initialize()
     {
@@ -293,8 +289,6 @@ public class Rayman3 : GbaGame
 
         // Load fonts
         ReadvancedFonts.Load();
-
-        Rom.Loaded += Rom_Loaded;
     }
 
     protected override void AddDebugWindowsAndMenus(DebugLayout debugLayout)

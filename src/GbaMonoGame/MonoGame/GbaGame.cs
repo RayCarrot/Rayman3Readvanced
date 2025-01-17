@@ -82,6 +82,9 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
 
     private void Rom_Loaded(object sender, EventArgs e)
     {
+        // Load the game
+        LoadGame();
+
         // Load the menu
         _menu = new MenuManager();
         _menu.Closed += Menu_Closed;
@@ -195,6 +198,7 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
     #region Protected Methods
 
     protected abstract Frame CreateInitialFrame();
+    protected virtual void LoadGame() { }
     protected virtual void AddDebugWindowsAndMenus(DebugLayout debugLayout) { }
 
     protected override void Initialize()
