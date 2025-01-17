@@ -22,6 +22,7 @@ public class TitleScreen : Frame
     public Effect CloudsShader { get; set; }
     public Cursor Cursor { get; set; }
     public TitleScreenGame[] Games { get; set; }
+    public SpriteFontTextObject QuitGameHeader { get; set; }
     public TitleScreenOptionsList QuitGameOptionsList { get; set; }
     public int SelectedGameIndex { get; set; }
 
@@ -267,26 +268,42 @@ public class TitleScreen : Frame
 
         Cursor = new Cursor(renderContext);
 
+        const float basePosX = 98;
+        const float basePosY = 172;
+        const float gamesDistance = 190;
+
         Games =
         [
-            new TitleScreenGame(renderContext, Platform.GBA, Cursor, new Vector2(98, 172)),
-            new TitleScreenGame(renderContext, Platform.NGage, Cursor, new Vector2(98 + 190, 172))
+            new TitleScreenGame(renderContext, Platform.GBA, Cursor, new Vector2(basePosX, basePosY)),
+            new TitleScreenGame(renderContext, Platform.NGage, Cursor, new Vector2(basePosX + gamesDistance, basePosY))
         ];
 
-        QuitGameOptionsList = new TitleScreenOptionsList(renderContext, Cursor, new Vector2(98 + 190 / 2f, 172));
+        QuitGameHeader = new SpriteFontTextObject
+        {
+            BgPriority = 0,
+            ObjPriority = 0,
+            ScreenPos = new Vector2(basePosX + gamesDistance / 2f, basePosY - 6),
+            Font = ReadvancedFonts.MenuYellow,
+            Text = "ARE YOU SURE YOU WANT TO QUIT?",
+            RenderContext = renderContext,
+        };
+
+        QuitGameHeader.ScreenPos -= new Vector2(QuitGameHeader.Font.GetWidth(QuitGameHeader.Text) / 2, 0);
+
+        QuitGameOptionsList = new TitleScreenOptionsList(renderContext, Cursor, new Vector2(basePosX + gamesDistance / 2f, basePosY + 16));
         QuitGameOptionsList.SetOptions(
         [
-            new TitleScreenOptionsList.Option("GO BACK", () =>
+            new TitleScreenOptionsList.Option("YES", () =>
+            {
+                Engine.GbaGame.Exit();
+            }),
+            new TitleScreenOptionsList.Option("NO", () =>
             {
                 foreach (TitleScreenGame game in Games)
                     game.SelectedIndex = -1;
 
                 SelectedGameIndex = 0;
                 Games[SelectedGameIndex].SelectedIndex = 0;
-            }),
-            new TitleScreenOptionsList.Option("QUIT GAME", () =>
-            {
-                Engine.GbaGame.Exit();
             }),
         ]);
 
@@ -339,6 +356,7 @@ public class TitleScreen : Frame
 
         if (SelectedGameIndex == -1)
         {
+            AnimationPlayer.Play(QuitGameHeader);
             QuitGameOptionsList.Draw(AnimationPlayer);
         }
         else
