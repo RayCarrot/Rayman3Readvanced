@@ -60,6 +60,7 @@ public static class ReadvancedFonts
         {
             GlyphSpecificLayoutOffsets = new Dictionary<char, float>()
             {
+                ['I'] = -1,
                 ['L'] = -2,
             }
         },

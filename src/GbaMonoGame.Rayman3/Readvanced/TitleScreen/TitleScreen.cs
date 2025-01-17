@@ -6,6 +6,7 @@ using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework.Graphics;
+using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
@@ -21,6 +22,7 @@ public class TitleScreen : Frame
     public Effect CloudsShader { get; set; }
     public Cursor Cursor { get; set; }
     public TitleScreenGame[] Games { get; set; }
+    public TitleScreenOptionsList QuitGameOptionsList { get; set; }
     public int SelectedGameIndex { get; set; }
 
     private void GetGamePaths(Platform platform, out string gameDirectory, out string[] gameFileNames)
@@ -64,6 +66,42 @@ public class TitleScreen : Frame
         TransitionsFX.FadeOutInit(1 / 16f);
     }
 
+    private void StartGame()
+    {
+        // Load the language
+        Localization.SetLanguage(Engine.Config.Language);
+
+        // TODO: Load saved volume
+
+        int? lastSaveSlot = Games[SelectedGameIndex].Platform switch
+        {
+            Platform.GBA => Engine.Config.LastPlayedGbaSaveSlot,
+            Platform.NGage => Engine.Config.LastPlayedNGageSaveSlot,
+            _ => throw new UnsupportedPlatformException()
+        };
+
+        if (LoadLastSave && lastSaveSlot != null && SaveGameManager.SlotExists(lastSaveSlot.Value))
+        {
+            // Load the save slot
+            GameInfo.Load(lastSaveSlot.Value);
+            GameInfo.LoadLastWorld();
+            GameInfo.CurrentSlot = lastSaveSlot.Value;
+        }
+        else
+        {
+            // Set the initial frame
+            FrameManager.SetNextFrame(Games[SelectedGameIndex].Platform switch
+            {
+                Platform.GBA => new Intro(),
+                Platform.NGage => new NGageSplashScreensAct(),
+                _ => throw new UnsupportedPlatformException()
+            });
+        }
+
+        // Reset game time
+        GameTime.Reset();
+    }
+
     private void UpdateGameOptions(TitleScreenGame game)
     {
         // Get the game paths
@@ -83,24 +121,24 @@ public class TitleScreen : Frame
 
             game.SetOptions(
             [
-                new TitleScreenGame.Option("CONTINUE", canContinue, x =>
+                new TitleScreenOptionsList.Option("CONTINUE", canContinue, () =>
                 {
                     LoadLastSave = true;
-                    LoadRom(x.Platform);
+                    LoadRom(game.Platform);
                 }),
-                new TitleScreenGame.Option("START", x =>
+                new TitleScreenOptionsList.Option("START", () =>
                 {
                     LoadLastSave = false;
-                    LoadRom(x.Platform);
+                    LoadRom(game.Platform);
                 }),
-                new TitleScreenGame.Option(
+                new TitleScreenOptionsList.Option(
                 [
                     // TODO: Implement
-                    new TitleScreenGame.Option("MODERN", _ =>
+                    new TitleScreenOptionsList.Option("MODERN", () =>
                     {
 
                     }),
-                    new TitleScreenGame.Option("ORIGINAL", _ =>
+                    new TitleScreenOptionsList.Option("ORIGINAL", () =>
                     {
 
                     })
@@ -112,14 +150,14 @@ public class TitleScreen : Frame
         {
             game.SetOptions(
             [
-                new TitleScreenGame.Option("LOCATE ROM", x =>
+                new TitleScreenOptionsList.Option("LOCATE ROM", () =>
                 {
                     // Force windowed mode for this
                     DisplayMode prevDisplayMode = Engine.GameWindow.DisplayMode;
                     if (Engine.GameWindow.DisplayMode != DisplayMode.Windowed)
                         Engine.GameWindow.DisplayMode = DisplayMode.Windowed;
 
-                    if (x.Platform == Platform.GBA)
+                    if (game.Platform == Platform.GBA)
                     {
                         OpenFileDialog fileDialog = new()
                         {
@@ -140,11 +178,11 @@ public class TitleScreen : Frame
                             File.Copy(selectedFilePath, Path.Combine(gameDirectory, gameFileNames[0]));
 
                             // Update
-                            UpdateGameOptions(x);
+                            UpdateGameOptions(game);
 
                         }
                     }
-                    else if (x.Platform == Platform.NGage)
+                    else if (game.Platform == Platform.NGage)
                     {
                         FolderBrowserDialog folderDialog = new()
                         {
@@ -169,7 +207,7 @@ public class TitleScreen : Frame
                                 File.Copy(Path.Combine(selectedDirectoryPath, gameFileName), Path.Combine(gameDirectory, gameFileName));
 
                             // Update
-                            UpdateGameOptions(x);
+                            UpdateGameOptions(game);
                         }
                     }
                     else
@@ -235,6 +273,23 @@ public class TitleScreen : Frame
             new TitleScreenGame(renderContext, Platform.NGage, Cursor, new Vector2(98 + 190, 172))
         ];
 
+        QuitGameOptionsList = new TitleScreenOptionsList(renderContext, Cursor, new Vector2(98 + 190 / 2f, 172));
+        QuitGameOptionsList.SetOptions(
+        [
+            new TitleScreenOptionsList.Option("GO BACK", () =>
+            {
+                foreach (TitleScreenGame game in Games)
+                    game.SelectedIndex = -1;
+
+                SelectedGameIndex = 0;
+                Games[SelectedGameIndex].SelectedIndex = 0;
+            }),
+            new TitleScreenOptionsList.Option("QUIT GAME", () =>
+            {
+                Engine.GbaGame.Exit();
+            }),
+        ]);
+
         foreach (TitleScreenGame game in Games)
             UpdateGameOptions(game);
 
@@ -246,7 +301,11 @@ public class TitleScreen : Frame
     {
         TransitionsFX.StepAll();
 
-        if (!Cursor.IsMoving && LoadRomTask == null)
+        if (SelectedGameIndex == -1)
+        {
+            QuitGameOptionsList.Step();
+        }
+        else if (!Cursor.IsMoving && LoadRomTask == null)
         {
             // Change selected game
             bool canPressLeftRight = Games[SelectedGameIndex].Options[Games[SelectedGameIndex].SelectedIndex].SubOptions == null;
@@ -258,51 +317,35 @@ public class TitleScreen : Frame
                 Games[SelectedGameIndex].SelectedIndex = 0;
                 Games[prevSelectedGameIndex].SelectedIndex = -1;
             }
+            else if (JoyPad.IsButtonJustPressed(GbaInput.B) || InputManager.IsButtonJustPressed(Keys.Escape))
+            {
+                SelectedGameIndex = -1;
+                QuitGameOptionsList.SelectedIndex = 0;
+            }
 
             // Step games
-            foreach (TitleScreenGame game in Games)
-                game.Step();
+            if (SelectedGameIndex != -1)
+            {
+                foreach (TitleScreenGame game in Games)
+                    game.Step();
+            }
         }
         else if (LoadRomTask is { IsCompleted: true } && TransitionsFX.IsFadeOutFinished)
         {
-            // Load the language
-            Localization.SetLanguage(Engine.Config.Language);
-
-            // TODO: Load saved volume
-
-            int? lastSaveSlot = Games[SelectedGameIndex].Platform switch
-            {
-                Platform.GBA => Engine.Config.LastPlayedGbaSaveSlot,
-                Platform.NGage => Engine.Config.LastPlayedNGageSaveSlot,
-                _ => throw new UnsupportedPlatformException()
-            };
-
-            if (LoadLastSave && lastSaveSlot != null && SaveGameManager.SlotExists(lastSaveSlot.Value))
-            {
-                // Load the save slot
-                GameInfo.Load(lastSaveSlot.Value);
-                GameInfo.LoadLastWorld();
-                GameInfo.CurrentSlot = lastSaveSlot.Value;
-            }
-            else
-            {
-                // Set the initial frame
-                FrameManager.SetNextFrame(Games[SelectedGameIndex].Platform switch
-                {
-                    Platform.GBA => new Intro(),
-                    Platform.NGage => new NGageSplashScreensAct(),
-                    _ => throw new UnsupportedPlatformException()
-                });
-            }
-
-            // Reset game time
-            GameTime.Reset();
+            StartGame();
         }
 
         Cursor.Step();
 
-        foreach (TitleScreenGame game in Games)
-            game.Draw(AnimationPlayer);
+        if (SelectedGameIndex == -1)
+        {
+            QuitGameOptionsList.Draw(AnimationPlayer);
+        }
+        else
+        {
+            foreach (TitleScreenGame game in Games)
+                game.Draw(AnimationPlayer);
+        }
 
         Cursor.Draw(AnimationPlayer);
 
