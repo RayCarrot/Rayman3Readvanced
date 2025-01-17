@@ -14,7 +14,8 @@ public static class Rom
     private static Game _game;
     private static Platform _platform;
     private static Vector2 _originalResolution;
-    private static OriginalGameRenderContext _originalGameRenderContext;
+    private static RenderContext _originalGameRenderContext;
+    private static RenderContext _originalScaledGameRenderContext;
     private static Context _context;
     private static Loader _loader;
 
@@ -30,7 +31,8 @@ public static class Rom
     public static Platform Platform => IsLoaded ? _platform : throw new RomNotInitializedException();
 
     public static Vector2 OriginalResolution => IsLoaded ? _originalResolution : throw new RomNotInitializedException();
-    public static OriginalGameRenderContext OriginalGameRenderContext => IsLoaded ? _originalGameRenderContext : throw new RomNotInitializedException();
+    public static RenderContext OriginalGameRenderContext => IsLoaded ? _originalGameRenderContext : throw new RomNotInitializedException();
+    public static RenderContext OriginalScaledGameRenderContext => IsLoaded ? _originalScaledGameRenderContext : throw new RomNotInitializedException();
 
     public static Context Context => IsLoaded ? _context : throw new RomNotInitializedException();
     public static Loader Loader => IsLoaded ? _loader : throw new RomNotInitializedException();
@@ -134,7 +136,8 @@ public static class Rom
                 _ => throw new UnsupportedPlatformException(),
             };
 
-            _originalGameRenderContext = new OriginalGameRenderContext();
+            _originalGameRenderContext = new FixedResolutionRenderContext(OriginalResolution);
+            _originalScaledGameRenderContext = new OriginalScaledGameRenderContext();
 
             Loaded?.Invoke(null, EventArgs.Empty);
         }

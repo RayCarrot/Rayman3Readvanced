@@ -1044,7 +1044,7 @@ public partial class UserInfoMulti2D : Dialog
                 VerticalAnchor = VerticalAnchorMode.Bottom,
 
                 // Use the original render context as to avoid scaling this (we want it to cover the screen!)
-                RenderContext = Rom.OriginalGameRenderContext,
+                RenderContext = Rom.OriginalScaledGameRenderContext,
             };
 
             ReverseControlsEffectIcon = new AnimatedObject(itemsResource, itemsResource.IsDynamic)

@@ -46,6 +46,11 @@ public class IniDeserializer : BaseIniSerializer
         {
             return (T)Enum.Parse(typeof(T), stringValue);
         }
+        else if (typeof(T) == typeof(Vector2))
+        {
+            string[] values = stringValue.Split('x');
+            return (T)(object)new Vector2(Single.Parse(values[0], CultureInfo.InvariantCulture), Single.Parse(values[1], CultureInfo.InvariantCulture));
+        }
         else if (typeof(T) == typeof(Point))
         {
             string[] values = stringValue.Split('x');

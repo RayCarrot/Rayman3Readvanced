@@ -62,7 +62,6 @@ public class LevelEditor : Frame
 
     public override void UnInit()
     {
-        Scene.UnInit();
         Scene = null;
 
         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);

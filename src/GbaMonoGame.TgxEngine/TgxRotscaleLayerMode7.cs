@@ -16,6 +16,7 @@ public class TgxRotscaleLayerMode7 : TgxGameLayer
         Is8Bit = true;
         LayerId = Resource.LayerId;
 
+        // TODO: Set render context
         Screen = new GfxScreen(LayerId)
         {
             IsEnabled = true,

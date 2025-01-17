@@ -112,7 +112,10 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
 
         CanPause = true;
         LevelMusicManager.Init();
-        CircleTransitionScreenEffect = new CircleTransitionScreenEffect();
+        CircleTransitionScreenEffect = new CircleTransitionScreenEffect()
+        {
+            RenderContext = Engine.GameRenderContext,
+        };
         TransitionsFX = new TransitionsFX(true);
         Scene = new Scene2D((int)GameInfo.MapId, x => new CameraSideScroller(x), 4, 1);
 
@@ -171,7 +174,6 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
         Gfx.Fade = 1;
 
-        Scene.UnInit();
         Scene = null;
 
         CircleTransitionValue = 0;

@@ -54,7 +54,10 @@ public class FrameSideScrollerGCN : FrameSideScroller
         if (MapInfo.StartMusicSoundEvent != Rayman3SoundEvent.None)
             SoundEventsManager.ProcessEvent(MapInfo.StartMusicSoundEvent);
 
-        CircleTransitionScreenEffect = new CircleTransitionScreenEffect();
+        CircleTransitionScreenEffect = new CircleTransitionScreenEffect()
+        {
+            RenderContext = Engine.GameRenderContext,
+        };
 
         TransitionsFX = new TransitionsFX(true);
         Scene = new Scene2D(Map, x => new CameraSideScroller(x), 3, 1);

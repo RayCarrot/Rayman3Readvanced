@@ -17,21 +17,13 @@ public class GfxDebugWindow : DebugWindow
             {
                 ImGui.SeparatorText("Resolution");
 
-                Point displayRes = Engine.GameWindow.GetResolution();
-                ImGui.Text($"Display resolution: {displayRes.X} x {displayRes.Y}");
+                Point windowRes = Engine.GameWindow.GetResolution();
+                Vector2 viewPortSize = Engine.GameViewPort.ScreenSize;
+                ImGui.Text($"Window resolution: {windowRes.X} x {windowRes.Y}");
+                ImGui.Text($"Viewport size: {viewPortSize.X} x {viewPortSize.Y}");
                 ImGui.Text($"Original game resolution: {Rom.OriginalResolution.X} x {Rom.OriginalResolution.Y}");
-                ImGui.Text($"Game Resolution: {Engine.GameViewPort.GameResolution.X} x {Engine.GameViewPort.GameResolution.Y}");
-
-                System.Numerics.Vector2 res = new(Engine.GameViewPort.RequestedGameResolution.X, Engine.GameViewPort.RequestedGameResolution.Y);
-                if (ImGui.InputFloat2("Requested resolution", ref res))
-                    Engine.GameViewPort.SetRequestedResolution(new Vector2(res.X, res.Y));
-
-                float resScale = res.X / Rom.OriginalGameRenderContext.Resolution.X;
-                if (ImGui.SliderFloat("Requested resolution", ref resScale, 0.5f, 2))
-                {
-                    Engine.GameViewPort.SetRequestedResolution(Rom.OriginalGameRenderContext.Resolution * resScale);
-                    Engine.SaveConfig();
-                }
+                ImGui.Text($"Original scaled game resolution: {Rom.OriginalScaledGameRenderContext.Resolution.X} x {Rom.OriginalScaledGameRenderContext.Resolution.Y}");
+                ImGui.Text($"Internal game resolution: {Engine.Config.InternalGameResolution.X} x {Engine.Config.InternalGameResolution.Y}");
 
                 ImGui.Spacing();
                 ImGui.SeparatorText("Fade");

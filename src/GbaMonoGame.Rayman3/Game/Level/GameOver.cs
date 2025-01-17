@@ -109,8 +109,6 @@ public class GameOver : Frame
 
     public override void Init()
     {
-        Engine.GameViewPort.SetFixedResolution(Rom.OriginalResolution);
-
         TransitionsFX = new TransitionsFX(true);
 
         Gfx.AddScreen(new GfxScreen(2)
@@ -125,7 +123,8 @@ public class GameOver : Frame
                     width: (int)Rom.OriginalResolution.X,
                     height: (int)Rom.OriginalResolution.Y,
                     bitmap: Rom.Loader.Rayman3_GameOverBitmap.ImgData,
-                    palette: new Palette(Rom.Loader.Rayman3_GameOverPalette))))
+                    palette: new Palette(Rom.Loader.Rayman3_GameOverPalette)))),
+            RenderContext = Rom.OriginalGameRenderContext,
         });
 
         AnimationPlayer = new AnimationPlayer(false, SoundEventsManager.ProcessEvent);
@@ -146,6 +145,7 @@ public class GameOver : Frame
                 Platform.NGage => new Vector2(90, 104),
                 _ => throw new UnsupportedPlatformException()
             },
+            RenderContext = Rom.OriginalGameRenderContext,
         };
 
         Countdown1 = new AnimatedObject(countdownAnimations, countdownAnimations.IsDynamic)
@@ -160,6 +160,7 @@ public class GameOver : Frame
                 Platform.NGage => new Vector2(78, 40),
                 _ => throw new UnsupportedPlatformException()
             },
+            RenderContext = Rom.OriginalGameRenderContext,
         };
         Countdown2 = new AnimatedObject(countdownAnimations, countdownAnimations.IsDynamic)
         {
@@ -174,6 +175,7 @@ public class GameOver : Frame
                 _ => throw new UnsupportedPlatformException()
             },
             IsAlphaBlendEnabled = true,
+            RenderContext = Rom.OriginalGameRenderContext,
         };
 
         Butterfly1 = new AnimatedObject(butterflyAnimations, butterflyAnimations.IsDynamic)
@@ -188,6 +190,7 @@ public class GameOver : Frame
                 Platform.NGage => new Vector2(120, 81),
                 _ => throw new UnsupportedPlatformException()
             },
+            RenderContext = Rom.OriginalGameRenderContext,
         };
         Butterfly2 = new AnimatedObject(butterflyAnimations, butterflyAnimations.IsDynamic)
         {
@@ -201,6 +204,7 @@ public class GameOver : Frame
                 Platform.NGage => new Vector2(30, 188),
                 _ => throw new UnsupportedPlatformException()
             },
+            RenderContext = Rom.OriginalGameRenderContext,
         };
 
         Mode = GameOverMode.Intro;

@@ -5,20 +5,34 @@ namespace GbaMonoGame.TgxEngine;
 
 public class ParallaxClusterRenderContext : RenderContext
 {
-    public ParallaxClusterRenderContext(TgxCluster cluster)
+    public ParallaxClusterRenderContext(Playfield2DRenderContext parentRenderContext, TgxCluster cluster)
     {
+        ParentRenderContext = parentRenderContext;
         Cluster = cluster;
     }
 
+    private Vector2 _lastParentResolution;
+
+    public Playfield2DRenderContext ParentRenderContext { get; }
     public TgxCluster Cluster { get; }
 
     protected override Vector2 GetResolution()
     {
-        // We want the parallax backgrounds to target the screen resolution since that
+        _lastParentResolution = ParentRenderContext.Resolution;
+
+        // We want the parallax backgrounds to target the original resolution since that
         // most closely matches how they were meant to be rendered. But since you can
         // play in higher internal resolution (like for widescreen) we have to make
         // sure it doesn't exceed the size of the smallest tile layer.
-        Vector2 ogRes = Rom.OriginalGameRenderContext.Resolution;
+        Vector2 originalResolution = Rom.OriginalResolution;
+        float ratio = ParentRenderContext.Resolution.X / ParentRenderContext.Resolution.Y;
+
+        Vector2 ogRes;
+        if (ratio > 1)
+            ogRes = new Vector2(ratio * originalResolution.Y, originalResolution.Y);
+        else
+            ogRes = new Vector2(originalResolution.X, 1 / ratio * originalResolution.X);
+
         Vector2 res = ogRes;
 
         if (res == Rom.OriginalResolution)
@@ -48,5 +62,13 @@ public class ParallaxClusterRenderContext : RenderContext
             Logger.Debug("Set cluster with size {0} render context resolution to {1}", Cluster.Size, res);
 
         return res;
+    }
+
+    public override void Update()
+    {
+        base.Update();
+    
+        if (_lastParentResolution != ParentRenderContext.Resolution)
+            UpdateResolution();
     }
 }

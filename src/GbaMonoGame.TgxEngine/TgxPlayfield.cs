@@ -20,7 +20,8 @@ public abstract class TgxPlayfield
     public AnimatedTilekitManager AnimatedTilekitManager { get; }
     public TgxTilePhysicalLayer PhysicalLayer { get; set; }
 
-    public static TgxPlayfield Load(PlayfieldResource playfieldResource) => Load<TgxPlayfield>(playfieldResource);
+    public static TgxPlayfield Load(PlayfieldResource playfieldResource) => 
+        Load<TgxPlayfield>(playfieldResource);
 
     public static T Load<T>(PlayfieldResource playfieldResource)
         where T : TgxPlayfield
@@ -62,10 +63,5 @@ public abstract class TgxPlayfield
             PhysicalLayer.DebugScreen.IsEnabled = !PhysicalLayer.DebugScreen.IsEnabled;
 
         AnimatedTilekitManager?.Step();
-    }
-
-    public virtual void UnInit()
-    {
-        Camera.UnInit();
     }
 }

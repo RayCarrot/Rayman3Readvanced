@@ -542,7 +542,8 @@ public partial class MenuAll
             BgPriority = 1,
             ObjPriority = 32,
             ScreenPos = new Vector2(145, 40 - MultiplayerPlayersOffsetY),
-            CurrentAnimation = 0
+            CurrentAnimation = 0,
+            RenderContext = Playfield.RenderContext,
         };
 
         Data.MultiplayerPlayerNumberIcons = new AnimatedObject(resource, false)
@@ -551,7 +552,8 @@ public partial class MenuAll
             BgPriority = 1,
             ObjPriority = 0,
             ScreenPos = new Vector2(102, 22 - MultiplayerPlayersOffsetY),
-            CurrentAnimation = 4
+            CurrentAnimation = 4,
+            RenderContext = Playfield.RenderContext,
         };
 
         Data.MultiplayerPlayerSelectionIcons = new AnimatedObject[4];
@@ -563,7 +565,8 @@ public partial class MenuAll
                 BgPriority = 1,
                 ObjPriority = 16,
                 ScreenPos = new Vector2(104 + 24 * i, 49 - MultiplayerPlayersOffsetY),
-                CurrentAnimation = 8
+                CurrentAnimation = 8,
+                RenderContext = Playfield.RenderContext,
             };
         }
 
@@ -573,7 +576,8 @@ public partial class MenuAll
             BgPriority = 1,
             ObjPriority = 0,
             ScreenPos = new Vector2(104, 26 - MultiplayerPlayersOffsetY),
-            CurrentAnimation = 10
+            CurrentAnimation = 10,
+            RenderContext = Playfield.RenderContext,
         };
 
         if (InitialPage == Page.Multiplayer)
@@ -950,7 +954,8 @@ public partial class MenuAll
             BgPriority = 1,
             ObjPriority = 32,
             ScreenPos = new Vector2(113, 60 - MultiplayerPlayersOffsetY),
-            CurrentAnimation = 0
+            CurrentAnimation = 0,
+            RenderContext = Playfield.RenderContext,
         };
 
         Data.MultiplayerPlayerNumberIcons = new AnimatedObject(resource, false)
@@ -959,7 +964,8 @@ public partial class MenuAll
             BgPriority = 1,
             ObjPriority = 0,
             ScreenPos = new Vector2(70, 42 - MultiplayerPlayersOffsetY),
-            CurrentAnimation = 4
+            CurrentAnimation = 4,
+            RenderContext = Playfield.RenderContext,
         };
 
         Data.MultiplayerPlayerSelectionIcons = new AnimatedObject[4];
@@ -971,7 +977,8 @@ public partial class MenuAll
                 BgPriority = 1,
                 ObjPriority = 16,
                 ScreenPos = new Vector2(72 + 24 * i, 69 - MultiplayerPlayersOffsetY),
-                CurrentAnimation = 8
+                CurrentAnimation = 8,
+                RenderContext = Playfield.RenderContext,
             };
         }
 
@@ -981,7 +988,8 @@ public partial class MenuAll
             BgPriority = 1,
             ObjPriority = 0,
             ScreenPos = new Vector2(72, 46 - MultiplayerPlayersOffsetY),
-            CurrentAnimation = 10
+            CurrentAnimation = 10,
+            RenderContext = Playfield.RenderContext,
         };
 
         NGageSetText(25, false, 36, 256, hostName); // Please wait for connections on %s
@@ -1242,7 +1250,8 @@ public partial class MenuAll
             BgPriority = 1,
             ObjPriority = 32,
             ScreenPos = new Vector2(113, 60 - MultiplayerPlayersOffsetY),
-            CurrentAnimation = 0
+            CurrentAnimation = 0,
+            RenderContext = Playfield.RenderContext,
         };
 
         Data.MultiplayerPlayerNumberIcons = new AnimatedObject(resource, false)
@@ -1251,7 +1260,8 @@ public partial class MenuAll
             BgPriority = 1,
             ObjPriority = 0,
             ScreenPos = new Vector2(70, 42 - MultiplayerPlayersOffsetY),
-            CurrentAnimation = 4
+            CurrentAnimation = 4,
+            RenderContext = Playfield.RenderContext,
         };
 
         Data.MultiplayerPlayerSelectionIcons = new AnimatedObject[4];
@@ -1263,7 +1273,8 @@ public partial class MenuAll
                 BgPriority = 1,
                 ObjPriority = 16,
                 ScreenPos = new Vector2(72 + 24 * i, 69 - MultiplayerPlayersOffsetY),
-                CurrentAnimation = 8
+                CurrentAnimation = 8,
+                RenderContext = Playfield.RenderContext,
             };
         }
 
@@ -1273,7 +1284,8 @@ public partial class MenuAll
             BgPriority = 1,
             ObjPriority = 0,
             ScreenPos = new Vector2(72, 46 - MultiplayerPlayersOffsetY),
-            CurrentAnimation = 10
+            CurrentAnimation = 10,
+            RenderContext = Playfield.RenderContext,
         };
 
         NGageSetText(31, false, null, 0); // Connecting

@@ -511,12 +511,12 @@ public partial class MenuAll : Frame, IHasPlayfield
 
         AnimationPlayer = new AnimationPlayer(false, null);
 
-        Data = new MenuData(MultiplayerPlayersOffsetY, SinglePakPlayersOffsetY);
+        Data = new MenuData(Rom.OriginalGameRenderContext, MultiplayerPlayersOffsetY, SinglePakPlayersOffsetY);
         WheelRotation = 0;
 
         PlayfieldResource menuPlayField = Rom.LoadResource<PlayfieldResource>(GameResource.MenuPlayfield);
         Playfield = TgxPlayfield.Load<TgxPlayfield2D>(menuPlayField);
-        Engine.GameViewPort.SetFixedResolution(Rom.OriginalResolution);
+        Playfield.RenderContext.SetFixedResolution(Rom.OriginalResolution);
 
         Gfx.ClearColor = Color.Black;
 
@@ -603,7 +603,6 @@ public partial class MenuAll : Frame, IHasPlayfield
     public override void UnInit()
     {
         SoundEngineInterface.SetNbVoices(7);
-        Playfield.UnInit();
 
         if (!IsLoadingMultiplayerMap)
         {

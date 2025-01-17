@@ -104,7 +104,6 @@ public class FrameNewPower : Frame, IHasScene, IHasPlayfield
         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
         Gfx.Fade = 1;
 
-        Scene.UnInit();
         Scene = null;
 
         GameInfo.StopLevelMusic();

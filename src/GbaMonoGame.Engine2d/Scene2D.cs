@@ -24,11 +24,9 @@ public class Scene2D
         Scene2DResource scene = Rom.LoadResource<Scene2DResource>(id);
 
         Playfield = TgxPlayfield.Load(scene.Playfield);
+        
+        // For now we use the same render context for the HUD, but this could be changed if we wanted to scale it differently
         HudRenderContext = Playfield.RenderContext;
-
-        // TODO: Set bounds if Mode7
-        if (Playfield is TgxPlayfield2D playfield2D)
-            Engine.GameViewPort.SetResolutionBounds(null, playfield2D.Size);
 
         KnotManager = new KnotManager(scene);
         KnotManager.LoadGameObjects(this, scene);
@@ -56,10 +54,6 @@ public class Scene2D
 
         Playfield = TgxPlayfield.Load<TgxPlayfield2D>(map.Playfield);
         HudRenderContext = Playfield.RenderContext;
-
-        // TODO: Set bounds if Mode7
-        if (Playfield is TgxPlayfield2D playfield2D)
-            Engine.GameViewPort.SetResolutionBounds(null, playfield2D.Size);
 
         KnotManager = new KnotManager(map.Scene);
         KnotManager.LoadGameObjects(this, map.Scene);
@@ -106,11 +100,6 @@ public class Scene2D
         RunCamera();
         ProcessDialogs();
         DrawActors();
-    }
-
-    public void UnInit()
-    {
-        Playfield.UnInit();
     }
 
     public void Step()

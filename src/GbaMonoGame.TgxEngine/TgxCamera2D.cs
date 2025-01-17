@@ -7,10 +7,12 @@ namespace GbaMonoGame.TgxEngine;
 
 public class TgxCamera2D : TgxCamera
 {
-    public TgxCamera2D(RenderContext renderContext) : base(renderContext) { }
+    public TgxCamera2D(Playfield2DRenderContext renderContext) : base(renderContext) { }
 
     private TgxCluster _mainCluster;
     private readonly List<TgxCluster> _clusters = [];
+
+    public new Playfield2DRenderContext RenderContext => (Playfield2DRenderContext)base.RenderContext;
 
     public override Vector2 Position
     {
@@ -94,15 +96,5 @@ public class TgxCamera2D : TgxCamera
     {
         TgxCluster cluster = GetCluster(clusterId);
         cluster.AddLayer(layer);
-    }
-
-    public override void UnInit()
-    {
-        // Make sure to uninit the parallax render contexts
-        foreach (TgxCluster cluster in GetClusters(true))
-        {
-            if (cluster.RenderContext != Engine.GameRenderContext)
-                cluster.RenderContext.UnInit();
-        }
     }
 }

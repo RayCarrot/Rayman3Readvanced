@@ -98,6 +98,7 @@ public sealed partial class Rayman : MovableActor
                             ObjPriority = 2,
                             CurrentAnimation = 1,
                             AffineMatrix = AffineMatrix.Identity,
+                            RenderContext = AnimatedObject.RenderContext,
                         };
                     }
                 }

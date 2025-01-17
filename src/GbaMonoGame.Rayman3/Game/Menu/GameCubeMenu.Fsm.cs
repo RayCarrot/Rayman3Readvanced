@@ -153,7 +153,10 @@ public partial class GameCubeMenu
         {
             case FsmAction.Init:
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
-                TransitionOutScreenEffect = new GameCubeMenuTransitionOutScreenEffect();
+                TransitionOutScreenEffect = new GameCubeMenuTransitionOutScreenEffect()
+                {
+                    RenderContext = Rom.OriginalGameRenderContext,
+                };
                 Gfx.SetScreenEffect(TransitionOutScreenEffect);
                 Timer = 0;
                 break;

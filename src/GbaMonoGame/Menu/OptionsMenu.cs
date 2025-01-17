@@ -52,8 +52,8 @@ public class OptionsMenu : Menu
                 items: Enumerable.Range(1, windowResCount).
                     Select(x => new MultiSelectionMenuOption<float>.Item($"{x}x", x)).
                     ToArray(),
-                getData: _ => Engine.GameWindow.WindowResolution.ToVector2().X / Engine.GameViewPort.RequestedGameResolution.X,
-                setData: data => Engine.GameWindow.WindowResolution = (Engine.GameViewPort.RequestedGameResolution * data).ToPoint(),
+                getData: _ => Engine.GameWindow.WindowResolution.ToVector2().X / Engine.Config.InternalGameResolution.X,
+                setData: data => Engine.GameWindow.WindowResolution = (Engine.Config.InternalGameResolution * data).ToPoint(),
                 getCustomName: data => $"{data:0.00}x"),
 
             // Window resolution
@@ -76,22 +76,21 @@ public class OptionsMenu : Menu
             new HeaderMenuOption("Game"),
 
             // Internal resolution
-            new MultiSelectionMenuOption<Point>(
+            new MultiSelectionMenuOption<Vector2>(
                 name: "Internal resolution",
                 items:
                 [
-                    new MultiSelectionMenuOption<Point>.Item($"Original ({originalRes.X} x {originalRes.Y})", originalRes.ToPoint()),
-                    new MultiSelectionMenuOption<Point>.Item("Modern (384 x 216)", new Point(384, 216)), // 16:9
+                    new MultiSelectionMenuOption<Vector2>.Item($"Original ({originalRes.X} x {originalRes.Y})", originalRes),
+                    new MultiSelectionMenuOption<Vector2>.Item("Modern (384 x 216)", new Vector2(384, 216)), // 16:9
                 ],
                 getData: _ => Engine.Config.InternalGameResolution,
                 setData: data =>
                 {
-                    float originalWindowScale = Engine.GameWindow.WindowResolution.ToVector2().X / Engine.GameViewPort.RequestedGameResolution.X;
+                    float originalWindowScale = Engine.GameWindow.WindowResolution.ToVector2().X / Engine.Config.InternalGameResolution.X;
 
                     Engine.Config.InternalGameResolution = data;
-                    Engine.GameViewPort.SetRequestedResolution(Engine.Config.InternalGameResolution.ToVector2());
 
-                    Engine.GameWindow.WindowResolution = (Engine.GameViewPort.RequestedGameResolution * originalWindowScale).ToPoint();
+                    Engine.GameWindow.WindowResolution = (Engine.Config.InternalGameResolution * originalWindowScale).ToPoint();
                     WindowResolutionMenuOption.Init();
                 },
                 getCustomName: data => $"{data.X} x {data.Y}"),

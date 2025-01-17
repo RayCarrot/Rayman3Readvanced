@@ -5,7 +5,8 @@ namespace GbaMonoGame.TgxEngine;
 
 public class TgxPlayfieldMode7 : TgxPlayfield
 {
-    public TgxPlayfieldMode7(PlayfieldMode7Resource playfieldResource) : base(new TgxCameraMode7(Engine.GameRenderContext), playfieldResource.TileKit)
+    public TgxPlayfieldMode7(PlayfieldMode7Resource playfieldResource) 
+        : base(new TgxCameraMode7(CreateRenderContext(playfieldResource)), playfieldResource.TileKit)
     {
         List<TgxRotscaleLayerMode7> rotScaleLayers = new();
 
@@ -34,14 +35,19 @@ public class TgxPlayfieldMode7 : TgxPlayfield
             }
             else if (gameLayerResource.Type == GameLayerType.PhysicalLayer)
             {
-                PhysicalLayer = new TgxTilePhysicalLayer(gameLayerResource);
-                PhysicalLayer.DebugScreen.RenderContext = RenderContext;
+                PhysicalLayer = new TgxTilePhysicalLayer(RenderContext, gameLayerResource);
 
                 // TODO: Somehow add layer to camera so we can display it in debug mode
             }
         }
 
         RotScaleLayers = rotScaleLayers;
+    }
+
+    private static RenderContext CreateRenderContext(PlayfieldMode7Resource resource)
+    {
+        // TODO: Implement
+        return Engine.GameRenderContext;
     }
 
     public IReadOnlyList<TgxRotscaleLayerMode7> RotScaleLayers { get; }

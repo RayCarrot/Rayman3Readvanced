@@ -20,8 +20,6 @@ public class EditableScene2D
         MapSize = new Vector2(mainClusterResource.SizeX * Tile.Size, mainClusterResource.SizeY * Tile.Size);
         Camera = new EditorCamera(MapSize);
 
-        Engine.GameViewPort.SetResolutionBounds(null, MapSize);
-
         if (sceneResource.Playfield.Type == PlayfieldType.Playfield2D)
             Playfield = new EditablePlayfield2D(sceneResource.Playfield.Playfield2D, Camera);
         else
@@ -68,11 +66,6 @@ public class EditableScene2D
     {
         RunCamera();
         DrawActors();
-    }
-
-    public void UnInit()
-    {
-        Camera.RenderContext.UnInit();
     }
 
     public void Step()

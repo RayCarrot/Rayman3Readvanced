@@ -241,10 +241,10 @@ public partial class PauseDialog : Dialog
                     ObjPriority = 0,
                     Color = TextColor.SleepMode,
                     FontSize = FontSize.Font16,
-                    RenderContext = Rom.OriginalGameRenderContext,
+                    RenderContext = Rom.OriginalScaledGameRenderContext,
                 };
 
-                SleepModeTexts[i].ScreenPos = new Vector2(Rom.OriginalGameRenderContext.Resolution.X / 2 - SleepModeTexts[i].GetStringWidth() / 2f, i * 16 + 50);
+                SleepModeTexts[i].ScreenPos = new Vector2(Rom.OriginalScaledGameRenderContext.Resolution.X / 2 - SleepModeTexts[i].GetStringWidth() / 2f, i * 16 + 50);
             }
         }
         else if (Rom.Platform == Platform.NGage)

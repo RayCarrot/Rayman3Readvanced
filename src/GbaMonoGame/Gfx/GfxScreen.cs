@@ -41,7 +41,7 @@ public class GfxScreen
     /// <summary>
     /// The render context to use when rendering.
     /// </summary>
-    public RenderContext RenderContext { get; set; } = Engine.GameRenderContext;
+    public RenderContext RenderContext { get; set; }
 
     public bool IsAlphaBlendEnabled { get; set; }
     public float Alpha { get; set; }

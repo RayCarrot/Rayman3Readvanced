@@ -13,12 +13,12 @@ public class GameConfig
     public GameConfig()
     {
         Microsoft.Xna.Framework.Graphics.DisplayMode defaultDisplayMode = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode;
-        Point defaultResolution = new(384, 216);
+        Vector2 defaultResolution = new(384, 216);
         const int defaultWindowScale = 4;
 
         // Display
         WindowPosition = new Point(0, 0);
-        WindowResolution = defaultResolution * new Point(defaultWindowScale);
+        WindowResolution = (defaultResolution * defaultWindowScale).ToPoint();
         WindowIsMaximized = false;
         LockWindowAspectRatio = true;
         FullscreenResolution = new Point(defaultDisplayMode.Width, defaultDisplayMode.Height);
@@ -58,7 +58,7 @@ public class GameConfig
     public DisplayMode DisplayMode { get; set; }
 
     // Game
-    public Point InternalGameResolution { get; set; }
+    public Vector2 InternalGameResolution { get; set; }
     public string Language { get; set; }
     public int? LastPlayedGbaSaveSlot { get; set; }
     public int? LastPlayedNGageSaveSlot { get; set; }
@@ -88,7 +88,7 @@ public class GameConfig
         DisplayMode = serializer.Serialize<DisplayMode>(DisplayMode, DisplaySection, "DisplayMode");
 
         // Game
-        InternalGameResolution = serializer.Serialize<Point>(InternalGameResolution, GameSection, "InternalGameResolution");
+        InternalGameResolution = serializer.Serialize<Vector2>(InternalGameResolution, GameSection, "InternalGameResolution");
         Language = serializer.Serialize<string>(Language, GameSection, "Language");
         LastPlayedGbaSaveSlot = serializer.Serialize<int?>(LastPlayedGbaSaveSlot, GameSection, "LastPlayedGbaSaveSlot");
         LastPlayedNGageSaveSlot = serializer.Serialize<int?>(LastPlayedNGageSaveSlot, GameSection, "LastPlayedNGageSaveSlot");

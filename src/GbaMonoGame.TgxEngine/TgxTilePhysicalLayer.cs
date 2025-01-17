@@ -4,7 +4,7 @@ namespace GbaMonoGame.TgxEngine;
 
 public class TgxTilePhysicalLayer : TgxGameLayer
 {
-    public TgxTilePhysicalLayer(GameLayerResource gameLayerResource) : base(gameLayerResource)
+    public TgxTilePhysicalLayer(RenderContext renderContext, GameLayerResource gameLayerResource) : base(gameLayerResource)
     {
         CollisionMap = gameLayerResource.PhysicalLayer.CollisionMap;
 
@@ -19,7 +19,8 @@ public class TgxTilePhysicalLayer : TgxGameLayer
             Priority = 0,
             Wrap = false,
             Is8Bit = null,
-            Renderer = new CollisionMapScreenRenderer(Width, Height, CollisionMap)
+            Renderer = new CollisionMapScreenRenderer(Width, Height, CollisionMap),
+            RenderContext = renderContext,
         };
         Gfx.AddScreen(DebugScreen);
     }

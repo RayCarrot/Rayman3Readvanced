@@ -34,6 +34,10 @@ public class IniSerializer : BaseIniSerializer
         {
             return value.ToString();
         }
+        else if (value is Vector2 vector2)
+        {
+            return $"{vector2.X}x{vector2.Y}";
+        }
         else if (value is Point point)
         {
             return $"{point.X}x{point.Y}";

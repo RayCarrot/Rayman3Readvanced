@@ -662,7 +662,8 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
         GameCubeTransitionScreenEffect = new SquareTransitionScreenEffect()
         {
-            Square = new Box(Vector2.Zero, Engine.GameRenderContext.Resolution),
+            Square = new Box(Vector2.Zero, Scene.RenderContext.Resolution),
+            RenderContext = Scene.RenderContext,
         };
         Gfx.SetScreenEffect(GameCubeTransitionScreenEffect);
 
@@ -712,7 +713,11 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         CircleWipeTransitionMode = TransitionMode.In;
         
         // Add the circle wipe transition as a screen effect. On the GBA this is done using a window.
-        CircleWipeTransitionScreenEffect = new CircleWipeTransitionScreenEffect { Value = 256, };
+        CircleWipeTransitionScreenEffect = new CircleWipeTransitionScreenEffect
+        {
+            Value = 256,
+            RenderContext = Engine.GameRenderContext,
+        };
         Gfx.SetScreenEffect(CircleWipeTransitionScreenEffect);
 
         TransitionsFX = new TransitionsFX(true);
@@ -723,7 +728,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
         // For some reason this playfield has 8 pixels of blank space on the bottom, so we have to limit the vertical resolution
         Vector2 maxRes = new(((TgxPlayfield2D)Scene.Playfield).Size.X, Rom.OriginalResolution.Y);
-        Engine.GameViewPort.SetResolutionBounds(null, maxRes);
+        ((TgxPlayfield2D)Scene.Playfield).RenderContext.MaxResolution = maxRes;
 
         // Create pause dialog, but don't add yet
         PauseDialog = new PauseDialog(Scene);
@@ -839,7 +844,6 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
         Gfx.Fade = 1;
 
-        Scene.UnInit();
         Scene = null;
 
         Gfx.ClearScreenEffect();

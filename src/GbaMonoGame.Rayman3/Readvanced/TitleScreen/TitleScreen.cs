@@ -187,7 +187,7 @@ public class TitleScreen : Frame
 
     public override void Init()
     {
-        Engine.GameViewPort.SetFixedResolution(new Vector2(384, 216));
+        RenderContext renderContext = new FixedResolutionRenderContext(new Vector2(384, 216));
 
         AnimationPlayer = new AnimationPlayer(false, null);
         TransitionsFX = new TransitionsFX(true);
@@ -204,7 +204,7 @@ public class TitleScreen : Frame
         Vector2 wrap = new(2, 1);
 
         // Center so that the blending happens in the middle
-        Vector2 cloudsPos = new((gbaClouds.Width * wrap.X - Engine.GameViewPort.GameResolution.X) / 2f, 0);
+        Vector2 cloudsPos = new((gbaClouds.Width * wrap.X - renderContext.Resolution.X) / 2f, 0);
         
         Gfx.AddScreen(new GfxScreen(0)
         {
@@ -216,6 +216,7 @@ public class TitleScreen : Frame
                 Shader = CloudsShader,
                 Scale = wrap, // Scale by the wrapping and correct in shader
             },
+            RenderContext = renderContext,
         });
         Gfx.AddScreen(new GfxScreen(1)
         {
@@ -223,14 +224,15 @@ public class TitleScreen : Frame
             Priority = 1,
             Offset = Vector2.Zero,
             Renderer = new TextureScreenRenderer(background),
+            RenderContext = renderContext,
         });
 
-        Cursor = new Cursor();
+        Cursor = new Cursor(renderContext);
 
         Games =
         [
-            new TitleScreenGame(Platform.GBA, Cursor, new Vector2(98, 172)),
-            new TitleScreenGame(Platform.NGage, Cursor, new Vector2(98 + 190, 172))
+            new TitleScreenGame(renderContext, Platform.GBA, Cursor, new Vector2(98, 172)),
+            new TitleScreenGame(renderContext, Platform.NGage, Cursor, new Vector2(98 + 190, 172))
         ];
 
         foreach (TitleScreenGame game in Games)

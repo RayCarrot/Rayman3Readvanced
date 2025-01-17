@@ -57,7 +57,7 @@ public abstract class AObject
     public HorizontalAnchorMode HorizontalAnchor { get; set; }
     public VerticalAnchorMode VerticalAnchor { get; set; }
 
-    public RenderContext RenderContext { get; set; } = Engine.GameRenderContext;
+    public RenderContext RenderContext { get; set; }
 
     public Vector2 GetAnchoredPosition()
     {

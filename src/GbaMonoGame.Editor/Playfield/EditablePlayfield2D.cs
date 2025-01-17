@@ -20,11 +20,10 @@ public class EditablePlayfield2D
             if (gameLayerResource.Type == GameLayerType.TileLayer && 
                 gameLayerResource.TileLayer.LayerId is 2 or 3)
             {
-                TgxTileLayer layer = new(gameLayerResource);
+                TgxTileLayer layer = new(camera.RenderContext, gameLayerResource);
                 tileLayers.Add(layer);
 
                 layer.LoadRenderer(playfieldResource.TileKit, Vram);
-                layer.Screen.RenderContext = camera.RenderContext;
                 layer.Screen.Wrap = false;
 
                 camera.AddGameLayer(layer);

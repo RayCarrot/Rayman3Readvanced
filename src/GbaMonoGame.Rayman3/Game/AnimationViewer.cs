@@ -47,6 +47,7 @@ public class AnimationViewer : Frame
             ScreenPos = Vector2.Zero,
             HorizontalAnchor = HorizontalAnchorMode.Center,
             VerticalAnchor = VerticalAnchorMode.Center,
+            RenderContext = Engine.GameRenderContext,
         };
         SelectedAnimationIndex = 0;
 
@@ -80,6 +81,7 @@ public class AnimationViewer : Frame
             FontSize = FontSize.Font16,
             ScreenPos = new Vector2(0, 10),
             HorizontalAnchor = HorizontalAnchorMode.Center,
+            RenderContext = Engine.GameRenderContext,
         };
 
         InitSelectResource();

@@ -372,6 +372,7 @@ public class LevelSelect : Frame
             Color = TextColor.LevelSelect,
             FontSize = FontSize.Font16,
             ScreenPos = new Vector2(60, 20),
+            RenderContext = Engine.GameRenderContext,
         };
 
         Rows = new SpriteTextObject[4];
@@ -383,6 +384,7 @@ public class LevelSelect : Frame
                 Color = TextColor.LevelSelect,
                 FontSize = FontSize.Font16,
                 ScreenPos = new Vector2(30, 60 + RowHeight * i),
+                RenderContext = Engine.GameRenderContext,
             };
         }
 
@@ -393,6 +395,7 @@ public class LevelSelect : Frame
             Color = TextColor.LevelSelect,
             FontSize = FontSize.Font16,
             ScreenPos = new Vector2(10, 60),
+            RenderContext = Engine.GameRenderContext,
         };
 
         InitSelectSaveSlot();

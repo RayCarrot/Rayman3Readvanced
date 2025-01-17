@@ -30,10 +30,6 @@ public class GfxRenderer
 
     public void BeginRender(RenderOptions options)
     {
-        // Set the scissor area first time we render this frame
-        if (RenderOptions == null)
-            SpriteBatch.GraphicsDevice.ScissorRectangle = GameViewPort.ScreenRectangle;
-
         // If we have new render options then we need to begin a new batch
         if (RenderOptions != options)
         {
@@ -41,7 +37,11 @@ public class GfxRenderer
             if (RenderOptions != null)
                 SpriteBatch.End();
 
+            // Set the new render options
             RenderOptions = options;
+
+            // Set the screen area to draw to
+            SpriteBatch.GraphicsDevice.ScissorRectangle = options.RenderContext.ViewPortRenderBox;
 
             // Get the shader
             Effect shader = options.Shader;

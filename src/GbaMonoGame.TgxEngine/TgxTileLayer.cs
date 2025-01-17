@@ -7,7 +7,7 @@ namespace GbaMonoGame.TgxEngine;
 
 public class TgxTileLayer : TgxGameLayer
 {
-    public TgxTileLayer(GameLayerResource gameLayerResource) : base(gameLayerResource)
+    public TgxTileLayer(RenderContext renderContext, GameLayerResource gameLayerResource) : base(gameLayerResource)
     {
         Resource = gameLayerResource.TileLayer;
 
@@ -25,6 +25,7 @@ public class TgxTileLayer : TgxGameLayer
             Is8Bit = Resource.Is8Bit,
             IsAlphaBlendEnabled = Resource.HasAlphaBlending, // TODO: We also need to update TransitionsFX, see Beneath map 1
             Alpha = Resource.AlphaCoeff,
+            RenderContext = renderContext,
         };
 
         Gfx.AddScreen(Screen);

@@ -11,6 +11,4 @@ public abstract class TgxCamera
 
     public RenderContext RenderContext { get; }
     public abstract Vector2 Position { get; set; }
-
-    public virtual void UnInit() { }
 }

@@ -95,6 +95,7 @@ public class Intro : Frame, IHasPlayfield
                 Platform.NGage => 9 + Localization.LanguageUiIndex,
                 _ => throw new UnsupportedPlatformException(),
             },
+            RenderContext = Rom.OriginalGameRenderContext,
         };
 
         if (Rom.Platform == Platform.NGage)
@@ -105,7 +106,8 @@ public class Intro : Frame, IHasPlayfield
                 BgPriority = 0,
                 ObjPriority = 0,
                 ScreenPos = new Vector2(88, 208),
-                CurrentAnimation = 23
+                CurrentAnimation = 23,
+                RenderContext = Rom.OriginalGameRenderContext,
             };
         }
 
@@ -120,12 +122,13 @@ public class Intro : Frame, IHasPlayfield
                 Platform.NGage => new Vector2(88, 128),
                 _ => throw new UnsupportedPlatformException(),
             },
-            CurrentAnimation = 0
+            CurrentAnimation = 0,
+            RenderContext = Rom.OriginalGameRenderContext,
         };
 
         PlayfieldResource introPlayfield = Rom.LoadResource<PlayfieldResource>(GameResource.IntroPlayfield);
         Playfield = TgxPlayfield.Load<TgxPlayfield2D>(introPlayfield);
-        Engine.GameViewPort.SetFixedResolution(Rom.OriginalResolution);
+        Playfield.RenderContext.SetFixedResolution(Rom.OriginalResolution);
 
         Gfx.ClearColor = Color.Black;
 
@@ -177,7 +180,6 @@ public class Intro : Frame, IHasPlayfield
 
     public override void UnInit()
     {
-        Playfield.UnInit();
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__sadslide);
 
         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);

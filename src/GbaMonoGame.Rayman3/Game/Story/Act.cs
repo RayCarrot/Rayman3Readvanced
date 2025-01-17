@@ -49,7 +49,7 @@ public abstract class Act : Frame
 
         CurrentText = Localization.GetText(ActResource.TextBankId, textId);
 
-        float centerX = Engine.GameViewPort.GameResolution.X / 2f;
+        float centerX = Rom.OriginalResolution.X / 2f;
         float baseY = Rom.Platform switch
         {
             Platform.GBA => 129,
@@ -172,8 +172,6 @@ public abstract class Act : Frame
 
     protected void Init(ActResource resource)
     {
-        Engine.GameViewPort.SetFixedResolution(Rom.OriginalResolution);
-
         TransitionsFX = new TransitionsFX(false);
         TransitionsFX.FadeInInit(1 / 16f);
         
@@ -196,6 +194,7 @@ public abstract class Act : Frame
                     ScreenPos = new Vector2(4, 129),
                     FontSize = FontSize.Font16,
                     Color = TextColor.Story,
+                    RenderContext = Rom.OriginalGameRenderContext,
                 },
                 new SpriteTextObject()
                 {
@@ -203,6 +202,7 @@ public abstract class Act : Frame
                     ScreenPos = new Vector2(4, 143),
                     FontSize = FontSize.Font16,
                     Color = TextColor.Story,
+                    RenderContext = Rom.OriginalGameRenderContext,
                 }
             };
         }
@@ -217,6 +217,7 @@ public abstract class Act : Frame
                     ScreenPos = new Vector2(4, 135),
                     FontSize = FontSize.Font16,
                     Color = TextColor.Story,
+                    RenderContext = Rom.OriginalGameRenderContext,
                 },
                 new SpriteTextObject()
                 {
@@ -224,6 +225,7 @@ public abstract class Act : Frame
                     ScreenPos = new Vector2(4, 149),
                     FontSize = FontSize.Font16,
                     Color = TextColor.Story,
+                    RenderContext = Rom.OriginalGameRenderContext,
                 },
                 new SpriteTextObject()
                 {
@@ -231,6 +233,7 @@ public abstract class Act : Frame
                     ScreenPos = new Vector2(4, 163),
                     FontSize = FontSize.Font16,
                     Color = TextColor.Story,
+                    RenderContext = Rom.OriginalGameRenderContext,
                 }
             };
         }
@@ -249,7 +252,8 @@ public abstract class Act : Frame
                 Platform.GBA => new Vector2(230, 158),
                 Platform.NGage => new Vector2(166, 200),
                 _ => throw new UnsupportedPlatformException()
-            }
+            },
+            RenderContext = Rom.OriginalGameRenderContext,
         };
 
         if (Rom.Platform == Platform.NGage)
@@ -259,7 +263,8 @@ public abstract class Act : Frame
             {
                 IsFramed = true,
                 CurrentAnimation = 10 + Localization.LanguageUiIndex,
-                ScreenPos = new Vector2(-1, 190)
+                ScreenPos = new Vector2(-1, 190),
+                RenderContext = Rom.OriginalGameRenderContext,
             };
         }
 
@@ -267,6 +272,7 @@ public abstract class Act : Frame
         {
             IsEnabled = true,
             Priority = 1,
+            RenderContext = Rom.OriginalGameRenderContext,
         };
         Gfx.AddScreen(BitmapScreen);
 

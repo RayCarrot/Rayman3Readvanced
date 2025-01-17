@@ -5,7 +5,7 @@ namespace GbaMonoGame.Rayman3;
 
 public class GameCubeMenuData
 {
-    public GameCubeMenuData()
+    public GameCubeMenuData(RenderContext renderContext)
     {
         AnimatedObjectResource animations = Rom.LoadResource<AnimatedObjectResource>(GameResource.GameCubeMenuAnimations);
         AnimatedObjectResource levelCheckAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.GameCubeMenuLevelCheckAnimations);
@@ -18,6 +18,7 @@ public class GameCubeMenuData
                 Text = "",
                 FontSize = FontSize.Font16,
                 Color = TextColor.GameCubeMenu,
+                RenderContext = renderContext,
             };
         }
 
@@ -30,6 +31,7 @@ public class GameCubeMenuData
                 ScreenPos = new Vector2(192, 36 + i * 24),
                 FontSize = FontSize.Font16,
                 Color = TextColor.GameCubeMenu,
+                RenderContext = renderContext,
             };
         }
 
@@ -40,6 +42,7 @@ public class GameCubeMenuData
             ScreenPos = new Vector2(36, 16),
             FontSize = FontSize.Font16,
             Color = TextColor.GameCubeMenu,
+            RenderContext = renderContext,
         };
 
         StatusText = new SpriteTextObject()
@@ -47,6 +50,7 @@ public class GameCubeMenuData
             Text = "",
             FontSize = FontSize.Font16,
             Color = TextColor.GameCubeMenu,
+            RenderContext = renderContext,
         };
 
         Wheel1 = new AnimatedObject(animations, animations.IsDynamic)
@@ -56,7 +60,8 @@ public class GameCubeMenuData
             ObjPriority = 0,
             ScreenPos = new Vector2(6, 106),
             CurrentAnimation = 0,
-            AffineMatrix = AffineMatrix.Identity
+            AffineMatrix = AffineMatrix.Identity,
+            RenderContext = renderContext,
         };
 
         Wheel2 = new AnimatedObject(animations, animations.IsDynamic)
@@ -66,7 +71,8 @@ public class GameCubeMenuData
             ObjPriority = 0,
             ScreenPos = new Vector2(132, 105),
             CurrentAnimation = 1,
-            AffineMatrix = AffineMatrix.Identity
+            AffineMatrix = AffineMatrix.Identity,
+            RenderContext = renderContext,
         };
 
         Wheel3 = new AnimatedObject(animations, animations.IsDynamic)
@@ -76,7 +82,8 @@ public class GameCubeMenuData
             ObjPriority = 32,
             ScreenPos = new Vector2(172, 108),
             CurrentAnimation = 2,
-            AffineMatrix = AffineMatrix.Identity
+            AffineMatrix = AffineMatrix.Identity,
+            RenderContext = renderContext,
         };
 
         Wheel4 = new AnimatedObject(animations, animations.IsDynamic)
@@ -86,7 +93,8 @@ public class GameCubeMenuData
             ObjPriority = 0,
             ScreenPos = new Vector2(66, 138),
             CurrentAnimation = 1,
-            AffineMatrix = AffineMatrix.Identity
+            AffineMatrix = AffineMatrix.Identity,
+            RenderContext = renderContext,
         };
 
         LumIcons = new AnimatedObject[3];
@@ -100,6 +108,7 @@ public class GameCubeMenuData
                 ObjPriority = 0,
                 ScreenPos = new Vector2(170, 36 + i * 24),
                 CurrentAnimation = 3,
+                RenderContext = renderContext,
             };
             LevelChecks[i] = new AnimatedObject(levelCheckAnimations, levelCheckAnimations.IsDynamic)
             {
@@ -107,6 +116,7 @@ public class GameCubeMenuData
                 BgPriority = 0,
                 ObjPriority = 0,
                 ScreenPos = new Vector2(69, 50 + i * 24),
+                RenderContext = renderContext,
             };
         }
     }

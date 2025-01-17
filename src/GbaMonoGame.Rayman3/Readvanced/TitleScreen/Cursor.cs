@@ -5,7 +5,7 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 
 public class Cursor
 {
-    public Cursor()
+    public Cursor(RenderContext renderContext)
     {
         Texture2D tex = Engine.FrameContentManager.Load<Texture2D>("Cursor");
 
@@ -14,7 +14,8 @@ public class Cursor
             BgPriority = 0,
             ObjPriority = 0,
             ScreenPos = Vector2.Zero,
-            Texture = tex
+            Texture = tex,
+            RenderContext = renderContext,
         };
     }
 

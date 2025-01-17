@@ -360,16 +360,18 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
             
             if (Engine.Config.LockWindowAspectRatio && Engine.GameWindow.IsResizable())
             {
+                Vector2 resolution = Engine.Config.InternalGameResolution;
+
                 float screenRatio = (float)newRes.X / newRes.Y;
-                float gameRatio = Engine.GameViewPort.GameResolution.X / Engine.GameViewPort.GameResolution.Y;
+                float gameRatio = resolution.X / resolution.Y;
 
                 float screenScale;
                 if (screenRatio > gameRatio)
-                    screenScale = newRes.Y / Engine.GameViewPort.GameResolution.Y;
+                    screenScale = newRes.Y / resolution.Y;
                 else
-                    screenScale = newRes.X / Engine.GameViewPort.GameResolution.X;
+                    screenScale = newRes.X / resolution.X;
 
-                newRes = new Vector2(Engine.GameViewPort.GameResolution.X * screenScale, Engine.GameViewPort.GameResolution.Y * screenScale).ToRoundedPoint();
+                newRes = new Vector2(resolution.X * screenScale, resolution.Y * screenScale).ToRoundedPoint();
 
                 Engine.GameWindow.WindowResolution = newRes;
             }

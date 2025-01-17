@@ -7,8 +7,9 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 
 public class TitleScreenGame
 {
-    public TitleScreenGame(Platform platform, Cursor cursor, Vector2 position)
+    public TitleScreenGame(RenderContext renderContext, Platform platform, Cursor cursor, Vector2 position)
     {
+        RenderContext = renderContext;
         Platform = platform;
         Cursor = cursor;
         Position = position;
@@ -18,6 +19,7 @@ public class TitleScreenGame
 
     private int _selectedIndex;
 
+    public RenderContext RenderContext { get; }
     public Platform Platform { get; }
     public Cursor Cursor { get; }
     public Vector2 Position { get; }
@@ -71,6 +73,7 @@ public class TitleScreenGame
                 ObjPriority = 0,
                 ScreenPos = basePos + new Vector2(0, 16) * i,
                 Font = ReadvancedFonts.MenuYellow,
+                RenderContext = RenderContext,
             };
 
             if (Options[i].SubOptions != null)

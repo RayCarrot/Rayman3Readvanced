@@ -1,9 +1,9 @@
 ﻿namespace GbaMonoGame;
 
 /// <summary>
-/// The primary render context using the current game resolution
+/// The primary render context using the internal game resolution
 /// </summary>
 public sealed class GameRenderContext : RenderContext
 {
-    protected override Vector2 GetResolution() => Engine.GameViewPort.GameResolution;
+    protected override Vector2 GetResolution() => Engine.Config.InternalGameResolution;
 }

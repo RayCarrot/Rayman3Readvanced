@@ -43,7 +43,7 @@ public static class Engine
     public static ContentManager FrameContentManager { get; private set; }
 
     /// <summary>
-    /// The primary render context using the current game resolution.
+    /// The primary render context using the internal game resolution.
     /// </summary>
     public static GameRenderContext GameRenderContext { get; private set; }
 
@@ -88,7 +88,7 @@ public static class Engine
         FixContentManager = new ContentManager(gbaGame.Services, AssetsDirectoryName);
         FrameContentManager = new ContentManager(gbaGame.Services, AssetsDirectoryName);
         GameWindow = gameWindow;
-        GameViewPort = new GbaGameViewPort(Config.InternalGameResolution.ToVector2());
+        GameViewPort = new GbaGameViewPort();
         GameRenderContext = new GameRenderContext();
 
         Gfx.Load();

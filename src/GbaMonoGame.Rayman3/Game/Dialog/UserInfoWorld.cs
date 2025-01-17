@@ -126,7 +126,7 @@ public class UserInfoWorld : Dialog
                 CurrentAnimation = ShouldPlayCurtainAnimation ? 1 : 0,
                 ScreenPos = new Vector2(120, 56),
                 OverrideGfxColor = true, // Should not be effected by the palette fading
-                RenderContext = Rom.OriginalGameRenderContext,
+                RenderContext = Rom.OriginalScaledGameRenderContext,
             };
             CurtainsRight = new AnimatedObject(resource, false)
             {
@@ -135,7 +135,7 @@ public class UserInfoWorld : Dialog
                 ScreenPos = new Vector2(-120, 56),
                 HorizontalAnchor = HorizontalAnchorMode.Right,
                 OverrideGfxColor = true, // Should not be effected by the palette fading
-                RenderContext = Rom.OriginalGameRenderContext,
+                RenderContext = Rom.OriginalScaledGameRenderContext,
             };
 
             for (int i = 0; i < 6; i++)

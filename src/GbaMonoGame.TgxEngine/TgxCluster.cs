@@ -6,7 +6,7 @@ namespace GbaMonoGame.TgxEngine;
 
 public class TgxCluster
 {
-    public TgxCluster(ClusterResource cluster, RenderContext camRenderContext)
+    public TgxCluster(ClusterResource cluster, Playfield2DRenderContext renderContext)
     {
         ScrollFactor = new Vector2(cluster.ScrollFactor.X, cluster.ScrollFactor.Y);
         Layers = new List<TgxGameLayer>();
@@ -15,8 +15,8 @@ public class TgxCluster
 
         // Render parallax backgrounds using a separate render context so we can scale them
         RenderContext = !Stationary && ScrollFactor == Vector2.One 
-            ? camRenderContext
-            : new ParallaxClusterRenderContext(this);
+            ? renderContext
+            : new ParallaxClusterRenderContext(renderContext, this);
     }
 
     private Vector2 _position;

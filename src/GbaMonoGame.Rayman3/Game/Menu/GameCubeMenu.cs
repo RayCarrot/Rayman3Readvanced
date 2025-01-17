@@ -116,8 +116,6 @@ public partial class GameCubeMenu : Frame
 
     public override void Init()
     {
-        Engine.GameViewPort.SetFixedResolution(Rom.OriginalResolution);
-
         AnimationPlayer = new AnimationPlayer(false, null);
 
         Gfx.AddScreen(new GfxScreen(2)
@@ -132,10 +130,11 @@ public partial class GameCubeMenu : Frame
                     width: (int)Rom.OriginalResolution.X,
                     height: (int)Rom.OriginalResolution.Y,
                     bitmap: Rom.Loader.Rayman3_GameCubeMenuBitmap.ImgData,
-                    palette: new Palette(Rom.Loader.Rayman3_GameCubeMenuPalette))))
+                    palette: new Palette(Rom.Loader.Rayman3_GameCubeMenuPalette)))),
+            RenderContext = Rom.OriginalGameRenderContext,
         });
 
-        Data = new GameCubeMenuData();
+        Data = new GameCubeMenuData(Rom.OriginalGameRenderContext);
         
         JoyBus = new JoyBus();
         JoyBus.Connect();
@@ -176,7 +175,10 @@ public partial class GameCubeMenu : Frame
         WheelRotation = 0;
         Gfx.ClearColor = Color.Black;
 
-        TransitionInScreenEffect = new GameCubeMenuTransitionInScreenEffect();
+        TransitionInScreenEffect = new GameCubeMenuTransitionInScreenEffect()
+        {
+            RenderContext = Rom.OriginalGameRenderContext,
+        };
         Gfx.SetScreenEffect(TransitionInScreenEffect);
 
         WaitingForConnection = false;
