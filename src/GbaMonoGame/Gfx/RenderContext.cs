@@ -72,40 +72,46 @@ public abstract class RenderContext
     {
         _lastScreenSize = Engine.GameViewPort.ScreenSize;
 
+        // Get the resolution
         Vector2 res = Resolution;
 
+        // Get a resolution extended to the internal game resolution's aspect ratio. For example, if we're
+        // in a 3:2 area while playing in widescreen then this extends the resolution to the widescreen ratio.
+        Vector2 scaledRes = res.ExtendToAspectRatio(Engine.Config.InternalGameResolution);
+
+        // Get the view port screen size
         Vector2 screenSize = Engine.GameViewPort.ScreenSize;
+
+        // Get the aspect ratios
         float screenRatio = screenSize.X / screenSize.Y;
-        float gameRatio = res.X / res.Y;
+        float gameRatio = scaledRes.X / scaledRes.Y;
 
+        // Calculate the scale
         float scale;
-        Vector2 size;
-        Vector2 pos;
-
         if (screenRatio > gameRatio)
-        {
-            scale = screenSize.Y / res.Y;
-            size = res * scale;
-            pos = new Vector2((screenSize.X - size.X) / 2, 0);
-        }
+            scale = screenSize.Y / scaledRes.Y;
         else
-        {
-            scale = screenSize.X / res.X;
-            size = res * scale;
-            pos = new Vector2(0, (screenSize.Y - size.Y) / 2);
-        }
+            scale = screenSize.X / scaledRes.X;
 
-        Matrix matrix = 
-            // Scale to fit the screen
+        // Scale the resolution to get the size to render to
+        Vector2 size = res * scale;
+
+        // Center the game
+        Vector2 pos = new((screenSize.X - size.X) / 2, (screenSize.Y - size.Y) / 2);
+
+        // Create a matrix
+        Matrix matrix =
+            // Scale
             Matrix.CreateScale(scale) * 
             // Center
             Matrix.CreateTranslation(pos.X, pos.Y, 0);
 
+        // Set the matrix
         Matrix = matrix;
 
         ViewPortRenderBox = new Rectangle(
             location: pos.ToCeilingPoint(), 
-            size: (res * scale).ToFloorPoint());
+            size: size.ToFloorPoint());
 
         Matrix inverseViewMatrix = Matrix.Invert(matrix);
         Vector2 tl = Vector2.Transform(Vector2.Zero, inverseViewMatrix);

@@ -7,14 +7,6 @@ public sealed class OriginalScaledGameRenderContext : RenderContext
 {
     protected override Vector2 GetResolution()
     {
-        Vector2 gameResolution = Engine.Config.InternalGameResolution;
-        Vector2 originalResolution = Rom.OriginalResolution;
-
-        float ratio = gameResolution.X / gameResolution.Y;
-
-        if (ratio > 1)
-            return new Vector2(ratio * originalResolution.Y, originalResolution.Y);
-        else
-            return new Vector2(originalResolution.X, 1 / ratio * originalResolution.X);
+        return Rom.OriginalResolution.ExtendToAspectRatio(Engine.Config.InternalGameResolution);
     }
 }
