@@ -11,11 +11,12 @@ public static class Vector2Extensions
 
     public static Vector2 ExtendToAspectRatio(this Vector2 vector, Vector2 aspectRatio)
     {
-        float ratio = aspectRatio.X / aspectRatio.Y;
+        float oldRatio = vector.X / vector.Y;
+        float newRatio = aspectRatio.X / aspectRatio.Y;
 
-        if (ratio > 1)
-            return new Vector2(ratio * vector.Y, vector.Y);
+        if (newRatio > oldRatio)
+            return new Vector2(newRatio * vector.Y, vector.Y);
         else
-            return new Vector2(vector.X, 1 / ratio * vector.X);
+            return new Vector2(vector.X, 1 / newRatio * vector.X);
     }
 }
