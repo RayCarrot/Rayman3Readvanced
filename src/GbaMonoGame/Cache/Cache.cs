@@ -31,6 +31,11 @@ public class Cache<T>
         return locationCache.TryGetObject(id, out cachableObject);
     }
 
+    public void SetObject(Pointer pointer, long id, T obj)
+    {
+        RegisterObject(obj, pointer, id);
+    }
+
     public T GetOrCreateObject(Pointer pointer, long id, Func<T> createObjFunc)
     {
         if (TryGetObject(pointer, id, out T cachableObject))

@@ -17,7 +17,7 @@ public class LocationCache<T>
 
     public void RegisterObject(T cachableObject, long id)
     {
-        Objects.Add(id, cachableObject);
+        Objects[id] = cachableObject;
     }
 
     public bool TryGetObject(long id, out T cachableObject)
