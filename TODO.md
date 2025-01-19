@@ -5,10 +5,11 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
 - Show icon with animation in the screen corner when saving.
 - If you change the button mapping then the in-game tutorial texts are wrong, such as when Murfy or Ly explain how to perform a move. Can we automatically replace that so it works for all languages?
 - The camera doesn't work as well on N-Gage when playing in widescreen due to the different values being used - have it work like on GBA instead and use those values?
-- Create a nicer startup screen and have options there. Allow resuming the game directly from last slot played, and maybe even map in level (such as Woods of Light 2)?
 - Option to convert save file between GBA and N-Gage. The save data is the same, so should be easy.
+- Option to export/import saves to/from emulator saves.
 - Run single frame when changing graphics to see changes? We can add an IsEnabled property to JoyPad which is false when the menu is showing to prevent inputs from registering on that frame.
 - Move hard-coded values to constants. There are a lot of these in the game!
+- Add a cheat menu?
 
 ## 🎥 Mode7
 Mode7 is going to be very complicated to re-implement. The way it originally works on the GBA is that the background layer and sprites have a different affine transform set on each scanline of the screen. This produces the "depth" effect even though the GBA can normally only do linear transformations. Ideally we'd implement this by creating a matrix or shader which produces a similar effect. We could re-implement the same logic as the GBA uses, but it would probably be more complicated and wouldn't scale as nicely in higher resolution.
