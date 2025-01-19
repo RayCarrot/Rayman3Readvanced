@@ -351,9 +351,12 @@ public class AnimatedObject : AObject
                         throw new Exception("Can't use a palette index when 8-bit");
 
                     PaletteTexture paletteTexture;
-
+                    if (texture is not IndexedSpriteTexture2D)
+                    {
+                        paletteTexture = null;
+                    }
                     // If the palette cycle index is 0 or not the animated palette then it's the default, unmodified, palette
-                    if (PaletteCycleIndex == 0 || anim.PaletteCycleAnimation.PaletteIndex != paletteIndex)
+                    else if (PaletteCycleIndex == 0 || anim.PaletteCycleAnimation.PaletteIndex != paletteIndex)
                     {
                         paletteTexture = new PaletteTexture(
                             Texture: Engine.TextureCache.GetOrCreateObject(
