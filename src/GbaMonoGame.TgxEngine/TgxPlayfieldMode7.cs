@@ -50,6 +50,7 @@ public class TgxPlayfieldMode7 : TgxPlayfield
         return Engine.GameRenderContext;
     }
 
+    public new TgxCameraMode7 Camera => (TgxCameraMode7)base.Camera;
     public IReadOnlyList<TgxRotscaleLayerMode7> RotScaleLayers { get; }
     public GbaVram Vram { get; }
 }

@@ -8,6 +8,9 @@ public class MissileRace1 : FrameMissileSingleMode7
     {
         base.Init();
 
+        // NOTE: Temp code for testing. This is the start position of the map.
+        Scene.Playfield.Camera.Position = new Vector2(334.5f, 121);
+
         // TODO: Implement
     }
 

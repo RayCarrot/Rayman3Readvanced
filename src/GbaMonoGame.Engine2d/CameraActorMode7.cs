@@ -20,7 +20,7 @@ public abstract class CameraActorMode7 : CameraActor
         TgxCameraMode7 cam = (TgxCameraMode7)Scene.Playfield.Camera;
 
         bool isFramed = false;
-        byte v63 = mode7Actor.field_0x63;
+        byte v63 = mode7Actor.field_0x63; // Height?
         short v60 = mode7Actor.field_0x60;
         float actorCamAngle = 0;
         float scale = 0;
@@ -41,27 +41,29 @@ public abstract class CameraActorMode7 : CameraActor
                 actorCamAngle = angle;
 
                 float uVar5 = cam.Direction + cam.field_0xb49;
-                float iVar15 = angle - uVar5;
-                float uVar11 = 6 - cam.field_0xb49; // What is the 6?
 
+                // TODO: Is it actually doing mod for all of these?
+                float iVar15 = MathHelpers.Mod((angle - uVar5), 256);
+                float uVar11 = MathHelpers.Mod(6 - cam.field_0xb49, 256); // What is the 6?
+                
                 // What is this check?
                 if (2 * uVar11 >= iVar15 || iVar15 >= 243)
                 {
-                    float iVar13 = uVar11;
+                    float iVar13 = camDist;
                     float uVar12 = angle - cam.Direction;
 
                     // Some perspective correction?
                     if (uVar12 is > 2 and < 254)
                         iVar13 = MathHelpers.Cos256(uVar12) * 7 * iVar13;
 
-                    // TODO: Determine from pre-calculated list
-                    scale = 1;
-                    int scaleIndex = 0;
+                    int scaleIndex = FUN_080a3a1c(cam.Scales, (int)iVar13);
+                    scale = cam.Scales[scaleIndex] * 4;
 
                     if (scale >= 0.5f)
                     {
                         // Huh?
-                        actor.ScreenPosition = new Vector2(angle - uVar5 * 0x5b6d, scaleIndex - (((v63 + v60) / scale) / 2 + 2));
+                        short x = (short)(((int)(((uint)angle - ((int)uVar5 * 0x100)) * 0x10000) >> 0x10) * 0x5b6d + 0x80000 >> 0x14);
+                        actor.ScreenPosition = new Vector2(x, scaleIndex - (((v63 + v60) * 0x100 / scale - v63) / 2 + 2));
                         isFramed = true;
                     }
                 }
@@ -72,6 +74,7 @@ public abstract class CameraActorMode7 : CameraActor
         {
             if (mode7Actor.IsAffine)
             {
+                scale = scale / 256f;
                 mode7Actor.AnimatedObject.AffineMatrix = new AffineMatrix(scale, 0, 0, scale);
                 mode7Actor.AnimatedObject.IsDoubleAffine = scale >= 1;
             }
@@ -86,5 +89,34 @@ public abstract class CameraActorMode7 : CameraActor
         mode7Actor.CamAngle = actorCamAngle;
 
         return isFramed;
+    }
+
+    // Binary search
+    int FUN_080a3a1c(float[] values, float param_2)
+    {
+        int iVar2 = 128;
+        uint uVar3 = 64;
+        int iVar4 = 0;
+        do
+        {
+            uint uVar1;
+            if (param_2 > values[iVar2])
+            {
+                uVar1 = (uint)-uVar3;
+            }
+            else
+            {
+                uVar1 = uVar3;
+            }
+            iVar2 = (int)(iVar2 + uVar1);
+            uVar3 >>= 1;
+            iVar4++;
+        } while (iVar4 < 7);
+
+        for (iVar4 = iVar2 - 1; iVar4 < iVar2 + 2 && param_2 <= values[iVar4]; iVar4++)
+        {
+
+        }
+        return iVar4;
     }
 }
