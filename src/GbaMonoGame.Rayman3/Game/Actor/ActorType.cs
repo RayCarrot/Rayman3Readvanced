@@ -68,6 +68,7 @@ public enum ActorType
 
     Bats = 72,
     Sparkle = 73,
+    MissileMode7 = 74,
 
     WalkingShell = 76,
     WoodenBar = 77,

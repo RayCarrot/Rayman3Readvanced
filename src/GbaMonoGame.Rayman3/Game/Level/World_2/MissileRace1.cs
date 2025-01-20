@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GbaMonoGame.Rayman3;
+﻿namespace GbaMonoGame.Rayman3;
 
 public class MissileRace1 : FrameMissileSingleMode7
 {
@@ -8,16 +6,22 @@ public class MissileRace1 : FrameMissileSingleMode7
 
     public override void Init()
     {
-        throw new NotImplementedException();
+        base.Init();
+
+        // TODO: Implement
     }
 
     public override void UnInit()
     {
-        throw new NotImplementedException();
+        base.UnInit();
+
+        // TODO: Implement
     }
 
     public override void Step()
     {
-        throw new NotImplementedException();
+        base.Step();
+
+        // TODO: Implement
     }
 }

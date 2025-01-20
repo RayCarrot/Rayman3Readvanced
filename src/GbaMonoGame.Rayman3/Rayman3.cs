@@ -127,6 +127,7 @@ public class Rayman3 : GbaGame
 
             { ActorType.Bats, (instanceId, scene, resource) => new Bats(instanceId, scene, resource) },
             { ActorType.Sparkle, (instanceId, scene, resource) => new Sparkle(instanceId, scene, resource) },
+            { ActorType.MissileMode7, (instanceId, scene, resource) => new MissileMode7(instanceId, scene, resource) },
 
             { ActorType.WalkingShell, (instanceId, scene, resource) => new WalkingShell(instanceId, scene, resource) },
             { ActorType.WoodenBar, (instanceId, scene, resource) => new WoodenBar(instanceId, scene, resource) },
