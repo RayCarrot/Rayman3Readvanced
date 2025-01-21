@@ -1,4 +1,3 @@
-using BinarySerializer;
 using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.TgxEngine;
@@ -22,9 +21,6 @@ public class TgxCameraMode7 : TgxCamera
             Scales[i] = 2000000000;
         for (int i = 161; i < 255; i++)
             Scales[i] = Mode7ScaleTable[i - Horizon] * Zoom;
-
-        // TODO: This shouldn't be called here - added only for testing
-        Update();
     }
 
     private static float[] Mode7ScaleTable { get; } =
@@ -257,90 +253,50 @@ public class TgxCameraMode7 : TgxCamera
     public int Horizon { get; set; }
     public int field_0xb49 { get; set; }
     public int Zoom { get; set; }
-    public int MaxDist { get; set; }
+    public float MaxDist { get; set; }
     public byte Direction { get; set; }
     public bool IsDirty { get; set; }
-
-    // TODO: Remove these functions
-    private int GetSinCosValue(long offset)
-    {
-        using (Rom.Context)
-        {
-            long addr = 0x080e1bac;
-            BinaryFile file = Rom.Context.GetMemoryMappedFileForAddress(addr);
-            BinaryDeserializer s = Rom.Context.Deserializer;
-            return s.DoAt(new Pointer(addr + offset * 4, file), () =>
-            {
-                return s.Serialize<int>(default);
-            });
-        }
-    }
-    private int GetScaleAtRow(int row)
-    {
-        using (Rom.Context)
-        {
-            long addr = 0x0820dd80;
-            BinaryFile file = Rom.Context.GetMemoryMappedFileForAddress(addr);
-            BinaryDeserializer s = Rom.Context.Deserializer;
-            return s.DoAt(new Pointer(addr + row * 4, file), () =>
-            {
-                return s.Serialize<int>(default);
-            });
-        }
-    }
 
     public void Update()
     {
         IsDirty = false;
 
-        int v1 = GetSinCosValue((uint)(Direction + field_0xb49) % 256 + 64); // cos
-        int v2 = GetSinCosValue((uint)(Direction + field_0xb49) % 256); // sin
-        int v3 = GetSinCosValue((uint)(Direction - field_0xb49 ) % 256 + 64); // cos
-        int v4 = GetSinCosValue((uint)(Direction - field_0xb49) % 256); // sin
+        float addCos = MathHelpers.Cos256(Direction + field_0xb49);
+        float addSin = MathHelpers.Sin256(Direction + field_0xb49);
+        float subCos = MathHelpers.Cos256(Direction - field_0xb49);
+        float subSin = MathHelpers.Sin256(Direction - field_0xb49);
 
-        int iVar7 = 0;
-        int iVar9 = 0;
-        int iVar10 = 0;
-        
-        int iVar8 = iVar7;
-        var iVar11 = iVar10;
+        float scale = 0;
+        float x = 0;
+        float y = 0;
         for (int i = 160; i > Horizon; i--)
         {
-            Scales[i] = Mode7ScaleTable[i - Horizon] * Zoom;
+            float prevX = x;
+            float prevY = y;
+
+            // Get the scale for the current scanline
+            scale = Mode7ScaleTable[i - Horizon] * Zoom;
             
-            iVar9 = (GetScaleAtRow(i - Horizon) * Zoom) >> 8;
-            iVar7 = iVar9 * (v1 >> 8);
-            iVar10 = iVar9 * (v2 >> 8);
-            var iVar6 = iVar9 * (v3 >> 8) - iVar7;
-            var iVar4 = iVar9 * (v4 >> 8) - iVar10;
+            // Save the scale for sprite positioning
+            Scales[i] = scale;
+            
+            // Calculate unknown x and y values
+            x = scale * addCos;
+            y = scale * addSin;
+            float unkX = scale * subCos - x;
+            float unkY = scale * subSin - y;
 
-            // Fixed-point like game does
-            short pa = (short)((uint)((iVar6 >> 0xc) + (iVar6 >> 8)) >> 8);
-            short pb = (short)((uint)(iVar8 - iVar7) >> 8);
-            short pc = (short)((uint)((iVar4 >> 0xc) + (iVar4 >> 8)) >> 8);
-            short pd = (short)((uint)(iVar11 - iVar10) >> 8);
-
+            // Calculate the affine matrix
             RotscaleAffineMatrixes[i] = new AffineMatrix(
-                pa: pa / 256f,
-                pb: pb / 256f,
-                pc: pc / 256f,
-                pd: pd / 256f);
-
-            iVar8 = iVar7;
-            iVar11 = iVar10;
+                pa: unkX / 4096f + unkX / 256f,
+                pb: prevX - x,
+                pc: unkY / 4096f + unkY / 256f,
+                pd: prevY - y);
         }
 
-        MaxDist = iVar9 >> 8;
+        MaxDist = scale;
 
-        // Ugly hard-coded for now for testing
-        const int posX = 21921792;
-        const int posY = 7929856;
-
-        iVar9 = (posX >> 8) + (iVar7 >> 8);
-        iVar8 = (posY >> 8) + (iVar10 >> 8);
-
-        // BG2_X and BG2_Y
-        float x = iVar9 / 256f;
-        float y = iVar8 / 256f;
+        // Screen position
+        Vector2 bgPos = Position + new Vector2(x, y);
     }
 }
