@@ -40,26 +40,30 @@ public abstract class CameraActorMode7 : CameraActor
                 float angle = MathHelpers.Atan2_256(posDiff);
                 actorCamAngle = angle;
 
-                float uVar5 = cam.Direction + cam.field_0xb49;
+                float uVar5 = MathHelpers.Mod(cam.Direction + cam.field_0xb49, 256);
 
-                // TODO: Is it actually doing mod for all of these?
-                float iVar15 = MathHelpers.Mod((angle - uVar5), 256);
-                float uVar11 = MathHelpers.Mod(6 - cam.field_0xb49, 256); // What is the 6?
+                float iVar15 = angle - uVar5;
+
+                // What is the 6?
+                float uVar11 = MathHelpers.Mod(6 - cam.field_0xb49, 256);
                 
                 // What is this check?
-                if (2 * uVar11 >= iVar15 || iVar15 >= 243)
+                if (iVar15 <= 2 * uVar11 || iVar15 >= 243)
                 {
-                    float iVar13 = camDist;
+                    float targetScale = camDist;
                     float uVar12 = angle - cam.Direction;
 
-                    // Some perspective correction?
+                    // Seems to be some correction when we're behind the camera?
                     if (uVar12 is > 2 and < 254)
-                        iVar13 = MathHelpers.Cos256(uVar12) * 7 * iVar13;
+                    {
+                        // What is this? Doesn't work...
+                        targetScale = (MathHelpers.Cos256(uVar12) * MathHelpers.FromFixedPoint(7) + 1) / 8 * targetScale;
+                    }
 
-                    int scaleIndex = FUN_080a3a1c(cam.Scales, (int)iVar13);
+                    int scaleIndex = BinaryScalesSearch(cam.Scales, (int)targetScale);
                     scale = cam.Scales[scaleIndex] * 4;
 
-                    if (scale >= 0.5f)
+                    if (scale >= 128)
                     {
                         // Huh?
                         short x = (short)(((int)(((uint)angle - ((int)uVar5 * 0x100)) * 0x10000) >> 0x10) * 0x5b6d + 0x80000 >> 0x14);
@@ -92,7 +96,7 @@ public abstract class CameraActorMode7 : CameraActor
     }
 
     // Binary search
-    int FUN_080a3a1c(float[] values, float param_2)
+    int BinaryScalesSearch(float[] values, float param_2)
     {
         int iVar2 = 128;
         uint uVar3 = 64;
