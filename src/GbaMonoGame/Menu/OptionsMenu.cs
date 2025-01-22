@@ -89,6 +89,7 @@ public class OptionsMenu : Menu
                     float originalWindowScale = Engine.GameWindow.WindowResolution.ToVector2().X / Engine.Config.InternalGameResolution.X;
 
                     Engine.Config.InternalGameResolution = data;
+                    Engine.GameViewPort.UpdateRenderBox();
 
                     Engine.GameWindow.WindowResolution = (Engine.Config.InternalGameResolution * originalWindowScale).ToPoint();
                     WindowResolutionMenuOption.Init();

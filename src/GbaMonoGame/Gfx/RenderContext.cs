@@ -4,7 +4,7 @@ namespace GbaMonoGame;
 
 public abstract class RenderContext
 {
-    private Vector2 _lastScreenSize;
+    private Box _lastViewPortRenderBox;
     private Vector2 _lastGameResolution;
 
     private Vector2 _resolution;
@@ -70,39 +70,43 @@ public abstract class RenderContext
 
     private void UpdateMatrix()
     {
-        _lastScreenSize = Engine.GameViewPort.ScreenSize;
+        _lastViewPortRenderBox = Engine.GameViewPort.RenderBox;
 
         // Get the resolution
         Vector2 res = Resolution;
 
-        // Get a resolution extended to the internal game resolution's aspect ratio. For example, if we're
-        // in a 3:2 area while playing in widescreen then this extends the resolution to the widescreen ratio.
-        Vector2 scaledRes = res.ExtendToAspectRatio(Engine.Config.InternalGameResolution);
-
-        // Get the view port screen size
-        Vector2 screenSize = Engine.GameViewPort.ScreenSize;
+        // Get the view port render box. This is the area on the screen we want to draw to.
+        Box viewPortRenderBox = Engine.GameViewPort.RenderBox;
+        Vector2 viewPortSize = viewPortRenderBox.Size;
 
         // Get the aspect ratios
-        float screenRatio = screenSize.X / screenSize.Y;
-        float gameRatio = scaledRes.X / scaledRes.Y;
+        float screenRatio = viewPortSize.X / viewPortSize.Y;
+        float gameRatio = res.X / res.Y;
 
-        // Calculate the scale
+        // Calculate the scale, size and position
         float scale;
+        Vector2 size;
+        Vector2 pos;
         if (screenRatio > gameRatio)
-            scale = screenSize.Y / scaledRes.Y;
+        {
+            scale = viewPortSize.Y / res.Y;
+            size = res * scale;
+            pos = new Vector2((viewPortSize.X - size.X) / 2, 0);
+        }
         else
-            scale = screenSize.X / scaledRes.X;
+        {
+            scale = viewPortSize.X / res.X;
+            size = res * scale;
+            pos = new Vector2(0, (viewPortSize.Y - size.Y) / 2);
+        }
 
-        // Scale the resolution to get the size to render to
-        Vector2 size = res * scale;
-
-        // Center the game
-        Vector2 pos = new((screenSize.X - size.X) / 2, (screenSize.Y - size.Y) / 2);
+        // Offset by the view port render box position
+        pos += viewPortRenderBox.Position;
 
         // Create a matrix
         Matrix matrix =
-            // Scale
-            Matrix.CreateScale(scale) * 
+            // Scale to fit the screen
+            Matrix.CreateScale(scale) *
             // Center
             Matrix.CreateTranslation(pos.X, pos.Y, 0);
 
@@ -110,8 +114,8 @@ public abstract class RenderContext
         Matrix = matrix;
 
         ViewPortRenderBox = new Rectangle(
-            location: pos.ToCeilingPoint(), 
-            size: size.ToFloorPoint());
+            location: pos.ToCeilingPoint(),
+            size: (res * scale).ToFloorPoint());
 
         Matrix inverseViewMatrix = Matrix.Invert(matrix);
         Vector2 tl = Vector2.Transform(Vector2.Zero, inverseViewMatrix);
@@ -139,7 +143,7 @@ public abstract class RenderContext
         if (Engine.Config.InternalGameResolution != _lastGameResolution)
             UpdateResolution();
         
-        if (Engine.GameViewPort.ScreenSize != _lastScreenSize)
+        if (Engine.GameViewPort.RenderBox != _lastViewPortRenderBox)
             UpdateMatrix();
     }
 }

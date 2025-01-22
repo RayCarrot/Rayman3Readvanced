@@ -18,9 +18,12 @@ public class GfxDebugWindow : DebugWindow
                 ImGui.SeparatorText("Resolution");
 
                 Point windowRes = Engine.GameWindow.GetResolution();
-                Vector2 viewPortSize = Engine.GameViewPort.ScreenSize;
+                Vector2 viewPortFullSize = Engine.GameViewPort.FullSize;
+                Box viewPortRenderBox = Engine.GameViewPort.RenderBox;
                 ImGui.Text($"Window resolution: {windowRes.X} x {windowRes.Y}");
-                ImGui.Text($"Viewport size: {viewPortSize.X} x {viewPortSize.Y}");
+                ImGui.Text($"Viewport full size: {viewPortFullSize.X} x {viewPortFullSize.Y}");
+                ImGui.Text($"Viewport render box position: {viewPortRenderBox.Position.X} x {viewPortRenderBox.Position.X}");
+                ImGui.Text($"Viewport render box size: {viewPortRenderBox.Size.X} x {viewPortRenderBox.Size.X}");
                 ImGui.Text($"Original game resolution: {Rom.OriginalResolution.X} x {Rom.OriginalResolution.Y}");
                 ImGui.Text($"Original scaled game resolution: {Rom.OriginalScaledGameRenderContext.Resolution.X} x {Rom.OriginalScaledGameRenderContext.Resolution.Y}");
                 ImGui.Text($"Internal game resolution: {Engine.Config.InternalGameResolution.X} x {Engine.Config.InternalGameResolution.Y}");
