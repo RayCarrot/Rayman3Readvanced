@@ -28,9 +28,7 @@ public class GameDebugWindow : DebugWindow
 
     public override void Draw(DebugLayout debugLayout, DebugLayoutTextureManager textureManager)
     {
-        Point newSize = new(
-            (int)ImGui.GetWindowContentRegionMax().X - (int)ImGui.GetWindowContentRegionMin().X,
-            (int)ImGui.GetWindowContentRegionMax().Y - (int)ImGui.GetWindowContentRegionMin().Y);
+        Point newSize = new((int)ImGui.GetContentRegionAvail().X, (int)ImGui.GetContentRegionAvail().Y);
 
         if (newSize != _previousWindowSize)
         {

@@ -344,7 +344,7 @@ public class ImGuiRenderer
 
         for (int n = 0; n < drawData.CmdListsCount; n++)
         {
-            ImDrawListPtr cmdList = drawData.CmdListsRange[n];
+            ImDrawListPtr cmdList = drawData.CmdLists[n];
 
             fixed (void* vtxDstPtr = &_vertexData[vtxOffset * DrawVertDeclaration.Size])
             fixed (void* idxDstPtr = &_indexData[idxOffset * sizeof(ushort)])
@@ -372,7 +372,7 @@ public class ImGuiRenderer
 
         for (int n = 0; n < drawData.CmdListsCount; n++)
         {
-            ImDrawListPtr cmdList = drawData.CmdListsRange[n];
+            ImDrawListPtr cmdList = drawData.CmdLists[n];
 
             for (int cmdi = 0; cmdi < cmdList.CmdBuffer.Size; cmdi++)
             {
