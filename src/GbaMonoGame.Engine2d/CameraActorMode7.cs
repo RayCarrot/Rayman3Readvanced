@@ -1,126 +1,116 @@
-﻿using GbaMonoGame.Engine2d;
+﻿using BinarySerializer.Ubisoft.GbaEngine;
+using GbaMonoGame.Engine2d;
 using GbaMonoGame.TgxEngine;
+using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.Rayman3;
 
 public abstract class CameraActorMode7 : CameraActor
 {
-    protected CameraActorMode7(Scene2D scene) : base(scene) { }
+    protected CameraActorMode7(Scene2D scene) : base(scene)
+    {
+        // NOTE: Temp code for testing - allows freely moving the camera
+        State.SetTo(action =>
+        {
+            switch (action)
+            {
+                case FsmAction.Init:
+                    // Do nothing
+                    break;
 
+                case FsmAction.Step:
+                    TgxCameraMode7 cam = (TgxCameraMode7)scene.Playfield.Camera;
+
+                    Vector2 direction = new(MathHelpers.Cos256(cam.Direction), MathHelpers.Sin256(cam.Direction));
+                    Vector2 sideDirection = new(MathHelpers.Cos256(cam.Direction - 64), MathHelpers.Sin256(cam.Direction - 64));
+
+                    const float speed = 1;
+
+                    if (JoyPad.IsButtonPressed(GbaInput.Up))
+                        cam.Position += direction * speed;
+                    if (JoyPad.IsButtonPressed(GbaInput.Down))
+                        cam.Position -= direction * speed;
+
+                    if (JoyPad.IsButtonPressed(GbaInput.Right))
+                        cam.Position -= sideDirection * speed;
+                    if (JoyPad.IsButtonPressed(GbaInput.Left))
+                        cam.Position += sideDirection * speed;
+
+                    if (JoyPad.IsButtonPressed(GbaInput.R))
+                        cam.Direction--;
+                    if (JoyPad.IsButtonPressed(GbaInput.L))
+                        cam.Direction++;
+                    break;
+
+                case FsmAction.UnInit:
+                    // Do nothing
+                    break;
+            }
+
+            return false;
+        });
+    }
+
+    // TODO: Fix this
     public override bool IsActorFramed(BaseActor actor)
     {
-        // TODO: Remove this once we implement the actors - this is just temp code to avoid crashing!
-        if (actor is not Mode7Actor)
-            return false;
-
-        // TODO: A LOT of this has to be rewritten and cleaned up. The Mode7 code is very confusing, and
-        //       there's a lot of fixed-point math and pre-calculated lookup tables being used...
-
-        Mode7Actor mode7Actor = (Mode7Actor)actor;
         TgxCameraMode7 cam = (TgxCameraMode7)Scene.Playfield.Camera;
 
-        bool isFramed = false;
-        byte v63 = mode7Actor.field_0x63; // Height?
-        short v60 = mode7Actor.field_0x60;
-        float actorCamAngle = 0;
-        float scale = 0;
+        Vector4 worldPos4 = new Vector4(actor.Position, 0, 1);
+        Vector4 screenPos4 = Vector4.Transform(worldPos4, cam.BasicEffectShader.View * cam.BasicEffectShader.Projection);
+        Vector2 screenPos = new Vector2(screenPos4.X, screenPos4.Y) / screenPos4.W;
 
-        Vector2 posDiff = mode7Actor.Position - Scene.Playfield.Camera.Position;
-        Vector2 camDirection = new(MathHelpers.Cos256(cam.Direction), MathHelpers.Sin256(cam.Direction));
-        
-        // Check if the actor is in front of the camera
-        if (Vector2.Dot(camDirection, posDiff) >= 0)
+        Vector2 pixelPos = (new Vector2(screenPos.X, -screenPos.Y) + Vector2.One) / 2 * actor.AnimatedObject.RenderContext.Resolution;
+        actor.AnimatedObject.ScreenPos = pixelPos;
+
+        float distance = screenPos4.W;
+        float desiredSize = 100f;
+        float scale = desiredSize / distance;
+
+        // Apply the scale to the animated object
+        actor.AnimatedObject.AffineMatrix = new AffineMatrix(0, new Vector2(scale));
+
+        //actor.AnimatedObject.ZPriority = distance;
+
+        if (pixelPos.X >= 0 && 
+            pixelPos.Y >= 0 && 
+            pixelPos.X < actor.AnimatedObject.RenderContext.Resolution.X && 
+            pixelPos.Y < actor.AnimatedObject.RenderContext.Resolution.Y)
         {
-            // Calculate the actor distance to the camera
-            float camDist = posDiff.Length();
-
-            // Check the distance from the camera
-            if (camDist <= cam.MaxDist)
-            {
-                float angle = MathHelpers.Atan2_256(posDiff);
-                actorCamAngle = angle;
-
-                float uVar5 = MathHelpers.Mod(cam.Direction + cam.field_0xb49, 256);
-
-                float iVar15 = angle - uVar5;
-
-                // What is the 6?
-                float uVar11 = MathHelpers.Mod(6 - cam.field_0xb49, 256);
-                
-                // What is this check?
-                if (iVar15 <= 2 * uVar11 || iVar15 >= 243)
-                {
-                    float targetScale = camDist;
-                    float uVar12 = angle - cam.Direction;
-
-                    // Seems to be some correction when we're behind the camera?
-                    if (uVar12 is > 2 and < 254)
-                    {
-                        // What is this? Doesn't work...
-                        targetScale = (MathHelpers.Cos256(uVar12) * MathHelpers.FromFixedPoint(7) + 1) / 8 * targetScale;
-                    }
-
-                    int scaleIndex = BinaryScalesSearch(cam.Scales, (int)targetScale);
-                    scale = cam.Scales[scaleIndex] * 4;
-
-                    if (scale >= 128)
-                    {
-                        // Huh?
-                        short x = (short)(((int)(((uint)angle - ((int)uVar5 * 0x100)) * 0x10000) >> 0x10) * 0x5b6d + 0x80000 >> 0x14);
-                        actor.ScreenPosition = new Vector2(x, scaleIndex - (((v63 + v60) * 0x100 / scale - v63) / 2 + 2));
-                        isFramed = true;
-                    }
-                }
-            }
-        }
-
-        if (isFramed)
-        {
-            if (mode7Actor.IsAffine)
-            {
-                scale = scale / 256f;
-                mode7Actor.AnimatedObject.AffineMatrix = new AffineMatrix(scale, 0, 0, scale);
-                mode7Actor.AnimatedObject.IsDoubleAffine = scale >= 1;
-            }
-
-            // TODO: Set priority
+            return true;
         }
         else
         {
-            actor.ScreenPosition = actor.ScreenPosition with { X = 384 };
+            return false;
         }
 
-        mode7Actor.CamAngle = actorCamAngle;
+        return true;
 
-        return isFramed;
-    }
+        //BasicEffect effect = new BasicEffect(Engine.GraphicsDevice);
+        ////effect.TextureEnabled = true;
+        //effect.VertexColorEnabled = true;
+        //effect.Projection = cam.Effect.Projection;
+        //effect.View = cam.Effect.View;
 
-    // Binary search
-    int BinaryScalesSearch(float[] values, float param_2)
-    {
-        int iVar2 = 128;
-        uint uVar3 = 64;
-        int iVar4 = 0;
-        do
-        {
-            uint uVar1;
-            if (param_2 > values[iVar2])
-            {
-                uVar1 = (uint)-uVar3;
-            }
-            else
-            {
-                uVar1 = uVar3;
-            }
-            iVar2 = (int)(iVar2 + uVar1);
-            uVar3 >>= 1;
-            iVar4++;
-        } while (iVar4 < 7);
+        //float dir = cam.Direction + 128;
 
-        for (iVar4 = iVar2 - 1; iVar4 < iVar2 + 2 && param_2 <= values[iVar4]; iVar4++)
-        {
+        //Vector3 cameraOffset = new(
+        //    x: MathHelpers.Cos256(dir) * cam.CameraDistance,
+        //    y: MathHelpers.Sin256(dir) * cam.CameraDistance,
+        //    z: -cam.CameraHeight);
 
-        }
-        return iVar4;
+        //Vector3 cameraPosition = new Vector3(cam.Position, 0) + cameraOffset;
+        //Vector3 cameraUp = new(0, 0, -1);
+
+        //Vector3 actorPos = new Vector3(actor.Position, 0);
+
+        //Matrix matrix = Matrix.CreateBillboard(actorPos, cameraPosition, cameraUp, null);
+        //Matrix lookAt = Matrix.CreateScale(0.2f, -0.2f, 0.2f) * matrix;
+        //effect.World = lookAt;
+
+        //actor.AnimatedObject.ScreenPos = Vector2.Zero;
+        //actor.AnimatedObject.Shader = effect;
+
+        return true;
     }
 }

@@ -9,11 +9,8 @@ public class PlayfieldDebugWindow : DebugWindow
 {
     public override string Name => "Playfield";
 
-    public override void Draw(DebugLayout debugLayout, DebugLayoutTextureManager textureManager)
+    private void DrawPlayfield2D(DebugLayout debugLayout, TgxPlayfield2D playfield2D)
     {
-        if (Frame.Current is not IHasPlayfield { Playfield: TgxPlayfield2D playfield2D }) 
-            return;
-
         Vector2 pos = playfield2D.Camera.Position;
 
         ImGui.SeparatorText("Camera");
@@ -69,5 +66,50 @@ public class PlayfieldDebugWindow : DebugWindow
             }
             ImGui.EndTable();
         }
+    }
+
+    private void DrawPlayfieldMode7(DebugLayout debugLayout, TgxPlayfieldMode7 playfieldMode7)
+    {
+        Vector2 pos = playfieldMode7.Camera.Position;
+
+        ImGui.SeparatorText("Camera");
+
+        bool modifiedX = ImGui.SliderFloat("Camera X", ref pos.X, 0, 2048);
+        bool modifiedY = ImGui.SliderFloat("Camera Y", ref pos.Y, 0, 2048);
+
+        if (modifiedX || modifiedY)
+            playfieldMode7.Camera.Position = pos;
+
+        float direction = playfieldMode7.Camera.Direction;
+        if (ImGui.SliderFloat("Direction", ref direction, 0, 256))
+            playfieldMode7.Camera.Direction = direction;
+
+        float cameraFieldOfView = playfieldMode7.Camera.CameraFieldOfView;
+        if (ImGui.SliderFloat("Camera FOV", ref cameraFieldOfView, 0, MathF.PI))
+            playfieldMode7.Camera.CameraFieldOfView = cameraFieldOfView;
+
+        float cameraDistance = playfieldMode7.Camera.CameraDistance;
+        if (ImGui.SliderFloat("Camera Distance", ref cameraDistance, 0, 500))
+            playfieldMode7.Camera.CameraDistance = cameraDistance;
+
+        float cameraHeight = playfieldMode7.Camera.CameraHeight;
+        if (ImGui.SliderFloat("Camera Height", ref cameraHeight, -100, 200))
+            playfieldMode7.Camera.CameraHeight = cameraHeight;
+
+        float cameraTargetHeight = playfieldMode7.Camera.CameraTargetHeight;
+        if (ImGui.SliderFloat("Camera Target Height", ref cameraTargetHeight, -100, 100))
+            playfieldMode7.Camera.CameraTargetHeight = cameraTargetHeight;
+
+        float cameraFar = playfieldMode7.Camera.CameraFar;
+        if (ImGui.SliderFloat("Camera Far", ref cameraFar, 0, 800))
+            playfieldMode7.Camera.CameraFar = cameraFar;
+    }
+
+    public override void Draw(DebugLayout debugLayout, DebugLayoutTextureManager textureManager)
+    {
+        if (Frame.Current is IHasPlayfield { Playfield: TgxPlayfield2D playfield2D }) 
+            DrawPlayfield2D(debugLayout, playfield2D);
+        else if (Frame.Current is IHasPlayfield { Playfield: TgxPlayfieldMode7 playfieldMode7 })
+            DrawPlayfieldMode7(debugLayout, playfieldMode7);
     }
 }

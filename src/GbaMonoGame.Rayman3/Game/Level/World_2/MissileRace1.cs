@@ -1,6 +1,4 @@
-﻿using GbaMonoGame.TgxEngine;
-
-namespace GbaMonoGame.Rayman3;
+﻿namespace GbaMonoGame.Rayman3;
 
 public class MissileRace1 : FrameMissileSingleMode7
 {
@@ -12,7 +10,6 @@ public class MissileRace1 : FrameMissileSingleMode7
 
         // NOTE: Temp code for testing. This is the start position of the map.
         Scene.Playfield.Camera.Position = new Vector2(334.5f, 121);
-        ((TgxCameraMode7)Scene.Playfield.Camera).Update();
 
         // TODO: Implement
     }

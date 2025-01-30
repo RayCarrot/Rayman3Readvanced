@@ -12,7 +12,7 @@ public class GfxRenderer
     {
         GameViewPort = gameViewPort;
         SpriteBatch = new SpriteBatch(graphicsDevice);
-        RasterizerState = new RasterizerState() { ScissorTestEnable = true };
+        RasterizerState = new RasterizerState() { ScissorTestEnable = true, CullMode = CullMode.None };
     }
 
     #endregion
