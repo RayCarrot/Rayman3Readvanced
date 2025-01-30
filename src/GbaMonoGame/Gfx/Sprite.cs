@@ -21,6 +21,8 @@ public class Sprite
     // TODO: There are multiple issues with how alpha is implemented here compared to on GBA. Most noticeably sprites should not effect each other. Very noticeable when setting it on Rayman and looking up - Rayman gets 4 eyes then! Although this might be how it is on N-Gage?
     public float? Alpha { get; set; }
 
+    public Effect Shader { get; set; }
+
     public RenderContext RenderContext { get; set; }
 
     public void Draw(GfxRenderer renderer, Color color)
@@ -29,6 +31,7 @@ public class Sprite
         {
             Alpha = Alpha != null,
             PaletteTexture = PaletteTexture,
+            Shader = Shader,
         });
 
         if (OverrideGfxColor)

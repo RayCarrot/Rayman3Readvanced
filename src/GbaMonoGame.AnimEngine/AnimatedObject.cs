@@ -123,6 +123,8 @@ public class AnimatedObject : AObject
 
     public BoxTable BoxTable { get; set; }
 
+    public Effect Shader { get; set; }
+
     #endregion
 
     #region Private Methods
@@ -412,7 +414,8 @@ public class AnimatedObject : AObject
                         AffineMatrix = affineMatrix,
                         OverrideGfxColor = OverrideGfxColor,
                         Alpha = IsAlphaBlendEnabled ? Alpha : null,
-                        RenderContext = RenderContext
+                        Shader = Shader,
+                        RenderContext = RenderContext,
                     };
 
                     if (IsBackSprite)
