@@ -2,8 +2,6 @@
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Vector3 = Microsoft.Xna.Framework.Vector3;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -42,8 +40,6 @@ public abstract class CameraActorMode7 : CameraActor
                         cam.Direction--;
                     if (JoyPad.IsButtonPressed(GbaInput.L))
                         cam.Direction++;
-
-                    cam.Step();
                     break;
 
                 case FsmAction.UnInit:
@@ -60,62 +56,35 @@ public abstract class CameraActorMode7 : CameraActor
     {
         TgxCameraMode7 cam = (TgxCameraMode7)Scene.Playfield.Camera;
 
-        BasicEffect effect = new BasicEffect(Engine.GraphicsDevice);
-        //effect.TextureEnabled = true;
-        effect.VertexColorEnabled = true;
-        effect.Projection = cam.BasicEffectShader.Projection;
-        effect.View = cam.BasicEffectShader.View;
+        Vector4 worldPos4 = new Vector4(actor.Position, 0, 1);
+        Vector4 screenPos4 = Vector4.Transform(worldPos4, cam.BasicEffectShader.View * cam.BasicEffectShader.Projection);
+        Vector2 screenPos = new Vector2(screenPos4.X, screenPos4.Y) / screenPos4.W;
 
-        cam.BasicEffectShader.View.Decompose(out _, out Quaternion rotation, out _);
-        var rotationMatrix = Matrix.Invert(Matrix.CreateFromQuaternion(rotation));
-        Vector3 actorPos = new Vector3(actor.Position, 0);
-        effect.World = Matrix.CreateScale(0.2f, 0.2f, 0.2f) * rotationMatrix * Matrix.CreateTranslation(actorPos);
+        Vector2 pixelPos = (new Vector2(screenPos.X, -screenPos.Y) + Vector2.One) / 2 * actor.AnimatedObject.RenderContext.Resolution;
+        actor.AnimatedObject.ScreenPos = pixelPos;
 
-        actor.AnimatedObject.ScreenPos = Vector2.Zero;
-        actor.AnimatedObject.Shader = effect;
+        float distance = screenPos4.W;
+        float desiredSize = 100f;
+        float scale = desiredSize / distance;
 
-        actor.AnimatedObject.Execute(null);
+        // Apply the scale to the animated object
+        actor.AnimatedObject.AffineMatrix = new AffineMatrix(0, new Vector2(scale));
 
-        effect = new BasicEffect(Engine.GraphicsDevice);
-        //effect.TextureEnabled = true;
-        effect.VertexColorEnabled = true;
-        effect.Projection = cam.BasicEffectShader.Projection;
-        effect.View = cam.BasicEffectShader.View;
+        //actor.AnimatedObject.ZPriority = distance;
 
-        effect.World = Matrix.CreateScale(0.2f, 0.2f, 0.2f) * Matrix.CreateTranslation(actorPos);
+        if (pixelPos.X >= 0 && 
+            pixelPos.Y >= 0 && 
+            pixelPos.X < actor.AnimatedObject.RenderContext.Resolution.X && 
+            pixelPos.Y < actor.AnimatedObject.RenderContext.Resolution.Y)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
 
-        actor.AnimatedObject.ScreenPos = Vector2.Zero;
-        actor.AnimatedObject.Shader = effect;
-
-        //Vector4 worldPos4 = new Vector4(actor.Position, 0, 1);
-        //Vector4 screenPos4 = Vector4.Transform(worldPos4, cam.BasicEffectShader.View * cam.BasicEffectShader.Projection);
-        //Vector2 screenPos = new Vector2(screenPos4.X, screenPos4.Y) / screenPos4.W;
-
-        //Vector2 pixelPos = (new Vector2(screenPos.X, -screenPos.Y) + Vector2.One) / 2 * actor.AnimatedObject.RenderContext.Resolution;
-        //actor.AnimatedObject.ScreenPos = pixelPos;
-
-        //float distance = screenPos4.W;
-        //float desiredSize = 100f;
-        //float scale = desiredSize / distance;
-
-        //// Apply the scale to the animated object
-        //actor.AnimatedObject.AffineMatrix = new AffineMatrix(0, new Vector2(scale));
-
-        ////actor.AnimatedObject.ZPriority = distance;
-
-        //if (pixelPos.X >= 0 && 
-        //    pixelPos.Y >= 0 && 
-        //    pixelPos.X < actor.AnimatedObject.RenderContext.Resolution.X && 
-        //    pixelPos.Y < actor.AnimatedObject.RenderContext.Resolution.Y)
-        //{
-        //    return true;
-        //}
-        //else
-        //{
-        //    return false;
-        //}
-
-        //return true;
+        return true;
 
         //BasicEffect effect = new BasicEffect(Engine.GraphicsDevice);
         ////effect.TextureEnabled = true;
