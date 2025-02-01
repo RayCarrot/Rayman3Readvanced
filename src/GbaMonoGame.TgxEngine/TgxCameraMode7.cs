@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.TgxEngine;
 
-// TODO: Fully implement
+// TODO: Scale by the resolution. Currently the scaling is overriden by the shader.
 public class TgxCameraMode7 : TgxCamera
 {
     public TgxCameraMode7(RenderContext renderContext) : base(renderContext)
@@ -92,6 +92,37 @@ public class TgxCameraMode7 : TgxCamera
         _isViewDirty = true;
     }
 
+    public Vector2 GetDirection(int offset = 0)
+    {
+        return new Vector2(MathHelpers.Cos256(Direction + offset), MathHelpers.Sin256(Direction + offset));
+    }
+
+    public Vector2 GetRenderPosition2D()
+    {
+        // Get the direction and offset by 180 degrees
+        Vector2 dir = GetDirection(128);
+
+        // Multiply by the distance
+        Vector2 cameraOffset = dir * CameraDistance;
+
+        // Add to the position
+        return Position + cameraOffset;
+    }
+
+    public Vector3 GetRenderPosition3D()
+    {
+        // Get the direction and offset by 180 degrees
+        Vector2 dir = GetDirection(128);
+
+        // Multiply by the distance and define the height
+        Vector3 cameraOffset = new(
+            value: dir * CameraDistance,
+            z: -CameraHeight);
+
+        // Add to the position
+        return new Vector3(Position, 0) + cameraOffset;
+    }
+
     public void Step()
     {
         // Get the current resolution
@@ -114,17 +145,8 @@ public class TgxCameraMode7 : TgxCamera
         // Update view
         if (_isViewDirty)
         {
-            // Get the direction and offset by 180 degrees
-            float dir = Direction + 128;
-
-            // Calculate the camera offset using the direction and height
-            Vector3 cameraOffset = new(
-                x: MathHelpers.Cos256(dir) * CameraDistance,
-                y: MathHelpers.Sin256(dir) * CameraDistance,
-                z: -CameraHeight);
-
             // Get the position
-            Vector3 cameraPosition = new Vector3(Position, 0) + cameraOffset;
+            Vector3 cameraPosition = GetRenderPosition3D();
             Vector3 cameraTarget = new(Position.X, Position.Y, -CameraTargetHeight);
             Vector3 cameraUp = new(0, 0, -1);
 
