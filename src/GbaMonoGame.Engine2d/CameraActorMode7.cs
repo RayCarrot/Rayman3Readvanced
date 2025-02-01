@@ -40,6 +40,8 @@ public abstract class CameraActorMode7 : CameraActor
                         cam.Direction--;
                     if (JoyPad.IsButtonPressed(GbaInput.L))
                         cam.Direction++;
+
+                    cam.Step();
                     break;
 
                 case FsmAction.UnInit:

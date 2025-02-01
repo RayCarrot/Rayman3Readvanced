@@ -54,10 +54,4 @@ public class TgxPlayfieldMode7 : TgxPlayfield
     public new TgxCameraMode7 Camera => (TgxCameraMode7)base.Camera;
     public IReadOnlyList<TgxRotscaleLayerMode7> RotScaleLayers { get; }
     public GbaVram Vram { get; }
-
-    public override void Step()
-    {
-        base.Step();
-        Camera.Step();
-    }
 }

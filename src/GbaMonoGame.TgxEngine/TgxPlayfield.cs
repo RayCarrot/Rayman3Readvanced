@@ -56,7 +56,7 @@ public abstract class TgxPlayfield
         return PhysicalLayer.CollisionMap[mapPoint.Y * PhysicalLayer.Width + mapPoint.X];
     }
 
-    public virtual void Step()
+    public void Step()
     {
         // Toggle showing debug collision screen
         if (InputManager.IsButtonJustPressed(Input.Debug_ToggleCollision))
