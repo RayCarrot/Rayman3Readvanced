@@ -8,21 +8,29 @@ public class GfxRenderer
 {
     #region Constructor
 
-    public GfxRenderer(GraphicsDevice graphicsDevice, GbaGameViewPort gameViewPort)
+    public GfxRenderer(GraphicsDevice graphicsDevice)
     {
-        GameViewPort = gameViewPort;
-        SpriteBatch = new SpriteBatch(graphicsDevice);
-        RasterizerState = new RasterizerState() { CullMode = CullMode.None };
+        _spriteBatch = new SpriteBatch(graphicsDevice);
+        _rasterizerState = new RasterizerState() { CullMode = CullMode.None };
+
+        _paletteShader = Gfx.PaletteShader;
+        _paletteTextureParam = _paletteShader.Parameters["PaletteTexture"];
+        _paletteIndexParam = _paletteShader.Parameters["PaletteIndex"];
+        _paletteHeightParam = _paletteShader.Parameters["PaletteHeight"];
     }
 
     #endregion
 
-    #region Private Properties
+    #region Private Fields
 
-    private SpriteBatch SpriteBatch { get; }
-    private GbaGameViewPort GameViewPort { get; }
-    private RasterizerState RasterizerState { get; }
-    private RenderOptions? RenderOptions { get; set; }
+    private readonly SpriteBatch _spriteBatch;
+    private readonly RasterizerState _rasterizerState;
+    private RenderOptions? _renderOptions;
+
+    private readonly Effect _paletteShader;
+    private readonly EffectParameter _paletteTextureParam;
+    private readonly EffectParameter _paletteIndexParam;
+    private readonly EffectParameter _paletteHeightParam;
 
     #endregion
 
@@ -31,17 +39,17 @@ public class GfxRenderer
     public void BeginRender(RenderOptions options)
     {
         // If we have new render options then we need to begin a new batch
-        if (RenderOptions != options)
+        if (_renderOptions != options)
         {
             // End previous batch
-            if (RenderOptions != null)
-                SpriteBatch.End();
+            if (_renderOptions != null)
+                _spriteBatch.End();
 
             // Set the new render options
-            RenderOptions = options;
+            _renderOptions = options;
 
             // Set the screen area to draw to
-            SpriteBatch.GraphicsDevice.Viewport = options.RenderContext.Viewport;
+            _spriteBatch.GraphicsDevice.Viewport = options.RenderContext.Viewport;
 
             // Get the shader
             Effect shader = options.Shader;
@@ -49,14 +57,14 @@ public class GfxRenderer
             // If we have a palette texture specified then we use the palette shader and pass in the params
             if (shader == null && options.PaletteTexture != null)
             {
-                shader = Gfx.PaletteShader;
-                shader.Parameters["PaletteTexture"].SetValue(options.PaletteTexture.Texture);
-                shader.Parameters["PaletteIndex"].SetValue(options.PaletteTexture.PaletteIndex);
-                shader.Parameters["PaletteHeight"].SetValue(options.PaletteTexture.Texture.Height);
+                shader = _paletteShader;
+                _paletteTextureParam.SetValue(options.PaletteTexture.Texture);
+                _paletteIndexParam.SetValue(options.PaletteTexture.PaletteIndex);
+                _paletteHeightParam.SetValue(options.PaletteTexture.Texture.Height);
             }
 
             // Begin a new batch
-            SpriteBatch.Begin(
+            _spriteBatch.Begin(
                 samplerState: SamplerState.PointClamp,
                 effect: shader,
                 blendState: options.Alpha ? new BlendState
@@ -67,18 +75,18 @@ public class GfxRenderer
                     AlphaDestinationBlend = Blend.InverseSourceAlpha,
                 } : null,
                 transformMatrix: Matrix.CreateScale(options.RenderContext.Scale),
-                rasterizerState: RasterizerState);
+                rasterizerState: _rasterizerState);
         }
     }
 
     public void EndRender()
     {
         // Ignore if we never began a render batch
-        if (RenderOptions == null) 
+        if (_renderOptions == null) 
             return;
         
-        SpriteBatch.End();
-        RenderOptions = null;
+        _spriteBatch.End();
+        _renderOptions = null;
     }
 
     #endregion
@@ -90,29 +98,29 @@ public class GfxRenderer
 
     public void Draw(Texture2D texture, Vector2 position, Color? color = null)
     {
-        SpriteBatch.Draw(texture, position, texture.Bounds, color ?? Color.White);
+        _spriteBatch.Draw(texture, position, texture.Bounds, color ?? Color.White);
     }
     public void Draw(Texture2D texture, Vector2 position, Rectangle sourceRectangle, Color? color = null)
     {
-        SpriteBatch.Draw(texture, position, sourceRectangle, color ?? Color.White);
+        _spriteBatch.Draw(texture, position, sourceRectangle, color ?? Color.White);
     }
 
     public void Draw(Texture2D texture, Vector2 position, SpriteEffects effects, Color? color = null)
     {
-        SpriteBatch.Draw(texture, position, texture.Bounds, color ?? Color.White, 0, Vector2.Zero, Vector2.One, effects, 0);
+        _spriteBatch.Draw(texture, position, texture.Bounds, color ?? Color.White, 0, Vector2.Zero, Vector2.One, effects, 0);
     }
     public void Draw(Texture2D texture, Vector2 position, Rectangle sourceRectangle, SpriteEffects effects, Color? color = null)
     {
-        SpriteBatch.Draw(texture, position, sourceRectangle, color ?? Color.White, 0, Vector2.Zero, Vector2.One, effects, 0);
+        _spriteBatch.Draw(texture, position, sourceRectangle, color ?? Color.White, 0, Vector2.Zero, Vector2.One, effects, 0);
     }
 
     public void Draw(Texture2D texture, Vector2 position, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Color? color = null)
     {
-        SpriteBatch.Draw(texture, position, texture.Bounds, color ?? Color.White, rotation, origin, scale, effects, 0);
+        _spriteBatch.Draw(texture, position, texture.Bounds, color ?? Color.White, rotation, origin, scale, effects, 0);
     }
     public void Draw(Texture2D texture, Vector2 position, Rectangle sourceRectangle, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Color? color = null)
     {
-        SpriteBatch.Draw(texture, position, sourceRectangle, color ?? Color.White, rotation, origin, scale, effects, 0);
+        _spriteBatch.Draw(texture, position, sourceRectangle, color ?? Color.White, rotation, origin, scale, effects, 0);
     }
 
     #endregion
@@ -127,7 +135,7 @@ public class GfxRenderer
     public void DrawFilledRectangle(Rectangle rect, Color color)
     {
         // Simply use the function already there
-        SpriteBatch.Draw(Gfx.Pixel, rect, color);
+        _spriteBatch.Draw(Gfx.Pixel, rect, color);
     }
 
     /// <summary>
@@ -138,7 +146,7 @@ public class GfxRenderer
     /// <param name="angle">The angle in radians to draw the rectangle at</param>
     public void DrawFilledRectangle(Rectangle rect, Color color, float angle)
     {
-        SpriteBatch.Draw(Gfx.Pixel, rect, null, color, angle, Vector2.Zero, SpriteEffects.None, 0);
+        _spriteBatch.Draw(Gfx.Pixel, rect, null, color, angle, Vector2.Zero, SpriteEffects.None, 0);
     }
 
     /// <summary>
@@ -162,7 +170,7 @@ public class GfxRenderer
     public void DrawFilledRectangle(Vector2 location, Vector2 size, Color color, float angle)
     {
         // stretch the pixel between the two vectors
-        SpriteBatch.Draw(Gfx.Pixel,
+        _spriteBatch.Draw(Gfx.Pixel,
             location,
             null,
             color,
@@ -334,7 +342,7 @@ public class GfxRenderer
     public void DrawLine(Vector2 point, float length, float angle, Color color, float thickness)
     {
         // stretch the pixel between the two vectors
-        SpriteBatch.Draw(Gfx.Pixel,
+        _spriteBatch.Draw(Gfx.Pixel,
             point,
             null,
             color,
@@ -356,7 +364,7 @@ public class GfxRenderer
 
     public void DrawPixel(Vector2 position, Color color)
     {
-        SpriteBatch.Draw(Gfx.Pixel, position, color);
+        _spriteBatch.Draw(Gfx.Pixel, position, color);
     }
 
     #endregion

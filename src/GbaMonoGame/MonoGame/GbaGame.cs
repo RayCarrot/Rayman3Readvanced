@@ -229,7 +229,7 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
         Engine.GameWindow.ApplyState();
 
         // Load the renderer
-        _gfxRenderer = new GfxRenderer(GraphicsDevice, Engine.GameViewPort);
+        _gfxRenderer = new GfxRenderer(GraphicsDevice);
         _debugGameRenderTarget = new GameRenderTarget(GraphicsDevice, Engine.GameViewPort);
     }
 
