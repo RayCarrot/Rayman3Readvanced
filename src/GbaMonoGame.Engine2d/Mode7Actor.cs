@@ -10,14 +10,14 @@ public abstract class Mode7Actor : MovableActor
     {
         IsAffine = true;
         Direction = 0;
-        field_0x60 = 0;
-        field_0x63 = 32;
+        ZPos = 0;
+        RenderHeight = 32;
         AnimatedObject.BgPriority = 0;
     }
 
-    public short field_0x60 { get; set; }
+    public short ZPos { get; set; }
     public bool IsAffine { get; set; }
-    public byte field_0x63 { get; set; }
+    public byte RenderHeight { get; set; }
     public byte Direction { get; set; }
     public float CamAngle { get; set; }
 }
