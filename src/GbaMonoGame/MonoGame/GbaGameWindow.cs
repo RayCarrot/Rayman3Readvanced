@@ -115,7 +115,7 @@ public class GbaGameWindow
 
     public Point GetResolution()
     {
-        return new Point(_graphics.GraphicsDevice.Viewport.Width, _graphics.GraphicsDevice.Viewport.Height);
+        return new Point(_graphics.GraphicsDevice.PresentationParameters.BackBufferWidth, _graphics.GraphicsDevice.PresentationParameters.BackBufferHeight);
     }
 
     public void SetTitle(string title)

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame;
 
@@ -8,9 +9,8 @@ public abstract class RenderContext
     private Vector2 _lastGameResolution;
 
     private Vector2 _resolution;
-    private Matrix _matrix;
-    private Box _visibleArea;
-    private Rectangle _viewPortRenderBox;
+    private float _scale;
+    private Viewport _viewPort;
 
     public Vector2 Resolution
     {
@@ -22,34 +22,26 @@ public abstract class RenderContext
         private set => _resolution = value;
     }
 
-    public Matrix Matrix
+    public float AspectRatio => Viewport.AspectRatio;
+
+    public float Scale
     {
         get
         {
             Update();
-            return _matrix;
+            return _scale;
         }
-        private set => _matrix = value;
+        private set => _scale = value;
     }
 
-    public Box VisibleArea
+    public Viewport Viewport
     {
         get
         {
             Update();
-            return _visibleArea;
+            return _viewPort;
         }
-        private set => _visibleArea = value;
-    }
-
-    public Rectangle ViewPortRenderBox
-    {
-        get
-        {
-            Update();
-            return _viewPortRenderBox;
-        }
-        private set => _viewPortRenderBox = value;
+        private set => _viewPort = value;
     }
 
     protected abstract Vector2 GetResolution();
@@ -63,12 +55,12 @@ public abstract class RenderContext
         // Get the new resolution
         Resolution = GetResolution();
         
-        // Update the matrix if the resolution has changed
+        // Update the scale if the resolution has changed
         if (_resolution != prevResolution)
-            UpdateMatrix();
+            UpdateScale();
     }
 
-    private void UpdateMatrix()
+    private void UpdateScale()
     {
         _lastViewPortRenderBox = Engine.GameViewPort.RenderBox;
 
@@ -103,40 +95,31 @@ public abstract class RenderContext
         // Offset by the view port render box position
         pos += viewPortRenderBox.Position;
 
-        // Create a matrix
-        Matrix matrix =
-            // Scale to fit the screen
-            Matrix.CreateScale(scale) *
-            // Center
-            Matrix.CreateTranslation(pos.X, pos.Y, 0);
+        // Set the scale
+        Scale = scale;
 
-        // Set the matrix
-        Matrix = matrix;
-
-        ViewPortRenderBox = new Rectangle(
+        Viewport = new Viewport(new Rectangle(
             location: pos.ToCeilingPoint(),
-            size: (res * scale).ToFloorPoint());
-
-        Matrix inverseViewMatrix = Matrix.Invert(matrix);
-        Vector2 tl = Vector2.Transform(Vector2.Zero, inverseViewMatrix);
-        Vector2 tr = Vector2.Transform(new Vector2(size.X, 0), inverseViewMatrix);
-        Vector2 bl = Vector2.Transform(new Vector2(0, size.Y), inverseViewMatrix);
-        Vector2 br = Vector2.Transform(size, inverseViewMatrix);
-        Vector2 min = new(
-            MathHelper.Min(tl.X, MathHelper.Min(tr.X, MathHelper.Min(bl.X, br.X))),
-            MathHelper.Min(tl.Y, MathHelper.Min(tr.Y, MathHelper.Min(bl.Y, br.Y))));
-        Vector2 max = new(
-            MathHelper.Max(tl.X, MathHelper.Max(tr.X, MathHelper.Max(bl.X, br.X))),
-            MathHelper.Max(tl.Y, MathHelper.Max(tr.Y, MathHelper.Max(bl.Y, br.Y))));
-        VisibleArea = new Box(0, 0, max.X - min.X, max.Y - min.Y);
+            size: (res * scale).ToFloorPoint()));
     }
 
-    public Vector2 ToWorldPosition(Vector2 pos) => Vector2.Transform(pos, Matrix.Invert(Matrix));
-    public Vector2 ToScreenPosition(Vector2 pos) => Vector2.Transform(pos, Matrix);
+    public Vector2 ToWorldPosition(Vector2 pos)
+    {
+        pos.X -= Viewport.X;
+        pos.Y -= Viewport.Y;
+        pos /= Scale;
+        return pos;
+    }
+    public Vector2 ToScreenPosition(Vector2 pos)
+    {
+        pos *= Scale;
+        pos.X += Viewport.X;
+        pos.Y += Viewport.Y;
+        return pos;
+    }
 
-    public bool IsVisible(Box rect) => VisibleArea.Intersects(rect);
-    public bool IsVisible(Vector2 position, Point size) => VisibleArea.Intersects(new Box(position.X, position.Y, position.X + size.X, position.Y + size.Y));
-    public bool IsVisible(Vector2 position) => VisibleArea.Contains(position);
+    public bool IsVisible(Rectangle rect) => Viewport.Bounds.Intersects(rect);
+    public bool IsVisible(Vector2 position) => Viewport.Bounds.Contains(position);
 
     public virtual void Update()
     {
@@ -144,6 +127,6 @@ public abstract class RenderContext
             UpdateResolution();
         
         if (Engine.GameViewPort.RenderBox != _lastViewPortRenderBox)
-            UpdateMatrix();
+            UpdateScale();
     }
 }

@@ -12,7 +12,7 @@ public class GfxRenderer
     {
         GameViewPort = gameViewPort;
         SpriteBatch = new SpriteBatch(graphicsDevice);
-        RasterizerState = new RasterizerState() { ScissorTestEnable = true, CullMode = CullMode.None };
+        RasterizerState = new RasterizerState() { CullMode = CullMode.None };
     }
 
     #endregion
@@ -41,7 +41,7 @@ public class GfxRenderer
             RenderOptions = options;
 
             // Set the screen area to draw to
-            SpriteBatch.GraphicsDevice.ScissorRectangle = options.RenderContext.ViewPortRenderBox;
+            SpriteBatch.GraphicsDevice.Viewport = options.RenderContext.Viewport;
 
             // Get the shader
             Effect shader = options.Shader;
@@ -66,7 +66,7 @@ public class GfxRenderer
                     AlphaSourceBlend = Blend.One,
                     AlphaDestinationBlend = Blend.InverseSourceAlpha,
                 } : null,
-                transformMatrix: options.RenderContext.Matrix,
+                transformMatrix: Matrix.CreateScale(options.RenderContext.Scale),
                 rasterizerState: RasterizerState);
         }
     }

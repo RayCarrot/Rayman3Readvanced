@@ -20,6 +20,7 @@ public class TgxCameraMode7 : TgxCamera
 
     private bool _isProjectionDirty = true;
     private bool _isViewDirty = true;
+    private Vector2 _prevResolution = Vector2.Zero;
 
     private float _cameraFieldOfView = MathHelper.PiOver4;
     private float _cameraDistance = 100.0f;
@@ -93,21 +94,21 @@ public class TgxCameraMode7 : TgxCamera
 
     public void Step()
     {
-        // TODO: Update when resolution changes
-        // Update projection
-        if (_isProjectionDirty)
-        {
-            // Get the current resolution
-            Vector2 res = RenderContext.Resolution;
+        // Get the current resolution
+        Vector2 res = RenderContext.Resolution;
 
+        // Update projection
+        if (_isProjectionDirty || _prevResolution != res)
+        {
             // Set the projection
             BasicEffectShader.Projection = Matrix.CreatePerspectiveFieldOfView(
                 fieldOfView: CameraFieldOfView,
-                aspectRatio: res.X / res.Y,
+                aspectRatio: RenderContext.AspectRatio,
                 nearPlaneDistance: 0.1f,
                 farPlaneDistance: CameraFar);
 
             _isProjectionDirty = false;
+            _prevResolution = res;
         }
 
         // Update view
