@@ -35,7 +35,9 @@ public class AnimationPlayer
     {
         for (int i = 0; i < _sortedObjects.Count; i++)
         {
-            if (_sortedObjects[i].Priority >= obj.Priority)
+            if (_sortedObjects[i].BgPriority > obj.BgPriority || 
+                (_sortedObjects[i].BgPriority == obj.BgPriority && _sortedObjects[i].ObjPriority > obj.ObjPriority) || 
+                (_sortedObjects[i].BgPriority == obj.BgPriority && _sortedObjects[i].ObjPriority == obj.ObjPriority && _sortedObjects[i].YPriority >= obj.YPriority))
             {
                 _sortedObjects.Insert(i, obj);
                 return;

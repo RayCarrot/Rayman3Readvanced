@@ -4,51 +4,16 @@ namespace GbaMonoGame.AnimEngine;
 
 public abstract class AObject
 {
-    public ushort Priority { get; private set; }
-
     // TODO: Do we keep these prio names or rename to ScreenPriority and SpritePriority to match our GFX names?
 
-    // 1100 0000 0000 0000
-    public int BgPriority
-    {
-        get => Priority >> 14;
-        set
-        {
-            if (value > 3)
-                throw new Exception("Invalid BG priority! Has to be a value between 0-3.");
+    // 1100 0000 0000 0000 (0-3)
+    public int BgPriority { get; set; }
 
-            Priority &= 0x3FFF;
-            Priority |= (ushort)((value & 0x3) << 14);
-        }
-    }
+    // 0011 1111 0000 0000 (0-63)
+    public int ObjPriority { get; set; }
 
-    // 0011 1111 0000 0000
-    public int ObjPriority
-    {
-        get => (Priority >> 8) & 0x3F;
-        set
-        {
-            if (value > 63)
-                throw new Exception("Invalid OBJ priority! Has to be a value between 0-63.");
-
-            Priority &= 0xC0FF;
-            Priority |= (ushort)((value & 0x3F) << 8);
-        }
-    }
-
-    // 0000 0000 1111 1111
-    public int YPriority
-    {
-        get => Priority & 0xFF;
-        set
-        {
-            if (value > 255)
-                throw new Exception("Invalid Y priority! Has to be a value between 0-255.");
-
-            Priority &= 0xFF00;
-            Priority |= (ushort)(value & 0xFF);
-        }
-    }
+    // 0000 0000 1111 1111 (0-255)
+    public float YPriority { get; set; }
 
     // This isn't in the base class in the original game, but easier to manage things this way
     public Vector2 ScreenPos { get; set; }
