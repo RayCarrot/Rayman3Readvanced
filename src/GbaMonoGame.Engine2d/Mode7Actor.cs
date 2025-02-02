@@ -20,7 +20,7 @@ public abstract class Mode7Actor : MovableActor
 
     public short ZPos { get; set; }
     public bool IsAffine { get; set; }
-    public byte RenderHeight { get; set; }
+    public int RenderHeight { get; set; }
     public float Direction { get; set; }
     public float CamAngle { get; set; }
 

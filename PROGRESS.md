@@ -219,9 +219,9 @@
 | LavaFall               | 🟩     |                                              |
 | #66                    | 🟥     |                                              |
 | ChainedSparkles        | 🟩     |                                              |
-| #68                    | 🟥     |                                              |
+| PlantMode7             | 🟩     |                                              |
 | #69                    | 🟥     |                                              |
-| #70                    | 🟥     |                                              |
+| DeadTreeMode7          | 🟩     |                                              |
 | #71                    | 🟥     |                                              |
 | Bats                   | 🟩     |                                              |
 | Sparkle                | 🟩     |                                              |
@@ -255,7 +255,7 @@
 | Arrive                 | 🟩     |                                              |
 | SpikyBomb              | 🟩     |                                              |
 | RaymanWorldMap         | 🟩     |                                              |
-| #104                   | 🟥     |                                              |
+| BumperMode7            | 🟩     |                                              |
 | #105                   | 🟥     |                                              |
 | MovingUnusedPlatform   | 🟩     |                                              |
 | RotatedHelicopterBomb  | 🟩     |                                              |

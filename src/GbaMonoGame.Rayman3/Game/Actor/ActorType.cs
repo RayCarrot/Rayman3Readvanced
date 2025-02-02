@@ -65,6 +65,9 @@ public enum ActorType
     LavaFall = 65,
 
     ChainedSparkles = 67,
+    PlantMode7 = 68,
+
+    DeadTreeMode7 = 70,
 
     Bats = 72,
     Sparkle = 73,
@@ -94,6 +97,7 @@ public enum ActorType
     Arrive = 101,
     SpikyBomb = 102,
     RaymanWorldMap = 103,
+    BumperMode7 = 104,
 
     MovingUnusedPlatform = 106, // Unused
     RotatedHelicopterBomb = 107,

@@ -124,6 +124,9 @@ public class Rayman3 : GbaGame
             { ActorType.LavaFall, (instanceId, scene, resource) => new LavaFall(instanceId, scene, resource) },
 
             { ActorType.ChainedSparkles, (instanceId, scene, resource) => new ChainedSparkles(instanceId, scene, resource) },
+            { ActorType.PlantMode7, (instanceId, scene, resource) => new SceneryMode7(instanceId, scene, resource) },
+
+            { ActorType.DeadTreeMode7, (instanceId, scene, resource) => new SceneryMode7(instanceId, scene, resource) },
 
             { ActorType.Bats, (instanceId, scene, resource) => new Bats(instanceId, scene, resource) },
             { ActorType.Sparkle, (instanceId, scene, resource) => new Sparkle(instanceId, scene, resource) },
@@ -153,6 +156,7 @@ public class Rayman3 : GbaGame
             { ActorType.Arrive, (instanceId, scene, resource) => new Arrive(instanceId, scene, resource) },
             { ActorType.SpikyBomb, (instanceId, scene, resource) => new FlyingBomb(instanceId, scene, resource) },
             { ActorType.RaymanWorldMap, (instanceId, scene, resource) => new RaymanWorldMap(instanceId, scene, resource) },
+            { ActorType.BumperMode7, (instanceId, scene, resource) => new SceneryMode7(instanceId, scene, resource) },
 
             { ActorType.MovingUnusedPlatform, (instanceId, scene, resource) => new MovingPlatform(instanceId, scene, resource) },
             { ActorType.RotatedHelicopterBomb, (instanceId, scene, resource) => new FlyingBomb(instanceId, scene, resource) },
