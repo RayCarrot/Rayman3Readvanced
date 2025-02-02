@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -92,6 +93,12 @@ public class TgxCameraMode7 : TgxCamera
         _isViewDirty = true;
     }
 
+    private static bool WithinEpsilon(float a, float b)
+    {
+        float num = a - b;
+        return num is >= -1.401298E-45f and <= Single.Epsilon;
+    }
+
     public Vector2 GetDirection(int offset = 0)
     {
         return new Vector2(MathHelpers.Cos256(Direction + offset), MathHelpers.Sin256(Direction + offset));
@@ -121,6 +128,30 @@ public class TgxCameraMode7 : TgxCamera
 
         // Add to the position
         return new Vector3(Position, 0) + cameraOffset;
+    }
+
+    public Vector3 Project(Vector3 source)
+    {
+        // Re-implemented from ViewPort.Project in MonoGame
+
+        Vector2 res = RenderContext.Resolution;
+
+        Matrix matrix = BasicEffectShader.World * BasicEffectShader.View * BasicEffectShader.Projection;
+        Vector3 vector = Vector3.Transform(source, matrix);
+
+        float a = source.X * matrix.M14 + source.Y * matrix.M24 + source.Z * matrix.M34 + matrix.M44;
+        if (!WithinEpsilon(a, 1f))
+        {
+            vector.X /= a;
+            vector.Y /= a;
+            vector.Z /= a;
+        }
+
+        // Scale by the resolution
+        vector.X = (((vector.X + 1f) * 0.5f) * res.X);
+        vector.Y = (((-vector.Y + 1f) * 0.5f) * res.Y);
+
+        return vector;
     }
 
     public void Step()
