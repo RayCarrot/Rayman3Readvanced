@@ -1,7 +1,9 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using BinarySerializer.Nintendo.GBA;
+using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
+using Vector3 = Microsoft.Xna.Framework.Vector3;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -53,66 +55,56 @@ public abstract class CameraActorMode7 : CameraActor
         });
     }
 
-    // TODO: Fix this
     public override bool IsActorFramed(BaseActor actor)
     {
         TgxCameraMode7 cam = (TgxCameraMode7)Scene.Playfield.Camera;
 
-        Vector4 worldPos4 = new Vector4(actor.Position, 0, 1);
-        Vector4 screenPos4 = Vector4.Transform(worldPos4, cam.BasicEffectShader.View * cam.BasicEffectShader.Projection);
-        Vector2 screenPos = new Vector2(screenPos4.X, screenPos4.Y) / screenPos4.W;
+        // Get the camera render position and direction
+        Vector2 camRenderPos = cam.GetRenderPosition2D();
+        Vector2 camDir = cam.GetDirection();
 
-        Vector2 pixelPos = (new Vector2(screenPos.X, -screenPos.Y) + Vector2.One) / 2 * actor.AnimatedObject.RenderContext.Resolution;
-        actor.AnimatedObject.ScreenPos = pixelPos;
+        // Get the difference between the actor and the camera
+        Vector2 posDiff = actor.Position - camRenderPos;
 
-        float distance = screenPos4.W;
-        float desiredSize = 100f;
-        float scale = desiredSize / distance;
-
-        // Apply the scale to the animated object
-        actor.AnimatedObject.AffineMatrix = new AffineMatrix(0, new Vector2(scale));
-
-        //actor.AnimatedObject.ZPriority = distance;
-
-        if (pixelPos.X >= 0 && 
-            pixelPos.Y >= 0 && 
-            pixelPos.X < actor.AnimatedObject.RenderContext.Resolution.X && 
-            pixelPos.Y < actor.AnimatedObject.RenderContext.Resolution.Y)
-        {
-            return true;
-        }
-        else
-        {
+        // Check if the actor is in front of the camera
+        if (Vector2.Dot(camDir, posDiff) < 0)
             return false;
-        }
 
-        return true;
+        // Calculate the actor distance to the camera
+        float camDist = posDiff.Length();
 
-        //BasicEffect effect = new BasicEffect(Engine.GraphicsDevice);
-        ////effect.TextureEnabled = true;
-        //effect.VertexColorEnabled = true;
-        //effect.Projection = cam.Effect.Projection;
-        //effect.View = cam.Effect.View;
+        // Check the distance from the camera
+        if (camDist > cam.CameraFar)
+            return false;
 
-        //float dir = cam.Direction + 128;
+        // Set the angle relative to the camera
+        if (actor is Mode7Actor mode7Actor)
+            mode7Actor.CamAngle = MathHelpers.Atan2_256(posDiff);
 
-        //Vector3 cameraOffset = new(
-        //    x: MathHelpers.Cos256(dir) * cam.CameraDistance,
-        //    y: MathHelpers.Sin256(dir) * cam.CameraDistance,
-        //    z: -cam.CameraHeight);
+        const float baseScale = 0.5f;
 
-        //Vector3 cameraPosition = new Vector3(cam.Position, 0) + cameraOffset;
-        //Vector3 cameraUp = new(0, 0, -1);
+        // TODO: Replace with the RenderHeight value from the actor
+        AnimationChannel channel = actor.AnimatedObject.GetAnimation().Channels[0];
+        Constants.Size shape = Constants.GetSpriteShape(channel.SpriteShape, channel.SpriteSize);
+        float renderHeight = shape.Height;
 
-        //Vector3 actorPos = new Vector3(actor.Position, 0);
+        // Get the 3D position and offset by half the height so it's above the floor
+        Vector3 actorPos = new(actor.Position, -(renderHeight / 2f) * baseScale);
 
-        //Matrix matrix = Matrix.CreateBillboard(actorPos, cameraPosition, cameraUp, null);
-        //Matrix lookAt = Matrix.CreateScale(0.2f, -0.2f, 0.2f) * matrix;
-        //effect.World = lookAt;
+        // Project to the screen
+        Vector3 screenPos = cam.Project(actorPos);
 
-        //actor.AnimatedObject.ScreenPos = Vector2.Zero;
-        //actor.AnimatedObject.Shader = effect;
+        // Set the screen position
+        actor.AnimatedObject.ScreenPos = new Vector2(screenPos.X, screenPos.Y);
 
+        // Set the Y priority, used for sorting the objects based on distance
+        actor.AnimatedObject.YPriority = screenPos.Z;
+
+        // Get a second screen position one unit away to determine the scale
+        Vector3 screenPos2 = cam.Project(actorPos + new Vector3(0, 0, 1));
+        float scale = (new Vector2(screenPos.X, screenPos.Y) - new Vector2(screenPos2.X, screenPos2.Y)).Length();
+        actor.AnimatedObject.AffineMatrix = new AffineMatrix(0, new Vector2(scale * baseScale));
+        
         return true;
     }
 }

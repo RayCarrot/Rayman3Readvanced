@@ -26,6 +26,7 @@ public class TgxPlayfieldMode7 : TgxPlayfield
                 layer.Screen.RenderContext = RenderContext;
                 ((TextureScreenRenderer)layer.Screen.Renderer).Shader = Camera.BasicEffectShader;
 
+                // TODO: Fix - in Mode7 it always uses the TextureScreenRenderer, but tiles may still be animated!
                 // Add the renderer to the animated tile kit manager
                 if (layer.Screen.Renderer is TileMapScreenRenderer renderer)
                     AnimatedTilekitManager?.AddRenderer(renderer);
@@ -38,7 +39,7 @@ public class TgxPlayfieldMode7 : TgxPlayfield
             {
                 PhysicalLayer = new TgxTilePhysicalLayer(RenderContext, gameLayerResource);
 
-                // TODO: Somehow add layer to camera so we can display it in debug mode
+                // TODO: Set shader so it displays in 3D
             }
         }
 
