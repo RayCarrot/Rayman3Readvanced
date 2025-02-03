@@ -38,8 +38,7 @@ public class TgxPlayfieldMode7 : TgxPlayfield
             else if (gameLayerResource.Type == GameLayerType.PhysicalLayer)
             {
                 PhysicalLayer = new TgxTilePhysicalLayer(RenderContext, gameLayerResource);
-
-                // TODO: Set shader so it displays in 3D
+                ((CollisionMapScreenRenderer)PhysicalLayer.DebugScreen.Renderer).Shader = Camera.BasicEffectShader;
             }
         }
 

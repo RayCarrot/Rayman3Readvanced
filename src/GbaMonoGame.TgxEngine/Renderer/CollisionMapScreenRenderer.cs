@@ -21,9 +21,14 @@ public class CollisionMapScreenRenderer : IScreenRenderer
     public int Width { get; }
     public int Height { get; }
     public byte[] CollisionMap { get; }
+    public Effect Shader { get; set; }
 
     private Rectangle GetVisibleTilesArea(Vector2 position, GfxScreen screen)
     {
+        // If we have a shader then we can't calculate the visible tiles area, so just return the whole map
+        if (Shader != null)
+            return new Rectangle(Point.Zero, (GetSize(screen) / Tile.Size).ToPoint());
+
         Rectangle rect = new(position.ToPoint(), GetSize(screen).ToPoint());
 
         int xStart = (Math.Max(0, rect.Left) - rect.X) / Tile.Size;
@@ -41,6 +46,7 @@ public class CollisionMapScreenRenderer : IScreenRenderer
         renderer.BeginRender(new RenderOptions(screen.RenderContext)
         {
             Alpha = screen.IsAlphaBlendEnabled,
+            Shader = Shader,
         });
 
         Rectangle visibleTilesArea = GetVisibleTilesArea(position, screen);
