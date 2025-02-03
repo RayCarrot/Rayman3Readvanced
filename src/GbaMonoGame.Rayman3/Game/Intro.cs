@@ -182,6 +182,8 @@ public class Intro : Frame, IHasPlayfield
     {
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__sadslide);
 
+        Playfield.UnInit();
+
         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
         Gfx.Fade = 1;
 

@@ -1,4 +1,6 @@
-﻿namespace GbaMonoGame.Engine2d;
+﻿using GbaMonoGame.TgxEngine;
+
+namespace GbaMonoGame.Engine2d;
 
 public abstract class CameraActor2D : CameraActor
 {
@@ -15,5 +17,16 @@ public abstract class CameraActor2D : CameraActor
             actor.ScreenPosition = actor.Position - Scene.Playfield.Camera.Position;
 
         return isFramed;
+    }
+
+    public override bool IsDebugBoxFramed(DebugBoxAObject obj, Box box)
+    {
+        TgxCamera cam = Scene.Playfield.Camera;
+
+        obj.Position = box.Position - cam.Position;
+        obj.Size = box.Size;
+
+        // TODO: Optimize by only returning true if in view
+        return true;
     }
 }

@@ -10,13 +10,13 @@ public class TgxCameraMode7 : TgxCamera
 {
     public TgxCameraMode7(RenderContext renderContext) : base(renderContext)
     {
-        // TODO: Dispose
         BasicEffectShader = new BasicEffect(Engine.GraphicsDevice)
         {
             World = Matrix.Identity,
             TextureEnabled = true,
             VertexColorEnabled = true,
         };
+        CachedBasicEffectShaders = new Dictionary<object, BasicEffect>();
     }
 
     private bool _isProjectionDirty = true;
@@ -33,6 +33,7 @@ public class TgxCameraMode7 : TgxCamera
 
     // Rendering
     public BasicEffect BasicEffectShader { get; }
+    public Dictionary<object, BasicEffect> CachedBasicEffectShaders { get; }
 
     // Projection values
     public float CameraFieldOfView
@@ -152,6 +153,17 @@ public class TgxCameraMode7 : TgxCamera
         vector.Y = (((-vector.Y + 1f) * 0.5f) * res.Y);
 
         return vector;
+    }
+
+    public override void UnInit()
+    {
+        base.UnInit();
+
+        BasicEffectShader.Dispose();
+
+        foreach (BasicEffect effect in CachedBasicEffectShaders.Values)
+            effect.Dispose();
+        CachedBasicEffectShaders.Clear();
     }
 
     public void Step()

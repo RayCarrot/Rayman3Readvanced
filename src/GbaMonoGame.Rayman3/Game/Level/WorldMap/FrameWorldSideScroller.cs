@@ -88,6 +88,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
         Gfx.Fade = 1;
 
+        Scene.UnInit();
         Scene = null;
 
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumTimer_Mix02);

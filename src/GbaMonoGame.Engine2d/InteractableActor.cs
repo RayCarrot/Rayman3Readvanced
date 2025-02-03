@@ -59,12 +59,10 @@ public abstract class InteractableActor : ActionActor
     {
         base.DrawDebugBoxes(animationPlayer);
 
-        _debugAttackBoxAObject.Position = Position + _animationBoxTable.AttackBox.Position - Scene.Playfield.Camera.Position;
-        _debugAttackBoxAObject.Size = _animationBoxTable.AttackBox.Size;
-        animationPlayer.PlayFront(_debugAttackBoxAObject);
+        if (Scene.Camera.IsDebugBoxFramed(_debugAttackBoxAObject, _animationBoxTable.AttackBox.Offset(Position)))
+            animationPlayer.PlayFront(_debugAttackBoxAObject);
 
-        _debugVulnerabilityBoxAObject.Position = Position + _animationBoxTable.VulnerabilityBox.Position - Scene.Playfield.Camera.Position;
-        _debugVulnerabilityBoxAObject.Size = _animationBoxTable.VulnerabilityBox.Size;
-        animationPlayer.PlayFront(_debugVulnerabilityBoxAObject);
+        if (Scene.Camera.IsDebugBoxFramed(_debugVulnerabilityBoxAObject, _animationBoxTable.VulnerabilityBox.Offset(Position)))
+            animationPlayer.PlayFront(_debugVulnerabilityBoxAObject);
     }
 }

@@ -56,6 +56,11 @@ public abstract class TgxPlayfield
         return PhysicalLayer.CollisionMap[mapPoint.Y * PhysicalLayer.Width + mapPoint.X];
     }
 
+    public void UnInit()
+    {
+        Camera.UnInit();
+    }
+
     public void Step()
     {
         // Toggle showing debug collision screen

@@ -24,4 +24,5 @@ public abstract class CameraActor : Object
 
     public abstract void SetFirstPosition();
     public abstract bool IsActorFramed(BaseActor actor);
+    public abstract bool IsDebugBoxFramed(DebugBoxAObject obj, Box box);
 }

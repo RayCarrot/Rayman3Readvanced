@@ -844,6 +844,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
         Gfx.Fade = 1;
 
+        Scene.UnInit();
         Scene = null;
 
         Gfx.ClearScreenEffect();

@@ -611,6 +611,8 @@ public partial class MenuAll : Frame, IHasPlayfield
         }
 
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__raytheme);
+
+        Playfield.UnInit();
     }
 
     public override void Step()

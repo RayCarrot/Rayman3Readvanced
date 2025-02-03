@@ -1,5 +1,4 @@
 ﻿using System;
-using GbaMonoGame.AnimEngine;
 
 namespace GbaMonoGame.Engine2d;
 
@@ -37,10 +36,5 @@ public abstract class Mode7Actor : MovableActor
 
         if (newActionId != ActionId)
             ActionId = newActionId;
-    }
-
-    public override void DrawDebugBoxes(AnimationPlayer animationPlayer)
-    {
-        // TODO: Implement
     }
 }

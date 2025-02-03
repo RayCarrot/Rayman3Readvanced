@@ -1,6 +1,7 @@
 using System;
 using GbaMonoGame.AnimEngine;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Engine2d;
 
@@ -13,6 +14,7 @@ public class DebugBoxAObject : AObject
     public Vector2 Size { get; set; }
     public Color Color { get; set; }
     public bool IsFilled { get; set; }
+    public Effect Shader { get; set; }
 
     private void DrawLine(Vector2 point1, Vector2 point2)
     {
@@ -29,6 +31,7 @@ public class DebugBoxAObject : AObject
             Center = false,
             AffineMatrix = new AffineMatrix(angle, new Vector2(distance, thickness)),
             Color = Color,
+            Shader = Shader,
             RenderContext = RenderContext,
         });
     }
@@ -47,6 +50,7 @@ public class DebugBoxAObject : AObject
                 Center = false,
                 AffineMatrix = new AffineMatrix(0, Size),
                 Color = new Color(Color, alpha),
+                Shader = Shader,
                 RenderContext = RenderContext,
             });
         }

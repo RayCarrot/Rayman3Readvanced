@@ -3,6 +3,7 @@ using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Vector3 = Microsoft.Xna.Framework.Vector3;
 
 namespace GbaMonoGame.Rayman3;
@@ -105,6 +106,32 @@ public abstract class CameraActorMode7 : CameraActor
         float scale = (new Vector2(screenPos.X, screenPos.Y) - new Vector2(screenPos2.X, screenPos2.Y)).Length();
         actor.AnimatedObject.AffineMatrix = new AffineMatrix(0, new Vector2(scale * baseScale));
         
+        return true;
+    }
+
+    public override bool IsDebugBoxFramed(DebugBoxAObject obj, Box box)
+    {
+        TgxCameraMode7 cam = (TgxCameraMode7)Scene.Playfield.Camera;
+
+        if (!cam.CachedBasicEffectShaders.TryGetValue(obj, out BasicEffect effect))
+        {
+            effect = new BasicEffect(Engine.GraphicsDevice)
+            {
+                VertexColorEnabled = true
+            };
+
+            cam.CachedBasicEffectShaders.Add(obj, effect);
+        }
+
+        effect.Projection = cam.BasicEffectShader.Projection;
+        effect.View = cam.BasicEffectShader.View;
+        effect.World = Matrix.CreateTranslation(new Vector3(box.Position, 0));
+
+        obj.ScreenPos = Vector2.Zero;
+        obj.Shader = effect;
+        obj.Size = box.Size;
+
+        // TODO: Optimize by only returning true if in view
         return true;
     }
 }
