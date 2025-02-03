@@ -25,9 +25,9 @@ public class TgxCameraMode7 : TgxCamera
 
     private float _cameraFieldOfView = MathHelper.PiOver4;
     private float _cameraDistance = 100.0f;
-    private float _cameraHeight = 50.0f;
-    private float _cameraFar = 300.0f;
     private float _cameraTargetHeight = 10.0f;
+    private float _cameraFar = 300.0f;
+    private float _cameraHeight = 50.0f;
     private Vector2 _position;
     private float _direction;
 
@@ -100,32 +100,20 @@ public class TgxCameraMode7 : TgxCamera
         return num is >= -1.401298E-45f and <= Single.Epsilon;
     }
 
-    public Vector2 GetDirection(int offset = 0)
+    public Vector2 GetDirection()
     {
-        return new Vector2(MathHelpers.Cos256(Direction + offset), MathHelpers.Sin256(Direction + offset));
+        return new Vector2(MathHelpers.Cos256(Direction), MathHelpers.Sin256(Direction));
     }
 
-    public Vector2 GetRenderPosition2D()
+    public Vector3 GetCameraTarget()
     {
-        // Get the direction and offset by 180 degrees
-        Vector2 dir = GetDirection(128);
+        // Get the direction
+        Vector2 dir = GetDirection();
 
-        // Multiply by the distance
-        Vector2 cameraOffset = dir * CameraDistance;
-
-        // Add to the position
-        return Position + cameraOffset;
-    }
-
-    public Vector3 GetRenderPosition3D()
-    {
-        // Get the direction and offset by 180 degrees
-        Vector2 dir = GetDirection(128);
-
-        // Multiply by the distance and define the height
+        // Multiply by the distance and set the height
         Vector3 cameraOffset = new(
             value: dir * CameraDistance,
-            z: -CameraHeight);
+            z: -CameraTargetHeight);
 
         // Add to the position
         return new Vector3(Position, 0) + cameraOffset;
@@ -188,16 +176,11 @@ public class TgxCameraMode7 : TgxCamera
         // Update view
         if (_isViewDirty)
         {
-            // Get the position
-            Vector3 cameraPosition = GetRenderPosition3D();
-            Vector3 cameraTarget = new(Position.X, Position.Y, -CameraTargetHeight);
-            Vector3 cameraUp = new(0, 0, -1);
-
             // Set the view
             BasicEffectShader.View = Matrix.CreateLookAt(
-                cameraPosition: cameraPosition,
-                cameraTarget: cameraTarget,
-                cameraUpVector: cameraUp);
+                cameraPosition: new Vector3(Position.X, Position.Y, -CameraHeight),
+                cameraTarget: GetCameraTarget(),
+                cameraUpVector: new Vector3(0, 0, -1));
 
             _isViewDirty = false;
         }

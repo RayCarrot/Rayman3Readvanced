@@ -60,12 +60,12 @@ public abstract class CameraActorMode7 : CameraActor
     {
         TgxCameraMode7 cam = (TgxCameraMode7)Scene.Playfield.Camera;
 
-        // Get the camera render position and direction
-        Vector2 camRenderPos = cam.GetRenderPosition2D();
+        // Get the camera position and direction
+        Vector2 camPos = cam.Position;
         Vector2 camDir = cam.GetDirection();
 
         // Get the difference between the actor and the camera
-        Vector2 posDiff = actor.Position - camRenderPos;
+        Vector2 posDiff = actor.Position - camPos;
 
         // Check if the actor is in front of the camera
         if (Vector2.Dot(camDir, posDiff) < 0)
