@@ -19,7 +19,15 @@ public abstract class GameObject : Object
         ResurrectsLater = gameObjectResource.ResurrectsLater;
         Flag_6 = gameObjectResource.Flag_6;
         Flag_7 = gameObjectResource.Flag_7;
+
+        _debugPositionPointAObject = new DebugPointAObject()
+        {
+            Color = DebugBoxColor.PositionPoint,
+            RenderContext = Scene.RenderContext,
+        };
     }
+
+    private readonly DebugPointAObject _debugPositionPointAObject;
 
     public int InstanceId { get; }
     public Scene2D Scene { get; }
@@ -70,7 +78,8 @@ public abstract class GameObject : Object
 
     public virtual void DrawDebugBoxes(AnimationPlayer animationPlayer)
     {
-        // TODO: Display cross at origin position like in Ray1Map?
+        if (Scene.Camera.IsDebugBoxFramed(_debugPositionPointAObject, Position))
+            animationPlayer.PlayFront(_debugPositionPointAObject);
     }
 
     public override void DrawDebugLayout(DebugLayout debugLayout, DebugLayoutTextureManager textureManager)

@@ -125,7 +125,7 @@ public class EditableScene2D
         if (SelectedGameObject != null)
         {
             Box selectionBox = SelectedGameObject.GetSelectionBox();
-            SelectionBoxAObject.Position = selectionBox.Position - Camera.Position;
+            SelectionBoxAObject.ScreenPos = selectionBox.Position - Camera.Position;
             SelectionBoxAObject.Size = selectionBox.Size;
             AnimationPlayer.PlayFront(SelectionBoxAObject);
         }
@@ -134,7 +134,7 @@ public class EditableScene2D
         if (HoverGameObject != null && !IsDraggingObject && HoverGameObject != SelectedGameObject)
         {
             Box selectionBox = HoverGameObject.GetSelectionBox();
-            HoverBoxAObject.Position = selectionBox.Position - Camera.Position;
+            HoverBoxAObject.ScreenPos = selectionBox.Position - Camera.Position;
             HoverBoxAObject.Size = selectionBox.Size;
             AnimationPlayer.PlayFront(HoverBoxAObject);
         }

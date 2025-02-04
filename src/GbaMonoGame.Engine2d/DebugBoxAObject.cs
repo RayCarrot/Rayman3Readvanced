@@ -1,7 +1,6 @@
 using System;
 using GbaMonoGame.AnimEngine;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Engine2d;
 
@@ -10,12 +9,10 @@ namespace GbaMonoGame.Engine2d;
 /// </summary>
 public class DebugBoxAObject : AObject
 {
-    public Vector2 Position { get; set; }
     public Vector2 Size { get; set; }
     public Color Color { get; set; }
     public float Thickness { get; set; } = 1;
     public bool IsFilled { get; set; }
-    public Effect Shader { get; set; }
 
     private void DrawLine(Vector2 point1, Vector2 point2)
     {
@@ -44,7 +41,7 @@ public class DebugBoxAObject : AObject
             Gfx.AddSprite(new Sprite
             {
                 Texture = Gfx.Pixel,
-                Position = Position,
+                Position = ScreenPos,
                 Priority = BgPriority,
                 Center = false,
                 AffineMatrix = new AffineMatrix(0, Size),
@@ -55,10 +52,10 @@ public class DebugBoxAObject : AObject
         }
         else
         {
-            DrawLine(Position, Position + new Vector2(Size.X, 0)); // Top
-            DrawLine(Position, Position + new Vector2(0, Size.Y)); // Left
-            DrawLine(Position + new Vector2(0, Size.Y), Position + Size); // Bottom
-            DrawLine(Position + new Vector2(Size.X, 0), Position + Size); // Right
+            DrawLine(ScreenPos, ScreenPos + new Vector2(Size.X, 0)); // Top
+            DrawLine(ScreenPos, ScreenPos + new Vector2(0, Size.Y)); // Left
+            DrawLine(ScreenPos + new Vector2(0, Size.Y), ScreenPos + Size); // Bottom
+            DrawLine(ScreenPos + new Vector2(Size.X, 0), ScreenPos + Size); // Right
         }
     }
 }

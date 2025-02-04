@@ -1,5 +1,6 @@
 ﻿using BinarySerializer.Nintendo.GBA;
 using BinarySerializer.Ubisoft.GbaEngine;
+using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
@@ -109,7 +110,7 @@ public abstract class CameraActorMode7 : CameraActor
         return true;
     }
 
-    public override bool IsDebugBoxFramed(DebugBoxAObject obj, Box box)
+    public override bool IsDebugBoxFramed(AObject obj, Vector2 position)
     {
         TgxCameraMode7 cam = (TgxCameraMode7)Scene.Playfield.Camera;
 
@@ -125,11 +126,10 @@ public abstract class CameraActorMode7 : CameraActor
 
         effect.Projection = cam.BasicEffectShader.Projection;
         effect.View = cam.BasicEffectShader.View;
-        effect.World = Matrix.CreateTranslation(new Vector3(box.Position, 0));
+        effect.World = Matrix.CreateTranslation(new Vector3(position, 0));
 
         obj.ScreenPos = Vector2.Zero;
         obj.Shader = effect;
-        obj.Size = box.Size;
 
         // TODO: Optimize by only returning true if in view
         return true;

@@ -217,11 +217,17 @@ public abstract class ActionActor : BaseActor
     {
         base.DrawDebugBoxes(animationPlayer);
 
-        if (Scene.Camera.IsDebugBoxFramed(_debugDetectionBoxAObject, _detectionBox.Offset(Position)))
+        if (Scene.Camera.IsDebugBoxFramed(_debugDetectionBoxAObject, Position + _detectionBox.Position))
+        {
+            _debugDetectionBoxAObject.Size = _detectionBox.Size;
             animationPlayer.PlayFront(_debugDetectionBoxAObject);
+        }
 
-        if (Scene.Camera.IsDebugBoxFramed(_debugActionBoxAObject, _actionBox.Offset(Position)))
+        if (Scene.Camera.IsDebugBoxFramed(_debugActionBoxAObject, Position + _actionBox.Position))
+        {
+            _debugActionBoxAObject.Size = _actionBox.Size;
             animationPlayer.PlayFront(_debugActionBoxAObject);
+        }
     }
 
     public override void DrawDebugLayout(DebugLayout debugLayout, DebugLayoutTextureManager textureManager)

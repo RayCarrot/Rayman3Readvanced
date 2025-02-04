@@ -123,8 +123,6 @@ public class AnimatedObject : AObject
 
     public BoxTable BoxTable { get; set; }
 
-    public Effect Shader { get; set; }
-
     #endregion
 
     #region Private Methods
