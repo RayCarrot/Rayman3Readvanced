@@ -13,23 +13,22 @@ public class DebugBoxAObject : AObject
     public Vector2 Position { get; set; }
     public Vector2 Size { get; set; }
     public Color Color { get; set; }
+    public float Thickness { get; set; } = 1;
     public bool IsFilled { get; set; }
     public Effect Shader { get; set; }
 
     private void DrawLine(Vector2 point1, Vector2 point2)
     {
-        const float thickness = 1;
-
         float distance = Vector2.Distance(point1, point2);
         float angle = MathF.Atan2(point2.Y - point1.Y, point2.X - point1.X);
 
         Gfx.AddSprite(new Sprite
         {
             Texture = Gfx.Pixel,
-            Position = point1,
+            Position = (point1 + point2) * 0.5f,
             Priority = BgPriority,
-            Center = false,
-            AffineMatrix = new AffineMatrix(angle, new Vector2(distance, thickness)),
+            Center = true,
+            AffineMatrix = new AffineMatrix(angle, new Vector2(distance, Thickness)),
             Color = Color,
             Shader = Shader,
             RenderContext = RenderContext,
