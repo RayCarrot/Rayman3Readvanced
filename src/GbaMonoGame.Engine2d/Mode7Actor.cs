@@ -1,4 +1,7 @@
 ﻿using System;
+using GbaMonoGame.AnimEngine;
+using GbaMonoGame.TgxEngine;
+using Vector3 = Microsoft.Xna.Framework.Vector3;
 
 namespace GbaMonoGame.Engine2d;
 
@@ -15,7 +18,15 @@ public abstract class Mode7Actor : MovableActor
         ZPos = 0;
         RenderHeight = 32;
         AnimatedObject.BgPriority = 0;
+
+        _debugPositionPointProjectedAObject = new DebugPointAObject()
+        {
+            Color = DebugBoxColor.PositionPointProjected,
+            RenderContext = Scene.RenderContext,
+        };
     }
+
+    private readonly DebugPointAObject _debugPositionPointProjectedAObject;
 
     public short ZPos { get; set; }
     public bool IsAffine { get; set; }
@@ -36,5 +47,23 @@ public abstract class Mode7Actor : MovableActor
 
         if (newActionId != ActionId)
             ActionId = newActionId;
+    }
+
+    public override void DrawDebugBoxes(AnimationPlayer animationPlayer)
+    {
+        base.DrawDebugBoxes(animationPlayer);
+
+        TgxCameraMode7 cam = (TgxCameraMode7)Scene.Playfield.Camera;
+
+        // Get the 3D position
+        Vector3 actorPos = new(Position, 0);
+
+        // Project to the screen
+        Vector3 screenPos = cam.Project(actorPos);
+
+        // Set the screen position
+        _debugPositionPointProjectedAObject.ScreenPos = new Vector2(screenPos.X, screenPos.Y);
+
+        animationPlayer.PlayFront(_debugPositionPointProjectedAObject);
     }
 }
