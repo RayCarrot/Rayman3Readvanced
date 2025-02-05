@@ -11,51 +11,7 @@ namespace GbaMonoGame.Rayman3;
 
 public abstract class CameraActorMode7 : CameraActor
 {
-    protected CameraActorMode7(Scene2D scene) : base(scene)
-    {
-        // NOTE: Temp code for testing - allows freely moving the camera
-        State.SetTo(action =>
-        {
-            switch (action)
-            {
-                case FsmAction.Init:
-                    // Do nothing
-                    break;
-
-                case FsmAction.Step:
-                    TgxCameraMode7 cam = (TgxCameraMode7)scene.Playfield.Camera;
-
-                    Vector2 direction = new(MathHelpers.Cos256(cam.Direction), MathHelpers.Sin256(cam.Direction));
-                    Vector2 sideDirection = new(MathHelpers.Cos256(cam.Direction - 64), MathHelpers.Sin256(cam.Direction - 64));
-
-                    const float speed = 1;
-
-                    if (JoyPad.IsButtonPressed(GbaInput.Up))
-                        cam.Position += direction * speed;
-                    if (JoyPad.IsButtonPressed(GbaInput.Down))
-                        cam.Position -= direction * speed;
-
-                    if (JoyPad.IsButtonPressed(GbaInput.Right))
-                        cam.Position -= sideDirection * speed;
-                    if (JoyPad.IsButtonPressed(GbaInput.Left))
-                        cam.Position += sideDirection * speed;
-
-                    if (JoyPad.IsButtonPressed(GbaInput.R))
-                        cam.Direction--;
-                    if (JoyPad.IsButtonPressed(GbaInput.L))
-                        cam.Direction++;
-
-                    cam.Step();
-                    break;
-
-                case FsmAction.UnInit:
-                    // Do nothing
-                    break;
-            }
-
-            return false;
-        });
-    }
+    protected CameraActorMode7(Scene2D scene) : base(scene) { }
 
     public override bool IsActorFramed(BaseActor actor)
     {
