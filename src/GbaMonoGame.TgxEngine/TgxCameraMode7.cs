@@ -24,10 +24,10 @@ public class TgxCameraMode7 : TgxCamera
     private Vector2 _prevResolution = Vector2.Zero;
 
     private float _cameraFieldOfView = MathHelper.PiOver4;
-    private float _cameraDistance = 100.0f;
-    private float _cameraTargetHeight = 10.0f;
-    private float _cameraFar = 300.0f;
-    private float _cameraHeight = 50.0f;
+    private float _cameraDistance = 250.0f;
+    private float _cameraTargetHeight = -40.0f;
+    private float _cameraFar = 386.0f;
+    private float _cameraHeight = 22.0f;
     private Vector2 _position;
     private float _direction;
 
