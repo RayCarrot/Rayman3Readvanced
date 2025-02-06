@@ -158,6 +158,14 @@ public static class GameInfo
         PersistentInfo.Cages[cageId >> 3] = (byte)(PersistentInfo.Cages[cageId >> 3] & ~(1 << (cageId & 7)));
     }
 
+    public static int GetTotalYelloLumsInLevel()
+    {
+        if (LevelType != LevelType.GameCube)
+            return Level.LumsCount;
+        else
+            return YellowLumsCount;
+    }
+
     public static int GetCollectedYellowLumsInLevel(MapId mapId)
     {
         if (LevelType == LevelType.GameCube)

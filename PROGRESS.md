@@ -119,11 +119,11 @@
 | Name                   | State   | Info                                         |
 | ---------------------- | ------- | -------------------------------------------- |
 | UserInfoSideScroller   | 🟩     |                                              |
-| UserInfoSideWorld      | 🟩     |                                              |
+| UserInfoWorld          | 🟩     |                                              |
 | UserInfoMulti2D        | 🟩     |                                              |
-| #?                     | 🟥     |                                              |
-| #?                     | 🟥     |                                              |
-| #?                     | 🟥     |                                              |
+| UserInfoWaterskiMode7  | 🟥     |                                              |
+| UserInfoSingleMode7    | 🟥     |                                              |
+| UserInfoMultiMode7     | 🟥     |                                              |
 | PauseDialog            | 🟩     |                                              |
 | FogDialog              | 🟩     |                                              |
 | LyTimerDialog          | 🟩     |                                              |

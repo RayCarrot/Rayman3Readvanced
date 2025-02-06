@@ -23,6 +23,7 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
     public Action CurrentStepAction { get; set; }
 
     public TransitionsFX TransitionsFX { get; set; }
+    public Dialog UserInfo { get; set; }
     public PauseDialog PauseDialog { get; set; }
 
     public bool CanPause { get; set; }
@@ -65,6 +66,11 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
     #endregion
 
     #region Public Methods
+
+    public bool IsPaused()
+    {
+        return CurrentStepAction != Step_Normal;
+    }
 
     public override void Init()
     {

@@ -96,7 +96,7 @@ public class LumsBar : Bar
 
     public override void Set()
     {
-        int lumsCount = GameInfo.LevelType == LevelType.GameCube ? GameInfo.YellowLumsCount : GameInfo.Level.LumsCount;
+        int lumsCount = GameInfo.GetTotalYelloLumsInLevel();
 
         TotalLumsDigit1.CurrentAnimation = lumsCount / 10;
         TotalLumsDigit2.CurrentAnimation = lumsCount % 10;
