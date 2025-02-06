@@ -89,6 +89,7 @@ public enum Message
     Main_CollectedMultiItemFist = 1070,
 
     Main_Hide = 1072, // Unused
+    MissileMode7_StartRace = 1073,
 
     Main_MultiplayerGameOver = 1075,
     Main_MultiplayerTagMoved = 1076,

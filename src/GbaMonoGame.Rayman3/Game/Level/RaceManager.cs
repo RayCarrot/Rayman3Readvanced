@@ -1,18 +1,88 @@
-﻿namespace GbaMonoGame.Rayman3;
+﻿using BinarySerializer.Ubisoft.GbaEngine;
+using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+using GbaMonoGame.Engine2d;
 
-// TODO: Implement
+namespace GbaMonoGame.Rayman3;
+
 public class RaceManager
 {
-    public RaceManager(ushort[] lapTimes)
+    public RaceManager(Scene2D scene, UserInfoSingleMode7 userInfo, ushort[] lapTimes)
     {
+        Scene = scene;
+        UserInfo = userInfo;
+        Timer = 0;
+        LapsCount = lapTimes.Length;
         LapTimes = lapTimes;
-        // TODO: Implement
+        CurrentLap = 1;
+        RemainingTime = -1;
+        Unknown = 0;
+        StartedRace = false;
+        Flag_1 = true;
     }
 
+    public Scene2D Scene { get; }
+    public UserInfoSingleMode7 UserInfo { get; }
+    public int LapsCount { get; }
     public ushort[] LapTimes { get; }
+    public uint Timer { get; set; }
+    public int RemainingTime { get; set; }
+    public int CurrentLap { get; set; }
+    public int Unknown { get; set; } // TODO: Name
+    public bool StartedRace { get; set; }
+    public bool Flag_1 { get; set; } // TODO: Name
 
     public void Step()
     {
-        // TODO: Implement
+        Timer++;
+
+        switch (Timer)
+        {
+            case 1:
+                RemainingTime = LapTimes[0] * 60;
+                break;
+            
+            case 60:
+                UserInfo.SetCountdownValue(3);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CountDwn_Mix07_P1_);
+                break;
+            
+            case 120:
+                UserInfo.SetCountdownValue(2);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CountDwn_Mix07_P2_);
+                break;
+
+            case 180:
+                UserInfo.SetCountdownValue(1);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CountDwn_Mix07_P3_);
+                break;
+
+            case 240:
+                UserInfo.SetCountdownValue(0);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoGO_Mix02);
+                StartedRace = true;
+                Scene.MainActor.ProcessMessage(this, Message.MissileMode7_StartRace);
+                break;
+
+            case 300:
+                UserInfo.Flag_0 = false;
+                break;
+        }
+
+        if (StartedRace)
+        {
+            if (RemainingTime <= 0)
+            {
+                Scene.MainActor.ProcessMessage(this, Message.Exploded);
+            }
+            else
+            {
+                RemainingTime--;
+
+                // TODO: Only allow this if in debug mode
+                // NOTE: This cheat is not included in the retail versions of the games
+                if (JoyPad.IsButtonPressed(GbaInput.R) && JoyPad.IsButtonPressed(GbaInput.L) && JoyPad.IsButtonJustPressed(GbaInput.Select))
+                    RemainingTime = 356400; // 99:00:00
+            }
+        }
     }
 }

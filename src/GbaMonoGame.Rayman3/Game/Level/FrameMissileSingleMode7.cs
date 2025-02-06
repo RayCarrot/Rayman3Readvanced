@@ -7,6 +7,12 @@ public class FrameMissileSingleMode7 : FrameMode7
         LapTimes = lapTimes;
     }
 
+    public new UserInfoSingleMode7 UserInfo
+    {
+        get => (UserInfoSingleMode7)base.UserInfo;
+        set => base.UserInfo = value;
+    }
+
     public ushort[] LapTimes { get; }
     public RaceManager RaceManager { get; set; }
     public bool[] CollectedLums { get; set; }
@@ -27,7 +33,7 @@ public class FrameMissileSingleMode7 : FrameMode7
 
         UserInfo = new UserInfoSingleMode7(Scene);
 
-        RaceManager = new RaceManager(LapTimes);
+        RaceManager = new RaceManager(Scene, UserInfo, LapTimes);
 
         int lumsCount = GameInfo.GetTotalYelloLumsInLevel();
         CollectedLums = new bool[lumsCount];

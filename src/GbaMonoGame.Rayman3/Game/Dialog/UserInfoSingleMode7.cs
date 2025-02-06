@@ -10,10 +10,17 @@ public class UserInfoSingleMode7 : Dialog
         // TODO: Implement
     }
 
+    public bool Flag_0 { get; set; } // TODO: Name
+
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {
         // TODO: Implement
         return true;
+    }
+
+    public void SetCountdownValue(int value)
+    {
+        // TODO: Implement
     }
 
     public override void Load()
