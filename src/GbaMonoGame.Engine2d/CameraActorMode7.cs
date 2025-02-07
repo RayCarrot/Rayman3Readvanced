@@ -39,30 +39,46 @@ public abstract class CameraActorMode7 : CameraActor
         if (actor is Mode7Actor mode7Actor)
             mode7Actor.CamAngle = MathHelpers.Atan2_256(posDiff);
 
-        const float baseScale = 0.5f;
+        // Get or create the shader for the actor
+        if (!cam.CachedBasicEffectShaders.TryGetValue(actor.AnimatedObject, out BasicEffect effect))
+        {
+            effect = new BasicEffect(Engine.GraphicsDevice)
+            {
+                VertexColorEnabled = true,
+                TextureEnabled = true,
+            };
 
-        // TODO: Replace with the RenderHeight value from the actor
-        AnimationChannel channel = actor.AnimatedObject.GetAnimation().Channels[0];
-        Constants.Size shape = Constants.GetSpriteShape(channel.SpriteShape, channel.SpriteSize);
-        float renderHeight = shape.Height;
+            cam.CachedBasicEffectShaders.Add(actor.AnimatedObject, effect);
+        }
 
-        // Get the 3D position and offset by half the height so it's above the floor
-        Vector3 actorPos = new(actor.Position, -(renderHeight / 2f) * baseScale);
+        // Set the projection and view from the camera
+        effect.Projection = cam.BasicEffectShader.Projection;
+        effect.View = cam.BasicEffectShader.View;
 
-        // Project to the screen
-        Vector3 screenPos = cam.Project(actorPos);
+        // Get the scale
+        const float scale = 0.25f;
+        Matrix scaleMatrix = Matrix.CreateScale(scale, -scale, scale);
 
-        // Set the screen position
-        actor.AnimatedObject.ScreenPos = new Vector2(screenPos.X, screenPos.Y);
+        // Get the rotation to face the camera
+        effect.View.Decompose(out _, out Quaternion rotation, out _);
+        Matrix rotationMatrix = Matrix.Invert(Matrix.CreateFromQuaternion(rotation));
+
+        // Get the translation
+        Vector3 actorPos = new(actor.Position, 0);
+        Matrix translationMatrix = Matrix.CreateTranslation(actorPos);
+
+        // Set the world matrix
+        effect.World = scaleMatrix * rotationMatrix * translationMatrix;
+
+        // The screen position is 0 since we use the shader
+        actor.AnimatedObject.ScreenPos = Vector2.Zero;
+
+        // Set the shader
+        actor.AnimatedObject.Shader = effect;
 
         // Set the Y priority, used for sorting the objects based on distance
-        actor.AnimatedObject.YPriority = screenPos.Z;
+        actor.AnimatedObject.YPriority = camDist;
 
-        // Get a second screen position one unit away to determine the scale
-        Vector3 screenPos2 = cam.Project(actorPos + new Vector3(0, 0, 1));
-        float scale = (new Vector2(screenPos.X, screenPos.Y) - new Vector2(screenPos2.X, screenPos2.Y)).Length();
-        actor.AnimatedObject.AffineMatrix = new AffineMatrix(0, new Vector2(scale * baseScale));
-        
         return true;
     }
 
