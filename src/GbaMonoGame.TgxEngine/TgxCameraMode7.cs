@@ -7,7 +7,11 @@ namespace GbaMonoGame.TgxEngine;
 // TODO: Scale by the resolution. Currently the scaling is overriden by the shader.
 public class TgxCameraMode7 : TgxCamera
 {
-    public TgxCameraMode7(RenderContext renderContext) : base(renderContext) { }
+    public TgxCameraMode7(RenderContext renderContext) : base(renderContext)
+    {
+        Step();
+        SetHorizon(62);
+    }
 
     private bool _isProjectionDirty = true;
     private bool _isViewDirty = true;
@@ -92,6 +96,15 @@ public class TgxCameraMode7 : TgxCamera
         RotScaleLayers.Add(layer);
     }
 
+    public void SetHorizon(float horizon)
+    {
+        Vector3 world = Unproject(new Vector2(RenderContext.Resolution.X / 2, horizon + 2), true);
+        Vector3 camPos = new(Position.X, Position.Y, -CameraHeight);
+        float dist = Vector3.Distance(camPos, world);
+        
+        CameraFar = dist;
+    }
+
     public Vector2 GetDirection()
     {
         return new Vector2(MathHelpers.Cos256(Direction), MathHelpers.Sin256(Direction));
@@ -131,9 +144,13 @@ public class TgxCameraMode7 : TgxCamera
     public Vector3 Unproject(Vector2 source, bool inViewPort)
     {
         Viewport viewport = RenderContext.Viewport;
+        float scale = RenderContext.Scale;
 
         if (inViewPort)
+        {
+            source *= scale;
             source += new Vector2(viewport.X, viewport.Y);
+        }
 
         Vector3 nearWorldPoint = viewport.Unproject(new Vector3(source, 0), ProjectionMatrix, ViewMatrix, Matrix.Identity);
         Vector3 farWorldPoint = viewport.Unproject(new Vector3(source, 1), ProjectionMatrix, ViewMatrix, Matrix.Identity);
