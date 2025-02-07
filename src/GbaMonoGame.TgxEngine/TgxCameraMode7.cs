@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.TgxEngine;
 
@@ -87,12 +87,6 @@ public class TgxCameraMode7 : TgxCamera
         _isViewDirty = true;
     }
 
-    private static bool WithinEpsilon(float a, float b)
-    {
-        float num = a - b;
-        return num is >= -1.401298E-45f and <= Single.Epsilon;
-    }
-
     public void AddRotScaleLayer(TgxGameLayer layer)
     {
         RotScaleLayers.Add(layer);
@@ -119,26 +113,38 @@ public class TgxCameraMode7 : TgxCamera
 
     public Vector3 Project(Vector3 source)
     {
-        // Re-implemented from ViewPort.Project in MonoGame
+        Viewport viewport = RenderContext.Viewport;
+        float scale = RenderContext.Scale;
 
-        Vector2 res = RenderContext.Resolution;
+        // Project to the screen using the viewport
+        Vector3 pos = viewport.Project(source, ProjectionMatrix, ViewMatrix, Matrix.Identity);
+        
+        // Offset by the viewport position on the screen
+        pos -= new Vector3(viewport.X, viewport.Y, 0);
 
-        Matrix matrix = ViewMatrix * ProjectionMatrix;
-        Vector3 vector = Vector3.Transform(source, matrix);
+        // Scale
+        pos /= scale;
+        
+        return pos;
+    }
 
-        float a = source.X * matrix.M14 + source.Y * matrix.M24 + source.Z * matrix.M34 + matrix.M44;
-        if (!WithinEpsilon(a, 1f))
-        {
-            vector.X /= a;
-            vector.Y /= a;
-            vector.Z /= a;
-        }
+    public Vector3 Unproject(Vector2 source, bool inViewPort)
+    {
+        Viewport viewport = RenderContext.Viewport;
 
-        // Scale by the resolution
-        vector.X = (((vector.X + 1f) * 0.5f) * res.X);
-        vector.Y = (((-vector.Y + 1f) * 0.5f) * res.Y);
+        if (inViewPort)
+            source += new Vector2(viewport.X, viewport.Y);
 
-        return vector;
+        Vector3 nearWorldPoint = viewport.Unproject(new Vector3(source, 0), ProjectionMatrix, ViewMatrix, Matrix.Identity);
+        Vector3 farWorldPoint = viewport.Unproject(new Vector3(source, 1), ProjectionMatrix, ViewMatrix, Matrix.Identity);
+        Ray ray = new(nearWorldPoint, farWorldPoint - nearWorldPoint);
+
+        Plane groundPlane = new(Vector3.Zero, Vector3.UnitZ);
+        
+        if (ray.Intersects(groundPlane) is { } distance)
+            return ray.Position + distance * ray.Direction;
+        else
+            return Vector3.Zero;
     }
 
     public void Step()
