@@ -36,7 +36,6 @@ public class AObjectFog : AObject
     public AnimatedObjectResource Resource { get; }
     public AnimationChannel[] SpriteChannels { get; }
 
-    public bool IsAlphaBlendEnabled { get; set; }
     public float Alpha { get; set; }
     public float GbaAlpha
     {
@@ -62,8 +61,8 @@ public class AObjectFog : AObject
             createObjFunc: static data => new IndexedSpriteTexture2D(data.Resource, data.SpriteShape, data.SpriteSize, data.TileIndex));
 
         int paletteIndex = channel.PalIndex;
-
-        PaletteTexture paletteTexture = new(
+            
+        RenderOptions.PaletteTexture = new PaletteTexture(
             Texture: Engine.TextureCache.GetOrCreateObject(
                 pointer: Resource.Palettes.Offset,
                 id: 0,
@@ -74,15 +73,14 @@ public class AObjectFog : AObject
         Sprite sprite = new()
         {
             Texture = texture,
-            PaletteTexture = paletteTexture,
             Position = new Vector2(screenPos.X, screenPos.Y),
             FlipX = false,
             FlipY = false,
             Priority = BgPriority,
             Center = true,
             AffineMatrix = null,
-            Alpha = IsAlphaBlendEnabled ? Alpha : null,
-            RenderContext = RenderContext
+            Alpha = Alpha,
+            RenderOptions = RenderOptions,
         };
 
         Gfx.AddSprite(sprite);

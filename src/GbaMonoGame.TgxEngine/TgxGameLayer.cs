@@ -17,4 +17,5 @@ public abstract class TgxGameLayer
     public int PixelHeight => Height * Tile.Size;
 
     public abstract void SetOffset(Vector2 offset);
+    public abstract void SetWorldViewProjMatrix(Matrix worldViewProj);
 }

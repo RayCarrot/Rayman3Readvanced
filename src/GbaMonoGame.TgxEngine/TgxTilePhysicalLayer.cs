@@ -20,7 +20,7 @@ public class TgxTilePhysicalLayer : TgxGameLayer
             Wrap = false,
             Is8Bit = null,
             Renderer = new CollisionMapScreenRenderer(Width, Height, CollisionMap),
-            RenderContext = renderContext,
+            RenderOptions = { RenderContext = renderContext },
         };
         Gfx.AddScreen(DebugScreen);
     }
@@ -31,5 +31,10 @@ public class TgxTilePhysicalLayer : TgxGameLayer
     public override void SetOffset(Vector2 offset)
     {
         DebugScreen.Offset = offset;
+    }
+
+    public override void SetWorldViewProjMatrix(Matrix worldViewProj)
+    {
+        DebugScreen.RenderOptions.WorldViewProj = worldViewProj;
     }
 }

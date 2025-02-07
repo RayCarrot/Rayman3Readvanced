@@ -19,3 +19,15 @@
 /processorParam:DebugMode=Auto
 /build:PaletteShader.fx
 
+#begin PaletteVertexShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:PaletteVertexShader.fx
+
+#begin VertexShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:VertexShader.fx
+

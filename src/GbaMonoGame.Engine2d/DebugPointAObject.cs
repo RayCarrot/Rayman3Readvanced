@@ -22,8 +22,7 @@ public class DebugPointAObject : AObject
             Center = false,
             AffineMatrix = new AffineMatrix(0, size),
             Color = new Color(Color, alpha),
-            Shader = Shader,
-            RenderContext = RenderContext,
+            RenderOptions = RenderOptions,
         });
     }
 

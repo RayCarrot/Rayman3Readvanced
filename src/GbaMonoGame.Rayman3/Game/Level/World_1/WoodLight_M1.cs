@@ -18,10 +18,7 @@ public class WoodLight_M1 : FrameSideScroller
         TextureScreenRenderer renderer = (TextureScreenRenderer)cloudsLayer.Screen.Renderer;
         if (Rom.Platform == Platform.GBA)
         {
-            cloudsLayer.Screen.Renderer = new LevelCloudsRenderer(renderer.Texture, [32, 120, 227])
-            {
-                PaletteTexture = renderer.PaletteTexture
-            };
+            cloudsLayer.Screen.Renderer = new LevelCloudsRenderer(renderer.Texture, [32, 120, 227]);
         }
         else
         {

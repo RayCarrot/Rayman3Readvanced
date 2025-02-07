@@ -101,7 +101,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SlideOut_Mix01);
         }
 
-        CircleTransitionScreenEffect.RenderContext = Scene.RenderContext;
+        CircleTransitionScreenEffect.RenderOptions.RenderContext = Scene.RenderContext;
         CircleTransitionScreenEffect.Init(CircleTransitionValue, Scene.MainActor.ScreenPosition - new Vector2(0, 32));
         Gfx.SetScreenEffect(CircleTransitionScreenEffect);
     }
@@ -114,7 +114,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         LevelMusicManager.Init();
         CircleTransitionScreenEffect = new CircleTransitionScreenEffect()
         {
-            RenderContext = Engine.GameRenderContext,
+            RenderOptions = { RenderContext = Engine.GameRenderContext },
         };
         TransitionsFX = new TransitionsFX(true);
         Scene = new Scene2D((int)GameInfo.MapId, x => new CameraSideScroller(x), 4, 1);

@@ -1,23 +1,13 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.TgxEngine;
 
 // TODO: Scale by the resolution. Currently the scaling is overriden by the shader.
 public class TgxCameraMode7 : TgxCamera
 {
-    public TgxCameraMode7(RenderContext renderContext) : base(renderContext)
-    {
-        BasicEffectShader = new BasicEffect(Engine.GraphicsDevice)
-        {
-            World = Matrix.Identity,
-            TextureEnabled = true,
-            VertexColorEnabled = true,
-        };
-        CachedBasicEffectShaders = new Dictionary<object, BasicEffect>();
-    }
+    public TgxCameraMode7(RenderContext renderContext) : base(renderContext) { }
 
     private bool _isProjectionDirty = true;
     private bool _isViewDirty = true;
@@ -32,8 +22,8 @@ public class TgxCameraMode7 : TgxCamera
     private float _direction;
 
     // Rendering
-    public BasicEffect BasicEffectShader { get; }
-    public Dictionary<object, BasicEffect> CachedBasicEffectShaders { get; }
+    public Matrix ViewMatrix { get; set; }
+    public Matrix ProjectionMatrix { get; set; }
 
     // Projection values
     public float CameraFieldOfView
@@ -76,6 +66,9 @@ public class TgxCameraMode7 : TgxCamera
         set => SetViewValue(ref _direction, value);
     }
 
+    // Layers
+    public List<TgxGameLayer> RotScaleLayers { get; } = new();
+
     private void SetProjectionValue<T>(ref T field, T newValue)
     {
         if (EqualityComparer<T>.Default.Equals(field, newValue))
@@ -98,6 +91,11 @@ public class TgxCameraMode7 : TgxCamera
     {
         float num = a - b;
         return num is >= -1.401298E-45f and <= Single.Epsilon;
+    }
+
+    public void AddRotScaleLayer(TgxGameLayer layer)
+    {
+        RotScaleLayers.Add(layer);
     }
 
     public Vector2 GetDirection()
@@ -125,7 +123,7 @@ public class TgxCameraMode7 : TgxCamera
 
         Vector2 res = RenderContext.Resolution;
 
-        Matrix matrix = BasicEffectShader.World * BasicEffectShader.View * BasicEffectShader.Projection;
+        Matrix matrix = ViewMatrix * ProjectionMatrix;
         Vector3 vector = Vector3.Transform(source, matrix);
 
         float a = source.X * matrix.M14 + source.Y * matrix.M24 + source.Z * matrix.M34 + matrix.M44;
@@ -143,32 +141,24 @@ public class TgxCameraMode7 : TgxCamera
         return vector;
     }
 
-    public override void UnInit()
-    {
-        base.UnInit();
-
-        BasicEffectShader.Dispose();
-
-        foreach (BasicEffect effect in CachedBasicEffectShaders.Values)
-            effect.Dispose();
-        CachedBasicEffectShaders.Clear();
-    }
-
     public void Step()
     {
         // Get the current resolution
         Vector2 res = RenderContext.Resolution;
 
+        bool updated = false;
+
         // Update projection
         if (_isProjectionDirty || _prevResolution != res)
         {
             // Set the projection
-            BasicEffectShader.Projection = Matrix.CreatePerspectiveFieldOfView(
+            ProjectionMatrix = Matrix.CreatePerspectiveFieldOfView(
                 fieldOfView: CameraFieldOfView,
                 aspectRatio: RenderContext.AspectRatio,
                 nearPlaneDistance: 0.1f,
                 farPlaneDistance: CameraFar);
 
+            updated = true;
             _isProjectionDirty = false;
             _prevResolution = res;
         }
@@ -177,12 +167,20 @@ public class TgxCameraMode7 : TgxCamera
         if (_isViewDirty)
         {
             // Set the view
-            BasicEffectShader.View = Matrix.CreateLookAt(
+            ViewMatrix = Matrix.CreateLookAt(
                 cameraPosition: new Vector3(Position.X, Position.Y, -CameraHeight),
                 cameraTarget: GetCameraTarget(),
                 cameraUpVector: new Vector3(0, 0, -1));
 
+            updated = true;
             _isViewDirty = false;
+        }
+
+        if (updated)
+        {
+            Matrix viewProj = ViewMatrix * ProjectionMatrix;
+            foreach (TgxGameLayer layer in RotScaleLayers)
+                layer.SetWorldViewProjMatrix(viewProj);
         }
     }
 }

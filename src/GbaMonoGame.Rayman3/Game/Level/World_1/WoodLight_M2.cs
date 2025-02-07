@@ -18,10 +18,7 @@ public class WoodLight_M2 : FrameSideScroller
         {
             TgxTileLayer cloudsLayer = ((TgxPlayfield2D)Scene.Playfield).TileLayers[0];
             TextureScreenRenderer renderer = (TextureScreenRenderer)cloudsLayer.Screen.Renderer;
-            cloudsLayer.Screen.Renderer = new LevelCloudsRenderer(renderer.Texture, [15, 71, 227])
-            {
-                PaletteTexture = renderer.PaletteTexture
-            };
+            cloudsLayer.Screen.Renderer = new LevelCloudsRenderer(renderer.Texture, [15, 71, 227]);
         }
     }
 }

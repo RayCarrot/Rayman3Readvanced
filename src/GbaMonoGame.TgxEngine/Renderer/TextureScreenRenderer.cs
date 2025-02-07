@@ -12,21 +12,14 @@ public class TextureScreenRenderer : IScreenRenderer
     }
 
     public Texture2D Texture { get; }
-    public PaletteTexture PaletteTexture { get; set; }
     public Rectangle TextureRectangle { get; set; }
-    public Effect Shader { get; set; }
     public Vector2 Scale { get; set; } = Vector2.One;
 
     public Vector2 GetSize(GfxScreen screen) => TextureRectangle.Size.ToVector2();
 
     public void Draw(GfxRenderer renderer, GfxScreen screen, Vector2 position, Color color)
     {
-        renderer.BeginRender(new RenderOptions(screen.RenderContext)
-        {
-            Alpha = screen.IsAlphaBlendEnabled,
-            PaletteTexture = PaletteTexture,
-            Shader = Shader,
-        });
+        renderer.BeginRender(screen.RenderOptions);
 
         renderer.Draw(Texture, position, TextureRectangle, 0, Vector2.Zero, Scale, SpriteEffects.None, color);
     }

@@ -56,10 +56,8 @@ public abstract class TgxPlayfield
         return PhysicalLayer.CollisionMap[mapPoint.Y * PhysicalLayer.Width + mapPoint.X];
     }
 
-    public void UnInit()
-    {
-        Camera.UnInit();
-    }
+    // TODO: Remove?
+    public void UnInit() { }
 
     public void Step()
     {

@@ -46,9 +46,9 @@ public class Font
         ref Vector2 position,
         int priority,
         AffineMatrix? affineMatrix,
-        float? alpha,
+        float alpha,
         Color color,
-        RenderContext renderContext)
+        RenderOptions renderOptions)
     {
         char c = text[charIndex];
 
@@ -80,7 +80,7 @@ public class Font
                 AffineMatrix = affineMatrix,
                 Alpha = alpha,
                 Color = color,
-                RenderContext = renderContext
+                RenderOptions = renderOptions,
             };
         }
         else

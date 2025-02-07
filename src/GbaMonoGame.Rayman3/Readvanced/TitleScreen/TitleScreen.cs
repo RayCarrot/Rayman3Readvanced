@@ -252,10 +252,9 @@ public class TitleScreen : Frame
             Offset = cloudsPos,
             Renderer = new TextureScreenRenderer(gbaClouds)
             {
-                Shader = CloudsShader,
                 Scale = wrap, // Scale by the wrapping and correct in shader
             },
-            RenderContext = renderContext,
+            RenderOptions = { RenderContext = renderContext, Shader = CloudsShader },
         });
         Gfx.AddScreen(new GfxScreen(1)
         {
@@ -263,7 +262,7 @@ public class TitleScreen : Frame
             Priority = 1,
             Offset = Vector2.Zero,
             Renderer = new TextureScreenRenderer(background),
-            RenderContext = renderContext,
+            RenderOptions = { RenderContext = renderContext },
         });
 
         Cursor = new Cursor(renderContext);

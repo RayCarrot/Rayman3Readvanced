@@ -7,7 +7,6 @@ public class Sprite
 {
     public Texture2D Texture { get; set; }
     public Rectangle TextureRectangle { get; set; }
-    public PaletteTexture PaletteTexture { get; set; }
     public Vector2 Position { get; set; }
     public bool FlipX { get; set; }
     public bool FlipY { get; set; }
@@ -19,28 +18,21 @@ public class Sprite
     public bool OverrideGfxColor { get; set; } // Needed for the curtains in the worldmap which are not effected by the palette fading
 
     // TODO: There are multiple issues with how alpha is implemented here compared to on GBA. Most noticeably sprites should not effect each other. Very noticeable when setting it on Rayman and looking up - Rayman gets 4 eyes then! Although this might be how it is on N-Gage?
-    public float? Alpha { get; set; }
+    public float Alpha { get; set; }
 
-    public Effect Shader { get; set; }
-
-    public RenderContext RenderContext { get; set; }
+    public RenderOptions RenderOptions { get; set; }
 
     public void Draw(GfxRenderer renderer, Color color)
     {
-        renderer.BeginRender(new RenderOptions(RenderContext)
-        {
-            Alpha = Alpha != null,
-            PaletteTexture = PaletteTexture,
-            Shader = Shader,
-        });
+        renderer.BeginRender(RenderOptions);
 
         if (OverrideGfxColor)
             color = Color;
         else
             color = new Color(Color.ToVector4() * color.ToVector4());
         
-        if (Alpha != null)
-            color = new Color(color, Alpha.Value);
+        if (RenderOptions.Alpha)
+            color = new Color(color, Alpha);
 
         Rectangle textureRectangle = TextureRectangle;
         if (textureRectangle == Rectangle.Empty)

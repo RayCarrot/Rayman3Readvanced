@@ -1,5 +1,6 @@
 ﻿using BinarySerializer.Nintendo.GBA;
 using BinarySerializer.Ubisoft.GbaEngine;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
@@ -23,9 +24,8 @@ public class TgxTileLayer : TgxGameLayer
             Priority = 3 - LayerId,
             Wrap = true,
             Is8Bit = Resource.Is8Bit,
-            IsAlphaBlendEnabled = Resource.HasAlphaBlending, // TODO: We also need to update TransitionsFX, see Beneath map 1
             Alpha = Resource.AlphaCoeff,
-            RenderContext = renderContext,
+            RenderOptions = { RenderContext = renderContext, Alpha = Resource.HasAlphaBlending }, // TODO: We also need to update TransitionsFX, see Beneath map 1
         };
 
         Gfx.AddScreen(Screen);
@@ -43,9 +43,15 @@ public class TgxTileLayer : TgxGameLayer
         Screen.Offset = offset;
     }
 
+    public override void SetWorldViewProjMatrix(Matrix worldViewProj)
+    {
+        Screen.RenderOptions.WorldViewProj = worldViewProj;
+    }
+
     public void LoadRenderer(TileKit tileKit, GbaVram vram)
     {
-        PaletteTexture paletteTexture = new(
+        // Create and set the palette texture
+        Screen.RenderOptions.PaletteTexture = new PaletteTexture(
             Texture: Engine.TextureCache.GetOrCreateObject(
                 pointer: vram.SelectedPalette.CachePointer,
                 id: 0,
@@ -66,7 +72,6 @@ public class TgxTileLayer : TgxGameLayer
                 height: Height, 
                 tileMap: TileMap, 
                 tileSet: tileSet, 
-                paletteTexture: paletteTexture, 
                 is8Bit: Is8Bit);
         }
         else
@@ -79,10 +84,7 @@ public class TgxTileLayer : TgxGameLayer
                 data: (Vram: vram, Layer: this),
                 createObjFunc: static data => new IndexedTiledTexture2D(data.Layer.Width, data.Layer.Height, data.Vram.TileSet, data.Layer.TileMap, data.Layer.Is8Bit));
 
-            Screen.Renderer = new TextureScreenRenderer(layerTexture)
-            {
-                PaletteTexture = paletteTexture,
-            };
+            Screen.Renderer = new TextureScreenRenderer(layerTexture);
         }
     }
 }

@@ -16,10 +16,7 @@ public class NGageAscension : FrameSideScroller
         {
             TgxTileLayer cloudsLayer = ((TgxPlayfield2D)Scene.Playfield).TileLayers[0];
             TextureScreenRenderer renderer = (TextureScreenRenderer)cloudsLayer.Screen.Renderer;
-            cloudsLayer.Screen.Renderer = new LevelCloudsRenderer(renderer.Texture, [32, 120, 227])
-            {
-                PaletteTexture = renderer.PaletteTexture
-            };
+            cloudsLayer.Screen.Renderer = new LevelCloudsRenderer(renderer.Texture, [32, 120, 227]);
         }
     }
 }

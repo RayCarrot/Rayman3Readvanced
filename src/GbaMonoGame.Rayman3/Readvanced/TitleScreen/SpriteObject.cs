@@ -15,7 +15,7 @@ public class SpriteObject : AObject
             Texture = Texture,
             Position = GetAnchoredPosition(),
             Priority = BgPriority,
-            RenderContext = RenderContext,
+            RenderOptions = RenderOptions,
         });
     }
 }

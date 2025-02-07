@@ -13,10 +13,19 @@ public class GfxRenderer
         _spriteBatch = new SpriteBatch(graphicsDevice);
         _rasterizerState = new RasterizerState() { CullMode = CullMode.None };
 
-        _paletteShader = Gfx.PaletteShader;
-        _paletteTextureParam = _paletteShader.Parameters["PaletteTexture"];
-        _paletteIndexParam = _paletteShader.Parameters["PaletteIndex"];
-        _paletteHeightParam = _paletteShader.Parameters["PaletteHeight"];
+        _paletteShader = Engine.FixContentManager.Load<Effect>("PaletteShader");
+        _paletteShaderPaletteTextureParam = _paletteShader.Parameters["PaletteTexture"];
+        _paletteShaderPaletteIndexParam = _paletteShader.Parameters["PaletteIndex"];
+        _paletteShaderPaletteHeightParam = _paletteShader.Parameters["PaletteHeight"];
+
+        _paletteVertexShader = Engine.FixContentManager.Load<Effect>("PaletteVertexShader");
+        _paletteVertexShaderPaletteTextureParam = _paletteVertexShader.Parameters["PaletteTexture"];
+        _paletteVertexShaderPaletteIndexParam = _paletteVertexShader.Parameters["PaletteIndex"];
+        _paletteVertexShaderPaletteHeightParam = _paletteVertexShader.Parameters["PaletteHeight"];
+        _paletteVertexShaderWorldViewProjParam = _paletteVertexShader.Parameters["WorldViewProj"];
+
+        _vertexShader = Engine.FixContentManager.Load<Effect>("VertexShader");
+        _vertexShaderWorldViewProjParam = _vertexShader.Parameters["WorldViewProj"];
     }
 
     #endregion
@@ -25,12 +34,21 @@ public class GfxRenderer
 
     private readonly SpriteBatch _spriteBatch;
     private readonly RasterizerState _rasterizerState;
-    private RenderOptions? _renderOptions;
+    private RenderOptions _renderOptions;
 
     private readonly Effect _paletteShader;
-    private readonly EffectParameter _paletteTextureParam;
-    private readonly EffectParameter _paletteIndexParam;
-    private readonly EffectParameter _paletteHeightParam;
+    private readonly EffectParameter _paletteShaderPaletteTextureParam;
+    private readonly EffectParameter _paletteShaderPaletteIndexParam;
+    private readonly EffectParameter _paletteShaderPaletteHeightParam;
+
+    private readonly Effect _paletteVertexShader;
+    private readonly EffectParameter _paletteVertexShaderPaletteTextureParam;
+    private readonly EffectParameter _paletteVertexShaderPaletteIndexParam;
+    private readonly EffectParameter _paletteVertexShaderPaletteHeightParam;
+    private readonly EffectParameter _paletteVertexShaderWorldViewProjParam;
+
+    private readonly Effect _vertexShader;
+    private readonly EffectParameter _vertexShaderWorldViewProjParam;
 
     #endregion
 
@@ -49,19 +67,54 @@ public class GfxRenderer
             _renderOptions = options;
 
             // Set the screen area to draw to
-            _spriteBatch.GraphicsDevice.Viewport = options.RenderContext.Viewport;
+            Viewport viewport = options.RenderContext.Viewport;
+            _spriteBatch.GraphicsDevice.Viewport = viewport;
 
             // Get the shader
-            Effect shader = options.Shader;
-            
-            // If we have a palette texture specified then we use the palette shader and pass in the params
-            if (shader == null && options.PaletteTexture != null)
+            Effect shader;
+
+            // If a shader is specified then we always use that
+            if (options.Shader != null)
             {
-                shader = _paletteShader;
-                _paletteTextureParam.SetValue(options.PaletteTexture.Texture);
-                _paletteIndexParam.SetValue(options.PaletteTexture.PaletteIndex);
-                _paletteHeightParam.SetValue(options.PaletteTexture.Texture.Height);
+                shader = options.Shader;
             }
+            // If we have a palette texture then we need to use a palette shader
+            else if (options.PaletteTexture != null)
+            {
+                // If we have a WorldViewProj matrix then we render it in 3D using a vertex shader
+                if (options.WorldViewProj != null)
+                {
+                    shader = _paletteVertexShader;
+                    _paletteVertexShaderPaletteTextureParam.SetValue(options.PaletteTexture.Texture);
+                    _paletteVertexShaderPaletteIndexParam.SetValue(options.PaletteTexture.PaletteIndex);
+                    _paletteVertexShaderPaletteHeightParam.SetValue(options.PaletteTexture.Texture.Height);
+                    _paletteVertexShaderWorldViewProjParam.SetValue(options.WorldViewProj.Value);
+                }
+                // If there is no WorldViewProj matrix then we render it in 2D using the vertex shader from the SpriteBatch
+                else
+                {
+                    shader = _paletteShader;
+                    _paletteShaderPaletteTextureParam.SetValue(options.PaletteTexture.Texture);
+                    _paletteShaderPaletteIndexParam.SetValue(options.PaletteTexture.PaletteIndex);
+                    _paletteShaderPaletteHeightParam.SetValue(options.PaletteTexture.Texture.Height);
+                }
+            }
+            // If we have a WorldViewProj matrix then we render it in 3D using a vertex shader
+            else if (options.WorldViewProj != null)
+            {
+                shader = _vertexShader;
+                _vertexShaderWorldViewProjParam.SetValue(options.WorldViewProj.Value);
+            }
+            // Render without a palette texture or custom shader
+            else
+            {
+                shader = null;
+            }
+
+            // Create a view matrix using the render scale. In the SpriteBatch this is multiplied by a projection matrix
+            // which is calculated as: Matrix.CreateOrthographicOffCenter(0, viewport.Width, viewport.Height, 0, 0, -1).
+            // Note that this gets ignored if we're using a vertex shader!
+            Matrix view = Matrix.CreateScale(options.RenderContext.Scale);
 
             // Begin a new batch
             _spriteBatch.Begin(
@@ -74,7 +127,7 @@ public class GfxRenderer
                     AlphaSourceBlend = Blend.One,
                     AlphaDestinationBlend = Blend.InverseSourceAlpha,
                 } : null,
-                transformMatrix: Matrix.CreateScale(options.RenderContext.Scale),
+                transformMatrix: view,
                 rasterizerState: _rasterizerState);
         }
     }

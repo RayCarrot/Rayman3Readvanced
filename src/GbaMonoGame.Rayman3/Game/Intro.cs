@@ -157,11 +157,7 @@ public class Intro : Frame, IHasPlayfield
         if (Rom.Platform == Platform.GBA)
         {
             TextureScreenRenderer renderer = ((TextureScreenRenderer)Playfield.TileLayers[3].Screen.Renderer);
-
-            Playfield.TileLayers[3].Screen.Renderer = new IntroCloudsRenderer(renderer.Texture)
-            {
-                PaletteTexture = renderer.PaletteTexture
-            };
+            Playfield.TileLayers[3].Screen.Renderer = new IntroCloudsRenderer(renderer.Texture);
         }
 
         Gfx.FadeControl = FadeControl.None;
@@ -226,7 +222,7 @@ public class Intro : Frame, IHasPlayfield
                 Timer = 0;
                 CurrentStepAction = Step_2;
 
-                Playfield.TileLayers[0].Screen.IsAlphaBlendEnabled = true;
+                Playfield.TileLayers[0].Screen.RenderOptions.Alpha = true;
                 Playfield.TileLayers[0].Screen.GbaAlpha = 0;
 
                 Playfield.TileLayers[0].Screen.IsEnabled = true;
@@ -254,8 +250,8 @@ public class Intro : Frame, IHasPlayfield
                 Timer = 0;
                 CurrentStepAction = Step_3;
 
-                Playfield.TileLayers[0].Screen.IsAlphaBlendEnabled = false;
-                Playfield.TileLayers[2].Screen.IsAlphaBlendEnabled = true;
+                Playfield.TileLayers[0].Screen.RenderOptions.Alpha = false;
+                Playfield.TileLayers[2].Screen.RenderOptions.Alpha = true;
                 Playfield.TileLayers[2].Screen.GbaAlpha = 16;
             }
             else
@@ -283,8 +279,8 @@ public class Intro : Frame, IHasPlayfield
             AlphaTimer = 0;
             CurrentStepAction = Step_4;
 
-            Playfield.TileLayers[2].Screen.IsAlphaBlendEnabled = false;
-            Playfield.TileLayers[3].Screen.IsAlphaBlendEnabled = true;
+            Playfield.TileLayers[2].Screen.RenderOptions.Alpha = false;
+            Playfield.TileLayers[3].Screen.RenderOptions.Alpha = true;
             Playfield.TileLayers[3].Screen.GbaAlpha = 0;
 
             Playfield.TileLayers[2].Screen.IsEnabled = false;

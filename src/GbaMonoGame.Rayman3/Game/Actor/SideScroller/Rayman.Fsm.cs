@@ -4426,7 +4426,7 @@ public partial class Rayman
                 if (InvisibilityTimer != 0 && InstanceId == MultiplayerManager.MachineId)
                 {
                     InvisibilityTimer = 0;
-                    AnimatedObject.IsAlphaBlendEnabled = false;
+                    AnimatedObject.RenderOptions.Alpha = false;
                 }
                 break;
         }

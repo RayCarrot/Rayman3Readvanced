@@ -21,7 +21,7 @@ public class EchoingCaves_M2 : FrameSideScroller
         LevelMusicManager.Init();
         CircleTransitionScreenEffect = new CircleTransitionScreenEffect()
         {
-            RenderContext = Engine.GameRenderContext,
+            RenderOptions = { RenderContext = Engine.GameRenderContext },
         };
         
         TransitionsFX = new TransitionsFX(true);

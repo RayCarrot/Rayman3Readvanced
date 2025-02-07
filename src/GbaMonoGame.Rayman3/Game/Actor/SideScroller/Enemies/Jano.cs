@@ -26,7 +26,7 @@ public sealed partial class Jano : MovableActor
         else
             State.SetTo(Fsm_Default);
 
-        AnimatedObject.IsAlphaBlendEnabled = true;
+        AnimatedObject.RenderOptions.Alpha = true;
     }
 
     public JanoSkullPlatform[] SkullPlatforms { get; }

@@ -329,9 +329,9 @@ public partial class MenuAll : Frame, IHasPlayfield
     public void SetBackgroundPalette(int index)
     {
         GbaVram vram = Playfield.Vram;
-        TextureScreenRenderer renderer = (TextureScreenRenderer)Playfield.TileLayers[0].Screen.Renderer;
-        
-        renderer.PaletteTexture = new PaletteTexture(
+        GfxScreen screen = Playfield.TileLayers[0].Screen;
+
+        screen.RenderOptions.PaletteTexture = new PaletteTexture(
             Texture: Engine.TextureCache.GetOrCreateObject(
                 pointer: vram.SelectedPalette.CachePointer,
                 id: index + 1, // +1 since 0 is the default

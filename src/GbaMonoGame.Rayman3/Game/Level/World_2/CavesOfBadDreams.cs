@@ -24,7 +24,7 @@ public class CavesOfBadDreams : FrameSideScroller
         Timer = 120;
 
         GfxScreen skullScreen = Gfx.GetScreen(1);
-        skullScreen.IsAlphaBlendEnabled = true;
+        skullScreen.RenderOptions.Alpha = true;
         skullScreen.GbaAlpha = 0;
 
         if (Rom.Platform == Platform.GBA)
@@ -33,7 +33,7 @@ public class CavesOfBadDreams : FrameSideScroller
             skullScreen.IsEnabled = true;
 
         if (!ScaleSkulls)
-            skullScreen.RenderContext = Scene.RenderContext;
+            skullScreen.RenderOptions.RenderContext = Scene.RenderContext;
 
         // TODO: Add config option for sine wave on N-Gage
         if (Rom.Platform == Platform.GBA)
@@ -41,7 +41,6 @@ public class CavesOfBadDreams : FrameSideScroller
             TextureScreenRenderer renderer = ((TextureScreenRenderer)skullScreen.Renderer);
             skullScreen.Renderer = new SineWaveRenderer(renderer.Texture)
             {
-                PaletteTexture = renderer.PaletteTexture,
                 Amplitude = 24
             };
         }
@@ -85,7 +84,7 @@ public class CavesOfBadDreams : FrameSideScroller
         switch (Mode)
         {
             case FadeMode.FadeIn:
-                skullScreen.IsAlphaBlendEnabled = true;
+                skullScreen.RenderOptions.Alpha = true;
                 skullScreen.GbaAlpha = (28 - Timer) / 4f;
                 
                 Timer--;
@@ -111,7 +110,7 @@ public class CavesOfBadDreams : FrameSideScroller
                 break;
             
             case FadeMode.FadeOut:
-                skullScreen.IsAlphaBlendEnabled = true;
+                skullScreen.RenderOptions.Alpha = true;
                 skullScreen.GbaAlpha = Timer / 4f;
                 
                 Timer--;
@@ -154,7 +153,7 @@ public class CavesOfBadDreams : FrameSideScroller
                     Timer = 0;
                 }
 
-                skullScreen.IsAlphaBlendEnabled = true;
+                skullScreen.RenderOptions.Alpha = true;
                 skullScreen.GbaAlpha = Timer / 4f;
                 break;
 

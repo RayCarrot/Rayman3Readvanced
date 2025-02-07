@@ -8,7 +8,7 @@ public class SquareTransitionScreenEffect : ScreenEffect
 
     public override void Draw(GfxRenderer renderer)
     {
-        renderer.BeginRender(new RenderOptions(RenderContext));
+        renderer.BeginRender(RenderOptions);
 
         renderer.DrawFilledRectangle(Vector2.Zero, new Vector2(Square.MinX, RenderContext.Resolution.Y), Color.Black); // Left
         renderer.DrawFilledRectangle(new Vector2(Square.MaxX, 0), new Vector2(RenderContext.Resolution.X - Square.MaxX, RenderContext.Resolution.Y), Color.Black); // Right

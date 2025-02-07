@@ -272,7 +272,7 @@ public abstract class Act : Frame
         {
             IsEnabled = true,
             Priority = 1,
-            RenderContext = Rom.OriginalGameRenderContext,
+            RenderOptions = { RenderContext = Rom.OriginalGameRenderContext },
         };
         Gfx.AddScreen(BitmapScreen);
 

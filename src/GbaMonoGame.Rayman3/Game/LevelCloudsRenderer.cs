@@ -18,7 +18,6 @@ public class LevelCloudsRenderer : IScreenRenderer
     }
 
     public Texture2D Texture { get; }
-    public PaletteTexture PaletteTexture { get; set; }
     private int[] Splits { get; }
     private int TextureWidth { get; }
     private int TextureHeight { get; }
@@ -35,11 +34,7 @@ public class LevelCloudsRenderer : IScreenRenderer
 
     public void Draw(GfxRenderer renderer, GfxScreen screen, Vector2 position, Color color)
     {
-        renderer.BeginRender(new RenderOptions(screen.RenderContext)
-        {
-            Alpha = screen.IsAlphaBlendEnabled,
-            PaletteTexture = PaletteTexture,
-        });
+        renderer.BeginRender(screen.RenderOptions);
 
         int offsetY = 0;
         int index = 0;

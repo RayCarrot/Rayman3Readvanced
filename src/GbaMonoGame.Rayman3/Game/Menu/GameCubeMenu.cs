@@ -131,7 +131,7 @@ public partial class GameCubeMenu : Frame
                     height: (int)Rom.OriginalResolution.Y,
                     bitmap: Rom.Loader.Rayman3_GameCubeMenuBitmap.ImgData,
                     palette: new Palette(Rom.Loader.Rayman3_GameCubeMenuPalette)))),
-            RenderContext = Rom.OriginalGameRenderContext,
+            RenderOptions = { RenderContext = Rom.OriginalGameRenderContext },
         });
 
         Data = new GameCubeMenuData(Rom.OriginalGameRenderContext);
@@ -177,7 +177,7 @@ public partial class GameCubeMenu : Frame
 
         TransitionInScreenEffect = new GameCubeMenuTransitionInScreenEffect()
         {
-            RenderContext = Rom.OriginalGameRenderContext,
+            RenderOptions = { RenderContext = Rom.OriginalGameRenderContext },
         };
         Gfx.SetScreenEffect(TransitionInScreenEffect);
 

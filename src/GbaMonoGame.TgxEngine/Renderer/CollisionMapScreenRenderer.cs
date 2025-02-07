@@ -21,20 +21,19 @@ public class CollisionMapScreenRenderer : IScreenRenderer
     public int Width { get; }
     public int Height { get; }
     public byte[] CollisionMap { get; }
-    public Effect Shader { get; set; }
 
     private Rectangle GetVisibleTilesArea(Vector2 position, GfxScreen screen)
     {
-        // If we have a shader then we can't calculate the visible tiles area, so just return the whole map
-        if (Shader != null)
+        // If it's in 3D then we can't calculate the visible tiles area, so just return the whole map
+        if (screen.RenderOptions.WorldViewProj != null)
             return new Rectangle(Point.Zero, (GetSize(screen) / Tile.Size).ToPoint());
 
         Rectangle rect = new(position.ToPoint(), GetSize(screen).ToPoint());
 
         int xStart = (Math.Max(0, rect.Left) - rect.X) / Tile.Size;
         int yStart = (Math.Max(0, rect.Top) - rect.Y) / Tile.Size;
-        int xEnd = (int)Math.Ceiling((Math.Min(screen.RenderContext.Resolution.X, rect.Right) - rect.X) / Tile.Size);
-        int yEnd = (int)Math.Ceiling((Math.Min(screen.RenderContext.Resolution.Y, rect.Bottom) - rect.Y) / Tile.Size);
+        int xEnd = (int)Math.Ceiling((Math.Min(screen.RenderOptions.RenderContext.Resolution.X, rect.Right) - rect.X) / Tile.Size);
+        int yEnd = (int)Math.Ceiling((Math.Min(screen.RenderOptions.RenderContext.Resolution.Y, rect.Bottom) - rect.Y) / Tile.Size);
 
         return new Rectangle(xStart, yStart, xEnd - xStart, yEnd - yStart);
     }
@@ -43,11 +42,7 @@ public class CollisionMapScreenRenderer : IScreenRenderer
 
     public void Draw(GfxRenderer renderer, GfxScreen screen, Vector2 position, Color color)
     {
-        renderer.BeginRender(new RenderOptions(screen.RenderContext)
-        {
-            Alpha = screen.IsAlphaBlendEnabled,
-            Shader = Shader,
-        });
+        renderer.BeginRender(screen.RenderOptions);
 
         Rectangle visibleTilesArea = GetVisibleTilesArea(position, screen);
 

@@ -10,7 +10,6 @@ public class SpriteFontTextObject : AObject
 
     public Font Font { get; set; }
     public AffineMatrix? AffineMatrix { get; set; }
-    public bool IsAlphaBlendEnabled { get; set; }
     public float Alpha { get; set; } = 1;
 
     public override void Execute(Action<short> soundEventCallback)
@@ -41,9 +40,9 @@ public class SpriteFontTextObject : AObject
                 position: ref pos,
                 priority: BgPriority,
                 affineMatrix: AffineMatrix,
-                alpha: IsAlphaBlendEnabled ? Alpha : null,
+                alpha: Alpha,
                 color: Color.White,
-                renderContext: RenderContext);
+                renderOptions: RenderOptions);
 
             if (sprite != null)
                 Gfx.AddSprite(sprite);

@@ -18,13 +18,12 @@ public class TgxPlayfieldMode7 : TgxPlayfield
         {
             if (gameLayerResource.Type == GameLayerType.RotscaleLayerMode7)
             {
-                TgxRotscaleLayerMode7 layer = new(gameLayerResource);
+                TgxRotscaleLayerMode7 layer = new(RenderContext, gameLayerResource);
                 rotScaleLayers.Add(layer);
 
                 layer.LoadRenderer(playfieldResource.TileKit, Vram);
 
-                layer.Screen.RenderContext = RenderContext;
-                ((TextureScreenRenderer)layer.Screen.Renderer).Shader = Camera.BasicEffectShader;
+                Camera.AddRotScaleLayer(layer);
 
                 // TODO: Fix - in Mode7 it always uses the TextureScreenRenderer, but tiles may still be animated!
                 // Add the renderer to the animated tile kit manager
@@ -38,7 +37,9 @@ public class TgxPlayfieldMode7 : TgxPlayfield
             else if (gameLayerResource.Type == GameLayerType.PhysicalLayer)
             {
                 PhysicalLayer = new TgxTilePhysicalLayer(RenderContext, gameLayerResource);
-                ((CollisionMapScreenRenderer)PhysicalLayer.DebugScreen.Renderer).Shader = Camera.BasicEffectShader;
+
+                // We want the debug collision map to scroll with the camera, so add it as a layer
+                Camera.AddRotScaleLayer(PhysicalLayer);
             }
         }
 

@@ -15,7 +15,6 @@ public class TileMapScreenRenderer : IScreenRenderer
         int height, 
         MapTile[] tileMap, 
         byte[] tileSet, 
-        PaletteTexture paletteTexture, 
         bool is8Bit)
     {
         CachePointer = cachePointer;
@@ -23,7 +22,6 @@ public class TileMapScreenRenderer : IScreenRenderer
         Height = height;
         TileMap = tileMap;
         TileSet = tileSet;
-        PaletteTexture = paletteTexture;
         Is8Bit = is8Bit;
 
         _replacedTiles = new Dictionary<int, int>();
@@ -36,7 +34,6 @@ public class TileMapScreenRenderer : IScreenRenderer
     public int Height { get; }
     public MapTile[] TileMap { get; }
     public byte[] TileSet { get; }
-    public PaletteTexture PaletteTexture { get; set; }
     public bool Is8Bit { get; }
     public Rectangle? TilesClip { get; set; } // Optional
 
@@ -46,8 +43,8 @@ public class TileMapScreenRenderer : IScreenRenderer
 
         int xStart = (int)((Math.Max(0, renderBox.MinX) - renderBox.MinX) / Tile.Size);
         int yStart = (int)((Math.Max(0, renderBox.MinY) - renderBox.MinY) / Tile.Size);
-        int xEnd = (int)Math.Ceiling((Math.Min(screen.RenderContext.Resolution.X, renderBox.MaxX) - renderBox.MinX) / Tile.Size);
-        int yEnd = (int)Math.Ceiling((Math.Min(screen.RenderContext.Resolution.Y, renderBox.MaxY) - renderBox.MinY) / Tile.Size);
+        int xEnd = (int)Math.Ceiling((Math.Min(screen.RenderOptions.RenderContext.Resolution.X, renderBox.MaxX) - renderBox.MinX) / Tile.Size);
+        int yEnd = (int)Math.Ceiling((Math.Min(screen.RenderOptions.RenderContext.Resolution.Y, renderBox.MaxY) - renderBox.MinY) / Tile.Size);
 
         // Make sure we don't go out of bounds. Only needed if the camera shows more than the actual map, which isn't usually the case.
         xEnd = Math.Min(xEnd, Width);
@@ -65,11 +62,7 @@ public class TileMapScreenRenderer : IScreenRenderer
 
     public void Draw(GfxRenderer renderer, GfxScreen screen, Vector2 position, Color color)
     {
-        renderer.BeginRender(new RenderOptions(screen.RenderContext)
-        {
-            Alpha = screen.IsAlphaBlendEnabled,
-            PaletteTexture = PaletteTexture,
-        });
+        renderer.BeginRender(screen.RenderOptions);
 
         Rectangle visibleTilesArea = GetVisibleTilesArea(position, screen);
 

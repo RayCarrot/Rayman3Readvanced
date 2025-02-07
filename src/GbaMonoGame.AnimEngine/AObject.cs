@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.AnimEngine;
 
@@ -23,8 +22,12 @@ public abstract class AObject
     public HorizontalAnchorMode HorizontalAnchor { get; set; }
     public VerticalAnchorMode VerticalAnchor { get; set; }
 
-    public RenderContext RenderContext { get; set; }
-    public Effect Shader { get; set; }
+    public RenderOptions RenderOptions { get; } = new();
+    public RenderContext RenderContext
+    {
+        get => RenderOptions.RenderContext;
+        set => RenderOptions.RenderContext = value;
+    }
 
     public Vector2 GetAnchoredPosition()
     {

@@ -2,7 +2,8 @@
 
 public abstract class ScreenEffect
 {
-    public RenderContext RenderContext { get; set; }
+    public RenderOptions RenderOptions { get; } = new();
+    public RenderContext RenderContext => RenderOptions.RenderContext;
 
     public abstract void Draw(GfxRenderer renderer);
 }

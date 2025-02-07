@@ -114,7 +114,7 @@ public class GfxDebugWindow : DebugWindow
                         });
 
                         ImGui.TableNextColumn();
-                        ImGui.Text($"{screen.RenderContext.GetType().Name}");
+                        ImGui.Text($"{screen.RenderOptions.RenderContext.GetType().Name}");
 
                         ImGui.TableNextColumn();
                         ImGui.Text($"{screen.Renderer?.GetType().Name}");
@@ -152,10 +152,10 @@ public class GfxDebugWindow : DebugWindow
                         ImGui.Text(sprite.AffineMatrix.HasValue ? "true" : "false");
 
                         ImGui.TableNextColumn();
-                        ImGui.Text(sprite.PaletteTexture != null ? "true" : "false");
+                        ImGui.Text(sprite.RenderOptions.PaletteTexture != null ? "true" : "false");
 
                         ImGui.TableNextColumn();
-                        ImGui.Text(sprite.RenderContext.GetType().Name);
+                        ImGui.Text(sprite.RenderOptions.RenderContext.GetType().Name);
                     }
                     ImGui.EndTable();
                 }

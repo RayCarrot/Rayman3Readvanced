@@ -47,7 +47,6 @@ public class AnimatedObject : AObject
 
     // Render flags
     public bool IsDoubleAffine { get; set; } // Not used here
-    public bool IsAlphaBlendEnabled { get; set; }
 
     public uint VisibleSpriteChannels { get; set; }
 
@@ -403,7 +402,6 @@ public class AnimatedObject : AObject
                     Sprite sprite = new()
                     {
                         Texture = texture,
-                        PaletteTexture = paletteTexture,
                         Position = new Vector2(xPos, yPos),
                         FlipX = channel.FlipX ^ FlipX,
                         FlipY = channel.FlipY ^ FlipY,
@@ -411,9 +409,8 @@ public class AnimatedObject : AObject
                         Center = true,
                         AffineMatrix = affineMatrix,
                         OverrideGfxColor = OverrideGfxColor,
-                        Alpha = IsAlphaBlendEnabled ? Alpha : null,
-                        Shader = Shader,
-                        RenderContext = RenderContext,
+                        Alpha = Alpha,
+                        RenderOptions = RenderOptions with { PaletteTexture = paletteTexture },
                     };
 
                     if (IsBackSprite)

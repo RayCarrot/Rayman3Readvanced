@@ -114,7 +114,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         GfxScreen spikyBagScreen = Gfx.GetScreen(3);
 
         // Since it scrolls with the camera we want to use the normal render context instead of a scaled parallax background one
-        spikyBagScreen.RenderContext = Scene.RenderContext;
+        spikyBagScreen.RenderOptions.RenderContext = Scene.RenderContext;
 
         float offsetX = Rom.Platform switch
         {
@@ -224,7 +224,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
     {
         TgxPlayfield2D playfield = (TgxPlayfield2D)Scene.Playfield;
         TgxTileLayer lightningSkyLayer = playfield.TileLayers[0];
-        TileMapScreenRenderer lightningSkyRenderer = (TileMapScreenRenderer)lightningSkyLayer.Screen.Renderer;
+        GfxScreen lightningSkyScreen = lightningSkyLayer.Screen;
         TgxTileLayer lightningLayer = playfield.TileLayers[1];
         TileMapScreenRenderer lightningRenderer = (TileMapScreenRenderer)lightningLayer.Screen.Renderer;
 
@@ -268,7 +268,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
         if (ShouldSetLightningAlpha)
         {
-            lightningLayer.Screen.IsAlphaBlendEnabled = true;
+            lightningLayer.Screen.RenderOptions.Alpha = true;
             lightningLayer.Screen.GbaAlpha = 8;
 
             ShouldSetLightningAlpha = false;
@@ -305,7 +305,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                 }
             }
 
-            lightningSkyRenderer.PaletteTexture = LightningSkyPaletteTextures[value];
+            lightningSkyScreen.RenderOptions.PaletteTexture = LightningSkyPaletteTextures[value];
 
             LightningValue++;
 
@@ -385,13 +385,12 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
         TgxPlayfield2D playfield = (TgxPlayfield2D)Scene.Playfield;
         TgxTileLayer volcanoLayer = playfield.TileLayers[2];
-        TileMapScreenRenderer renderer = (TileMapScreenRenderer)volcanoLayer.Screen.Renderer;
 
         int index = VolcanoGlowValue <= VolcanoGlowMaxValue
             ? VolcanoGlowValue
             : VolcanoGlowMaxValue * 2 - VolcanoGlowValue;
 
-        renderer.PaletteTexture = VolcanoPaletteTextures[index];
+        volcanoLayer.Screen.RenderOptions.PaletteTexture = VolcanoPaletteTextures[index];
 
         VolcanoGlowValue++;
 
@@ -663,7 +662,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         GameCubeTransitionScreenEffect = new SquareTransitionScreenEffect()
         {
             Square = new Box(Vector2.Zero, Scene.RenderContext.Resolution),
-            RenderContext = Scene.RenderContext,
+            RenderOptions = { RenderContext = Scene.RenderContext },
         };
         Gfx.SetScreenEffect(GameCubeTransitionScreenEffect);
 
@@ -716,7 +715,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         CircleWipeTransitionScreenEffect = new CircleWipeTransitionScreenEffect
         {
             Value = 256,
-            RenderContext = Engine.GameRenderContext,
+            RenderOptions = { RenderContext = Engine.GameRenderContext },
         };
         Gfx.SetScreenEffect(CircleWipeTransitionScreenEffect);
 
@@ -797,8 +796,8 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             ScreenPos = new Vector2(120, 60),
             HorizontalAnchor = HorizontalAnchorMode.Center,
             Text = "",
-            IsAlphaBlendEnabled = true,
             RenderContext = Scene.HudRenderContext,
+            RenderOptions = { Alpha = true },
         };
 
         Rayman.CurrentAnimation = WorldId switch

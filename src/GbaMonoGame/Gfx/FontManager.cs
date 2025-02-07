@@ -225,9 +225,9 @@ public static class FontManager
         ref Vector2 position, 
         int priority, 
         AffineMatrix? affineMatrix, 
-        float? alpha, 
+        float alpha, 
         Color color,
-        RenderContext renderContext)
+        RenderOptions renderOptions)
     {
         LoadedFont loadedFont = fontSize switch
         {
@@ -247,7 +247,7 @@ public static class FontManager
             AffineMatrix = affineMatrix,
             Alpha = alpha,
             Color = color,
-            RenderContext = renderContext
+            RenderOptions = renderOptions,
         };
 
         position += new Vector2(loadedFont.Font.CharacterWidths[c], 0);

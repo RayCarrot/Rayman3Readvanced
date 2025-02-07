@@ -68,7 +68,7 @@ public class CircleTransitionScreenEffect : ScreenEffect
     
     public override void Draw(GfxRenderer renderer)
     {
-        renderer.BeginRender(new RenderOptions(RenderContext));
+        renderer.BeginRender(RenderOptions);
 
         Vector2 pos = CirclePosition;
 

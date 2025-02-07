@@ -124,7 +124,7 @@ public class GameOver : Frame
                     height: (int)Rom.OriginalResolution.Y,
                     bitmap: Rom.Loader.Rayman3_GameOverBitmap.ImgData,
                     palette: new Palette(Rom.Loader.Rayman3_GameOverPalette)))),
-            RenderContext = Rom.OriginalGameRenderContext,
+            RenderOptions = { RenderContext = Rom.OriginalGameRenderContext },
         });
 
         AnimationPlayer = new AnimationPlayer(false, SoundEventsManager.ProcessEvent);
@@ -174,9 +174,9 @@ public class GameOver : Frame
                 Platform.NGage => new Vector2(78, 40),
                 _ => throw new UnsupportedPlatformException()
             },
-            IsAlphaBlendEnabled = true,
             RenderContext = Rom.OriginalGameRenderContext,
         };
+        Countdown2.RenderOptions.Alpha = true;
 
         Butterfly1 = new AnimatedObject(butterflyAnimations, butterflyAnimations.IsDynamic)
         {

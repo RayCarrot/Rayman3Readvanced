@@ -17,11 +17,7 @@ public class SolidColorScreenRenderer : IScreenRenderer
 
     public void Draw(GfxRenderer renderer, GfxScreen screen, Vector2 position, Color color)
     {
-        renderer.BeginRender(new RenderOptions(screen.RenderContext)
-        {
-            Alpha = screen.IsAlphaBlendEnabled,
-        });
-
+        renderer.BeginRender(screen.RenderOptions);
         renderer.DrawFilledRectangle(position, Size, Color);
     }
 }

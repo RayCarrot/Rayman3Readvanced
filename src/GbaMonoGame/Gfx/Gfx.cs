@@ -19,11 +19,6 @@ public static class Gfx
     public static Texture2D Pixel { get; private set; }
 
     /// <summary>
-    /// The shader to use when applying a palette to a texture.
-    /// </summary>
-    public static Effect PaletteShader { get; private set; }
-
-    /// <summary>
     /// The game screens. These are the equivalent of backgrounds on the GBA
     /// and there are always 4 of these.
     /// </summary>
@@ -85,7 +80,10 @@ public static class Gfx
         // TODO: Add config option to use GBA fading on N-Gage
         if (Rom.IsLoaded && Rom.Platform == Platform.GBA && FadeControl.Mode != FadeMode.None && Fade is > 0 and <= 1)
         {
-            renderer.BeginRender(new RenderOptions(Engine.GameRenderContext));
+            renderer.BeginRender(new RenderOptions()
+            {
+                RenderContext = Engine.GameRenderContext,
+            });
 
             switch (FadeControl.Mode)
             {
@@ -107,8 +105,6 @@ public static class Gfx
     {
         Pixel = new Texture2D(Engine.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
         Pixel.SetData([Color.White]);
-
-        PaletteShader = Engine.FixContentManager.Load<Effect>("PaletteShader");
     }
 
     public static void AddScreen(GfxScreen screen) => Screens.Add(screen.Id, screen);
@@ -131,7 +127,10 @@ public static class Gfx
         // Draw clear color on GBA
         if (Rom.IsLoaded && Rom.Platform == Platform.GBA)
         {
-            renderer.BeginRender(new RenderOptions(Engine.GameRenderContext));
+            renderer.BeginRender(new RenderOptions()
+            {
+                RenderContext = Engine.GameRenderContext,
+            });
             renderer.DrawFilledRectangle(Vector2.Zero, Engine.GameRenderContext.Resolution, ClearColor);
         }
 

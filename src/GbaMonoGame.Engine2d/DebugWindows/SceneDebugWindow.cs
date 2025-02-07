@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GbaMonoGame.Engine2d;
 
+// TODO: Update for Mode7
 public class SceneDebugWindow : DebugWindow
 {
     public override string Name => "Scene";
@@ -151,7 +152,10 @@ public class SceneDebugWindow : DebugWindow
         if (Frame.Current is not IHasScene { Scene: { } scene2D }) 
             return;
 
-        renderer.BeginRender(new RenderOptions(scene2D.RenderContext));
+        renderer.BeginRender(new RenderOptions()
+        {
+            RenderContext = scene2D.RenderContext,
+        });
 
         if (HighlightedGameObject != null)
             DrawBox(renderer, scene2D.Playfield, GetObjBox(HighlightedGameObject), Color.Orange);

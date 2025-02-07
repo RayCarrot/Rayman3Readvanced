@@ -38,12 +38,8 @@ public class GfxScreen
     /// </summary>
     public Vector2 Offset { get; set; }
 
-    /// <summary>
-    /// The render context to use when rendering.
-    /// </summary>
-    public RenderContext RenderContext { get; set; }
+    public RenderOptions RenderOptions { get; } = new();
 
-    public bool IsAlphaBlendEnabled { get; set; }
     public float Alpha { get; set; }
     public float GbaAlpha
     {
@@ -68,7 +64,7 @@ public class GfxScreen
             return;
 
         // TODO: Add config option to use GBA fading on N-Gage
-        if (Rom.IsLoaded && Rom.Platform == Platform.GBA && IsAlphaBlendEnabled)
+        if (Rom.IsLoaded && Rom.Platform == Platform.GBA && RenderOptions.Alpha)
             color = new Color(color, Alpha);
 
         if (Wrap)
@@ -82,8 +78,8 @@ public class GfxScreen
             // Get the camera bounds
             const float camMinX = 0;
             const float camMinY = 0;
-            float maxResX = RenderContext.Resolution.X;
-            float maxResY = RenderContext.Resolution.Y;
+            float maxResX = RenderOptions.RenderContext.Resolution.X;
+            float maxResY = RenderOptions.RenderContext.Resolution.Y;
 
             // Get the background position and wrap it
             Vector2 wrappedPos = new(MathHelpers.Mod(-Offset.X, size.X), MathHelpers.Mod(-Offset.Y, size.Y));

@@ -14,7 +14,6 @@ public class IntroCloudsRenderer : IScreenRenderer
     private const int CloudHeight = 85;
 
     public Texture2D Texture { get; }
-    public PaletteTexture PaletteTexture { get; set; }
 
     private float[] GetScrollOffsets() =>
     [
@@ -28,11 +27,7 @@ public class IntroCloudsRenderer : IScreenRenderer
 
     public void Draw(GfxRenderer renderer, GfxScreen screen, Vector2 position, Color color)
     {
-        renderer.BeginRender(new RenderOptions(screen.RenderContext)
-        {
-            Alpha = screen.IsAlphaBlendEnabled,
-            PaletteTexture = PaletteTexture,
-        });
+        renderer.BeginRender(screen.RenderOptions);
 
         int index = 0;
         foreach (float scrollOffset in GetScrollOffsets())

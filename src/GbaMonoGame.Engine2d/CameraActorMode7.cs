@@ -2,7 +2,6 @@
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -36,28 +35,16 @@ public abstract class CameraActorMode7 : CameraActor
         if (actor is Mode7Actor mode7Actor)
             mode7Actor.CamAngle = MathHelpers.Atan2_256(posDiff);
 
-        // Get or create the shader for the actor
-        if (!cam.CachedBasicEffectShaders.TryGetValue(actor.AnimatedObject, out BasicEffect effect))
-        {
-            effect = new BasicEffect(Engine.GraphicsDevice)
-            {
-                VertexColorEnabled = true,
-                TextureEnabled = true,
-            };
-
-            cam.CachedBasicEffectShaders.Add(actor.AnimatedObject, effect);
-        }
-
-        // Set the projection and view from the camera
-        effect.Projection = cam.BasicEffectShader.Projection;
-        effect.View = cam.BasicEffectShader.View;
+        // Get the projection and view from the camera
+        Matrix projection = cam.ProjectionMatrix;
+        Matrix view = cam.ViewMatrix;
 
         // Get the scale
         const float scale = 0.25f;
         Matrix scaleMatrix = Matrix.CreateScale(scale, -scale, scale);
 
         // Get the rotation to face the camera
-        effect.View.Decompose(out _, out Quaternion rotation, out _);
+        view.Decompose(out _, out Quaternion rotation, out _);
         Matrix rotationMatrix = Matrix.Invert(Matrix.CreateFromQuaternion(rotation));
 
         // Get the translation
@@ -65,13 +52,13 @@ public abstract class CameraActorMode7 : CameraActor
         Matrix translationMatrix = Matrix.CreateTranslation(actorPos);
 
         // Set the world matrix
-        effect.World = scaleMatrix * rotationMatrix * translationMatrix;
+        Matrix world = scaleMatrix * rotationMatrix * translationMatrix;
 
-        // The screen position is 0 since we use the shader
+        // The screen position is 0 since we have the positional data in the world matrix
         actor.AnimatedObject.ScreenPos = Vector2.Zero;
 
-        // Set the shader
-        actor.AnimatedObject.Shader = effect;
+        // Set the WorldViewProj matrix
+        actor.AnimatedObject.RenderOptions.WorldViewProj = world * view * projection;
 
         // Set the Y priority, used for sorting the objects based on distance
         actor.AnimatedObject.YPriority = camDist;
@@ -83,22 +70,12 @@ public abstract class CameraActorMode7 : CameraActor
     {
         TgxCameraMode7 cam = (TgxCameraMode7)Scene.Playfield.Camera;
 
-        if (!cam.CachedBasicEffectShaders.TryGetValue(obj, out BasicEffect effect))
-        {
-            effect = new BasicEffect(Engine.GraphicsDevice)
-            {
-                VertexColorEnabled = true
-            };
-
-            cam.CachedBasicEffectShaders.Add(obj, effect);
-        }
-
-        effect.Projection = cam.BasicEffectShader.Projection;
-        effect.View = cam.BasicEffectShader.View;
-        effect.World = Matrix.CreateTranslation(new Vector3(position, 0));
+        Matrix projection = cam.ProjectionMatrix;
+        Matrix view = cam.ViewMatrix;
+        Matrix world = Matrix.CreateTranslation(new Vector3(position, 0));
 
         obj.ScreenPos = Vector2.Zero;
-        obj.Shader = effect;
+        obj.RenderOptions.WorldViewProj = world * view * projection;
 
         // TODO: Optimize by only returning true if in view
         return true;

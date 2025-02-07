@@ -21,7 +21,7 @@ public class MenuManager
     private const int LineHeight = 40;
     private const float TransitionTextStep = 1 / 8f;
 
-    private MenuRenderContext RenderContext { get; } = new();
+    private RenderOptions RenderOptions { get; } = new() { RenderContext = new MenuRenderContext() };
     private List<Sprite> Sprites { get; } = new();
     private Vector2 Margin { get; } = new(250, 80);
     private Color DisabledColor { get; } = new(0.4f, 0.4f, 0.4f);
@@ -89,7 +89,7 @@ public class MenuManager
         AffineMatrix? matrix = animate ? new AffineMatrix(0, new Vector2(1, TransitionTextValue)) : null;
         foreach (byte b in text)
         {
-            Sprite sprite = FontManager.GetCharacterSprite(b, fontSize, ref position, 0, matrix, null, color, RenderContext);
+            Sprite sprite = FontManager.GetCharacterSprite(b, fontSize, ref position, 0, matrix, 1, color, RenderOptions);
             Sprites.Add(sprite);
         }
     }
@@ -153,7 +153,7 @@ public class MenuManager
 
     public void Update()
     {
-        FullRenderBox = new Box(Margin.X, Margin.Y, RenderContext.Resolution.X - Margin.X, RenderContext.Resolution.Y - Margin.Y);
+        FullRenderBox = new Box(Margin.X, Margin.Y, RenderOptions.RenderContext.Resolution.X - Margin.X, RenderOptions.RenderContext.Resolution.Y - Margin.Y);
         Position = new Vector2(FullRenderBox.MinX, FullRenderBox.MinY);
         CurrentColumnIndex = 0;
 
@@ -230,7 +230,7 @@ public class MenuManager
         }
 
         // Draw engine version in the corner
-        Vector2 versionPos = new(RenderContext.Resolution.X - 12, RenderContext.Resolution.Y - 37);
+        Vector2 versionPos = new(RenderOptions.RenderContext.Resolution.X - 12, RenderOptions.RenderContext.Resolution.Y - 37);
         DrawText(
             text: $"Version {Engine.Version.ToString(3)}",
             position: ref versionPos,
@@ -460,7 +460,10 @@ public class MenuManager
         }
 
         // Fade out the game
-        renderer.BeginRender(new RenderOptions(Engine.GameRenderContext));
+        renderer.BeginRender(new RenderOptions()
+        {
+            RenderContext = Engine.GameRenderContext
+        });
         renderer.DrawFilledRectangle(Vector2.Zero, Engine.GameRenderContext.Resolution, Color.Black * MathHelper.Lerp(0.0f, 0.7f, TransitionValue));
 
         // Draw the sprites

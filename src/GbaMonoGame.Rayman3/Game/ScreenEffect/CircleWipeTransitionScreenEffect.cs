@@ -9,7 +9,7 @@ public class CircleWipeTransitionScreenEffect : ScreenEffect
     // NOTE: This math will be a bit different from the original game due to the usage of floats
     public override void Draw(GfxRenderer renderer)
     {
-        renderer.BeginRender(new RenderOptions(RenderContext));
+        renderer.BeginRender(RenderOptions);
 
         float scalingFactor = MathHelpers.FromFixedPoint(0x39b07); // Around 3.6
         Vector2 res = RenderContext.Resolution;

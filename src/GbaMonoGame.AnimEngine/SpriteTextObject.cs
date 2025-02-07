@@ -22,7 +22,6 @@ public class SpriteTextObject : AObject
     public Color Color { get; set; }
     public FontSize FontSize { get; set; }
     public AffineMatrix? AffineMatrix { get; set; }
-    public bool IsAlphaBlendEnabled { get; set; }
 
     public float Alpha { get; set; } = 1;
     public float GbaAlpha
@@ -49,9 +48,9 @@ public class SpriteTextObject : AObject
                 position: ref pos, 
                 priority: BgPriority, 
                 affineMatrix: AffineMatrix, 
-                alpha: IsAlphaBlendEnabled ? Alpha : null, 
+                alpha: Alpha, 
                 color: Color, 
-                renderContext: RenderContext));
+                renderOptions: RenderOptions));
         }
     }
 }

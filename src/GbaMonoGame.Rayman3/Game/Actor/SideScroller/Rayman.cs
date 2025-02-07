@@ -1709,7 +1709,7 @@ public sealed partial class Rayman : MovableActor
 
             case Message.Main_CollectedMultiItemInvisibility:
                 InvisibilityTimer = 480;
-                AnimatedObject.IsAlphaBlendEnabled = true;
+                AnimatedObject.RenderOptions.Alpha = true;
                 ((FrameMultiSideScroller)Frame.Current).InvisibleActorId = InstanceId;
                 PlaySound(Rayman3SoundEvent.Play__LumGreen_Mix04);
                 return false;
@@ -1955,7 +1955,7 @@ public sealed partial class Rayman : MovableActor
 
             if (InvisibilityTimer == 0)
             {
-                AnimatedObject.IsAlphaBlendEnabled = false;
+                AnimatedObject.RenderOptions.Alpha = false;
                 ((FrameMultiSideScroller)Frame.Current).InvisibleActorId = -1;
             }
         }
