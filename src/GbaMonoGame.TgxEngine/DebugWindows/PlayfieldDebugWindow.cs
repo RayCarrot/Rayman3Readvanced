@@ -89,7 +89,7 @@ public class PlayfieldDebugWindow : DebugWindow
             playfieldMode7.Camera.CameraFieldOfView = cameraFieldOfView;
 
         float cameraDistance = playfieldMode7.Camera.CameraDistance;
-        if (ImGui.SliderFloat("Camera Distance", ref cameraDistance, 0, 500))
+        if (ImGui.SliderFloat("Camera Distance", ref cameraDistance, 0, 1000))
             playfieldMode7.Camera.CameraDistance = cameraDistance;
 
         float cameraHeight = playfieldMode7.Camera.CameraHeight;
