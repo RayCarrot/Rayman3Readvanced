@@ -29,9 +29,6 @@ public class TgxRotscaleLayerMode7 : TgxGameLayer
         };
 
         Gfx.AddScreen(Screen);
-
-        Vector2_0x20 = new Vector2(126, 126);
-        Vector2_0x24 = new Vector2(120, 120);
     }
 
     public RotscaleLayerMode7Resource Resource { get; }
@@ -40,10 +37,6 @@ public class TgxRotscaleLayerMode7 : TgxGameLayer
     public int BaseTileIndex { get; }
     public bool Is8Bit { get; }
     public byte LayerId { get; }
-
-    // TODO: Name
-    public Vector2 Vector2_0x20 { get; set; }
-    public Vector2 Vector2_0x24 { get; set; }
 
     public override void SetOffset(Vector2 offset)
     {
@@ -57,15 +50,25 @@ public class TgxRotscaleLayerMode7 : TgxGameLayer
 
     public void LoadRenderer(TileKit tileKit, GbaVram vram)
     {
-        // TODO: Use indexed texture with palette texture
+        // Create and set the palette texture
+        Screen.RenderOptions.PaletteTexture = new PaletteTexture(
+            Texture: Engine.TextureCache.GetOrCreateObject(
+                pointer: vram.SelectedPalette.CachePointer,
+                id: 0,
+                data: vram.SelectedPalette,
+                createObjFunc: static p => new PaletteTexture2D(p)),
+            PaletteIndex: 0);
+
         // TODO: This doesn't work with animated tiles! We probably need to use the TileMap renderer and convert the
         //       TileMap like Ray1Map does (since it's static and not dynamic). Or create a separate texture for each
         //       frame of the animation.
-        Texture2D tex = Engine.TextureCache.GetOrCreateObject(
+
+        Texture2D layerTexture = Engine.TextureCache.GetOrCreateObject(
             pointer: Resource.Offset,
             id: 0,
-            data: (Vram: vram, Layer: this, BaseTileIndex: BaseTileIndex),
-            createObjFunc: static data => new TiledTexture2D(data.Layer.Width, data.Layer.Height, data.Vram.TileSet, data.Layer.TileMap, data.BaseTileIndex, data.Vram.SelectedPalette, true));
-        Screen.Renderer = new TextureScreenRenderer(tex);
+            data: (Vram: vram, Layer: this, BaseTileIndex),
+            createObjFunc: static data => new IndexedTiledTexture2D(data.Layer.Width, data.Layer.Height, data.Vram.TileSet, data.Layer.TileMap, data.BaseTileIndex, data.Layer.Is8Bit));
+
+        Screen.Renderer = new TextureScreenRenderer(layerTexture);
     }
 }
