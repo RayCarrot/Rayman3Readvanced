@@ -23,8 +23,14 @@ public class GbaVram
 
     public static GbaVram AllocateStatic(TileKit tileKit, TileMappingTable tileMappingTable, int vramLength8bpp, bool isAffine, int defaultPalette)
     {
+        int base8bpp = 512;
+
         // If affine then the game starts at 513 instead of 512 (it always sets 512 to a blank tile)
-        int base8bpp = isAffine ? 513 : 512;
+        if (isAffine)
+        {
+            base8bpp++;
+            vramLength8bpp--;
+        }
 
         // 8-bit tiles start at its base and go on for the specified length before wrapping around
         // to 0. 4-bit tiles start at 0. Any data after this is dynamic.
