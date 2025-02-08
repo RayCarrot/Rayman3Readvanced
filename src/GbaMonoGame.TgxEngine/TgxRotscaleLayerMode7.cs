@@ -17,7 +17,10 @@ public class TgxRotscaleLayerMode7 : TgxGameLayer
         Is8Bit = true;
         LayerId = Resource.LayerId;
 
-        Screen = new GfxScreen(LayerId)
+        // Hack - we set the screen layer id to 4, which is normally out of bounds (as the GBA only has 0-3). The reason we
+        // have to do this is that on the GBA the RotScale layer is actually shared with a Text layer, so they end up
+        // having the same layer id.
+        Screen = new GfxScreen(4)
         {
             IsEnabled = true,
             Offset = Vector2.Zero,
