@@ -17,9 +17,9 @@
 | Scene2D                | 🟩     |                                              |
 | GameObject             | 🟩     |                                              |
 | TgxPlayfield2D         | 🟩     |                                              |
-| TgxPlayfieldMode7      | 🟥     |                                              |
+| TgxPlayfieldMode7      | 🟩     |                                              |
 | TgxCamera2D            | 🟩     |                                              |
-| TgxCameraMode7         | 🟥     |                                              |
+| TgxCameraMode7         | 🟨     |                                              |
 
 ## Frames
 | Name                   | State   | Info                                         |
@@ -38,10 +38,10 @@
 | WoodLight_M2               | 🟩     |                                              |
 | FairyGlade_M1              | 🟩     |                                              |
 | FairyGlade_M2              | 🟩     |                                              |
-| MarshAwakening1            | 🟥     |                                              |
+| MarshAwakening1            | 🟨     |                                              |
 | SanctuaryOfBigTree_M1      | 🟩     |                                              |
 | SanctuaryOfBigTree_M2      | 🟩     |                                              |
-| MissileRace1               | 🟥     |                                              |
+| MissileRace1               | 🟨     |                                              |
 | EchoingCaves_M1            | 🟩     |                                              |
 | EchoingCaves_M2            | 🟩     |                                              |
 | CavesOfBadDreams_M1        | 🟩     |                                              |
@@ -49,7 +49,7 @@
 | BossBadDreams              | 🟩     |                                              |
 | MenhirHills_M1             | 🟩     |                                              |
 | MenhirHills_M2             | 🟩     |                                              |
-| MarshAwakening2            | 🟥     |                                              |
+| MarshAwakening2            | 🟨     |                                              |
 | SanctuaryOfStoneAndFire_M1 | 🟩     |                                              |
 | SanctuaryOfStoneAndFire_M2 | 🟩     |                                              |
 | SanctuaryOfStoneAndFire_M3 | 🟩     |                                              |
@@ -68,7 +68,7 @@
 | BossScaleMan               | 🟩     |                                              |
 | IronMountains_M1           | 🟩     |                                              |
 | IronMountains_M2           | 🟩     |                                              |
-| MissileRace2               | 🟥     |                                              |
+| MissileRace2               | 🟨     |                                              |
 | PirateShip_M1              | 🟩     |                                              |
 | PirateShip_M2              | 🟩     |                                              |
 | BossFinal_M1               | 🟩     |                                              |

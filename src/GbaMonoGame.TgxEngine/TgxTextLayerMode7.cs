@@ -47,7 +47,7 @@ public class TgxTextLayerMode7 : TgxGameLayer
     private static MapTile[] CreateTileMap(PlayfieldMode7Resource playfieldResource, GameLayerResource gameLayerResource)
     {
         // Get the resource
-        TextLayerMode7 resource = gameLayerResource.TextLayerMode7;
+        TextLayerMode7Resource resource = gameLayerResource.TextLayerMode7;
         
         // Get the map dimensions
         int width = resource.MapDimensions.X;
