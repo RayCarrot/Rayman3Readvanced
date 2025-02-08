@@ -9,6 +9,7 @@ public class TgxPlayfieldMode7 : TgxPlayfield
         : base(new TgxCameraMode7(CreateRenderContext(playfieldResource)), playfieldResource.TileKit)
     {
         List<TgxRotscaleLayerMode7> rotScaleLayers = new();
+        List<TgxTextLayerMode7> textLayers = new();
 
         // Load vram
         Vram = GbaVram.AllocateStatic(playfieldResource.TileKit, playfieldResource.TileMappingTable, 0x100, true, playfieldResource.DefaultPalette);
@@ -32,7 +33,13 @@ public class TgxPlayfieldMode7 : TgxPlayfield
             }
             else if (gameLayerResource.Type == GameLayerType.TextLayerMode7)
             {
-                // TODO: Implement
+                TgxTextLayerMode7 layer = new(RenderContext, playfieldResource, gameLayerResource);
+                textLayers.Add(layer);
+
+                layer.LoadRenderer(playfieldResource.TileKit, Vram);
+
+                // TODO: Add to camera
+                // TODO: Animated tiles?
             }
             else if (gameLayerResource.Type == GameLayerType.PhysicalLayer)
             {
@@ -44,6 +51,7 @@ public class TgxPlayfieldMode7 : TgxPlayfield
         }
 
         RotScaleLayers = rotScaleLayers;
+        TextLayers = textLayers;
     }
 
     private static RenderContext CreateRenderContext(PlayfieldMode7Resource resource)
@@ -54,5 +62,6 @@ public class TgxPlayfieldMode7 : TgxPlayfield
 
     public new TgxCameraMode7 Camera => (TgxCameraMode7)base.Camera;
     public IReadOnlyList<TgxRotscaleLayerMode7> RotScaleLayers { get; }
+    public IReadOnlyList<TgxTextLayerMode7> TextLayers { get; }
     public GbaVram Vram { get; }
 }
