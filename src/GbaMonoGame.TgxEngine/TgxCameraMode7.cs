@@ -9,6 +9,8 @@ public class TgxCameraMode7 : TgxCamera
 {
     public TgxCameraMode7(RenderContext renderContext) : base(renderContext)
     {
+        TextLayerRenderContext = new TextLayerRenderContext(renderContext);
+
         Step();
         SetHorizon(62);
     }
@@ -70,8 +72,13 @@ public class TgxCameraMode7 : TgxCamera
         set => SetViewValue(ref _direction, value);
     }
 
+    // Horizon
+    public float Horizon { get; private set; }
+    public TextLayerRenderContext TextLayerRenderContext { get; }
+
     // Layers
     public List<TgxGameLayer> RotScaleLayers { get; } = new();
+    public List<TgxTextLayerMode7> TextLayers { get; } = new();
 
     private void SetProjectionValue<T>(ref T field, T newValue)
     {
@@ -96,9 +103,20 @@ public class TgxCameraMode7 : TgxCamera
         RotScaleLayers.Add(layer);
     }
 
+    public void AddTextLayer(TgxTextLayerMode7 layer)
+    {
+        TextLayers.Add(layer);
+    }
+
     public void SetHorizon(float horizon)
     {
-        Vector3 world = Unproject(new Vector2(RenderContext.Resolution.X / 2, horizon + 2), true);
+        Horizon = horizon;
+
+        TextLayerRenderContext.Horizon = horizon;
+        TextLayerRenderContext.Update();
+
+        // NOTE: It should be horizon+1, but there can be slight scaling artifacts, so better doing one pixel behind the background
+        Vector3 world = Unproject(new Vector2(RenderContext.Resolution.X / 2, horizon), true);
         Vector3 camPos = new(Position.X, Position.Y, -CameraHeight);
         float dist = Vector3.Distance(camPos, world);
         
@@ -201,9 +219,17 @@ public class TgxCameraMode7 : TgxCamera
 
         if (updated)
         {
+            // Update rotscale layers
             Matrix viewProj = ViewMatrix * ProjectionMatrix;
             foreach (TgxGameLayer layer in RotScaleLayers)
                 layer.SetWorldViewProjMatrix(viewProj);
+
+            // Update text layers
+            foreach (TgxTextLayerMode7 layer in TextLayers)
+            {
+                layer.ScrolledPosition = layer.ScrolledPosition with { X = layer.RotationFactor * Direction };
+                layer.SetOffset(layer.ScrolledPosition);
+            }
         }
     }
 }

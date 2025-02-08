@@ -16,6 +16,11 @@ public class TgxTextLayerMode7 : TgxGameLayer
         LayerId = Resource.LayerId;
         Is8Bit = Resource.Is8Bit;
 
+        if (Resource.MapDimensions.X == 64)
+            RotationFactor = Resource.RotationFactor * 2;
+        else
+            RotationFactor = Resource.RotationFactor;
+
         Screen = new GfxScreen(LayerId)
         {
             IsEnabled = true,
@@ -35,6 +40,9 @@ public class TgxTextLayerMode7 : TgxGameLayer
     public MapTile[] TileMap { get; }
     public byte LayerId { get; }
     public bool Is8Bit { get; }
+
+    public Vector2 ScrolledPosition { get; set; }
+    public float RotationFactor { get; }
 
     private static MapTile[] CreateTileMap(PlayfieldMode7Resource playfieldResource, GameLayerResource gameLayerResource)
     {

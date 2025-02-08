@@ -33,12 +33,12 @@ public class TgxPlayfieldMode7 : TgxPlayfield
             }
             else if (gameLayerResource.Type == GameLayerType.TextLayerMode7)
             {
-                TgxTextLayerMode7 layer = new(RenderContext, playfieldResource, gameLayerResource);
+                TgxTextLayerMode7 layer = new(Camera.TextLayerRenderContext, playfieldResource, gameLayerResource);
                 textLayers.Add(layer);
 
                 layer.LoadRenderer(playfieldResource.TileKit, Vram);
 
-                // TODO: Add to camera
+                Camera.AddTextLayer(layer);
                 // TODO: Animated tiles?
             }
             else if (gameLayerResource.Type == GameLayerType.PhysicalLayer)

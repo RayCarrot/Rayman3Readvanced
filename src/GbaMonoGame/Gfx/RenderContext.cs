@@ -12,6 +12,8 @@ public abstract class RenderContext
     private float _scale;
     private Viewport _viewPort;
 
+    protected virtual bool Center => true;
+
     public Vector2 Resolution
     {
         get
@@ -78,18 +80,22 @@ public abstract class RenderContext
         // Calculate the scale, size and position
         float scale;
         Vector2 size;
-        Vector2 pos;
+        Vector2 pos = Vector2.Zero;
         if (screenRatio > gameRatio)
         {
             scale = viewPortSize.Y / res.Y;
             size = res * scale;
-            pos = new Vector2((viewPortSize.X - size.X) / 2, 0);
+
+            if (Center)
+                pos = new Vector2((viewPortSize.X - size.X) / 2, 0);
         }
         else
         {
             scale = viewPortSize.X / res.X;
             size = res * scale;
-            pos = new Vector2(0, (viewPortSize.Y - size.Y) / 2);
+            
+            if (Center)
+                pos = new Vector2(0, (viewPortSize.Y - size.Y) / 2);
         }
 
         // Offset by the view port render box position
