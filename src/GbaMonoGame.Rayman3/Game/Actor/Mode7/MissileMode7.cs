@@ -27,4 +27,7 @@ public sealed partial class MissileMode7 : Mode7Actor
             return false;
         });
     }
+
+    public byte field_0x8d { get; set; }
+    public byte field_0x8f { get; set; }
 }

@@ -17,7 +17,7 @@ public class RaceManager
         RemainingTime = -1;
         Unknown = 0;
         StartedRace = false;
-        Flag_1 = true;
+        DrivingTheRightWay = true;
     }
 
     public Scene2D Scene { get; }
@@ -29,7 +29,7 @@ public class RaceManager
     public int CurrentLap { get; set; }
     public int Unknown { get; set; } // TODO: Name
     public bool StartedRace { get; set; }
-    public bool Flag_1 { get; set; } // TODO: Name
+    public bool DrivingTheRightWay { get; set; }
 
     public void Step()
     {
@@ -64,7 +64,7 @@ public class RaceManager
                 break;
 
             case 300:
-                UserInfo.Flag_0 = false;
+                UserInfo.IsCountdownActive = false;
                 break;
         }
 

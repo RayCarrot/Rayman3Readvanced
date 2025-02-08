@@ -662,7 +662,7 @@ public partial class UserInfoMulti2D : Dialog
         AnimatedObjectResource timersResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerTimerAnimations);
         AnimatedObjectResource iconsResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerIconAnimations);
         AnimatedObjectResource playerIconsResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerPlayerIconAnimations);
-        AnimatedObjectResource countdownResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerCountdownAnimations);
+        AnimatedObjectResource countdownResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.CountdownAnimations);
         AnimatedObjectResource gameOverSignResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerGameOverSignAnimations);
         AnimatedObjectResource itemsResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerItemAnimations);
 

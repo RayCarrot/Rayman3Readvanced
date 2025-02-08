@@ -122,7 +122,7 @@
 | UserInfoWorld          | 🟩     |                                              |
 | UserInfoMulti2D        | 🟩     |                                              |
 | UserInfoWaterskiMode7  | 🟥     |                                              |
-| UserInfoSingleMode7    | 🟥     |                                              |
+| UserInfoSingleMode7    | 🟩     |                                              |
 | UserInfoMultiMode7     | 🟥     |                                              |
 | PauseDialog            | 🟩     |                                              |
 | FogDialog              | 🟩     |                                              |

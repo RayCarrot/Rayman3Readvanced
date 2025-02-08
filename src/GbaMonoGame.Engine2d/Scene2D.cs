@@ -8,6 +8,7 @@ using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Engine2d;
 
+// TODO: Do not call Load on dialogs multiple times
 public class Scene2D
 {
     public Scene2D(int id, Func<Scene2D, CameraActor> createCameraFunc, int layersCount, int actorDrawPriority)

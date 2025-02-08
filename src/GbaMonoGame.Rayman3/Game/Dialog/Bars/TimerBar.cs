@@ -15,7 +15,7 @@ public class TimerBar : Bar
 
     public override void Load()
     {
-        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.TimerAnimations);
+        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.LapAndTimerAnimations);
 
         TimerFrame = new AnimatedObject(resource, false)
         {
@@ -62,6 +62,10 @@ public class TimerBar : Bar
     {
         if (Mode is BarMode.StayHidden or BarMode.Disabled)
             return;
+
+        // NOTE: The original game does not do this and instead displays incorrect values (-1 is displayed as 00:00:99)
+        if (time < 0)
+            time = 0;
 
         // Code copied from the N-Gage decompilation. Could probably be cleaned up a bit.
         int iVar1 = time / 3600;

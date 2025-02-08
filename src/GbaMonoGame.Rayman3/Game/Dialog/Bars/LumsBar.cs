@@ -109,6 +109,16 @@ public class LumsBar : Bar
         LumsIcon.CurrentAnimation = CollectedLumsDigitValue1 == 0 ? 24 : 21;
     }
 
+    public void SetWithoutUpdating()
+    {
+        int lumsCount = GameInfo.GetTotalYelloLumsInLevel();
+
+        TotalLumsDigit1.CurrentAnimation = lumsCount / 10;
+        TotalLumsDigit2.CurrentAnimation = lumsCount % 10;
+
+        LumsIcon.CurrentAnimation = CollectedLumsDigitValue1 == 0 ? 24 : 21;
+    }
+
     public override void Draw(AnimationPlayer animationPlayer)
     {
         if (Mode is BarMode.StayHidden or BarMode.Disabled)
