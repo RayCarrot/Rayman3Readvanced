@@ -21,6 +21,7 @@ public readonly struct PhysicalType
     public bool IsFullySolid => ValueByte < 16;
     public bool IsAngledSolid => ValueByte is >= 16 and < 32;
     public bool IsSolid => ValueByte < 32;
+    public Mode7PhysicalTypeDefine Mode7Define => Mode7PhysicalTypeDefine.Defines[(byte)(ValueByte + 1)];
 
     public float GetAngleSolidHeight(float xPos)
     {
