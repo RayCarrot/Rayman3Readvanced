@@ -32,7 +32,7 @@ public enum Message
     Main_CollectedGreenLum = 1011,
     Main_CollectedBlueLum = 1012,
     Main_CollectedWhiteLum = 1013,
-    Main_CollectedUnusedLum = 1014, // Doesn't exist
+    Main_CollectedUnusedLum = 1014, // TODO: Name
     Main_CollectedBigYellowLum = 1015, // Unused
     Main_CollectedBigBlueLum = 1016,
     Main_Victory = 1017, // Unused
@@ -90,6 +90,7 @@ public enum Message
 
     Main_Hide = 1072, // Unused
     MissileMode7_StartRace = 1073,
+    MissileMode7_1074 = 1074, // TODO: Name
 
     Main_MultiplayerGameOver = 1075,
     Main_MultiplayerTagMoved = 1076,

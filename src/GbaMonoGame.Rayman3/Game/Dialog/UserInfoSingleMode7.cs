@@ -143,7 +143,7 @@ public class UserInfoSingleMode7 : Dialog
 
         MissileMode7 mainActor = (MissileMode7)Scene.MainActor;
 
-        if (mainActor.field_0x8d == 3 && (mainActor.field_0x8f & 0x10) != 0)
+        if (mainActor.field_0x8d == 3 && (mainActor.BoostTimer & 0x10) != 0)
             Laps.CurrentAnimation = 10;
         else
             Laps.CurrentAnimation = 10 + mainActor.field_0x8d;

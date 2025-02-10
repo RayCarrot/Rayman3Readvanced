@@ -28,10 +28,10 @@ public abstract class Mode7Actor : MovableActor
 
     private readonly DebugPointAObject _debugPositionPointProjectedAObject;
 
-    public short ZPos { get; set; }
+    public float ZPos { get; set; }
     public bool IsAffine { get; set; }
     public int RenderHeight { get; set; }
-    public float Direction { get; set; }
+    public float Direction { get; set; } // 0-256
     public float CamAngle { get; set; }
 
     public float GetCamDirection()

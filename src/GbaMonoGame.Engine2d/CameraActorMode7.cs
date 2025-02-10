@@ -54,8 +54,13 @@ public abstract class CameraActorMode7 : CameraActor
         // Set the world matrix
         Matrix world = scaleMatrix * rotationMatrix * translationMatrix;
 
+        // Get the z position
+        float zPos = 0;
+        if (actor is Mode7Actor mode7Actor2)
+            zPos = mode7Actor2.ZPos / 2;
+
         // The screen position is 0 since we have the positional data in the world matrix
-        actor.AnimatedObject.ScreenPos = Vector2.Zero;
+        actor.AnimatedObject.ScreenPos = new Vector2(0, -zPos);
 
         // Set the WorldViewProj matrix
         actor.AnimatedObject.RenderOptions.WorldViewProj = world * view * projection;

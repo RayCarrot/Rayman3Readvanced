@@ -225,7 +225,7 @@
 | #71                    | 🟥     |                                              |
 | Bats                   | 🟩     |                                              |
 | Sparkle                | 🟩     |                                              |
-| #74                    | 🟥     |                                              |
+| MissileMode7           | 🟨     |                                              |
 | #75                    | 🟥     |                                              |
 | WalkingShell           | 🟩     |                                              |
 | WoodenBar              | 🟩     |                                              |
