@@ -185,7 +185,7 @@
 | RedShell               | 🟩     |                                              |
 | KegFire                | 🟩     |                                              |
 | #33                    | 🟥     |                                              |
-| #34                    | 🟥     |                                              |
+| LumsMode7              | 🟩     |                                              |
 | Caterpillar            | 🟩     |                                              |
 | #36                    | 🟥     |                                              |
 | Butterfly              | 🟩     |                                              |

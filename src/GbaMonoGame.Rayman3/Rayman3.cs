@@ -96,7 +96,7 @@ public class Rayman3 : GbaGame
             { ActorType.RedShell, (instanceId, scene, resource) => new RedShell(instanceId, scene, resource) },
             { ActorType.KegFire, (instanceId, scene, resource) => new KegFire(instanceId, scene, resource) },
             { ActorType.RaymanMode7, (instanceId, scene, resource) => new RaymanMode7(instanceId, scene, resource) },
-
+            { ActorType.LumsMode7, (instanceId, scene, resource) => new LumsMode7(instanceId, scene, resource) },
             { ActorType.Caterpillar, (instanceId, scene, resource) => new Caterpillar(instanceId, scene, resource) },
 
             { ActorType.Butterfly, (instanceId, scene, resource) => new Scenery(instanceId, scene, resource) },

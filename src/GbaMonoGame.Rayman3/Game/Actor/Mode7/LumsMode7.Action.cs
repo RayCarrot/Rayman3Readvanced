@@ -1,6 +1,6 @@
 ﻿namespace GbaMonoGame.Rayman3;
 
-public partial class Lums
+public partial class LumsMode7
 {
     public new Action ActionId
     {
@@ -11,12 +11,7 @@ public partial class Lums
     public enum Action
     {
         YellowLum = 0,
-        RedLum = 1,
-        GreenLum = 2,
-        BlueLum = 3,
-        WhiteLum = 4,
-        Unused = 5, // Doesn't exist
-        BigYellowLum = 6, // Unused
-        BigBlueLum = 7,
+        BlueLum = 1,
+        RedLum = 2,
     }
 }

@@ -1,8 +1,10 @@
-﻿namespace GbaMonoGame.Rayman3;
+﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 
-public class FrameMissileSingleMode7 : FrameMode7
+namespace GbaMonoGame.Rayman3;
+
+public class FrameSingleMode7 : FrameMode7
 {
-    public FrameMissileSingleMode7(MapId mapId, ushort[] lapTimes) : base(mapId)
+    public FrameSingleMode7(MapId mapId, ushort[] lapTimes) : base(mapId)
     {
         LapTimes = lapTimes;
     }
@@ -20,6 +22,18 @@ public class FrameMissileSingleMode7 : FrameMode7
     // TODO: Name
     public byte field_0x3a { get; set; }
     public byte field_0x3b { get; set; }
+
+    public void KillLum(int lumId)
+    {
+        CollectedLums[lumId] = true;
+
+        int lumsBarValue = UserInfo.LumsBar.CollectedLumsDigitValue1 * 10 + UserInfo.LumsBar.CollectedLumsDigitValue2;
+        if (lumsBarValue == GameInfo.GetTotalYelloLumsInLevel())
+        {
+            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumTotal_Mix02);
+            LevelMusicManager.OverrideLevelMusic(Rayman3SoundEvent.Play__win2);
+        }
+    }
 
     public override void Init()
     {

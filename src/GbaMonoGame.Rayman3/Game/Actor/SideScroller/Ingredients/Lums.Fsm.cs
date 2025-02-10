@@ -136,7 +136,6 @@ public partial class Lums
                     Action.GreenLum => Message.Main_CollectedGreenLum,
                     Action.BlueLum => Message.Main_CollectedBlueLum,
                     Action.WhiteLum => Message.Main_CollectedWhiteLum,
-                    Action.UnusedLum => Message.Main_CollectedUnusedLum,
                     Action.BigYellowLum => Message.Main_CollectedBigYellowLum,
                     Action.BigBlueLum => Message.Main_CollectedBigBlueLum,
                     _ => throw new ArgumentOutOfRangeException(nameof(ActionId), ActionId, null)
@@ -288,7 +287,6 @@ public partial class Lums
                     Action.GreenLum => Message.Main_CollectedGreenLum,
                     Action.BlueLum => Message.Main_CollectedBlueLum,
                     Action.WhiteLum => Message.Main_CollectedWhiteLum,
-                    Action.UnusedLum => Message.Main_CollectedUnusedLum,
                     Action.BigYellowLum => Message.Main_CollectedBigYellowLum,
                     Action.BigBlueLum => Message.Main_CollectedBigBlueLum,
                     _ => throw new ArgumentOutOfRangeException(nameof(ActionId), ActionId, null)

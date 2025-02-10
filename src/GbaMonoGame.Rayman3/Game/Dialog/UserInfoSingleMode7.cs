@@ -102,6 +102,7 @@ public class UserInfoSingleMode7 : Dialog
             RenderContext = Scene.HudRenderContext,
         };
 
+        // Hide the boost bar
         Laps.SetChannelInvisible(0);
         Laps.SetChannelInvisible(1);
         Laps.SetChannelInvisible(2);
@@ -135,7 +136,7 @@ public class UserInfoSingleMode7 : Dialog
 
     public override void Draw(AnimationPlayer animationPlayer)
     {
-        RaceManager raceManager = ((FrameMissileSingleMode7)Frame.Current).RaceManager;
+        RaceManager raceManager = ((FrameSingleMode7)Frame.Current).RaceManager;
 
         LifeBar.Draw(animationPlayer);
         LumsBar.Draw(animationPlayer);

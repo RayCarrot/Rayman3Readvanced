@@ -134,19 +134,19 @@ public sealed partial class MissileMode7 : Mode7Actor
 
         switch (message)
         {
-            case Message.Main_CollectedYellowLum:
+            case Message.MissileMode7_CollectedBlueLum:
                 // TODO: Implement
                 return true;
 
-            case Message.Main_CollectedRedLum:
+            case Message.MissileMode7_CollectedRedLum:
                 if (HitPoints < 5)
                     HitPoints++;
 
                 PrevHitPoints = HitPoints;
                 return true;
 
-            case Message.Main_CollectedUnusedLum:
-                ((FrameMissileSingleMode7)Frame.Current).UserInfo.LumsBar.AddLums(1);
+            case Message.MissileMode7_CollectedYellowLum:
+                ((FrameSingleMode7)Frame.Current).UserInfo.LumsBar.AddLums(1);
                 return true;
 
             case Message.MissileMode7_StartRace:

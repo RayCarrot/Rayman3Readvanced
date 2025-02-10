@@ -28,11 +28,13 @@ public enum Message
     Gate_Open = 1007,
     Gate_Close = 1008,
     Main_CollectedYellowLum = 1009,
+    MissileMode7_CollectedBlueLum = 1009,
     Main_CollectedRedLum = 1010,
+    MissileMode7_CollectedRedLum = 1010,
     Main_CollectedGreenLum = 1011,
     Main_CollectedBlueLum = 1012,
     Main_CollectedWhiteLum = 1013,
-    Main_CollectedUnusedLum = 1014, // TODO: Name
+    MissileMode7_CollectedYellowLum = 1014,
     Main_CollectedBigYellowLum = 1015, // Unused
     Main_CollectedBigBlueLum = 1016,
     Main_Victory = 1017, // Unused

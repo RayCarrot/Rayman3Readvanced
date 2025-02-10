@@ -36,7 +36,7 @@ public enum ActorType
     RedShell = 31,
     KegFire = 32,
     RaymanMode7 = 33,
-
+    LumsMode7 = 34,
     Caterpillar = 35,
 
     Butterfly = 37,
