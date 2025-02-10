@@ -43,6 +43,7 @@ public class TgxTextLayerMode7 : TgxGameLayer
 
     public Vector2 ScrolledPosition { get; set; }
     public float RotationFactor { get; }
+    public bool IsStatic { get; set; }
 
     private static MapTile[] CreateTileMap(PlayfieldMode7Resource playfieldResource, GameLayerResource gameLayerResource)
     {

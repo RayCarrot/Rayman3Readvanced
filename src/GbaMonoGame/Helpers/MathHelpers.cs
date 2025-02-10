@@ -25,6 +25,14 @@ public static class MathHelpers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 DirectionalVector256(float angle)
+    {
+        return new Vector2(
+            x: Cos256(angle),
+            y: Sin256(angle));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2 Rotate256(Vector2 vector, float angle)
     {
         float cos = Cos256(angle);

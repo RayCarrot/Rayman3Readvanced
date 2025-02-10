@@ -7,10 +7,18 @@ public partial class CameraMode7 : CameraActorMode7
 {
     public CameraMode7(Scene2D scene) : base(scene)
     {
+        IsWaterSki = false;
+        //field_0x1c = 0;
+        //field_0x1e = 0;
+        Timer = 0;
         MainActorDistance = 55;
+        DirectionDelta = 0;
     }
 
+    public bool IsWaterSki { get; set; }
+    public uint Timer { get; set; }
     public float MainActorDistance { get; set; }
+    public float DirectionDelta { get; set; }
 
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {
@@ -35,13 +43,12 @@ public partial class CameraMode7 : CameraActorMode7
         // Set the direction as the inverse of the direction of the linked actor
         cam.Direction = -linkedActor.Direction;
 
-        // TODO: Update text layers
-
         // Set the camera position
+        Vector2 directionalVector = MathHelpers.DirectionalVector256(0x100 - cam.Direction);
         cam.Position = new Vector2(
-            x: linkedActor.Position.X - MathHelpers.Cos256(0x100 - cam.Direction) * (MainActorDistance + 90),
-            y: linkedActor.Position.Y + MathHelpers.Sin256(0x100 - cam.Direction) * (MainActorDistance + 90));
+            x: linkedActor.Position.X - directionalVector.X * (MainActorDistance + 90),
+            y: linkedActor.Position.Y + directionalVector.Y * (MainActorDistance + 90));
 
-        State.SetTo(FUN_0801f14c);
+        State.SetTo(Fsm_Init);
     }
 }
