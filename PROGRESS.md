@@ -256,7 +256,7 @@
 | SpikyBomb              | 🟩     |                                              |
 | RaymanWorldMap         | 🟩     |                                              |
 | BumperMode7            | 🟩     |                                              |
-| #105                   | 🟥     |                                              |
+| BoulderMode7           | 🟩     |                                              |
 | MovingUnusedPlatform   | 🟩     |                                              |
 | RotatedHelicopterBomb  | 🟩     |                                              |
 | Leaf                   | 🟩     |                                              |

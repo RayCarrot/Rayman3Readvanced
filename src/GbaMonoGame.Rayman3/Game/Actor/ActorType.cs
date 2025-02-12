@@ -98,7 +98,7 @@ public enum ActorType
     SpikyBomb = 102,
     RaymanWorldMap = 103,
     BumperMode7 = 104,
-
+    BoulderMode7 = 105,
     MovingUnusedPlatform = 106, // Unused
     RotatedHelicopterBomb = 107,
     Leaf = 108,

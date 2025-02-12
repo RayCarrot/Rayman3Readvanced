@@ -157,7 +157,7 @@ public class Rayman3 : GbaGame
             { ActorType.SpikyBomb, (instanceId, scene, resource) => new FlyingBomb(instanceId, scene, resource) },
             { ActorType.RaymanWorldMap, (instanceId, scene, resource) => new RaymanWorldMap(instanceId, scene, resource) },
             { ActorType.BumperMode7, (instanceId, scene, resource) => new SceneryMode7(instanceId, scene, resource) },
-
+            { ActorType.BoulderMode7, (instanceId, scene, resource) => new BoulderMode7(instanceId, scene, resource) },
             { ActorType.MovingUnusedPlatform, (instanceId, scene, resource) => new MovingPlatform(instanceId, scene, resource) },
             { ActorType.RotatedHelicopterBomb, (instanceId, scene, resource) => new FlyingBomb(instanceId, scene, resource) },
             { ActorType.Leaf, (instanceId, scene, resource) => new Leaf(instanceId, scene, resource) },
