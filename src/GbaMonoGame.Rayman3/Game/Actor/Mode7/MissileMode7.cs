@@ -31,8 +31,8 @@ public sealed partial class MissileMode7 : Mode7Actor
         field_0x8d = 0;
         field_0x8c = 0;
         field_0x88 = 0;
-        field_0x92 = 256;
-        field_0x94 = 256;
+        ScaleX = 1;
+        ScaleY = 1;
         field_0x8a = 0;
         field_0x89 = Mode7PhysicalTypeDefine.Empty;
         PrevHitPoints = HitPoints;
@@ -41,30 +41,34 @@ public sealed partial class MissileMode7 : Mode7Actor
         field_0x96 = 0.0625f;
         field_0x99 = 0;
         field_0x9a = 0;
-        field_0x9b = 0;
+        CustomScaleTimer = 0;
         field_0x9c = 0;
 
         State.SetTo(Fsm_Start);
     }
 
     public int PrevHitPoints { get; set; }
+    public ushort InvulnerabilityTimer { get; set; }
+    
     public byte BoostTimer { get; set; }
+    
     public float ZPosSpeed { get; set; }
     public float ZPosDeacceleration { get; set; }
+
+    public float ScaleX { get; set; }
+    public float ScaleY { get; set; }
+    public byte CustomScaleTimer { get; set; }
 
     // TODO: Name
     public byte field_0x8d { get; set; }
     public byte field_0x8c { get; set; }
     public byte field_0x88 { get; set; }
-    public ushort field_0x92 { get; set; }
-    public ushort field_0x94 { get; set; }
     public byte field_0x8a { get; set; }
     public Mode7PhysicalTypeDefine field_0x89 { get; set; }
     public byte field_0x8e { get; set; }
     public float field_0x96 { get; set; }
     public byte field_0x99 { get; set; }
     public byte field_0x9a { get; set; }
-    public byte field_0x9b { get; set; }
     public byte field_0x9c { get; set; }
 
     public bool Debug_NoClip { get; set; } // Custom no-clip mode
@@ -179,17 +183,56 @@ public sealed partial class MissileMode7 : Mode7Actor
             base.DoBehavior();
     }
 
-    // TODO: Implement
     public override void Step()
     {
-        base.Step();
+        if (RSMultiplayer.IsActive)
+        {
+            // TODO: Implement
+        }
 
+        base.Step();
+        
         ToggleNoClip();
     }
 
-    // TODO: Implement
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
-        base.Draw(animationPlayer, forceDraw);
+        CameraActor camera = Scene.Camera;
+
+        bool draw = camera.IsActorFramed(this) || forceDraw;
+
+        // Conditionally don't draw every second frame during invulnerability
+        if (draw)
+        {
+            if (IsInvulnerable &&
+                HitPoints != 0 &&
+                (GameTime.ElapsedFrames & 1) == 0 &&
+                (GameInfo.Cheats & Cheat.Invulnerable) == 0)
+            {
+                draw = false;
+            }
+        }
+
+        if (draw)
+        {
+            AnimatedObject.AffineMatrix = new AffineMatrix(0, ScaleX, ScaleY);
+            AnimatedObject.IsFramed = true;
+            animationPlayer.Play(AnimatedObject);
+        }
+        else
+        {
+            AnimatedObject.IsFramed = false;
+            AnimatedObject.ComputeNextFrame();
+        }
+
+        if (!IsTouchingMap)
+        {
+            MechModel.Speed = Speed;
+            
+            if (Speed.X > 7)
+                Speed = Speed with { X = 7 };
+            if (Speed.Y > 7)
+                Speed = Speed with { Y = 7 };
+        }
     }
 }
