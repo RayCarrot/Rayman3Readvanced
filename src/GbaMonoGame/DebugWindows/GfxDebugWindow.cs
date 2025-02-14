@@ -83,7 +83,7 @@ public class GfxDebugWindow : DebugWindow
                     ImGui.TableSetupColumn("Renderer");
                     ImGui.TableHeadersRow();
 
-                    foreach (GfxScreen screen in Gfx.Screens.Values.OrderBy(x => x.Id))
+                    foreach (GfxScreen screen in Gfx.Screens.OrderBy(x => x.Id))
                     {
                         ImGui.TableNextRow();
 

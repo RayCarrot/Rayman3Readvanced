@@ -22,7 +22,7 @@ public static class Gfx
     /// The game screens. These are the equivalent of backgrounds on the GBA
     /// and there are always 4 of these.
     /// </summary>
-    public static Dictionary<int, GfxScreen> Screens { get; } = [];
+    public static List<GfxScreen> Screens { get; } = [];
 
     /// <summary>
     /// The game sprites. These are the equivalent of objects on the GBA.
@@ -107,8 +107,14 @@ public static class Gfx
         Pixel.SetData([Color.White]);
     }
 
-    public static void AddScreen(GfxScreen screen) => Screens.Add(screen.Id, screen);
-    public static GfxScreen GetScreen(int id) => Screens[id];
+    public static void AddScreen(GfxScreen screen)
+    {
+        if (Screens.Any(x => x.Id == screen.Id))
+            throw new Exception($"A screen with the id {screen.Id} has already been added");
+
+        Screens.Add(screen);
+    }
+    public static GfxScreen GetScreen(int id) => Screens.FirstOrDefault(x => x.Id == id);
     public static void ClearScreens() => Screens.Clear();
 
     public static void AddSprite(Sprite sprite) => Sprites.Add(sprite);
@@ -138,7 +144,7 @@ public static class Gfx
         for (int i = 3; i >= 0; i--)
         {
             // Draw screens
-            foreach (GfxScreen screen in Screens.Values.Where(x => x.IsEnabled && x.Priority == i))
+            foreach (GfxScreen screen in Screens.Where(x => x.IsEnabled && x.Priority == i))
                 screen.Draw(renderer, Color);
 
             if ((FadeControl.Flags & (FadeFlags)(1 << i)) != 0)
