@@ -82,8 +82,7 @@ public partial class BoulderMode7
                             if (actionBox.Intersects(playerDetectionBox) && !player.IsInvulnerable)
                             {
                                 player.ReceiveDamage(1);
-                                player.ScaleX = 0.5f;
-                                player.ScaleY = 2;
+                                player.Scale = new Vector2(0.5f, 2);
                                 player.CustomScaleTimer = 100;
                             }
                         }
@@ -95,8 +94,7 @@ public partial class BoulderMode7
                             Scene.MainActor.ReceiveDamage(1);
 
                             MissileMode7 mainActor = (MissileMode7)Scene.MainActor;
-                            mainActor.ScaleX = 0.5f;
-                            mainActor.ScaleY = 2;
+                            mainActor.Scale = new Vector2(0.5f, 2);
                             mainActor.CustomScaleTimer = 100;
                         }
                     }

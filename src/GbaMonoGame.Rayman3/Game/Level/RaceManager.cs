@@ -15,8 +15,8 @@ public class RaceManager
         LapTimes = lapTimes;
         CurrentLap = 1;
         RemainingTime = -1;
-        Unknown = 0;
-        StartedRace = false;
+        CurrentTempLap = 0;
+        IsRacing = false;
         DrivingTheRightWay = true;
     }
 
@@ -27,8 +27,8 @@ public class RaceManager
     public uint Timer { get; set; }
     public int RemainingTime { get; set; }
     public int CurrentLap { get; set; }
-    public int Unknown { get; set; } // TODO: Name
-    public bool StartedRace { get; set; }
+    public int CurrentTempLap { get; set; }
+    public bool IsRacing { get; set; }
     public bool DrivingTheRightWay { get; set; }
 
     public void Step()
@@ -59,7 +59,7 @@ public class RaceManager
             case 240:
                 UserInfo.SetCountdownValue(0);
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoGO_Mix02);
-                StartedRace = true;
+                IsRacing = true;
                 Scene.MainActor.ProcessMessage(this, Message.MissileMode7_StartRace);
                 break;
 
@@ -68,7 +68,7 @@ public class RaceManager
                 break;
         }
 
-        if (StartedRace)
+        if (IsRacing)
         {
             if (RemainingTime <= 0)
             {

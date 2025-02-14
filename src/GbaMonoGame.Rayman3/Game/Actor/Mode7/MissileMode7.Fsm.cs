@@ -13,26 +13,26 @@ public partial class MissileMode7
             BoostTimer--;
 
             if (BoostTimer == 0)
-                field_0x8d = 0;
+                CollectedBlueLums = 0;
 
             if (BoostTimer == 176)
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoWoHoo_Mix01);
         }
 
-        if (field_0x99 != 0)
+        if (WahooSoundTimer != 0)
         {
-            if (field_0x99 == 1)
+            if (WahooSoundTimer == 1)
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoWoHoo_Mix01);
 
-            field_0x99--;
+            WahooSoundTimer--;
         }
 
-        if (field_0x9a != 0)
+        if (JumpSoundTimer != 0)
         {
-            if (field_0x9a == 1)
+            if (JumpSoundTimer == 1)
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01);
 
-            field_0x9a--;
+            JumpSoundTimer--;
         }
 
         if ((GameInfo.Cheats & Cheat.Invulnerable) == 0)
@@ -129,26 +129,35 @@ public partial class MissileMode7
                 // Get the current physical type
                 Mode7PhysicalTypeDefine physicalType = Scene.GetPhysicalType(Position).Mode7Define;
 
-                if (physicalType.Bumper2 && !field_0x89.Bumper2)
+                if (physicalType.Bumper2 && !PrevPhysicalType.Bumper2)
                 {
-                    // TODO: Implement
+                    MechModel.Speed = -new Vector2(MechModel.Speed.Y, MechModel.Speed.X);
+                    Direction = MathHelpers.Mod(MathHelpers.Atan2_256(MechModel.Speed * new Vector2(1, -16)), 256);
+
+                    if (InstanceId == Scene.Camera.LinkedObject.InstanceId)
+                    {
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PinBall_Mix02);
+                        WahooSoundTimer = 15;
+                    }
                 }
-                else if (physicalType.Bumper1 && !field_0x89.Bumper1)
+                else if (physicalType.Bumper1 && !PrevPhysicalType.Bumper1) 
                 {
-                    // TODO: Implement
+                    MechModel.Speed = new Vector2(MechModel.Speed.Y, MechModel.Speed.X);
+                    Direction = MathHelpers.Mod(MathHelpers.Atan2_256(MechModel.Speed * new Vector2(1, -16)), 256);
+
+                    if (InstanceId == Scene.Camera.LinkedObject.InstanceId)
+                    {
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PinBall_Mix02);
+                        WahooSoundTimer = 15;
+                    }
+
                 }
 
                 bool result;
                 if (RSMultiplayer.IsActive)
-                {
-                    // TODO: Implement
-                    result = true;
-                }
+                    result = DoMultiRace();
                 else
-                {
-                    // TODO: Implement
-                    result = true;
-                }
+                    result = DoSingleRace();
 
                 if (result)
                 {
@@ -217,11 +226,10 @@ public partial class MissileMode7
                     if (CustomScaleTimer == 0)
                     {
                         // Gradually return to normal scale
-                        if (1 < ScaleY)
-                        {
-                            ScaleX += 8 / 256f;
-                            ScaleY -= 16 / 256f;
-                        }
+                        if (1 < Scale.Y)
+                            Scale += new Vector2(8, -16) / 256;
+                        else
+                            Scale = Vector2.One;
                     }
                     else
                     {
@@ -251,14 +259,13 @@ public partial class MissileMode7
             case FsmAction.Init:
                 if (InstanceId == Scene.Camera.LinkedObject.InstanceId) 
                 {
-                    field_0x9a = 15;
+                    JumpSoundTimer = 15;
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PinBall_Mix02);
                 }
 
                 ZPosSpeed = 8;
                 ZPosDeacceleration = 0.375f;
-                ScaleX = 288 / 256f;
-                ScaleY = 224 / 256f;
+                Scale = new Vector2(288, 224) / 256;
                 field_0x9c = 1;
                 break;
 
@@ -268,15 +275,9 @@ public partial class MissileMode7
 
                 bool result;
                 if (RSMultiplayer.IsActive)
-                {
-                    // TODO: Implement
-                    result = true;
-                }
+                    result = DoMultiRace();
                 else
-                {
-                    // TODO: Implement
-                    result = true;
-                }
+                    result = DoSingleRace();
 
                 if (result)
                 {
@@ -298,8 +299,7 @@ public partial class MissileMode7
                 break;
 
             case FsmAction.UnInit:
-                ScaleX = 192 / 256f;
-                ScaleY = 384 / 256f;
+                Scale = new Vector2(192, 284) / 256;
                 field_0x9c = 0;
                 break;
         }
@@ -310,6 +310,102 @@ public partial class MissileMode7
     public bool Fsm_Dying(FsmAction action)
     {
         // TODO: Implement
+
+        return true;
+    }
+
+    public bool Fsm_FinishedRace(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                if (!RSMultiplayer.IsActive || InstanceId == Scene.Camera.LinkedObject.InstanceId)
+                {
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Motor01_Mix12);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumTimer_Mix02);
+
+                    if (RSMultiplayer.IsActive)
+                    {
+                        // TODO: Implement
+                    }
+                    else
+                    {
+                        Scene.Camera.ProcessMessage(this, Message.CamMode7_Spin, true);
+                    }
+                }
+
+                if (RSMultiplayer.IsActive)
+                    InvulnerabilityTimer = 0;
+                else
+                    InvulnerabilityTimer = 800;
+                break;
+
+            case FsmAction.Step:
+                SetMode7DirectionalAction();
+
+                MechModel.Speed -= MechModel.Speed / 64;
+
+                // Gradually return to normal scale
+                if (1 < Scale.Y)
+                    Scale += new Vector2(8, -16) / 256;
+                else
+                    Scale = Vector2.One;
+
+                UpdateJump();
+
+                if (RSMultiplayer.IsActive)
+                {
+                    // TODO: Implement
+                }
+
+                if (RSMultiplayer.IsActive)
+                {
+                    // TODO: Implement
+                }
+
+                InvulnerabilityTimer++;
+
+                if (InvulnerabilityTimer > 974)
+                {
+                    if (InvulnerabilityTimer == 998)
+                    {
+                        SoundEventsManager.StopAllSongs();
+                    }
+                    else if (InvulnerabilityTimer == 1000)
+                    {
+                        Frame.Current.EndOfFrame = true;
+
+                        if (!RSMultiplayer.IsActive)
+                        {
+                            if (GameInfo.PersistentInfo.LastCompletedLevel < (int)GameInfo.MapId &&
+                                GameInfo.MapId < MapId.Bonus1 &&
+                                GameInfo.PersistentInfo.LastCompletedLevel < (int)GameInfo.MapId)
+                            {
+                                GameInfo.PersistentInfo.LastCompletedLevel = (byte)GameInfo.MapId;
+                            }
+
+                            GameInfo.PersistentInfo.LastPlayedLevel = (byte)GameInfo.MapId;
+                            GameInfo.Save(GameInfo.CurrentSlot);
+                        }
+                    }
+                }
+                else if (InvulnerabilityTimer == 974 || 
+                         (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A) && InvulnerabilityTimer > 300))
+                {
+                    FrameMode7 frame = (FrameMode7)Frame.Current;
+
+                    frame.TransitionsFX.FadeOutInit(2 / 16f);
+                    frame.CanPause = false;
+
+                    if (InvulnerabilityTimer < 974)
+                        InvulnerabilityTimer = 975;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
 
         return true;
     }

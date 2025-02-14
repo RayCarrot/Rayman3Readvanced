@@ -72,6 +72,7 @@ public enum Message
     Murfy_Spawn = 1049,
     Main_QuickFinishBodyShotAttack = 1050,
 
+    CamMode7_Spin = 1053,
     Cam_Shake = 1054,
     Cam_MoveToTarget = 1055,
     Main_1056 = 1056, // TODO: Name
@@ -79,7 +80,7 @@ public enum Message
     Cam_MoveToLinkedObject = 1058,
     Main_ExitStopOrCutscene = 1059,
     Exploded = 1060,
-
+    CamMode7_1061 = 1061, // TODO: Name
     Cam_SetPosition = 1062,
     Lum_ToggleVisibility = 1063,
     Main_MountWalkingShell = 1064,
@@ -92,7 +93,7 @@ public enum Message
 
     Main_Hide = 1072, // Unused
     MissileMode7_StartRace = 1073,
-    MissileMode7_1074 = 1074, // TODO: Name
+    MissileMode7_EndRace = 1074,
 
     Main_MultiplayerGameOver = 1075,
     Main_MultiplayerTagMoved = 1076,

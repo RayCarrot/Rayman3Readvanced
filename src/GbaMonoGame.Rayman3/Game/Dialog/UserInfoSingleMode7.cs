@@ -144,10 +144,10 @@ public class UserInfoSingleMode7 : Dialog
 
         MissileMode7 mainActor = (MissileMode7)Scene.MainActor;
 
-        if (mainActor.field_0x8d == 3 && (mainActor.BoostTimer & 0x10) != 0)
+        if (mainActor.CollectedBlueLums == 3 && (mainActor.BoostTimer & 0x10) != 0)
             Laps.CurrentAnimation = 10;
         else
-            Laps.CurrentAnimation = 10 + mainActor.field_0x8d;
+            Laps.CurrentAnimation = 10 + mainActor.CollectedBlueLums;
 
         LapDigits[0].CurrentAnimation = raceManager.CurrentLap;
         LapDigits[1].CurrentAnimation = raceManager.LapsCount;
@@ -159,7 +159,7 @@ public class UserInfoSingleMode7 : Dialog
         if (!raceManager.DrivingTheRightWay && 
             (GameTime.ElapsedFrames & 0x20) != 0 && 
             !IsPaused && 
-            raceManager.StartedRace)
+            raceManager.IsRacing)
         {
             animationPlayer.PlayFront(WrongWayText);
 

@@ -28,7 +28,7 @@ public partial class CameraMode7
 
                     MainActorDistance -= 30;
 
-                    State.MoveTo(Fsm_Waterski);
+                    State.MoveTo(Fsm_Spin);
                     return false;
                 }
 
@@ -55,7 +55,7 @@ public partial class CameraMode7
         switch (action)
         {
             case FsmAction.Init:
-                cam.Direction = -((Mode7Actor)LinkedObject).Direction;
+                cam.Direction = MathHelpers.Mod(-((Mode7Actor)LinkedObject).Direction, 256);
 
                 Vector2 directionalVector = MathHelpers.DirectionalVector256(0x100 - cam.Direction);
 
@@ -78,18 +78,18 @@ public partial class CameraMode7
 
                 // NOTE: The game has no tolerance and uses a direct equality comparison. But that's because
                 //       it doesn't store a fractional value for the direction.
-                if (Math.Abs(linkedObjDir - -cam.Direction) >= 1)
+                if (MathHelpers.Mod(Math.Abs(linkedObjDir - -cam.Direction), 256) >= 1)
                 {
                     if (MathHelpers.Mod(linkedObjDir + cam.Direction, 256) < 128)
                     {
                         DirectionDelta += 0.25f + MathHelpers.Mod(linkedObjDir + cam.Direction, 256) * 0.0625f;
-                        cam.Direction = -(MathHelpers.Mod(DirectionDelta, 256) - cam.Direction);
+                        cam.Direction = MathHelpers.Mod(-(MathHelpers.Mod(DirectionDelta, 256) - cam.Direction), 256);
                         DirectionDelta %= 1;
                     }
                     else
                     {
                         DirectionDelta += 0.25f + MathHelpers.Mod(-cam.Direction - linkedObjDir, 256) * 0.0625f;
-                        cam.Direction = -(-MathHelpers.Mod(DirectionDelta, 256) - cam.Direction);
+                        cam.Direction = MathHelpers.Mod(-(-MathHelpers.Mod(DirectionDelta, 256) - cam.Direction), 256);
                         DirectionDelta %= 1;
                     }
                 }
@@ -116,17 +116,34 @@ public partial class CameraMode7
         return true;
     }
 
-    // TODO: Implement
-    public bool Fsm_Waterski(FsmAction action)
+    public bool Fsm_Spin(FsmAction action)
     {
         switch (action)
         {
             case FsmAction.Init:
-
+                ResetPosition = true;
                 break;
 
             case FsmAction.Step:
+                TgxCameraMode7 cam = (TgxCameraMode7)Scene.Playfield.Camera;
+                Vector2 camDirectionalVector = MathHelpers.DirectionalVector256(0x100 - cam.Direction);
 
+                if (ResetPosition)
+                {
+                    ResetPosition = false;
+
+                    cam.Position = new Vector2(
+                        x: LinkedObject.Position.X - camDirectionalVector.X * MainActorDistance,
+                        y: LinkedObject.Position.Y + camDirectionalVector.Y * MainActorDistance);
+                }
+
+                cam.Direction = MathHelpers.Mod(-(1 - cam.Direction), 256);
+
+                Vector2 posDelta = new(
+                    x: LinkedObject.Position.X - (MainActorDistance * camDirectionalVector.X + camDirectionalVector.X / 2) - cam.Position.X,
+                    y: LinkedObject.Position.Y + (MainActorDistance * camDirectionalVector.Y + camDirectionalVector.Y / 2) - cam.Position.Y);
+
+                cam.Position += posDelta;
                 break;
 
             case FsmAction.UnInit:

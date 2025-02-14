@@ -28,19 +28,18 @@ public sealed partial class MissileMode7 : Mode7Actor
         if (RSMultiplayer.IsActive && InstanceId != 0)
             AnimatedObject.BasePaletteIndex = InstanceId;
 
-        field_0x8d = 0;
+        CollectedBlueLums = 0;
         field_0x8c = 0;
         field_0x88 = 0;
-        ScaleX = 1;
-        ScaleY = 1;
-        field_0x8a = 0;
-        field_0x89 = Mode7PhysicalTypeDefine.Empty;
+        Scale = Vector2.One;
+        RaceDirection = Mode7PhysicalTypeDefine.Mode7PhysicalTypeDirection.Right;
+        PrevPhysicalType = Mode7PhysicalTypeDefine.Empty;
         PrevHitPoints = HitPoints;
-        field_0x8e = 0;
+        CurrentTempLap = 0;
         BoostTimer = 0;
         field_0x96 = 0.0625f;
-        field_0x99 = 0;
-        field_0x9a = 0;
+        WahooSoundTimer = 0;
+        JumpSoundTimer = 0;
         CustomScaleTimer = 0;
         field_0x9c = 0;
 
@@ -50,25 +49,27 @@ public sealed partial class MissileMode7 : Mode7Actor
     public int PrevHitPoints { get; set; }
     public ushort InvulnerabilityTimer { get; set; }
     
+    public byte CollectedBlueLums { get; set; }
     public byte BoostTimer { get; set; }
-    
+    public byte WahooSoundTimer { get; set; }
+    public byte JumpSoundTimer { get; set; }
+
     public float ZPosSpeed { get; set; }
     public float ZPosDeacceleration { get; set; }
 
-    public float ScaleX { get; set; }
-    public float ScaleY { get; set; }
+    public Vector2 Scale { get; set; }
     public byte CustomScaleTimer { get; set; }
 
+    public Mode7PhysicalTypeDefine PrevPhysicalType { get; set; }
+    public Mode7PhysicalTypeDefine.Mode7PhysicalTypeDirection RaceDirection { get; set; }
+
+    public byte CurrentTempLap { get; set; }
+    public bool IsOnCorrectLap { get; set; }
+
     // TODO: Name
-    public byte field_0x8d { get; set; }
     public byte field_0x8c { get; set; }
     public byte field_0x88 { get; set; }
-    public byte field_0x8a { get; set; }
-    public Mode7PhysicalTypeDefine field_0x89 { get; set; }
-    public byte field_0x8e { get; set; }
     public float field_0x96 { get; set; }
-    public byte field_0x99 { get; set; }
-    public byte field_0x9a { get; set; }
     public byte field_0x9c { get; set; }
 
     public bool Debug_NoClip { get; set; } // Custom no-clip mode
@@ -76,6 +77,33 @@ public sealed partial class MissileMode7 : Mode7Actor
     private void SetMode7DirectionalAction()
     {
         SetMode7DirectionalAction(0, 6);
+    }
+
+    private bool IsMovingTheRightDirection(Mode7PhysicalTypeDefine.Mode7PhysicalTypeDirection raceDirection)
+    {
+        return raceDirection switch
+        {
+            Mode7PhysicalTypeDefine.Mode7PhysicalTypeDirection.Right => Speed.X >= 0,
+            Mode7PhysicalTypeDefine.Mode7PhysicalTypeDirection.UpRight => Speed.X >= Speed.Y,
+            Mode7PhysicalTypeDefine.Mode7PhysicalTypeDirection.Up => Speed.Y <= 0,
+            Mode7PhysicalTypeDefine.Mode7PhysicalTypeDirection.UpLeft => Speed.X <= -Speed.Y,
+            Mode7PhysicalTypeDefine.Mode7PhysicalTypeDirection.Left => Speed.X <= 0,
+            Mode7PhysicalTypeDefine.Mode7PhysicalTypeDirection.DownLeft => Speed.Y >= Speed.X,
+            Mode7PhysicalTypeDefine.Mode7PhysicalTypeDirection.Down => Speed.Y >= 0,
+            Mode7PhysicalTypeDefine.Mode7PhysicalTypeDirection.DownRight => Speed.X >= -Speed.Y,
+            _ => true
+        };
+    }
+
+    private bool IsFacingTheRightDirection(Mode7PhysicalTypeDefine.Mode7PhysicalTypeDirection raceDirection)
+    {
+        float v1 = (int)raceDirection * 32 + 80;
+        float v2 = (int)raceDirection * 32 + 176;
+        
+        if (v1 < v2)
+            return v1 > Direction || Direction > v2;
+        else
+            return v1 > Direction && Direction > v2;
     }
 
     private void UpdateJump()
@@ -93,6 +121,102 @@ public sealed partial class MissileMode7 : Mode7Actor
         {
             ZPos = zPos;
         }
+    }
+
+    private bool DoSingleRace()
+    {
+        FrameSingleMode7 frame = (FrameSingleMode7)Frame.Current;
+        RaceManager raceManager = frame.RaceManager;
+
+        // Get the current physical type
+        Mode7PhysicalTypeDefine physicalType = Scene.GetPhysicalType(Position).Mode7Define;
+
+        if (physicalType.Directional && !PrevPhysicalType.Directional)
+            RaceDirection = physicalType.Direction;
+
+        bool isMovingTheRightDirection = IsMovingTheRightDirection(RaceDirection);
+
+        // TODO: Update the sound pitch based on the speed
+        //SoundEventsManager.SetSoundPitch();
+
+        // Update if we're facing the right direction
+        raceManager.DrivingTheRightWay = IsFacingTheRightDirection(RaceDirection);
+
+        // Check if we passed the finish line
+        if (physicalType.RaceEnd != PrevPhysicalType.RaceEnd)
+        {
+            if (isMovingTheRightDirection)
+            {
+                CurrentTempLap++;
+
+                if ((CurrentTempLap & 1) == 0 && IsOnCorrectLap)
+                {
+                    raceManager.CurrentTempLap++;
+
+                    bool finishedRace;
+
+                    // New lap
+                    if (raceManager.CurrentLap < raceManager.CurrentTempLap)
+                    {
+                        if (raceManager.CurrentTempLap == 2)
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LineFX01_Mix02_P1_);
+                        else if (raceManager.CurrentTempLap == 3)
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LineFX01_Mix02_P2_);
+                        else if (raceManager.CurrentTempLap == 4)
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02);
+
+                        raceManager.CurrentLap = raceManager.CurrentTempLap;
+
+                        // Initialize next lap
+                        if (raceManager.CurrentLap <= raceManager.LapsCount)
+                        {
+                            raceManager.RemainingTime = raceManager.LapTimes[raceManager.CurrentLap - 1] * 60;
+                            finishedRace = false;
+                        }
+                        // The race has been finished
+                        else
+                        {
+                            raceManager.CurrentLap = raceManager.LapsCount;
+                            raceManager.IsRacing = false;
+                            finishedRace = true;
+                        }
+                    }
+                    else
+                    {
+                        finishedRace = false;
+                    }
+
+                    if (finishedRace)
+                    {
+                        frame.SaveLums();
+                        State.MoveTo(Fsm_FinishedRace);
+                        SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.Play__win3, 0);
+                        LevelMusicManager.HasOverridenLevelMusic = false;
+                    }
+                }
+
+                IsOnCorrectLap = true;
+            }
+            else
+            {
+                CurrentTempLap--;
+                
+                if ((CurrentTempLap & 1) == 0 && !IsOnCorrectLap)
+                    raceManager.CurrentTempLap--;
+
+                IsOnCorrectLap = false;
+            }
+        }
+
+        PrevPhysicalType = physicalType;
+
+        return true;
+    }
+
+    private bool DoMultiRace()
+    {
+        // TODO: Implement
+        return true;
     }
 
     private void ToggleNoClip()
@@ -139,7 +263,25 @@ public sealed partial class MissileMode7 : Mode7Actor
         switch (message)
         {
             case Message.MissileMode7_CollectedBlueLum:
-                // TODO: Implement
+                if (CollectedBlueLums < 3)
+                {
+                    CollectedBlueLums++;
+
+                    // Play sound
+                    if (!RSMultiplayer.IsActive || InstanceId == Scene.Camera.LinkedObject.InstanceId)
+                    {
+                        if (CollectedBlueLums == 1)
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumBoost_Mix01GEN_P1);
+                        else if (CollectedBlueLums == 2)
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumBoost_Mix01GEN_P2);
+                        else if (CollectedBlueLums == 3)
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumBoost_Mix01GEN_P3);
+                    }
+                }
+
+                // 3 blue lums initiate the boost
+                if (CollectedBlueLums == 3)
+                    BoostTimer = 192;
                 return true;
 
             case Message.MissileMode7_CollectedRedLum:
@@ -160,8 +302,8 @@ public sealed partial class MissileMode7 : Mode7Actor
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Motor01_Mix12);
                 return true;
 
-            case Message.MissileMode7_1074:
-                // TODO: Implement
+            case Message.MissileMode7_EndRace:
+                State.MoveTo(Fsm_FinishedRace);
                 return true;
 
             default:
@@ -215,7 +357,7 @@ public sealed partial class MissileMode7 : Mode7Actor
 
         if (draw)
         {
-            AnimatedObject.AffineMatrix = new AffineMatrix(0, ScaleX, ScaleY);
+            AnimatedObject.AffineMatrix = new AffineMatrix(0, Scale.X, Scale.Y);
             AnimatedObject.IsFramed = true;
             animationPlayer.Play(AnimatedObject);
         }

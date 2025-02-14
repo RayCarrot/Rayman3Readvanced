@@ -19,11 +19,29 @@ public partial class CameraMode7 : CameraActorMode7
     public uint Timer { get; set; }
     public float MainActorDistance { get; set; }
     public float DirectionDelta { get; set; }
+    public bool ResetPosition { get; set; }
 
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {
-        // TODO: Implement
-        return base.ProcessMessageImpl(sender, message, param);
+        if (base.ProcessMessageImpl(sender, message, param))
+            return false;
+
+        switch (message)
+        {
+            case Message.CamMode7_Spin:
+                State.MoveTo(Fsm_Spin);
+
+                if (param is true)
+                    ResetPosition = false;
+                return true;
+
+            case Message.CamMode7_1061:
+                // TODO: Implement
+                return true;
+
+            default:
+                return false;
+        }
     }
 
     public override void Step()

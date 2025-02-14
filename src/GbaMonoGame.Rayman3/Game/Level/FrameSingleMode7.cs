@@ -35,6 +35,15 @@ public class FrameSingleMode7 : FrameMode7
         }
     }
 
+    public void SaveLums()
+    {
+        for (int i = 0; i < CollectedLums.Length; i++)
+        {
+            if (CollectedLums[i])
+                GameInfo.SetYellowLumAsCollected(i);
+        }
+    }
+
     public override void Init()
     {
         base.Init();
