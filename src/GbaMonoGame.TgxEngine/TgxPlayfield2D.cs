@@ -31,14 +31,10 @@ public class TgxPlayfield2D : TgxPlayfield
                 TgxTileLayer layer = new(renderContext, gameLayerResource);
                 tileLayers.Add(layer);
 
-                layer.LoadRenderer(playfieldResource.TileKit, Vram);
+                layer.LoadRenderer(Vram, playfieldResource.TileKit, AnimatedTilekitManager);
                 
                 // The game does this in the layer constructor, but it's easier here since we have access to the camera
                 Camera.AddLayer(gameLayerResource.TileLayer.ClusterIndex, layer);
-
-                // Add the renderer to the animated tile kit manager
-                if (layer.Screen.Renderer is TileMapScreenRenderer renderer)
-                    AnimatedTilekitManager?.AddRenderer(renderer);
             }
             else if (gameLayerResource.Type == GameLayerType.PhysicalLayer)
             {

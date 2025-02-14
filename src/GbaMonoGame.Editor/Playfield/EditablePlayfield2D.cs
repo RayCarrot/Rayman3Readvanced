@@ -23,7 +23,7 @@ public class EditablePlayfield2D
                 TgxTileLayer layer = new(camera.RenderContext, gameLayerResource);
                 tileLayers.Add(layer);
 
-                layer.LoadRenderer(playfieldResource.TileKit, Vram);
+                layer.LoadRenderer(Vram, playfieldResource.TileKit, null);
                 layer.Screen.Wrap = false;
 
                 camera.AddGameLayer(layer);

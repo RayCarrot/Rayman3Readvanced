@@ -1,7 +1,6 @@
 ﻿using BinarySerializer.Nintendo.GBA;
 using BinarySerializer.Ubisoft.GbaEngine;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace GbaMonoGame.TgxEngine;
@@ -13,7 +12,6 @@ public class TgxRotscaleLayerMode7 : TgxGameLayer
         Resource = gameLayerResource.RotscaleLayerMode7;
 
         TileMap = Resource.TileMap;
-        BaseTileIndex = 512;
         Is8Bit = true;
         LayerId = Resource.LayerId;
 
@@ -37,7 +35,6 @@ public class TgxRotscaleLayerMode7 : TgxGameLayer
     public RotscaleLayerMode7Resource Resource { get; }
     public GfxScreen Screen { get; }
     public MapTile[] TileMap { get; }
-    public int BaseTileIndex { get; }
     public bool Is8Bit { get; }
     public byte LayerId { get; }
 
@@ -51,27 +48,18 @@ public class TgxRotscaleLayerMode7 : TgxGameLayer
         Screen.RenderOptions.WorldViewProj = worldViewProj;
     }
 
-    public void LoadRenderer(TileKit tileKit, GbaVram vram)
+    public void LoadRenderer(GbaVram vram, TileKit tileKit, AnimatedTilekitManager animatedTilekitManager)
     {
-        // Create and set the palette texture
-        Screen.RenderOptions.PaletteTexture = new PaletteTexture(
-            Texture: Engine.TextureCache.GetOrCreateObject(
-                pointer: vram.SelectedPalette.CachePointer,
-                id: 0,
-                data: vram.SelectedPalette,
-                createObjFunc: static p => new PaletteTexture2D(p)),
-            PaletteIndex: 0);
-
-        // TODO: This doesn't work with animated tiles! We probably need to use the TileMap renderer and convert the
-        //       TileMap like Ray1Map does (since it's static and not dynamic). Or create a separate texture for each
-        //       frame of the animation.
-
-        Texture2D layerTexture = Engine.TextureCache.GetOrCreateObject(
-            pointer: Resource.Offset,
-            id: 0,
-            data: (Vram: vram, Layer: this, BaseTileIndex),
-            createObjFunc: static data => new IndexedTiledTexture2D(data.Layer.Width, data.Layer.Height, data.Vram.TileSet, data.Layer.TileMap, data.BaseTileIndex, data.Layer.Is8Bit));
-
-        Screen.Renderer = new TextureScreenRenderer(layerTexture);
+        Screen.Renderer = vram.CreateTileMapRenderer(
+            renderOptions: Screen.RenderOptions,
+            tileKit: tileKit,
+            animatedTilekitManager: animatedTilekitManager,
+            layerCachePointer: Resource.Offset,
+            width: Width,
+            height: Height,
+            tileMap: TileMap,
+            baseTileIndex: 512,
+            is8Bit: Is8Bit,
+            isDynamic: false);
     }
 }
