@@ -1,4 +1,5 @@
-﻿using GbaMonoGame.AnimEngine;
+﻿using System;
+using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
@@ -28,8 +29,14 @@ public abstract class CameraActorMode7 : CameraActor
         float camDist = posDiff.Length();
 
         // Check the distance from the camera
-        if (camDist > cam.CameraFar)
+        if (camDist >= cam.CameraFar)
             return false;
+
+        // TODO: Add this as an option, enabled by default for modern mode
+        // The game doesn't do this, but it looks nicer if we fade in the objects as they enter the view
+        const float fadeDist = 40f;
+        actor.AnimatedObject.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+        actor.AnimatedObject.Alpha = MathF.Min((cam.CameraFar - camDist) / fadeDist, 1);
 
         // Set the angle relative to the camera
         if (actor is Mode7Actor mode7Actor)
