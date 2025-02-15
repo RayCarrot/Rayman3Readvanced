@@ -31,7 +31,7 @@ public class Sprite
         else
             color = new Color(Color.ToVector4() * color.ToVector4());
         
-        if (RenderOptions.Alpha)
+        if (RenderOptions.BlendMode != BlendMode.None)
             color = new Color(color, Alpha);
 
         Rectangle textureRectangle = TextureRectangle;

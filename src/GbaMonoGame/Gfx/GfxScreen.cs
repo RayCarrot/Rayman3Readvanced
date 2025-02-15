@@ -64,7 +64,7 @@ public class GfxScreen
             return;
 
         // TODO: Add config option to use GBA fading on N-Gage
-        if (Rom.IsLoaded && Rom.Platform == Platform.GBA && RenderOptions.Alpha)
+        if (Rom.IsLoaded && Rom.Platform == Platform.GBA && RenderOptions.BlendMode != BlendMode.None)
             color = new Color(color, Alpha);
 
         if (Wrap)

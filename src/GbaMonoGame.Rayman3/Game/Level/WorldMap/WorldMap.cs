@@ -268,7 +268,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
         if (ShouldSetLightningAlpha)
         {
-            lightningLayer.Screen.RenderOptions.Alpha = true;
+            lightningLayer.Screen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
             lightningLayer.Screen.GbaAlpha = 8;
 
             ShouldSetLightningAlpha = false;
@@ -797,7 +797,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             HorizontalAnchor = HorizontalAnchorMode.Center,
             Text = "",
             RenderContext = Scene.HudRenderContext,
-            RenderOptions = { Alpha = true },
+            RenderOptions = { BlendMode = BlendMode.AlphaBlend },
         };
 
         Rayman.CurrentAnimation = WorldId switch

@@ -8,7 +8,7 @@ public record RenderOptions
 {
     public RenderContext RenderContext { get; set; }
     public Effect Shader { get; set; }
-    public bool Alpha { get; set; }
+    public BlendMode BlendMode { get; set; }
     public PaletteTexture PaletteTexture { get; set; }
     public Matrix? WorldViewProj { get; set; }
-};
+}

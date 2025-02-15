@@ -120,13 +120,19 @@ public class GfxRenderer
             _spriteBatch.Begin(
                 samplerState: SamplerState.PointClamp,
                 effect: shader,
-                blendState: options.Alpha ? new BlendState
+                blendState: options.BlendMode switch
                 {
-                    ColorSourceBlend = Blend.SourceAlpha,
-                    ColorDestinationBlend = Blend.InverseSourceAlpha,
-                    AlphaSourceBlend = Blend.One,
-                    AlphaDestinationBlend = Blend.InverseSourceAlpha,
-                } : null,
+                    BlendMode.None => null,
+                    BlendMode.AlphaBlend => new BlendState
+                    {
+                        ColorSourceBlend = Blend.SourceAlpha,
+                        ColorDestinationBlend = Blend.InverseSourceAlpha,
+                        AlphaSourceBlend = Blend.One,
+                        AlphaDestinationBlend = Blend.InverseSourceAlpha,
+                    },
+                    BlendMode.Additive => BlendState.Additive,
+                    _ => throw new ArgumentOutOfRangeException()
+                },
                 transformMatrix: view,
                 rasterizerState: _rasterizerState);
         }

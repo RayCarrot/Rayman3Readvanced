@@ -109,7 +109,7 @@ public partial class RaymanBody
                 {
                     FrameMultiSideScroller frame = (FrameMultiSideScroller)Frame.Current;
                     GameObject sparkleActor = frame.InvisibleActorId == -1 ? null : Scene.GetGameObject(frame.InvisibleActorId);
-                    AnimatedObject.RenderOptions.Alpha = sparkleActor != null && Rayman == sparkleActor;
+                    AnimatedObject.RenderOptions.BlendMode = sparkleActor != null && Rayman == sparkleActor ? BlendMode.AlphaBlend : BlendMode.None;
                     ChargePower += 2;
                 }
                 break;

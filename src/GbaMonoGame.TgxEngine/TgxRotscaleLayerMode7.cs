@@ -26,7 +26,7 @@ public class TgxRotscaleLayerMode7 : TgxGameLayer
             Wrap = true,
             Is8Bit = Is8Bit,
             GbaAlpha = Resource.AlphaCoeff,
-            RenderOptions = { RenderContext = renderContext, Alpha = Resource.HasAlphaBlending },
+            RenderOptions = { RenderContext = renderContext, BlendMode = Resource.HasAlphaBlending ? BlendMode.AlphaBlend : BlendMode.None }, // TODO: We also need to update TransitionsFX, see Beneath map 1
         };
 
         Gfx.AddScreen(Screen);
