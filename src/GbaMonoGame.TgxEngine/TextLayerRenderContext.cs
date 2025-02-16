@@ -11,8 +11,8 @@ public class TextLayerRenderContext : RenderContext
 
     private Vector2 _lastParentResolution;
 
-    // Do not center as we want it to render on the top of the screen
-    protected override bool Center => false;
+    // Anchor to the top instead of centering
+    protected override VerticalAlignment VerticalAlignment => VerticalAlignment.Top;
 
     public RenderContext ParentRenderContext { get; }
     public float Horizon { get; set; }
@@ -20,7 +20,7 @@ public class TextLayerRenderContext : RenderContext
     protected override Vector2 GetResolution()
     {
         _lastParentResolution = ParentRenderContext.Resolution;
-        return ParentRenderContext.Resolution with{ Y = Horizon + 1 };
+        return ParentRenderContext.Resolution with { Y = Horizon + 1 };
     }
 
     public override void Update()

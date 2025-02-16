@@ -12,7 +12,8 @@ public abstract class RenderContext
     private float _scale;
     private Viewport _viewPort;
 
-    protected virtual bool Center => true;
+    protected virtual HorizontalAlignment HorizontalAlignment => HorizontalAlignment.Center;
+    protected virtual VerticalAlignment VerticalAlignment => VerticalAlignment.Center;
 
     public Vector2 Resolution
     {
@@ -86,16 +87,42 @@ public abstract class RenderContext
             scale = viewPortSize.Y / res.Y;
             size = res * scale;
 
-            if (Center)
-                pos = new Vector2((viewPortSize.X - size.X) / 2, 0);
+            switch (HorizontalAlignment)
+            {
+                default:
+                case HorizontalAlignment.Left:
+                    // Do nothing
+                    break;
+                
+                case HorizontalAlignment.Center:
+                    pos = new Vector2((viewPortSize.X - size.X) / 2, 0);
+                    break;
+                
+                case HorizontalAlignment.Right:
+                    pos = new Vector2(viewPortSize.X - size.X, 0);
+                    break;
+            }
         }
         else
         {
             scale = viewPortSize.X / res.X;
             size = res * scale;
-            
-            if (Center)
-                pos = new Vector2(0, (viewPortSize.Y - size.Y) / 2);
+
+            switch (VerticalAlignment)
+            {
+                default:
+                case VerticalAlignment.Top:
+                    // Do nothing
+                    break;
+
+                case VerticalAlignment.Center:
+                    pos = new Vector2(0, (viewPortSize.Y - size.Y) / 2);
+                    break;
+                
+                case VerticalAlignment.Bottom:
+                    pos = new Vector2(0, viewPortSize.Y - size.Y);
+                    break;
+            }
         }
 
         // Offset by the view port render box position
