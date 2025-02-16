@@ -16,6 +16,7 @@ public class TgxCameraMode7 : TgxCamera
 
     private bool _isProjectionDirty = true;
     private bool _isViewDirty = true;
+    private bool _isHorizonDirty = true;
     private Vector2 _prevResolution = Vector2.Zero;
 
     private float _cameraFieldOfView = MathHelper.PiOver4;
@@ -25,6 +26,7 @@ public class TgxCameraMode7 : TgxCamera
     private float _cameraHeight = 20.0f;
     private Vector2 _position;
     private float _direction;
+    private float _horizon;
 
     // Rendering
     public Matrix ViewMatrix { get; set; }
@@ -76,7 +78,15 @@ public class TgxCameraMode7 : TgxCamera
     }
 
     // Horizon
-    public float Horizon { get; private set; }
+    public float Horizon
+    {
+        get
+        {
+            _isHorizonDirty = true;
+            return _horizon;
+        }
+        set => _horizon = value;
+    }
     public TextLayerRenderContext TextLayerRenderContext { get; }
 
     // Layers
@@ -109,21 +119,6 @@ public class TgxCameraMode7 : TgxCamera
     public void AddTextLayer(TgxTextLayerMode7 layer)
     {
         TextLayers.Add(layer);
-    }
-
-    public void SetHorizon(float horizon)
-    {
-        Horizon = horizon;
-
-        TextLayerRenderContext.Horizon = horizon;
-        TextLayerRenderContext.UpdateResolution();
-
-        // NOTE: It should be horizon+1, but there can be slight scaling artifacts, so better doing one pixel behind the background
-        Vector3 world = Unproject(new Vector2(RenderContext.Resolution.X / 2, horizon), true);
-        Vector3 camPos = new(Position.X, Position.Y, -CameraHeight);
-        float dist = Vector3.Distance(camPos, world);
-        
-        CameraFar = dist;
     }
 
     public Vector2 GetDirection()
@@ -203,14 +198,12 @@ public class TgxCameraMode7 : TgxCamera
         Vector2 res = RenderContext.Resolution;
 
         bool updateViewProj = false;
-        bool updateHorizon = false;
 
         // Update resolution
         if (_prevResolution != res)
         {
             _prevResolution = res;
             _isProjectionDirty = true;
-            updateHorizon = true;
         }
 
         // Update projection
@@ -225,6 +218,7 @@ public class TgxCameraMode7 : TgxCamera
 
             updateViewProj = true;
             _isProjectionDirty = false;
+            _isHorizonDirty = true;
         }
 
         // Update view
@@ -249,9 +243,19 @@ public class TgxCameraMode7 : TgxCamera
         }
 
         // Update the horizon
-        if (updateHorizon)
+        if (_isHorizonDirty)
         {
-            SetHorizon(Horizon);
+            TextLayerRenderContext.Horizon = Horizon;
+            TextLayerRenderContext.UpdateResolution();
+
+            // NOTE: It should be horizon+1, but there can be slight scaling artifacts, so better doing one pixel behind the background
+            Vector3 world = Unproject(new Vector2(RenderContext.Resolution.X / 2, Horizon), true);
+            Vector3 camPos = new(Position.X, Position.Y, -CameraHeight);
+            float dist = Vector3.Distance(camPos, world);
+
+            CameraFar = dist;
+
+            _isHorizonDirty = false;
         }
     }
 }
