@@ -84,6 +84,10 @@ public class PlayfieldDebugWindow : DebugWindow
         if (ImGui.SliderFloat("Direction", ref direction, 0, 256))
             playfieldMode7.Camera.Direction = direction;
 
+        float horizon = playfieldMode7.Camera.Horizon;
+        if (ImGui.SliderFloat("Horizon", ref horizon, 0, 256))
+            playfieldMode7.Camera.Horizon = horizon;
+
         float cameraFieldOfView = playfieldMode7.Camera.CameraFieldOfView;
         if (ImGui.SliderFloat("Camera FOV", ref cameraFieldOfView, 0, MathF.PI))
             playfieldMode7.Camera.CameraFieldOfView = cameraFieldOfView;
