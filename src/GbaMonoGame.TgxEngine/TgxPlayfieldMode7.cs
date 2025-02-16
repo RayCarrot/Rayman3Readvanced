@@ -6,7 +6,7 @@ namespace GbaMonoGame.TgxEngine;
 public class TgxPlayfieldMode7 : TgxPlayfield
 {
     public TgxPlayfieldMode7(PlayfieldMode7Resource playfieldResource) 
-        : base(new TgxCameraMode7(CreateRenderContext(playfieldResource)), playfieldResource.TileKit)
+        : base(new TgxCameraMode7(CreateRenderContext()), playfieldResource.TileKit)
     {
         List<TgxRotscaleLayerMode7> rotScaleLayers = new();
         List<TgxTextLayerMode7> textLayers = new();
@@ -48,10 +48,12 @@ public class TgxPlayfieldMode7 : TgxPlayfield
         TextLayers = textLayers;
     }
 
-    private static RenderContext CreateRenderContext(PlayfieldMode7Resource resource)
+    private static RenderContext CreateRenderContext()
     {
-        // TODO: Implement
-        return Engine.GameRenderContext;
+        // Force it to use the original resolution (240x160) as a base. Otherwise we run into issues
+        // if it's too big as just increasing it slightly will cause you to see waaaay past the end
+        // of the level map.
+        return Rom.OriginalScaledGameRenderContext;
     }
 
     public new TgxCameraMode7 Camera => (TgxCameraMode7)base.Camera;

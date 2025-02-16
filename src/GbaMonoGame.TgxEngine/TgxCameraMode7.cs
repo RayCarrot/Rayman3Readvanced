@@ -250,10 +250,18 @@ public class TgxCameraMode7 : TgxCamera
 
             // NOTE: It should be horizon+1, but there can be slight scaling artifacts, so better doing one pixel behind the background
             Vector3 world = Unproject(new Vector2(RenderContext.Resolution.X / 2, Horizon), true);
-            Vector3 camPos = new(Position.X, Position.Y, -CameraHeight);
-            float dist = Vector3.Distance(camPos, world);
 
-            CameraFar = dist;
+            if (world != Vector3.Zero)
+            {
+                Vector3 camPos = new(Position.X, Position.Y, -CameraHeight);
+                float dist = Vector3.Distance(camPos, world);
+                CameraFar = dist;
+            }
+            // Fallback if world is zero, which would usually happen if the horizon is too low compared to the resolution, so we see waaay past the map
+            else if (RotScaleLayers.Count > 0)
+            {
+                CameraFar = RotScaleLayers[0].PixelWidth;
+            }
 
             _isHorizonDirty = false;
         }
