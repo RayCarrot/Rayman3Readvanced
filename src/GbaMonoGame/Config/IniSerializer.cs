@@ -36,7 +36,7 @@ public class IniSerializer : BaseIniSerializer
         }
         else if (value is Vector2 vector2)
         {
-            return $"{vector2.X}x{vector2.Y}";
+            return $"{vector2.X.ToString(CultureInfo.InvariantCulture)}x{vector2.Y.ToString(CultureInfo.InvariantCulture)}";
         }
         else if (value is Point point)
         {
