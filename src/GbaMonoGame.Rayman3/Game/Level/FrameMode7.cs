@@ -1,7 +1,9 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using BinarySerializer.Nintendo.GBA;
+using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.TgxEngine;
+using Microsoft.Xna.Framework;
 using Action = System.Action;
 
 namespace GbaMonoGame.Rayman3;
@@ -64,6 +66,73 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
 
         CanPause = false;
         CurrentStepAction = Step_Normal;
+    }
+
+    protected void ExtendMap(Rectangle repeatRect)
+    {
+        // In the original game if you see outside the map then it wraps whatever is loaded in VRAM, which will usually
+        // be leftover tiles from before. This isn't very noticeable due to the low resolution, but here it is. So instead
+        // we want to define a section of the map to repeat/tile outside the main map.
+
+        // Get the main map layer
+        TgxRotscaleLayerMode7 rotScaleLayer = ((TgxPlayfieldMode7)Scene.Playfield).RotScaleLayers[0];
+
+        // Get the tiles to repeat
+        MapTile[] repeatSection = new MapTile[repeatRect.Width * repeatRect.Height];
+        for (int y = 0; y < repeatRect.Height; y++)
+        {
+            for (int x = 0; x < repeatRect.Width; x++)
+            {
+                repeatSection[y * repeatRect.Width + x] = rotScaleLayer.TileMap[(y + repeatRect.Y) * rotScaleLayer.Width + (x + repeatRect.X)];
+            }
+        }
+
+        // Create a new map, same size as the original, with the repeat pattern
+        MapTile[] overflowTileMap = new MapTile[rotScaleLayer.Width * rotScaleLayer.Height];
+        for (int y = 0; y < rotScaleLayer.Height; y++)
+        {
+            for (int x = 0; x < rotScaleLayer.Width; x++)
+            {
+                overflowTileMap[y * rotScaleLayer.Width + x] = repeatSection[(y % repeatRect.Height) * repeatRect.Width + (x % repeatRect.Width)];
+            }
+        }
+
+        // Create a renderer
+        IScreenRenderer overflowRenderer = Scene.Playfield.GfxTileKitManager.CreateTileMapRenderer(
+            renderOptions: rotScaleLayer.Screen.RenderOptions,
+            animatedTilekitManager: Scene.Playfield.AnimatedTilekitManager,
+            layerCachePointer: rotScaleLayer.Resource.Offset + 1, // A bit hacky, but we need a unique cache id for this
+            width: rotScaleLayer.Width,
+            height: rotScaleLayer.Height,
+            tileMap: overflowTileMap,
+            baseTileIndex: 512,
+            is8Bit: rotScaleLayer.Is8Bit,
+            isDynamic: false);
+
+        // Create 9 maps to render in a 3x3 grid where the middle one is the original map
+        MultiScreenRenderer.Section[] sections = new MultiScreenRenderer.Section[9];
+
+        // Set the original map
+        sections[0] = new MultiScreenRenderer.Section(rotScaleLayer.Screen.Renderer, Vector2.Zero);
+        
+        // Set the remaining 8 maps
+        int i = 1;
+        for (int y = -1; y < 2; y++)
+        {
+            for (int x = -1; x < 2; x++)
+            {
+                // Ignore if the original map
+                if (x == 0 && y == 0)
+                    continue;
+
+                sections[i] = new MultiScreenRenderer.Section(overflowRenderer, new Vector2(rotScaleLayer.PixelWidth * x, rotScaleLayer.PixelHeight * y));
+
+                i++;
+            }
+        }
+
+        // Replace the renderer
+        rotScaleLayer.Screen.Renderer = new MultiScreenRenderer(sections, new Vector2(rotScaleLayer.PixelWidth * 3, rotScaleLayer.PixelHeight * 3));
     }
 
     #endregion
