@@ -1,4 +1,5 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using System;
+using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 
@@ -167,8 +168,7 @@ public partial class MissileMode7
                     // Accelerate when holding A
                     if (MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.A))
                     {
-                        MechModel.Acceleration = MathHelpers.DirectionalVector256(Direction) * field_0x96 *
-                                                 new Vector2(1, -1);
+                        MechModel.Acceleration = MathHelpers.DirectionalVector256(Direction) * Acceleration * new Vector2(1, -1);
 
                         if (BoostTimer != 0)
                             MechModel.Acceleration *= 2;
@@ -309,7 +309,54 @@ public partial class MissileMode7
 
     public bool Fsm_Dying(FsmAction action)
     {
-        // TODO: Implement
+        switch (action)
+        {
+            case FsmAction.Init:
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Motor01_Mix12);
+                InvulnerabilityTimer = 0;
+                GameInfo.ModifyLives(-1);
+                ReceiveDamage(255);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__RaDeath_Mix03);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumTimer_Mix02);
+                break;
+
+            case FsmAction.Step:
+                SetMode7DirectionalAction();
+                InvulnerabilityTimer++;
+
+                if (InvulnerabilityTimer == 90)
+                {
+                    ((FrameMode7)Frame.Current).TransitionsFX.FadeOutInit(2 / 16f);
+                    ((FrameMode7)Frame.Current).CanPause = false;
+                }
+
+                if (InvulnerabilityTimer == 120)
+                {
+                    if (GameInfo.PersistentInfo.Lives == 0)
+                        FrameManager.SetNextFrame(new GameOver());
+                    else
+                        FrameManager.ReloadCurrentFrame();
+                }
+
+                // TODO: The game doesn't have this >30 check and sets ZPos=InvulnerabilityTimer*8
+                //       The problem is we calculate the ZPos in 3D while the game does it in screen
+                //       coordinates (more or less), which makes us travel upwards at a much slower pace.
+                //       This sort of replicates the original look, but not fully (you still move up too fast).
+                if (InvulnerabilityTimer > 30)
+                {
+                    Scale = Vector2.Zero;
+                }
+                else
+                {
+                    Scale = Vector2.One + new Vector2(InvulnerabilityTimer * 64, InvulnerabilityTimer * -8) / 256;
+                    ZPos = MathF.Pow(InvulnerabilityTimer, 2);
+                }
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
 
         return true;
     }

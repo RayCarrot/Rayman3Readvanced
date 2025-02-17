@@ -37,7 +37,7 @@ public sealed partial class MissileMode7 : Mode7Actor
         PrevHitPoints = HitPoints;
         CurrentTempLap = 0;
         BoostTimer = 0;
-        field_0x96 = 0.0625f;
+        Acceleration = 0.0625f;
         WahooSoundTimer = 0;
         JumpSoundTimer = 0;
         CustomScaleTimer = 0;
@@ -56,6 +56,7 @@ public sealed partial class MissileMode7 : Mode7Actor
 
     public float ZPosSpeed { get; set; }
     public float ZPosDeacceleration { get; set; }
+    public float Acceleration { get; set; }
 
     public Vector2 Scale { get; set; }
     public byte CustomScaleTimer { get; set; }
@@ -69,7 +70,6 @@ public sealed partial class MissileMode7 : Mode7Actor
     // TODO: Name
     public byte field_0x8c { get; set; }
     public byte field_0x88 { get; set; }
-    public float field_0x96 { get; set; }
     public byte field_0x9c { get; set; }
 
     public bool Debug_NoClip { get; set; } // Custom no-clip mode
