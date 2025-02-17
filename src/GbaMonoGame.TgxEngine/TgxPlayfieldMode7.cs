@@ -22,7 +22,7 @@ public class TgxPlayfieldMode7 : TgxPlayfield
                 TgxRotscaleLayerMode7 layer = new(RenderContext, gameLayerResource);
                 rotScaleLayers.Add(layer);
 
-                layer.LoadRenderer(GfxTileKitManager, playfieldResource.TileKit, AnimatedTilekitManager);
+                layer.LoadRenderer(GfxTileKitManager, AnimatedTilekitManager);
 
                 Camera.AddRotScaleLayer(layer);
             }
@@ -31,7 +31,7 @@ public class TgxPlayfieldMode7 : TgxPlayfield
                 TgxTextLayerMode7 layer = new(Camera.TextLayerRenderContext, playfieldResource, gameLayerResource);
                 textLayers.Add(layer);
 
-                layer.LoadRenderer(GfxTileKitManager, playfieldResource.TileKit, AnimatedTilekitManager);
+                layer.LoadRenderer(GfxTileKitManager, AnimatedTilekitManager);
 
                 Camera.AddTextLayer(layer);
             }

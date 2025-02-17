@@ -1,6 +1,5 @@
 ﻿using System;
 using BinarySerializer.Nintendo.GBA;
-using BinarySerializer.Ubisoft.GbaEngine;
 using Microsoft.Xna.Framework;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
@@ -104,11 +103,10 @@ public class TgxTextLayerMode7 : TgxGameLayer
         Screen.RenderOptions.WorldViewProj = worldViewProj;
     }
 
-    public void LoadRenderer(GfxTileKitManager tileKitManager, TileKit tileKit, AnimatedTilekitManager animatedTilekitManager)
+    public void LoadRenderer(GfxTileKitManager tileKitManager, AnimatedTilekitManager animatedTilekitManager)
     {
         Screen.Renderer = tileKitManager.CreateTileMapRenderer(
             renderOptions: Screen.RenderOptions,
-            tileKit: tileKit,
             animatedTilekitManager: animatedTilekitManager,
             layerCachePointer: Resource.Offset,
             width: Width,

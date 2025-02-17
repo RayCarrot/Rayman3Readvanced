@@ -17,6 +17,8 @@ public class GfxTileKitManager
     private const int MaxTextureWidth = 2048 / Tile.Size;
     private const int MaxTextureHeight = 2048 / Tile.Size;
 
+    public TileKit TileKit { get; set; }
+
     public byte[] TileSet { get; set; }
     public int[] GameToVramMappingTable4bpp { get; set; }
     public int[] GameToVramMappingTable8bpp { get; set; }
@@ -106,7 +108,6 @@ public class GfxTileKitManager
 
     public IScreenRenderer CreateTileMapRenderer(
         RenderOptions renderOptions, 
-        TileKit tileKit, 
         AnimatedTilekitManager animatedTilekitManager, 
         Pointer layerCachePointer,
         int width,
@@ -131,12 +132,12 @@ public class GfxTileKitManager
         if (isDynamic)
         {
             // If it's dynamic then we read the tiles directly from the tilekit rather than the allocated ones in VRAM
-            byte[] tileSet = is8Bit ? tileKit.Tiles8bpp : tileKit.Tiles4bpp;
+            byte[] tileSet = is8Bit ? TileKit.Tiles8bpp : TileKit.Tiles4bpp;
 
             TileMapScreenRenderer renderer = new(
                 // Use the tilekit as the cache pointer since multiple layers can share the same tilekit and we're
                 // caching per tile, but make the pointer differ depending on if it's 4-bit or 8-bit.
-                cachePointer: tileKit.Offset + (is8Bit ? 1 : 0),
+                cachePointer: TileKit.Offset + (is8Bit ? 1 : 0),
                 width: width,
                 height: height,
                 tileMap: tileMap,
@@ -151,7 +152,7 @@ public class GfxTileKitManager
         else
         {
             // Get the animations used by this layer
-            IReadOnlyList<TileKitAnimation> animations = animatedTilekitManager?.GetUsedAnimations(this, tileKit, tileMap, baseTileIndex, is8Bit, false);
+            IReadOnlyList<TileKitAnimation> animations = animatedTilekitManager?.GetUsedAnimations(this, TileKit, tileMap, baseTileIndex, is8Bit, false);
 
             // If it's animated then we create a separate texture for each animation frame
             if (animations?.Count > 0)
@@ -167,7 +168,7 @@ public class GfxTileKitManager
 
                 int tileSize = is8Bit ? TileSize8bpp : TileSize4bpp;
 
-                byte[] sourceTileSet = is8Bit ? tileKit.Tiles8bpp : tileKit.Tiles4bpp;
+                byte[] sourceTileSet = is8Bit ? TileKit.Tiles8bpp : TileKit.Tiles4bpp;
                 int[] mappingTable = is8Bit ? GameToVramMappingTable8bpp : GameToVramMappingTable4bpp;
 
                 byte[] tileSet = new byte[TileSet.Length];
@@ -271,6 +272,7 @@ public class GfxTileKitManager
         }
 
         // Set properties
+        TileKit = tileKit;
         TileSet = tileSet;
         GameToVramMappingTable4bpp = mappingTable4bpp;
         GameToVramMappingTable8bpp = mappingTable8bpp;

@@ -31,7 +31,7 @@ public class TgxPlayfield2D : TgxPlayfield
                 TgxTileLayer layer = new(renderContext, gameLayerResource);
                 tileLayers.Add(layer);
 
-                layer.LoadRenderer(GfxTileKitManager, playfieldResource.TileKit, AnimatedTilekitManager);
+                layer.LoadRenderer(GfxTileKitManager, AnimatedTilekitManager);
                 
                 // The game does this in the layer constructor, but it's easier here since we have access to the camera
                 Camera.AddLayer(gameLayerResource.TileLayer.ClusterIndex, layer);
