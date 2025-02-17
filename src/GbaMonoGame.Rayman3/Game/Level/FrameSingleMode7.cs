@@ -57,7 +57,7 @@ public class FrameSingleMode7 : FrameMode7
             GbaAlpha = 12,
             IsEnabled = true,
             Renderer = FogScreenRenderer,
-            RenderOptions = { BlendMode = BlendMode.Additive, RenderContext = Engine.GameRenderContext }
+            RenderOptions = { BlendMode = BlendMode.Additive, RenderContext = Scene.RenderContext }
         });
     }
 
