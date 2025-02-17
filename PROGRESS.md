@@ -19,7 +19,7 @@
 | TgxPlayfield2D         | 🟩     |                                              |
 | TgxPlayfieldMode7      | 🟩     |                                              |
 | TgxCamera2D            | 🟩     |                                              |
-| TgxCameraMode7         | 🟨     |                                              |
+| TgxCameraMode7         | 🟩     |                                              |
 
 ## Frames
 | Name                   | State   | Info                                         |
@@ -41,7 +41,7 @@
 | MarshAwakening1            | 🟨     |                                              |
 | SanctuaryOfBigTree_M1      | 🟩     |                                              |
 | SanctuaryOfBigTree_M2      | 🟩     |                                              |
-| MissileRace1               | 🟨     |                                              |
+| MissileRace1               | 🟩     |                                              |
 | EchoingCaves_M1            | 🟩     |                                              |
 | EchoingCaves_M2            | 🟩     |                                              |
 | CavesOfBadDreams_M1        | 🟩     |                                              |
@@ -68,7 +68,7 @@
 | BossScaleMan               | 🟩     |                                              |
 | IronMountains_M1           | 🟩     |                                              |
 | IronMountains_M2           | 🟩     |                                              |
-| MissileRace2               | 🟨     |                                              |
+| MissileRace2               | 🟩     |                                              |
 | PirateShip_M1              | 🟩     |                                              |
 | PirateShip_M2              | 🟩     |                                              |
 | BossFinal_M1               | 🟩     |                                              |
@@ -225,7 +225,7 @@
 | #71                    | 🟥     |                                              |
 | Bats                   | 🟩     |                                              |
 | Sparkle                | 🟩     |                                              |
-| MissileMode7           | 🟨     |                                              |
+| MissileMode7           | 🟨     | Not implemented multiplayer states           |
 | #75                    | 🟥     |                                              |
 | WalkingShell           | 🟩     |                                              |
 | WoodenBar              | 🟩     |                                              |
