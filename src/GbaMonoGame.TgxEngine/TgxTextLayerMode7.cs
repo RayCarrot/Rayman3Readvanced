@@ -104,9 +104,9 @@ public class TgxTextLayerMode7 : TgxGameLayer
         Screen.RenderOptions.WorldViewProj = worldViewProj;
     }
 
-    public void LoadRenderer(GbaVram vram, TileKit tileKit, AnimatedTilekitManager animatedTilekitManager)
+    public void LoadRenderer(GfxTileKitManager tileKitManager, TileKit tileKit, AnimatedTilekitManager animatedTilekitManager)
     {
-        Screen.Renderer = vram.CreateTileMapRenderer(
+        Screen.Renderer = tileKitManager.CreateTileMapRenderer(
             renderOptions: Screen.RenderOptions,
             tileKit: tileKit,
             animatedTilekitManager: animatedTilekitManager,

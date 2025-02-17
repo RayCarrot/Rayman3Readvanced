@@ -26,7 +26,7 @@ public class AnimatedTilekitManager
     /// Gets the animations used for the specified tile map
     /// </summary>
     public IReadOnlyList<TileKitAnimation> GetUsedAnimations(
-        GbaVram vram, 
+        GfxTileKitManager tileKitManager, 
         TileKit tileKit, 
         MapTile[] tileMap, 
         int baseTileIndex, 
@@ -40,7 +40,7 @@ public class AnimatedTilekitManager
         List<TileKitAnimation> animations = new();
 
         // Get the mapping table for game tiles to VRAM tiles
-        int[] mappingTable = is8Bit ? vram.GameToVramMappingTable8bpp : vram.GameToVramMappingTable4bpp;
+        int[] mappingTable = is8Bit ? tileKitManager.GameToVramMappingTable8bpp : tileKitManager.GameToVramMappingTable4bpp;
 
         // Check each animation
         foreach (TileKitAnimation anim in Animations)

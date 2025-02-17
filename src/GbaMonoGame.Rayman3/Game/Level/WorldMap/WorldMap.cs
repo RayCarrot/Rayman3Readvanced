@@ -171,8 +171,8 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         LightningSkyPaletteTextures = new PaletteTexture[LightningMaxValue + 4 + 1];
 
         // Get the original colors
-        GbaVram vram = ((TgxPlayfield2D)Scene.Playfield).Vram;
-        Color[] originalColors = vram.SelectedPalette.Colors;
+        GfxTileKitManager tileKitManager = Scene.Playfield.GfxTileKitManager;
+        Color[] originalColors = tileKitManager.SelectedPalette.Colors;
         int palLength = originalColors.Length;
 
         // Create an array for the new colors
@@ -203,7 +203,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
             LightningSkyPaletteTextures[value] = new PaletteTexture(
                 Texture: Engine.TextureCache.GetOrCreateObject(
-                    pointer: vram.SelectedPalette.CachePointer,
+                    pointer: tileKitManager.SelectedPalette.CachePointer,
                     id: value,
                     data: colors,
                     createObjFunc: static c => new PaletteTexture2D(c)),
@@ -328,8 +328,8 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         VolcanoPaletteTextures = new PaletteTexture[VolcanoGlowMaxValue + 1];
 
         // Get the original colors
-        GbaVram vram = ((TgxPlayfield2D)Scene.Playfield).Vram;
-        Color[] originalColors = vram.SelectedPalette.Colors;
+        GfxTileKitManager tileKitManager = Scene.Playfield.GfxTileKitManager;
+        Color[] originalColors = tileKitManager.SelectedPalette.Colors;
         int palLength = originalColors.Length;
 
         // Create the target colors for sub-palette 4
@@ -369,7 +369,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
             VolcanoPaletteTextures[value] = new PaletteTexture(
                 Texture: Engine.TextureCache.GetOrCreateObject(
-                    pointer: vram.SelectedPalette.CachePointer,
+                    pointer: tileKitManager.SelectedPalette.CachePointer,
                     id: LightningSkyPaletteTextures.Length + value,
                     data: colors,
                     createObjFunc: static c => new PaletteTexture2D(c)),

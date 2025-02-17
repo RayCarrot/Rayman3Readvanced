@@ -8,6 +8,7 @@ public abstract class TgxPlayfield
 {
     protected TgxPlayfield(TgxCamera camera, TileKit tileKit)
     {
+        GfxTileKitManager = new GfxTileKitManager();
         Camera = camera;
         RenderContext = camera.RenderContext;
 
@@ -15,6 +16,7 @@ public abstract class TgxPlayfield
             AnimatedTilekitManager = new AnimatedTilekitManager(tileKit.AnimatedTileKits);
     }
 
+    public GfxTileKitManager GfxTileKitManager { get; }
     public TgxCamera Camera { get; }
     public RenderContext RenderContext { get; }
     public AnimatedTilekitManager AnimatedTilekitManager { get; }

@@ -8,8 +8,9 @@ public class EditablePlayfield2D
 {
     public EditablePlayfield2D(Playfield2DResource playfieldResource, EditorCamera camera)
     {
-        // Load vram
-        Vram = GbaVram.AllocateStatic(playfieldResource.TileKit, playfieldResource.TileMappingTable, 0x180, false, playfieldResource.DefaultPalette);
+        // Load tiles
+        GfxTileKitManager = new GfxTileKitManager();
+        GfxTileKitManager.LoadTileKit(playfieldResource.TileKit, playfieldResource.TileMappingTable, 0x180, false, playfieldResource.DefaultPalette);
 
         List<TgxTileLayer> tileLayers = new();
 
@@ -23,7 +24,7 @@ public class EditablePlayfield2D
                 TgxTileLayer layer = new(camera.RenderContext, gameLayerResource);
                 tileLayers.Add(layer);
 
-                layer.LoadRenderer(Vram, playfieldResource.TileKit, null);
+                layer.LoadRenderer(GfxTileKitManager, playfieldResource.TileKit, null);
                 layer.Screen.Wrap = false;
 
                 camera.AddGameLayer(layer);
@@ -34,5 +35,5 @@ public class EditablePlayfield2D
     }
 
     public IReadOnlyList<TgxTileLayer> TileLayers { get; }
-    public GbaVram Vram { get; }
+    public GfxTileKitManager GfxTileKitManager { get; }
 }

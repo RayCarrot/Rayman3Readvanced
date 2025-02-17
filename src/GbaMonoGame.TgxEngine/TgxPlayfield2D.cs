@@ -15,8 +15,8 @@ public class TgxPlayfield2D : TgxPlayfield
         foreach (ClusterResource clusterResource in playfieldResource.Clusters)
             Camera.AddCluster(clusterResource);
 
-        // Load vram
-        Vram = GbaVram.AllocateStatic(playfieldResource.TileKit, playfieldResource.TileMappingTable, 0x180, false, playfieldResource.DefaultPalette);
+        // Load tiles
+        GfxTileKitManager.LoadTileKit(playfieldResource.TileKit, playfieldResource.TileMappingTable, 0x180, false, playfieldResource.DefaultPalette);
 
         // Load the layers
         foreach (GameLayerResource gameLayerResource in playfieldResource.Layers)
@@ -31,7 +31,7 @@ public class TgxPlayfield2D : TgxPlayfield
                 TgxTileLayer layer = new(renderContext, gameLayerResource);
                 tileLayers.Add(layer);
 
-                layer.LoadRenderer(Vram, playfieldResource.TileKit, AnimatedTilekitManager);
+                layer.LoadRenderer(GfxTileKitManager, playfieldResource.TileKit, AnimatedTilekitManager);
                 
                 // The game does this in the layer constructor, but it's easier here since we have access to the camera
                 Camera.AddLayer(gameLayerResource.TileLayer.ClusterIndex, layer);
@@ -59,5 +59,4 @@ public class TgxPlayfield2D : TgxPlayfield
     public new Playfield2DRenderContext RenderContext => (Playfield2DRenderContext)base.RenderContext;
     public Vector2 Size => Camera.GetMainCluster().Size;
     public IReadOnlyList<TgxTileLayer> TileLayers { get; }
-    public GbaVram Vram { get; }
 }

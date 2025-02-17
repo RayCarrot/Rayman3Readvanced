@@ -328,12 +328,12 @@ public partial class MenuAll : Frame, IHasPlayfield
 
     public void SetBackgroundPalette(int index)
     {
-        GbaVram vram = Playfield.Vram;
+        GfxTileKitManager tileKitManager = Playfield.GfxTileKitManager;
         GfxScreen screen = Playfield.TileLayers[0].Screen;
 
         screen.RenderOptions.PaletteTexture = new PaletteTexture(
             Texture: Engine.TextureCache.GetOrCreateObject(
-                pointer: vram.SelectedPalette.CachePointer,
+                pointer: tileKitManager.SelectedPalette.CachePointer,
                 id: index + 1, // +1 since 0 is the default
                 data: index,
                 createObjFunc: static i => new PaletteTexture2D(GetBackgroundPalette(i))),

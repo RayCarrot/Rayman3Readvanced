@@ -8,17 +8,8 @@ using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace GbaMonoGame.TgxEngine;
 
-public class GbaVram
+public class GfxTileKitManager
 {
-    private GbaVram(byte[] tileSet, int[] gameToVramMappingTable4Bpp, int[] gameToVramMappingTable8Bpp, Palette[] palettes, int selectedPaletteIndex)
-    {
-        TileSet = tileSet;
-        GameToVramMappingTable4bpp = gameToVramMappingTable4Bpp;
-        GameToVramMappingTable8bpp = gameToVramMappingTable8Bpp;
-        Palettes = palettes;
-        SelectedPaletteIndex = selectedPaletteIndex;
-    }
-
     private const int TileSize4bpp = 0x20;
     private const int TileSize8bpp = 0x40;
 
@@ -26,12 +17,12 @@ public class GbaVram
     private const int MaxTextureWidth = 2048 / Tile.Size;
     private const int MaxTextureHeight = 2048 / Tile.Size;
 
-    public byte[] TileSet { get; }
-    public int[] GameToVramMappingTable4bpp { get; }
-    public int[] GameToVramMappingTable8bpp { get; }
+    public byte[] TileSet { get; set; }
+    public int[] GameToVramMappingTable4bpp { get; set; }
+    public int[] GameToVramMappingTable8bpp { get; set; }
 
-    public Palette[] Palettes { get; }
-    public int SelectedPaletteIndex { get; }
+    public Palette[] Palettes { get; set; }
+    public int SelectedPaletteIndex { get; set; }
     public Palette SelectedPalette => Palettes[SelectedPaletteIndex];
 
     private static IScreenRenderer CreateTextureScreenRenderer(
@@ -229,7 +220,7 @@ public class GbaVram
         }
     }
 
-    public static GbaVram AllocateStatic(TileKit tileKit, TileMappingTable tileMappingTable, int vramLength8bpp, bool isAffine, int defaultPalette)
+    public void LoadTileKit(TileKit tileKit, TileMappingTable tileMappingTable, int vramLength8bpp, bool isAffine, int defaultPalette)
     {
         int base8bpp = 512;
 
@@ -279,6 +270,11 @@ public class GbaVram
                 createObjFunc: p => new Palette(p));
         }
 
-        return new GbaVram(tileSet, mappingTable4bpp, mappingTable8bpp, palettes, defaultPalette);
+        // Set properties
+        TileSet = tileSet;
+        GameToVramMappingTable4bpp = mappingTable4bpp;
+        GameToVramMappingTable8bpp = mappingTable8bpp;
+        Palettes = palettes;
+        SelectedPaletteIndex = defaultPalette;
     }
 }
