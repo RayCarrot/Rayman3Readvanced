@@ -41,7 +41,7 @@ public class GfxTileKitManager
         // If the map is too big then we need to split it into sections
         if (width > MaxTextureWidth || height > MaxTextureHeight)
         {
-            List<SectionedTextureScreenRenderer.TextureSection> sections = new();
+            List<MultiScreenRenderer.Section> sections = new();
 
             for (int y = 0; y < height; y += MaxTextureHeight)
             {
@@ -76,11 +76,13 @@ public class GfxTileKitManager
                             baseTileIndex: data.BaseTileIndex,
                             is8Bit: data.Is8Bit));
 
-                    sections.Add(new SectionedTextureScreenRenderer.TextureSection(layerSectionTexture, new Vector2(x * Tile.Size, y * Tile.Size)));
+                    sections.Add(new MultiScreenRenderer.Section(
+                        screenRenderer: new TextureScreenRenderer(layerSectionTexture), 
+                        position: new Vector2(x * Tile.Size, y * Tile.Size)));
                 }
             }
 
-            return new SectionedTextureScreenRenderer(sections.ToArray(), new Vector2(width * Tile.Size, height * Tile.Size));
+            return new MultiScreenRenderer(sections.ToArray(), new Vector2(width * Tile.Size, height * Tile.Size));
         }
         else
         {
