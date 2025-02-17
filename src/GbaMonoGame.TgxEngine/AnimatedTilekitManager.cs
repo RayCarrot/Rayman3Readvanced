@@ -85,7 +85,7 @@ public class AnimatedTilekitManager
         _dynamicTileRenderers.Add(renderer);
     }
 
-    public void AddTextureRenderer(MultipleTexturesScreenRenderer renderer, int speed, int framesCount)
+    public void AddTextureRenderer(MultiSelectableScreenRenderer renderer, int speed, int framesCount)
     {
         _textureAnimations.Add(new TextureAnimation(renderer, speed, framesCount));
     }
@@ -129,21 +129,21 @@ public class AnimatedTilekitManager
                 if (anim.Frame >= anim.FramesCount)
                     anim.Frame = 0;
 
-                anim.Renderer.SelectedTexture = anim.Frame;
+                anim.Renderer.SelectedScreenRenderer = anim.Frame;
             }
         }
     }
 
     private class TextureAnimation
     {
-        public TextureAnimation(MultipleTexturesScreenRenderer renderer, int speed, int framesCount)
+        public TextureAnimation(MultiSelectableScreenRenderer renderer, int speed, int framesCount)
         {
             Renderer = renderer;
             Speed = speed;
             FramesCount = framesCount;
         }
 
-        public MultipleTexturesScreenRenderer Renderer { get; }
+        public MultiSelectableScreenRenderer Renderer { get; }
         public int Speed { get; }
         public int FramesCount { get; }
         public int Timer { get; set; }

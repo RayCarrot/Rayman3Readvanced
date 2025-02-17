@@ -4,6 +4,7 @@ using BinarySerializer;
 using BinarySerializer.Nintendo.GBA;
 using BinarySerializer.Ubisoft.GbaEngine;
 using Microsoft.Xna.Framework.Graphics;
+using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace GbaMonoGame.TgxEngine;
 
@@ -21,6 +22,10 @@ public class GbaVram
     private const int TileSize4bpp = 0x20;
     private const int TileSize8bpp = 0x40;
 
+    // Limit the texture size for a map to 2048x2048 to prevent it being too big on some platforms
+    private const int MaxTextureWidth = 2048 / Tile.Size;
+    private const int MaxTextureHeight = 2048 / Tile.Size;
+
     public byte[] TileSet { get; }
     public int[] GameToVramMappingTable4bpp { get; }
     public int[] GameToVramMappingTable8bpp { get; }
@@ -28,6 +33,85 @@ public class GbaVram
     public Palette[] Palettes { get; }
     public int SelectedPaletteIndex { get; }
     public Palette SelectedPalette => Palettes[SelectedPaletteIndex];
+
+    private static IScreenRenderer CreateTextureScreenRenderer(
+        Pointer layerCachePointer,
+        int cacheId,
+        int maxCacheId,
+        byte[] tileSet,
+        int width,
+        int height,
+        MapTile[] tileMap,
+        int baseTileIndex,
+        bool is8Bit)
+    {
+        // If the map is too big then we need to split it into sections
+        if (width > MaxTextureWidth || height > MaxTextureHeight)
+        {
+            List<SectionedTextureScreenRenderer.TextureSection> sections = new();
+
+            for (int y = 0; y < height; y += MaxTextureHeight)
+            {
+                for (int x = 0; x < width; x += MaxTextureWidth)
+                {
+                    int sectionWidth = Math.Min(MaxTextureWidth, width - x);
+                    int sectionHeight = Math.Min(MaxTextureHeight, height - y);
+
+                    Texture2D layerSectionTexture = Engine.TextureCache.GetOrCreateObject(
+                        pointer: layerCachePointer,
+                        id: (y * width + x) * maxCacheId + cacheId,
+                        data: (
+                            TileSet: tileSet,
+                            Width: width,
+                            Height: height,
+                            X: x,
+                            Y: y,
+                            SectionWidth: sectionWidth,
+                            SectionHeight: sectionHeight,
+                            TileMap: tileMap,
+                            BaseTileIndex: baseTileIndex,
+                            Is8Bit: is8Bit),
+                        createObjFunc: static data => new IndexedTiledTexture2D(
+                            fullWidth: data.Width,
+                            fullHeight: data.Height,
+                            startX: data.X,
+                            startY: data.Y,
+                            width: data.SectionWidth,
+                            height: data.SectionHeight,
+                            tileSet: data.TileSet,
+                            tileMap: data.TileMap,
+                            baseTileIndex: data.BaseTileIndex,
+                            is8Bit: data.Is8Bit));
+
+                    sections.Add(new SectionedTextureScreenRenderer.TextureSection(layerSectionTexture, new Vector2(x * Tile.Size, y * Tile.Size)));
+                }
+            }
+
+            return new SectionedTextureScreenRenderer(sections.ToArray(), new Vector2(width * Tile.Size, height * Tile.Size));
+        }
+        else
+        {
+            Texture2D layerTexture = Engine.TextureCache.GetOrCreateObject(
+                pointer: layerCachePointer,
+                id: cacheId,
+                data: (
+                    TileSet: tileSet, 
+                    Width: width, 
+                    Height: height, 
+                    TileMap: tileMap, 
+                    BaseTileIndex: baseTileIndex, 
+                    Is8Bit: is8Bit),
+                createObjFunc: static data => new IndexedTiledTexture2D(
+                    width: data.Width, 
+                    height: data.Height, 
+                    tileSet: data.TileSet, 
+                    tileMap: data.TileMap, 
+                    baseTileIndex: data.BaseTileIndex, 
+                    is8Bit: data.Is8Bit));
+
+            return new TextureScreenRenderer(layerTexture);
+        }
+    }
 
     public IScreenRenderer CreateTileMapRenderer(
         RenderOptions renderOptions, 
@@ -87,7 +171,8 @@ public class GbaVram
 
                 TileKitAnimation anim = animations[0];
 
-                Texture2D[] layerTextures = new Texture2D[anim.TileKit.FramesCount];
+                // Create one screen renderer per animation frame
+                IScreenRenderer[] layerScreenRenderers = new IScreenRenderer[anim.TileKit.FramesCount];
 
                 int tileSize = is8Bit ? TileSize8bpp : TileSize4bpp;
 
@@ -97,7 +182,7 @@ public class GbaVram
                 byte[] tileSet = new byte[TileSet.Length];
                 Array.Copy(TileSet, tileSet, TileSet.Length);
 
-                for (int frame = 0; frame < layerTextures.Length; frame++)
+                for (int frame = 0; frame < layerScreenRenderers.Length; frame++)
                 {
                     // Update the animated tiles
                     if (frame != 0)
@@ -111,27 +196,35 @@ public class GbaVram
                         }
                     }
 
-                    layerTextures[frame] = Engine.TextureCache.GetOrCreateObject(
-                        pointer: layerCachePointer,
-                        id: frame,
-                        data: (TileSet: tileSet, Width: width, Height: height, TileMap: tileMap, BaseTileIndex: baseTileIndex, Is8Bit: is8Bit),
-                        createObjFunc: static data => new IndexedTiledTexture2D(data.Width, data.Height, data.TileSet, data.TileMap, data.BaseTileIndex, data.Is8Bit));
+                    layerScreenRenderers[frame] = CreateTextureScreenRenderer(
+                        layerCachePointer: layerCachePointer, 
+                        cacheId: frame, 
+                        maxCacheId: layerScreenRenderers.Length, 
+                        tileSet: tileSet, 
+                        width: width, 
+                        height: height, 
+                        tileMap: tileMap, 
+                        baseTileIndex: baseTileIndex, 
+                        is8Bit: is8Bit);
                 }
 
-                MultipleTexturesScreenRenderer renderer = new(layerTextures);
+                MultiSelectableScreenRenderer renderer = new(layerScreenRenderers);
                 animatedTilekitManager.AddTextureRenderer(renderer, anim.TileKit.Speed, anim.TileKit.FramesCount);
                 return renderer;
             }
             // If it's not animated then we just add a single texture
             else
             {
-                Texture2D layerTexture = Engine.TextureCache.GetOrCreateObject(
-                    pointer: layerCachePointer,
-                    id: 0,
-                    data: (TileSet: TileSet, Width: width, Height: height, TileMap: tileMap, BaseTileIndex: baseTileIndex, Is8Bit: is8Bit),
-                    createObjFunc: static data => new IndexedTiledTexture2D(data.Width, data.Height, data.TileSet, data.TileMap, data.BaseTileIndex, data.Is8Bit));
-
-                return new TextureScreenRenderer(layerTexture);
+                return CreateTextureScreenRenderer(
+                    layerCachePointer: layerCachePointer, 
+                    cacheId: 0, 
+                    maxCacheId: 1, 
+                    tileSet: TileSet, 
+                    width: width, 
+                    height: height, 
+                    tileMap: tileMap, 
+                    baseTileIndex: baseTileIndex, 
+                    is8Bit: is8Bit);
             }
         }
     }

@@ -28,21 +28,28 @@ public class IndexedTiledTexture2D : Texture2D
         this(width, height, tileSet, tileMap, 0, is8Bit) { }
 
     public IndexedTiledTexture2D(int width, int height, byte[] tileSet, MapTile[] tileMap, int baseTileIndex, bool is8Bit) :
+        this(width, height, 0, 0, width, height, tileSet, tileMap, baseTileIndex, is8Bit)
+    { }
+
+    public IndexedTiledTexture2D(int fullWidth, int fullHeight, int startX, int startY, int width, int height, byte[] tileSet, MapTile[] tileMap, int baseTileIndex, bool is8Bit) :
         base(Engine.GraphicsDevice, width * Tile.Size, height * Tile.Size, false, SurfaceFormat.Alpha8)
     {
         byte[] texColorIndexes = new byte[Width * Height];
+
+        int endX = startX + width;
+        int endY = startY + height;
 
         if (is8Bit)
         {
             int absTileY = 0;
 
-            for (int tileY = 0; tileY < height; tileY++)
+            for (int tileY = startY; tileY < endY; tileY++)
             {
                 int absTileX = 0;
 
-                for (int tileX = 0; tileX < width; tileX++)
+                for (int tileX = startX; tileX < endX; tileX++)
                 {
-                    MapTile tile = tileMap[tileY * width + tileX];
+                    MapTile tile = tileMap[tileY * fullWidth + tileX];
 
                     int tilePixelIndex = (baseTileIndex + tile.TileIndex) * 0x40;
 
@@ -65,13 +72,13 @@ public class IndexedTiledTexture2D : Texture2D
         {
             int absTileY = 0;
 
-            for (int tileY = 0; tileY < height; tileY++)
+            for (int tileY = startY; tileY < endY; tileY++)
             {
                 int absTileX = 0;
 
-                for (int tileX = 0; tileX < width; tileX++)
+                for (int tileX = startX; tileX < endX; tileX++)
                 {
-                    MapTile tile = tileMap[tileY * width + tileX];
+                    MapTile tile = tileMap[tileY * fullWidth + tileX];
 
                     int tilePixelIndex = (baseTileIndex + tile.TileIndex) * 0x20;
                     int palOffset = tile.PaletteIndex * 16;
