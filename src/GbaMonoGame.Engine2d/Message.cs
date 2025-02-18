@@ -34,7 +34,7 @@ public enum Message
     Main_CollectedGreenLum = 1011,
     Main_CollectedBlueLum = 1012,
     Main_CollectedWhiteLum = 1013,
-    MissileMode7_CollectedYellowLum = 1014,
+    MainMode7_CollectedYellowLum = 1014,
     Main_CollectedBigYellowLum = 1015, // Unused
     Main_CollectedBigBlueLum = 1016,
     Main_Victory = 1017, // Unused

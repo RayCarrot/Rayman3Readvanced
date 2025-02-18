@@ -36,7 +36,7 @@ public partial class LumsMode7
             case FsmAction.Init:
                 if (ActionId == Action.YellowLum)
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.MissileMode7_CollectedYellowLum);
+                    Scene.MainActor.ProcessMessage(this, Message.MainMode7_CollectedYellowLum);
 
                     if (GameInfo.LevelType == LevelType.Race)
                         ((FrameSingleMode7)Frame.Current).KillLum(LumId);

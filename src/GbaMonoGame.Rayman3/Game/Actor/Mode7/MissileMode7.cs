@@ -291,7 +291,7 @@ public sealed partial class MissileMode7 : Mode7Actor
                 PrevHitPoints = HitPoints;
                 return true;
 
-            case Message.MissileMode7_CollectedYellowLum:
+            case Message.MainMode7_CollectedYellowLum:
                 ((FrameSingleMode7)Frame.Current).UserInfo.LumsBar.AddLums(1);
                 return true;
 
