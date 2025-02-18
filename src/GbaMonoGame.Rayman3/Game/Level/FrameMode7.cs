@@ -3,7 +3,6 @@ using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.TgxEngine;
-using Microsoft.Xna.Framework;
 using Action = System.Action;
 
 namespace GbaMonoGame.Rayman3;
@@ -68,7 +67,7 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
         CurrentStepAction = Step_Normal;
     }
 
-    protected void ExtendMap(Rectangle repeatRect)
+    protected void ExtendMap(MapTile[] repeatSection, int repeatSectionWidth, int repeatSectionHeight)
     {
         // In the original game if you see outside the map then it wraps whatever is loaded in VRAM, which will usually
         // be leftover tiles from before. This isn't very noticeable due to the low resolution, but here it is. So instead
@@ -77,23 +76,13 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
         // Get the main map layer
         TgxRotscaleLayerMode7 rotScaleLayer = ((TgxPlayfieldMode7)Scene.Playfield).RotScaleLayers[0];
 
-        // Get the tiles to repeat
-        MapTile[] repeatSection = new MapTile[repeatRect.Width * repeatRect.Height];
-        for (int y = 0; y < repeatRect.Height; y++)
-        {
-            for (int x = 0; x < repeatRect.Width; x++)
-            {
-                repeatSection[y * repeatRect.Width + x] = rotScaleLayer.TileMap[(y + repeatRect.Y) * rotScaleLayer.Width + (x + repeatRect.X)];
-            }
-        }
-
         // Create a new map, same size as the original, with the repeat pattern
         MapTile[] overflowTileMap = new MapTile[rotScaleLayer.Width * rotScaleLayer.Height];
         for (int y = 0; y < rotScaleLayer.Height; y++)
         {
             for (int x = 0; x < rotScaleLayer.Width; x++)
             {
-                overflowTileMap[y * rotScaleLayer.Width + x] = repeatSection[(y % repeatRect.Height) * repeatRect.Width + (x % repeatRect.Width)];
+                overflowTileMap[y * rotScaleLayer.Width + x] = repeatSection[(y % repeatSectionHeight) * repeatSectionWidth + (x % repeatSectionWidth)];
             }
         }
 
