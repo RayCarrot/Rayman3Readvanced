@@ -52,6 +52,7 @@ public enum Message
     Main_BeginHang = 1029,
     Main_EndHang = 1030,
     Main_LevelExit = 1031,
+    MainMode7_LevelStart = 1031,
 
     Main_CollectedCage = 1033,
     LightOnFire_Right = 1034,

@@ -2,5 +2,23 @@
 
 public partial class RaymanMode7
 {
-    // TODO: Implement
+    public bool Fsm_Default(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                // TODO: Implement
+                break;
+
+            case FsmAction.Step:
+                // TODO: Implement
+                return true;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
+
+        return true;
+    }
 }
