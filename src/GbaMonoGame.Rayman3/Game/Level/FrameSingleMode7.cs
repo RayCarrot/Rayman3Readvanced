@@ -20,6 +20,7 @@ public class FrameSingleMode7 : FrameMode7
     public RaceManager RaceManager { get; set; }
     public bool[] CollectedLums { get; set; }
 
+    public GfxScreen FogScreen { get; set; }
     public Mode7FogScreenRenderer FogScreenRenderer { get; set; }
     public int ColorAdd { get; set; }
     public int ColorAddDelta { get; set; }
@@ -48,7 +49,7 @@ public class FrameSingleMode7 : FrameMode7
             new Mode7FogScreenRenderer.FogLine(0x4, 0x48),
         ]);
 
-        Gfx.AddScreen(new GfxScreen(5)
+        FogScreen = new GfxScreen(5)
         {
             Priority = 0,
             Wrap = false,
@@ -58,22 +59,36 @@ public class FrameSingleMode7 : FrameMode7
             IsEnabled = true,
             Renderer = FogScreenRenderer,
             RenderOptions = { BlendMode = BlendMode.Additive, RenderContext = Scene.RenderContext }
-        });
+        };
+
+        Gfx.AddScreen(FogScreen);
     }
 
     private void StepFog()
     {
         // NOTE: The game updates the fog color in a VSYNC callback
 
-        if (ColorAdd == 4)
-            ColorAddDelta = -1;
-        else if (ColorAdd == -4)
-            ColorAddDelta = 1;
-
-        if ((GameTime.ElapsedFrames & 3) == 0)
+        if (TransitionsFX.IsFadeInFinished && TransitionsFX.IsFadeOutFinished && !IsPaused())
         {
-            ColorAdd += ColorAddDelta;
-            FogScreenRenderer.ColorAdd = ColorAdd;
+            FogScreen.IsEnabled = true;
+
+            if (ColorAdd == 4)
+                ColorAddDelta = -1;
+            else if (ColorAdd == -4)
+                ColorAddDelta = 1;
+
+            if ((GameTime.ElapsedFrames & 3) == 0)
+            {
+                ColorAdd += ColorAddDelta;
+                FogScreenRenderer.ColorAdd = ColorAdd;
+            }
+        }
+        else
+        {
+            ColorAddDelta = 1;
+            ColorAdd = 0;
+
+            FogScreen.IsEnabled = false;
         }
     }
 
