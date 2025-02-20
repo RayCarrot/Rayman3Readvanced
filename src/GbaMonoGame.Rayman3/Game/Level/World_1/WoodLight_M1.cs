@@ -15,7 +15,11 @@ public class WoodLight_M1 : FrameSideScroller
 
         // TODO: Add config option for scrolling on N-Gage
         TgxTileLayer cloudsLayer = ((TgxPlayfield2D)Scene.Playfield).TileLayers[0];
-        TextureScreenRenderer renderer = (TextureScreenRenderer)cloudsLayer.Screen.Renderer;
+        TextureScreenRenderer renderer;
+        if (cloudsLayer.Screen.Renderer is MultiScreenRenderer multiScreenRenderer)
+            renderer = (TextureScreenRenderer)multiScreenRenderer.Sections[0].ScreenRenderer;
+        else
+            renderer = (TextureScreenRenderer)cloudsLayer.Screen.Renderer;
         if (Rom.Platform == Platform.GBA)
         {
             cloudsLayer.Screen.Renderer = new LevelCloudsRenderer(renderer.Texture, [32, 120, 227]);
