@@ -103,9 +103,9 @@ public class UserInfoSingleMode7 : Dialog
         };
 
         // Hide the boost bar
-        Laps.SetChannelInvisible(0);
-        Laps.SetChannelInvisible(1);
-        Laps.SetChannelInvisible(2);
+        Laps.DeactivateChannel(0);
+        Laps.DeactivateChannel(1);
+        Laps.DeactivateChannel(2);
 
         LapDigits = new AnimatedObject[2];
         for (int i = 0; i < LapDigits.Length; i++)

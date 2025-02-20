@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using BinarySerializer;
 using BinarySerializer.Nintendo.GBA;
 using BinarySerializer.Ubisoft.GbaEngine;
@@ -19,10 +20,13 @@ public class AnimatedObject : AObject
 
     public AnimatedObject(AnimatedObjectResource resource, bool isDynamic)
     {
+        if (isDynamic)
+            Debug.Assert(resource.IsDynamic, "The animated object data is not dynamic");
+
         IsSoundEnabled = true;
         IsDynamic = isDynamic;
         Resource = resource;
-        VisibleSpriteChannels = UInt32.MaxValue;
+        ActiveChannels = UInt32.MaxValue;
     }
 
     #endregion
@@ -45,10 +49,10 @@ public class AnimatedObject : AObject
     public bool IsDelayMode { get; set; }
     public bool IsPaused { get; set; }
 
-    // Render flags
+    // Render mode
     public bool IsDoubleAffine { get; set; } // Not used here
 
-    public uint VisibleSpriteChannels { get; set; }
+    public uint ActiveChannels { get; set; }
 
     public bool IsBackSprite { get; set; }
 
@@ -140,9 +144,9 @@ public class AnimatedObject : AObject
 
     public Animation GetAnimation() => Resource.Animations[CurrentAnimation];
 
-    public bool IsChannelVisible(int channel) => (VisibleSpriteChannels & (1 << channel)) != 0;
-    public void SetChannelVisible(int channel) => VisibleSpriteChannels = (uint)((int)VisibleSpriteChannels | (1 << channel));
-    public void SetChannelInvisible(int channel) => VisibleSpriteChannels = (uint)((int)VisibleSpriteChannels & ~(1 << channel));
+    public bool IsChannelVisible(int channel) => (ActiveChannels & (1 << channel)) != 0;
+    public void ActivateChannel(int channel) => ActiveChannels = (uint)((int)ActiveChannels | (1 << channel));
+    public void DeactivateChannel(int channel) => ActiveChannels = (uint)((int)ActiveChannels & ~(1 << channel));
 
     public void Rewind()
     {
@@ -160,7 +164,8 @@ public class AnimatedObject : AObject
     {
         EndOfAnimation = false;
 
-        PlayChannelBox();
+        if (BoxTable != null)
+            PlayChannelBox();
 
         Animation anim = GetAnimation();
 
@@ -211,6 +216,8 @@ public class AnimatedObject : AObject
 
     public void PlayChannelBox()
     {
+        Debug.Assert(BoxTable != null, "There's no box table");
+
         if (IsDelayMode || BoxTable == null)
             return;
 
@@ -261,6 +268,8 @@ public class AnimatedObject : AObject
         }
 
         EndOfAnimation = false;
+
+        Debug.Assert(IsFramed, "This function should not be called when the object is not framed");
 
         // --- At this point the engine loads dynamic data which we don't need to ---
 
@@ -346,8 +355,8 @@ public class AnimatedObject : AObject
 
                     int paletteIndex = BasePaletteIndex + channel.PalIndex;
 
-                    if (paletteIndex > 0 && Resource.Is8Bit)
-                        throw new Exception("Can't use a palette index when 8-bit");
+                    if (paletteIndex > 0)
+                        Debug.Assert(!Resource.Is8Bit, "Can't use a palette index when 8-bit");
 
                     PaletteTexture paletteTexture;
                     if (texture is not IndexedSpriteTexture2D)
@@ -433,11 +442,15 @@ public class AnimatedObject : AObject
                     break;
 
                 case AnimationChannelType.AttackBox:
+                    Debug.Assert(BoxTable != null, "There's no box table");
+
                     if (!IsDelayMode && BoxTable != null)
                         BoxTable.AttackBox = new Box(channel.Box);
                     break;
 
                 case AnimationChannelType.VulnerabilityBox:
+                    Debug.Assert(BoxTable != null, "There's no box table");
+
                     if (!IsDelayMode && BoxTable != null)
                         BoxTable.VulnerabilityBox = new Box(channel.Box);
                     break;

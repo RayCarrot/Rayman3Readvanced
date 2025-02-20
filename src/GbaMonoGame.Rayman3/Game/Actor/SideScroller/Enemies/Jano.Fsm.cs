@@ -91,7 +91,7 @@ public partial class Jano
 
             case FsmAction.UnInit:
                 // Create a checkpoint to avoid showing the intro cutscene each time
-                GameInfo.SetCheckpoint(new Vector2(378, 208));
+                GameInfo.GreenLumTouchedByRayman(0, new Vector2(378, 208));
                 break;
         }
 

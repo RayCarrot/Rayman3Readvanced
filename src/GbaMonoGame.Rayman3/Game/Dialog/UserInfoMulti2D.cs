@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
@@ -216,6 +217,8 @@ public partial class UserInfoMulti2D : Dialog
                 highestTime = Times[id];
             }
         }
+
+        Debug.Assert(newTagId != -1);
 
         return newTagId;
     }

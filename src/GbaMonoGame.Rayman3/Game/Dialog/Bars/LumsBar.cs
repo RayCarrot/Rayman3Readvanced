@@ -1,4 +1,5 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using System.Diagnostics;
+using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 
 namespace GbaMonoGame.Rayman3;
@@ -20,6 +21,8 @@ public class LumsBar : Bar
 
     public void AddLums(int count)
     {
+        Debug.Assert(count <= 10, "Cannot add more than 10 lums at one time");
+
         DrawStep = BarDrawStep.MoveIn;
         WaitTimer = 0;
 
@@ -96,12 +99,12 @@ public class LumsBar : Bar
 
     public override void Set()
     {
-        int lumsCount = GameInfo.GetTotalYelloLumsInLevel();
+        int lumsCount = GameInfo.GetLumsCountForCurrentMap();
 
         TotalLumsDigit1.CurrentAnimation = lumsCount / 10;
         TotalLumsDigit2.CurrentAnimation = lumsCount % 10;
 
-        int collectedLums = GameInfo.GetCollectedYellowLumsInLevel(GameInfo.MapId);
+        int collectedLums = GameInfo.GetDeadLumsForCurrentMap(GameInfo.MapId);
 
         CollectedLumsDigitValue1 = collectedLums / 10;
         CollectedLumsDigitValue2 = collectedLums % 10;
@@ -111,7 +114,7 @@ public class LumsBar : Bar
 
     public void SetWithoutUpdating()
     {
-        int lumsCount = GameInfo.GetTotalYelloLumsInLevel();
+        int lumsCount = GameInfo.GetLumsCountForCurrentMap();
 
         TotalLumsDigit1.CurrentAnimation = lumsCount / 10;
         TotalLumsDigit2.CurrentAnimation = lumsCount % 10;

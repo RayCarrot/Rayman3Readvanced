@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -26,6 +27,9 @@ public static class MultiplayerInfo
         GameType = gameType;
 
         if (GameType is MultiplayerGameType.RayTag or MultiplayerGameType.CatAndMouse or MultiplayerGameType.CaptureTheFlag)
+        {
+            Debug.Assert(TagInfo == null, "Tag info has already been set");
             TagInfo = new TagInfo(GameType, MapId.Value);
+        }
     }
 }

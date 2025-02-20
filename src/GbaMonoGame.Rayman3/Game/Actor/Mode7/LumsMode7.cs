@@ -23,10 +23,9 @@ public sealed partial class LumsMode7 : Mode7Actor
 
             if (ActionId == Action.YellowLum)
             {
-                LumId = GameInfo.LoadedYellowLums;
-                GameInfo.LoadedYellowLums++;
+                LumId = GameInfo.GetLumsId();
 
-                if (GameInfo.HasCollectedYellowLum(LumId, GameInfo.MapId))
+                if (GameInfo.IsLumDead(LumId, GameInfo.MapId))
                     ProcessMessage(this, Message.Destroy);
             }
         }

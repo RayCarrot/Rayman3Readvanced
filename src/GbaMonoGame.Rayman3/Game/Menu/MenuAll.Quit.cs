@@ -13,9 +13,9 @@ public partial class MenuAll
     {
         SelectOption(0, false);
 
-        Data.QuitSelection.CurrentAnimation = 15 + Localization.LanguageUiIndex + SelectedOption * 5;
-        Data.QuitHeader.CurrentAnimation = 34 + Localization.LanguageUiIndex;
-        Data.GameLogo.CurrentAnimation = 0;
+        Anims.QuitSelection.CurrentAnimation = 15 + Localization.LanguageUiIndex + SelectedOption * 5;
+        Anims.QuitHeader.CurrentAnimation = 34 + Localization.LanguageUiIndex;
+        Anims.GameLogo.CurrentAnimation = 0;
 
         CurrentStepAction = Step_TransitionToQuit;
         ResetStem();
@@ -40,11 +40,11 @@ public partial class MenuAll
 
         MoveGameLogo();
 
-        Data.GameLogo.FrameChannelSprite(); // NOTE The game gives the bounding box a width of 255 instead of 240 here
+        Anims.GameLogo.FrameChannelSprite(); // NOTE The game gives the bounding box a width of 255 instead of 240 here
 
-        AnimationPlayer.Play(Data.GameLogo);
-        AnimationPlayer.Play(Data.QuitSelection);
-        AnimationPlayer.Play(Data.QuitHeader);
+        AnimationPlayer.Play(Anims.GameLogo);
+        AnimationPlayer.Play(Anims.QuitSelection);
+        AnimationPlayer.Play(Anims.QuitHeader);
     }
 
     private void Step_Quit()
@@ -52,19 +52,19 @@ public partial class MenuAll
         if (JoyPad.IsButtonJustPressed(GbaInput.Up))
         {
             SelectOption(SelectedOption == 0 ? 1 : 0, true);
-            Data.QuitSelection.CurrentAnimation = 15 + Localization.LanguageUiIndex + SelectedOption * 5;
+            Anims.QuitSelection.CurrentAnimation = 15 + Localization.LanguageUiIndex + SelectedOption * 5;
         }
         else if (JoyPad.IsButtonJustPressed(GbaInput.Down))
         {
             SelectOption(SelectedOption == 1 ? 0 : 1, true);
-            Data.QuitSelection.CurrentAnimation = 15 + Localization.LanguageUiIndex + SelectedOption * 5;
+            Anims.QuitSelection.CurrentAnimation = 15 + Localization.LanguageUiIndex + SelectedOption * 5;
         }
         else if (JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start))
         {
-            Data.Cursor.CurrentAnimation = 16;
+            Anims.Cursor.CurrentAnimation = 16;
 
             if (SelectedOption == 0)
-                NextStepAction = Step_InitializeTransitionToSelectGameMode;
+                NextStepAction = Step_InitializeTransitionToGameMode;
             else if (SelectedOption == 1)
                 Engine.GbaGame.Exit();
 
@@ -77,8 +77,8 @@ public partial class MenuAll
         }
         else if (JoyPad.IsButtonJustPressed(GbaInput.B) || JoyPad.IsButtonJustPressed(GbaInput.Select))
         {
-            Data.Cursor.CurrentAnimation = 16;
-            NextStepAction = Step_InitializeTransitionToSelectGameMode;
+            Anims.Cursor.CurrentAnimation = 16;
+            NextStepAction = Step_InitializeTransitionToGameMode;
             CurrentStepAction = Step_TransitionOutOfQuit;
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
             SelectOption(0, false);
@@ -87,14 +87,14 @@ public partial class MenuAll
             TransitionOutCursorAndStem();
         }
 
-        AnimationPlayer.Play(Data.QuitSelection);
-        AnimationPlayer.Play(Data.QuitHeader);
+        AnimationPlayer.Play(Anims.QuitSelection);
+        AnimationPlayer.Play(Anims.QuitHeader);
 
         MoveGameLogo();
 
-        Data.GameLogo.FrameChannelSprite(); // NOTE The game gives the bounding box a width of 255 instead of 240 here
+        Anims.GameLogo.FrameChannelSprite(); // NOTE The game gives the bounding box a width of 255 instead of 240 here
 
-        AnimationPlayer.Play(Data.GameLogo);
+        AnimationPlayer.Play(Anims.GameLogo);
     }
 
     private void Step_TransitionOutOfQuit()
@@ -106,7 +106,7 @@ public partial class MenuAll
             TgxCluster cluster = Playfield.Camera.GetCluster(1);
             cluster.Position -= new Vector2(0, 4);
 
-            Data.GameLogo.ScreenPos = Data.GameLogo.ScreenPos with { Y = 16 - TransitionValue / 2f};
+            Anims.GameLogo.ScreenPos = Anims.GameLogo.ScreenPos with { Y = 16 - TransitionValue / 2f};
         }
         else if (TransitionValue >= Playfield.RenderContext.Resolution.Y + 60)
         {
@@ -114,13 +114,13 @@ public partial class MenuAll
             CurrentStepAction = NextStepAction;
         }
 
-        AnimationPlayer.Play(Data.QuitSelection);
+        AnimationPlayer.Play(Anims.QuitSelection);
 
         MoveGameLogo();
 
-        Data.GameLogo.FrameChannelSprite(); // NOTE The game gives the bounding box a width of 255 instead of 240 here
+        Anims.GameLogo.FrameChannelSprite(); // NOTE The game gives the bounding box a width of 255 instead of 240 here
 
-        AnimationPlayer.Play(Data.GameLogo);
+        AnimationPlayer.Play(Anims.GameLogo);
     }
 
     #endregion

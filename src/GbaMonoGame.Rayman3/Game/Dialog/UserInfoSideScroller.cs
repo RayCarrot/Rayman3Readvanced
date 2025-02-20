@@ -1,4 +1,5 @@
-﻿using GbaMonoGame.AnimEngine;
+﻿using System;
+using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
@@ -87,11 +88,17 @@ public class UserInfoSideScroller : Dialog
 
     public void SwitchActivated()
     {
+        if (SwitchBar == null)
+            throw new Exception("SwitchActivated can only be called in selected maps");
+
         SwitchBar.ActivateSwitch();
     }
 
     public void BossHit()
     {
+        if (BossBar == null)
+            throw new Exception("BossHit can only be called in selected maps");
+
         BossBar.Set();
     }
 

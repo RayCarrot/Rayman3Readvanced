@@ -1,4 +1,6 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using System;
+using System.Diagnostics;
+using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 
 namespace GbaMonoGame.Engine2d;
@@ -7,13 +9,16 @@ public class Captor : GameObject
 {
     public Captor(int instanceId, Scene2D scene, CaptorResource captorResource) : base(instanceId, scene, captorResource)
     {
+        TriggeredCount = 0;
+
         TriggerOnMainActorDetection = captorResource.TriggerOnMainActorDetection;
-        IsTriggering = captorResource.IsTriggering;
-        CaptorFlag_2 = captorResource.CaptorFlag_2;
+        IsDetected = captorResource.IsDetected;
         
         Events = captorResource.Events.Events;
         OriginalEventsToTrigger = captorResource.EventsCount;
         EventsToTrigger = captorResource.EventsCount;
+
+        Debug.Assert(EventsToTrigger > 0, "The captor has no event");
 
         _captorBox = new Box(captorResource.BoxMinX, captorResource.BoxMinY, captorResource.BoxMaxX, captorResource.BoxMaxY);
 
@@ -31,8 +36,7 @@ public class Captor : GameObject
 
     // Flags
     public bool TriggerOnMainActorDetection { get; set; }
-    public bool IsTriggering { get; set; }
-    public bool CaptorFlag_2 { get; set; }
+    public bool IsDetected { get; set; }
 
     public CaptorEvent[] Events { get; }
     public int OriginalEventsToTrigger { get; set; }
@@ -47,7 +51,7 @@ public class Captor : GameObject
         switch (message)
         {
             case Message.Captor_Trigger:
-                IsTriggering = true;
+                IsDetected = true;
                 TriggerEvent();
                 return true;
         }
@@ -57,6 +61,9 @@ public class Captor : GameObject
 
     public void TriggerEvent()
     {
+        Debug.Assert(IsDetected, "The captor has not been detected");
+        Debug.Assert(EventsToTrigger > 0, "The captor has no event to trigger");
+
         foreach (CaptorEvent evt in Events)
         {
             Message msg = (Message)evt.MessageId;
@@ -94,7 +101,7 @@ public class Captor : GameObject
             ProcessMessage(this, Message.Destroy);
             TriggeredCount = 0;
             EventsToTrigger = OriginalEventsToTrigger;
-            IsTriggering = false;
+            IsDetected = false;
         }
     }
 

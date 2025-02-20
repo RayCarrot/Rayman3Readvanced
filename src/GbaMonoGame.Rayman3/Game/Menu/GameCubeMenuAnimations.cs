@@ -3,9 +3,9 @@ using GbaMonoGame.AnimEngine;
 
 namespace GbaMonoGame.Rayman3;
 
-public class GameCubeMenuData
+public class GameCubeMenuAnimations
 {
-    public GameCubeMenuData(RenderContext renderContext)
+    public GameCubeMenuAnimations(RenderContext renderContext)
     {
         AnimatedObjectResource animations = Rom.LoadResource<AnimatedObjectResource>(GameResource.GameCubeMenuAnimations);
         AnimatedObjectResource levelCheckAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.GameCubeMenuLevelCheckAnimations);
@@ -35,7 +35,7 @@ public class GameCubeMenuData
             };
         }
 
-        int collectedYellowLums = GameInfo.GetTotalCollectedYellowLums();
+        int collectedYellowLums = GameInfo.GetTotalDeadLums();
         TotalLumsText = new SpriteTextObject()
         {
             Text = collectedYellowLums.ToString(),

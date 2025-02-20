@@ -292,7 +292,7 @@ public class LevelSelect : Frame
                 LevelInfo levelInfo = GameInfo.Levels[(int)SelectedMapId];
 
                 for (int i = 0; i < levelInfo.GlobalLumsIndex; i++)
-                    GameInfo.KillLum(i);
+                    GameInfo.SetLumStatus(i, true);
 
                 if (GameInfo.World1LumsCompleted())
                     GameInfo.PersistentInfo.UnlockedBonus1 = true;
@@ -312,7 +312,7 @@ public class LevelSelect : Frame
                 LevelInfo levelInfo = GameInfo.Levels[(int)SelectedMapId];
 
                 for (int i = 0; i < levelInfo.GlobalCagesIndex; i++)
-                    GameInfo.KillCage(i);
+                    GameInfo.SetCageStatus(i, true);
             }
 
             GameInfo.CurrentSlot = SelectedSaveSlotIndex;

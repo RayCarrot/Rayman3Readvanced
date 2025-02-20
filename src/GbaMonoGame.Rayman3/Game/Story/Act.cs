@@ -86,7 +86,7 @@ public abstract class Act : Frame
         TextTransitionValue = 1;
 
         foreach (SpriteTextObject textObj in TextObjects)
-            textObj.AffineMatrix = AffineMatrix.Identity;
+            textObj.SetYScaling(1);
     }
 
     private void TransitionTextOut()
@@ -94,7 +94,7 @@ public abstract class Act : Frame
         TextTransitionValue++;
 
         foreach (SpriteTextObject textObj in TextObjects)
-            textObj.AffineMatrix = new AffineMatrix(1, 0, 0, TextTransitionValue);
+            textObj.SetYScaling(TextTransitionValue);
 
         if (TextTransitionValue > 8)
         {
@@ -118,7 +118,7 @@ public abstract class Act : Frame
             }
 
             foreach (SpriteTextObject textObj in TextObjects)
-                textObj.AffineMatrix = new AffineMatrix(1, 0, 0, TextTransitionValue);
+                textObj.SetYScaling(TextTransitionValue);
         }
         else
         {

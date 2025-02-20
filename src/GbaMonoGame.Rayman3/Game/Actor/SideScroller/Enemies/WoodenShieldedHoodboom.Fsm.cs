@@ -1,4 +1,5 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+﻿using System.Diagnostics;
+using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
@@ -143,6 +144,9 @@ public partial class WoodenShieldedHoodboom
         {
             case FsmAction.Init:
                 Grenade grenade = Scene.CreateProjectile<Grenade>(ActorType.Grenade);
+
+                Debug.Assert(grenade != null, "The grenade projectile could not be created");
+
                 if (grenade != null)
                 {
                     float xPos;

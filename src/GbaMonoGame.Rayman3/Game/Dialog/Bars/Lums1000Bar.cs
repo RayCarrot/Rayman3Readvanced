@@ -1,4 +1,5 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using System.Diagnostics;
+using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 
 namespace GbaMonoGame.Rayman3;
@@ -16,6 +17,10 @@ public class Lums1000Bar : Bar
 
     public void AddLastLums()
     {
+        // Original assertion messages here are kinda funny. They say "beuh!" and "beuh! encore".
+        Debug.Assert(GameInfo.MapId == MapId._1000Lums, "Map is wrong");
+        Debug.Assert(DeadLums == 999, "Dead lums is not 999");
+
         DeadLums = 1000;
         LumsIcon.CurrentAnimation = 35;
         LumsIcon.ScreenPos = LumsIcon.ScreenPos with { X = -70 };
@@ -68,7 +73,7 @@ public class Lums1000Bar : Bar
 
     public override void Set()
     {
-        DeadLums = GameInfo.GetTotalCollectedYellowLums();
+        DeadLums = GameInfo.GetTotalDeadLums();
 
         if (DeadLums == 1000)
         {

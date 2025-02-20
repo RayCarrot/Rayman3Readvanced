@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using BinarySerializer;
 using BinarySerializer.Ubisoft.GbaEngine;
@@ -84,7 +85,7 @@ public partial class MenuAll : Frame, IHasPlayfield
     public TgxPlayfield2D Playfield { get; set; }
     public TransitionsFX TransitionsFX { get; set; }
 
-    public MenuData Data { get; set; }
+    public MenuAllAnimations Anims { get; set; }
     public Action CurrentStepAction { get; set; }
     public Action NextStepAction { get; set; }
 
@@ -97,7 +98,7 @@ public partial class MenuAll : Frame, IHasPlayfield
 
     public int PrevSelectedOption { get; set; }
     public int SelectedOption { get; set; }
-    public int StemMode { get; set; }
+    public int StemMode { get; set; } // TODO: Enum
 
     public bool ShouldTextBlink { get; set; }
     public int PreviousTextId { get; set; }
@@ -124,29 +125,31 @@ public partial class MenuAll : Frame, IHasPlayfield
 
     #region Methods
 
-    public void SetText(int textId, bool blink)
+    public void SetMenuText(int textId, bool blink)
     {
         ShouldTextBlink = blink;
 
         string[] text = Localization.GetText(11, textId);
 
-        int unusedLines = Data.Texts.Length - text.Length;
-        for (int i = 0; i < Data.Texts.Length; i++)
+        Debug.Assert(text.Length <= Anims.Texts.Length, "Too many lines for this text");
+
+        int unusedLines = Anims.Texts.Length - text.Length;
+        for (int i = 0; i < Anims.Texts.Length; i++)
         {
             if (i < unusedLines)
             {
-                Data.Texts[i].Text = "";
+                Anims.Texts[i].Text = "";
             }
             else
             {
-                Data.Texts[i].Text = text[i - unusedLines];
-                Data.Texts[i].ScreenPos = new Vector2(140 - Data.Texts[i].GetStringWidth() / 2f, 32 + i * 16);
+                Anims.Texts[i].Text = text[i - unusedLines];
+                Anims.Texts[i].ScreenPos = new Vector2(140 - Anims.Texts[i].GetStringWidth() / 2f, 32 + i * 16);
             }
         }
     }
 
     // N-Gage uses a more complex method for setting text, with wrapping and optional params
-    public void NGageSetText(int textId, bool blink, int? baseY, int maxLineWidth, params object[] paramsBuffer)
+    public void NGageSetMenuText(int textId, bool blink, int? baseY, int maxLineWidth, params object[] paramsBuffer)
     {
         ShouldTextBlink = blink;
 
@@ -156,7 +159,7 @@ public partial class MenuAll : Frame, IHasPlayfield
 
         int paramIndex = 0;
         int textIndex;
-        for (textIndex = 0; textIndex < text.Length && textIndex < Data.Texts.Length; textIndex++)
+        for (textIndex = 0; textIndex < text.Length && textIndex < Anims.Texts.Length; textIndex++)
         {
             // Get the string
             string str = text[textIndex];
@@ -176,7 +179,7 @@ public partial class MenuAll : Frame, IHasPlayfield
                 str = str.sprintf(strParams);
 
             // Single line
-            if (maxLineWidth < 1 || textIndex != text.Length - 1 || text.Length >= Data.Texts.Length)
+            if (maxLineWidth < 1 || textIndex != text.Length - 1 || text.Length >= Anims.Texts.Length)
             {
                 drawText(textIndex, str);
             }
@@ -263,15 +266,15 @@ public partial class MenuAll : Frame, IHasPlayfield
         }
 
         // Set unused lines to be empty
-        for (; textIndex < Data.Texts.Length; textIndex++)
-            Data.Texts[textIndex].Text = "";
+        for (; textIndex < Anims.Texts.Length; textIndex++)
+            Anims.Texts[textIndex].Text = "";
 
         // Helper method for drawing text
         void drawText(int index, string str)
         {
             int lineWidth = FontManager.GetStringWidth(FontSize.Font16, str);
-            Data.Texts[index].ScreenPos = new Vector2(108 - lineWidth / 2f, baseY.Value + 48 + index * 16);
-            Data.Texts[index].Text = str;
+            Anims.Texts[index].ScreenPos = new Vector2(108 - lineWidth / 2f, baseY.Value + 48 + index * 16);
+            Anims.Texts[index].Text = str;
         }
     }
 
@@ -279,7 +282,7 @@ public partial class MenuAll : Frame, IHasPlayfield
     {
         if (!ShouldTextBlink || (GameTime.ElapsedFrames & 0x10) != 0)
         {
-            foreach (SpriteTextObject text in Data.Texts)
+            foreach (SpriteTextObject text in Anims.Texts)
             {
                 if (front)
                     AnimationPlayer.PlayFront(text);
@@ -343,50 +346,52 @@ public partial class MenuAll : Frame, IHasPlayfield
     public void ResetStem()
     {
         StemMode = 1;
-        Data.Stem.CurrentAnimation = 12;
+        Anims.Stem.CurrentAnimation = 12;
     }
 
     public void ManageCursorAndStem()
     {
         if (StemMode == 0)
         {
-            if (Data.Cursor.CurrentAnimation == 16)
+            if (Anims.Cursor.CurrentAnimation == 16)
             {
-                if (Data.Cursor.EndOfAnimation)
-                {
-                    Data.Cursor.CurrentAnimation = 0;
+                Debug.Assert(Anims.Stem.CurrentAnimation == 1, "The steam has the wrong animation");
 
-                    if (Data.Cursor.ScreenPos.Y <= CursorBaseY)
+                if (Anims.Cursor.EndOfAnimation)
+                {
+                    Anims.Cursor.CurrentAnimation = 0;
+
+                    if (Anims.Cursor.ScreenPos.Y <= CursorBaseY)
                     {
-                        Data.Stem.CurrentAnimation = 15;
+                        Anims.Stem.CurrentAnimation = 15;
                     }
                 }
             }
-            else if (Data.Cursor.ScreenPos.Y > CursorBaseY)
+            else if (Anims.Cursor.ScreenPos.Y > CursorBaseY)
             {
-                Data.Cursor.ScreenPos -= new Vector2(0, 4);
+                Anims.Cursor.ScreenPos -= new Vector2(0, 4);
 
-                if (Data.Cursor.ScreenPos.Y <= CursorBaseY)
+                if (Anims.Cursor.ScreenPos.Y <= CursorBaseY)
                 {
-                    Data.Cursor.ScreenPos = Data.Cursor.ScreenPos with { Y = CursorBaseY };
-                    Data.Stem.CurrentAnimation = 15;
+                    Anims.Cursor.ScreenPos = Anims.Cursor.ScreenPos with { Y = CursorBaseY };
+                    Anims.Stem.CurrentAnimation = 15;
                 }
             }
-            else if (Data.Stem.CurrentAnimation == 15 && Data.Stem.EndOfAnimation)
+            else if (Anims.Stem.CurrentAnimation == 15 && Anims.Stem.EndOfAnimation)
             {
-                Data.Stem.CurrentAnimation = 14;
+                Anims.Stem.CurrentAnimation = 14;
                 StemMode = 3;
             }
         }
         else if (StemMode == 1)
         {
-            if (Data.Stem.CurrentAnimation == 12 && Data.Stem.EndOfAnimation)
+            if (Anims.Stem.CurrentAnimation == 12 && Anims.Stem.EndOfAnimation)
             {
-                Data.Stem.CurrentAnimation = 17;
+                Anims.Stem.CurrentAnimation = 17;
             }
-            else if (Data.Stem.CurrentAnimation == 17 && Data.Stem.EndOfAnimation)
+            else if (Anims.Stem.CurrentAnimation == 17 && Anims.Stem.EndOfAnimation)
             {
-                Data.Stem.CurrentAnimation = 1;
+                Anims.Stem.CurrentAnimation = 1;
                 StemMode = 2;
             }
         }
@@ -406,13 +411,13 @@ public partial class MenuAll : Frame, IHasPlayfield
                 {
                     float yPos = SelectedOption * lineHeight + CursorBaseY;
 
-                    if (yPos < Data.Cursor.ScreenPos.Y)
+                    if (yPos < Anims.Cursor.ScreenPos.Y)
                     {
-                        Data.Cursor.ScreenPos -= new Vector2(0, 4);
+                        Anims.Cursor.ScreenPos -= new Vector2(0, 4);
                     }
                     else
                     {
-                        Data.Cursor.ScreenPos = Data.Cursor.ScreenPos with { Y = yPos };
+                        Anims.Cursor.ScreenPos = Anims.Cursor.ScreenPos with { Y = yPos };
                         PrevSelectedOption = SelectedOption;
                     }
                 }
@@ -420,24 +425,24 @@ public partial class MenuAll : Frame, IHasPlayfield
                 {
                     float yPos = SelectedOption * lineHeight + CursorBaseY;
 
-                    if (yPos > Data.Cursor.ScreenPos.Y)
+                    if (yPos > Anims.Cursor.ScreenPos.Y)
                     {
-                        Data.Cursor.ScreenPos += new Vector2(0, 4);
+                        Anims.Cursor.ScreenPos += new Vector2(0, 4);
                     }
                     else
                     {
-                        Data.Cursor.ScreenPos = Data.Cursor.ScreenPos with { Y = yPos };
+                        Anims.Cursor.ScreenPos = Anims.Cursor.ScreenPos with { Y = yPos };
                         PrevSelectedOption = SelectedOption;
                     }
                 }
             }
         }
 
-        AnimationPlayer.Play(Data.Stem);
+        AnimationPlayer.Play(Anims.Stem);
 
         // The cursor is usually included in the stem animation, except for animation 1
-        if (Data.Stem.CurrentAnimation == 1)
-            AnimationPlayer.Play(Data.Cursor);
+        if (Anims.Stem.CurrentAnimation == 1)
+            AnimationPlayer.Play(Anims.Cursor);
     }
 
     public void TransitionOutCursorAndStem()
@@ -450,10 +455,10 @@ public partial class MenuAll : Frame, IHasPlayfield
 
         StemMode = 0;
 
-        Data.Stem.CurrentAnimation = 1;
+        Anims.Stem.CurrentAnimation = 1;
 
-        if (Data.Cursor.ScreenPos.Y <= CursorBaseY && Data.Cursor.CurrentAnimation != 16)
-            Data.Stem.CurrentAnimation = 15;
+        if (Anims.Cursor.ScreenPos.Y <= CursorBaseY && Anims.Cursor.CurrentAnimation != 16)
+            Anims.Stem.CurrentAnimation = 15;
     }
 
     public void SelectOption(int selectedOption, bool playSound)
@@ -484,7 +489,7 @@ public partial class MenuAll : Frame, IHasPlayfield
                 GameInfo.Load(i);
 
                 // Get the info from the slot
-                Slots[i] = new Slot(GameInfo.GetTotalCollectedYellowLums(), GameInfo.GetTotalCollectedCages(), GameInfo.PersistentInfo.Lives);
+                Slots[i] = new Slot(GameInfo.GetTotalDeadLums(), GameInfo.GetTotalDeadCages(), GameInfo.PersistentInfo.Lives);
 
                 if (Rom.Platform == Platform.GBA)
                 {
@@ -511,7 +516,7 @@ public partial class MenuAll : Frame, IHasPlayfield
 
         AnimationPlayer = new AnimationPlayer(false, null);
 
-        Data = new MenuData(Rom.OriginalGameRenderContext, MultiplayerPlayersOffsetY, SinglePakPlayersOffsetY);
+        Anims = new MenuAllAnimations(Rom.OriginalGameRenderContext, MultiplayerPlayersOffsetY, SinglePakPlayersOffsetY);
         WheelRotation = 0;
 
         PlayfieldResource menuPlayField = Rom.LoadResource<PlayfieldResource>(GameResource.MenuPlayfield);
@@ -528,23 +533,23 @@ public partial class MenuAll : Frame, IHasPlayfield
 
         switch (InitialPage)
         {
-            case Page.SelectLanguage:
+            case Page.Language:
                 // NOTE: The game doesn't do this, but this allows the saved language to be pre-selected
                 SelectedOption = Localization.LanguageId;
-                Data.LanguageList.CurrentAnimation = LanguagesBaseAnimation + SelectedOption;
+                Anims.LanguageList.CurrentAnimation = LanguagesBaseAnimation + SelectedOption;
 
                 CurrentStepAction = Rom.Platform switch
                 {
-                    Platform.GBA => Step_SelectLanguage,
-                    Platform.NGage => Step_InitializeTransitionToSelectLanguage,
+                    Platform.GBA => Step_Language,
+                    Platform.NGage => Step_InitializeTransitionToLanguage,
                     _ => throw new UnsupportedPlatformException()
                 };
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
                 break;
 
-            case Page.SelectGameMode:
+            case Page.GameMode:
                 Playfield.TileLayers[3].Screen.IsEnabled = false;
-                CurrentStepAction = Step_InitializeTransitionToSelectGameMode;
+                CurrentStepAction = Step_InitializeTransitionToGameMode;
                 break;
 
             case Page.Options:
@@ -570,10 +575,13 @@ public partial class MenuAll : Frame, IHasPlayfield
                 break;
 
             // N-Gage exclusive
-            case Page.NGage_FirstPage:
+            case Page.NGage_FirstPage when Rom.Platform == Platform.NGage:
                 Playfield.TileLayers[3].Screen.IsEnabled = false;
                 CurrentStepAction = Step_InitializeFirstPage;
                 break;
+
+            default:
+                throw new Exception("Invalid start page for MenuAll");
         }
 
         if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__raytheme) &&
@@ -623,15 +631,15 @@ public partial class MenuAll : Frame, IHasPlayfield
 
         CurrentStepAction();
 
-        if (Rom.Platform == Platform.NGage || CurrentStepAction != Step_SelectLanguage)
+        if (Rom.Platform == Platform.NGage || CurrentStepAction != Step_Language)
             ManageCursorAndStem();
 
         if (Rom.Platform == Platform.NGage)
         {
-            Data.SelectSymbol.CurrentAnimation = Localization.LanguageUiIndex;
-            Data.BackSymbol.CurrentAnimation = 5 + Localization.LanguageUiIndex;
+            Anims.SelectSymbol.CurrentAnimation = Localization.LanguageUiIndex;
+            Anims.BackSymbol.CurrentAnimation = 5 + Localization.LanguageUiIndex;
 
-            Data.BackSymbol.ScreenPos = Data.BackSymbol.ScreenPos with
+            Anims.BackSymbol.ScreenPos = Anims.BackSymbol.ScreenPos with
             {
                 X = Localization.LanguageUiIndex switch
                 {
@@ -643,14 +651,14 @@ public partial class MenuAll : Frame, IHasPlayfield
                 }
             };
 
-            AnimationPlayer.PlayFront(Data.SelectSymbol);
+            AnimationPlayer.PlayFront(Anims.SelectSymbol);
 
-            if (CurrentStepAction != Step_SelectGameMode &&
-                CurrentStepAction != Step_InitializeTransitionToSelectGameMode &&
-                CurrentStepAction != Step_TransitionToSelectGameMode &&
-                CurrentStepAction != Step_TransitionOutOfSelectGameMode)
+            if (CurrentStepAction != Step_GameMode &&
+                CurrentStepAction != Step_InitializeTransitionToGameMode &&
+                CurrentStepAction != Step_TransitionToGameMode &&
+                CurrentStepAction != Step_TransitionOutOfGameMode)
             {
-                AnimationPlayer.PlayFront(Data.BackSymbol);
+                AnimationPlayer.PlayFront(Anims.BackSymbol);
             }
         }
 
@@ -661,26 +669,26 @@ public partial class MenuAll : Frame, IHasPlayfield
 
         if (Rom.Platform == Platform.GBA)
         {
-            Data.Wheel1.AffineMatrix = new AffineMatrix(WheelRotation % 256, 1, 1);
-            Data.Wheel2.AffineMatrix = new AffineMatrix(255 - WheelRotation / 2f % 256, 1, 1);
-            Data.Wheel3.AffineMatrix = new AffineMatrix(WheelRotation / 4f % 256, 1, 1);
-            Data.Wheel4.AffineMatrix = new AffineMatrix(WheelRotation / 8f % 256, 1, 1);
+            Anims.Wheel1.AffineMatrix = new AffineMatrix(WheelRotation % 256, 1, 1);
+            Anims.Wheel2.AffineMatrix = new AffineMatrix(255 - WheelRotation / 2f % 256, 1, 1);
+            Anims.Wheel3.AffineMatrix = new AffineMatrix(WheelRotation / 4f % 256, 1, 1);
+            Anims.Wheel4.AffineMatrix = new AffineMatrix(WheelRotation / 8f % 256, 1, 1);
 
-            AnimationPlayer.Play(Data.Wheel1);
-            AnimationPlayer.Play(Data.Wheel2);
-            AnimationPlayer.Play(Data.Wheel3);
-            AnimationPlayer.Play(Data.Wheel4);
+            AnimationPlayer.Play(Anims.Wheel1);
+            AnimationPlayer.Play(Anims.Wheel2);
+            AnimationPlayer.Play(Anims.Wheel3);
+            AnimationPlayer.Play(Anims.Wheel4);
 
             if (SteamTimer == 0)
             {
-                if (!Data.Steam.EndOfAnimation)
+                if (!Anims.Steam.EndOfAnimation)
                 {
-                    AnimationPlayer.Play(Data.Steam);
+                    AnimationPlayer.Play(Anims.Steam);
                 }
                 else
                 {
                     SteamTimer = Random.GetNumber(180) + 60; // Value between 60 and 240
-                    Data.Steam.CurrentAnimation = Random.GetNumber(200) < 100 ? 0 : 1;
+                    Anims.Steam.CurrentAnimation = Random.GetNumber(200) < 100 ? 0 : 1;
                 }
             }
             else
@@ -690,11 +698,11 @@ public partial class MenuAll : Frame, IHasPlayfield
         }
         else if (Rom.Platform == Platform.NGage)
         {
-            Data.Wheel2.AffineMatrix = new AffineMatrix(255 - WheelRotation / 2f % 256, 1, 1);
-            Data.Wheel4.AffineMatrix = new AffineMatrix(WheelRotation / 8f % 256, 1, 1);
+            Anims.Wheel2.AffineMatrix = new AffineMatrix(255 - WheelRotation / 2f % 256, 1, 1);
+            Anims.Wheel4.AffineMatrix = new AffineMatrix(WheelRotation / 8f % 256, 1, 1);
 
-            AnimationPlayer.Play(Data.Wheel2);
-            AnimationPlayer.Play(Data.Wheel4);
+            AnimationPlayer.Play(Anims.Wheel2);
+            AnimationPlayer.Play(Anims.Wheel4);
         }
         else
         {
@@ -709,11 +717,11 @@ public partial class MenuAll : Frame, IHasPlayfield
     // N-Gage exclusive
     private void Step_InitializeFirstPage()
     {
-        InitialPage = Page.SelectLanguage;
+        InitialPage = Page.Language;
 
         // TODO: If the game has failed to load the save file then it transitions to a page where it says the drive is full - re-implement?
 
-        CurrentStepAction = Step_InitializeTransitionToSelectGameMode;
+        CurrentStepAction = Step_InitializeTransitionToGameMode;
     }
 
     #endregion
@@ -722,8 +730,8 @@ public partial class MenuAll : Frame, IHasPlayfield
 
     public enum Page
     {
-        SelectLanguage,
-        SelectGameMode,
+        Language,
+        GameMode,
         Options,
         Multiplayer,
         MultiplayerLostConnection,

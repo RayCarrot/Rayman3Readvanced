@@ -9,7 +9,7 @@ public partial class Rayman
 {
     private bool FsmStep_DoOnTheGround()
     {
-        if (!FsmStep_CheckDeath())
+        if (!FsmStep_DoDefault())
             return false;
 
         CheckSlide();
@@ -54,7 +54,7 @@ public partial class Rayman
             ActionId = IsFacingRight ? Action.Damage_Knockback_Right : Action.Damage_Knockback_Left;
         }
 
-        return FsmStep_CheckDeath();
+        return FsmStep_DoDefault();
     }
 
     private bool FsmStep_DoStandingOnPlum()
@@ -79,7 +79,7 @@ public partial class Rayman
         return true;
     }
 
-    private bool FsmStep_CheckDeath()
+    private bool FsmStep_DoDefault()
     {
         CameraSideScroller cam = (CameraSideScroller)Scene.Camera;
 
@@ -143,7 +143,7 @@ public partial class Rayman
         if (field23_0x98 != 0)
             field23_0x98--;
 
-        if (IsDead())
+        if (CheckDeath())
         {
             if (!RSMultiplayer.IsActive)
                 State.MoveTo(Fsm_Dying);
@@ -2934,7 +2934,7 @@ public partial class Rayman
                 break;
 
             case FsmAction.Step:
-                if (!FsmStep_CheckDeath())
+                if (!FsmStep_DoDefault())
                     return false;
 
                 if (AnimatedObject.CurrentFrame == 19 && Timer == 0)
@@ -4354,7 +4354,7 @@ public partial class Rayman
                 break;
 
             case FsmAction.Step:
-                if (!FsmStep_CheckDeath())
+                if (!FsmStep_DoDefault())
                     return false;
 
                 ManageHit();

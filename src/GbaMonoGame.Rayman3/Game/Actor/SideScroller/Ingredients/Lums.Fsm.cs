@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 
@@ -88,7 +89,7 @@ public partial class Lums
                     switch (ActionId)
                     {
                         case Action.YellowLum:
-                            GameInfo.SetYellowLumAsCollected(LumId);
+                            GameInfo.KillLum(LumId);
                             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumOrag_Mix06);
                             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumOrag_Mix06);
                             break;
@@ -106,7 +107,7 @@ public partial class Lums
                             while (Scene.GetPhysicalType(pos) == PhysicalTypeValue.None)
                                 pos += new Vector2(0, Tile.Size);
 
-                            GameInfo.SetCheckpoint(pos);
+                            GameInfo.GreenLumTouchedByRayman(LumId, pos);
                             break;
 
                         case Action.BlueLum:
@@ -329,7 +330,11 @@ public partial class Lums
                 break;
 
             case FsmAction.UnInit:
-                Position = MultiplayerInfo.TagInfo.GetLumPosition(LumId);
+                Vector2 pos = MultiplayerInfo.TagInfo.GetLumPosition(LumId);
+
+                Debug.Assert(pos != Vector2.Zero);
+
+                Position = pos;
 
                 // NOTE: The game also checks for big blue lum state here, but the actual animation code doesn't account for it
                 if (ActionId == Action.BlueLum)

@@ -147,7 +147,7 @@ public partial class Cage
         switch (action)
         {
             case FsmAction.Init:
-                GameInfo.SetCageAsCollected(CageId);
+                GameInfo.KillCage(CageId);
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CageTrsh_Mix05);
                 ActionId = InitialActionId + 4;
                 Scene.MainActor.ProcessMessage(this, Message.Main_CollectedCage);

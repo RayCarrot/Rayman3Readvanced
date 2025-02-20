@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine;
 using ImGuiNET;
@@ -318,6 +319,8 @@ public class GbaSoundEventsManager : SoundEventsManager
         {
             case SoundEvent.SoundEventType.Play:
                 SoundResource res = GetSoundResource(evt.ResourceId);
+
+                Debug.Assert(res != null, "Sound resource is null");
 
                 if (res != null)
                     CreateSong(soundEventId, res, evt, obj);

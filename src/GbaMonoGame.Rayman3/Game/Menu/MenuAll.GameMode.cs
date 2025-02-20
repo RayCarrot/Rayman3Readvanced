@@ -39,7 +39,7 @@ public partial class MenuAll
         // Move Y
         if (GameLogoYOffset < 56)
         {
-            Data.GameLogo.ScreenPos = Data.GameLogo.ScreenPos with { Y = GameLogoYOffset * 2 - 54 };
+            Anims.GameLogo.ScreenPos = Anims.GameLogo.ScreenPos with { Y = GameLogoYOffset * 2 - 54 };
             GameLogoYOffset += 4;
         }
         else if (OtherGameLogoValue != 12)
@@ -47,7 +47,7 @@ public partial class MenuAll
             GameLogoSinValue = (GameLogoSinValue + 16) % 256;
 
             float y = 56 + MathHelpers.Sin256(GameLogoSinValue) * OtherGameLogoValue;
-            Data.GameLogo.ScreenPos = Data.GameLogo.ScreenPos with { Y = y };
+            Anims.GameLogo.ScreenPos = Anims.GameLogo.ScreenPos with { Y = y };
 
             if (OtherGameLogoValue == 20 && GameLogoSinValue == 96)
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Pannel_BigFoot1_Mix02);
@@ -55,9 +55,9 @@ public partial class MenuAll
             if (GameLogoSinValue == 0)
                 OtherGameLogoValue -= 4;
         }
-        else if (Data.GameLogo.ScreenPos.Y > 16)
+        else if (Anims.GameLogo.ScreenPos.Y > 16)
         {
-            Data.GameLogo.ScreenPos -= new Vector2(0, 1);
+            Anims.GameLogo.ScreenPos -= new Vector2(0, 1);
         }
 
         // TODO: Rewrite with floats to move in 60fps
@@ -102,7 +102,7 @@ public partial class MenuAll
 
             GameLogoMovementXOffset++;
             PrevGameTime = GameTime.ElapsedFrames;
-            Data.GameLogo.ScreenPos = Data.GameLogo.ScreenPos with { X = GameLogoBaseX + x };
+            Anims.GameLogo.ScreenPos = Anims.GameLogo.ScreenPos with { X = GameLogoBaseX + x };
         }
     }
 
@@ -110,24 +110,24 @@ public partial class MenuAll
 
     #region Steps
 
-    private void Step_InitializeTransitionToSelectGameMode()
+    private void Step_InitializeTransitionToGameMode()
     {
-        Data.GameModeList.CurrentAnimation = Localization.LanguageUiIndex * GameModeOptionsCount + SelectedOption;
+        Anims.GameModeList.CurrentAnimation = Localization.LanguageUiIndex * GameModeOptionsCount + SelectedOption;
 
         // Center sprites if English
         if (Localization.LanguageId == 0)
         {
             if (Rom.Platform == Platform.GBA)
             {
-                Data.GameModeList.ScreenPos = Data.GameModeList.ScreenPos with { X = 86 };
-                Data.Cursor.ScreenPos = Data.Cursor.ScreenPos with { X = 46 };
-                Data.Stem.ScreenPos = Data.Stem.ScreenPos with { X = 60 };
+                Anims.GameModeList.ScreenPos = Anims.GameModeList.ScreenPos with { X = 86 };
+                Anims.Cursor.ScreenPos = Anims.Cursor.ScreenPos with { X = 46 };
+                Anims.Stem.ScreenPos = Anims.Stem.ScreenPos with { X = 60 };
             }
             else if (Rom.Platform == Platform.NGage)
             {
-                Data.GameModeList.ScreenPos = Data.GameModeList.ScreenPos with { X = 58 };
-                Data.Cursor.ScreenPos = Data.Cursor.ScreenPos with { X = 18 };
-                Data.Stem.ScreenPos = Data.Stem.ScreenPos with { X = 32 };
+                Anims.GameModeList.ScreenPos = Anims.GameModeList.ScreenPos with { X = 58 };
+                Anims.Cursor.ScreenPos = Anims.Cursor.ScreenPos with { X = 18 };
+                Anims.Stem.ScreenPos = Anims.Stem.ScreenPos with { X = 32 };
             }
             else
             {
@@ -136,14 +136,14 @@ public partial class MenuAll
         }
 
         // The game does a bit of a hack to skip the transition if we start at the game mode selection
-        if (InitialPage == Page.SelectGameMode)
+        if (InitialPage == Page.GameMode)
         {
-            CurrentStepAction = Step_SelectGameMode;
-            InitialPage = Page.SelectLanguage;
+            CurrentStepAction = Step_GameMode;
+            InitialPage = Page.Language;
         }
         else
         {
-            CurrentStepAction = Step_TransitionToSelectGameMode;
+            CurrentStepAction = Step_TransitionToGameMode;
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
         }
 
@@ -152,7 +152,7 @@ public partial class MenuAll
         GameLogoMovementXOffset = 10;
         GameLogoMovementWidth = 10;
         GameLogoMovementXCountdown = 0;
-        Data.GameLogo.ScreenPos = Data.GameLogo.ScreenPos with { X = GameLogoBaseX };
+        Anims.GameLogo.ScreenPos = Anims.GameLogo.ScreenPos with { X = GameLogoBaseX };
         OtherGameLogoValue = 20;
         GameLogoSinValue = 0;
         GameLogoYOffset = 0;
@@ -163,7 +163,7 @@ public partial class MenuAll
         SelectedOption = 0;
     }
 
-    private void Step_TransitionToSelectGameMode()
+    private void Step_TransitionToGameMode()
     {
         TransitionValue += 4;
 
@@ -176,34 +176,34 @@ public partial class MenuAll
         if (TransitionValue >= 160)
         {
             TransitionValue = 0;
-            CurrentStepAction = Step_SelectGameMode;
+            CurrentStepAction = Step_GameMode;
         }
 
         MoveGameLogo();
 
-        Data.GameLogo.FrameChannelSprite(); // NOTE The game gives the bounding box a width of 255 instead of 240 here
+        Anims.GameLogo.FrameChannelSprite(); // NOTE The game gives the bounding box a width of 255 instead of 240 here
         
-        AnimationPlayer.Play(Data.GameLogo);
-        AnimationPlayer.Play(Data.GameModeList);
+        AnimationPlayer.Play(Anims.GameLogo);
+        AnimationPlayer.Play(Anims.GameModeList);
     }
 
-    private void Step_SelectGameMode()
+    private void Step_GameMode()
     {
         if (JoyPad.IsButtonJustPressed(GbaInput.Up))
         {
             SelectOption(SelectedOption == 0 ? GameModeOptionsCount - 1 : SelectedOption - 1, true);
 
-            Data.GameModeList.CurrentAnimation = Localization.LanguageUiIndex * GameModeOptionsCount + SelectedOption;
+            Anims.GameModeList.CurrentAnimation = Localization.LanguageUiIndex * GameModeOptionsCount + SelectedOption;
         }
         else if (JoyPad.IsButtonJustPressed(GbaInput.Down))
         {
             SelectOption(SelectedOption == GameModeOptionsCount - 1 ? 0 : SelectedOption + 1, true);
 
-            Data.GameModeList.CurrentAnimation = Localization.LanguageUiIndex * GameModeOptionsCount + SelectedOption;
+            Anims.GameModeList.CurrentAnimation = Localization.LanguageUiIndex * GameModeOptionsCount + SelectedOption;
         }
         else if (JoyPad.IsButtonJustPressed(GbaInput.A))
         {
-            Data.Cursor.CurrentAnimation = 16;
+            Anims.Cursor.CurrentAnimation = 16;
 
             NextStepAction = SelectedOption switch
             {
@@ -215,10 +215,10 @@ public partial class MenuAll
                 3 when Rom.Platform == Platform.NGage => Step_InitializeTransitionToHelp,
                 4 when Rom.Platform == Platform.NGage => Step_InitializeTransitionToQuit,
                 
-                _ => throw new Exception("Invalid game mode")
+                _ => throw new Exception("Wrong game mode selection")
             };
 
-            CurrentStepAction = Step_TransitionOutOfSelectGameMode;
+            CurrentStepAction = Step_TransitionOutOfGameMode;
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
             SelectOption(0, false);
             TransitionValue = 0;
@@ -226,15 +226,15 @@ public partial class MenuAll
             TransitionOutCursorAndStem();
         }
 
-        AnimationPlayer.Play(Data.GameModeList);
+        AnimationPlayer.Play(Anims.GameModeList);
 
         MoveGameLogo();
 
-        Data.GameLogo.FrameChannelSprite(); // NOTE The game gives the bounding box a width of 255 instead of 240 here
-        AnimationPlayer.Play(Data.GameLogo);
+        Anims.GameLogo.FrameChannelSprite(); // NOTE The game gives the bounding box a width of 255 instead of 240 here
+        AnimationPlayer.Play(Anims.GameLogo);
     }
 
-    private void Step_TransitionOutOfSelectGameMode()
+    private void Step_TransitionOutOfGameMode()
     {
         TransitionValue += 4;
 
@@ -242,7 +242,7 @@ public partial class MenuAll
         {
             TgxCluster cluster = Playfield.Camera.GetCluster(1);
             cluster.Position -= new Vector2(0, 4);
-            Data.GameLogo.ScreenPos = Data.GameLogo.ScreenPos with { Y = 16 - TransitionValue / 2f };
+            Anims.GameLogo.ScreenPos = Anims.GameLogo.ScreenPos with { Y = 16 - TransitionValue / 2f };
         }
         else if (TransitionValue >= Playfield.RenderContext.Resolution.Y + 60)
         {
@@ -250,12 +250,12 @@ public partial class MenuAll
             CurrentStepAction = NextStepAction;
         }
 
-        AnimationPlayer.Play(Data.GameModeList);
+        AnimationPlayer.Play(Anims.GameModeList);
 
         MoveGameLogo();
 
-        Data.GameLogo.FrameChannelSprite(); // NOTE The game gives the bounding box a width of 255 instead of 240 here
-        AnimationPlayer.Play(Data.GameLogo);
+        Anims.GameLogo.FrameChannelSprite(); // NOTE The game gives the bounding box a width of 255 instead of 240 here
+        AnimationPlayer.Play(Anims.GameLogo);
     }
 
     #endregion

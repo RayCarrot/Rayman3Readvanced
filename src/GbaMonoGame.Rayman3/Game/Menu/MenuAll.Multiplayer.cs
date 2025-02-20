@@ -73,7 +73,7 @@ public partial class MenuAll
                         else if ((packet & 0xf000) == 0xd000)
                         {
                             MultiplayerInfo.InitialGameTime = (uint)(packet & 0x1ff);
-                            MultiplayerManager.UpdateFromRSMultiplayer();
+                            MultiplayerManager.CacheData();
 
                             FinishedLyChallenge1 = (packet & 0x200) != 0;
                             FinishedLyChallenge2 = (packet & 0x400) != 0;
@@ -186,11 +186,11 @@ public partial class MenuAll
 
     private void Step_InitializeTransitionToMultiplayerModeSelection()
     {
-        Data.MultiplayerModeSelection.CurrentAnimation = Localization.LanguageUiIndex * 2;
+        Anims.MultiplayerModeSelection.CurrentAnimation = Localization.LanguageUiIndex * 2;
 
         // Center sprites if English
         if (Localization.LanguageId == 0)
-            Data.MultiplayerModeSelection.ScreenPos = Data.MultiplayerModeSelection.ScreenPos with { X = 86 };
+            Anims.MultiplayerModeSelection.ScreenPos = Anims.MultiplayerModeSelection.ScreenPos with { X = 86 };
 
         CurrentStepAction = Step_TransitionToMultiplayerModeSelection;
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
@@ -214,7 +214,7 @@ public partial class MenuAll
             CurrentStepAction = Step_MultiplayerModeSelection;
         }
 
-        AnimationPlayer.Play(Data.MultiplayerModeSelection);
+        AnimationPlayer.Play(Anims.MultiplayerModeSelection);
     }
 
     private void Step_MultiplayerModeSelection()
@@ -222,11 +222,11 @@ public partial class MenuAll
         if (JoyPad.IsButtonJustPressed(GbaInput.Up) || JoyPad.IsButtonJustPressed(GbaInput.Down))
         {
             SelectOption(SelectedOption == 0 ? 1 : 0, true);
-            Data.MultiplayerModeSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + SelectedOption;
+            Anims.MultiplayerModeSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + SelectedOption;
         }
         else if (JoyPad.IsButtonJustPressed(GbaInput.B))
         {
-            NextStepAction = Step_InitializeTransitionToSelectGameMode;
+            NextStepAction = Step_InitializeTransitionToGameMode;
             CurrentStepAction = Step_TransitionOutOfMultiplayerModeSelection;
 
             TransitionOutCursorAndStem();
@@ -234,7 +234,7 @@ public partial class MenuAll
         }
         else if (JoyPad.IsButtonJustPressed(GbaInput.A))
         {
-            Data.Cursor.CurrentAnimation = 16;
+            Anims.Cursor.CurrentAnimation = 16;
 
             NextStepAction = SelectedOption switch
             {
@@ -249,7 +249,7 @@ public partial class MenuAll
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
         }
 
-        AnimationPlayer.Play(Data.MultiplayerModeSelection);
+        AnimationPlayer.Play(Anims.MultiplayerModeSelection);
     }
 
     private void Step_TransitionOutOfMultiplayerModeSelection()
@@ -266,7 +266,7 @@ public partial class MenuAll
             CurrentStepAction = NextStepAction;
         }
 
-        AnimationPlayer.Play(Data.MultiplayerModeSelection);
+        AnimationPlayer.Play(Anims.MultiplayerModeSelection);
     }
 
     #endregion
@@ -275,11 +275,11 @@ public partial class MenuAll
 
     private void Step_InitializeTransitionToMultiplayerConnectionSelection()
     {
-        Data.MultiplayerConnectionSelection.CurrentAnimation = Localization.LanguageUiIndex * 2;
+        Anims.MultiplayerConnectionSelection.CurrentAnimation = Localization.LanguageUiIndex * 2;
 
         // Center sprites if English
         if (Localization.LanguageId == 0)
-            Data.MultiplayerConnectionSelection.ScreenPos = Data.MultiplayerConnectionSelection.ScreenPos with { X = 58 };
+            Anims.MultiplayerConnectionSelection.ScreenPos = Anims.MultiplayerConnectionSelection.ScreenPos with { X = 58 };
 
         CurrentStepAction = Step_TransitionToMultiplayerConnectionSelection;
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
@@ -303,7 +303,7 @@ public partial class MenuAll
             CurrentStepAction = Step_MultiplayerConnectionSelection;
         }
 
-        AnimationPlayer.Play(Data.MultiplayerConnectionSelection);
+        AnimationPlayer.Play(Anims.MultiplayerConnectionSelection);
     }
 
     private void Step_MultiplayerConnectionSelection()
@@ -311,11 +311,11 @@ public partial class MenuAll
         if (JoyPad.IsButtonJustPressed(GbaInput.Up) || JoyPad.IsButtonJustPressed(GbaInput.Down))
         {
             SelectOption(SelectedOption == 0 ? 2 : 0, true);
-            Data.MultiplayerConnectionSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + SelectedOption / 2;
+            Anims.MultiplayerConnectionSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + SelectedOption / 2;
         }
         else if (JoyPad.IsButtonJustPressed(GbaInput.B))
         {
-            NextStepAction = Step_InitializeTransitionToSelectGameMode;
+            NextStepAction = Step_InitializeTransitionToGameMode;
             CurrentStepAction = Step_TransitionOutOfMultiplayerConnectionSelection;
 
             TransitionOutCursorAndStem();
@@ -323,7 +323,7 @@ public partial class MenuAll
         }
         else if (JoyPad.IsButtonJustPressed(GbaInput.A))
         {
-            Data.Cursor.CurrentAnimation = 16;
+            Anims.Cursor.CurrentAnimation = 16;
 
             NextStepAction = SelectedOption switch
             {
@@ -338,7 +338,7 @@ public partial class MenuAll
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
         }
 
-        AnimationPlayer.Play(Data.MultiplayerConnectionSelection);
+        AnimationPlayer.Play(Anims.MultiplayerConnectionSelection);
     }
 
     private void Step_TransitionOutOfMultiplayerConnectionSelection()
@@ -355,7 +355,7 @@ public partial class MenuAll
             CurrentStepAction = NextStepAction;
         }
 
-        AnimationPlayer.Play(Data.MultiplayerConnectionSelection);
+        AnimationPlayer.Play(Anims.MultiplayerConnectionSelection);
     }
 
     #endregion
@@ -364,8 +364,8 @@ public partial class MenuAll
 
     private void Step_InitializeTransitionToMultiplayerJoinGame()
     {
-        Data.ArrowLeft.CurrentAnimation = 1;
-        Data.ArrowRight.CurrentAnimation = 0;
+        Anims.ArrowLeft.CurrentAnimation = 1;
+        Anims.ArrowRight.CurrentAnimation = 0;
 
         CurrentStepAction = Step_TransitionToMultiplayerJoinGame;
 
@@ -381,7 +381,7 @@ public partial class MenuAll
         HostsCount = 0;
         FinishedSearchingForHosts = false;
         
-        NGageSetText(27, false, null, 0); // Looking for potential hosts
+        NGageSetMenuText(27, false, null, 0); // Looking for potential hosts
     }
 
     private void Step_TransitionToMultiplayerJoinGame()
@@ -396,7 +396,7 @@ public partial class MenuAll
             TransitionValue = 0;
             CurrentStepAction = Step_MultiplayerJoinGame;
 
-            foreach (SpriteTextObject textObj in Data.Texts)
+            foreach (SpriteTextObject textObj in Anims.Texts)
                 textObj.BgPriority = 0;
         }
 
@@ -439,7 +439,7 @@ public partial class MenuAll
                 NextStepAction = Step_InitializeTransitionToMultiplayerJoinedGamePlayerSelection;
                 CurrentStepAction = Step_TransitionOutOfMultiplayerJoinGame;
 
-                foreach (SpriteTextObject textObj in Data.Texts)
+                foreach (SpriteTextObject textObj in Anims.Texts)
                     textObj.BgPriority = 3;
 
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
@@ -455,7 +455,7 @@ public partial class MenuAll
             NextStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;
             CurrentStepAction = Step_TransitionOutOfMultiplayerJoinGame;
 
-            foreach (SpriteTextObject textObj in Data.Texts)
+            foreach (SpriteTextObject textObj in Anims.Texts)
                 textObj.BgPriority = 3;
 
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
@@ -466,7 +466,7 @@ public partial class MenuAll
         {
             if (hostsCount == 0)
             {
-                NGageSetText(30, false, null, 0); // No host found
+                NGageSetMenuText(30, false, null, 0); // No host found
             }
             else
             {
@@ -474,17 +474,17 @@ public partial class MenuAll
                 int textId = finishedSearchingForHosts 
                     ? 29  // %i host(s) found Select a host %s
                     : 28; // Looking for potential hosts %i host(s) found Select a host %s
-                NGageSetText(textId, false, null, 80, hostsCount, selectedHostName);
+                NGageSetMenuText(textId, false, null, 80, hostsCount, selectedHostName);
                 HostsCount = hostsCount;
                 FinishedSearchingForHosts = finishedSearchingForHosts;
             }
         }
 
         // This shouldn't be here - leftover?
-        Data.MultiplayerPlayerSelection.ScreenPos = Data.MultiplayerPlayerSelection.ScreenPos with { Y = 60 - MultiplayerPlayersOffsetY };
-        Data.MultiplayerPlayerNumberIcons.ScreenPos = Data.MultiplayerPlayerNumberIcons.ScreenPos with { Y = 42 - MultiplayerPlayersOffsetY };
-        Data.MultiplayerPlayerSelectionHighlight.ScreenPos = Data.MultiplayerPlayerSelectionHighlight.ScreenPos with { Y = 46 - MultiplayerPlayersOffsetY };
-        foreach (AnimatedObject obj in Data.MultiplayerPlayerSelectionIcons)
+        Anims.MultiplayerPlayerSelection.ScreenPos = Anims.MultiplayerPlayerSelection.ScreenPos with { Y = 60 - MultiplayerPlayersOffsetY };
+        Anims.MultiplayerPlayerNumberIcons.ScreenPos = Anims.MultiplayerPlayerNumberIcons.ScreenPos with { Y = 42 - MultiplayerPlayersOffsetY };
+        Anims.MultiplayerPlayerSelectionHighlight.ScreenPos = Anims.MultiplayerPlayerSelectionHighlight.ScreenPos with { Y = 46 - MultiplayerPlayersOffsetY };
+        foreach (AnimatedObject obj in Anims.MultiplayerPlayerSelectionIcons)
             obj.ScreenPos = obj.ScreenPos with { Y = 69 - MultiplayerPlayersOffsetY };
 
         int stringsCount;
@@ -496,17 +496,17 @@ public partial class MenuAll
         float arrowYPos = 58 + (96 + stringsCount * -16) / 2f + (stringsCount - 1) * 16;
 
         if (SelectedHost < 1)
-            Data.ArrowLeft.ScreenPos = Data.ArrowLeft.ScreenPos with { X = 300 };
+            Anims.ArrowLeft.ScreenPos = Anims.ArrowLeft.ScreenPos with { X = 300 };
         else
-            Data.ArrowLeft.ScreenPos = new Vector2(68, arrowYPos);
+            Anims.ArrowLeft.ScreenPos = new Vector2(68, arrowYPos);
 
         if (SelectedHost >= hostsCount - 1)
-            Data.ArrowRight.ScreenPos = Data.ArrowRight.ScreenPos with { X = 300 };
+            Anims.ArrowRight.ScreenPos = Anims.ArrowRight.ScreenPos with { X = 300 };
         else
-            Data.ArrowRight.ScreenPos = new Vector2(152, arrowYPos);
+            Anims.ArrowRight.ScreenPos = new Vector2(152, arrowYPos);
 
-        AnimationPlayer.Play(Data.ArrowLeft);
-        AnimationPlayer.Play(Data.ArrowRight);
+        AnimationPlayer.Play(Anims.ArrowLeft);
+        AnimationPlayer.Play(Anims.ArrowRight);
 
         DrawText(true);
     }
@@ -536,7 +536,7 @@ public partial class MenuAll
     {
         AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerPlayersAnimations);
 
-        Data.MultiplayerPlayerSelection = new AnimatedObject(resource, false)
+        Anims.MultiplayerPlayerSelection = new AnimatedObject(resource, false)
         {
             IsFramed = true,
             BgPriority = 1,
@@ -546,7 +546,7 @@ public partial class MenuAll
             RenderContext = Playfield.RenderContext,
         };
 
-        Data.MultiplayerPlayerNumberIcons = new AnimatedObject(resource, false)
+        Anims.MultiplayerPlayerNumberIcons = new AnimatedObject(resource, false)
         {
             IsFramed = true,
             BgPriority = 1,
@@ -556,10 +556,10 @@ public partial class MenuAll
             RenderContext = Playfield.RenderContext,
         };
 
-        Data.MultiplayerPlayerSelectionIcons = new AnimatedObject[4];
-        for (int i = 0; i < Data.MultiplayerPlayerSelectionIcons.Length; i++)
+        Anims.MultiplayerPlayerSelectionIcons = new AnimatedObject[4];
+        for (int i = 0; i < Anims.MultiplayerPlayerSelectionIcons.Length; i++)
         {
-            Data.MultiplayerPlayerSelectionIcons[i] = new AnimatedObject(resource, false)
+            Anims.MultiplayerPlayerSelectionIcons[i] = new AnimatedObject(resource, false)
             {
                 IsFramed = true,
                 BgPriority = 1,
@@ -570,7 +570,7 @@ public partial class MenuAll
             };
         }
 
-        Data.MultiplayerPlayerSelectionHighlight = new AnimatedObject(resource, false)
+        Anims.MultiplayerPlayerSelectionHighlight = new AnimatedObject(resource, false)
         {
             IsFramed = true,
             BgPriority = 1,
@@ -583,17 +583,17 @@ public partial class MenuAll
         if (InitialPage == Page.Multiplayer)
         {
             for (int i = 0; i < 5; i++)
-                Data.Texts[i].Text = "";
+                Anims.Texts[i].Text = "";
 
             CurrentStepAction = Step_MultiplayerPlayerSelection;
-            InitialPage = Page.SelectLanguage;
+            InitialPage = Page.Language;
             MultiplayerConnectionTimer = 30;
             LastConnectionTime = GameTime.ElapsedFrames;
             ReturningFromMultiplayerGame = true;
         }
         else
         {
-            SetText(0, false);
+            SetMenuText(0, false);
             CurrentStepAction = Step_TransitionToMultiplayerPlayerSelection;
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
             ReturningFromMultiplayerGame = false;
@@ -626,15 +626,15 @@ public partial class MenuAll
             if (RSMultiplayer.PlayersCount > 1)
             {
                 if (RSMultiplayer.IsMaster)
-                    SetText(2, true); // Press START
+                    SetMenuText(2, true); // Press START
                 else
-                    SetText(3, false); // Please Wait...
+                    SetMenuText(3, false); // Please Wait...
 
-                Data.MultiplayerPlayerNumberIcons.CurrentAnimation = 3 + RSMultiplayer.PlayersCount;
+                Anims.MultiplayerPlayerNumberIcons.CurrentAnimation = 3 + RSMultiplayer.PlayersCount;
 
-                Data.MultiplayerPlayerSelectionHighlight.ScreenPos = Data.MultiplayerPlayerSelectionHighlight.ScreenPos with { X = 104 + RSMultiplayer.MachineId * 24 };
+                Anims.MultiplayerPlayerSelectionHighlight.ScreenPos = Anims.MultiplayerPlayerSelectionHighlight.ScreenPos with { X = 104 + RSMultiplayer.MachineId * 24 };
 
-                Data.MultiplayerPlayerSelection.CurrentAnimation = RSMultiplayer.MachineId;
+                Anims.MultiplayerPlayerSelection.CurrentAnimation = RSMultiplayer.MachineId;
             }
             
             MultiplayerPlayersOffsetY -= 4;
@@ -657,21 +657,21 @@ public partial class MenuAll
             IsMultiplayerConnected = null;
         }
 
-        Data.MultiplayerPlayerSelection.ScreenPos = Data.MultiplayerPlayerSelection.ScreenPos with { Y = 40 - MultiplayerPlayersOffsetY };
-        Data.MultiplayerPlayerNumberIcons.ScreenPos = Data.MultiplayerPlayerNumberIcons.ScreenPos with { Y = 22 - MultiplayerPlayersOffsetY };
-        Data.MultiplayerPlayerSelectionHighlight.ScreenPos = Data.MultiplayerPlayerSelectionHighlight.ScreenPos with { Y = 26 - MultiplayerPlayersOffsetY };
+        Anims.MultiplayerPlayerSelection.ScreenPos = Anims.MultiplayerPlayerSelection.ScreenPos with { Y = 40 - MultiplayerPlayersOffsetY };
+        Anims.MultiplayerPlayerNumberIcons.ScreenPos = Anims.MultiplayerPlayerNumberIcons.ScreenPos with { Y = 22 - MultiplayerPlayersOffsetY };
+        Anims.MultiplayerPlayerSelectionHighlight.ScreenPos = Anims.MultiplayerPlayerSelectionHighlight.ScreenPos with { Y = 26 - MultiplayerPlayersOffsetY };
 
-        foreach (AnimatedObject obj in Data.MultiplayerPlayerSelectionIcons)
+        foreach (AnimatedObject obj in Anims.MultiplayerPlayerSelectionIcons)
             obj.ScreenPos = obj.ScreenPos with { Y = 49 - MultiplayerPlayersOffsetY };
 
         DrawText(false);
-        AnimationPlayer.Play(Data.MultiplayerPlayerSelection);
-        AnimationPlayer.Play(Data.MultiplayerPlayerNumberIcons);
+        AnimationPlayer.Play(Anims.MultiplayerPlayerSelection);
+        AnimationPlayer.Play(Anims.MultiplayerPlayerNumberIcons);
 
         for (int i = 0; i < RSMultiplayer.PlayersCount; i++)
-            AnimationPlayer.Play(Data.MultiplayerPlayerSelectionIcons[i]);
+            AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionIcons[i]);
 
-        AnimationPlayer.Play(Data.MultiplayerPlayerSelectionHighlight);
+        AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionHighlight);
     }
 
     private void Step_MultiplayerPlayerSelection()
@@ -688,7 +688,7 @@ public partial class MenuAll
                 if (MultiplayerConnectionTimer == 20)
                 {
                     if (PreviousTextId != 1)
-                        SetText(0, false);
+                        SetMenuText(0, false);
 
                     PreviousTextId = 1;
                     MultiplayerConnectionTimer++;
@@ -710,7 +710,7 @@ public partial class MenuAll
                 if (MultiplayerConnectionTimer == 10)
                 {
                     if (PreviousTextId != 1)
-                        SetText(0, false);
+                        SetMenuText(0, false);
 
                     PreviousTextId = 1;
                     MultiplayerConnectionTimer++;
@@ -760,23 +760,23 @@ public partial class MenuAll
                     if (RSMultiplayer.IsMaster)
                     {
                         if (PreviousTextId != 2)
-                            SetText(2, true); // Press START
+                            SetMenuText(2, true); // Press START
 
                         PreviousTextId = 2;
                     }
                     else
                     {
                         if (PreviousTextId != 3)
-                            SetText(3, false); // Please Wait...
+                            SetMenuText(3, false); // Please Wait...
 
                         PreviousTextId = 3;
                     }
 
-                    Data.MultiplayerPlayerNumberIcons.CurrentAnimation = 3 + RSMultiplayer.PlayersCount;
+                    Anims.MultiplayerPlayerNumberIcons.CurrentAnimation = 3 + RSMultiplayer.PlayersCount;
 
-                    Data.MultiplayerPlayerSelectionHighlight.ScreenPos = Data.MultiplayerPlayerSelectionHighlight.ScreenPos with { X = 104 + RSMultiplayer.MachineId * 24 };
+                    Anims.MultiplayerPlayerSelectionHighlight.ScreenPos = Anims.MultiplayerPlayerSelectionHighlight.ScreenPos with { X = 104 + RSMultiplayer.MachineId * 24 };
 
-                    Data.MultiplayerPlayerSelection.CurrentAnimation = RSMultiplayer.MachineId;
+                    Anims.MultiplayerPlayerSelection.CurrentAnimation = RSMultiplayer.MachineId;
 
                     MultiplayerPlayersOffsetY -= 4;
 
@@ -827,7 +827,7 @@ public partial class MenuAll
 
                     RSMultiplayer.SendPacket([packet]);
                     MultiplayerInfo.InitialGameTime = trimmedGameTime;
-                    MultiplayerManager.UpdateFromRSMultiplayer();
+                    MultiplayerManager.CacheData();
 
                     NextStepAction = Step_InitializeTransitionToMultiplayerTypeSelection;
                     CurrentStepAction = Step_TransitionOutOfMultiplayerPlayerSelection;
@@ -889,21 +889,21 @@ public partial class MenuAll
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
         }
 
-        Data.MultiplayerPlayerSelection.ScreenPos = Data.MultiplayerPlayerSelection.ScreenPos with { Y = 40 - MultiplayerPlayersOffsetY };
-        Data.MultiplayerPlayerNumberIcons.ScreenPos = Data.MultiplayerPlayerNumberIcons.ScreenPos with { Y = 22 - MultiplayerPlayersOffsetY };
-        Data.MultiplayerPlayerSelectionHighlight.ScreenPos = Data.MultiplayerPlayerSelectionHighlight.ScreenPos with { Y = 26 - MultiplayerPlayersOffsetY };
+        Anims.MultiplayerPlayerSelection.ScreenPos = Anims.MultiplayerPlayerSelection.ScreenPos with { Y = 40 - MultiplayerPlayersOffsetY };
+        Anims.MultiplayerPlayerNumberIcons.ScreenPos = Anims.MultiplayerPlayerNumberIcons.ScreenPos with { Y = 22 - MultiplayerPlayersOffsetY };
+        Anims.MultiplayerPlayerSelectionHighlight.ScreenPos = Anims.MultiplayerPlayerSelectionHighlight.ScreenPos with { Y = 26 - MultiplayerPlayersOffsetY };
 
-        foreach (AnimatedObject obj in Data.MultiplayerPlayerSelectionIcons)
+        foreach (AnimatedObject obj in Anims.MultiplayerPlayerSelectionIcons)
             obj.ScreenPos = obj.ScreenPos with { Y = 49 - MultiplayerPlayersOffsetY };
 
         DrawText(false);
-        AnimationPlayer.Play(Data.MultiplayerPlayerSelection);
-        AnimationPlayer.Play(Data.MultiplayerPlayerNumberIcons);
+        AnimationPlayer.Play(Anims.MultiplayerPlayerSelection);
+        AnimationPlayer.Play(Anims.MultiplayerPlayerNumberIcons);
 
         for (int i = 0; i < RSMultiplayer.PlayersCount; i++)
-            AnimationPlayer.Play(Data.MultiplayerPlayerSelectionIcons[i]);
+            AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionIcons[i]);
 
-        AnimationPlayer.Play(Data.MultiplayerPlayerSelectionHighlight);
+        AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionHighlight);
     }
 
     private void Step_TransitionOutOfMultiplayerPlayerSelection()
@@ -925,17 +925,17 @@ public partial class MenuAll
         else
             MultiplayerPlayersOffsetY = 70;
 
-        Data.MultiplayerPlayerSelection.ScreenPos = Data.MultiplayerPlayerSelection.ScreenPos with { Y = 40 - MultiplayerPlayersOffsetY };
-        Data.MultiplayerPlayerNumberIcons.ScreenPos = Data.MultiplayerPlayerNumberIcons.ScreenPos with { Y = 22 - MultiplayerPlayersOffsetY };
+        Anims.MultiplayerPlayerSelection.ScreenPos = Anims.MultiplayerPlayerSelection.ScreenPos with { Y = 40 - MultiplayerPlayersOffsetY };
+        Anims.MultiplayerPlayerNumberIcons.ScreenPos = Anims.MultiplayerPlayerNumberIcons.ScreenPos with { Y = 22 - MultiplayerPlayersOffsetY };
 
-        foreach (AnimatedObject obj in Data.MultiplayerPlayerSelectionIcons)
+        foreach (AnimatedObject obj in Anims.MultiplayerPlayerSelectionIcons)
             obj.ScreenPos = obj.ScreenPos with { Y = 49 - MultiplayerPlayersOffsetY };
 
-        AnimationPlayer.Play(Data.MultiplayerPlayerSelection);
-        AnimationPlayer.Play(Data.MultiplayerPlayerNumberIcons);
+        AnimationPlayer.Play(Anims.MultiplayerPlayerSelection);
+        AnimationPlayer.Play(Anims.MultiplayerPlayerNumberIcons);
 
         for (int i = 0; i < RSMultiplayer.PlayersCount; i++)
-            AnimationPlayer.Play(Data.MultiplayerPlayerSelectionIcons[i]);
+            AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionIcons[i]);
     }
 
     #endregion
@@ -948,7 +948,7 @@ public partial class MenuAll
 
         AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerPlayersAnimations);
 
-        Data.MultiplayerPlayerSelection = new AnimatedObject(resource, false)
+        Anims.MultiplayerPlayerSelection = new AnimatedObject(resource, false)
         {
             IsFramed = true,
             BgPriority = 1,
@@ -958,7 +958,7 @@ public partial class MenuAll
             RenderContext = Playfield.RenderContext,
         };
 
-        Data.MultiplayerPlayerNumberIcons = new AnimatedObject(resource, false)
+        Anims.MultiplayerPlayerNumberIcons = new AnimatedObject(resource, false)
         {
             IsFramed = true,
             BgPriority = 1,
@@ -968,10 +968,10 @@ public partial class MenuAll
             RenderContext = Playfield.RenderContext,
         };
 
-        Data.MultiplayerPlayerSelectionIcons = new AnimatedObject[4];
-        for (int i = 0; i < Data.MultiplayerPlayerSelectionIcons.Length; i++)
+        Anims.MultiplayerPlayerSelectionIcons = new AnimatedObject[4];
+        for (int i = 0; i < Anims.MultiplayerPlayerSelectionIcons.Length; i++)
         {
-            Data.MultiplayerPlayerSelectionIcons[i] = new AnimatedObject(resource, false)
+            Anims.MultiplayerPlayerSelectionIcons[i] = new AnimatedObject(resource, false)
             {
                 IsFramed = true,
                 BgPriority = 1,
@@ -982,7 +982,7 @@ public partial class MenuAll
             };
         }
 
-        Data.MultiplayerPlayerSelectionHighlight = new AnimatedObject(resource, false)
+        Anims.MultiplayerPlayerSelectionHighlight = new AnimatedObject(resource, false)
         {
             IsFramed = true,
             BgPriority = 1,
@@ -992,7 +992,7 @@ public partial class MenuAll
             RenderContext = Playfield.RenderContext,
         };
 
-        NGageSetText(25, false, 36, 256, hostName); // Please wait for connections on %s
+        NGageSetMenuText(25, false, 36, 256, hostName); // Please wait for connections on %s
         CurrentStepAction = Step_TransitionToMultiplayerHostedGamePlayerSelection;
 
         // NOTE: The game sets some global value here
@@ -1028,11 +1028,11 @@ public partial class MenuAll
 
         if (playerConnectionStates[0] == 4)
         {
-            Data.MultiplayerPlayerNumberIcons.CurrentAnimation = 3 + RSMultiplayer.PlayersCount;
+            Anims.MultiplayerPlayerNumberIcons.CurrentAnimation = 3 + RSMultiplayer.PlayersCount;
 
-            Data.MultiplayerPlayerSelectionHighlight.ScreenPos = Data.MultiplayerPlayerSelectionHighlight.ScreenPos with { X = 72 + RSMultiplayer.MachineId * 24 };
+            Anims.MultiplayerPlayerSelectionHighlight.ScreenPos = Anims.MultiplayerPlayerSelectionHighlight.ScreenPos with { X = 72 + RSMultiplayer.MachineId * 24 };
 
-            Data.MultiplayerPlayerSelection.CurrentAnimation = RSMultiplayer.MachineId;
+            Anims.MultiplayerPlayerSelection.CurrentAnimation = RSMultiplayer.MachineId;
         }
 
         MultiplayerPlayersOffsetY -= 4;
@@ -1040,17 +1040,17 @@ public partial class MenuAll
         if (MultiplayerPlayersOffsetY < 0)
             MultiplayerPlayersOffsetY = 0;
 
-        Data.MultiplayerPlayerSelection.ScreenPos = Data.MultiplayerPlayerSelection.ScreenPos with { Y = 60 - MultiplayerPlayersOffsetY };
-        Data.MultiplayerPlayerNumberIcons.ScreenPos = Data.MultiplayerPlayerNumberIcons.ScreenPos with { Y = 42 - MultiplayerPlayersOffsetY };
-        Data.MultiplayerPlayerSelectionHighlight.ScreenPos = Data.MultiplayerPlayerSelectionHighlight.ScreenPos with { Y = 46 - MultiplayerPlayersOffsetY };
+        Anims.MultiplayerPlayerSelection.ScreenPos = Anims.MultiplayerPlayerSelection.ScreenPos with { Y = 60 - MultiplayerPlayersOffsetY };
+        Anims.MultiplayerPlayerNumberIcons.ScreenPos = Anims.MultiplayerPlayerNumberIcons.ScreenPos with { Y = 42 - MultiplayerPlayersOffsetY };
+        Anims.MultiplayerPlayerSelectionHighlight.ScreenPos = Anims.MultiplayerPlayerSelectionHighlight.ScreenPos with { Y = 46 - MultiplayerPlayersOffsetY };
 
-        foreach (AnimatedObject obj in Data.MultiplayerPlayerSelectionIcons)
+        foreach (AnimatedObject obj in Anims.MultiplayerPlayerSelectionIcons)
             obj.ScreenPos = obj.ScreenPos with { Y = 69 - MultiplayerPlayersOffsetY };
 
         DrawText(false);
 
-        AnimationPlayer.Play(Data.MultiplayerPlayerSelection);
-        AnimationPlayer.Play(Data.MultiplayerPlayerNumberIcons);
+        AnimationPlayer.Play(Anims.MultiplayerPlayerSelection);
+        AnimationPlayer.Play(Anims.MultiplayerPlayerNumberIcons);
 
         for (int id = 0; id < RSMultiplayer.PlayersCount; id++)
         {
@@ -1058,22 +1058,22 @@ public partial class MenuAll
             {
                 case 1:
                     if ((GameTime.ElapsedFrames & 8) != 0)
-                        AnimationPlayer.Play(Data.MultiplayerPlayerSelectionIcons[id]);
+                        AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionIcons[id]);
                     break;
 
                 case 2:
                     if ((GameTime.ElapsedFrames & 4) != 0)
-                        AnimationPlayer.Play(Data.MultiplayerPlayerSelectionIcons[id]);
+                        AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionIcons[id]);
                     break;
 
                 case 3:
                 case 4:
-                    AnimationPlayer.Play(Data.MultiplayerPlayerSelectionIcons[id]);
+                    AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionIcons[id]);
                     break;
             }
         }
 
-        AnimationPlayer.Play(Data.MultiplayerPlayerSelectionHighlight);
+        AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionHighlight);
     }
 
     private void Step_MultiplayerHostedGamePlayerSelection()
@@ -1083,11 +1083,11 @@ public partial class MenuAll
 
         if (playerConnectionStates[0] == 4)
         {
-            Data.MultiplayerPlayerNumberIcons.CurrentAnimation = 3 + RSMultiplayer.PlayersCount;
+            Anims.MultiplayerPlayerNumberIcons.CurrentAnimation = 3 + RSMultiplayer.PlayersCount;
 
-            Data.MultiplayerPlayerSelectionHighlight.ScreenPos = Data.MultiplayerPlayerSelectionHighlight.ScreenPos with { X = 72 + RSMultiplayer.MachineId * 24 };
+            Anims.MultiplayerPlayerSelectionHighlight.ScreenPos = Anims.MultiplayerPlayerSelectionHighlight.ScreenPos with { X = 72 + RSMultiplayer.MachineId * 24 };
 
-            Data.MultiplayerPlayerSelection.CurrentAnimation = RSMultiplayer.MachineId;
+            Anims.MultiplayerPlayerSelection.CurrentAnimation = RSMultiplayer.MachineId;
         }
 
         MultiplayerPlayersOffsetY -= 4;
@@ -1100,7 +1100,7 @@ public partial class MenuAll
             // NOTE: Hard-code conditions for now
             if (false)
             {
-                NGageSetText(26, false, 36, 100, hostName); // Press 5 when ready. Host name : %s
+                NGageSetMenuText(26, false, 36, 100, hostName); // Press 5 when ready. Host name : %s
 
                 if (JoyPad.IsButtonJustPressed(GbaInput.A))
                 {
@@ -1109,7 +1109,7 @@ public partial class MenuAll
             }
             else if (false)
             {
-                NGageSetText(4, false, 36, 0); // Please Wait...
+                NGageSetMenuText(4, false, 36, 0); // Please Wait...
             }
             else if (true)
             {
@@ -1121,7 +1121,7 @@ public partial class MenuAll
                 // NOTE: The game sends the packet
 
                 MultiplayerInfo.InitialGameTime = trimmedGameTime;
-                MultiplayerManager.UpdateFromRSMultiplayer();
+                MultiplayerManager.CacheData();
 
                 NextStepAction = Step_InitializeTransitionToMultiplayerTypeSelection;
                 CurrentStepAction = Step_TransitionOutOfMultiplayerHostedGamePlayerSelection;
@@ -1148,17 +1148,17 @@ public partial class MenuAll
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
         }
 
-        Data.MultiplayerPlayerSelection.ScreenPos = Data.MultiplayerPlayerSelection.ScreenPos with { Y = 60 - MultiplayerPlayersOffsetY };
-        Data.MultiplayerPlayerNumberIcons.ScreenPos = Data.MultiplayerPlayerNumberIcons.ScreenPos with { Y = 42 - MultiplayerPlayersOffsetY };
-        Data.MultiplayerPlayerSelectionHighlight.ScreenPos = Data.MultiplayerPlayerSelectionHighlight.ScreenPos with { Y = 46 - MultiplayerPlayersOffsetY };
+        Anims.MultiplayerPlayerSelection.ScreenPos = Anims.MultiplayerPlayerSelection.ScreenPos with { Y = 60 - MultiplayerPlayersOffsetY };
+        Anims.MultiplayerPlayerNumberIcons.ScreenPos = Anims.MultiplayerPlayerNumberIcons.ScreenPos with { Y = 42 - MultiplayerPlayersOffsetY };
+        Anims.MultiplayerPlayerSelectionHighlight.ScreenPos = Anims.MultiplayerPlayerSelectionHighlight.ScreenPos with { Y = 46 - MultiplayerPlayersOffsetY };
 
-        foreach (AnimatedObject obj in Data.MultiplayerPlayerSelectionIcons)
+        foreach (AnimatedObject obj in Anims.MultiplayerPlayerSelectionIcons)
             obj.ScreenPos = obj.ScreenPos with { Y = 69 - MultiplayerPlayersOffsetY };
 
         DrawText(true);
 
-        AnimationPlayer.Play(Data.MultiplayerPlayerSelection);
-        AnimationPlayer.Play(Data.MultiplayerPlayerNumberIcons);
+        AnimationPlayer.Play(Anims.MultiplayerPlayerSelection);
+        AnimationPlayer.Play(Anims.MultiplayerPlayerNumberIcons);
 
         for (int id = 0; id < RSMultiplayer.PlayersCount; id++)
         {
@@ -1166,22 +1166,22 @@ public partial class MenuAll
             {
                 case 1:
                     if ((GameTime.ElapsedFrames & 8) != 0)
-                        AnimationPlayer.Play(Data.MultiplayerPlayerSelectionIcons[id]);
+                        AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionIcons[id]);
                     break;
 
                 case 2:
                     if ((GameTime.ElapsedFrames & 4) != 0)
-                        AnimationPlayer.Play(Data.MultiplayerPlayerSelectionIcons[id]);
+                        AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionIcons[id]);
                     break;
 
                 case 3:
                 case 4:
-                    AnimationPlayer.Play(Data.MultiplayerPlayerSelectionIcons[id]);
+                    AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionIcons[id]);
                     break;
             }
         }
 
-        AnimationPlayer.Play(Data.MultiplayerPlayerSelectionHighlight);
+        AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionHighlight);
     }
 
     private void Step_TransitionOutOfMultiplayerHostedGamePlayerSelection()
@@ -1205,14 +1205,14 @@ public partial class MenuAll
         else
             MultiplayerPlayersOffsetY = 100;
 
-        Data.MultiplayerPlayerSelection.ScreenPos = Data.MultiplayerPlayerSelection.ScreenPos with { Y = 60 - MultiplayerPlayersOffsetY };
-        Data.MultiplayerPlayerNumberIcons.ScreenPos = Data.MultiplayerPlayerNumberIcons.ScreenPos with { Y = 42 - MultiplayerPlayersOffsetY };
+        Anims.MultiplayerPlayerSelection.ScreenPos = Anims.MultiplayerPlayerSelection.ScreenPos with { Y = 60 - MultiplayerPlayersOffsetY };
+        Anims.MultiplayerPlayerNumberIcons.ScreenPos = Anims.MultiplayerPlayerNumberIcons.ScreenPos with { Y = 42 - MultiplayerPlayersOffsetY };
 
-        foreach (AnimatedObject obj in Data.MultiplayerPlayerSelectionIcons)
+        foreach (AnimatedObject obj in Anims.MultiplayerPlayerSelectionIcons)
             obj.ScreenPos = obj.ScreenPos with { Y = 69 - MultiplayerPlayersOffsetY };
 
-        AnimationPlayer.Play(Data.MultiplayerPlayerSelection);
-        AnimationPlayer.Play(Data.MultiplayerPlayerNumberIcons);
+        AnimationPlayer.Play(Anims.MultiplayerPlayerSelection);
+        AnimationPlayer.Play(Anims.MultiplayerPlayerNumberIcons);
 
         for (int id = 0; id < RSMultiplayer.PlayersCount; id++)
         {
@@ -1220,17 +1220,17 @@ public partial class MenuAll
             {
                 case 1:
                     if ((GameTime.ElapsedFrames & 8) != 0)
-                        AnimationPlayer.Play(Data.MultiplayerPlayerSelectionIcons[id]);
+                        AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionIcons[id]);
                     break;
 
                 case 2:
                     if ((GameTime.ElapsedFrames & 4) != 0)
-                        AnimationPlayer.Play(Data.MultiplayerPlayerSelectionIcons[id]);
+                        AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionIcons[id]);
                     break;
 
                 case 3:
                 case 4:
-                    AnimationPlayer.Play(Data.MultiplayerPlayerSelectionIcons[id]);
+                    AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionIcons[id]);
                     break;
             }
         }
@@ -1244,7 +1244,7 @@ public partial class MenuAll
     {
         AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerPlayersAnimations);
 
-        Data.MultiplayerPlayerSelection = new AnimatedObject(resource, false)
+        Anims.MultiplayerPlayerSelection = new AnimatedObject(resource, false)
         {
             IsFramed = true,
             BgPriority = 1,
@@ -1254,7 +1254,7 @@ public partial class MenuAll
             RenderContext = Playfield.RenderContext,
         };
 
-        Data.MultiplayerPlayerNumberIcons = new AnimatedObject(resource, false)
+        Anims.MultiplayerPlayerNumberIcons = new AnimatedObject(resource, false)
         {
             IsFramed = true,
             BgPriority = 1,
@@ -1264,10 +1264,10 @@ public partial class MenuAll
             RenderContext = Playfield.RenderContext,
         };
 
-        Data.MultiplayerPlayerSelectionIcons = new AnimatedObject[4];
-        for (int i = 0; i < Data.MultiplayerPlayerSelectionIcons.Length; i++)
+        Anims.MultiplayerPlayerSelectionIcons = new AnimatedObject[4];
+        for (int i = 0; i < Anims.MultiplayerPlayerSelectionIcons.Length; i++)
         {
-            Data.MultiplayerPlayerSelectionIcons[i] = new AnimatedObject(resource, false)
+            Anims.MultiplayerPlayerSelectionIcons[i] = new AnimatedObject(resource, false)
             {
                 IsFramed = true,
                 BgPriority = 1,
@@ -1278,7 +1278,7 @@ public partial class MenuAll
             };
         }
 
-        Data.MultiplayerPlayerSelectionHighlight = new AnimatedObject(resource, false)
+        Anims.MultiplayerPlayerSelectionHighlight = new AnimatedObject(resource, false)
         {
             IsFramed = true,
             BgPriority = 1,
@@ -1288,7 +1288,7 @@ public partial class MenuAll
             RenderContext = Playfield.RenderContext,
         };
 
-        NGageSetText(31, false, null, 0); // Connecting
+        NGageSetMenuText(31, false, null, 0); // Connecting
         CurrentStepAction = Step_TransitionToMultiplayerJoinedGamePlayerSelection;
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
         SetBackgroundPalette(2);
@@ -1318,33 +1318,33 @@ public partial class MenuAll
 
         if (playerConnectionStates[0] == 4)
         {
-            NGageSetText(33, false, null, 0); // Please wait
+            NGageSetMenuText(33, false, null, 0); // Please wait
 
             if (RSMultiplayer.PlayersCount > 1)
             {
-                NGageSetText(4, false, null, 0); // Please Wait...
+                NGageSetMenuText(4, false, null, 0); // Please Wait...
 
-                Data.MultiplayerPlayerNumberIcons.CurrentAnimation = 3 + RSMultiplayer.PlayersCount;
+                Anims.MultiplayerPlayerNumberIcons.CurrentAnimation = 3 + RSMultiplayer.PlayersCount;
 
-                Data.MultiplayerPlayerSelectionHighlight.ScreenPos = Data.MultiplayerPlayerSelectionHighlight.ScreenPos with { X = 72 + RSMultiplayer.MachineId * 24 };
+                Anims.MultiplayerPlayerSelectionHighlight.ScreenPos = Anims.MultiplayerPlayerSelectionHighlight.ScreenPos with { X = 72 + RSMultiplayer.MachineId * 24 };
 
-                Data.MultiplayerPlayerSelection.CurrentAnimation = RSMultiplayer.MachineId;
+                Anims.MultiplayerPlayerSelection.CurrentAnimation = RSMultiplayer.MachineId;
             }
 
-            Data.MultiplayerPlayerSelection.ScreenPos = Data.MultiplayerPlayerSelection.ScreenPos with { Y = 60 - MultiplayerPlayersOffsetY };
-            Data.MultiplayerPlayerNumberIcons.ScreenPos = Data.MultiplayerPlayerNumberIcons.ScreenPos with { Y = 42 - MultiplayerPlayersOffsetY };
-            Data.MultiplayerPlayerSelectionHighlight.ScreenPos = Data.MultiplayerPlayerSelectionHighlight.ScreenPos with { Y = 46 - MultiplayerPlayersOffsetY };
+            Anims.MultiplayerPlayerSelection.ScreenPos = Anims.MultiplayerPlayerSelection.ScreenPos with { Y = 60 - MultiplayerPlayersOffsetY };
+            Anims.MultiplayerPlayerNumberIcons.ScreenPos = Anims.MultiplayerPlayerNumberIcons.ScreenPos with { Y = 42 - MultiplayerPlayersOffsetY };
+            Anims.MultiplayerPlayerSelectionHighlight.ScreenPos = Anims.MultiplayerPlayerSelectionHighlight.ScreenPos with { Y = 46 - MultiplayerPlayersOffsetY };
 
-            foreach (AnimatedObject obj in Data.MultiplayerPlayerSelectionIcons)
+            foreach (AnimatedObject obj in Anims.MultiplayerPlayerSelectionIcons)
                 obj.ScreenPos = obj.ScreenPos with { Y = 69 - MultiplayerPlayersOffsetY };
 
-            AnimationPlayer.Play(Data.MultiplayerPlayerSelection);
-            AnimationPlayer.Play(Data.MultiplayerPlayerNumberIcons);
+            AnimationPlayer.Play(Anims.MultiplayerPlayerSelection);
+            AnimationPlayer.Play(Anims.MultiplayerPlayerNumberIcons);
 
             for (int i = 0; i < RSMultiplayer.PlayersCount; i++)
-                AnimationPlayer.Play(Data.MultiplayerPlayerSelectionIcons[i]);
+                AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionIcons[i]);
 
-            AnimationPlayer.Play(Data.MultiplayerPlayerSelectionHighlight);
+            AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionHighlight);
 
             MultiplayerPlayersOffsetY -= 4;
 
@@ -1369,41 +1369,41 @@ public partial class MenuAll
         switch (playerConnectionStates[0])
         {
             case 1:
-                NGageSetText(32, false, null, 0); // Connected. Wait for host to start a game.
+                NGageSetMenuText(32, false, null, 0); // Connected. Wait for host to start a game.
                 break;
 
             case 2:
-                NGageSetText(31, false, null, 0); // Connecting
+                NGageSetMenuText(31, false, null, 0); // Connecting
                 break;
 
             case 3:
             case 4:
-                NGageSetText(33, false, null, 0); // Please wait
+                NGageSetMenuText(33, false, null, 0); // Please wait
                 break;
         }
 
         if (playerConnectionStates[0] == 4)
         {
-            Data.MultiplayerPlayerNumberIcons.CurrentAnimation = 3 + RSMultiplayer.PlayersCount;
+            Anims.MultiplayerPlayerNumberIcons.CurrentAnimation = 3 + RSMultiplayer.PlayersCount;
 
-            Data.MultiplayerPlayerSelectionHighlight.ScreenPos = Data.MultiplayerPlayerSelectionHighlight.ScreenPos with { X = 72 + RSMultiplayer.MachineId * 24 };
+            Anims.MultiplayerPlayerSelectionHighlight.ScreenPos = Anims.MultiplayerPlayerSelectionHighlight.ScreenPos with { X = 72 + RSMultiplayer.MachineId * 24 };
 
-            Data.MultiplayerPlayerSelection.CurrentAnimation = RSMultiplayer.MachineId;
+            Anims.MultiplayerPlayerSelection.CurrentAnimation = RSMultiplayer.MachineId;
 
-            Data.MultiplayerPlayerSelection.ScreenPos = Data.MultiplayerPlayerSelection.ScreenPos with { Y = 60 - MultiplayerPlayersOffsetY };
-            Data.MultiplayerPlayerNumberIcons.ScreenPos = Data.MultiplayerPlayerNumberIcons.ScreenPos with { Y = 42 - MultiplayerPlayersOffsetY };
-            Data.MultiplayerPlayerSelectionHighlight.ScreenPos = Data.MultiplayerPlayerSelectionHighlight.ScreenPos with { Y = 46 - MultiplayerPlayersOffsetY };
+            Anims.MultiplayerPlayerSelection.ScreenPos = Anims.MultiplayerPlayerSelection.ScreenPos with { Y = 60 - MultiplayerPlayersOffsetY };
+            Anims.MultiplayerPlayerNumberIcons.ScreenPos = Anims.MultiplayerPlayerNumberIcons.ScreenPos with { Y = 42 - MultiplayerPlayersOffsetY };
+            Anims.MultiplayerPlayerSelectionHighlight.ScreenPos = Anims.MultiplayerPlayerSelectionHighlight.ScreenPos with { Y = 46 - MultiplayerPlayersOffsetY };
 
-            foreach (AnimatedObject obj in Data.MultiplayerPlayerSelectionIcons)
+            foreach (AnimatedObject obj in Anims.MultiplayerPlayerSelectionIcons)
                 obj.ScreenPos = obj.ScreenPos with { Y = 69 - MultiplayerPlayersOffsetY };
 
-            AnimationPlayer.Play(Data.MultiplayerPlayerSelection);
-            AnimationPlayer.Play(Data.MultiplayerPlayerNumberIcons);
+            AnimationPlayer.Play(Anims.MultiplayerPlayerSelection);
+            AnimationPlayer.Play(Anims.MultiplayerPlayerNumberIcons);
 
             for (int i = 0; i < RSMultiplayer.PlayersCount; i++)
-                AnimationPlayer.Play(Data.MultiplayerPlayerSelectionIcons[i]);
+                AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionIcons[i]);
 
-            AnimationPlayer.Play(Data.MultiplayerPlayerSelectionHighlight);
+            AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionHighlight);
 
             MultiplayerPlayersOffsetY -= 4;
 
@@ -1465,17 +1465,17 @@ public partial class MenuAll
         else
             MultiplayerPlayersOffsetY = 100;
 
-        Data.MultiplayerPlayerSelection.ScreenPos = Data.MultiplayerPlayerSelection.ScreenPos with { Y = 60 - MultiplayerPlayersOffsetY };
-        Data.MultiplayerPlayerNumberIcons.ScreenPos = Data.MultiplayerPlayerNumberIcons.ScreenPos with { Y = 42 - MultiplayerPlayersOffsetY };
+        Anims.MultiplayerPlayerSelection.ScreenPos = Anims.MultiplayerPlayerSelection.ScreenPos with { Y = 60 - MultiplayerPlayersOffsetY };
+        Anims.MultiplayerPlayerNumberIcons.ScreenPos = Anims.MultiplayerPlayerNumberIcons.ScreenPos with { Y = 42 - MultiplayerPlayersOffsetY };
 
-        foreach (AnimatedObject obj in Data.MultiplayerPlayerSelectionIcons)
+        foreach (AnimatedObject obj in Anims.MultiplayerPlayerSelectionIcons)
             obj.ScreenPos = obj.ScreenPos with { Y = 69 - MultiplayerPlayersOffsetY };
 
-        AnimationPlayer.Play(Data.MultiplayerPlayerSelection);
-        AnimationPlayer.Play(Data.MultiplayerPlayerNumberIcons);
+        AnimationPlayer.Play(Anims.MultiplayerPlayerSelection);
+        AnimationPlayer.Play(Anims.MultiplayerPlayerNumberIcons);
 
         for (int i = 0; i < RSMultiplayer.PlayersCount; i++)
-            AnimationPlayer.Play(Data.MultiplayerPlayerSelectionIcons[i]);
+            AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionIcons[i]);
     }
 
     #endregion
@@ -1484,19 +1484,19 @@ public partial class MenuAll
 
     private void Step_InitializeTransitionToMultiplayerTypeSelection()
     {
-        Data.MultiplayerTypeName.CurrentAnimation = MultiplayerType + Localization.LanguageUiIndex * MultiplayerTypeAnimationsCount;
-        Data.MultiplayerTypeFrame.CurrentAnimation = 2;
-        Data.ArrowLeft.CurrentAnimation = 1;
-        Data.ArrowRight.CurrentAnimation = 0;
-        Data.MultiplayerTypeIcon.CurrentAnimation = MultiplayerType;
+        Anims.MultiplayerTypeName.CurrentAnimation = MultiplayerType + Localization.LanguageUiIndex * MultiplayerTypeAnimationsCount;
+        Anims.MultiplayerTypeFrame.CurrentAnimation = 2;
+        Anims.ArrowLeft.CurrentAnimation = 1;
+        Anims.ArrowRight.CurrentAnimation = 0;
+        Anims.MultiplayerTypeIcon.CurrentAnimation = MultiplayerType;
 
         if (Rom.Platform == Platform.NGage)
         {
             ShouldTextBlink = true;
             string text = Localization.GetText(11, 34)[0]; // Please wait
             int width = FontManager.GetStringWidth(FontSize.Font16, text);
-            Data.Texts[4].ScreenPos = new Vector2(108 - width / 2f, 110);
-            Data.Texts[4].Text = text;
+            Anims.Texts[4].ScreenPos = new Vector2(108 - width / 2f, 110);
+            Anims.Texts[4].Text = text;
         }
 
         CurrentStepAction = Step_TransitionToMultiplayerTypeSelection;
@@ -1526,17 +1526,17 @@ public partial class MenuAll
 
         if (Rom.Platform == Platform.GBA)
         {
-            Data.MultiplayerTypeFrame.ScreenPos = Data.MultiplayerTypeFrame.ScreenPos with { Y = 35 - MultiplayerPlayersOffsetY };
-            Data.ArrowLeft.ScreenPos = Data.ArrowLeft.ScreenPos with { Y = 50 - MultiplayerPlayersOffsetY };
-            Data.ArrowRight.ScreenPos = Data.ArrowRight.ScreenPos with { Y = 50 - MultiplayerPlayersOffsetY };
-            Data.MultiplayerTypeIcon.ScreenPos = Data.MultiplayerTypeIcon.ScreenPos with { Y = 24 - MultiplayerPlayersOffsetY };
+            Anims.MultiplayerTypeFrame.ScreenPos = Anims.MultiplayerTypeFrame.ScreenPos with { Y = 35 - MultiplayerPlayersOffsetY };
+            Anims.ArrowLeft.ScreenPos = Anims.ArrowLeft.ScreenPos with { Y = 50 - MultiplayerPlayersOffsetY };
+            Anims.ArrowRight.ScreenPos = Anims.ArrowRight.ScreenPos with { Y = 50 - MultiplayerPlayersOffsetY };
+            Anims.MultiplayerTypeIcon.ScreenPos = Anims.MultiplayerTypeIcon.ScreenPos with { Y = 24 - MultiplayerPlayersOffsetY };
         }
         else if (Rom.Platform == Platform.NGage)
         {
-            Data.MultiplayerTypeFrame.ScreenPos = Data.MultiplayerTypeFrame.ScreenPos with { Y = 65 - MultiplayerPlayersOffsetY };
-            Data.ArrowLeft.ScreenPos = Data.ArrowLeft.ScreenPos with { Y = 80 - MultiplayerPlayersOffsetY };
-            Data.ArrowRight.ScreenPos = Data.ArrowRight.ScreenPos with { Y = 80 - MultiplayerPlayersOffsetY };
-            Data.MultiplayerTypeIcon.ScreenPos = Data.MultiplayerTypeIcon.ScreenPos with { Y = 54 - MultiplayerPlayersOffsetY };
+            Anims.MultiplayerTypeFrame.ScreenPos = Anims.MultiplayerTypeFrame.ScreenPos with { Y = 65 - MultiplayerPlayersOffsetY };
+            Anims.ArrowLeft.ScreenPos = Anims.ArrowLeft.ScreenPos with { Y = 80 - MultiplayerPlayersOffsetY };
+            Anims.ArrowRight.ScreenPos = Anims.ArrowRight.ScreenPos with { Y = 80 - MultiplayerPlayersOffsetY };
+            Anims.MultiplayerTypeIcon.ScreenPos = Anims.MultiplayerTypeIcon.ScreenPos with { Y = 54 - MultiplayerPlayersOffsetY };
         }
         else
         {
@@ -1549,11 +1549,11 @@ public partial class MenuAll
             HasProcessedPackets = false;
         }
 
-        AnimationPlayer.Play(Data.MultiplayerTypeName);
+        AnimationPlayer.Play(Anims.MultiplayerTypeName);
         
-        Data.MultiplayerTypeFrame.FrameChannelSprite();
+        Anims.MultiplayerTypeFrame.FrameChannelSprite();
         if (Rom.Platform == Platform.GBA)
-            AnimationPlayer.Play(Data.MultiplayerTypeFrame);
+            AnimationPlayer.Play(Anims.MultiplayerTypeFrame);
 
         int arrowLeftPosX = Rom.Platform switch
         {
@@ -1562,9 +1562,9 @@ public partial class MenuAll
             _ => throw new UnsupportedPlatformException()
         };
         if (MultiplayerType == 0)
-            Data.ArrowLeft.ScreenPos = Data.ArrowLeft.ScreenPos with { X = 300 };
+            Anims.ArrowLeft.ScreenPos = Anims.ArrowLeft.ScreenPos with { X = 300 };
         else
-            Data.ArrowLeft.ScreenPos = Data.ArrowLeft.ScreenPos with { X = arrowLeftPosX };
+            Anims.ArrowLeft.ScreenPos = Anims.ArrowLeft.ScreenPos with { X = arrowLeftPosX };
 
         int arrowRightPosX = Rom.Platform switch
         {
@@ -1573,19 +1573,19 @@ public partial class MenuAll
             _ => throw new UnsupportedPlatformException()
         };
         if (MultiplayerType == 2)
-            Data.ArrowRight.ScreenPos = Data.ArrowRight.ScreenPos with { X = 300 };
+            Anims.ArrowRight.ScreenPos = Anims.ArrowRight.ScreenPos with { X = 300 };
         else
-            Data.ArrowRight.ScreenPos = Data.ArrowRight.ScreenPos with { X = arrowRightPosX };
+            Anims.ArrowRight.ScreenPos = Anims.ArrowRight.ScreenPos with { X = arrowRightPosX };
 
-        AnimationPlayer.Play(Data.ArrowLeft);
-        AnimationPlayer.Play(Data.ArrowRight);
-        AnimationPlayer.Play(Data.MultiplayerTypeIcon);
+        AnimationPlayer.Play(Anims.ArrowLeft);
+        AnimationPlayer.Play(Anims.ArrowRight);
+        AnimationPlayer.Play(Anims.MultiplayerTypeIcon);
 
         // NOTE: Hard-code for now
         if (Rom.Platform == Platform.NGage && false)
         {
             if (!ShouldTextBlink || (GameTime.ElapsedFrames & 0x10) != 0)
-                AnimationPlayer.Play(Data.Texts[4]);
+                AnimationPlayer.Play(Anims.Texts[4]);
         }
     }
 
@@ -1603,16 +1603,16 @@ public partial class MenuAll
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     MultiplayerType--;
-                    Data.MultiplayerTypeName.CurrentAnimation = MultiplayerType + Localization.LanguageUiIndex * MultiplayerTypeAnimationsCount;
-                    Data.MultiplayerTypeIcon.CurrentAnimation = MultiplayerType;
+                    Anims.MultiplayerTypeName.CurrentAnimation = MultiplayerType + Localization.LanguageUiIndex * MultiplayerTypeAnimationsCount;
+                    Anims.MultiplayerTypeIcon.CurrentAnimation = MultiplayerType;
                 }
 
                 if (MultiJoyPad.IsButtonJustPressed(0, GbaInput.Right) && MultiplayerType != 2)
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     MultiplayerType++;
-                    Data.MultiplayerTypeName.CurrentAnimation = MultiplayerType + Localization.LanguageUiIndex * MultiplayerTypeAnimationsCount;
-                    Data.MultiplayerTypeIcon.CurrentAnimation = MultiplayerType;
+                    Anims.MultiplayerTypeName.CurrentAnimation = MultiplayerType + Localization.LanguageUiIndex * MultiplayerTypeAnimationsCount;
+                    Anims.MultiplayerTypeIcon.CurrentAnimation = MultiplayerType;
                 }
                 else if (MultiJoyPad.IsButtonJustPressed(0, GbaInput.A))
                 {
@@ -1641,18 +1641,18 @@ public partial class MenuAll
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                 }
 
-                MultiplayerManager.ReleaseJoyPads();
+                MultiplayerManager.FrameProcessed();
             }
             else
             {
                 GameTime.Pause();
             }
 
-            AnimationPlayer.Play(Data.MultiplayerTypeName);
+            AnimationPlayer.Play(Anims.MultiplayerTypeName);
 
-            Data.MultiplayerTypeFrame.FrameChannelSprite();
+            Anims.MultiplayerTypeFrame.FrameChannelSprite();
             if (Rom.Platform == Platform.GBA)
-                AnimationPlayer.Play(Data.MultiplayerTypeFrame);
+                AnimationPlayer.Play(Anims.MultiplayerTypeFrame);
 
             int arrowLeftPosX = Rom.Platform switch
             {
@@ -1661,9 +1661,9 @@ public partial class MenuAll
                 _ => throw new UnsupportedPlatformException()
             };
             if (MultiplayerType == 0)
-                Data.ArrowLeft.ScreenPos = Data.ArrowLeft.ScreenPos with { X = 300 };
+                Anims.ArrowLeft.ScreenPos = Anims.ArrowLeft.ScreenPos with { X = 300 };
             else
-                Data.ArrowLeft.ScreenPos = Data.ArrowLeft.ScreenPos with { X = arrowLeftPosX };
+                Anims.ArrowLeft.ScreenPos = Anims.ArrowLeft.ScreenPos with { X = arrowLeftPosX };
 
             int arrowRightPosX = Rom.Platform switch
             {
@@ -1672,19 +1672,19 @@ public partial class MenuAll
                 _ => throw new UnsupportedPlatformException()
             };
             if (MultiplayerType == 2)
-                Data.ArrowRight.ScreenPos = Data.ArrowRight.ScreenPos with { X = 300 };
+                Anims.ArrowRight.ScreenPos = Anims.ArrowRight.ScreenPos with { X = 300 };
             else
-                Data.ArrowRight.ScreenPos = Data.ArrowRight.ScreenPos with { X = arrowRightPosX };
+                Anims.ArrowRight.ScreenPos = Anims.ArrowRight.ScreenPos with { X = arrowRightPosX };
 
-            AnimationPlayer.Play(Data.ArrowLeft);
-            AnimationPlayer.Play(Data.ArrowRight);
-            AnimationPlayer.Play(Data.MultiplayerTypeIcon);
+            AnimationPlayer.Play(Anims.ArrowLeft);
+            AnimationPlayer.Play(Anims.ArrowRight);
+            AnimationPlayer.Play(Anims.MultiplayerTypeIcon);
 
             // NOTE: Hard-code for now
             if (Rom.Platform == Platform.NGage && false)
             {
                 if (!ShouldTextBlink || (GameTime.ElapsedFrames & 0x10) != 0)
-                    AnimationPlayer.Play(Data.Texts[4]);
+                    AnimationPlayer.Play(Anims.Texts[4]);
             }
 
             // NOTE: Hard-code for now
@@ -1736,28 +1736,28 @@ public partial class MenuAll
 
         if (Rom.Platform == Platform.GBA)
         {
-            Data.MultiplayerTypeFrame.ScreenPos = Data.MultiplayerTypeFrame.ScreenPos with { Y = 35 - MultiplayerPlayersOffsetY };
-            Data.ArrowLeft.ScreenPos = Data.ArrowLeft.ScreenPos with { Y = 50 - MultiplayerPlayersOffsetY };
-            Data.ArrowRight.ScreenPos = Data.ArrowRight.ScreenPos with { Y = 50 - MultiplayerPlayersOffsetY };
-            Data.MultiplayerTypeIcon.ScreenPos = Data.MultiplayerTypeIcon.ScreenPos with { Y = 24 - MultiplayerPlayersOffsetY };
+            Anims.MultiplayerTypeFrame.ScreenPos = Anims.MultiplayerTypeFrame.ScreenPos with { Y = 35 - MultiplayerPlayersOffsetY };
+            Anims.ArrowLeft.ScreenPos = Anims.ArrowLeft.ScreenPos with { Y = 50 - MultiplayerPlayersOffsetY };
+            Anims.ArrowRight.ScreenPos = Anims.ArrowRight.ScreenPos with { Y = 50 - MultiplayerPlayersOffsetY };
+            Anims.MultiplayerTypeIcon.ScreenPos = Anims.MultiplayerTypeIcon.ScreenPos with { Y = 24 - MultiplayerPlayersOffsetY };
         }
         else if (Rom.Platform == Platform.NGage)
         {
-            Data.MultiplayerTypeFrame.ScreenPos = Data.MultiplayerTypeFrame.ScreenPos with { Y = 65 - MultiplayerPlayersOffsetY };
-            Data.ArrowLeft.ScreenPos = Data.ArrowLeft.ScreenPos with { Y = 80 - MultiplayerPlayersOffsetY };
-            Data.ArrowRight.ScreenPos = Data.ArrowRight.ScreenPos with { Y = 80 - MultiplayerPlayersOffsetY };
-            Data.MultiplayerTypeIcon.ScreenPos = Data.MultiplayerTypeIcon.ScreenPos with { Y = 54 - MultiplayerPlayersOffsetY };
+            Anims.MultiplayerTypeFrame.ScreenPos = Anims.MultiplayerTypeFrame.ScreenPos with { Y = 65 - MultiplayerPlayersOffsetY };
+            Anims.ArrowLeft.ScreenPos = Anims.ArrowLeft.ScreenPos with { Y = 80 - MultiplayerPlayersOffsetY };
+            Anims.ArrowRight.ScreenPos = Anims.ArrowRight.ScreenPos with { Y = 80 - MultiplayerPlayersOffsetY };
+            Anims.MultiplayerTypeIcon.ScreenPos = Anims.MultiplayerTypeIcon.ScreenPos with { Y = 54 - MultiplayerPlayersOffsetY };
         }
         else
         {
             throw new UnsupportedPlatformException();
         }
 
-        AnimationPlayer.Play(Data.MultiplayerTypeName);
+        AnimationPlayer.Play(Anims.MultiplayerTypeName);
 
-        Data.MultiplayerTypeFrame.FrameChannelSprite();
+        Anims.MultiplayerTypeFrame.FrameChannelSprite();
         if (Rom.Platform == Platform.GBA)
-            AnimationPlayer.Play(Data.MultiplayerTypeFrame);
+            AnimationPlayer.Play(Anims.MultiplayerTypeFrame);
 
         int arrowLeftPosX = Rom.Platform switch
         {
@@ -1766,9 +1766,9 @@ public partial class MenuAll
             _ => throw new UnsupportedPlatformException()
         };
         if (MultiplayerType == 0)
-            Data.ArrowLeft.ScreenPos = Data.ArrowLeft.ScreenPos with { X = 300 };
+            Anims.ArrowLeft.ScreenPos = Anims.ArrowLeft.ScreenPos with { X = 300 };
         else
-            Data.ArrowLeft.ScreenPos = Data.ArrowLeft.ScreenPos with { X = arrowLeftPosX };
+            Anims.ArrowLeft.ScreenPos = Anims.ArrowLeft.ScreenPos with { X = arrowLeftPosX };
 
         int arrowRightPosX = Rom.Platform switch
         {
@@ -1777,19 +1777,19 @@ public partial class MenuAll
             _ => throw new UnsupportedPlatformException()
         };
         if (MultiplayerType == 2)
-            Data.ArrowRight.ScreenPos = Data.ArrowRight.ScreenPos with { X = 300 };
+            Anims.ArrowRight.ScreenPos = Anims.ArrowRight.ScreenPos with { X = 300 };
         else
-            Data.ArrowRight.ScreenPos = Data.ArrowRight.ScreenPos with { X = arrowRightPosX };
+            Anims.ArrowRight.ScreenPos = Anims.ArrowRight.ScreenPos with { X = arrowRightPosX };
 
-        AnimationPlayer.Play(Data.ArrowLeft);
-        AnimationPlayer.Play(Data.ArrowRight);
-        AnimationPlayer.Play(Data.MultiplayerTypeIcon);
+        AnimationPlayer.Play(Anims.ArrowLeft);
+        AnimationPlayer.Play(Anims.ArrowRight);
+        AnimationPlayer.Play(Anims.MultiplayerTypeIcon);
 
         // NOTE: Hard-code for now
         if (Rom.Platform == Platform.NGage && false)
         {
             if (!ShouldTextBlink || (GameTime.ElapsedFrames & 0x10) != 0)
-                AnimationPlayer.Play(Data.Texts[4]);
+                AnimationPlayer.Play(Anims.Texts[4]);
         }
     }
 
@@ -1803,55 +1803,55 @@ public partial class MenuAll
 
         if (Rom.Platform == Platform.GBA)
         {
-            Data.MultiplayerMapSelection.CurrentAnimation = MultiplayerType;
+            Anims.MultiplayerMapSelection.CurrentAnimation = MultiplayerType;
 
-            Data.MultiplayerMapName1.Text = Localization.GetText(11, 9 + MultiplayerType * 2)[0];
-            Data.MultiplayerMapName1.ScreenPos = new Vector2(
-                x: 140 - Data.MultiplayerMapName1.GetStringWidth() / 2f,
+            Anims.MultiplayerMapName1.Text = Localization.GetText(11, 9 + MultiplayerType * 2)[0];
+            Anims.MultiplayerMapName1.ScreenPos = new Vector2(
+                x: 140 - Anims.MultiplayerMapName1.GetStringWidth() / 2f,
                 y: 56);
 
-            Data.MultiplayerMapName2.Text = Localization.GetText(11, 10 + MultiplayerType * 2)[0];
-            Data.MultiplayerMapName2.ScreenPos = new Vector2(
-                x: 140 - Data.MultiplayerMapName2.GetStringWidth() / 2f,
+            Anims.MultiplayerMapName2.Text = Localization.GetText(11, 10 + MultiplayerType * 2)[0];
+            Anims.MultiplayerMapName2.ScreenPos = new Vector2(
+                x: 140 - Anims.MultiplayerMapName2.GetStringWidth() / 2f,
                 y: 96);
         }
         else if (Rom.Platform == Platform.NGage)
         {
             if (MultiplayerType == 0)
-                Data.MultiplayerMapSelection.CurrentAnimation = 8 + (int)CaptureTheFlagMode * 4 + CaptureTheFlagSoloMode * 2;
+                Anims.MultiplayerMapSelection.CurrentAnimation = 8 + (int)CaptureTheFlagMode * 4 + CaptureTheFlagSoloMode * 2;
             else
-                Data.MultiplayerMapSelection.CurrentAnimation = MultiplayerType - 1;
+                Anims.MultiplayerMapSelection.CurrentAnimation = MultiplayerType - 1;
 
             if (MultiplayerType == 0)
             {
-                Data.MultiplayerMapName1.Text = Localization.GetText(11, 10 + (int)CaptureTheFlagMode * 4 + CaptureTheFlagSoloMode * 2)[0];
-                Data.MultiplayerMapName1.ScreenPos = new Vector2(
-                    x: 108 - Data.MultiplayerMapName1.GetStringWidth() / 2f,
+                Anims.MultiplayerMapName1.Text = Localization.GetText(11, 10 + (int)CaptureTheFlagMode * 4 + CaptureTheFlagSoloMode * 2)[0];
+                Anims.MultiplayerMapName1.ScreenPos = new Vector2(
+                    x: 108 - Anims.MultiplayerMapName1.GetStringWidth() / 2f,
                     y: 84);
 
-                Data.MultiplayerMapName2.Text = Localization.GetText(11, 11 + (int)CaptureTheFlagMode * 4 + CaptureTheFlagSoloMode * 2)[0];
-                Data.MultiplayerMapName2.ScreenPos = new Vector2(
-                    x: 108 - Data.MultiplayerMapName2.GetStringWidth() / 2f,
+                Anims.MultiplayerMapName2.Text = Localization.GetText(11, 11 + (int)CaptureTheFlagMode * 4 + CaptureTheFlagSoloMode * 2)[0];
+                Anims.MultiplayerMapName2.ScreenPos = new Vector2(
+                    x: 108 - Anims.MultiplayerMapName2.GetStringWidth() / 2f,
                     y: 124);
             }
             else
             {
-                Data.MultiplayerMapName1.Text = Localization.GetText(11, 14 + MultiplayerType * 2)[0];
-                Data.MultiplayerMapName1.ScreenPos = new Vector2(
-                    x: 108 - Data.MultiplayerMapName1.GetStringWidth() / 2f,
+                Anims.MultiplayerMapName1.Text = Localization.GetText(11, 14 + MultiplayerType * 2)[0];
+                Anims.MultiplayerMapName1.ScreenPos = new Vector2(
+                    x: 108 - Anims.MultiplayerMapName1.GetStringWidth() / 2f,
                     y: 80);
 
-                Data.MultiplayerMapName2.Text = Localization.GetText(11, 15 + MultiplayerType * 2)[0];
-                Data.MultiplayerMapName2.ScreenPos = new Vector2(
-                    x: 108 - Data.MultiplayerMapName2.GetStringWidth() / 2f,
+                Anims.MultiplayerMapName2.Text = Localization.GetText(11, 15 + MultiplayerType * 2)[0];
+                Anims.MultiplayerMapName2.ScreenPos = new Vector2(
+                    x: 108 - Anims.MultiplayerMapName2.GetStringWidth() / 2f,
                     y: 120);
             }
 
             ShouldTextBlink = true;
             string text = Localization.GetText(11, 34)[0]; // Please wait
             int width = FontManager.GetStringWidth(FontSize.Font16, text);
-            Data.Texts[4].ScreenPos = new Vector2(108 - width / 2f, 136);
-            Data.Texts[4].Text = text;
+            Anims.Texts[4].ScreenPos = new Vector2(108 - width / 2f, 136);
+            Anims.Texts[4].Text = text;
         }
         else
         {
@@ -1893,7 +1893,7 @@ public partial class MenuAll
                 PrevSelectedOption = 0;
                 SelectedOption = 0;
 
-                foreach (SpriteTextObject textObj in Data.Texts)
+                foreach (SpriteTextObject textObj in Anims.Texts)
                     textObj.BgPriority = 0;
             }
 
@@ -1908,17 +1908,17 @@ public partial class MenuAll
 
         AnimateSelectedMultiplayerMapPalette();
 
-        Data.MultiplayerMapSelection.FrameChannelSprite();
+        Anims.MultiplayerMapSelection.FrameChannelSprite();
 
-        AnimationPlayer.Play(Data.MultiplayerMapSelection);
-        AnimationPlayer.Play(Data.MultiplayerMapName1);
-        AnimationPlayer.Play(Data.MultiplayerMapName2);
+        AnimationPlayer.Play(Anims.MultiplayerMapSelection);
+        AnimationPlayer.Play(Anims.MultiplayerMapName1);
+        AnimationPlayer.Play(Anims.MultiplayerMapName2);
 
         // NOTE: Hard-code for now
         if (Rom.Platform == Platform.NGage && false)
         {
             if (!ShouldTextBlink || (GameTime.ElapsedFrames & 0x10) != 0)
-                AnimationPlayer.Play(Data.Texts[4]);
+                AnimationPlayer.Play(Anims.Texts[4]);
         }
     }
 
@@ -1950,14 +1950,14 @@ public partial class MenuAll
 
                             if (Rom.Platform == Platform.GBA)
                             {
-                                Data.MultiplayerMapSelection.CurrentAnimation = MultiplayerType;
+                                Anims.MultiplayerMapSelection.CurrentAnimation = MultiplayerType;
                             }
                             else if (Rom.Platform == Platform.NGage)
                             {
                                 if (MultiplayerType == 0)
-                                    Data.MultiplayerMapSelection.CurrentAnimation = 8 + (int)CaptureTheFlagMode * 4 + CaptureTheFlagSoloMode * 2;
+                                    Anims.MultiplayerMapSelection.CurrentAnimation = 8 + (int)CaptureTheFlagMode * 4 + CaptureTheFlagSoloMode * 2;
                                 else
-                                    Data.MultiplayerMapSelection.CurrentAnimation = MultiplayerType - 1;
+                                    Anims.MultiplayerMapSelection.CurrentAnimation = MultiplayerType - 1;
                             }
                             else
                             {
@@ -1980,14 +1980,14 @@ public partial class MenuAll
 
                                 if (Rom.Platform == Platform.GBA)
                                 {
-                                    Data.MultiplayerMapSelection.CurrentAnimation = 3 + MultiplayerType;
+                                    Anims.MultiplayerMapSelection.CurrentAnimation = 3 + MultiplayerType;
                                 }
                                 else if (Rom.Platform == Platform.NGage)
                                 {
                                     if (MultiplayerType == 0)
-                                        Data.MultiplayerMapSelection.CurrentAnimation = 9 + (int)CaptureTheFlagMode * 4 + CaptureTheFlagSoloMode * 2;
+                                        Anims.MultiplayerMapSelection.CurrentAnimation = 9 + (int)CaptureTheFlagMode * 4 + CaptureTheFlagSoloMode * 2;
                                     else
-                                        Data.MultiplayerMapSelection.CurrentAnimation = 2 + MultiplayerType;
+                                        Anims.MultiplayerMapSelection.CurrentAnimation = 2 + MultiplayerType;
                                 }
                                 else
                                 {
@@ -2022,7 +2022,7 @@ public partial class MenuAll
 
                         if (Rom.Platform == Platform.NGage)
                         {
-                            foreach (SpriteTextObject textObj in Data.Texts)
+                            foreach (SpriteTextObject textObj in Anims.Texts)
                                 textObj.BgPriority = 3;
                         }
 
@@ -2031,7 +2031,7 @@ public partial class MenuAll
                     }
                 }
 
-                MultiplayerManager.ReleaseJoyPads();
+                MultiplayerManager.FrameProcessed();
             }
             else
             {
@@ -2040,17 +2040,17 @@ public partial class MenuAll
 
             AnimateSelectedMultiplayerMapPalette();
 
-            Data.MultiplayerMapSelection.FrameChannelSprite();
+            Anims.MultiplayerMapSelection.FrameChannelSprite();
 
-            AnimationPlayer.Play(Data.MultiplayerMapSelection);
-            AnimationPlayer.Play(Data.MultiplayerMapName1);
-            AnimationPlayer.Play(Data.MultiplayerMapName2);
+            AnimationPlayer.Play(Anims.MultiplayerMapSelection);
+            AnimationPlayer.Play(Anims.MultiplayerMapName1);
+            AnimationPlayer.Play(Anims.MultiplayerMapName2);
 
             // NOTE: Hard-code for now
             if (Rom.Platform == Platform.NGage && false)
             {
                 if (!ShouldTextBlink || (GameTime.ElapsedFrames & 0x10) != 0)
-                    AnimationPlayer.Play(Data.Texts[4]);
+                    AnimationPlayer.Play(Anims.Texts[4]);
             }
 
             // NOTE: Hard-code for now
@@ -2076,7 +2076,7 @@ public partial class MenuAll
                 CurrentStepAction = Step_TransitionOutOfMultiplayerMapSelection;
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
 
-                foreach (SpriteTextObject textObj in Data.Texts)
+                foreach (SpriteTextObject textObj in Anims.Texts)
                     textObj.BgPriority = 3;
 
                 TransitionOutCursorAndStem();
@@ -2110,17 +2110,17 @@ public partial class MenuAll
 
         AnimateSelectedMultiplayerMapPalette();
 
-        Data.MultiplayerMapSelection.FrameChannelSprite();
+        Anims.MultiplayerMapSelection.FrameChannelSprite();
 
-        AnimationPlayer.Play(Data.MultiplayerMapSelection);
-        AnimationPlayer.Play(Data.MultiplayerMapName1);
-        AnimationPlayer.Play(Data.MultiplayerMapName2);
+        AnimationPlayer.Play(Anims.MultiplayerMapSelection);
+        AnimationPlayer.Play(Anims.MultiplayerMapName1);
+        AnimationPlayer.Play(Anims.MultiplayerMapName2);
 
         // NOTE: Hard-code for now
         if (Rom.Platform == Platform.NGage && false)
         {
             if (!ShouldTextBlink || (GameTime.ElapsedFrames & 0x10) != 0)
-                AnimationPlayer.Play(Data.Texts[4]);
+                AnimationPlayer.Play(Anims.Texts[4]);
         }
     }
 
@@ -2130,14 +2130,14 @@ public partial class MenuAll
 
     private void Step_InitializeTransitionToMultiplayerFlagOptions()
     {
-        Data.MultiplayerCaptureTheFlagOptions.CurrentAnimation = Localization.LanguageUiIndex;
-        Data.MultiplayerCaptureTheFlagModeName.CurrentAnimation = 5 + Localization.LanguageUiIndex;
-        Data.MultiplayerCaptureTheFlagOptionsArrowLeft.CurrentAnimation = 15;
-        Data.MultiplayerCaptureTheFlagOptionsArrowRight.CurrentAnimation = 16;
-        Data.MultiplayerCaptureTheFlagOptionsColon.CurrentAnimation = 17;
-        Data.MultiplayerCaptureTheFlagOptionsFlagsDigit.CurrentAnimation = 18;
+        Anims.MultiplayerCaptureTheFlagOptions.CurrentAnimation = Localization.LanguageUiIndex;
+        Anims.MultiplayerCaptureTheFlagModeName.CurrentAnimation = 5 + Localization.LanguageUiIndex;
+        Anims.MultiplayerCaptureTheFlagOptionsArrowLeft.CurrentAnimation = 15;
+        Anims.MultiplayerCaptureTheFlagOptionsArrowRight.CurrentAnimation = 16;
+        Anims.MultiplayerCaptureTheFlagOptionsColon.CurrentAnimation = 17;
+        Anims.MultiplayerCaptureTheFlagOptionsFlagsDigit.CurrentAnimation = 18;
         
-        foreach (AnimatedObject digit in Data.MultiplayerCaptureTheFlagOptionsTimeDigits)
+        foreach (AnimatedObject digit in Anims.MultiplayerCaptureTheFlagOptionsTimeDigits)
             digit.CurrentAnimation = 18;
 
         CurrentStepAction = Step_TransitionToMultiplayerFlagOptions;
@@ -2157,33 +2157,33 @@ public partial class MenuAll
         {
             TransitionValue = 0;
             CurrentStepAction = Step_MultiplayerFlagOptions;
-            Data.MultiplayerCaptureTheFlagOptions.BgPriority = 0;
-            Data.MultiplayerCaptureTheFlagOptionsArrowRight.BgPriority = 0;
+            Anims.MultiplayerCaptureTheFlagOptions.BgPriority = 0;
+            Anims.MultiplayerCaptureTheFlagOptionsArrowRight.BgPriority = 0;
             GameTime.Resume();
         }
 
         SelectedOption = 0;
 
         int y = ArrowYPositions[SelectedOption / 2];
-        Data.MultiplayerCaptureTheFlagOptionsArrowLeft.ScreenPos = Data.MultiplayerCaptureTheFlagOptionsArrowLeft.ScreenPos with { Y = y };
-        Data.MultiplayerCaptureTheFlagOptionsArrowRight.ScreenPos = Data.MultiplayerCaptureTheFlagOptionsArrowRight.ScreenPos with { Y = y };
+        Anims.MultiplayerCaptureTheFlagOptionsArrowLeft.ScreenPos = Anims.MultiplayerCaptureTheFlagOptionsArrowLeft.ScreenPos with { Y = y };
+        Anims.MultiplayerCaptureTheFlagOptionsArrowRight.ScreenPos = Anims.MultiplayerCaptureTheFlagOptionsArrowRight.ScreenPos with { Y = y };
 
         CaptureTheFlagMode = 0;
         CaptureTheFlagSoloMode = MultiplayerManager.PlayersCount > 2 ? 1 : 0;
 
-        Data.MultiplayerCaptureTheFlagOptionsFlagsDigit.CurrentAnimation = 18 + CaptureTheFlagTargetFlagsCount;
-        Data.MultiplayerCaptureTheFlagOptionsTimeDigits[0].CurrentAnimation = 18 + CaptureTheFlagTargetTime / 60;
-        Data.MultiplayerCaptureTheFlagOptionsTimeDigits[1].CurrentAnimation = 18 + (CaptureTheFlagTargetTime % 60) / 10;
-        Data.MultiplayerCaptureTheFlagOptionsTimeDigits[2].CurrentAnimation = 18 + CaptureTheFlagTargetTime - (CaptureTheFlagTargetTime / 10) * 10;
+        Anims.MultiplayerCaptureTheFlagOptionsFlagsDigit.CurrentAnimation = 18 + CaptureTheFlagTargetFlagsCount;
+        Anims.MultiplayerCaptureTheFlagOptionsTimeDigits[0].CurrentAnimation = 18 + CaptureTheFlagTargetTime / 60;
+        Anims.MultiplayerCaptureTheFlagOptionsTimeDigits[1].CurrentAnimation = 18 + (CaptureTheFlagTargetTime % 60) / 10;
+        Anims.MultiplayerCaptureTheFlagOptionsTimeDigits[2].CurrentAnimation = 18 + CaptureTheFlagTargetTime - (CaptureTheFlagTargetTime / 10) * 10;
 
-        AnimationPlayer.Play(Data.MultiplayerCaptureTheFlagOptionsArrowLeft);
-        AnimationPlayer.Play(Data.MultiplayerCaptureTheFlagOptionsArrowRight);
-        AnimationPlayer.Play(Data.MultiplayerCaptureTheFlagOptionsColon);
-        AnimationPlayer.Play(Data.MultiplayerCaptureTheFlagOptionsFlagsDigit);
-        AnimationPlayer.Play(Data.MultiplayerCaptureTheFlagModeName);
-        AnimationPlayer.Play(Data.MultiplayerCaptureTheFlagOptions);
+        AnimationPlayer.Play(Anims.MultiplayerCaptureTheFlagOptionsArrowLeft);
+        AnimationPlayer.Play(Anims.MultiplayerCaptureTheFlagOptionsArrowRight);
+        AnimationPlayer.Play(Anims.MultiplayerCaptureTheFlagOptionsColon);
+        AnimationPlayer.Play(Anims.MultiplayerCaptureTheFlagOptionsFlagsDigit);
+        AnimationPlayer.Play(Anims.MultiplayerCaptureTheFlagModeName);
+        AnimationPlayer.Play(Anims.MultiplayerCaptureTheFlagOptions);
 
-        foreach (AnimatedObject digit in Data.MultiplayerCaptureTheFlagOptionsTimeDigits)
+        foreach (AnimatedObject digit in Anims.MultiplayerCaptureTheFlagOptionsTimeDigits)
             AnimationPlayer.Play(digit);
     }
 
@@ -2202,22 +2202,22 @@ public partial class MenuAll
                     SelectOption(SelectedOption == 0 ? 4 : SelectedOption - 2, true);
 
                     int y = ArrowYPositions[SelectedOption / 2];
-                    Data.MultiplayerCaptureTheFlagOptionsArrowLeft.ScreenPos = Data.MultiplayerCaptureTheFlagOptionsArrowLeft.ScreenPos with { Y = y };
-                    Data.MultiplayerCaptureTheFlagOptionsArrowRight.ScreenPos = Data.MultiplayerCaptureTheFlagOptionsArrowRight.ScreenPos with { Y = y };
+                    Anims.MultiplayerCaptureTheFlagOptionsArrowLeft.ScreenPos = Anims.MultiplayerCaptureTheFlagOptionsArrowLeft.ScreenPos with { Y = y };
+                    Anims.MultiplayerCaptureTheFlagOptionsArrowRight.ScreenPos = Anims.MultiplayerCaptureTheFlagOptionsArrowRight.ScreenPos with { Y = y };
 
                     // Huh?
-                    Data.OptionsSelection.CurrentAnimation = SelectedOption + Localization.LanguageUiIndex * 3;
+                    Anims.OptionsSelection.CurrentAnimation = SelectedOption + Localization.LanguageUiIndex * 3;
                 }
                 else if (MultiJoyPad.IsButtonJustPressed(0, GbaInput.Down))
                 {
                     SelectOption(SelectedOption == 4 ? 0 : SelectedOption + 2, true);
 
                     int y = ArrowYPositions[SelectedOption / 2];
-                    Data.MultiplayerCaptureTheFlagOptionsArrowLeft.ScreenPos = Data.MultiplayerCaptureTheFlagOptionsArrowLeft.ScreenPos with { Y = y };
-                    Data.MultiplayerCaptureTheFlagOptionsArrowRight.ScreenPos = Data.MultiplayerCaptureTheFlagOptionsArrowRight.ScreenPos with { Y = y };
+                    Anims.MultiplayerCaptureTheFlagOptionsArrowLeft.ScreenPos = Anims.MultiplayerCaptureTheFlagOptionsArrowLeft.ScreenPos with { Y = y };
+                    Anims.MultiplayerCaptureTheFlagOptionsArrowRight.ScreenPos = Anims.MultiplayerCaptureTheFlagOptionsArrowRight.ScreenPos with { Y = y };
 
                     // Huh?
-                    Data.OptionsSelection.CurrentAnimation = SelectedOption + Localization.LanguageUiIndex * 3;
+                    Anims.OptionsSelection.CurrentAnimation = SelectedOption + Localization.LanguageUiIndex * 3;
                 }
                 else if (MultiJoyPad.IsButtonJustPressed(0, GbaInput.Left))
                 {
@@ -2229,13 +2229,13 @@ public partial class MenuAll
                         {
                             CaptureTheFlagMode = CaptureTheFlagMode.Teams;
                             CaptureTheFlagSoloMode = 0;
-                            Data.MultiplayerCaptureTheFlagModeName.CurrentAnimation = 10 + Localization.LanguageUiIndex;
+                            Anims.MultiplayerCaptureTheFlagModeName.CurrentAnimation = 10 + Localization.LanguageUiIndex;
                         }
                         else
                         {
                             CaptureTheFlagMode = CaptureTheFlagMode.Solo;
                             CaptureTheFlagSoloMode = MultiplayerManager.PlayersCount > 2 ? 1 : 0;
-                            Data.MultiplayerCaptureTheFlagModeName.CurrentAnimation = 5 + Localization.LanguageUiIndex;
+                            Anims.MultiplayerCaptureTheFlagModeName.CurrentAnimation = 5 + Localization.LanguageUiIndex;
                         }
                     }
                     else if (option == 1)
@@ -2246,7 +2246,7 @@ public partial class MenuAll
                         if (CaptureTheFlagTargetTime == 0 && CaptureTheFlagTargetFlagsCount == 0)
                             CaptureTheFlagTargetFlagsCount = 1;
 
-                        Data.MultiplayerCaptureTheFlagOptionsFlagsDigit.CurrentAnimation = 18 + CaptureTheFlagTargetFlagsCount;
+                        Anims.MultiplayerCaptureTheFlagOptionsFlagsDigit.CurrentAnimation = 18 + CaptureTheFlagTargetFlagsCount;
                     }
                     else if (option == 2)
                     {
@@ -2256,9 +2256,9 @@ public partial class MenuAll
                         if (CaptureTheFlagTargetTime == 0 && CaptureTheFlagTargetFlagsCount == 0)
                             CaptureTheFlagTargetTime = 30;
 
-                        Data.MultiplayerCaptureTheFlagOptionsTimeDigits[0].CurrentAnimation = 18 + CaptureTheFlagTargetTime / 60;
-                        Data.MultiplayerCaptureTheFlagOptionsTimeDigits[1].CurrentAnimation = 18 + (CaptureTheFlagTargetTime % 60) / 10;
-                        Data.MultiplayerCaptureTheFlagOptionsTimeDigits[2].CurrentAnimation = 18 + CaptureTheFlagTargetTime - (CaptureTheFlagTargetTime / 10) * 10;
+                        Anims.MultiplayerCaptureTheFlagOptionsTimeDigits[0].CurrentAnimation = 18 + CaptureTheFlagTargetTime / 60;
+                        Anims.MultiplayerCaptureTheFlagOptionsTimeDigits[1].CurrentAnimation = 18 + (CaptureTheFlagTargetTime % 60) / 10;
+                        Anims.MultiplayerCaptureTheFlagOptionsTimeDigits[2].CurrentAnimation = 18 + CaptureTheFlagTargetTime - (CaptureTheFlagTargetTime / 10) * 10;
                     }
                 }
                 else if (MultiJoyPad.IsButtonJustPressed(0, GbaInput.Right))
@@ -2271,13 +2271,13 @@ public partial class MenuAll
                         {
                             CaptureTheFlagMode = CaptureTheFlagMode.Teams;
                             CaptureTheFlagSoloMode = 0;
-                            Data.MultiplayerCaptureTheFlagModeName.CurrentAnimation = 10 + Localization.LanguageUiIndex;
+                            Anims.MultiplayerCaptureTheFlagModeName.CurrentAnimation = 10 + Localization.LanguageUiIndex;
                         }
                         else
                         {
                             CaptureTheFlagMode = CaptureTheFlagMode.Solo;
                             CaptureTheFlagSoloMode = MultiplayerManager.PlayersCount > 2 ? 1 : 0;
-                            Data.MultiplayerCaptureTheFlagModeName.CurrentAnimation = 5 + Localization.LanguageUiIndex;
+                            Anims.MultiplayerCaptureTheFlagModeName.CurrentAnimation = 5 + Localization.LanguageUiIndex;
                         }
                     }
                     else if (option == 1)
@@ -2285,16 +2285,16 @@ public partial class MenuAll
                         if (CaptureTheFlagTargetFlagsCount < 9)
                             CaptureTheFlagTargetFlagsCount++;
 
-                        Data.MultiplayerCaptureTheFlagOptionsFlagsDigit.CurrentAnimation = 18 + CaptureTheFlagTargetFlagsCount;
+                        Anims.MultiplayerCaptureTheFlagOptionsFlagsDigit.CurrentAnimation = 18 + CaptureTheFlagTargetFlagsCount;
                     }
                     else if (option == 2)
                     {
                         if (CaptureTheFlagTargetTime < 540)
                             CaptureTheFlagTargetTime += 30;
 
-                        Data.MultiplayerCaptureTheFlagOptionsTimeDigits[0].CurrentAnimation = 18 + CaptureTheFlagTargetTime / 60;
-                        Data.MultiplayerCaptureTheFlagOptionsTimeDigits[1].CurrentAnimation = 18 + (CaptureTheFlagTargetTime % 60) / 10;
-                        Data.MultiplayerCaptureTheFlagOptionsTimeDigits[2].CurrentAnimation = 18 + CaptureTheFlagTargetTime - (CaptureTheFlagTargetTime / 10) * 10;
+                        Anims.MultiplayerCaptureTheFlagOptionsTimeDigits[0].CurrentAnimation = 18 + CaptureTheFlagTargetTime / 60;
+                        Anims.MultiplayerCaptureTheFlagOptionsTimeDigits[1].CurrentAnimation = 18 + (CaptureTheFlagTargetTime % 60) / 10;
+                        Anims.MultiplayerCaptureTheFlagOptionsTimeDigits[2].CurrentAnimation = 18 + CaptureTheFlagTargetTime - (CaptureTheFlagTargetTime / 10) * 10;
                     }
                 }
                 else if (MultiJoyPad.IsButtonJustPressed(0, GbaInput.A) || MultiJoyPad.IsButtonJustPressed(0, GbaInput.Start))
@@ -2314,23 +2314,23 @@ public partial class MenuAll
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                 }
 
-                MultiplayerManager.ReleaseJoyPads();
+                MultiplayerManager.FrameProcessed();
             }
             else
             {
                 GameTime.Pause();
             }
 
-            AnimationPlayer.Play(Data.MultiplayerCaptureTheFlagOptionsArrowLeft);
-            AnimationPlayer.Play(Data.MultiplayerCaptureTheFlagOptionsArrowRight);
-            AnimationPlayer.Play(Data.MultiplayerCaptureTheFlagOptionsColon);
-            AnimationPlayer.Play(Data.MultiplayerCaptureTheFlagOptionsFlagsDigit);
-            AnimationPlayer.Play(Data.MultiplayerCaptureTheFlagModeName);
+            AnimationPlayer.Play(Anims.MultiplayerCaptureTheFlagOptionsArrowLeft);
+            AnimationPlayer.Play(Anims.MultiplayerCaptureTheFlagOptionsArrowRight);
+            AnimationPlayer.Play(Anims.MultiplayerCaptureTheFlagOptionsColon);
+            AnimationPlayer.Play(Anims.MultiplayerCaptureTheFlagOptionsFlagsDigit);
+            AnimationPlayer.Play(Anims.MultiplayerCaptureTheFlagModeName);
 
-            foreach (AnimatedObject digit in Data.MultiplayerCaptureTheFlagOptionsTimeDigits)
+            foreach (AnimatedObject digit in Anims.MultiplayerCaptureTheFlagOptionsTimeDigits)
                 AnimationPlayer.Play(digit);
             
-            AnimationPlayer.Play(Data.MultiplayerCaptureTheFlagOptions);
+            AnimationPlayer.Play(Anims.MultiplayerCaptureTheFlagOptions);
 
             // NOTE: Hard-code for now
             if (Rom.Platform == Platform.NGage && false)
@@ -2351,8 +2351,8 @@ public partial class MenuAll
 
     private void Step_TransitionOutOfMultiplayerFlagOptions()
     {
-        Data.MultiplayerCaptureTheFlagOptions.BgPriority = 3;
-        Data.MultiplayerCaptureTheFlagOptionsArrowRight.BgPriority = 3;
+        Anims.MultiplayerCaptureTheFlagOptions.BgPriority = 3;
+        Anims.MultiplayerCaptureTheFlagOptionsArrowRight.BgPriority = 3;
 
         TransitionValue += 4;
 
@@ -2369,14 +2369,14 @@ public partial class MenuAll
 
         SelectedOption = PrevSelectedOption;
 
-        AnimationPlayer.Play(Data.MultiplayerCaptureTheFlagOptionsArrowLeft);
-        AnimationPlayer.Play(Data.MultiplayerCaptureTheFlagOptionsArrowRight);
-        AnimationPlayer.Play(Data.MultiplayerCaptureTheFlagOptionsColon);
-        AnimationPlayer.Play(Data.MultiplayerCaptureTheFlagOptionsFlagsDigit);
-        AnimationPlayer.Play(Data.MultiplayerCaptureTheFlagModeName);
-        AnimationPlayer.Play(Data.MultiplayerCaptureTheFlagOptions);
+        AnimationPlayer.Play(Anims.MultiplayerCaptureTheFlagOptionsArrowLeft);
+        AnimationPlayer.Play(Anims.MultiplayerCaptureTheFlagOptionsArrowRight);
+        AnimationPlayer.Play(Anims.MultiplayerCaptureTheFlagOptionsColon);
+        AnimationPlayer.Play(Anims.MultiplayerCaptureTheFlagOptionsFlagsDigit);
+        AnimationPlayer.Play(Anims.MultiplayerCaptureTheFlagModeName);
+        AnimationPlayer.Play(Anims.MultiplayerCaptureTheFlagOptions);
 
-        foreach (AnimatedObject digit in Data.MultiplayerCaptureTheFlagOptionsTimeDigits)
+        foreach (AnimatedObject digit in Anims.MultiplayerCaptureTheFlagOptionsTimeDigits)
             AnimationPlayer.Play(digit);
     }
 
@@ -2390,27 +2390,27 @@ public partial class MenuAll
         {
             if (InitialPage == Page.MultiplayerLostConnection)
             {
-                InitialPage = Page.SelectLanguage;
+                InitialPage = Page.Language;
                 CurrentStepAction = Step_MultiplayerLostConnection;
-                SetText(1, true);
+                SetMenuText(1, true);
             }
             else
             {
                 CurrentStepAction = Step_TransitionToMultiplayerPlayerSelection;
-                SetText(0, false);
+                SetMenuText(0, false);
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
             }
         }
         else if (Rom.Platform == Platform.NGage)
         {
-            InitialPage = Page.SelectLanguage;
+            InitialPage = Page.Language;
             CurrentStepAction = Step_TransitionToMultiplayerLostConnection;
 
             int playerIdWhoLeftTheGame = -1; // NOTE: Hard-code for now
             if (playerIdWhoLeftTheGame == -1)
-                NGageSetText(1, true, null, 0); // Link Error! Press Left Soft Key
+                NGageSetMenuText(1, true, null, 0); // Link Error! Press Left Soft Key
             else
-                NGageSetText(2, true, null, 100, playerIdWhoLeftTheGame + 1); // Player %i has left the game
+                NGageSetMenuText(2, true, null, 100, playerIdWhoLeftTheGame + 1); // Player %i has left the game
         }
         else
         {
@@ -2497,13 +2497,13 @@ public partial class MenuAll
 
     private void Step_InitializeTransitionToMultiplayerSinglePak()
     {
-        SetText(3, false); // Please Wait...
+        SetMenuText(3, false); // Please Wait...
 
         MultiplayerSinglePakConnectionTimer = 125;
         NextTextId = -1;
         field_0xe1 = 0;
 
-        Data.MultiplayerSinglePakPlayers.CurrentAnimation = 11;
+        Anims.MultiplayerSinglePakPlayers.CurrentAnimation = 11;
         SinglePakPlayersOffsetY = 0x46;
 
         CurrentStepAction = Step_TransitionToMultiplayerSinglePak;
@@ -2530,10 +2530,10 @@ public partial class MenuAll
             CurrentStepAction = Step_MultiplayerSinglePak;
         }
 
-        Data.MultiplayerSinglePakPlayers.ScreenPos = Data.MultiplayerSinglePakPlayers.ScreenPos with { Y = 40 - SinglePakPlayersOffsetY };
+        Anims.MultiplayerSinglePakPlayers.ScreenPos = Anims.MultiplayerSinglePakPlayers.ScreenPos with { Y = 40 - SinglePakPlayersOffsetY };
 
         DrawText(false);
-        AnimationPlayer.Play(Data.MultiplayerSinglePakPlayers);
+        AnimationPlayer.Play(Anims.MultiplayerSinglePakPlayers);
     }
 
     private void Step_MultiplayerSinglePak()
@@ -2542,7 +2542,7 @@ public partial class MenuAll
 
         if (NextTextId != -1)
         {
-            SetText(NextTextId, false);
+            SetMenuText(NextTextId, false);
             NextTextId = -1;
         }
 
@@ -2557,11 +2557,11 @@ public partial class MenuAll
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
         }
 
-        Data.MultiplayerSinglePakPlayers.ScreenPos = Data.MultiplayerSinglePakPlayers.ScreenPos with { Y = 40 - SinglePakPlayersOffsetY };
+        Anims.MultiplayerSinglePakPlayers.ScreenPos = Anims.MultiplayerSinglePakPlayers.ScreenPos with { Y = 40 - SinglePakPlayersOffsetY };
 
         if (NextTextId == -1)
             DrawText(false);
-        AnimationPlayer.Play(Data.MultiplayerSinglePakPlayers);
+        AnimationPlayer.Play(Anims.MultiplayerSinglePakPlayers);
     }
 
     private void Step_TransitionOutOfMultiplayerSinglePak()
@@ -2584,7 +2584,7 @@ public partial class MenuAll
             SinglePakPlayersOffsetY = 70;
 
         DrawText(false);
-        AnimationPlayer.Play(Data.MultiplayerSinglePakPlayers);
+        AnimationPlayer.Play(Anims.MultiplayerSinglePakPlayers);
     }
 
     #endregion

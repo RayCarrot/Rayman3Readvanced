@@ -6,7 +6,7 @@ namespace GbaMonoGame.Rayman3;
 public partial class ItemsMulti
 {
     // NOTE: For some reason there's no check against the current FSM state action, so the code always runs
-    public bool Fsm_Default(FsmAction action)
+    public bool Fsm_Items(FsmAction action)
     {
         // Time out
         if (Timer >= 900)

@@ -168,8 +168,8 @@ public partial class PauseDialog
                             // won't work due to custom resolutions being possible, so we instead hide all sprite channels.
                             if (Rom.Platform == Platform.NGage)
                             {
-                                MusicVolume.VisibleSpriteChannels = 0;
-                                SfxVolume.VisibleSpriteChannels = 0;
+                                MusicVolume.ActiveChannels = 0;
+                                SfxVolume.ActiveChannels = 0;
                             }
                             
                             quitGame = true;
@@ -329,8 +329,8 @@ public partial class PauseDialog
                     else if (Rom.Platform == Platform.NGage)
                     {
                         // Unhide
-                        MusicVolume.VisibleSpriteChannels = UInt32.MaxValue;
-                        SfxVolume.VisibleSpriteChannels = UInt32.MaxValue;
+                        MusicVolume.ActiveChannels = UInt32.MaxValue;
+                        SfxVolume.ActiveChannels = UInt32.MaxValue;
 
                         PauseSelection.CurrentAnimation = 10 + Localization.LanguageUiIndex;
                         PrevSelectedOption = SelectedOption;
@@ -359,7 +359,7 @@ public partial class PauseDialog
                         SoundEventsManager.StopAllSongs();
                         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                         Gfx.Fade = 1;
-                        FrameManager.SetNextFrame(new MenuAll(MenuAll.Page.SelectGameMode));
+                        FrameManager.SetNextFrame(new MenuAll(MenuAll.Page.GameMode));
                     }
 
                     if (Rom.Platform == Platform.GBA)

@@ -27,10 +27,9 @@ public sealed partial class Lums : BaseActor
 
                 if (ActionId == Action.YellowLum && !IsProjectile && !RSMultiplayer.IsActive)
                 {
-                    LumId = GameInfo.LoadedYellowLums;
-                    GameInfo.LoadedYellowLums++;
+                    LumId = GameInfo.GetLumsId();
 
-                    if (GameInfo.HasCollectedYellowLum(LumId, GameInfo.MapId))
+                    if (GameInfo.IsLumDead(LumId, GameInfo.MapId))
                         ProcessMessage(this, Message.Destroy);
                 }
                 break;
@@ -128,7 +127,7 @@ public sealed partial class Lums : BaseActor
         {
             // Don't resurrect if collected (used when triggered from captors)
             case Message.Resurrect:
-                if (ActionId == Action.YellowLum && GameInfo.HasCollectedYellowLum(LumId, GameInfo.MapId))
+                if (ActionId == Action.YellowLum && GameInfo.IsLumDead(LumId, GameInfo.MapId))
                     return false;
                 break;
         }

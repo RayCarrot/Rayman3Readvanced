@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
@@ -98,7 +99,7 @@ public class Scene2D
     public void Init()
     {
         ResurrectActors();
-        RunCamera();
+        CameraStep();
         ProcessDialogs();
         DrawActors();
     }
@@ -120,12 +121,12 @@ public class Scene2D
             }
             else
             {
-                RunActors();
+                ActorBehaviorStep();
                 ResurrectActors();
-                StepActors();
-                MoveActors();
-                RunCaptors();
-                RunCamera();
+                ActorStep();
+                ActorMoveStep();
+                CaptorStep();
+                CameraStep();
                 ProcessDialogs();
                 DrawActors();
             }
@@ -138,12 +139,12 @@ public class Scene2D
             }
             else
             {
-                RunActors();
+                ActorBehaviorStep();
                 ResurrectActors();
-                StepActors();
-                MoveActors();
-                RunCaptors();
-                RunCamera();
+                ActorStep();
+                ActorMoveStep();
+                CaptorStep();
+                CameraStep();
                 DrawActors();
                 ProcessDialogs();
             }
@@ -313,7 +314,7 @@ public class Scene2D
         PendingDialogRefresh = false;
     }
 
-    public void RunActors()
+    public void ActorBehaviorStep()
     {
         foreach (BaseActor actor in KnotManager.EnumerateAllActors(isEnabled: true))
         {
@@ -352,7 +353,7 @@ public class Scene2D
         }
     }
 
-    public void StepActors()
+    public void ActorStep()
     {
         foreach (BaseActor actor in KnotManager.EnumerateAllActors(isEnabled: true))
         {
@@ -360,7 +361,7 @@ public class Scene2D
         }
     }
 
-    public void MoveActors()
+    public void ActorMoveStep()
     {
         foreach (BaseActor actor in KnotManager.EnumerateAllActors(isEnabled: true))
         {
@@ -369,29 +370,36 @@ public class Scene2D
         }
     }
 
-    public void RunCaptors()
+    public void CaptorStep()
     {
         foreach (Captor captor in KnotManager.EnumerateCaptors(isEnabled: true))
         {
             if (captor.TriggerOnMainActorDetection)
             {
-                captor.IsTriggering = captor.GetCaptorBox().Intersects(MainActor.GetDetectionBox());
+                Debug.Assert(MainActor.IsAgainstCaptor, "The main actor is not against captor");
+
+                captor.IsDetected = captor.GetCaptorBox().Intersects(MainActor.GetDetectionBox());
             }
             else
             {
-                if (!captor.IsTriggering)
+                if (!captor.IsDetected)
                 {
                     foreach (BaseActor actor in KnotManager.EnumerateAllActors(isEnabled: true))
                     {
+                        // Skip main actor if not in multiplayer
+                        if (!RSMultiplayer.IsActive && actor.InstanceId == 0)
+                            continue;
+
                         if (actor.IsAgainstCaptor && actor is ActionActor actionActor)
                         {
-                            captor.IsTriggering = captor.GetCaptorBox().Intersects(actionActor.GetDetectionBox());
+                            captor.IsDetected = captor.GetCaptorBox().Intersects(actionActor.GetDetectionBox());
+                            break;
                         }
                     }
                 }
             }
 
-            if (captor.IsTriggering)
+            if (captor.IsDetected)
                 captor.TriggerEvent();
         }
     }
@@ -404,7 +412,7 @@ public class Scene2D
         }
     }
 
-    public void RunCamera()
+    public void CameraStep()
     {
         Camera.Step();
     }
@@ -441,6 +449,8 @@ public class Scene2D
 
     public bool IsHitMainActor(InteractableActor actor)
     {
+        Debug.Assert(MainActor.ReceivesDamage, "The main actor cannot receive damage");
+
         Box mainActorVulnerabilityBox = MainActor.GetVulnerabilityBox();
         Box attackBox = actor.GetAttackBox();
 

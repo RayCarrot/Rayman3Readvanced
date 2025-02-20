@@ -36,25 +36,25 @@ public partial class MenuAll
 
             if (StartEraseCursorTargetIndex < StartEraseCursorCurrentIndex)
             {
-                if (Data.StartEraseCursor.ScreenPos.X > targetXPos)
+                if (Anims.StartEraseCursor.ScreenPos.X > targetXPos)
                 {
-                    Data.StartEraseCursor.ScreenPos -= new Vector2(4, 0);
+                    Anims.StartEraseCursor.ScreenPos -= new Vector2(4, 0);
                 }
                 else
                 {
-                    Data.StartEraseCursor.ScreenPos = Data.StartEraseCursor.ScreenPos with { X = targetXPos };
+                    Anims.StartEraseCursor.ScreenPos = Anims.StartEraseCursor.ScreenPos with { X = targetXPos };
                     StartEraseCursorCurrentIndex = StartEraseCursorTargetIndex;
                 }
             }
             else
             {
-                if (Data.StartEraseCursor.ScreenPos.X < targetXPos)
+                if (Anims.StartEraseCursor.ScreenPos.X < targetXPos)
                 {
-                    Data.StartEraseCursor.ScreenPos += new Vector2(4, 0);
+                    Anims.StartEraseCursor.ScreenPos += new Vector2(4, 0);
                 }
                 else
                 {
-                    Data.StartEraseCursor.ScreenPos = Data.StartEraseCursor.ScreenPos with { X = targetXPos };
+                    Anims.StartEraseCursor.ScreenPos = Anims.StartEraseCursor.ScreenPos with { X = targetXPos };
                     StartEraseCursorCurrentIndex = StartEraseCursorTargetIndex;
                 }
             }
@@ -67,26 +67,26 @@ public partial class MenuAll
 
     private void Step_InitializeTransitionToSinglePlayer()
     {
-        foreach (SpriteTextObject slotLumText in Data.SlotLumTexts)
+        foreach (SpriteTextObject slotLumText in Anims.SlotLumTexts)
             slotLumText.Text = "1000";
 
-        foreach (SpriteTextObject slotCageText in Data.SlotCageTexts)
+        foreach (SpriteTextObject slotCageText in Anims.SlotCageTexts)
             slotCageText.Text = "50";
 
-        foreach (AnimatedObject slotEmptyText in Data.SlotEmptyTexts)
+        foreach (AnimatedObject slotEmptyText in Anims.SlotEmptyTexts)
             slotEmptyText.CurrentAnimation = Localization.LanguageUiIndex;
 
-        Data.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 1;
+        Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 1;
 
         if (Rom.Platform == Platform.GBA)
-            Data.StartEraseCursor.CurrentAnimation = 40;
+            Anims.StartEraseCursor.CurrentAnimation = 40;
 
         for (int i = 0; i < 3; i++)
         {
             if (Slots[i] != null)
             {
-                Data.SlotLumTexts[i].Text = Slots[i].LumsCount.ToString();
-                Data.SlotCageTexts[i].Text = Slots[i].CagesCount.ToString();
+                Anims.SlotLumTexts[i].Text = Slots[i].LumsCount.ToString();
+                Anims.SlotCageTexts[i].Text = Slots[i].CagesCount.ToString();
             }
         }
 
@@ -100,13 +100,13 @@ public partial class MenuAll
 
         if (Rom.Platform == Platform.GBA)
         {
-            Data.StartEraseSelection.ScreenPos = new Vector2(80, 30);
-            Data.StartEraseCursor.ScreenPos = new Vector2(106, 12);
+            Anims.StartEraseSelection.ScreenPos = new Vector2(80, 30);
+            Anims.StartEraseCursor.ScreenPos = new Vector2(106, 12);
         }
         else if (Rom.Platform == Platform.NGage)
         {
-            Data.StartEraseSelection.ScreenPos = new Vector2(52, 30);
-            Data.StartEraseCursor.ScreenPos = new Vector2(78, 12);
+            Anims.StartEraseSelection.ScreenPos = new Vector2(52, 30);
+            Anims.StartEraseCursor.ScreenPos = new Vector2(78, 12);
         }
         else
         {
@@ -124,8 +124,8 @@ public partial class MenuAll
             cluster.Position += new Vector2(0, 8);
         }
 
-        Data.StartEraseSelection.ScreenPos = Data.StartEraseSelection.ScreenPos with { Y = TransitionValue / 2f - 50 };
-        Data.StartEraseCursor.ScreenPos = Data.StartEraseCursor.ScreenPos with { Y = TransitionValue / 2f - 68 };
+        Anims.StartEraseSelection.ScreenPos = Anims.StartEraseSelection.ScreenPos with { Y = TransitionValue / 2f - 50 };
+        Anims.StartEraseCursor.ScreenPos = Anims.StartEraseCursor.ScreenPos with { Y = TransitionValue / 2f - 68 };
 
         if (TransitionValue >= 160)
         {
@@ -135,25 +135,25 @@ public partial class MenuAll
 
         for (int i = 0; i < 3; i++)
         {
-            AnimationPlayer.Play(Data.SlotIcons[i]);
+            AnimationPlayer.Play(Anims.SlotIcons[i]);
 
             if (Slots[i] == null)
             {
-                AnimationPlayer.Play(Data.SlotEmptyTexts[i]);
+                AnimationPlayer.Play(Anims.SlotEmptyTexts[i]);
             }
             else
             {
-                AnimationPlayer.Play(Data.SlotLumTexts[i]);
-                AnimationPlayer.Play(Data.SlotCageTexts[i]);
-                AnimationPlayer.Play(Data.SlotLumIcons[i]);
-                AnimationPlayer.Play(Data.SlotCageIcons[i]);
+                AnimationPlayer.Play(Anims.SlotLumTexts[i]);
+                AnimationPlayer.Play(Anims.SlotCageTexts[i]);
+                AnimationPlayer.Play(Anims.SlotLumIcons[i]);
+                AnimationPlayer.Play(Anims.SlotCageIcons[i]);
             }
         }
 
-        AnimationPlayer.Play(Data.StartEraseSelection);
+        AnimationPlayer.Play(Anims.StartEraseSelection);
 
         if (Rom.Platform == Platform.GBA)
-            AnimationPlayer.Play(Data.StartEraseCursor);
+            AnimationPlayer.Play(Anims.StartEraseCursor);
     }
 
     private void Step_SinglePlayer()
@@ -177,7 +177,7 @@ public partial class MenuAll
                         {
                             // Load an existing game
                             GameInfo.Load(SelectedOption);
-                            GameInfo.LoadLastWorld();
+                            GameInfo.GotoLastSaveGame();
                         }
 
                         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
@@ -188,27 +188,27 @@ public partial class MenuAll
                     }
                 }
                 // Move start/erase to start
-                else if ((JoyPad.IsButtonJustPressed(GbaInput.Left) || JoyPad.IsButtonJustPressed(GbaInput.L)) && Data.Cursor.CurrentAnimation != 16)
+                else if ((JoyPad.IsButtonJustPressed(GbaInput.Left) || JoyPad.IsButtonJustPressed(GbaInput.L)) && Anims.Cursor.CurrentAnimation != 16)
                 {
                     if (StartEraseCursorTargetIndex != 0)
                     {
                         SetEraseCursorTargetIndex(0);
-                        Data.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 1;
+                        Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 1;
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
                 }
                 // Move start/erase to erase
-                else if ((JoyPad.IsButtonJustPressed(GbaInput.Right) || JoyPad.IsButtonJustPressed(GbaInput.R)) && Data.Cursor.CurrentAnimation != 16)
+                else if ((JoyPad.IsButtonJustPressed(GbaInput.Right) || JoyPad.IsButtonJustPressed(GbaInput.R)) && Anims.Cursor.CurrentAnimation != 16)
                 {
                     if (StartEraseCursorTargetIndex != 1)
                     {
                         SetEraseCursorTargetIndex(1);
-                        Data.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2;
+                        Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2;
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
                 }
                 // Move up
-                else if (JoyPad.IsButtonJustPressed(GbaInput.Up) && Data.Cursor.CurrentAnimation != 16)
+                else if (JoyPad.IsButtonJustPressed(GbaInput.Up) && Anims.Cursor.CurrentAnimation != 16)
                 {
                     if (SelectedOption == 0)
                         SelectOption(2, true);
@@ -216,7 +216,7 @@ public partial class MenuAll
                         SelectOption(SelectedOption - 1, true);
                 }
                 // Move down
-                else if (JoyPad.IsButtonJustPressed(GbaInput.Down) && Data.Cursor.CurrentAnimation != 16)
+                else if (JoyPad.IsButtonJustPressed(GbaInput.Down) && Anims.Cursor.CurrentAnimation != 16)
                 {
                     if (SelectedOption == 2)
                         SelectOption(0, true);
@@ -224,9 +224,9 @@ public partial class MenuAll
                         SelectOption(SelectedOption + 1, true);
                 }
                 // Select slot
-                else if (JoyPad.IsButtonJustPressed(GbaInput.A) && Data.Cursor.CurrentAnimation != 16)
+                else if (JoyPad.IsButtonJustPressed(GbaInput.A) && Anims.Cursor.CurrentAnimation != 16)
                 {
-                    Data.Cursor.CurrentAnimation = 16;
+                    Anims.Cursor.CurrentAnimation = 16;
 
                     if (StartEraseCursorTargetIndex != 1)
                     {
@@ -247,30 +247,30 @@ public partial class MenuAll
 
             case 1:
                 TransitionValue += 4;
-                Data.StartEraseSelection.ScreenPos = Data.StartEraseSelection.ScreenPos with { Y = 30 - TransitionValue };
-                Data.StartEraseCursor.ScreenPos = Data.StartEraseCursor.ScreenPos with { Y = 12 - TransitionValue };
+                Anims.StartEraseSelection.ScreenPos = Anims.StartEraseSelection.ScreenPos with { Y = 30 - TransitionValue };
+                Anims.StartEraseCursor.ScreenPos = Anims.StartEraseCursor.ScreenPos with { Y = 12 - TransitionValue };
 
                 if (TransitionValue >= 64)
                 {
                     TransitionValue = 0;
                     EraseSaveStage = 2;
-                    Data.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 21;
+                    Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 21;
 
                     if (Rom.Platform == Platform.GBA)
-                        Data.StartEraseSelection.ScreenPos = new Vector2(144, -80);
+                        Anims.StartEraseSelection.ScreenPos = new Vector2(144, -80);
                     else if (Rom.Platform == Platform.NGage)
-                        Data.StartEraseSelection.ScreenPos = new Vector2(104, -80);
+                        Anims.StartEraseSelection.ScreenPos = new Vector2(104, -80);
                     else
                         throw new UnsupportedPlatformException();
 
-                    Data.StartEraseCursor.ScreenPos = Data.StartEraseCursor.ScreenPos with { Y = -38 };
+                    Anims.StartEraseCursor.ScreenPos = Anims.StartEraseCursor.ScreenPos with { Y = -38 };
                 }
                 break;
 
             case 2:
                 TransitionValue += 4;
-                Data.StartEraseSelection.ScreenPos = Data.StartEraseSelection.ScreenPos with { Y = TransitionValue - 80 };
-                Data.StartEraseCursor.ScreenPos = Data.StartEraseCursor.ScreenPos with { Y = TransitionValue - 38 };
+                Anims.StartEraseSelection.ScreenPos = Anims.StartEraseSelection.ScreenPos with { Y = TransitionValue - 80 };
+                Anims.StartEraseCursor.ScreenPos = Anims.StartEraseCursor.ScreenPos with { Y = TransitionValue - 38 };
 
                 if (TransitionValue >= 80)
                 {
@@ -286,7 +286,7 @@ public partial class MenuAll
                     if (StartEraseCursorTargetIndex != 0)
                     {
                         SetEraseCursorTargetIndex(0);
-                        Data.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 20;
+                        Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 20;
                         // TODO: Game passes in 0 as obj here, but that's probably a mistake
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
@@ -297,7 +297,7 @@ public partial class MenuAll
                     if (StartEraseCursorTargetIndex != 1)
                     {
                         SetEraseCursorTargetIndex(1);
-                        Data.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 21;
+                        Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 21;
                         // TODO: Game passes in 0 as obj here, but that's probably a mistake
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
@@ -318,30 +318,30 @@ public partial class MenuAll
 
             case 4:
                 TransitionValue += 4;
-                Data.StartEraseSelection.ScreenPos = Data.StartEraseSelection.ScreenPos with { Y = -TransitionValue };
-                Data.StartEraseCursor.ScreenPos = Data.StartEraseCursor.ScreenPos with { Y = 42 - TransitionValue };
+                Anims.StartEraseSelection.ScreenPos = Anims.StartEraseSelection.ScreenPos with { Y = -TransitionValue };
+                Anims.StartEraseCursor.ScreenPos = Anims.StartEraseCursor.ScreenPos with { Y = 42 - TransitionValue };
 
                 if (TransitionValue >= 80)
                 {
                     TransitionValue = 0;
                     EraseSaveStage = 5;
-                    Data.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2;
+                    Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2;
 
                     if (Rom.Platform == Platform.GBA)
-                        Data.StartEraseSelection.ScreenPos = new Vector2(80, -50);
+                        Anims.StartEraseSelection.ScreenPos = new Vector2(80, -50);
                     else if (Rom.Platform == Platform.NGage)
-                        Data.StartEraseSelection.ScreenPos = new Vector2(52, -50);
+                        Anims.StartEraseSelection.ScreenPos = new Vector2(52, -50);
                     else
                         throw new UnsupportedPlatformException();
 
-                    Data.StartEraseCursor.ScreenPos = Data.StartEraseCursor.ScreenPos with { Y = -68 };
+                    Anims.StartEraseCursor.ScreenPos = Anims.StartEraseCursor.ScreenPos with { Y = -68 };
                 }
                 break;
 
             case 5:
                 TransitionValue += 4;
-                Data.StartEraseSelection.ScreenPos = Data.StartEraseSelection.ScreenPos with { Y = TransitionValue - 34 };
-                Data.StartEraseCursor.ScreenPos = Data.StartEraseCursor.ScreenPos with { Y = TransitionValue - 52 };
+                Anims.StartEraseSelection.ScreenPos = Anims.StartEraseSelection.ScreenPos with { Y = TransitionValue - 34 };
+                Anims.StartEraseCursor.ScreenPos = Anims.StartEraseCursor.ScreenPos with { Y = TransitionValue - 52 };
 
                 if (TransitionValue >= 64)
                 {
@@ -355,7 +355,7 @@ public partial class MenuAll
         {
             if (EraseSaveStage == 0)
             {
-                NextStepAction = Step_InitializeTransitionToSelectGameMode;
+                NextStepAction = Step_InitializeTransitionToGameMode;
                 CurrentStepAction = Step_TransitionOutOfSinglePlayer;
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                 TransitionValue = 0;
@@ -382,27 +382,27 @@ public partial class MenuAll
 
         for (int i = 0; i < 3; i++)
         {
-            AnimationPlayer.Play(Data.SlotIcons[i]);
+            AnimationPlayer.Play(Anims.SlotIcons[i]);
 
             if (Slots[i] == null)
             {
-                AnimationPlayer.Play(Data.SlotEmptyTexts[i]);
+                AnimationPlayer.Play(Anims.SlotEmptyTexts[i]);
             }
             else
             {
-                AnimationPlayer.Play(Data.SlotLumTexts[i]);
-                AnimationPlayer.Play(Data.SlotCageTexts[i]);
-                AnimationPlayer.Play(Data.SlotLumIcons[i]);
-                AnimationPlayer.Play(Data.SlotCageIcons[i]);
+                AnimationPlayer.Play(Anims.SlotLumTexts[i]);
+                AnimationPlayer.Play(Anims.SlotCageTexts[i]);
+                AnimationPlayer.Play(Anims.SlotLumIcons[i]);
+                AnimationPlayer.Play(Anims.SlotCageIcons[i]);
             }
         }
 
-        AnimationPlayer.Play(Data.StartEraseSelection);
-        AnimationPlayer.Play(Data.StartEraseCursor);
+        AnimationPlayer.Play(Anims.StartEraseSelection);
+        AnimationPlayer.Play(Anims.StartEraseCursor);
 
-        if (!IsStartingGame && Data.Cursor.CurrentAnimation == 16 && Data.Cursor.EndOfAnimation)
+        if (!IsStartingGame && Anims.Cursor.CurrentAnimation == 16 && Anims.Cursor.EndOfAnimation)
         {
-            Data.Cursor.CurrentAnimation = 0;
+            Anims.Cursor.CurrentAnimation = 0;
 
             if (StartEraseCursorTargetIndex == 0)
             {
@@ -421,8 +421,8 @@ public partial class MenuAll
         {
             TgxCluster cluster = Playfield.Camera.GetCluster(1);
             cluster.Position -= new Vector2(0, 4);
-            Data.StartEraseSelection.ScreenPos = Data.StartEraseSelection.ScreenPos with { Y = 30 - TransitionValue / 2f };
-            Data.StartEraseCursor.ScreenPos = Data.StartEraseCursor.ScreenPos with { Y = 12 - TransitionValue / 2f };
+            Anims.StartEraseSelection.ScreenPos = Anims.StartEraseSelection.ScreenPos with { Y = 30 - TransitionValue / 2f };
+            Anims.StartEraseCursor.ScreenPos = Anims.StartEraseCursor.ScreenPos with { Y = 12 - TransitionValue / 2f };
         }
         else if (TransitionValue >= Playfield.RenderContext.Resolution.Y + 60)
         {
@@ -432,23 +432,23 @@ public partial class MenuAll
 
         for (int i = 0; i < 3; i++)
         {
-            AnimationPlayer.Play(Data.SlotIcons[i]);
+            AnimationPlayer.Play(Anims.SlotIcons[i]);
 
             if (Slots[i] == null)
             {
-                AnimationPlayer.Play(Data.SlotEmptyTexts[i]);
+                AnimationPlayer.Play(Anims.SlotEmptyTexts[i]);
             }
             else
             {
-                AnimationPlayer.Play(Data.SlotLumTexts[i]);
-                AnimationPlayer.Play(Data.SlotCageTexts[i]);
-                AnimationPlayer.Play(Data.SlotLumIcons[i]);
-                AnimationPlayer.Play(Data.SlotCageIcons[i]);
+                AnimationPlayer.Play(Anims.SlotLumTexts[i]);
+                AnimationPlayer.Play(Anims.SlotCageTexts[i]);
+                AnimationPlayer.Play(Anims.SlotLumIcons[i]);
+                AnimationPlayer.Play(Anims.SlotCageIcons[i]);
             }
         }
 
-        AnimationPlayer.Play(Data.StartEraseSelection);
-        AnimationPlayer.Play(Data.StartEraseCursor);
+        AnimationPlayer.Play(Anims.StartEraseSelection);
+        AnimationPlayer.Play(Anims.StartEraseCursor);
     }
 
     #endregion

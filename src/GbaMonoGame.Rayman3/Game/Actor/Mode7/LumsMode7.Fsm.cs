@@ -41,7 +41,7 @@ public partial class LumsMode7
                     if (GameInfo.LevelType == LevelType.Race)
                         ((FrameSingleMode7)Frame.Current).KillLum(LumId);
                     else
-                        GameInfo.SetYellowLumAsCollected(LumId);
+                        GameInfo.KillLum(LumId);
 
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumOrag_Mix06);
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumOrag_Mix06);

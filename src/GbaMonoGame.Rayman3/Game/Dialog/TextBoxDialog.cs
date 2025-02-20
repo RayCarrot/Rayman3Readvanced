@@ -303,9 +303,9 @@ public partial class TextBoxDialog : Dialog
 
         // Blink next text symbol
         if (CurrentTextLine + 2 < CurrentText.Length && TextTransitionValue == 1 && (GameTime.ElapsedFrames & 0x10) != 0)
-            Canvas.SetChannelVisible(0);
+            Canvas.ActivateChannel(0);
         else
-            Canvas.SetChannelInvisible(0);
+            Canvas.DeactivateChannel(0);
 
         animationPlayer.PlayFront(Canvas);
 

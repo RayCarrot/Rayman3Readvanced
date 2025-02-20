@@ -99,7 +99,7 @@ public sealed partial class Murfy : MovableActor
                 break;
 
             default:
-                throw new Exception("Murfy is not set to be used in the current map");
+                throw new Exception("Murfy was not set to be used in this map");
         }
     }
 
@@ -116,7 +116,7 @@ public sealed partial class Murfy : MovableActor
         if (!HasPlayedCutscene && GameInfo.MapId == MapId.WoodLight_M1)
         {
             if (GameInfo.LastGreenLumAlive == 0)
-                GameInfo.SetCheckpoint(new Vector2(130, 264));
+                GameInfo.GreenLumTouchedByRayman(0, new Vector2(130, 264));
 
             return true;
         }

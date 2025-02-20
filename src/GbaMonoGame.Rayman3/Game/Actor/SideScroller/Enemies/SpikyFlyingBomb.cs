@@ -30,7 +30,7 @@ public sealed partial class SpikyFlyingBomb : MovableActor
                 Action.Move_Right => PhysicalTypeValue.Enemy_Right,
                 Action.Move_Up => PhysicalTypeValue.Enemy_Up,
                 Action.Move_Down => PhysicalTypeValue.Enemy_Down,
-                _ => throw new Exception("Invalid flying bomb action")
+                _ => throw new Exception("Invalid initial action for the spiky flying bomb")
             };
             State.SetTo(Fsm_Move);
         }

@@ -1,4 +1,5 @@
-﻿using GbaMonoGame.Engine2d;
+﻿using System;
+using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -15,6 +16,9 @@ public sealed partial class Skull : MovableActor
             State.SetTo(Fsm_SolidMove);
         else
             State.SetTo(Fsm_Spawn);
+
+        if ((Action)actorResource.FirstActionId > Action.SpinStart)
+            throw new Exception("Invalid initial action for the skull actor");
     }
 
     public Vector2 InitialPosition { get; }

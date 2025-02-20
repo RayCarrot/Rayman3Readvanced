@@ -1,4 +1,6 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using System;
+using System.Diagnostics;
+using BinarySerializer.Ubisoft.GbaEngine;
 
 namespace GbaMonoGame;
 
@@ -9,7 +11,7 @@ public static class MultiplayerManager
     public static int MachineId { get; set; }
     public static int PlayersCount { get; set; }
     public static uint[] MachineTimers { get; set; }
-    public static bool HasInvalidatedCurrentFrameInputs { get; set; }
+    public static bool HasProcessedFrame { get; set; }
 
     // TODO: Name
     public static int field_0x4 { get; set; }
@@ -21,7 +23,7 @@ public static class MultiplayerManager
     {
         InitialGameTime = 0;
         field_0x4 = 0;
-        HasInvalidatedCurrentFrameInputs = field_0x1a;
+        HasProcessedFrame = field_0x1a;
         field_0x19 = 0;
         field_0x1a = false;
         field_0x1b = 0;
@@ -76,7 +78,7 @@ public static class MultiplayerManager
             }
 
             // Read our inputs
-            if (!field_0x1a && (HasInvalidatedCurrentFrameInputs || MachineTimers[MachineId] == 0))
+            if (!field_0x1a && (HasProcessedFrame || MachineTimers[MachineId] == 0))
             {
                 if (field_0x19 == 0)
                 {
@@ -125,20 +127,28 @@ public static class MultiplayerManager
         return false;
     }
 
-    public static void ReleaseJoyPads()
+    public static void FrameProcessed()
     {
-        HasInvalidatedCurrentFrameInputs = true;
+        if (MachineId >= RSMultiplayer.PlayersCount)
+            throw new Exception("Invalid machine id");
+
+        HasProcessedFrame = true;
         MultiJoyPad.ReleaseJoyPads(MachineTimers[MachineId]);
     }
 
-    public static void UpdateFromRSMultiplayer()
+    public static void CacheData()
     {
+        Debug.Assert(RSMultiplayer.MubState == MubState.Connected);
+
         MachineId = RSMultiplayer.MachineId;
         PlayersCount = RSMultiplayer.PlayersCount;
     }
 
     public static uint GetMachineTimer()
     {
+        if (MachineId >= RSMultiplayer.PlayersCount)
+            throw new Exception("Invalid machine id");
+
         return MachineTimers[MachineId];
     }
 

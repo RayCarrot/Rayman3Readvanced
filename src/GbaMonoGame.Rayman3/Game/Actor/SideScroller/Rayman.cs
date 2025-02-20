@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using BinarySerializer;
 using BinarySerializer.Nintendo.GBA;
 using BinarySerializer.Ubisoft.GbaEngine;
@@ -13,6 +14,8 @@ public sealed partial class Rayman : MovableActor
 {
     public Rayman(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        Debug.Assert(InstanceId < RSMultiplayer.MaxPlayersCount, "The main actor must be the 4 first game objects");
+
         Resource = actorResource;
 
         IsLocalPlayer = true;
@@ -324,36 +327,36 @@ public sealed partial class Rayman : MovableActor
         switch (type)
         {
             case RaymanBody.RaymanBodyPartType.Fist:
-                AnimatedObject.SetChannelInvisible(3);
-                AnimatedObject.SetChannelInvisible(2);
+                AnimatedObject.DeactivateChannel(3);
+                AnimatedObject.DeactivateChannel(2);
                 break;
 
             case RaymanBody.RaymanBodyPartType.SecondFist:
-                AnimatedObject.SetChannelInvisible(16);
-                AnimatedObject.SetChannelInvisible(15);
+                AnimatedObject.DeactivateChannel(16);
+                AnimatedObject.DeactivateChannel(15);
                 break;
 
             case RaymanBody.RaymanBodyPartType.Foot:
-                AnimatedObject.SetChannelInvisible(5);
-                AnimatedObject.SetChannelInvisible(4);
+                AnimatedObject.DeactivateChannel(5);
+                AnimatedObject.DeactivateChannel(4);
                 bodyPart.BaseActionId = 6;
                 break;
 
             case RaymanBody.RaymanBodyPartType.Torso:
-                AnimatedObject.SetChannelInvisible(12);
-                AnimatedObject.SetChannelInvisible(11);
+                AnimatedObject.DeactivateChannel(12);
+                AnimatedObject.DeactivateChannel(11);
                 bodyPart.BaseActionId = 12;
                 break;
 
             case RaymanBody.RaymanBodyPartType.SuperFist:
-                AnimatedObject.SetChannelInvisible(3);
-                AnimatedObject.SetChannelInvisible(2);
+                AnimatedObject.DeactivateChannel(3);
+                AnimatedObject.DeactivateChannel(2);
                 bodyPart.BaseActionId = 18;
                 break;
 
             case RaymanBody.RaymanBodyPartType.SecondSuperFist:
-                AnimatedObject.SetChannelInvisible(16);
-                AnimatedObject.SetChannelInvisible(15);
+                AnimatedObject.DeactivateChannel(16);
+                AnimatedObject.DeactivateChannel(15);
                 bodyPart.BaseActionId = 18;
                 break;
         }
@@ -1183,7 +1186,7 @@ public sealed partial class Rayman : MovableActor
         };
     }
 
-    private bool IsDead()
+    private bool CheckDeath()
     {
         Box detectionBox = GetDetectionBox();
 
@@ -1327,24 +1330,24 @@ public sealed partial class Rayman : MovableActor
                 {
                     case RaymanBody.RaymanBodyPartType.Fist:
                     case RaymanBody.RaymanBodyPartType.SuperFist:
-                        AnimatedObject.SetChannelVisible(3);
-                        AnimatedObject.SetChannelVisible(2);
+                        AnimatedObject.ActivateChannel(3);
+                        AnimatedObject.ActivateChannel(2);
                         break;
 
                     case RaymanBody.RaymanBodyPartType.SecondFist:
                     case RaymanBody.RaymanBodyPartType.SecondSuperFist:
-                        AnimatedObject.SetChannelVisible(16);
-                        AnimatedObject.SetChannelVisible(15);
+                        AnimatedObject.ActivateChannel(16);
+                        AnimatedObject.ActivateChannel(15);
                         break;
 
                     case RaymanBody.RaymanBodyPartType.Foot:
-                        AnimatedObject.SetChannelVisible(5);
-                        AnimatedObject.SetChannelVisible(4);
+                        AnimatedObject.ActivateChannel(5);
+                        AnimatedObject.ActivateChannel(4);
                         break;
 
                     case RaymanBody.RaymanBodyPartType.Torso:
-                        AnimatedObject.SetChannelVisible(12);
-                        AnimatedObject.SetChannelVisible(11);
+                        AnimatedObject.ActivateChannel(12);
+                        AnimatedObject.ActivateChannel(11);
                         break;
                 }
                 return false;

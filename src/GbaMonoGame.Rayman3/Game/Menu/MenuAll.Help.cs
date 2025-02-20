@@ -10,11 +10,11 @@ public partial class MenuAll
 
     private void Step_InitializeTransitionToHelp()
     {
-        Data.ArrowLeft.CurrentAnimation = 1;
-        Data.ArrowRight.CurrentAnimation = 0;
+        Anims.ArrowLeft.CurrentAnimation = 1;
+        Anims.ArrowRight.CurrentAnimation = 0;
 
         CurrentStepAction = Step_TransitionToHelp;
-        NGageSetText(36, false, null, 0);
+        NGageSetMenuText(36, false, null, 0);
         SetBackgroundPalette(2);
         SelectedOption = 0;
     }
@@ -38,17 +38,17 @@ public partial class MenuAll
         DrawText(false);
 
         if (SelectedOption == 0)
-            Data.ArrowLeft.ScreenPos = Data.ArrowLeft.ScreenPos with { X = 300 };
+            Anims.ArrowLeft.ScreenPos = Anims.ArrowLeft.ScreenPos with { X = 300 };
         else
-            Data.ArrowLeft.ScreenPos = new Vector2(68, 136);
+            Anims.ArrowLeft.ScreenPos = new Vector2(68, 136);
 
         if (SelectedOption >= 3)
-            Data.ArrowRight.ScreenPos = Data.ArrowRight.ScreenPos with { X = 300 };
+            Anims.ArrowRight.ScreenPos = Anims.ArrowRight.ScreenPos with { X = 300 };
         else
-            Data.ArrowRight.ScreenPos = new Vector2(152, 136);
+            Anims.ArrowRight.ScreenPos = new Vector2(152, 136);
 
-        AnimationPlayer.Play(Data.ArrowLeft);
-        AnimationPlayer.Play(Data.ArrowRight);
+        AnimationPlayer.Play(Anims.ArrowLeft);
+        AnimationPlayer.Play(Anims.ArrowRight);
     }
 
     private void Step_Help()
@@ -88,22 +88,22 @@ public partial class MenuAll
         }
 
         if (prevSelectedOption != SelectedOption)
-            NGageSetText(36 + SelectedOption, false, null, 0);
+            NGageSetMenuText(36 + SelectedOption, false, null, 0);
 
         DrawText(true);
 
         if (SelectedOption == 0)
-            Data.ArrowLeft.ScreenPos = Data.ArrowLeft.ScreenPos with { X = 300 };
+            Anims.ArrowLeft.ScreenPos = Anims.ArrowLeft.ScreenPos with { X = 300 };
         else
-            Data.ArrowLeft.ScreenPos = new Vector2(68, 136);
+            Anims.ArrowLeft.ScreenPos = new Vector2(68, 136);
 
         if (SelectedOption >= 3)
-            Data.ArrowRight.ScreenPos = Data.ArrowRight.ScreenPos with { X = 300 };
+            Anims.ArrowRight.ScreenPos = Anims.ArrowRight.ScreenPos with { X = 300 };
         else
-            Data.ArrowRight.ScreenPos = new Vector2(152, 136);
+            Anims.ArrowRight.ScreenPos = new Vector2(152, 136);
 
-        AnimationPlayer.Play(Data.ArrowLeft);
-        AnimationPlayer.Play(Data.ArrowRight);
+        AnimationPlayer.Play(Anims.ArrowLeft);
+        AnimationPlayer.Play(Anims.ArrowRight);
     }
 
     private void Step_TransitionOutOfHelp()
@@ -118,7 +118,7 @@ public partial class MenuAll
         else if (TransitionValue >= Playfield.RenderContext.Resolution.Y + 60)
         {
             TransitionValue = 0;
-            CurrentStepAction = Step_InitializeTransitionToSelectGameMode;
+            CurrentStepAction = Step_InitializeTransitionToGameMode;
         }
 
         DrawText(false);

@@ -32,7 +32,7 @@ public sealed partial class ItemsMulti : BaseActor
             SpawnCountdown = 0;
         }
 
-        State.SetTo(Fsm_Default);
+        State.SetTo(Fsm_Items);
     }
 
     public ushort Timer { get; set; }

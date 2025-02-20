@@ -1,4 +1,5 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using System;
+using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 
 namespace GbaMonoGame.Rayman3;
@@ -17,9 +18,15 @@ public class CagesBar : Bar
 
     public void AddCages(int count)
     {
+        if (count > 9)
+            throw new Exception("Cannot add more than 9 cage at one time");
+
         DrawStep = BarDrawStep.MoveIn;
         WaitTimer = 0;
         CollectedCagesDigitValue += count;
+
+        if (CollectedCagesDigitValue > 9)
+            throw new Exception("Cannot have more than 9 cages");
     }
 
     public override void Load()
@@ -65,7 +72,7 @@ public class CagesBar : Bar
         int cagesCount = GameInfo.LevelType == LevelType.GameCube ? GameInfo.CagesCount : GameInfo.Level.CagesCount;
         TotalCagesDigit.CurrentAnimation = cagesCount;
 
-        CollectedCagesDigitValue = GameInfo.GetCollectedCagesInLevel(GameInfo.MapId);
+        CollectedCagesDigitValue = GameInfo.GetDeadCagesForCurrentMap(GameInfo.MapId);
     }
 
     public override void Draw(AnimationPlayer animationPlayer)

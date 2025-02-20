@@ -1,4 +1,5 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+﻿using System;
+using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
@@ -24,7 +25,7 @@ public partial class GameCubeMenu : Frame
 
     public AnimationPlayer AnimationPlayer { get; set; }
     public TransitionsFX TransitionsFX { get; set; }
-    public GameCubeMenuData Data { get; set; }
+    public GameCubeMenuAnimations Anims { get; set; }
     public FiniteStateMachine State { get; } = new();
 
     public GameCubeMenuTransitionInScreenEffect TransitionInScreenEffect { get; set; }
@@ -54,7 +55,7 @@ public partial class GameCubeMenu : Frame
 
     private bool IsMapUnlocked(int mapId)
     {
-        int lums = GameInfo.GetTotalCollectedYellowLums();
+        int lums = GameInfo.GetTotalDeadLums();
         return lums >= (mapId + 1) * 100 &&
                GameInfo.PersistentInfo.CompletedGCNBonusLevels >= mapId;
     }
@@ -70,7 +71,7 @@ public partial class GameCubeMenu : Frame
 
         for (int i = 0; i < text.Length; i++)
         {
-            SpriteTextObject textObj = i == 0 ? Data.StatusText : Data.ReusableTexts[i - 1];
+            SpriteTextObject textObj = i == 0 ? Anims.StatusText : Anims.ReusableTexts[i - 1];
 
             textObj.Color = TextColor.GameCubeMenu;
             textObj.Text = text[i];
@@ -80,34 +81,37 @@ public partial class GameCubeMenu : Frame
 
     private void MapSelectionUpdateText()
     {
+        if (MapInfos.MapsCount < 3)
+            throw new Exception("Need at least 3 maps");
+
         // Set text colors
         int selectedIndex = SelectedMap - MapScroll;
         for (int i = 0; i < 3; i++)
-            Data.ReusableTexts[i].Color = i == selectedIndex ? TextColor.GameCubeMenu : TextColor.GameCubeMenuFaded;
+            Anims.ReusableTexts[i].Color = i == selectedIndex ? TextColor.GameCubeMenu : TextColor.GameCubeMenuFaded;
 
         // Update animations and texts
         for (int i = 0; i < 3; i++)
         {
             MapSelectionUpdateAnimations(MapScroll + i, i);
-            Data.LumRequirementTexts[i].Text = ((MapScroll + i + 1) * 100).ToString();
-            Data.ReusableTexts[i].Text = MapInfos.Maps[MapScroll + i].Name;
+            Anims.LumRequirementTexts[i].Text = ((MapScroll + i + 1) * 100).ToString();
+            Anims.ReusableTexts[i].Text = MapInfos.Maps[MapScroll + i].Name;
         }
     }
 
     private void MapSelectionUpdateAnimations(int mapId, int index)
     {
         if (!IsMapUnlocked(mapId))
-            Data.LevelChecks[index].CurrentAnimation = 2;
+            Anims.LevelChecks[index].CurrentAnimation = 2;
         else if (!IsMapCompleted(mapId))
-            Data.LevelChecks[index].CurrentAnimation = 0;
+            Anims.LevelChecks[index].CurrentAnimation = 0;
         else
-            Data.LevelChecks[index].CurrentAnimation = 1;
+            Anims.LevelChecks[index].CurrentAnimation = 1;
     }
 
     private void ResetReusableTexts()
     {
         for (int i = 0; i < 3; i++)
-            Data.ReusableTexts[i].ScreenPos = new Vector2(85, 36 + i * 24);
+            Anims.ReusableTexts[i].ScreenPos = new Vector2(85, 36 + i * 24);
     }
 
     #endregion
@@ -134,7 +138,7 @@ public partial class GameCubeMenu : Frame
             RenderOptions = { RenderContext = Rom.OriginalGameRenderContext },
         });
 
-        Data = new GameCubeMenuData(Rom.OriginalGameRenderContext);
+        Anims = new GameCubeMenuAnimations(Rom.OriginalGameRenderContext);
         
         JoyBus = new JoyBus();
         JoyBus.Connect();
@@ -149,10 +153,10 @@ public partial class GameCubeMenu : Frame
         GcnUnlockFlags = 0;
         IsShowingLyChallengeUnlocked = false;
 
-        if (GameInfo.HasCollectedAllYellowLums())
+        if (GameInfo.AreAllLumsDead())
             GcnUnlockFlags |= 1;
 
-        if (GameInfo.HasCollectedAllCages())
+        if (GameInfo.AreAllCagesDead())
             GcnUnlockFlags |= 2;
 
         if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossFinal_M2)
@@ -204,48 +208,48 @@ public partial class GameCubeMenu : Frame
         if (WheelRotation >= 2048)
             WheelRotation = 0;
 
-        Data.Wheel1.AffineMatrix = new AffineMatrix(WheelRotation % 256, 1, 1);
-        Data.Wheel2.AffineMatrix = new AffineMatrix(255 - WheelRotation / 2f % 256, 1, 1);
-        Data.Wheel3.AffineMatrix = new AffineMatrix(WheelRotation / 4f % 256, 1, 1);
-        Data.Wheel4.AffineMatrix = new AffineMatrix(WheelRotation / 8f % 256, 1, 1);
+        Anims.Wheel1.AffineMatrix = new AffineMatrix(WheelRotation % 256, 1, 1);
+        Anims.Wheel2.AffineMatrix = new AffineMatrix(255 - WheelRotation / 2f % 256, 1, 1);
+        Anims.Wheel3.AffineMatrix = new AffineMatrix(WheelRotation / 4f % 256, 1, 1);
+        Anims.Wheel4.AffineMatrix = new AffineMatrix(WheelRotation / 8f % 256, 1, 1);
 
-        AnimationPlayer.Play(Data.Wheel1);
-        AnimationPlayer.Play(Data.Wheel2);
-        AnimationPlayer.Play(Data.Wheel3);
-        AnimationPlayer.Play(Data.Wheel4);
+        AnimationPlayer.Play(Anims.Wheel1);
+        AnimationPlayer.Play(Anims.Wheel2);
+        AnimationPlayer.Play(Anims.Wheel3);
+        AnimationPlayer.Play(Anims.Wheel4);
 
         if (WaitingForConnection)
         {
-            foreach (SpriteTextObject text in Data.ReusableTexts)
+            foreach (SpriteTextObject text in Anims.ReusableTexts)
                 AnimationPlayer.Play(text);
         }
         else if (State == Fsm_DownloadMap)
         {
-            AnimationPlayer.Play(Data.ReusableTexts[0]);
-            AnimationPlayer.Play(Data.ReusableTexts[1]);
+            AnimationPlayer.Play(Anims.ReusableTexts[0]);
+            AnimationPlayer.Play(Anims.ReusableTexts[1]);
         }
         else if (State == Fsm_SelectMap)
         {
             if (IsShowingLyChallengeUnlocked)
             {
-                AnimationPlayer.Play(Data.ReusableTexts[0]);
+                AnimationPlayer.Play(Anims.ReusableTexts[0]);
             }
             else
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    AnimationPlayer.Play(Data.ReusableTexts[i]);
-                    AnimationPlayer.Play(Data.LumRequirementTexts[i]);
-                    AnimationPlayer.Play(Data.LumIcons[i]);
-                    AnimationPlayer.Play(Data.LevelChecks[i]);
+                    AnimationPlayer.Play(Anims.ReusableTexts[i]);
+                    AnimationPlayer.Play(Anims.LumRequirementTexts[i]);
+                    AnimationPlayer.Play(Anims.LumIcons[i]);
+                    AnimationPlayer.Play(Anims.LevelChecks[i]);
                 }
             }
         }
 
-        AnimationPlayer.Play(Data.TotalLumsText);
+        AnimationPlayer.Play(Anims.TotalLumsText);
 
         if (WaitingForConnection || State == Fsm_DownloadMap || State == Fsm_SelectMap || State == Fsm_DownloadMapAck)
-            AnimationPlayer.Play(Data.StatusText);
+            AnimationPlayer.Play(Anims.StatusText);
 
         TransitionsFX.StepAll();
         AnimationPlayer.Execute();

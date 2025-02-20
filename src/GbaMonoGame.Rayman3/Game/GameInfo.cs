@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 
@@ -122,8 +123,10 @@ public static class GameInfo
         }
     }
 
-    public static void SetCheckpoint(Vector2 pos)
+    public static void GreenLumTouchedByRayman(int id, Vector2 pos)
     {
+        Debug.Assert(id == LastGreenLumAlive, "Invalid Greens lums id. The lums ids have to be ordered.");
+
         LastGreenLumAlive++;
         CheckpointPosition = pos;
     }
@@ -148,17 +151,23 @@ public static class GameInfo
         return (PersistentInfo.Cages[cageId >> 3] & (1 << (cageId & 7))) == 0;
     }
 
-    public static void KillLum(int lumId)
+    public static void SetLumStatus(int lumId, bool isDead)
     {
-        PersistentInfo.Lums[lumId >> 3] = (byte)(PersistentInfo.Lums[lumId >> 3] & ~(1 << (lumId & 7)));
+        if (isDead)
+            PersistentInfo.Lums[lumId >> 3] = (byte)(PersistentInfo.Lums[lumId >> 3] & ~(1 << (lumId & 7)));
+        else
+            PersistentInfo.Lums[lumId >> 3] = (byte)(PersistentInfo.Lums[lumId >> 3] | (1 << (lumId & 7)));
     }
 
-    public static void KillCage(int cageId)
+    public static void SetCageStatus(int cageId, bool isDead)
     {
-        PersistentInfo.Cages[cageId >> 3] = (byte)(PersistentInfo.Cages[cageId >> 3] & ~(1 << (cageId & 7)));
+        if (isDead)
+            PersistentInfo.Cages[cageId >> 3] = (byte)(PersistentInfo.Cages[cageId >> 3] & ~(1 << (cageId & 7)));
+        else
+            PersistentInfo.Cages[cageId >> 3] = (byte)(PersistentInfo.Cages[cageId >> 3] | (1 << (cageId & 7)));
     }
 
-    public static int GetTotalYelloLumsInLevel()
+    public static int GetLumsCountForCurrentMap()
     {
         if (LevelType != LevelType.GameCube)
             return Level.LumsCount;
@@ -166,7 +175,7 @@ public static class GameInfo
             return YellowLumsCount;
     }
 
-    public static int GetCollectedYellowLumsInLevel(MapId mapId)
+    public static int GetDeadLumsForCurrentMap(MapId mapId)
     {
         if (LevelType == LevelType.GameCube)
         {
@@ -178,7 +187,7 @@ public static class GameInfo
 
             for (int i = 0; i < Levels[(int)mapId].LumsCount; i++)
             {
-                if (HasCollectedYellowLum(i, mapId))
+                if (IsLumDead(i, mapId))
                     count++;
             }
 
@@ -186,7 +195,7 @@ public static class GameInfo
         }
     }
 
-    public static int GetCollectedCagesInLevel(MapId mapId)
+    public static int GetDeadCagesForCurrentMap(MapId mapId)
     {
         if (LevelType == LevelType.GameCube)
         {
@@ -198,7 +207,7 @@ public static class GameInfo
 
             for (int i = 0; i < Levels[(int)mapId].CagesCount; i++)
             {
-                if (HasCollectedCage(i, mapId))
+                if (IsCageDead(i, mapId))
                     count++;
             }
 
@@ -206,7 +215,17 @@ public static class GameInfo
         }
     }
 
-    public static int GetTotalCollectedYellowLums()
+    public static int GetLumsId()
+    {
+        if (LevelType != LevelType.GameCube && LoadedYellowLums >= YellowLumsCount)
+            throw new Exception("Too many Yellow lums registered");
+
+        int id = LoadedYellowLums;
+        LoadedYellowLums++;
+        return id;
+    }
+
+    public static int GetTotalDeadLums()
     {
         int count = 0;
 
@@ -219,7 +238,7 @@ public static class GameInfo
         return count;
     }
 
-    public static int GetTotalCollectedCages()
+    public static int GetTotalDeadCages()
     {
         int count = 0;
 
@@ -232,21 +251,24 @@ public static class GameInfo
         return count;
     }
 
-    public static bool HasCollectedAllYellowLums()
+    public static bool AreAllLumsDead()
     {
-        return GetTotalCollectedYellowLums() == 1000;
+        return GetTotalDeadLums() == 1000;
     }
 
-    public static bool HasCollectedAllCages()
+    public static bool AreAllCagesDead()
     {
-        return GetTotalCollectedCages() == 50;
+        return GetTotalDeadCages() == 50;
     }
 
     public static bool World1LumsCompleted()
     {
         int count = 0;
         for (MapId mapId = MapId.WoodLight_M1; mapId <= MapId.SanctuaryOfBigTree_M2; mapId++)
-            count += GetCollectedYellowLumsInLevel(mapId);
+            count += GetDeadLumsForCurrentMap(mapId);
+
+        Debug.Assert(count <= LumsPerWorld, "Abnormal dead lums count in world #1");
+
         return count == LumsPerWorld;
     }
 
@@ -254,7 +276,10 @@ public static class GameInfo
     {
         int count = 0;
         for (MapId mapId = MapId.MissileRace1; mapId <= MapId.MarshAwakening2; mapId++)
-            count += GetCollectedYellowLumsInLevel(mapId);
+            count += GetDeadLumsForCurrentMap(mapId);
+
+        Debug.Assert(count <= LumsPerWorld, "Abnormal dead lums count in world #2");
+
         return count == LumsPerWorld;
     }
 
@@ -262,7 +287,10 @@ public static class GameInfo
     {
         int count = 0;
         for (MapId mapId = MapId.SanctuaryOfStoneAndFire_M1; mapId <= MapId.SanctuaryOfRockAndLava_M3; mapId++)
-            count += GetCollectedYellowLumsInLevel(mapId);
+            count += GetDeadLumsForCurrentMap(mapId);
+
+        Debug.Assert(count <= LumsPerWorld, "Abnormal dead lums count in world #3");
+
         return count == LumsPerWorld;
     }
 
@@ -270,21 +298,24 @@ public static class GameInfo
     {
         int count = 0;
         for (MapId mapId = MapId.TombOfTheAncients_M1; mapId <= MapId.BossFinal_M2; mapId++)
-            count += GetCollectedYellowLumsInLevel(mapId);
+            count += GetDeadLumsForCurrentMap(mapId);
+
+        Debug.Assert(count <= LumsPerWorld, "Abnormal dead lums count in world #4");
+
         return count == LumsPerWorld;
     }
 
-    public static bool HasCollectedYellowLum(int lumId, MapId mapId)
+    public static bool IsLumDead(int lumId, MapId mapId)
     {
         return GetLumStatus(Levels[(int)mapId].GlobalLumsIndex + lumId);
     }
 
-    public static bool HasCollectedCage(int cageId, MapId mapId)
+    public static bool IsCageDead(int cageId, MapId mapId)
     {
         return GetCageStatus(Levels[(int)mapId].GlobalCagesIndex + cageId);
     }
 
-    public static void SetYellowLumAsCollected(int lumId)
+    public static void KillLum(int lumId)
     {
         if (LevelType == LevelType.GameCube)
         {
@@ -298,10 +329,10 @@ public static class GameInfo
         }
         else
         {
-            KillLum(Level.GlobalLumsIndex + lumId);
+            SetLumStatus(Level.GlobalLumsIndex + lumId, true);
 
             // NOTE: Game also checks to MapId is not 0xFF, but that shouldn't be possible
-            if (GetCollectedYellowLumsInLevel(MapId) == YellowLumsCount && LevelType != LevelType.Race)
+            if (GetDeadLumsForCurrentMap(MapId) == YellowLumsCount && LevelType != LevelType.Race)
             {
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumTotal_Mix02);
                 LevelMusicManager.OverrideLevelMusic(Rayman3SoundEvent.Play__win2);
@@ -309,7 +340,7 @@ public static class GameInfo
         }
     }
 
-    public static void SetCageAsCollected(int cageId)
+    public static void KillCage(int cageId)
     {
         if (LevelType == LevelType.GameCube)
         {
@@ -319,20 +350,20 @@ public static class GameInfo
         }
         else
         {
-            KillCage(Level.GlobalCagesIndex + cageId);
+            SetCageStatus(Level.GlobalCagesIndex + cageId, true);
 
             // NOTE: Game also checks to MapId is not 0xFF, but that shouldn't be possible
-            if (GetCollectedCagesInLevel(MapId) == CagesCount)
+            if (GetDeadCagesForCurrentMap(MapId) == CagesCount)
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumTotal_Mix02);
         }
     }
 
-    public static void SetAllYellowLumsAsCollected()
+    public static void KillAllLums()
     {
         Array.Clear(PersistentInfo.Lums);
     }
 
-    public static void SetAllCagesAsCollected()
+    public static void KillAllCages()
     {
         Array.Clear(PersistentInfo.Cages);
     }
@@ -365,6 +396,9 @@ public static class GameInfo
 
     public static void LoadLevel(MapId mapId)
     {
+        if (mapId > MapId.WorldMap)
+            throw new Exception("Invalid map");
+
         if (mapId == MapId.MarshAwakening1 && PersistentInfo.LastCompletedLevel < (int)MapId.MarshAwakening1)
         {
             FrameManager.SetNextFrame(new Act2());
@@ -379,7 +413,7 @@ public static class GameInfo
         }
     }
 
-    public static void LoadLastWorld()
+    public static void GotoLastSaveGame()
     {
         switch ((MapId)PersistentInfo.LastPlayedLevel)
         {
@@ -455,7 +489,7 @@ public static class GameInfo
             case MapId.World4:
             case MapId.WorldMap:
             default:
-                throw new Exception("Invalid level to load world from");
+                throw new Exception("Invalid last map id");
         }
     }
 

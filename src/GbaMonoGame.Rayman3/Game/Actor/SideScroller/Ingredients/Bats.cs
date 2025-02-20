@@ -15,7 +15,7 @@ public sealed partial class Bats : ActionActor
         else if (InitialAction == Action.Stationary_Flap)
             State.SetTo(Fsm_StationaryWait);
         else
-            throw new Exception("Invalid initial action");
+            throw new Exception("Invalid starting animation for bats");
     }
 
     public Action InitialAction { get; }

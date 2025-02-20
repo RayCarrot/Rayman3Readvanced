@@ -4,6 +4,7 @@ using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
 
+// Original name: Mumu
 public sealed partial class Caterpillar : MovableActor
 {
     public Caterpillar(int instanceId, Scene2D scene, ActorResource actorResource) 
@@ -40,7 +41,7 @@ public sealed partial class Caterpillar : MovableActor
                 break;
 
             default:
-                throw new Exception("Invalid initial action set");
+                throw new Exception("Invalid initial action set for the caterpillar actor");
         }
 
         State.SetTo(Fsm_Move);

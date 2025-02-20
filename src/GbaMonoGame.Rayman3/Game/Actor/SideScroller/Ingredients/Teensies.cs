@@ -52,7 +52,7 @@ public sealed partial class Teensies : ActionActor
             ActionId = Random.GetNumber(5) * 2 + (IsFacingRight ? Action.Master1_Right : Action.Master1_Left);
     }
 
-    private bool IsWorldFinished()
+    private bool IsMapRequirementFulfilled()
     {
         if (InitialActionId is Action.Init_World1_Right or Action.Init_World1_Left)
             return GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.SanctuaryOfBigTree_M2;
@@ -70,7 +70,7 @@ public sealed partial class Teensies : ActionActor
     {
         if (InitialActionId is Action.Init_World1_Right or Action.Init_World1_Left)
         {
-            if (GameInfo.GetTotalCollectedCages() >= 5)
+            if (GameInfo.GetTotalDeadCages() >= 5)
             {
                 GameInfo.PersistentInfo.UnlockedWorld2 = true;
                 return true;
@@ -82,7 +82,7 @@ public sealed partial class Teensies : ActionActor
         }
         else if (InitialActionId is Action.Init_World2_Right or Action.Init_World2_Left)
         {
-            if (GameInfo.GetTotalCollectedCages() >= 10)
+            if (GameInfo.GetTotalDeadCages() >= 10)
             {
                 GameInfo.PersistentInfo.UnlockedWorld3 = true;
                 return true;
@@ -94,7 +94,7 @@ public sealed partial class Teensies : ActionActor
         }
         else if (InitialActionId is Action.Init_World3_Right or Action.Init_World3_Left)
         {
-            if (GameInfo.GetTotalCollectedCages() >= 15)
+            if (GameInfo.GetTotalDeadCages() >= 15)
             {
                 GameInfo.PersistentInfo.UnlockedWorld4 = true;
                 return true;
@@ -106,7 +106,7 @@ public sealed partial class Teensies : ActionActor
         }
         else if (InitialActionId is Action.Init_World4_Right or Action.Init_World4_Left)
         {
-            if (GameInfo.GetTotalCollectedCages() >= 20)
+            if (GameInfo.GetTotalDeadCages() >= 20)
             {
                 GameInfo.PersistentInfo.UnlockedFinalBoss = true;
                 return true;
@@ -146,7 +146,7 @@ public sealed partial class Teensies : ActionActor
 
     private void SetRequirementNotMetText()
     {
-        if (IsWorldFinished())
+        if (IsMapRequirementFulfilled())
         {
             switch (InitialActionId)
             {

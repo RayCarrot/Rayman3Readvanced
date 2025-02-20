@@ -2,6 +2,7 @@
 
 namespace GbaMonoGame.Rayman3;
 
+// Original name: FleurFeu
 public sealed partial class FlowerFire : BaseActor
 {
     public FlowerFire(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)

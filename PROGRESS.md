@@ -119,7 +119,7 @@
 | Name                   | State   | Info                                         |
 | ---------------------- | ------- | -------------------------------------------- |
 | UserInfoSideScroller   | 🟩     |                                              |
-| UserInfoWorld          | 🟩     |                                              |
+| UserInfoWorldMap       | 🟩     |                                              |
 | UserInfoMulti2D        | 🟩     |                                              |
 | UserInfoWaterskiMode7  | 🟥     |                                              |
 | UserInfoSingleMode7    | 🟩     |                                              |
@@ -157,7 +157,7 @@
 | Piranha                | 🟩     |                                              |
 | WaterSplash            | 🟩     |                                              |
 | Explosion              | 🟩     |                                              |
-| Missile                | 🟩     |                                              |
+| EnergyBall             | 🟩     |                                              |
 | BouncyPlatform         | 🟩     |                                              |
 | MovingFlowerPlatform   | 🟩     |                                              |
 | FallingChainedPlatform | 🟩     |                                              |

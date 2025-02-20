@@ -1,4 +1,5 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using System.Diagnostics;
+using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 
@@ -381,9 +382,15 @@ public partial class Murfy
             case FsmAction.UnInit:
                 Position = InitialPosition;
                 if (GameInfo.MapId is MapId.ChallengeLy1 or MapId.ChallengeLy2)
+                {
+                    Debug.Assert(TargetActor == Scene.MainActor, "Murfy incoherent behavior");
                     Scene.MainActor.ProcessMessage(this, Message.Main_LevelEnd);
+                }
                 else if (TargetActor == Scene.MainActor)
+                {
                     Scene.MainActor.ProcessMessage(this, Message.Main_ExitStopOrCutscene);
+                }
+
                 break;
         }
 

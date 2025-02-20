@@ -23,7 +23,7 @@ public partial class Skull
             case FsmAction.Step:
                 bool isActionFinished = IsActionFinished;
 
-                if (isActionFinished && InitialAction == Action.Rotate1)
+                if (isActionFinished && InitialAction == Action.SpinStart)
                 {
                     State.MoveTo(Fsm_Rotate);
                     return false;
@@ -55,12 +55,12 @@ public partial class Skull
                 break;
 
             case FsmAction.Step:
-                if (IsHit() && ActionId is Action.Rotate1 or Action.Rotate2)
+                if (IsHit() && ActionId is Action.SpinStart or Action.Spin_6)
                     Timer |= 0xf000;
 
-                if (IsActionFinished && ActionId == Action.Rotate1)
+                if (IsActionFinished && ActionId == Action.SpinStart)
                 {
-                    ActionId = Action.Rotate2;
+                    ActionId = Action.Spin_6;
 
                     if ((Timer & 0xf000) == 0)
                         ChangeAction();
@@ -69,9 +69,9 @@ public partial class Skull
                 {
                     Timer++;
 
-                    if ((Timer & 0xfff) > 270 && ActionId == Action.Rotate2)
+                    if ((Timer & 0xfff) > 270 && ActionId == Action.Spin_6)
                     {
-                        ActionId = Action.Rotate3;
+                        ActionId = Action.Spin_7;
 
                         if ((Timer & 0xf000) == 0)
                             ChangeAction();
@@ -84,7 +84,7 @@ public partial class Skull
                     return false;
                 }
 
-                if (IsActionFinished && ActionId == Action.Rotate3)
+                if (IsActionFinished && ActionId == Action.Spin_7)
                 {
                     State.MoveTo(Fsm_Despawn);
                     return false;

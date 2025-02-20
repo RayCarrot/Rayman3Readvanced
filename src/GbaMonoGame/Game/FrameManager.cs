@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame;
 
@@ -77,8 +78,11 @@ public static class FrameManager
         if (SoundEventsManager.IsLoaded)
             SoundEventsManager.RefreshEventSet();
 
+        if (CurrentFrame == null)
+            throw new Exception("No current frame to step into");
+
         // Step the currently active frame
-        CurrentFrame?.Step();
+        CurrentFrame.Step();
         
         // Update the game time by one game frame
         GameTime.Update();

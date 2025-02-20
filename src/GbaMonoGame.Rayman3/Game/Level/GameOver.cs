@@ -1,4 +1,5 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using System;
+using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.TgxEngine;
@@ -330,9 +331,12 @@ public class GameOver : Frame
             case GameOverMode.ReturnToMenu:
                 if (TransitionsFX.IsFadeOutFinished)
                 {
-                    FrameManager.SetNextFrame(new MenuAll(MenuAll.Page.SelectGameMode));
+                    FrameManager.SetNextFrame(new MenuAll(MenuAll.Page.GameMode));
                 }
                 break;
+
+            default:
+                throw new Exception("Invalid GameOver mode");
         }
 
         AnimationPlayer.Play(Butterfly1);

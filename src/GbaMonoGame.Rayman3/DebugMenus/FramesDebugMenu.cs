@@ -19,8 +19,8 @@ public class FramesDebugMenu : DebugMenu
         new("Animation Viewer", () => new AnimationViewer()),
         new("Menu", null, 
         [
-            new("Language", () => new MenuAll(MenuAll.Page.SelectLanguage)),
-            new("Game Mode", () => new MenuAll(MenuAll.Page.SelectGameMode)),
+            new("Language", () => new MenuAll(MenuAll.Page.Language)),
+            new("Game Mode", () => new MenuAll(MenuAll.Page.GameMode)),
             new("Options", () => new MenuAll(MenuAll.Page.Options)),
             new("Multiplayer", () => new MenuAll(MenuAll.Page.Multiplayer)),
             new("Multiplayer Lost Connection", () => new MenuAll(MenuAll.Page.MultiplayerLostConnection))

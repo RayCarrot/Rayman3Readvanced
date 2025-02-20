@@ -96,7 +96,7 @@ public class FrameSingleMode7 : FrameMode7
         CollectedLums[lumId] = true;
 
         int lumsBarValue = UserInfo.LumsBar.CollectedLumsDigitValue1 * 10 + UserInfo.LumsBar.CollectedLumsDigitValue2;
-        if (lumsBarValue == GameInfo.GetTotalYelloLumsInLevel())
+        if (lumsBarValue == GameInfo.GetLumsCountForCurrentMap())
         {
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumTotal_Mix02);
             LevelMusicManager.OverrideLevelMusic(Rayman3SoundEvent.Play__win2);
@@ -108,7 +108,7 @@ public class FrameSingleMode7 : FrameMode7
         for (int i = 0; i < CollectedLums.Length; i++)
         {
             if (CollectedLums[i])
-                GameInfo.SetYellowLumAsCollected(i);
+                GameInfo.KillLum(i);
         }
     }
 
@@ -131,7 +131,7 @@ public class FrameSingleMode7 : FrameMode7
 
         RaceManager = new RaceManager(Scene, UserInfo, LapTimes);
 
-        int lumsCount = GameInfo.GetTotalYelloLumsInLevel();
+        int lumsCount = GameInfo.GetLumsCountForCurrentMap();
         CollectedLums = new bool[lumsCount];
 
         Scene.AddDialog(UserInfo, false, false);

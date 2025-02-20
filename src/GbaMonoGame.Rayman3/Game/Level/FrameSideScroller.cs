@@ -48,7 +48,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
 
     #region Private Methods
 
-    private void StepCircleTransition()
+    private void StepCircleFX()
     {
         switch (CircleTransitionMode)
         {
@@ -203,7 +203,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.Step();
         Scene.Playfield.Step();
         TransitionsFX.StepAll();
-        StepCircleTransition();
+        StepCircleFX();
         Scene.AnimationPlayer.Execute();
         LevelMusicManager.Step();
         

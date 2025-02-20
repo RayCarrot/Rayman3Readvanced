@@ -50,7 +50,7 @@ public class Cages50Bar : Bar
 
     public override void Set()
     {
-        DeadCages = GameInfo.GetTotalCollectedCages();
+        DeadCages = GameInfo.GetTotalDeadCages();
 
         if (DeadCages == 50)
         {

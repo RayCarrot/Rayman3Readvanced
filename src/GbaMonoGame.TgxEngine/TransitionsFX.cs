@@ -82,6 +82,7 @@ public class TransitionsFX
         }
     }
 
+    // TODO: Pass in step size as 0-16 value like game does
     public void FadeInInit(float stepSize)
     {
         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);

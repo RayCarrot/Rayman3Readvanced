@@ -27,18 +27,18 @@ public partial class MenuAll
     #region Steps
 
     // N-Gage exclusive
-    private void Step_InitializeTransitionToSelectLanguage()
+    private void Step_InitializeTransitionToLanguage()
     {
-        CurrentStepAction = Step_TransitionToSelectLanguage;
+        CurrentStepAction = Step_TransitionToLanguage;
         SetBackgroundPalette(1);
         SelectOption(Localization.LanguageId, false);
-        Data.LanguageList.CurrentAnimation = LanguagesBaseAnimation + SelectedOption;
+        Anims.LanguageList.CurrentAnimation = LanguagesBaseAnimation + SelectedOption;
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
         ResetStem();
     }
 
     // N-Gage exclusive
-    private void Step_TransitionToSelectLanguage()
+    private void Step_TransitionToLanguage()
     {
         TransitionValue += 4;
 
@@ -51,13 +51,13 @@ public partial class MenuAll
         if (TransitionValue >= 160)
         {
             TransitionValue = 0;
-            CurrentStepAction = Step_SelectLanguage;
+            CurrentStepAction = Step_Language;
         }
 
-        AnimationPlayer.Play(Data.LanguageList);
+        AnimationPlayer.Play(Anims.LanguageList);
     }
 
-    private void Step_SelectLanguage()
+    private void Step_Language()
     {
         if (Rom.Platform != Platform.NGage || TransitionsFX.IsFadeInFinished)
         {
@@ -74,7 +74,7 @@ public partial class MenuAll
                 else
                     SelectedOption = selectedOption;
 
-                Data.LanguageList.CurrentAnimation = LanguagesBaseAnimation + SelectedOption;
+                Anims.LanguageList.CurrentAnimation = LanguagesBaseAnimation + SelectedOption;
 
                 // TODO: Game passes in 0 as obj here, but that's probably a mistake
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
@@ -92,7 +92,7 @@ public partial class MenuAll
                 else
                     SelectedOption = selectedOption;
 
-                Data.LanguageList.CurrentAnimation = LanguagesBaseAnimation + SelectedOption;
+                Anims.LanguageList.CurrentAnimation = LanguagesBaseAnimation + SelectedOption;
 
                 // TODO: Game passes in 0 as obj here, but that's probably a mistake
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
@@ -120,7 +120,7 @@ public partial class MenuAll
                     GameLogoYOffset = 56;
                     OtherGameLogoValue = 12;
                     
-                    Data.GameModeList.CurrentAnimation = Localization.LanguageUiIndex * 3 + SelectedOption;
+                    Anims.GameModeList.CurrentAnimation = Localization.LanguageUiIndex * 3 + SelectedOption;
                 }
 
                 // Center sprites if English
@@ -128,15 +128,15 @@ public partial class MenuAll
                 {
                     if (Rom.Platform == Platform.GBA)
                     {
-                        Data.GameModeList.ScreenPos = Data.GameModeList.ScreenPos with { X = 86 };
-                        Data.Cursor.ScreenPos = Data.Cursor.ScreenPos with { X = 46 };
-                        Data.Stem.ScreenPos = Data.Stem.ScreenPos with { X = 60 };
+                        Anims.GameModeList.ScreenPos = Anims.GameModeList.ScreenPos with { X = 86 };
+                        Anims.Cursor.ScreenPos = Anims.Cursor.ScreenPos with { X = 46 };
+                        Anims.Stem.ScreenPos = Anims.Stem.ScreenPos with { X = 60 };
                     }
                     else if (Rom.Platform == Platform.NGage)
                     {
-                        Data.GameModeList.ScreenPos = Data.GameModeList.ScreenPos with { X = 58 };
-                        Data.Cursor.ScreenPos = Data.Cursor.ScreenPos with { X = 18 };
-                        Data.Stem.ScreenPos = Data.Stem.ScreenPos with { X = 32 };
+                        Anims.GameModeList.ScreenPos = Anims.GameModeList.ScreenPos with { X = 58 };
+                        Anims.Cursor.ScreenPos = Anims.Cursor.ScreenPos with { X = 18 };
+                        Anims.Stem.ScreenPos = Anims.Stem.ScreenPos with { X = 32 };
                     }
                     else
                     {
@@ -169,7 +169,7 @@ public partial class MenuAll
             }
         }
 
-        AnimationPlayer.Play(Data.LanguageList);
+        AnimationPlayer.Play(Anims.LanguageList);
     }
 
     private void Step_TransitionOutOfLanguage()
@@ -179,21 +179,21 @@ public partial class MenuAll
             TgxCluster mainCluster = Playfield.Camera.GetMainCluster();
             mainCluster.Position += new Vector2(0, 3);
 
-            Data.LanguageList.ScreenPos = Data.LanguageList.ScreenPos with { Y = TransitionValue + 28 };
-            Data.LanguageList.FrameChannelSprite();
-            AnimationPlayer.Play(Data.LanguageList);
+            Anims.LanguageList.ScreenPos = Anims.LanguageList.ScreenPos with { Y = TransitionValue + 28 };
+            Anims.LanguageList.FrameChannelSprite();
+            AnimationPlayer.Play(Anims.LanguageList);
 
             MoveGameLogo();
 
-            Data.GameLogo.FrameChannelSprite(); // NOTE The game gives the bounding box a width of 255 instead of 240 here
-            AnimationPlayer.Play(Data.GameLogo);
+            Anims.GameLogo.FrameChannelSprite(); // NOTE The game gives the bounding box a width of 255 instead of 240 here
+            AnimationPlayer.Play(Anims.GameLogo);
 
-            AnimationPlayer.Play(Data.GameModeList);
+            AnimationPlayer.Play(Anims.GameModeList);
 
             if (TransitionValue < -207)
             {
                 TransitionValue = 0;
-                CurrentStepAction = Step_SelectGameMode;
+                CurrentStepAction = Step_GameMode;
             }
             else
             {
@@ -216,7 +216,7 @@ public partial class MenuAll
                 CurrentStepAction = Step_InitializeTransitionToOptions;
             }
 
-            AnimationPlayer.Play(Data.LanguageList);
+            AnimationPlayer.Play(Anims.LanguageList);
         }
         else
         {

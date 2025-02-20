@@ -14,7 +14,7 @@ public sealed partial class Cage : InteractableActor
 
         State.SetTo(Fsm_Idle);
 
-        if (GameInfo.HasCollectedCage(CageId, GameInfo.MapId))
+        if (GameInfo.IsCageDead(CageId, GameInfo.MapId))
             ProcessMessage(this, Message.Destroy);
     }
 

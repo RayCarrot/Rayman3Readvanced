@@ -1,4 +1,5 @@
-﻿using GbaMonoGame.Engine2d;
+﻿using System;
+using GbaMonoGame.Engine2d;
 using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
@@ -54,6 +55,9 @@ public partial class CameraMode7 : CameraActorMode7
 
     public override void SetFirstPosition()
     {
+        if (LinkedObject == null)
+            throw new Exception("The camera has no linked actor");
+
         TgxCameraMode7 cam = (TgxCameraMode7)Scene.Playfield.Camera;
 
         Mode7Actor linkedActor = (Mode7Actor)LinkedObject;

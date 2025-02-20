@@ -1,4 +1,5 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using System;
+using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
@@ -160,6 +161,9 @@ public class CavesOfBadDreams : FrameSideScroller
             case FadeMode.Ended:
                 // Do nothing
                 break;
+
+            default:
+                throw new Exception("Invalid mode");
         }
     }
 

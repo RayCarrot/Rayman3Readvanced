@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace GbaMonoGame.Engine2d;
 
@@ -23,7 +23,7 @@ public readonly struct PhysicalType
     public bool IsSolid => ValueByte < 32;
     public Mode7PhysicalTypeDefine Mode7Define => Mode7PhysicalTypeDefine.Defines[(byte)(ValueByte + 1)];
 
-    public float GetAngleSolidHeight(float xPos)
+    public float GetBlockTopSolid(float xPos)
     {
         float subTileX = MathHelpers.Mod(xPos, Tile.Size);
 
@@ -42,14 +42,14 @@ public readonly struct PhysicalType
             PhysicalTypeValue.SlideAngle30Left2 => subTileX / 2 + Tile.Size / 2f,
             PhysicalTypeValue.SolidAngle30Right2 => Tile.Size - (subTileX / 2 + Tile.Size / 2f) - 0.5f,
             PhysicalTypeValue.SlideAngle30Right2 => Tile.Size - (subTileX / 2 + Tile.Size / 2f) - 0.5f,
-            _ => throw new Exception($"The physical value {this} is not angled")
+            _ => throw new Exception($"The physical value {this} is not an angled block")
         };
     }
 
-    public bool IsAnglePointSolid(Vector2 position)
+    public bool IsBlockPointSolid(Vector2 position)
     {
         float subTileY = MathHelpers.Mod(position.Y, Tile.Size);
-        float solidHeight = GetAngleSolidHeight(position.X);
+        float solidHeight = GetBlockTopSolid(position.X);
 
         // In the game this is done using a pre-calculated table, but since we want float-precision we calculate it dynamically
         return subTileY >= Tile.Size - solidHeight;

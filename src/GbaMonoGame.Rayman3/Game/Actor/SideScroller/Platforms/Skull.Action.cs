@@ -18,9 +18,9 @@ public partial class Skull
         Move_Down = 4,
 
         // Unused - broken animations in final build
-        Rotate1 = 5,
-        Rotate2 = 6,
-        Rotate3 = 7,
+        SpinStart = 5,
+        Spin_6 = 6,
+        Spin_7 = 7,
         
         Stationary = 8,
         Spawn = 9,

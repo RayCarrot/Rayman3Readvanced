@@ -77,6 +77,9 @@ public static class MultiJoyPad
 
     public static bool IsValid(int machineId, uint machineTimer)
     {
+        if (machineId is < 0 or >= MaxPlayersCount)
+            throw new Exception("Invalid machine id");
+
         return ValidFlags[machineId][machineTimer % BufferedFramesCount];
     }
 

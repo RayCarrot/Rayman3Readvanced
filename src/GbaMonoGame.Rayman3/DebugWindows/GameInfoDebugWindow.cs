@@ -59,7 +59,7 @@ public class GameInfoDebugWindow : DebugWindow
 
         if (ImGui.Button("Load"))
         {
-            GameInfo.LoadLastWorld();
+            GameInfo.GotoLastSaveGame();
         }
 
         ImGui.SameLine();
@@ -82,8 +82,8 @@ public class GameInfoDebugWindow : DebugWindow
             }
         }
 
-        ImGui.Text($"Lums: {GameInfo.GetTotalCollectedYellowLums()} / 1000");
-        ImGui.Text($"Cages: {GameInfo.GetTotalCollectedCages()} / 50");
+        ImGui.Text($"Lums: {GameInfo.GetTotalDeadLums()} / 1000");
+        ImGui.Text($"Cages: {GameInfo.GetTotalDeadCages()} / 50");
         ImGui.Text($"Last played level: {(MapId)GameInfo.PersistentInfo.LastPlayedLevel}");
         ImGui.Text($"Last completed level: {(MapId)GameInfo.PersistentInfo.LastCompletedLevel}");
         ImGui.Text($"Lives: {GameInfo.PersistentInfo.Lives}");

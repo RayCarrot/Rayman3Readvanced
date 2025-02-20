@@ -224,6 +224,9 @@ public sealed partial class CameraSideScroller : CameraActor2D
 
     public override void SetFirstPosition()
     {
+        if (LinkedObject == null)
+            throw new Exception("The camera has no linked actor");
+
         IsFacingRight = LinkedObject.IsFacingRight;
 
         Vector2 pos;

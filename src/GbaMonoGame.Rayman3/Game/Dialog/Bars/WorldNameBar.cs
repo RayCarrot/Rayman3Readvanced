@@ -21,7 +21,7 @@ public class WorldNameBar : Bar
     public AnimatedObject Canvas { get; set; }
     public SpriteTextObject WorldName { get; set; }
 
-    public void SetWorld(WorldId worldId)
+    public void SetWorldId(WorldId worldId)
     {
         string worldNameText = Localization.GetText(8, worldId switch
         {
@@ -83,7 +83,7 @@ public class WorldNameBar : Bar
             RenderContext = Scene.HudRenderContext,
         };
 
-        SetWorld(0);
+        SetWorldId(0);
     }
 
     public override void Set() { }

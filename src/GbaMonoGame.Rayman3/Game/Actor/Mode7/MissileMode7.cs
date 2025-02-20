@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
@@ -10,6 +11,8 @@ public sealed partial class MissileMode7 : Mode7Actor
 {
     public MissileMode7(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        Debug.Assert(InstanceId < RSMultiplayer.MaxPlayersCount, "The main actor must be the 4 first game objects");
+
         if (InstanceId != 0 && InstanceId >= RSMultiplayer.PlayersCount)
             ProcessMessage(this, Message.Destroy);
 

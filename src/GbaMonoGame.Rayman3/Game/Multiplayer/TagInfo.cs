@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace GbaMonoGame.Rayman3;
@@ -8,7 +10,7 @@ public class TagInfo
     public TagInfo(MultiplayerGameType gameType, int mapId)
     {
         LumsTable = new List<LumPosition>(GetLumsCount(gameType, mapId));
-        field7_0xd = -1;
+        LastActionId = -1;
         field8_0xe = -1;
         ItemsIdList = new List<int>(GetItemsCount(gameType, mapId));
         Timer = 0;
@@ -16,9 +18,8 @@ public class TagInfo
 
     public List<LumPosition> LumsTable { get; }
 
-    // TODO: Name these. Why is field8 never set?
-    public int field7_0xd { get; set; }
-    public int field8_0xe { get; set; }
+    public int LastActionId { get; set; }
+    public int field8_0xe { get; set; } // TODO: Name. Why is it never set?
     public List<int> ItemsIdList { get; }
 
     private uint Timer { get; set; }
@@ -69,7 +70,7 @@ public class TagInfo
             Timer = GameTime.ElapsedFrames;
 
         int randItemIndex = Random.GetNumber(ItemsIdList.Count - 1);
-        if (randItemIndex >= field7_0xd)
+        if (randItemIndex >= LastActionId)
             randItemIndex++;
 
         ItemsMulti obj = scene.GetGameObject<ItemsMulti>(ItemsIdList[randItemIndex]);
@@ -81,38 +82,44 @@ public class TagInfo
             for (int i = 0; i < ItemsIdList.Count; i++)
             {
                 if (i != randItemIndex &&
-                    i != field7_0xd &&
+                    i != LastActionId &&
                     !scene.GetGameObject<ItemsMulti>(ItemsIdList[i]).IsInvisibleItem())
                 {
                     validItems.Add(i);
                 }
             }
 
+            if (validItems.Count == 0)
+                throw new Exception("No random item could be found");
+
             randItemIndex = validItems[Random.GetNumber(validItems.Count)];
             obj = scene.GetGameObject<ItemsMulti>(randItemIndex);
         }
 
         obj.Spawn();
-        field7_0xd = randItemIndex;
+        LastActionId = randItemIndex;
     }
 
     public int GetRandomActionId()
     {
         if (Timer != 0 && GameTime.ElapsedFrames - Timer <= 600)
         {
-            int rand = Random.GetNumber(2);
-            if (rand == field8_0xe)
-                rand = (rand + 1) % 2;
-            field7_0xd = rand;
-            return rand;
+            int newActionId = Random.GetNumber(2);
+            if (newActionId == field8_0xe)
+                newActionId = (newActionId + 1) % 2;
+
+            Debug.Assert(newActionId != 2, "Invisible item should not be spawned");
+
+            LastActionId = newActionId;
+            return newActionId;
         }
         else
         {
-            int rand = Random.GetNumber(2);
-            if (rand >= field8_0xe)
-                rand++;
-            field7_0xd = rand;
-            return rand;
+            int newActionId = Random.GetNumber(2);
+            if (newActionId >= field8_0xe)
+                newActionId++;
+            LastActionId = newActionId;
+            return newActionId;
         }
     }
 }

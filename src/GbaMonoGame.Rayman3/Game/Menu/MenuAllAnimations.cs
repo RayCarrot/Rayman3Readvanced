@@ -3,9 +3,9 @@ using GbaMonoGame.AnimEngine;
 
 namespace GbaMonoGame.Rayman3;
 
-public class MenuData
+public class MenuAllAnimations
 {
-    public MenuData(RenderContext renderContext, int multiplayerMultiPakPlayersOffsetY, int multiplayerSinglePakPlayersOffsetY)
+    public MenuAllAnimations(RenderContext renderContext, int multiplayerMultiPakPlayersOffsetY, int multiplayerSinglePakPlayersOffsetY)
     {
         if (Rom.Platform == Platform.GBA)
         {

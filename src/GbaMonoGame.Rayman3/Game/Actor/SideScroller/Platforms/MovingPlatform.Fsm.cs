@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 
@@ -121,6 +122,9 @@ public partial class MovingPlatform
                 if (CurrentDirectionalType == PhysicalTypeValue.MovingPlatform_Stop && Fire == null)
                 {
                     Fire = Scene.CreateProjectile<FlowerFire>(ActorType.FlowerFire);
+
+                    Debug.Assert(Fire != null, "The flower fire projectile could not be created");
+                    
                     AnimatedObject.CurrentAnimation = 5;
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BBQ_Mix10);
 

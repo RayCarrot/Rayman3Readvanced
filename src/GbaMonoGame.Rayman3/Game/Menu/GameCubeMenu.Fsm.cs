@@ -119,7 +119,7 @@ public partial class GameCubeMenu
         switch (action)
         {
             case FsmAction.Init:
-                Data.StatusText.Text = "";
+                Anims.StatusText.Text = "";
                 // Why does the game do this??
                 MapInfoFileSize = (int)GameTime.ElapsedFrames;
                 break;
@@ -187,8 +187,8 @@ public partial class GameCubeMenu
         {
             case FsmAction.Init:
                 ResetReusableTexts();
-                Data.StatusText.ScreenPos = new Vector2(105, 88);
-                Data.StatusText.Text = "";
+                Anims.StatusText.ScreenPos = new Vector2(105, 88);
+                Anims.StatusText.Text = "";
                 break;
 
             case FsmAction.Step:
@@ -378,17 +378,17 @@ public partial class GameCubeMenu
 
                     string[] text = Localization.GetText(11, 8);
 
-                    Data.StatusText.Text = text[0];
-                    Data.StatusText.ScreenPos = new Vector2(140 - Data.StatusText.GetStringWidth() / 2f, 50);
+                    Anims.StatusText.Text = text[0];
+                    Anims.StatusText.ScreenPos = new Vector2(140 - Anims.StatusText.GetStringWidth() / 2f, 50);
 
-                    Data.ReusableTexts[0].Text = text[1];
-                    Data.ReusableTexts[0].ScreenPos = new Vector2(140 - Data.ReusableTexts[0].GetStringWidth() / 2f, 70);
+                    Anims.ReusableTexts[0].Text = text[1];
+                    Anims.ReusableTexts[0].ScreenPos = new Vector2(140 - Anims.ReusableTexts[0].GetStringWidth() / 2f, 70);
 
                     IsShowingLyChallengeUnlocked = true;
                 }
                 else
                 {
-                    Data.StatusText.Text = "";
+                    Anims.StatusText.Text = "";
                     ResetReusableTexts();
                     MapSelectionUpdateText();
                 }
@@ -405,7 +405,7 @@ public partial class GameCubeMenu
                     if (JoyPad.IsButtonJustPressed(GbaInput.Start) || JoyPad.IsButtonJustPressed(GbaInput.A))
                     {
                         IsShowingLyChallengeUnlocked = false;
-                        Data.StatusText.Text = "";
+                        Anims.StatusText.Text = "";
                         ResetReusableTexts();
                         MapSelectionUpdateText();
                     }
@@ -513,19 +513,19 @@ public partial class GameCubeMenu
         switch (action)
         {
             case FsmAction.Init:
-                Data.StatusText.Text = "   %";
+                Anims.StatusText.Text = "   %";
 
-                Data.ReusableTexts[0].Color = TextColor.GameCubeMenu;
-                Data.ReusableTexts[1].Color = TextColor.GameCubeMenu;
+                Anims.ReusableTexts[0].Color = TextColor.GameCubeMenu;
+                Anims.ReusableTexts[1].Color = TextColor.GameCubeMenu;
 
                 string[] text = Localization.GetText(11, 7);
-                Data.ReusableTexts[0].Text = text[0];
-                Data.ReusableTexts[0].ScreenPos = new Vector2(140 - Data.ReusableTexts[0].GetStringWidth() / 2f, 40);
+                Anims.ReusableTexts[0].Text = text[0];
+                Anims.ReusableTexts[0].ScreenPos = new Vector2(140 - Anims.ReusableTexts[0].GetStringWidth() / 2f, 40);
 
-                Data.ReusableTexts[1].Text = MapInfos.Maps[SelectedMap].Name;
-                Data.ReusableTexts[1].ScreenPos = new Vector2(140 - Data.ReusableTexts[1].GetStringWidth() / 2f, 60);
+                Anims.ReusableTexts[1].Text = MapInfos.Maps[SelectedMap].Name;
+                Anims.ReusableTexts[1].ScreenPos = new Vector2(140 - Anims.ReusableTexts[1].GetStringWidth() / 2f, 60);
 
-                Data.StatusText.ScreenPos = new Vector2(122, 80);
+                Anims.StatusText.ScreenPos = new Vector2(122, 80);
                 break;
 
             case FsmAction.Step:
@@ -537,7 +537,7 @@ public partial class GameCubeMenu
                 string percentageString = $"{percentage}%";
                 percentageString = percentageString.PadLeft(4);
 
-                Data.StatusText.Text = percentageString;
+                Anims.StatusText.Text = percentageString;
 
                 // Stop download
                 if (JoyPad.IsButtonJustPressed(GbaInput.B))
@@ -589,7 +589,7 @@ public partial class GameCubeMenu
         switch (action)
         {
             case FsmAction.Init:
-                Data.StatusText.Text = "100%";
+                Anims.StatusText.Text = "100%";
                 break;
 
             case FsmAction.Step:

@@ -33,27 +33,27 @@ public partial class MenuAll
                     case 4:
                     case 7:
                     case 9:
-                        Data.MusicVolume.CurrentAnimation = 5;
+                        Anims.MusicVolume.CurrentAnimation = 5;
                         break;
 
                     case 2:
-                        Data.MusicVolume.CurrentAnimation = 25;
+                        Anims.MusicVolume.CurrentAnimation = 25;
                         break;
 
                     case 3:
-                        Data.MusicVolume.CurrentAnimation = 19;
+                        Anims.MusicVolume.CurrentAnimation = 19;
                         break;
 
                     case 5:
-                        Data.MusicVolume.CurrentAnimation = 27;
+                        Anims.MusicVolume.CurrentAnimation = 27;
                         break;
 
                     case 6:
-                        Data.MusicVolume.CurrentAnimation = 23;
+                        Anims.MusicVolume.CurrentAnimation = 23;
                         break;
 
                     case 8:
-                        Data.MusicVolume.CurrentAnimation = 21;
+                        Anims.MusicVolume.CurrentAnimation = 21;
                         break;
                 }
             }
@@ -66,27 +66,27 @@ public partial class MenuAll
                     case 4:
                     case 7:
                     case 9:
-                        Data.MusicVolume.CurrentAnimation = 6;
+                        Anims.MusicVolume.CurrentAnimation = 6;
                         break;
 
                     case 2:
-                        Data.MusicVolume.CurrentAnimation = 24;
+                        Anims.MusicVolume.CurrentAnimation = 24;
                         break;
 
                     case 3:
-                        Data.MusicVolume.CurrentAnimation = 18;
+                        Anims.MusicVolume.CurrentAnimation = 18;
                         break;
 
                     case 5:
-                        Data.MusicVolume.CurrentAnimation = 26;
+                        Anims.MusicVolume.CurrentAnimation = 26;
                         break;
 
                     case 6:
-                        Data.MusicVolume.CurrentAnimation = 22;
+                        Anims.MusicVolume.CurrentAnimation = 22;
                         break;
 
                     case 8:
-                        Data.MusicVolume.CurrentAnimation = 20;
+                        Anims.MusicVolume.CurrentAnimation = 20;
                         break;
                 }
             }
@@ -96,19 +96,19 @@ public partial class MenuAll
             switch (((NGageSoundEventsManager)SoundEventsManager.Current).MusicVolume)
             {
                 case 0:
-                    Data.MusicVolume.CurrentAnimation = 28;
+                    Anims.MusicVolume.CurrentAnimation = 28;
                     break;
 
                 case 0x20:
-                    Data.MusicVolume.CurrentAnimation = 29;
+                    Anims.MusicVolume.CurrentAnimation = 29;
                     break;
 
                 case 0x40:
-                    Data.MusicVolume.CurrentAnimation = 30;
+                    Anims.MusicVolume.CurrentAnimation = 30;
                     break;
 
                 case 0x80:
-                    Data.MusicVolume.CurrentAnimation = 31;
+                    Anims.MusicVolume.CurrentAnimation = 31;
                     break;
             }
         }
@@ -131,27 +131,27 @@ public partial class MenuAll
                     case 4:
                     case 7:
                     case 9:
-                        Data.SfxVolume.CurrentAnimation = 5;
+                        Anims.SfxVolume.CurrentAnimation = 5;
                         break;
 
                     case 2:
-                        Data.SfxVolume.CurrentAnimation = 25;
+                        Anims.SfxVolume.CurrentAnimation = 25;
                         break;
 
                     case 3:
-                        Data.SfxVolume.CurrentAnimation = 19;
+                        Anims.SfxVolume.CurrentAnimation = 19;
                         break;
 
                     case 5:
-                        Data.SfxVolume.CurrentAnimation = 27;
+                        Anims.SfxVolume.CurrentAnimation = 27;
                         break;
 
                     case 6:
-                        Data.SfxVolume.CurrentAnimation = 23;
+                        Anims.SfxVolume.CurrentAnimation = 23;
                         break;
 
                     case 8:
-                        Data.SfxVolume.CurrentAnimation = 21;
+                        Anims.SfxVolume.CurrentAnimation = 21;
                         break;
                 }
             }
@@ -164,27 +164,27 @@ public partial class MenuAll
                     case 4:
                     case 7:
                     case 9:
-                        Data.SfxVolume.CurrentAnimation = 6;
+                        Anims.SfxVolume.CurrentAnimation = 6;
                         break;
 
                     case 2:
-                        Data.SfxVolume.CurrentAnimation = 24;
+                        Anims.SfxVolume.CurrentAnimation = 24;
                         break;
 
                     case 3:
-                        Data.SfxVolume.CurrentAnimation = 18;
+                        Anims.SfxVolume.CurrentAnimation = 18;
                         break;
 
                     case 5:
-                        Data.SfxVolume.CurrentAnimation = 26;
+                        Anims.SfxVolume.CurrentAnimation = 26;
                         break;
 
                     case 6:
-                        Data.SfxVolume.CurrentAnimation = 22;
+                        Anims.SfxVolume.CurrentAnimation = 22;
                         break;
 
                     case 8:
-                        Data.SfxVolume.CurrentAnimation = 20;
+                        Anims.SfxVolume.CurrentAnimation = 20;
                         break;
                 }
             }
@@ -194,19 +194,19 @@ public partial class MenuAll
             switch (((NGageSoundEventsManager)SoundEventsManager.Current).SfxVolume)
             {
                 case 0:
-                    Data.SfxVolume.CurrentAnimation = 28;
+                    Anims.SfxVolume.CurrentAnimation = 28;
                     break;
 
                 case 0x20:
-                    Data.SfxVolume.CurrentAnimation = 29;
+                    Anims.SfxVolume.CurrentAnimation = 29;
                     break;
 
                 case 0x40:
-                    Data.SfxVolume.CurrentAnimation = 30;
+                    Anims.SfxVolume.CurrentAnimation = 30;
                     break;
 
                 case 0x80:
-                    Data.SfxVolume.CurrentAnimation = 31;
+                    Anims.SfxVolume.CurrentAnimation = 31;
                     break;
             }
         }
@@ -306,7 +306,7 @@ public partial class MenuAll
 
     private void Step_InitializeTransitionToOptions()
     {
-        Data.OptionsSelection.CurrentAnimation = Localization.LanguageUiIndex * OptionsOptionsCount + SelectedOption;
+        Anims.OptionsSelection.CurrentAnimation = Localization.LanguageUiIndex * OptionsOptionsCount + SelectedOption;
         UpdateMusicVolumeAnimations();
         UpdateSfxVolumeAnimations();
 
@@ -315,11 +315,11 @@ public partial class MenuAll
         {
             if (Rom.Platform == Platform.GBA)
             {
-                Data.OptionsSelection.ScreenPos = Data.OptionsSelection.ScreenPos with { X = 86 };
+                Anims.OptionsSelection.ScreenPos = Anims.OptionsSelection.ScreenPos with { X = 86 };
             }
             else if (Rom.Platform == Platform.NGage)
             {
-                Data.OptionsSelection.ScreenPos = Data.OptionsSelection.ScreenPos with { X = 58 };
+                Anims.OptionsSelection.ScreenPos = Anims.OptionsSelection.ScreenPos with { X = 58 };
             }
             else
             {
@@ -330,7 +330,7 @@ public partial class MenuAll
         if (InitialPage == Page.Options)
         {
             CurrentStepAction = Step_Options;
-            InitialPage = Page.SelectLanguage;
+            InitialPage = Page.Language;
 
             // Center sprites if English
             int x;
@@ -353,9 +353,9 @@ public partial class MenuAll
                 };
             }
 
-            Data.SoundsBase.ScreenPos = Data.SoundsBase.ScreenPos with { X = x };
-            Data.MusicVolume.ScreenPos = Data.MusicVolume.ScreenPos with { X = x };
-            Data.SfxVolume.ScreenPos = Data.SfxVolume.ScreenPos with { X = x };
+            Anims.SoundsBase.ScreenPos = Anims.SoundsBase.ScreenPos with { X = x };
+            Anims.MusicVolume.ScreenPos = Anims.MusicVolume.ScreenPos with { X = x };
+            Anims.SfxVolume.ScreenPos = Anims.SfxVolume.ScreenPos with { X = x };
         }
         else
         {
@@ -396,9 +396,9 @@ public partial class MenuAll
             };
         }
 
-        Data.SoundsBase.ScreenPos = Data.SoundsBase.ScreenPos with { X = x - TransitionValue / 2f };
-        Data.MusicVolume.ScreenPos = Data.MusicVolume.ScreenPos with { X = x - TransitionValue / 2f };
-        Data.SfxVolume.ScreenPos = Data.SfxVolume.ScreenPos with { X = x - TransitionValue / 2f };
+        Anims.SoundsBase.ScreenPos = Anims.SoundsBase.ScreenPos with { X = x - TransitionValue / 2f };
+        Anims.MusicVolume.ScreenPos = Anims.MusicVolume.ScreenPos with { X = x - TransitionValue / 2f };
+        Anims.SfxVolume.ScreenPos = Anims.SfxVolume.ScreenPos with { X = x - TransitionValue / 2f };
 
         if (TransitionValue >= 160)
         {
@@ -412,10 +412,10 @@ public partial class MenuAll
             UpdateSfxVolumeAnimations();
         }
 
-        AnimationPlayer.Play(Data.OptionsSelection);
-        AnimationPlayer.Play(Data.SoundsBase);
-        AnimationPlayer.PlayFront(Data.MusicVolume);
-        AnimationPlayer.PlayFront(Data.SfxVolume);
+        AnimationPlayer.Play(Anims.OptionsSelection);
+        AnimationPlayer.Play(Anims.SoundsBase);
+        AnimationPlayer.PlayFront(Anims.MusicVolume);
+        AnimationPlayer.PlayFront(Anims.SfxVolume);
     }
 
     private void Step_Options()
@@ -427,36 +427,36 @@ public partial class MenuAll
         }
         else
         {
-            if (JoyPad.IsButtonJustPressed(GbaInput.Up) && Data.Cursor.CurrentAnimation == 0)
+            if (JoyPad.IsButtonJustPressed(GbaInput.Up) && Anims.Cursor.CurrentAnimation == 0)
             {
                 if (SelectedOption == 0)
                     SelectOption(OptionsOptionsCount - 1, true);
                 else
                     SelectOption(SelectedOption - 1, true);
 
-                Data.OptionsSelection.CurrentAnimation = Localization.LanguageUiIndex * OptionsOptionsCount + SelectedOption;
+                Anims.OptionsSelection.CurrentAnimation = Localization.LanguageUiIndex * OptionsOptionsCount + SelectedOption;
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.Down) && Data.Cursor.CurrentAnimation == 0)
+            else if (JoyPad.IsButtonJustPressed(GbaInput.Down) && Anims.Cursor.CurrentAnimation == 0)
             {
                 if (SelectedOption == OptionsOptionsCount - 1)
                     SelectOption(0, true);
                 else
                     SelectOption(SelectedOption + 1, true);
 
-                Data.OptionsSelection.CurrentAnimation = Localization.LanguageUiIndex * OptionsOptionsCount + SelectedOption;
+                Anims.OptionsSelection.CurrentAnimation = Localization.LanguageUiIndex * OptionsOptionsCount + SelectedOption;
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.B) && Data.Cursor.CurrentAnimation == 0)
+            else if (JoyPad.IsButtonJustPressed(GbaInput.B) && Anims.Cursor.CurrentAnimation == 0)
             {
                 // TODO: N-Gage auto-saves the option here
 
-                NextStepAction = Step_InitializeTransitionToSelectGameMode;
+                NextStepAction = Step_InitializeTransitionToGameMode;
                 CurrentStepAction = Step_TransitionOutOfOptions;
                 TransitionOutCursorAndStem();
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.A) && Data.Cursor.CurrentAnimation == 0)
+            else if (JoyPad.IsButtonJustPressed(GbaInput.A) && Anims.Cursor.CurrentAnimation == 0)
             {
-                Data.Cursor.CurrentAnimation = 16;
+                Anims.Cursor.CurrentAnimation = 16;
 
                 // Music volume
                 if (SelectedOption == 0)
@@ -503,44 +503,44 @@ public partial class MenuAll
 
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
             }
-            else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(GbaInput.Left) && Data.Cursor.CurrentAnimation == 0)
+            else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(GbaInput.Left) && Anims.Cursor.CurrentAnimation == 0)
             {
                 if (SelectedOption == 0)
                 {
-                    Data.Cursor.CurrentAnimation = 16;
+                    Anims.Cursor.CurrentAnimation = 16;
                     ModifyMusicVolume(-1);
                     UpdateMusicVolumeAnimations();
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                 }
                 else if (SelectedOption == 1)
                 {
-                    Data.Cursor.CurrentAnimation = 16;
+                    Anims.Cursor.CurrentAnimation = 16;
                     ModifySfxVolume(-1);
                     UpdateSfxVolumeAnimations();
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                 }
             }
-            else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(GbaInput.Right) && Data.Cursor.CurrentAnimation == 0)
+            else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(GbaInput.Right) && Anims.Cursor.CurrentAnimation == 0)
             {
                 if (SelectedOption == 0)
                 {
-                    Data.Cursor.CurrentAnimation = 16;
+                    Anims.Cursor.CurrentAnimation = 16;
                     ModifyMusicVolume(1);
                     UpdateMusicVolumeAnimations();
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                 }
                 else if (SelectedOption == 1)
                 {
-                    Data.Cursor.CurrentAnimation = 16;
+                    Anims.Cursor.CurrentAnimation = 16;
                     ModifySfxVolume(1);
                     UpdateSfxVolumeAnimations();
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                 }
             }
 
-            if (Data.Cursor.CurrentAnimation == 16 && Data.Cursor.EndOfAnimation)
+            if (Anims.Cursor.CurrentAnimation == 16 && Anims.Cursor.EndOfAnimation)
             {
-                Data.Cursor.CurrentAnimation = 0;
+                Anims.Cursor.CurrentAnimation = 0;
 
                 if (SelectedOption == 2)
                 {
@@ -549,7 +549,7 @@ public partial class MenuAll
                 }
                 else if (Rom.Platform == Platform.NGage && SelectedOption == 3)
                 {
-                    NextStepAction = Step_InitializeTransitionToSelectLanguage;
+                    NextStepAction = Step_InitializeTransitionToLanguage;
                     CurrentStepAction = Step_TransitionOutOfOptions;
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                     TransitionOutCursorAndStem();
@@ -557,10 +557,10 @@ public partial class MenuAll
             }
         }
 
-        AnimationPlayer.Play(Data.OptionsSelection);
-        AnimationPlayer.Play(Data.SoundsBase);
-        AnimationPlayer.PlayFront(Data.MusicVolume);
-        AnimationPlayer.PlayFront(Data.SfxVolume);
+        AnimationPlayer.Play(Anims.OptionsSelection);
+        AnimationPlayer.Play(Anims.SoundsBase);
+        AnimationPlayer.PlayFront(Anims.MusicVolume);
+        AnimationPlayer.PlayFront(Anims.SfxVolume);
     }
 
     private void Step_TransitionOutOfOptions()
@@ -592,9 +592,9 @@ public partial class MenuAll
                 };
             }
 
-            Data.SoundsBase.ScreenPos = Data.SoundsBase.ScreenPos with { X = x + TransitionValue / 2f };
-            Data.MusicVolume.ScreenPos = Data.MusicVolume.ScreenPos with { X = x + TransitionValue / 2f };
-            Data.SfxVolume.ScreenPos = Data.SfxVolume.ScreenPos with { X = x + TransitionValue / 2f };
+            Anims.SoundsBase.ScreenPos = Anims.SoundsBase.ScreenPos with { X = x + TransitionValue / 2f };
+            Anims.MusicVolume.ScreenPos = Anims.MusicVolume.ScreenPos with { X = x + TransitionValue / 2f };
+            Anims.SfxVolume.ScreenPos = Anims.SfxVolume.ScreenPos with { X = x + TransitionValue / 2f };
         }
         else if (TransitionValue >= Playfield.RenderContext.Resolution.Y + 60)
         {
@@ -602,10 +602,10 @@ public partial class MenuAll
             CurrentStepAction = NextStepAction;
         }
 
-        AnimationPlayer.Play(Data.OptionsSelection);
-        AnimationPlayer.Play(Data.SoundsBase);
-        AnimationPlayer.PlayFront(Data.MusicVolume);
-        AnimationPlayer.PlayFront(Data.SfxVolume);
+        AnimationPlayer.Play(Anims.OptionsSelection);
+        AnimationPlayer.Play(Anims.SoundsBase);
+        AnimationPlayer.PlayFront(Anims.MusicVolume);
+        AnimationPlayer.PlayFront(Anims.SfxVolume);
     }
 
     #endregion

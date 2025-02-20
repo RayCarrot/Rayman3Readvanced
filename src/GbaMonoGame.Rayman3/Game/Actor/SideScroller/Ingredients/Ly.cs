@@ -27,7 +27,7 @@ public sealed partial class Ly : MovableActor
         });
     }
 
-    private void SetPowerAndReplayData()
+    private void StartCutScene()
     {
         Rayman rayman = (Rayman)Scene.MainActor;
 
@@ -64,7 +64,7 @@ public sealed partial class Ly : MovableActor
                 break;
 
             default:
-                throw new Exception("Ly is not set to be used in the current map");
+                throw new Exception("Ly was not set to be used in this level");
         }
     }
 }

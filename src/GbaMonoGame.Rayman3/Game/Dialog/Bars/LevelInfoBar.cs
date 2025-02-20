@@ -224,9 +224,9 @@ public class LevelInfoBar : Bar
 
         foreach (MapId mapId in LevelMaps[LevelCurtainId])
         {
-            collectedLums += GameInfo.GetCollectedYellowLumsInLevel(mapId);
+            collectedLums += GameInfo.GetDeadLumsForCurrentMap(mapId);
             totalLums += GameInfo.Levels[(int)mapId].LumsCount;
-            collectedCages += GameInfo.GetCollectedCagesInLevel(mapId);
+            collectedCages += GameInfo.GetDeadCagesForCurrentMap(mapId);
             totalCages += GameInfo.Levels[(int)mapId].CagesCount;
         }
 

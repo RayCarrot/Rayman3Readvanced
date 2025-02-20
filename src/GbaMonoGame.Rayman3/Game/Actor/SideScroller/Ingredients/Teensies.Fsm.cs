@@ -27,7 +27,7 @@ public partial class Teensies
 
                 SetMasterAction();
 
-                bool requirementMet = IsWorldFinished() && IsEnoughCagesTaken();
+                bool requirementMet = IsMapRequirementFulfilled() && IsEnoughCagesTaken();
 
                 if (Scene.IsDetectedMainActor(this) && InitialActionId is Action.Init_World1_Right or Action.Init_World1_Left)
                 {
@@ -79,7 +79,7 @@ public partial class Teensies
                 if (JoyPad.IsButtonJustPressed(GbaInput.A))
                     TextBox.MoveToNextText();
 
-                if (TextBox.IsFinished && IsWorldFinished() && IsEnoughCagesTaken())
+                if (TextBox.IsFinished && IsMapRequirementFulfilled() && IsEnoughCagesTaken())
                 {
                     State.MoveTo(Fsm_ShowRequirementMetText);
                     return false;

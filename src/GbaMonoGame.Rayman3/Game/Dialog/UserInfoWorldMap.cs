@@ -4,9 +4,9 @@ using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
 
-public class UserInfoWorld : Dialog
+public class UserInfoWorldMap : Dialog
 {
-    public UserInfoWorld(Scene2D scene, bool hasBlueLum) : base(scene)
+    public UserInfoWorldMap(Scene2D scene, bool hasBlueLum) : base(scene)
     {
         LifeBar = new LifeBar(scene);
         LevelInfoBar = new LevelInfoBar(scene);
@@ -101,6 +101,23 @@ public class UserInfoWorld : Dialog
         return false;
     }
 
+    public void SetWorldId(WorldId worldId)
+    {
+        WorldNameBar.SetWorldId(worldId);
+    }
+
+    public void ShowWorldBar()
+    {
+        WorldNameBar.CanMoveIn = true;
+        WorldNameBar.MoveInWorldNameBar();
+    }
+
+    public void HideWorldBar()
+    {
+        WorldNameBar.CanMoveIn = false;
+        WorldNameBar.MoveOutWorldNameBar();
+    }
+
     public override void Load()
     {
         LifeBar.Load();
@@ -140,8 +157,8 @@ public class UserInfoWorld : Dialog
 
             for (int i = 0; i < 6; i++)
             {
-                CurtainsLeft.SetChannelInvisible(i);
-                CurtainsRight.SetChannelInvisible(i + 6);
+                CurtainsLeft.DeactivateChannel(i);
+                CurtainsRight.DeactivateChannel(i + 6);
             }
 
             if (ShouldPlayCurtainAnimation)

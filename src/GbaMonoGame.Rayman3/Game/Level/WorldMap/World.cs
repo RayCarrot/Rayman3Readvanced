@@ -48,7 +48,7 @@ public class World : FrameWorldSideScroller
     {
         base.Init();
 
-        UserInfo = new UserInfoWorld(Scene, GameInfo.Level.HasBlueLum);
+        UserInfo = new UserInfoWorldMap(Scene, GameInfo.Level.HasBlueLum);
         Scene.AddDialog(UserInfo, false, false);
 
         BlockPause = true;

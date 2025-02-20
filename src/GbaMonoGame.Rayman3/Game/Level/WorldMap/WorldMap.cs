@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using BinarySerializer;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
@@ -48,7 +49,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
     public Scene2D Scene { get; set; }
     public TransitionsFX TransitionsFX { get; set; }
-    public UserInfoWorld UserInfo { get; set; }
+    public UserInfoWorldMap UserInfo { get; set; }
     public PauseDialog PauseDialog { get; set; }
     public FadeControl SavedFadeControl { get; set; }
 
@@ -585,8 +586,8 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                     if (Rom.Platform == Platform.GBA)
                         GameInfo.PersistentInfo.CompletedGCNBonusLevels = 10;
 
-                    GameInfo.SetAllCagesAsCollected();
-                    GameInfo.SetAllYellowLumsAsCollected();
+                    GameInfo.KillAllCages();
+                    GameInfo.KillAllLums();
 
                     GameInfo.EnableCheat(Scene, Cheat.InfiniteLives);
                     GameInfo.EnableCheat(Scene, Cheat.AllPowers);
@@ -621,7 +622,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         WorldPaths[0].CurrentAnimation = 3;
     }
 
-    private void SelectWorld()
+    private void WorldNameInit()
     {
         string worldNameText = Localization.GetText(8, WorldId switch
         {
@@ -740,7 +741,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         if (!SoundEventsManager.IsSongPlaying(GameInfo.GetLevelMusicSoundEvent()))
             GameInfo.PlayLevelMusic();
 
-        UserInfo = new UserInfoWorld(Scene, GameInfo.Level.HasBlueLum);
+        UserInfo = new UserInfoWorldMap(Scene, GameInfo.Level.HasBlueLum);
         Scene.AddDialog(UserInfo, false, false);
 
         AnimatedObjectResource raymanResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.RaymanWorldMapAnimations);
@@ -810,13 +811,24 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         };
 
         if (GameInfo.PersistentInfo.UnlockedWorld2 && !GameInfo.PersistentInfo.PlayedWorld2Unlock)
+        {
+            Debug.Assert(WorldId == WorldId.World1, "World #2 cannot be unlocked here");
             CurrentExStepAction = StepEx_UnlockWorld2;
+        }
         else if (GameInfo.PersistentInfo.UnlockedWorld3 && !GameInfo.PersistentInfo.PlayedWorld3Unlock)
+        {
+            Debug.Assert(WorldId == WorldId.World2, "World #3 cannot be unlocked here");
             CurrentExStepAction = StepEx_UnlockWorld3;
+        }
         else if (GameInfo.PersistentInfo.UnlockedWorld4 && !GameInfo.PersistentInfo.PlayedWorld4Unlock)
+        {
+            Debug.Assert(WorldId == WorldId.World3, "World #4 cannot be unlocked here");
             CurrentExStepAction = StepEx_UnlockWorld4;
+        }
         else
+        {
             CurrentExStepAction = StepEx_Play;
+        }
 
         Timer = 0;
 
@@ -824,9 +836,8 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         InitLightning();
         InitVolcanoGlow();
 
-        UserInfo.WorldNameBar.SetWorld(WorldId);
-        UserInfo.WorldNameBar.CanMoveIn = true;
-        UserInfo.WorldNameBar.MoveInWorldNameBar();
+        UserInfo.SetWorldId(WorldId);
+        UserInfo.ShowWorldBar();
 
         CurrentStepAction = Step_Normal;
 
@@ -1018,8 +1029,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                         {
                             Rayman.CurrentAnimation = 0;
                             CurrentMovement = WorldMapMovement.World1To2;
-                            UserInfo.WorldNameBar.CanMoveIn = false;
-                            UserInfo.WorldNameBar.MoveOutWorldNameBar();
+                            UserInfo.HideWorldBar();
                         }
                         break;
 
@@ -1028,8 +1038,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                         {
                             Rayman.CurrentAnimation = 2;
                             CurrentMovement = WorldMapMovement.World2To3;
-                            UserInfo.WorldNameBar.CanMoveIn = false;
-                            UserInfo.WorldNameBar.MoveOutWorldNameBar();
+                            UserInfo.HideWorldBar();
                         }
                         break;
 
@@ -1038,8 +1047,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                         {
                             Rayman.CurrentAnimation = 6;
                             CurrentMovement = WorldMapMovement.World3To4;
-                            UserInfo.WorldNameBar.CanMoveIn = false;
-                            UserInfo.WorldNameBar.MoveOutWorldNameBar();
+                            UserInfo.HideWorldBar();
                         }
                         break;
                 }
@@ -1059,30 +1067,26 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                             Rayman.CurrentAnimation = 22;
                             CurrentMovement = WorldMapMovement.World1ToGameCube;
                             SelectedWorldType = WorldType.GameCube;
-                            UserInfo.WorldNameBar.CanMoveIn = false;
-                            UserInfo.WorldNameBar.MoveOutWorldNameBar();
+                            UserInfo.HideWorldBar();
                         }
                         break;
 
                     case WorldId.World2:
                         Rayman.CurrentAnimation = 13;
                         CurrentMovement = WorldMapMovement.World2To1;
-                        UserInfo.WorldNameBar.CanMoveIn = false;
-                        UserInfo.WorldNameBar.MoveOutWorldNameBar();
+                        UserInfo.HideWorldBar();
                         break;
 
                     case WorldId.World3:
                         Rayman.CurrentAnimation = 10;
                         CurrentMovement = WorldMapMovement.World3To2;
-                        UserInfo.WorldNameBar.CanMoveIn = false;
-                        UserInfo.WorldNameBar.MoveOutWorldNameBar();
+                        UserInfo.HideWorldBar();
                         break;
 
                     case WorldId.World4:
                         Rayman.CurrentAnimation = 8;
                         CurrentMovement = WorldMapMovement.World4To3;
-                        UserInfo.WorldNameBar.CanMoveIn = false;
-                        UserInfo.WorldNameBar.MoveOutWorldNameBar();
+                        UserInfo.HideWorldBar();
                         break;
                 }
             }
@@ -1114,9 +1118,8 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                     {
                         CurrentMovement = WorldMapMovement.None;
                         WorldId = WorldId.World2;
-                        UserInfo.WorldNameBar.SetWorld(WorldId);
-                        UserInfo.WorldNameBar.CanMoveIn = true;
-                        UserInfo.WorldNameBar.MoveInWorldNameBar();
+                        UserInfo.SetWorldId(WorldId);
+                        UserInfo.ShowWorldBar();
                         Rayman.CurrentAnimation = 16;
                     }
                 }
@@ -1144,9 +1147,8 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                     {
                         CurrentMovement = WorldMapMovement.None;
                         WorldId = WorldId.World3;
-                        UserInfo.WorldNameBar.SetWorld(WorldId);
-                        UserInfo.WorldNameBar.CanMoveIn = true;
-                        UserInfo.WorldNameBar.MoveInWorldNameBar();
+                        UserInfo.SetWorldId(WorldId);
+                        UserInfo.ShowWorldBar();
                         Rayman.CurrentAnimation = 17;
                     }
                 }
@@ -1167,9 +1169,8 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                     {
                         CurrentMovement = WorldMapMovement.None;
                         WorldId = WorldId.World4;
-                        UserInfo.WorldNameBar.SetWorld(WorldId);
-                        UserInfo.WorldNameBar.CanMoveIn = true;
-                        UserInfo.WorldNameBar.MoveInWorldNameBar();
+                        UserInfo.SetWorldId(WorldId);
+                        UserInfo.ShowWorldBar();
                         Rayman.CurrentAnimation = 18;
                     }
                 }
@@ -1187,9 +1188,8 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                     {
                         CurrentMovement = WorldMapMovement.None;
                         WorldId = WorldId.World3;
-                        UserInfo.WorldNameBar.SetWorld(WorldId);
-                        UserInfo.WorldNameBar.CanMoveIn = true;
-                        UserInfo.WorldNameBar.MoveInWorldNameBar();
+                        UserInfo.SetWorldId(WorldId);
+                        UserInfo.ShowWorldBar();
                         Rayman.CurrentAnimation = 17;
                     }
                 }
@@ -1210,9 +1210,8 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                     {
                         CurrentMovement = WorldMapMovement.None;
                         WorldId = WorldId.World2;
-                        UserInfo.WorldNameBar.SetWorld(WorldId);
-                        UserInfo.WorldNameBar.CanMoveIn = true;
-                        UserInfo.WorldNameBar.MoveInWorldNameBar();
+                        UserInfo.SetWorldId(WorldId);
+                        UserInfo.ShowWorldBar();
                         Rayman.CurrentAnimation = 16;
                     }
                 }
@@ -1237,9 +1236,8 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                     {
                         CurrentMovement = WorldMapMovement.None;
                         WorldId = WorldId.World1;
-                        UserInfo.WorldNameBar.SetWorld(WorldId);
-                        UserInfo.WorldNameBar.CanMoveIn = true;
-                        UserInfo.WorldNameBar.MoveInWorldNameBar();
+                        UserInfo.SetWorldId(WorldId);
+                        UserInfo.ShowWorldBar();
                         Rayman.CurrentAnimation = 15;
                     }
                 }
@@ -1312,7 +1310,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         }
         else if (SelectedWorldType != WorldType.None && CircleWipeTransitionMode == TransitionMode.FinishedOut)
         {
-            SelectWorld();
+            WorldNameInit();
             Gfx.ClearScreenEffect();
         }
 

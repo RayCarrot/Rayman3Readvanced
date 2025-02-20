@@ -32,6 +32,11 @@ public class SpriteTextObject : AObject
 
     public int GetStringWidth() => FontManager.GetStringWidth(FontSize, TextBytes);
 
+    public void SetYScaling(float scale)
+    {
+        AffineMatrix = new AffineMatrix(1, 0, 0, scale);
+    }
+
     public override void Execute(Action<short> soundEventCallback)
     {
         if (TextBytes == null)

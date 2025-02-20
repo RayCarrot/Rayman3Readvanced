@@ -1,6 +1,6 @@
 ﻿namespace GbaMonoGame.Rayman3;
 
-public partial class Missile
+public partial class EnergyBall
 {
     public new Action ActionId
     {

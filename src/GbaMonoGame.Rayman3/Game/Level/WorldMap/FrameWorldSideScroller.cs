@@ -26,7 +26,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
 
     public bool BlockPause { get; set; }
     public TransitionsFX TransitionsFX { get; set; }
-    public UserInfoWorld UserInfo { get; set; }
+    public UserInfoWorldMap UserInfo { get; set; }
     public PauseDialog PauseDialog { get; set; }
 
     #endregion

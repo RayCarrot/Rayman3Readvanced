@@ -12,7 +12,7 @@ public partial class TextBoxDialog
                 TextTransitionValue = 1;
                 Timer = 0;
                 foreach (SpriteTextObject textObj in TextObjects)
-                    textObj.AffineMatrix = AffineMatrix.Identity;
+                    textObj.SetYScaling(1);
                 break;
 
             case FsmAction.Step:
@@ -66,7 +66,7 @@ public partial class TextBoxDialog
             case FsmAction.Init:
                 TextTransitionValue = 1;
                 foreach (SpriteTextObject textObj in TextObjects)
-                    textObj.AffineMatrix = AffineMatrix.Identity;
+                    textObj.SetYScaling(1);
                 break;
 
             case FsmAction.Step:
@@ -76,7 +76,7 @@ public partial class TextBoxDialog
                 {
                     TextTransitionValue++;
                     foreach (SpriteTextObject textObj in TextObjects)
-                        textObj.AffineMatrix = new AffineMatrix(1, 0, 0, TextTransitionValue);
+                        textObj.SetYScaling(TextTransitionValue);
 
                     if (TextTransitionValue > 8)
                     {
@@ -151,7 +151,7 @@ public partial class TextBoxDialog
                     }
 
                     foreach (SpriteTextObject textObj in TextObjects)
-                        textObj.AffineMatrix = new AffineMatrix(1, 0, 0, TextTransitionValue);
+                        textObj.SetYScaling(TextTransitionValue);
                 }
 
                 if (finished)

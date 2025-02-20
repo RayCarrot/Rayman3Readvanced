@@ -112,7 +112,7 @@ public sealed partial class LevelCurtain : ActionActor
         {
             if (MapId <= (MapId)(GameInfo.PersistentInfo.LastCompletedLevel + 1) ||
                 MapId is MapId.ChallengeLy1 or MapId.ChallengeLy2 or MapId.ChallengeLyGCN ||
-                (MapId == MapId._1000Lums && GameInfo.GetTotalCollectedYellowLums() >= 999))
+                (MapId == MapId._1000Lums && GameInfo.GetTotalDeadLums() >= 999))
             {
                 State.SetTo(Fsm_Unlocked);
             }

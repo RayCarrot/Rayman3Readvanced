@@ -8,7 +8,7 @@ public enum ActorType
     Piranha = 3,
     WaterSplash = 4,
     Explosion = 5,
-    Missile = 6,
+    EnergyBall = 6,
     BouncyPlatform = 7,
     MovingFlowerPlatform = 8,
     FallingChainedPlatform = 9,

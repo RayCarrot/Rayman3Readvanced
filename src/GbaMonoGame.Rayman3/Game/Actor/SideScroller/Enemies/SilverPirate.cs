@@ -17,9 +17,9 @@ public sealed partial class SilverPirate : PirateBaseActor
 
     private void Shoot()
     {
-        Missile missile = Scene.CreateProjectile<Missile>(ActorType.Missile);
+        EnergyBall energyBall = Scene.CreateProjectile<EnergyBall>(ActorType.EnergyBall);
 
-        if (missile == null)
+        if (energyBall == null)
             return;
 
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Laser1_Mix02);
@@ -28,13 +28,13 @@ public sealed partial class SilverPirate : PirateBaseActor
 
         if (IsFacingRight)
         {
-            missile.Position = Position + new Vector2(36, yOffset);
-            missile.ActionId = Missile.Action.Shot2_Right;
+            energyBall.Position = Position + new Vector2(36, yOffset);
+            energyBall.ActionId = EnergyBall.Action.Shot2_Right;
         }
         else
         {
-            missile.Position = Position + new Vector2(-36, yOffset);
-            missile.ActionId = Missile.Action.Shot2_Left;
+            energyBall.Position = Position + new Vector2(-36, yOffset);
+            energyBall.ActionId = EnergyBall.Action.Shot2_Left;
         }
     }
 

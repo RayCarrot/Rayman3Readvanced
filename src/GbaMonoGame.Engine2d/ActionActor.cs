@@ -153,7 +153,7 @@ public abstract class ActionActor : BaseActor
 
         // If the type is angled, then check if the point within the tile is solid
         if (centerType.IsAngledSolid)
-            centerType = centerType.IsAnglePointSolid(pos) ? PhysicalTypeValue.Solid : PhysicalTypeValue.None;
+            centerType = centerType.IsBlockPointSolid(pos) ? PhysicalTypeValue.Solid : PhysicalTypeValue.None;
 
         // Return if the type is solid
         if (centerType.IsSolid) 
