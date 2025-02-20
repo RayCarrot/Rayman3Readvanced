@@ -67,7 +67,8 @@ public class GfxScreen
         if (Rom.IsLoaded && Rom.Platform == Platform.GBA && RenderOptions.BlendMode != BlendMode.None)
             color = new Color(color, Alpha);
 
-        if (Wrap)
+        // We can't wrap if the camera is in 3D
+        if (Wrap && RenderOptions.WorldViewProj == null)
         {
             // Get the normal size of the background. This is used to wrapping.
             Vector2 size = Renderer.GetSize(this);
