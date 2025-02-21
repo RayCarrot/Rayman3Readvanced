@@ -91,8 +91,21 @@ public static class InputManager
         return inputs;
     }
 
-    public static bool IsMouseOnScreen(RenderContext renderContext) => 
-        renderContext.IsVisible(GetMousePosition(renderContext));
+    public static bool IsMouseOnScreen(RenderContext renderContext)
+    {
+        Vector2 mousePos = GetMousePosition(renderContext);
+
+        if (mousePos.X < 0 || mousePos.Y < 0)
+            return false;
+
+        Vector2 resolution = renderContext.Resolution;
+
+        if (mousePos.X >= resolution.X || mousePos.Y >= resolution.Y)
+            return false;
+
+        return true;
+    }
+
     public static Vector2 GetMousePosition(RenderContext renderContext) => 
         renderContext.ToWorldPosition(_mouseState.Position.ToVector2() + MouseOffset);
     public static Vector2 GetMousePositionDelta(RenderContext renderContext) => 

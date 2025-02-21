@@ -151,9 +151,6 @@ public abstract class RenderContext
         return pos;
     }
 
-    public bool IsVisible(Rectangle rect) => Viewport.Bounds.Intersects(rect);
-    public bool IsVisible(Vector2 position) => Viewport.Bounds.Contains(position);
-
     public virtual void Update()
     {
         if (Engine.Config.InternalGameResolution != _lastGameResolution)
