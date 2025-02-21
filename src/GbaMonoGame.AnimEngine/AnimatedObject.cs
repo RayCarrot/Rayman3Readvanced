@@ -269,7 +269,10 @@ public class AnimatedObject : AObject
 
         EndOfAnimation = false;
 
-        Debug.Assert(IsFramed, "This function should not be called when the object is not framed");
+        // Ideally we'd do this (the game only does it for 8-bit animations for some reason), but several
+        // animations forget to set themselves as framed and it's a pain to fix them all. The IsFramed
+        // property doesn't matter unless it's manually checked for anyway.
+        // Debug.Assert(IsFramed, "This function should not be called when the object is not framed");
 
         // --- At this point the engine loads dynamic data which we don't need to ---
 
