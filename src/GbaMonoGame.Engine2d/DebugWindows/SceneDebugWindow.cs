@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GbaMonoGame.Engine2d;
 
-// TODO: Update for Mode7
 public class SceneDebugWindow : DebugWindow
 {
     public override string Name => "Scene";
@@ -35,12 +34,12 @@ public class SceneDebugWindow : DebugWindow
 
     private void UpdateMouseDetection(Scene2D scene)
     {
-        Vector2 mousePos = InputManager.GetMousePosition(scene.RenderContext);
-
         if (!InputManager.IsMouseOnScreen(scene.RenderContext))
             return;
         
         HighlightedGameObject = null;
+
+        Vector2 mousePos = InputManager.GetMousePosition(scene.RenderContext);
 
         foreach (GameObject obj in scene.KnotManager.EnumerateAllGameObjects(true))
         {
@@ -64,7 +63,8 @@ public class SceneDebugWindow : DebugWindow
         if (Frame.Current is not IHasScene { Scene: { } scene2D }) 
             return;
 
-        UpdateMouseDetection(scene2D);
+        if (scene2D.Playfield is TgxPlayfield2D)
+            UpdateMouseDetection(scene2D);
 
         ImGui.SeparatorText("General");
 
@@ -149,7 +149,7 @@ public class SceneDebugWindow : DebugWindow
 
     public override void DrawGame(GfxRenderer renderer)
     {
-        if (Frame.Current is not IHasScene { Scene: { } scene2D }) 
+        if (Frame.Current is not IHasScene { Scene: { Playfield: TgxPlayfield2D } scene2D }) 
             return;
 
         renderer.BeginRender(new RenderOptions()
