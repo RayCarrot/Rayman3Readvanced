@@ -73,7 +73,13 @@ public class TgxCameraMode7 : TgxCamera
         set
         {
             SetViewValue(ref _direction, value);
-            UpdateTextLayers();
+
+            // Update text layers
+            foreach (TgxTextLayerMode7 layer in TextLayers)
+            {
+                if (!layer.IsStatic)
+                    layer.ScrolledPosition = layer.ScrolledPosition with { X = layer.RotationFactor * Direction };
+            }
         }
     }
 
@@ -178,18 +184,6 @@ public class TgxCameraMode7 : TgxCamera
             return ray.Position + distance * ray.Direction;
         else
             return Vector3.Zero;
-    }
-
-    public void UpdateTextLayers()
-    {
-        // Update text layers
-        foreach (TgxTextLayerMode7 layer in TextLayers)
-        {
-            if (!layer.IsStatic)
-                layer.ScrolledPosition = layer.ScrolledPosition with { X = layer.RotationFactor * Direction };
-            
-            layer.SetOffset(layer.ScrolledPosition);
-        }
     }
 
     public void Step()

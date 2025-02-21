@@ -33,13 +33,24 @@ public class TgxTextLayerMode7 : TgxGameLayer
         Gfx.AddScreen(Screen);
     }
 
+    private Vector2 _scrolledPosition;
+
     public TextLayerMode7Resource Resource { get; }
     public GfxScreen Screen { get; }
     public MapTile[] TileMap { get; }
     public byte LayerId { get; }
     public bool Is8Bit { get; }
 
-    public Vector2 ScrolledPosition { get; set; }
+    public Vector2 ScrolledPosition
+    {
+        get => _scrolledPosition;
+        set
+        {
+            _scrolledPosition = value;
+            SetOffset(value);
+        }
+    }
+
     public float RotationFactor { get; }
     public bool IsStatic { get; set; }
 
