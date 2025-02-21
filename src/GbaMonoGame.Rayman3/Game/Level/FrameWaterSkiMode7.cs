@@ -60,7 +60,7 @@ public class FrameWaterSkiMode7 : FrameMode7
                 }
                 else if (WaterskiTimer == 128)
                 {
-                    Scene.Camera.ProcessMessage(this, Message.CamMode7_1061);
+                    Scene.Camera.ProcessMessage(this, Message.CamMode7_Reset);
                     Scene.MainActor.ProcessMessage(this, Message.MainMode7_LevelStart);
                     UserInfo.CountdownValue = 0;
                     UserInfo.ShowCountdown = true;

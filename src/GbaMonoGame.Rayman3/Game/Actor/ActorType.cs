@@ -44,6 +44,8 @@ public enum ActorType
     Jano = 39,
     JanoSkullPlatform = 40,
 
+    SamMode7 = 42,
+
     WoodenShieldedHoodboom = 44,
 
     Slapdash = 46,

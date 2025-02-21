@@ -1,6 +1,8 @@
 ﻿using System;
+using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.TgxEngine;
+using ImGuiNET;
 using Vector3 = Microsoft.Xna.Framework.Vector3;
 
 namespace GbaMonoGame.Engine2d;
@@ -36,14 +38,16 @@ public abstract class Mode7Actor : MovableActor
 
     public float GetCamDirection()
     {
-        return -128 - CamAngle - Direction;
+        return MathHelpers.Mod(-128 - CamAngle - Direction, 256);
     }
 
     // TODO: Clean up
-    public void SetMode7DirectionalAction(int param_2, int param_3)
+    public void SetMode7DirectionalAction(int baseActionId, int param_3)
     {
         int camDir = (int)MathF.Round(GetCamDirection());
-        int newActionId = (int)(param_2 + ((camDir + (256 >> (param_3 + 1 & 0xFF)) & 0xffU) >> (8 - param_3 & 0xFF)));
+        int newActionId = MathHelpers.Mod(camDir + (256 >> MathHelpers.Mod(param_3 + 1, 256)), 256) >> MathHelpers.Mod(8 - param_3, 256);
+
+        newActionId += baseActionId;
 
         if (newActionId != ActionId)
             ActionId = newActionId;
@@ -65,5 +69,14 @@ public abstract class Mode7Actor : MovableActor
         _debugPositionPointProjectedAObject.ScreenPos = new Vector2(screenPos.X, screenPos.Y);
 
         animationPlayer.PlayFront(_debugPositionPointProjectedAObject);
+    }
+
+    public override void DrawDebugLayout(DebugLayout debugLayout, DebugLayoutTextureManager textureManager)
+    {
+        base.DrawDebugLayout(debugLayout, textureManager);
+
+        float direction = Direction;
+        if (ImGui.SliderFloat("Direction", ref direction, 0, 256))
+            Direction = direction;
     }
 }

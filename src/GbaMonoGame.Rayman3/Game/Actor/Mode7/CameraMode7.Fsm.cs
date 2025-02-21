@@ -23,8 +23,8 @@ public partial class CameraMode7
                 // Waterski
                 if (Timer == 2 && IsWaterSki)
                 {
-                    // TODO: Set direction based on Sam actor
-                    //cam.Direction = 
+                    SamMode7 sam = Scene.GetGameObject<SamMode7>(((RaymanMode7)LinkedObject).SamActorId);
+                    cam.Direction = MathHelpers.Mod(-(sam.Direction - 128), 256);
 
                     MainActorDistance -= 30;
 
@@ -78,7 +78,7 @@ public partial class CameraMode7
 
                 // NOTE: The game has no tolerance and uses a direct equality comparison. But that's because
                 //       it doesn't store a fractional value for the direction.
-                if (MathHelpers.Mod(Math.Abs(linkedObjDir - -cam.Direction), 256) >= 1)
+                if (Math.Abs(MathHelpers.Mod(linkedObjDir - MathHelpers.Mod(-cam.Direction, 256), 256)) >= 1)
                 {
                     if (MathHelpers.Mod(linkedObjDir + cam.Direction, 256) < 128)
                     {
@@ -142,6 +142,53 @@ public partial class CameraMode7
                 Vector2 posDelta = new(
                     x: LinkedObject.Position.X - (MainActorDistance * camDirectionalVector.X + camDirectionalVector.X / 2) - cam.Position.X,
                     y: LinkedObject.Position.Y + (MainActorDistance * camDirectionalVector.Y + camDirectionalVector.Y / 2) - cam.Position.Y);
+
+                cam.Position += posDelta;
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
+
+        return true;
+    }
+
+    public bool Fsm_WaterSkiFollow(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                MainActorDistance = 85;
+                break;
+
+            case FsmAction.Step:
+                TgxCameraMode7 cam = (TgxCameraMode7)Scene.Playfield.Camera;
+                SamMode7 sam = Scene.GetGameObject<SamMode7>(((RaymanMode7)LinkedObject).SamActorId);
+
+                float linkedObjDir = sam.Direction;
+
+                // NOTE: The game has no tolerance and uses a direct equality comparison. But that's because
+                //       it doesn't store a fractional value for the direction.
+                if (Math.Abs(MathHelpers.Mod(linkedObjDir - MathHelpers.Mod(-cam.Direction, 256), 256)) >= 1)
+                {
+                    // NOTE: The game changes by 1 every second frame, but we instead to 0.5 every frame
+                    if (MathHelpers.Mod(linkedObjDir + cam.Direction, 256) < 128)
+                        cam.Direction = MathHelpers.Mod(-(MathHelpers.Mod(-cam.Direction, 256) + 0.5f), 256);
+                    else
+                        cam.Direction = MathHelpers.Mod(-(MathHelpers.Mod(-cam.Direction, 256) - 0.5f), 256);
+                }
+
+                Vector2 camDirectionalVector = MathHelpers.DirectionalVector256(0x100 - cam.Direction);
+                Vector2 targetPos = (LinkedObject.Position + sam.Position) / 2;
+
+                Vector2 posDelta = new(
+                    x: targetPos.X -
+                       (MainActorDistance * camDirectionalVector.X + camDirectionalVector.X / 2) - 
+                       cam.Position.X,
+                    y: targetPos.Y + 
+                       (MainActorDistance * camDirectionalVector.Y + camDirectionalVector.Y / 2) - 
+                       cam.Position.Y);
 
                 cam.Position += posDelta;
                 break;

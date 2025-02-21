@@ -81,7 +81,7 @@ public enum Message
     Cam_MoveToLinkedObject = 1058,
     Main_ExitStopOrCutscene = 1059,
     Exploded = 1060,
-    CamMode7_1061 = 1061, // TODO: Name
+    CamMode7_Reset = 1061,
     Cam_SetPosition = 1062,
     Lum_ToggleVisibility = 1063,
     Main_MountWalkingShell = 1064,

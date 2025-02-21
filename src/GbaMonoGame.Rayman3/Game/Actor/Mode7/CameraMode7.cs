@@ -36,8 +36,13 @@ public partial class CameraMode7 : CameraActorMode7
                     ResetPosition = false;
                 return true;
 
-            case Message.CamMode7_1061:
-                // TODO: Implement
+            case Message.CamMode7_Reset:
+                // Waterski
+                if (IsWaterSki)
+                    State.MoveTo(Fsm_WaterSkiFollow);
+                // Default
+                else
+                    State.MoveTo(Fsm_Follow);
                 return true;
 
             default:

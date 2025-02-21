@@ -1,4 +1,4 @@
-﻿using System;
+﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -8,16 +8,16 @@ public class MarshAwakening2 : FrameWaterSkiMode7
 
     public override void Init()
     {
-        throw new NotImplementedException();
+        base.Init();
+
+        CameraMode7 cam = (CameraMode7)Scene.Camera;
+        cam.IsWaterSki = true;
+        cam.MainActorDistance = 85;
     }
 
     public override void UnInit()
     {
-        throw new NotImplementedException();
-    }
-
-    public override void Step()
-    {
-        throw new NotImplementedException();
+        base.UnInit();
+        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__SkiLoop1);
     }
 }

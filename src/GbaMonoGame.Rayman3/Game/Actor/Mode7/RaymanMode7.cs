@@ -20,7 +20,7 @@ public sealed partial class RaymanMode7 : Mode7Actor
         RenderHeight = 64;
         
         field_0x7a = Direction;
-        field_0x7c = 0;
+        SlowDown = false;
         PrevHitPoints = HitPoints;
         ProcessJoypad = false;
         
@@ -30,10 +30,11 @@ public sealed partial class RaymanMode7 : Mode7Actor
     // TODO: Name
     public float field_0x7a { get; set; }
     public byte field_0x7b { get; set; }
-    public byte field_0x7c { get; set; }
     
     public int SamActorId { get; }
     public bool ProcessJoypad { get; set; }
+    public float MoveSpeed { get; set; }
+    public bool SlowDown { get; set; }
 
     public int PrevHitPoints { get; set; }
     public byte InvulnerabilityTimer { get; set; }
