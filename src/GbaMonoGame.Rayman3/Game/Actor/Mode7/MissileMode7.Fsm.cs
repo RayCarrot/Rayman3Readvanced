@@ -133,7 +133,7 @@ public partial class MissileMode7
                 if (physicalType.Bumper2 && !PrevPhysicalType.Bumper2)
                 {
                     MechModel.Speed = -new Vector2(MechModel.Speed.Y, MechModel.Speed.X);
-                    Direction = MathHelpers.Mod(MathHelpers.Atan2_256(MechModel.Speed * new Vector2(1, -16)), 256);
+                    Direction = Angle256.FromVector(MechModel.Speed * new Vector2(1, -16));
 
                     if (InstanceId == Scene.Camera.LinkedObject.InstanceId)
                     {
@@ -144,7 +144,7 @@ public partial class MissileMode7
                 else if (physicalType.Bumper1 && !PrevPhysicalType.Bumper1) 
                 {
                     MechModel.Speed = new Vector2(MechModel.Speed.Y, MechModel.Speed.X);
-                    Direction = MathHelpers.Mod(MathHelpers.Atan2_256(MechModel.Speed * new Vector2(1, -16)), 256);
+                    Direction = Angle256.FromVector(MechModel.Speed * new Vector2(1, -16));
 
                     if (InstanceId == Scene.Camera.LinkedObject.InstanceId)
                     {
@@ -168,7 +168,7 @@ public partial class MissileMode7
                     // Accelerate when holding A
                     if (MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.A))
                     {
-                        MechModel.Acceleration = MathHelpers.DirectionalVector256(Direction) * Acceleration * new Vector2(1, -1);
+                        MechModel.Acceleration = Direction.ToDirectionalVector() * Acceleration * new Vector2(1, -1);
 
                         if (BoostTimer != 0)
                             MechModel.Acceleration *= 2;

@@ -89,7 +89,7 @@ public class UserInfoWaterskiMode7 : Dialog
         TgxCameraMode7 cam = (TgxCameraMode7)Scene.Playfield.Camera;
 
         Birds.ScreenPos = new Vector2(
-            x: (MathHelpers.Mod(256 - cam.Direction, 256) + BirdsXPosition) * 2,
+            x: (cam.Direction.Inverse() + BirdsXPosition) * 2,
             y: cam.Horizon - 42);
 
         if (!IsPaused)

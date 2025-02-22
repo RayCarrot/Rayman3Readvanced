@@ -18,14 +18,14 @@ public sealed partial class MissileMode7 : Mode7Actor
 
         if (GameInfo.MapId == MapId.GbaMulti_MissileArena)
         {
-            Direction = InstanceId switch
+            Direction = new Angle256(InstanceId switch
             {
                 0 => 224,
                 1 => 160,
                 2 => 96,
                 3 => 32,
                 _ => throw new Exception("Invalid instance id")
-            };
+            });
         }
 
         if (RSMultiplayer.IsActive && InstanceId != 0)
@@ -100,8 +100,8 @@ public sealed partial class MissileMode7 : Mode7Actor
 
     private bool IsFacingTheRightDirection(Mode7PhysicalTypeDefine.Mode7PhysicalTypeDirection raceDirection)
     {
-        float v1 = (int)raceDirection * 32 + 80;
-        float v2 = (int)raceDirection * 32 + 176;
+        Angle256 v1 = (int)raceDirection * 32 + 80;
+        Angle256 v2 = (int)raceDirection * 32 + 176;
         
         if (v1 < v2)
             return v1 > Direction || Direction > v2;
@@ -237,8 +237,8 @@ public sealed partial class MissileMode7 : Mode7Actor
 
     private void DoNoClipBehavior()
     {
-        Vector2 direction = MathHelpers.DirectionalVector256(Direction) * new Vector2(1, -1);
-        Vector2 sideDirection = MathHelpers.DirectionalVector256(Direction + 64) * new Vector2(1, -1);
+        Vector2 direction = Direction.ToDirectionalVector() * new Vector2(1, -1);
+        Vector2 sideDirection = (Direction + Angle256.Quarter).ToDirectionalVector() * new Vector2(1, -1);
 
         int speed = JoyPad.IsButtonPressed(GbaInput.A) ? 4 : 2;
 

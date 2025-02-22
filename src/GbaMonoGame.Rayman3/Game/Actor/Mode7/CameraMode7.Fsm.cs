@@ -24,7 +24,7 @@ public partial class CameraMode7
                 if (Timer == 2 && IsWaterSki)
                 {
                     SamMode7 sam = Scene.GetGameObject<SamMode7>(((RaymanMode7)LinkedObject).SamActorId);
-                    cam.Direction = MathHelpers.Mod(-(sam.Direction - 128), 256);
+                    cam.Direction = (sam.Direction - Angle256.Half).Inverse();
 
                     MainActorDistance -= 30;
 
@@ -55,9 +55,9 @@ public partial class CameraMode7
         switch (action)
         {
             case FsmAction.Init:
-                cam.Direction = MathHelpers.Mod(-((Mode7Actor)LinkedObject).Direction, 256);
+                cam.Direction = ((Mode7Actor)LinkedObject).Direction.Inverse();
 
-                Vector2 directionalVector = MathHelpers.DirectionalVector256(0x100 - cam.Direction);
+                Vector2 directionalVector = cam.Direction.Inverse().ToDirectionalVector();
 
                 cam.Position = new Vector2(
                     x: LinkedObject.Position.X - directionalVector.X * MainActorDistance,
@@ -74,29 +74,29 @@ public partial class CameraMode7
                     }
                 }
 
-                float linkedObjDir = ((Mode7Actor)LinkedObject).Direction;
+                Angle256 linkedObjDir = ((Mode7Actor)LinkedObject).Direction;
 
                 // NOTE: The game has no tolerance and uses a direct equality comparison. But that's because
                 //       it doesn't store a fractional value for the direction.
-                if (Math.Abs(MathHelpers.Mod(linkedObjDir - MathHelpers.Mod(-cam.Direction, 256), 256)) >= 1)
+                if (Math.Abs(linkedObjDir - cam.Direction.Inverse()) >= 1)
                 {
-                    if (MathHelpers.Mod(linkedObjDir + cam.Direction, 256) < 128)
+                    if (linkedObjDir + cam.Direction < Angle256.Half)
                     {
-                        DirectionDelta += 0.25f + MathHelpers.Mod(linkedObjDir + cam.Direction, 256) * 0.0625f;
-                        cam.Direction = MathHelpers.Mod(-(MathHelpers.Mod(DirectionDelta, 256) - cam.Direction), 256);
-                        DirectionDelta %= 1;
+                        DirectionDelta += 0.25f + (linkedObjDir + cam.Direction) * 0.0625f;
+                        cam.Direction = (DirectionDelta - cam.Direction).Inverse();
                     }
                     else
                     {
-                        DirectionDelta += 0.25f + MathHelpers.Mod(-cam.Direction - linkedObjDir, 256) * 0.0625f;
-                        cam.Direction = MathHelpers.Mod(-(-MathHelpers.Mod(DirectionDelta, 256) - cam.Direction), 256);
-                        DirectionDelta %= 1;
+                        DirectionDelta += 0.25f + (cam.Direction.Inverse() - linkedObjDir) * 0.0625f;
+                        cam.Direction = (DirectionDelta.Inverse() - cam.Direction).Inverse();
                     }
+
+                    DirectionDelta %= 1;
                 }
 
                 float speedLength = LinkedObject.Speed.Length();
                 float targetLength = MainActorDistance + speedLength;
-                Vector2 camDirectionalVector = MathHelpers.DirectionalVector256(0x100 - cam.Direction);
+                Vector2 camDirectionalVector = cam.Direction.Inverse().ToDirectionalVector();
 
                 Vector2 posDelta = new(
                     x: LinkedObject.Position.X - (targetLength * camDirectionalVector.X + camDirectionalVector.X / 2) - cam.Position.X,
@@ -126,7 +126,7 @@ public partial class CameraMode7
 
             case FsmAction.Step:
                 TgxCameraMode7 cam = (TgxCameraMode7)Scene.Playfield.Camera;
-                Vector2 camDirectionalVector = MathHelpers.DirectionalVector256(0x100 - cam.Direction);
+                Vector2 camDirectionalVector = cam.Direction.Inverse().ToDirectionalVector();
 
                 if (ResetPosition)
                 {
@@ -137,7 +137,7 @@ public partial class CameraMode7
                         y: LinkedObject.Position.Y + camDirectionalVector.Y * MainActorDistance);
                 }
 
-                cam.Direction = MathHelpers.Mod(-(1 - cam.Direction), 256);
+                cam.Direction = (1 - cam.Direction).Inverse();
 
                 Vector2 posDelta = new(
                     x: LinkedObject.Position.X - (MainActorDistance * camDirectionalVector.X + camDirectionalVector.X / 2) - cam.Position.X,
@@ -166,20 +166,20 @@ public partial class CameraMode7
                 TgxCameraMode7 cam = (TgxCameraMode7)Scene.Playfield.Camera;
                 SamMode7 sam = Scene.GetGameObject<SamMode7>(((RaymanMode7)LinkedObject).SamActorId);
 
-                float linkedObjDir = sam.Direction;
+                Angle256 linkedObjDir = sam.Direction;
 
                 // NOTE: The game has no tolerance and uses a direct equality comparison. But that's because
                 //       it doesn't store a fractional value for the direction.
-                if (Math.Abs(MathHelpers.Mod(linkedObjDir - MathHelpers.Mod(-cam.Direction, 256), 256)) >= 1)
+                if (Math.Abs(linkedObjDir - cam.Direction.Inverse()) >= 1)
                 {
                     // NOTE: The game changes by 1 every second frame, but we instead to 0.5 every frame
-                    if (MathHelpers.Mod(linkedObjDir + cam.Direction, 256) < 128)
-                        cam.Direction = MathHelpers.Mod(-(MathHelpers.Mod(-cam.Direction, 256) + 0.5f), 256);
+                    if (linkedObjDir + cam.Direction < Angle256.Half)
+                        cam.Direction = (cam.Direction.Inverse() + 0.5f).Inverse();
                     else
-                        cam.Direction = MathHelpers.Mod(-(MathHelpers.Mod(-cam.Direction, 256) - 0.5f), 256);
+                        cam.Direction = (cam.Direction.Inverse() - 0.5f).Inverse();
                 }
 
-                Vector2 camDirectionalVector = MathHelpers.DirectionalVector256(0x100 - cam.Direction);
+                Vector2 camDirectionalVector = cam.Direction.Inverse().ToDirectionalVector();
                 Vector2 targetPos = (LinkedObject.Position + sam.Position) / 2;
 
                 Vector2 posDelta = new(

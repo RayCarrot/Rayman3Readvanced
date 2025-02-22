@@ -15,7 +15,7 @@ public sealed partial class RaymanMode7 : Mode7Actor
         State.SetTo(Fsm_Default);
 
         AnimatedObject.BgPriority = 0;
-        Direction = 0;
+        Direction = Angle256.Zero;
         ZPos = 0;
         RenderHeight = 64;
         
@@ -28,7 +28,7 @@ public sealed partial class RaymanMode7 : Mode7Actor
     }
 
     // TODO: Name
-    public float field_0x7a { get; set; }
+    public Angle256 field_0x7a { get; set; }
     public byte field_0x7b { get; set; }
     
     public int SamActorId { get; }
@@ -56,8 +56,8 @@ public sealed partial class RaymanMode7 : Mode7Actor
 
     private void DoNoClipBehavior()
     {
-        Vector2 direction = MathHelpers.DirectionalVector256(Direction) * new Vector2(1, -1);
-        Vector2 sideDirection = MathHelpers.DirectionalVector256(Direction + 64) * new Vector2(1, -1);
+        Vector2 direction = Direction.ToDirectionalVector() * new Vector2(1, -1);
+        Vector2 sideDirection = (Direction + Angle256.Quarter).ToDirectionalVector() * new Vector2(1, -1);
 
         int speed = JoyPad.IsButtonPressed(GbaInput.A) ? 4 : 2;
 

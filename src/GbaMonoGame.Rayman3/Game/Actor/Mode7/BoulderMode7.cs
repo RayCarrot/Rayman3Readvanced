@@ -8,7 +8,7 @@ public sealed partial class BoulderMode7 : Mode7Actor
 {
     public BoulderMode7(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
-        Direction = 0;
+        Direction = Angle256.Zero;
         ZPos = 0;
         RenderHeight = 64;
         Rotation = 0;

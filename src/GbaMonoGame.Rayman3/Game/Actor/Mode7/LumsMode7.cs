@@ -8,7 +8,7 @@ public sealed partial class LumsMode7 : Mode7Actor
     public LumsMode7(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
         AnimatedObject.BgPriority = 0;
-        Direction = 0;
+        Direction = Angle256.Zero;
         ZPos = 0;
         RenderHeight = 32;
         Timer = MaxTimer;

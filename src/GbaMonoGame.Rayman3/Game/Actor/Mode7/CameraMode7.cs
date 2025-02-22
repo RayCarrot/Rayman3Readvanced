@@ -13,13 +13,13 @@ public partial class CameraMode7 : CameraActorMode7
         //field_0x1e = 0;
         Timer = 0;
         MainActorDistance = 55;
-        DirectionDelta = 0;
+        DirectionDelta = Angle256.Zero;
     }
 
     public bool IsWaterSki { get; set; }
     public uint Timer { get; set; }
     public float MainActorDistance { get; set; }
-    public float DirectionDelta { get; set; }
+    public Angle256 DirectionDelta { get; set; }
     public bool ResetPosition { get; set; }
 
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
@@ -71,7 +71,7 @@ public partial class CameraMode7 : CameraActorMode7
         cam.Direction = -linkedActor.Direction;
 
         // Set the camera position
-        Vector2 directionalVector = MathHelpers.DirectionalVector256(0x100 - cam.Direction);
+        Vector2 directionalVector = cam.Direction.Inverse().ToDirectionalVector();
         cam.Position = new Vector2(
             x: linkedActor.Position.X - directionalVector.X * (MainActorDistance + 90),
             y: linkedActor.Position.Y + directionalVector.Y * (MainActorDistance + 90));

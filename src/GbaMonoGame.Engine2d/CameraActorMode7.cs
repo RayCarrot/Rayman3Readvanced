@@ -16,7 +16,7 @@ public abstract class CameraActorMode7 : CameraActor
 
         // Get the camera position and direction
         Vector2 camPos = cam.Position;
-        Vector2 camDir = cam.GetDirection();
+        Vector2 camDir = cam.Direction.ToDirectionalVector();
 
         // Get the difference between the actor and the camera
         Vector2 posDiff = actor.Position - camPos;

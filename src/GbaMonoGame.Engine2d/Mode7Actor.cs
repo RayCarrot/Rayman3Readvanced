@@ -1,5 +1,4 @@
 ﻿using System;
-using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.TgxEngine;
 using ImGuiNET;
@@ -16,7 +15,7 @@ public abstract class Mode7Actor : MovableActor
         : base(instanceId, scene, actorResource, animatedObject)
     {
         IsAffine = true;
-        Direction = 0;
+        Direction = Angle256.Zero;
         ZPos = 0;
         RenderHeight = 32;
         AnimatedObject.BgPriority = 0;
@@ -33,12 +32,12 @@ public abstract class Mode7Actor : MovableActor
     public float ZPos { get; set; }
     public bool IsAffine { get; set; }
     public int RenderHeight { get; set; }
-    public float Direction { get; set; } // 0-256
+    public Angle256 Direction { get; set; }
     public float CamAngle { get; set; }
 
-    public float GetCamDirection()
+    public Angle256 GetCamDirection()
     {
-        return MathHelpers.Mod(-128 - CamAngle - Direction, 256);
+        return -128 - CamAngle - Direction;
     }
 
     // TODO: Clean up

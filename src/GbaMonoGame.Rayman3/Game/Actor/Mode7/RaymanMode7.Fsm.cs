@@ -65,15 +65,18 @@ public partial class RaymanMode7
 
         Vector2 posDiff = (sam.Position - Position) * new Vector2(1, -1);
         
-        Direction = MathHelpers.Mod(MathHelpers.Atan2_256(posDiff), 256);
+        Direction = Angle256.FromVector(posDiff);
 
         float posDist = posDiff.Length();
-        
-        float speedX = posDist * (sam.MechModel.Speed.X * MathHelpers.Cos256(Direction - sam.Direction)) / 60;
+
+        Angle256 angleDiff = Direction - sam.Direction;
+        Vector2 angleDiffVector = angleDiff.ToDirectionalVector();
+
+        float speedX = posDist * (sam.MechModel.Speed.X * angleDiffVector.X) / 60;
         if (SlowDown)
             speedX /= 4;
 
-        float speedY = posDist * (sam.MechModel.Speed.X * MathHelpers.Sin256(Direction - sam.Direction)) / 60;
+        float speedY = posDist * (sam.MechModel.Speed.X * angleDiffVector.Y) / 60;
         speedY += MoveSpeed;
         if (SlowDown)
             speedY /= 4;

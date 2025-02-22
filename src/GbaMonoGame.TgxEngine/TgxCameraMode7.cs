@@ -25,7 +25,7 @@ public class TgxCameraMode7 : TgxCamera
     private float _cameraFar = 0.2f;
     private float _cameraHeight = 20.0f;
     private Vector2 _position;
-    private float _direction;
+    private Angle256 _direction;
     private float _horizon;
 
     // Rendering
@@ -67,7 +67,7 @@ public class TgxCameraMode7 : TgxCamera
         get => _position;
         set => SetViewValue(ref _position, value);
     }
-    public float Direction
+    public Angle256 Direction
     {
         get => _direction;
         set
@@ -127,15 +127,10 @@ public class TgxCameraMode7 : TgxCamera
         TextLayers.Add(layer);
     }
 
-    public Vector2 GetDirection()
-    {
-        return new Vector2(MathHelpers.Cos256(Direction), MathHelpers.Sin256(Direction));
-    }
-
     public Vector3 GetCameraTarget()
     {
         // Get the direction
-        Vector2 dir = GetDirection();
+        Vector2 dir = Direction.ToDirectionalVector();
 
         // Multiply by the distance and set the height
         Vector3 cameraOffset = new(
