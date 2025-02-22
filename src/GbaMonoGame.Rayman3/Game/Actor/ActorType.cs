@@ -63,6 +63,7 @@ public enum ActorType
     SpikyFlyingBomb = 60,
     FlowerFire = 61,
 
+    WaterSplashMode7 = 63,
     Murfy = 64,
     LavaFall = 65,
 
