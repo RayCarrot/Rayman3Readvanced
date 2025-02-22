@@ -121,7 +121,7 @@
 | UserInfoSideScroller   | 🟩     |                                              |
 | UserInfoWorldMap       | 🟩     |                                              |
 | UserInfoMulti2D        | 🟩     |                                              |
-| UserInfoWaterskiMode7  | 🟥     |                                              |
+| UserInfoWaterskiMode7  | 🟩     |                                              |
 | UserInfoSingleMode7    | 🟩     |                                              |
 | UserInfoMultiMode7     | 🟥     |                                              |
 | PauseDialog            | 🟩     |                                              |
@@ -184,7 +184,7 @@
 | Depart                 | 🟩     |                                              |
 | RedShell               | 🟩     |                                              |
 | KegFire                | 🟩     |                                              |
-| #33                    | 🟥     |                                              |
+| RaymanMode7            | 🟨     |                                              |
 | LumsMode7              | 🟩     |                                              |
 | Caterpillar            | 🟩     |                                              |
 | #36                    | 🟥     |                                              |
@@ -193,7 +193,7 @@
 | Jano                   | 🟩     |                                              |
 | JanoSkullPlatform      | 🟩     |                                              |
 | #41                    | 🟥     |                                              |
-| #42                    | 🟥     |                                              |
+| SamMode7               | 🟨     |                                              |
 | #43                    | 🟥     |                                              |
 | WoodenShieldedHoodboom | 🟩     |                                              |
 | #45                    | 🟥     |                                              |
@@ -214,7 +214,7 @@
 | SpikyFlyingBomb        | 🟩     |                                              |
 | FlowerFire             | 🟩     |                                              |
 | #62                    | 🟥     |                                              |
-| #63                    | 🟥     |                                              |
+| WaterSplashMode7       | 🟩     |                                              |
 | Murfy                  | 🟩     |                                              |
 | LavaFall               | 🟩     |                                              |
 | #66                    | 🟥     |                                              |
