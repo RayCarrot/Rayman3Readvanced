@@ -30,7 +30,10 @@ public sealed partial class RaymanMode7 : Mode7Actor
     // TODO: Name
     public Angle256 field_0x7a { get; set; }
     public byte field_0x7b { get; set; }
-    
+
+    public float ZPosSpeed { get; set; }
+    public float ZPosDeacceleration { get; set; }
+
     public int SamActorId { get; }
     public bool ProcessJoypad { get; set; }
     public float MoveSpeed { get; set; }

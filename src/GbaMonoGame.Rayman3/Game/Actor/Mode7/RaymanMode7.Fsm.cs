@@ -136,7 +136,13 @@ public partial class RaymanMode7
                 }
                 else if ((GameTime.ElapsedFrames & 7) == 0)
                 {
-                    // TODO: Create watersplash projectile
+                    WaterSplashMode7 waterSplash = Scene.CreateProjectile<WaterSplashMode7>(ActorType.WaterSplashMode7);
+                    if (waterSplash != null)
+                    {
+                        waterSplash.ActionId = WaterSplashMode7.Action.Splash;
+                        waterSplash.Position = Position;
+                        waterSplash.ChangeAction();
+                    }
                 }
 
                 if (JoyPad.IsButtonJustPressed(GbaInput.A) && ProcessJoypad)
@@ -144,7 +150,7 @@ public partial class RaymanMode7
                     State.MoveTo(Fsm_Jump);
                     return false;
                 }
-                return true;
+                break;
 
             case FsmAction.UnInit:
                 // Do nothing
@@ -159,15 +165,44 @@ public partial class RaymanMode7
         switch (action)
         {
             case FsmAction.Init:
-                // TODO: Implement
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__SkiLoop1);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01);
+                ZPosSpeed = 8;
+                ZPosDeacceleration = 0.375f; 
                 break;
 
             case FsmAction.Step:
-                // TODO: Implement
-                return true;
+                if (!FsmStep_CheckDeath())
+                    return false;
+
+                if (!FsmStep_DoMovement())
+                    return false;
+
+                SetMode7DirectionalAction(48, 6);
+
+                float newZPos = ZPosSpeed + ZPos;
+                ZPosSpeed -= ZPosDeacceleration;
+
+                if (newZPos <= 0)
+                {
+                    ZPos = 0;
+                }
+                else
+                {
+                    ZPos = newZPos;
+                    
+                    // TODO: Update horizon
+                }
+
+                if (ZPos <= 0)
+                {
+                    State.MoveTo(Fsm_Default);
+                    return false;
+                }
+                break;
 
             case FsmAction.UnInit:
-                // TODO: Implement
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SplshGen_Mix04);
                 break;
         }
 
@@ -184,7 +219,7 @@ public partial class RaymanMode7
 
             case FsmAction.Step:
                 // TODO: Implement
-                return true;
+                break;
 
             case FsmAction.UnInit:
                 // TODO: Implement
@@ -204,7 +239,7 @@ public partial class RaymanMode7
 
             case FsmAction.Step:
                 // TODO: Implement
-                return true;
+                break;
 
             case FsmAction.UnInit:
                 // TODO: Implement
