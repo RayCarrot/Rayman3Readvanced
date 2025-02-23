@@ -10,7 +10,8 @@ public abstract class CameraActorMode7 : CameraActor
 {
     protected CameraActorMode7(Scene2D scene) : base(scene) { }
 
-    public override bool IsActorFramed(BaseActor actor)
+    // Custom method so we can use IsActorFramed without an actor
+    public bool IsAnimatedObjectFramed(AnimatedObject animatedObject, Vector2 position, float zPos)
     {
         TgxCameraMode7 cam = (TgxCameraMode7)Scene.Playfield.Camera;
 
@@ -18,14 +19,14 @@ public abstract class CameraActorMode7 : CameraActor
         Vector2 camPos = cam.Position;
         Vector2 camDir = cam.Direction.ToDirectionalVector();
 
-        // Get the difference between the actor and the camera
-        Vector2 posDiff = actor.Position - camPos;
+        // Get the difference between the object and the camera
+        Vector2 posDiff = position - camPos;
 
-        // Check if the actor is in front of the camera
+        // Check if the object is in front of the camera
         if (Vector2.Dot(camDir, posDiff) < 0)
             return false;
 
-        // Calculate the actor distance to the camera
+        // Calculate the object distance to the camera
         float camDist = posDiff.Length();
 
         // Check the distance from the camera
@@ -35,12 +36,8 @@ public abstract class CameraActorMode7 : CameraActor
         // TODO: Add this as an option, enabled by default for modern mode
         // The game doesn't do this, but it looks nicer if we fade in the objects as they enter the view
         const float fadeDist = 40f;
-        actor.AnimatedObject.RenderOptions.BlendMode = BlendMode.AlphaBlend;
-        actor.AnimatedObject.Alpha = MathF.Min((cam.CameraFar - camDist) / fadeDist, 1);
-
-        // Set the angle relative to the camera
-        if (actor is Mode7Actor mode7Actor)
-            mode7Actor.CamAngle = MathHelpers.Atan2_256(posDiff);
+        animatedObject.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+        animatedObject.Alpha = MathF.Min((cam.CameraFar - camDist) / fadeDist, 1);
 
         // Get the projection and view from the camera
         Matrix projection = cam.ProjectionMatrix;
@@ -55,27 +52,45 @@ public abstract class CameraActorMode7 : CameraActor
         Matrix rotationMatrix = Matrix.Invert(Matrix.CreateFromQuaternion(rotation));
 
         // Get the translation
-        Vector3 actorPos = new(actor.Position, 0);
-        Matrix translationMatrix = Matrix.CreateTranslation(actorPos);
+        Vector3 objPos = new(position, 0);
+        Matrix translationMatrix = Matrix.CreateTranslation(objPos);
 
         // Set the world matrix
         Matrix world = scaleMatrix * rotationMatrix * translationMatrix;
 
+        // The screen position is 0 since we have the positional data in the world matrix
+        animatedObject.ScreenPos = new Vector2(0, -zPos / 2);
+
+        // Set the WorldViewProj matrix
+        animatedObject.RenderOptions.WorldViewProj = world * view * projection;
+
+        // Set the Y priority, used for sorting the objects based on distance
+        animatedObject.YPriority = camDist;
+
+        return true;
+    }
+
+    public override bool IsActorFramed(BaseActor actor)
+    {
         // Get the z position
         float zPos = 0;
         if (actor is Mode7Actor mode7Actor2)
-            zPos = mode7Actor2.ZPos / 2;
+            zPos = mode7Actor2.ZPos;
 
-        // The screen position is 0 since we have the positional data in the world matrix
-        actor.AnimatedObject.ScreenPos = new Vector2(0, -zPos);
+        bool isFramed = IsAnimatedObjectFramed(actor.AnimatedObject, actor.Position, zPos);
 
-        // Set the WorldViewProj matrix
-        actor.AnimatedObject.RenderOptions.WorldViewProj = world * view * projection;
+        if (actor is Mode7Actor mode7Actor)
+        {
+            TgxCameraMode7 cam = (TgxCameraMode7)Scene.Playfield.Camera;
 
-        // Set the Y priority, used for sorting the objects based on distance
-        actor.AnimatedObject.YPriority = camDist;
+            // Get the difference between the actor and the camera
+            Vector2 posDiff = actor.Position - cam.Position;
 
-        return true;
+            // Set the angle relative to the camera
+            mode7Actor.CamAngle = MathHelpers.Atan2_256(posDiff);
+        }
+
+        return isFramed;
     }
 
     public override bool IsDebugBoxFramed(AObject obj, Vector2 position)
