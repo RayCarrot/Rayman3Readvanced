@@ -18,7 +18,16 @@ public sealed partial class SamMode7 : Mode7Actor
         TetherSparkles = null;
 
         State.SetTo(Fsm_Init);
+
+        _debugCollisionPositionPointAObject = new DebugPointAObject()
+        {
+            Color = DebugBoxColor.DetectionBox,
+            RenderContext = Scene.RenderContext,
+        };
+
     }
+
+    private readonly DebugPointAObject _debugCollisionPositionPointAObject;
 
     private readonly float[] DrawOffsetsTable =
     [
@@ -190,5 +199,15 @@ public sealed partial class SamMode7 : Mode7Actor
 
         // Restore actual position
         Position = actualPos;
+    }
+
+    public override void DrawDebugBoxes(AnimationPlayer animationPlayer)
+    {
+        base.DrawDebugBoxes(animationPlayer);
+
+        Vector2 pos = Position + Direction.ToDirectionalVector() * new Vector2(MathHelpers.FromFixedPoint(0x12FD00)) * new Vector2(1, -1);
+
+        if (Scene.Camera.IsDebugBoxFramed(_debugCollisionPositionPointAObject, pos))
+            animationPlayer.PlayFront(_debugCollisionPositionPointAObject);
     }
 }

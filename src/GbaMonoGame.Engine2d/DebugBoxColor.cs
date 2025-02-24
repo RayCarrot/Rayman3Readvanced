@@ -2,7 +2,7 @@
 
 namespace GbaMonoGame.Engine2d;
 
-internal static class DebugBoxColor
+public static class DebugBoxColor
 {
     // Colors source: https://materialui.co/colors
     public static Color PositionPoint { get; } = new(233, 30, 99); // Pink 500
