@@ -62,11 +62,11 @@ public enum ActorType
     Hoodstormer = 59,
     SpikyFlyingBomb = 60,
     FlowerFire = 61,
-
+    FlyingBombMode7 = 62,
     WaterSplashMode7 = 63,
     Murfy = 64,
     LavaFall = 65,
-
+    ExplosionMode7 = 66,
     ChainedSparkles = 67,
     PlantMode7 = 68,
 

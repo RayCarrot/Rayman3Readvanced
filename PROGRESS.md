@@ -193,7 +193,7 @@
 | Jano                   | 🟩     |                                              |
 | JanoSkullPlatform      | 🟩     |                                              |
 | #41                    | 🟥     |                                              |
-| SamMode7               | 🟨     |                                              |
+| SamMode7               | 🟩     |                                              |
 | #43                    | 🟥     |                                              |
 | WoodenShieldedHoodboom | 🟩     |                                              |
 | #45                    | 🟥     |                                              |
@@ -213,11 +213,11 @@
 | Hoodstormer            | 🟩     |                                              |
 | SpikyFlyingBomb        | 🟩     |                                              |
 | FlowerFire             | 🟩     |                                              |
-| #62                    | 🟥     |                                              |
+| FlyingBombMode7        | 🟩     |                                              |
 | WaterSplashMode7       | 🟩     |                                              |
 | Murfy                  | 🟩     |                                              |
 | LavaFall               | 🟩     |                                              |
-| #66                    | 🟥     |                                              |
+| ExplosionMode7         | 🟩     |                                              |
 | ChainedSparkles        | 🟩     |                                              |
 | PlantMode7             | 🟩     |                                              |
 | #69                    | 🟥     |                                              |
