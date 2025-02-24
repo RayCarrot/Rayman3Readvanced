@@ -25,7 +25,7 @@ public partial class BoulderMode7
                 }
 
                 // Get the current physical type
-                Mode7PhysicalTypeDefine physicalType = Scene.GetPhysicalType(Position).Mode7Define;
+                MissileMode7PhysicalTypeDefine physicalType = MissileMode7PhysicalTypeDefine.FromPhysicalType(Scene.GetPhysicalType(Position));
 
                 // Change direction
                 if (physicalType.Damage)

@@ -50,7 +50,7 @@ public partial class MissileMode7
             else
             {
                 // Get the current physical type
-                Mode7PhysicalTypeDefine physicalType = Scene.GetPhysicalType(Position).Mode7Define;
+                MissileMode7PhysicalTypeDefine physicalType = MissileMode7PhysicalTypeDefine.FromPhysicalType(Scene.GetPhysicalType(Position));
 
                 if (physicalType.Damage && State != Fsm_Jump && !IsInvulnerable)
                 {
@@ -128,9 +128,9 @@ public partial class MissileMode7
                     return false;
 
                 // Get the current physical type
-                Mode7PhysicalTypeDefine physicalType = Scene.GetPhysicalType(Position).Mode7Define;
+                MissileMode7PhysicalTypeDefine physicalType = MissileMode7PhysicalTypeDefine.FromPhysicalType(Scene.GetPhysicalType(Position));
 
-                if (physicalType.Bumper2 && !PrevPhysicalType.Bumper2)
+                if (physicalType.BumperLeft && !PrevPhysicalType.BumperLeft)
                 {
                     MechModel.Speed = -new Vector2(MechModel.Speed.Y, MechModel.Speed.X);
                     Direction = Angle256.FromVector(MechModel.Speed * new Vector2(1, -16));
@@ -141,7 +141,7 @@ public partial class MissileMode7
                         WahooSoundTimer = 15;
                     }
                 }
-                else if (physicalType.Bumper1 && !PrevPhysicalType.Bumper1) 
+                else if (physicalType.BumperRight && !PrevPhysicalType.BumperRight) 
                 {
                     MechModel.Speed = new Vector2(MechModel.Speed.Y, MechModel.Speed.X);
                     Direction = Angle256.FromVector(MechModel.Speed * new Vector2(1, -16));

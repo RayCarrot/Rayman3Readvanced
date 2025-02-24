@@ -35,8 +35,8 @@ public sealed partial class MissileMode7 : Mode7Actor
         field_0x8c = 0;
         field_0x88 = 0;
         Scale = Vector2.One;
-        RaceDirection = Mode7PhysicalTypeDefine.Mode7PhysicalTypeDirection.Right;
-        PrevPhysicalType = Mode7PhysicalTypeDefine.Empty;
+        RaceDirection = MissileMode7PhysicalTypeDefine.TypeDirection.Right;
+        PrevPhysicalType = MissileMode7PhysicalTypeDefine.Empty;
         PrevHitPoints = HitPoints;
         CurrentTempLap = 0;
         BoostTimer = 0;
@@ -64,8 +64,8 @@ public sealed partial class MissileMode7 : Mode7Actor
     public Vector2 Scale { get; set; }
     public byte CustomScaleTimer { get; set; }
 
-    public Mode7PhysicalTypeDefine PrevPhysicalType { get; set; }
-    public Mode7PhysicalTypeDefine.Mode7PhysicalTypeDirection RaceDirection { get; set; }
+    public MissileMode7PhysicalTypeDefine PrevPhysicalType { get; set; }
+    public MissileMode7PhysicalTypeDefine.TypeDirection RaceDirection { get; set; }
 
     public byte CurrentTempLap { get; set; }
     public bool IsOnCorrectLap { get; set; }
@@ -82,23 +82,23 @@ public sealed partial class MissileMode7 : Mode7Actor
         SetMode7DirectionalAction(0, 6);
     }
 
-    private bool IsMovingTheRightDirection(Mode7PhysicalTypeDefine.Mode7PhysicalTypeDirection raceDirection)
+    private bool IsMovingTheRightDirection(MissileMode7PhysicalTypeDefine.TypeDirection raceDirection)
     {
         return raceDirection switch
         {
-            Mode7PhysicalTypeDefine.Mode7PhysicalTypeDirection.Right => Speed.X >= 0,
-            Mode7PhysicalTypeDefine.Mode7PhysicalTypeDirection.UpRight => Speed.X >= Speed.Y,
-            Mode7PhysicalTypeDefine.Mode7PhysicalTypeDirection.Up => Speed.Y <= 0,
-            Mode7PhysicalTypeDefine.Mode7PhysicalTypeDirection.UpLeft => Speed.X <= -Speed.Y,
-            Mode7PhysicalTypeDefine.Mode7PhysicalTypeDirection.Left => Speed.X <= 0,
-            Mode7PhysicalTypeDefine.Mode7PhysicalTypeDirection.DownLeft => Speed.Y >= Speed.X,
-            Mode7PhysicalTypeDefine.Mode7PhysicalTypeDirection.Down => Speed.Y >= 0,
-            Mode7PhysicalTypeDefine.Mode7PhysicalTypeDirection.DownRight => Speed.X >= -Speed.Y,
+            MissileMode7PhysicalTypeDefine.TypeDirection.Right => Speed.X >= 0,
+            MissileMode7PhysicalTypeDefine.TypeDirection.UpRight => Speed.X >= Speed.Y,
+            MissileMode7PhysicalTypeDefine.TypeDirection.Up => Speed.Y <= 0,
+            MissileMode7PhysicalTypeDefine.TypeDirection.UpLeft => Speed.X <= -Speed.Y,
+            MissileMode7PhysicalTypeDefine.TypeDirection.Left => Speed.X <= 0,
+            MissileMode7PhysicalTypeDefine.TypeDirection.DownLeft => Speed.Y >= Speed.X,
+            MissileMode7PhysicalTypeDefine.TypeDirection.Down => Speed.Y >= 0,
+            MissileMode7PhysicalTypeDefine.TypeDirection.DownRight => Speed.X >= -Speed.Y,
             _ => true
         };
     }
 
-    private bool IsFacingTheRightDirection(Mode7PhysicalTypeDefine.Mode7PhysicalTypeDirection raceDirection)
+    private bool IsFacingTheRightDirection(MissileMode7PhysicalTypeDefine.TypeDirection raceDirection)
     {
         Angle256 v1 = (int)raceDirection * 32 + 80;
         Angle256 v2 = (int)raceDirection * 32 + 176;
@@ -132,7 +132,7 @@ public sealed partial class MissileMode7 : Mode7Actor
         RaceManager raceManager = frame.RaceManager;
 
         // Get the current physical type
-        Mode7PhysicalTypeDefine physicalType = Scene.GetPhysicalType(Position).Mode7Define;
+        MissileMode7PhysicalTypeDefine physicalType = MissileMode7PhysicalTypeDefine.FromPhysicalType(Scene.GetPhysicalType(Position));
 
         if (physicalType.Directional && !PrevPhysicalType.Directional)
             RaceDirection = physicalType.Direction;
