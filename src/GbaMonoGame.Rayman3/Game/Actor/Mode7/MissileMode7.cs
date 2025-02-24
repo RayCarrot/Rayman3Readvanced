@@ -77,11 +77,6 @@ public sealed partial class MissileMode7 : Mode7Actor
 
     public bool Debug_NoClip { get; set; } // Custom no-clip mode
 
-    private void SetMode7DirectionalAction()
-    {
-        SetMode7DirectionalAction(0, 6);
-    }
-
     private bool IsMovingTheRightDirection(MissileMode7PhysicalTypeDefine.TypeDirection raceDirection)
     {
         return raceDirection switch

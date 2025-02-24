@@ -117,7 +117,7 @@ public partial class RaymanMode7
                 int animTimer = AnimatedObject.Timer;
                 bool isDelayMode = AnimatedObject.IsDelayMode;
                 
-                SetMode7DirectionalAction(0, 6);
+                SetMode7DirectionalAction((int)Action.Default, ActionRotationSize);
                 ChangeAction();
                 
                 AnimatedObject.CurrentFrame = currentFrame;
@@ -178,7 +178,7 @@ public partial class RaymanMode7
                 if (!FsmStep_DoMovement())
                     return false;
 
-                SetMode7DirectionalAction(48, 6);
+                SetMode7DirectionalAction((int)Action.Jump, ActionRotationSize);
 
                 float newZPos = ZPosSpeed + ZPos;
                 ZPosSpeed -= ZPosDeacceleration;

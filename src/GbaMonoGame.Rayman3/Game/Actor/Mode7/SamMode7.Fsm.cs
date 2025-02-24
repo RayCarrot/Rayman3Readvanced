@@ -45,7 +45,7 @@ public partial class SamMode7
                 break;
 
             case FsmAction.Step:
-                SetMode7DirectionalAction();
+                SetMode7DirectionalAction((int)Action.Default, ActionRotationSize);
 
                 // Huh?
                 Vector2 pos = Position + Direction.ToDirectionalVector() * new Vector2(MathHelpers.FromFixedPoint(0x12FD00)) * new Vector2(1, -1);
@@ -115,7 +115,7 @@ public partial class SamMode7
                 break;
 
             case FsmAction.Step:
-                SetMode7DirectionalAction();
+                SetMode7DirectionalAction((int)Action.Default, ActionRotationSize);
 
                 // Slow down
                 if (MechModel.Speed.X > 0)

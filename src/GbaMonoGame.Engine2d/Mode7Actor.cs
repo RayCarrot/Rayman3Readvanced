@@ -29,11 +29,12 @@ public abstract class Mode7Actor : MovableActor
         return -128 - CamAngle - Direction;
     }
 
-    // TODO: Clean up
-    public void SetMode7DirectionalAction(int baseActionId, int param_3)
+    public void SetMode7DirectionalAction(int baseActionId, int size)
     {
         int camDir = (int)MathF.Round(GetCamDirection());
-        int newActionId = MathHelpers.Mod(camDir + (256 >> MathHelpers.Mod(param_3 + 1, 256)), 256) >> MathHelpers.Mod(8 - param_3, 256);
+
+        // NOTE: No idea what this is doing, but it works. Would be nice to rewrite in a cleaner way using floats though.
+        int newActionId = MathHelpers.Mod(camDir + (256 >> MathHelpers.Mod(size + 1, 256)), 256) >> MathHelpers.Mod(8 - size, 256);
 
         newActionId += baseActionId;
 

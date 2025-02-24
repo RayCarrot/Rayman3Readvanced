@@ -104,7 +104,7 @@ public partial class MissileMode7
                 break;
 
             case FsmAction.Step:
-                SetMode7DirectionalAction();
+                SetMode7DirectionalAction((int)Action.Default, ActionRotationSize);
                 break;
 
             case FsmAction.UnInit:
@@ -163,7 +163,7 @@ public partial class MissileMode7
                 if (result)
                 {
                     // Update the animation
-                    SetMode7DirectionalAction();
+                    SetMode7DirectionalAction((int)Action.Default, ActionRotationSize);
 
                     // Accelerate when holding A
                     if (MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.A))
@@ -282,7 +282,7 @@ public partial class MissileMode7
                 if (result)
                 {
                     // Update the animation
-                    SetMode7DirectionalAction();
+                    SetMode7DirectionalAction((int)Action.Default, ActionRotationSize);
 
                     // Update the jump
                     UpdateJump();
@@ -321,7 +321,7 @@ public partial class MissileMode7
                 break;
 
             case FsmAction.Step:
-                SetMode7DirectionalAction();
+                SetMode7DirectionalAction((int)Action.Default, ActionRotationSize);
                 InvulnerabilityTimer++;
 
                 if (InvulnerabilityTimer == 90)
@@ -388,7 +388,7 @@ public partial class MissileMode7
                 break;
 
             case FsmAction.Step:
-                SetMode7DirectionalAction();
+                SetMode7DirectionalAction((int)Action.Default, ActionRotationSize);
 
                 MechModel.Speed -= MechModel.Speed / 64;
 

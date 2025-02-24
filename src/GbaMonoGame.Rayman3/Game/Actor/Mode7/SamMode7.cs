@@ -36,11 +36,6 @@ public sealed partial class SamMode7 : Mode7Actor
     public Angle256 TargetDirection { get; set; }
     public WaterSplashMode7 WaterSplashObj { get; set; }
 
-    private void SetMode7DirectionalAction()
-    {
-        SetMode7DirectionalAction(0, 5);
-    }
-
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {
         if (base.ProcessMessageImpl(sender, message, param))

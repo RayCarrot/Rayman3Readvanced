@@ -1,6 +1,6 @@
 ﻿namespace GbaMonoGame.Rayman3;
 
-public partial class RaymanMode7
+public partial class MissileMode7
 {
     private const int ActionRotationSize = 6;
 
@@ -13,7 +13,5 @@ public partial class RaymanMode7
     public enum Action
     {
         Default = 0,
-        Jump = 48,
-        Dying = 98,
     }
 }
