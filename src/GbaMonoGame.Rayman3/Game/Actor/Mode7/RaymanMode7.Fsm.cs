@@ -10,7 +10,7 @@ public partial class RaymanMode7
 {
     private bool FsmStep_CheckDeath()
     {
-        if ((GameInfo.Cheats & Cheat.Invulnerable) == 0)
+        if ((GameInfo.Cheats & Cheat.Invulnerable) == 0 && !Scene.GetGameObject<SamMode7>(SamActorId).Debug_NoClip)
         {
             InvulnerabilityTimer++;
 

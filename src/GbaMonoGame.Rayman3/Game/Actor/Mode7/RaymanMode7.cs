@@ -1,5 +1,4 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
-using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
 
@@ -43,42 +42,9 @@ public sealed partial class RaymanMode7 : Mode7Actor
     public int PrevHitPoints { get; set; }
     public byte InvulnerabilityTimer { get; set; }
 
-    public bool Debug_NoClip { get; set; } // Custom no-clip mode
-
-    private void ToggleNoClip()
-    {
-        if (InputManager.IsButtonJustPressed(Input.Debug_ToggleNoClip))
-        {
-            Debug_NoClip = !Debug_NoClip;
-
-            if (Debug_NoClip)
-                MechModel.Speed = Vector2.Zero;
-            else
-                State.MoveTo(Fsm_Default);
-        }
-    }
-
     private void DoNoClipBehavior()
     {
-        Vector2 direction = Direction.ToDirectionalVector() * new Vector2(1, -1);
-        Vector2 sideDirection = (Direction + Angle256.Quarter).ToDirectionalVector() * new Vector2(1, -1);
-
-        int speed = JoyPad.IsButtonPressed(GbaInput.A) ? 4 : 2;
-
-        if (JoyPad.IsButtonPressed(GbaInput.Up))
-            Position += direction * speed;
-        if (JoyPad.IsButtonPressed(GbaInput.Down))
-            Position -= direction * speed;
-
-        if (JoyPad.IsButtonPressed(GbaInput.Right))
-            Position -= sideDirection * speed;
-        if (JoyPad.IsButtonPressed(GbaInput.Left))
-            Position += sideDirection * speed;
-
-        if (JoyPad.IsButtonPressed(GbaInput.R))
-            Direction--;
-        if (JoyPad.IsButtonPressed(GbaInput.L))
-            Direction++;
+        Position = Scene.GetGameObject(SamActorId).Position;
     }
 
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
@@ -112,18 +78,18 @@ public sealed partial class RaymanMode7 : Mode7Actor
         }
     }
 
+    // Disable collision when debug mode is on
+    public override Box GetAttackBox() => Scene.GetGameObject<SamMode7>(SamActorId).Debug_NoClip ? Box.Empty : base.GetAttackBox();
+    public override Box GetVulnerabilityBox() => Scene.GetGameObject<SamMode7>(SamActorId).Debug_NoClip ? Box.Empty : base.GetVulnerabilityBox();
+    public override Box GetDetectionBox() => Scene.GetGameObject<SamMode7>(SamActorId).Debug_NoClip ? Box.Empty : base.GetDetectionBox();
+    public override Box GetActionBox() => Scene.GetGameObject<SamMode7>(SamActorId).Debug_NoClip ? Box.Empty : base.GetActionBox();
+
     public override void DoBehavior()
     {
-        if (Debug_NoClip)
+        if (Scene.GetGameObject<SamMode7>(SamActorId).Debug_NoClip)
             DoNoClipBehavior();
         else
             base.DoBehavior();
-    }
-
-    public override void Step()
-    {
-        base.Step();
-        ToggleNoClip();
     }
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)

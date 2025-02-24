@@ -36,6 +36,46 @@ public sealed partial class SamMode7 : Mode7Actor
     public Angle256 TargetDirection { get; set; }
     public WaterSplashMode7 WaterSplashObj { get; set; }
 
+    public bool Debug_NoClip { get; set; } // Custom no-clip mode
+
+    private void ToggleNoClip()
+    {
+        if (InputManager.IsButtonJustPressed(Input.Debug_ToggleNoClip))
+        {
+            Debug_NoClip = !Debug_NoClip;
+
+            if (Debug_NoClip)
+                MechModel.Speed = Vector2.Zero;
+            else
+                State.MoveTo(Fsm_Move);
+        }
+    }
+
+    private void DoNoClipBehavior()
+    {
+        Vector2 direction = Direction.ToDirectionalVector() * new Vector2(1, -1);
+        Vector2 sideDirection = (Direction + Angle256.Quarter).ToDirectionalVector() * new Vector2(1, -1);
+
+        int speed = JoyPad.IsButtonPressed(GbaInput.A) ? 4 : 2;
+
+        if (JoyPad.IsButtonPressed(GbaInput.Up))
+            Position += direction * speed;
+        if (JoyPad.IsButtonPressed(GbaInput.Down))
+            Position -= direction * speed;
+
+        if (JoyPad.IsButtonPressed(GbaInput.Right))
+            Position -= sideDirection * speed;
+        if (JoyPad.IsButtonPressed(GbaInput.Left))
+            Position += sideDirection * speed;
+
+        if (JoyPad.IsButtonPressed(GbaInput.R))
+            Direction--;
+        if (JoyPad.IsButtonPressed(GbaInput.L))
+            Direction++;
+
+        TargetDirection = Direction;
+    }
+
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {
         if (base.ProcessMessageImpl(sender, message, param))
@@ -84,6 +124,20 @@ public sealed partial class SamMode7 : Mode7Actor
                 RenderContext = Scene.RenderContext,
             };
         }
+    }
+
+    public override void DoBehavior()
+    {
+        if (Debug_NoClip)
+            DoNoClipBehavior();
+        else
+            base.DoBehavior();
+    }
+
+    public override void Step()
+    {
+        base.Step();
+        ToggleNoClip();
     }
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
