@@ -23,7 +23,22 @@ public partial class RaymanMode7
             }
             else
             {
-                // TODO: Collision check
+                Vector2 dir = Direction.ToDirectionalVector();
+
+                PhysicalType type1 = Scene.GetPhysicalType(Position);
+                PhysicalType type2 = Scene.GetPhysicalType(Position + new Vector2(dir.Y, dir.X) * Tile.Size);
+                PhysicalType type3 = Scene.GetPhysicalType(Position - new Vector2(dir.Y, dir.X) * Tile.Size);
+
+                if ((type3 == PhysicalTypeValue.Damage || type2 == PhysicalTypeValue.Damage || type1 == PhysicalTypeValue.Damage) && State != Fsm_Jump) 
+                {
+                    if (GameInfo.MapId == MapId.MarshAwakening1)
+                        ((MarshAwakening1)Frame.Current).CanShowTextBox = true;
+
+                    ReceiveDamage(1);
+
+                    if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__SkiWeed_Mix02))
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SkiWeed_Mix02);
+                }
             }
 
             if (HitPoints == 0)
