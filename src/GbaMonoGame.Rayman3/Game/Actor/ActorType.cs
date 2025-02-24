@@ -69,9 +69,9 @@ public enum ActorType
     ExplosionMode7 = 66,
     ChainedSparkles = 67,
     PlantMode7 = 68,
-
+    BrokenFenceMode7 = 69,
     DeadTreeMode7 = 70,
-
+    PumpkinMode7 = 71,
     Bats = 72,
     Sparkle = 73,
     MissileMode7 = 74,

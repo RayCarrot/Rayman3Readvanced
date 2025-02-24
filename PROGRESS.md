@@ -220,9 +220,9 @@
 | ExplosionMode7         | 🟩     |                                              |
 | ChainedSparkles        | 🟩     |                                              |
 | PlantMode7             | 🟩     |                                              |
-| #69                    | 🟥     |                                              |
+| BrokenFenceMode7       | 🟩     |                                              |
 | DeadTreeMode7          | 🟩     |                                              |
-| #71                    | 🟥     |                                              |
+| PumpkinMode7           | 🟩     |                                              |
 | Bats                   | 🟩     |                                              |
 | Sparkle                | 🟩     |                                              |
 | MissileMode7           | 🟨     | Not implemented multiplayer states           |

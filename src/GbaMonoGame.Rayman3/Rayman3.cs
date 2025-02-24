@@ -128,9 +128,9 @@ public class Rayman3 : GbaGame
             { ActorType.ExplosionMode7, (instanceId, scene, resource) => new ExplosionMode7(instanceId, scene, resource) },
             { ActorType.ChainedSparkles, (instanceId, scene, resource) => new ChainedSparkles(instanceId, scene, resource) },
             { ActorType.PlantMode7, (instanceId, scene, resource) => new SceneryMode7(instanceId, scene, resource) },
-
+            { ActorType.BrokenFenceMode7, (instanceId, scene, resource) => new BrokenFenceMode7(instanceId, scene, resource) },
             { ActorType.DeadTreeMode7, (instanceId, scene, resource) => new SceneryMode7(instanceId, scene, resource) },
-
+            { ActorType.PumpkinMode7, (instanceId, scene, resource) => new PumpkinMode7(instanceId, scene, resource) },
             { ActorType.Bats, (instanceId, scene, resource) => new Bats(instanceId, scene, resource) },
             { ActorType.Sparkle, (instanceId, scene, resource) => new Sparkle(instanceId, scene, resource) },
             { ActorType.MissileMode7, (instanceId, scene, resource) => new MissileMode7(instanceId, scene, resource) },
