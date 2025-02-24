@@ -445,14 +445,17 @@ public class AnimatedObject : AObject
                     break;
 
                 case AnimationChannelType.AttackBox:
-                    Debug.Assert(BoxTable != null, "There's no box table");
+                    // Same as the IsFramed check where the game only does this for 8-bit animations. Ideally we'd do it for all,
+                    // but Rayman's game over animations have boxes defined (probably a leftover from his in-game animations).
+                    //Debug.Assert(BoxTable != null, "There's no box table");
 
                     if (!IsDelayMode && BoxTable != null)
                         BoxTable.AttackBox = new Box(channel.Box);
                     break;
 
                 case AnimationChannelType.VulnerabilityBox:
-                    Debug.Assert(BoxTable != null, "There's no box table");
+                    // Same as above comment for attack box
+                    //Debug.Assert(BoxTable != null, "There's no box table");
 
                     if (!IsDelayMode && BoxTable != null)
                         BoxTable.VulnerabilityBox = new Box(channel.Box);
