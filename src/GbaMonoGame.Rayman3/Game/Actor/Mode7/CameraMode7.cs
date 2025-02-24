@@ -4,13 +4,12 @@ using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
 
+// NOTE: This class has some unused states which haven't been re-implemented here
 public partial class CameraMode7 : CameraActorMode7
 {
     public CameraMode7(Scene2D scene) : base(scene)
     {
         IsWaterSki = false;
-        //field_0x1c = 0;
-        //field_0x1e = 0;
         Timer = 0;
         MainActorDistance = 55;
         DirectionDelta = Angle256.Zero;

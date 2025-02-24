@@ -107,7 +107,7 @@ public enum Message
     Main_BeginInFrontOfLevelCurtain = 1082,
     Main_EndInFrontOfLevelCurtain = 1083,
     Main_Damaged3 = 1084,
-    
+    MainMode7_ShowTextBox = 1085,
     Main_Damaged4 = 1086,
     ReloadAnimation = 1087,
     Main_EnterCutscene = 1088,

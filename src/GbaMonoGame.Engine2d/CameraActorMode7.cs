@@ -10,8 +10,12 @@ public abstract class CameraActorMode7 : CameraActor
 {
     protected CameraActorMode7(Scene2D scene) : base(scene) { }
 
+    // TODO: Currently we ignore if the object should use affine rendering or not and always render it in 3D. In the
+    //       original game this would determine if the object should be scaled based on the camera distance. Usually
+    //       this was disabled due to rendering limitations on the GBA, but it does make the sprites render at a
+    //       different size for us than in the original game.
     // Custom method so we can use IsActorFramed without an actor
-    public bool IsAnimatedObjectFramed(AnimatedObject animatedObject, Vector2 position, float zPos)
+    public bool IsAnimatedObjectFramed(AnimatedObject animatedObject, Vector2 position, float zPos, bool isAffine)
     {
         TgxCameraMode7 cam = (TgxCameraMode7)Scene.Playfield.Camera;
 
@@ -77,7 +81,7 @@ public abstract class CameraActorMode7 : CameraActor
         if (actor is Mode7Actor mode7Actor2)
             zPos = mode7Actor2.ZPos;
 
-        bool isFramed = IsAnimatedObjectFramed(actor.AnimatedObject, actor.Position, zPos);
+        bool isFramed = IsAnimatedObjectFramed(actor.AnimatedObject, actor.Position, zPos, actor is Mode7Actor { IsAffine: true });
 
         if (actor is Mode7Actor mode7Actor)
         {

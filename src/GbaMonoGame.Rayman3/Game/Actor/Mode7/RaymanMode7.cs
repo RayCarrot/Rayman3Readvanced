@@ -18,7 +18,8 @@ public sealed partial class RaymanMode7 : Mode7Actor
         Direction = Angle256.Zero;
         ZPos = 0;
         RenderHeight = 64;
-        
+        IsAffine = false; // NOTE: The game doesn't set this, but in the custom Draw implementation it doesn't use affine rendering
+
         field_0x7a = Direction;
         SlowDown = false;
         PrevHitPoints = HitPoints;
@@ -102,8 +103,8 @@ public sealed partial class RaymanMode7 : Mode7Actor
                 ProcessJoypad = true;
                 return true;
 
-            case (Message)1085: // TODO: Name. The message comes from a captor, but does nothing. Check prototypes?
-                // Do nothing
+            case Message.MainMode7_ShowTextBox:
+                // Unused and does nothing in the final game. This used to trigger the tutorial textbox with Murfy.
                 return true;
 
             default:
