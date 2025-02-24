@@ -1,5 +1,7 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using System.Diagnostics;
+using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+using GbaMonoGame.Engine2d;
 using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
@@ -214,15 +216,31 @@ public partial class RaymanMode7
         switch (action)
         {
             case FsmAction.Init:
-                // TODO: Implement
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoRcvH1_Mix04);
+                InvulnerabilityTimer = 0;
+                IsInvulnerable = true;
                 break;
 
             case FsmAction.Step:
-                // TODO: Implement
-                break;
+                if (!FsmStep_DoMovement())
+                    return false;
+
+                int currentFrame = AnimatedObject.CurrentFrame;
+                int animTimer = AnimatedObject.Timer;
+                bool isDelayMode = AnimatedObject.IsDelayMode;
+
+                SetMode7DirectionalAction((int)Action.Default, ActionRotationSize);
+                ChangeAction();
+
+                AnimatedObject.CurrentFrame = currentFrame;
+                AnimatedObject.Timer = animTimer;
+                AnimatedObject.IsDelayMode = isDelayMode;
+
+                State.MoveTo(Fsm_Default);
+                return false;
 
             case FsmAction.UnInit:
-                // TODO: Implement
+                // Do nothing
                 break;
         }
 
@@ -234,15 +252,46 @@ public partial class RaymanMode7
         switch (action)
         {
             case FsmAction.Init:
-                // TODO: Implement
+                InvulnerabilityTimer = 0;
+                GameInfo.ModifyLives(-1);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__RaDeath_Mix03);
+                ReceiveDamage(255);
+                Scene.GetGameObject(SamActorId).ProcessMessage(this, Message.Main_Damaged2);
+                ActionId = Action.Dying;
+                MechModel.Speed = MechModel.Speed with { Y = 0 };
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__SkiLoop1);
                 break;
 
             case FsmAction.Step:
                 // TODO: Implement
+                // FUN_0807ed9c();
+
+                Debug.Assert(ProcessJoypad, "Should not die near the end of the map");
+
+                InvulnerabilityTimer++;
+
+                FrameWaterSkiMode7 frame = (FrameWaterSkiMode7)Frame.Current;
+                if (InvulnerabilityTimer == 90)
+                {
+                    frame.TransitionsFX.FadeOutInit(2 / 16f);
+                    frame.CanPause = false;
+                }
+                else if (InvulnerabilityTimer == 167)
+                {
+                    if (GameInfo.PersistentInfo.Lives == 0)
+                        FrameManager.SetNextFrame(new GameOver());
+                    else
+                        FrameManager.ReloadCurrentFrame();
+                }
+
+                if (InvulnerabilityTimer > 80)
+                {
+                    // TODO: Update fog value
+                }
                 break;
 
             case FsmAction.UnInit:
-                // TODO: Implement
+                // Do nothing
                 break;
         }
 

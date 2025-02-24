@@ -128,7 +128,31 @@ public sealed partial class RaymanMode7 : Mode7Actor
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
-        // TODO: Implement
-        base.Draw(animationPlayer, forceDraw);
+        CameraActor camera = Scene.Camera;
+
+        bool draw = camera.IsActorFramed(this) || forceDraw;
+
+        // Conditionally don't draw every second frame during invulnerability
+        if (draw)
+        {
+            if (IsInvulnerable &&
+                HitPoints != 0 &&
+                (GameTime.ElapsedFrames & 1) == 0 &&
+                (GameInfo.Cheats & Cheat.Invulnerable) == 0)
+            {
+                draw = false;
+            }
+        }
+
+        if (draw)
+        {
+            AnimatedObject.IsFramed = true;
+            animationPlayer.Play(AnimatedObject);
+        }
+        else
+        {
+            AnimatedObject.IsFramed = false;
+            AnimatedObject.ComputeNextFrame();
+        }
     }
 }
