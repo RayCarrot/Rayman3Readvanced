@@ -1,5 +1,8 @@
+using System.Diagnostics;
+
 namespace GbaMonoGame;
 
+[DebuggerDisplay("{Value,nq}")]
 public readonly struct Angle256
 {
     public Angle256(float value)
