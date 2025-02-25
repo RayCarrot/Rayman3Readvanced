@@ -100,8 +100,7 @@ public partial class RaymanMode7
 
         MechModel.Speed = new Vector2(speedX, speedY);
 
-        // TODO: Implement
-        // FUN_0807ed9c();
+        ScrollClouds();
 
         return true;
     }
@@ -112,8 +111,11 @@ public partial class RaymanMode7
         {
             case FsmAction.Init:
                 TgxPlayfieldMode7 playfield = (TgxPlayfieldMode7)Scene.Playfield;
+
+                // Set clouds as static since they'll be updated manually in here
                 playfield.TextLayers[1].IsStatic = true;
 
+                // Set the initial Y offset, which is later changed when jumping
                 playfield.TextLayers[0].ScrolledPosition = playfield.TextLayers[0].ScrolledPosition with { Y = 11 };
                 playfield.TextLayers[1].ScrolledPosition = playfield.TextLayers[1].ScrolledPosition with { Y = 11 };
                 playfield.TextLayers[2].ScrolledPosition = playfield.TextLayers[2].ScrolledPosition with { Y = 11 };
@@ -278,8 +280,7 @@ public partial class RaymanMode7
                 break;
 
             case FsmAction.Step:
-                // TODO: Implement
-                // FUN_0807ed9c();
+                ScrollClouds();
 
                 Debug.Assert(ProcessJoypad, "Should not die near the end of the map");
 

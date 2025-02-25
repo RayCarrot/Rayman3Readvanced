@@ -1,6 +1,7 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -9,7 +10,7 @@ public sealed partial class RaymanMode7 : Mode7Actor
     public RaymanMode7(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
         SamActorId = actorResource.Links[0]!.Value;
-        field_0x7b = 0;
+        PrevCamAngle = Angle256.Zero;
         
         State.SetTo(Fsm_Default);
 
@@ -29,7 +30,6 @@ public sealed partial class RaymanMode7 : Mode7Actor
 
     // TODO: Name
     public Angle256 field_0x7a { get; set; }
-    public byte field_0x7b { get; set; }
 
     public float ZPosSpeed { get; set; }
     public float ZPosDeacceleration { get; set; }
@@ -42,9 +42,29 @@ public sealed partial class RaymanMode7 : Mode7Actor
     public int PrevHitPoints { get; set; }
     public byte InvulnerabilityTimer { get; set; }
 
+    public Angle256 PrevCamAngle { get; set; }
+
     private void DoNoClipBehavior()
     {
         Position = Scene.GetGameObject(SamActorId).Position;
+    }
+
+    private void ScrollClouds()
+    {
+        TgxPlayfieldMode7 playfield = (TgxPlayfieldMode7)Scene.Playfield;
+        TgxCameraMode7 cam = playfield.Camera;
+
+        // Workaround for the game casting to a signed byte
+        float x = PrevCamAngle - cam.Direction.Inverse();
+        if (x >= 128)
+            x -= 256;
+
+        // NOTE: The game scrolls by 1 every 4 frames
+        x += 0.25f;
+
+        playfield.TextLayers[1].ScrolledPosition += new Vector2(x, 0);
+
+        PrevCamAngle = cam.Direction.Inverse();
     }
 
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
