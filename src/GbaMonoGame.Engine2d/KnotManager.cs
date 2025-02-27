@@ -126,7 +126,8 @@ public class KnotManager
         }
         else
         {
-            // TODO: Offset position if Mode7
+            if (playfield is TgxPlayfieldMode7)
+                camPos -= Rom.OriginalResolution / 2;
 
             TgxGameLayer physicalLayer = playfield.PhysicalLayer;
             Vector2 res = playfield.RenderContext.Resolution;
