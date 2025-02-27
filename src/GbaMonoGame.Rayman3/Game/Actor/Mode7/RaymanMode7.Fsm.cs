@@ -299,9 +299,7 @@ public partial class RaymanMode7
                 }
 
                 if (InvulnerabilityTimer > 80)
-                {
-                    // TODO: Update fog value
-                }
+                    frame.FadeDecrease = (InvulnerabilityTimer - 80) / 4f;
                 break;
 
             case FsmAction.UnInit:

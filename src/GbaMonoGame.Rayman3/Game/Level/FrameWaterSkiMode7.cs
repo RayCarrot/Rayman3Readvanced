@@ -1,5 +1,6 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -14,7 +15,48 @@ public class FrameWaterSkiMode7 : FrameMode7
     }
 
     public uint WaterskiTimer { get; set; }
-    public float FadeAdd { get; set; }
+
+    public GfxScreen FogScreen { get; set; }
+    public Mode7FogScreenRenderer FogScreenRenderer { get; set; }
+    public float FadeDecrease { get; set; }
+
+    private void InitFog()
+    {
+        // NOTE: The game handles the fog by updating the backdrop color based on the following scanlines and then blends it with the screen
+
+        FogScreenRenderer = new Mode7FogScreenRenderer(
+        [
+            new Mode7FogScreenRenderer.FogLine(0x1, -0x20),
+            new Mode7FogScreenRenderer.FogLine(0x2, -0x1C),
+            new Mode7FogScreenRenderer.FogLine(0x3, -0x18),
+            new Mode7FogScreenRenderer.FogLine(0x4, -0x15),
+            new Mode7FogScreenRenderer.FogLine(0x5, -0x12),
+            new Mode7FogScreenRenderer.FogLine(0x6, -0x0E),
+            new Mode7FogScreenRenderer.FogLine(0x7, -0x0A),
+            new Mode7FogScreenRenderer.FogLine(0x8, -0x06),
+            new Mode7FogScreenRenderer.FogLine(0x9, -0x04),
+            new Mode7FogScreenRenderer.FogLine(0xA, -0x02),
+            new Mode7FogScreenRenderer.FogLine(0x9, 0x01),
+            new Mode7FogScreenRenderer.FogLine(0x8, 0x04),
+            new Mode7FogScreenRenderer.FogLine(0x6, 0x08),
+            new Mode7FogScreenRenderer.FogLine(0x4, 0x0C),
+            new Mode7FogScreenRenderer.FogLine(0x2, 0x10),
+            new Mode7FogScreenRenderer.FogLine(0x0, 0x16),
+        ]);
+
+        FogScreen = new GfxScreen(5)
+        {
+            Priority = 0,
+            Wrap = false,
+            Is8Bit = null,
+            Offset = Vector2.Zero,
+            IsEnabled = true,
+            Renderer = FogScreenRenderer,
+            RenderOptions = { RenderContext = Scene.RenderContext }
+        };
+
+        Gfx.AddScreen(FogScreen);
+    }
 
     public override void Init()
     {
@@ -27,13 +69,13 @@ public class FrameWaterSkiMode7 : FrameMode7
             new(31), new(14), new(15)
         ], 3, 3);
 
-        // TODO: Init fog
+        InitFog();
 
         UserInfo = new UserInfoWaterskiMode7(Scene);
         Scene.AddDialog(UserInfo, false, false);
 
         WaterskiTimer = 0;
-        FadeAdd = 10;
+        FadeDecrease = 10;
     }
 
     public override void Step()
@@ -77,15 +119,16 @@ public class FrameWaterSkiMode7 : FrameMode7
                 }
 
                 if (WaterskiTimer <= 90)
-                    FadeAdd = 90 - WaterskiTimer / 4f;
+                    FadeDecrease = (90 - WaterskiTimer) / 4f;
             }
 
-            // TODO: Update fog horizon
+            FogScreenRenderer.Horizon = ((TgxCameraMode7)Scene.Playfield.Camera).Horizon;
         }
 
         base.Step();
-        
-        // TODO: Update fog
+
+        FogScreen.IsEnabled = TransitionsFX.IsFadeInFinished && TransitionsFX.IsFadeOutFinished && !IsPaused();
+        FogScreenRenderer.FadeDecrease = FadeDecrease;
 
         if (EndOfFrame)
             GameInfo.LoadLevel(GameInfo.GetNextLevelId());
