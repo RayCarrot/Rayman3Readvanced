@@ -2,9 +2,9 @@
 
 namespace GbaMonoGame.Rayman3;
 
-public class Mode7FogScreenRenderer : IScreenRenderer
+public class Mode7RedFogScreenRenderer : IScreenRenderer
 {
-    public Mode7FogScreenRenderer(FogLine[] fogLines)
+    public Mode7RedFogScreenRenderer(FogLine[] fogLines)
     {
         FogLines = fogLines;
     }
