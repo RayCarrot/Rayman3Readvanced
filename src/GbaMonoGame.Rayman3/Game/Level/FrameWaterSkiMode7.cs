@@ -20,8 +20,12 @@ public class FrameWaterSkiMode7 : FrameMode7
     {
         base.Init();
 
-        // TODO: Extend map
-        // ExtendMap(new Rectangle(0, 0, 3, 3));
+        ExtendMap(
+        [
+            new(1), new(2), new(3),
+            new(33), new(34), new(32),
+            new(31), new(14), new(15)
+        ], 3, 3);
 
         // TODO: Init fog
 
