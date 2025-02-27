@@ -38,7 +38,7 @@
 | WoodLight_M2               | 🟩     |                                              |
 | FairyGlade_M1              | 🟩     |                                              |
 | FairyGlade_M2              | 🟩     |                                              |
-| MarshAwakening1            | 🟨     |                                              |
+| MarshAwakening1            | 🟩     |                                              |
 | SanctuaryOfBigTree_M1      | 🟩     |                                              |
 | SanctuaryOfBigTree_M2      | 🟩     |                                              |
 | MissileRace1               | 🟩     |                                              |
@@ -49,7 +49,7 @@
 | BossBadDreams              | 🟩     |                                              |
 | MenhirHills_M1             | 🟩     |                                              |
 | MenhirHills_M2             | 🟩     |                                              |
-| MarshAwakening2            | 🟨     |                                              |
+| MarshAwakening2            | 🟩     |                                              |
 | SanctuaryOfStoneAndFire_M1 | 🟩     |                                              |
 | SanctuaryOfStoneAndFire_M2 | 🟩     |                                              |
 | SanctuaryOfStoneAndFire_M3 | 🟩     |                                              |
@@ -184,7 +184,7 @@
 | Depart                 | 🟩     |                                              |
 | RedShell               | 🟩     |                                              |
 | KegFire                | 🟩     |                                              |
-| RaymanMode7            | 🟨     |                                              |
+| RaymanMode7            | 🟩     |                                              |
 | LumsMode7              | 🟩     |                                              |
 | Caterpillar            | 🟩     |                                              |
 | #36                    | 🟥     |                                              |
