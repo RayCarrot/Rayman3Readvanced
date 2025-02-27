@@ -94,7 +94,7 @@ public class Scene2D
     //       Perhaps we should still use knots to handle game logic, but still draw and step all actors in the scene?
     // If we're playing in a different resolution than the original we can't use
     // the knots (object sectors). Instead we keep all objects active at all times.
-    public bool KeepAllObjectsActive => Resolution != Rom.OriginalResolution;
+    public bool KeepAllObjectsActive => Resolution != Rom.OriginalResolution || Playfield is TgxPlayfieldMode7;
 
     public void Init()
     {
