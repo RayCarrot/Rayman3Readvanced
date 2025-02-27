@@ -62,13 +62,6 @@ public class FrameWaterSkiMode7 : FrameMode7
     {
         base.Init();
 
-        ExtendMap(
-        [
-            new(1), new(2), new(3),
-            new(33), new(34), new(32),
-            new(31), new(14), new(15)
-        ], 3, 3);
-
         InitFog();
 
         UserInfo = new UserInfoWaterskiMode7(Scene);

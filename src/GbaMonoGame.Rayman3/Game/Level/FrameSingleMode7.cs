@@ -116,13 +116,6 @@ public class FrameSingleMode7 : FrameMode7
     {
         base.Init();
 
-        ExtendMap(
-        [
-            new(2), new(3), new(4),
-            new(6), new(1), new(7),
-            new(8), new(5), new(9)
-        ], 3, 3);
-
         GameInfo.LevelType = LevelType.Race;
         ColorAddDelta = -1;
         ColorAdd = 0;
