@@ -67,6 +67,25 @@ public sealed partial class RaymanMode7 : Mode7Actor
         PrevCamAngle = cam.Direction.Inverse();
     }
 
+    private void UpdateJump(float height)
+    {
+        TgxPlayfieldMode7 playfield = (TgxPlayfieldMode7)Scene.Playfield;
+        TgxCameraMode7 cam = playfield.Camera;
+
+        cam.Horizon = 67 + height / 8;
+
+        float y = 11 - height / 8;
+
+        // The game doesn't do this, but because we use floats we don't want it to go below 0
+        if (y < 0)
+            y = 0;
+
+        playfield.TextLayers[0].ScrolledPosition = playfield.TextLayers[0].ScrolledPosition with { Y = y };
+        playfield.TextLayers[1].ScrolledPosition = playfield.TextLayers[1].ScrolledPosition with { Y = y };
+        playfield.TextLayers[2].ScrolledPosition = playfield.TextLayers[2].ScrolledPosition with { Y = y };
+        playfield.TextLayers[3].ScrolledPosition = playfield.TextLayers[3].ScrolledPosition with { Y = y };
+    }
+
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {
         if (base.ProcessMessageImpl(sender, message, param))

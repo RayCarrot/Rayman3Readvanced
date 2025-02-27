@@ -121,7 +121,6 @@ public partial class RaymanMode7
                 playfield.TextLayers[2].ScrolledPosition = playfield.TextLayers[2].ScrolledPosition with { Y = 11 };
                 playfield.TextLayers[3].ScrolledPosition = playfield.TextLayers[3].ScrolledPosition with { Y = 11 };
 
-                // TODO: The map has to shift too
                 playfield.Camera.Horizon = 67;
                 break;
 
@@ -209,8 +208,7 @@ public partial class RaymanMode7
                 else
                 {
                     ZPos = newZPos;
-                    
-                    // TODO: Update horizon
+                    UpdateJump(newZPos);
                 }
 
                 if (ZPos <= 0)
