@@ -10,13 +10,15 @@ public class TgxCameraMode7 : TgxCamera
     public TgxCameraMode7(RenderContext renderContext) : base(renderContext)
     {
         TextLayerRenderContext = new TextLayerRenderContext(renderContext);
-        Horizon = 62;
+        Horizon = DefaultHorizon;
         Step();
     }
 
+    private const float DefaultHorizon = 62;
+
     private bool _isProjectionDirty = true;
     private bool _isViewDirty = true;
-    private bool _isHorizonDirty = true;
+    private bool _isCameraFarDirty = true;
     private Vector2 _prevResolution = Vector2.Zero;
 
     private float _cameraFieldOfView = MathHelper.PiOver4;
@@ -31,54 +33,105 @@ public class TgxCameraMode7 : TgxCamera
     // Rendering
     public Matrix ViewMatrix { get; set; }
     public Matrix ProjectionMatrix { get; set; }
+    public Matrix ViewProjectionMatrix { get; set; }
 
     // Projection values
     public float CameraFieldOfView
     {
         get => _cameraFieldOfView;
-        set => SetProjectionValue(ref _cameraFieldOfView, value);
+        set
+        {
+            if (_cameraFieldOfView != value)
+            {
+                _cameraFieldOfView = value;
+                _isProjectionDirty = true;
+                _isCameraFarDirty = true;
+            }
+        }
     }
     public float CameraFar
     {
         get => _cameraFar;
-        set => SetProjectionValue(ref _cameraFar, value);
+        set
+        {
+            if (_cameraFar != value)
+            {
+                _cameraFar = value;
+                _isProjectionDirty = true;
+            }
+        }
     }
 
     // View values
     public float CameraDistance
     {
         get => _cameraDistance;
-        set => SetViewValue(ref _cameraDistance, value);
+        set
+        {
+            if (_cameraDistance != value)
+            {
+                _cameraDistance = value;
+                _isViewDirty = true;
+                _isCameraFarDirty = true;
+            }
+        }
     }
     public float CameraHeight
     {
         get => _cameraHeight;
-        set => SetViewValue(ref _cameraHeight, value);
+        set
+        {
+            if (_cameraHeight != value)
+            {
+                _cameraHeight = value;
+                _isViewDirty = true;
+                _isCameraFarDirty = true;
+            }
+        }
     }
     public float CameraTargetHeight
     {
         get => _cameraTargetHeight;
-        set => SetViewValue(ref _cameraTargetHeight, value);
+        set
+        {
+            if (_cameraTargetHeight != value)
+            {
+                _cameraTargetHeight = value;
+                _isViewDirty = true;
+                _isCameraFarDirty = true;
+            }
+        }
     }
 
     // Positioning
     public override Vector2 Position
     {
         get => _position;
-        set => SetViewValue(ref _position, value);
+        set
+        {
+            if (_position != value)
+            {
+                _position = value;
+                _isViewDirty = true;
+            }
+        }
     }
     public Angle256 Direction
     {
         get => _direction;
         set
         {
-            SetViewValue(ref _direction, value);
-
-            // Update text layers
-            foreach (TgxTextLayerMode7 layer in TextLayers)
+            if (_direction != value)
             {
-                if (!layer.IsStatic)
-                    layer.ScrolledPosition = layer.ScrolledPosition with { X = layer.RotationFactor * Direction };
+                _direction = value;
+                _isViewDirty = true;
+
+                // Update text layers
+                foreach (TgxTextLayerMode7 layer in TextLayers)
+                {
+                    if (!layer.IsStatic)
+                        layer.ScrolledPosition = layer.ScrolledPosition with { X = layer.RotationFactor * Direction };
+                }
             }
         }
     }
@@ -86,35 +139,53 @@ public class TgxCameraMode7 : TgxCamera
     // Horizon
     public float Horizon
     {
-        get
+        get => _horizon;
+        set
         {
-            _isHorizonDirty = true;
-            return _horizon;
+            if (_horizon != value)
+            {
+                _horizon = value;
+                _isCameraFarDirty = true;
+            }
         }
-        set => _horizon = value;
     }
+
     public TextLayerRenderContext TextLayerRenderContext { get; }
 
     // Layers
     public List<TgxGameLayer> RotScaleLayers { get; } = new();
     public List<TgxTextLayerMode7> TextLayers { get; } = new();
 
-    private void SetProjectionValue<T>(ref T field, T newValue)
+    private void UpdateProjectionMatrix()
     {
-        if (EqualityComparer<T>.Default.Equals(field, newValue))
-            return;
+        // Set the projection matrix
+        ProjectionMatrix = Matrix.CreatePerspectiveFieldOfView(
+            fieldOfView: CameraFieldOfView,
+            aspectRatio: RenderContext.AspectRatio,
+            nearPlaneDistance: 0.1f,
+            farPlaneDistance: CameraFar);
 
-        field = newValue;
-        _isProjectionDirty = true;
+        // If we changed the horizon then we have to vertically shift the map. The game uses 0 as the base, but we
+        // use the default horizon value as the base instead since that's what the camera values are all based on.
+        float verticalShift = DefaultHorizon - Horizon;
+
+        // Convert from screen space to clip space (-1 to 1)
+        float shiftInClipSpace = 2 * verticalShift / RenderContext.Resolution.Y;
+
+        // Create a translation matrix for the shift
+        Matrix screenShift = Matrix.CreateTranslation(0, shiftInClipSpace, 0);
+
+        // Shift the projection matrix
+        ProjectionMatrix *= screenShift;
     }
 
-    private void SetViewValue<T>(ref T field, T newValue)
+    private void UpdateViewMatrix()
     {
-        if (EqualityComparer<T>.Default.Equals(field, newValue))
-            return;
-
-        field = newValue;
-        _isViewDirty = true;
+        // Set the view
+        ViewMatrix = Matrix.CreateLookAt(
+            cameraPosition: new Vector3(Position.X, Position.Y, -CameraHeight),
+            cameraTarget: GetCameraTarget(),
+            cameraUpVector: new Vector3(0, 0, -1));
     }
 
     public void AddRotScaleLayer(TgxGameLayer layer)
@@ -192,67 +263,79 @@ public class TgxCameraMode7 : TgxCamera
         if (_prevResolution != res)
         {
             _prevResolution = res;
+
+            // If the resolution is changes then we have to update the projection
             _isProjectionDirty = true;
         }
 
         // Update projection
-        if (_isProjectionDirty)
+        if (_isProjectionDirty || _isCameraFarDirty)
         {
-            // Set the projection
-            ProjectionMatrix = Matrix.CreatePerspectiveFieldOfView(
-                fieldOfView: CameraFieldOfView,
-                aspectRatio: RenderContext.AspectRatio,
-                nearPlaneDistance: 0.1f,
-                farPlaneDistance: CameraFar);
-
-            updateViewProj = true;
             _isProjectionDirty = false;
-            _isHorizonDirty = true;
+            
+            // Update the matrix
+            UpdateProjectionMatrix();
+            
+            // Flag to update the ViewProj matrix
+            updateViewProj = true;
         }
 
         // Update view
         if (_isViewDirty)
         {
-            // Set the view
-            ViewMatrix = Matrix.CreateLookAt(
-                cameraPosition: new Vector3(Position.X, Position.Y, -CameraHeight),
-                cameraTarget: GetCameraTarget(),
-                cameraUpVector: new Vector3(0, 0, -1));
-
-            updateViewProj = true;
             _isViewDirty = false;
+
+            // Update the matrix
+            UpdateViewMatrix();
+
+            // Flag to update the ViewProj matrix
+            updateViewProj = true;
         }
 
-        if (updateViewProj)
+        // Update camera far
+        if (_isCameraFarDirty)
         {
-            // Update rotscale layers
-            Matrix viewProj = ViewMatrix * ProjectionMatrix;
-            foreach (TgxGameLayer layer in RotScaleLayers)
-                layer.SetWorldViewProjMatrix(viewProj);
-        }
+            _isCameraFarDirty = false;
 
-        // Update the horizon
-        if (_isHorizonDirty)
-        {
+            // Update the horizon
             TextLayerRenderContext.Horizon = Horizon;
             TextLayerRenderContext.UpdateResolution();
 
-            // NOTE: It should be horizon+1, but there can be slight scaling artifacts, so better doing one pixel behind the background
-            Vector3 world = Unproject(new Vector2(RenderContext.Resolution.X / 2, Horizon), true);
+            // NOTE: It should be horizon+1, but there can be slight scaling artifacts, so better doing two pixels behind the background to ensure there's no empty space in-between
+            Vector3 world = Unproject(new Vector2(res.X / 2, Horizon - 1), true);
 
             if (world != Vector3.Zero)
             {
                 Vector3 camPos = new(Position.X, Position.Y, -CameraHeight);
                 float dist = Vector3.Distance(camPos, world);
-                CameraFar = dist;
+                if (dist != _cameraFar)
+                {
+                    _cameraFar = dist;
+                    UpdateProjectionMatrix();
+                    updateViewProj = true;
+                }
             }
             // Fallback if world is zero, which would usually happen if the horizon is too low compared to the resolution, so we see waaay past the map
             else if (RotScaleLayers.Count > 0)
             {
-                CameraFar = RotScaleLayers[0].PixelWidth;
+                float dist = RotScaleLayers[0].PixelWidth;
+                if (dist != _cameraFar)
+                {
+                    _cameraFar = dist;
+                    UpdateProjectionMatrix();
+                    updateViewProj = true;
+                }
             }
+        }
 
-            _isHorizonDirty = false;
+        if (updateViewProj)
+        {
+            // Update the ViewProj matrix
+            ViewProjectionMatrix = ViewMatrix * ProjectionMatrix;
+
+            // Update rotscale layers
+            foreach (TgxGameLayer layer in RotScaleLayers)
+                layer.SetWorldViewProjMatrix(ViewProjectionMatrix);
         }
     }
 }
