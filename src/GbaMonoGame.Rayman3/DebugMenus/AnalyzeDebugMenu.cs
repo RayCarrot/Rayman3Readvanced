@@ -58,6 +58,14 @@ public class AnalyzeDebugMenu : DebugMenu
                     break;
                 }
 
+                long absoluteOffset = i * 4 + 4 + offset * 4;
+
+                if (absoluteOffset >= rom.Length)
+                {
+                    isValid = false;
+                    break;
+                }
+
                 prevOffset = offset;
             }
 
@@ -151,35 +159,40 @@ public class AnalyzeDebugMenu : DebugMenu
 
                     if (isLevel)
                     {
-                        byte idxPlayfield = resource.RawData[0];
-
-                        if (idxPlayfield >= dependencies)
+                        if (resource.RawData.Length < 10)
                         {
                             isLevel = false;
                         }
                         else
                         {
-                            byte gameObjectsCount = resource.RawData[4];
-                            byte alwaysActorsCount = resource.RawData[5];
-                            byte actorsCount = resource.RawData[6];
-                            byte projectileActorsCount = resource.RawData[7];
-                            byte unknownActorsCount = resource.RawData[8];
-                            byte captorsCount = resource.RawData[9];
+                            byte idxPlayfield = resource.RawData[0];
 
-                            if (gameObjectsCount <= 0 ||
-                                alwaysActorsCount + actorsCount + projectileActorsCount + unknownActorsCount +
-                                captorsCount != gameObjectsCount)
+                            if (idxPlayfield >= dependencies)
                             {
                                 isLevel = false;
                             }
                             else
                             {
-                                Scene2DResource scene = gameOffsetTable.ReadResource<Scene2DResource>(context, i,
-                                    (_, x) => x.Pre_SerializeDependencies = false);
-                                Log($"{fileName}: Scene {i} has {gameObjectsCount} objects");
+                                byte gameObjectsCount = resource.RawData[4];
+                                byte alwaysActorsCount = resource.RawData[5];
+                                byte actorsCount = resource.RawData[6];
+                                byte projectileActorsCount = resource.RawData[7];
+                                byte captorsCount = resource.RawData[9];
 
-                                foreach (ActorResource actor in scene.Actors.Concat(scene.AlwaysActors))
-                                    usedActorTypes[actor.Type].Add(fileIndex);
+                                if (gameObjectsCount <= 0 ||
+                                    alwaysActorsCount + actorsCount + projectileActorsCount + captorsCount != gameObjectsCount)
+                                {
+                                    isLevel = false;
+                                }
+                                else
+                                {
+                                    Scene2DResource scene = gameOffsetTable.ReadResource<Scene2DResource>(context, i,
+                                        (_, x) => x.Pre_SerializeDependencies = false);
+                                    Log($"{fileName}: Scene {i} has {gameObjectsCount} objects");
+
+                                    foreach (ActorResource actor in scene.Actors.Concat(scene.AlwaysActors).Concat(scene.ProjectileActors))
+                                        usedActorTypes[actor.Type].Add(fileIndex);
+                                }
                             }
                         }
                     }
