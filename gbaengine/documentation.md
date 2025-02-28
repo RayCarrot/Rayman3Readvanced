@@ -107,6 +107,17 @@ Certain effects might not be replicated exactly the same as on a GBA, such as af
 
 Another example where there is a difference is for animations with palette cycling. Since the original game only has a single global palette in VRAM it means that multiple animations of the same type will share the same palette, and thus also modify the same one. Having multiple animations playing will then result in the palette cycling appear to animate faster since it shifts it multiple times per frame. This is most notable for the blue lum bar where the filled parts consists of several animations. In this port each animation is self-contained and modifies its own palette, resulting in the animations always modifying the palette at a constant rate.
 
+### Mode7
+The Mode7 rendering is handled very differently from how the original game does it. On the GBA it gets rendered by changing the rotation/scaling parameters of the map on each scanline using pre-calculated perspective values to correctly scale it. In this port it instead gets rendered in 3D using a perspective and view matrix. It's been attempted to recreate the original camera perspective, however it's not exactly the same due to how differently they work.
+
+Also unlike the normal sidescrolling levels increasing the internal resolution does not increase the FOV of these levels. This is because increasing it just slightly will cause you to see way too far into the level, sometimes even past the horizon, due to the camera angle. However changing the internal resolution does still change the aspect ratio, allowing them to be played in widescreen.
+
+Another thing that had to be changed was map wrapping. If you look outside of the main level map in the original game you would see leftover tiles in the VRAM repeated. It's not very noticeable due to you always moving in those levels, but it looks rather bad. So since the game has no proper method for handling wrapping this port instead defines a custom section of tiles to repeat outside of the map.
+
+When it comes to the sprites they are also rendered differently. In the original game it uses some rather imprecise code to determine their screen position and scale. Due to its imprecision is causes sprites to not always stay fixed in place. It also doesn't correctly handle animations with multiple sprites, or where the sprites change their offsets. This is because the animation offsets are always in screen space rather than world space. It's most noticeable for the lum animations where the further away from the camera they are the more the sparkling animation causes the sprites to move. To solve these issues, and make rendering easier, the sprites are now rendered in 3D instead, using the camera's matrices, and rotated to always face the camera.
+
+The new way of rendering sprites does cause some sprites to appear a bit differently. This is due to some actors not rendering their sprites with scaling applied, meaning they only get positioned on screen, but not scaled based on the distance. This causes some sprites to appear smaller in this port than they do in the original game where they're always rendered at the original size.
+
 ### V-SYNC
 In the original GBA version the game calls `vsync` whenever it waits for the frame to finish drawing on screen. This can be done at any point, but is in the majority of cases done inside of the Frame classes' `Init` and `Step` functions.
 
