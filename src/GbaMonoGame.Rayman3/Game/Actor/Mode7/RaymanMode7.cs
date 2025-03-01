@@ -86,6 +86,18 @@ public sealed partial class RaymanMode7 : Mode7Actor
         playfield.TextLayers[3].ScrolledPosition = playfield.TextLayers[3].ScrolledPosition with { Y = y };
     }
 
+    // Unused
+    private PhysicalType GetCurrentPhysicalType()
+    {
+        return Scene.GetPhysicalType(Position);
+    }
+
+    // Unused
+    private bool IsDead()
+    {
+        return HitPoints == 0 || GetCurrentPhysicalType() == PhysicalTypeValue.InstaKill;
+    }
+
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {
         if (base.ProcessMessageImpl(sender, message, param))
