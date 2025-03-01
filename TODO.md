@@ -11,16 +11,6 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
 - Move hard-coded values to constants. There are a lot of these in the game!
 - Add a cheat menu?
 
-## 🎥 Mode7
-Mode7 is going to be very complicated to re-implement. The way it originally works on the GBA is that the background layer and sprites have a different affine transform set on each scanline of the screen. This produces the "depth" effect even though the GBA can normally only do linear transformations. Ideally we'd implement this by creating a matrix or shader which produces a similar effect. We could re-implement the same logic as the GBA uses, but it would probably be more complicated and wouldn't scale as nicely in higher resolution.
-
-Some potential resources:
-
-- https://github.com/MattDrivenDev/MonoGameMode7/blob/main/src/Mode7/Mode7Camera.cs (using code from this article: https://www.c-sharpcorner.com/uploadfile/8c85cf/game-components-affine-and-non-affine-transforms-in-windows-phone-7)
-- https://www.coranac.com/tonc/text/mode7.htm (code and math tables available at: https://github.dev/devkitPro/libtonc/blob/master/include/tonc_math.h)
-- https://discussions.unity.com/t/hedgehog-arts-gpu-mode7-previously-hard-coded-mode7-effect/606919
-- https://gist.github.com/Jellonator/0686c6e74d06745957de5a96fa00ec6c
-
 ## 🎮 Multiplayer
 Implementing local multiplayer, using multiple game instances or through LAN, shouldn't be too hard. The game's multiplayer code is very simple, with it usually just sending a single 16-bit value between clients each frame.
 
@@ -69,6 +59,9 @@ The following are ideas for optional improvements which the player can toggle on
 - Have tiles, such as the spikes in the cave of bad dreams, not insta-kill you. Allow you to stand on them when on i-frames?
 - Restore original Rayman 2 level names.
 - Option to check for buffered inputs? Pass in buffer length in the JoyPad check methods? For jumps, attack etc. as to avoid it feeling like inputs get lost.
+- Option to exit level from pause menu. USeful for levels without exit signs, like bosses and Mode7 levels.
+- Option to not clear collected lums if you die in a race level.
+- Option to use GBA sounds for the N-Gage version.
 
 ## ⭐ Bonus
 ### Achievements
@@ -92,6 +85,8 @@ List of challenges you can play. These put you into a level and has you attempti
 - Beat level in reverse (start at the end and make your way back to the beginning).
 - Beat Rock and Lava Boss without using blue lum (using damage boosts).
 - Beat level while playing as Murfy (new gameplay style where you fly).
+- Collect all yellow lums in race during one lap.
+- Beat Marshes of Awakening 1 without moving to the side (so only jumping).
 
 ### Mods
 Allow you to install mods to the game by creating a folder for each mod which can they contain replaced textures, text, sounds etc.
