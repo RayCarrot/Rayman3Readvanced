@@ -594,7 +594,7 @@ public partial class Rayman
 
                         if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == tagId) ||
                             (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != tagId) ||
-                            (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && FlagData.field_00 == null))
+                            (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && FlagData.PickedUpFlag == null))
                         {
                             ActionId = IsFacingRight ? Action.WalkFast_Right : Action.WalkFast_Left;
                         }
@@ -747,7 +747,7 @@ public partial class Rayman
 
                             if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == tagId) ||
                                 (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != tagId) ||
-                                (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && FlagData.field_00 == null))
+                                (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && FlagData.PickedUpFlag == null))
                             {
                                 ActionId = IsFacingRight ? Action.WalkFast_Right : Action.WalkFast_Left;
                             }

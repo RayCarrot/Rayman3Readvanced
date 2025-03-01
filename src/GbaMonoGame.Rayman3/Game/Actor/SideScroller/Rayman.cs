@@ -1279,6 +1279,11 @@ public sealed partial class Rayman : MovableActor
         }
     }
 
+    private void DrawFlagArrows()
+    {
+        // TODO: Implement
+    }
+
     private void ToggleNoClip()
     {
         if (InputManager.IsButtonJustPressed(Input.Debug_ToggleNoClip))
@@ -1974,6 +1979,21 @@ public sealed partial class Rayman : MovableActor
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
+        if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        {
+            // Determine if the flag should be visible in the animation
+            if (FlagData.PickedUpFlag == null)
+                AnimatedObject.DeactivateChannel(4);
+            else
+                AnimatedObject.ActivateChannel(4);
+
+            if (FlagData.field_b4 != 0 && IsLocalPlayer)
+            {
+                FlagData.field_b4--;
+                DrawFlagArrows();
+            }
+        }
+
         CameraActor camera = Scene.Camera;
 
         bool draw = camera.IsActorFramed(this) || forceDraw;
@@ -1987,6 +2007,15 @@ public sealed partial class Rayman : MovableActor
                 !RSMultiplayer.IsActive && 
                 HitPoints != 0 && 
                 (GameTime.ElapsedFrames & 1) == 0)
+            {
+                draw = false;
+            }
+
+            if (Rom.Platform == Platform.NGage &&
+                RSMultiplayer.IsActive &&
+                MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag &&
+                FlagData.field_ac != 0 &&
+                (GameTime.ElapsedFrames & 1) != 0)
             {
                 draw = false;
             }
@@ -2008,7 +2037,7 @@ public sealed partial class Rayman : MovableActor
     public class CaptureTheFlagData
     {
         // TODO: Name these properties
-        public BaseActor field_00 { get; set; }
+        public BaseActor PickedUpFlag { get; set; }
         public AnimatedObject[] FlagArrows { get; } = new AnimatedObject[RSMultiplayer.MaxPlayersCount - 1];
         public uint field_ac { get; set; }
         public uint field_b0 { get; set; }
