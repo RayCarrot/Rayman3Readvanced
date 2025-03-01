@@ -1683,7 +1683,7 @@ public partial class MenuAll
             // NOTE: Hard-code for now
             if (Rom.Platform == Platform.NGage && false)
             {
-                if (!ShouldTextBlink || (GameTime.ElapsedFrames & 0x10) != 0)
+                if (!ShouldTextBlink || (GameTime.ElapsedTotalFrames & 0x10) != 0)
                     AnimationPlayer.Play(Anims.Texts[4]);
             }
 
@@ -2049,7 +2049,7 @@ public partial class MenuAll
             // NOTE: Hard-code for now
             if (Rom.Platform == Platform.NGage && false)
             {
-                if (!ShouldTextBlink || (GameTime.ElapsedFrames & 0x10) != 0)
+                if (!ShouldTextBlink || (GameTime.ElapsedTotalFrames & 0x10) != 0)
                     AnimationPlayer.Play(Anims.Texts[4]);
             }
 

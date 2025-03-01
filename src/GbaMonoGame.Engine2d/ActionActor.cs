@@ -81,6 +81,7 @@ public abstract class ActionActor : BaseActor
 
         bool draw = camera.IsActorFramed(this) || forceDraw;
 
+        // NOTE: Instead of checking ElapsedFrames the N-Gage version checks the amount of drawn frames here (since it renders in 30fps)
         // Conditionally don't draw every second frame during invulnerability
         if (draw)
         {
