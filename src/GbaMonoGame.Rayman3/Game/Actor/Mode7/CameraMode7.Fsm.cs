@@ -5,6 +5,7 @@ using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
 
+// NOTE: There are 3 unused states which haven't been re-implemented here. They are leftovers from the free-cam mode in the prototypes.
 public partial class CameraMode7
 {
     public bool Fsm_Init(FsmAction action)

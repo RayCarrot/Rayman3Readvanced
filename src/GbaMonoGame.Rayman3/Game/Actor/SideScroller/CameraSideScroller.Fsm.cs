@@ -4,6 +4,7 @@ using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
 
+// NOTE: There is 1 unused state which hasn't been re-implemented here
 public partial class CameraSideScroller
 {
     public bool Fsm_Follow(FsmAction action)

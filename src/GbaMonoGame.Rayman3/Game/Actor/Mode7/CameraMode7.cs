@@ -4,7 +4,6 @@ using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
 
-// NOTE: This class has some unused states which haven't been re-implemented here
 public partial class CameraMode7 : CameraActorMode7
 {
     public CameraMode7(Scene2D scene) : base(scene)
