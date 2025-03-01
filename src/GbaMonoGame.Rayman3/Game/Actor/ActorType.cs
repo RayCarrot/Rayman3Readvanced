@@ -43,11 +43,11 @@ public enum ActorType
 
     Jano = 39,
     JanoSkullPlatform = 40,
-
+    Spider = 41, // TODO: Implement
     SamMode7 = 42,
 
     WoodenShieldedHoodboom = 44,
-
+    Spinneroo = 45, // TODO: Implement
     Slapdash = 46,
     PurpleLum = 47,
     Grenade = 48,
@@ -89,7 +89,7 @@ public enum ActorType
     ItemsMulti = 87,
 
     Skull = 89,
-
+    UnusedEnemyMode7 = 90, // Unused TODO: Implement
     SpikyBag = 91,
     MurfyStone = 92,
 

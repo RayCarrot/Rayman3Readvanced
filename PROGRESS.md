@@ -192,11 +192,11 @@
 | #38                    | 🟥     |                                              |
 | Jano                   | 🟩     |                                              |
 | JanoSkullPlatform      | 🟩     |                                              |
-| #41                    | 🟥     |                                              |
+| Spider                 | 🟥     |                                              |
 | SamMode7               | 🟩     |                                              |
 | #43                    | 🟥     |                                              |
 | WoodenShieldedHoodboom | 🟩     |                                              |
-| #45                    | 🟥     |                                              |
+| Spinneroo              | 🟥     |                                              |
 | Slapdash               | 🟩     |                                              |
 | PurpleLum              | 🟩     |                                              |
 | Grenade                | 🟩     |                                              |
@@ -241,7 +241,7 @@
 | ItemsMulti             | 🟩     |                                              |
 | #88                    | 🟥     |                                              |
 | Skull                  | 🟩     |                                              |
-| #90                    | 🟥     |                                              |
+| UnusedEnemyMode7       | 🟥     |                                              |
 | SpikyBag               | 🟩     |                                              |
 | MurfyStone             | 🟩     |                                              |
 | #93                    | 🟥     |                                              |
