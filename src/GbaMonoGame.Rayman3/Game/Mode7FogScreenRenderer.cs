@@ -2,6 +2,7 @@
 
 namespace GbaMonoGame.Rayman3;
 
+// TODO: Would look nicer with a smoother gradient. Same for the red fog, but less noticeable there.
 public class Mode7FogScreenRenderer : IScreenRenderer
 {
     public Mode7FogScreenRenderer(FogLine[] fogLines)
