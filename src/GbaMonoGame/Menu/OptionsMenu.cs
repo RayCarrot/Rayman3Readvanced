@@ -47,7 +47,7 @@ public class OptionsMenu : Menu
                 getCustomName: data => $"{data.X} x {data.Y}"),
 
             // Window resolution
-            WindowResolutionMenuOption = new MultiSelectionMenuOption<float>(
+            new MultiSelectionMenuOption<float>(
                 name: "Window resolution",
                 items: Enumerable.Range(1, windowResCount).
                     Select(x => new MultiSelectionMenuOption<float>.Item($"{x}x", x)).
@@ -86,13 +86,8 @@ public class OptionsMenu : Menu
                 getData: _ => Engine.Config.InternalGameResolution,
                 setData: data =>
                 {
-                    float originalWindowScale = Engine.GameWindow.WindowResolution.ToVector2().X / Engine.Config.InternalGameResolution.X;
-
                     Engine.Config.InternalGameResolution = data;
                     Engine.GameViewPort.UpdateRenderBox();
-
-                    Engine.GameWindow.WindowResolution = (Engine.Config.InternalGameResolution * originalWindowScale).ToPoint();
-                    WindowResolutionMenuOption.Init();
                 },
                 getCustomName: data => $"{data.X} x {data.Y}"),
 
@@ -148,8 +143,6 @@ public class OptionsMenu : Menu
     }
 
     private MenuOption[] Options { get; }
-
-    private MultiSelectionMenuOption<float> WindowResolutionMenuOption { get; }
 
     public override void OnExit()
     {

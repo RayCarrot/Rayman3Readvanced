@@ -40,7 +40,8 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
     private int _skippedDraws = -1;
     private float _fps = 60;
     private bool _showMenu;
-    private Point _prevResolution;
+    private Point _prevWindowResolution;
+    private Vector2 _prevInternalResolution;
     private bool _prevLockWindowAspectRatio;
 
     #endregion
@@ -299,7 +300,7 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
             }
 
             // Reset
-            _prevResolution = default;
+            _prevWindowResolution = default;
         }
 
         // Toggle pause
@@ -358,7 +359,9 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
             _debugGameRenderTarget.BeginRender();
 
         if (!DebugMode && 
-            (Engine.GameWindow.GetResolution() != _prevResolution || Engine.Config.LockWindowAspectRatio != _prevLockWindowAspectRatio))
+            (Engine.GameWindow.GetResolution() != _prevWindowResolution || 
+             Engine.Config.InternalGameResolution != _prevInternalResolution || 
+             Engine.Config.LockWindowAspectRatio != _prevLockWindowAspectRatio))
         {
             Point newRes = Engine.GameWindow.GetResolution();
             
@@ -366,21 +369,15 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
             {
                 Vector2 resolution = Engine.Config.InternalGameResolution;
 
-                float screenRatio = (float)newRes.X / newRes.Y;
-                float gameRatio = resolution.X / resolution.Y;
-
-                float screenScale;
-                if (screenRatio > gameRatio)
-                    screenScale = newRes.Y / resolution.Y;
-                else
-                    screenScale = newRes.X / resolution.X;
+                float screenScale = newRes.X / resolution.X;
 
                 newRes = new Vector2(resolution.X * screenScale, resolution.Y * screenScale).ToRoundedPoint();
 
                 Engine.GameWindow.WindowResolution = newRes;
             }
 
-            _prevResolution = newRes;
+            _prevWindowResolution = newRes;
+            _prevInternalResolution = Engine.Config.InternalGameResolution;
             _prevLockWindowAspectRatio = Engine.Config.LockWindowAspectRatio;
 
             Engine.GameViewPort.Resize(Engine.GameWindow.GetResolution().ToVector2());
