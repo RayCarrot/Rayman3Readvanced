@@ -20,16 +20,12 @@ public sealed partial class RaymanMode7 : Mode7Actor
         RenderHeight = 64;
         IsAffine = false; // NOTE: The game doesn't set this, but in the custom Draw implementation it doesn't use affine rendering
 
-        field_0x7a = Direction;
         SlowDown = false;
         PrevHitPoints = HitPoints;
         ProcessJoypad = false;
         
         GameInfo.IsInWorldMap = false;
     }
-
-    // TODO: Name
-    public Angle256 field_0x7a { get; set; }
 
     public float ZPosSpeed { get; set; }
     public float ZPosDeacceleration { get; set; }
