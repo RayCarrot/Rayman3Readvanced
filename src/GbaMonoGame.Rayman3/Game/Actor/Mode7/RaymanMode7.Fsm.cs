@@ -131,6 +131,10 @@ public partial class RaymanMode7
                 if (!FsmStep_DoMovement())
                     return false;
 
+                // NOTE: This causes a bug in the original game on the first frame this runs after you jump. That's because of the
+                //       animation is still in the delay mode from the jump animation and will thus not reload the tiles, causing
+                //       it to reuse the tiles from the jump animation for the default animation. This however is not an issue
+                //       here since we load tiles differently.
                 int currentFrame = AnimatedObject.CurrentFrame;
                 int animTimer = AnimatedObject.Timer;
                 bool isDelayMode = AnimatedObject.IsDelayMode;
