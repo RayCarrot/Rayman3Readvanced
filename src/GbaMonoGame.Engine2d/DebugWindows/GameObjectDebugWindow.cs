@@ -24,6 +24,13 @@ public class GameObjectDebugWindow : DebugWindow
             if (ImGui.InputFloat2("Position", ref pos))
                 selectedGameObject.Position = new Vector2(pos.X, pos.Y);
 
+            if (selectedGameObject is Mode7Actor mode7Actor)
+            {
+                float zPos = mode7Actor.ZPos;
+                if (ImGui.SliderFloat("Z-position", ref zPos, 0, 256))
+                    mode7Actor.ZPos = zPos;
+            }
+
             selectedGameObject.DrawDebugLayout(debugLayout, textureManager);
 
             if (selectedGameObject is BaseActor actor)
