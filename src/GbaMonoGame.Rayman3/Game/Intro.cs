@@ -1,8 +1,11 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using System;
+using BinarySerializer.Nintendo.GBA;
+using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Action = System.Action;
 
 namespace GbaMonoGame.Rayman3;
@@ -42,6 +45,222 @@ public class Intro : Frame, IHasPlayfield
     #endregion
 
     #region Private Methods
+
+    // TODO: Make it optional if it uses the replaced animations or not
+    private void ReplaceLogo()
+    {
+        // Define the letters to replace
+        var letters = new[]
+        {
+            // R
+            new
+            {
+                ReplaceTile = 362,
+                HideTiles = new[] { 426, 688 },
+                OriginalOffset = new Point(-110, -46),
+                NewOffset = new Point(2, 6),
+                FileName = "IntroLogo_Part1"
+            },
+            // A
+            new
+            {
+                ReplaceTile = 430,
+                HideTiles = new[] { 462 },
+                OriginalOffset = new Point(-76, -27),
+                NewOffset = new Point(33, 17),
+                FileName = "IntroLogo_Part2"
+            },
+            // Y
+            new
+            {
+                ReplaceTile = 466,
+                HideTiles = new[] { 482, 490 },
+                OriginalOffset = new Point(-53, -28),
+                NewOffset = new Point(56, 21),
+                FileName = "IntroLogo_Part3"
+            },
+            // M
+            new
+            {
+                ReplaceTile = 492,
+                HideTiles = Array.Empty<int>(),
+                OriginalOffset = new Point(-25, -30),
+                NewOffset = new Point(86, 22),
+                FileName = "IntroLogo_Part4"
+            },
+            // A
+            new
+            {
+                ReplaceTile = 524,
+                HideTiles = Array.Empty<int>(),
+                OriginalOffset = new Point(3, -30),
+                NewOffset = new Point(117, 21),
+                FileName = "IntroLogo_Part5"
+            },
+            // N
+            new
+            {
+                ReplaceTile = 556,
+                HideTiles = new[] { 588 },
+                OriginalOffset = new Point(30, -27),
+                NewOffset = new Point(142, 19),
+                FileName = "IntroLogo_Part6"
+            },
+            // ®
+            new
+            {
+                ReplaceTile = -1,
+                HideTiles = new[] { 360 },
+                OriginalOffset = new Point(0, 0),
+                NewOffset = new Point(0, 0),
+                FileName = (string)null
+            },
+            // 3
+            new
+            {
+                ReplaceTile = 596,
+                HideTiles = new[] { 660, 676, 684 },
+                OriginalOffset = new Point(62, -52),
+                NewOffset = new Point(174, 5),
+                FileName = "IntroLogo_Part7"
+            },
+        };
+
+        const int baseCacheId = 1000;
+
+        // Load the textures
+        for (int letterIndex = 0; letterIndex < letters.Length; letterIndex++)
+        {
+            var letter = letters[letterIndex];
+            if (letter.FileName != null)
+                Engine.TextureCache.SetObject(
+                    BlackLumAndLogoObj.Resource.Offset,
+                    baseCacheId + letterIndex,
+                    Engine.FrameContentManager.Load<Texture2D>(letter.FileName));
+        }
+
+        Point originalBaseOffset = letters[0].OriginalOffset;
+        Point newBaseOffset = letters[0].NewOffset;
+
+        // Replace the logo in animations 7 and 8
+        replaceAnimation(7);
+        replaceAnimation(8);
+
+        void replaceAnimation(int animId)
+        {
+            // Ignore if the animation has already been replaced
+            if (BlackLumAndLogoObj.HasReplacedAnimation(animId))
+                return;
+
+            // Create a copy of the animation
+            Animation anim = Rom.CopyResource(BlackLumAndLogoObj.Resource.Animations[animId]);
+            anim.AffineMatrices = BlackLumAndLogoObj.Resource.Animations[animId].AffineMatrices;
+            anim.PaletteCycleAnimation = BlackLumAndLogoObj.Resource.Animations[animId].PaletteCycleAnimation;
+
+            // Enumerate every frame
+            int channelIndex = 0;
+            for (int frameIndex = 0; frameIndex < anim.FramesCount; frameIndex++)
+            {
+                // Enumerate every channel in the frame
+                for (int frameChannelIndex = 0; frameChannelIndex < anim.ChannelsPerFrame[frameIndex]; frameChannelIndex++)
+                {
+                    AnimationChannel channel = anim.Channels[channelIndex];
+                    if (channel.ChannelType == AnimationChannelType.Sprite)
+                    {
+                        for (int letterIndex = 0; letterIndex < letters.Length; letterIndex++)
+                        {
+                            var letter = letters[letterIndex];
+
+                            // Replace the sprite
+                            if (channel.TileIndex == letter.ReplaceTile)
+                            {
+                                Point offset = originalBaseOffset + (letter.NewOffset - newBaseOffset) - letter.OriginalOffset;
+
+                                channel.TileIndex = (ushort)(baseCacheId + letterIndex);
+                                channel.XPosition += (short)offset.X;
+                                channel.YPosition += (short)offset.Y;
+                            }
+                            // Hide the sprite
+                            else if (Array.IndexOf(letter.HideTiles, channel.TileIndex) >= 0)
+                            {
+                                channel.ObjectMode = OBJ_ATTR_ObjectMode.HIDE;
+                            }
+                        }
+                    }
+
+                    channelIndex++;
+                }
+            }
+
+            BlackLumAndLogoObj.ReplaceAnimation(animId, anim);
+        }
+
+        // Load the "READVANCED" subtitle texture
+        Engine.TextureCache.SetObject(
+            BlackLumAndLogoObj.Resource.Offset,
+            baseCacheId + letters.Length,
+            Engine.FrameContentManager.Load<Texture2D>("IntroLogo_Part8"));
+
+        Point newOffset = new(44, 67);
+        Point offset = originalBaseOffset + (newOffset - newBaseOffset);
+        const int tileIndex = 360;
+
+        // Replace the ® with the subtitle
+        Animation anim = BlackLumAndLogoObj.GetReplacedAnimation(7);
+        int channelIndex = 0;
+        for (int frameIndex = 0; frameIndex < anim.FramesCount; frameIndex++)
+        {
+            for (int frameChannelIndex = 0; frameChannelIndex < anim.ChannelsPerFrame[frameIndex]; frameChannelIndex++)
+            {
+                AnimationChannel channel = anim.Channels[channelIndex];
+                if (channel.ChannelType == AnimationChannelType.Sprite && channel.TileIndex == tileIndex)
+                {
+                    // Move in from bottom and bounce
+                    if (frameIndex == 59)
+                    {
+                        channel.ObjectMode = OBJ_ATTR_ObjectMode.REG;
+                        channel.TileIndex = (ushort)(baseCacheId + letters.Length);
+                        channel.XPosition = (short)offset.X;
+                        channel.YPosition = (short)(offset.Y + 50);
+                    }
+                    else if (frameIndex == 60)
+                    {
+                        channel.ObjectMode = OBJ_ATTR_ObjectMode.REG;
+                        channel.TileIndex = (ushort)(baseCacheId + letters.Length);
+                        channel.XPosition = (short)offset.X;
+                        channel.YPosition = (short)offset.Y;
+                    }
+                    else if (frameIndex == 61)
+                    {
+                        channel.ObjectMode = OBJ_ATTR_ObjectMode.REG;
+                        channel.TileIndex = (ushort)(baseCacheId + letters.Length);
+                        channel.XPosition = (short)offset.X;
+                        channel.YPosition = (short)(offset.Y + 5);
+                    }
+                    else if (frameIndex == 62)
+                    {
+                        channel.ObjectMode = OBJ_ATTR_ObjectMode.REG;
+                        channel.TileIndex = (ushort)(baseCacheId + letters.Length);
+                        channel.XPosition = (short)offset.X;
+                        channel.YPosition = (short)offset.Y;
+                    }
+                }
+
+                channelIndex++;
+            }
+        }
+
+        foreach (AnimationChannel channel in BlackLumAndLogoObj.GetReplacedAnimation(8).Channels)
+        {
+            if (channel.TileIndex == tileIndex)
+            {
+                channel.ObjectMode = OBJ_ATTR_ObjectMode.REG;
+                channel.TileIndex = (ushort)(baseCacheId + letters.Length);
+                channel.XPosition = (short)offset.X;
+                channel.YPosition = (short)offset.Y;
+            }
+        }
+    }
 
     private void Skip()
     {
@@ -172,6 +391,8 @@ public class Intro : Frame, IHasPlayfield
 
         SoundEventsManager.SetVolumeForType(SoundType.Music, 0);
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__sadslide);
+
+        ReplaceLogo();
     }
 
     public override void UnInit()
