@@ -181,5 +181,21 @@ public static class Rom
         return new MemoryStream(res.RawData);
     }
 
+    public static T CopyResource<T>(T resource)
+        where T : BinarySerializable, new()
+    {
+        using Context context = Context;
+        
+        SerializerSettings settings = (SerializerSettings)context.Settings;
+        bool ignoreCacheOnRead = settings.IgnoreCacheOnRead;
+        settings.IgnoreCacheOnRead = true;
+
+        T obj = FileFactory.Read<T>(context, resource.Offset);
+
+        settings.IgnoreCacheOnRead = ignoreCacheOnRead;
+
+        return obj;
+    }
+
     #endregion
 }
