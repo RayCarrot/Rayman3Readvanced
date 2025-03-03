@@ -20,7 +20,7 @@ public class Rayman3 : GbaGame
     public override Dictionary<SoundType, string> SampleSongs => new()
     {
         [SoundType.Music] = "Music/raytheme",
-        [SoundType.Sfx] = "Sfx/LumTotal_Mix02",
+        [SoundType.Sfx] = "Sfx/LumTotal_Mix02GEN",
     };
 
     public override bool CanSkipCutscene => (Frame.Current as IHasScene)?.Scene.GetDialog<TextBoxDialog>()?.CanSkip() ?? false;
