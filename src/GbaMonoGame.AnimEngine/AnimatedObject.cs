@@ -126,6 +126,9 @@ public class AnimatedObject : AObject
 
     public BoxTable BoxTable { get; set; }
 
+    // Custom - allows animations to be replaced with new ones
+    public Dictionary<int, Animation> ReplacedAnimations { get; set; }
+
     #endregion
 
     #region Private Methods
@@ -142,7 +145,29 @@ public class AnimatedObject : AObject
 
     #region Public Methods
 
-    public Animation GetAnimation() => Resource.Animations[CurrentAnimation];
+    public Animation GetAnimation()
+    {
+        if (ReplacedAnimations != null && ReplacedAnimations.TryGetValue(CurrentAnimation, out Animation anim))
+            return anim;
+        else
+            return Resource.Animations[CurrentAnimation];
+    }
+
+    public void ReplaceAnimation(int id, Animation animation)
+    {
+        ReplacedAnimations ??= new Dictionary<int, Animation>();
+        ReplacedAnimations[id] = animation;
+    }
+
+    public bool HasReplacedAnimation(int id)
+    {
+        return ReplacedAnimations != null && ReplacedAnimations.ContainsKey(id);
+    }
+
+    public Animation GetReplacedAnimation(int id)
+    {
+        return ReplacedAnimations[id];
+    }
 
     public bool IsChannelVisible(int channel) => (ActiveChannels & (1 << channel)) != 0;
     public void ActivateChannel(int channel) => ActiveChannels = (uint)((int)ActiveChannels | (1 << channel));
