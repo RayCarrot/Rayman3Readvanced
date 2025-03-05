@@ -355,7 +355,7 @@ public partial class MenuAll : Frame, IHasPlayfield
         {
             if (Anims.Cursor.CurrentAnimation == 16)
             {
-                Debug.Assert(Anims.Stem.CurrentAnimation == 1, "The steam has the wrong animation");
+                Debug.Assert(Anims.Stem.CurrentAnimation == 1, "The stem has the wrong animation");
 
                 if (Anims.Cursor.EndOfAnimation)
                 {
