@@ -9,8 +9,9 @@ public partial class MenuAll
 {
     #region Properties
 
+    public uint GameLogoPrevMovedTime { get; set; }
     public int GameLogoYOffset { get; set; }
-    public int OtherGameLogoValue { get; set; }
+    public int GameLogoYSpeed { get; set; }
     public int GameLogoSinValue { get; set; }
     public int GameLogoMovementXOffset { get; set; }
     public int GameLogoMovementWidth { get; set; }
@@ -39,40 +40,48 @@ public partial class MenuAll
         // Move Y
         if (GameLogoYOffset < 56)
         {
+            // Move down
             Anims.GameLogo.ScreenPos = Anims.GameLogo.ScreenPos with { Y = GameLogoYOffset * 2 - 54 };
             GameLogoYOffset += 4;
         }
-        else if (OtherGameLogoValue != 12)
+        else if (GameLogoYSpeed != 12)
         {
+            // Bounce up and down
             GameLogoSinValue = (GameLogoSinValue + 16) % 256;
 
-            float y = 56 + MathHelpers.Sin256(GameLogoSinValue) * OtherGameLogoValue;
+            float y = 56 + MathHelpers.Sin256(GameLogoSinValue) * GameLogoYSpeed;
             Anims.GameLogo.ScreenPos = Anims.GameLogo.ScreenPos with { Y = y };
 
-            if (OtherGameLogoValue == 20 && GameLogoSinValue == 96)
+            if (GameLogoYSpeed == 20 && GameLogoSinValue == 96)
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Pannel_BigFoot1_Mix02);
 
             if (GameLogoSinValue == 0)
-                OtherGameLogoValue -= 4;
+                GameLogoYSpeed -= 4;
         }
         else if (Anims.GameLogo.ScreenPos.Y > 16)
         {
+            // Move up
             Anims.GameLogo.ScreenPos -= new Vector2(0, 1);
         }
 
         // TODO: Rewrite with floats to move in 60fps
         // Move X (back and forth from a width of 10 to 0)
-        uint time = GameTime.ElapsedFrames - PrevGameTime;
-        if (time > 4 && GameLogoMovementWidth == 10 ||
-            time > 6 && GameLogoMovementWidth == 9 ||
-            time > 8 && GameLogoMovementWidth == 8 ||
-            time > 10 && GameLogoMovementWidth == 7 ||
-            time > 12 && GameLogoMovementWidth == 6 ||
-            time > 14 && GameLogoMovementWidth == 5 ||
-            time > 16 && GameLogoMovementWidth == 4 ||
-            time > 18 && GameLogoMovementWidth == 3 ||
-            time > 20 && GameLogoMovementWidth == 2 ||
-            time > 22 && GameLogoMovementWidth == 1)
+        uint elapsedTime = GameTime.ElapsedFrames - GameLogoPrevMovedTime;
+        uint targetTime = GameLogoMovementWidth switch
+        {
+            10 => 4,
+            9 => 6,
+            8 => 8,
+            7 => 10,
+            6 => 12,
+            5 => 14,
+            4 => 16,
+            3 => 18,
+            2 => 20,
+            1 => 22,
+            _ => 0
+        };
+        if (targetTime != 0 && elapsedTime > targetTime)
         {
             int x;
 
@@ -101,7 +110,7 @@ public partial class MenuAll
             }
 
             GameLogoMovementXOffset++;
-            PrevGameTime = GameTime.ElapsedFrames;
+            GameLogoPrevMovedTime = GameTime.ElapsedFrames;
             Anims.GameLogo.ScreenPos = Anims.GameLogo.ScreenPos with { X = GameLogoBaseX + x };
         }
     }
@@ -148,12 +157,12 @@ public partial class MenuAll
         }
 
         IsLoadingMultiplayerMap = false;
-        PrevGameTime = 0;
+        GameLogoPrevMovedTime = 0;
         GameLogoMovementXOffset = 10;
         GameLogoMovementWidth = 10;
         GameLogoMovementXCountdown = 0;
         Anims.GameLogo.ScreenPos = Anims.GameLogo.ScreenPos with { X = GameLogoBaseX };
-        OtherGameLogoValue = 20;
+        GameLogoYSpeed = 20;
         GameLogoSinValue = 0;
         GameLogoYOffset = 0;
 

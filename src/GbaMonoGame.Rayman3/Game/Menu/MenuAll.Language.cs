@@ -118,7 +118,7 @@ public partial class MenuAll
                 if (Rom.Platform == Platform.GBA)
                 {
                     GameLogoYOffset = 56;
-                    OtherGameLogoValue = 12;
+                    GameLogoYSpeed = 12;
                     
                     Anims.GameModeList.CurrentAnimation = Localization.LanguageUiIndex * 3 + SelectedOption;
                 }

@@ -34,7 +34,7 @@ public partial class MenuAll : Frame, IHasPlayfield
         SinglePakPlayersOffsetY = 70;
         GameLogoMovementXOffset = 3;
         GameLogoMovementWidth = 6;
-        PrevGameTime = 0;
+        GameLogoPrevMovedTime = 0;
         GameLogoMovementXCountdown = 0;
         GameLogoYOffset = 0;
         StemMode = StemMode.MoveOut;
@@ -105,7 +105,6 @@ public partial class MenuAll : Frame, IHasPlayfield
     public int NextTextId { get; set; }
 
     public int TransitionValue { get; set; }
-    public uint PrevGameTime { get; set; }
     public int WheelRotation { get; set; }
     public int SteamTimer { get; set; }
 
