@@ -37,7 +37,7 @@ public partial class MenuAll : Frame, IHasPlayfield
         PrevGameTime = 0;
         GameLogoMovementXCountdown = 0;
         GameLogoYOffset = 0;
-        StemMode = 0;
+        StemMode = StemMode.MoveOut;
 
         if (Rom.Platform == Platform.GBA)
         {
@@ -98,7 +98,7 @@ public partial class MenuAll : Frame, IHasPlayfield
 
     public int PrevSelectedOption { get; set; }
     public int SelectedOption { get; set; }
-    public int StemMode { get; set; } // TODO: Enum
+    public StemMode StemMode { get; set; }
 
     public bool ShouldTextBlink { get; set; }
     public int PreviousTextId { get; set; }
@@ -345,13 +345,13 @@ public partial class MenuAll : Frame, IHasPlayfield
 
     public void ResetStem()
     {
-        StemMode = 1;
+        StemMode = StemMode.MoveIn;
         Anims.Stem.CurrentAnimation = 12;
     }
 
     public void ManageCursorAndStem()
     {
-        if (StemMode == 0)
+        if (StemMode == StemMode.MoveOut)
         {
             if (Anims.Cursor.CurrentAnimation == 16)
             {
@@ -380,10 +380,10 @@ public partial class MenuAll : Frame, IHasPlayfield
             else if (Anims.Stem.CurrentAnimation == 15 && Anims.Stem.EndOfAnimation)
             {
                 Anims.Stem.CurrentAnimation = 14;
-                StemMode = 3;
+                StemMode = StemMode.Inactive;
             }
         }
-        else if (StemMode == 1)
+        else if (StemMode == StemMode.MoveIn)
         {
             if (Anims.Stem.CurrentAnimation == 12 && Anims.Stem.EndOfAnimation)
             {
@@ -392,10 +392,10 @@ public partial class MenuAll : Frame, IHasPlayfield
             else if (Anims.Stem.CurrentAnimation == 17 && Anims.Stem.EndOfAnimation)
             {
                 Anims.Stem.CurrentAnimation = 1;
-                StemMode = 2;
+                StemMode = StemMode.Active;
             }
         }
-        else if (StemMode == 2)
+        else if (StemMode == StemMode.Active)
         {
             int lineHeight;
             if (CurrentStepAction == Step_SinglePlayer)
@@ -447,13 +447,13 @@ public partial class MenuAll : Frame, IHasPlayfield
 
     public void TransitionOutCursorAndStem()
     {
-        if (Rom.Platform == Platform.NGage || StemMode is 2 or 3)
+        if (Rom.Platform == Platform.NGage || StemMode is StemMode.Active or StemMode.Inactive)
         {
             PrevSelectedOption = SelectedOption;
             SelectedOption = 0;
         }
 
-        StemMode = 0;
+        StemMode = StemMode.MoveOut;
 
         Anims.Stem.CurrentAnimation = 1;
 
@@ -463,7 +463,7 @@ public partial class MenuAll : Frame, IHasPlayfield
 
     public void SelectOption(int selectedOption, bool playSound)
     {
-        if (Rom.Platform == Platform.NGage || StemMode is 2 or 3)
+        if (Rom.Platform == Platform.NGage || StemMode is StemMode.Active or StemMode.Inactive)
         {
             PrevSelectedOption = SelectedOption;
             SelectedOption = selectedOption;

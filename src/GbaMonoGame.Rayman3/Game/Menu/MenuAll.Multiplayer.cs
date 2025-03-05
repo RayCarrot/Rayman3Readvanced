@@ -1942,7 +1942,7 @@ public partial class MenuAll
                 }
                 else
                 {
-                    if (MultiJoyPad.IsButtonJustPressed(0, GbaInput.Up) && (Rom.Platform == Platform.NGage || StemMode == 2))
+                    if (MultiJoyPad.IsButtonJustPressed(0, GbaInput.Up) && (Rom.Platform == Platform.NGage || StemMode == StemMode.Active))
                     {
                         if (MultiplayerMapId == 1)
                         {
@@ -1967,7 +1967,7 @@ public partial class MenuAll
                             SelectOption(0, true);
                         }
                     }
-                    else if (MultiJoyPad.IsButtonJustPressed(0, GbaInput.Down) && (Rom.Platform == Platform.NGage || StemMode == 2))
+                    else if (MultiJoyPad.IsButtonJustPressed(0, GbaInput.Down) && (Rom.Platform == Platform.NGage || StemMode == StemMode.Active))
                     {
                         if (Rom.Platform == Platform.NGage || 
                             (MultiplayerType == 0 && FinishedLyChallenge1) ||
