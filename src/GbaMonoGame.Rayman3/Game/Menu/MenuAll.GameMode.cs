@@ -2,6 +2,7 @@
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.TgxEngine;
+using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -16,6 +17,10 @@ public partial class MenuAll
     public int GameLogoMovementXOffset { get; set; }
     public int GameLogoMovementWidth { get; set; }
     public int GameLogoMovementXCountdown { get; set; }
+
+    // Custom values for smooth movement
+    public float GameLogoStartX { get; set; }
+    public float GameLogoEndX { get; set; }
 
     public float GameLogoBaseX { get; } = Rom.Platform switch
     {
@@ -64,7 +69,6 @@ public partial class MenuAll
             Anims.GameLogo.ScreenPos -= new Vector2(0, 1);
         }
 
-        // TODO: Rewrite with floats to move in 60fps
         // Move X (back and forth from a width of 10 to 0)
         uint elapsedTime = GameTime.ElapsedFrames - GameLogoPrevMovedTime;
         uint targetTime = GameLogoMovementWidth switch
@@ -81,6 +85,10 @@ public partial class MenuAll
             1 => 22,
             _ => 0
         };
+
+        // Custom code for smooth movement
+        Anims.GameLogo.ScreenPos = Anims.GameLogo.ScreenPos with { X = MathHelper.Lerp(GameLogoStartX, GameLogoEndX, elapsedTime / (float)targetTime) };
+
         if (targetTime != 0 && elapsedTime > targetTime)
         {
             int x;
@@ -111,7 +119,10 @@ public partial class MenuAll
 
             GameLogoMovementXOffset++;
             GameLogoPrevMovedTime = GameTime.ElapsedFrames;
-            Anims.GameLogo.ScreenPos = Anims.GameLogo.ScreenPos with { X = GameLogoBaseX + x };
+
+            // Custom code for smooth movement
+            GameLogoStartX = Anims.GameLogo.ScreenPos.X;
+            GameLogoEndX = GameLogoBaseX + x;
         }
     }
 
