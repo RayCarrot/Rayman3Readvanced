@@ -28,6 +28,9 @@ public class GfxScreen
     /// </summary>
     public bool Wrap { get; set; }
 
+    public int CurrentWrapX { get; private set; }
+    public int CurrentWrapY { get; private set; }
+
     /// <summary>
     /// Indicates the color mode for the screen, if it's 8-bit or 4-bit.
     /// </summary>
@@ -110,17 +113,26 @@ public class GfxScreen
                 startY -= size.Y;
 
             // Draw the background to fill out the visible range
+            CurrentWrapY = 0;
             for (float y = startY; y < endY; y += size.Y)
             {
+                CurrentWrapX = 0;
+
                 for (float x = startX; x < endX; x += size.X)
                 {
                     Renderer?.Draw(renderer, this, new Vector2(x, y), color);
+                    CurrentWrapX++;
                 }
+
+                CurrentWrapY++;
             }
         }
         else
         {
             Renderer?.Draw(renderer, this, -Offset, color);
+
+            CurrentWrapX = 1;
+            CurrentWrapY = 1;
         }
     }
 }

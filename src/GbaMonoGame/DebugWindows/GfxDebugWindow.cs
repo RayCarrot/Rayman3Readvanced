@@ -70,7 +70,7 @@ public class GfxDebugWindow : DebugWindow
             {
                 ImGui.SeparatorText("Screens");
 
-                if (ImGui.BeginTable("_screens", 9))
+                if (ImGui.BeginTable("_screens", 10))
                 {
                     ImGui.TableSetupColumn("Enabled", ImGuiTableColumnFlags.WidthFixed);
                     ImGui.TableSetupColumn("Wrap", ImGuiTableColumnFlags.WidthFixed);
@@ -78,6 +78,7 @@ public class GfxDebugWindow : DebugWindow
                     ImGui.TableSetupColumn("Prio", ImGuiTableColumnFlags.WidthFixed);
                     ImGui.TableSetupColumn("Offset", ImGuiTableColumnFlags.WidthFixed);
                     ImGui.TableSetupColumn("Size", ImGuiTableColumnFlags.WidthFixed);
+                    ImGui.TableSetupColumn("Wrap", ImGuiTableColumnFlags.WidthFixed);
                     ImGui.TableSetupColumn("Bpp", ImGuiTableColumnFlags.WidthFixed);
                     ImGui.TableSetupColumn("Render context");
                     ImGui.TableSetupColumn("Renderer");
@@ -104,6 +105,9 @@ public class GfxDebugWindow : DebugWindow
 
                         ImGui.TableNextColumn();
                         ImGui.Text($"{screen.Renderer?.GetSize(screen).X:0.00} x {screen.Renderer?.GetSize(screen).Y:0.00}");
+
+                        ImGui.TableNextColumn();
+                        ImGui.Text($"{screen.CurrentWrapX}x{screen.CurrentWrapY}");
 
                         ImGui.TableNextColumn();
                         ImGui.Text(screen.Is8Bit switch
