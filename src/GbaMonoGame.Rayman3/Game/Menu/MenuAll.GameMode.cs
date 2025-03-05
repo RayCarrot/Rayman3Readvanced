@@ -87,7 +87,8 @@ public partial class MenuAll
         };
 
         // Custom code for smooth movement
-        Anims.GameLogo.ScreenPos = Anims.GameLogo.ScreenPos with { X = MathHelper.Lerp(GameLogoStartX, GameLogoEndX, elapsedTime / (float)targetTime) };
+        if (targetTime != 0)
+            Anims.GameLogo.ScreenPos = Anims.GameLogo.ScreenPos with { X = MathHelper.Lerp(GameLogoStartX, GameLogoEndX, elapsedTime / (float)targetTime) };
 
         if (targetTime != 0 && elapsedTime > targetTime)
         {
@@ -176,6 +177,8 @@ public partial class MenuAll
         GameLogoYSpeed = 20;
         GameLogoSinValue = 0;
         GameLogoYOffset = 0;
+        GameLogoStartX = Anims.GameLogo.ScreenPos.X;
+        GameLogoEndX = Anims.GameLogo.ScreenPos.X;
 
         ResetStem();
         SetBackgroundPalette(3);
