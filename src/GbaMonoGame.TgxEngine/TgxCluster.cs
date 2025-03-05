@@ -23,7 +23,7 @@ public class TgxCluster
 
     public List<TgxGameLayer> Layers { get; }
 
-    public Vector2 Size { get; }
+    public Vector2 Size { get; set; }
 
     public Vector2 Position
     {
