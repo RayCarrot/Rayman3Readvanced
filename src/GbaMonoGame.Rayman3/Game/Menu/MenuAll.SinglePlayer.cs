@@ -11,7 +11,7 @@ public partial class MenuAll
 
     public byte StartEraseCursorTargetIndex { get; set; }
     public byte StartEraseCursorCurrentIndex { get; set; }
-    public byte EraseSaveStage { get; set; }
+    public StartEraseMode StartEraseMode { get; set; }
 
     #endregion
 
@@ -96,7 +96,7 @@ public partial class MenuAll
         SetBackgroundPalette(1);
         StartEraseCursorCurrentIndex = 0;
         StartEraseCursorTargetIndex = 0;
-        EraseSaveStage = 0;
+        StartEraseMode = StartEraseMode.Selection;
 
         if (Rom.Platform == Platform.GBA)
         {
@@ -158,9 +158,9 @@ public partial class MenuAll
 
     private void Step_SinglePlayer()
     {
-        switch (EraseSaveStage)
+        switch (StartEraseMode)
         {
-            case 0:
+            case StartEraseMode.Selection:
                 if (IsStartingGame)
                 {
                     if (TransitionsFX.IsFadeOutFinished)
@@ -234,7 +234,7 @@ public partial class MenuAll
                     }
                     else if (Slots[SelectedOption] != null)
                     {
-                        EraseSaveStage = 1;
+                        StartEraseMode = StartEraseMode.TransitionOutSelection;
                         TransitionValue = 0;
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
@@ -245,7 +245,7 @@ public partial class MenuAll
                 }
                 break;
 
-            case 1:
+            case StartEraseMode.TransitionOutSelection:
                 TransitionValue += 4;
                 Anims.StartEraseSelection.ScreenPos = Anims.StartEraseSelection.ScreenPos with { Y = 30 - TransitionValue };
                 Anims.StartEraseCursor.ScreenPos = Anims.StartEraseCursor.ScreenPos with { Y = 12 - TransitionValue };
@@ -253,7 +253,7 @@ public partial class MenuAll
                 if (TransitionValue >= 64)
                 {
                     TransitionValue = 0;
-                    EraseSaveStage = 2;
+                    StartEraseMode = StartEraseMode.TransitionInConfirmErase;
                     Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 21;
 
                     if (Rom.Platform == Platform.GBA)
@@ -267,7 +267,7 @@ public partial class MenuAll
                 }
                 break;
 
-            case 2:
+            case StartEraseMode.TransitionInConfirmErase:
                 TransitionValue += 4;
                 Anims.StartEraseSelection.ScreenPos = Anims.StartEraseSelection.ScreenPos with { Y = TransitionValue - 80 };
                 Anims.StartEraseCursor.ScreenPos = Anims.StartEraseCursor.ScreenPos with { Y = TransitionValue - 38 };
@@ -275,11 +275,11 @@ public partial class MenuAll
                 if (TransitionValue >= 80)
                 {
                     TransitionValue = 0;
-                    EraseSaveStage = 3;
+                    StartEraseMode = StartEraseMode.ConfirmErase;
                 }
                 break;
 
-            case 3:
+            case StartEraseMode.ConfirmErase:
                 // Move left
                 if (JoyPad.IsButtonJustPressed(GbaInput.Left) || JoyPad.IsButtonJustPressed(GbaInput.L))
                 {
@@ -305,7 +305,7 @@ public partial class MenuAll
                 // Erase slot
                 else if (JoyPad.IsButtonJustPressed(GbaInput.A))
                 {
-                    EraseSaveStage = 4;
+                    StartEraseMode = StartEraseMode.TransitionOutConfirmErase;
                     TransitionValue = 0;
                     if (StartEraseCursorTargetIndex == 0 && Slots[SelectedOption] != null)
                     {
@@ -316,7 +316,7 @@ public partial class MenuAll
                 }
                 break;
 
-            case 4:
+            case StartEraseMode.TransitionOutConfirmErase:
                 TransitionValue += 4;
                 Anims.StartEraseSelection.ScreenPos = Anims.StartEraseSelection.ScreenPos with { Y = -TransitionValue };
                 Anims.StartEraseCursor.ScreenPos = Anims.StartEraseCursor.ScreenPos with { Y = 42 - TransitionValue };
@@ -324,7 +324,7 @@ public partial class MenuAll
                 if (TransitionValue >= 80)
                 {
                     TransitionValue = 0;
-                    EraseSaveStage = 5;
+                    StartEraseMode = StartEraseMode.TransitionInSelection;
                     Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2;
 
                     if (Rom.Platform == Platform.GBA)
@@ -338,7 +338,7 @@ public partial class MenuAll
                 }
                 break;
 
-            case 5:
+            case StartEraseMode.TransitionInSelection:
                 TransitionValue += 4;
                 Anims.StartEraseSelection.ScreenPos = Anims.StartEraseSelection.ScreenPos with { Y = TransitionValue - 34 };
                 Anims.StartEraseCursor.ScreenPos = Anims.StartEraseCursor.ScreenPos with { Y = TransitionValue - 52 };
@@ -346,14 +346,14 @@ public partial class MenuAll
                 if (TransitionValue >= 64)
                 {
                     TransitionValue = 0;
-                    EraseSaveStage = 0;
+                    StartEraseMode = StartEraseMode.Selection;
                 }
                 break;
         }
 
         if (JoyPad.IsButtonJustPressed(GbaInput.B) && TransitionsFX.IsFadeOutFinished && !IsStartingGame)
         {
-            if (EraseSaveStage == 0)
+            if (StartEraseMode == StartEraseMode.Selection)
             {
                 NextStepAction = Step_InitializeTransitionToGameMode;
                 CurrentStepAction = Step_TransitionOutOfSinglePlayer;
@@ -362,18 +362,18 @@ public partial class MenuAll
                 SelectOption(0, false);
                 TransitionOutCursorAndStem();
             }
-            else if (EraseSaveStage == 1)
+            else if (StartEraseMode == StartEraseMode.TransitionOutSelection)
             {
-                EraseSaveStage = 5;
+                StartEraseMode = StartEraseMode.TransitionInSelection;
             }
-            else if (EraseSaveStage == 2)
+            else if (StartEraseMode == StartEraseMode.TransitionInConfirmErase)
             {
-                EraseSaveStage = 4;
+                StartEraseMode = StartEraseMode.TransitionOutConfirmErase;
                 TransitionValue = 80 - TransitionValue;
             }
-            else if (EraseSaveStage == 3)
+            else if (StartEraseMode == StartEraseMode.ConfirmErase)
             {
-                EraseSaveStage = 4;
+                StartEraseMode = StartEraseMode.TransitionOutConfirmErase;
                 TransitionValue = 0;
             }
         }
