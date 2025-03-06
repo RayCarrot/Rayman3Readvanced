@@ -10,16 +10,9 @@ namespace GbaMonoGame.Rayman3;
 
 public class ModernMenuAll : Frame, IHasPlayfield
 {
-    #region Constructor
-
-    public ModernMenuAll()
-    {
-
-    }
-
-    #endregion
-
     #region Properties
+
+    private const float CursorBaseY = 67;
 
     TgxPlayfield IHasPlayfield.Playfield => Playfield;
 
@@ -41,34 +34,84 @@ public class ModernMenuAll : Frame, IHasPlayfield
 
     public int PrevSelectedOption { get; set; }
     public int SelectedOption { get; set; }
-    public const float CursorBaseY = 67;
     public StemMode StemMode { get; set; }
 
     public int WheelRotation { get; set; }
     public int SteamTimer { get; set; }
 
+    public bool IsLoadingMultiplayerMap { get; set; }
+    public bool HasLoadedGameInfo { get; set; }
+    public Slot[] Slots { get; } = new Slot[3];
+    public bool FinishedLyChallenge1 { get; set; }
+    public bool FinishedLyChallenge2 { get; set; }
+    public bool HasAllCages { get; set; }
+
     #endregion
 
     #region Methods
 
-    public void SetNextPage(MenuPage page)
+    public void LoadGameInfo()
     {
-        if (CurrentPage != null)
+        if (HasLoadedGameInfo)
+            return;
+
+        GameInfo.Init();
+        HasLoadedGameInfo = true;
+
+        for (int i = 0; i < 3; i++)
         {
+            if (SaveGameManager.SlotExists(i))
+            {
+                // Load the slot
+                GameInfo.Load(i);
+
+                // Get the info from the slot
+                Slots[i] = new Slot(GameInfo.GetTotalDeadLums(), GameInfo.GetTotalDeadCages(), GameInfo.PersistentInfo.Lives);
+
+                if (Rom.Platform == Platform.GBA)
+                {
+                    if (GameInfo.PersistentInfo.FinishedLyChallenge1)
+                        FinishedLyChallenge1 = true;
+
+                    if (GameInfo.PersistentInfo.FinishedLyChallenge2)
+                        FinishedLyChallenge2 = true;
+
+                    if (Slots[i]?.CagesCount == 50)
+                        HasAllCages = true;
+                }
+            }
+            else
+            {
+                Slots[i] = null;
+            }
+        }
+    }
+
+    public void ChangePage(MenuPage page, NewPageMode mode)
+    {
+        if (mode == NewPageMode.Initial)
+        {
+            CurrentPage = page;
+            page.State = MenuPage.MenuPageState.Init;
+        }
+        else
+        {
+            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+
             if (CurrentPage.UsesCursor)
             {
+                if (mode == NewPageMode.Next)
+                {
+                    Cursor.CurrentAnimation = 16;
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                }
+
                 SelectOption(0, false);
                 TransitionOutCursorAndStem();
             }
 
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
             CurrentPage.State = MenuPage.MenuPageState.TransitionOut;
             NextPage = page;
-        }
-        else
-        {
-            CurrentPage = page;
-            page.State = MenuPage.MenuPageState.Init;
         }
     }
 
@@ -140,7 +183,7 @@ public class ModernMenuAll : Frame, IHasPlayfield
         }
         else if (StemMode == StemMode.Active)
         {
-            const int lineHeight = 16;
+            int lineHeight = CurrentPage.LineHeight;
 
             if (SelectedOption != PrevSelectedOption)
             {
@@ -214,8 +257,7 @@ public class ModernMenuAll : Frame, IHasPlayfield
     {
         RenderContext renderContext = new FixedResolutionRenderContext(new Vector2(384, 216));
 
-        // TODO: Implement
-        // LoadGameInfo();
+        LoadGameInfo();
 
         AnimationPlayer = new AnimationPlayer(false, null);
 
@@ -353,7 +395,7 @@ public class ModernMenuAll : Frame, IHasPlayfield
 
         // TODO: Allow the initial page to be changed like how the original menu does it
         Playfield.TileLayers[3].Screen.IsEnabled = false;
-        SetNextPage(new GameModeMenuPage(this));
+        ChangePage(new GameModeMenuPage(this), NewPageMode.Initial);
 
         // Play the music
         if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__raytheme) &&
@@ -385,12 +427,11 @@ public class ModernMenuAll : Frame, IHasPlayfield
     {
         SoundEngineInterface.SetNbVoices(7);
 
-        // TODO: Implement
-        //if (!IsLoadingMultiplayerMap)
-        //{
-        //    RSMultiplayer.UnInit();
-        //    GameTime.Resume();
-        //}
+        if (!IsLoadingMultiplayerMap)
+        {
+            RSMultiplayer.UnInit();
+            GameTime.Resume();
+        }
 
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__raytheme);
 
@@ -445,6 +486,12 @@ public class ModernMenuAll : Frame, IHasPlayfield
             SteamTimer--;
         }
     }
+
+    #endregion
+
+    #region Data Types
+
+    public record Slot(int LumsCount, int CagesCount, int LivesCount);
 
     #endregion
 }

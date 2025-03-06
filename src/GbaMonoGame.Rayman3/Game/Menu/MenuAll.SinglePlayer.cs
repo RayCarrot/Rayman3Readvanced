@@ -353,28 +353,30 @@ public partial class MenuAll
 
         if (JoyPad.IsButtonJustPressed(GbaInput.B) && TransitionsFX.IsFadeOutFinished && !IsStartingGame)
         {
-            if (StartEraseMode == StartEraseMode.Selection)
+            switch (StartEraseMode)
             {
-                NextStepAction = Step_InitializeTransitionToGameMode;
-                CurrentStepAction = Step_TransitionOutOfSinglePlayer;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
-                TransitionValue = 0;
-                SelectOption(0, false);
-                TransitionOutCursorAndStem();
-            }
-            else if (StartEraseMode == StartEraseMode.TransitionOutSelection)
-            {
-                StartEraseMode = StartEraseMode.TransitionInSelection;
-            }
-            else if (StartEraseMode == StartEraseMode.TransitionInConfirmErase)
-            {
-                StartEraseMode = StartEraseMode.TransitionOutConfirmErase;
-                TransitionValue = 80 - TransitionValue;
-            }
-            else if (StartEraseMode == StartEraseMode.ConfirmErase)
-            {
-                StartEraseMode = StartEraseMode.TransitionOutConfirmErase;
-                TransitionValue = 0;
+                case StartEraseMode.Selection:
+                    NextStepAction = Step_InitializeTransitionToGameMode;
+                    CurrentStepAction = Step_TransitionOutOfSinglePlayer;
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+                    TransitionValue = 0;
+                    SelectOption(0, false);
+                    TransitionOutCursorAndStem();
+                    break;
+
+                case StartEraseMode.TransitionOutSelection:
+                    StartEraseMode = StartEraseMode.TransitionInSelection;
+                    break;
+
+                case StartEraseMode.TransitionInConfirmErase:
+                    StartEraseMode = StartEraseMode.TransitionOutConfirmErase;
+                    TransitionValue = 80 - TransitionValue;
+                    break;
+
+                case StartEraseMode.ConfirmErase:
+                    StartEraseMode = StartEraseMode.TransitionOutConfirmErase;
+                    TransitionValue = 0;
+                    break;
             }
         }
 
