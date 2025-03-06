@@ -41,7 +41,7 @@ public class ModernMenuAll : Frame, IHasPlayfield
 
     public bool IsLoadingMultiplayerMap { get; set; }
     public bool HasLoadedGameInfo { get; set; }
-    public Slot[] Slots { get; } = new Slot[3];
+    public Slot[] Slots { get; } = new Slot[GameInfo.ModernSaveSlotsCount];
     public bool FinishedLyChallenge1 { get; set; }
     public bool FinishedLyChallenge2 { get; set; }
     public bool HasAllCages { get; set; }
@@ -58,7 +58,7 @@ public class ModernMenuAll : Frame, IHasPlayfield
         GameInfo.Init();
         HasLoadedGameInfo = true;
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < Slots.Length; i++)
         {
             if (SaveGameManager.SlotExists(i))
             {

@@ -7,7 +7,9 @@ namespace GbaMonoGame.Rayman3;
 
 public static class GameInfo
 {
-    private const int LumsPerWorld = 230;
+    public const int LumsPerWorld = 230;
+    public const int OriginalSaveSlotsCount = 3;
+    public const int ModernSaveSlotsCount = 5;
 
     public static MapId? NextMapId { get; set; }
     public static MapId MapId { get; set; }

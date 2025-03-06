@@ -81,7 +81,7 @@ public partial class MenuAll
         if (Rom.Platform == Platform.GBA)
             Anims.StartEraseCursor.CurrentAnimation = 40;
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < GameInfo.OriginalSaveSlotsCount; i++)
         {
             if (Slots[i] != null)
             {
@@ -133,7 +133,7 @@ public partial class MenuAll
             CurrentStepAction = Step_SinglePlayer;
         }
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < GameInfo.OriginalSaveSlotsCount; i++)
         {
             AnimationPlayer.Play(Anims.SlotIcons[i]);
 
@@ -382,7 +382,7 @@ public partial class MenuAll
 
         MoveStartEraseCursor();
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < GameInfo.OriginalSaveSlotsCount; i++)
         {
             AnimationPlayer.Play(Anims.SlotIcons[i]);
 
@@ -432,7 +432,7 @@ public partial class MenuAll
             CurrentStepAction = NextStepAction;
         }
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < GameInfo.OriginalSaveSlotsCount; i++)
         {
             AnimationPlayer.Play(Anims.SlotIcons[i]);
 

@@ -60,7 +60,7 @@ public partial class MenuAll : Frame, IHasPlayfield
             ReturningFromMultiplayerGame = false;
         }
 
-        Slots = new Slot[3];
+        Slots = new Slot[GameInfo.OriginalSaveSlotsCount];
         HasLoadedGameInfo = false;
         IsStartingGame = false;
         InitialPage = initialPage;
@@ -480,7 +480,7 @@ public partial class MenuAll : Frame, IHasPlayfield
         GameInfo.Init();
         HasLoadedGameInfo = true;
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < GameInfo.OriginalSaveSlotsCount; i++)
         {
             if (SaveGameManager.SlotExists(i))
             {

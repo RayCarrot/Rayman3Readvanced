@@ -424,7 +424,7 @@ public class LevelSelect : Frame
             SelectedSaveSlotIndex--;
             
             if (SelectedSaveSlotIndex < 0)
-                SelectedSaveSlotIndex = 2;
+                SelectedSaveSlotIndex = GameInfo.ModernSaveSlotsCount - 1;
             
             Rows[0].Text = $"Slot #{SelectedSaveSlotIndex + 1}";
         }
@@ -432,7 +432,7 @@ public class LevelSelect : Frame
         {
             SelectedSaveSlotIndex++;
             
-            if (SelectedSaveSlotIndex > 2)
+            if (SelectedSaveSlotIndex > GameInfo.ModernSaveSlotsCount - 1)
                 SelectedSaveSlotIndex = 0;
 
             Rows[0].Text = $"Slot #{SelectedSaveSlotIndex + 1}";

@@ -1,6 +1,7 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Rayman3.Readvanced;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -9,6 +10,7 @@ public class SlotMenuOption : MenuOption
     public ModernMenuAll.Slot Slot { get; set; }
 
     public AnimatedObject Icon { get; set; }
+    public SpriteObject ExtIcon { get; set; } // For custom icons 4 and 5
     public AnimatedObject LumIcon { get; set; }
     public AnimatedObject CageIcon { get; set; }
     public SpriteTextObject LumText { get; set; }
@@ -21,15 +23,29 @@ public class SlotMenuOption : MenuOption
 
         AnimatedObjectResource propsAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuPropAnimations);
 
-        Icon = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
+        if (index < 3)
         {
-            IsFramed = true,
-            BgPriority = 3,
-            ObjPriority = 0,
-            ScreenPos = position,
-            CurrentAnimation = 8 + index,
-            RenderContext = renderContext,
-        };
+            Icon = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
+            {
+                IsFramed = true,
+                BgPriority = 3,
+                ObjPriority = 0,
+                ScreenPos = position,
+                CurrentAnimation = 8 + (index % 3),
+                RenderContext = renderContext,
+            };
+        }
+        else
+        {
+            ExtIcon = new SpriteObject
+            {
+                BgPriority = 3,
+                ObjPriority = 0,
+                ScreenPos = position,
+                Texture = Engine.FrameContentManager.Load<Texture2D>($"SaveSlotIcon_{index + 1}"),
+                RenderContext = renderContext,
+            };
+        }
         LumIcon = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
         {
             IsFramed = true,
@@ -63,7 +79,7 @@ public class SlotMenuOption : MenuOption
             BgPriority = 3,
             ObjPriority = 0,
             ScreenPos = position + new Vector2(106, 1),
-            Text = Slot?.CagesCount.ToString() ?? "0",
+            Text = "50   1:54:03",
             FontSize = FontSize.Font16,
             Color = TextColor.Menu,
             RenderContext = renderContext,
@@ -81,7 +97,10 @@ public class SlotMenuOption : MenuOption
 
     public override void Draw(AnimationPlayer animationPlayer)
     {
-        animationPlayer.Play(Icon);
+        if (Icon != null)
+            animationPlayer.Play(Icon);
+        else
+            animationPlayer.Play(ExtIcon);
 
         if (Slot == null)
         {
