@@ -30,7 +30,7 @@ public class SinglePlayerMenuPage : MenuPage
     {
         if (StartEraseCursorTargetIndex != StartEraseCursorCurrentIndex)
         {
-            int targetXPos = StartEraseCursorTargetIndex * 72 + 106;
+            int targetXPos = StartEraseCursorTargetIndex * 72 + 136;
 
             if (StartEraseCursorTargetIndex < StartEraseCursorCurrentIndex)
             {
@@ -73,7 +73,7 @@ public class SinglePlayerMenuPage : MenuPage
             IsFramed = true,
             BgPriority = 1,
             ObjPriority = 0,
-            ScreenPos = new Vector2(80, 30),
+            ScreenPos = new Vector2(110, 30),
             CurrentAnimation = 1,
             RenderContext = RenderContext,
         };
@@ -83,7 +83,7 @@ public class SinglePlayerMenuPage : MenuPage
             IsFramed = true,
             BgPriority = 1,
             ObjPriority = 0,
-            ScreenPos = new Vector2(106, 12),
+            ScreenPos = new Vector2(136, 12),
             CurrentAnimation = 40,
             RenderContext = RenderContext,
         };
@@ -193,7 +193,7 @@ public class SinglePlayerMenuPage : MenuPage
                     TransitionValue = 0;
                     EraseSaveStage = StartEraseMode.TransitionInConfirmErase;
                     StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 21;
-                    StartEraseSelection.ScreenPos = new Vector2(144, -80);
+                    StartEraseSelection.ScreenPos = new Vector2(174, -80);
                     StartEraseCursor.ScreenPos = StartEraseCursor.ScreenPos with { Y = -38 };
                 }
                 break;
@@ -258,7 +258,7 @@ public class SinglePlayerMenuPage : MenuPage
                     TransitionValue = 0;
                     EraseSaveStage = StartEraseMode.TransitionInSelection;
                     StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2;
-                    StartEraseSelection.ScreenPos = new Vector2(80, -50);
+                    StartEraseSelection.ScreenPos = new Vector2(110, -50);
                     StartEraseCursor.ScreenPos = StartEraseCursor.ScreenPos with { Y = -68 };
                 }
                 break;
