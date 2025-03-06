@@ -80,12 +80,12 @@ public abstract class MenuPage
                 break;
             
             case MenuPageState.TransitionIn:
-                TransitionValue += 4;
+                TransitionValue += 6;
 
-                if (TransitionValue <= RenderContext.Resolution.Y / 2)
+                if (TransitionValue <= 140)
                 {
                     TgxCluster cluster = Menu.Playfield.Camera.GetCluster(1);
-                    cluster.Position += new Vector2(0, 8);
+                    cluster.Position += new Vector2(0, 10);
                 }
 
                 Step_TransitionIn();
@@ -105,12 +105,12 @@ public abstract class MenuPage
                 break;
 
             case MenuPageState.TransitionOut:
-                TransitionValue += 4;
+                TransitionValue += 6;
 
                 if (TransitionValue <= RenderContext.Resolution.Y)
                 {
                     TgxCluster cluster = Menu.Playfield.Camera.GetCluster(1);
-                    cluster.Position -= new Vector2(0, 4);
+                    cluster.Position -= new Vector2(0, 6);
                     Step_TransitionOut();
                 }
                 else if (TransitionValue >= RenderContext.Resolution.Y + 60)
