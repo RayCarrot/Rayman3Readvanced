@@ -69,7 +69,7 @@ public class GameInfoDebugWindow : DebugWindow
             GameInfo.ResetPersistentInfo();
         }
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < GameInfo.ModernSaveSlotsCount; i++)
         {
             if (i != 0)
                 ImGui.SameLine();
@@ -124,6 +124,10 @@ public class GameInfoDebugWindow : DebugWindow
 
         ImGui.Text($"Completed GCN bonus levels: {GameInfo.PersistentInfo.CompletedGCNBonusLevels}");
 
+        if (ImGui.Button("Reset"))
+            GameInfo.ResetPersistentInfo();
+
+        ImGui.SameLine();
         if (ImGui.Button("Unlock all levels"))
             GameInfo.PersistentInfo.LastCompletedLevel = (byte)MapId.BossFinal_M2;
 
