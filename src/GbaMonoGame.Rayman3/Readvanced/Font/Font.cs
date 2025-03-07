@@ -43,6 +43,7 @@ public class Font
     public Sprite GetCharacterSprite(
         string text,
         int charIndex,
+        Matrix transformation,
         ref Vector2 position,
         int priority,
         AffineMatrix? affineMatrix,
@@ -69,6 +70,8 @@ public class Font
             spritePos -= new Vector2(0, bounds.Height);
 
             spritePos += glyph.RenderOffset;
+
+            Vector2.Transform(ref spritePos, ref transformation, out spritePos);
 
             sprite = new Sprite()
             {

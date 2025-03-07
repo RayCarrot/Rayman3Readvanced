@@ -21,22 +21,34 @@ public class SpriteFontTextObject : AObject
             throw new Exception("Can't render text without a font");
 
         Vector2 originalPos = GetAnchoredPosition();
-        Vector2 pos = originalPos;
+
+        Matrix transformation = Matrix.Identity;
+        transformation.M11 = AffineMatrix?.Scale.X ?? 1;
+        transformation.M22 = AffineMatrix?.Scale.Y ?? 1;
+        transformation.M41 = originalPos.X;
+        transformation.M42 = originalPos.Y;
+
+        Vector2 pos = Vector2.Zero;
 
         for (int i = 0; i < Text.Length; i++)
         {
             char c = Text[i];
-            
+
+            if (c == '\r')
+                continue;
+
             // Linebreak
             if (c == '\n')
             {
-                pos = new Vector2(originalPos.X, pos.Y + Font.LineHeight);
+                pos.X = 0;
+                pos.Y += Font.LineHeight;
                 continue;
             }
 
             Sprite sprite = Font.GetCharacterSprite(
                 text: Text,
                 charIndex: i,
+                transformation: transformation,
                 position: ref pos,
                 priority: BgPriority,
                 affineMatrix: AffineMatrix,
