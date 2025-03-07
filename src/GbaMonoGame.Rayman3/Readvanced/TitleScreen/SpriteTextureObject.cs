@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
-public class SpriteObject : AObject
+public class SpriteTextureObject : AObject
 {
     public Texture2D Texture { get; set; }
 

@@ -10,12 +10,12 @@ public class SlotMenuOption : MenuOption
     public ModernMenuAll.Slot Slot { get; set; }
 
     public AnimatedObject Icon { get; set; }
-    public SpriteObject ExtIcon { get; set; } // For custom icons 4 and 5
+    public SpriteTextureObject ExtIcon { get; set; } // For custom icons 4 and 5
     public AnimatedObject LumIcon { get; set; }
     public SpriteTextObject LumText { get; set; }
     public AnimatedObject CageIcon { get; set; }
     public SpriteTextObject CageText { get; set; }
-    public SpriteObject TimeIcon { get; set; }
+    public SpriteTextureObject TimeIcon { get; set; }
     public SpriteTextObject TimeText { get; set; }
     public SpriteFontTextObject EmptyText { get; set; }
 
@@ -39,7 +39,7 @@ public class SlotMenuOption : MenuOption
         }
         else
         {
-            ExtIcon = new SpriteObject
+            ExtIcon = new SpriteTextureObject
             {
                 BgPriority = 3,
                 ObjPriority = 0,
@@ -86,7 +86,7 @@ public class SlotMenuOption : MenuOption
             Color = TextColor.Menu,
             RenderContext = renderContext,
         };
-        TimeIcon = new SpriteObject
+        TimeIcon = new SpriteTextureObject
         {
             BgPriority = 3,
             ObjPriority = 0,

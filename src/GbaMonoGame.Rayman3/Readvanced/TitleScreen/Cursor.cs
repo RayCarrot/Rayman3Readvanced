@@ -9,7 +9,7 @@ public class Cursor
     {
         Texture2D tex = Engine.FrameContentManager.Load<Texture2D>("Cursor");
 
-        CursorSprite = new SpriteObject
+        CursorSprite = new SpriteTextureObject
         {
             BgPriority = 0,
             ObjPriority = 0,
@@ -19,7 +19,7 @@ public class Cursor
         };
     }
 
-    public SpriteObject CursorSprite { get; set; }
+    public SpriteTextureObject CursorSprite { get; set; }
     public Vector2 PreviousPosition { get; set; }
     public Vector2 TargetPosition { get; set; }
     public float TargetMovementAmount { get; set; }

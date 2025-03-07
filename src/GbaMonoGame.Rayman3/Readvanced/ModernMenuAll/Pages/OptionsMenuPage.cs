@@ -19,7 +19,7 @@ public class OptionsMenuPage : MenuPage
     public int SelectedTab { get; set; }
 
     public AnimatedObject TabsCursor { get; set; }
-    public SpriteObject TabHeaders { get; set; }
+    public SpriteTextureObject TabHeaders { get; set; }
     public SpriteFontTextObject[] TabHeaderTexts { get; set; }
 
     private void SetSelectedTab(int selectedTab, bool playSound = true)
@@ -122,7 +122,7 @@ public class OptionsMenuPage : MenuPage
             RenderContext = RenderContext,
         };
 
-        TabHeaders = new SpriteObject
+        TabHeaders = new SpriteTextureObject
         {
             BgPriority = 1,
             ObjPriority = 0,

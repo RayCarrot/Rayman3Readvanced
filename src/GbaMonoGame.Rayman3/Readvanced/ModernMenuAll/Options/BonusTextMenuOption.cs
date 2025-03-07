@@ -12,7 +12,7 @@ public class BonusTextMenuOption : TextMenuOption
     }
 
     public Collection[] Collections { get; }
-    public SpriteObject[] CollectionIcons { get; set; }
+    public SpriteTextureObject[] CollectionIcons { get; set; }
     public SpriteTextObject[] CollectionTextObjects { get; set; }
 
     public override void Init(ModernMenuAll menu, RenderContext renderContext, Vector2 position, int index)
@@ -22,10 +22,10 @@ public class BonusTextMenuOption : TextMenuOption
         const int startX = 110;
         const int width = 65;
 
-        CollectionIcons = new SpriteObject[Collections.Length];
+        CollectionIcons = new SpriteTextureObject[Collections.Length];
         for (int i = 0; i < CollectionIcons.Length; i++)
         {
-            CollectionIcons[i] = new SpriteObject()
+            CollectionIcons[i] = new SpriteTextureObject()
             {
                 BgPriority = 3,
                 ObjPriority = 0,
@@ -55,7 +55,7 @@ public class BonusTextMenuOption : TextMenuOption
     {
         base.Draw(animationPlayer);
 
-        foreach (SpriteObject icon in CollectionIcons)
+        foreach (SpriteTextureObject icon in CollectionIcons)
             animationPlayer.Play(icon);
 
         foreach (SpriteTextObject textObject in CollectionTextObjects)
