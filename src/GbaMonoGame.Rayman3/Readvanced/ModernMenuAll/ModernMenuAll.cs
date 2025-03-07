@@ -227,8 +227,11 @@ public class ModernMenuAll : Frame, IHasPlayfield
 
     public void TransitionOutCursorAndStem()
     {
-        PrevSelectedOption = SelectedOption;
-        SelectedOption = 0;
+        if (StemMode is StemMode.Active or StemMode.Inactive)
+        {
+            PrevSelectedOption = SelectedOption;
+            SelectedOption = 0;
+        }
 
         StemMode = StemMode.MoveOut;
 
@@ -238,13 +241,22 @@ public class ModernMenuAll : Frame, IHasPlayfield
             Stem.CurrentAnimation = 15;
     }
 
-    public void SelectOption(int selectedOption, bool playSound)
+    public bool SelectOption(int selectedOption, bool playSound)
     {
-        PrevSelectedOption = SelectedOption;
-        SelectedOption = selectedOption;
+        if (StemMode is StemMode.Active or StemMode.Inactive)
+        {
+            PrevSelectedOption = SelectedOption;
+            SelectedOption = selectedOption;
 
-        if (playSound)
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+            if (playSound)
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public override void Init()

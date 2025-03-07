@@ -46,18 +46,22 @@ public abstract class MenuPage
 
     protected void ChangeSelectedOption(int delta)
     {
-        Options[SelectedOption].ChangeIsSelected(false);
+        int prevSelectedOption = SelectedOption;
 
-        SelectedOption += delta;
+        int newSelectedOption = SelectedOption + delta;
+        if (newSelectedOption > Options.Count - 1)
+            newSelectedOption = 0;
+        else if (newSelectedOption < 0)
+            newSelectedOption = Options.Count - 1;
 
-        if (SelectedOption > Options.Count - 1)
-            SelectedOption = 0;
-        else if (SelectedOption < 0)
-            SelectedOption = Options.Count - 1;
-        
-        Options[SelectedOption].ChangeIsSelected(true);
-        
-        Menu.SelectOption(SelectedOption, true);
+        bool changed = Menu.SelectOption(newSelectedOption, true);
+
+        if (changed)
+        {
+            SelectedOption = newSelectedOption;
+            Options[prevSelectedOption].ChangeIsSelected(false);
+            Options[newSelectedOption].ChangeIsSelected(true);
+        }
     }
 
     public void Step()
