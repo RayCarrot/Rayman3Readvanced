@@ -1,4 +1,5 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using System;
+using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using Microsoft.Xna.Framework;
@@ -164,11 +165,15 @@ public class GameModeMenuPage : MenuPage
         }
         else if (JoyPad.IsButtonJustPressed(GbaInput.A))
         {
-            // TODO: Implement the remaining pages
             Menu.ChangePage(SelectedOption switch
             {
                 0 => new SinglePlayerMenuPage(Menu),
-                _ => new GameModeMenuPage(Menu),
+                1 => new GameModeMenuPage(Menu), // TODO: Implement multiplayer menus
+                2 => new BonusMenuPage(Menu),
+                3 => new GameModeMenuPage(Menu), // TODO: Implement options menu
+                4 => new GameModeMenuPage(Menu), // TODO: Implement credits
+                5 => new GameModeMenuPage(Menu), // TODO: Implement quit game menu
+                _ => throw new Exception("Invalid selection"),
             }, NewPageMode.Next);
         }
     }
