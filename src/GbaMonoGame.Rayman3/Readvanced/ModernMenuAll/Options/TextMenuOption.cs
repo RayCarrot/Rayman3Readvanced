@@ -21,7 +21,7 @@ public class TextMenuOption : MenuOption
         {
             BgPriority = 3,
             ObjPriority = 0,
-            ScreenPos = position + new Vector2(0, 13),
+            ScreenPos = position + new Vector2(0, 13 * Scale),
             RenderContext = renderContext,
             AffineMatrix = new AffineMatrix(0, new Vector2(Scale), false, false),
             Text = Text,

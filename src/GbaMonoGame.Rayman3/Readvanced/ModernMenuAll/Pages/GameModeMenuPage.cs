@@ -157,11 +157,11 @@ public class GameModeMenuPage : MenuPage
     {
         if (JoyPad.IsButtonJustPressed(GbaInput.Up))
         {
-            ChangeSelectedOption(-1);
+            SetSelectedOption(SelectedOption - 1);
         }
         else if (JoyPad.IsButtonJustPressed(GbaInput.Down))
         {
-            ChangeSelectedOption(1);
+            SetSelectedOption(SelectedOption + 1);
         }
         else if (JoyPad.IsButtonJustPressed(GbaInput.A))
         {
@@ -170,7 +170,7 @@ public class GameModeMenuPage : MenuPage
                 0 => new SinglePlayerMenuPage(Menu),
                 1 => new GameModeMenuPage(Menu), // TODO: Implement multiplayer menus
                 2 => new BonusMenuPage(Menu),
-                3 => new GameModeMenuPage(Menu), // TODO: Implement options menu
+                3 => new OptionsMenuPage(Menu),
                 4 => new GameModeMenuPage(Menu), // TODO: Implement credits
                 5 => new GameModeMenuPage(Menu), // TODO: Implement quit game menu
                 _ => throw new Exception("Invalid selection"),

@@ -36,6 +36,12 @@ public abstract class MenuPage
             option.Draw(animationPlayer);
     }
 
+    protected void ClearOptions()
+    {
+        SelectedOption = 0;
+        Options.Clear();
+    }
+
     protected void AddOption(MenuOption option)
     {
         int index = Options.Count;
@@ -44,17 +50,17 @@ public abstract class MenuPage
         option.ChangeIsSelected(index == SelectedOption);
     }
 
-    protected void ChangeSelectedOption(int delta)
+    protected void SetSelectedOption(int selectedOption, bool playSound = true)
     {
         int prevSelectedOption = SelectedOption;
 
-        int newSelectedOption = SelectedOption + delta;
+        int newSelectedOption = selectedOption;
         if (newSelectedOption > Options.Count - 1)
             newSelectedOption = 0;
         else if (newSelectedOption < 0)
             newSelectedOption = Options.Count - 1;
 
-        bool changed = Menu.SelectOption(newSelectedOption, true);
+        bool changed = Menu.SelectOption(newSelectedOption, playSound);
 
         if (changed)
         {
@@ -69,9 +75,7 @@ public abstract class MenuPage
         switch (State)
         {
             case MenuPageState.Init:
-                Options.Clear();
-                SelectedOption = 0;
-
+                ClearOptions();
                 Init();
                 
                 if (UsesCursor)

@@ -38,11 +38,11 @@ public class BonusMenuPage : MenuPage
     {
         if (JoyPad.IsButtonJustPressed(GbaInput.Up))
         {
-            ChangeSelectedOption(-1);
+            SetSelectedOption(SelectedOption - 1);
         }
         else if (JoyPad.IsButtonJustPressed(GbaInput.Down))
         {
-            ChangeSelectedOption(1);
+            SetSelectedOption(SelectedOption + 1);
         }
         else if (JoyPad.IsButtonJustPressed(GbaInput.B))
         {

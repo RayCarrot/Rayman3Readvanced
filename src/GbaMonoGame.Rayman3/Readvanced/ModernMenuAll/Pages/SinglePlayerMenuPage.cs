@@ -154,12 +154,12 @@ public class SinglePlayerMenuPage : MenuPage
                 // Move up
                 else if (JoyPad.IsButtonJustPressed(GbaInput.Up) && Menu.Cursor.CurrentAnimation != 16)
                 {
-                    ChangeSelectedOption(-1);
+                    SetSelectedOption(SelectedOption - 1);
                 }
                 // Move down
                 else if (JoyPad.IsButtonJustPressed(GbaInput.Down) && Menu.Cursor.CurrentAnimation != 16)
                 {
-                    ChangeSelectedOption(1);
+                    SetSelectedOption(SelectedOption + 1);
                 }
                 // Select slot
                 else if (JoyPad.IsButtonJustPressed(GbaInput.A) && Menu.Cursor.CurrentAnimation != 16)
