@@ -10,7 +10,7 @@ public class SinglePlayerMenuPage : MenuPage
 
     public override bool UsesCursor => true;
     public override int BackgroundPalette => 1;
-    public override int LineHeight => 18;
+    public override int LineHeight => 20;
 
     public AnimatedObject StartEraseSelection { get; set; }
     public AnimatedObject StartEraseCursor { get; set; }
