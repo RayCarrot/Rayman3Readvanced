@@ -16,7 +16,7 @@ public abstract class MenuPage
     public RenderContext RenderContext => Menu.Playfield.RenderContext;
     public List<MenuOption> Options { get; } = [];
     public MenuPageState State { get; set; }
-    public int TransitionValue { get; set; }
+    public int TransitionValue { get; set; } // 0-160
 
     public int SelectedOption { get; set; }
 
@@ -84,12 +84,14 @@ public abstract class MenuPage
                 break;
             
             case MenuPageState.TransitionIn:
-                TransitionValue += 6;
+                // 40 frames total
+                TransitionValue += 4;
 
-                if (TransitionValue <= 140)
+                // 20 frames to move up the curtains
+                if (TransitionValue < 80)
                 {
                     TgxCluster cluster = Menu.Playfield.Camera.GetCluster(1);
-                    cluster.Position += new Vector2(0, 10);
+                    cluster.Position += new Vector2(0, cluster.RenderContext.Resolution.Y / (80 / 4f));
                 }
 
                 Step_TransitionIn();
@@ -109,15 +111,16 @@ public abstract class MenuPage
                 break;
 
             case MenuPageState.TransitionOut:
-                TransitionValue += 6;
+                // 69 frames total (55 in the original game)
+                TransitionValue += 4;
 
-                if (TransitionValue <= RenderContext.Resolution.Y)
+                TgxCluster curtainsCluster = Menu.Playfield.Camera.GetCluster(1);
+                if (TransitionValue <= curtainsCluster.RenderContext.Resolution.Y)
                 {
-                    TgxCluster cluster = Menu.Playfield.Camera.GetCluster(1);
-                    cluster.Position -= new Vector2(0, 6);
+                    curtainsCluster.Position -= new Vector2(0, 4);
                     Step_TransitionOut();
                 }
-                else if (TransitionValue >= RenderContext.Resolution.Y + 60)
+                else if (TransitionValue >= curtainsCluster.RenderContext.Resolution.Y + 60)
                 {
                     TransitionValue = 0;
                     State = MenuPageState.Inactive;
