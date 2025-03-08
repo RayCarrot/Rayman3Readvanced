@@ -15,24 +15,24 @@ public class SinglePlayerMenuPage : MenuPage
     public AnimatedObject StartEraseSelection { get; set; }
     public AnimatedObject StartEraseCursor { get; set; }
 
-    public byte StartEraseCursorTargetIndex { get; set; }
-    public byte StartEraseCursorCurrentIndex { get; set; }
+    public byte PrevSelectedStartEraseOption { get; set; }
+    public byte SelectedStartEraseOption { get; set; }
     public StartEraseMode EraseSaveStage { get; set; }
     public bool IsStartingGame { get; set; }
 
-    private void SetEraseCursorTargetIndex(byte targetIndex)
+    private void SelectStartEraseOption(byte targetIndex)
     {
-        StartEraseCursorCurrentIndex = StartEraseCursorTargetIndex;
-        StartEraseCursorTargetIndex = targetIndex;
+        PrevSelectedStartEraseOption = SelectedStartEraseOption;
+        SelectedStartEraseOption = targetIndex;
     }
 
-    private void MoveStartEraseCursor()
+    private void ManageStartEraseCursor()
     {
-        if (StartEraseCursorTargetIndex != StartEraseCursorCurrentIndex)
+        if (SelectedStartEraseOption != PrevSelectedStartEraseOption)
         {
-            int targetXPos = StartEraseCursorTargetIndex * 72 + 136;
+            int targetXPos = SelectedStartEraseOption * 72 + 136;
 
-            if (StartEraseCursorTargetIndex < StartEraseCursorCurrentIndex)
+            if (SelectedStartEraseOption < PrevSelectedStartEraseOption)
             {
                 if (StartEraseCursor.ScreenPos.X > targetXPos)
                 {
@@ -41,7 +41,7 @@ public class SinglePlayerMenuPage : MenuPage
                 else
                 {
                     StartEraseCursor.ScreenPos = StartEraseCursor.ScreenPos with { X = targetXPos };
-                    StartEraseCursorCurrentIndex = StartEraseCursorTargetIndex;
+                    PrevSelectedStartEraseOption = SelectedStartEraseOption;
                 }
             }
             else
@@ -53,7 +53,7 @@ public class SinglePlayerMenuPage : MenuPage
                 else
                 {
                     StartEraseCursor.ScreenPos = StartEraseCursor.ScreenPos with { X = targetXPos };
-                    StartEraseCursorCurrentIndex = StartEraseCursorTargetIndex;
+                    PrevSelectedStartEraseOption = SelectedStartEraseOption;
                 }
             }
         }
@@ -89,8 +89,8 @@ public class SinglePlayerMenuPage : MenuPage
         };
 
         // Reset values
-        StartEraseCursorCurrentIndex = 0;
-        StartEraseCursorTargetIndex = 0;
+        PrevSelectedStartEraseOption = 0;
+        SelectedStartEraseOption = 0;
         EraseSaveStage = StartEraseMode.Selection;
     }
 
@@ -134,9 +134,9 @@ public class SinglePlayerMenuPage : MenuPage
                 // Move start/erase to start
                 else if ((JoyPad.IsButtonJustPressed(GbaInput.Left) || JoyPad.IsButtonJustPressed(GbaInput.L)) && Menu.Cursor.CurrentAnimation != 16)
                 {
-                    if (StartEraseCursorTargetIndex != 0)
+                    if (SelectedStartEraseOption != 0)
                     {
-                        SetEraseCursorTargetIndex(0);
+                        SelectStartEraseOption(0);
                         StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 1;
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
@@ -144,9 +144,9 @@ public class SinglePlayerMenuPage : MenuPage
                 // Move start/erase to erase
                 else if ((JoyPad.IsButtonJustPressed(GbaInput.Right) || JoyPad.IsButtonJustPressed(GbaInput.R)) && Menu.Cursor.CurrentAnimation != 16)
                 {
-                    if (StartEraseCursorTargetIndex != 1)
+                    if (SelectedStartEraseOption != 1)
                     {
-                        SetEraseCursorTargetIndex(1);
+                        SelectStartEraseOption(1);
                         StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2;
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
@@ -166,7 +166,7 @@ public class SinglePlayerMenuPage : MenuPage
                 {
                     Menu.Cursor.CurrentAnimation = 16;
 
-                    if (StartEraseCursorTargetIndex != 1)
+                    if (SelectedStartEraseOption != 1)
                     {
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
@@ -214,9 +214,9 @@ public class SinglePlayerMenuPage : MenuPage
                 // Move left
                 if (JoyPad.IsButtonJustPressed(GbaInput.Left) || JoyPad.IsButtonJustPressed(GbaInput.L))
                 {
-                    if (StartEraseCursorTargetIndex != 0)
+                    if (SelectedStartEraseOption != 0)
                     {
-                        SetEraseCursorTargetIndex(0);
+                        SelectStartEraseOption(0);
                         StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 20;
                         // TODO: Game passes in 0 as obj here, but that's probably a mistake
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
@@ -225,9 +225,9 @@ public class SinglePlayerMenuPage : MenuPage
                 // Move right
                 else if (JoyPad.IsButtonJustPressed(GbaInput.Right) || JoyPad.IsButtonJustPressed(GbaInput.R))
                 {
-                    if (StartEraseCursorTargetIndex != 1)
+                    if (SelectedStartEraseOption != 1)
                     {
-                        SetEraseCursorTargetIndex(1);
+                        SelectStartEraseOption(1);
                         StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 21;
                         // TODO: Game passes in 0 as obj here, but that's probably a mistake
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
@@ -238,7 +238,7 @@ public class SinglePlayerMenuPage : MenuPage
                 {
                     EraseSaveStage = StartEraseMode.TransitionOutConfirmErase;
                     TransitionValue = 0;
-                    if (StartEraseCursorTargetIndex == 0 && Menu.Slots[SelectedOption] != null)
+                    if (SelectedStartEraseOption == 0 && Menu.Slots[SelectedOption] != null)
                     {
                         Menu.Slots[SelectedOption] = null;
                         ((SlotMenuOption)Options[SelectedOption]).Slot = null;
@@ -300,13 +300,13 @@ public class SinglePlayerMenuPage : MenuPage
             }
         }
 
-        MoveStartEraseCursor();
+        ManageStartEraseCursor();
 
         if (!IsStartingGame && Menu.Cursor.CurrentAnimation == 16 && Menu.Cursor.EndOfAnimation)
         {
             Menu.Cursor.CurrentAnimation = 0;
 
-            if (StartEraseCursorTargetIndex == 0)
+            if (SelectedStartEraseOption == 0)
             {
                 SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.None, 1);
                 IsStartingGame = true;

@@ -20,8 +20,8 @@ public partial class MenuAll : Frame, IHasPlayfield
         WheelRotation = 0;
         SelectedOption = 0;
         PrevSelectedOption = 0;
-        StartEraseCursorTargetIndex = 0;
-        StartEraseCursorCurrentIndex = 0;
+        SelectedStartEraseOption = 0;
+        PrevSelectedStartEraseOption = 0;
         CurrentStepAction = null;
         NextStepAction = null;
         TransitionValue = 0;
@@ -104,7 +104,7 @@ public partial class MenuAll : Frame, IHasPlayfield
     public int PreviousTextId { get; set; }
     public int NextTextId { get; set; }
 
-    public int TransitionValue { get; set; }
+    public int TransitionValue { get; set; } // 0-160
     public int WheelRotation { get; set; }
     public int SteamTimer { get; set; }
 

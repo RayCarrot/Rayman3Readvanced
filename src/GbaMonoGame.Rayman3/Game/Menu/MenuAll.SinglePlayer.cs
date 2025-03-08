@@ -9,32 +9,32 @@ public partial class MenuAll
 {
     #region Properties
 
-    public byte StartEraseCursorTargetIndex { get; set; }
-    public byte StartEraseCursorCurrentIndex { get; set; }
+    public byte PrevSelectedStartEraseOption { get; set; }
+    public byte SelectedStartEraseOption { get; set; }
     public StartEraseMode StartEraseMode { get; set; }
 
     #endregion
 
     #region Private Methods
 
-    private void SetEraseCursorTargetIndex(byte targetIndex)
+    private void SelectStartEraseOption(byte targetIndex)
     {
-        StartEraseCursorCurrentIndex = StartEraseCursorTargetIndex;
-        StartEraseCursorTargetIndex = targetIndex;
+        PrevSelectedStartEraseOption = SelectedStartEraseOption;
+        SelectedStartEraseOption = targetIndex;
     }
 
-    private void MoveStartEraseCursor()
+    private void ManageStartEraseCursor()
     {
-        if (StartEraseCursorTargetIndex != StartEraseCursorCurrentIndex)
+        if (SelectedStartEraseOption != PrevSelectedStartEraseOption)
         {
             int targetXPos = Rom.Platform switch
             {
-                Platform.GBA => StartEraseCursorTargetIndex * 72 + 106,
-                Platform.NGage => StartEraseCursorTargetIndex * 72 + 78,
+                Platform.GBA => SelectedStartEraseOption * 72 + 106,
+                Platform.NGage => SelectedStartEraseOption * 72 + 78,
                 _ => throw new UnsupportedPlatformException()
             };
 
-            if (StartEraseCursorTargetIndex < StartEraseCursorCurrentIndex)
+            if (SelectedStartEraseOption < PrevSelectedStartEraseOption)
             {
                 if (Anims.StartEraseCursor.ScreenPos.X > targetXPos)
                 {
@@ -43,7 +43,7 @@ public partial class MenuAll
                 else
                 {
                     Anims.StartEraseCursor.ScreenPos = Anims.StartEraseCursor.ScreenPos with { X = targetXPos };
-                    StartEraseCursorCurrentIndex = StartEraseCursorTargetIndex;
+                    PrevSelectedStartEraseOption = SelectedStartEraseOption;
                 }
             }
             else
@@ -55,7 +55,7 @@ public partial class MenuAll
                 else
                 {
                     Anims.StartEraseCursor.ScreenPos = Anims.StartEraseCursor.ScreenPos with { X = targetXPos };
-                    StartEraseCursorCurrentIndex = StartEraseCursorTargetIndex;
+                    PrevSelectedStartEraseOption = SelectedStartEraseOption;
                 }
             }
         }
@@ -94,8 +94,8 @@ public partial class MenuAll
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
         ResetStem();
         SetBackgroundPalette(1);
-        StartEraseCursorCurrentIndex = 0;
-        StartEraseCursorTargetIndex = 0;
+        PrevSelectedStartEraseOption = 0;
+        SelectedStartEraseOption = 0;
         StartEraseMode = StartEraseMode.Selection;
 
         if (Rom.Platform == Platform.GBA)
@@ -190,9 +190,9 @@ public partial class MenuAll
                 // Move start/erase to start
                 else if ((JoyPad.IsButtonJustPressed(GbaInput.Left) || JoyPad.IsButtonJustPressed(GbaInput.L)) && Anims.Cursor.CurrentAnimation != 16)
                 {
-                    if (StartEraseCursorTargetIndex != 0)
+                    if (SelectedStartEraseOption != 0)
                     {
-                        SetEraseCursorTargetIndex(0);
+                        SelectStartEraseOption(0);
                         Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 1;
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
@@ -200,9 +200,9 @@ public partial class MenuAll
                 // Move start/erase to erase
                 else if ((JoyPad.IsButtonJustPressed(GbaInput.Right) || JoyPad.IsButtonJustPressed(GbaInput.R)) && Anims.Cursor.CurrentAnimation != 16)
                 {
-                    if (StartEraseCursorTargetIndex != 1)
+                    if (SelectedStartEraseOption != 1)
                     {
-                        SetEraseCursorTargetIndex(1);
+                        SelectStartEraseOption(1);
                         Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2;
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
@@ -228,7 +228,7 @@ public partial class MenuAll
                 {
                     Anims.Cursor.CurrentAnimation = 16;
 
-                    if (StartEraseCursorTargetIndex != 1)
+                    if (SelectedStartEraseOption != 1)
                     {
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
@@ -283,9 +283,9 @@ public partial class MenuAll
                 // Move left
                 if (JoyPad.IsButtonJustPressed(GbaInput.Left) || JoyPad.IsButtonJustPressed(GbaInput.L))
                 {
-                    if (StartEraseCursorTargetIndex != 0)
+                    if (SelectedStartEraseOption != 0)
                     {
-                        SetEraseCursorTargetIndex(0);
+                        SelectStartEraseOption(0);
                         Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 20;
                         // TODO: Game passes in 0 as obj here, but that's probably a mistake
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
@@ -294,9 +294,9 @@ public partial class MenuAll
                 // Move right
                 else if (JoyPad.IsButtonJustPressed(GbaInput.Right) || JoyPad.IsButtonJustPressed(GbaInput.R))
                 {
-                    if (StartEraseCursorTargetIndex != 1)
+                    if (SelectedStartEraseOption != 1)
                     {
-                        SetEraseCursorTargetIndex(1);
+                        SelectStartEraseOption(1);
                         Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 21;
                         // TODO: Game passes in 0 as obj here, but that's probably a mistake
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
@@ -307,7 +307,7 @@ public partial class MenuAll
                 {
                     StartEraseMode = StartEraseMode.TransitionOutConfirmErase;
                     TransitionValue = 0;
-                    if (StartEraseCursorTargetIndex == 0 && Slots[SelectedOption] != null)
+                    if (SelectedStartEraseOption == 0 && Slots[SelectedOption] != null)
                     {
                         Slots[SelectedOption] = null;
                         SaveGameManager.DeleteSlot(SelectedOption);
@@ -380,7 +380,7 @@ public partial class MenuAll
             }
         }
 
-        MoveStartEraseCursor();
+        ManageStartEraseCursor();
 
         for (int i = 0; i < GameInfo.OriginalSaveSlotsCount; i++)
         {
@@ -406,7 +406,7 @@ public partial class MenuAll
         {
             Anims.Cursor.CurrentAnimation = 0;
 
-            if (StartEraseCursorTargetIndex == 0)
+            if (SelectedStartEraseOption == 0)
             {
                 SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.None, 1);
                 IsStartingGame = true;
