@@ -130,6 +130,16 @@ public static class FontManager
         return Encoding.GetBytes(text);
     }
 
+    public static Matrix CreateTextTransformation(Vector2 position, Vector2 scale, Vector2 origin)
+    {
+        Matrix transformation = Matrix.Identity;
+        transformation.M11 = scale.X;
+        transformation.M22 = scale.Y;
+        transformation.M41 = -origin.X * transformation.M11 + position.X + origin.X;
+        transformation.M42 = -origin.Y * transformation.M22 + position.Y + origin.Y;
+        return transformation;
+    }
+
     public static int GetStringWidth(FontSize fontSize, string text)
     {
         return GetStringWidth(fontSize, GetTextBytes(text));
@@ -222,6 +232,7 @@ public static class FontManager
     public static Sprite GetCharacterSprite(
         byte c, 
         FontSize fontSize, 
+        Matrix transformation,
         ref Vector2 position, 
         int priority, 
         AffineMatrix? affineMatrix, 
@@ -237,13 +248,16 @@ public static class FontManager
             _ => throw new ArgumentOutOfRangeException(nameof(fontSize), fontSize, null)
         };
 
+        Vector2 spritePos = position;
+        Vector2.Transform(ref spritePos, ref transformation, out spritePos);
+
         Sprite sprite = new()
         {
             Texture = loadedFont.Texture,
             TextureRectangle = loadedFont.CharacterRectangles[c],
-            Position = position,
+            Position = spritePos,
             Priority = priority,
-            Center = true,
+            Center = false, // Don't center here since the transformation matrix already does that!
             AffineMatrix = affineMatrix,
             Alpha = alpha,
             Color = color,

@@ -21,12 +21,7 @@ public class SpriteFontTextObject : AObject
             throw new Exception("Can't render text without a font");
 
         Vector2 originalPos = GetAnchoredPosition();
-
-        Matrix transformation = Matrix.Identity;
-        transformation.M11 = AffineMatrix?.Scale.X ?? 1;
-        transformation.M22 = AffineMatrix?.Scale.Y ?? 1;
-        transformation.M41 = originalPos.X;
-        transformation.M42 = originalPos.Y;
+        Matrix transformation = FontManager.CreateTextTransformation(originalPos, AffineMatrix?.Scale ?? Vector2.One, Vector2.Zero);
 
         Vector2 pos = Vector2.Zero;
 

@@ -89,7 +89,7 @@ public class MenuManager
         AffineMatrix? matrix = animate ? new AffineMatrix(0, new Vector2(1, TransitionTextValue)) : null;
         foreach (byte b in text)
         {
-            Sprite sprite = FontManager.GetCharacterSprite(b, fontSize, ref position, 0, matrix, 1, color, RenderOptions);
+            Sprite sprite = FontManager.GetCharacterSprite(b, fontSize, Matrix.Identity, ref position, 0, matrix, 1, color, RenderOptions);
             Sprites.Add(sprite);
         }
     }

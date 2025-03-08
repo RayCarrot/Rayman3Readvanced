@@ -42,7 +42,13 @@ public class SpriteTextObject : AObject
         if (TextBytes == null)
             return;
 
-        Vector2 pos = GetAnchoredPosition();
+        Vector2 originalPos = GetAnchoredPosition();
+
+        // Vertically center so that the Y scaling works
+        Vector2 origin = new(0, FontManager.GetFontHeight(FontSize) / 2f);
+        Matrix transformation = FontManager.CreateTextTransformation(originalPos, AffineMatrix?.Scale ?? Vector2.One, origin);
+
+        Vector2 pos = Vector2.Zero;
 
         foreach (byte c in TextBytes)
         {
@@ -50,6 +56,7 @@ public class SpriteTextObject : AObject
             Gfx.AddSprite(FontManager.GetCharacterSprite(
                 c: c, 
                 fontSize: FontSize, 
+                transformation: transformation,
                 position: ref pos, 
                 priority: BgPriority, 
                 affineMatrix: AffineMatrix, 
