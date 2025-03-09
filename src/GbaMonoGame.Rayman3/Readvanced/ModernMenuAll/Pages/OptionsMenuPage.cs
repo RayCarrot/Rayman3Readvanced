@@ -13,7 +13,7 @@ public class OptionsMenuPage : MenuPage
     private const float TabHeaderWidth = 60;
     private const float TabHeaderTextScale = 1 / 2f;
     private const float TabsCursorMoveTime = 12;
-    private const float InfoTextScale = 1 / 4f;
+    private const float InfoTextScale = 1 / 3f;
     private const float ArrowScale = 1 / 2f;
 
     public override bool UsesCursor => true;
@@ -117,8 +117,9 @@ public class OptionsMenuPage : MenuPage
             [
                 new OptionsMenuOption(
                     text: "DISPLAY MODE", 
-                    infoText: "Sets the display mode for the game. In borderless fullscreen mode the resolution\n" +
-                              "can not be changed as it will always use the screen resolution."),
+                    infoText: "Sets the display mode for the game. In borderless fullscreen\n" +
+                              "mode the resolution can not be changed as it will always use\n" +
+                              "the screen resolution."),
                 new OptionsMenuOption(
                     text: "FULLSCREEN RESOLUTION", 
                     infoText: "The resolution to use when in fullscreen mode."),

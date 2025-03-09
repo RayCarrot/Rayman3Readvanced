@@ -12,7 +12,7 @@ public class OptionsMenuOption : MenuOption
     }
 
     private const float TextScale = 2 / 3f;
-    private const float ValueTextScale = 1 / 3f;
+    private const float ValueTextScale = 2 / 3f;
     private const float ValueTextXPosition = 200;
     private const float ValueTextPadding = 5;
 
