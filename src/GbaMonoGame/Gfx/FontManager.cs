@@ -130,6 +130,11 @@ public static class FontManager
         return Encoding.GetBytes(text);
     }
 
+    public static string GetTextString(byte[] bytes)
+    {
+        return Encoding.GetString(bytes);
+    }
+
     public static Matrix CreateTextTransformation(Vector2 position, Vector2 scale, Vector2 origin)
     {
         Matrix transformation = Matrix.Identity;

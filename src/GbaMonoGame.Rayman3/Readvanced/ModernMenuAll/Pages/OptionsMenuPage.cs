@@ -1,4 +1,6 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using System;
+using System.Diagnostics;
+using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Rayman3.Readvanced;
@@ -14,6 +16,8 @@ public class OptionsMenuPage : MenuPage
     private const float TabHeaderTextScale = 1 / 2f;
     private const float TabsCursorMoveTime = 12;
     private const float InfoTextScale = 1 / 3f;
+    private const int InfoTextMaxLines = 3;
+    private const float InfoTextMaxWidth = 260;
     private const float ArrowScale = 1 / 2f;
 
     public override bool UsesCursor => true;
@@ -32,7 +36,7 @@ public class OptionsMenuPage : MenuPage
     public SpriteFontTextObject[] TabHeaderTexts { get; set; }
 
     public SpriteTextureObject InfoTextBox { get; set; }
-    public SpriteTextObject InfoTextObject { get; set; }
+    public SpriteTextObject[] InfoTextLines { get; set; }
     public AnimatedObject ArrowLeft { get; set; }
     public AnimatedObject ArrowRight { get; set; }
 
@@ -98,7 +102,10 @@ public class OptionsMenuPage : MenuPage
         OptionsMenuOption option = (OptionsMenuOption)Options[SelectedOption];
 
         // Set the info text
-        InfoTextObject.Text = option.InfoText;
+        byte[][] textLines = FontManager.GetWrappedStringLines(FontSize.Font32, option.InfoText, InfoTextMaxWidth * (1 / InfoTextScale));
+        Debug.Assert(textLines.Length <= InfoTextMaxLines, "Info text has too many lines");
+        for (int i = 0; i < InfoTextLines.Length; i++)
+            InfoTextLines[i].Text = i < textLines.Length ? FontManager.GetTextString(textLines[i]) : String.Empty;
 
         // Set the arrow positions
         ArrowLeft.ScreenPos = option.ArrowLeftPosition * (1 / ArrowScale);
@@ -117,9 +124,7 @@ public class OptionsMenuPage : MenuPage
             [
                 new OptionsMenuOption(
                     text: "DISPLAY MODE", 
-                    infoText: "Sets the display mode for the game. In borderless fullscreen\n" +
-                              "mode the resolution can not be changed as it will always use\n" +
-                              "the screen resolution."),
+                    infoText: "Sets the display mode for the game. In borderless fullscreen mode the resolution can not be changed as it will always use the screen resolution."),
                 new OptionsMenuOption(
                     text: "FULLSCREEN RESOLUTION", 
                     infoText: "The resolution to use when in fullscreen mode."),
@@ -128,8 +133,7 @@ public class OptionsMenuPage : MenuPage
                     infoText: "The resolution factor, based on the internal resolution, to use when in windowed mode."),
                 new OptionsMenuOption(
                     text: "LOCK WINDOW ASPECT RATIO",  
-                    infoText: "Determines if the window, in windowed mode, should automatically resize to fit the\n" +
-                              "game's internal resolution's aspect ratio."),
+                    infoText: "Determines if the window, in windowed mode, should automatically resize to fit the game's internal resolution's aspect ratio."),
             ]),
             new Tab("SOUND", 
             [ 
@@ -202,17 +206,23 @@ public class OptionsMenuPage : MenuPage
             Texture = infoTextBoxTexture,
         };
 
-        InfoTextObject = new SpriteTextObject
+        InfoTextLines = new SpriteTextObject[InfoTextMaxLines];
+        for (int i = 0; i < InfoTextLines.Length; i++)
         {
-            BgPriority = 3,
-            ObjPriority = 0,
-            YPriority = 0,
-            ScreenPos = new Vector2(75, 110),
-            RenderContext = RenderContext,
-            AffineMatrix = new AffineMatrix(0, new Vector2(InfoTextScale), false, false),
-            Color = TextColor.TextBox,
-            FontSize = FontSize.Font32,
-        };
+            float height = FontManager.GetFontHeight(FontSize.Font32) * InfoTextScale;
+
+            InfoTextLines[i] = new SpriteTextObject
+            {
+                BgPriority = 3,
+                ObjPriority = 0,
+                YPriority = 0,
+                ScreenPos = new Vector2(75, 110 + height * i),
+                RenderContext = RenderContext,
+                AffineMatrix = new AffineMatrix(0, new Vector2(InfoTextScale), false, false),
+                Color = TextColor.TextBox,
+                FontSize = FontSize.Font32,
+            };
+        }
 
         // A bit hacky, but create a new render context for the arrows in order to scale them. We could do it through the
         // affine matrix, but that will misalign the animation sprites.
@@ -333,7 +343,8 @@ public class OptionsMenuPage : MenuPage
         animationPlayer.Play(TabsCursor);
 
         animationPlayer.Play(InfoTextBox);
-        animationPlayer.Play(InfoTextObject);
+        foreach (SpriteTextObject infoTextLine in InfoTextLines)
+            animationPlayer.Play(infoTextLine);
 
         if (IsEditingOption)
         {
