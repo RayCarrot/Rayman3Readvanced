@@ -31,6 +31,7 @@ public class OptionsMenuPage : MenuPage
     public SpriteTextureObject TabHeaders { get; set; }
     public SpriteFontTextObject[] TabHeaderTexts { get; set; }
 
+    public SpriteTextureObject InfoTextBox { get; set; }
     public SpriteTextObject InfoTextObject { get; set; }
     public AnimatedObject ArrowLeft { get; set; }
     public AnimatedObject ArrowRight { get; set; }
@@ -153,6 +154,7 @@ public class OptionsMenuPage : MenuPage
         // Create animations
         AnimatedObjectResource startEraseAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuStartEraseAnimations);
         Texture2D tabFrameTexture = Engine.FrameContentManager.Load<Texture2D>("OptionsMenuTabs");
+        Texture2D infoTextBoxTexture = Engine.FrameContentManager.Load<Texture2D>("MenuTextBox");
         AnimatedObjectResource multiplayerTypeFrameAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerTypeFrameAnimations);
 
         TabsCursor = new AnimatedObject(startEraseAnimations, startEraseAnimations.IsDynamic)
@@ -190,6 +192,15 @@ public class OptionsMenuPage : MenuPage
             };
         }
 
+        InfoTextBox = new SpriteTextureObject
+        {
+            BgPriority = 3,
+            ObjPriority = 0,
+            ScreenPos = new Vector2(70, 112),
+            RenderContext = RenderContext,
+            Texture = infoTextBoxTexture,
+        };
+
         InfoTextObject = new SpriteTextObject
         {
             BgPriority = 3,
@@ -198,7 +209,7 @@ public class OptionsMenuPage : MenuPage
             ScreenPos = new Vector2(75, 110),
             RenderContext = RenderContext,
             AffineMatrix = new AffineMatrix(0, new Vector2(InfoTextScale), false, false),
-            Color = TextColor.Menu,
+            Color = TextColor.TextBox,
             FontSize = FontSize.Font32,
         };
 
@@ -320,6 +331,7 @@ public class OptionsMenuPage : MenuPage
 
         animationPlayer.Play(TabsCursor);
 
+        animationPlayer.Play(InfoTextBox);
         animationPlayer.Play(InfoTextObject);
 
         if (IsEditingOption)
