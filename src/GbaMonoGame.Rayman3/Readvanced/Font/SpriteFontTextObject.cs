@@ -21,7 +21,10 @@ public class SpriteFontTextObject : AObject
             throw new Exception("Can't render text without a font");
 
         Vector2 originalPos = GetAnchoredPosition();
-        Matrix transformation = FontManager.CreateTextTransformation(originalPos, AffineMatrix?.Scale ?? Vector2.One, Vector2.Zero);
+
+        // Vertically center so it's the same as the normal sprite text
+        Vector2 origin = new(0, Font.LineHeight / 2f);
+        Matrix transformation = FontManager.CreateTextTransformation(originalPos, AffineMatrix?.Scale ?? Vector2.One, origin);
 
         Vector2 pos = Vector2.Zero;
 
