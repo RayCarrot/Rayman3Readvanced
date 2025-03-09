@@ -11,6 +11,21 @@ public static class ReadvancedFonts
     {
         [' '] = new(Rectangle.Empty, layoutOffset: 5),
         ['!'] = new(new Rectangle(16, 8, 5, 13)),
+        ['"'] = new(new Rectangle(25, 8, 6, 5), renderOffset: new Vector2(0, -8)),
+        ['#'] = new(new Rectangle(35, 10, 11, 10), renderOffset: new Vector2(0, -1)),
+        ['$'] = new(new Rectangle(50, 7, 8, 15), renderOffset: new Vector2(0, 1)),
+        ['%'] = new(new Rectangle(62, 8, 16, 14), renderOffset: new Vector2(0, 1)),
+        ['&'] = new(new Rectangle(82, 8, 10, 13)),
+        ['\''] = new(new Rectangle(96, 8, 4, 5), renderOffset: new Vector2(0, -8)),
+        ['('] = new(new Rectangle(105, 8, 5, 15), renderOffset: new Vector2(0, 2)),
+        [')'] = new(new Rectangle(115, 8, 6, 15), renderOffset: new Vector2(0, 2)),
+        ['*'] = new(new Rectangle(125, 8, 7, 7), renderOffset: new Vector2(0, -6)),
+        ['+'] = new(new Rectangle(137, 11, 8, 9), renderOffset: new Vector2(0, -1)),
+        [','] = new(new Rectangle(150, 16, 5, 7), renderOffset: new Vector2(0, 2)),
+        ['-'] = new(new Rectangle(159, 13, 6, 4), renderOffset: new Vector2(0, -4)),
+        ['.'] = new(new Rectangle(169, 16, 4, 4), renderOffset: new Vector2(0, -1)),
+        ['/'] = new(new Rectangle(178, 8, 7, 12), renderOffset: new Vector2(0, -1)),
+        ['0'] = new(new Rectangle(190, 9, 9, 12)),
 
         ['1'] = new(new Rectangle(6, 28, 5, 12)),
         ['2'] = new(new Rectangle(16, 28, 8, 12)),
@@ -76,6 +91,8 @@ public static class ReadvancedFonts
             }
         },
         ['Z'] = new(new Rectangle(150, 67, 9, 12)),
+
+        ['x'] = new(new Rectangle(121, 108, 10, 10), renderOffset: new Vector2(0, 1)),
     };
 
     public static Font MenuYellow { get; private set; }
