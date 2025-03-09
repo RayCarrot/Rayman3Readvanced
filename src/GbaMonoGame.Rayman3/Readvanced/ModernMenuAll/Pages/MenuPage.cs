@@ -60,13 +60,16 @@ public abstract class MenuPage
         else if (newSelectedOption < 0)
             newSelectedOption = Options.Count - 1;
 
-        bool changed = Menu.SelectOption(newSelectedOption, playSound);
+        bool changed = Menu.SetCursorTarget(newSelectedOption);
 
         if (changed)
         {
             SelectedOption = newSelectedOption;
             Options[prevSelectedOption].ChangeIsSelected(false);
             Options[newSelectedOption].ChangeIsSelected(true);
+
+            if (playSound)
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
         }
 
         return changed;

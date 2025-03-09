@@ -1,5 +1,4 @@
-﻿using System;
-using BinarySerializer.Ubisoft.GbaEngine;
+﻿using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Rayman3.Readvanced;
@@ -11,7 +10,9 @@ public class OptionsMenuPage : MenuPage
 {
     public OptionsMenuPage(ModernMenuAll menu) : base(menu) { }
 
+    private const float TabHeaderWidth = 60;
     private const float TabHeaderTextScale = 1 / 2f;
+    private const float TabsCursorMoveTime = 12;
     private const float InfoTextScale = 1 / 4f;
     private const float ArrowScale = 1 / 2f;
 
@@ -20,10 +21,11 @@ public class OptionsMenuPage : MenuPage
     public override int LineHeight => 12;
 
     public Tab[] Tabs { get; set; }
-    public int PrevSelectedTab { get; set; }
-    public float PrevCursorXPosition { get; set; }
     public int SelectedTab { get; set; }
     public bool IsEditingOption { get; set; }
+
+    public float? CursorStartX { get; set; }
+    public float? CursorDestX { get; set; }
 
     public AnimatedObject TabsCursor { get; set; }
     public SpriteTextureObject TabHeaders { get; set; }
@@ -33,23 +35,17 @@ public class OptionsMenuPage : MenuPage
     public AnimatedObject ArrowLeft { get; set; }
     public AnimatedObject ArrowRight { get; set; }
 
-    private int GetTabsCursorTargetX(int tabIndex)
-    {
-        return tabIndex * 60 + 90;
-    }
-
     private void SetSelectedTab(int selectedTab, bool playSound = true)
     {
-        PrevSelectedTab = SelectedTab;
-        PrevCursorXPosition = TabsCursor.ScreenPos.X;
-
         if (selectedTab > Tabs.Length - 1)
             selectedTab = 0;
         else if (selectedTab < 0)
             selectedTab = Tabs.Length - 1;
 
         SelectedTab = selectedTab;
-        
+
+        SetCursorMovement(TabsCursor.ScreenPos.X, selectedTab * TabHeaderWidth + 90);
+
         ClearOptions();
         foreach (OptionsMenuOption menuOption in Tabs[selectedTab].MenuOptions)
             AddOption(menuOption);
@@ -60,39 +56,35 @@ public class OptionsMenuPage : MenuPage
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
     }
 
+    private void SetCursorMovement(float startX, float endX)
+    {
+        CursorStartX = startX;
+        CursorDestX = endX;
+    }
+
     private void ManageTabsCursor()
     {
-        if (SelectedTab != PrevSelectedTab)
-        {
-            float prevTargetX = PrevCursorXPosition;
-            float newTargetX = GetTabsCursorTargetX(SelectedTab);
-            float dist = Math.Abs(newTargetX - prevTargetX);
-            float speed = dist / 15f;
+        if (CursorStartX == null || CursorDestX == null)
+            return;
 
-            if (newTargetX < prevTargetX)
-            {
-                if (TabsCursor.ScreenPos.X > newTargetX)
-                {
-                    TabsCursor.ScreenPos -= new Vector2(speed, 0);
-                }
-                else
-                {
-                    TabsCursor.ScreenPos = TabsCursor.ScreenPos with { X = newTargetX };
-                    PrevSelectedTab = SelectedTab;
-                }
-            }
-            else
-            {
-                if (TabsCursor.ScreenPos.X < newTargetX)
-                {
-                    TabsCursor.ScreenPos += new Vector2(speed, 0);
-                }
-                else
-                {
-                    TabsCursor.ScreenPos = TabsCursor.ScreenPos with { X = newTargetX };
-                    PrevSelectedTab = SelectedTab;
-                }
-            }
+        float startX = CursorStartX.Value;
+        float destX = CursorDestX.Value;
+
+        float dist = destX - startX;
+        float speed = dist / TabsCursorMoveTime;
+
+        // Move
+        if ((destX < startX && TabsCursor.ScreenPos.X > destX) ||
+            (destX > startX && TabsCursor.ScreenPos.X < destX))
+        {
+            TabsCursor.ScreenPos += new Vector2(speed, 0);
+        }
+        // Finished moving
+        else
+        {
+            TabsCursor.ScreenPos = TabsCursor.ScreenPos with { X = destX };
+            CursorStartX = null;
+            CursorDestX = null;
         }
     }
 
@@ -190,7 +182,7 @@ public class OptionsMenuPage : MenuPage
             {
                 BgPriority = 1,
                 ObjPriority = 0,
-                ScreenPos = new Vector2(89 + i * 60 - width / 2, 30),
+                ScreenPos = new Vector2(89 + i * TabHeaderWidth - width / 2, 30),
                 RenderContext = RenderContext,
                 AffineMatrix = new AffineMatrix(0, new Vector2(TabHeaderTextScale), false, false),
                 Text = Tabs[i].Name,
@@ -232,7 +224,8 @@ public class OptionsMenuPage : MenuPage
 
         // Reset values
         IsEditingOption = false;
-        PrevSelectedTab = 0;
+        CursorStartX = null;
+        CursorDestX = null;
 
         // Set the initial tab
         SetSelectedTab(0, false);

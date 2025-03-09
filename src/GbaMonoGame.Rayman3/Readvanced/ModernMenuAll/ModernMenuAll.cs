@@ -32,8 +32,8 @@ public class ModernMenuAll : Frame, IHasPlayfield
     public MenuPage CurrentPage { get; set; }
     public MenuPage NextPage { get; set; }
 
-    public int PrevSelectedOption { get; set; }
-    public int SelectedOption { get; set; }
+    public int PrevSelectedCursorIndex { get; set; }
+    public int SelectedCursorIndex { get; set; }
     public StemMode StemMode { get; set; }
 
     public int WheelRotation { get; set; }
@@ -106,7 +106,6 @@ public class ModernMenuAll : Frame, IHasPlayfield
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                 }
 
-                SelectOption(0, false);
                 TransitionOutCursorAndStem();
             }
 
@@ -185,11 +184,11 @@ public class ModernMenuAll : Frame, IHasPlayfield
         {
             int lineHeight = CurrentPage.LineHeight;
 
-            if (SelectedOption != PrevSelectedOption)
+            if (SelectedCursorIndex != PrevSelectedCursorIndex)
             {
-                if (SelectedOption < PrevSelectedOption)
+                if (SelectedCursorIndex < PrevSelectedCursorIndex)
                 {
-                    float yPos = SelectedOption * lineHeight + CursorBaseY;
+                    float yPos = SelectedCursorIndex * lineHeight + CursorBaseY;
 
                     if (yPos < Cursor.ScreenPos.Y)
                     {
@@ -198,12 +197,12 @@ public class ModernMenuAll : Frame, IHasPlayfield
                     else
                     {
                         Cursor.ScreenPos = Cursor.ScreenPos with { Y = yPos };
-                        PrevSelectedOption = SelectedOption;
+                        PrevSelectedCursorIndex = SelectedCursorIndex;
                     }
                 }
                 else
                 {
-                    float yPos = SelectedOption * lineHeight + CursorBaseY;
+                    float yPos = SelectedCursorIndex * lineHeight + CursorBaseY;
 
                     if (yPos > Cursor.ScreenPos.Y)
                     {
@@ -212,7 +211,7 @@ public class ModernMenuAll : Frame, IHasPlayfield
                     else
                     {
                         Cursor.ScreenPos = Cursor.ScreenPos with { Y = yPos };
-                        PrevSelectedOption = SelectedOption;
+                        PrevSelectedCursorIndex = SelectedCursorIndex;
                     }
                 }
             }
@@ -227,11 +226,7 @@ public class ModernMenuAll : Frame, IHasPlayfield
 
     public void TransitionOutCursorAndStem()
     {
-        if (StemMode is StemMode.Active or StemMode.Inactive)
-        {
-            PrevSelectedOption = SelectedOption;
-            SelectedOption = 0;
-        }
+        SetCursorTarget(0);
 
         StemMode = StemMode.MoveOut;
 
@@ -241,16 +236,12 @@ public class ModernMenuAll : Frame, IHasPlayfield
             Stem.CurrentAnimation = 15;
     }
 
-    public bool SelectOption(int selectedOption, bool playSound)
+    public bool SetCursorTarget(int selectedIndex)
     {
         if (StemMode is StemMode.Active or StemMode.Inactive)
         {
-            PrevSelectedOption = SelectedOption;
-            SelectedOption = selectedOption;
-
-            if (playSound)
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
-
+            PrevSelectedCursorIndex = SelectedCursorIndex;
+            SelectedCursorIndex = selectedIndex;
             return true;
         }
         else
