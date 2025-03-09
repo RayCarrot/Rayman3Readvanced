@@ -46,7 +46,13 @@ public abstract class MenuPage
     {
         int index = Options.Count;
         Options.Add(option);
-        option.Init(Menu, RenderContext, new Vector2(75, 54 + LineHeight * index), index);
+
+        if (!option.IsInitialized)
+        {
+            option.Init(Menu, RenderContext, new Vector2(75, 54 + LineHeight * index), index);
+            option.IsInitialized = true;
+        }
+
         option.ChangeIsSelected(index == SelectedOption);
     }
 
