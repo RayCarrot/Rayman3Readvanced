@@ -45,13 +45,25 @@ public class SpriteTextObject : AObject
         Vector2 originalPos = GetAnchoredPosition();
 
         // Vertically center so that the Y scaling works
-        Vector2 origin = new(0, FontManager.GetFontHeight(FontSize) / 2f);
+        float height = FontManager.GetFontHeight(FontSize);
+        Vector2 origin = new(0, height / 2f);
         Matrix transformation = FontManager.CreateTextTransformation(originalPos, AffineMatrix?.Scale ?? Vector2.One, origin);
 
         Vector2 pos = Vector2.Zero;
 
         foreach (byte c in TextBytes)
         {
+            // Custom code to allow line-breaks. This isn't supported in the original game.
+            if (c == '\r')
+                continue;
+
+            if (c == '\n')
+            {
+                pos.X = 0;
+                pos.Y += height;
+                continue;
+            }
+
             // TODO: Option to always draw with the highest resolution font (but scale to fit original size)
             Gfx.AddSprite(FontManager.GetCharacterSprite(
                 c: c, 
