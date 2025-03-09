@@ -50,7 +50,7 @@ public abstract class MenuPage
         option.ChangeIsSelected(index == SelectedOption);
     }
 
-    protected void SetSelectedOption(int selectedOption, bool playSound = true)
+    protected virtual bool SetSelectedOption(int selectedOption, bool playSound = true)
     {
         int prevSelectedOption = SelectedOption;
 
@@ -68,6 +68,8 @@ public abstract class MenuPage
             Options[prevSelectedOption].ChangeIsSelected(false);
             Options[newSelectedOption].ChangeIsSelected(true);
         }
+
+        return changed;
     }
 
     public void Step()
