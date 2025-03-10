@@ -17,21 +17,27 @@ public class GameConfig
         const int defaultWindowScale = 4;
 
         // Display
+        DisplayMode = DisplayMode.Fullscreen;
+        FullscreenResolution = new Point(defaultDisplayMode.Width, defaultDisplayMode.Height);
         WindowPosition = new Point(0, 0);
         WindowResolution = (defaultResolution * defaultWindowScale).ToPoint();
         WindowIsMaximized = false;
         LockWindowAspectRatio = true;
-        FullscreenResolution = new Point(defaultDisplayMode.Width, defaultDisplayMode.Height);
-        DisplayMode = DisplayMode.Fullscreen;
         
         // Game
-        InternalGameResolution = defaultResolution;
-        Language = "en";
         LastPlayedGbaSaveSlot = null;
+        LastPlayedNGageSaveSlot = null;
+        Language = "en";
+        InternalGameResolution = defaultResolution;
         
+        // Controls
         Controls = new Dictionary<Input, Keys>();
+        
+        // Sound
         SfxVolume = 1;
         MusicVolume = 1;
+        
+        // Debug
         WriteSerializerLog = false;
     }
 
