@@ -157,7 +157,7 @@ public class OptionsMenuPage : MenuPage
                     setData: data => Engine.GameWindow.WindowResolution = (Engine.Config.InternalGameResolution * data).ToPoint(),
                     getCustomName: data => $"{data:0.00}x"),
                 new MultiSelectionOptionsMenuOption<bool>(
-                    text: "LOCK WINDOW ASPECT RATIO",  
+                    text: "LOCK WINDOW ASPECT RATIO", 
                     infoText: "Determines if the window, in windowed mode, should automatically resize to fit the game's internal resolution's aspect ratio.",
                     items:
                     [
@@ -170,6 +170,7 @@ public class OptionsMenuPage : MenuPage
             ]),
             new Tab("GAME",
             [
+                // TODO: Add more game options
                 new MultiSelectionOptionsMenuOption<Language>(
                     text: "LANGUAGE", 
                     infoText: "The language to use for any localized text.", 
@@ -177,7 +178,11 @@ public class OptionsMenuPage : MenuPage
                         Select(x => new MultiSelectionOptionsMenuOption<Language>.Item(x.EnglishName.ToUpper(), x)).
                         ToArray(),
                     getData: _ => Localization.Language,
-                    setData: x => Localization.SetLanguage(x),
+                    setData: data =>
+                    {
+                        Localization.SetLanguage(data);
+                        Engine.Config.Language = data.Locale;
+                    },
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<Vector2>(
                     text: "INTERNAL RESOLUTION", 
@@ -197,6 +202,7 @@ public class OptionsMenuPage : MenuPage
             ]),
             new Tab("CONTROLS",
             [
+                // TODO: Implement
                 new MultiSelectionOptionsMenuOption<object>(
                     text: "TEMP",
                     infoText: "TEMP",
@@ -223,6 +229,7 @@ public class OptionsMenuPage : MenuPage
             ]),
             new Tab("DEBUG",
             [
+                // TODO: Implement
                 new MultiSelectionOptionsMenuOption<object>(
                     text: "TEMP",
                     infoText: "TEMP",

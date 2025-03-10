@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3;
 
+// TODO: Select language first time you start the game?
 public class ModernMenuAll : Frame, IHasPlayfield
 {
     #region Properties
