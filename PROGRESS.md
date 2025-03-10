@@ -7,10 +7,9 @@
 | Name                   | State   | Info                                         |
 | ---------------------- | ------- | -------------------------------------------- |
 | Storage                | 🟩     |                                              |
-| JoyPad                 | 🟨     | Not implemented custom mapping               |
+| JoyPad                 | 🟨     | Not implemented controller support           |
 | FrameManager           | 🟩     |                                              |
 | Gfx                    | 🟩     |                                              |
-| Menu                   | 🟨     |                                              |
 | Multiplayer            | 🟨     |                                              |
 | SoundEngine            | 🟨     |                                              |
 | AnimationPlayer        | 🟩     |                                              |

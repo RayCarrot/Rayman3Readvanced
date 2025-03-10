@@ -7,7 +7,6 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
 - The camera doesn't work as well on N-Gage when playing in widescreen due to the different values being used - have it work like on GBA instead and use those values?
 - Option to convert save file between GBA and N-Gage. The save data is the same, so should be easy.
 - Option to export/import saves to/from emulator saves.
-- Run single frame when changing graphics to see changes? We can add an IsEnabled property to JoyPad which is false when the menu is showing to prevent inputs from registering on that frame.
 - Move hard-coded values to constants. There are a lot of these in the game!
 - Add a cheat menu?
 
@@ -34,9 +33,7 @@ Potential resources:
 ## ⚙️ Options
 ### 📃 General
 - Have option presets, such as "Modern" and "Original".
-- Show a tooltip for each option when it is selected. Some say "A custom value can be set in the config.json file" as to make that more clear.
 - Option to enable debug features. This allows you to toggle the debug mode, use debug cheats etc. The collision tileset should only be loaded if this option is enabled.
-- Make clear internal resolution is not the resolution the game renders at. We use high res rotation, subpixel positions etc. which means the game takes advantage of a higher rendering resolution. It also doesn't effect menus and such which are forced to the original resolution.
 
 ### ⌚ Performance
 - Option not to clear cache between Frame instances.
@@ -62,6 +59,7 @@ The following are ideas for optional improvements which the player can toggle on
 - Option to exit level from pause menu. USeful for levels without exit signs, like bosses and Mode7 levels.
 - Option to not clear collected lums if you die in a race level.
 - Option to use GBA sounds for the N-Gage version.
+- Option to not show N-Gage button prompts in the corners.
 
 ## ⭐ Bonus
 ### Achievements
