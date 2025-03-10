@@ -355,11 +355,22 @@ public class ModernMenuAll : Frame, IHasPlayfield
 
         // Tile the background twice so that it fills the width
         GfxScreen bgScreen = Playfield.TileLayers[0].Screen;
+        int bgWidth = Rom.Platform switch
+        {
+            Platform.GBA => 168,
+            Platform.NGage => 120, // NOTE: Width is actually 144, but it wraps at 120
+            _ => throw new UnsupportedPlatformException()
+        };
+        Vector2 bgOffset = Rom.Platform switch
+        {
+            Platform.GBA => new Vector2(32, 0),
+            Platform.NGage => new Vector2(96, -24),
+            _ => throw new UnsupportedPlatformException()
+        };
         bgScreen.Renderer = new MultiScreenRenderer(
         [
-            // Move to the right by 32, and add a copy on the left (the background width is 168)
-            new(bgScreen.Renderer, new Vector2(-168 + 32, 0)),
-            new(bgScreen.Renderer, new Vector2(32, 0))
+            new(bgScreen.Renderer, bgOffset),
+            new(bgScreen.Renderer, new Vector2(-bgWidth, 0) + bgOffset),
         ], renderContext.Resolution);
 
         // Replace the curtain with a new widescreen texture
