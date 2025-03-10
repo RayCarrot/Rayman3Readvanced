@@ -3,9 +3,9 @@ using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
-public class OptionsMenuOption : MenuOption
+public abstract class OptionsMenuOption : MenuOption
 {
-    public OptionsMenuOption(string text, string infoText)
+    protected OptionsMenuOption(string text, string infoText)
     {
         Text = text;
         InfoText = infoText;
@@ -13,7 +13,7 @@ public class OptionsMenuOption : MenuOption
 
     private const float TextScale = 2 / 3f;
     private const float ValueTextScale = 2 / 3f;
-    private const float ValueTextXPosition = 200;
+    private const float ValueTextXPosition = 180;
     private const float ValueTextPadding = 5;
 
     public string Text { get; }
@@ -24,6 +24,17 @@ public class OptionsMenuOption : MenuOption
     
     public Vector2 ArrowLeftPosition { get; set; }
     public Vector2 ArrowRightPosition { get; set; }
+
+    protected void UpdateArrowPositions()
+    {
+        float valueTextWidth = ValueTextObject.Font.GetWidth(ValueTextObject.Text) * ValueTextScale;
+        ArrowLeftPosition = ValueTextObject.ScreenPos + new Vector2(-ValueTextPadding, -2);
+        ArrowRightPosition = ValueTextObject.ScreenPos + new Vector2(valueTextWidth + ValueTextPadding, -1);
+    }
+
+    public abstract void Apply();
+    public abstract void Reset();
+    public abstract void Step();
 
     public override void Init(ModernMenuAll menu, RenderContext renderContext, Vector2 position, int index)
     {
@@ -45,13 +56,8 @@ public class OptionsMenuOption : MenuOption
             ScreenPos = position + new Vector2(ValueTextXPosition, 13 * ValueTextScale),
             RenderContext = renderContext,
             AffineMatrix = new AffineMatrix(0, new Vector2(ValueTextScale), false, false),
-            Text = index % 2 == 0 ? "ON" : "OFF", // TODO: Implement
             Font = ReadvancedFonts.MenuYellow,
         };
-
-        float valueTextWidth = ValueTextObject.Font.GetWidth(ValueTextObject.Text) * ValueTextScale;
-        ArrowLeftPosition = position + new Vector2(ValueTextXPosition - ValueTextPadding, 6);
-        ArrowRightPosition = position + new Vector2(ValueTextXPosition + valueTextWidth + ValueTextPadding, 7);
     }
 
     public override void ChangeIsSelected(bool isSelected)

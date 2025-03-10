@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Rayman3.Readvanced;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3;
@@ -15,8 +17,8 @@ public class OptionsMenuPage : MenuPage
     private const float TabHeaderWidth = 60;
     private const float TabHeaderTextScale = 1 / 2f;
     private const float TabsCursorMoveTime = 12;
-    private const float InfoTextScale = 1 / 3f;
-    private const int InfoTextMaxLines = 3;
+    private const float InfoTextScale = 3 / 10f;
+    private const int InfoTextMaxLines = 4;
     private const float InfoTextMaxWidth = 260;
     private const float ArrowScale = 1 / 2f;
 
@@ -107,52 +109,130 @@ public class OptionsMenuPage : MenuPage
         for (int i = 0; i < InfoTextLines.Length; i++)
             InfoTextLines[i].Text = i < textLines.Length ? FontManager.GetTextString(textLines[i]) : String.Empty;
 
-        // Set the arrow positions
-        ArrowLeft.ScreenPos = option.ArrowLeftPosition * (1 / ArrowScale);
-        ArrowRight.ScreenPos = option.ArrowRightPosition * (1 / ArrowScale);
-
         return true;
     }
 
     protected override void Init()
     {
+        // Get graphics properties
+        GraphicsAdapter adapter = Engine.GbaGame.GraphicsDevice.Adapter;
+        Vector2 originalRes = Rom.OriginalResolution;
+        Vector2 screenRes = new(adapter.CurrentDisplayMode.Width, adapter.CurrentDisplayMode.Height);
+        int windowResCount = Math.Min((int)(screenRes.X / originalRes.X), (int)(screenRes.Y / originalRes.Y));
+
         // TODO: Finish setting up the options
         // Add tabs
         Tabs =
         [
             new Tab("DISPLAY",
             [
-                new OptionsMenuOption(
+                new MultiSelectionOptionsMenuOption<DisplayMode>(
                     text: "DISPLAY MODE", 
-                    infoText: "Sets the display mode for the game. In borderless fullscreen mode the resolution can not be changed as it will always use the screen resolution."),
-                new OptionsMenuOption(
+                    infoText: "In borderless mode the resolution can not be changed as it will always use the screen resolution.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<DisplayMode>.Item("WINDOWED", DisplayMode.Windowed),
+                        new MultiSelectionOptionsMenuOption<DisplayMode>.Item("FULLSCREEN", DisplayMode.Fullscreen),
+                        new MultiSelectionOptionsMenuOption<DisplayMode>.Item("BORDERLESS", DisplayMode.Borderless)
+                    ],
+                    getData: _ => Engine.GameWindow.DisplayMode,
+                    setData: data => Engine.GameWindow.DisplayMode = data,
+                    getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<Point>(
                     text: "FULLSCREEN RESOLUTION", 
-                    infoText: "The resolution to use when in fullscreen mode."),
-                new OptionsMenuOption(
+                    infoText: "The resolution to use when in fullscreen mode.",
+                    items: adapter.SupportedDisplayModes.
+                        Select(x => new MultiSelectionOptionsMenuOption<Point>.Item($"{x.Width} x {x.Height}", new Point(x.Width, x.Height))).
+                        ToArray(),
+                    getData: _ => Engine.GameWindow.FullscreenResolution,
+                    setData: data => Engine.GameWindow.FullscreenResolution = data,
+                    getCustomName: data => $"{data.X} x {data.Y}"),
+                new MultiSelectionOptionsMenuOption<float>(
                     text: "WINDOW RESOLUTION", 
-                    infoText: "The resolution factor, based on the internal resolution, to use when in windowed mode."),
-                new OptionsMenuOption(
+                    infoText: "The resolution factor, based on the internal resolution, to use when in windowed mode. You can also freely change the window resolution by resizing the window.",
+                    items: Enumerable.Range(1, windowResCount).
+                        Select(x => new MultiSelectionOptionsMenuOption<float>.Item($"{x}x", x)).
+                        ToArray(),
+                    getData: _ => Engine.GameWindow.WindowResolution.ToVector2().X / Engine.Config.InternalGameResolution.X,
+                    setData: data => Engine.GameWindow.WindowResolution = (Engine.Config.InternalGameResolution * data).ToPoint(),
+                    getCustomName: data => $"{data:0.00}x"),
+                new MultiSelectionOptionsMenuOption<bool>(
                     text: "LOCK WINDOW ASPECT RATIO",  
-                    infoText: "Determines if the window, in windowed mode, should automatically resize to fit the game's internal resolution's aspect ratio."),
-            ]),
-            new Tab("SOUND", 
-            [ 
-                new OptionsMenuOption("MUSIC VOLUME", "This is some info text"),
-                new OptionsMenuOption("SOUND FX VOLUME", "This is some info text"),
+                    infoText: "Determines if the window, in windowed mode, should automatically resize to fit the game's internal resolution's aspect ratio.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true)
+                    ],
+                    getData: _ => Engine.Config.LockWindowAspectRatio,
+                    setData: data => Engine.Config.LockWindowAspectRatio = data,
+                    getCustomName: _ => null),
             ]),
             new Tab("GAME",
             [
-                new OptionsMenuOption("LANGUAGE", "This is some info text"),
-                new OptionsMenuOption("INTERNAL RESOLUTION", "This is some info text"),
+                new MultiSelectionOptionsMenuOption<Language>(
+                    text: "LANGUAGE", 
+                    infoText: "The language to use for any localized text.", 
+                    items: Localization.GetLanguages().
+                        Select(x => new MultiSelectionOptionsMenuOption<Language>.Item(x.EnglishName.ToUpper(), x)).
+                        ToArray(),
+                    getData: _ => Localization.Language,
+                    setData: x => Localization.SetLanguage(x),
+                    getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<Vector2>(
+                    text: "INTERNAL RESOLUTION", 
+                    infoText: "Determines the game's aspect ratio and scale. A higher resolution will result in a higher FOV for the sidescroller levels. For Mode7 levels only the aspect ratio is changed. Note that this does not effect the resolution the game renders at.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<Vector2>.Item($"ORIGINAL ({originalRes.X} x {originalRes.Y})", originalRes),
+                        new MultiSelectionOptionsMenuOption<Vector2>.Item("MODERN (384 x 216)", new Vector2(384, 216)), // 16:9
+                    ],
+                    getData: _ => Engine.Config.InternalGameResolution,
+                    setData: data =>
+                    {
+                        Engine.Config.InternalGameResolution = data;
+                        Engine.GameViewPort.UpdateRenderBox();
+                    },
+                    getCustomName: data => $"{data.X} x {data.Y}"),
             ]),
             new Tab("CONTROLS",
             [
-                new OptionsMenuOption("TEMP OPTION", "This is some info text"),
+                new MultiSelectionOptionsMenuOption<object>(
+                    text: "TEMP",
+                    infoText: "TEMP",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<object>.Item("TEMP", null),
+                    ],
+                    getData: _ => null,
+                    setData: _ => { },
+                    getCustomName: _ => null),            
+            ]),
+            new Tab("SOUND", 
+            [
+                new VolumeSelectionOptionsMenuOption(
+                    text: "MUSIC VOLUME", 
+                    infoText: "The volume for music.",
+                    getVolume: () => Engine.Config.MusicVolume,
+                    setVolume: data => Engine.Config.MusicVolume = data),
+                new VolumeSelectionOptionsMenuOption(
+                    text: "SOUND FX VOLUME", 
+                    infoText: "The volume for sound effects.",
+                    getVolume: () => Engine.Config.SfxVolume,
+                    setVolume: data => Engine.Config.SfxVolume = data),
             ]),
             new Tab("DEBUG",
             [
-                new OptionsMenuOption("DEBUG MODE", "This is some info text"),
-                new OptionsMenuOption("SERIALIZER LOG", "This is some info text"),
+                new MultiSelectionOptionsMenuOption<object>(
+                    text: "TEMP",
+                    infoText: "TEMP",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<object>.Item("TEMP", null),
+                    ],
+                    getData: _ => null,
+                    setData: _ => { },
+                    getCustomName: _ => null),
             ]),
         ];
 
@@ -216,7 +296,7 @@ public class OptionsMenuPage : MenuPage
                 BgPriority = 3,
                 ObjPriority = 0,
                 YPriority = 0,
-                ScreenPos = new Vector2(75, 110 + height * i),
+                ScreenPos = new Vector2(75, 109 + height * i),
                 RenderContext = RenderContext,
                 AffineMatrix = new AffineMatrix(0, new Vector2(InfoTextScale), false, false),
                 Color = TextColor.TextBox,
@@ -287,16 +367,23 @@ public class OptionsMenuPage : MenuPage
             {
                 IsEditingOption = true;
 
+                OptionsMenuOption option = (OptionsMenuOption)Options[SelectedOption];
+                option.Reset();
+
                 Menu.Cursor.CurrentAnimation = 16;
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
 
-                // Start arrow animations on frame 4
+                // Start arrow animations on frame 4 since it looks nicer
                 ArrowLeft.CurrentFrame = 4;
                 ArrowRight.CurrentFrame = 4;
             }
             else if (JoyPad.IsButtonJustPressed(GbaInput.B))
             {
+                // Go back to the game mode menu
                 Menu.ChangePage(new GameModeMenuPage(Menu), NewPageMode.Back);
+                
+                // Save
+                Engine.SaveConfig();
             }
         }
         // Editing
@@ -306,12 +393,25 @@ public class OptionsMenuPage : MenuPage
             {
                 IsEditingOption = false;
 
+                OptionsMenuOption option = (OptionsMenuOption)Options[SelectedOption];
+                option.Apply();
+
                 Menu.Cursor.CurrentAnimation = 16;
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
             }
             else if (JoyPad.IsButtonJustPressed(GbaInput.B))
             {
                 IsEditingOption = false;
+
+                OptionsMenuOption option = (OptionsMenuOption)Options[SelectedOption];
+                option.Reset();
+
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
+            }
+            else
+            {
+                OptionsMenuOption option = (OptionsMenuOption)Options[SelectedOption];
+                option.Step();
             }
         }
 
@@ -348,20 +448,20 @@ public class OptionsMenuPage : MenuPage
 
         if (IsEditingOption)
         {
+            OptionsMenuOption option = (OptionsMenuOption)Options[SelectedOption];
+
+            // Set the arrow positions
+            ArrowLeft.ScreenPos = option.ArrowLeftPosition * (1 / ArrowScale);
+            ArrowRight.ScreenPos = option.ArrowRightPosition * (1 / ArrowScale);
+
             animationPlayer.Play(ArrowLeft);
             animationPlayer.Play(ArrowRight);
         }
     }
 
-    public class Tab
+    public class Tab(string name, OptionsMenuOption[] menuOptions)
     {
-        public Tab(string name, OptionsMenuOption[] menuOptions)
-        {
-            Name = name;
-            MenuOptions = menuOptions;
-        }
-
-        public string Name { get; }
-        public OptionsMenuOption[] MenuOptions { get; }
+        public string Name { get; } = name;
+        public OptionsMenuOption[] MenuOptions { get; } = menuOptions;
     }
 }

@@ -70,6 +70,11 @@ public static class Localization
         return languages[languageId];
     }
 
+    public static void SetLanguage(Language language)
+    {
+        SetLanguage(language.Locale);
+    }
+
     public static void SetLanguage(string locale)
     {
         int id = GetLanguageId(locale);
