@@ -94,6 +94,10 @@ public partial class CameraMode7
 
                     DirectionDelta %= 1;
                 }
+                else
+                {
+                    cam.Direction = linkedObjDir.Inverse();
+                }
 
                 float speedLength = LinkedObject.Speed.Length();
                 float targetLength = MainActorDistance + speedLength;
@@ -178,6 +182,10 @@ public partial class CameraMode7
                         cam.Direction = (cam.Direction.Inverse() + 0.5f).Inverse();
                     else
                         cam.Direction = (cam.Direction.Inverse() - 0.5f).Inverse();
+                }
+                else
+                {
+                    cam.Direction = linkedObjDir.Inverse();
                 }
 
                 Vector2 camDirectionalVector = cam.Direction.Inverse().ToDirectionalVector();
