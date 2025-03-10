@@ -229,7 +229,7 @@ public partial class PauseDialog : Dialog
 
         if (Rom.Platform == Platform.GBA)
         {
-            string[] textLines = Localization.GetText(11, 15);
+            string[] textLines = Localization.GetText(TextBankId.Connectivity, 15);
 
             SleepModeTexts = new SpriteTextObject[4];
             for (int i = 0; i < SleepModeTexts.Length; i++)

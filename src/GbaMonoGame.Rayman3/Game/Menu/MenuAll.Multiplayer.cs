@@ -489,9 +489,9 @@ public partial class MenuAll
 
         int stringsCount;
         if (finishedSearchingForHosts)
-            stringsCount = Localization.GetText(11, 29).Length;
+            stringsCount = Localization.GetText(TextBankId.Connectivity, 29).Length;
         else
-            stringsCount = Localization.GetText(11, 28).Length;
+            stringsCount = Localization.GetText(TextBankId.Connectivity, 28).Length;
 
         float arrowYPos = 58 + (96 + stringsCount * -16) / 2f + (stringsCount - 1) * 16;
 
@@ -1493,7 +1493,7 @@ public partial class MenuAll
         if (Rom.Platform == Platform.NGage)
         {
             ShouldTextBlink = true;
-            string text = Localization.GetText(11, 34)[0]; // Please wait
+            string text = Localization.GetText(TextBankId.Connectivity, 34)[0]; // Please wait
             int width = FontManager.GetStringWidth(FontSize.Font16, text);
             Anims.Texts[4].ScreenPos = new Vector2(108 - width / 2f, 110);
             Anims.Texts[4].Text = text;
@@ -1805,12 +1805,12 @@ public partial class MenuAll
         {
             Anims.MultiplayerMapSelection.CurrentAnimation = MultiplayerType;
 
-            Anims.MultiplayerMapName1.Text = Localization.GetText(11, 9 + MultiplayerType * 2)[0];
+            Anims.MultiplayerMapName1.Text = Localization.GetText(TextBankId.Connectivity, 9 + MultiplayerType * 2)[0];
             Anims.MultiplayerMapName1.ScreenPos = new Vector2(
                 x: 140 - Anims.MultiplayerMapName1.GetStringWidth() / 2f,
                 y: 56);
 
-            Anims.MultiplayerMapName2.Text = Localization.GetText(11, 10 + MultiplayerType * 2)[0];
+            Anims.MultiplayerMapName2.Text = Localization.GetText(TextBankId.Connectivity, 10 + MultiplayerType * 2)[0];
             Anims.MultiplayerMapName2.ScreenPos = new Vector2(
                 x: 140 - Anims.MultiplayerMapName2.GetStringWidth() / 2f,
                 y: 96);
@@ -1824,31 +1824,31 @@ public partial class MenuAll
 
             if (MultiplayerType == 0)
             {
-                Anims.MultiplayerMapName1.Text = Localization.GetText(11, 10 + (int)CaptureTheFlagMode * 4 + CaptureTheFlagSoloMode * 2)[0];
+                Anims.MultiplayerMapName1.Text = Localization.GetText(TextBankId.Connectivity, 10 + (int)CaptureTheFlagMode * 4 + CaptureTheFlagSoloMode * 2)[0];
                 Anims.MultiplayerMapName1.ScreenPos = new Vector2(
                     x: 108 - Anims.MultiplayerMapName1.GetStringWidth() / 2f,
                     y: 84);
 
-                Anims.MultiplayerMapName2.Text = Localization.GetText(11, 11 + (int)CaptureTheFlagMode * 4 + CaptureTheFlagSoloMode * 2)[0];
+                Anims.MultiplayerMapName2.Text = Localization.GetText(TextBankId.Connectivity, 11 + (int)CaptureTheFlagMode * 4 + CaptureTheFlagSoloMode * 2)[0];
                 Anims.MultiplayerMapName2.ScreenPos = new Vector2(
                     x: 108 - Anims.MultiplayerMapName2.GetStringWidth() / 2f,
                     y: 124);
             }
             else
             {
-                Anims.MultiplayerMapName1.Text = Localization.GetText(11, 14 + MultiplayerType * 2)[0];
+                Anims.MultiplayerMapName1.Text = Localization.GetText(TextBankId.Connectivity, 14 + MultiplayerType * 2)[0];
                 Anims.MultiplayerMapName1.ScreenPos = new Vector2(
                     x: 108 - Anims.MultiplayerMapName1.GetStringWidth() / 2f,
                     y: 80);
 
-                Anims.MultiplayerMapName2.Text = Localization.GetText(11, 15 + MultiplayerType * 2)[0];
+                Anims.MultiplayerMapName2.Text = Localization.GetText(TextBankId.Connectivity, 15 + MultiplayerType * 2)[0];
                 Anims.MultiplayerMapName2.ScreenPos = new Vector2(
                     x: 108 - Anims.MultiplayerMapName2.GetStringWidth() / 2f,
                     y: 120);
             }
 
             ShouldTextBlink = true;
-            string text = Localization.GetText(11, 34)[0]; // Please wait
+            string text = Localization.GetText(TextBankId.Connectivity, 34)[0]; // Please wait
             int width = FontManager.GetStringWidth(FontSize.Font16, text);
             Anims.Texts[4].ScreenPos = new Vector2(108 - width / 2f, 136);
             Anims.Texts[4].Text = text;

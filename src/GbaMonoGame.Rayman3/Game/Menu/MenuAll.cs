@@ -128,7 +128,7 @@ public partial class MenuAll : Frame, IHasPlayfield
     {
         ShouldTextBlink = blink;
 
-        string[] text = Localization.GetText(11, textId);
+        string[] text = Localization.GetText(TextBankId.Connectivity, textId);
 
         Debug.Assert(text.Length <= Anims.Texts.Length, "Too many lines for this text");
 
@@ -152,7 +152,7 @@ public partial class MenuAll : Frame, IHasPlayfield
     {
         ShouldTextBlink = blink;
 
-        string[] text = Localization.GetText(11, textId);
+        string[] text = Localization.GetText(TextBankId.Connectivity, textId);
 
         baseY ??= text.Length * -16 + 96;
 

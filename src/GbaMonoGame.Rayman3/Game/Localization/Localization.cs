@@ -47,9 +47,9 @@ public static class Localization
         };
     }
 
-    public static string[] GetText(int bankId, int textId)
+    public static string[] GetText(TextBankId bankId, int textId)
     {
-        Text text = _textBanks[bankId].Texts[textId];
+        Text text = _textBanks[(int)bankId].Texts[textId];
         
         string[] strings = new string[text.LinesCount];
         for (int i = 0; i < strings.Length; i++)

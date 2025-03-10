@@ -71,7 +71,7 @@ public class LevelInfoBar : Bar
     private string GetLevelName()
     {
         int textId = GameInfo.Levels[(int)LevelMaps[LevelCurtainId][0]].NameTextId;
-        return Localization.GetText(8, textId)[0];
+        return Localization.GetText(TextBankId.LevelNames, textId)[0];
     }
 
     public void SetLevel(int levelCurtainId)

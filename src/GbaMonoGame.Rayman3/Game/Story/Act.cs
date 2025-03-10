@@ -47,7 +47,7 @@ public abstract class Act : Frame
         if (textId == -1)
             return;
 
-        CurrentText = Localization.GetText(ActResource.TextBankId, textId);
+        CurrentText = Localization.GetText((TextBankId)ActResource.TextBankId, textId);
 
         float centerX = Rom.OriginalResolution.X / 2f;
         float baseY = Rom.Platform switch

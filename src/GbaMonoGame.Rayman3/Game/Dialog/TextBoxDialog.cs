@@ -35,7 +35,7 @@ public partial class TextBoxDialog : Dialog
     public bool IsShowingCutsceneCharacter { get; set; }
     public bool NextText { get; set; }
 
-    public int TextBankId { get; set; }
+    public TextBankId TextBankId { get; set; }
     public int TextId { get; set; }
     public TextBoxCutsceneCharacter CutsceneCharacter { get; set; }
     public int CurrentTextLine { get; set; }
@@ -156,9 +156,9 @@ public partial class TextBoxDialog : Dialog
         CutsceneCharacter = cutsceneCharacter;
         TextBankId = cutsceneCharacter switch
         {
-            TextBoxCutsceneCharacter.Murfy => 0,
-            TextBoxCutsceneCharacter.Ly => 1,
-            TextBoxCutsceneCharacter.Teensies => 9,
+            TextBoxCutsceneCharacter.Murfy => TextBankId.TextBoxMurfy,
+            TextBoxCutsceneCharacter.Ly => TextBankId.TextBoxLy,
+            TextBoxCutsceneCharacter.Teensies => TextBankId.TextBoxTeensies,
             _ => throw new ArgumentOutOfRangeException(nameof(cutsceneCharacter), cutsceneCharacter, null)
         };
     }

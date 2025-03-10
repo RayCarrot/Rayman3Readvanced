@@ -67,7 +67,7 @@ public partial class GameCubeMenu : Frame
 
     private void ShowPleaseConnectText()
     {
-        string[] text = Localization.GetText(11, 6);
+        string[] text = Localization.GetText(TextBankId.Connectivity, 6);
 
         for (int i = 0; i < text.Length; i++)
         {

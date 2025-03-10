@@ -376,7 +376,7 @@ public partial class GameCubeMenu
                 {
                     GameInfo.PersistentInfo.UnlockedLyChallengeGCN = true;
 
-                    string[] text = Localization.GetText(11, 8);
+                    string[] text = Localization.GetText(TextBankId.Connectivity, 8);
 
                     Anims.StatusText.Text = text[0];
                     Anims.StatusText.ScreenPos = new Vector2(140 - Anims.StatusText.GetStringWidth() / 2f, 50);
@@ -518,7 +518,7 @@ public partial class GameCubeMenu
                 Anims.ReusableTexts[0].Color = TextColor.GameCubeMenu;
                 Anims.ReusableTexts[1].Color = TextColor.GameCubeMenu;
 
-                string[] text = Localization.GetText(11, 7);
+                string[] text = Localization.GetText(TextBankId.Connectivity, 7);
                 Anims.ReusableTexts[0].Text = text[0];
                 Anims.ReusableTexts[0].ScreenPos = new Vector2(140 - Anims.ReusableTexts[0].GetStringWidth() / 2f, 40);
 
