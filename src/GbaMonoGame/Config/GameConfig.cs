@@ -50,25 +50,25 @@ public class GameConfig
     #region Public Properties
 
     // Display
+    public DisplayMode DisplayMode { get; set; }
+    public Point FullscreenResolution { get; set; }
     public Point WindowPosition { get; set; }
     public Point WindowResolution { get; set; }
     public bool WindowIsMaximized { get; set; }
     public bool LockWindowAspectRatio { get; set; }
-    public Point FullscreenResolution { get; set; }
-    public DisplayMode DisplayMode { get; set; }
 
     // Game
-    public Vector2 InternalGameResolution { get; set; }
-    public string Language { get; set; }
     public int? LastPlayedGbaSaveSlot { get; set; }
     public int? LastPlayedNGageSaveSlot { get; set; }
+    public string Language { get; set; }
+    public Vector2 InternalGameResolution { get; set; }
 
     // Controls
     public Dictionary<Input, Keys> Controls { get; set; }
 
     // Sound
-    public float SfxVolume { get; set; }
     public float MusicVolume { get; set; }
+    public float SfxVolume { get; set; }
 
     // Debug
     public bool WriteSerializerLog { get; set; }
@@ -80,25 +80,25 @@ public class GameConfig
     public void Serialize(BaseIniSerializer serializer)
     {
         // Display
+        DisplayMode = serializer.Serialize<DisplayMode>(DisplayMode, DisplaySection, "DisplayMode");
+        FullscreenResolution = serializer.Serialize<Point>(FullscreenResolution, DisplaySection, "FullscreenResolution");
         WindowPosition = serializer.Serialize<Point>(WindowPosition, DisplaySection, "WindowPosition");
         WindowResolution = serializer.Serialize<Point>(WindowResolution, DisplaySection, "WindowResolution");
         WindowIsMaximized = serializer.Serialize<bool>(WindowIsMaximized, DisplaySection, "WindowIsMaximized");
         LockWindowAspectRatio = serializer.Serialize<bool>(LockWindowAspectRatio, DisplaySection, "LockWindowAspectRatio");
-        FullscreenResolution = serializer.Serialize<Point>(FullscreenResolution, DisplaySection, "FullscreenResolution");
-        DisplayMode = serializer.Serialize<DisplayMode>(DisplayMode, DisplaySection, "DisplayMode");
 
         // Game
-        InternalGameResolution = serializer.Serialize<Vector2>(InternalGameResolution, GameSection, "InternalGameResolution");
-        Language = serializer.Serialize<string>(Language, GameSection, "Language");
         LastPlayedGbaSaveSlot = serializer.Serialize<int?>(LastPlayedGbaSaveSlot, GameSection, "LastPlayedGbaSaveSlot");
         LastPlayedNGageSaveSlot = serializer.Serialize<int?>(LastPlayedNGageSaveSlot, GameSection, "LastPlayedNGageSaveSlot");
+        Language = serializer.Serialize<string>(Language, GameSection, "Language");
+        InternalGameResolution = serializer.Serialize<Vector2>(InternalGameResolution, GameSection, "InternalGameResolution");
 
         // Controls
         Controls = serializer.SerializeDictionary<Input, Keys>(Controls, ControlsSection);
 
         // Sound
-        SfxVolume = serializer.Serialize<float>(SfxVolume, SoundSection, "SfxVolume");
         MusicVolume = serializer.Serialize<float>(MusicVolume, SoundSection, "MusicVolume");
+        SfxVolume = serializer.Serialize<float>(SfxVolume, SoundSection, "SfxVolume");
 
         // Debug
         WriteSerializerLog = serializer.Serialize<bool>(WriteSerializerLog, DebugSection, "WriteSerializerLog");
