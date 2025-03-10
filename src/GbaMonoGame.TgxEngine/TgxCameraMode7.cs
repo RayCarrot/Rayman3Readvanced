@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.TgxEngine;
 
-// TODO: Scale by the resolution. Currently the scaling is overriden by the shader.
 public class TgxCameraMode7 : TgxCamera
 {
     public TgxCameraMode7(RenderContext renderContext) : base(renderContext)
@@ -21,6 +20,7 @@ public class TgxCameraMode7 : TgxCamera
     private bool _isCameraFarDirty = true;
     private Vector2 _prevResolution = Vector2.Zero;
 
+    // TODO: Rework with scanline base 0. Also zoom in more like in og game - might fix z-pos issue.
     private float _cameraFieldOfView = MathHelper.PiOver4;
     private float _cameraDistance = 790.0f;
     private float _cameraTargetHeight = -85.0f;
