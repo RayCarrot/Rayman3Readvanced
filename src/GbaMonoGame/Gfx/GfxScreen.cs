@@ -92,8 +92,8 @@ public class GfxScreen
             float startX = camMinX - size.X + (wrappedPos.X == 0 ? size.X : wrappedPos.X);
             float startY = camMinY - size.Y + (wrappedPos.Y == 0 ? size.Y : wrappedPos.Y);
 
-            float fullWidth = startX + maxResX;
-            float fullHeight = startY + maxResY;
+            float fullWidth = maxResX - startX;
+            float fullHeight = maxResY - startY;
 
             Vector2 wrappedEnd = new(fullWidth % size.X, fullHeight % size.Y);
             float endX = maxResX + size.X - (wrappedEnd.X == 0 ? size.X : wrappedEnd.X);
