@@ -136,6 +136,10 @@ public static class Rom
                 _ => throw new UnsupportedPlatformException(),
             };
 
+            // Set the internal resolution if it's null
+            if (Engine.Config.InternalGameResolution == null)
+                Engine.InternalGameResolution = OriginalResolution;
+
             _originalGameRenderContext = new FixedResolutionRenderContext(OriginalResolution);
             _originalScaledGameRenderContext = new OriginalScaledGameRenderContext();
 

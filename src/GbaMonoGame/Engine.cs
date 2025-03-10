@@ -43,6 +43,11 @@ public static class Engine
     public static ContentManager FrameContentManager { get; private set; }
 
     /// <summary>
+    /// The internal game resolution used for the aspect ratio and scaling.
+    /// </summary>
+    public static Vector2 InternalGameResolution { get; set; }
+
+    /// <summary>
     /// The primary render context using the internal game resolution.
     /// </summary>
     public static GameRenderContext GameRenderContext { get; private set; }
@@ -70,6 +75,12 @@ public static class Engine
         GameConfig config = new();
         config.Serialize(new IniDeserializer(filePath));
         Config = config;
+
+        // If the internal resolution is null then we default to the original resolution
+        if (config.InternalGameResolution == null)
+            InternalGameResolution = Rom.IsLoaded ? Rom.OriginalResolution : new Vector2(384, 216);
+        else
+            InternalGameResolution = config.InternalGameResolution.Value;
     }
 
     public static void SaveConfig()

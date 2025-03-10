@@ -2,12 +2,12 @@
 
 public class EditorRenderContext : RenderContext
 {
-    public float Scale { get; set; }
+    public float EditorScale { get; set; }
     public Vector2 MaxResolution { get; set; }
 
     protected override Vector2 GetResolution()
     {
-        Vector2 newGameResolution = Engine.Config.InternalGameResolution * Scale;
+        Vector2 newGameResolution = Engine.InternalGameResolution * EditorScale;
 
         Vector2 max = MaxResolution;
 

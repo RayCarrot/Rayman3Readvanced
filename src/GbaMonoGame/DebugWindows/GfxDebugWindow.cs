@@ -26,17 +26,19 @@ public class GfxDebugWindow : DebugWindow
                 ImGui.Text($"Viewport render box size: {viewPortRenderBox.Size.X} x {viewPortRenderBox.Size.X}");
                 ImGui.Text($"Original game resolution: {Rom.OriginalResolution.X} x {Rom.OriginalResolution.Y}");
                 ImGui.Text($"Original scaled game resolution: {Rom.OriginalScaledGameRenderContext.Resolution.X} x {Rom.OriginalScaledGameRenderContext.Resolution.Y}");
-                ImGui.Text($"Internal game resolution: {Engine.Config.InternalGameResolution.X} x {Engine.Config.InternalGameResolution.Y}");
+                ImGui.Text($"Internal game resolution: {Engine.InternalGameResolution.X} x {Engine.InternalGameResolution.Y}");
 
-                float resX = Engine.Config.InternalGameResolution.X;
-                float resY = Engine.Config.InternalGameResolution.Y;
+                float resX = Engine.InternalGameResolution.X;
+                float resY = Engine.InternalGameResolution.Y;
                 if (ImGui.SliderFloat("Internal resolution X", ref resX, Single.Epsilon, 1000))
                 {
+                    Engine.InternalGameResolution = new Vector2(resX, resY);
                     Engine.Config.InternalGameResolution = new Vector2(resX, resY);
                     Engine.GameViewPort.UpdateRenderBox();
                 }
                 if (ImGui.SliderFloat("Internal resolution Y", ref resY, Single.Epsilon, 1000))
                 {
+                    Engine.InternalGameResolution = new Vector2(resX, resY);
                     Engine.Config.InternalGameResolution = new Vector2(resX, resY);
                     Engine.GameViewPort.UpdateRenderBox();
                 }

@@ -51,7 +51,7 @@ public abstract class RenderContext
 
     public void UpdateResolution()
     {
-        _lastGameResolution = Engine.Config.InternalGameResolution;
+        _lastGameResolution = Engine.InternalGameResolution;
 
         Vector2 prevResolution = _resolution;
 
@@ -153,7 +153,7 @@ public abstract class RenderContext
 
     public virtual void Update()
     {
-        if (Engine.Config.InternalGameResolution != _lastGameResolution)
+        if (Engine.InternalGameResolution != _lastGameResolution)
             UpdateResolution();
         
         if (Engine.GameViewPort.RenderBox != _lastViewPortRenderBox)

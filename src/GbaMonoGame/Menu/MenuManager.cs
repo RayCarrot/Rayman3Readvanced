@@ -485,7 +485,7 @@ public class MenuManager
     private class MenuRenderContext : RenderContext
     {
         // Scale by 5 to fit more text on screen
-        protected override Vector2 GetResolution() => Engine.Config.InternalGameResolution * 5f;
+        protected override Vector2 GetResolution() => Engine.InternalGameResolution * 5f;
     }
 
     private class MenuState

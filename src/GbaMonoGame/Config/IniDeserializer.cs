@@ -27,12 +27,16 @@ public class IniDeserializer : BaseIniSerializer
         {
             return (T)(object)stringValue;
         }
+        else if (typeof(T) == typeof(int))
+        {
+            return (T)(object)Int32.Parse(stringValue);
+        }
         else if (typeof(T) == typeof(int?))
         {
             if (stringValue == String.Empty)
                 return (T)(object)null;
             else
-                return (T)(object)Int32.Parse(stringValue);
+                return (T)(object)ParseValue<int>(stringValue);
         }
         else if (typeof(T) == typeof(float))
         {
@@ -50,6 +54,13 @@ public class IniDeserializer : BaseIniSerializer
         {
             string[] values = stringValue.Split('x');
             return (T)(object)new Vector2(Single.Parse(values[0], CultureInfo.InvariantCulture), Single.Parse(values[1], CultureInfo.InvariantCulture));
+        }
+        else if (typeof(T) == typeof(Vector2?))
+        {
+            if (stringValue == String.Empty)
+                return (T)(object)null;
+            else
+                return (T)(object)ParseValue<Vector2>(stringValue);
         }
         else if (typeof(T) == typeof(Point))
         {

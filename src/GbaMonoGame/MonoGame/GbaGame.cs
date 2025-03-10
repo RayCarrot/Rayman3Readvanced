@@ -367,7 +367,7 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
             
             if (Engine.Config.LockWindowAspectRatio && Engine.GameWindow.IsResizable())
             {
-                Vector2 resolution = Engine.Config.InternalGameResolution;
+                Vector2 resolution = Engine.InternalGameResolution;
 
                 float screenScale = newRes.X / resolution.X;
 
@@ -377,7 +377,7 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
             }
 
             _prevWindowResolution = newRes;
-            _prevInternalResolution = Engine.Config.InternalGameResolution;
+            _prevInternalResolution = Engine.InternalGameResolution;
             _prevLockWindowAspectRatio = Engine.Config.LockWindowAspectRatio;
 
             Engine.GameViewPort.Resize(Engine.GameWindow.GetResolution().ToVector2());

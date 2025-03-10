@@ -16,7 +16,7 @@ public class EditorCamera
             maxY: mapSize.Y + ScrollMargin);
         RenderContext = new EditorRenderContext
         {
-            Scale = Scale,
+            EditorScale = Scale,
             MaxResolution = ScrollBounds.Size
         };
 
@@ -74,13 +74,13 @@ public class EditorCamera
         if (wheelDelta < 0)
         {
             Scale += MouseWheelZoomSpeed;
-            RenderContext.Scale = Scale;
+            RenderContext.EditorScale = Scale;
             RenderContext.UpdateResolution();
         }
         else if (wheelDelta > 0)
         {
             Scale -= MouseWheelZoomSpeed;
-            RenderContext.Scale = Scale;
+            RenderContext.EditorScale = Scale;
             RenderContext.UpdateResolution();
         }
 

@@ -13,7 +13,7 @@ public class GbaGameViewPort
 
     public void UpdateRenderBox()
     {
-        Vector2 scaledScreenSize = FullSize.ShrinkToAspectRatio(Engine.Config.InternalGameResolution);
+        Vector2 scaledScreenSize = FullSize.ShrinkToAspectRatio(Engine.InternalGameResolution);
 
         RenderBox = new Box(
             position: (FullSize - scaledScreenSize) / 2,

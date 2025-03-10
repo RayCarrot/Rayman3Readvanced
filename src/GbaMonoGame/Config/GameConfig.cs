@@ -61,7 +61,7 @@ public class GameConfig
     public int? LastPlayedGbaSaveSlot { get; set; }
     public int? LastPlayedNGageSaveSlot { get; set; }
     public string Language { get; set; }
-    public Vector2 InternalGameResolution { get; set; }
+    public Vector2? InternalGameResolution { get; set; } // Null to use original resolution
 
     // Controls
     public Dictionary<Input, Keys> Controls { get; set; }
@@ -91,7 +91,7 @@ public class GameConfig
         LastPlayedGbaSaveSlot = serializer.Serialize<int?>(LastPlayedGbaSaveSlot, GameSection, "LastPlayedGbaSaveSlot");
         LastPlayedNGageSaveSlot = serializer.Serialize<int?>(LastPlayedNGageSaveSlot, GameSection, "LastPlayedNGageSaveSlot");
         Language = serializer.Serialize<string>(Language, GameSection, "Language");
-        InternalGameResolution = serializer.Serialize<Vector2>(InternalGameResolution, GameSection, "InternalGameResolution");
+        InternalGameResolution = serializer.Serialize<Vector2?>(InternalGameResolution, GameSection, "InternalGameResolution");
 
         // Controls
         Controls = serializer.SerializeDictionary<Input, Keys>(Controls, ControlsSection);

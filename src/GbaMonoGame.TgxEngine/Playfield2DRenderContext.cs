@@ -34,7 +34,7 @@ public class Playfield2DRenderContext : RenderContext
 
     protected override Vector2 GetResolution()
     {
-        Vector2 resolution = Engine.Config.InternalGameResolution;
+        Vector2 resolution = Engine.InternalGameResolution;
 
         if (MaxResolution is { } max)
         {
@@ -46,7 +46,7 @@ public class Playfield2DRenderContext : RenderContext
 
         // If the new resolution is wider than the requested resolution then we crop it down to the same aspect ratio. This
         // is to avoid big black bars on the top and bottom in wider maps such as the worldmap.
-        float requestedGameRatio = Engine.Config.InternalGameResolution.X / Engine.Config.InternalGameResolution.Y;
+        float requestedGameRatio = Engine.InternalGameResolution.X / Engine.InternalGameResolution.Y;
         float newGameRatio = resolution.X / resolution.Y;
         if (newGameRatio > requestedGameRatio)
             resolution = new Vector2(resolution.Y * requestedGameRatio, resolution.Y);

@@ -7,6 +7,6 @@ public sealed class OriginalScaledGameRenderContext : RenderContext
 {
     protected override Vector2 GetResolution()
     {
-        return Rom.OriginalResolution.ExtendToAspectRatio(Engine.Config.InternalGameResolution);
+        return Rom.OriginalResolution.ExtendToAspectRatio(Engine.InternalGameResolution);
     }
 }
