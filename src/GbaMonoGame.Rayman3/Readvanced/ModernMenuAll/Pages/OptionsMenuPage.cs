@@ -388,9 +388,6 @@ public class OptionsMenuPage : MenuPage
             {
                 // Go back to the game mode menu
                 Menu.ChangePage(new GameModeMenuPage(Menu), NewPageMode.Back);
-                
-                // Save
-                Engine.SaveConfig();
             }
         }
         // Editing
@@ -436,6 +433,12 @@ public class OptionsMenuPage : MenuPage
         
         foreach (SpriteFontTextObject tabHeader in TabHeaderTexts)
             tabHeader.ScreenPos = tabHeader.ScreenPos with { Y = 30 - TransitionValue / 2f };
+    }
+
+    protected override void UnInit()
+    {
+        // Save
+        Engine.SaveConfig();
     }
 
     protected override void Draw(AnimationPlayer animationPlayer)

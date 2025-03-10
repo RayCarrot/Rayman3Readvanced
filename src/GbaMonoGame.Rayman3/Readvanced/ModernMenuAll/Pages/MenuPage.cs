@@ -28,6 +28,7 @@ public abstract class MenuPage
     protected virtual void Step_TransitionIn() { }
     protected virtual void Step_Active() { }
     protected virtual void Step_TransitionOut() { }
+    protected virtual void UnInit() { }
     protected virtual void Draw(AnimationPlayer animationPlayer) { }
 
     protected void DrawOptions(AnimationPlayer animationPlayer)
@@ -139,6 +140,7 @@ public abstract class MenuPage
                 {
                     TransitionValue = 0;
                     State = MenuPageState.Inactive;
+                    UnInit();
                 }
 
                 Draw(Menu.AnimationPlayer);
