@@ -1,8 +1,10 @@
 ﻿using System;
+using BinarySerializer.Nintendo.GBA;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -118,6 +120,40 @@ public class GameModeMenuPage : MenuPage
         }
     }
 
+    // TODO: Make it optional if it uses the replaced animations or not
+    private void ReplaceLogo()
+    {
+        const int animId = 0;
+        const int baseCacheId = 1000;
+
+        Animation anim = Rom.CopyResource(GameLogo.Resource.Animations[animId]);
+        anim.AffineMatrices = GameLogo.Resource.Animations[animId].AffineMatrices;
+        anim.PaletteCycleAnimation = GameLogo.Resource.Animations[animId].PaletteCycleAnimation;
+
+        anim.ChannelsPerFrame = [1];
+        anim.Channels =
+        [
+            new AnimationChannel
+            {
+                ChannelType = AnimationChannelType.Sprite,
+                XPosition = -63,
+                YPosition = -75,
+                ObjectMode = OBJ_ATTR_ObjectMode.REG,
+                TileIndex = baseCacheId,
+                FlipX = false,
+                FlipY = false,
+            }
+        ];
+
+        GameLogo.ReplaceAnimation(animId, anim);
+
+        // Load the logo texture
+        Engine.TextureCache.SetObject(
+            GameLogo.Resource.Offset,
+            baseCacheId,
+            Engine.FrameContentManager.Load<Texture2D>("MenuLogo"));
+    }
+
     protected override void Init()
     {
         // Add menu options
@@ -140,6 +176,7 @@ public class GameModeMenuPage : MenuPage
             CurrentAnimation = 0,
             RenderContext = RenderContext,
         };
+        ReplaceLogo();
 
         // Reset values
         GameLogoPrevMovedTime = 0;
