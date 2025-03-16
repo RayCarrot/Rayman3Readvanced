@@ -18,7 +18,6 @@ public static class Engine
     #region Properties
 
     public static GameConfig Config { get; private set; }
-    public static Version Version => new(0, 0, 0);
 
     public static bool IsLoading { get; set; }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using BinarySerializer.Ubisoft.GbaEngine;
-using Microsoft.Xna.Framework.Audio;
 
 namespace GbaMonoGame;
 
@@ -34,7 +33,6 @@ public abstract class SoundEventsManager
 
     protected abstract void ForcePauseAllSongsImpl();
     protected abstract void ForceResumeAllSongsImpl();
-    protected abstract SoundEffect GetSoundByNameImpl(string name);
     protected abstract void DrawDebugLayoutImpl();
 
     #endregion
@@ -77,7 +75,6 @@ public abstract class SoundEventsManager
     // Custom
     public static void ForcePauseAllSongs() => Current.ForcePauseAllSongsImpl();
     public static void ForceResumeAllSongs() => Current.ForceResumeAllSongsImpl();
-    public static SoundEffect GetSoundByName(string name) => Current.GetSoundByNameImpl(name);
     public static void DrawDebugLayout() => Current.DrawDebugLayoutImpl();
 
     #endregion

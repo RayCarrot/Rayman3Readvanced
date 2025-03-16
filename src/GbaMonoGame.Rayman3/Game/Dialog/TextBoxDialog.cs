@@ -187,6 +187,7 @@ public partial class TextBoxDialog : Dialog
 
     public bool CanSkip() => State == Fsm_WaitForNextText;
 
+    // TODO: Implement in pause menu
     public void Skip()
     {
         if (State != Fsm_WaitForNextText)

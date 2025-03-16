@@ -15,7 +15,7 @@ public enum Input
     Gba_R,
     Gba_L,
 
-    // Menu
+    // Menu TODO: Remove?
     Menu_Right,
     Menu_Left,
     Menu_Up,

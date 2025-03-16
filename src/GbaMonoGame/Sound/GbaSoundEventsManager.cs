@@ -451,12 +451,7 @@ public class GbaSoundEventsManager : SoundEventsManager
         foreach (ActiveSong playingSong in _activeSongs)
             playingSong.InEnginePaused = false;
     }
-
-    protected override SoundEffect GetSoundByNameImpl(string name)
-    {
-        return _songTable.Values.First(x => x.Name == name);
-    }
-
+    
     protected override void DrawDebugLayoutImpl()
     {
         if (ImGui.BeginTable("_songs", 5))

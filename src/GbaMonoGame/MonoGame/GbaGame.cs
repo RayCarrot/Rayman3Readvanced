@@ -33,13 +33,11 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
     private readonly GbaGameWindow _gameWindow;
 
     private GfxRenderer _gfxRenderer;
-    private MenuManager _menu;
     private DebugLayout _debugLayout;
     private GameRenderTarget _debugGameRenderTarget;
     private PerformanceDebugWindow _performanceWindow;
     private int _skippedDraws = -1;
     private float _fps = 60;
-    private bool _showMenu;
     private Point _prevWindowResolution;
     private Vector2 _prevInternalResolution;
     private bool _prevLockWindowAspectRatio;
@@ -54,10 +52,6 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
 
     #region Public Properties
 
-    public abstract Dictionary<SoundType, string> SampleSongs { get; }
-    
-    public abstract bool CanSkipCutscene { get; }
-
     public bool RunSingleFrame { get; set; }
     public bool IsPaused { get; set; }
     public bool DebugMode { get; set; }
@@ -65,12 +59,6 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
     #endregion
 
     #region Event Handlers
-
-    private void Menu_Closed(object sender, EventArgs e)
-    {
-        _showMenu = false;
-        Resume();
-    }
 
     private void GbaGame_Exiting(object sender, EventArgs e)
     {
@@ -85,10 +73,6 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
     {
         // Load the game
         LoadGame();
-
-        // Load the menu
-        _menu = new MenuManager();
-        _menu.Closed += Menu_Closed;
 
         // Load the debug layout
         _debugLayout = new DebugLayout();
@@ -304,7 +288,7 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
         }
 
         // Toggle pause
-        if (!_showMenu && InputManager.IsButtonPressed(Keys.LeftControl) && InputManager.IsButtonJustPressed(Keys.P))
+        if (InputManager.IsButtonPressed(Keys.LeftControl) && InputManager.IsButtonJustPressed(Keys.P))
         {
             if (!IsPaused)
                 Pause();
@@ -313,37 +297,19 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
         }
 
         // Speed up game
-        if (!_showMenu && InputManager.IsButtonPressed(Keys.LeftShift))
+        if (InputManager.IsButtonPressed(Keys.LeftShift))
             SetFramerate(Framerate * 4);
         else if (InputManager.IsButtonJustReleased(Keys.LeftShift))
             SetFramerate(Framerate);
 
-        // Toggle menu
-        if (_menu is { IsTransitioningOut: false } && InputManager.IsButtonJustPressed(Keys.Escape))
-        {
-            if (!_showMenu)
-            {
-                Pause();
-                _menu.Open(new MainMenu());
-                _showMenu = true;
-            }
-            else
-            {
-                _menu.Close();
-            }
-        }
-
         // Run one frame
-        if (!_showMenu && InputManager.IsButtonPressed(Keys.LeftControl) && InputManager.IsButtonJustPressed(Keys.F))
+        if (InputManager.IsButtonPressed(Keys.LeftControl) && InputManager.IsButtonJustPressed(Keys.F))
         {
             IsPaused = false;
             RunSingleFrame = true;
         }
 
         StepEngine();
-
-        if (_showMenu)
-            _menu.Update();
 
         if (DebugMode && !IsPaused)
             _performanceWindow.AddUpdateTime(_updateTimeStopWatch.ElapsedMilliseconds);
@@ -390,8 +356,6 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
         Gfx.Draw(_gfxRenderer);
         if (DebugMode && !IsPaused)
             _performanceWindow.AddDrawCalls(GraphicsDevice.Metrics.DrawCount);
-        if (_showMenu)
-            _menu.Draw(_gfxRenderer);
         if (DebugMode)
             _debugLayout.DrawGame(_gfxRenderer);
         _gfxRenderer.EndRender();
@@ -416,8 +380,6 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
     #endregion
 
     #region Public Methods
-
-    public abstract void SkipCutscene();
 
     public void Pause()
     {

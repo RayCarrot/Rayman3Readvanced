@@ -235,11 +235,6 @@ public class NGageSoundEventsManager : SoundEventsManager
             sfx.SoundInstance.Resume();
     }
 
-    protected override SoundEffect GetSoundByNameImpl(string name)
-    {
-        return _soundResources.Values.First(x => x.Name == name);
-    }
-
     protected override void DrawDebugLayoutImpl()
     {
         if (ImGui.BeginTable("_songs", 4))
