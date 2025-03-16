@@ -41,6 +41,7 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
     private Point _prevWindowResolution;
     private Vector2 _prevInternalResolution;
     private bool _prevLockWindowAspectRatio;
+    private bool _speedUp;
 
     #endregion
 
@@ -166,7 +167,15 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
         if (DebugMode)
             _updateTimeStopWatch.Restart();
 
-        Engine.Step();
+        if (!_speedUp)
+        {
+            Engine.Step();
+        }
+        else
+        {
+            for (int i = 0; i < 4; i++)
+                Engine.Step();
+        }
 
         // If this frame did a load, and thus might have taken longer than 1/60th of a second, then
         // we disable fixed time step to avoid MonoGame repeatedly calling Update() to make up for
@@ -298,9 +307,9 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
 
         // Speed up game
         if (InputManager.IsButtonPressed(Keys.LeftShift))
-            SetFramerate(Framerate * 4);
+            _speedUp = true;
         else if (InputManager.IsButtonJustReleased(Keys.LeftShift))
-            SetFramerate(Framerate);
+            _speedUp = false;
 
         // Run one frame
         if (InputManager.IsButtonPressed(Keys.LeftControl) && InputManager.IsButtonJustPressed(Keys.F))
