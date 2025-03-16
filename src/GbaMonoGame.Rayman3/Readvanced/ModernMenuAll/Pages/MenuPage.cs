@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.TgxEngine;
@@ -17,6 +18,8 @@ public abstract class MenuPage
     public List<MenuOption> Options { get; } = [];
     public MenuPageState State { get; set; }
     public int TransitionValue { get; set; } // 0-160
+    public Action ClickCallback { get; set; }
+    public Action FadeOutCallback { get; set; }
 
     public int SelectedOption { get; set; }
 
@@ -82,6 +85,23 @@ public abstract class MenuPage
         return changed;
     }
 
+    protected void CursorClick(Action callback)
+    {
+        Menu.CursorClick();
+        ClickCallback = callback;
+    }
+
+    protected void InvalidCursorClick()
+    {
+        Menu.InvalidCursorClick();
+    }
+
+    protected void FadeOut(float stepSize, Action callback)
+    {
+        Menu.TransitionsFX.FadeOutInit(stepSize);
+        FadeOutCallback = callback;
+    }
+
     public void Step()
     {
         switch (State)
@@ -97,6 +117,8 @@ public abstract class MenuPage
                 
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
                 State = MenuPageState.TransitionIn;
+                ClickCallback = null;
+                FadeOutCallback = null;
                 break;
             
             case MenuPageState.TransitionIn:
@@ -122,7 +144,26 @@ public abstract class MenuPage
                 break;
 
             case MenuPageState.Active:
-                Step_Active();
+                if (FadeOutCallback == null && ClickCallback == null)
+                {
+                    Step_Active();
+                }
+                else if (FadeOutCallback != null && Menu.TransitionsFX.IsFadeOutFinished)
+                {
+                    FadeOutCallback();
+                    FadeOutCallback = null;
+                }
+                else if (Menu.HasFinishedCursorClick())
+                {
+                    Menu.SetCursorToIdle();
+
+                    if (ClickCallback != null)
+                    {
+                        ClickCallback();
+                        ClickCallback = null;
+                    }
+                }
+
                 Draw(Menu.AnimationPlayer);
                 break;
 

@@ -202,16 +202,43 @@ public class GameModeMenuPage : MenuPage
         }
         else if (JoyPad.IsButtonJustPressed(GbaInput.A))
         {
-            Menu.ChangePage(SelectedOption switch
+            switch (SelectedOption)
             {
-                0 => new SinglePlayerMenuPage(Menu),
-                1 => new GameModeMenuPage(Menu), // TODO: Implement multiplayer menus
-                2 => new BonusMenuPage(Menu),
-                3 => new OptionsMenuPage(Menu),
-                4 => new GameModeMenuPage(Menu), // TODO: Implement credits
-                5 => new GameModeMenuPage(Menu), // TODO: Implement quit game menu
-                _ => throw new Exception("Invalid selection"),
-            }, NewPageMode.Next);
+                case 0:
+                    Menu.ChangePage(new SinglePlayerMenuPage(Menu), NewPageMode.Next);
+                    break;
+
+                case 1:
+                    // TODO: Implement multiplayer menus
+                    Menu.ChangePage(new GameModeMenuPage(Menu), NewPageMode.Next);
+                    break;
+
+                case 2:
+                    Menu.ChangePage(new BonusMenuPage(Menu), NewPageMode.Next);
+                    break;
+
+                case 3:
+                    Menu.ChangePage(new OptionsMenuPage(Menu), NewPageMode.Next);
+                    break;
+
+                case 4:
+                    CursorClick(() =>
+                    {
+                        FadeOut(4 / 16f, () =>
+                        {
+                            FrameManager.SetNextFrame(new Credits());
+                        });
+                    });
+                    break;
+
+                // TODO: Implement quit game menu
+                case 5:
+                    Menu.ChangePage(new GameModeMenuPage(Menu), NewPageMode.Next);
+                    break;
+
+                default:
+                    throw new Exception("Invalid selection");
+            }
         }
     }
 

@@ -102,10 +102,7 @@ public class ModernMenuAll : Frame, IHasPlayfield
             if (CurrentPage.UsesCursor)
             {
                 if (mode == NewPageMode.Next)
-                {
-                    Cursor.CurrentAnimation = 16;
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
-                }
+                    CursorClick();
 
                 TransitionOutCursorAndStem();
             }
@@ -127,6 +124,28 @@ public class ModernMenuAll : Frame, IHasPlayfield
                 data: index,
                 createObjFunc: static i => new PaletteTexture2D(MenuAll.GetBackgroundPalette(i))),
             PaletteIndex: 0);
+    }
+
+    public void CursorClick()
+    {
+        Cursor.CurrentAnimation = 16;
+        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+    }
+
+    public void InvalidCursorClick()
+    {
+        Cursor.CurrentAnimation = 16;
+        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
+    }
+
+    public bool HasFinishedCursorClick()
+    {
+        return Cursor.CurrentAnimation == 16 && Cursor.EndOfAnimation;
+    }
+
+    public void SetCursorToIdle()
+    {
+        Cursor.CurrentAnimation = 0;
     }
 
     public void ResetStem()

@@ -18,7 +18,6 @@ public class SinglePlayerMenuPage : MenuPage
     public byte PrevSelectedStartEraseOption { get; set; }
     public byte SelectedStartEraseOption { get; set; }
     public StartEraseMode EraseSaveStage { get; set; }
-    public bool IsStartingGame { get; set; }
 
     private void SelectStartEraseOption(byte targetIndex)
     {
@@ -105,34 +104,8 @@ public class SinglePlayerMenuPage : MenuPage
         switch (EraseSaveStage)
         {
             case StartEraseMode.Selection:
-                if (IsStartingGame)
-                {
-                    if (Menu.TransitionsFX.IsFadeOutFinished)
-                    {
-                        SoundEventsManager.StopAllSongs();
-
-                        if (Menu.Slots[SelectedOption] == null)
-                        {
-                            // Create a new game
-                            FrameManager.SetNextFrame(new Act1());
-                            GameInfo.ResetPersistentInfo();
-                        }
-                        else
-                        {
-                            // Load an existing game
-                            GameInfo.Load(SelectedOption);
-                            GameInfo.GotoLastSaveGame();
-                        }
-
-                        Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-                        Gfx.Fade = 1;
-
-                        GameInfo.CurrentSlot = SelectedOption;
-                        IsStartingGame = false;
-                    }
-                }
                 // Move start/erase to start
-                else if ((JoyPad.IsButtonJustPressed(GbaInput.Left) || JoyPad.IsButtonJustPressed(GbaInput.L)) && Menu.Cursor.CurrentAnimation != 16)
+                if ((JoyPad.IsButtonJustPressed(GbaInput.Left) || JoyPad.IsButtonJustPressed(GbaInput.L)))
                 {
                     if (SelectedStartEraseOption != 0)
                     {
@@ -142,7 +115,7 @@ public class SinglePlayerMenuPage : MenuPage
                     }
                 }
                 // Move start/erase to erase
-                else if ((JoyPad.IsButtonJustPressed(GbaInput.Right) || JoyPad.IsButtonJustPressed(GbaInput.R)) && Menu.Cursor.CurrentAnimation != 16)
+                else if ((JoyPad.IsButtonJustPressed(GbaInput.Right) || JoyPad.IsButtonJustPressed(GbaInput.R)))
                 {
                     if (SelectedStartEraseOption != 1)
                     {
@@ -152,33 +125,61 @@ public class SinglePlayerMenuPage : MenuPage
                     }
                 }
                 // Move up
-                else if (JoyPad.IsButtonJustPressed(GbaInput.Up) && Menu.Cursor.CurrentAnimation != 16)
+                else if (JoyPad.IsButtonJustPressed(GbaInput.Up))
                 {
                     SetSelectedOption(SelectedOption - 1);
                 }
                 // Move down
-                else if (JoyPad.IsButtonJustPressed(GbaInput.Down) && Menu.Cursor.CurrentAnimation != 16)
+                else if (JoyPad.IsButtonJustPressed(GbaInput.Down))
                 {
                     SetSelectedOption(SelectedOption + 1);
                 }
                 // Select slot
-                else if (JoyPad.IsButtonJustPressed(GbaInput.A) && Menu.Cursor.CurrentAnimation != 16)
+                else if (JoyPad.IsButtonJustPressed(GbaInput.A))
                 {
-                    Menu.Cursor.CurrentAnimation = 16;
+                    // Load game
+                    if (SelectedStartEraseOption != 1 || Menu.Slots[SelectedOption] != null)
+                    {
+                        CursorClick(() =>
+                        {
+                            SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.None, 1);
+                            FadeOut(2 / 16f, () =>
+                            {
+                                SoundEventsManager.StopAllSongs();
 
-                    if (SelectedStartEraseOption != 1)
-                    {
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                                if (Menu.Slots[SelectedOption] == null)
+                                {
+                                    // Create a new game
+                                    FrameManager.SetNextFrame(new Act1());
+                                    GameInfo.ResetPersistentInfo();
+                                }
+                                else
+                                {
+                                    // Load an existing game
+                                    GameInfo.Load(SelectedOption);
+                                    GameInfo.GotoLastSaveGame();
+                                }
+
+                                Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
+                                Gfx.Fade = 1;
+
+                                GameInfo.CurrentSlot = SelectedOption;
+                            });
+                        });
                     }
-                    else if (Menu.Slots[SelectedOption] != null)
-                    {
-                        EraseSaveStage = StartEraseMode.TransitionOutSelection;
-                        TransitionValue = 0;
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
-                    }
+                    // Erase slot
                     else
                     {
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
+                        if (Menu.Slots[SelectedOption] != null)
+                        {
+                            EraseSaveStage = StartEraseMode.TransitionOutSelection;
+                            TransitionValue = 0;
+                            CursorClick(null);
+                        }
+                        else
+                        {
+                            InvalidCursorClick();
+                        }
                     }
                 }
                 break;
@@ -276,7 +277,7 @@ public class SinglePlayerMenuPage : MenuPage
                 break;
         }
 
-        if (JoyPad.IsButtonJustPressed(GbaInput.B) && Menu.TransitionsFX.IsFadeOutFinished && !IsStartingGame)
+        if (JoyPad.IsButtonJustPressed(GbaInput.B) && Menu.TransitionsFX.IsFadeOutFinished)
         {
             switch (EraseSaveStage)
             {
@@ -301,18 +302,6 @@ public class SinglePlayerMenuPage : MenuPage
         }
 
         ManageStartEraseCursor();
-
-        if (!IsStartingGame && Menu.Cursor.CurrentAnimation == 16 && Menu.Cursor.EndOfAnimation)
-        {
-            Menu.Cursor.CurrentAnimation = 0;
-
-            if (SelectedStartEraseOption == 0)
-            {
-                SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.None, 1);
-                IsStartingGame = true;
-                Menu.TransitionsFX.FadeOutInit(2 / 16f);
-            }
-        }
     }
 
     protected override void Step_TransitionOut()

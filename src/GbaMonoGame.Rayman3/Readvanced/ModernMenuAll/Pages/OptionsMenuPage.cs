@@ -378,8 +378,7 @@ public class OptionsMenuPage : MenuPage
                 OptionsMenuOption option = (OptionsMenuOption)Options[SelectedOption];
                 option.Reset();
 
-                Menu.Cursor.CurrentAnimation = 16;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                CursorClick(null);
 
                 // Start arrow animations on frame 4 since it looks nicer
                 ArrowLeft.CurrentFrame = 4;
@@ -401,8 +400,7 @@ public class OptionsMenuPage : MenuPage
                 OptionsMenuOption option = (OptionsMenuOption)Options[SelectedOption];
                 option.Apply();
 
-                Menu.Cursor.CurrentAnimation = 16;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                CursorClick(null);
             }
             else if (JoyPad.IsButtonJustPressed(GbaInput.B))
             {
@@ -421,10 +419,6 @@ public class OptionsMenuPage : MenuPage
         }
 
         ManageTabsCursor();
-
-        // End the selected animation
-        if (Menu.Cursor.CurrentAnimation == 16 && Menu.Cursor.EndOfAnimation)
-            Menu.Cursor.CurrentAnimation = 0;
     }
 
     protected override void Step_TransitionOut()
