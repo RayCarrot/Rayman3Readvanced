@@ -120,7 +120,6 @@ public class GameModeMenuPage : MenuPage
         }
     }
 
-    // TODO: Make it optional if it uses the replaced animations or not
     private void ReplaceLogo()
     {
         const int animId = 0;
@@ -176,7 +175,9 @@ public class GameModeMenuPage : MenuPage
             CurrentAnimation = 0,
             RenderContext = RenderContext,
         };
-        ReplaceLogo();
+
+        if (Engine.Config.UseReadvancedLogo)
+            ReplaceLogo();
 
         // Reset values
         GameLogoPrevMovedTime = 0;

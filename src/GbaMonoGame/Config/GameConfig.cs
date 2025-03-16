@@ -68,6 +68,7 @@ public class GameConfig
     public int? LastPlayedNGageSaveSlot { get; set; }
     public string Language { get; set; }
     public Vector2? InternalGameResolution { get; set; } // Null to use original resolution
+    public bool UseReadvancedLogo { get; set; }
 
     // Controls
     public Dictionary<Input, Keys> Controls { get; set; }
@@ -98,6 +99,7 @@ public class GameConfig
         LastPlayedNGageSaveSlot = serializer.Serialize<int?>(LastPlayedNGageSaveSlot, GameSection, "LastPlayedNGageSaveSlot");
         Language = serializer.Serialize<string>(Language, GameSection, "Language");
         InternalGameResolution = serializer.Serialize<Vector2?>(InternalGameResolution, GameSection, "InternalGameResolution");
+        UseReadvancedLogo = serializer.Serialize<bool>(UseReadvancedLogo, GameSection, "UseReadvancedLogo");
 
         // Controls
         Controls = serializer.SerializeDictionary<Input, Keys>(Controls, ControlsSection);

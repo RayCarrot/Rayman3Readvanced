@@ -46,7 +46,6 @@ public class Intro : Frame, IHasPlayfield
 
     #region Private Methods
 
-    // TODO: Make it optional if it uses the replaced animations or not
     private void ReplaceLogo()
     {
         // Define the letters to replace
@@ -392,7 +391,8 @@ public class Intro : Frame, IHasPlayfield
         SoundEventsManager.SetVolumeForType(SoundType.Music, 0);
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__sadslide);
 
-        ReplaceLogo();
+        if (Engine.Config.UseReadvancedLogo)
+            ReplaceLogo();
     }
 
     public override void UnInit()

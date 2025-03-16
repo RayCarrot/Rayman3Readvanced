@@ -200,6 +200,17 @@ public class OptionsMenuPage : MenuPage
                         Engine.GameViewPort.UpdateRenderBox();
                     },
                     getCustomName: data => $"{data.X} x {data.Y}"),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "GAME LOGO", 
+                    infoText: "Determines the game logo used during the intro sequence and menu.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ORIGINAL", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("READVANCED", true),
+                    ],
+                    getData: _ => Engine.Config.UseReadvancedLogo,
+                    setData: data => Engine.Config.UseReadvancedLogo = data,
+                    getCustomName: _ => null),
             ]),
             new Tab("CONTROLS",
             [
