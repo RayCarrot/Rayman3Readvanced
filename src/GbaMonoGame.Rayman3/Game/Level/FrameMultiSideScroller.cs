@@ -145,9 +145,9 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         {
             SoundEventsManager.StopAllSongs();
 
-            MenuAll.Page menuPage = Rom.Platform == Platform.GBA && EndOfFrame
-                ? MenuAll.Page.Multiplayer
-                : MenuAll.Page.MultiplayerLostConnection;
+            InitialMenuPage menuPage = Rom.Platform == Platform.GBA && EndOfFrame
+                ? InitialMenuPage.Multiplayer
+                : InitialMenuPage.MultiplayerLostConnection;
             FrameManager.SetNextFrame(new MenuAll(menuPage));
 
             Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);

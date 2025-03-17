@@ -286,8 +286,8 @@ public class Intro : Frame, IHasPlayfield
         // Pre-load the menu
         Menu = new MenuAll(Rom.Platform switch
         {
-            Platform.GBA => MenuAll.Page.Language,
-            Platform.NGage => MenuAll.Page.NGage_FirstPage,
+            Platform.GBA => InitialMenuPage.Language,
+            Platform.NGage => InitialMenuPage.NGage_FirstPage,
             _ => throw new UnsupportedPlatformException(),
         });
         Menu.LoadGameInfo();

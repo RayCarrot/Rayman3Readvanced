@@ -331,7 +331,7 @@ public class GameOver : Frame
             case GameOverMode.ReturnToMenu:
                 if (TransitionsFX.IsFadeOutFinished)
                 {
-                    FrameManager.SetNextFrame(new MenuAll(MenuAll.Page.GameMode));
+                    FrameManager.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));
                 }
                 break;
 

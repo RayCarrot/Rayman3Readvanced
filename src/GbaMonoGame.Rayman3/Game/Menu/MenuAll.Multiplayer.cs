@@ -580,13 +580,13 @@ public partial class MenuAll
             RenderContext = Playfield.RenderContext,
         };
 
-        if (InitialPage == Page.Multiplayer)
+        if (InitialPage == InitialMenuPage.Multiplayer)
         {
             for (int i = 0; i < 5; i++)
                 Anims.Texts[i].Text = "";
 
             CurrentStepAction = Step_MultiplayerPlayerSelection;
-            InitialPage = Page.Language;
+            InitialPage = InitialMenuPage.Language;
             MultiplayerConnectionTimer = 30;
             LastConnectionTime = GameTime.ElapsedFrames;
             ReturningFromMultiplayerGame = true;
@@ -2388,9 +2388,9 @@ public partial class MenuAll
     {
         if (Rom.Platform == Platform.GBA)
         {
-            if (InitialPage == Page.MultiplayerLostConnection)
+            if (InitialPage == InitialMenuPage.MultiplayerLostConnection)
             {
-                InitialPage = Page.Language;
+                InitialPage = InitialMenuPage.Language;
                 CurrentStepAction = Step_MultiplayerLostConnection;
                 SetMenuText(1, true);
             }
@@ -2403,7 +2403,7 @@ public partial class MenuAll
         }
         else if (Rom.Platform == Platform.NGage)
         {
-            InitialPage = Page.Language;
+            InitialPage = InitialMenuPage.Language;
             CurrentStepAction = Step_TransitionToMultiplayerLostConnection;
 
             int playerIdWhoLeftTheGame = -1; // NOTE: Hard-code for now

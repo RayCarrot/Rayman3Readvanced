@@ -20,11 +20,11 @@ public class FramesDebugMenu : DebugMenu
         new("Modern Menu", () => new ModernMenuAll()),
         new("Menu", null, 
         [
-            new("Language", () => new MenuAll(MenuAll.Page.Language)),
-            new("Game Mode", () => new MenuAll(MenuAll.Page.GameMode)),
-            new("Options", () => new MenuAll(MenuAll.Page.Options)),
-            new("Multiplayer", () => new MenuAll(MenuAll.Page.Multiplayer)),
-            new("Multiplayer Lost Connection", () => new MenuAll(MenuAll.Page.MultiplayerLostConnection))
+            new("Language", () => new MenuAll(InitialMenuPage.Language)),
+            new("Game Mode", () => new MenuAll(InitialMenuPage.GameMode)),
+            new("Options", () => new MenuAll(InitialMenuPage.Options)),
+            new("Multiplayer", () => new MenuAll(InitialMenuPage.Multiplayer)),
+            new("Multiplayer Lost Connection", () => new MenuAll(InitialMenuPage.MultiplayerLostConnection))
         ]),
         new("Story", null, 
         [

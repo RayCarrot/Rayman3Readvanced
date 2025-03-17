@@ -327,10 +327,10 @@ public partial class MenuAll
             }
         }
 
-        if (InitialPage == Page.Options)
+        if (InitialPage == InitialMenuPage.Options)
         {
             CurrentStepAction = Step_Options;
-            InitialPage = Page.Language;
+            InitialPage = InitialMenuPage.Language;
 
             // Center sprites if English
             int x;

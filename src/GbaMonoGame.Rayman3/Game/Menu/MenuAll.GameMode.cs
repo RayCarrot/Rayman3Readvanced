@@ -157,10 +157,10 @@ public partial class MenuAll
         }
 
         // The game does a bit of a hack to skip the transition if we start at the game mode selection
-        if (InitialPage == Page.GameMode)
+        if (InitialPage == InitialMenuPage.GameMode)
         {
             CurrentStepAction = Step_GameMode;
-            InitialPage = Page.Language;
+            InitialPage = InitialMenuPage.Language;
         }
         else
         {

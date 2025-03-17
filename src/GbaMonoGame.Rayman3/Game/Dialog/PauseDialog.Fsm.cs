@@ -359,7 +359,7 @@ public partial class PauseDialog
                         SoundEventsManager.StopAllSongs();
                         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                         Gfx.Fade = 1;
-                        FrameManager.SetNextFrame(new MenuAll(MenuAll.Page.GameMode));
+                        FrameManager.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));
                     }
 
                     if (Rom.Platform == Platform.GBA)

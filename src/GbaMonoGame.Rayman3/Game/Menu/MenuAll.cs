@@ -15,7 +15,7 @@ public partial class MenuAll : Frame, IHasPlayfield
 {
     #region Constructor
 
-    public MenuAll(Page initialPage)
+    public MenuAll(InitialMenuPage initialPage)
     {
         WheelRotation = 0;
         SelectedOption = 0;
@@ -108,7 +108,7 @@ public partial class MenuAll : Frame, IHasPlayfield
     public int WheelRotation { get; set; }
     public int SteamTimer { get; set; }
 
-    public Page InitialPage { get; set; }
+    public InitialMenuPage InitialPage { get; set; }
 
     public bool IsLoadingMultiplayerMap { get; set; }
 
@@ -532,7 +532,7 @@ public partial class MenuAll : Frame, IHasPlayfield
 
         switch (InitialPage)
         {
-            case Page.Language:
+            case InitialMenuPage.Language:
                 // NOTE: The game doesn't do this, but this allows the saved language to be pre-selected
                 SelectedOption = Localization.LanguageId;
                 Anims.LanguageList.CurrentAnimation = LanguagesBaseAnimation + SelectedOption;
@@ -546,17 +546,17 @@ public partial class MenuAll : Frame, IHasPlayfield
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
                 break;
 
-            case Page.GameMode:
+            case InitialMenuPage.GameMode:
                 Playfield.TileLayers[3].Screen.IsEnabled = false;
                 CurrentStepAction = Step_InitializeTransitionToGameMode;
                 break;
 
-            case Page.Options:
+            case InitialMenuPage.Options:
                 Playfield.TileLayers[3].Screen.IsEnabled = false;
                 CurrentStepAction = Step_InitializeTransitionToOptions;
                 break;
 
-            case Page.Multiplayer:
+            case InitialMenuPage.Multiplayer:
                 IsLoadingMultiplayerMap = true;
                 Playfield.TileLayers[3].Screen.IsEnabled = false;
                 CurrentStepAction = Rom.Platform switch
@@ -567,14 +567,14 @@ public partial class MenuAll : Frame, IHasPlayfield
                 };
                 break;
 
-            case Page.MultiplayerLostConnection:
+            case InitialMenuPage.MultiplayerLostConnection:
                 IsLoadingMultiplayerMap = true;
                 Playfield.TileLayers[3].Screen.IsEnabled = false;
                 CurrentStepAction = Step_InitializeTransitionToMultiplayerLostConnection;
                 break;
 
             // N-Gage exclusive
-            case Page.NGage_FirstPage when Rom.Platform == Platform.NGage:
+            case InitialMenuPage.NGage_FirstPage when Rom.Platform == Platform.NGage:
                 Playfield.TileLayers[3].Screen.IsEnabled = false;
                 CurrentStepAction = Step_InitializeFirstPage;
                 break;
@@ -716,7 +716,7 @@ public partial class MenuAll : Frame, IHasPlayfield
     // N-Gage exclusive
     private void Step_InitializeFirstPage()
     {
-        InitialPage = Page.Language;
+        InitialPage = InitialMenuPage.Language;
 
         // TODO: If the game has failed to load the save file then it transitions to a page where it says the drive is full - re-implement?
 
@@ -726,16 +726,6 @@ public partial class MenuAll : Frame, IHasPlayfield
     #endregion
 
     #region Data Types
-
-    public enum Page
-    {
-        Language,
-        GameMode,
-        Options,
-        Multiplayer,
-        MultiplayerLostConnection,
-        NGage_FirstPage,
-    }
 
     public record Slot(int LumsCount, int CagesCount, int LivesCount);
 
