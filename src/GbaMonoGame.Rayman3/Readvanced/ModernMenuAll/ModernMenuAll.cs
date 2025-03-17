@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
@@ -8,9 +9,17 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3;
 
-// TODO: Select language first time you start the game?
 public class ModernMenuAll : Frame, IHasPlayfield
 {
+    #region Constructor
+
+    public ModernMenuAll(InitialMenuPage initialPage)
+    {
+        InitialPage = initialPage;
+    }
+
+    #endregion
+
     #region Properties
 
     private const float CursorBaseY = 67;
@@ -30,6 +39,7 @@ public class ModernMenuAll : Frame, IHasPlayfield
     public AnimatedObject Stem { get; set; }
     public AnimatedObject Steam { get; set; }
 
+    public InitialMenuPage InitialPage { get; }
     public MenuPage CurrentPage { get; set; }
     public MenuPage NextPage { get; set; }
 
@@ -421,9 +431,42 @@ public class ModernMenuAll : Frame, IHasPlayfield
 
         Playfield.Step();
 
-        // TODO: Allow the initial page to be changed like how the original menu does it
-        Playfield.TileLayers[3].Screen.IsEnabled = false;
-        ChangePage(new GameModeMenuPage(this), NewPageMode.Initial);
+        GfxScreen languageCurtainScreen = Playfield.TileLayers[3].Screen;
+
+        switch (InitialPage)
+        {
+            // TODO: Select language first time you start the game? Or just skip and have players do it in the new options page?
+            case InitialMenuPage.Language:
+            case InitialMenuPage.NGage_FirstPage when Rom.Platform == Platform.NGage:
+                languageCurtainScreen.IsEnabled = false;
+                ChangePage(new GameModeMenuPage(this), NewPageMode.Initial);
+                break;
+
+            case InitialMenuPage.GameMode:
+                languageCurtainScreen.IsEnabled = false;
+                ChangePage(new GameModeMenuPage(this), NewPageMode.Initial);
+                break;
+
+            case InitialMenuPage.Options:
+                languageCurtainScreen.IsEnabled = false;
+                ChangePage(new OptionsMenuPage(this), NewPageMode.Initial);
+                break;
+
+            // TODO: Implement multiplayer page
+            case InitialMenuPage.Multiplayer:
+                languageCurtainScreen.IsEnabled = false;
+                ChangePage(new GameModeMenuPage(this), NewPageMode.Initial);
+                break;
+
+            // TODO: Implement multiplayer page
+            case InitialMenuPage.MultiplayerLostConnection:
+                languageCurtainScreen.IsEnabled = false;
+                ChangePage(new GameModeMenuPage(this), NewPageMode.Initial);
+                break;
+
+            default:
+                throw new Exception("Invalid start page for ModernMenuAll");
+        }
 
         // Play the music
         if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__raytheme) &&

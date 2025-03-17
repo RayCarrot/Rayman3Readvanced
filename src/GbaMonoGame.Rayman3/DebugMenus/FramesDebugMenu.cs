@@ -17,14 +17,23 @@ public class FramesDebugMenu : DebugMenu
         new("Game Over", () => new GameOver()),
         new("Level Select", () => new LevelSelect()),
         new("Animation Viewer", () => new AnimationViewer()),
-        new("Modern Menu", () => new ModernMenuAll()),
+        new("Modern Menu", null,
+        [
+            new("Language", () => new ModernMenuAll(InitialMenuPage.Language)),
+            new("Game Mode", () => new ModernMenuAll(InitialMenuPage.GameMode)),
+            new("Options", () => new ModernMenuAll(InitialMenuPage.Options)),
+            new("Multiplayer", () => new ModernMenuAll(InitialMenuPage.Multiplayer)),
+            new("Multiplayer Lost Connection", () => new ModernMenuAll(InitialMenuPage.MultiplayerLostConnection)),
+            new("N-Gage First Page", () => new ModernMenuAll(InitialMenuPage.NGage_FirstPage))
+        ]),
         new("Menu", null, 
         [
             new("Language", () => new MenuAll(InitialMenuPage.Language)),
             new("Game Mode", () => new MenuAll(InitialMenuPage.GameMode)),
             new("Options", () => new MenuAll(InitialMenuPage.Options)),
             new("Multiplayer", () => new MenuAll(InitialMenuPage.Multiplayer)),
-            new("Multiplayer Lost Connection", () => new MenuAll(InitialMenuPage.MultiplayerLostConnection))
+            new("Multiplayer Lost Connection", () => new MenuAll(InitialMenuPage.MultiplayerLostConnection)),
+            new("N-Gage First Page", () => new MenuAll(InitialMenuPage.NGage_FirstPage))
         ]),
         new("Story", null, 
         [

@@ -25,7 +25,7 @@ public class Intro : Frame, IHasPlayfield
     public TgxPlayfield2D Playfield { get; set; }
 
     public Action CurrentStepAction { get; set; }
-    public MenuAll Menu { get; set; }
+    public ModernMenuAll Menu { get; set; }
     public AnimatedObject PressStartObj { get; set; }
     public AnimatedObject GameloftLogoObj { get; set; }
     public AnimatedObject BlackLumAndLogoObj { get; set; }
@@ -284,7 +284,7 @@ public class Intro : Frame, IHasPlayfield
         SoundEngineInterface.SetNbVoices(10);
 
         // Pre-load the menu
-        Menu = new MenuAll(Rom.Platform switch
+        Menu = new ModernMenuAll(Rom.Platform switch
         {
             Platform.GBA => InitialMenuPage.Language,
             Platform.NGage => InitialMenuPage.NGage_FirstPage,
