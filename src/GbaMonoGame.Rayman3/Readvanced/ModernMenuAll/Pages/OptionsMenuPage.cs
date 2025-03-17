@@ -57,7 +57,7 @@ public class OptionsMenuPage : MenuPage
         foreach (OptionsMenuOption menuOption in Tabs[selectedTab].MenuOptions)
             AddOption(menuOption);
 
-        SetSelectedOption(0, false);
+        SetSelectedOption(0, playSound: false, forceUpdate: true);
 
         if (playSound)
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
@@ -95,9 +95,9 @@ public class OptionsMenuPage : MenuPage
         }
     }
 
-    protected override bool SetSelectedOption(int selectedOption, bool playSound = true)
+    protected override bool SetSelectedOption(int selectedOption, bool playSound = true, bool forceUpdate = false)
     {
-        if (!base.SetSelectedOption(selectedOption, playSound))
+        if (!base.SetSelectedOption(selectedOption, playSound, forceUpdate))
             return false;
         
         // Get the selected option

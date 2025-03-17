@@ -60,7 +60,7 @@ public abstract class MenuPage
         option.ChangeIsSelected(index == SelectedOption);
     }
 
-    protected virtual bool SetSelectedOption(int selectedOption, bool playSound = true)
+    protected virtual bool SetSelectedOption(int selectedOption, bool playSound = true, bool forceUpdate = false)
     {
         int prevSelectedOption = SelectedOption;
 
@@ -72,7 +72,7 @@ public abstract class MenuPage
 
         bool changed = Menu.SetCursorTarget(newSelectedOption);
 
-        if (changed)
+        if (changed || forceUpdate)
         {
             SelectedOption = newSelectedOption;
             Options[prevSelectedOption].ChangeIsSelected(false);
@@ -82,7 +82,7 @@ public abstract class MenuPage
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
         }
 
-        return changed;
+        return changed || forceUpdate;
     }
 
     protected void CursorClick(Action callback)
