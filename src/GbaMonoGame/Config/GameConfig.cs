@@ -29,7 +29,8 @@ public class GameConfig
         LastPlayedNGageSaveSlot = null;
         Language = "en";
         InternalGameResolution = defaultResolution;
-        
+        UseReadvancedLogo = true;
+
         // Controls
         Controls = new Dictionary<Input, Keys>();
         
