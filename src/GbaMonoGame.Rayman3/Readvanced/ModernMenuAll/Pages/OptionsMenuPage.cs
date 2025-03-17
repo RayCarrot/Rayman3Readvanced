@@ -77,6 +77,7 @@ public class OptionsMenuPage : MenuPage
         float startX = CursorStartX.Value;
         float destX = CursorDestX.Value;
 
+        // Move with a speed based on the distance
         float dist = destX - startX;
         float speed = dist / TabsCursorMoveTime;
 

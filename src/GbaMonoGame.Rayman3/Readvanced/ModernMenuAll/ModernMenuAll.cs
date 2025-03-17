@@ -43,8 +43,8 @@ public class ModernMenuAll : Frame, IHasPlayfield
     public MenuPage CurrentPage { get; set; }
     public MenuPage NextPage { get; set; }
 
-    public int PrevSelectedCursorIndex { get; set; }
-    public int SelectedCursorIndex { get; set; }
+    public float? CursorStartY { get; set; }
+    public float? CursorDestY { get; set; }
     public StemMode StemMode { get; set; }
 
     public int WheelRotation { get; set; }
@@ -212,37 +212,30 @@ public class ModernMenuAll : Frame, IHasPlayfield
         }
         else if (StemMode == StemMode.Active)
         {
-            int lineHeight = CurrentPage.LineHeight;
+            // Move with a constant speed of 4
+            const float speed = 4;
 
-            if (SelectedCursorIndex != PrevSelectedCursorIndex)
+            if (CursorStartY != null && CursorDestY != null)
             {
-                if (SelectedCursorIndex < PrevSelectedCursorIndex)
-                {
-                    float yPos = SelectedCursorIndex * lineHeight + CursorBaseY;
+                float startY = CursorStartY.Value;
+                float destY = CursorDestY.Value;
 
-                    if (yPos < Cursor.ScreenPos.Y)
-                    {
-                        Cursor.ScreenPos -= new Vector2(0, 4);
-                    }
-                    else
-                    {
-                        Cursor.ScreenPos = Cursor.ScreenPos with { Y = yPos };
-                        PrevSelectedCursorIndex = SelectedCursorIndex;
-                    }
+                // Move up
+                if (destY < startY && Cursor.ScreenPos.Y > destY)
+                {
+                    Cursor.ScreenPos -= new Vector2(0, speed);
                 }
+                // Move down
+                else if (destY > startY && Cursor.ScreenPos.Y < destY)
+                {
+                    Cursor.ScreenPos += new Vector2(0, speed);
+                }
+                // Finished moving
                 else
                 {
-                    float yPos = SelectedCursorIndex * lineHeight + CursorBaseY;
-
-                    if (yPos > Cursor.ScreenPos.Y)
-                    {
-                        Cursor.ScreenPos += new Vector2(0, 4);
-                    }
-                    else
-                    {
-                        Cursor.ScreenPos = Cursor.ScreenPos with { Y = yPos };
-                        PrevSelectedCursorIndex = SelectedCursorIndex;
-                    }
+                    Cursor.ScreenPos = Cursor.ScreenPos with { Y = destY };
+                    CursorStartY = null;
+                    CursorDestY = null;
                 }
             }
         }
@@ -270,8 +263,8 @@ public class ModernMenuAll : Frame, IHasPlayfield
     {
         if (StemMode is StemMode.Active or StemMode.Inactive)
         {
-            PrevSelectedCursorIndex = SelectedCursorIndex;
-            SelectedCursorIndex = selectedIndex;
+            CursorStartY = Cursor.ScreenPos.Y;
+            CursorDestY = CursorBaseY + selectedIndex * CurrentPage.LineHeight;
             return true;
         }
         else
