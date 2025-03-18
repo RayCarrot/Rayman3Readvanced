@@ -35,7 +35,7 @@ public class EchoingCaves_M2 : FrameSideScroller
         Scene.AddDialog(UserInfo, false, false);
 
         // Create pause dialog, but don't add yet
-        PauseDialog = Engine.Config.UseModernPauseDialog ? new ModernPauseDialog(Scene) : new PauseDialog(Scene);
+        PauseDialog = Engine.Config.UseModernPauseDialog ? new ModernPauseDialog(Scene, true) : new PauseDialog(Scene);
 
         Scene.Init();
         Scene.Playfield.Step();

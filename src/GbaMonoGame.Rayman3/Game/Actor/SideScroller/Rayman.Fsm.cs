@@ -3827,7 +3827,6 @@ public partial class Rayman
                             // TODO: Implement
                             break;
 
-                        case MapId.Power6:
                         case MapId.World1:
                         case MapId.World2:
                         case MapId.World3:

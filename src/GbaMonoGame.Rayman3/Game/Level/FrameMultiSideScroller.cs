@@ -87,7 +87,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         UserInfo = new UserInfoMulti2D(Scene);
         Scene.AddDialog(UserInfo, false, false);
 
-        PauseDialog = Engine.Config.UseModernPauseDialog ? new ModernPauseDialog(Scene) : new PauseDialog(Scene);
+        PauseDialog = Engine.Config.UseModernPauseDialog ? new ModernPauseDialog(Scene, false) : new PauseDialog(Scene);
 
         Scene.Init();
 

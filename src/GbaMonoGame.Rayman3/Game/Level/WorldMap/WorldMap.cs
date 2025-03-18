@@ -732,7 +732,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         ((TgxPlayfield2D)Scene.Playfield).RenderContext.MaxResolution = maxRes;
 
         // Create pause dialog, but don't add yet
-        PauseDialog = Engine.Config.UseModernPauseDialog ? new ModernPauseDialog(Scene) : new PauseDialog(Scene);
+        PauseDialog = Engine.Config.UseModernPauseDialog ? new ModernPauseDialog(Scene, false) : new PauseDialog(Scene);
 
         Scene.Init();
         Scene.Playfield.Step();

@@ -1,5 +1,6 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
@@ -14,7 +15,7 @@ public partial class ModernPauseDialog
                 [
                     "CONTINUE",
                     "OPTIONS",
-                    "QUIT GAME", // TODO: EXIT LEVEL when inside a level
+                    CanExitLevel ? "EXIT LEVEL" : "QUIT GAME",
                 ]);
                 SetSelectedOption(0);
                 break;
@@ -67,7 +68,7 @@ public partial class ModernPauseDialog
                             options = true;
                             break;
 
-                        // Exit level
+                        // Exit level / quit game
                         case 2:
                             quitGame = true;
                             break;
@@ -134,16 +135,34 @@ public partial class ModernPauseDialog
                 }
                 else if (JoyPad.IsButtonJustPressed(GbaInput.A) && SelectedOption == 0)
                 {
-                    GameTime.Resume();
+                    // Exit level
+                    if (CanExitLevel)
+                    {
+                        DrawStep = PauseDialogDrawStep.MoveOut;
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
 
-                    SoundEventsManager.StopAllSongs();
-                    Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-                    Gfx.Fade = 1;
+                        if (Rom.Platform == Platform.NGage)
+                            ((NGageSoundEventsManager)SoundEventsManager.Current).ResumeLoopingSoundEffects();
 
-                    if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
-                        FrameManager.SetNextFrame(new GameCubeMenu());
+                        State.MoveTo(null);
+                        
+                        // TODO: Implement exit level message for the Mode7 actors
+                        Scene.MainActor.ProcessMessage(this, Message.Main_LevelExit);
+                    }
+                    // Quit game
                     else
-                        FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
+                    {
+                        GameTime.Resume();
+
+                        SoundEventsManager.StopAllSongs();
+                        Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
+                        Gfx.Fade = 1;
+
+                        if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
+                            FrameManager.SetNextFrame(new GameCubeMenu());
+                        else
+                            FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
+                    }
 
                     if (Rom.Platform == Platform.GBA)
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);

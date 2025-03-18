@@ -68,7 +68,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
         UserInfo.ProcessMessage(this, Message.UserInfo_GameCubeLevel);
 
         // Create pause dialog, but don't add yet
-        PauseDialog = Engine.Config.UseModernPauseDialog ? new ModernPauseDialog(Scene) : new PauseDialog(Scene);
+        PauseDialog = Engine.Config.UseModernPauseDialog ? new ModernPauseDialog(Scene, true) : new PauseDialog(Scene);
 
         Scene.AddDialog(UserInfo, false, false);
         Scene.Init();

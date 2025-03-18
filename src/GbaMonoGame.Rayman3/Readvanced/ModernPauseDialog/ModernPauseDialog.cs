@@ -7,8 +7,9 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 
 public partial class ModernPauseDialog : Dialog
 {
-    public ModernPauseDialog(Scene2D scene) : base(scene)
+    public ModernPauseDialog(Scene2D scene, bool canExitLevel) : base(scene)
     {
+        CanExitLevel = canExitLevel;
         PausedMachineId = -1;
     }
 
@@ -29,6 +30,7 @@ public partial class ModernPauseDialog : Dialog
     public int CursorOffsetY { get; set; }
     public PauseDialogDrawStep DrawStep { get; set; }
 
+    public bool CanExitLevel { get; }
     public int PausedMachineId { get; set; }
 
     private void ManageCursor()
