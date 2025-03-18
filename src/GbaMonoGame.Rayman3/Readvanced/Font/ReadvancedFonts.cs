@@ -48,8 +48,10 @@ public static class ReadvancedFonts
         {
             GlyphSpecificLayoutOffsets = new Dictionary<char, float>()
             {
+                ['H'] = -1,
                 ['N'] = -1,
                 ['T'] = -2,
+                ['V'] = -1,
             }
         },
         ['B'] = new(new Rectangle(21, 47, 9, 12)),
@@ -75,12 +77,20 @@ public static class ReadvancedFonts
         {
             GlyphSpecificLayoutOffsets = new Dictionary<char, float>()
             {
+                ['A'] = -2,
+                ['C'] = -1,
                 ['I'] = -1,
                 ['L'] = -2,
             }
         },
         ['U'] = new(new Rectangle(74, 67, 9, 12)),
-        ['V'] = new(new Rectangle(88, 67, 10, 12)),
+        ['V'] = new(new Rectangle(88, 67, 10, 12))
+        {
+            GlyphSpecificLayoutOffsets = new Dictionary<char, float>()
+            {
+                ['A'] = -2,
+            }
+        },
         ['W'] = new(new Rectangle(103, 67, 13, 12)),
         ['X'] = new(new Rectangle(120, 67, 12, 12)),
         ['Y'] = new(new Rectangle(136, 67, 10, 12))
