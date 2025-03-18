@@ -157,7 +157,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
 
     public void Step_Pause_Paused()
     {
-        if (PauseDialog.DrawStep == PauseDialog.PauseDialogDrawStep.Hide)
+        if (PauseDialog.DrawStep == PauseDialogDrawStep.Hide)
             CurrentStepAction = Step_Pause_UnInit;
 
         Scene.Step();

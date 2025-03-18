@@ -35,10 +35,10 @@ public partial class PauseDialog : Dialog
     public int PrevSelectedOption { get; set; }
 
     public int OffsetY { get; set; }
-    public int CursorOffset { get; set; }
+    public int CursorOffsetY { get; set; }
     public PauseDialogDrawStep DrawStep { get; set; }
 
-    private void SetCursorPosition()
+    private void ManageCursor()
     {
         if (SelectedOption != PrevSelectedOption)
         {
@@ -47,31 +47,31 @@ public partial class PauseDialog : Dialog
 
             if (SelectedOption < PrevSelectedOption)
             {
-                if (targetY < CursorOffset)
+                if (targetY < CursorOffsetY)
                 {
-                    CursorOffset -= 2;
+                    CursorOffsetY -= 2;
                 }
                 else
                 {
-                    CursorOffset = targetY;
+                    CursorOffsetY = targetY;
                     PrevSelectedOption = SelectedOption;
                 }
             }
             else
             {
-                if (targetY > CursorOffset)
+                if (targetY > CursorOffsetY)
                 {
-                    CursorOffset += 2;
+                    CursorOffsetY += 2;
                 }
                 else
                 {
-                    CursorOffset = targetY;
+                    CursorOffsetY = targetY;
                     PrevSelectedOption = SelectedOption;
                 }
             }
         }
 
-        Cursor.ScreenPos = Cursor.ScreenPos with { Y = CursorOffset + 88 - OffsetY };
+        Cursor.ScreenPos = Cursor.ScreenPos with { Y = CursorOffsetY + 88 - OffsetY };
     }
 
     private void SetMusicVolumeAnimation()
@@ -208,7 +208,7 @@ public partial class PauseDialog : Dialog
             RenderContext = Scene.HudRenderContext,
         };
 
-        CursorOffset = 0;
+        CursorOffsetY = 0;
 
         AnimatedObjectResource selectionsResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.PauseSelectionAnimations);
         PauseSelection = new AnimatedObject(selectionsResource, true)
@@ -359,7 +359,7 @@ public partial class PauseDialog : Dialog
             Canvas.FrameChannelSprite();
 
             Canvas.ScreenPos = Canvas.ScreenPos with { Y = 80 - OffsetY };
-            SetCursorPosition();
+            ManageCursor();
             PauseSelection.ScreenPos = PauseSelection.ScreenPos with { Y = 90 - OffsetY };
 
             if (Rom.Platform == Platform.NGage)
@@ -396,13 +396,5 @@ public partial class PauseDialog : Dialog
                 animationPlayer.PlayFront(BackSymbol);
             }
         }
-    }
-
-    public enum PauseDialogDrawStep
-    {
-        Hide = 0,
-        MoveIn = 1,
-        Wait = 2,
-        MoveOut = 3,
     }
 }
