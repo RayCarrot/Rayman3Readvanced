@@ -212,6 +212,18 @@ public class OptionsMenuPage : MenuPage
                     getData: _ => Engine.Config.UseReadvancedLogo,
                     setData: data => Engine.Config.UseReadvancedLogo = data,
                     getCustomName: _ => null),
+                // TODO: If the user changes this while in a level then the pause dialog should be re-created?
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "PAUSE MENU", 
+                    infoText: "Determines if the game should use the original or updated pause menu. The updated one provides access to the game options and the ability to exit a level.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ORIGINAL", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("READVANCED", true),
+                    ],
+                    getData: _ => Engine.Config.UseModernPauseDialog,
+                    setData: data => Engine.Config.UseModernPauseDialog = data,
+                    getCustomName: _ => null),
             ]),
             new Tab("CONTROLS",
             [

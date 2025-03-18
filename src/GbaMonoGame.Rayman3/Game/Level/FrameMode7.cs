@@ -2,6 +2,7 @@
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 using GbaMonoGame.TgxEngine;
 using Action = System.Action;
 
@@ -28,7 +29,7 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
 
     public TransitionsFX TransitionsFX { get; set; }
     public Dialog UserInfo { get; set; }
-    public PauseDialog PauseDialog { get; set; }
+    public Dialog PauseDialog { get; set; }
 
     public bool CanPause { get; set; }
     public int PausedMachineId { get; set; }
@@ -54,7 +55,7 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
         Scene = new Scene2D((int)GameInfo.MapId, x => new CameraMode7(x), 3, 1);
 
         // Create pause dialog, but don't add yet
-        PauseDialog = new PauseDialog(Scene);
+        PauseDialog = Engine.Config.UseModernPauseDialog ? new ModernPauseDialog(Scene) : new PauseDialog(Scene);
 
         Scene.Init();
         Scene.Playfield.Step();
@@ -210,7 +211,10 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
 
     public void Step_Pause_AddDialog()
     {
-        PauseDialog.PausedMachineId = PausedMachineId;
+        if (PauseDialog is PauseDialog pauseDialog)
+            pauseDialog.PausedMachineId = PausedMachineId;
+        else if (PauseDialog is ModernPauseDialog modernPauseDialog)
+            modernPauseDialog.PausedMachineId = PausedMachineId;
 
         Scene.AddDialog(PauseDialog, true, false);
 
@@ -223,14 +227,14 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
 
     public void Step_Pause_Paused()
     {
-        if (PauseDialog.DrawStep == PauseDialogDrawStep.Hide)
+        if (PauseDialog is PauseDialog { DrawStep: PauseDialogDrawStep.Hide } or ModernPauseDialog { DrawStep: PauseDialogDrawStep.Hide })
             CurrentStepAction = Step_Pause_UnInit;
 
         Scene.Step();
 
         // The original game doesn't have this check, but since we're still running the game loop
         // while in the simulated sleep mode we have to make sure to not draw the HUD then
-        if (!PauseDialog.IsInSleepMode)
+        if (PauseDialog is not PauseDialog { IsInSleepMode: true })
             UserInfo.Draw(Scene.AnimationPlayer);
 
         Scene.Playfield.Step();

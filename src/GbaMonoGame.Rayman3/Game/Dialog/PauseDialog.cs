@@ -9,7 +9,7 @@ public partial class PauseDialog : Dialog
 {
     public PauseDialog(Scene2D scene) : base(scene)
     {
-        PausedMachineId = 0xff;
+        PausedMachineId = -1;
     }
 
     public AnimatedObject Canvas { get; set; }

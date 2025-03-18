@@ -1,6 +1,7 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 using GbaMonoGame.TgxEngine;
 using Action = System.Action;
 
@@ -34,7 +35,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
     public TransitionsFX TransitionsFX { get; set; }
     public UserInfoMulti2D UserInfo { get; set; }
-    public PauseDialog PauseDialog { get; set; }
+    public Dialog PauseDialog { get; set; }
 
     public int PausedMachineId { get; set; }
     public int InvisibleActorId { get; set; }
@@ -86,7 +87,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         UserInfo = new UserInfoMulti2D(Scene);
         Scene.AddDialog(UserInfo, false, false);
 
-        PauseDialog = new PauseDialog(Scene);
+        PauseDialog = Engine.Config.UseModernPauseDialog ? new ModernPauseDialog(Scene) : new PauseDialog(Scene);
 
         Scene.Init();
 
@@ -204,7 +205,10 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
     public void Step_Pause_AddDialog()
     {
-        PauseDialog.PausedMachineId = PausedMachineId;
+        if (PauseDialog is PauseDialog pauseDialog)
+            pauseDialog.PausedMachineId = PausedMachineId;
+        else if (PauseDialog is ModernPauseDialog modernPauseDialog)
+            modernPauseDialog.PausedMachineId = PausedMachineId;
 
         Scene.AddDialog(PauseDialog, true, false);
 
@@ -220,7 +224,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
     public void Step_Pause_Paused()
     {
-        if (PauseDialog.DrawStep == PauseDialogDrawStep.Hide)
+        if (PauseDialog is PauseDialog { DrawStep: PauseDialogDrawStep.Hide } or ModernPauseDialog { DrawStep: PauseDialogDrawStep.Hide })
             CurrentStepAction = Step_Pause_UnInit;
 
         Scene.Step();

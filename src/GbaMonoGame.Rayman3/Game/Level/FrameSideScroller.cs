@@ -1,6 +1,7 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 using GbaMonoGame.TgxEngine;
 using Action = System.Action;
 
@@ -32,7 +33,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
     public UserInfoSideScroller UserInfo { get; set; }
     public FogDialog Fog { get; set; }
     public LyTimerDialog LyTimer { get; set; }
-    public PauseDialog PauseDialog { get; set; }
+    public Dialog PauseDialog { get; set; }
 
     public bool CanPause { get; set; }
     public bool IsTimed { get; set; }
@@ -156,7 +157,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.AddDialog(UserInfo, false, false);
 
         // Create pause dialog, but don't add yet
-        PauseDialog = new PauseDialog(Scene);
+        PauseDialog = Engine.Config.UseModernPauseDialog ? new ModernPauseDialog(Scene) : new PauseDialog(Scene);
 
         Scene.Init();
         Scene.Playfield.Step();
@@ -273,14 +274,14 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
 
     public void Step_Pause_Paused()
     {
-        if (PauseDialog.DrawStep == PauseDialogDrawStep.Hide)
+        if (PauseDialog is PauseDialog { DrawStep: PauseDialogDrawStep.Hide } or ModernPauseDialog { DrawStep: PauseDialogDrawStep.Hide })
             CurrentStepAction = Step_Pause_UnInit;
 
         Scene.Step();
 
         // The original game doesn't have this check, but since we're still running the game loop
         // while in the simulated sleep mode we have to make sure to not draw the HUD then
-        if (!PauseDialog.IsInSleepMode)
+        if (PauseDialog is not PauseDialog { IsInSleepMode: true })
             UserInfo.Draw(Scene.AnimationPlayer);
         
         Scene.Playfield.Step();

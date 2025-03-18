@@ -30,6 +30,7 @@ public class GameConfig
         Language = "en";
         InternalGameResolution = defaultResolution;
         UseReadvancedLogo = true;
+        UseModernPauseDialog = true;
 
         // Controls
         Controls = new Dictionary<Input, Keys>();
@@ -70,6 +71,7 @@ public class GameConfig
     public string Language { get; set; }
     public Vector2? InternalGameResolution { get; set; } // Null to use original resolution
     public bool UseReadvancedLogo { get; set; }
+    public bool UseModernPauseDialog { get; set; }
 
     // Controls
     public Dictionary<Input, Keys> Controls { get; set; }
@@ -101,6 +103,7 @@ public class GameConfig
         Language = serializer.Serialize<string>(Language, GameSection, "Language");
         InternalGameResolution = serializer.Serialize<Vector2?>(InternalGameResolution, GameSection, "InternalGameResolution");
         UseReadvancedLogo = serializer.Serialize<bool>(UseReadvancedLogo, GameSection, "UseReadvancedLogo");
+        UseModernPauseDialog = serializer.Serialize<bool>(UseModernPauseDialog, GameSection, "UseModernPauseDialog");
 
         // Controls
         Controls = serializer.SerializeDictionary<Input, Keys>(Controls, ControlsSection);
