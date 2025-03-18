@@ -193,7 +193,7 @@
 | JanoSkullPlatform      | 🟩     |                                              |
 | Spider                 | 🟥     |                                              |
 | SamMode7               | 🟩     |                                              |
-| #43                    | 🟥     |                                              |
+| Vines                  | 🟥     |                                              |
 | WoodenShieldedHoodboom | 🟩     |                                              |
 | Spinneroo              | 🟥     |                                              |
 | Slapdash               | 🟩     |                                              |
@@ -208,7 +208,7 @@
 | LavaSplash             | 🟩     |                                              |
 | #56                    | 🟥     |                                              |
 | #57                    | 🟥     |                                              |
-| #58                    | 🟥     |                                              |
+| Electricity            | 🟥     |                                              |
 | Hoodstormer            | 🟩     |                                              |
 | SpikyFlyingBomb        | 🟩     |                                              |
 | FlowerFire             | 🟩     |                                              |
@@ -231,12 +231,12 @@
 | Ly                     | 🟩     |                                              |
 | Flag                   | 🟩     |                                              |
 | #80                    | 🟥     |                                              |
-| #81                    | 🟥     |                                              |
+| BreakableWall          | 🟥     |                                              |
 | KegDebris              | 🟩     |                                              |
-| #83                    | 🟥     |                                              |
+| Scaleman               | 🟥     |                                              |
 | Machine                | 🟩     |                                              |
 | Balloon                | 🟩     |                                              |
-| #86                    | 🟥     |                                              |
+| Scaleman2              | 🟥     |                                              |
 | ItemsMulti             | 🟩     |                                              |
 | #88                    | 🟥     |                                              |
 | Skull                  | 🟩     |                                              |
@@ -247,7 +247,7 @@
 | #94                    | 🟥     |                                              |
 | Teensies               | 🟩     |                                              |
 | #96                    | 🟥     |                                              |
-| #97                    | 🟥     |                                              |
+| Rocky                  | 🟥     |                                              |
 | #98                    | 🟥     |                                              |
 | MechanicalPlatform     | 🟩     |                                              |
 | Urchin                 | 🟩     |                                              |

@@ -45,7 +45,7 @@ public enum ActorType
     JanoSkullPlatform = 40,
     Spider = 41, // TODO: Implement
     SamMode7 = 42,
-
+    Vines = 43, // TODO: Implement
     WoodenShieldedHoodboom = 44,
     Spinneroo = 45, // TODO: Implement
     Slapdash = 46,
@@ -59,6 +59,7 @@ public enum ActorType
     Plum = 54, // TODO: Implement
     LavaSplash = 55,
 
+    Electricity = 58, // TODO: Implement
     Hoodstormer = 59,
     SpikyFlyingBomb = 60,
     FlowerFire = 61,
@@ -81,11 +82,12 @@ public enum ActorType
     Ly = 78,
     Flag = 79,
 
+    BreakableWall = 81, // TODO: Implement
     KegDebris = 82,
-
+    Scaleman = 83, // TODO: Implement
     Machine = 84,
     Balloon = 85,
-
+    Scaleman2 = 86, // TODO: Implement
     ItemsMulti = 87,
 
     Skull = 89,
@@ -94,6 +96,8 @@ public enum ActorType
     MurfyStone = 92,
 
     Teensies = 95,
+
+    Rocky = 97, // TODO: Implement
 
     MechanicalPlatform = 99,
     Urchin = 100,
