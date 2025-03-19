@@ -14,12 +14,9 @@ public class BonusTextMenuOption : TextMenuOption
     public SpriteTextureObject[] CollectionIcons { get; set; }
     public SpriteTextObject[] CollectionTextObjects { get; set; }
 
-    public override void Init(int bgPriority, RenderContext renderContext, Vector2 position, int index)
+    public override void Init(int bgPriority, RenderContext renderContext, int index)
     {
-        base.Init(bgPriority, renderContext, position, index);
-
-        const int startX = 110;
-        const int width = 65;
+        base.Init(bgPriority, renderContext, index);
 
         CollectionIcons = new SpriteTextureObject[Collections.Length];
         for (int i = 0; i < CollectionIcons.Length; i++)
@@ -28,7 +25,6 @@ public class BonusTextMenuOption : TextMenuOption
             {
                 BgPriority = bgPriority,
                 ObjPriority = 0,
-                ScreenPos = position + new Vector2(startX + i * width, 0),
                 Texture = Engine.FrameContentManager.Load<Texture2D>(Collections[i].IconTexture),
                 RenderContext = renderContext,
             };
@@ -41,13 +37,26 @@ public class BonusTextMenuOption : TextMenuOption
             {
                 BgPriority = bgPriority,
                 ObjPriority = 0,
-                ScreenPos = position + new Vector2(startX + 19 + i * width, 1),
                 RenderContext = renderContext,
                 Text = Collections[i].Text,
                 FontSize = FontSize.Font16,
                 Color = TextColor.Menu,
             };
         }
+    }
+
+    public override void SetPosition(Vector2 position)
+    {
+        base.SetPosition(position);
+
+        const int startX = 110;
+        const int width = 65;
+
+        for (int i = 0; i < CollectionIcons.Length; i++)
+            CollectionIcons[i].ScreenPos = position + new Vector2(startX + i * width, 0);
+
+        for (int i = 0; i < CollectionTextObjects.Length; i++)
+            CollectionTextObjects[i].ScreenPos = position + new Vector2(startX + 19 + i * width, 1);
     }
 
     public override void Draw(AnimationPlayer animationPlayer)

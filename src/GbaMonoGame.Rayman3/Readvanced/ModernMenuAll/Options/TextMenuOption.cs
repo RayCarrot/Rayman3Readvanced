@@ -14,18 +14,22 @@ public class TextMenuOption : MenuOption
     public float Scale { get; }
     public SpriteFontTextObject TextObject { get; set; }
 
-    public override void Init(int bgPriority, RenderContext renderContext, Vector2 position, int index)
+    public override void Init(int bgPriority, RenderContext renderContext, int index)
     {
         TextObject = new SpriteFontTextObject()
         {
             BgPriority = bgPriority,
             ObjPriority = 0,
-            ScreenPos = position + new Vector2(0, 13 * Scale),
             RenderContext = renderContext,
             AffineMatrix = new AffineMatrix(0, new Vector2(Scale), false, false),
             Text = Text,
             Font = ReadvancedFonts.MenuYellow,
         };
+    }
+
+    public override void SetPosition(Vector2 position)
+    {
+        TextObject.ScreenPos = position + new Vector2(0, 13 * Scale);
     }
 
     public override void ChangeIsSelected(bool isSelected)

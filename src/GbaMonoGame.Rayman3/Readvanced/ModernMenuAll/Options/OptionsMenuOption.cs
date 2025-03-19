@@ -12,7 +12,7 @@ public abstract class OptionsMenuOption : MenuOption
 
     private const float TextScale = 2 / 3f;
     private const float ValueTextScale = 2 / 3f;
-    private const float ValueTextXPosition = 180;
+    private const float ValueTextXPosition = 165;
     private const float ValueTextPadding = 5;
 
     public string Text { get; }
@@ -35,13 +35,12 @@ public abstract class OptionsMenuOption : MenuOption
     public abstract void Reset();
     public abstract void Step();
 
-    public override void Init(int bgPriority, RenderContext renderContext, Vector2 position, int index)
+    public override void Init(int bgPriority, RenderContext renderContext, int index)
     {
         TextObject = new SpriteFontTextObject()
         {
             BgPriority = bgPriority,
             ObjPriority = 0,
-            ScreenPos = position + new Vector2(0, 13 * TextScale),
             RenderContext = renderContext,
             AffineMatrix = new AffineMatrix(0, new Vector2(TextScale), false, false),
             Text = Text,
@@ -52,11 +51,16 @@ public abstract class OptionsMenuOption : MenuOption
         {
             BgPriority = bgPriority,
             ObjPriority = 0,
-            ScreenPos = position + new Vector2(ValueTextXPosition, 13 * ValueTextScale),
             RenderContext = renderContext,
             AffineMatrix = new AffineMatrix(0, new Vector2(ValueTextScale), false, false),
             Font = ReadvancedFonts.MenuYellow,
         };
+    }
+
+    public override void SetPosition(Vector2 position)
+    {
+        TextObject.ScreenPos = position + new Vector2(0, 13 * TextScale);
+        ValueTextObject.ScreenPos = position + new Vector2(ValueTextXPosition, 13 * ValueTextScale);
     }
 
     public override void ChangeIsSelected(bool isSelected)

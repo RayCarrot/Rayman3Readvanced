@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.TgxEngine;
@@ -22,10 +23,27 @@ public abstract class MenuPage
     public Action FadeOutCallback { get; set; }
 
     public int SelectedOption { get; set; }
+    public int ScrollOffset { get; set; }
+    public bool HasScrollableContent => Options.Count > MaxOptions;
+    public int MaxScrollOffset => Options.Count - MaxOptions;
 
     public abstract bool UsesCursor { get; }
     public abstract int BackgroundPalette { get; }
     public abstract int LineHeight { get; }
+    public virtual int MaxOptions => 6;
+    public virtual bool HasScrollBar => false;
+    
+    private Vector2 GetOptionPosition(int index) => new(75, 54 + LineHeight * index);
+
+    private void UpdateOptionPositions()
+    {
+        int index = 0;
+        foreach (MenuOption option in Options.Skip(ScrollOffset).Take(MaxOptions))
+        {
+            option.SetPosition(GetOptionPosition(index));
+            index++;
+        }
+    }
 
     protected virtual void Init() { }
     protected virtual void Step_TransitionIn() { }
@@ -36,13 +54,14 @@ public abstract class MenuPage
 
     protected void DrawOptions(AnimationPlayer animationPlayer)
     {
-        foreach (MenuOption option in Options)
+        foreach (MenuOption option in Options.Skip(ScrollOffset).Take(MaxOptions))
             option.Draw(animationPlayer);
     }
 
     protected void ClearOptions()
     {
         SelectedOption = 0;
+        ScrollOffset = 0;
         Options.Clear();
     }
 
@@ -53,10 +72,11 @@ public abstract class MenuPage
 
         if (!option.IsInitialized)
         {
-            option.Init(3, RenderContext, new Vector2(75, 54 + LineHeight * index), index);
+            option.Init(3, RenderContext, index);
             option.IsInitialized = true;
         }
-
+        
+        option.SetPosition(GetOptionPosition(index - ScrollOffset));
         option.ChangeIsSelected(index == SelectedOption);
     }
 
@@ -65,18 +85,43 @@ public abstract class MenuPage
         int prevSelectedOption = SelectedOption;
 
         int newSelectedOption = selectedOption;
-        if (newSelectedOption > Options.Count - 1)
-            newSelectedOption = 0;
-        else if (newSelectedOption < 0)
-            newSelectedOption = Options.Count - 1;
 
-        bool changed = Menu.SetCursorTarget(newSelectedOption);
+        int newScrollOffset = ScrollOffset;
+        if (newSelectedOption > prevSelectedOption)
+        {
+            if (newSelectedOption >= ScrollOffset + MaxOptions)
+                newScrollOffset++;
+        }
+        else if (newSelectedOption < prevSelectedOption)
+        {
+            if (newSelectedOption < ScrollOffset)
+                newScrollOffset--;
+        }
+
+        if (newSelectedOption > Options.Count - 1)
+        {
+            newSelectedOption = 0;
+            newScrollOffset = 0;
+        }
+        else if (newSelectedOption < 0)
+        {
+            newSelectedOption = Options.Count - 1;
+            newScrollOffset = MaxScrollOffset;
+        }
+
+        bool changed = Menu.SetCursorTarget(newSelectedOption - newScrollOffset);
 
         if (changed || forceUpdate)
         {
             SelectedOption = newSelectedOption;
             Options[prevSelectedOption].ChangeIsSelected(false);
             Options[newSelectedOption].ChangeIsSelected(true);
+
+            if (newScrollOffset != ScrollOffset)
+            {
+                ScrollOffset = newScrollOffset;
+                UpdateOptionPositions();
+            }
 
             if (playSound)
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);

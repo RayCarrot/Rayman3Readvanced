@@ -23,6 +23,8 @@ public class ModernMenuAll : Frame, IHasPlayfield
     #region Properties
 
     private const float CursorBaseY = 67;
+    private const float ScrollBarThumbBaseY = 56;
+    private const float ScrollBarLength = 32;
 
     TgxPlayfield IHasPlayfield.Playfield => Playfield;
 
@@ -38,6 +40,8 @@ public class ModernMenuAll : Frame, IHasPlayfield
     public AnimatedObject Cursor { get; set; }
     public AnimatedObject Stem { get; set; }
     public AnimatedObject Steam { get; set; }
+    public SpriteTextureObject ScrollBar { get; set; }
+    public SpriteTextureObject ScrollBarThumb { get; set; }
 
     public InitialMenuPage InitialPage { get; }
     public MenuPage CurrentPage { get; set; }
@@ -283,6 +287,8 @@ public class ModernMenuAll : Frame, IHasPlayfield
 
         AnimatedObjectResource propsAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuPropAnimations);
         AnimatedObjectResource steamAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuSteamAnimations);
+        Texture2D scrollBarTexture = Engine.FixContentManager.Load<Texture2D>("ScrollBar");
+        Texture2D scrollBarThumbTexture = Engine.FixContentManager.Load<Texture2D>("ScrollBarThumb");
 
         Wheel1 = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
         {
@@ -366,6 +372,24 @@ public class ModernMenuAll : Frame, IHasPlayfield
             ObjPriority = 0,
             ScreenPos = new Vector2(27, 20),
             CurrentAnimation = 0,
+            RenderContext = renderContext,
+        };
+
+        ScrollBar = new SpriteTextureObject
+        {
+            BgPriority = 3,
+            ObjPriority = 0,
+            ScreenPos = new Vector2(352, 40),
+            Texture = scrollBarTexture,
+            RenderContext = renderContext,
+        };
+
+        ScrollBarThumb = new SpriteTextureObject
+        {
+            BgPriority = 3,
+            ObjPriority = 0,
+            ScreenPos = new Vector2(357, ScrollBarThumbBaseY),
+            Texture = scrollBarThumbTexture,
             RenderContext = renderContext,
         };
 
@@ -532,6 +556,19 @@ public class ModernMenuAll : Frame, IHasPlayfield
         AnimationPlayer.Play(Wheel3);
         AnimationPlayer.Play(Wheel4);
         AnimationPlayer.Play(Wheel5);
+
+        if (CurrentPage.HasScrollBar)
+        {
+            AnimationPlayer.Play(ScrollBar);
+
+            if (CurrentPage.HasScrollableContent)
+            {
+                float scrollY = MathHelper.Lerp(0, ScrollBarLength, CurrentPage.ScrollOffset / (float)CurrentPage.MaxScrollOffset);
+                ScrollBarThumb.ScreenPos = ScrollBarThumb.ScreenPos with { Y = ScrollBarThumbBaseY + scrollY };
+
+                AnimationPlayer.Play(ScrollBarThumb);
+            }
+        }
 
         if (SteamTimer == 0)
         {

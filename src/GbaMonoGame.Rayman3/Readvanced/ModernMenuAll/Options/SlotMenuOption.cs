@@ -23,7 +23,7 @@ public class SlotMenuOption : MenuOption
     public SpriteTextObject TimeText { get; set; }
     public SpriteFontTextObject EmptyText { get; set; }
 
-    public override void Init(int bgPriority, RenderContext renderContext, Vector2 position, int index)
+    public override void Init(int bgPriority, RenderContext renderContext, int index)
     {
         AnimatedObjectResource propsAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuPropAnimations);
 
@@ -34,7 +34,6 @@ public class SlotMenuOption : MenuOption
                 IsFramed = true,
                 BgPriority = bgPriority,
                 ObjPriority = 0,
-                ScreenPos = position,
                 CurrentAnimation = 8 + (index % 3),
                 RenderContext = renderContext,
             };
@@ -45,7 +44,6 @@ public class SlotMenuOption : MenuOption
             {
                 BgPriority = bgPriority,
                 ObjPriority = 0,
-                ScreenPos = position,
                 Texture = Engine.FrameContentManager.Load<Texture2D>($"SaveSlotIcon_{index + 1}"),
                 RenderContext = renderContext,
             };
@@ -55,7 +53,6 @@ public class SlotMenuOption : MenuOption
             IsFramed = true,
             BgPriority = bgPriority,
             ObjPriority = 0,
-            ScreenPos = position + new Vector2(23, 1),
             CurrentAnimation = 13,
             RenderContext = renderContext,
         };
@@ -63,7 +60,6 @@ public class SlotMenuOption : MenuOption
         {
             BgPriority = bgPriority,
             ObjPriority = 0,
-            ScreenPos = position + new Vector2(45, 1),
             Text = Slot?.LumsCount.ToString() ?? "0",
             FontSize = FontSize.Font16,
             Color = TextColor.Menu,
@@ -74,7 +70,6 @@ public class SlotMenuOption : MenuOption
             IsFramed = true,
             BgPriority = bgPriority,
             ObjPriority = 0,
-            ScreenPos = position + new Vector2(81, -4),
             CurrentAnimation = 11,
             RenderContext = renderContext,
         };
@@ -82,7 +77,6 @@ public class SlotMenuOption : MenuOption
         {
             BgPriority = bgPriority,
             ObjPriority = 0,
-            ScreenPos = position + new Vector2(106, 1),
             Text = Slot?.CagesCount.ToString() ?? "0",
             FontSize = FontSize.Font16,
             Color = TextColor.Menu,
@@ -92,7 +86,6 @@ public class SlotMenuOption : MenuOption
         {
             BgPriority = bgPriority,
             ObjPriority = 0,
-            ScreenPos = position + new Vector2(131, 0),
             Texture = Engine.FrameContentManager.Load<Texture2D>("SaveSlotTime"),
             RenderContext = renderContext,
         };
@@ -100,7 +93,6 @@ public class SlotMenuOption : MenuOption
         {
             BgPriority = bgPriority,
             ObjPriority = 0,
-            ScreenPos = position + new Vector2(150, 1),
             Text = "1:54:03", // TODO: Get actual time from save slot
             FontSize = FontSize.Font16,
             Color = TextColor.Menu,
@@ -110,11 +102,26 @@ public class SlotMenuOption : MenuOption
         {
             BgPriority = bgPriority,
             ObjPriority = 0,
-            ScreenPos = position + new Vector2(42, 13),
             Text = "EMPTY",
             Font = ReadvancedFonts.MenuYellow,
             RenderContext = renderContext,
         };
+    }
+
+    public override void SetPosition(Vector2 position)
+    {
+        if (Icon != null)
+            Icon.ScreenPos = position;
+        else
+            ExtIcon.ScreenPos = position;
+
+        LumIcon.ScreenPos = position + new Vector2(23, 1);
+        LumText.ScreenPos = position + new Vector2(45, 1);
+        CageIcon.ScreenPos = position + new Vector2(81, -4);
+        CageText.ScreenPos = position + new Vector2(106, 1);
+        TimeIcon.ScreenPos = position + new Vector2(131, 0);
+        TimeText.ScreenPos = position + new Vector2(150, 1);
+        EmptyText.ScreenPos = position + new Vector2(42, 13);
     }
 
     public override void Draw(AnimationPlayer animationPlayer)

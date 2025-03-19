@@ -22,6 +22,8 @@ public class OptionsMenuPage : MenuPage
     public override bool UsesCursor => true;
     public override int BackgroundPalette => 1;
     public override int LineHeight => 12;
+    public override int MaxOptions => 4;
+    public override bool HasScrollBar => true;
 
     public GameOptions.GameOptionsGroup[] Tabs { get; set; }
     public int SelectedTab { get; set; }

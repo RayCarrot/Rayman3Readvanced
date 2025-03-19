@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
@@ -28,6 +30,11 @@ public class PauseDialogOptionsMenu
     private const float TabsCursorBaseY = 12;
     private const float InfoTextBoxBaseY = 112;
     private const float InfoTextLinesBaseY = 109;
+    private const float ScrollBarBaseY = 40;
+    private const float ScrollBarThumbBaseY = 56;
+
+    private const int MaxOptions = 4;
+    private const float ScrollBarLength = 32;
 
     private const float LineHeight = 12;
 
@@ -52,9 +59,10 @@ public class PauseDialogOptionsMenu
     public float? TabsCursorDestX { get; set; }
 
     public OptionsMenuOption[] Options { get; set; }
-    public float[] OptionsTextBaseY { get; set; }
-    public float[] OptionsValueTextBaseY { get; set; }
     public int SelectedOption { get; set; }
+    public int ScrollOffset { get; set; }
+    public bool HasScrollableContent => Options.Length > MaxOptions;
+    public int MaxScrollOffset => Options.Length - MaxOptions;
 
     public SpriteTextureObject Canvas { get; set; }
     public AnimatedObject Cursor { get; set; }
@@ -68,10 +76,15 @@ public class PauseDialogOptionsMenu
     public AnimatedObject ArrowLeft { get; set; }
     public AnimatedObject ArrowRight { get; set; }
 
+    public SpriteTextureObject ScrollBar { get; set; }
+    public SpriteTextureObject ScrollBarThumb { get; set; }
+
     public float OffsetY { get; set; }
     public float CursorOffsetY { get; set; }
     public float TabHeadersOffsetY { get; set; }
     public PauseDialogDrawStep DrawStep { get; set; }
+
+    private Vector2 GetOptionPosition(int index) => new(75, 54 + LineHeight * index - OffsetY);
 
     private void SetSelectedTab(int selectedTab, bool playSound = true)
     {
@@ -85,22 +98,18 @@ public class PauseDialogOptionsMenu
         SetTabsCursorMovement(TabsCursor.ScreenPos.X, selectedTab * TabHeaderWidth + 90);
 
         SelectedOption = 0;
+        ScrollOffset = 0;
         Options = Tabs[selectedTab].Options;
-        OptionsTextBaseY = new float[Options.Length];
-        OptionsValueTextBaseY = new float[Options.Length];
         for (int i = 0; i < Options.Length; i++)
         {
             OptionsMenuOption option = Options[i];
             if (!option.IsInitialized)
             {
-                option.Init(0, RenderContext, new Vector2(75, 54 + LineHeight * i), i);
+                option.Init(0, RenderContext, i);
                 option.IsInitialized = true;
             }
 
             option.ChangeIsSelected(false);
-
-            OptionsTextBaseY[i] = option.TextObject.ScreenPos.Y;
-            OptionsValueTextBaseY[i] = option.ValueTextObject.ScreenPos.Y;
         }
 
         SetSelectedOption(0, false);
@@ -189,16 +198,37 @@ public class PauseDialogOptionsMenu
         int prevSelectedOption = SelectedOption;
 
         int newSelectedOption = selectedOption;
-        if (newSelectedOption > Options.Length - 1)
-            newSelectedOption = 0;
-        else if (newSelectedOption < 0)
-            newSelectedOption = Options.Length - 1;
 
-        SetCursorMovement(CursorOffsetY, newSelectedOption * LineHeight);
+        int newScrollOffset = ScrollOffset;
+        if (newSelectedOption > prevSelectedOption)
+        {
+            if (newSelectedOption >= ScrollOffset + MaxOptions)
+                newScrollOffset++;
+        }
+        else if (newSelectedOption < prevSelectedOption)
+        {
+            if (newSelectedOption < ScrollOffset)
+                newScrollOffset--;
+        }
+
+        if (newSelectedOption > Options.Length - 1)
+        {
+            newSelectedOption = 0;
+            newScrollOffset = 0;
+        }
+        else if (newSelectedOption < 0)
+        {
+            newSelectedOption = Options.Length - 1;
+            newScrollOffset = MaxScrollOffset;
+        }
+        SetCursorMovement(CursorOffsetY, (newSelectedOption - newScrollOffset) * LineHeight);
 
         SelectedOption = newSelectedOption;
         Options[prevSelectedOption].ChangeIsSelected(false);
         Options[newSelectedOption].ChangeIsSelected(true);
+
+        if (newScrollOffset != ScrollOffset)
+            ScrollOffset = newScrollOffset;
 
         if (playSound)
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
@@ -298,6 +328,8 @@ public class PauseDialogOptionsMenu
         Texture2D tabHeadersTexture = Engine.FixContentManager.Load<Texture2D>("OptionsMenuTabs");
         Texture2D infoTextBoxTexture = Engine.FixContentManager.Load<Texture2D>("MenuTextBox");
         AnimatedObjectResource multiplayerTypeFrameAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerTypeFrameAnimations);
+        Texture2D scrollBarTexture = Engine.FixContentManager.Load<Texture2D>("ScrollBar");
+        Texture2D scrollBarThumbTexture = Engine.FixContentManager.Load<Texture2D>("ScrollBarThumb");
 
         Canvas = new SpriteTextureObject
         {
@@ -397,6 +429,24 @@ public class PauseDialogOptionsMenu
             ObjPriority = 0,
             CurrentAnimation = 0,
             RenderContext = arrowRenderContext,
+        };
+
+        ScrollBar = new SpriteTextureObject
+        {
+            BgPriority = 0,
+            ObjPriority = 0,
+            ScreenPos = new Vector2(352, ScrollBarBaseY),
+            Texture = scrollBarTexture,
+            RenderContext = RenderContext,
+        };
+
+        ScrollBarThumb = new SpriteTextureObject
+        {
+            BgPriority = 0,
+            ObjPriority = 0,
+            ScreenPos = new Vector2(357, ScrollBarThumbBaseY),
+            Texture = scrollBarThumbTexture,
+            RenderContext = RenderContext,
         };
 
         // Reset values
@@ -539,13 +589,14 @@ public class PauseDialogOptionsMenu
             // Transition
             Canvas.ScreenPos = Canvas.ScreenPos with { Y = CanvasBaseY - OffsetY };
             Cursor.ScreenPos = Cursor.ScreenPos with { Y = CursorBaseY + CursorOffsetY - OffsetY };
-            
-            for (int i = 0; i < Options.Length; i++)
+
+            int index = 0;
+            foreach (OptionsMenuOption option in Options.Skip(ScrollOffset).Take(MaxOptions))
             {
-                Options[i].TextObject.ScreenPos = Options[i].TextObject.ScreenPos with { Y = OptionsTextBaseY[i] - OffsetY };
-                Options[i].ValueTextObject.ScreenPos = Options[i].ValueTextObject.ScreenPos with { Y = OptionsValueTextBaseY[i] - OffsetY };
+                option.SetPosition(GetOptionPosition(index));
+                index++;
             }
-            
+
             TabHeaders.ScreenPos = TabHeaders.ScreenPos with { Y = TabHeadersBaseY - TabHeadersOffsetY };
             
             foreach (SpriteFontTextObject tabHeaderText in TabHeaderTexts)
@@ -558,10 +609,15 @@ public class PauseDialogOptionsMenu
             for (int i = 0; i < InfoTextLines.Length; i++)
                 InfoTextLines[i].ScreenPos = InfoTextLines[i].ScreenPos with { Y = InfoTextLinesBaseY + height * i - OffsetY };
 
+            ScrollBar.ScreenPos = ScrollBar.ScreenPos with { Y = ScrollBarBaseY - OffsetY };
+
+            float scrollY = MathHelper.Lerp(0, ScrollBarLength, ScrollOffset / (float)MaxScrollOffset);
+            ScrollBarThumb.ScreenPos = ScrollBarThumb.ScreenPos with { Y = ScrollBarThumbBaseY + scrollY - OffsetY };
+
             // Draw
             animationPlayer.Play(Canvas);
             animationPlayer.Play(Cursor);
-            foreach (OptionsMenuOption option in Options)
+            foreach (OptionsMenuOption option in Options.Skip(ScrollOffset).Take(MaxOptions))
                 option.Draw(animationPlayer);
 
             animationPlayer.Play(TabHeaders);
@@ -586,6 +642,10 @@ public class PauseDialogOptionsMenu
                 animationPlayer.Play(ArrowLeft);
                 animationPlayer.Play(ArrowRight);
             }
+
+            animationPlayer.Play(ScrollBar);
+            if (HasScrollableContent)
+                animationPlayer.Play(ScrollBarThumb);
         }
     }
 }
