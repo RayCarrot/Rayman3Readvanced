@@ -117,6 +117,17 @@ public static class GameOptions
                     getData: _ => Engine.Config.UseModernPauseDialog,
                     setData: data => Engine.Config.UseModernPauseDialog = data,
                     getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "ALLOW SKIPPING TEXTBOXES",
+                    infoText: "If enabled then you can skip textboxes instead of pausing.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
+                    ],
+                    getData: _ => Engine.Config.CanSkipTextBoxes,
+                    setData: data => Engine.Config.CanSkipTextBoxes = data,
+                    getCustomName: _ => null),
             ]),
             new GameOptionsGroup("CONTROLS",
             [

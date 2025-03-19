@@ -41,7 +41,7 @@ public partial class TextBoxDialog : Dialog
     public int CurrentTextLine { get; set; }
     public string[] CurrentText { get; set; }
 
-    public bool IsFinished { get; private set; }
+    public bool IsFinished { get; set; }
 
     #endregion
 
@@ -185,20 +185,17 @@ public partial class TextBoxDialog : Dialog
             NextText = true;
     }
 
-    public bool CanSkip() => State == Fsm_WaitForNextText;
-
-    // TODO: Implement in pause menu
     public void Skip()
     {
-        if (State != Fsm_WaitForNextText)
-            return;
-
-        CurrentTextLine = 0;
-        ShouldPlayedLySound = true;
-        ShouldPlayRaymanSound = true;
-        ShouldPlayedMurfySound = true;
-        IsFinished = true;
-        State.MoveTo(Fsm_TransitionTextIn);
+        if (State == Fsm_WaitForNextText)
+        {
+            CurrentTextLine = 0;
+            ShouldPlayedLySound = true;
+            ShouldPlayRaymanSound = true;
+            ShouldPlayedMurfySound = true;
+            IsFinished = true;
+            State.MoveTo(Fsm_TransitionTextIn);
+        }
     }
 
     public bool IsOnScreen() => OffsetY < 45;

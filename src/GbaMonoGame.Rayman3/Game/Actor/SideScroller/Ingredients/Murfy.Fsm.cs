@@ -12,6 +12,14 @@ public partial class Murfy
         if (JoyPad.IsButtonJustPressed(GbaInput.A))
             TextBox.MoveToNextText();
 
+        if (Engine.Config.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(GbaInput.Start))
+        {
+            FrameSideScroller frame = (FrameSideScroller)Frame.Current;
+            frame.CanPause = false;
+
+            TextBox.Skip();
+        }
+
         if (TextBox.IsFinished)
         {
             MoveTextBoxIn = false;
@@ -132,6 +140,12 @@ public partial class Murfy
 
                 if (GameInfo.MapId is not (MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4))
                     ((FrameSideScroller)Frame.Current).UserInfo.MoveOutBars();
+
+                // Don't allow pausing since it uses the same button as skipping
+                FrameSideScroller frame = (FrameSideScroller)Frame.Current;
+                SavedCanPause = frame.CanPause;
+                if (Engine.Config.CanSkipTextBoxes)
+                    frame.CanPause = false;
                 break;
 
             case FsmAction.Step:
@@ -391,6 +405,12 @@ public partial class Murfy
                     Scene.MainActor.ProcessMessage(this, Message.Main_ExitStopOrCutscene);
                 }
 
+                // Restore being able to pause
+                if (Engine.Config.CanSkipTextBoxes)
+                {
+                    FrameSideScroller frame = (FrameSideScroller)Frame.Current;
+                    frame.CanPause = SavedCanPause;
+                }
                 break;
         }
 

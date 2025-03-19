@@ -34,6 +34,7 @@ public sealed partial class Murfy : MovableActor
     public byte NGage_Byte_8E { get; set; }
     
     public bool IsForBonusInWorld1 { get; set; }
+    public bool SavedCanPause { get; set; }
 
     private void SetText()
     {

@@ -46,6 +46,8 @@ public sealed partial class Teensies : ActionActor
     public bool HasSetTextBox { get; set; }
     public TextBoxDialog TextBox { get; set; }
 
+    public bool SavedBlockPause { get; set; }
+
     private void SetMasterAction()
     {
         if (IsActionFinished)
