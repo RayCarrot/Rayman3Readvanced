@@ -73,7 +73,7 @@ public class SinglePlayerMenuPage : MenuPage
             BgPriority = 1,
             ObjPriority = 0,
             ScreenPos = new Vector2(110, 30),
-            CurrentAnimation = 1,
+            CurrentAnimation = Localization.LanguageUiIndex * 2 + 1,
             RenderContext = RenderContext,
         };
 
