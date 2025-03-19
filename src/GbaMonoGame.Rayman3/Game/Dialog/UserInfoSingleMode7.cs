@@ -54,6 +54,23 @@ public class UserInfoSingleMode7 : Dialog
         Countdown.IsFramed = true;
     }
 
+    // TODO: Move in timer and laps
+    public void MoveInBars()
+    {
+        LifeBar.SetToStayVisible();
+        LifeBar.MoveIn();
+
+        LumsBar.SetToStayVisible();
+        LumsBar.MoveIn();
+    }
+
+    // TODO: Move out timer and laps
+    public void MoveOutBars()
+    {
+        LifeBar.DrawStep = BarDrawStep.MoveOut;
+        LumsBar.DrawStep = BarDrawStep.MoveOut;
+    }
+
     public override void Load()
     {
         // NOTE: Game has it set up so Load can be called multiple times. Dynamic objects don't get recreated after the first time, but instead

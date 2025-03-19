@@ -121,6 +121,18 @@ public class UserInfoSideScroller : Dialog
         CagesBar.DrawStep = BarDrawStep.Hide;
     }
 
+    public void MoveInBars()
+    {
+        LifeBar.SetToStayVisible();
+        LifeBar.MoveIn();
+
+        GetLumsBar().SetToStayVisible();
+        GetLumsBar().MoveIn();
+
+        CagesBar.SetToStayVisible();
+        CagesBar.MoveIn();
+    }
+
     public void MoveOutBars()
     {
         LifeBar.DrawStep = BarDrawStep.MoveOut;
@@ -135,16 +147,7 @@ public class UserInfoSideScroller : Dialog
         {
             case Message.UserInfo_Pause:
                 if (GameInfo.MapId is not (MapId.ChallengeLy1 or MapId.ChallengeLy2 or MapId.ChallengeLyGCN))
-                {
-                    LifeBar.SetToStayVisible();
-                    LifeBar.MoveIn();
-
-                    GetLumsBar().SetToStayVisible();
-                    GetLumsBar().MoveIn();
-
-                    CagesBar.SetToStayVisible();
-                    CagesBar.MoveIn();
-                }
+                    MoveInBars();
 
                 BlueLumBar?.SetToStayHidden();
                 SwitchBar?.SetToStayHidden();

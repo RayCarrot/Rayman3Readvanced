@@ -83,7 +83,7 @@ public partial class ModernPauseDialog
 
                 if (options)
                 {
-                    // TODO: Implement
+                    State.MoveTo(Fsm_Options);
                     return false;
                 }
 
@@ -96,6 +96,33 @@ public partial class ModernPauseDialog
 
             case FsmAction.UnInit:
                 // Do nothing
+                break;
+        }
+
+        return true;
+    }
+
+    public bool Fsm_Options(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                OptionsMenu.MoveIn();
+                break;
+
+            case FsmAction.Step:
+                OptionsMenu.Step();
+                
+                if (OptionsMenu.DrawStep == PauseDialogDrawStep.Hide)
+                {
+                    State.MoveTo(Fsm_CheckSelection);
+                    SetSelectedOption(1);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                Engine.SaveConfig();
                 break;
         }
 

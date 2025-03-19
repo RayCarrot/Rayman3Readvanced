@@ -81,6 +81,15 @@ public class UserInfoWorldMap : Dialog
         return false;
     }
 
+    public void MoveInCurtains()
+    {
+        if (CurtainsLeft == null)
+            return;
+
+        CurtainsLeft.CurrentAnimation = 1;
+        CurtainsRight.CurrentAnimation = 1;
+    }
+
     public void MoveOutCurtains()
     {
         if (CurtainsLeft == null)
@@ -116,6 +125,25 @@ public class UserInfoWorldMap : Dialog
     {
         WorldNameBar.CanMoveIn = false;
         WorldNameBar.MoveOutWorldNameBar();
+    }
+
+    public void MoveInBars()
+    {
+        LifeBar.SetToStayVisible();
+        LifeBar.MoveIn();
+
+        Lums1000Bar.SetToStayVisible();
+        Lums1000Bar.MoveIn();
+
+        Cages50Bar.SetToStayVisible();
+        Cages50Bar.MoveIn();
+    }
+
+    public void MoveOutBars()
+    {
+        LifeBar.DrawStep = BarDrawStep.MoveOut;
+        Lums1000Bar.DrawStep = BarDrawStep.MoveOut;
+        Cages50Bar.DrawStep = BarDrawStep.MoveOut;
     }
 
     public override void Load()

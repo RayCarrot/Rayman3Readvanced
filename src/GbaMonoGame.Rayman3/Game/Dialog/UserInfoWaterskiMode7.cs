@@ -44,6 +44,21 @@ public class UserInfoWaterskiMode7 : Dialog
         }
     }
 
+    public void MoveInBars()
+    {
+        LifeBar.SetToStayVisible();
+        LifeBar.MoveIn();
+
+        LumsBar.SetToStayVisible();
+        LumsBar.MoveIn();
+    }
+
+    public void MoveOutBars()
+    {
+        LifeBar.DrawStep = BarDrawStep.MoveOut;
+        LumsBar.DrawStep = BarDrawStep.MoveOut;
+    }
+
     public override void Load()
     {
         // NOTE: Game has it set up so Load can be called multiple times. Dynamic objects don't get recreated after the first time, but instead

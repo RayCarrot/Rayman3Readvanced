@@ -22,6 +22,8 @@ public partial class ModernPauseDialog : Dialog
     public AnimatedObject Cursor { get; set; }
     public SpriteFontTextObject[] Options { get; set; }
 
+    public PauseDialogOptionsMenu OptionsMenu { get; set; }
+
     public int SelectedOption { get; set; }
     public int PrevSelectedOption { get; set; }
     public int OptionsCount { get; set; }
@@ -141,6 +143,9 @@ public partial class ModernPauseDialog : Dialog
             };
         }
 
+        OptionsMenu = new PauseDialogOptionsMenu();
+        OptionsMenu.Load();
+
         CursorOffsetY = 0;
     }
 
@@ -171,7 +176,7 @@ public partial class ModernPauseDialog : Dialog
                 break;
             
             case PauseDialogDrawStep.MoveIn:
-                if (OffsetY < 1)
+                if (OffsetY <= 0)
                 {
                     DrawStep = PauseDialogDrawStep.Wait;
                     OffsetY = 0;
@@ -208,6 +213,7 @@ public partial class ModernPauseDialog : Dialog
             animationPlayer.Play(Cursor);
             foreach (SpriteFontTextObject option in Options)
                 animationPlayer.Play(option);
+            OptionsMenu.Draw(animationPlayer);
         }
     }
 }
