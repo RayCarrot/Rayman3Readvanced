@@ -15,9 +15,9 @@ public class BonusTextMenuOption : TextMenuOption
     public SpriteTextureObject[] CollectionIcons { get; set; }
     public SpriteTextObject[] CollectionTextObjects { get; set; }
 
-    public override void Init(ModernMenuAll menu, RenderContext renderContext, Vector2 position, int index)
+    public override void Init(int bgPriority, RenderContext renderContext, Vector2 position, int index)
     {
-        base.Init(menu, renderContext, position, index);
+        base.Init(bgPriority, renderContext, position, index);
 
         const int startX = 110;
         const int width = 65;
@@ -27,7 +27,7 @@ public class BonusTextMenuOption : TextMenuOption
         {
             CollectionIcons[i] = new SpriteTextureObject()
             {
-                BgPriority = 3,
+                BgPriority = bgPriority,
                 ObjPriority = 0,
                 ScreenPos = position + new Vector2(startX + i * width, 0),
                 Texture = Engine.FrameContentManager.Load<Texture2D>(Collections[i].IconTexture),
@@ -40,7 +40,7 @@ public class BonusTextMenuOption : TextMenuOption
         {
             CollectionTextObjects[i] = new SpriteTextObject()
             {
-                BgPriority = 3,
+                BgPriority = bgPriority,
                 ObjPriority = 0,
                 ScreenPos = position + new Vector2(startX + 19 + i * width, 1),
                 RenderContext = renderContext,

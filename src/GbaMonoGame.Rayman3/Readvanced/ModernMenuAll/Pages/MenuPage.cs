@@ -53,7 +53,7 @@ public abstract class MenuPage
 
         if (!option.IsInitialized)
         {
-            option.Init(Menu, RenderContext, new Vector2(75, 54 + LineHeight * index), index);
+            option.Init(3, RenderContext, new Vector2(75, 54 + LineHeight * index), index);
             option.IsInitialized = true;
         }
 

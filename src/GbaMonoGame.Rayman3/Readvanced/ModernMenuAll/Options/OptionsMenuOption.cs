@@ -36,11 +36,11 @@ public abstract class OptionsMenuOption : MenuOption
     public abstract void Reset();
     public abstract void Step();
 
-    public override void Init(ModernMenuAll menu, RenderContext renderContext, Vector2 position, int index)
+    public override void Init(int bgPriority, RenderContext renderContext, Vector2 position, int index)
     {
         TextObject = new SpriteFontTextObject()
         {
-            BgPriority = 3,
+            BgPriority = bgPriority,
             ObjPriority = 0,
             ScreenPos = position + new Vector2(0, 13 * TextScale),
             RenderContext = renderContext,
@@ -51,7 +51,7 @@ public abstract class OptionsMenuOption : MenuOption
 
         ValueTextObject = new SpriteFontTextObject()
         {
-            BgPriority = 3,
+            BgPriority = bgPriority,
             ObjPriority = 0,
             ScreenPos = position + new Vector2(ValueTextXPosition, 13 * ValueTextScale),
             RenderContext = renderContext,

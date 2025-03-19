@@ -7,6 +7,11 @@ namespace GbaMonoGame.Rayman3;
 
 public class SlotMenuOption : MenuOption
 {
+    public SlotMenuOption(ModernMenuAll.Slot slot)
+    {
+        Slot = slot;
+    }
+
     public ModernMenuAll.Slot Slot { get; set; }
 
     public AnimatedObject Icon { get; set; }
@@ -19,10 +24,8 @@ public class SlotMenuOption : MenuOption
     public SpriteTextObject TimeText { get; set; }
     public SpriteFontTextObject EmptyText { get; set; }
 
-    public override void Init(ModernMenuAll menu, RenderContext renderContext, Vector2 position, int index)
+    public override void Init(int bgPriority, RenderContext renderContext, Vector2 position, int index)
     {
-        Slot = menu.Slots[index];
-
         AnimatedObjectResource propsAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuPropAnimations);
 
         if (index < 3)
@@ -30,7 +33,7 @@ public class SlotMenuOption : MenuOption
             Icon = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
             {
                 IsFramed = true,
-                BgPriority = 3,
+                BgPriority = bgPriority,
                 ObjPriority = 0,
                 ScreenPos = position,
                 CurrentAnimation = 8 + (index % 3),
@@ -41,7 +44,7 @@ public class SlotMenuOption : MenuOption
         {
             ExtIcon = new SpriteTextureObject
             {
-                BgPriority = 3,
+                BgPriority = bgPriority,
                 ObjPriority = 0,
                 ScreenPos = position,
                 Texture = Engine.FrameContentManager.Load<Texture2D>($"SaveSlotIcon_{index + 1}"),
@@ -51,7 +54,7 @@ public class SlotMenuOption : MenuOption
         LumIcon = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
         {
             IsFramed = true,
-            BgPriority = 3,
+            BgPriority = bgPriority,
             ObjPriority = 0,
             ScreenPos = position + new Vector2(23, 1),
             CurrentAnimation = 13,
@@ -59,7 +62,7 @@ public class SlotMenuOption : MenuOption
         };
         LumText = new SpriteTextObject()
         {
-            BgPriority = 3,
+            BgPriority = bgPriority,
             ObjPriority = 0,
             ScreenPos = position + new Vector2(45, 1),
             Text = Slot?.LumsCount.ToString() ?? "0",
@@ -70,7 +73,7 @@ public class SlotMenuOption : MenuOption
         CageIcon = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
         {
             IsFramed = true,
-            BgPriority = 3,
+            BgPriority = bgPriority,
             ObjPriority = 0,
             ScreenPos = position + new Vector2(81, -4),
             CurrentAnimation = 11,
@@ -78,7 +81,7 @@ public class SlotMenuOption : MenuOption
         };
         CageText = new SpriteTextObject()
         {
-            BgPriority = 3,
+            BgPriority = bgPriority,
             ObjPriority = 0,
             ScreenPos = position + new Vector2(106, 1),
             Text = Slot?.CagesCount.ToString() ?? "0",
@@ -88,7 +91,7 @@ public class SlotMenuOption : MenuOption
         };
         TimeIcon = new SpriteTextureObject
         {
-            BgPriority = 3,
+            BgPriority = bgPriority,
             ObjPriority = 0,
             ScreenPos = position + new Vector2(131, 0),
             Texture = Engine.FrameContentManager.Load<Texture2D>("SaveSlotTime"),
@@ -96,7 +99,7 @@ public class SlotMenuOption : MenuOption
         };
         TimeText = new SpriteTextObject()
         {
-            BgPriority = 3,
+            BgPriority = bgPriority,
             ObjPriority = 0,
             ScreenPos = position + new Vector2(150, 1),
             Text = "1:54:03", // TODO: Get actual time from save slot
@@ -106,7 +109,7 @@ public class SlotMenuOption : MenuOption
         };
         EmptyText = new SpriteFontTextObject()
         {
-            BgPriority = 3,
+            BgPriority = bgPriority,
             ObjPriority = 0,
             ScreenPos = position + new Vector2(42, 13),
             Text = "EMPTY",

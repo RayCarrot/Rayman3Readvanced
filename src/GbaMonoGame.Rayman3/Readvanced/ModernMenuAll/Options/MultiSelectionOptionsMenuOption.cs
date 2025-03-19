@@ -103,9 +103,9 @@ public class MultiSelectionOptionsMenuOption<T> : OptionsMenuOption
         }
     }
 
-    public override void Init(ModernMenuAll menu, RenderContext renderContext, Vector2 position, int index)
+    public override void Init(int bgPriority, RenderContext renderContext, Vector2 position, int index)
     {
-        base.Init(menu, renderContext, position, index);
+        base.Init(bgPriority, renderContext, position, index);
         Reset();
     }
 

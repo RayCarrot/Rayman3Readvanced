@@ -61,8 +61,8 @@ public class SinglePlayerMenuPage : MenuPage
     protected override void Init()
     {
         // Add slots
-        for (int i = 0; i < Menu.Slots.Length; i++)
-            AddOption(new SlotMenuOption());
+        foreach (ModernMenuAll.Slot slot in Menu.Slots)
+            AddOption(new SlotMenuOption(slot));
 
         // Create animations
         AnimatedObjectResource startEraseAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuStartEraseAnimations);

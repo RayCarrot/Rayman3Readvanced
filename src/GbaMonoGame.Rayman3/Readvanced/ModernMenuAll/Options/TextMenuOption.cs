@@ -15,11 +15,11 @@ public class TextMenuOption : MenuOption
     public float Scale { get; }
     public SpriteFontTextObject TextObject { get; set; }
 
-    public override void Init(ModernMenuAll menu, RenderContext renderContext, Vector2 position, int index)
+    public override void Init(int bgPriority, RenderContext renderContext, Vector2 position, int index)
     {
         TextObject = new SpriteFontTextObject()
         {
-            BgPriority = 3,
+            BgPriority = bgPriority,
             ObjPriority = 0,
             ScreenPos = position + new Vector2(0, 13 * Scale),
             RenderContext = renderContext,
