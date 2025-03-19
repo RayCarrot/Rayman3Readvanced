@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace GbaMonoGame.Rayman3;
+namespace GbaMonoGame.Rayman3.Readvanced;
 
 public class VolumeSelectionOptionsMenuOption : MultiSelectionOptionsMenuOption<float>
 {

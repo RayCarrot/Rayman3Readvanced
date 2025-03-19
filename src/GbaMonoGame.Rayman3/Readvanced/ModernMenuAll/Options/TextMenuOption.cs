@@ -1,7 +1,6 @@
 ﻿using GbaMonoGame.AnimEngine;
-using GbaMonoGame.Rayman3.Readvanced;
 
-namespace GbaMonoGame.Rayman3;
+namespace GbaMonoGame.Rayman3.Readvanced;
 
 public class TextMenuOption : MenuOption
 {

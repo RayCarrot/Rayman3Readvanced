@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace GbaMonoGame.Rayman3;
+namespace GbaMonoGame.Rayman3.Readvanced;
 
 public static class GameOptions
 {

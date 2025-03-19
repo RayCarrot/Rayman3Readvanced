@@ -4,7 +4,7 @@ using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.TgxEngine;
 
-namespace GbaMonoGame.Rayman3;
+namespace GbaMonoGame.Rayman3.Readvanced;
 
 public abstract class MenuPage
 {

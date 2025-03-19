@@ -6,7 +6,7 @@ using GbaMonoGame.AnimEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace GbaMonoGame.Rayman3;
+namespace GbaMonoGame.Rayman3.Readvanced;
 
 public class GameModeMenuPage : MenuPage
 {

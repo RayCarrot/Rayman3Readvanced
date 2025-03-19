@@ -3,10 +3,9 @@ using System.Diagnostics;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
-using GbaMonoGame.Rayman3.Readvanced;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace GbaMonoGame.Rayman3;
+namespace GbaMonoGame.Rayman3.Readvanced;
 
 public class OptionsMenuPage : MenuPage
 {

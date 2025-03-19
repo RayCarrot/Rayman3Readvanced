@@ -1,4 +1,4 @@
-﻿namespace GbaMonoGame.Rayman3;
+﻿namespace GbaMonoGame.Rayman3.Readvanced;
 
 public enum NewPageMode
 {

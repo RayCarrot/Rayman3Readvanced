@@ -1,7 +1,7 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 
-namespace GbaMonoGame.Rayman3;
+namespace GbaMonoGame.Rayman3.Readvanced;
 
 public class BonusMenuPage : MenuPage
 {

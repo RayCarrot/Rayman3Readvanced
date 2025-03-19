@@ -3,6 +3,7 @@ using BinarySerializer.Nintendo.GBA;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
+using GbaMonoGame.Rayman3.Readvanced;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

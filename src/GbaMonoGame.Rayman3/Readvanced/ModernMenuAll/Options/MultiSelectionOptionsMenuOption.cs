@@ -3,7 +3,7 @@ using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 
-namespace GbaMonoGame.Rayman3;
+namespace GbaMonoGame.Rayman3.Readvanced;
 
 public class MultiSelectionOptionsMenuOption<T> : OptionsMenuOption
 {
