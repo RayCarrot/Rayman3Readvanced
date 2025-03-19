@@ -2,10 +2,18 @@
 
 public class FixedResolutionRenderContext : RenderContext
 {
-    public FixedResolutionRenderContext(Vector2 fixedResolution)
+    public FixedResolutionRenderContext(
+        Vector2 fixedResolution, 
+        HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center, 
+        VerticalAlignment verticalAlignment = VerticalAlignment.Center)
     {
         FixedResolution = fixedResolution;
+        HorizontalAlignment = horizontalAlignment;
+        VerticalAlignment = verticalAlignment;
     }
+
+    protected override HorizontalAlignment HorizontalAlignment { get; }
+    protected override VerticalAlignment VerticalAlignment { get; }
 
     public Vector2 FixedResolution { get; }
 
