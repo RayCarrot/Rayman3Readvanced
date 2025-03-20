@@ -92,6 +92,9 @@ public partial class Ly
                 if (JoyPad.IsButtonJustPressed(GbaInput.A) && !TextBox.IsFinished && ActionId != Action.BeginTalk)
                     TextBox.MoveToNextText();
 
+                if (Engine.Config.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(GbaInput.Start))
+                    TextBox.Skip();
+
                 if (TextBox.IsFinished)
                 {
                     State.MoveTo(Fsm_GivePower);
