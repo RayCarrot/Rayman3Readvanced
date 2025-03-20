@@ -35,6 +35,9 @@ public partial class ModernPauseDialog : Dialog
     public bool CanExitLevel { get; }
     public int PausedMachineId { get; set; }
 
+    public CircleTransitionScreenEffect CircleTransitionScreenEffect { get; set; }
+    public int CircleTransitionValue { get; set; }
+
     private void ManageCursor()
     {
         if (SelectedOption != PrevSelectedOption)

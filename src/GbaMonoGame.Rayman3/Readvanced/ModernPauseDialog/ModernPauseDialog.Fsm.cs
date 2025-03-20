@@ -1,6 +1,5 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
-using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
@@ -145,7 +144,32 @@ public partial class ModernPauseDialog
             case FsmAction.Step:
                 bool goBack = false;
 
-                if (JoyPad.IsButtonJustPressed(GbaInput.Up))
+                if (CircleTransitionScreenEffect != null)
+                {
+                    CircleTransitionValue -= 6;
+
+                    if (CircleTransitionValue < 0)
+                    {
+                        CircleTransitionValue = 0;
+                        CircleTransitionScreenEffect = null;
+
+                        GameTime.Resume();
+                        SoundEventsManager.StopAllSongs();
+
+                        if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
+                            FrameManager.SetNextFrame(new GameCubeMenu());
+                        else
+                            GameInfo.LoadLevel(MapId.World1 + (int)GameInfo.WorldId);
+
+                        GameInfo.PersistentInfo.LastPlayedLevel = (byte)GameInfo.MapId;
+                        GameInfo.Save(GameInfo.CurrentSlot);
+                    }
+                    else
+                    {
+                        CircleTransitionScreenEffect.Radius = CircleTransitionValue;
+                    }
+                }
+                else if (JoyPad.IsButtonJustPressed(GbaInput.Up))
                 {
                     SetSelectedOption(SelectedOption - 1);
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
@@ -165,16 +189,19 @@ public partial class ModernPauseDialog
                     // Exit level
                     if (CanExitLevel)
                     {
-                        DrawStep = PauseDialogDrawStep.MoveOut;
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SlideOut_Mix01);
 
-                        if (Rom.Platform == Platform.NGage)
-                            ((NGageSoundEventsManager)SoundEventsManager.Current).ResumeLoopingSoundEffects();
+                        CircleTransitionValue = 252;
 
-                        State.MoveTo(null);
-                        
-                        // TODO: Implement exit level message for the Mode7 actors
-                        Scene.MainActor.ProcessMessage(this, Message.Main_LevelExit);
+                        // Create the circle transition
+                        CircleTransitionScreenEffect = new CircleTransitionScreenEffect()
+                        {
+                            RenderOptions = { RenderContext = Scene.RenderContext },
+                        };
+
+                        // Initialize and add as a screen effect
+                        CircleTransitionScreenEffect.Init(CircleTransitionValue, Scene.RenderContext.Resolution / 2);
+                        Gfx.SetScreenEffect(CircleTransitionScreenEffect);
                     }
                     // Quit game
                     else
