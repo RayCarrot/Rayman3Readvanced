@@ -28,6 +28,9 @@ public class UserInfoSingleMode7 : Dialog
     public bool IsCountdownActive { get; set; }
     public bool IsPaused { get; set; }
 
+    // Custom to allow hiding the bars for the pause dialog options menu
+    public bool HideLaps { get; set; }
+
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {
         // Handle messages
@@ -54,7 +57,8 @@ public class UserInfoSingleMode7 : Dialog
         Countdown.IsFramed = true;
     }
 
-    // TODO: Move in timer and laps
+    // TODO: Add move in/out transitions for timer and laps?
+    // Custom to allow hiding the bars for the pause dialog options menu
     public void MoveInBars()
     {
         LifeBar.SetToStayVisible();
@@ -62,13 +66,19 @@ public class UserInfoSingleMode7 : Dialog
 
         LumsBar.SetToStayVisible();
         LumsBar.MoveIn();
+
+        TimerBar.SetToStayVisible();
+
+        HideLaps = false;
     }
 
-    // TODO: Move out timer and laps
+    // Custom to allow hiding the bars for the pause dialog options menu
     public void MoveOutBars()
     {
-        LifeBar.DrawStep = BarDrawStep.MoveOut;
-        LumsBar.DrawStep = BarDrawStep.MoveOut;
+        LifeBar.MoveOut();
+        LumsBar.MoveOut();
+        TimerBar.SetToStayHidden();
+        HideLaps = true;
     }
 
     public override void Load()
@@ -169,9 +179,12 @@ public class UserInfoSingleMode7 : Dialog
         LapDigits[0].CurrentAnimation = raceManager.CurrentLap;
         LapDigits[1].CurrentAnimation = raceManager.LapsCount;
 
-        animationPlayer.PlayFront(Laps);
-        animationPlayer.PlayFront(LapDigits[0]);
-        animationPlayer.PlayFront(LapDigits[1]);
+        if (!HideLaps)
+        {
+            animationPlayer.PlayFront(Laps);
+            animationPlayer.PlayFront(LapDigits[0]);
+            animationPlayer.PlayFront(LapDigits[1]);
+        }
 
         if (!raceManager.DrivingTheRightWay && 
             (GameTime.ElapsedFrames & 0x20) != 0 && 

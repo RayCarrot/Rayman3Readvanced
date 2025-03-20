@@ -16,6 +16,10 @@ public class Lums1000Bar : Bar
     public AnimatedObject CollectedLumsDigit2 { get; set; }
     public AnimatedObject CollectedLumsDigit3 { get; set; }
 
+    // Custom to allow moving out for pause dialog options menu
+    public bool EnableTransitions { get; set; }
+    public int OffsetY { get; set; }
+
     public void AddLastLums()
     {
         // Original assertion messages here are kinda funny. They say "beuh!" and "beuh! encore".
@@ -121,6 +125,53 @@ public class Lums1000Bar : Bar
 
     public override void Draw(AnimationPlayer animationPlayer)
     {
+        // Custom transition code for the pause dialog options menu
+        if (EnableTransitions)
+        {
+            if (Mode is BarMode.StayHidden or BarMode.Disabled)
+                return;
+
+            switch (DrawStep)
+            {
+                case BarDrawStep.Hide:
+                    OffsetY = 35;
+                    break;
+
+                case BarDrawStep.MoveIn:
+                    if (OffsetY > 0)
+                    {
+                        OffsetY -= 2;
+                    }
+                    else
+                    {
+                        OffsetY = 0;
+                        DrawStep = BarDrawStep.Wait;
+                        EnableTransitions = false;
+                    }
+                    break;
+
+                case BarDrawStep.MoveOut:
+                    if (OffsetY < 35)
+                    {
+                        OffsetY++;
+                    }
+                    else
+                    {
+                        OffsetY = 35;
+                        DrawStep = BarDrawStep.Hide;
+                    }
+                    break;
+            }
+
+            if (DrawStep == BarDrawStep.Hide)
+                return;
+
+            LumsIcon.ScreenPos = LumsIcon.ScreenPos with { Y = 8 - OffsetY };
+            CollectedLumsDigit1.ScreenPos = CollectedLumsDigit1.ScreenPos with { Y = 24 - OffsetY };
+            CollectedLumsDigit2.ScreenPos = CollectedLumsDigit2.ScreenPos with { Y = 24 - OffsetY };
+            CollectedLumsDigit3.ScreenPos = CollectedLumsDigit3.ScreenPos with { Y = 24 - OffsetY };
+        }
+
         animationPlayer.PlayFront(LumsIcon);
 
         if (DeadLums < 1000)

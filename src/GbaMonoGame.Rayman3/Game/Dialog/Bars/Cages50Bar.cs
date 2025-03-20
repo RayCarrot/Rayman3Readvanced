@@ -14,6 +14,10 @@ public class Cages50Bar : Bar
     public AnimatedObject CollectedCagesDigit1 { get; set; }
     public AnimatedObject CollectedCagesDigit2 { get; set; }
 
+    // Custom to allow moving out for pause dialog options menu
+    public bool EnableTransitions { get; set; }
+    public int OffsetX { get; set; }
+
     public override void Load()
     {
         AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.HudAnimations);
@@ -67,6 +71,52 @@ public class Cages50Bar : Bar
 
     public override void Draw(AnimationPlayer animationPlayer)
     {
+        // Custom transition code for the pause dialog options menu
+        if (EnableTransitions)
+        {
+            if (Mode is BarMode.StayHidden or BarMode.Disabled)
+                return;
+
+            switch (DrawStep)
+            {
+                case BarDrawStep.Hide:
+                    OffsetX = 65;
+                    break;
+
+                case BarDrawStep.MoveIn:
+                    if (OffsetX > 0)
+                    {
+                        OffsetX -= 3;
+                    }
+                    else
+                    {
+                        OffsetX = 0;
+                        DrawStep = BarDrawStep.Wait;
+                        EnableTransitions = false;
+                    }
+                    break;
+
+                case BarDrawStep.MoveOut:
+                    if (OffsetX < 65)
+                    {
+                        OffsetX += 2;
+                    }
+                    else
+                    {
+                        OffsetX = 65;
+                        DrawStep = BarDrawStep.Hide;
+                    }
+                    break;
+            }
+
+            if (DrawStep == BarDrawStep.Hide)
+                return;
+
+            CagesIcon.ScreenPos = CagesIcon.ScreenPos with { X = -68 + OffsetX };
+            CollectedCagesDigit1.ScreenPos = CollectedCagesDigit1.ScreenPos with { X = -56 + OffsetX };
+            CollectedCagesDigit2.ScreenPos = CollectedCagesDigit2.ScreenPos with { X = -44 + OffsetX };
+        }
+
         animationPlayer.PlayFront(CagesIcon);
 
         if (DeadCages < 50)

@@ -44,6 +44,7 @@ public class UserInfoWaterskiMode7 : Dialog
         }
     }
 
+    // Custom to allow hiding the bars for the pause dialog options menu
     public void MoveInBars()
     {
         LifeBar.SetToStayVisible();
@@ -53,10 +54,11 @@ public class UserInfoWaterskiMode7 : Dialog
         LumsBar.MoveIn();
     }
 
+    // Custom to allow hiding the bars for the pause dialog options menu
     public void MoveOutBars()
     {
-        LifeBar.DrawStep = BarDrawStep.MoveOut;
-        LumsBar.DrawStep = BarDrawStep.MoveOut;
+        LifeBar.MoveOut();
+        LumsBar.MoveOut();
     }
 
     public override void Load()

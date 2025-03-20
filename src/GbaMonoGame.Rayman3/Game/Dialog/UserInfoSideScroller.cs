@@ -135,9 +135,9 @@ public class UserInfoSideScroller : Dialog
 
     public void MoveOutBars()
     {
-        LifeBar.DrawStep = BarDrawStep.MoveOut;
-        GetLumsBar().DrawStep = BarDrawStep.MoveOut;
-        CagesBar.DrawStep = BarDrawStep.MoveOut;
+        LifeBar.MoveOut();
+        GetLumsBar().MoveOut();
+        CagesBar.MoveOut();
     }
 
     protected override bool ProcessMessageImpl(object sender, Message message, object param)

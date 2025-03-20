@@ -59,6 +59,11 @@ public abstract class Bar
             DrawStep = BarDrawStep.MoveIn;
     }
 
+    public void MoveOut()
+    {
+        DrawStep = BarDrawStep.MoveOut;
+    }
+
     public abstract void Load();
     public abstract void Set();
     public abstract void Draw(AnimationPlayer animationPlayer);
