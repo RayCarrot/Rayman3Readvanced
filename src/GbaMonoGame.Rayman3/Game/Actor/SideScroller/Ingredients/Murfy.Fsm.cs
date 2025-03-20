@@ -14,8 +14,12 @@ public partial class Murfy
 
         if (Engine.Config.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(GbaInput.Start))
         {
-            FrameSideScroller frame = (FrameSideScroller)Frame.Current;
-            frame.CanPause = false;
+            if (Frame.Current is FrameSideScroller frameSideScroller)
+                frameSideScroller.CanPause = false;
+            else if (Frame.Current is FrameWorldSideScroller frameWorldSideScroller)
+                frameWorldSideScroller.BlockPause = true;
+            else
+                Debug.Assert(false, "Invalid frame for Murfy actor");
 
             TextBox.Skip();
         }
@@ -142,10 +146,22 @@ public partial class Murfy
                     ((FrameSideScroller)Frame.Current).UserInfo.MoveOutBars();
 
                 // Don't allow pausing since it uses the same button as skipping
-                FrameSideScroller frame = (FrameSideScroller)Frame.Current;
-                SavedCanPause = frame.CanPause;
-                if (Engine.Config.CanSkipTextBoxes)
-                    frame.CanPause = false;
+                if (Frame.Current is FrameSideScroller frameSideScroller)
+                {
+                    SavedBlockPause = !frameSideScroller.CanPause;
+                    if (Engine.Config.CanSkipTextBoxes)
+                        frameSideScroller.CanPause = false;
+                }
+                else if (Frame.Current is FrameWorldSideScroller frameWorldSideScroller)
+                {
+                    SavedBlockPause = frameWorldSideScroller.BlockPause;
+                    if (Engine.Config.CanSkipTextBoxes)
+                        frameWorldSideScroller.BlockPause = true;
+                }
+                else
+                {
+                    Debug.Assert(false, "Invalid frame for Murfy actor");
+                }
                 break;
 
             case FsmAction.Step:
@@ -408,8 +424,12 @@ public partial class Murfy
                 // Restore being able to pause
                 if (Engine.Config.CanSkipTextBoxes)
                 {
-                    FrameSideScroller frame = (FrameSideScroller)Frame.Current;
-                    frame.CanPause = SavedCanPause;
+                    if (Frame.Current is FrameSideScroller frameSideScroller)
+                        frameSideScroller.CanPause = !SavedBlockPause;
+                    else if (Frame.Current is FrameWorldSideScroller frameWorldSideScroller)
+                        frameWorldSideScroller.BlockPause = SavedBlockPause;
+                    else
+                        Debug.Assert(false, "Invalid frame for Murfy actor");
                 }
                 break;
         }
