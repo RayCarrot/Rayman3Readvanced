@@ -20,6 +20,12 @@ public static class MathHelpers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float Angle256ToRadians(float angle)
+    {
+        return 2 * MathF.PI * angle / 256f;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float Sin256(float x)
     {
         return MathF.Sin(2 * MathF.PI * x / 256f);

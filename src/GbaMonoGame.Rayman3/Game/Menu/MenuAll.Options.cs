@@ -423,7 +423,7 @@ public partial class MenuAll
         if (IsLoadingCredits)
         {
             if (TransitionsFX.IsFadeOutFinished)
-                FrameManager.SetNextFrame(new Credits());
+                FrameManager.SetNextFrame(new Credits(true));
         }
         else
         {

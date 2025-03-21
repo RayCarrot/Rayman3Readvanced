@@ -227,7 +227,7 @@ public class GameModeMenuPage : MenuPage
                     {
                         FadeOut(4 / 16f, () =>
                         {
-                            FrameManager.SetNextFrame(new Credits());
+                            FrameManager.SetNextFrame(new Credits(false));
                         });
                     });
                     break;

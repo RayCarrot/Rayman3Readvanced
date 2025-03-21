@@ -26,7 +26,7 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
     #region Private Fields
 
     // The GBA framerate is actually 59.727500569606, but we do 60
-    private const float Framerate = 60;
+    public const float Framerate = 60;
 
     private readonly GraphicsDeviceManager _graphics;
     private readonly Stopwatch _updateTimeStopWatch;
