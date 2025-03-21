@@ -57,8 +57,8 @@ Pressing the `tab` key while playing will toggle the debug mode. This is set up 
 ## Credits
 - **RayCarrot**: Main developer, game formats reverse engineering
 - **Droolie**: Game formats reverse engineering
-- **XanderNT**: Rayman 3 Readvanced logo
-- **Miles**: Extracting the GBA sounds
+- **XanderNT**: Rayman 3 Readvanced logos
+- **MilesTheCreator**: Extracting the GBA sounds
 - **Robin**: General MonoGame and shader help
 - **zelenbug**: Widescreen menu assets
 
