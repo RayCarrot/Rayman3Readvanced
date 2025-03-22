@@ -47,4 +47,23 @@ public sealed partial class Skull : MovableActor
 
         return false;
     }
+
+    // Unused (unreferenced function)
+    /*
+    protected override bool ProcessMessageImpl(object sender, Message message, object param)
+    {
+        if (base.ProcessMessageImpl(sender, message, param))
+            return false;
+
+        switch (message)
+        {
+            case Message.HitActorOfSameType:
+                State.MoveTo(Fsm_FallDown);
+                return false;
+
+            default:
+                return false;
+        }
+    }
+    */
 }

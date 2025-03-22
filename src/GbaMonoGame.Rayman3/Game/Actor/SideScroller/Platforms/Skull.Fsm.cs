@@ -311,4 +311,34 @@ public partial class Skull
 
         return true;
     }
+
+    // Unused
+    public bool Fsm_FallDown(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                ActionId = Action.FallDown;
+                CheckAgainstObjectCollision = false;
+                Timer = 0;
+                break;
+
+            case FsmAction.Step:
+                PhysicalType type = Scene.GetPhysicalType(Position);
+
+                if (type == PhysicalTypeValue.Enemy_Up)
+                {
+                    CheckAgainstObjectCollision = true;
+                    State.MoveTo(Fsm_Despawn);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                CheckAgainstObjectCollision = true;
+                break;
+        }
+
+        return true;
+    }
 }

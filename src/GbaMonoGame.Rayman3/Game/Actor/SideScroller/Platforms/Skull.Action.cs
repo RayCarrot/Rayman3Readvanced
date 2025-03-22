@@ -25,7 +25,7 @@ public partial class Skull
         Stationary = 8,
         Spawn = 9,
         StationaryShake = 10,
-        Action11 = 11, // Unused
+        FallDown = 11, // Unused
         Despawn = 12,
 
         SolidMove_Left = 13,
