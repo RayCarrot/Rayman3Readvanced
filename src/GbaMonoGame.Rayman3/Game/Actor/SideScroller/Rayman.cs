@@ -178,7 +178,7 @@ public sealed partial class Rayman : MovableActor
         {
             Cheat cheat = (Cheat)(1 << i);
 
-            if ((GameInfo.Cheats & cheat) != 0)
+            if (GameInfo.IsCheatEnabled(cheat))
                 GameInfo.EnableCheat(Scene, cheat);
         }
     }
@@ -641,7 +641,7 @@ public sealed partial class Rayman : MovableActor
 
     private bool ManageHit()
     {
-        if (RSMultiplayer.IsActive || (GameInfo.Cheats & Cheat.Invulnerable) != 0)
+        if (RSMultiplayer.IsActive || GameInfo.IsCheatEnabled(Cheat.Invulnerable))
             return false;
 
         CheckForTileDamage();
@@ -2002,8 +2002,8 @@ public sealed partial class Rayman : MovableActor
         // Conditionally don't draw every second frame during invulnerability
         if (draw)
         {
-            if (IsInvulnerable && 
-                (GameInfo.Cheats & Cheat.Invulnerable) == 0 && 
+            if (IsInvulnerable &&
+                !GameInfo.IsCheatEnabled(Cheat.Invulnerable) && 
                 !RSMultiplayer.IsActive && 
                 HitPoints != 0 && 
                 (GameTime.ElapsedFrames & 1) == 0)

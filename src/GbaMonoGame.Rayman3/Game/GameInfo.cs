@@ -125,6 +125,11 @@ public static class GameInfo
         }
     }
 
+    public static bool IsCheatEnabled(Cheat cheat)
+    {
+        return (Cheats & cheat) != 0;
+    }
+
     public static void GreenLumTouchedByRayman(int id, Vector2 pos)
     {
         Debug.Assert(id == LastGreenLumAlive, "Invalid Greens lums id. The lums ids have to be ordered.");
@@ -629,7 +634,7 @@ public static class GameInfo
 
     public static void ModifyLives(int change)
     {
-        if ((Cheats & Cheat.InfiniteLives) != 0)
+        if (IsCheatEnabled(Cheat.InfiniteLives))
         {
             PersistentInfo.Lives = 99;
             return;

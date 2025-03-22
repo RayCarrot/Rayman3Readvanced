@@ -347,7 +347,7 @@ public sealed partial class MissileMode7 : Mode7Actor
             if (IsInvulnerable &&
                 HitPoints != 0 &&
                 (GameTime.ElapsedFrames & 1) == 0 &&
-                (GameInfo.Cheats & Cheat.Invulnerable) == 0)
+                !GameInfo.IsCheatEnabled(Cheat.Invulnerable))
             {
                 draw = false;
             }

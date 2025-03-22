@@ -36,7 +36,7 @@ public partial class MissileMode7
             JumpSoundTimer--;
         }
 
-        if ((GameInfo.Cheats & Cheat.Invulnerable) == 0)
+        if (!GameInfo.IsCheatEnabled(Cheat.Invulnerable))
         {
             InvulnerabilityTimer++;
 

@@ -130,7 +130,7 @@ public partial class FlyingBombMode7
         switch (action)
         {
             case FsmAction.Init:
-                if ((GameInfo.Cheats & Cheat.Invulnerable) == 0)
+                if (!GameInfo.IsCheatEnabled(Cheat.Invulnerable))
                 {
                     Scene.MainActor.IsInvulnerable = false;
                     Scene.MainActor.ReceiveDamage(AttackPoints);

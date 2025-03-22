@@ -44,7 +44,7 @@ public class GameInfoDebugWindow : DebugWindow
                 ImGui.SameLine();
 
             Cheat cheat = (Cheat)(1 << i);
-            bool cheatEnabled = (GameInfo.Cheats & cheat) != 0;
+            bool cheatEnabled = GameInfo.IsCheatEnabled(cheat);
             if (ImGui.Checkbox(cheat.ToString(), ref cheatEnabled))
             {
                 if (cheatEnabled)
