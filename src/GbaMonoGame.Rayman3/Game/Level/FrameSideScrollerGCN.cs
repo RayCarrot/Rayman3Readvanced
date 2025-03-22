@@ -45,7 +45,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
         GameInfo.MapId = MapId.GameCube_Bonus1 + GcnMapId;
 
         PreviousPowers = GameInfo.Powers;
-        GameInfo.Powers = Power.All;
+        GameInfo.EnablePower(Power.All);
 
         GameInfo.YellowLumsCount = MapInfo.LumsCount;
         GameInfo.CagesCount = MapInfo.CagesCount;

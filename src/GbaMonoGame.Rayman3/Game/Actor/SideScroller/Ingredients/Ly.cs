@@ -35,32 +35,32 @@ public sealed partial class Ly : MovableActor
         {
             case MapId.WoodLight_M2:
                 JoyPad.SetReplayData(Rom.Loader.Rayman3_NewPower1Replay.Inputs);
-                rayman.SetPowers(Power.DoubleFist);
+                rayman.SetPower(Power.DoubleFist);
                 break;
 
             case MapId.BossMachine:
                 JoyPad.SetReplayData(Rom.Loader.Rayman3_NewPower2Replay.Inputs);
-                rayman.SetPowers(Power.Grab);
+                rayman.SetPower(Power.Grab);
                 break;
 
             case MapId.EchoingCaves_M2:
                 JoyPad.SetReplayData(Rom.Loader.Rayman3_NewPower3Replay.Inputs);
-                rayman.SetPowers(Power.WallJump);
+                rayman.SetPower(Power.WallJump);
                 break;
 
             case MapId.SanctuaryOfStoneAndFire_M3:
                 JoyPad.SetReplayData(Rom.Loader.Rayman3_NewPower4Replay.Inputs);
-                rayman.SetPowers(Power.SuperHelico);
+                rayman.SetPower(Power.SuperHelico);
                 break;
 
             case MapId.BossRockAndLava:
                 JoyPad.SetReplayData(Rom.Loader.Rayman3_NewPower5Replay.Inputs);
-                rayman.SetPowers(Power.BodyShot);
+                rayman.SetPower(Power.BodyShot);
                 break;
 
             case MapId.BossScaleMan:
                 JoyPad.SetReplayData(Rom.Loader.Rayman3_NewPower6Replay.Inputs);
-                rayman.SetPowers(Power.SuperFist);
+                rayman.SetPower(Power.SuperFist);
                 break;
 
             default:

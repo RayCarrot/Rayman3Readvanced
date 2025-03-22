@@ -25,13 +25,13 @@ public class GameInfoDebugWindow : DebugWindow
                 ImGui.SameLine();
 
             Power power = (Power)(1 << i);
-            bool hasPower = (GameInfo.Powers & power) != 0;
+            bool hasPower = GameInfo.IsPowerEnabled(power);
             if (ImGui.Checkbox(power.ToString(), ref hasPower))
             {
                 if (hasPower)
-                    GameInfo.Powers |= power;
+                    GameInfo.EnablePower(power);
                 else
-                    GameInfo.Powers &= ~power;
+                    GameInfo.DisablePower(power);
             }
         }
 

@@ -147,7 +147,7 @@ public class FramesDebugMenu : DebugMenu
                 Frame frame = LevelFactory.Create(mapId);
 
                 // Set all powers
-                GameInfo.Powers |= Power.All;
+                GameInfo.EnablePower(Power.All);
 
                 return frame;
             })).

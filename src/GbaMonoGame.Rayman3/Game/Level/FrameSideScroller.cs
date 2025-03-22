@@ -153,7 +153,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         }
 
         // Add user info (default hud)
-        UserInfo = new UserInfoSideScroller(Scene, GameInfo.Level.HasBlueLum);
+        UserInfo = new UserInfoSideScroller(Scene, GameInfo.GetLevelHasBlueLum());
         Scene.AddDialog(UserInfo, false, false);
 
         // Create pause dialog, but don't add yet

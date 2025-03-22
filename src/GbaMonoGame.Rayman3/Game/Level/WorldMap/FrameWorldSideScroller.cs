@@ -56,9 +56,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
         if (prevMap != MapId.WorldMap && GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
         {
             // Get the actor to spawn the main actor at (either default position or at a curtain)
-            int startActorId = GameInfo.PersistentInfo.LastPlayedLevel == 0xFF
-                ? 0
-                : GameInfo.Levels[GameInfo.PersistentInfo.LastPlayedLevel].LevelCurtainActorId;
+            int startActorId = GameInfo.GetLevelCurtainActorId();
 
             Vector2 startPos = Scene.GetGameObject(startActorId).Position;
             startPos -= new Vector2(32, 0);

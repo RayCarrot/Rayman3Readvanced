@@ -239,28 +239,28 @@ public class LevelSelect : Frame
 
             if (SelectedMapId > MapId.WoodLight_M2)
             {
-                GameInfo.Powers |= Power.DoubleFist;
+                GameInfo.EnablePower(Power.DoubleFist);
                 GameInfo.PersistentInfo.PlayedMurfyWorldHelp = true;
             }
 
             if (SelectedMapId > MapId.BossMachine)
             {
-                GameInfo.Powers |= Power.Grab;
+                GameInfo.EnablePower(Power.Grab);
             }
 
             if (SelectedMapId > MapId.EchoingCaves_M2)
             {
-                GameInfo.Powers |= Power.WallJump;
+                GameInfo.EnablePower(Power.WallJump);
             }
 
             if (SelectedMapId > MapId.BossRockAndLava)
             {
-                GameInfo.Powers |= Power.BodyShot;
+                GameInfo.EnablePower(Power.BodyShot);
             }
 
             if (SelectedMapId > MapId.BossScaleMan)
             {
-                GameInfo.Powers |= Power.SuperFist;
+                GameInfo.EnablePower(Power.SuperFist);
             }
 
             if (SelectedMapId > MapId.PirateShip_M2)

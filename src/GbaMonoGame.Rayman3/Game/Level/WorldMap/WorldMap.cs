@@ -742,7 +742,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         if (!SoundEventsManager.IsSongPlaying(GameInfo.GetLevelMusicSoundEvent()))
             GameInfo.PlayLevelMusic();
 
-        UserInfo = new UserInfoWorldMap(Scene, GameInfo.Level.HasBlueLum);
+        UserInfo = new UserInfoWorldMap(Scene, GameInfo.GetLevelHasBlueLum());
         Scene.AddDialog(UserInfo, false, false);
 
         AnimatedObjectResource raymanResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.RaymanWorldMapAnimations);

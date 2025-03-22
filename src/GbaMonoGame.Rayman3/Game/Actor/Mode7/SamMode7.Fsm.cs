@@ -140,12 +140,8 @@ public partial class SamMode7
                 // Save and end level
                 else if (Timer == 218)
                 {
-                    if (GameInfo.PersistentInfo.LastCompletedLevel < (int)GameInfo.MapId &&
-                        GameInfo.MapId < MapId.Bonus1 &&
-                        GameInfo.PersistentInfo.LastCompletedLevel < (int)GameInfo.MapId)
-                    {
-                        GameInfo.PersistentInfo.LastCompletedLevel = (byte)GameInfo.MapId;
-                    }
+                    if (GameInfo.IsFirstTimeCompletingLevel())
+                        GameInfo.UpdateLastCompletedLevel();
 
                     frame.EndOfFrame = true;
                     GameInfo.PersistentInfo.LastPlayedLevel = (byte)GameInfo.MapId;

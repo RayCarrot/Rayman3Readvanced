@@ -50,7 +50,7 @@ public partial class Barrel
                 }
 
                 // Fall into water
-                if ((GameInfo.Powers & Power.DoubleFist) != 0 && HitPoints != InitialHitPoints && MoveOnWater)
+                if (GameInfo.IsPowerEnabled(Power.DoubleFist) && HitPoints != InitialHitPoints && MoveOnWater)
                 {
                     InitialHitPoints = HitPoints;
                     State.MoveTo(Fsm_FallIntoWater);
@@ -58,7 +58,7 @@ public partial class Barrel
                 }
 
                 // Fall to break
-                if ((GameInfo.Powers & Power.DoubleFist) != 0 && HitPoints != InitialHitPoints && !MoveOnWater)
+                if (GameInfo.IsPowerEnabled(Power.DoubleFist) && HitPoints != InitialHitPoints && !MoveOnWater)
                 {
                     InitialHitPoints = HitPoints;
                     State.MoveTo(Fsm_FallToBreak);

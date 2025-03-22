@@ -31,7 +31,7 @@ public class EchoingCaves_M2 : FrameSideScroller
         Scene = new Scene2D((int)GameInfo.MapId, x => new CameraSideScroller(x), 3, 0);
 
         // Add user info (default hud)
-        UserInfo = new UserInfoSideScroller(Scene, GameInfo.Level.HasBlueLum);
+        UserInfo = new UserInfoSideScroller(Scene, GameInfo.GetLevelHasBlueLum());
         Scene.AddDialog(UserInfo, false, false);
 
         // Create pause dialog, but don't add yet

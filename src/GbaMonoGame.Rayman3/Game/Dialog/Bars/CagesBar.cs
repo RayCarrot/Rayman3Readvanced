@@ -69,7 +69,7 @@ public class CagesBar : Bar
 
     public override void Set()
     {
-        int cagesCount = GameInfo.LevelType == LevelType.GameCube ? GameInfo.CagesCount : GameInfo.Level.CagesCount;
+        int cagesCount = GameInfo.GetCagesCountForCurrentMap();
         TotalCagesDigit.CurrentAnimation = cagesCount;
 
         CollectedCagesDigitValue = GameInfo.GetDeadCagesForCurrentMap(GameInfo.MapId);

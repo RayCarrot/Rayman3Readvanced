@@ -701,7 +701,7 @@ public partial class Rayman
                     {
                         Attack(0, RaymanBody.RaymanBodyPartType.SecondFist, new Vector2(16, -16), false);
 
-                        if ((GameInfo.Powers & Power.DoubleFist) == 0)
+                        if (!GameInfo.IsPowerEnabled(Power.DoubleFist))
                             field23_0x98 = 0;
                     }
                 }
@@ -1443,7 +1443,7 @@ public partial class Rayman
                         Action.SuperHelico_ChargeSuperFist_Right or Action.SuperHelico_ChargeSuperFist_Left or
                         Action.SuperHelico_EndChargeFist_Right or Action.SuperHelico_EndChargeFist_Left))
                 {
-                    int timer = RSMultiplayer.IsActive ? MultiplayerBlueLumTimer : GameInfo.BlueLumTimer;
+                    int timer = RSMultiplayer.IsActive ? MultiplayerBlueLumTimer : GameInfo.BlueLumsTimer;
 
                     if (timer < 79 &&
                         ActionId is not (Action.HelicoTimeout_Right or Action.HelicoTimeout_Left))
@@ -2079,7 +2079,7 @@ public partial class Rayman
                         Attack(chargePower, RaymanBody.RaymanBodyPartType.Fist, new Vector2(16, -16), ActionId is Action.ChargeFist_Right or Action.ChargeFist_Left);
                         NextActionId = IsFacingRight ? Action.EndChargeFist_Right : Action.EndChargeFist_Left;
 
-                        if ((GameInfo.Powers & Power.DoubleFist) == 0)
+                        if (!GameInfo.IsPowerEnabled(Power.DoubleFist))
                             field23_0x98 = 0;
                         type = 1;
                     }
@@ -3860,7 +3860,7 @@ public partial class Rayman
                         FrameManager.SetNextFrame(new GameCubeMenu());
                         GameInfo.Save(GameInfo.CurrentSlot);
                     }
-                    else if (GameInfo.MapId > (MapId)GameInfo.PersistentInfo.LastCompletedLevel)
+                    else if (GameInfo.IsFirstTimeCompletingLevel())
                     {
                         switch (GameInfo.MapId)
                         {

@@ -9,8 +9,7 @@ public sealed partial class Cage : InteractableActor
         InitialActionId = actorResource.FirstActionId == 0 ? 0 : 6;
         PrevHitPoints = HitPoints;
         
-        CageId = GameInfo.LoadedCages;
-        GameInfo.LoadedCages++;
+        CageId = GameInfo.GetCageId();
 
         State.SetTo(Fsm_Idle);
 

@@ -67,10 +67,9 @@ public sealed partial class Lums : BaseActor
 
             if (ActionId == Action.GreenLum)
             {
-                LumId = GameInfo.GreenLums;
-                GameInfo.GreenLums++;
+                LumId = GameInfo.GetGreenLumsId();
 
-                if (LumId < GameInfo.LastGreenLumAlive)
+                if (GameInfo.IsGreenLumDead(LumId))
                     ProcessMessage(this, Message.Destroy);
             }
         }

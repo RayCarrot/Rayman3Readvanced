@@ -107,7 +107,7 @@ public sealed partial class Rayman : MovableActor
                 }
 
                 IsInvulnerable = true;
-                SetPowers(Power.All);
+                SetPower(Power.All);
             }
         }
 
@@ -307,7 +307,7 @@ public sealed partial class Rayman : MovableActor
         }
         else
         {
-            return (GameInfo.Powers & power) != 0;
+            return GameInfo.IsPowerEnabled(power);
         }
     }
 
@@ -1438,7 +1438,7 @@ public sealed partial class Rayman : MovableActor
                     return false;
                 
                 if (!RSMultiplayer.IsActive)
-                    GameInfo.AddBlueLumTime();
+                    GameInfo.IncBlueLumsTime();
 
                 IsSuperHelicoActive = true;
                 MultiplayerBlueLumTimer = 300;
@@ -1755,7 +1755,7 @@ public sealed partial class Rayman : MovableActor
                 return false;
 
             case Message.Main_EndSuperHelico:
-                GameInfo.BlueLumTimer = 0;
+                GameInfo.ResetBlueLumsTime();
                 return false;
 
             case Message.Main_EnterLevelCurtain:
@@ -1818,9 +1818,12 @@ public sealed partial class Rayman : MovableActor
         }
     }
 
-    public void SetPowers(Power powers)
+    public void SetPower(Power power)
     {
-        GameInfo.Powers |= powers;
+        if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+            FlagData.Powers |= power;
+        else
+            GameInfo.EnablePower(power);
     }
 
     // Disable collision when debug mode is on
@@ -1943,7 +1946,7 @@ public sealed partial class Rayman : MovableActor
             }
             else
             {
-                if (GameInfo.BlueLumTimer == 0)
+                if (GameInfo.IsBlueLumsTimeOver())
                     IsSuperHelicoActive = false;
             }
         }

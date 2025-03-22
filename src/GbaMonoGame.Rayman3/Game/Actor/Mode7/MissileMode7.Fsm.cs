@@ -424,12 +424,8 @@ public partial class MissileMode7
 
                         if (!RSMultiplayer.IsActive)
                         {
-                            if (GameInfo.PersistentInfo.LastCompletedLevel < (int)GameInfo.MapId &&
-                                GameInfo.MapId < MapId.Bonus1 &&
-                                GameInfo.PersistentInfo.LastCompletedLevel < (int)GameInfo.MapId)
-                            {
-                                GameInfo.PersistentInfo.LastCompletedLevel = (byte)GameInfo.MapId;
-                            }
+                            if (GameInfo.IsFirstTimeCompletingLevel())
+                                GameInfo.UpdateLastCompletedLevel();
 
                             GameInfo.PersistentInfo.LastPlayedLevel = (byte)GameInfo.MapId;
                             GameInfo.Save(GameInfo.CurrentSlot);

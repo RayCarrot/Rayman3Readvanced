@@ -8,7 +8,7 @@ public class BlueLumBar : Bar
 {
     public BlueLumBar(Scene2D scene) : base(scene)
     {
-        GameInfo.BlueLumTimer = 0;
+        GameInfo.ResetBlueLumsTime();
     }
 
     private const int BarXPosition = 10;
@@ -100,11 +100,11 @@ public class BlueLumBar : Bar
     {
         bool drawScaledFill = true;
 
-        if (Mode == BarMode.StayHidden || GameInfo.BlueLumTimer == 0)
+        if (Mode == BarMode.StayHidden || GameInfo.IsBlueLumsTimeOver())
             return;
 
         // The timer has a range of 0-416. Dividing it by 8 gives us 0-52.
-        float scaledTimerValue = GameInfo.BlueLumTimer / 8f;
+        float scaledTimerValue = GameInfo.BlueLumsTimer / 8f;
         
         // Round down to nearest factor of 16
         float scaledFillXPos = scaledTimerValue;
@@ -212,11 +212,11 @@ public class BlueLumBar : Bar
         if (drawScaledFill)
             animationPlayer.PlayFront(ScaledFill);
 
-        GameInfo.BlueLumTimer--;
+        GameInfo.BlueLumsTimer--;
 
-        if (GameInfo.BlueLumTimer == 78)
+        if (GameInfo.BlueLumsTimer == 78)
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumTimer_Mix02);
-        else if (GameInfo.BlueLumTimer == 0)
+        else if (GameInfo.IsBlueLumsTimeOver())
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumTimer_Mix02);
     }
 }
