@@ -1,4 +1,5 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using System;
+using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Rayman3.Readvanced;
@@ -10,17 +11,18 @@ using Vector3 = Microsoft.Xna.Framework.Vector3;
 
 namespace GbaMonoGame.Rayman3;
 
+// TODO: Add custom Readvanced credits in here
 public class Credits : Frame
 {
     public Credits(bool calledFromOptionsMenu)
     {
         ObjAlpha = 0;
-        field16_0x2c = 0;
-        TextMode = 0;
-        field18_0x34 = 0;
-        field19_0x38 = 0;
+        HeaderTextMode = TextMode.MoveIn;
+        NamesTextMode = TextMode.MoveIn;
+        Unused1 = 0;
+        NamesTextTimer = 0;
         LocString = null;
-        Unused = 0;
+        Unused2 = 0;
         CurrentStringIndex = 0;
         NextStringIndex = 0;
         HeadersCount = 0;
@@ -30,8 +32,9 @@ public class Credits : Frame
         IsExiting = false;
     }
 
-    // The original game lags in the credits and runs at 15fps, so we need to simulate that with a 4-frame lag
-    private const int LagFrames = 4;
+    // The original game lags in the credits and runs at around 15-30fps, so we need to simulate that
+    private const float LagFrames = 3;
+    private const int TextLinesCount = 4;
 
     public TransitionsFX TransitionsFX { get; set; }
     public AnimationPlayer AnimationPlayer { get; set; }
@@ -39,14 +42,18 @@ public class Credits : Frame
     public AnimatedObject BackgroundStructure { get; set; }
     public AnimActor Wheel { get; set; }
 
+    public SpriteTextObject[] TextObjects { get; set; } // One for every line of text
+    public float[] TextOffsetsX { get; set; }
+    public float[] TextOffsetsY { get; set; }
+
     public uint Timer { get; set; }
     public float ObjAlpha { get; set; }
-    public int field16_0x2c { get; set; } // TODO: Name
-    public int TextMode { get; set; }
-    public uint field18_0x34 { get; set; } // TODO: Name
-    public uint field19_0x38 { get; set; } // TODO: Name
+    public TextMode HeaderTextMode { get; set; }
+    public TextMode NamesTextMode { get; set; }
+    public uint Unused1 { get; set; }
+    public uint Unused2 { get; set; }
+    public float NamesTextTimer { get; set; }
     public string[] LocString { get; set; }
-    public uint Unused { get; set; }
     public int CurrentStringIndex { get; set; }
     public int NextStringIndex { get; set; }
     public int HeadersCount { get; set; }
@@ -57,7 +64,287 @@ public class Credits : Frame
 
     private void InitText()
     {
-        // TODO: Implement
+        LocString = Localization.GetText(TextBankId.Credits, 0);
+
+        TextObjects = new SpriteTextObject[TextLinesCount];
+        TextOffsetsX = new float[TextLinesCount];
+        TextOffsetsY = new float[TextLinesCount];
+        for (int i = 0; i < TextObjects.Length; i++)
+        {
+            TextObjects[i] = new SpriteTextObject
+            {
+                ScreenPos = Vector2.Zero,
+                RenderContext = Rom.OriginalGameRenderContext,
+                Text = String.Empty,
+                Color = TextColor.Credits,
+                FontSize = FontSize.Font16,
+            };
+            TextOffsetsX[i] = 0;
+            TextOffsetsY[i] = 0;
+        }
+
+        Unused2 = 0;
+        CurrentStringIndex = 0;
+        NextStringIndex = 0;
+        ProcessNextText();
+    }
+
+    private void ProcessNextText()
+    {
+        HeadersCount = 0;
+        NamesCount = 0;
+        IsTextDirty = true;
+        
+        int index = NextStringIndex;
+        CurrentStringIndex = index;
+
+        bool terminate = false;
+        while (index < LocString.Length)
+        {
+            switch (LocString[index][0])
+            {
+                case '*':
+                    HeadersCount++;
+                    break;
+                
+                case '-':
+                    terminate = true;
+                    break;
+                
+                default:
+                    NamesCount++;
+                    break;
+            }
+
+            index++;
+
+            if (terminate)
+                break;
+        }
+
+        IsTextDirty = true;
+        NextStringIndex = index;
+    }
+
+    private void StepText()
+    {
+        // Initialize new text
+        if (IsTextDirty)
+        {
+            ObjAlpha = 0;
+
+            float nameOffsetY = 16;
+
+            // Set headers
+            for (int i = 0; i < HeadersCount; i++)
+            {
+                TextOffsetsX[i] = 20;
+                TextOffsetsY[i] = (HeadersCount - i) * -16;
+                
+                TextObjects[i].RenderOptions.BlendMode = BlendMode.None;
+                TextObjects[i].ScreenPos = new Vector2(TextOffsetsX[i], TextOffsetsY[i]);
+                TextObjects[i].Text = LocString[CurrentStringIndex][1..];
+
+                nameOffsetY += 16;
+                CurrentStringIndex++;
+            }
+
+            nameOffsetY += 8;
+
+            // Set names
+            int nameIndex = HeadersCount;
+            for (; nameIndex < TextLinesCount && CurrentStringIndex < NextStringIndex - 1; nameIndex++)
+            {
+                TextOffsetsX[nameIndex] = 36;
+                TextOffsetsY[nameIndex] = nameOffsetY;
+
+                TextObjects[nameIndex].RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                TextObjects[nameIndex].GbaAlpha = ObjAlpha;
+                TextObjects[nameIndex].ScreenPos = new Vector2(TextOffsetsX[nameIndex], TextOffsetsY[nameIndex]);
+                TextObjects[nameIndex].Text = LocString[CurrentStringIndex];
+
+                nameOffsetY += 16;
+                CurrentStringIndex++;
+            }
+            for (; nameIndex < TextLinesCount; nameIndex++)
+            {
+                TextOffsetsX[nameIndex] = 36;
+                TextOffsetsY[nameIndex] = nameOffsetY;
+
+                TextObjects[nameIndex].RenderOptions.BlendMode = BlendMode.None;
+                TextObjects[nameIndex].Text = String.Empty;
+            }
+
+            IsTextDirty = false;
+            HeaderTextMode = TextMode.MoveIn;
+            NamesTextMode = TextMode.MoveIn;
+            NamesTextTimer = 0;
+        }
+
+        // Move headers
+        switch (HeaderTextMode)
+        {
+            case TextMode.MoveIn:
+                for (int i = 0; i < HeadersCount; i++)
+                {
+                    TextOffsetsY[i] += 4 / LagFrames;
+                    TextObjects[i].ScreenPos = new Vector2(20, TextOffsetsY[i]);
+                }
+
+                if (TextOffsetsY[0] >= 16)
+                {
+                    HeaderTextMode = TextMode.Wait;
+                    Unused1 = 0;
+                }
+                break;
+
+            case TextMode.Wait:
+                // Do nothing
+                break;
+
+            case TextMode.MoveOut:
+                for (int i = 0; i < HeadersCount; i++)
+                {
+                    TextOffsetsY[i] -= (HeadersCount + 1) / LagFrames;
+                    TextObjects[i].ScreenPos = new Vector2(20, TextOffsetsY[i]);
+                }
+
+                if (TextOffsetsY[HeadersCount - 1] < -16 && NamesTextMode == TextMode.Hidden)
+                {
+                    HeaderTextMode = TextMode.MoveIn;
+                    ProcessNextText();
+                }
+                break;
+
+            case TextMode.Hidden:
+                // Do nothing
+                break;
+        }
+
+        // Move names
+        switch (NamesTextMode)
+        {
+            case TextMode.MoveIn:
+                if (NamesTextTimer < 5)
+                {
+                    NamesTextTimer += 1 / LagFrames;
+                }
+                else
+                {
+                    ObjAlpha += 1 / LagFrames;
+
+                    foreach (SpriteTextObject textObject in TextObjects)
+                    {
+                        if (textObject.RenderOptions.BlendMode != BlendMode.None)
+                            textObject.GbaAlpha = ObjAlpha;
+                    }
+
+                    if (ObjAlpha >= 16)
+                    {
+                        NamesTextMode = TextMode.Wait;
+                        NamesTextTimer = 0;
+                    }
+                }
+                break;
+
+            case TextMode.Wait:
+                int waitTime = 0;
+                for (int nameIndex = HeadersCount; nameIndex < TextLinesCount; nameIndex++)
+                {
+                    if (NamesCount == 0)
+                        break;
+
+                    waitTime += 30;
+
+                    // NOTE: This seems like a bug since we're modifying the property, causing it to be 0 on the next frame!
+                    NamesCount -= 1;
+                }
+
+                if (waitTime >= 60)
+                    waitTime = 60;
+
+                if (NamesTextTimer <= waitTime)
+                {
+                    NamesTextTimer += 1 / LagFrames;
+                }
+                else
+                {
+                    NamesTextMode = TextMode.MoveOut;
+                    NamesTextTimer = 0;
+                }
+                break;
+
+            case TextMode.MoveOut:
+                if (ObjAlpha > 0)
+                {
+                    ObjAlpha -= 1 / LagFrames;
+                    foreach (SpriteTextObject textObject in TextObjects)
+                    {
+                        if (textObject.RenderOptions.BlendMode != BlendMode.None)
+                            textObject.GbaAlpha = ObjAlpha;
+                    }
+                }
+
+                for (int namesIndex = HeadersCount; namesIndex < TextLinesCount; namesIndex++)
+                {
+                    TextOffsetsX[namesIndex] += 12 / LagFrames;
+                    TextObjects[namesIndex].ScreenPos = new Vector2(TextOffsetsX[namesIndex], TextOffsetsY[namesIndex]);
+                }
+
+                if (CurrentStringIndex < NextStringIndex - 1)
+                {
+                    if (TextOffsetsX[3] >= Rom.OriginalResolution.X)
+                    {
+                        int nameIndex = HeadersCount;
+                        for (; nameIndex < TextLinesCount && CurrentStringIndex < NextStringIndex - 1; nameIndex++)
+                        {
+                            TextOffsetsX[nameIndex] = 36;
+
+                            TextObjects[nameIndex].RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                            TextObjects[nameIndex].ScreenPos = new Vector2(TextOffsetsX[nameIndex], TextOffsetsY[nameIndex]);
+                            TextObjects[nameIndex].Text = LocString[CurrentStringIndex];
+
+                            CurrentStringIndex++;
+                        }
+                        for (; nameIndex < TextLinesCount; nameIndex++)
+                        {
+                            TextOffsetsX[nameIndex] = 36;
+
+                            TextObjects[nameIndex].RenderOptions.BlendMode = BlendMode.None;
+                            TextObjects[nameIndex].Text = String.Empty;
+                        }
+
+                        NamesTextMode = TextMode.MoveIn;
+                        NamesTextTimer = 0;
+                        ObjAlpha = 0;
+                        foreach (SpriteTextObject textObject in TextObjects)
+                        {
+                            if (textObject.RenderOptions.BlendMode != BlendMode.None)
+                                textObject.GbaAlpha = ObjAlpha;
+                        }
+                    }
+                }
+                else if (TextOffsetsX[3] < Rom.OriginalResolution.X)
+                {
+                    HeaderTextMode = TextMode.MoveOut;
+                }
+                else
+                {
+                    NamesTextMode = TextMode.Hidden;
+                }
+                break;
+
+            case TextMode.Hidden:
+                // Do nothing
+                break;
+        }
+    }
+
+    private void DrawText()
+    {
+        // NOTE: The game does this manually since it keeps the background structure always loaded in the OAM
+        foreach (SpriteTextObject textObject in TextObjects)
+            AnimationPlayer.Play(textObject);
     }
 
     private void InitWheel()
@@ -237,19 +524,30 @@ public class Credits : Frame
                 FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
         }
 
-        // TODO: Step text
+        // NOTE: This only runs every second frame on N-Gage, probably to compensate for less lag
+        if (TransitionsFX.IsFadeInFinished && TransitionsFX.IsFadeOutFinished && !IsExiting && Timer > 20)
+            StepText();
 
         StepWheel();
 
         // NOTE: The GBA version calls this from a vsync callback instead of here - probably due to the lag
         TransitionsFX.StepAll();
 
-        // TODO: Draw text
+        if (TransitionsFX.IsFadeInFinished && TransitionsFX.IsFadeOutFinished && !IsExiting && Timer > 20)
+            DrawText();
 
         Timer++;
 
         // NOTE: The game doesn't do this - it only calls Play in the Init and then keeps it loaded in the OAM while manually drawing the text
         AnimationPlayer.PlayFront(BackgroundStructure);
         AnimationPlayer.Execute();
+    }
+
+    public enum TextMode
+    {
+        MoveIn = 0,
+        Wait = 1,
+        MoveOut = 2,
+        Hidden = 3,
     }
 }

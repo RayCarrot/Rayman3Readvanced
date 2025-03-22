@@ -28,7 +28,7 @@
 | GameCubeMenu           | 🟩     |                                              |
 | Act                    | 🟩     |                                              |
 | GameOver               | 🟩     |                                              |
-| Credits                | 🟥     |                                              |
+| Credits                | 🟩     |                                              |
 
 ## Levels
 | Name                       | State   | Info                                         |
