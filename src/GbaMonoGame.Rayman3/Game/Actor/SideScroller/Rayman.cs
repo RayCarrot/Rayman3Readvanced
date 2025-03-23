@@ -167,6 +167,7 @@ public sealed partial class Rayman : MovableActor
 
     // Unknown fields
     public ushort MultiplayerBlueLumTimer { get; set; }
+    public ushort NGage_field_0x88 { get; set; }
     public byte field16_0x91 { get; set; }
     public byte field22_0x97 { get; set; }
     public byte field23_0x98 { get; set; }
@@ -1218,7 +1219,7 @@ public sealed partial class Rayman : MovableActor
                 if (lavaSplash != null)
                 {
                     lavaSplash.Position = Position;
-                    lavaSplash.ActionId = LavaSplash.Action.MainActorDrownSplash;
+                    lavaSplash.ActionId = LavaSplash.Action.DrownSplash;
                     lavaSplash.ChangeAction();
                 }
 
@@ -1646,7 +1647,7 @@ public sealed partial class Rayman : MovableActor
                 if (State != Fsm_Dying && AttachedObject is not { Type: (int)ActorType.Plum })
                 {
                     NextActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
-                    State.MoveTo(FUN_080224f4);
+                    State.MoveTo(Fsm_OnPlum);
                     AttachedObject = (BaseActor)param;
                 }
                 return false;
@@ -1839,6 +1840,10 @@ public sealed partial class Rayman : MovableActor
         Timer = 0;
         InvulnerabilityStartTime = 0;
         MultiplayerBlueLumTimer = 0;
+        
+        if (Rom.Platform == Platform.NGage)
+            NGage_field_0x88 = 0;
+
         NextActionId = null;
         Array.Clear(ActiveBodyParts);
         Flag1_0 = false;

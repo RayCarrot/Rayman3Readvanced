@@ -204,7 +204,7 @@
 | Boulder                | 🟥     |                                              |
 | #52                    | 🟥     |                                              |
 | MovingWoodenPlatform   | 🟩     |                                              |
-| Plum                   | 🟥     |                                              |
+| Plum                   | 🟩     |                                              |
 | LavaSplash             | 🟩     |                                              |
 | #56                    | 🟥     |                                              |
 | #57                    | 🟥     |                                              |

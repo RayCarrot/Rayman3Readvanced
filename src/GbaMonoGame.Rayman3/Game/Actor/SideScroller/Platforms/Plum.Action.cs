@@ -1,6 +1,6 @@
 ﻿namespace GbaMonoGame.Rayman3;
 
-public partial class LavaSplash
+public partial class Plum
 {
     public new Action ActionId
     {
@@ -11,8 +11,12 @@ public partial class LavaSplash
     public enum Action
     {
         Idle = 0,
-        PlumLandedSplash = 1,
-        Moving = 2,
-        DrownSplash = 3,
+        BounceGround = 1,
+        Hit = 2,
+        Fall = 3,
+        Float = 4,
+        Grow = 5,
+        BounceAir = 6,
+        FloatAngle = 7,
     }
 }

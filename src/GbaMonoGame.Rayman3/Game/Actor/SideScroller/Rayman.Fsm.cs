@@ -2067,10 +2067,7 @@ public partial class Rayman
 
                     // Move plum
                     if (AttachedObject?.Type == (int)ActorType.Plum)
-                    {
-                        // TODO: Implement and handle message to move plum
-                        AttachedObject.ProcessMessage(this, IsFacingRight ? (Message)0x40c : (Message)0x40d, chargePower);
-                    }
+                        AttachedObject.ProcessMessage(this, IsFacingRight ? Message.Plum_HitRight : Message.Plum_HitLeft, chargePower);
 
                     if (ActionId is
                         Action.ChargeFist_Right or Action.ChargeFist_Left or
@@ -2170,7 +2167,7 @@ public partial class Rayman
 
                 if (type == 1 && AttachedObject?.Type == (int)ActorType.Plum)
                 {
-                    State.MoveTo(FUN_080224f4);
+                    State.MoveTo(Fsm_OnPlum);
                     return false;
                 }
 
@@ -3654,6 +3651,123 @@ public partial class Rayman
         return true;
     }
 
+    public bool Fsm_OnPlum(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                if (NextActionId == null)
+                    ActionId = IsFacingRight ? Action.Idle_Right : Action.Idle_Left;
+                else
+                    ActionId = NextActionId.Value;
+
+                Flag1_D = false;
+                break;
+
+            case FsmAction.Step:
+                if (!FsmStep_DoStandingOnPlum())
+                    return false;
+
+                CameraSideScroller cam = (CameraSideScroller)Scene.Camera;
+
+                if (IsActionFinished && ActionId == NextActionId)
+                {
+                    ActionId = IsFacingRight ? Action.Idle_Right : Action.Idle_Left;
+                    NextActionId = null;
+                }
+
+                // Change direction
+                if (IsDirectionalButtonPressed(GbaInput.Left) && IsFacingRight)
+                {
+                    ActionId = Action.Idle_Left;
+                    ChangeAction();
+
+                    if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
+                        FlagData.field_b9 = 1;
+                }
+                else if (IsDirectionalButtonPressed(GbaInput.Right) && IsFacingLeft)
+                {
+                    ActionId = Action.Idle_Right;
+                    ChangeAction();
+
+                    if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
+                        FlagData.field_b9 = 1;
+                }
+
+                if (Rom.Platform == Platform.NGage)
+                {
+                    if (IsFacingRight)
+                        cam.HorizontalOffset = ((MovableActor)AttachedObject).Speed.X < 0 ? CameraOffset.DefaultReversed : CameraOffset.Default;
+                    else
+                        cam.HorizontalOffset = ((MovableActor)AttachedObject).Speed.X < 0 ? CameraOffset.Default : CameraOffset.DefaultReversed;
+                }
+
+                // Jump
+                if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A))
+                {
+                    Position = Position with { Y = GetActionBox().MinY - 16 };
+
+                    if (Rom.Platform == Platform.NGage)
+                        NGage_field_0x88 = 0x3c;
+
+                    PreviousXSpeed = ((MovableActor)AttachedObject).Speed.X;
+                    AttachedObject = null;
+
+                    State.MoveTo(Fsm_Jump);
+                    return false;
+                }
+
+                // Attack
+                if (field23_0x98 == 0 && MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.B) && CanAttackWithFist(2))
+                {
+                    State.MoveTo(Fsm_Attack);
+                    return false;
+                }
+
+                // Crouch
+                if (IsDirectionalButtonPressed(GbaInput.Down))
+                {
+                    NextActionId = IsFacingRight ? Action.CrouchDown_Right : Action.CrouchDown_Left;
+                    State.MoveTo(Fsm_CrouchOnPlum);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                if (IsLocalPlayer)
+                {
+                    Flag1_D = true;
+                    field16_0x91 = 0;
+                }
+                break;
+        }
+
+        return true;
+    }
+
+    public bool Fsm_CrouchOnPlum(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                // TODO: Implement
+                break;
+
+            case FsmAction.Step:
+                if (!FsmStep_DoStandingOnPlum())
+                    return false;
+
+                // TODO: Implement
+                break;
+
+            case FsmAction.UnInit:
+                // TODO: Implement
+                break;
+        }
+
+        return true;
+    }
+
     public bool Fsm_EndMap(FsmAction action)
     {
         switch (action)
@@ -4603,7 +4717,6 @@ public partial class Rayman
     }
 
     // TODO: Implement all of these
-    public bool FUN_080224f4(FsmAction action) => true; // FUN_1004d84c
     public bool FUN_1005dea0(FsmAction action) => true;
     public bool FUN_1005dfa4(FsmAction action) => true;
     public bool FUN_1005e04c(FsmAction action) => true;

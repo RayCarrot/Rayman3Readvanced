@@ -13,7 +13,7 @@ public partial class LavaSplash
                 break;
 
             case FsmAction.Step:
-                if (ActionId == Action.MainActorDrownSplash)
+                if (ActionId == Action.DrownSplash)
                 {
                     if (IsActionFinished)
                     {
