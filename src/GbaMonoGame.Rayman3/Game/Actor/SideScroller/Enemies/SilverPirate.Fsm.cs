@@ -58,7 +58,7 @@ public partial class SilverPirate
                 // If all objects are kept active we want to wait with having the pirate fall until it's framed
                 if (Scene.KeepAllObjectsActive && !AnimatedObject.IsFramed)
                 {
-                    Speed = Speed with { Y = 0 };
+                    Position = Resource.Pos.ToVector2();
                 }
                 else
                 {
