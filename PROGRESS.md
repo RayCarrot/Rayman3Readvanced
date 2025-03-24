@@ -173,7 +173,7 @@
 | SphereBase             | 🟩     |                                              |
 | Sphere                 | 🟩     |                                              |
 | #22                    | 🟥     |                                              |
-| GreenPirate            | 🟥     |                                              |
+| GreenPirate            | 🟩     |                                              |
 | BluePirate             | 🟥     |                                              |
 | SilverPirate           | 🟩     |                                              |
 | HelicopterBomb         | 🟩     |                                              |

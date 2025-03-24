@@ -16,7 +16,7 @@ public abstract class PirateBaseActor : MovableActor
     public ActorResource Resource { get; }
 
     public bool SpawnsRedLum { get; set; }
-    public bool PirateFlag_1 { get; set; } // TODO: Name
+    public bool IsSecondAttack { get; set; }
 
     public uint InvulnerabilityTimer { get; set; }
     public uint IdleDetectionTimer { get; set; }
@@ -29,7 +29,7 @@ public abstract class PirateBaseActor : MovableActor
         IdleDetectionTimer = 0;
         HitFromFront = false;
         PrevHitPoints = HitPoints;
-        PirateFlag_1 = false;
+        IsSecondAttack = false;
     }
 
     protected void SpawnRedLum(float offsetX)

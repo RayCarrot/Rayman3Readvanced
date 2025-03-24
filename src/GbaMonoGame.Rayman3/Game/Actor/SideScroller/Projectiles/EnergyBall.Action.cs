@@ -14,8 +14,8 @@ public partial class EnergyBall
         Shot1_Left = 1,
         Shot2_Right = 2,
         Shot2_Left = 3,
-        Shot3_Right = 4,
-        Shot4_Left = 5,
+        Shot3_Left = 4,
+        Shot3_Right = 5,
 
         DownShot_Left = 6,
         DownShot_Right = 7,
