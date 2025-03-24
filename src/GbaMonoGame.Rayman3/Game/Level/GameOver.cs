@@ -111,6 +111,9 @@ public class GameOver : Frame
 
     public override void Init()
     {
+        // NOTE: The game doesn't do this, but we have to since we might be showing more of the screen
+        Gfx.ClearColor = Color.Black;
+
         TransitionsFX = new TransitionsFX(true);
 
         Gfx.AddScreen(new GfxScreen(2)
