@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using GbaMonoGame.TgxEngine;
 using ImGuiNET;
 using Microsoft.Xna.Framework;
@@ -75,13 +74,11 @@ public class SceneDebugWindow : DebugWindow
 
         ImGui.SeparatorText("Always actors");
 
-        ImGui.Text($"Count: {scene2D.KnotManager.AlwaysActorsCount}");
+        ImGui.Text($"Count: {scene2D.KnotManager.AlwaysActors.Length}");
 
         if (ImGui.BeginListBox("##_alwaysActors", new System.Numerics.Vector2(300, 150)))
         {
-            foreach (BaseActor actor in scene2D.KnotManager.GameObjects.
-                         Take(scene2D.KnotManager.AlwaysActorsCount).
-                         Cast<BaseActor>())
+            foreach (BaseActor actor in scene2D.KnotManager.AlwaysActors)
             {
                 bool isSelected = SelectedGameObject == actor;
                 if (ImGui.Selectable($"{actor.InstanceId}. {ObjectFactory.GetActorTypeName(actor.Type)}", isSelected))
@@ -95,14 +92,11 @@ public class SceneDebugWindow : DebugWindow
         ImGui.Spacing();
         ImGui.SeparatorText("Actors");
 
-        ImGui.Text($"Count: {scene2D.KnotManager.ActorsCount}");
+        ImGui.Text($"Count: {scene2D.KnotManager.Actors.Length}");
 
         if (ImGui.BeginListBox("##_actors", new System.Numerics.Vector2(300, 300)))
         {
-            foreach (BaseActor actor in scene2D.KnotManager.GameObjects.
-                         Skip(scene2D.KnotManager.AlwaysActorsCount).
-                         Take(scene2D.KnotManager.ActorsCount).
-                         Cast<BaseActor>())
+            foreach (BaseActor actor in scene2D.KnotManager.Actors)
             {
                 bool isSelected = SelectedGameObject == actor;
                 if (ImGui.Selectable($"{actor.InstanceId}. {ObjectFactory.GetActorTypeName(actor.Type)}", isSelected))
@@ -116,14 +110,11 @@ public class SceneDebugWindow : DebugWindow
         ImGui.Spacing();
         ImGui.SeparatorText("Captors");
 
-        ImGui.Text($"Count: {scene2D.KnotManager.CaptorsCount}");
+        ImGui.Text($"Count: {scene2D.KnotManager.Captors.Length}");
 
-        if (scene2D.KnotManager.CaptorsCount > 0 && ImGui.BeginListBox("##_captors", new System.Numerics.Vector2(300, 80)))
+        if (scene2D.KnotManager.Captors.Length > 0 && ImGui.BeginListBox("##_captors", new System.Numerics.Vector2(300, 80)))
         {
-            foreach (Captor captor in scene2D.KnotManager.GameObjects.
-                         Skip(scene2D.KnotManager.AlwaysActorsCount + scene2D.KnotManager.ActorsCount).
-                         Take(scene2D.KnotManager.CaptorsCount).
-                         Cast<Captor>())
+            foreach (Captor captor in scene2D.KnotManager.Captors)
             {
                 bool isSelected = SelectedGameObject == captor;
                 if (ImGui.Selectable($"{captor.InstanceId}. Captor", isSelected))

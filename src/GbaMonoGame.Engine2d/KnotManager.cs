@@ -6,27 +6,30 @@ using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Engine2d;
 
+// TODO: Duplicate all always actors with projectile flag
 public class KnotManager
 {
     #region Constructor
 
     public KnotManager(Scene2DResource sceneResource)
     {
-        GameObjectsCount = sceneResource.GameObjectCount;
-        AlwaysActorsCount = sceneResource.AlwaysActorsCount;
-        ActorsCount = sceneResource.ActorsCount;
-        CaptorsCount = sceneResource.CaptorsCount;
+        GameObjects = new GameObject[sceneResource.GameObjectCount];
+        AlwaysActors = new BaseActor[sceneResource.AlwaysActorsCount];
+        Actors = new BaseActor[sceneResource.ActorsCount];
+        Captors = new Captor[sceneResource.CaptorsCount];
         KnotsWidth = sceneResource.KnotsWidth;
-        GameObjects = new GameObject[GameObjectsCount];
         Knots = sceneResource.Knots;
+
+        if (GameObjects.Length != AlwaysActors.Length + Actors.Length + Captors.Length)
+            throw new Exception("Invalid game objects count");
 
         // Create a special knot with every object which we use when loading all objects at once
         _fullKnot = new Knot
         {
-            ActorsCount = (byte)ActorsCount,
-            CaptorsCount = (byte)CaptorsCount,
-            ActorIds = Enumerable.Range(AlwaysActorsCount, ActorsCount).Select(x => (byte)x).ToArray(),
-            CaptorIds = Enumerable.Range(AlwaysActorsCount + ActorsCount, CaptorsCount).Select(x => (byte)x).ToArray(),
+            ActorsCount = (byte)Actors.Length,
+            CaptorsCount = (byte)Captors.Length,
+            ActorIds = Enumerable.Range(AlwaysActors.Length, Actors.Length).Select(x => (byte)x).ToArray(),
+            CaptorIds = Enumerable.Range(AlwaysActors.Length + Actors.Length, Captors.Length).Select(x => (byte)x).ToArray(),
         };
     }
 
@@ -40,15 +43,11 @@ public class KnotManager
 
     #region Public Properties
 
-    // Total
-    public int GameObjectsCount { get; }
+    public GameObject[] GameObjects { get; set; }
+    public BaseActor[] AlwaysActors { get; }
+    public BaseActor[] Actors { get; }
+    public Captor[] Captors { get; }
 
-    // Object types
-    public int AlwaysActorsCount { get; }
-    public int ActorsCount { get; }
-    public int CaptorsCount { get; }
-
-    public GameObject[] GameObjects { get; }
     public Knot[] Knots { get; }
     public byte KnotsWidth { get; }
 
@@ -63,36 +62,50 @@ public class KnotManager
     // object has to access the main actor of the scene
     public void LoadGameObjects(Scene2D scene, Scene2DResource sceneResource)
     {
+        int instanceId = 0;
+
         // Create always actors
         for (int i = 0; i < sceneResource.AlwaysActors.Length; i++)
-            GameObjects[i] = ObjectFactory.Create(i, scene, sceneResource.AlwaysActors[i]);
+        {
+            AlwaysActors[i] = ObjectFactory.Create(instanceId, scene, sceneResource.AlwaysActors[i]);
+            GameObjects[instanceId] = AlwaysActors[i];
+            instanceId++;
+        }
 
         // Create actors
         for (int i = 0; i < sceneResource.Actors.Length; i++)
-            GameObjects[AlwaysActorsCount + i] = ObjectFactory.Create(AlwaysActorsCount + i, scene, sceneResource.Actors[i]);
+        {
+            Actors[i] = ObjectFactory.Create(instanceId, scene, sceneResource.Actors[i]);
+            GameObjects[instanceId] = Actors[i];
+            instanceId++;
+        }
 
         // Create captors
         for (int i = 0; i < sceneResource.Captors.Length; i++)
-            GameObjects[AlwaysActorsCount + ActorsCount + i] = new Captor(AlwaysActorsCount + ActorsCount + i, scene, sceneResource.Captors[i]);
+        {
+            Captors[i] = new Captor(instanceId, scene, sceneResource.Captors[i]);
+            GameObjects[instanceId] = Captors[i];
+            instanceId++;
+        }
 
         // Initialize always actors
-        for (int i = 0; i < AlwaysActorsCount; i++)
-            ((BaseActor)GameObjects[i]).Init(sceneResource.AlwaysActors[i]);
+        for (int i = 0; i < AlwaysActors.Length; i++)
+            AlwaysActors[i].Init(sceneResource.AlwaysActors[i]);
 
         // Initialize actors
-        for (int i = 0; i < ActorsCount; i++)
-            ((BaseActor)GameObjects[AlwaysActorsCount + i]).Init(sceneResource.Actors[i]);
+        for (int i = 0; i < Actors.Length; i++)
+            Actors[i].Init(sceneResource.Actors[i]);
     }
 
     public IEnumerable<BaseActor> EnumerateAlwaysActors(bool isEnabled)
     {
-        return GameObjects.Take(AlwaysActorsCount).Where(x => x.IsEnabled == isEnabled).Cast<BaseActor>();
+        return AlwaysActors.Where(x => x.IsEnabled == isEnabled);
     }
 
     public IEnumerable<BaseActor> EnumerateActors(bool isEnabled, Knot knot = null)
     {
         knot ??= CurrentKnot;
-        return knot.ActorIds.Select(x => GameObjects[x]).Where(x => x.IsEnabled == isEnabled).Cast<BaseActor>();
+        return knot.ActorIds.Select(x => GetGameObject(x)).Where(x => x.IsEnabled == isEnabled).Cast<BaseActor>();
     }
 
     public IEnumerable<BaseActor> EnumerateAllActors(bool isEnabled, Knot knot = null)
@@ -111,10 +124,13 @@ public class KnotManager
     public IEnumerable<Captor> EnumerateCaptors(bool isEnabled, Knot knot = null)
     {
         knot ??= CurrentKnot;
-        return knot.CaptorIds.Select(x => GameObjects[x]).Where(x => x.IsEnabled == isEnabled).Cast<Captor>();
+        return knot.CaptorIds.Select(x => GetGameObject(x)).Where(x => x.IsEnabled == isEnabled).Cast<Captor>();
     }
 
-    public GameObject GetGameObject(int instanceId) => GameObjects[instanceId];
+    public GameObject GetGameObject(int instanceId)
+    {
+        return GameObjects[instanceId];
+    }
 
     public bool UpdateCurrentKnot(TgxPlayfield playfield, Vector2 camPos, bool keepObjectsActive)
     {
