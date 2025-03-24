@@ -23,15 +23,15 @@ public class Scene2D
         Dialogs = new List<Dialog>(layersCount);
         DialogModalFlags = new List<bool>(layersCount);
 
-        Scene2DResource scene = Rom.LoadResource<Scene2DResource>(id);
+        Resource = Rom.LoadResource<Scene2DResource>(id);
 
-        Playfield = TgxPlayfield.Load(scene.Playfield);
+        Playfield = TgxPlayfield.Load(Resource.Playfield);
         
         // For now we use the game render context for the HUD, but this could be changed if we wanted to scale it differently
         HudRenderContext = Engine.GameRenderContext;
 
-        KnotManager = new KnotManager(scene);
-        KnotManager.LoadGameObjects(this, scene);
+        KnotManager = new KnotManager(Resource);
+        KnotManager.LoadGameObjects(this);
 
         Camera.LinkedObject = MainActor;
 
@@ -57,13 +57,15 @@ public class Scene2D
         Playfield = TgxPlayfield.Load<TgxPlayfield2D>(map.Playfield);
         HudRenderContext = Engine.GameRenderContext;
 
-        KnotManager = new KnotManager(map.Scene);
-        KnotManager.LoadGameObjects(this, map.Scene);
+        Resource = map.Scene;
+        KnotManager = new KnotManager(Resource);
+        KnotManager.LoadGameObjects(this);
 
         Camera.LinkedObject = MainActor;
         Camera.SetFirstPosition();
     }
 
+    public Scene2DResource Resource { get; }
     public CameraActor Camera { get; }
     public RenderContext HudRenderContext { get; }
     public List<Dialog> Dialogs { get; }
@@ -506,12 +508,12 @@ public class Scene2D
     public T CreateProjectile<T>(Enum actorType)
         where T : BaseActor
     {
-        return (T)KnotManager.CreateProjectile((int)(object)actorType);
+        return (T)KnotManager.CreateProjectile(this, (int)(object)actorType);
     }
 
     public BaseActor CreateProjectile(int actorType)
     {
-        return KnotManager.CreateProjectile(actorType);
+        return KnotManager.CreateProjectile(this, actorType);
     }
 
     public PhysicalType GetPhysicalType(Vector2 position)

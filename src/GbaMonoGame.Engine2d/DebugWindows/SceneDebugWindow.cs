@@ -126,6 +126,24 @@ public class SceneDebugWindow : DebugWindow
 
         ImGui.Spacing();
         ImGui.Spacing();
+        ImGui.SeparatorText("Added projectiles");
+
+        ImGui.Text($"Count: {scene2D.KnotManager.AddedProjectiles.Count}");
+
+        if (scene2D.KnotManager.AddedProjectiles.Count > 0 && ImGui.BeginListBox("##_addedProjectiles", new System.Numerics.Vector2(300, 80)))
+        {
+            foreach (BaseActor actor in scene2D.KnotManager.AddedProjectiles)
+            {
+                bool isSelected = SelectedGameObject == actor;
+                if (ImGui.Selectable($"{actor.InstanceId}. {ObjectFactory.GetActorTypeName(actor.Type)}", isSelected))
+                    SelectedGameObject = actor;
+            }
+
+            ImGui.EndListBox();
+        }
+
+        ImGui.Spacing();
+        ImGui.Spacing();
         ImGui.SeparatorText("Knots");
 
         ImGui.Text("Count: 0");

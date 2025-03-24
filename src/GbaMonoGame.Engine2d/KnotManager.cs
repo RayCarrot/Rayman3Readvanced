@@ -13,14 +13,15 @@ public class KnotManager
 
     public KnotManager(Scene2DResource sceneResource)
     {
-        GameObjects = new GameObject[sceneResource.GameObjectCount];
+        GameObjects = new List<GameObject>(sceneResource.GameObjectCount);
         AlwaysActors = new BaseActor[sceneResource.AlwaysActorsCount];
         Actors = new BaseActor[sceneResource.ActorsCount];
         Captors = new Captor[sceneResource.CaptorsCount];
+        AddedProjectiles = new List<BaseActor>();
         KnotsWidth = sceneResource.KnotsWidth;
         Knots = sceneResource.Knots;
 
-        if (GameObjects.Length != AlwaysActors.Length + Actors.Length + Captors.Length)
+        if (sceneResource.GameObjectCount != sceneResource.AlwaysActorsCount + sceneResource.ActorsCount + sceneResource.CaptorsCount)
             throw new Exception("Invalid game objects count");
 
         // Create a special knot with every object which we use when loading all objects at once
@@ -43,10 +44,11 @@ public class KnotManager
 
     #region Public Properties
 
-    public GameObject[] GameObjects { get; set; }
+    public List<GameObject> GameObjects { get; set; }
     public BaseActor[] AlwaysActors { get; }
     public BaseActor[] Actors { get; }
     public Captor[] Captors { get; }
+    public List<BaseActor> AddedProjectiles { get; } // Custom list of always actors - removes the projectile limit
 
     public Knot[] Knots { get; }
     public byte KnotsWidth { get; }
@@ -60,15 +62,16 @@ public class KnotManager
 
     // The game does this in the constructor, but we need the object instance to be created before doing this in case an
     // object has to access the main actor of the scene
-    public void LoadGameObjects(Scene2D scene, Scene2DResource sceneResource)
+    public void LoadGameObjects(Scene2D scene)
     {
+        Scene2DResource sceneResource = scene.Resource;
         int instanceId = 0;
 
         // Create always actors
         for (int i = 0; i < sceneResource.AlwaysActors.Length; i++)
         {
             AlwaysActors[i] = ObjectFactory.Create(instanceId, scene, sceneResource.AlwaysActors[i]);
-            GameObjects[instanceId] = AlwaysActors[i];
+            GameObjects.Add(AlwaysActors[i]);
             instanceId++;
         }
 
@@ -76,7 +79,7 @@ public class KnotManager
         for (int i = 0; i < sceneResource.Actors.Length; i++)
         {
             Actors[i] = ObjectFactory.Create(instanceId, scene, sceneResource.Actors[i]);
-            GameObjects[instanceId] = Actors[i];
+            GameObjects.Add(Actors[i]);
             instanceId++;
         }
 
@@ -84,7 +87,7 @@ public class KnotManager
         for (int i = 0; i < sceneResource.Captors.Length; i++)
         {
             Captors[i] = new Captor(instanceId, scene, sceneResource.Captors[i]);
-            GameObjects[instanceId] = Captors[i];
+            GameObjects.Add(Captors[i]);
             instanceId++;
         }
 
@@ -99,7 +102,7 @@ public class KnotManager
 
     public IEnumerable<BaseActor> EnumerateAlwaysActors(bool isEnabled)
     {
-        return AlwaysActors.Where(x => x.IsEnabled == isEnabled);
+        return AlwaysActors.Concat(AddedProjectiles).Where(x => x.IsEnabled == isEnabled);
     }
 
     public IEnumerable<BaseActor> EnumerateActors(bool isEnabled, Knot knot = null)
@@ -195,11 +198,44 @@ public class KnotManager
         // Don't need to do anything here. The original game re-allocates data in VRAM here, usually after game has been paused.
     }
 
-    public BaseActor CreateProjectile(int actorType)
+    public BaseActor CreateProjectile(Scene2D scene, int actorType)
     {
         BaseActor actor = EnumerateAllActors(isEnabled: false).FirstOrDefault(x => x.Type == actorType && x.IsProjectile);
-        actor?.ProcessMessage(null, Message.ResurrectWakeUp);
-        return actor;
+
+        if (actor != null)
+        {
+            actor.ProcessMessage(null, Message.ResurrectWakeUp);
+            return actor;
+        }
+        else if (Engine.Config.AddProjectilesWhenNeeded)
+        {
+            // Custom code to remove the limit of only spawning already allocated projectiles. This is needed if the game runs
+            // at a higher resolution as it might need more projectiles to be active at the same time due to more actors being
+            // on screen at the same time. Otherwise an enemy might fire a shot which doesn't spawn.
+
+            Scene2DResource sceneResource = scene.Resource;
+            ActorResource actorResource = sceneResource.AlwaysActors.FirstOrDefault(x => x.Type == actorType && x.IsProjectile);
+
+            if (actorResource == null)
+                return null;
+
+            int instanceId = GameObjects.Count;
+            actor = ObjectFactory.Create(instanceId, scene, actorResource);
+            
+            AddedProjectiles.Add(actor);
+            GameObjects.Add(actor);
+            actor.Init(actorResource);
+
+            actor.ProcessMessage(null, Message.ResurrectWakeUp);
+
+            Logger.Info("Added a new projectile with instance id {0} and type {1}", actor.InstanceId, actor.Type);
+
+            return actor;
+        }
+        else
+        {
+            return null;
+        }
     }
 
     #endregion

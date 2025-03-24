@@ -128,6 +128,17 @@ public static class GameOptions
                     getData: _ => Engine.Config.CanSkipTextBoxes,
                     setData: data => Engine.Config.CanSkipTextBoxes = data,
                     getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "ADD PROJECTILES WHEN NEEDED",
+                    infoText: "If enabled then new projectile objects will be created in the level if there aren't enough available to show on screen. This helps avoid enemy shots not firing if playing in a higher internal resolution.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
+                    ],
+                    getData: _ => Engine.Config.AddProjectilesWhenNeeded,
+                    setData: data => Engine.Config.AddProjectilesWhenNeeded = data,
+                    getCustomName: _ => null),
             ]),
             new GameOptionsGroup("CONTROLS",
             [
