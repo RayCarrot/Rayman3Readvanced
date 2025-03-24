@@ -132,7 +132,9 @@ public sealed partial class Rayman : MovableActor
     public int CameraTargetY { get; set; }
     public ushort InvisibilityTimer { get; set; }
     public ushort ReverseControlsTimer { get; set; }
+    public ushort MultiplayerBlueLumTimer { get; set; }
     public int InitialHitPoints { get; set; }
+    public ushort ForceDefaultCameraTimer { get; set; } // N-Gage only
 
     public bool Debug_NoClip { get; set; } // Custom no-clip mode
 
@@ -166,8 +168,6 @@ public sealed partial class Rayman : MovableActor
     public bool Flag2_7 { get; set; }
 
     // Unknown fields
-    public ushort MultiplayerBlueLumTimer { get; set; }
-    public ushort NGage_field_0x88 { get; set; }
     public byte field16_0x91 { get; set; }
     public byte field22_0x97 { get; set; }
     public byte field23_0x98 { get; set; }
@@ -1842,7 +1842,7 @@ public sealed partial class Rayman : MovableActor
         MultiplayerBlueLumTimer = 0;
         
         if (Rom.Platform == Platform.NGage)
-            NGage_field_0x88 = 0;
+            ForceDefaultCameraTimer = 0;
 
         NextActionId = null;
         Array.Clear(ActiveBodyParts);
@@ -1981,7 +1981,50 @@ public sealed partial class Rayman : MovableActor
 
         if (Rom.Platform == Platform.NGage)
         {
-            // TODO: Implement!
+            CameraSideScroller cam = (CameraSideScroller)Scene.Camera;
+
+            // Force default camera for certain actions on N-Gage, except if attached to a plum since that has
+            // its own camera code which is based on the plum's direction instead of Rayman's direction
+            if (ForceDefaultCameraTimer != 0 && 
+                (AttachedObject == null || (ActorType)AttachedObject.Type != ActorType.Plum))
+            {
+                if (IsFacingRight)
+                    cam.HorizontalOffset = Speed.X < 0 ? CameraOffset.DefaultReversed : CameraOffset.Default;
+                else
+                    cam.HorizontalOffset = Speed.X < 0 ? CameraOffset.Default : CameraOffset.DefaultReversed;
+
+                ForceDefaultCameraTimer--;
+            }
+
+            // Special camera code for the exclusive N-Gage falling levels
+            if ((GameInfo.MapId == MapId.MarshAwakening2 || GameInfo.MapId == MapId.MissileRace2) && Speed.Y > 0)
+            {
+                cam.HorizontalOffset = CameraOffset.Multiplayer;
+                CameraTargetY = 70;
+                cam.ProcessMessage(this, Message.Cam_FollowPositionY, CameraTargetY);
+            }
+
+            if (RSMultiplayer.IsActive && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+            {
+                if (FlagData.field_ac != 0)
+                    FlagData.field_ac--;
+
+                if (FlagData.field_b0 != 0)
+                    FlagData.field_b0--;
+
+                if (FlagData.field_b9)
+                {
+                    if (FlagData.field_b0 != 0)
+                        MechModel.Speed = MechModel.Speed with { X = MechModel.Speed.X * 3 / 2 };
+
+                    FlagData.field_b9 = false;
+                }
+                else
+                {
+                    if (FlagData.field_b0 % 256 != 0 && FlagData.field_b0 == 0)
+                        MechModel.Speed = MechModel.Speed with { X = MechModel.Speed.X * 2 / 3 };
+                }
+            }
         }
     }
 
@@ -2051,7 +2094,7 @@ public sealed partial class Rayman : MovableActor
         public uint field_b0 { get; set; }
         public uint field_b4 { get; set; }
         public byte field_b8 { get; set; }
-        public byte field_b9 { get; set; }
+        public bool field_b9 { get; set; }
         public byte PlayerPaletteId { get; set; } // TODO: Probably don't need this
         public Power Powers { get; set; }
         public byte field_bc { get; set; }
