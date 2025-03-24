@@ -162,7 +162,8 @@ public partial class Rayman
 
         Idle_Yoyo_Right = 152,
         Idle_Yoyo_Left = 153,
-
+        Plum_Crouch_Right = 154,
+        Plum_Crouch_Left = 155,
         Idle_ChewingGum_Right = 156,
         Idle_ChewingGum_Left = 157,
         Dying_Right = 158,

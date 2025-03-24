@@ -203,7 +203,7 @@ public sealed partial class Rayman : MovableActor
         }
     }
 
-    private bool IsDirectionalButtonButtonReleased(GbaInput input)
+    private bool IsDirectionalButtonReleased(GbaInput input)
     {
         if (RSMultiplayer.IsActive)
         {

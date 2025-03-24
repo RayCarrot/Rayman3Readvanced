@@ -763,7 +763,7 @@ public partial class Rayman
                 }
 
                 // Return if released the left or right inputs
-                if (IsDirectionalButtonButtonReleased(GbaInput.Left) && IsDirectionalButtonButtonReleased(GbaInput.Right) &&
+                if (IsDirectionalButtonReleased(GbaInput.Left) && IsDirectionalButtonReleased(GbaInput.Right) &&
                     ActionId is
                         Action.Walk_Right or Action.Walk_Left or
                         Action.WalkFast_Right or Action.WalkFast_Left)
@@ -773,7 +773,7 @@ public partial class Rayman
                 }
 
                 // Return and shout for Globox if looking for him when released the left and right inputs
-                if (IsDirectionalButtonButtonReleased(GbaInput.Left) && IsDirectionalButtonButtonReleased(GbaInput.Right) &&
+                if (IsDirectionalButtonReleased(GbaInput.Left) && IsDirectionalButtonReleased(GbaInput.Right) &&
                     ActionId is Action.Walk_LookAround_Right or Action.Walk_LookAround_Left)
                 {
                     NextActionId = IsFacingRight ? Action.Idle_Shout_Right : Action.Idle_Shout_Left;
@@ -1750,7 +1750,7 @@ public partial class Rayman
                 }
 
                 // Let go of down and stop crouching
-                if (IsDirectionalButtonButtonReleased(GbaInput.Down) && !topType.IsSolid)
+                if (IsDirectionalButtonReleased(GbaInput.Down) && !topType.IsSolid)
                 {
                     State.MoveTo(Fsm_Default);
                     return false;
@@ -1864,21 +1864,21 @@ public partial class Rayman
                 }
 
                 // Walk
-                if (IsDirectionalButtonButtonReleased(GbaInput.Down) && (IsDirectionalButtonPressed(GbaInput.Left) || IsDirectionalButtonPressed(GbaInput.Right)) && !topType.IsSolid)
+                if (IsDirectionalButtonReleased(GbaInput.Down) && (IsDirectionalButtonPressed(GbaInput.Left) || IsDirectionalButtonPressed(GbaInput.Right)) && !topType.IsSolid)
                 {
                     State.MoveTo(Fsm_Walk);
                     return false;
                 }
 
                 // Stopped crouching/crawling
-                if (IsDirectionalButtonButtonReleased(GbaInput.Down) && IsDirectionalButtonButtonReleased(GbaInput.Left) && IsDirectionalButtonButtonReleased(GbaInput.Right) && !topType.IsSolid)
+                if (IsDirectionalButtonReleased(GbaInput.Down) && IsDirectionalButtonReleased(GbaInput.Left) && IsDirectionalButtonReleased(GbaInput.Right) && !topType.IsSolid)
                 {
                     State.MoveTo(Fsm_Default);
                     return false;
                 }
 
                 // Crouch
-                if (IsDirectionalButtonButtonReleased(GbaInput.Right) && IsDirectionalButtonButtonReleased(GbaInput.Left))
+                if (IsDirectionalButtonReleased(GbaInput.Right) && IsDirectionalButtonReleased(GbaInput.Left))
                 {
                     State.MoveTo(Fsm_Crouch);
                     return false;
@@ -3369,7 +3369,7 @@ public partial class Rayman
 
                 // TODO: There's a bug here which causes a crash. Same in the original game. If falling it might still enter this state with attached obj null.
                 // Stop walking
-                if (IsDirectionalButtonButtonReleased(GbaInput.Left) && IsDirectionalButtonButtonReleased(GbaInput.Right))
+                if (IsDirectionalButtonReleased(GbaInput.Left) && IsDirectionalButtonReleased(GbaInput.Right))
                 {
                     State.MoveTo(Fsm_CarryObject);
                     return false;
@@ -3750,18 +3750,87 @@ public partial class Rayman
         switch (action)
         {
             case FsmAction.Init:
-                // TODO: Implement
+                if (NextActionId == null)
+                    ActionId = IsFacingRight ? Action.Crouch_Right : Action.Crouch_Left;
+                else
+                    ActionId = NextActionId.Value;
+
+                // Custom detection box for when crouching
+                SetDetectionBox(new Box(
+                    minX: ActorModel.DetectionBox.MinX,
+                    minY: ActorModel.DetectionBox.MaxY - 32,
+                    maxX: ActorModel.DetectionBox.MaxX,
+                    maxY: ActorModel.DetectionBox.MaxY));
+
+                Flag1_D = false;
                 break;
 
             case FsmAction.Step:
                 if (!FsmStep_DoStandingOnPlum())
                     return false;
 
-                // TODO: Implement
+                Box detectionBox = GetDetectionBox();
+
+                PhysicalType topType = Scene.GetPhysicalType(detectionBox.TopLeft + new Vector2(1, -8));
+                if (!topType.IsSolid)
+                    topType = Scene.GetPhysicalType(detectionBox.TopRight + new Vector2(-1, -8));
+
+                if (IsActionFinished && ActionId is not (Action.Plum_Crouch_Right or Action.Plum_Crouch_Left))
+                {
+                    ActionId = IsFacingRight ? Action.Plum_Crouch_Right : Action.Plum_Crouch_Left;
+                    NextActionId = null;
+                }
+
+                // Change direction
+                if (IsDirectionalButtonPressed(GbaInput.Left) && IsFacingRight)
+                {
+                    ActionId = Action.Plum_Crouch_Left;
+                    ChangeAction();
+
+                    if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
+                        FlagData.field_b9 = 1;
+                }
+                else if (IsDirectionalButtonPressed(GbaInput.Right) && IsFacingLeft)
+                {
+                    ActionId = Action.Plum_Crouch_Right;
+                    ChangeAction();
+
+                    if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && FlagData != null)
+                        FlagData.field_b9 = 1;
+                }
+
+                // End crouch
+                if (IsDirectionalButtonReleased(GbaInput.Down) && !topType.IsSolid)
+                {
+                    State.MoveTo(Fsm_OnPlum);
+                    return false;
+                }
+
+                // Jump
+                if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A) && !topType.IsSolid)
+                {
+                    Position = Position with { Y = GetActionBox().MinY - 20 };
+                    if (Rom.Platform == Platform.NGage)
+                        NGage_field_0x88 = 0x3c;
+                    PreviousXSpeed = ((MovableActor)AttachedObject).Speed.X;
+                    AttachedObject = null;
+                    State.MoveTo(Fsm_Jump);
+                    return false;
+                }
                 break;
 
             case FsmAction.UnInit:
-                // TODO: Implement
+                // Restore detection box
+                SetDetectionBox(new Box(ActorModel.DetectionBox));
+
+                if (ActionId == NextActionId || ActionId is Action.Crawl_Right or Action.Crawl_Left)
+                    NextActionId = null;
+
+                if (IsLocalPlayer)
+                {
+                    Flag1_D = true;
+                    field16_0x91 = 0;
+                }
                 break;
         }
 

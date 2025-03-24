@@ -56,7 +56,7 @@ public enum ActorType
     Boulder = 51, // TODO: Implement
 
     MovingWoodenPlatform = 53,
-    Plum = 54, // TODO: Implement
+    Plum = 54,
     LavaSplash = 55,
 
     Electricity = 58, // TODO: Implement
