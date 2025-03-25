@@ -207,7 +207,7 @@
 | Plum                   | 🟩     |                                              |
 | LavaSplash             | 🟩     |                                              |
 | #56                    | 🟥     |                                              |
-| #57                    | 🟥     |                                              |
+| BlackLum               | 🟩     |                                              |
 | Electricity            | 🟥     |                                              |
 | Hoodstormer            | 🟩     |                                              |
 | SpikyFlyingBomb        | 🟩     |                                              |

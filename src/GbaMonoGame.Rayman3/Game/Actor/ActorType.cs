@@ -59,6 +59,7 @@ public enum ActorType
     Plum = 54,
     LavaSplash = 55,
 
+    BlackLum = 57,
     Electricity = 58, // TODO: Implement
     Hoodstormer = 59,
     SpikyFlyingBomb = 60,

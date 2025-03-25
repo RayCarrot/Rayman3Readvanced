@@ -108,6 +108,8 @@ public class Rayman3 : GbaGame
             { ActorType.Plum, (instanceId, scene, resource) => new Plum(instanceId, scene, resource) },
             { ActorType.LavaSplash, (instanceId, scene, resource) => new LavaSplash(instanceId, scene, resource) },
 
+            { ActorType.BlackLum, (instanceId, scene, resource) => new BlackLum(instanceId, scene, resource) },
+
             { ActorType.Hoodstormer, (instanceId, scene, resource) => new Hoodstormer(instanceId, scene, resource) },
             { ActorType.SpikyFlyingBomb, (instanceId, scene, resource) => new SpikyFlyingBomb(instanceId, scene, resource) },
 
