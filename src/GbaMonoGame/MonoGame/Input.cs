@@ -15,14 +15,6 @@ public enum Input
     Gba_R,
     Gba_L,
 
-    // Menu TODO: Remove?
-    Menu_Right,
-    Menu_Left,
-    Menu_Up,
-    Menu_Down,
-    Menu_Confirm,
-    Menu_Back,
-
     // Debug
     Debug_ToggleBoxes,
     Debug_ToggleCollision,

@@ -44,14 +44,6 @@ public static class InputManager
             Input.Gba_R => Keys.W,
             Input.Gba_L => Keys.Q,
 
-            // Menu
-            Input.Menu_Right => Keys.Right,
-            Input.Menu_Left => Keys.Left,
-            Input.Menu_Up => Keys.Up,
-            Input.Menu_Down => Keys.Down,
-            Input.Menu_Confirm => Keys.Space,
-            Input.Menu_Back => Keys.Back,
-
             // Debug
             Input.Debug_ToggleBoxes => Keys.B,
             Input.Debug_ToggleCollision => Keys.T,
