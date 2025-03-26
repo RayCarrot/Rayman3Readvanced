@@ -54,7 +54,7 @@
 | SanctuaryOfStoneAndFire_M3 | 🟩     |                                              |
 | BeneathTheSanctuary_M1     | 🟩     |                                              |
 | BeneathTheSanctuary_M2     | 🟩     |                                              |
-| ThePrecipice_M1            | 🟨     | Not implemented background effect            |
+| ThePrecipice_M1            | 🟩     |                                              |
 | ThePrecipice_M2            | 🟨     | Not implemented camera centering on boulder  |
 | BossRockAndLava            | 🟩     |                                              |
 | TheCanopy_M1               | 🟩     |                                              |
