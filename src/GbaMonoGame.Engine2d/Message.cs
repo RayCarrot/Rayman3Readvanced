@@ -48,6 +48,7 @@ public enum Message
     Damaged = 1025,
     Cam_CenterPositionX = 1026,
     Cam_ResetPositionX = 1027,
+    FallingBridge_Fall = 1028,
     Main_PreventWallJumps = 1028,
     Main_BeginHang = 1029,
     Main_EndHang = 1030,

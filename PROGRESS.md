@@ -172,7 +172,7 @@
 | Barrel                 | 🟩     |                                              |
 | SphereBase             | 🟩     |                                              |
 | Sphere                 | 🟩     |                                              |
-| #22                    | 🟥     |                                              |
+| FallingBridge          | 🟩     |                                              |
 | GreenPirate            | 🟩     |                                              |
 | BluePirate             | 🟥     |                                              |
 | SilverPirate           | 🟩     |                                              |

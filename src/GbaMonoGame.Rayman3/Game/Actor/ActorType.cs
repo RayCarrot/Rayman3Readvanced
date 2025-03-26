@@ -24,7 +24,7 @@ public enum ActorType
     Barrel = 19,
     SphereBase = 20,
     Sphere = 21,
-
+    FallingBridge = 22,
     GreenPirate = 23,
     BluePirate = 24, // TODO: Implement
     SilverPirate = 25,
