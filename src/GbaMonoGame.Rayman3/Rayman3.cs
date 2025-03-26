@@ -147,6 +147,8 @@ public class Rayman3 : GbaGame
 
             { ActorType.Teensies, (instanceId, scene, resource) => new Teensies(instanceId, scene, resource) },
 
+            { ActorType.Rocky, (instanceId, scene, resource) => new Rocky(instanceId, scene, resource) },
+            { ActorType.RockyFlame, (instanceId, scene, resource) => new RockyFlame(instanceId, scene, resource) },
             { ActorType.MechanicalPlatform, (instanceId, scene, resource) => new MechanicalPlatform(instanceId, scene, resource) },
             { ActorType.Urchin, (instanceId, scene, resource) => new Urchin(instanceId, scene, resource) },
             { ActorType.Arrive, (instanceId, scene, resource) => new Arrive(instanceId, scene, resource) },

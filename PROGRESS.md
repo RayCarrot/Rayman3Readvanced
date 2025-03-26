@@ -248,7 +248,7 @@
 | Teensies               | 🟩     |                                              |
 | #96                    | 🟥     |                                              |
 | Rocky                  | 🟥     |                                              |
-| #98                    | 🟥     |                                              |
+| RockyFlame             | 🟩     |                                              |
 | MechanicalPlatform     | 🟩     |                                              |
 | Urchin                 | 🟩     |                                              |
 | Arrive                 | 🟩     |                                              |

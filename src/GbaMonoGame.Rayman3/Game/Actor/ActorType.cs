@@ -98,8 +98,8 @@ public enum ActorType
 
     Teensies = 95,
 
-    Rocky = 97, // TODO: Implement
-
+    Rocky = 97,
+    RockyFlame = 98,
     MechanicalPlatform = 99,
     Urchin = 100,
     Arrive = 101,
