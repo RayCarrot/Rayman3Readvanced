@@ -24,25 +24,15 @@ public class UserInfoSideScroller : Dialog
             SwitchBar = new SwitchBar(scene);
 
         if (GameInfo.MapId == MapId.BossMachine)
-        {
             BossBar = new BossMachineBar(scene);
-        }
         else if (GameInfo.MapId == MapId.BossRockAndLava)
-        {
-            // TODO: Boss bar
-        }
+            BossBar = new BossRockAndLavaBar(scene);
         else if (GameInfo.MapId == MapId.BossScaleMan)
-        {
-            // TODO: Boss bar
-        }
+            BossBar = new BossScalemanBar(scene);
         else if (GameInfo.MapId == MapId.BossFinal_M1)
-        {
-            // TODO: Boss bar
-        }
+            BossBar = new BossFinalBar(scene, 0);
         else if (GameInfo.MapId == MapId.BossFinal_M2)
-        {
-            // TODO: Boss bar
-        }
+            BossBar = new BossFinalBar(scene, 1);
 
         // Disable lums and cages bars in bosses
         if (GameInfo.MapId is

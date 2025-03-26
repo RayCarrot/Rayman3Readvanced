@@ -141,10 +141,10 @@
 | TimerBar               | 🟩     |                                              |
 | ScoreBar               | 🟩     |                                              |
 | SwitchBar              | 🟩     |                                              |
-| BossFinalBar           | 🟥     |                                              |
+| BossFinalBar           | 🟩     |                                              |
 | BossMachineBar         | 🟩     |                                              |
-| BossRockAndLavaBar     | 🟥     |                                              |
-| BossScalemanBar        | 🟥     |                                              |
+| BossRockAndLavaBar     | 🟩     |                                              |
+| BossScalemanBar        | 🟩     |                                              |
 | WorldNameBar           | 🟩     |                                              |
 
 ## Actors
