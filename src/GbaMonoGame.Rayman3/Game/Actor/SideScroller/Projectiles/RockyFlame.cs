@@ -1,4 +1,5 @@
-﻿using GbaMonoGame.Engine2d;
+﻿using BinarySerializer.Ubisoft.GbaEngine;
+using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -10,8 +11,9 @@ public sealed partial class RockyFlame : InteractableActor
         Timer = 0;
         AnimatedObject.ObjPriority = 10;
 
-        // The top of the flame wraps to the bottom. Fix this by setting a max y. The y positions should only be negative for this object.
-        AnimatedObject.WrapMaxY = 0;
+        // The top of the flame wraps to the bottom on GBA. Fix this by setting a max y. The y positions should only be negative for this object.
+        if (Rom.Platform == Platform.GBA)
+            AnimatedObject.WrapMaxY = 0;
     }
 
     public byte Timer { get; set; }

@@ -22,7 +22,7 @@ public sealed partial class Rocky : MovableActor
         AnimatedObject.BgPriority = 0;
         AnimatedObject.ObjPriority = 17;
 
-        // The top of the flame wraps to the bottom. Fix this by setting a max y. The y positions should only be negative for this object.
+        // The top of the flame wraps to the bottom. Fix this by setting a max y.
         AnimatedObject.WrapMaxY = 100;
     }
 
