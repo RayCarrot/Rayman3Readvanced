@@ -129,6 +129,13 @@ public class AnimatedObject : AObject
     // Custom - allows animations to be replaced with new ones
     public Dictionary<int, Animation> ReplacedAnimations { get; set; }
 
+    // Custom. This is used to fix sprite wrapping. For bigger animations, like bosses, the sprites sometimes
+    // wrap around to the other side due to the position values being stored as signed bytes.
+    public float WrapMinX { get; set; } = Single.NaN;
+    public float WrapMinY { get; set; } = Single.NaN;
+    public float WrapMaxX { get; set; } = Single.NaN;
+    public float WrapMaxY { get; set; } = Single.NaN;
+
     #endregion
 
     #region Private Methods
@@ -337,6 +344,10 @@ public class AnimatedObject : AObject
 
                     // Get x position
                     float xPos = channel.XPosition;
+                    if (WrapMinX != Single.NaN && xPos < WrapMinX)
+                        xPos += 256;
+                    else if (WrapMaxX != Single.NaN && xPos > WrapMaxX)
+                        xPos -= 256;
 
                     Vector2 pos = GetAnchoredPosition();
 
@@ -347,6 +358,10 @@ public class AnimatedObject : AObject
 
                     // Get y position
                     float yPos = channel.YPosition;
+                    if (WrapMinY != Single.NaN && yPos < WrapMinY)
+                        yPos += 256;
+                    else if (WrapMaxY != Single.NaN && yPos > WrapMaxY)
+                        yPos -= 256;
 
                     if (!FlipY)
                         yPos += pos.Y;
