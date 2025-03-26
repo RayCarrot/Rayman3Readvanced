@@ -55,7 +55,7 @@
 | BeneathTheSanctuary_M1     | 🟩     |                                              |
 | BeneathTheSanctuary_M2     | 🟩     |                                              |
 | ThePrecipice_M1            | 🟩     |                                              |
-| ThePrecipice_M2            | 🟨     | Not implemented camera centering on boulder  |
+| ThePrecipice_M2            | 🟩     |                                              |
 | BossRockAndLava            | 🟩     |                                              |
 | TheCanopy_M1               | 🟩     |                                              |
 | TheCanopy_M2               | 🟩     |                                              |

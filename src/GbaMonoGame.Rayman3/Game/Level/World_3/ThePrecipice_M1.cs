@@ -10,7 +10,7 @@ public class ThePrecipice_M1 : FrameSideScroller
     {
         GreenColor = 25 * Speed;
         AddColor = true;
-        Unused1 = (short)Random.GetNumber(127);
+        LightningTime = (ushort)Random.GetNumber(127);
     }
 
     private const int MinColor = 24;
@@ -23,13 +23,13 @@ public class ThePrecipice_M1 : FrameSideScroller
     public PaletteTexture[] PaletteTextures { get; set; }
 
     // Unused
-    public short Unused1 { get; set; }
-    public short Unused2 { get; set; }
+    public ushort LightningTime { get; set; }
+    public ushort Timer { get; set; }
 
     public override void Init()
     {
         base.Init();
-        Unused2 = 0;
+        Timer = 0;
 
         // Get the original colors
         GfxTileKitManager tileKitManager = Scene.Playfield.GfxTileKitManager;
