@@ -27,8 +27,7 @@ public class Scene2D
 
         Playfield = TgxPlayfield.Load(Resource.Playfield);
         
-        // For now we use the game render context for the HUD, but this could be changed if we wanted to scale it differently
-        HudRenderContext = Engine.GameRenderContext;
+        HudRenderContext = new HudRenderContext(RenderContext);
 
         KnotManager = new KnotManager(Resource);
         KnotManager.LoadGameObjects(this);
@@ -55,7 +54,7 @@ public class Scene2D
         DialogModalFlags = new List<bool>(layersCount);
 
         Playfield = TgxPlayfield.Load<TgxPlayfield2D>(map.Playfield);
-        HudRenderContext = Engine.GameRenderContext;
+        HudRenderContext = new HudRenderContext(RenderContext);
 
         Resource = map.Scene;
         KnotManager = new KnotManager(Resource);
