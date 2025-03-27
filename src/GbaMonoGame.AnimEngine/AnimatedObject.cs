@@ -129,6 +129,7 @@ public class AnimatedObject : AObject
     // Custom - allows animations to be replaced with new ones
     public Dictionary<int, Animation> ReplacedAnimations { get; set; }
 
+    // TODO: Check if this needs to be applied to more animations
     // Custom. This is used to fix sprite wrapping. For bigger animations, like bosses, the sprites sometimes
     // wrap around to the other side due to the position values being stored as signed bytes.
     public float WrapMinX { get; set; } = Single.NaN;

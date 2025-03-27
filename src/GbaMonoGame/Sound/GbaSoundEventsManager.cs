@@ -314,6 +314,10 @@ public class GbaSoundEventsManager : SoundEventsManager
     {
         SoundEvent evt = GetEventFromId(soundEventId);
 
+        // This should ideally never happen, but it seems that the animation for when Rocky lands tries and play a sound which doesn't exist
+        if (evt == null)
+            return;
+
         switch (evt.Type)
         {
             case SoundEvent.SoundEventType.Play:

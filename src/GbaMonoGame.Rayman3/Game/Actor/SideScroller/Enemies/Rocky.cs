@@ -1,5 +1,6 @@
 ﻿using System;
 using BinarySerializer.Ubisoft.GbaEngine;
+using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
 
@@ -107,18 +108,48 @@ public sealed partial class Rocky : MovableActor
 
     private void SpawnBlueLum()
     {
-        // TODO: Implement
+        if (BlueLum is not { IsEnabled: true })
+        {
+            if (BlueLum == null)
+            {
+                BlueLum = Scene.CreateProjectile<Lums>(ActorType.Lums);
+                BlueLum.AnimatedObject.BasePaletteIndex = 1;
+                BlueLum.AnimatedObject.CurrentAnimation = 0;
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Appear_SocleFX1_Mix01);
+            }
+            else
+            {
+                BlueLum.ProcessMessage(this, Message.Resurrect);
+            }
+
+            BlueLum.ActionId = Lums.Action.BlueLum;
+            BlueLum.Position = new Vector2(IsFacingLeft ? 80 : 160, 80);
+        }
+
+        AttackCount = BossHealth == 3 ? 5 : 8;
     }
 
-    // TODO: Implement
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {
-        return base.ProcessMessageImpl(sender, message, param);
+        if (base.ProcessMessageImpl(sender, message, param))
+            return false;
+
+        // Handle messages
+        switch (message)
+        {
+            case Message.Hit:
+                Vector2 hitPos = ((GameObject)param).Position;
+                if (State == Fsm_Default && hitPos.Y < Position.Y - 30)
+                    State.MoveTo(Fsm_Hit);
+                return false;
+
+            default:
+                return false;
+        }
     }
 
-    // TODO: Implement
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
-        base.Draw(animationPlayer, forceDraw);
+        DrawLarge(animationPlayer, forceDraw);
     }
 }

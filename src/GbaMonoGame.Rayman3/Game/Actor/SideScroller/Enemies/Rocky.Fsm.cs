@@ -146,18 +146,223 @@ public partial class Rocky
         switch (action)
         {
             case FsmAction.Init:
-                // TODO: Implement
-
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BossVO02_Mix01);
+                ActionId = IsFacingRight ? Action.Punch_Right : Action.Punch_Left;
+                Timer = 0;
                 break;
 
             case FsmAction.Step:
-                // TODO: Implement
+                Scene.Camera.ProcessMessage(this, Message.Cam_FollowPositionY, 155);
 
+                if (Scene.IsHitMainActor(this))
+                {
+                    Scene.MainActor.ReceiveDamage(1);
+                    Scene.MainActor.ProcessMessage(this, Message.Damaged);
+                }
+
+                if (ActionId is Action.Punch_Right or Action.Punch_Left)
+                    Timer++;
+
+                if (IsActionFinished && Timer != 0)
+                {
+                    State.MoveTo(Fsm_Default);
+                    return false;
+                }
                 break;
 
             case FsmAction.UnInit:
-                // TODO: Implement
+                // Do nothing
+                break;
+        }
 
+        return true;
+    }
+
+    public bool Fsm_ChargeAttack(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                AttackCount--;
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Combust1_Mix02);
+                break;
+
+            case FsmAction.Step:
+                Scene.Camera.ProcessMessage(this, Message.Cam_FollowPositionY, 155);
+
+                if (Scene.IsHitMainActor(this) && !Scene.MainActor.IsInvulnerable)
+                {
+                    Scene.MainActor.ReceiveDamage(1);
+                    Scene.MainActor.ProcessMessage(this, Message.Main_Damaged3);
+                }
+
+                if (IsActionFinished && ActionId is Action.PrepareCharge_Right or Action.PrepareCharge_Left)
+                    ActionId = IsFacingRight ? Action.Charge_Right : Action.Charge_Left;
+
+                if (AttackCount == 0 && (AnimatedObject.ScreenPos.X < -50 || AnimatedObject.ScreenPos.X > Scene.Resolution.X + 30))
+                {
+                    State.MoveTo(Fsm_Land);
+                    return false;
+                }
+
+                if (AttackCount != 0 && (AnimatedObject.ScreenPos.X < -50 || AnimatedObject.ScreenPos.X > Scene.Resolution.X + 30))
+                {
+                    State.MoveTo(Fsm_ChargeAttack);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                if (AttackCount == 0)
+                {
+                    Position = Position with { Y = InitialYPosition };
+                }
+                else
+                {
+                    // Change direction
+                    if (IsFacingLeft)
+                    {
+                        AnimatedObject.FlipX = false;
+                        Position = new Vector2(0, InitialYPosition);
+                    }
+                    else
+                    {
+                        AnimatedObject.FlipX = true;
+                        Position = new Vector2(Scene.Resolution.X, 160);
+                    }
+
+                    ActionId = IsFacingRight ? Action.Charge_Right : Action.Charge_Left;
+                }
+
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Combust1_Mix02);
+                break;
+        }
+
+        return true;
+    }
+
+    public bool Fsm_Land(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                if (IsFacingLeft)
+                {
+                    ActionId = Action.Fall_Right;
+                    Position = new Vector2(30, 0);
+                }
+                else
+                {
+                    ActionId = Action.Fall_Left;
+                    Position = new Vector2(210, 0);
+                }
+
+                Timer = 0;
+                AttackCount = BossHealth == 3 ? 5 : 8;
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Combust1_Mix02);
+                break;
+
+            case FsmAction.Step:
+                Scene.Camera.ProcessMessage(this, Message.Cam_FollowPositionY, 155);
+
+                if (Scene.IsHitMainActor(this))
+                    Scene.MainActor.ProcessMessage(this, Message.Exploded);
+
+                Timer++;
+
+                if (Timer < 60)
+                    Position -= new Vector2(0, 4);
+
+                if (Position.Y > InitialYPosition)
+                {
+                    Position = Position with { Y = InitialYPosition };
+                    ActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
+                    ChangeAction();
+                }
+
+                if (IsActionFinished && ActionId is Action.Land_Right or Action.Land_Left)
+                {
+                    State.MoveTo(Fsm_SlamAttack);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Combust1_Mix02);
+                break;
+        }
+
+        return true;
+    }
+
+    public bool Fsm_Hit(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MetlImp1_PiraHit3_Mix03);
+                ActionId = IsFacingRight ? Action.Hit_Right : Action.Hit_Left;
+                BossHealth--;
+                ((FrameSideScroller)Frame.Current).UserInfo.BossHit();
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumTimer_Mix02);
+                Scene.MainActor.ProcessMessage(this, Message.Main_EndSuperHelico);
+                break;
+
+            case FsmAction.Step:
+                Scene.Camera.ProcessMessage(this, Message.Cam_FollowPositionY, 155);
+
+                if (Scene.IsHitMainActor(this))
+                {
+                    Scene.MainActor.ReceiveDamage(1);
+                    Scene.MainActor.ProcessMessage(this, Message.Damaged);
+                }
+
+                Rayman rayman = (Rayman)Scene.MainActor;
+
+                if (IsActionFinished && rayman.State != rayman.Fsm_SuperHelico && BossHealth == 0)
+                {
+                    State.MoveTo(Fsm_Dying);
+                    return false;
+                }
+
+                if (IsActionFinished && rayman.State != rayman.Fsm_SuperHelico && BossHealth != 0)
+                {
+                    ActionId = IsFacingRight ? Action.PrepareCharge_Right : Action.PrepareCharge_Left;
+                    State.MoveTo(Fsm_ChargeAttack);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                AttackCount = BossHealth == 2 ? 1 : 3;
+                break;
+        }
+
+        return true;
+    }
+
+    public bool Fsm_Dying(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                ActionId = IsFacingRight ? Action.Dying_Right : Action.Dying_Left;
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalDead_Mix02);
+                break;
+
+            case FsmAction.Step:
+                Scene.Camera.ProcessMessage(this, Message.Cam_FollowPositionY, 155);
+
+                if (IsActionFinished)
+                {
+                    State.MoveTo(Fsm_Default);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                Scene.MainActor.ProcessMessage(this, Message.Main_LevelEnd);
+                ProcessMessage(this, Message.Destroy);
                 break;
         }
 
