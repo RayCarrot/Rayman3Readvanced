@@ -249,17 +249,27 @@ public class Credits : Frame
 
             case TextMode.Wait:
                 int waitTime = 0;
-                for (int nameIndex = HeadersCount; nameIndex < TextLinesCount; nameIndex++)
+
+                if (Engine.Config.FixBugs)
                 {
-                    if (NamesCount == 0)
-                        break;
+                    waitTime = NamesCount * 30;
+                }
+                else
+                {
+                    for (int nameIndex = HeadersCount; nameIndex < TextLinesCount; nameIndex++)
+                    {
+                        if (NamesCount == 0)
+                            break;
 
-                    waitTime += 30;
+                        waitTime += 30;
 
-                    // NOTE: This seems like a bug since we're modifying the property, causing it to be 0 on the next frame!
-                    NamesCount -= 1;
+                        // NOTE: This is a bug since we're modifying the property, causing it to be 0 on the next frame!
+                        //       This makes the text move out immediately rather than staying on the screen for a bit.
+                        NamesCount -= 1;
+                    }
                 }
 
+                // Max is 60 frames (1 second)
                 if (waitTime >= 60)
                     waitTime = 60;
 

@@ -139,6 +139,17 @@ public static class GameOptions
                     getData: _ => Engine.Config.AddProjectilesWhenNeeded,
                     setData: data => Engine.Config.AddProjectilesWhenNeeded = data,
                     getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "FIX BUGS",
+                    infoText: "Indicates if you want to play with the bugs in the game fixed or not.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
+                    ],
+                    getData: _ => Engine.Config.FixBugs,
+                    setData: data => Engine.Config.FixBugs = data,
+                    getCustomName: _ => null),
             ]),
             new GameOptionsGroup("CONTROLS",
             [

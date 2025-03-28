@@ -33,6 +33,7 @@ public class GameConfig
         UseModernPauseDialog = true;
         CanSkipTextBoxes = true;
         AddProjectilesWhenNeeded = true;
+        FixBugs = true;
 
         // Controls
         Controls = new Dictionary<Input, Keys>();
@@ -76,6 +77,7 @@ public class GameConfig
     public bool UseModernPauseDialog { get; set; }
     public bool CanSkipTextBoxes { get; set; }
     public bool AddProjectilesWhenNeeded { get; set; }
+    public bool FixBugs { get; set; }
 
     // Controls
     public Dictionary<Input, Keys> Controls { get; set; }
@@ -110,6 +112,7 @@ public class GameConfig
         UseModernPauseDialog = serializer.Serialize<bool>(UseModernPauseDialog, GameSection, "UseModernPauseDialog");
         CanSkipTextBoxes = serializer.Serialize<bool>(CanSkipTextBoxes, GameSection, "CanSkipTextBoxes");
         AddProjectilesWhenNeeded = serializer.Serialize<bool>(AddProjectilesWhenNeeded, GameSection, "AddProjectilesWhenNeeded");
+        FixBugs = serializer.Serialize<bool>(FixBugs, GameSection, "FixBugs");
 
         // Controls
         Controls = serializer.SerializeDictionary<Input, Keys>(Controls, ControlsSection);
