@@ -17,6 +17,7 @@ public class KnotManager
         AlwaysActors = new BaseActor[sceneResource.AlwaysActorsCount];
         Actors = new BaseActor[sceneResource.ActorsCount];
         Captors = new Captor[sceneResource.CaptorsCount];
+        PendingAddedProjectiles = new List<BaseActor>();
         AddedProjectiles = new List<BaseActor>();
         KnotsWidth = sceneResource.KnotsWidth;
         Knots = sceneResource.Knots;
@@ -48,7 +49,10 @@ public class KnotManager
     public BaseActor[] AlwaysActors { get; }
     public BaseActor[] Actors { get; }
     public Captor[] Captors { get; }
-    public List<BaseActor> AddedProjectiles { get; } // Custom list of always actors - removes the projectile limit
+
+    // Custom list of always actors - removes the projectile limit
+    public List<BaseActor> PendingAddedProjectiles { get; }
+    public List<BaseActor> AddedProjectiles { get; }
 
     public Knot[] Knots { get; }
     public byte KnotsWidth { get; }
@@ -198,6 +202,13 @@ public class KnotManager
         // Don't need to do anything here. The original game re-allocates data in VRAM here, usually after game has been paused.
     }
 
+    public void AddPendingProjectiles()
+    {
+        GameObjects.AddRange(PendingAddedProjectiles);
+        AddedProjectiles.AddRange(PendingAddedProjectiles);
+        PendingAddedProjectiles.Clear();
+    }
+
     public BaseActor CreateProjectile(Scene2D scene, int actorType)
     {
         BaseActor actor = EnumerateAllActors(isEnabled: false).FirstOrDefault(x => x.Type == actorType && x.IsProjectile);
@@ -219,11 +230,10 @@ public class KnotManager
             if (actorResource == null)
                 return null;
 
-            int instanceId = GameObjects.Count;
+            int instanceId = GameObjects.Count + PendingAddedProjectiles.Count;
             actor = ObjectFactory.Create(instanceId, scene, actorResource);
-            
-            AddedProjectiles.Add(actor);
-            GameObjects.Add(actor);
+
+            PendingAddedProjectiles.Add(actor);
             actor.Init(actorResource);
 
             actor.ProcessMessage(null, Message.ResurrectWakeUp);

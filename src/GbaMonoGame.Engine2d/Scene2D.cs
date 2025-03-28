@@ -155,6 +155,9 @@ public class Scene2D
             throw new UnsupportedPlatformException();
         }
 
+        // Custom - add new created projectiles at the end of this frame to avoid issues with enumerations
+        KnotManager.AddPendingProjectiles();
+
         // Toggle showing debug boxes
         if (InputManager.IsButtonJustPressed(Input.Debug_ToggleBoxes))
             ShowDebugBoxes = !ShowDebugBoxes;
