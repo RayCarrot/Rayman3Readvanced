@@ -6,7 +6,6 @@ using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Engine2d;
 
-// TODO: Duplicate all always actors with projectile flag
 public class KnotManager
 {
     #region Constructor
