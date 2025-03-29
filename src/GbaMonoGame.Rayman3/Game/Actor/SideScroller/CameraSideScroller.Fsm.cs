@@ -164,16 +164,20 @@ public partial class CameraSideScroller
                     }
                 }
 
-                Speed = VerticalShake(Speed);
+                Vector2 camDelta = Speed;
+                camDelta = VerticalShake(camDelta);
 
                 // Clamp speed
-                Speed = new Vector2(Math.Clamp(Speed.X, -7, 7), Math.Clamp(Speed.Y, -7, 7));
+                camDelta = new Vector2(Math.Clamp(camDelta.X, -7, 7), Math.Clamp(camDelta.Y, -7, 7));
 
                 TgxCamera2D tgxCam = ((TgxPlayfield2D)Scene.Playfield).Camera;
                 TgxCluster mainCluster = tgxCam.GetMainCluster();
 
                 // Move camera
-                tgxCam.Position += Speed;
+                tgxCam.Position += camDelta;
+
+                if (FollowYMode == FollowMode.DoNotFollow)
+                    Speed = Speed with { Y = 0 };
 
                 PreviousLinkedObjectPosition = LinkedObject.Position;
 
@@ -248,13 +252,14 @@ public partial class CameraSideScroller
                         }
                     }
 
-                    Speed = VerticalShake(Speed);
+                    Vector2 camDelta = Speed;
+                    camDelta = VerticalShake(camDelta);
 
                     // Clamp speed - weird that it's 8 and not 7, a typo in the original code?
-                    Speed = new Vector2(Math.Clamp(Speed.X, -8, 8), Math.Clamp(Speed.Y, -8, 8));
+                    camDelta = new Vector2(Math.Clamp(camDelta.X, -8, 8), Math.Clamp(camDelta.Y, -8, 8));
 
                     // Move camera
-                    tgxCam.Position += Speed;
+                    tgxCam.Position += camDelta;
 
                     // Reached target
                     if ((Timer == 6 && Speed.X == 0) ||

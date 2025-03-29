@@ -174,7 +174,7 @@ public sealed partial class CameraSideScroller : CameraActor2D
                 float xOffset = LinkedObject.IsFacingLeft
                     ? Scene.Resolution.X - ScaledHorizontalOffset
                     : ScaledHorizontalOffset;
-                float yOffset = TargetY;
+                float yOffset = ScaledTargetY;
 
                 MoveTargetPos = new Vector2(LinkedObject.Position.X - xOffset, LinkedObject.Position.Y - yOffset);
 
