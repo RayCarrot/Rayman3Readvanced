@@ -97,7 +97,7 @@ public class Rayman3 : GbaGame
             { ActorType.SamMode7, (instanceId, scene, resource) => new SamMode7(instanceId, scene, resource) },
 
             { ActorType.WoodenShieldedHoodboom, (instanceId, scene, resource) => new WoodenShieldedHoodboom(instanceId, scene, resource) },
-
+            { ActorType.Spinneroo, (instanceId, scene, resource) => new Spinneroo(instanceId, scene, resource) },
             { ActorType.Slapdash, (instanceId, scene, resource) => new Slapdash(instanceId, scene, resource) },
             { ActorType.PurpleLum, (instanceId, scene, resource) => new PurpleLum(instanceId, scene, resource) },
             { ActorType.Grenade, (instanceId, scene, resource) => new Grenade(instanceId, scene, resource) },

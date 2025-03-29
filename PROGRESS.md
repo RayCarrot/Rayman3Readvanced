@@ -195,7 +195,7 @@
 | SamMode7               | 🟩     |                                              |
 | Vines                  | 🟥     |                                              |
 | WoodenShieldedHoodboom | 🟩     |                                              |
-| Spinneroo              | 🟥     |                                              |
+| Spinneroo              | 🟩     |                                              |
 | Slapdash               | 🟩     |                                              |
 | PurpleLum              | 🟩     |                                              |
 | Grenade                | 🟩     |                                              |

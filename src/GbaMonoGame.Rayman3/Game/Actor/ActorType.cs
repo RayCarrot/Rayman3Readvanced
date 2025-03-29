@@ -47,7 +47,7 @@ public enum ActorType
     SamMode7 = 42,
     Vines = 43, // TODO: Implement
     WoodenShieldedHoodboom = 44,
-    Spinneroo = 45, // TODO: Implement
+    Spinneroo = 45,
     Slapdash = 46,
     PurpleLum = 47,
     Grenade = 48,
