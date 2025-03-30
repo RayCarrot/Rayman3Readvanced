@@ -193,7 +193,7 @@
 | JanoSkullPlatform      | 🟩     |                                              |
 | Spider                 | 🟥     |                                              |
 | SamMode7               | 🟩     |                                              |
-| Vines                  | 🟥     |                                              |
+| Vines                  | 🟩     |                                              |
 | WoodenShieldedHoodboom | 🟩     |                                              |
 | Spinneroo              | 🟩     |                                              |
 | Slapdash               | 🟩     |                                              |

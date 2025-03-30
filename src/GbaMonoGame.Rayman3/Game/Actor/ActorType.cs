@@ -45,7 +45,7 @@ public enum ActorType
     JanoSkullPlatform = 40,
     Spider = 41, // TODO: Implement
     SamMode7 = 42,
-    Vines = 43, // TODO: Implement
+    Vines = 43,
     WoodenShieldedHoodboom = 44,
     Spinneroo = 45,
     Slapdash = 46,

@@ -95,7 +95,7 @@ public class Rayman3 : GbaGame
             { ActorType.JanoSkullPlatform, (instanceId, scene, resource) => new JanoSkullPlatform(instanceId, scene, resource) },
 
             { ActorType.SamMode7, (instanceId, scene, resource) => new SamMode7(instanceId, scene, resource) },
-
+            { ActorType.Vines, (instanceId, scene, resource) => new Vines(instanceId, scene, resource) },
             { ActorType.WoodenShieldedHoodboom, (instanceId, scene, resource) => new WoodenShieldedHoodboom(instanceId, scene, resource) },
             { ActorType.Spinneroo, (instanceId, scene, resource) => new Spinneroo(instanceId, scene, resource) },
             { ActorType.Slapdash, (instanceId, scene, resource) => new Slapdash(instanceId, scene, resource) },
