@@ -103,6 +103,7 @@ public class Rayman3 : GbaGame
             { ActorType.Grenade, (instanceId, scene, resource) => new Grenade(instanceId, scene, resource) },
             { ActorType.SwingSparkle, (instanceId, scene, resource) => new SwingSparkle(instanceId, scene, resource) },
             { ActorType.BreakableGround, (instanceId, scene, resource) => new BreakableGround(instanceId, scene, resource) },
+            { ActorType.Boulder, (instanceId, scene, resource) => new Boulder(instanceId, scene, resource) },
 
             { ActorType.MovingWoodenPlatform, (instanceId, scene, resource) => new MovingPlatform(instanceId, scene, resource) },
             { ActorType.Plum, (instanceId, scene, resource) => new Plum(instanceId, scene, resource) },
@@ -127,7 +128,7 @@ public class Rayman3 : GbaGame
             { ActorType.Bats, (instanceId, scene, resource) => new Bats(instanceId, scene, resource) },
             { ActorType.Sparkle, (instanceId, scene, resource) => new Sparkle(instanceId, scene, resource) },
             { ActorType.MissileMode7, (instanceId, scene, resource) => new MissileMode7(instanceId, scene, resource) },
-
+            { ActorType.Impact, (instanceId, scene, resource) => new Explosion(instanceId, scene, resource) },
             { ActorType.WalkingShell, (instanceId, scene, resource) => new WalkingShell(instanceId, scene, resource) },
             { ActorType.WoodenBar, (instanceId, scene, resource) => new WoodenBar(instanceId, scene, resource) },
             { ActorType.Ly, (instanceId, scene, resource) => new Ly(instanceId, scene, resource) },

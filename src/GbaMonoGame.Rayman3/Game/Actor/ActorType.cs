@@ -53,7 +53,7 @@ public enum ActorType
     Grenade = 48,
     SwingSparkle = 49,
     BreakableGround = 50,
-    Boulder = 51, // TODO: Implement
+    Boulder = 51,
 
     MovingWoodenPlatform = 53,
     Plum = 54,
@@ -77,7 +77,7 @@ public enum ActorType
     Bats = 72,
     Sparkle = 73,
     MissileMode7 = 74,
-
+    Impact = 75,
     WalkingShell = 76,
     WoodenBar = 77,
     Ly = 78,

@@ -201,7 +201,7 @@
 | Grenade                | 🟩     |                                              |
 | SwingSparkle           | 🟩     |                                              |
 | BreakableGround        | 🟩     |                                              |
-| Boulder                | 🟥     |                                              |
+| Boulder                | 🟩     |                                              |
 | #52                    | 🟥     |                                              |
 | MovingWoodenPlatform   | 🟩     |                                              |
 | Plum                   | 🟩     |                                              |
@@ -225,7 +225,7 @@
 | Bats                   | 🟩     |                                              |
 | Sparkle                | 🟩     |                                              |
 | MissileMode7           | 🟨     | Not implemented multiplayer states           |
-| #75                    | 🟥     |                                              |
+| Impact                 | 🟩     |                                              |
 | WalkingShell           | 🟩     |                                              |
 | WoodenBar              | 🟩     |                                              |
 | Ly                     | 🟩     |                                              |
