@@ -4008,7 +4008,7 @@ public partial class Rayman
                         case MapId.SanctuaryOfRockAndLava_M1:
                         case MapId.SanctuaryOfRockAndLava_M2:
                         case MapId.SanctuaryOfRockAndLava_M3:
-                            // TODO: Implement
+                            ((SanctuaryOfRockAndLava)Frame.Current).FadeOut();
                             break;
 
                         case MapId.World1:
@@ -4318,13 +4318,9 @@ public partial class Rayman
                     ((FrameSideScrollerGCN)Frame.Current).FUN_0808a9f4();
 
                 if (GameInfo.MapId is MapId.SanctuaryOfRockAndLava_M1 or MapId.SanctuaryOfRockAndLava_M2 or MapId.SanctuaryOfRockAndLava_M3)
-                {
-                    // TODO: Implement
-                }
+                    ((SanctuaryOfRockAndLava)Frame.Current).FadeOut();
                 else
-                {
                     ((FrameSideScroller)Frame.Current).InitNewCircleTransition(false);
-                }
 
                 if (AttachedObject != null)
                 {

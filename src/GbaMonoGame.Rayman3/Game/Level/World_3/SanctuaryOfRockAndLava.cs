@@ -1,7 +1,71 @@
-﻿namespace GbaMonoGame.Rayman3;
+﻿using BinarySerializer.Ubisoft.GbaEngine;
+using GbaMonoGame.TgxEngine;
 
-// TODO: Implement shadow effect. Not implemented on N-Gage.
+namespace GbaMonoGame.Rayman3;
+
 public class SanctuaryOfRockAndLava : FrameSideScroller
 {
     public SanctuaryOfRockAndLava(MapId mapId) : base(mapId) { }
+
+    public byte FadeOutTimer { get; set; }
+
+    public void FadeOut()
+    {
+        FadeOutTimer = 0;
+    }
+
+    public override void Init()
+    {
+        base.Init();
+
+        // TODO: Add config option for lava scrolling on N-Gage
+        if (Rom.Platform == Platform.GBA)
+        {
+            TgxTileLayer lavaLayer = ((TgxPlayfield2D)Scene.Playfield).TileLayers[0];
+            TextureScreenRenderer renderer;
+            if (lavaLayer.Screen.Renderer is MultiScreenRenderer multiScreenRenderer)
+                renderer = (TextureScreenRenderer)multiScreenRenderer.Sections[0].ScreenRenderer;
+            else
+                renderer = (TextureScreenRenderer)lavaLayer.Screen.Renderer;
+
+            lavaLayer.Screen.Renderer = new SanctuaryLavaRenderer(renderer.Texture);
+
+            FadeOutTimer = 0xFF;
+        }
+    }
+
+    public override void Step()
+    {
+        base.Step();
+
+        if (Rom.Platform == Platform.GBA)
+        {
+            Vector2 camPos = Scene.Playfield.Camera.Position;
+            TgxTileLayer lavaLayer = ((TgxPlayfield2D)Scene.Playfield).TileLayers[0];
+            
+            lavaLayer.Screen.Offset = lavaLayer.Screen.Offset with { Y = camPos.Y * MathHelpers.FromFixedPoint(0x7332) };
+            ((SanctuaryLavaRenderer)lavaLayer.Screen.Renderer).SinValue++;
+        }
+
+        // TODO: Add config option for fading out on N-Gage
+        if (Rom.Platform == Platform.GBA && FadeOutTimer != 0xFF)
+        {
+            if (FadeOutTimer < 16)
+            {
+                FadeOutTimer++;
+
+                foreach (GfxScreen screen in Gfx.Screens)
+                {
+                    if (screen.RenderOptions.BlendMode != BlendMode.None)
+                        screen.GbaAlpha = 16 - FadeOutTimer;
+                }
+
+                if (FadeOutTimer == 6)
+                {
+                    ((Rayman)Scene.MainActor).Timer = 0;
+                    InitNewCircleTransition(false);
+                }
+            }
+        }
+    }
 }

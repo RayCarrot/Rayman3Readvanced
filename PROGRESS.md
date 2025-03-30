@@ -59,9 +59,9 @@
 | BossRockAndLava            | 🟩     |                                              |
 | TheCanopy_M1               | 🟩     |                                              |
 | TheCanopy_M2               | 🟩     |                                              |
-| SanctuaryOfRockAndLava_M1  | 🟨     | Not implemented light effect                 |
-| SanctuaryOfRockAndLava_M2  | 🟨     | Not implemented light effect                 |
-| SanctuaryOfRockAndLava_M3  | 🟨     | Not implemented light effect                 |
+| SanctuaryOfRockAndLava_M1  | 🟩     |                                              |
+| SanctuaryOfRockAndLava_M2  | 🟩     |                                              |
+| SanctuaryOfRockAndLava_M3  | 🟩     |                                              |
 | TombOfTheAncients_M1       | 🟩     |                                              |
 | TombOfTheAncients_M2       | 🟩     |                                              |
 | BossScaleMan               | 🟩     |                                              |
