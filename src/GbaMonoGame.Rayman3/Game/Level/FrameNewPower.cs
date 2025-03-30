@@ -20,7 +20,6 @@ public class FrameNewPower : Frame, IHasScene, IHasPlayfield
 
     public MapId OriginalMapId { get; }
     public Scene2D Scene { get; set; }
-    public TransitionsFX TransitionsFX { get; set; }
     public ushort Timer { get; set; }
     public bool HasStoppedMusic { get; set; }
 
@@ -57,8 +56,8 @@ public class FrameNewPower : Frame, IHasScene, IHasPlayfield
         GameInfo.InitLevel(LevelType.Normal);
 
         LevelMusicManager.Init();
-        TransitionsFX = new TransitionsFX(true);
-        TransitionsFX.FadeInInit(1 / 16f);
+        TransitionsFX.Init(true);
+        TransitionsFX.FadeInInit(1);
         Scene = new Scene2D((int)GameInfo.MapId, x => new CameraSideScroller(x), 3, 1);
 
         Scene.Init();
@@ -125,12 +124,12 @@ public class FrameNewPower : Frame, IHasScene, IHasPlayfield
         {
             Timer++;
 
-            if (TransitionsFX.IsFadeOutFinished)
+            if (!TransitionsFX.IsFadingOut)
             {
                 // Begin fade out after 1 second
                 if (Timer == 61)
                 {
-                    TransitionsFX.FadeOutInit(1 / 16f);
+                    TransitionsFX.FadeOutInit(1);
                 }
                 else if (Timer > 61)
                 {

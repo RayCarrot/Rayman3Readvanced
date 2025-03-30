@@ -83,7 +83,6 @@ public partial class MenuAll : Frame, IHasPlayfield
 
     public AnimationPlayer AnimationPlayer { get; set; }
     public TgxPlayfield2D Playfield { get; set; }
-    public TransitionsFX TransitionsFX { get; set; }
 
     public MenuAllAnimations Anims { get; set; }
     public Action CurrentStepAction { get; set; }
@@ -601,8 +600,8 @@ public partial class MenuAll : Frame, IHasPlayfield
 
         GameTime.Resume();
 
-        TransitionsFX = new TransitionsFX(false);
-        TransitionsFX.FadeInInit(1 / 16f);
+        TransitionsFX.Init(false);
+        TransitionsFX.FadeInInit(1);
 
         SteamTimer = 0;
     }

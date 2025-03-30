@@ -25,8 +25,8 @@ public class EchoingCaves_M2 : FrameSideScroller
             RenderOptions = { RenderContext = Engine.GameRenderContext },
         };
         
-        TransitionsFX = new TransitionsFX(true);
-        TransitionsFX.FadeInInit(4 / 16f);
+        TransitionsFX.Init(true);
+        TransitionsFX.FadeInInit(4);
 
         Scene = new Scene2D((int)GameInfo.MapId, x => new CameraSideScroller(x), 3, 0);
 

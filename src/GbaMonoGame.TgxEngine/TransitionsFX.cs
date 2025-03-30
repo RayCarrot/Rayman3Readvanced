@@ -1,103 +1,197 @@
-﻿namespace GbaMonoGame.TgxEngine;
+﻿using System;
+using System.Collections.Generic;
 
-public class TransitionsFX
+namespace GbaMonoGame.TgxEngine;
+
+public static class TransitionsFX
 {
-    public TransitionsFX(bool clear)
+    public static void Init(bool clear)
     {
+        Screns = new List<GfxScreen>();
+        AlphaStep = null;
+        BrightnessCoefficient = MaxAlpha;
+        FadeCoefficient = MinAlpha;
+
         if (clear)
             Gfx.FadeControl = FadeControl.None;
     }
 
-    public float FadeCoefficient { get; set; }
-    public float BrightnessCoefficient { get; set; } = 1;
+    private const float MinAlpha = 0;
+    private const float MaxAlpha = 16;
 
-    // TODO: Should maybe be renamed and reversed to "IsFadingIn" and "IsFadingOut". Code in FrameNewPower is more readable then.
-    public bool IsFadeOutFinished => BrightnessCoefficient == 1;
-    public bool IsFadeInFinished => FadeCoefficient == 0;
+    // Screen alpha blending
+    public static float FadeStepSize { get; set; }
 
-    public float StepSize { get; set; }
+    public static float FadeCoefficient { get; set; }
+    public static float BrightnessCoefficient { get; set; }
 
-    public void StepAll()
+    public static bool IsFadingOut => BrightnessCoefficient != MaxAlpha;
+    public static bool IsFadingIn => FadeCoefficient != MinAlpha;
+
+    // Background alpha blending
+    public static float? AlphaStep { get; set; }
+    public static float AlphaCoefficient { get; set; }
+    public static List<GfxScreen> Screns { get; set; }
+
+    public static void StepAll()
     {
         // The game only runs this in 15 fps (every 4 frames), but we want to do it every frame
-        float stepSize = StepSize / 4;
+        float stepSize = FadeStepSize / 4;
 
-        if (BrightnessCoefficient < 1)
+        // Fade out
+        if (BrightnessCoefficient < MaxAlpha)
         {
             BrightnessCoefficient += stepSize;
 
-            if (FadeCoefficient > 1)
-                FadeCoefficient = 1;
+            if (FadeCoefficient > MaxAlpha)
+                FadeCoefficient = MaxAlpha;
 
-            Gfx.Fade = BrightnessCoefficient;
+            Gfx.GbaFade = BrightnessCoefficient;
         }
-        else if (FadeCoefficient == 0)
+        // Fade in
+        else if (FadeCoefficient != MinAlpha)
         {
-            // TODO: Implement
-            Logger.NotImplemented("Not implemented transition when fade coefficient is 0");
+            FadeCoefficient -= stepSize;
+
+            if (FadeCoefficient < MinAlpha)
+                FadeCoefficient = MinAlpha;
+
+            Gfx.GbaFade = FadeCoefficient;
+
+            if (FadeCoefficient == MinAlpha)
+                Gfx.FadeControl = FadeControl.None;
         }
         else
         {
-            FadeCoefficient -= stepSize;
-
-            if (FadeCoefficient < 0)
-                FadeCoefficient = 0;
-
-            Gfx.Fade = FadeCoefficient;
-
-            if (FadeCoefficient == 0)
-                Gfx.FadeControl = FadeControl.None;
+            if (Screns.Count != 0 && AlphaStep != null)
+                AlphaBlendingStep();
         }
     }
 
-    public void StepFadeIn()
+    public static void StepFadeIn()
     {
         // The game only runs this in 30 fps (every 2 frames), but we want to do it every frame
-        float stepSize = StepSize / 2;
+        float stepSize = FadeStepSize / 2;
 
-        if (!IsFadeInFinished)
+        if (IsFadingIn)
         {
             FadeCoefficient -= stepSize;
 
             if (FadeCoefficient < 0)
                 FadeCoefficient = 0;
 
-            Gfx.Fade = FadeCoefficient;
+            Gfx.GbaFade = FadeCoefficient;
         }
     }
 
-    public void StepFadeOut()
+    public static void StepFadeOut()
     {
         // The game only runs this in 30 fps (every 2 frames), but we want to do it every frame
-        float stepSize = StepSize / 2;
+        float stepSize = FadeStepSize / 2;
 
-        if (!IsFadeOutFinished)
+        if (IsFadingOut)
         {
             BrightnessCoefficient += stepSize;
 
             if (BrightnessCoefficient > 1)
                 BrightnessCoefficient = 1;
 
-            Gfx.Fade = BrightnessCoefficient;
+            Gfx.GbaFade = BrightnessCoefficient;
         }
     }
 
-    // TODO: Pass in step size as 0-16 value like game does
-    public void FadeInInit(float stepSize)
+    public static void SetBGAlphaBlending(GfxScreen screen, float alphaCoefficient)
     {
-        Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-        Gfx.Fade = 1;
-
-        FadeCoefficient = 1;
-        StepSize = stepSize;
+        AlphaStep = 0;
+        AlphaCoefficient = alphaCoefficient;
+        screen.IsEnabled = false;
+        Screns.Add(screen);
     }
 
-    public void FadeOutInit(float stepSize)
+    public static void ApplyAlphaSettings(float coefficient)
+    {
+        foreach (GfxScreen screen in Screns)
+            screen.GbaAlpha = coefficient;
+    }
+
+    public static void AlphaBlendingStep()
+    {
+        // The game only runs this every 8 frames, but we want to do it every frame
+        float speed = 1 / 8f;
+
+        if (AlphaStep == null)
+        {
+            throw new Exception("Incorrect use of this function");
+        }
+        // Fade in
+        else if (AlphaStep < 127)
+        {
+            if (AlphaStep > AlphaCoefficient)
+            {
+                AlphaStep = null;
+            }
+            else
+            {
+                ApplyAlphaSettings(AlphaStep.Value);
+
+                if (AlphaStep == 0)
+                    foreach (GfxScreen screen in Screns)
+                        screen.IsEnabled = true;
+
+                AlphaStep += speed;
+            }
+        }
+        // Fade out
+        else
+        {
+            if (AlphaCoefficient < 255 - AlphaStep)
+            {
+                AlphaStep = null;
+
+                foreach (GfxScreen screen in Screns)
+                    screen.IsEnabled = false;
+
+                if (BrightnessCoefficient > MaxAlpha)
+                {
+                    FadeStepSize = BrightnessCoefficient - MaxAlpha;
+                    BrightnessCoefficient = MinAlpha;
+                    AlphaStep = 0;
+
+                    Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
+                    Gfx.Fade = MinAlpha;
+                }
+            }
+            else
+            {
+                ApplyAlphaSettings(AlphaStep.Value + AlphaCoefficient + 1);
+                AlphaStep -= speed;
+            }
+        }
+    }
+
+    public static void FadeInInit(float stepSize)
     {
         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-        Gfx.Fade = 0;
-        
-        BrightnessCoefficient = 0;
-        StepSize = stepSize;
+        Gfx.Fade = MaxAlpha;
+
+        FadeCoefficient = MaxAlpha;
+        FadeStepSize = stepSize;
+    }
+
+    public static void FadeOutInit(float stepSize)
+    {
+        if (Screns.Count == 0)
+        {
+            Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
+            Gfx.Fade = MinAlpha;
+
+            BrightnessCoefficient = MinAlpha;
+            FadeStepSize = stepSize;
+        }
+        else
+        {
+            AlphaStep = 255;
+            BrightnessCoefficient = MaxAlpha + stepSize;
+        }
     }
 }

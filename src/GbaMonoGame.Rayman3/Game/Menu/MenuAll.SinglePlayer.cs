@@ -163,7 +163,7 @@ public partial class MenuAll
             case StartEraseMode.Selection:
                 if (IsStartingGame)
                 {
-                    if (TransitionsFX.IsFadeOutFinished)
+                    if (!TransitionsFX.IsFadingOut)
                     {
                         SoundEventsManager.StopAllSongs();
 
@@ -351,7 +351,7 @@ public partial class MenuAll
                 break;
         }
 
-        if (JoyPad.IsButtonJustPressed(GbaInput.B) && TransitionsFX.IsFadeOutFinished && !IsStartingGame)
+        if (JoyPad.IsButtonJustPressed(GbaInput.B) && !TransitionsFX.IsFadingOut && !IsStartingGame)
         {
             switch (StartEraseMode)
             {
@@ -410,7 +410,7 @@ public partial class MenuAll
             {
                 SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.None, 1);
                 IsStartingGame = true;
-                TransitionsFX.FadeOutInit(2 / 16f);
+                TransitionsFX.FadeOutInit(2);
             }
         }
     }

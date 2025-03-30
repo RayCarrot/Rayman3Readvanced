@@ -14,7 +14,6 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 public class TitleScreen : Frame
 {
     public AnimationPlayer AnimationPlayer { get; set; }
-    public TransitionsFX TransitionsFX { get; set; }
 
     public Task LoadRomTask { get; set; }
     public bool LoadLastSave { get; set; }
@@ -64,7 +63,7 @@ public class TitleScreen : Frame
             Rom.Init(gameDirectory, gameFileNames, Game.Rayman3, platform);
         });
 
-        TransitionsFX.FadeOutInit(1 / 16f);
+        TransitionsFX.FadeOutInit(1);
     }
 
     private void StartGame()
@@ -217,7 +216,7 @@ public class TitleScreen : Frame
         RenderContext renderContext = new FixedResolutionRenderContext(new Vector2(384, 216));
 
         AnimationPlayer = new AnimationPlayer(false, null);
-        TransitionsFX = new TransitionsFX(true);
+        TransitionsFX.Init(true);
 
         CloudsShader = Engine.FrameContentManager.Load<Effect>("TitleScreenCloudsShader");
 
@@ -333,7 +332,7 @@ public class TitleScreen : Frame
                     game.Step();
             }
         }
-        else if (LoadRomTask is { IsCompleted: true } && TransitionsFX.IsFadeOutFinished)
+        else if (LoadRomTask is { IsCompleted: true } && !TransitionsFX.IsFadingOut)
         {
             StartGame();
         }

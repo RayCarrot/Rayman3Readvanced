@@ -33,7 +33,6 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
     public FadeControl SavedFadeControl { get; set; }
 
-    public TransitionsFX TransitionsFX { get; set; }
     public UserInfoMulti2D UserInfo { get; set; }
     public Dialog PauseDialog { get; set; }
 
@@ -59,8 +58,8 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
     {
         GameInfo.InitLevel(LevelType.Multiplayer);
         
-        TransitionsFX = new TransitionsFX(false);
-        TransitionsFX.FadeInInit(1 / 16f);
+        TransitionsFX.Init(false);
+        TransitionsFX.FadeInInit(1);
 
         LevelMusicManager.Init();
         MultiplayerManager.Init();
@@ -168,7 +167,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.AnimationPlayer.Execute();
 
         // Pause
-        if (!UserInfo.IsGameOver && TransitionsFX.IsFadeInFinished)
+        if (!UserInfo.IsGameOver && !TransitionsFX.IsFadingIn)
         {
             for (int id = 0; id < RSMultiplayer.MaxPlayersCount; id++)
             {

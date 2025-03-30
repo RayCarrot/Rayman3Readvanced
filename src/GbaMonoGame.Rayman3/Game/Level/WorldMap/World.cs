@@ -1,6 +1,7 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
 using Action = System.Action;
 
@@ -298,7 +299,7 @@ public class World : FrameWorldSideScroller
             if (MurfyTimer > 90)
             {
                 CurrentExStepAction = StepEx_MurfyFadeOut;
-                TransitionsFX.FadeOutInit(2 / 16f);
+                TransitionsFX.FadeOutInit(2);
             }
 
             MurfyTimer++;
@@ -307,19 +308,19 @@ public class World : FrameWorldSideScroller
 
     public void StepEx_MurfyFadeOut()
     {
-        if (TransitionsFX.IsFadeOutFinished)
+        if (!TransitionsFX.IsFadingOut)
         {
             Scene.Camera.ProcessMessage(this, Message.Cam_SetPosition, Scene.MainActor.Position - new Vector2(120, 120));
             Scene.Camera.ProcessMessage(this, Message.Cam_Unlock);
             UserInfo.Hide = false;
-            TransitionsFX.FadeInInit(2 / 16f);
+            TransitionsFX.FadeInInit(2);
             CurrentExStepAction = StepEx_MurfyFadeIn;
         }
     }
 
     public void StepEx_MurfyFadeIn()
     {
-        if (TransitionsFX.IsFadeInFinished)
+        if (!TransitionsFX.IsFadingIn)
         {
             Scene.MainActor.ProcessMessage(this, Message.Main_ExitStopOrCutscene);
             CurrentExStepAction = null;

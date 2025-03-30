@@ -16,7 +16,6 @@ public class AnimationViewer : Frame
 
     public Action CurrentStepAction { get; set; }
 
-    public TransitionsFX TransitionsFX { get; set; }
     public AnimationPlayer AnimationPlayer { get; set; }
 
     public SpriteTextObject SelectionText { get; set; }
@@ -69,8 +68,8 @@ public class AnimationViewer : Frame
 
     public override void Init()
     {
-        TransitionsFX = new TransitionsFX(true);
-        TransitionsFX.FadeInInit(2 / 16f);
+        TransitionsFX.Init(true);
+        TransitionsFX.FadeInInit(2);
         AnimationPlayer = new AnimationPlayer(false, SoundEventsManager.ProcessEvent);
         Gfx.ClearColor = Color.Black;
 

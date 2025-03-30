@@ -24,7 +24,6 @@ public partial class GameCubeMenu : Frame
     #region Private Properties
 
     public AnimationPlayer AnimationPlayer { get; set; }
-    public TransitionsFX TransitionsFX { get; set; }
     public GameCubeMenuAnimations Anims { get; set; }
     public FiniteStateMachine State { get; } = new();
 

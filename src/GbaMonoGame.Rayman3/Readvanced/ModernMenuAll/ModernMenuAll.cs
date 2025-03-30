@@ -30,7 +30,6 @@ public class ModernMenuAll : Frame, IHasPlayfield
 
     public AnimationPlayer AnimationPlayer { get; set; }
     public TgxPlayfield2D Playfield { get; set; }
-    public TransitionsFX TransitionsFX { get; set; }
 
     public AnimatedObject Wheel1 { get; set; }
     public AnimatedObject Wheel2 { get; set; }
@@ -505,8 +504,8 @@ public class ModernMenuAll : Frame, IHasPlayfield
 
         GameTime.Resume();
 
-        TransitionsFX = new TransitionsFX(false);
-        TransitionsFX.FadeInInit(1 / 16f);
+        TransitionsFX.Init(false);
+        TransitionsFX.FadeInInit(1);
 
         SteamTimer = 0;
     }

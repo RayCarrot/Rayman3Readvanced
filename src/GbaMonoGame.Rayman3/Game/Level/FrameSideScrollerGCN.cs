@@ -60,7 +60,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
             RenderOptions = { RenderContext = Engine.GameRenderContext },
         };
 
-        TransitionsFX = new TransitionsFX(true);
+        TransitionsFX.Init(true);
         Scene = new Scene2D(Map, x => new CameraSideScroller(x), 3, 1);
 
         // Add user info (default hud)

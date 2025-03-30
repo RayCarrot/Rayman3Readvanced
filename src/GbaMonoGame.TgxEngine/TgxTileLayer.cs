@@ -22,9 +22,11 @@ public class TgxTileLayer : TgxGameLayer
             Priority = 3 - LayerId,
             Wrap = true,
             Is8Bit = Resource.Is8Bit,
-            Alpha = Resource.AlphaCoeff,
-            RenderOptions = { RenderContext = renderContext, BlendMode = Resource.HasAlphaBlending ? BlendMode.AlphaBlend : BlendMode.None }, // TODO: We also need to update TransitionsFX, see Beneath map 1
+            RenderOptions = { RenderContext = renderContext, BlendMode = Resource.HasAlphaBlending ? BlendMode.AlphaBlend : BlendMode.None },
         };
+
+        if (Resource.HasAlphaBlending)
+            TransitionsFX.SetBGAlphaBlending(Screen, Resource.AlphaCoeff * 16);
 
         Gfx.AddScreen(Screen);
     }

@@ -291,7 +291,7 @@ public partial class RaymanMode7
                 FrameWaterSkiMode7 frame = (FrameWaterSkiMode7)Frame.Current;
                 if (InvulnerabilityTimer == 90)
                 {
-                    frame.TransitionsFX.FadeOutInit(2 / 16f);
+                    TransitionsFX.FadeOutInit(2);
                     frame.CanPause = false;
                 }
                 else if (InvulnerabilityTimer == 167)

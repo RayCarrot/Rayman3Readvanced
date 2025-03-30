@@ -19,7 +19,6 @@ public class LevelEditor : Frame
 
     public int MapId { get; }
     public EditableScene2D Scene { get; set; }
-    public TransitionsFX TransitionsFX { get; set; }
     public GfxScreen MapBackgroundScreen { get; set; }
 
     #endregion
@@ -37,8 +36,8 @@ public class LevelEditor : Frame
 
     public override void Init()
     {
-        TransitionsFX = new TransitionsFX(false);
-        TransitionsFX.FadeInInit(2 / 16f);
+        TransitionsFX.Init(false);
+        TransitionsFX.FadeInInit(2);
 
         Scene = new EditableScene2D(MapId);
 

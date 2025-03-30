@@ -1,6 +1,7 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
+using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
@@ -143,7 +144,7 @@ public class SinglePlayerMenuPage : MenuPage
                         CursorClick(() =>
                         {
                             SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.None, 1);
-                            FadeOut(2 / 16f, () =>
+                            FadeOut(2, () =>
                             {
                                 SoundEventsManager.StopAllSongs();
 
@@ -277,7 +278,7 @@ public class SinglePlayerMenuPage : MenuPage
                 break;
         }
 
-        if (JoyPad.IsButtonJustPressed(GbaInput.B) && Menu.TransitionsFX.IsFadeOutFinished)
+        if (JoyPad.IsButtonJustPressed(GbaInput.B) && !TransitionsFX.IsFadingOut)
         {
             switch (EraseSaveStage)
             {

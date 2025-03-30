@@ -49,7 +49,6 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
     #region Public Properties
 
     public Scene2D Scene { get; set; }
-    public TransitionsFX TransitionsFX { get; set; }
     public UserInfoWorldMap UserInfo { get; set; }
     public Dialog PauseDialog { get; set; }
     public FadeControl SavedFadeControl { get; set; }
@@ -721,7 +720,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         };
         Gfx.SetScreenEffect(CircleWipeTransitionScreenEffect);
 
-        TransitionsFX = new TransitionsFX(true);
+        TransitionsFX.Init(true);
         GameInfo.InitLevel(LevelType.Normal);
         LevelMusicManager.Init();
         

@@ -2,6 +2,7 @@ using System;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -192,7 +193,7 @@ public partial class Rayman
                 if (IsInFrontOfLevelCurtain)
                 {
                     // Hide while fading and then show spawn animation
-                    if (((FrameWorldSideScroller)Frame.Current).TransitionsFX.IsFadeInFinished)
+                    if (!TransitionsFX.IsFadingIn)
                     {
                         if (ActionId is not (Action.Spawn_Curtain_Right or Action.Spawn_Curtain_Left))
                             ActionId = IsFacingRight ? Action.Spawn_Curtain_Right : Action.Spawn_Curtain_Left;
@@ -4019,7 +4020,7 @@ public partial class Rayman
 
                         // NOTE: This is unused - the Rayman actor does not appear in the worldmap
                         case MapId.WorldMap:
-                            ((WorldMap)Frame.Current).TransitionsFX.FadeOutInit(1 / 16f);
+                            TransitionsFX.FadeOutInit(1);
                             break;
 
                         default:
@@ -4697,8 +4698,8 @@ public partial class Rayman
 
                 // Fade out after 7 seconds
                 if (Timer == 420)
-                    ((FrameMultiSideScroller)Frame.Current).TransitionsFX.FadeOutInit(2 / 16f);
-                else if (Timer > 420 && ((FrameMultiSideScroller)Frame.Current).TransitionsFX.IsFadeOutFinished)
+                    TransitionsFX.FadeOutInit(2);
+                else if (Timer > 420 && !TransitionsFX.IsFadingOut)
                     Frame.Current.EndOfFrame = true;
                 break;
 

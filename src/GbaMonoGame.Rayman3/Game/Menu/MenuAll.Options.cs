@@ -1,5 +1,6 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -422,7 +423,7 @@ public partial class MenuAll
     {
         if (IsLoadingCredits)
         {
-            if (TransitionsFX.IsFadeOutFinished)
+            if (!TransitionsFX.IsFadingOut)
                 FrameManager.SetNextFrame(new Credits(true));
         }
         else
@@ -544,7 +545,7 @@ public partial class MenuAll
 
                 if (SelectedOption == 2)
                 {
-                    TransitionsFX.FadeOutInit(4 / 16f);
+                    TransitionsFX.FadeOutInit(4);
                     IsLoadingCredits = true;
                 }
                 else if (Rom.Platform == Platform.NGage && SelectedOption == 3)

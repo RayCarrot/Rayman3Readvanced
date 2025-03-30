@@ -32,7 +32,6 @@ public class LevelSelect : Frame
 
     public Action CurrentStepAction { get; set; }
 
-    public TransitionsFX TransitionsFX { get; set; }
     public AnimationPlayer AnimationPlayer { get; set; }
 
     public SpriteTextObject Header { get; set; }
@@ -361,8 +360,8 @@ public class LevelSelect : Frame
 
     public override void Init()
     {
-        TransitionsFX = new TransitionsFX(true);
-        TransitionsFX.FadeInInit(2 / 16f);
+        TransitionsFX.Init(true);
+        TransitionsFX.FadeInInit(2);
         AnimationPlayer = new AnimationPlayer(false, null);
         Gfx.ClearColor = new RGB555Color(0x5555).ToColor();
 

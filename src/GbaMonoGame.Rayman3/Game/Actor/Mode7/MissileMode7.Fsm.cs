@@ -2,6 +2,7 @@
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -326,7 +327,7 @@ public partial class MissileMode7
 
                 if (InvulnerabilityTimer == 90)
                 {
-                    ((FrameMode7)Frame.Current).TransitionsFX.FadeOutInit(2 / 16f);
+                    TransitionsFX.FadeOutInit(2);
                     ((FrameMode7)Frame.Current).CanPause = false;
                 }
 
@@ -437,7 +438,7 @@ public partial class MissileMode7
                 {
                     FrameMode7 frame = (FrameMode7)Frame.Current;
 
-                    frame.TransitionsFX.FadeOutInit(2 / 16f);
+                    TransitionsFX.FadeOutInit(2);
                     frame.CanPause = false;
 
                     if (InvulnerabilityTimer < 974)

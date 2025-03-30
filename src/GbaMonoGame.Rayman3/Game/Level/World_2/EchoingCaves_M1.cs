@@ -1,6 +1,7 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.TgxEngine;
 using Action = System.Action;
 
 namespace GbaMonoGame.Rayman3;
@@ -137,7 +138,7 @@ public class EchoingCaves_M1 : FrameSideScroller
         else
         {
             CurrentCutsceneStepAction = Step_Cutscene_ShowObject;
-            TransitionsFX.FadeOutInit(2 / 16f);
+            TransitionsFX.FadeOutInit(2);
             CameraTargetIndex = 1;
             Timer = 0;
         }
@@ -148,7 +149,7 @@ public class EchoingCaves_M1 : FrameSideScroller
         base.Step();
 
         // Wait until the fade out is finished
-        if (!TransitionsFX.IsFadeOutFinished)
+        if (TransitionsFX.IsFadingOut)
             return;
 
         Vector2 pos = Vector2.Zero;
@@ -161,7 +162,7 @@ public class EchoingCaves_M1 : FrameSideScroller
         Scene.Camera.ProcessMessage(this, Message.Cam_Lock, pos);
 
         CurrentCutsceneStepAction = Step_Cutscene_AnimateObject;
-        TransitionsFX.FadeInInit(2 / 16f);
+        TransitionsFX.FadeInInit(2);
     }
 
     public void Step_Cutscene_AnimateObject()
@@ -169,7 +170,7 @@ public class EchoingCaves_M1 : FrameSideScroller
         base.Step();
 
         // Wait until the fade in is finished
-        if (!TransitionsFX.IsFadeInFinished)
+        if (TransitionsFX.IsFadingIn)
             return;
 
         CurrentCutsceneStepAction = Step_Cutscene_Finish;
@@ -228,7 +229,7 @@ public class EchoingCaves_M1 : FrameSideScroller
             if (CameraTargetIndex <= 5)
             {
                 CurrentCutsceneStepAction = Step_Cutscene_ShowObject;
-                TransitionsFX.FadeOutInit(2 / 16f);
+                TransitionsFX.FadeOutInit(2);
             }
             else
             {

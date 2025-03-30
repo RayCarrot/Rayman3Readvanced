@@ -59,7 +59,7 @@ public partial class MenuAll
 
     private void Step_Language()
     {
-        if (Rom.Platform != Platform.NGage || TransitionsFX.IsFadeInFinished)
+        if (Rom.Platform != Platform.NGage || !TransitionsFX.IsFadingIn)
         {
             if (JoyPad.IsButtonJustPressed(GbaInput.Up))
             {

@@ -11,7 +11,6 @@ namespace GbaMonoGame.Rayman3;
 public class GameOver : Frame
 {
     public AnimationPlayer AnimationPlayer { get; set; }
-    public TransitionsFX TransitionsFX { get; set; }
     public AnimatedObject Rayman { get; set; }
     public AnimatedObject Countdown1 { get; set; }
     public AnimatedObject Countdown2 { get; set; }
@@ -114,7 +113,7 @@ public class GameOver : Frame
         // NOTE: The game doesn't do this, but we have to since we might be showing more of the screen
         Gfx.ClearColor = Color.Black;
 
-        TransitionsFX = new TransitionsFX(true);
+        TransitionsFX.Init(true);
 
         Gfx.AddScreen(new GfxScreen(2)
         {
@@ -293,7 +292,7 @@ public class GameOver : Frame
                     else
                     {
                         Mode = GameOverMode.ReloadLevel;
-                        TransitionsFX.FadeOutInit(2 / 16f);
+                        TransitionsFX.FadeOutInit(2);
                     }
                 }
                 break;
@@ -312,7 +311,7 @@ public class GameOver : Frame
                     else
                     {
                         Mode = GameOverMode.ReturnToMenu;
-                        TransitionsFX.FadeOutInit(2 / 16f);
+                        TransitionsFX.FadeOutInit(2);
 
                         SoundEventsManager.StopAllSongs();
                     }
@@ -324,7 +323,7 @@ public class GameOver : Frame
                 break;
 
             case GameOverMode.ReloadLevel:
-                if (TransitionsFX.IsFadeOutFinished)
+                if (!TransitionsFX.IsFadingOut)
                 {
                     GameInfo.PersistentInfo.Lives = 3;
                     GameInfo.PersistentInfo.LastPlayedLevel = (byte)GameInfo.MapId;
@@ -333,7 +332,7 @@ public class GameOver : Frame
                 break;
 
             case GameOverMode.ReturnToMenu:
-                if (TransitionsFX.IsFadeOutFinished)
+                if (!TransitionsFX.IsFadingOut)
                     FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
                 break;
 

@@ -11,7 +11,6 @@ public abstract class Act : Frame
 {
     #region Properties
 
-    public TransitionsFX TransitionsFX { get; set; }
     public ActResource ActResource { get; set; }
     public AnimationPlayer AnimationPlayer { get; set; }
     public GfxScreen BitmapScreen { get; set; }
@@ -175,8 +174,8 @@ public abstract class Act : Frame
         // NOTE: The game doesn't do this, but we have to since we might be showing more of the screen
         Gfx.ClearColor = Color.Black;
 
-        TransitionsFX = new TransitionsFX(false);
-        TransitionsFX.FadeInInit(1 / 16f);
+        TransitionsFX.Init(false);
+        TransitionsFX.FadeInInit(1);
         
         IsFadingOut = false;
 
@@ -296,18 +295,18 @@ public abstract class Act : Frame
 
     public override void Step()
     {
-        if (!TransitionsFX.IsFadeOutFinished)
+        if (TransitionsFX.IsFadingOut)
         {
             TransitionsFX.StepFadeOut();
         }
-        else if (!TransitionsFX.IsFadeInFinished)
+        else if (TransitionsFX.IsFadingIn)
         {
             TransitionsFX.StepFadeIn();
         }
         else if (IsFadingOut)
         {
             IsFadingOut = false;
-            TransitionsFX.FadeInInit(1 / 16f);
+            TransitionsFX.FadeInInit(1);
             NextFrame(false);
         }
         else
@@ -316,7 +315,7 @@ public abstract class Act : Frame
             if (!IsAutomatic && JoyPad.IsButtonJustPressed(GbaInput.Start)) // TODO: N-Gage checks other input?
             {
                 CurrentFrameIndex = ActResource.LastFrameIndex;
-                TransitionsFX.FadeOutInit(1 / 16f);
+                TransitionsFX.FadeOutInit(1);
                 IsFadingOut = true;
                 SoundEventsManager.StopAllSongs();
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
@@ -334,7 +333,7 @@ public abstract class Act : Frame
                 if (ActResource.Frames.Value[CurrentFrameIndex].TextId == -1 ||
                     CurrentTextLine >= CurrentText.Length)
                 {
-                    TransitionsFX.FadeOutInit(1 / 16f);
+                    TransitionsFX.FadeOutInit(1);
                     IsFadingOut = true;
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                 }

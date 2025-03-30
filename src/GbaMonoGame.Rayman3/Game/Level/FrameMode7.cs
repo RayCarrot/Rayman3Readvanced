@@ -27,7 +27,6 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
 
     public FadeControl SavedFadeControl { get; set; }
 
-    public TransitionsFX TransitionsFX { get; set; }
     public Dialog UserInfo { get; set; }
     public Dialog PauseDialog { get; set; }
 
@@ -50,8 +49,8 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
     {
         LevelMusicManager.Init();
 
-        TransitionsFX = new TransitionsFX(true);
-        TransitionsFX.FadeInInit(1 / 16f);
+        TransitionsFX.Init(true);
+        TransitionsFX.FadeInInit(1);
         Scene = new Scene2D((int)GameInfo.MapId, x => new CameraMode7(x), 3, 1);
 
         // Create pause dialog, but don't add yet

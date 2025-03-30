@@ -26,7 +26,6 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
     public FadeControl SavedFadeControl { get; set; }
 
     public bool BlockPause { get; set; }
-    public TransitionsFX TransitionsFX { get; set; }
     public UserInfoWorldMap UserInfo { get; set; }
     public Dialog PauseDialog { get; set; }
 
@@ -47,8 +46,8 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
         GameInfo.InitLevel(LevelType.Normal);
         LevelMusicManager.Init();
 
-        TransitionsFX = new TransitionsFX(true);
-        TransitionsFX.FadeInInit(1 / 16f);
+        TransitionsFX.Init(true);
+        TransitionsFX.FadeInInit(1);
 
         Scene = new Scene2D((int)GameInfo.MapId, x => new CameraSideScroller(x), 3, 1);
 

@@ -1,4 +1,5 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -67,7 +68,7 @@ public class FrameSingleMode7 : FrameMode7
     {
         // NOTE: The game updates the fog color in a VSYNC callback
 
-        if (TransitionsFX.IsFadeInFinished && TransitionsFX.IsFadeOutFinished && !IsPaused())
+        if (!TransitionsFX.IsFadingIn && !TransitionsFX.IsFadingOut && !IsPaused())
         {
             FogScreen.IsEnabled = true;
 

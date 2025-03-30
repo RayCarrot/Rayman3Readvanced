@@ -2,6 +2,7 @@
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
+using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -1934,7 +1935,7 @@ public partial class MenuAll
 
                 if (IsStartingGame)
                 {
-                    if (Rom.Platform == Platform.NGage || TransitionsFX.IsFadeOutFinished)
+                    if (Rom.Platform == Platform.NGage || !TransitionsFX.IsFadingOut)
                     {
                         StartMultiplayerGame();
                         IsStartingGame = false;
@@ -2008,7 +2009,7 @@ public partial class MenuAll
                             MultiplayerManager.FUN_080ae49c();
 
                         Gfx.FadeControl = new FadeControl(FadeMode.None);
-                        TransitionsFX.FadeOutInit(4 / 16f);
+                        TransitionsFX.FadeOutInit(4);
                     }
                     else if (MultiJoyPad.IsButtonJustPressed(0, GbaInput.B))
                     {

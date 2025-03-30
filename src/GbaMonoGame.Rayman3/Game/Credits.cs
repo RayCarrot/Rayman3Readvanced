@@ -36,7 +36,6 @@ public class Credits : Frame
     private const float LagFrames = 3;
     private const int TextLinesCount = 4;
 
-    public TransitionsFX TransitionsFX { get; set; }
     public AnimationPlayer AnimationPlayer { get; set; }
 
     public AnimatedObject BackgroundStructure { get; set; }
@@ -469,8 +468,8 @@ public class Credits : Frame
 
     public override void Init()
     {
-        TransitionsFX = new TransitionsFX(true);
-        TransitionsFX.FadeInInit(2 / 16f);
+        TransitionsFX.Init(true);
+        TransitionsFX.FadeInInit(2);
 
         AnimationPlayer = new AnimationPlayer(false, null);
 
@@ -520,11 +519,11 @@ public class Credits : Frame
                 JoyPad.IsButtonJustPressed(GbaInput.A) ||
                 JoyPad.IsButtonJustPressed(GbaInput.Start))
             {
-                TransitionsFX.FadeOutInit(2 / 16f);
+                TransitionsFX.FadeOutInit(2);
                 IsExiting = true;
             }
         }
-        else if (TransitionsFX.IsFadeOutFinished)
+        else if (!TransitionsFX.IsFadingOut)
         {
             SoundEventsManager.StopAllSongs();
 
@@ -535,7 +534,7 @@ public class Credits : Frame
         }
 
         // NOTE: This only runs every second frame on N-Gage, probably to compensate for less lag
-        if (TransitionsFX.IsFadeInFinished && TransitionsFX.IsFadeOutFinished && !IsExiting && Timer > 20)
+        if (!TransitionsFX.IsFadingIn && !TransitionsFX.IsFadingOut && !IsExiting && Timer > 20)
             StepText();
 
         StepWheel();
@@ -543,7 +542,7 @@ public class Credits : Frame
         // NOTE: The GBA version calls this from a vsync callback instead of here - probably due to the lag
         TransitionsFX.StepAll();
 
-        if (TransitionsFX.IsFadeInFinished && TransitionsFX.IsFadeOutFinished && !IsExiting && Timer > 20)
+        if (!TransitionsFX.IsFadingIn && !TransitionsFX.IsFadingOut && !IsExiting && Timer > 20)
             DrawText();
 
         Timer++;

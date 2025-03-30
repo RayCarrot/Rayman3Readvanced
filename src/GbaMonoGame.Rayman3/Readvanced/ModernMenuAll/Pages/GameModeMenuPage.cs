@@ -225,7 +225,7 @@ public class GameModeMenuPage : MenuPage
                 case 4:
                     CursorClick(() =>
                     {
-                        FadeOut(4 / 16f, () =>
+                        FadeOut(4, () =>
                         {
                             FrameManager.SetNextFrame(new Credits(false));
                         });

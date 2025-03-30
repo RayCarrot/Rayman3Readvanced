@@ -24,7 +24,7 @@ public partial class GameCubeMenu
         {
             case FsmAction.Init:
                 ShowPleaseConnectText();
-                TransitionsFX = new TransitionsFX(true);
+                TransitionsFX.Init(true);
                 Timer = 0;
                 break;
 

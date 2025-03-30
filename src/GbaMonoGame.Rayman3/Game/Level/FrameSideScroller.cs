@@ -29,7 +29,6 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
 
     public FadeControl SavedFadeControl { get; set; }
 
-    public TransitionsFX TransitionsFX { get; set; }
     public UserInfoSideScroller UserInfo { get; set; }
     public FogDialog Fog { get; set; }
     public LyTimerDialog LyTimer { get; set; }
@@ -117,7 +116,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         {
             RenderOptions = { RenderContext = Engine.GameRenderContext },
         };
-        TransitionsFX = new TransitionsFX(true);
+        TransitionsFX.Init(true);
         Scene = new Scene2D((int)GameInfo.MapId, x => new CameraSideScroller(x), 4, 1);
 
         // Add fog

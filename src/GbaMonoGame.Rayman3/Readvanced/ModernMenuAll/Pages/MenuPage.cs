@@ -143,7 +143,7 @@ public abstract class MenuPage
 
     protected void FadeOut(float stepSize, Action callback)
     {
-        Menu.TransitionsFX.FadeOutInit(stepSize);
+        TransitionsFX.FadeOutInit(stepSize);
         FadeOutCallback = callback;
     }
 
@@ -193,7 +193,7 @@ public abstract class MenuPage
                 {
                     Step_Active();
                 }
-                else if (FadeOutCallback != null && Menu.TransitionsFX.IsFadeOutFinished)
+                else if (FadeOutCallback != null && !TransitionsFX.IsFadingOut)
                 {
                     FadeOutCallback();
                     FadeOutCallback = null;

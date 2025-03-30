@@ -1,6 +1,7 @@
 ﻿using System;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -129,7 +130,7 @@ public partial class SamMode7
                 // Fade out
                 if (Timer == 140)
                 {
-                    frame.TransitionsFX.FadeOutInit(2 / 16f);
+                    TransitionsFX.FadeOutInit(2);
                     frame.CanPause = false;
                 }
                 // Stop music
