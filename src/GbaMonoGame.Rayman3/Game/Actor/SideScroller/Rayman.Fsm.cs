@@ -30,7 +30,7 @@ public partial class Rayman
 
         if (ShouldAutoJump())
         {
-            PlaySound(Rayman3SoundEvent.Stop__SkiLoop1);
+            PlaySound(Rayman3SoundEvent.Stop__SldGreen_SkiLoop1);
 
             State.MoveTo(Fsm_JumpSlide);
             return false;
@@ -237,7 +237,7 @@ public partial class Rayman
                 }
                 else
                 {
-                    PlaySound(Rayman3SoundEvent.Stop__SkiLoop1);
+                    PlaySound(Rayman3SoundEvent.Stop__SldGreen_SkiLoop1);
 
                     if (SlideType == null)
                         PreviousXSpeed = 0;
@@ -318,7 +318,7 @@ public partial class Rayman
                 }
                 else
                 {
-                    PlaySound(Rayman3SoundEvent.Stop__SkiLoop1);
+                    PlaySound(Rayman3SoundEvent.Stop__SldGreen_SkiLoop1);
 
                     if (NextActionId != null && NextActionId != ActionId)
                     {
@@ -566,7 +566,7 @@ public partial class Rayman
                 }
                 else
                 {
-                    PlaySound(Rayman3SoundEvent.Stop__SkiLoop1);
+                    PlaySound(Rayman3SoundEvent.Stop__SldGreen_SkiLoop1);
 
                     if (SlideType == null)
                         PreviousXSpeed = 0;
@@ -720,10 +720,10 @@ public partial class Rayman
                         AnimatedObject.CurrentFrame is 2 or 10 &&
                         !AnimatedObject.IsDelayMode)
                     {
-                        PlaySound(Rayman3SoundEvent.Play__PlumSnd2_Mix03);
+                        PlaySound(Rayman3SoundEvent.Play__GlueFoot_PlumSnd2_Mix02);
                     }
 
-                    PlaySound(Rayman3SoundEvent.Stop__SkiLoop1);
+                    PlaySound(Rayman3SoundEvent.Stop__SldGreen_SkiLoop1);
 
                     if (!RSMultiplayer.IsActive)
                     {
@@ -834,7 +834,7 @@ public partial class Rayman
         switch (action)
         {
             case FsmAction.Init:
-                PlaySound(Rayman3SoundEvent.Stop__SkiLoop1);
+                PlaySound(Rayman3SoundEvent.Stop__SldGreen_SkiLoop1);
 
                 if (ActionId is not (Action.BouncyJump_Right or Action.BouncyJump_Left))
                 {
@@ -1097,7 +1097,7 @@ public partial class Rayman
         switch (action)
         {
             case FsmAction.Init:
-                PlaySound(Rayman3SoundEvent.Stop__SkiLoop1);
+                PlaySound(Rayman3SoundEvent.Stop__SldGreen_SkiLoop1);
                 ActionId = IsFacingRight ? Action.Fall_Right : Action.Fall_Left;
                 NextActionId = null;
                 Timer = 0;
@@ -1684,7 +1684,7 @@ public partial class Rayman
                 }
                 else
                 {
-                    PlaySound(Rayman3SoundEvent.Stop__SkiLoop1);
+                    PlaySound(Rayman3SoundEvent.Stop__SldGreen_SkiLoop1);
                     
                     if (SlideType == null)
                         PreviousXSpeed = 0;
@@ -1719,7 +1719,7 @@ public partial class Rayman
                 }
                 else
                 {
-                    PlaySound(Rayman3SoundEvent.Stop__SkiLoop1);
+                    PlaySound(Rayman3SoundEvent.Stop__SldGreen_SkiLoop1);
 
                     if (ActionId is not (Action.Crouch_Right or Action.Crouch_Left or Action.CrouchDown_Right or Action.CrouchDown_Left))
                         ActionId = IsFacingRight ? Action.Crouch_Right : Action.Crouch_Left;
@@ -1802,7 +1802,7 @@ public partial class Rayman
                 }
                 else
                 {
-                    PlaySound(Rayman3SoundEvent.Stop__SkiLoop1);
+                    PlaySound(Rayman3SoundEvent.Stop__SldGreen_SkiLoop1);
 
                     if (SlideType == null)
                         PreviousXSpeed = 0;
@@ -1858,7 +1858,7 @@ public partial class Rayman
                 }
                 else
                 {
-                    PlaySound(Rayman3SoundEvent.Stop__SkiLoop1);
+                    PlaySound(Rayman3SoundEvent.Stop__SldGreen_SkiLoop1);
 
                     if (ActionId is not (Action.Crawl_Right or Action.Crawl_Left))
                         ActionId = IsFacingRight ? Action.Crawl_Right : Action.Crawl_Left;

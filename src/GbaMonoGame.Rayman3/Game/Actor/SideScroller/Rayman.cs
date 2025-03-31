@@ -437,7 +437,7 @@ public sealed partial class Rayman : MovableActor
         else
         {
             SlideType = null;
-            PlaySound(Rayman3SoundEvent.Stop__SkiLoop1);
+            PlaySound(Rayman3SoundEvent.Stop__SldGreen_SkiLoop1);
         }
 
     }
@@ -727,11 +727,11 @@ public sealed partial class Rayman : MovableActor
 
     private void SlidingOnSlippery()
     {
-        if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__SkiLoop1))
-            PlaySound(Rayman3SoundEvent.Play__SkiLoop1);
+        if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__SldGreen_SkiLoop1))
+            PlaySound(Rayman3SoundEvent.Play__SldGreen_SkiLoop1);
 
         // TODO: Not on N-Gage
-        SoundEventsManager.SetSoundPitch(Rayman3SoundEvent.Play__SkiLoop1, Math.Abs(Speed.X));
+        SoundEventsManager.SetSoundPitch(Rayman3SoundEvent.Play__SldGreen_SkiLoop1, Math.Abs(Speed.X));
 
         if (PreviousXSpeed < -1.5f)
         {
