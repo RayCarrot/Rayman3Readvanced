@@ -44,7 +44,7 @@ public sealed partial class MissileMode7 : Mode7Actor
         WahooSoundTimer = 0;
         JumpSoundTimer = 0;
         CustomScaleTimer = 0;
-        field_0x9c = 0;
+        IsJumping = false;
 
         State.SetTo(Fsm_Start);
     }
@@ -56,6 +56,8 @@ public sealed partial class MissileMode7 : Mode7Actor
     public byte BoostTimer { get; set; }
     public byte WahooSoundTimer { get; set; }
     public byte JumpSoundTimer { get; set; }
+
+    public bool IsJumping { get; set; }
 
     public float ZPosSpeed { get; set; }
     public float ZPosDeacceleration { get; set; }
@@ -73,7 +75,6 @@ public sealed partial class MissileMode7 : Mode7Actor
     // TODO: Name
     public byte field_0x8c { get; set; }
     public byte field_0x88 { get; set; }
-    public byte field_0x9c { get; set; }
 
     public bool Debug_NoClip { get; set; } // Custom no-clip mode
 
@@ -134,8 +135,10 @@ public sealed partial class MissileMode7 : Mode7Actor
 
         bool isMovingTheRightDirection = IsMovingTheRightDirection(RaceDirection);
 
-        // TODO: Update the sound pitch based on the speed
-        //SoundEventsManager.SetSoundPitch();
+        float pitch = Speed.Length() * 512;
+        if (IsJumping)
+            pitch += 1024;
+        SoundEventsManager.SetSoundPitch(Rayman3SoundEvent.Play__Motor01_Mix12, pitch);
 
         // Update if we're facing the right direction
         raceManager.DrivingTheRightWay = IsFacingTheRightDirection(RaceDirection);

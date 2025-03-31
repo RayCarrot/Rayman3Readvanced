@@ -730,8 +730,7 @@ public sealed partial class Rayman : MovableActor
         if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__SldGreen_SkiLoop1))
             PlaySound(Rayman3SoundEvent.Play__SldGreen_SkiLoop1);
 
-        // TODO: Not on N-Gage
-        SoundEventsManager.SetSoundPitch(Rayman3SoundEvent.Play__SldGreen_SkiLoop1, Math.Abs(Speed.X));
+        SoundEventsManager.SetSoundPitch(Rayman3SoundEvent.Play__SldGreen_SkiLoop1, Math.Abs(Speed.X) * 256);
 
         if (PreviousXSpeed < -1.5f)
         {

@@ -267,7 +267,7 @@ public partial class MissileMode7
                 ZPosSpeed = 8;
                 ZPosDeacceleration = 0.375f;
                 Scale = new Vector2(288, 224) / 256;
-                field_0x9c = 1;
+                IsJumping = true;
                 break;
 
             case FsmAction.Step:
@@ -301,7 +301,7 @@ public partial class MissileMode7
 
             case FsmAction.UnInit:
                 Scale = new Vector2(192, 284) / 256;
-                field_0x9c = 0;
+                IsJumping = false;
                 break;
         }
 
