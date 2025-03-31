@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
+using BinarySerializer;
 using BinarySerializer.Ubisoft.GbaEngine;
 using ImGuiNET;
-using Microsoft.Xna.Framework.Audio;
-using SoundBank = BinarySerializer.Ubisoft.GbaEngine.SoundBank;
+using SoLoud;
 
 namespace GbaMonoGame;
 
@@ -12,39 +14,31 @@ public class GbaSoundEventsManager : SoundEventsManager
 {
     #region Constructor
 
-    public GbaSoundEventsManager(Dictionary<int, string> songTable, SoundBank soundBank)
+    public GbaSoundEventsManager(Dictionary<int, string> songFileNames, SoundBank soundBank)
     {
-        // Load the song table
-        Dictionary<string, SoundEffect> loadedSounds = new();
-        foreach (var song in songTable)
-        {
-            if (song.Value == null)
-                continue;
+        _soloud = new Soloud();
+        _soloud.init();
 
-            if (loadedSounds.TryGetValue(song.Value, out SoundEffect snd))
-            {
-                _songTable[song.Key] = snd;
-            }
-            else
-            {
-                snd = SoundEffect.FromFile($"{song.Value}.wav");
-                snd.Name = song.Value;
-                loadedSounds[song.Value] = snd;
-                _songTable[song.Key] = snd;
-            }
-        }
-
+        _songTable = new Dictionary<int, Song>();
         _soundBank = soundBank;
+
+        _volumePerType = new float[8];
+        Array.Fill(_volumePerType, SoundEngineInterface.MaxVolume);
+        
+        _songInstances = new List<SongInstance>();
+
+        LoadSongs(songFileNames);
     }
 
     #endregion
 
     #region Private Fields
 
-    private readonly Dictionary<int, SoundEffect> _songTable = new();
+    private readonly Soloud _soloud; // TODO: Deinit
+    private readonly Dictionary<int, Song> _songTable;
     private readonly SoundBank _soundBank;
-    private readonly float[] _volumePerType = Enumerable.Repeat(SoundEngineInterface.MaxVolume, 8).ToArray();
-    private readonly List<ActiveSong> _activeSongs = []; // On GBA this is max 4 songs, but we don't need that limit
+    private readonly float[] _volumePerType;
+    private readonly List<SongInstance> _songInstances; // On GBA this is max 4 songs, but we don't need that limit
     private CallBackSet _callBacks;
     
     private readonly int[] _rollOffTable =
@@ -86,6 +80,84 @@ public class GbaSoundEventsManager : SoundEventsManager
     #endregion
 
     #region Private Methods
+
+    private void LoadSongs(Dictionary<int, string> songFileNames)
+    {
+        Dictionary<string, Song> loadedSounds = new();
+        foreach (var songTableEntry in songFileNames)
+        {
+            if (songTableEntry.Value == null)
+                continue;
+
+            // Check if already loaded
+            if (loadedSounds.TryGetValue(songTableEntry.Value, out Song song))
+            {
+                _songTable[songTableEntry.Key] = song;
+            }
+            else
+            {
+                song = new Song
+                {
+                    WavSound = new Wav(),
+                    FileName = songTableEntry.Value
+                };
+
+                string fileName = $"{songTableEntry.Value}.wav";
+
+                song.WavSound.load(fileName);
+                song.WavSound.setLoopPoint(GetLoopPointInSeconds(fileName));
+
+                loadedSounds[songTableEntry.Value] = song;
+                _songTable[songTableEntry.Key] = song;
+            }
+        }
+    }
+
+    private double GetLoopPointInSeconds(string fileName)
+    {
+        Encoding encoding = Encoding.ASCII;
+
+        using FileStream stream = File.OpenRead(fileName);
+        using Reader reader = new(stream);
+
+        // Verify header
+        if (reader.ReadString(4, encoding) != "RIFF")
+            throw new Exception("Invalid sound file format. Not RIFF type.");
+
+        uint length = reader.ReadUInt32();
+        length += 8; // For the RIFF header
+
+        if (reader.ReadString(4, encoding) != "WAVE")
+            throw new Exception("Invalid sound file format. Not WAVE type.");
+
+        // Enumerate WAVE chunks
+        uint sampleRate = 0;
+        uint loopPoint = 0;
+        while (stream.Position < length)
+        {
+            string chunkId = reader.ReadString(4, encoding);
+            uint chunkSize = reader.ReadUInt32();
+            long pos = stream.Position;
+
+            if (chunkId == "fmt ")
+            {
+                stream.Position += 4;
+                sampleRate = reader.ReadUInt32();
+            }
+            else if (chunkId == "smpl")
+            {
+                stream.Position += 44;
+                loopPoint = reader.ReadUInt32();
+            }
+
+            stream.Position = pos + chunkSize;
+        }
+
+        if (sampleRate == 0)
+            throw new Exception("Invalid sound file format. No sample rate found.");
+
+        return loopPoint / (double)sampleRate;
+    }
 
     private SoundEvent GetEventFromId(short soundEventId)
     {
@@ -136,10 +208,13 @@ public class GbaSoundEventsManager : SoundEventsManager
     {
         // NOTE: On GBA only 4 songs can play at once. It checks if there's an available one, or one with lower priority. We however don't need that.
 
-        SoundEffect sndEffect = _songTable[res.SongTableIndex];
-        SoundEffectInstance sndEffectInstance = sndEffect.CreateInstance();
+        Song song = _songTable[res.SongTableIndex];
 
-        ActiveSong song = new()
+        // Play, but start paused so we can first set the parameters
+        uint handle = _soloud.play(song.WavSound, aPaused: true);
+
+        // Create a new song instance
+        SongInstance songInstance = new()
         {
             Obj = obj,
             EventId = soundEventId,
@@ -155,22 +230,25 @@ public class GbaSoundEventsManager : SoundEventsManager
             StopIfNotLooping = false,
             Loop = res.Loop,
             IsMusic = res.IsMusic,
-            SoundEffect = sndEffect,
-            SoundInstance = sndEffectInstance
+            Soloud = _soloud,
+            Song = song,
+            VoiceHandle = handle,
         };
+        _songInstances.Add(songInstance);
 
-        sndEffectInstance.IsLooped = res.Loop;
-        _activeSongs.Add(song);
+        // Set sound parameters
+        _soloud.setLooping(handle, res.Loop);
+        UpdateVolumeAndPan(songInstance);
 
-        UpdateVolumeAndPan(song);
-        sndEffectInstance.Play();
+        // Un-pause
+        _soloud.setPause(handle, false);
     }
 
     private void ReplaceSong(short soundEventId, short nextEventId, float fadeOut, object obj)
     {
         bool foundSong = false;
 
-        foreach (ActiveSong song in _activeSongs)
+        foreach (SongInstance song in _songInstances)
         {
             if (song.IsPlaying && !song.IsFadingOut && song.EventId == soundEventId && song.Obj == obj)
             {
@@ -178,18 +256,18 @@ public class GbaSoundEventsManager : SoundEventsManager
                     fadeOut = 0;
 
                 song.StopIfNotLooping = false;
+
                 song.Loop = false;
-                song.SoundInstance.IsLooped = false;
+                _soloud.setLooping(song.VoiceHandle, false);
 
                 if (fadeOut == 0)
                 {
-                    song.SoundInstance.Stop();
+                    _soloud.stop(song.VoiceHandle);
                 }
                 else
                 {
-                    // TODO: Fade out
-                    Logger.NotImplemented("Not implemented fading out song");
-                    song.SoundInstance.Stop();
+                    _soloud.fadeVolume(song.VoiceHandle, 0, fadeOut * (1 / 60f)); // TODO: Correctly convert time
+                    _soloud.scheduleStop(song.VoiceHandle, fadeOut);
                 }
 
                 song.IsFadingOut = true;
@@ -197,7 +275,9 @@ public class GbaSoundEventsManager : SoundEventsManager
                 if (!foundSong)
                 {
                     foundSong = true;
-                    song.NextSoundEventId = nextEventId;
+
+                    if (nextEventId != -1)
+                        song.NextSoundEventId = nextEventId;
                 }
             }
         }
@@ -223,22 +303,22 @@ public class GbaSoundEventsManager : SoundEventsManager
         dx = Math.Clamp(-dist.X / 2, SoundEngineInterface.MinPan, SoundEngineInterface.MaxPan);
     }
 
-    private void UpdateVolumeAndPan(ActiveSong song)
+    private void UpdateVolumeAndPan(SongInstance songInstance)
     {
         float vol;
         float pan;
 
-        if (song.Obj == null && (song.IsRollOffEnabled || song.IsPanEnabled))
+        if (songInstance.Obj == null && (songInstance.IsRollOffEnabled || songInstance.IsPanEnabled))
             throw new Exception("Song has roll-off or pan enabled, but no object is set!");
 
-        if (song.IsRollOffEnabled || song.IsPanEnabled)
+        if (songInstance.IsRollOffEnabled || songInstance.IsPanEnabled)
         {
-            Vector2 mikePos = _callBacks.GetMikePosition(song.Obj);
-            CalculateRollOffAndPan(mikePos, out vol, out pan, song.Obj);
+            Vector2 mikePos = _callBacks.GetMikePosition(songInstance.Obj);
+            CalculateRollOffAndPan(mikePos, out vol, out pan, songInstance.Obj);
 
-            if (!song.IsRollOffEnabled)
+            if (!songInstance.IsRollOffEnabled)
                 vol = SoundEngineInterface.MaxVolume;
-            if (!song.IsPanEnabled)
+            if (!songInstance.IsPanEnabled)
                 pan = 0;
         }
         else
@@ -247,26 +327,25 @@ public class GbaSoundEventsManager : SoundEventsManager
             pan = 0;
         }
 
-        vol *= GetVolumeForType(song.SoundType) / SoundEngineInterface.MaxVolume;
+        vol *= GetVolumeForType(songInstance.SoundType) / SoundEngineInterface.MaxVolume;
 
-        if (song.SoundType == SoundType.Sfx)
+        if (songInstance.SoundType == SoundType.Sfx)
             vol *= Engine.Config.SfxVolume;
-        else if (song.SoundType == SoundType.Music)
+        else if (songInstance.SoundType == SoundType.Music)
             vol *= Engine.Config.MusicVolume;
 
-        if (song.Volume != vol || song.Pan != pan)
+        if (songInstance.Volume != vol || songInstance.Pan != pan)
         {
-            song.SoundInstance.Volume = vol / SoundEngineInterface.MaxVolume;
-            // TODO: This currently doesn't work - issue in MonoGame? Pan is unused in Rayman 3 though, so we can ignore it.
-            song.SoundInstance.Pan = pan switch
+            _soloud.setVolume(songInstance.VoiceHandle, vol / SoundEngineInterface.MaxVolume);
+            _soloud.setPan(songInstance.VoiceHandle, pan switch
             {
                 > 0 => pan / SoundEngineInterface.MaxPan,
                 < 0 => -pan / SoundEngineInterface.MinPan,
                 _ => 0
-            };
+            });
 
-            song.Volume = vol;
-            song.Pan = pan;
+            songInstance.Volume = vol;
+            songInstance.Pan = pan;
         }
     }
 
@@ -276,7 +355,7 @@ public class GbaSoundEventsManager : SoundEventsManager
 
     protected override void RefreshEventSetImpl()
     {
-        foreach (ActiveSong song in _activeSongs.ToArray())
+        foreach (SongInstance song in _songInstances.ToArray())
         {
             // Do not refresh songs if they are paused in the engine since that's outside the game's code
             if (song.InEnginePaused)
@@ -285,7 +364,7 @@ public class GbaSoundEventsManager : SoundEventsManager
             if (!song.IsPlaying)
                 continue;
 
-            if (song.SoundInstance.State != SoundState.Playing && (!song.StopIfNotLooping || !song.Loop))
+            if (!_soloud.isValidVoiceHandle(song.VoiceHandle) && (!song.StopIfNotLooping || !song.Loop))
             {
                 song.IsPlaying = false;
 
@@ -298,10 +377,7 @@ public class GbaSoundEventsManager : SoundEventsManager
             }
 
             if (!song.IsPlaying)
-            {
-                song.SoundInstance.Dispose();
-                _activeSongs.Remove(song);
-            }
+                _songInstances.Remove(song);
         }
     }
     
@@ -339,12 +415,19 @@ public class GbaSoundEventsManager : SoundEventsManager
 
     protected override bool IsSongPlayingImpl(short soundEventId)
     {
-        return _activeSongs.Any(x => x.IsPlaying && x.EventId == soundEventId);
+        return _songInstances.Any(x => x.IsPlaying && x.EventId == soundEventId);
     }
 
     protected override void SetSoundPitchImpl(short soundEventId, float pitch)
     {
-        // TODO: Implement
+        foreach (SongInstance songInstance in _songInstances)
+        {
+            if (songInstance.IsPlaying && songInstance.EventId == soundEventId)
+            {
+                // 1 is default in SoLoud, while 0 is default in mp2k. Not sure about the 4096 scaling, but seems to sound correct.
+                _soloud.setRelativePlaySpeed(songInstance.VoiceHandle, 1 + pitch / 4096);
+            }
+        }
     }
 
     protected override short ReplaceAllSongsImpl(short soundEventId, float fadeOut)
@@ -352,7 +435,7 @@ public class GbaSoundEventsManager : SoundEventsManager
         bool firstSong = true;
         short firstEventId = -1;
 
-        foreach (ActiveSong song in _activeSongs)
+        foreach (SongInstance song in _songInstances)
         {
             if (song.IsPlaying && song.Priority == 100)
             {
@@ -383,29 +466,29 @@ public class GbaSoundEventsManager : SoundEventsManager
 
     protected override void FinishReplacingAllSongsImpl()
     {
-        foreach (ActiveSong song in _activeSongs.ToArray())
+        foreach (SongInstance songInstance in _songInstances.ToArray())
         {
-            if (song.IsPlaying && song.IsFadingOut && song.NextSoundEventId != -1)
+            if (songInstance.IsPlaying && songInstance.IsFadingOut && songInstance.NextSoundEventId != -1)
             {
-                song.SoundInstance.Dispose();
-                _activeSongs.Remove(song);
+                _soloud.stop(songInstance.VoiceHandle);
+                _songInstances.Remove(songInstance);
 
-                ProcessEvent(song.NextSoundEventId, song.Obj);
+                ProcessEvent(songInstance.NextSoundEventId, songInstance.Obj);
             }
         }
     }
 
     protected override void StopAllSongsImpl()
     {
-        foreach (ActiveSong playingSong in _activeSongs)
-            playingSong.SoundInstance.Dispose();
+        foreach (SongInstance songInstance in _songInstances)
+            _soloud.stop(songInstance.VoiceHandle);
 
-        _activeSongs.Clear();
+        _songInstances.Clear();
     }
 
     protected override void PauseAllSongsImpl()
     {
-        foreach (ActiveSong playingSong in _activeSongs)
+        foreach (SongInstance playingSong in _songInstances)
         {
             playingSong.StopIfNotLooping = true; // Not actually set here, but always set alongside PauseAll, so might as well do it here
             playingSong.InGamePaused = true;
@@ -414,8 +497,8 @@ public class GbaSoundEventsManager : SoundEventsManager
 
     protected override void ResumeAllSongsImpl()
     {
-        // TODO: Should only music be resumed?
-        foreach (ActiveSong playingSong in _activeSongs)
+        // NOTE: In the original game it seems to not resume sound effects, unless they're looping, in which case they play from the beginning
+        foreach (SongInstance playingSong in _songInstances)
         {
             playingSong.StopIfNotLooping = false; // Not actually set here, but always set alongside ResumeAll, so might as well do it here
             playingSong.InGamePaused = false;
@@ -443,45 +526,41 @@ public class GbaSoundEventsManager : SoundEventsManager
 
     protected override void ForcePauseAllSongsImpl()
     {
-        foreach (ActiveSong playingSong in _activeSongs)
+        foreach (SongInstance playingSong in _songInstances)
             playingSong.InEnginePaused = true;
     }
 
     protected override void ForceResumeAllSongsImpl()
     {
-        foreach (ActiveSong playingSong in _activeSongs)
+        foreach (SongInstance playingSong in _songInstances)
             playingSong.InEnginePaused = false;
     }
     
     protected override void DrawDebugLayoutImpl()
     {
-        if (ImGui.BeginTable("_songs", 5))
+        if (ImGui.BeginTable("_songs", 4))
         {
             ImGui.TableSetupColumn("Event", ImGuiTableColumnFlags.WidthFixed);
             ImGui.TableSetupColumn("Name");
-            ImGui.TableSetupColumn("State", ImGuiTableColumnFlags.WidthFixed);
-            ImGui.TableSetupColumn("Duration", ImGuiTableColumnFlags.WidthFixed);
+            ImGui.TableSetupColumn("Paused", ImGuiTableColumnFlags.WidthFixed);
             ImGui.TableSetupColumn("Next");
             ImGui.TableHeadersRow();
 
-            foreach (ActiveSong playingSong in _activeSongs)
+            foreach (SongInstance songInstance in _songInstances)
             {
                 ImGui.TableNextRow();
 
                 ImGui.TableNextColumn();
-                ImGui.Text($"{playingSong.EventId}");
+                ImGui.Text($"{songInstance.EventId}");
 
                 ImGui.TableNextColumn();
-                ImGui.Text($"{playingSong.SoundEffect.Name}");
+                ImGui.Text($"{songInstance.Song.FileName}");
 
                 ImGui.TableNextColumn();
-                ImGui.Text($"{playingSong.SoundInstance.State}");
+                ImGui.Text($"{_soloud.getPause(songInstance.VoiceHandle)}");
 
                 ImGui.TableNextColumn();
-                ImGui.Text($"{playingSong.SoundEffect.Duration.TotalSeconds:F}");
-
-                ImGui.TableNextColumn();
-                ImGui.Text($"{playingSong.NextSoundEventId}");
+                ImGui.Text($"{songInstance.NextSoundEventId}");
             }
 
             ImGui.EndTable();
@@ -492,7 +571,13 @@ public class GbaSoundEventsManager : SoundEventsManager
 
     #region Data Types
 
-    private class ActiveSong
+    private class Song
+    {
+        public Wav WavSound { get; init; }
+        public string FileName { get; init; }
+    }
+
+    private class SongInstance
     {
         private bool _inGamePaused;
         private bool _inEnginePaused;
@@ -517,17 +602,14 @@ public class GbaSoundEventsManager : SoundEventsManager
         public bool Loop { get; set; }
         public bool IsMusic { get; init; }
 
-        // MonoGame
+        // Soloud
         public bool InGamePaused
         {
             get => _inGamePaused;
             set
             {
                 _inGamePaused = value;
-                if (value || InEnginePaused)
-                    SoundInstance.Pause();
-                else
-                    SoundInstance.Resume();
+                Soloud.setPause(VoiceHandle, value || InEnginePaused);
             }
         }
         public bool InEnginePaused
@@ -536,14 +618,13 @@ public class GbaSoundEventsManager : SoundEventsManager
             set
             {
                 _inEnginePaused = value;
-                if (value || InGamePaused)
-                    SoundInstance.Pause();
-                else
-                    SoundInstance.Resume();
+                Soloud.setPause(VoiceHandle, value || InGamePaused);
             }
         }
-        public SoundEffectInstance SoundInstance { get; init; }
-        public SoundEffect SoundEffect { get; init; }
+
+        public Soloud Soloud { get; init; }
+        public Song Song { get; init; }
+        public uint VoiceHandle { get; init; }
     }
 
     #endregion

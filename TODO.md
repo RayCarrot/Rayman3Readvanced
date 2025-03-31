@@ -18,15 +18,6 @@ It might also be possible to implement split-screen multiplayer where each playe
 
 However online multiplayer would be much more complicated. The game expects the communication between clients every frame, which would require very low latency (probably around 16 ms?). If we can get it working then this library would be a potential option: https://github.com/RevenantX/LiteNetLib
 
-## 🔊 Audio
-The sound code currently uses the sound engine built-in to MonoGame. However it has several limitations, such as not supporting loop points, making it not viable for this projects. Because of this a new audio library has to be found, which supports the following features:
-
-- WAV and XM playback
-- Loop points
-- Fading in/out
-- Adjustable pitch
-- Adjustable pan
-
 ## ⚙️ Options
 ### 📃 General
 - Have option presets, such as "Modern" and "Original". Also clarify for each option which value is the original one.

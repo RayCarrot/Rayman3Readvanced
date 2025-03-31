@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Audio;
 
 namespace GbaMonoGame;
 
+// TODO: Use SoLoud instead of MonoGame for sounds
 // TODO: Read XM music from data instead of using GBA music
 // TODO: Implement the full sound engine code, such as fading in/out songs
 public class NGageSoundEventsManager : SoundEventsManager
