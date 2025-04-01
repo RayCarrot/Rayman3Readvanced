@@ -267,8 +267,9 @@ public class GbaSoundEventsManager : SoundEventsManager
                 else
                 {
                     // The MP2k engine fades for 16 steps, with the fade speed value determining how many frames to wait in-between each step
-                    _soloud.fadeVolume(song.VoiceHandle, 0, fadeOut * 16 * (1 / 60f));
-                    _soloud.scheduleStop(song.VoiceHandle, fadeOut);
+                    float fadeOutTime = fadeOut * 16 * (1 / 60f);
+                    _soloud.fadeVolume(song.VoiceHandle, 0, fadeOutTime);
+                    _soloud.scheduleStop(song.VoiceHandle, fadeOutTime);
                 }
 
                 song.IsFadingOut = true;
