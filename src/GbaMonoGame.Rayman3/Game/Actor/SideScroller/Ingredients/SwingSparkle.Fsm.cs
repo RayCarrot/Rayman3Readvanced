@@ -1,4 +1,5 @@
-﻿using GbaMonoGame.Engine2d;
+﻿using BinarySerializer.Ubisoft.GbaEngine;
+using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -41,6 +42,20 @@ public partial class SwingSparkle
                 ScreenPosition = ScreenPosition with { X = 0 };
                 AnimatedObject.CurrentAnimation = 0;
                 ProcessMessage(this, Message.Destroy);
+
+                if (Rom.Platform == Platform.GBA || Engine.Config.FixBugs)
+                {
+                    // NOTE: The game doesn't do this, however we have to do this to re-produce a bugged, but desirable, behavior. Basically,
+                    //       in the original GBA code it doesn't do a null check on ´rayman.AttachedObject´ when setting the position. This
+                    //       means on the very last frame of the sparkles appearing, when the attached object is null, then the position it
+                    //       sets becomes some unexpected large out-of-bounds value. In the N-Gage version they added a null check to avoid
+                    //       the game crashing (it doesn't crash on a null pointer on the GBA).
+                    //       This sounds like undesirable behavior, however on the very first frame when the sparkles appear again they will
+                    //       render on the last set position. This means that when hitting a purple lum again you will for a single frame
+                    //       see sparkles appear at the wrong position, before going back to normal the next frame. With the bug this however
+                    //       isn't visible because the last position will be out-of-bounds and thus not visible.
+                    Position = new Vector2(-1000, -1000);
+                }
                 break;
         }
 
