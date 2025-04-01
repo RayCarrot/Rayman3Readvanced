@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using GbaMonoGame.TgxEngine;
 using ImGuiNET;
 using Microsoft.Xna.Framework;
@@ -40,13 +41,13 @@ public class SceneDebugWindow : DebugWindow
 
         Vector2 mousePos = InputManager.GetMousePosition(scene.RenderContext);
 
-        foreach (GameObject obj in scene.KnotManager.EnumerateAllGameObjects(true))
+        foreach (GameObject gameObject in new EnabledAlwaysActorIterator(scene).Concat(new EnabledActorCaptorIterator(scene)))
         {
-            Box box = GetObjBox(obj).Offset(-scene.Playfield.Camera.Position);
+            Box box = GetObjBox(gameObject).Offset(-scene.Playfield.Camera.Position);
 
             if (box.Contains(mousePos))
             {
-                HighlightedGameObject = obj;
+                HighlightedGameObject = gameObject;
                 break;
             }
         }
@@ -74,7 +75,7 @@ public class SceneDebugWindow : DebugWindow
 
         ImGui.SeparatorText("Always actors");
 
-        ImGui.Text($"Count: {scene2D.KnotManager.AlwaysActors.Length}");
+        ImGui.Text($"Count: {scene2D.KnotManager.AlwaysActorsCount}");
 
         if (ImGui.BeginListBox("##_alwaysActors", new System.Numerics.Vector2(300, 150)))
         {
@@ -92,7 +93,7 @@ public class SceneDebugWindow : DebugWindow
         ImGui.Spacing();
         ImGui.SeparatorText("Actors");
 
-        ImGui.Text($"Count: {scene2D.KnotManager.Actors.Length}");
+        ImGui.Text($"Count: {scene2D.KnotManager.ActorsCount}");
 
         if (ImGui.BeginListBox("##_actors", new System.Numerics.Vector2(300, 300)))
         {
@@ -110,9 +111,9 @@ public class SceneDebugWindow : DebugWindow
         ImGui.Spacing();
         ImGui.SeparatorText("Captors");
 
-        ImGui.Text($"Count: {scene2D.KnotManager.Captors.Length}");
+        ImGui.Text($"Count: {scene2D.KnotManager.CaptorsCount}");
 
-        if (scene2D.KnotManager.Captors.Length > 0 && ImGui.BeginListBox("##_captors", new System.Numerics.Vector2(300, 80)))
+        if (scene2D.KnotManager.CaptorsCount > 0 && ImGui.BeginListBox("##_captors", new System.Numerics.Vector2(300, 80)))
         {
             foreach (Captor captor in scene2D.KnotManager.Captors)
             {

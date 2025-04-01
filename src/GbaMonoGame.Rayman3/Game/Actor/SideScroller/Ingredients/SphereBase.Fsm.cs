@@ -15,7 +15,7 @@ public partial class SphereBase
 
             case FsmAction.Step:
                 // Check for collision with sphere
-                foreach (BaseActor actor in Scene.KnotManager.EnumerateAlwaysActors(isEnabled: true))
+                foreach (BaseActor actor in new EnabledAlwaysActorIterator(Scene))
                 {
                     // Verify type
                     if (actor.Type != (int)ActorType.Sphere)

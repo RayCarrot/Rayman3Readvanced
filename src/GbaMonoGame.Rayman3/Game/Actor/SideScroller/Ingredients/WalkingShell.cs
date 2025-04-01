@@ -64,7 +64,7 @@ public sealed partial class WalkingShell : MovableActor
 
     private bool IsNearBreakableDoor()
     {
-        foreach (BaseActor actor in Scene.KnotManager.EnumerateActors(isEnabled: true))
+        foreach (BaseActor actor in new EnabledActorIterator(Scene))
         {
             if (actor.Type == (int)ActorType.BreakableDoor && actor.Position.X - Position.X < 220)
             {

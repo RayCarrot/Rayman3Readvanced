@@ -144,7 +144,7 @@ public partial class Boulder
                     if (type.Value is PhysicalTypeValue.InstaKill or PhysicalTypeValue.MoltenLava)
                     {
                         bool activeBoulder = false;
-                        foreach (BaseActor actor in Scene.KnotManager.EnumerateActors(isEnabled: true))
+                        foreach (BaseActor actor in new EnabledActorIterator(Scene))
                         {
                             if (actor != this && (ActorType)actor.Type == ActorType.Boulder && actor.State != Fsm_Wait)
                             {

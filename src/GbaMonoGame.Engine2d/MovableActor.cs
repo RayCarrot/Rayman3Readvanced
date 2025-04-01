@@ -515,7 +515,32 @@ public abstract class MovableActor : InteractableActor
 
                 Box detectionBox = GetDetectionBox();
 
-                foreach (BaseActor actor in Scene.KnotManager.EnumerateAllActors(isEnabled: true))
+                foreach (BaseActor actor in new EnabledAlwaysActorIterator(Scene))
+                {
+                    if (actor != this && actor.IsSolid && actor is ActionActor actionActor)
+                    {
+                        Box otherDetectionBox = actionActor.GetDetectionBox();
+
+                        if (!actionActor.IsObjectCollisionXOnly)
+                        {
+                            if (CheckObjectCollisionXY(detectionBox, otherDetectionBox))
+                            {
+                                IsTouchingActor = true;
+                                detectionBox = GetDetectionBox();
+                            }
+                        }
+                        else
+                        {
+                            if (CheckObjectCollisionX(detectionBox, otherDetectionBox))
+                            {
+                                IsTouchingActor = true;
+                                detectionBox = GetDetectionBox();
+                            }
+                        }
+                    }
+                }
+
+                foreach (BaseActor actor in new EnabledActorIterator(Scene))
                 {
                     if (actor != this && actor.IsSolid && actor is ActionActor actionActor)
                     {

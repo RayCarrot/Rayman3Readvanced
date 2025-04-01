@@ -320,7 +320,12 @@ public class Scene2D
 
     public void ActorBehaviorStep()
     {
-        foreach (BaseActor actor in KnotManager.EnumerateAllActors(isEnabled: true))
+        foreach (BaseActor actor in new EnabledAlwaysActorIterator(this))
+        {
+            actor.DoBehavior();
+        }
+
+        foreach (BaseActor actor in new EnabledActorIterator(this))
         {
             actor.DoBehavior();
         }
@@ -331,25 +336,26 @@ public class Scene2D
         Vector2 camPos = Playfield.Camera.Position;
         bool newKnot = KnotManager.UpdateCurrentKnot(Playfield, camPos, KeepAllObjectsActive);
 
-        foreach (GameObject obj in KnotManager.EnumerateAllGameObjects(isEnabled: false))
+        // Resurrect always actors if immediate
+        foreach (BaseActor obj in new DisabledAlwaysActorIterator(this))
         {
             if (obj.ResurrectsImmediately)
                 obj.ProcessMessage(null, Message.Resurrect);
         }
 
+        // Resurrect actors and captors if immediate
+        foreach (GameObject obj in new DisabledActorCaptorIterator(this))
+        {
+            if (obj.ResurrectsImmediately)
+                obj.ProcessMessage(null, Message.Resurrect);
+        }
+
+        // Resurrect actors and captors if later
         if (newKnot && KnotManager.PreviousKnot != null)
         {
-            foreach (BaseActor obj in KnotManager.EnumerateActors(isEnabled: false, knot: KnotManager.PreviousKnot))
+            foreach (GameObject obj in new DisabledActorCaptorIterator(this, knot: KnotManager.PreviousKnot))
             {
-                if (obj.ResurrectsLater && !KnotManager.IsInCurrentKnot(obj))
-                {
-                    obj.ProcessMessage(null, Message.Resurrect);
-                }
-            }
-
-            foreach (Captor obj in KnotManager.EnumerateCaptors(isEnabled: false, knot: KnotManager.PreviousKnot))
-            {
-                if (obj.ResurrectsLater && !KnotManager.IsInCurrentKnot(obj))
+                if (obj.ResurrectsLater && !KnotManager.IsInCurrentKnot(this, obj.InstanceId))
                 {
                     obj.ProcessMessage(null, Message.Resurrect);
                 }
@@ -359,7 +365,12 @@ public class Scene2D
 
     public void ActorStep()
     {
-        foreach (BaseActor actor in KnotManager.EnumerateAllActors(isEnabled: true))
+        foreach (BaseActor actor in new EnabledAlwaysActorIterator(this))
+        {
+            actor.Step();
+        }
+
+        foreach (BaseActor actor in new EnabledActorIterator(this))
         {
             actor.Step();
         }
@@ -367,7 +378,13 @@ public class Scene2D
 
     public void ActorMoveStep()
     {
-        foreach (BaseActor actor in KnotManager.EnumerateAllActors(isEnabled: true))
+        foreach (BaseActor actor in new EnabledAlwaysActorIterator(this))
+        {
+            if (actor is MovableActor movableActor)
+                movableActor.Move();
+        }
+
+        foreach (BaseActor actor in new EnabledActorIterator(this))
         {
             if (actor is MovableActor movableActor)
                 movableActor.Move();
@@ -376,7 +393,7 @@ public class Scene2D
 
     public void CaptorStep()
     {
-        foreach (Captor captor in KnotManager.EnumerateCaptors(isEnabled: true))
+        foreach (Captor captor in new EnabledCaptorIterator(this))
         {
             if (captor.TriggerOnMainActorDetection)
             {
@@ -388,12 +405,21 @@ public class Scene2D
             {
                 if (!captor.IsDetected)
                 {
-                    foreach (BaseActor actor in KnotManager.EnumerateAllActors(isEnabled: true))
+                    foreach (BaseActor actor in new EnabledAlwaysActorIterator(this))
                     {
                         // Skip main actor if not in multiplayer
                         if (!RSMultiplayer.IsActive && actor.InstanceId == 0)
                             continue;
 
+                        if (actor.IsAgainstCaptor && actor is ActionActor actionActor)
+                        {
+                            captor.IsDetected = captor.GetCaptorBox().Intersects(actionActor.GetDetectionBox());
+                            break;
+                        }
+                    }
+
+                    foreach (BaseActor actor in new EnabledActorIterator(this))
+                    {
                         if (actor.IsAgainstCaptor && actor is ActionActor actionActor)
                         {
                             captor.IsDetected = captor.GetCaptorBox().Intersects(actionActor.GetDetectionBox());
@@ -410,7 +436,12 @@ public class Scene2D
 
     public void DrawActors()
     {
-        foreach (BaseActor actor in KnotManager.EnumerateAllActors(isEnabled: true))
+        foreach (BaseActor actor in new EnabledAlwaysActorIterator(this))
+        {
+            actor.Draw(AnimationPlayer, false);
+        }
+
+        foreach (BaseActor actor in new EnabledActorIterator(this))
         {
             actor.Draw(AnimationPlayer, false);
         }
@@ -423,9 +454,14 @@ public class Scene2D
 
     public void DrawDebugBoxes()
     {
-        foreach (GameObject obj in KnotManager.EnumerateAllGameObjects(isEnabled: true))
+        foreach (BaseActor actor in new EnabledAlwaysActorIterator(this))
         {
-            obj.DrawDebugBoxes(AnimationPlayer);
+            actor.DrawDebugBoxes(AnimationPlayer);
+        }
+
+        foreach (GameObject gameObject in new EnabledActorCaptorIterator(this))
+        {
+            gameObject.DrawDebugBoxes(AnimationPlayer);
         }
     }
 
@@ -465,16 +501,26 @@ public class Scene2D
     {
         Box attackBox = actor.GetAttackBox();
 
-        foreach (BaseActor actorToCheck in KnotManager.EnumerateAllActors(isEnabled: true))
+        foreach (BaseActor actorToCheck in new EnabledAlwaysActorIterator(this))
         {
             // Ignore main actor if not in multiplayer
             if (!RSMultiplayer.IsActive && actorToCheck.InstanceId == 0)
                 continue;
 
             // Check for collision
-            if (actorToCheck != actor && 
-                actorToCheck.ReceivesDamage && 
-                actorToCheck is InteractableActor interactableActor && 
+            if (actorToCheck != actor &&
+                actorToCheck.ReceivesDamage &&
+                actorToCheck is InteractableActor interactableActor &&
+                interactableActor.GetVulnerabilityBox().Intersects(attackBox))
+                return interactableActor;
+        }
+
+        foreach (BaseActor actorToCheck in new EnabledActorIterator(this))
+        {
+            // Check for collision
+            if (actorToCheck != actor &&
+                actorToCheck.ReceivesDamage &&
+                actorToCheck is InteractableActor interactableActor &&
                 interactableActor.GetVulnerabilityBox().Intersects(attackBox))
                 return interactableActor;
         }
@@ -486,17 +532,28 @@ public class Scene2D
     {
         Box attackBox = actor.GetAttackBox();
 
-        foreach (BaseActor actorToCheck in KnotManager.EnumerateAllActors(isEnabled: true))
+        foreach (BaseActor actorToCheck in new EnabledAlwaysActorIterator(this))
         {
             // Ignore main actor if not in multiplayer
             if (!RSMultiplayer.IsActive && actorToCheck.InstanceId == 0)
                 continue;
 
             // Check for collision
-            if (actorToCheck != actor && 
+            if (actorToCheck != actor &&
                 actorToCheck.Type == type &&
-                actorToCheck.ReceivesDamage && 
-                actorToCheck is InteractableActor interactableActor && 
+                actorToCheck.ReceivesDamage &&
+                actorToCheck is InteractableActor interactableActor &&
+                interactableActor.GetVulnerabilityBox().Intersects(attackBox))
+                return interactableActor;
+        }
+
+        foreach (BaseActor actorToCheck in new EnabledActorIterator(this))
+        {
+            // Check for collision
+            if (actorToCheck != actor &&
+                actorToCheck.Type == type &&
+                actorToCheck.ReceivesDamage &&
+                actorToCheck is InteractableActor interactableActor &&
                 interactableActor.GetVulnerabilityBox().Intersects(attackBox))
                 return interactableActor;
         }

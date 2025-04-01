@@ -27,10 +27,10 @@ public class KnotManager
         // Create a special knot with every object which we use when loading all objects at once
         _fullKnot = new Knot
         {
-            ActorsCount = (byte)Actors.Length,
-            CaptorsCount = (byte)Captors.Length,
-            ActorIds = Enumerable.Range(AlwaysActors.Length, Actors.Length).Select(x => (byte)x).ToArray(),
-            CaptorIds = Enumerable.Range(AlwaysActors.Length + Actors.Length, Captors.Length).Select(x => (byte)x).ToArray(),
+            ActorsCount = (byte)ActorsCount,
+            CaptorsCount = (byte)CaptorsCount,
+            ActorIds = Enumerable.Range(ActorsIndex, ActorsCount).Select(x => (byte)x).ToArray(),
+            CaptorIds = Enumerable.Range(CaptorsIndex, CaptorsCount).Select(x => (byte)x).ToArray(),
         };
     }
 
@@ -45,13 +45,25 @@ public class KnotManager
     #region Public Properties
 
     public List<GameObject> GameObjects { get; set; }
+    public int GameObjectsCount => GameObjects.Count;
+    
     public BaseActor[] AlwaysActors { get; }
+    public int AlwaysActorsCount => AlwaysActors.Length;
+    public int AlwaysActorsIndex => 0;
+    
     public BaseActor[] Actors { get; }
+    public int ActorsCount => Actors.Length;
+    public int ActorsIndex => AlwaysActorsIndex + AlwaysActorsCount;
+
     public Captor[] Captors { get; }
+    public int CaptorsCount => Captors.Length;
+    public int CaptorsIndex => ActorsIndex + ActorsCount;
 
     // Custom list of always actors - removes the projectile limit
     public List<BaseActor> PendingAddedProjectiles { get; }
     public List<BaseActor> AddedProjectiles { get; }
+    public int AddedProjectilesCount => AddedProjectiles.Count;
+    public int AddedProjectilesIndex => CaptorsIndex + CaptorsCount;
 
     public Knot[] Knots { get; }
     public byte KnotsWidth { get; }
@@ -103,36 +115,6 @@ public class KnotManager
             Actors[i].Init(sceneResource.Actors[i]);
     }
 
-    public IEnumerable<BaseActor> EnumerateAlwaysActors(bool isEnabled)
-    {
-        return AlwaysActors.Concat(AddedProjectiles).Where(x => x.IsEnabled == isEnabled);
-    }
-
-    public IEnumerable<BaseActor> EnumerateActors(bool isEnabled, Knot knot = null)
-    {
-        knot ??= CurrentKnot;
-        return knot.ActorIds.Select(x => GetGameObject(x)).Where(x => x.IsEnabled == isEnabled).Cast<BaseActor>();
-    }
-
-    public IEnumerable<BaseActor> EnumerateAllActors(bool isEnabled, Knot knot = null)
-    {
-        return EnumerateAlwaysActors(isEnabled).Concat(EnumerateActors(isEnabled, knot));
-    }
-
-    public IEnumerable<GameObject> EnumerateAllGameObjects(bool isEnabled, Knot knot = null)
-    {
-        return EnumerateAlwaysActors(isEnabled).
-            Concat(EnumerateActors(isEnabled, knot)).
-            Cast<GameObject>().
-            Concat(EnumerateCaptors(isEnabled, knot));
-    }
-
-    public IEnumerable<Captor> EnumerateCaptors(bool isEnabled, Knot knot = null)
-    {
-        knot ??= CurrentKnot;
-        return knot.CaptorIds.Select(x => GetGameObject(x)).Where(x => x.IsEnabled == isEnabled).Cast<Captor>();
-    }
-
     public GameObject GetGameObject(int instanceId)
     {
         return GameObjects[instanceId];
@@ -176,24 +158,26 @@ public class KnotManager
         return true;
     }
 
-    public bool IsInCurrentKnot(GameObject gameObject)
+    public bool IsInCurrentKnot(Scene2D scene, int instanceId)
     {
-        if (gameObject is BaseActor)
-            return CurrentKnot.ActorIds.All(x => x != gameObject.InstanceId);
-        else if (gameObject is Captor)
-            return CurrentKnot.CaptorIds.All(x => x != gameObject.InstanceId);
-        else
-            throw new Exception($"Unsupported game object type {gameObject}");
+        foreach (GameObject gameObject in new ActorCaptorIterator(scene))
+        {
+            if (gameObject.InstanceId == instanceId)
+                return true;
+        }
+
+        return false;
     }
 
-    public bool IsInPreviousKnot(GameObject gameObject)
+    public bool IsInPreviousKnot(Scene2D scene, int instanceId)
     {
-        if (gameObject is BaseActor)
-            return PreviousKnot.ActorIds.All(x => x != gameObject.InstanceId);
-        else if (gameObject is Captor)
-            return PreviousKnot.CaptorIds.All(x => x != gameObject.InstanceId);
-        else
-            throw new Exception($"Unsupported game object type {gameObject}");
+        foreach (GameObject gameObject in new ActorCaptorIterator(scene, PreviousKnot))
+        {
+            if (gameObject.InstanceId == instanceId)
+                return true;
+        }
+
+        return false;
     }
 
     public void ReloadAnimations()
@@ -210,14 +194,25 @@ public class KnotManager
 
     public BaseActor CreateProjectile(Scene2D scene, int actorType)
     {
-        BaseActor actor = EnumerateAllActors(isEnabled: false).FirstOrDefault(x => x.Type == actorType && x.IsProjectile);
-
-        if (actor != null)
+        foreach (BaseActor actor in new DisabledActorIterator(scene))
         {
-            actor.ProcessMessage(null, Message.ResurrectWakeUp);
-            return actor;
+            if (actor.IsProjectile && actor.Type == actorType)
+            {
+                actor.ProcessMessage(null, Message.ResurrectWakeUp);
+                return actor;
+            }
         }
-        else if (Engine.Config.AddProjectilesWhenNeeded)
+
+        foreach (BaseActor actor in new DisabledAlwaysActorIterator(scene))
+        {
+            if (actor.IsProjectile && actor.Type == actorType)
+            {
+                actor.ProcessMessage(null, Message.ResurrectWakeUp);
+                return actor;
+            }
+        }
+
+        if (Engine.Config.AddProjectilesWhenNeeded)
         {
             // Custom code to remove the limit of only spawning already allocated projectiles. This is needed if the game runs
             // at a higher resolution as it might need more projectiles to be active at the same time due to more actors being
@@ -229,17 +224,17 @@ public class KnotManager
             if (actorResource == null)
                 return null;
 
-            int instanceId = GameObjects.Count + PendingAddedProjectiles.Count;
-            actor = ObjectFactory.Create(instanceId, scene, actorResource);
+            int instanceId = GameObjectsCount + PendingAddedProjectiles.Count;
+            BaseActor projectile = ObjectFactory.Create(instanceId, scene, actorResource);
 
-            PendingAddedProjectiles.Add(actor);
-            actor.Init(actorResource);
+            PendingAddedProjectiles.Add(projectile);
+            projectile.Init(actorResource);
 
-            actor.ProcessMessage(null, Message.ResurrectWakeUp);
+            projectile.ProcessMessage(null, Message.ResurrectWakeUp);
 
-            Logger.Info("Added a new projectile with instance id {0} and type {1}", actor.InstanceId, actor.Type);
+            Logger.Info("Added a new projectile with instance id {0} and type {1}", projectile.InstanceId, projectile.Type);
 
-            return actor;
+            return projectile;
         }
         else
         {
