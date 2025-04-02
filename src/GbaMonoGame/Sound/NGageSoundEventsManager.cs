@@ -1,146 +1,217 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using BinarySerializer.Ubisoft.GbaEngine;
 using ImGuiNET;
-using Microsoft.Xna.Framework.Audio;
+using SoLoud;
 
 namespace GbaMonoGame;
 
-// TODO: Use SoLoud instead of MonoGame for sounds
-// TODO: Read XM music from data instead of using GBA music
-// TODO: Implement the full sound engine code, such as fading in/out songs
 public class NGageSoundEventsManager : SoundEventsManager
 {
     #region Constructor
 
-    public NGageSoundEventsManager(Dictionary<int, string> songTable, NGageSoundEvent[] soundEvents)
+    public NGageSoundEventsManager(Dictionary<int, string> songFileNames, NGageSoundEvent[] soundEvents)
     {
-        // Load the sound resources
-        Dictionary<int, SoundEffect> loadedSounds = new();
-        foreach (NGageSoundEvent evt in soundEvents)
-        {
-            if (!evt.IsValid)
-                continue;
+        _soloud = new Soloud();
+        _soloud.init();
 
-            if (loadedSounds.TryGetValue(evt.SoundResourceId, out SoundEffect snd))
-            {
-                _soundResources[evt.SoundResourceId] = snd;
-            }
-            else
-            {
-                // Load music from extracted files
-                if (evt.IsMusic)
-                {
-                    snd = SoundEffect.FromFile($"{songTable[evt.SoundResourceId]}.wav");
-                }
-                // Load sound effects from game data since it's already .wav data there and the N-Gage version has a few exclusive sounds
-                else
-                {
-                    using Stream sndStream = Rom.LoadResourceStream(evt.SoundResourceId);
-                    snd = SoundEffect.FromStream(sndStream);
-                }
+        _musicTable = new Dictionary<int, Music>();
+        _soundEffectsTable = new Dictionary<int, SoundEffect>();
 
-                snd.Name = songTable[evt.SoundResourceId];
-                loadedSounds[evt.SoundResourceId] = snd;
-                _soundResources[evt.SoundResourceId] = snd;
-            }
-        }
+        _currentMusicVolume = 1;
+        _musicFadeVolume = 0;
+        _doesCurrentMusicLoop = false;
+        _prevMusicSoundResId = -1;
+        _prevMusicInstrumentsResId = -1;
+
+        MusicVolume = SoundEngineInterface.MaxVolume;
+        SoundEffectsVolume = SoundEngineInterface.MaxVolume;
+
+        LoadSongs(songFileNames, soundEvents);
     }
 
     #endregion
 
     #region Private Fields
 
-    private readonly Dictionary<int, SoundEffect> _soundResources = new();
-    private ActiveSong _activeMusic;
-    private readonly Dictionary<int, ActiveSong> _activeSoundEffects = new(); // On N-Gage this is max 64 songs, but we don't need that limit
+    private readonly Soloud _soloud; // TODO: Deinit! With Rom.UnInit
+
+    private readonly Dictionary<int, Music> _musicTable;
+    private readonly Dictionary<int, SoundEffect> _soundEffectsTable;
+
+    private readonly Dictionary<int, SoundEffectInstance> _soundEffectInstances = new(); // On N-Gage this is max 64 songs, but we don't need that limit
+
+    private uint _musicVoiceHandle;
+    private bool _doesCurrentMusicLoop;
+    private float _currentMusicVolume;
+    private float _musicFadeVolume;
+    
+    private int _prevMusicSoundResId;
+    private int _prevMusicInstrumentsResId;
+    
+    private int _currentMusicSoundResId;
+    private int _currentMusicInstrumentsResId;
+    
+    private int _nextMusicSoundResId;
+    private int _nextMusicInstrumentsResId;
 
     #endregion
 
     #region Public Properties
 
-    public float MusicVolume { get; set; } = SoundEngineInterface.MaxVolume;
-    public float SfxVolume { get; set; } = SoundEngineInterface.MaxVolume;
+    public float MusicVolume { get; set; }
+    public float SoundEffectsVolume { get; set; }
 
     #endregion
 
     #region Private Methods
 
-    private void CreateSong(NGageSoundEvent evt)
+    private void LoadSongs(Dictionary<int, string> songFileNames, NGageSoundEvent[] soundEvents)
     {
-        // TODO: If song does not loop and prev song loops then the game saves it and continues playing when current song stops (see spheres in bad dreams)
-
-        SoundEffect sndEffect = _soundResources[evt.SoundResourceId];
-        SoundEffectInstance sndEffectInstance = sndEffect.CreateInstance();
-
-        ActiveSong song = new()
+        HashSet<int> loadedSounds = new();
+        foreach (NGageSoundEvent evt in soundEvents)
         {
-            SoundResourceId = evt.SoundResourceId,
-            Volume = (float)evt.Volume / 7,
-            IsMusic = evt.IsMusic,
-            Loop = evt.Loop,
-            SoundEffect = sndEffect,
-            SoundInstance = sndEffectInstance
-        };
+            if (!evt.IsValid)
+                continue;
 
-        sndEffectInstance.IsLooped = evt.Loop;
-
-        // Only one music track can play at a time
-        if (evt.IsMusic)
-        {
-            _activeMusic?.SoundInstance.Dispose();
-            _activeMusic = song;
-        }
-        // Only one sound effect of the same type can play at a time
-        else
-        {
-            if (_activeSoundEffects.TryGetValue(evt.SoundResourceId, out ActiveSong existingSong))
-                existingSong.SoundInstance.Dispose();
-
-            _activeSoundEffects[evt.SoundResourceId] = song;
-        }
-
-        UpdateVolume(song);
-        sndEffectInstance.Play();
-    }
-
-    private void StopSong(NGageSoundEvent evt)
-    {
-        if (evt.IsMusic)
-        {
-            if (_activeMusic != null && _activeMusic.SoundResourceId == evt.SoundResourceId)
+            if (loadedSounds.Add(evt.SoundResourceId))
             {
-                _activeMusic.SoundInstance.Dispose();
-                _activeMusic = null;
-            }
-        }
-        else
-        {
-            if (_activeSoundEffects.TryGetValue(evt.SoundResourceId, out ActiveSong sfx))
-            {
-                sfx.SoundInstance.Dispose();
-                _activeSoundEffects.Remove(evt.SoundResourceId);
+                // Load music from extracted files
+                if (evt.IsMusic)
+                {
+                    Music music = new()
+                    {
+                        XmSound = new Openmpt(),
+                        FileName = songFileNames[evt.SoundResourceId]
+                    };
+
+                    // TODO: Load XM audio
+
+                    _musicTable[evt.SoundResourceId] = music;
+                }
+                // Load sound effects from game data since it's already .wav data there and the N-Gage version has a few exclusive sounds
+                else
+                {
+                    SoundEffect soundEffect = new()
+                    {
+                        WavSound = new Wav(),
+                        FileName = songFileNames[evt.SoundResourceId]
+                    };
+
+                    RawResource resource = Rom.LoadResource<RawResource>(evt.SoundResourceId);
+                    byte[] rawData = resource.RawData;
+
+                    IntPtr resourcePtr = IntPtr.Zero;
+                    try
+                    {
+                        resourcePtr = Marshal.AllocHGlobal(rawData.Length);
+                        Marshal.Copy(rawData, 0, resourcePtr, rawData.Length);
+
+                        soundEffect.WavSound.loadMem(resourcePtr, (uint)rawData.Length, true, false);
+                    }
+                    finally
+                    {
+                        if (resourcePtr != IntPtr.Zero)
+                            Marshal.FreeHGlobal(resourcePtr);
+                    }
+
+                    _soundEffectsTable[evt.SoundResourceId] = soundEffect;
+                }
             }
         }
     }
 
-    private void UpdateVolume(ActiveSong song)
+    private void SetNextMusic(int soundResId, int instrumentsResId, float volume, bool loop)
     {
-        float vol = song.Volume;
-
-        if (song.IsMusic)
+        if (soundResId >= 0)
         {
-            vol *= Engine.Config.MusicVolume;
-            vol *= MusicVolume / SoundEngineInterface.MaxVolume;
-        }
-        else
-        {
-            vol *= Engine.Config.SfxVolume;
-            vol *= SfxVolume / SoundEngineInterface.MaxVolume;
-        }
+            // If the new music does not loop then we want to continue playing the current music
+            // after this new one. For example the jingle when you place the spheres on a base.
+            if (_doesCurrentMusicLoop && !loop)
+            {
+                _prevMusicSoundResId = _nextMusicSoundResId;
+                _prevMusicInstrumentsResId = _nextMusicInstrumentsResId;
+            }
 
-        song.SoundInstance.Volume = vol;
+            // Set the next music to be played
+            _nextMusicSoundResId = soundResId;
+            _nextMusicInstrumentsResId = instrumentsResId;
+            
+            // Set parameters
+            _doesCurrentMusicLoop = loop;
+            _currentMusicVolume = volume;
+        }
+    }
+
+    private void PlayMusic(int soundResId, int soundInstrumentsResId)
+    {
+        Music music = _musicTable[soundResId];
+
+        // Play, but start paused so we can first set the parameters
+        _musicVoiceHandle = _soloud.play(music.XmSound, aPaused: true);
+
+        // Set sound parameters
+        _soloud.setLooping(_musicVoiceHandle, _doesCurrentMusicLoop);
+        _soloud.setVolume(_musicVoiceHandle, _currentMusicVolume * (_musicFadeVolume / SoundEngineInterface.MaxVolume) * Engine.Config.MusicVolume);
+
+        // Un-pause
+        _soloud.setPause(_musicVoiceHandle, false);
+
+        _currentMusicSoundResId = soundResId;
+        _currentMusicInstrumentsResId = soundInstrumentsResId;
+        _nextMusicSoundResId = soundResId;
+        _nextMusicInstrumentsResId = soundInstrumentsResId;
+    }
+
+    private bool IsMusicPlaying(int soundResId)
+    {
+        return soundResId == _nextMusicSoundResId;
+    }
+
+    private void PlaySoundEffect(int soundResId, float volume, bool loop)
+    {
+        if (SoundEffectsVolume > 0 && !IsSoundEffectPlaying(soundResId))
+        {
+            SoundEffect soundEffect = _soundEffectsTable[soundResId];
+
+            // Play, but start paused so we can first set the parameters
+            uint handle = _soloud.play(soundEffect.WavSound, aPaused: true);
+
+            // Create a new sound effect instance
+            _soundEffectInstances[soundResId] = new SoundEffectInstance()
+            {
+                SoundResourceId = soundResId,
+                Loop = loop,
+                Volume = volume,
+                Soloud = _soloud,
+                SoundEffect = soundEffect,
+                VoiceHandle = handle,
+            };
+
+            // Set sound parameters
+            _soloud.setLooping(handle, loop);
+            _soloud.setVolume(handle, volume * (SoundEffectsVolume / SoundEngineInterface.MaxVolume) * Engine.Config.SfxVolume);
+
+            // Un-pause
+            _soloud.setPause(handle, false);
+        }
+    }
+
+    private bool IsSoundEffectPlaying(int soundResId)
+    {
+        return _soundEffectInstances.TryGetValue(soundResId, out SoundEffectInstance soundEffectInstance) &&
+               soundEffectInstance.IsValid;
+    }
+
+    private void StopSoundEffect(int soundResId)
+    {
+        if (_soundEffectInstances.TryGetValue(soundResId, out SoundEffectInstance soundEffectInstance))
+        {
+            _soloud.stop(soundEffectInstance.VoiceHandle);
+            _soundEffectInstances.Remove(soundResId);
+        }
     }
 
     #endregion
@@ -149,25 +220,52 @@ public class NGageSoundEventsManager : SoundEventsManager
 
     protected override void RefreshEventSetImpl()
     {
-        if (_activeMusic != null)
+        // Fade in music if there's no new music to be played
+        if (_currentMusicSoundResId == _nextMusicSoundResId && _currentMusicSoundResId >= 0)
         {
-            UpdateVolume(_activeMusic);
+            // Increase until we reach the music volume
+            _musicFadeVolume += 6;
+            if (MusicVolume < _musicFadeVolume)
+                _musicFadeVolume = MusicVolume;
 
-            if (_activeMusic.SoundInstance.State == SoundState.Stopped && !_activeMusic.Loop)
+            // If the music has stopped playing, it does not loop, and we previously played music, then we go back to playing that music
+            if (!_doesCurrentMusicLoop && _prevMusicSoundResId >= 0 && !IsMusicPlaying(_currentMusicSoundResId))
             {
-                _activeMusic.SoundInstance.Dispose();
-                _activeMusic = null;
+                _nextMusicSoundResId = _prevMusicSoundResId;
+                _nextMusicInstrumentsResId = _prevMusicInstrumentsResId;
+                _doesCurrentMusicLoop = true;
+                _musicFadeVolume = 0;
+            }
+        }
+        // Fade out
+        else
+        {
+            _musicFadeVolume -= 6;
+
+            // Finished fading out, play next music
+            if (_musicFadeVolume <= 0)
+            {
+                _musicFadeVolume = 0;
+                PlayMusic(_nextMusicSoundResId, _nextMusicInstrumentsResId);
             }
         }
 
-        foreach (ActiveSong sfx in _activeSoundEffects.Values.ToArray())
-        {
-            UpdateVolume(sfx);
+        // Update music volume
+        _soloud.setVolume(_musicVoiceHandle, _currentMusicVolume * (_musicFadeVolume / SoundEngineInterface.MaxVolume) * Engine.Config.MusicVolume);
 
-            if (sfx.SoundInstance.State == SoundState.Stopped && !sfx.Loop)
+        // Update sound effect volumes
+        foreach (SoundEffectInstance soundEffectInstance in _soundEffectInstances.Values.ToArray())
+        {
+            if (soundEffectInstance.IsValid)
             {
-                sfx.SoundInstance.Dispose();
-                _activeSoundEffects.Remove(sfx.SoundResourceId);
+                float volume = soundEffectInstance.Volume *
+                               (SoundEffectsVolume / SoundEngineInterface.MaxVolume) *
+                               Engine.Config.SfxVolume;
+                _soloud.setVolume(soundEffectInstance.VoiceHandle, volume);
+            }
+            else
+            {
+                _soundEffectInstances.Remove(soundEffectInstance.SoundResourceId);
             }
         }
     }
@@ -181,10 +279,21 @@ public class NGageSoundEventsManager : SoundEventsManager
 
         NGageSoundEvent evt = Rom.Loader.NGage_SoundEvents[soundEventId];
 
-        if (evt.PlaySong)
-            CreateSong(evt);
+        if (!evt.IsValid)
+            return;
+
+        if (evt.IsMusic)
+        {
+            if (evt.PlaySong)
+                SetNextMusic(evt.SoundResourceId, evt.InstrumentsResourceId, evt.Volume / 7f, evt.Loop);
+        }
         else
-            StopSong(evt);
+        {
+            if (evt.PlaySong)
+                PlaySoundEffect(evt.SoundResourceId, evt.Volume / 7f, evt.Loop);
+            else
+                StopSoundEffect(evt.SoundResourceId);
+        }
     }
 
     protected override bool IsSongPlayingImpl(short soundEventId)
@@ -194,10 +303,13 @@ public class NGageSoundEventsManager : SoundEventsManager
 
         NGageSoundEvent evt = Rom.Loader.NGage_SoundEvents[soundEventId];
 
+        if (!evt.IsValid)
+            return false;
+
         if (evt.IsMusic)
-            return _activeMusic != null && _activeMusic.SoundResourceId == evt.SoundResourceId;
+            return IsMusicPlaying(soundEventId);
         else
-            return _activeSoundEffects.ContainsKey(evt.SoundResourceId);
+            return IsSoundEffectPlaying(soundEventId);
     }
 
     protected override void SetSoundPitchImpl(short soundEventId, float pitch) { }
@@ -222,62 +334,54 @@ public class NGageSoundEventsManager : SoundEventsManager
 
     protected override void ForcePauseAllSongsImpl()
     {
-        _activeMusic?.SoundInstance.Pause();
+        if (_soloud.isValidVoiceHandle(_musicVoiceHandle))
+            _soloud.setPause(_musicVoiceHandle, true);
 
-        foreach (ActiveSong sfx in _activeSoundEffects.Values)
-            sfx.SoundInstance.Pause();
+        foreach (SoundEffectInstance soundEffectInstance in _soundEffectInstances.Values)
+            soundEffectInstance.InEnginePaused = true;
     }
 
     protected override void ForceResumeAllSongsImpl()
     {
-        _activeMusic?.SoundInstance.Resume();
+        if (_soloud.isValidVoiceHandle(_musicVoiceHandle))
+            _soloud.setPause(_musicVoiceHandle, false);
 
-        foreach (ActiveSong sfx in _activeSoundEffects.Values)
-            sfx.SoundInstance.Resume();
+        foreach (SoundEffectInstance soundEffectInstance in _soundEffectInstances.Values)
+            soundEffectInstance.InEnginePaused = false;
     }
 
     protected override void DrawDebugLayoutImpl()
     {
-        if (ImGui.BeginTable("_songs", 4))
+        ImGui.Text($"Music loop: {_doesCurrentMusicLoop}");
+        ImGui.Text($"Music volume: {_currentMusicVolume}");
+        ImGui.Text($"Music fade volume: {_musicFadeVolume}");
+        ImGui.Text($"Previous music: {(!_musicTable.TryGetValue(_prevMusicSoundResId, out Music prevMusic) ? String.Empty : prevMusic.FileName)}");
+        ImGui.Text($"Current music: {(!_musicTable.TryGetValue(_currentMusicSoundResId, out Music currentMusic) ? String.Empty : currentMusic.FileName)}");
+        ImGui.Text($"Next music: {(!_musicTable.TryGetValue(_nextMusicSoundResId, out Music nextMusic) ? String.Empty : nextMusic.FileName)}");
+
+        if (ImGui.BeginTable("_soundEffects", 4))
         {
             ImGui.TableSetupColumn("Resource", ImGuiTableColumnFlags.WidthFixed);
             ImGui.TableSetupColumn("Name");
-            ImGui.TableSetupColumn("State", ImGuiTableColumnFlags.WidthFixed);
-            ImGui.TableSetupColumn("Duration", ImGuiTableColumnFlags.WidthFixed);
+            ImGui.TableSetupColumn("Volume", ImGuiTableColumnFlags.WidthFixed);
+            ImGui.TableSetupColumn("Loop", ImGuiTableColumnFlags.WidthFixed);
             ImGui.TableHeadersRow();
 
-            if (_activeMusic != null)
+            foreach (SoundEffectInstance soundEffectInstance in _soundEffectInstances.Values)
             {
                 ImGui.TableNextRow();
 
                 ImGui.TableNextColumn();
-                ImGui.Text($"{_activeMusic.SoundResourceId}");
+                ImGui.Text($"{soundEffectInstance.SoundResourceId}");
 
                 ImGui.TableNextColumn();
-                ImGui.Text($"{_activeMusic.SoundEffect.Name}");
+                ImGui.Text($"{soundEffectInstance.SoundEffect.FileName}");
 
                 ImGui.TableNextColumn();
-                ImGui.Text($"{_activeMusic.SoundInstance.State}");
+                ImGui.Text($"{soundEffectInstance.Volume}");
 
                 ImGui.TableNextColumn();
-                ImGui.Text($"{_activeMusic.SoundEffect.Duration.TotalSeconds:F}");
-            }
-
-            foreach (ActiveSong playingSong in _activeSoundEffects.Values)
-            {
-                ImGui.TableNextRow();
-
-                ImGui.TableNextColumn();
-                ImGui.Text($"{playingSong.SoundResourceId}");
-
-                ImGui.TableNextColumn();
-                ImGui.Text($"{playingSong.SoundEffect.Name}");
-
-                ImGui.TableNextColumn();
-                ImGui.Text($"{playingSong.SoundInstance.State}");
-
-                ImGui.TableNextColumn();
-                ImGui.Text($"{playingSong.SoundEffect.Duration.TotalSeconds:F}");
+                ImGui.Text($"{soundEffectInstance.Loop}");
             }
 
             ImGui.EndTable();
@@ -290,28 +394,73 @@ public class NGageSoundEventsManager : SoundEventsManager
 
     public void PauseLoopingSoundEffects()
     {
-        // TODO: Implement
+        foreach (SoundEffectInstance soundEffectInstance in _soundEffectInstances.Values)
+        {
+            if (soundEffectInstance.Loop)
+                soundEffectInstance.InGamePaused = true;
+        }
     }
 
     public void ResumeLoopingSoundEffects()
     {
-        // TODO: Implement
+        foreach (SoundEffectInstance soundEffectInstance in _soundEffectInstances.Values)
+        {
+            if (soundEffectInstance.Loop)
+                soundEffectInstance.InGamePaused = false;
+        }
     }
 
     #endregion
 
     #region Data Types
 
-    private class ActiveSong
+    private class Music
     {
-        public int SoundResourceId { get; init; }
-        public float Volume { get; init; }
-        public bool IsMusic { get; init; }
-        public bool Loop { get; set; }
+        public Openmpt XmSound { get; init; }
+        public string FileName { get; init; }
+    }
 
-        // MonoGame
-        public SoundEffectInstance SoundInstance { get; init; }
+    private class SoundEffect
+    {
+        public Wav WavSound { get; init; }
+        public string FileName { get; init; }
+    }
+
+    private class SoundEffectInstance
+    {
+        private bool _inGamePaused;
+        private bool _inEnginePaused;
+
+        // N-Gage
+        public int SoundResourceId { get; init; }
+        public bool Loop { get; init; }
+        public float Volume { get; init; }
+
+        // Custom
+        public bool InGamePaused
+        {
+            get => _inGamePaused;
+            set
+            {
+                _inGamePaused = value;
+                Soloud.setPause(VoiceHandle, value || InEnginePaused);
+            }
+        }
+        public bool InEnginePaused
+        {
+            get => _inEnginePaused;
+            set
+            {
+                _inEnginePaused = value;
+                Soloud.setPause(VoiceHandle, value || InGamePaused);
+            }
+        }
+
+        // Soloud
+        public bool IsValid => Soloud.isValidVoiceHandle(VoiceHandle);
+        public Soloud Soloud { get; init; }
         public SoundEffect SoundEffect { get; init; }
+        public uint VoiceHandle { get; init; }
     }
 
     #endregion

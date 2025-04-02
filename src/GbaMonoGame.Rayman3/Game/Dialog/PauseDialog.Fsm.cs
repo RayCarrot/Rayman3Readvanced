@@ -156,7 +156,7 @@ public partial class PauseDialog
 
                         // Sfx volume
                         case 2 when Rom.Platform == Platform.NGage:
-                            if (((NGageSoundEventsManager)SoundEventsManager.Current).SfxVolume < SoundEngineInterface.MaxVolume)
+                            if (((NGageSoundEventsManager)SoundEventsManager.Current).SoundEffectsVolume < SoundEngineInterface.MaxVolume)
                                 ModifySfxVolume(1);
                             else
                                 ModifySfxVolume(-3);

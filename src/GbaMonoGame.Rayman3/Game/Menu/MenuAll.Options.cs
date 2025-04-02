@@ -192,7 +192,7 @@ public partial class MenuAll
         }
         else if (Rom.Platform == Platform.NGage)
         {
-            switch (((NGageSoundEventsManager)SoundEventsManager.Current).SfxVolume)
+            switch (((NGageSoundEventsManager)SoundEventsManager.Current).SoundEffectsVolume)
             {
                 case 0:
                     Anims.SfxVolume.CurrentAnimation = 28;
@@ -277,7 +277,7 @@ public partial class MenuAll
     // N-Gage
     private void ModifySfxVolume(int volDelta)
     {
-        float currentVolume = ((NGageSoundEventsManager)SoundEventsManager.Current).SfxVolume;
+        float currentVolume = ((NGageSoundEventsManager)SoundEventsManager.Current).SoundEffectsVolume;
         float newVolume = 0;
 
         if (0 < volDelta)
@@ -298,7 +298,7 @@ public partial class MenuAll
                 newVolume = 0;
         }
 
-        ((NGageSoundEventsManager)SoundEventsManager.Current).SfxVolume = newVolume;
+        ((NGageSoundEventsManager)SoundEventsManager.Current).SoundEffectsVolume = newVolume;
     }
 
     #endregion
@@ -489,7 +489,7 @@ public partial class MenuAll
                     }
                     else if (Rom.Platform == Platform.NGage)
                     {
-                        if (((NGageSoundEventsManager)SoundEventsManager.Current).SfxVolume < SoundEngineInterface.MaxVolume)
+                        if (((NGageSoundEventsManager)SoundEventsManager.Current).SoundEffectsVolume < SoundEngineInterface.MaxVolume)
                             ModifySfxVolume(1);
                         else
                             ModifySfxVolume(-3);

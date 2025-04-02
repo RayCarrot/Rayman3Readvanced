@@ -98,7 +98,7 @@ public partial class PauseDialog : Dialog
 
     private void SetSfxVolumeAnimation()
     {
-        switch (((NGageSoundEventsManager)SoundEventsManager.Current).SfxVolume)
+        switch (((NGageSoundEventsManager)SoundEventsManager.Current).SoundEffectsVolume)
         {
             case 0:
                 SfxVolume.CurrentAnimation = 30;
@@ -146,7 +146,7 @@ public partial class PauseDialog : Dialog
 
     private void ModifySfxVolume(int volDelta)
     {
-        float currentVolume = ((NGageSoundEventsManager)SoundEventsManager.Current).SfxVolume;
+        float currentVolume = ((NGageSoundEventsManager)SoundEventsManager.Current).SoundEffectsVolume;
         float newVolume = 0;
 
         if (0 < volDelta)
@@ -167,7 +167,7 @@ public partial class PauseDialog : Dialog
                 newVolume = 0;
         }
 
-        ((NGageSoundEventsManager)SoundEventsManager.Current).SfxVolume = newVolume;
+        ((NGageSoundEventsManager)SoundEventsManager.Current).SoundEffectsVolume = newVolume;
     }
 
     protected override bool ProcessMessageImpl(object sender, Message message, object param) => false;

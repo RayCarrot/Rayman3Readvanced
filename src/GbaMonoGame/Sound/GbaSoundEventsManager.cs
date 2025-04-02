@@ -34,7 +34,7 @@ public class GbaSoundEventsManager : SoundEventsManager
 
     #region Private Fields
 
-    private readonly Soloud _soloud; // TODO: Deinit
+    private readonly Soloud _soloud; // TODO: Deinit! With Rom.UnInit
     private readonly Dictionary<int, Song> _songTable;
     private readonly SoundBank _soundBank;
     private readonly float[] _volumePerType;
@@ -604,7 +604,7 @@ public class GbaSoundEventsManager : SoundEventsManager
         public bool Loop { get; set; }
         public bool IsMusic { get; init; }
 
-        // Soloud
+        // Custom
         public bool InGamePaused
         {
             get => _inGamePaused;
@@ -624,6 +624,7 @@ public class GbaSoundEventsManager : SoundEventsManager
             }
         }
 
+        // Soloud
         public Soloud Soloud { get; init; }
         public Song Song { get; init; }
         public uint VoiceHandle { get; init; }
