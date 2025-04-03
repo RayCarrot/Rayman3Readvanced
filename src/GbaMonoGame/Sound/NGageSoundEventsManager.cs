@@ -71,6 +71,7 @@ public class NGageSoundEventsManager : SoundEventsManager
     private void LoadSongs(Dictionary<int, string> songFileNames, NGageSoundEvent[] soundEvents)
     {
         HashSet<int> loadedSounds = new();
+        Dictionary<int, byte[]> loadedInstruments = new();
         foreach (NGageSoundEvent evt in soundEvents)
         {
             if (!evt.IsValid)
@@ -87,7 +88,33 @@ public class NGageSoundEventsManager : SoundEventsManager
                         FileName = songFileNames[evt.SoundResourceId]
                     };
 
-                    // TODO: Load XM audio
+                    // Load the instruments data
+                    if (!loadedInstruments.TryGetValue(evt.InstrumentsResourceId, out byte[] instruments))
+                    {
+                        RawResource instrumentsResource = Rom.LoadResource<RawResource>(evt.InstrumentsResourceId);
+                        instruments = instrumentsResource.RawData;
+                        loadedInstruments[evt.InstrumentsResourceId] = instruments;
+                    }
+
+                    // Load the XM data
+                    RawResource xmResource = Rom.LoadResource<RawResource>(evt.SoundResourceId);
+                    byte[] xm = xmResource.RawData;
+
+                    IntPtr xmPtr = IntPtr.Zero;
+                    try
+                    {
+                        int combinedXmLength = xm.Length + instruments.Length - 2;
+                        xmPtr = Marshal.AllocHGlobal(combinedXmLength);
+                        Marshal.Copy(xm, 0, xmPtr, xm.Length);
+                        Marshal.Copy(instruments, 2, xmPtr + xm.Length, instruments.Length - 2);
+
+                        music.XmSound.loadMem(xmPtr, (uint)combinedXmLength, true, false);
+                    }
+                    finally
+                    {
+                        if (xmPtr != IntPtr.Zero)
+                            Marshal.FreeHGlobal(xmPtr);
+                    }
 
                     _musicTable[evt.SoundResourceId] = music;
                 }
@@ -153,7 +180,7 @@ public class NGageSoundEventsManager : SoundEventsManager
         _musicVoiceHandle = _soloud.play(music.XmSound, aPaused: true);
 
         // Set sound parameters
-        _soloud.setLooping(_musicVoiceHandle, _doesCurrentMusicLoop);
+        //_soloud.setLooping(_musicVoiceHandle, _doesCurrentMusicLoop); // Doesn't work, so ignore
         _soloud.setVolume(_musicVoiceHandle, _currentMusicVolume * (_musicFadeVolume / SoundEngineInterface.MaxVolume) * Engine.Config.MusicVolume);
 
         // Un-pause
@@ -167,7 +194,7 @@ public class NGageSoundEventsManager : SoundEventsManager
 
     private bool IsMusicPlaying(int soundResId)
     {
-        return soundResId == _nextMusicSoundResId;
+        return soundResId == _nextMusicSoundResId && _soloud.isValidVoiceHandle(_musicVoiceHandle);
     }
 
     private void PlaySoundEffect(int soundResId, float volume, bool loop)
@@ -235,6 +262,11 @@ public class NGageSoundEventsManager : SoundEventsManager
                 _nextMusicInstrumentsResId = _prevMusicInstrumentsResId;
                 _doesCurrentMusicLoop = true;
                 _musicFadeVolume = 0;
+            }
+            // Custom code - Openmpt doesn't support looping for XM audio it seems, so we have to manually loop
+            else if (_doesCurrentMusicLoop && !IsMusicPlaying(_currentMusicSoundResId))
+            {
+                PlayMusic(_nextMusicSoundResId, _nextMusicInstrumentsResId);
             }
         }
         // Fade out

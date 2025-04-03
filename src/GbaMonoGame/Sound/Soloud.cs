@@ -1777,9 +1777,9 @@ public class Openmpt : SoloudObject
 
 	[DllImport("soloud", CallingConvention = CallingConvention.Cdecl)]
 	internal static extern int Openmpt_loadMemEx(IntPtr aObjHandle, IntPtr aMem, uint aLength, int aCopy, int aTakeOwnership);
-	public int loadMem(IntPtr aMem, uint aLength, int aCopy = 0, int aTakeOwnership = 1)
+	public int loadMem(IntPtr aMem, uint aLength, bool aCopy = false, bool aTakeOwnership = true)
 	{
-		return Openmpt_loadMemEx(objhandle, aMem, aLength, aCopy, aTakeOwnership);
+		return Openmpt_loadMemEx(objhandle, aMem, aLength, aCopy ? 1 : 0, aTakeOwnership ? 1 : 0);
 	}
 
 	[DllImport("soloud", CallingConvention = CallingConvention.Cdecl)]
