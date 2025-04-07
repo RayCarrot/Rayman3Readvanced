@@ -44,10 +44,10 @@ public enum PhysicalTypeValue : byte
     Water = 48,
     WallJump = 49,
     SlideJump = 50,
-    Spider_Stop_Right = 51,
-    Spider_Stop_Left = 52,
-    Spider_Move_Up = 53,
-    Spider_Move_Down = 54,
+    Spider_Right = 51,
+    Spider_Left = 52,
+    Spider_Up = 53,
+    Spider_Down = 54,
 
     Lava = 74,
 

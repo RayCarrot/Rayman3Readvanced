@@ -15,14 +15,12 @@ public sealed partial class Spider : MovableActor
         //       and it needs to be set to a non-zero value for the spider to start moving after it spawns.
         ShouldJump = true;
 
-        if ((Action)actorResource.FirstActionId == Action.Action12)
-        {
-            // TODO: Set already active state
-        }
+        // Guard
+        if ((Action)actorResource.FirstActionId == Action.Stop_Down)
+            State.SetTo(Fsm_GuardSpawn);
+        // Chase
         else
-        {
-            State.SetTo(Fsm_Spawn);
-        }
+            State.SetTo(Fsm_ChaseSpawn);
     }
 
     public Vector2 InititialPosition { get; set; }
@@ -70,25 +68,25 @@ public sealed partial class Spider : MovableActor
         PhysicalType type = Scene.GetPhysicalType(Position);
         
         // Fully stop
-        if ((!IsSpiderFacingLeft && type == PhysicalTypeValue.Spider_Stop_Right) ||
-            (IsSpiderFacingLeft && type == PhysicalTypeValue.Spider_Stop_Left))
+        if ((!IsSpiderFacingLeft && type == PhysicalTypeValue.Spider_Right) ||
+            (IsSpiderFacingLeft && type == PhysicalTypeValue.Spider_Left))
         {
             ClimbSpeedX = 0;
             ClimbSpeedY = 0;
         }
         // Move up
-        else if (type == PhysicalTypeValue.Spider_Move_Up)
+        else if (type == PhysicalTypeValue.Spider_Up)
         {
             ClimbSpeedY = -7;
         }
         // Move down
-        else if (type == PhysicalTypeValue.Spider_Move_Down)
+        else if (type == PhysicalTypeValue.Spider_Down)
         {
             ClimbSpeedY = 7;
         }
         // Full stop (vertical only)
-        else if ((!IsSpiderFacingLeft && type == PhysicalTypeValue.Spider_Stop_Left) || 
-                 (IsSpiderFacingLeft && type == PhysicalTypeValue.Spider_Stop_Right))
+        else if ((!IsSpiderFacingLeft && type == PhysicalTypeValue.Spider_Left) || 
+                 (IsSpiderFacingLeft && type == PhysicalTypeValue.Spider_Right))
         {
             ClimbSpeedY = 0;
         }
@@ -108,7 +106,7 @@ public sealed partial class Spider : MovableActor
         switch (message)
         {
             case Message.Spider_Spawn:
-                if (State == Fsm_Spawn)
+                if (State == Fsm_ChaseSpawn)
                 {
                     Rayman rayman = (Rayman)Scene.MainActor;
                     if (rayman.State == rayman.Fsm_Climb)

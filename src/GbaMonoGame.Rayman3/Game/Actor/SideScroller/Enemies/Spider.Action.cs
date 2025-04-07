@@ -8,40 +8,39 @@ public partial class Spider
         set => base.ActionId = (int)value;
     }
 
-    // TODO: Name all actions
     public enum Action
     {
-        Action0 = 0,
-        Action1 = 1,
-        Action2 = 2,
-        Action3 = 3,
-        Action4 = 4,
-        Action5 = 5,
-        Action6 = 6,
-        Action7 = 7,
+        Chase_Right = 0,
+        Chase_Left = 1,
+        Action2 = 2, // Unused
+        Action3 = 3, // Unused
+        Action4 = 4, // Unused
+        Action5 = 5, // Unused
+        Action6 = 6, // Unused
+        Action7 = 7, // Unused
         Attack_Down = 8,
         Attack_Up = 9,
         Attack_Right = 10,
         Attack_Left = 11,
-        Action12 = 12,
+        Stop_Down = 12,
         Idle_Right = 13,
         Idle_Left = 14,
-        Action15 = 15,
-        Action16 = 16,
-        Action17 = 17,
-        Action18 = 18,
-        Action19 = 19,
-        Action20 = 20,
-        Action21 = 21,
-        Action22 = 22,
-        Action23 = 23,
+        Action15 = 15, // Unused
+        Climb_Right = 16,
+        Climb_Left = 17,
+        Climb_Down = 18,
+        Climb_Up = 19,
+        Stop_Left = 20,
+        Stop_Right = 21,
+        Stop_Up = 22,
+        Action23 = 23, // Unused
         RotateTo_Attack_Up = 24,
-        Action25 = 25,
-        Action26 = 26,
+        Action25 = 25, // Unused
+        Action26 = 26, // Unused
         RotateFrom_Attack_Down = 27,
         RotateTo_Attack_Down = 28,
-        Action29 = 29,
-        Action30 = 30,
+        Action29 = 29, // Unused
+        Action30 = 30, // Unused
         RotateFrom_Attack_Up = 31,
     }
 }

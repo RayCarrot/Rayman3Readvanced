@@ -191,7 +191,7 @@
 | #38                    | 🟥     |                                              |
 | Jano                   | 🟩     |                                              |
 | JanoSkullPlatform      | 🟩     |                                              |
-| Spider                 | 🟥     |                                              |
+| Spider                 | 🟩     |                                              |
 | SamMode7               | 🟩     |                                              |
 | Vines                  | 🟩     |                                              |
 | WoodenShieldedHoodboom | 🟩     |                                              |
