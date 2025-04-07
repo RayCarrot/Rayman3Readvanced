@@ -929,10 +929,10 @@ public sealed partial class Rayman : MovableActor
         PhysicalType bottomType = Scene.GetPhysicalType(pos);
 
         if (bottomType.Value is 
-            PhysicalTypeValue.ClimbSpider1 or 
-            PhysicalTypeValue.ClimbSpider2 or 
-            PhysicalTypeValue.ClimbSpider3 or 
-            PhysicalTypeValue.ClimbSpider4)
+            PhysicalTypeValue.Spider_Stop_Right or 
+            PhysicalTypeValue.Spider_Stop_Left or 
+            PhysicalTypeValue.Spider_Move_Up or 
+            PhysicalTypeValue.Spider_Move_Down)
         {
             bottomType = PhysicalTypeValue.Climb;
         }
@@ -941,10 +941,10 @@ public sealed partial class Rayman : MovableActor
         PhysicalType topType = Scene.GetPhysicalType(pos);
 
         if (topType.Value is
-            PhysicalTypeValue.ClimbSpider1 or
-            PhysicalTypeValue.ClimbSpider2 or
-            PhysicalTypeValue.ClimbSpider3 or
-            PhysicalTypeValue.ClimbSpider4)
+            PhysicalTypeValue.Spider_Stop_Right or
+            PhysicalTypeValue.Spider_Stop_Left or
+            PhysicalTypeValue.Spider_Move_Up or
+            PhysicalTypeValue.Spider_Move_Down)
         {
             topType = PhysicalTypeValue.Climb;
         }
@@ -973,10 +973,10 @@ public sealed partial class Rayman : MovableActor
         PhysicalType leftType = Scene.GetPhysicalType(pos);
 
         if (leftType.Value is
-            PhysicalTypeValue.ClimbSpider1 or
-            PhysicalTypeValue.ClimbSpider2 or
-            PhysicalTypeValue.ClimbSpider3 or
-            PhysicalTypeValue.ClimbSpider4)
+            PhysicalTypeValue.Spider_Stop_Right or
+            PhysicalTypeValue.Spider_Stop_Left or
+            PhysicalTypeValue.Spider_Move_Up or
+            PhysicalTypeValue.Spider_Move_Down)
         {
             leftType = PhysicalTypeValue.Climb;
         }
@@ -985,10 +985,10 @@ public sealed partial class Rayman : MovableActor
         PhysicalType rightType = Scene.GetPhysicalType(pos);
 
         if (rightType.Value is
-            PhysicalTypeValue.ClimbSpider1 or
-            PhysicalTypeValue.ClimbSpider2 or
-            PhysicalTypeValue.ClimbSpider3 or
-            PhysicalTypeValue.ClimbSpider4)
+            PhysicalTypeValue.Spider_Stop_Right or
+            PhysicalTypeValue.Spider_Stop_Left or
+            PhysicalTypeValue.Spider_Move_Up or
+            PhysicalTypeValue.Spider_Move_Down)
         {
             rightType = PhysicalTypeValue.Climb;
         }

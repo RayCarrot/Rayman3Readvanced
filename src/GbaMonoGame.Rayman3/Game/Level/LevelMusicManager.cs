@@ -232,6 +232,26 @@ public static class LevelMusicManager
             ShouldPlaySpecialMusic = true;
     }
 
+    public static void PlaySpecialMusicIfDetectedWith(GameObject obj, Box box)
+    {
+        Box objBox = box.Offset(obj.Position);
+
+        // Extend the box if playing
+        if (IsPlayingSpecialMusic)
+        {
+            objBox = new Box(
+                minX: objBox.MinX - 64,
+                minY: objBox.MinY - 64,
+                maxX: objBox.MaxX + 64,
+                maxY: objBox.MaxY + 64);
+        }
+
+        Box mainActorDetectionBox = obj.Scene.MainActor.GetDetectionBox();
+
+        if (mainActorDetectionBox.Intersects(objBox))
+            ShouldPlaySpecialMusic = true;
+    }
+
     public static void OverrideLevelMusic(Enum soundEventId) => OverrideLevelMusic((short)(object)soundEventId);
     public static void OverrideLevelMusic(short soundEventId)
     {
