@@ -5,7 +5,6 @@ using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
 
-// TODO: Fix softlock when going back to start
 public partial class Spider
 {
     private bool FsmStep_CheckTurnAround()
@@ -344,7 +343,7 @@ public partial class Spider
             case FsmAction.Init:
                 AnimationTimer = 0;
 
-                PhysicalType type = Scene.GetPhysicalType(Position);
+                PhysicalType type = Scene.GetPhysicalType(Position + Tile.Right);
                 if (type.Value is 
                     PhysicalTypeValue.Enemy_Right or
                     PhysicalTypeValue.Spider_Stop_Left or
