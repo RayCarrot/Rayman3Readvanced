@@ -201,7 +201,7 @@ public sealed partial class Jano : MovableActor
 
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {
-        // This is the only actor which actually returns true in here
+        // This is one of the few actors which actually returns true in here
 
         if (base.ProcessMessageImpl(sender, message, param))
             return true;

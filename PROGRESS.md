@@ -236,7 +236,7 @@
 | Scaleman               | 🟥     |                                              |
 | Machine                | 🟩     |                                              |
 | Balloon                | 🟩     |                                              |
-| Scaleman2              | 🟥     |                                              |
+| ScalemanShadow         | 🟩     |                                              |
 | ItemsMulti             | 🟩     |                                              |
 | #88                    | 🟥     |                                              |
 | Skull                  | 🟩     |                                              |

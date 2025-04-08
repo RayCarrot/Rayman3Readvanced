@@ -43,7 +43,7 @@ public enum ActorType
 
     Jano = 39,
     JanoSkullPlatform = 40,
-    Spider = 41, // TODO: Implement
+    Spider = 41,
     SamMode7 = 42,
     Vines = 43,
     WoodenShieldedHoodboom = 44,
@@ -85,10 +85,10 @@ public enum ActorType
 
     BreakableWall = 81, // TODO: Implement
     KegDebris = 82,
-    Scaleman = 83, // TODO: Implement
+    Scaleman = 83,
     Machine = 84,
     Balloon = 85,
-    Scaleman2 = 86, // TODO: Implement
+    ScalemanShadow = 86,
     ItemsMulti = 87,
 
     Skull = 89,
