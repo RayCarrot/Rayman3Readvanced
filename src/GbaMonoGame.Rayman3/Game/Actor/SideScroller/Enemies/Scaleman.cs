@@ -1,4 +1,5 @@
-﻿using GbaMonoGame.AnimEngine;
+﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
@@ -11,24 +12,41 @@ public sealed partial class Scaleman : MovableActor
         IsInvulnerable = true;
 
         ScalemanShadow = null;
-        Field_64 = null;
+        RedLum = null;
         Timer = 0;
         Field_6A = 0;
-        Field_6C = 101;
-        Field_6E = 1;
+        HitTimer = 101;
+        CenterCamera = true;
 
         State.SetTo(Fsm_PreInit);
     }
 
-    // TODO: Name properties
     public ScalemanShadow ScalemanShadow { get; set; }
-    public object Field_64 { get; set; }
+    public Lums RedLum { get; set; }
     public ushort Timer { get; set; }
-    public ushort Field_6A { get; set; }
-    public ushort Field_6C { get; set; }
-    public byte Field_6E { get; set; }
+    public ushort Field_6A { get; set; } // TODO: Name
+    public ushort HitTimer { get; set; }
+    public bool CenterCamera { get; set; } // Always true
 
     private bool IsSecondPhase() => HitPoints <= 3;
+
+    private void CreateRedLum()
+    {
+        RedLum = Scene.CreateProjectile<Lums>(ActorType.Lums);
+        if (RedLum != null)
+        {
+            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Sparkles_Mix01);
+            RedLum.ProcessMessage(this, Message.Lum_ToggleVisibility);
+            RedLum.AnimatedObject.CurrentAnimation = 3;
+            RedLum.ActionId = Lums.Action.RedLum;
+            RedLum.Position = Position - new Vector2(0, -80);
+        }
+    }
+
+    private void SpawnRedLum()
+    {
+        RedLum?.ProcessMessage(this, Message.Lum_ToggleVisibility);
+    }
 
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {
@@ -65,9 +83,19 @@ public sealed partial class Scaleman : MovableActor
                     }
                 }
                 // Take damage when hit while small
-                else
+                else if (ActionId is 
+                         Action.Small_Idle_Right or Action.Small_Idle_Left or 
+                         Action.Small_Run_Right or Action.Small_Run_Left or 
+                         Action.Small_RunFast_Right or Action.Small_RunFast_Left or
+                         Action.Small_ChangeDirection_Right or Action.Small_ChangeDirection_Left or
+                         Action.Small_Hop_Right or Action.Small_Hop_Left)
                 {
-                    // TODO: Implement
+                    if (raymanBody.BodyPartType == RaymanBody.RaymanBodyPartType.Torso)
+                    {
+                        ((FrameSideScroller)Frame.Current).UserInfo.BossHit();
+                        State.MoveTo(Fsm_SmallHit);
+                        ChangeAction();
+                    }
                 }
                 return true;
 
@@ -78,13 +106,30 @@ public sealed partial class Scaleman : MovableActor
 
     public override void Step()
     {
-        // TODO: Implement
+        ((CameraSideScroller)Scene.Camera).HorizontalOffset = CenterCamera ? CameraOffset.Center : CameraOffset.Default;
+
+        if (HitTimer <= 100)
+            HitTimer++;
+
+        SpawnRedLum();
+        
         base.Step();
     }
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
-        // TODO: Implement
-        base.Draw(animationPlayer, forceDraw);
+        bool doNotDraw = HitTimer <= 100 && HitPoints != 0 && (GameTime.ElapsedFrames & 1) == 0;
+
+        if ((Scene.Camera.IsActorFramed(this) || forceDraw) && !doNotDraw)
+        {
+            AnimatedObject.IsFramed = true;
+            animationPlayer.Play(AnimatedObject);
+        }
+        else
+        {
+            AnimatedObject.IsFramed = false;
+            AnimatedObject.PlayChannelSound(animationPlayer);
+            AnimatedObject.ComputeNextFrame();
+        }
     }
 }

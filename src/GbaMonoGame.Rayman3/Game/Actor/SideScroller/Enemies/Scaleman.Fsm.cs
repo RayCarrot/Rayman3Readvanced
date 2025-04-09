@@ -93,7 +93,8 @@ public partial class Scaleman
                         }
                         else if (HitPoints is 5 or 2)
                         {
-                            // TODO: Implement
+                            State.MoveTo(Fsm_BallBounce);
+                            return false;
                         }
                         else if (HitPoints is 4 or 1)
                         {
@@ -188,6 +189,62 @@ public partial class Scaleman
         return true;
     }
 
+    public bool Fsm_BallBounce(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                ActionId = IsFacingRight ? Action.Ball_Bounce_Right : Action.Ball_Bounce_Left;
+                Timer = 0;
+                break;
+
+            case FsmAction.Step:
+                if (Scene.IsHitMainActor(this))
+                    Scene.MainActor.ReceiveDamage(AttackPoints);
+
+                if (ActionId is Action.Ball_Bounce_Right or Action.Ball_Bounce_Left)
+                {
+                    PhysicalType type = Scene.GetPhysicalType(Position + (IsFacingRight ? Tile.Right : Tile.Left) * 3 + Tile.Up);
+                    if (type == PhysicalTypeValue.Solid)
+                    {
+                        int frame = AnimatedObject.CurrentFrame;
+
+                        // Change direction
+                        ActionId = IsFacingRight ? Action.Ball_Bounce_Left : Action.Ball_Bounce_Right;
+                        ChangeAction();
+
+                        AnimatedObject.CurrentFrame = frame;
+                    }
+                }
+
+                if (IsActionFinished)
+                {
+                    if (ActionId is Action.Ball_Bounce_Right or Action.Ball_Bounce_Left)
+                    {
+                        if (Timer >= 540)
+                            ActionId = IsFacingRight ? Action.Emerge_Right : Action.Emerge_Left;
+
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalBong_PinBall_Mix02);
+                    }
+                    else if (ActionId is Action.Emerge_Right or Action.Emerge_Left)
+                    {
+                        Timer = 0;
+                        State.MoveTo(Fsm_Default);
+                        return false;
+                    }
+                }
+
+                Timer++;
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
+
+        return true;
+    }
+
     public bool Fsm_Shrink(FsmAction action)
     {
         switch (action)
@@ -266,11 +323,151 @@ public partial class Scaleman
                 break;
 
             case FsmAction.Step:
-                // TODO: Implement
+                if (ActionId is
+                    Action.Small_Run_Right or Action.Small_Run_Left or
+                    Action.Small_RunFast_Right or Action.Small_RunFast_Left)
+                {
+                    PhysicalType type = Scene.GetPhysicalType(Position + (IsFacingRight ? Tile.Right : Tile.Left) * 3 + Tile.Up);
+
+                    if (type == PhysicalTypeValue.Solid)
+                    {
+                        ActionId = IsFacingRight ? Action.Small_ChangeDirection_Right : Action.Small_ChangeDirection_Left;
+                        ChangeAction();
+                    }
+                }
+                else if (ActionId is Action.Small_ChangeDirection_Right or Action.Small_ChangeDirection_Left)
+                {
+                    if (IsActionFinished)
+                    {
+                        if (IsSecondPhase())
+                            ActionId = IsFacingRight ? Action.Small_RunFast_Left : Action.Small_RunFast_Right;
+                        else
+                            ActionId = IsFacingRight ? Action.Small_Run_Left : Action.Small_Run_Right;
+                        ChangeAction();
+                    }
+                }
+
+                if (Scene.IsHitMainActor(this))
+                    Scene.MainActor.ReceiveDamage(AttackPoints);
+
+                if (Timer >= 340)
+                {
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__ScalFlee_Mix02);
+
+                    if (IsActionFinished)
+                    {
+                        if (ActionId is
+                            Action.Small_Run_Right or Action.Small_Run_Left or
+                            Action.Small_RunFast_Right or Action.Small_RunFast_Left)
+                        {
+                            ActionId = IsFacingRight ? Action.Small_Hop_Right : Action.Small_Hop_Left;
+                        }
+                        else if (ActionId is Action.Small_Hop_Right or Action.Small_Hop_Left)
+                        {
+                            ActionId = IsFacingRight ? Action.Grow_Right : Action.Grow_Left;
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScaMorf2_Mix02);
+                        }
+                        else if (ActionId is Action.Grow_Right or Action.Grow_Left)
+                        {
+                            ActionId = IsFacingRight ? Action.Hop_Right : Action.Hop_Left;
+                        }
+                        else if (ActionId is Action.Hop_Right or Action.Hop_Left)
+                        {
+                            Timer = 91;
+                            State.MoveTo(Fsm_Default);
+                            return false;
+                        }
+                    }
+                }
+
+                Timer++;
                 break;
 
             case FsmAction.UnInit:
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__ScalFlee_Mix02);
+                break;
+        }
+
+        return true;
+    }
+
+    public bool Fsm_SmallHit(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                ActionId = IsFacingRight ? Action.Small_Hit_Right : Action.Small_Hit_Left;
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScaHurt2_Mix02);
+                HitPoints--;
+                HitTimer = 0;
+                break;
+
+            case FsmAction.Step:
+                if (IsActionFinished)
+                {
+                    if (ActionId is Action.Small_Hit_Right or Action.Small_Hit_Left)
+                    {
+                        ActionId = IsFacingRight ? Action.Grow_Right : Action.Grow_Left;
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScaMorf2_Mix02);
+                    }
+                    else if (ActionId is Action.Grow_Right or Action.Grow_Left)
+                    {
+                        if (HitPoints == 3)
+                        {
+                            ActionId = IsFacingRight ? Action.CreateRedLum_Right : Action.CreateRedLum_Left;
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalGrrr_Mix02);
+                        }
+                        else if (HitPoints == 0)
+                        {
+                            State.MoveTo(Fsm_Dying);
+                            return false;
+                        }
+                        else
+                        {
+                            ActionId = IsFacingRight ? Action.Hop_Right : Action.Hop_Left;
+                        }
+                    }
+                    else if (ActionId is Action.CreateRedLum_Right or Action.CreateRedLum_Left)
+                    {
+                        CreateRedLum();
+                        ActionId = IsFacingRight ? Action.Hop_Right : Action.Hop_Left;
+                    }
+                    else
+                    {
+                        Timer = 91;
+                        State.MoveTo(Fsm_Default);
+                        return false;
+                    }
+                }
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
+
+        return true;
+    }
+
+    public bool Fsm_Dying(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalDead_Mix02);
+                ActionId = IsFacingRight ? Action.Dying_Right : Action.Dying_Left;
+                break;
+
+            case FsmAction.Step:
+                if (IsActionFinished)
+                {
+                    ProcessMessage(this, Message.Destroy);
+                    Scene.MainActor.ProcessMessage(this, Message.Main_LevelEnd);
+                }
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
                 break;
         }
 
