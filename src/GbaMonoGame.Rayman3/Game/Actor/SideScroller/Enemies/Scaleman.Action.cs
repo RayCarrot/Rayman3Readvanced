@@ -8,7 +8,6 @@ public partial class Scaleman
         set => base.ActionId = (int)value;
     }
 
-    // TODO: Name
     public enum Action
     {
         Idle_Right = 0,
@@ -29,12 +28,12 @@ public partial class Scaleman
         Ball_Roll_Left = 15,
         Ball_RollFast_Right = 16,
         Ball_RollFast_Left = 17,
-        Action18 = 18,
-        Action19 = 19,
-        Action20 = 20,
-        Action21 = 21,
-        Action22 = 22,
-        Action23 = 23,
+        Ball_FlyUp_Right = 18,
+        Ball_FlyUp_Left = 19,
+        Ball_FlyDown_Right = 20,
+        Ball_FlyDown_Left = 21,
+        Ball_Land_Right = 22,
+        Ball_Land_Left = 23,
         Emerge_Right = 24,
         Emerge_Left = 25,
         Small_Idle_Right = 26,

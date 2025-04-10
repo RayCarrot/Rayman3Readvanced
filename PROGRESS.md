@@ -233,7 +233,7 @@
 | #80                    | 🟥     |                                              |
 | BreakableWall          | 🟥     |                                              |
 | KegDebris              | 🟩     |                                              |
-| Scaleman               | 🟥     |                                              |
+| Scaleman               | 🟩     |                                              |
 | Machine                | 🟩     |                                              |
 | Balloon                | 🟩     |                                              |
 | ScalemanShadow         | 🟩     |                                              |

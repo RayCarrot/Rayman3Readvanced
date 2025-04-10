@@ -4,6 +4,7 @@ using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
 
+// TODO: There's a visual bug with the shadow when the Scaleman fall down. The last frame has a 1-pixel gap between the sprites due to the scaling.
 public sealed partial class Scaleman : MovableActor
 {
     public Scaleman(int instanceId, Scene2D scene, ActorResource actorResource) 
@@ -14,7 +15,7 @@ public sealed partial class Scaleman : MovableActor
         ScalemanShadow = null;
         RedLum = null;
         Timer = 0;
-        Field_6A = 0;
+        AirAttackTimer = 0;
         HitTimer = 101;
         CenterCamera = true;
 
@@ -24,7 +25,7 @@ public sealed partial class Scaleman : MovableActor
     public ScalemanShadow ScalemanShadow { get; set; }
     public Lums RedLum { get; set; }
     public ushort Timer { get; set; }
-    public ushort Field_6A { get; set; } // TODO: Name
+    public ushort AirAttackTimer { get; set; }
     public ushort HitTimer { get; set; }
     public bool CenterCamera { get; set; } // Always true
 
@@ -39,7 +40,7 @@ public sealed partial class Scaleman : MovableActor
             RedLum.ProcessMessage(this, Message.Lum_ToggleVisibility);
             RedLum.AnimatedObject.CurrentAnimation = 3;
             RedLum.ActionId = Lums.Action.RedLum;
-            RedLum.Position = Position - new Vector2(0, -80);
+            RedLum.Position = Position - new Vector2(0, 80);
         }
     }
 

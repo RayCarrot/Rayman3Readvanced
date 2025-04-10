@@ -1,4 +1,6 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+﻿using System;
+using BinarySerializer.Ubisoft.GbaEngine;
+using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
@@ -98,7 +100,8 @@ public partial class Scaleman
                         }
                         else if (HitPoints is 4 or 1)
                         {
-                            // TODO: Implement
+                            State.MoveTo(Fsm_BallAirAttackInit);
+                            return false;
                         }
                     }
                 }
@@ -235,6 +238,199 @@ public partial class Scaleman
                 }
 
                 Timer++;
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
+
+        return true;
+    }
+
+    public bool Fsm_BallAirAttackInit(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                ActionId = IsFacingRight ? Action.Ball_FlyUp_Right : Action.Ball_FlyUp_Left;
+                Timer = 0;
+
+                ScalemanShadow ??= Scene.CreateProjectile<ScalemanShadow>(ActorType.ScalemanShadow);
+                if (ScalemanShadow == null)
+                    throw new Exception("The shadow of the Scaleman cannot be created");
+                break;
+
+            case FsmAction.Step:
+                if (Scene.IsHitMainActor(this))
+                    Scene.MainActor.ReceiveDamage(AttackPoints);
+
+                ScalemanShadow.AnimatedObject.CurrentAnimation = 13;
+                ScalemanShadow.Position = Position;
+                MechModel.Speed = MechModel.Speed with { X = 0 };
+
+                State.MoveTo(Fsm_BallAirAttackFlyUp);
+                return false;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
+
+        return true;
+    }
+
+    public bool Fsm_BallAirAttackFlyUp(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                ActionId = IsFacingRight ? Action.Ball_FlyUp_Right : Action.Ball_FlyUp_Left;
+                MechModel.Speed = MechModel.Speed with { Y = -3 };
+                Timer++;
+                ScalemanShadow.AnimatedObject.CurrentAnimation = 12;
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalUp_Mix03);
+                break;
+
+            case FsmAction.Step:
+                if (Scene.IsHitMainActor(this))
+                    Scene.MainActor.ReceiveDamage(AttackPoints);
+
+                if ((Rom.Platform == Platform.GBA && Position.Y < 0) ||
+                    (Rom.Platform == Platform.NGage && Position.Y < -10))
+                {
+                    State.MoveTo(Fsm_BallAirAttackTarget);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
+
+        return true;
+    }
+
+    public bool Fsm_BallAirAttackTarget(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                MechModel.Speed = Vector2.Zero;
+                AirAttackTimer = 0;
+                break;
+
+            case FsmAction.Step:
+                if (Position.X < Scene.MainActor.Position.X)
+                {
+                    if (Position.X + 4 > Scene.MainActor.Position.X)
+                        ScalemanShadow.Position = ScalemanShadow.Position with { X = Scene.MainActor.Position.X };
+                    else
+                        ScalemanShadow.Position = ScalemanShadow.Position with { X = Position.X + 4 };
+                }
+                else
+                {
+                    if (Position.X - 4 < Scene.MainActor.Position.X)
+                        ScalemanShadow.Position = ScalemanShadow.Position with { X = Scene.MainActor.Position.X };
+                    else
+                        ScalemanShadow.Position = ScalemanShadow.Position with { X = Position.X - 4 };
+                }
+
+                if (AirAttackTimer < 30)
+                {
+                    AirAttackTimer++;
+                }
+                else
+                {
+                    State.MoveTo(Fsm_BallAirAttackFlyDown);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                float physicalLayerWidth = Scene.Playfield.PhysicalLayer.PixelWidth;
+
+                Position = Scene.MainActor.Speed.X switch
+                {
+                    >= 1 => Position with { X = Scene.MainActor.Position.X + 36 },
+                    <= -1 => Position with { X = Scene.MainActor.Position.X - 36 },
+                    _ => Position with { X = Scene.MainActor.Position.X }
+                };
+
+                if (Position.X < 12)
+                    Position = Position with { X = 12 };
+                else if (Position.X > physicalLayerWidth - 12)
+                    Position = Position with { X = physicalLayerWidth - 12 };
+
+                ScalemanShadow.Position = ScalemanShadow.Position with { X = Position.X };
+                break;
+        }
+
+        return true;
+    }
+
+    public bool Fsm_BallAirAttackFlyDown(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                ActionId = Scene.MainActor.IsFacingRight ? Action.Ball_FlyDown_Right : Action.Ball_FlyDown_Left;
+
+                if (IsSecondPhase())
+                    MechModel.Speed = new Vector2(0, 3.5f);
+                else
+                    MechModel.Speed = new Vector2(0, 3);
+
+                ScalemanShadow.AnimatedObject.CurrentAnimation = 11;
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalUp_Mix03);
+                break;
+
+            case FsmAction.Step:
+                if (Scene.IsHitMainActor(this))
+                    Scene.MainActor.ReceiveDamage(AttackPoints);
+
+                // NOTE: This code is bugged in the original game and doesn't run. This
+                //       is due to it referencing the shadow actor as an animated object.
+                if (Engine.Config.FixBugs && ScalemanShadow.AnimatedObject.EndOfAnimation && ScalemanShadow.AnimatedObject.CurrentAnimation == 11)
+                    ScalemanShadow.AnimatedObject.CurrentAnimation = 13;
+
+                ScalemanShadow.Position = ScalemanShadow.Position with { X = Position.X };
+
+                if (ActionId is Action.Ball_FlyDown_Right or Action.Ball_FlyDown_Left)
+                {
+                    Box detectionBox = GetDetectionBox();
+                    PhysicalType type = Scene.GetPhysicalType(detectionBox.BottomCenter);
+                    if (type == PhysicalTypeValue.Solid)
+                    {
+                        ActionId = IsFacingRight ? Action.Ball_Land_Right : Action.Ball_Land_Left;
+                        ChangeAction();
+                    }
+                }
+
+                if (IsActionFinished)
+                {
+                    if (ActionId is Action.Ball_Land_Right or Action.Ball_Land_Left)
+                    {
+                        if (Timer < 3)
+                        {
+                            State.MoveTo(Fsm_BallAirAttackFlyUp);
+                            return false;
+                        }
+                        else
+                        {
+                            ActionId = IsFacingRight ? Action.Emerge_Right : Action.Emerge_Left;
+                        }
+                    }
+                    else if (ActionId is Action.Emerge_Right or Action.Emerge_Left)
+                    {
+                        ScalemanShadow.ProcessMessage(this, Message.Destroy);
+                        ScalemanShadow = null;
+                        Timer = 60;
+                        State.MoveTo(Fsm_Default);
+                        return false;
+                    }
+                }
                 break;
 
             case FsmAction.UnInit:
