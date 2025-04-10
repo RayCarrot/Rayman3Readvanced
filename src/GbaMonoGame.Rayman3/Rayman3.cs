@@ -76,7 +76,7 @@ public class Rayman3 : GbaGame
             { ActorType.Sphere, (instanceId, scene, resource) => new Sphere(instanceId, scene, resource) },
             { ActorType.FallingBridge, (instanceId, scene, resource) => new FallingBridge(instanceId, scene, resource) },
             { ActorType.GreenPirate, (instanceId, scene, resource) => new GreenPirate(instanceId, scene, resource) },
-
+            { ActorType.BluePirate, (instanceId, scene, resource) => new BluePirate(instanceId, scene, resource) },
             { ActorType.SilverPirate, (instanceId, scene, resource) => new SilverPirate(instanceId, scene, resource) },
             { ActorType.HelicopterBomb, (instanceId, scene, resource) => new FlyingBomb(instanceId, scene, resource) },
             { ActorType.ZombieChicken, (instanceId, scene, resource) => new ZombieChicken(instanceId, scene, resource) },

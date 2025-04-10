@@ -26,7 +26,7 @@ public enum ActorType
     Sphere = 21,
     FallingBridge = 22,
     GreenPirate = 23,
-    BluePirate = 24, // TODO: Implement
+    BluePirate = 24,
     SilverPirate = 25,
     HelicopterBomb = 26,
     ZombieChicken = 27,

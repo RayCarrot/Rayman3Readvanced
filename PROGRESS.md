@@ -174,7 +174,7 @@
 | Sphere                 | 🟩     |                                              |
 | FallingBridge          | 🟩     |                                              |
 | GreenPirate            | 🟩     |                                              |
-| BluePirate             | 🟥     |                                              |
+| BluePirate             | 🟩     |                                              |
 | SilverPirate           | 🟩     |                                              |
 | HelicopterBomb         | 🟩     |                                              |
 | ZombieChicken          | 🟩     |                                              |
