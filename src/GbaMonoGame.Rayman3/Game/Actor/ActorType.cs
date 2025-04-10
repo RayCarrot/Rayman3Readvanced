@@ -60,7 +60,7 @@ public enum ActorType
     LavaSplash = 55,
 
     BlackLum = 57,
-    Electricity = 58, // TODO: Implement
+    Electricity = 58,
     Hoodstormer = 59,
     SpikyFlyingBomb = 60,
     FlowerFire = 61,

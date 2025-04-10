@@ -208,7 +208,7 @@
 | LavaSplash             | 🟩     |                                              |
 | #56                    | 🟥     |                                              |
 | BlackLum               | 🟩     |                                              |
-| Electricity            | 🟥     |                                              |
+| Electricity            | 🟩     |                                              |
 | Hoodstormer            | 🟩     |                                              |
 | SpikyFlyingBomb        | 🟩     |                                              |
 | FlowerFire             | 🟩     |                                              |
