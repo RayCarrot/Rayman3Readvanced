@@ -109,9 +109,10 @@ public class Captor : GameObject
     {
         base.DrawDebugBoxes(animationPlayer);
 
-        if (Scene.Camera.IsDebugBoxFramed(_debugCaptorBoxAObject, _captorBox.Position))
+        Box captorBox = GetCaptorBox();
+        if (Scene.Camera.IsDebugBoxFramed(_debugCaptorBoxAObject, captorBox.Position))
         {
-            _debugCaptorBoxAObject.Size = _captorBox.Size;
+            _debugCaptorBoxAObject.Size = captorBox.Size;
             animationPlayer.PlayFront(_debugCaptorBoxAObject);
         }
     }

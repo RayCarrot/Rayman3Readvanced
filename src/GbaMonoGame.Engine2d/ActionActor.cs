@@ -218,15 +218,17 @@ public abstract class ActionActor : BaseActor
     {
         base.DrawDebugBoxes(animationPlayer);
 
-        if (Scene.Camera.IsDebugBoxFramed(_debugDetectionBoxAObject, Position + _detectionBox.Position))
+        Box detectionBox = GetDetectionBox();
+        if (Scene.Camera.IsDebugBoxFramed(_debugDetectionBoxAObject, detectionBox.Position))
         {
-            _debugDetectionBoxAObject.Size = _detectionBox.Size;
+            _debugDetectionBoxAObject.Size = detectionBox.Size;
             animationPlayer.PlayFront(_debugDetectionBoxAObject);
         }
 
-        if (Scene.Camera.IsDebugBoxFramed(_debugActionBoxAObject, Position + _actionBox.Position))
+        Box actionBox = GetActionBox();
+        if (Scene.Camera.IsDebugBoxFramed(_debugActionBoxAObject, actionBox.Position))
         {
-            _debugActionBoxAObject.Size = _actionBox.Size;
+            _debugActionBoxAObject.Size = actionBox.Size;
             animationPlayer.PlayFront(_debugActionBoxAObject);
         }
     }
