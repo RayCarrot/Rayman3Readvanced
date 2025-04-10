@@ -83,7 +83,7 @@ public enum ActorType
     Ly = 78,
     Flag = 79,
 
-    BreakableWall = 81, // TODO: Implement
+    BreakableWall = 81,
     KegDebris = 82,
     Scaleman = 83,
     Machine = 84,

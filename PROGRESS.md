@@ -231,7 +231,7 @@
 | Ly                     | 🟩     |                                              |
 | Flag                   | 🟩     |                                              |
 | #80                    | 🟥     |                                              |
-| BreakableWall          | 🟥     |                                              |
+| BreakableWall          | 🟩     |                                              |
 | KegDebris              | 🟩     |                                              |
 | Scaleman               | 🟩     |                                              |
 | Machine                | 🟩     |                                              |
