@@ -49,7 +49,6 @@ public class Rayman3 : GbaGame
         // Load fonts
         FontManager.Load(Rom.Loader.Font8, Rom.Loader.Font16, Rom.Loader.Font32);
 
-        // TODO: Implement the rest
         ObjectFactory.Init(new Dictionary<ActorType, ObjectFactory.CreateActor>()
         {
             { ActorType.Rayman, (instanceId, scene, resource) => new Rayman(instanceId, scene, resource) },
@@ -68,7 +67,7 @@ public class Rayman3 : GbaGame
             { ActorType.Cage, (instanceId, scene, resource) => new Cage(instanceId, scene, resource) },
             { ActorType.LevelCurtain, (instanceId, scene, resource) => new LevelCurtain(instanceId, scene, resource) },
             { ActorType.FallingWoodenPlatform, (instanceId, scene, resource) => new FallingPlatform(instanceId, scene, resource) },
-
+            { ActorType.UnusedBouncyPlatform, (instanceId, scene, resource) => new UnusedBouncyPlatform(instanceId, scene, resource) },
             { ActorType.BreakableDoor, (instanceId, scene, resource) => new BreakableDoor(instanceId, scene, resource) },
             { ActorType.Keg, (instanceId, scene, resource) => new Keg(instanceId, scene, resource) },
             { ActorType.Barrel, (instanceId, scene, resource) => new Barrel(instanceId, scene, resource) },
@@ -88,9 +87,9 @@ public class Rayman3 : GbaGame
             { ActorType.RaymanMode7, (instanceId, scene, resource) => new RaymanMode7(instanceId, scene, resource) },
             { ActorType.LumsMode7, (instanceId, scene, resource) => new LumsMode7(instanceId, scene, resource) },
             { ActorType.Caterpillar, (instanceId, scene, resource) => new Caterpillar(instanceId, scene, resource) },
-
+            { ActorType.UnusedScenery1, (instanceId, scene, resource) => new Scenery(instanceId, scene, resource) },
             { ActorType.Butterfly, (instanceId, scene, resource) => new Scenery(instanceId, scene, resource) },
-
+            { ActorType.Snail, (instanceId, scene, resource) => new Snail(instanceId, scene, resource) },
             { ActorType.Jano, (instanceId, scene, resource) => new Jano(instanceId, scene, resource) },
             { ActorType.JanoSkullPlatform, (instanceId, scene, resource) => new JanoSkullPlatform(instanceId, scene, resource) },
             { ActorType.Spider, (instanceId, scene, resource) => new Spider(instanceId, scene, resource) },
@@ -104,16 +103,15 @@ public class Rayman3 : GbaGame
             { ActorType.SwingSparkle, (instanceId, scene, resource) => new SwingSparkle(instanceId, scene, resource) },
             { ActorType.BreakableGround, (instanceId, scene, resource) => new BreakableGround(instanceId, scene, resource) },
             { ActorType.Boulder, (instanceId, scene, resource) => new Boulder(instanceId, scene, resource) },
-
+            { ActorType.Wall, (instanceId, scene, resource) => new Wall(instanceId, scene, resource) },
             { ActorType.MovingWoodenPlatform, (instanceId, scene, resource) => new MovingPlatform(instanceId, scene, resource) },
             { ActorType.Plum, (instanceId, scene, resource) => new Plum(instanceId, scene, resource) },
             { ActorType.LavaSplash, (instanceId, scene, resource) => new LavaSplash(instanceId, scene, resource) },
-
+            { ActorType.UnusedScenery2, (instanceId, scene, resource) => new Scenery(instanceId, scene, resource) },
             { ActorType.BlackLum, (instanceId, scene, resource) => new BlackLum(instanceId, scene, resource) },
             { ActorType.Electricity, (instanceId, scene, resource) => new Electricity(instanceId, scene, resource) },
             { ActorType.Hoodstormer, (instanceId, scene, resource) => new Hoodstormer(instanceId, scene, resource) },
             { ActorType.SpikyFlyingBomb, (instanceId, scene, resource) => new SpikyFlyingBomb(instanceId, scene, resource) },
-
             { ActorType.FlowerFire, (instanceId, scene, resource) => new FlowerFire(instanceId, scene, resource) },
             { ActorType.FlyingBombMode7, (instanceId, scene, resource) => new FlyingBombMode7(instanceId, scene, resource) },
             { ActorType.WaterSplashMode7, (instanceId, scene, resource) => new WaterSplashMode7(instanceId, scene, resource) },
@@ -133,7 +131,7 @@ public class Rayman3 : GbaGame
             { ActorType.WoodenBar, (instanceId, scene, resource) => new WoodenBar(instanceId, scene, resource) },
             { ActorType.Ly, (instanceId, scene, resource) => new Ly(instanceId, scene, resource) },
             { ActorType.Flag, (instanceId, scene, resource) => new Scenery(instanceId, scene, resource) },
-
+            { ActorType.UnusedScenery3, (instanceId, scene, resource) => new Scenery(instanceId, scene, resource) },
             { ActorType.BreakableWall, (instanceId, scene, resource) => new BreakableWall(instanceId, scene, resource) },
             { ActorType.KegDebris, (instanceId, scene, resource) => new KegDebris(instanceId, scene, resource) },
             { ActorType.Scaleman, (instanceId, scene, resource) => new Scaleman(instanceId, scene, resource) },
@@ -141,14 +139,15 @@ public class Rayman3 : GbaGame
             { ActorType.Balloon, (instanceId, scene, resource) => new Balloon(instanceId, scene, resource) },
             { ActorType.ScalemanShadow, (instanceId, scene, resource) => new ScalemanShadow(instanceId, scene, resource) },
             { ActorType.ItemsMulti, (instanceId, scene, resource) => new ItemsMulti(instanceId, scene, resource) },
-
+            // TODO: FlyingShell
             { ActorType.Skull, (instanceId, scene, resource) => new Skull(instanceId, scene, resource) },
-
+            { ActorType.UnusedEnemyMode7, (instanceId, scene, resource) => new UnusedEnemyMode7(instanceId, scene, resource) },
             { ActorType.SpikyBag, (instanceId, scene, resource) => new SpikyBag(instanceId, scene, resource) },
             { ActorType.MurfyStone, (instanceId, scene, resource) => new MurfyStone(instanceId, scene, resource) },
-
+            // TODO: Grolgoth
+            // TODO: GrolgothBomb
             { ActorType.Teensies, (instanceId, scene, resource) => new Teensies(instanceId, scene, resource) },
-
+            { ActorType.Ammo, (instanceId, scene, resource) => new Ammo(instanceId, scene, resource) },
             { ActorType.Rocky, (instanceId, scene, resource) => new Rocky(instanceId, scene, resource) },
             { ActorType.RockyFlame, (instanceId, scene, resource) => new RockyFlame(instanceId, scene, resource) },
             { ActorType.MechanicalPlatform, (instanceId, scene, resource) => new MechanicalPlatform(instanceId, scene, resource) },
@@ -158,15 +157,16 @@ public class Rayman3 : GbaGame
             { ActorType.RaymanWorldMap, (instanceId, scene, resource) => new RaymanWorldMap(instanceId, scene, resource) },
             { ActorType.BumperMode7, (instanceId, scene, resource) => new SceneryMode7(instanceId, scene, resource) },
             { ActorType.BoulderMode7, (instanceId, scene, resource) => new BoulderMode7(instanceId, scene, resource) },
-            { ActorType.MovingUnusedPlatform, (instanceId, scene, resource) => new MovingPlatform(instanceId, scene, resource) },
+            { ActorType.UnusedMovingPlatform, (instanceId, scene, resource) => new MovingPlatform(instanceId, scene, resource) },
             { ActorType.RotatedHelicopterBomb, (instanceId, scene, resource) => new FlyingBomb(instanceId, scene, resource) },
             { ActorType.Leaf, (instanceId, scene, resource) => new Leaf(instanceId, scene, resource) },
             { ActorType.JanoShot, (instanceId, scene, resource) => new JanoShot(instanceId, scene, resource) },
             { ActorType.MetalShieldedHoodboom, (instanceId, scene, resource) => new MetalShieldedHoodboom(instanceId, scene, resource) },
-
-            { ActorType.RaymanCaptureTheFlagSolo, (instanceId, scene, resource) => new Rayman(instanceId, scene, resource) },
-
-            { ActorType.RaymanCaptureTheFlagTeams, (instanceId, scene, resource) => new Rayman(instanceId, scene, resource) },
+            // TODO: CaptureTheFlagFlag
+            { ActorType.CaptureTheFlagRaymanSolo, (instanceId, scene, resource) => new Rayman(instanceId, scene, resource) },
+            // TODO: CaptureTheFlagFlagBase
+            // TODO: CaptureTheFlagItems
+            { ActorType.CaptureTheFlagRaymanTeams, (instanceId, scene, resource) => new Rayman(instanceId, scene, resource) },
         }, x => ((ActorType)x).ToString());
         
         Dictionary<MapId, LevelFactory.CreateLevel> levelCreations = new()

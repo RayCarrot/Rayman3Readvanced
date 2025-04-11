@@ -18,7 +18,7 @@ public enum ActorType
     Cage = 13,
     LevelCurtain = 14,
     FallingWoodenPlatform = 15,
-
+    UnusedBouncyPlatform = 16, // Unused
     BreakableDoor = 17,
     Keg = 18,
     Barrel = 19,
@@ -38,9 +38,9 @@ public enum ActorType
     RaymanMode7 = 33,
     LumsMode7 = 34,
     Caterpillar = 35,
-
+    UnusedScenery1 = 36, // Unused
     Butterfly = 37,
-
+    Snail = 38, // Unused (used in Focus Test prototype)
     Jano = 39,
     JanoSkullPlatform = 40,
     Spider = 41,
@@ -54,11 +54,11 @@ public enum ActorType
     SwingSparkle = 49,
     BreakableGround = 50,
     Boulder = 51,
-
+    Wall = 52, // Unused
     MovingWoodenPlatform = 53,
     Plum = 54,
     LavaSplash = 55,
-
+    UnusedScenery2 = 56, // Unused
     BlackLum = 57,
     Electricity = 58,
     Hoodstormer = 59,
@@ -82,7 +82,7 @@ public enum ActorType
     WoodenBar = 77,
     Ly = 78,
     Flag = 79,
-
+    UnusedScenery3 = 80, // Unused (used in ETSC prototype as early Ly sprites)
     BreakableWall = 81,
     KegDebris = 82,
     Scaleman = 83,
@@ -90,14 +90,15 @@ public enum ActorType
     Balloon = 85,
     ScalemanShadow = 86,
     ItemsMulti = 87,
-
+    FlyingShell = 88, // TODO: Implement
     Skull = 89,
-    UnusedEnemyMode7 = 90, // Unused TODO: Implement
+    UnusedEnemyMode7 = 90, // Unused
     SpikyBag = 91,
     MurfyStone = 92,
-
+    Grolgoth = 93, // TODO: Implement
+    GrolgothBomb = 94, // TODO: Implement
     Teensies = 95,
-
+    Ammo = 96, // Unused (used in ETSC prototype)
     Rocky = 97,
     RockyFlame = 98,
     MechanicalPlatform = 99,
@@ -107,14 +108,16 @@ public enum ActorType
     RaymanWorldMap = 103,
     BumperMode7 = 104,
     BoulderMode7 = 105,
-    MovingUnusedPlatform = 106, // Unused
+    UnusedMovingPlatform = 106, // Unused
     RotatedHelicopterBomb = 107,
     Leaf = 108,
     JanoShot = 109,
     MetalShieldedHoodboom = 110,
 
     // N-Gage exclusive
-    RaymanCaptureTheFlagSolo = 112,
-
-    RaymanCaptureTheFlagTeams = 115,
+    CaptureTheFlagFlag = 111, // TODO: Implement
+    CaptureTheFlagRaymanSolo = 112,
+    CaptureTheFlagFlagBase = 113, // TODO: Implement
+    CaptureTheFlagItems = 114, // TODO: Implement
+    CaptureTheFlagRaymanTeams = 115,
 }

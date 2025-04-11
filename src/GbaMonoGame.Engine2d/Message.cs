@@ -91,7 +91,7 @@ public enum Message
     Lum_ToggleVisibility = 1063,
     Main_MountWalkingShell = 1064,
     Main_UnmountWalkingShell = 1065,
-
+    Message_1066 = 1066, // TODO: Name 
     Main_CollectedMultiItemGlobox = 1067,
     Main_CollectedMultiItemReverse = 1068,
     Main_CollectedMultiItemInvisibility = 1069,
