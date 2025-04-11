@@ -214,7 +214,12 @@ public partial class CameraSideScroller
                     TgxCamera2D tgxCam = ((TgxPlayfield2D)Scene.Playfield).Camera;
                     Vector2 pos = tgxCam.Position;
                     float dist = Vector2.Distance(MoveTargetPos, pos);
-                    Speed = (MoveTargetPos - pos) / dist;
+
+                    if (dist != 0)
+                        Speed = (MoveTargetPos - pos) / dist;
+                    else
+                        Speed = Vector2.Zero;
+                    
                     Speed *= 4;
                 }
                 break;
