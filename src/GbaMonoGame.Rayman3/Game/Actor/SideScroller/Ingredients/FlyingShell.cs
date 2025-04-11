@@ -1,0 +1,211 @@
+﻿using BinarySerializer.Ubisoft.GbaEngine;
+using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+using GbaMonoGame.Engine2d;
+
+namespace GbaMonoGame.Rayman3;
+
+public sealed partial class FlyingShell : MovableActor
+{
+    public FlyingShell(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
+    {
+        CrashTimer = 0;
+        Ammo = 0;
+
+        State.SetTo(Fsm_Init);
+    }
+
+    public EnergyBall EnergyBall { get; set; }
+    public byte CrashTimer { get; set; }
+    public byte EndTimer { get; set; }
+    public int Ammo { get; set; } // Unused
+
+    public bool Debug_NoClip { get; set; } // Custom no-clip mode
+
+    private void UpdateSoundPitch()
+    {
+        SoundEventsManager.SetSoundPitch(Rayman3SoundEvent.Play__Motor01_Mix12, 192 + (160 - Position.Y) * 8);
+    }
+
+    private bool IsCollidingWithWall()
+    {
+        Box detectionBox = GetDetectionBox();
+        detectionBox = new Box(detectionBox.MinX, detectionBox.MinY, detectionBox.MaxX, detectionBox.MaxY - Tile.Size);
+
+        if (Scene.GetPhysicalType(detectionBox.BottomRight) == PhysicalTypeValue.InstaKill) 
+            return true;
+        
+        if (Scene.GetPhysicalType(detectionBox.MiddleRight) == PhysicalTypeValue.InstaKill) 
+            return true;
+        
+        if (Scene.GetPhysicalType(detectionBox.TopRight) == PhysicalTypeValue.InstaKill) 
+            return true;
+        
+        if (Scene.GetPhysicalType(detectionBox.TopCenter) == PhysicalTypeValue.InstaKill) 
+            return true;
+        
+        if (Scene.GetPhysicalType(detectionBox.TopLeft) == PhysicalTypeValue.InstaKill) 
+            return true;
+        
+        if (Scene.GetPhysicalType(detectionBox.MiddleLeft) == PhysicalTypeValue.InstaKill) 
+            return true;
+        
+        if (Scene.GetPhysicalType(detectionBox.BottomLeft) == PhysicalTypeValue.InstaKill) 
+            return true;
+        
+        if (Scene.GetPhysicalType(detectionBox.BottomCenter) == PhysicalTypeValue.InstaKill) 
+            return true;
+        
+        return false;
+    }
+
+    // Unused
+    private void CreateEnergyBall()
+    {
+        if (EnergyBall == null)
+        {
+            // But it's null???
+            EnergyBall.MechModel.Speed = Vector2.Zero;
+            EnergyBall.ActionId = EnergyBall.Action.Shot1Enemy_Right;
+
+            EnergyBall = Scene.CreateProjectile<EnergyBall>(ActorType.EnergyBall);
+        }
+
+        if (EnergyBall != null)
+        {
+            if (Speed.X > 0)
+            {
+                EnergyBall.Position = Position + new Vector2(32, 0);
+
+                if (ActionId != Action.FlyUp_Right)
+                    EnergyBall.ActionId = EnergyBall.Action.Shot1Enemy_Right;
+            }
+            else
+            {
+                EnergyBall.Position = Position - new Vector2(32, 0);
+
+                if (ActionId != Action.FlyUp_Left)
+                    EnergyBall.ActionId = EnergyBall.Action.Shot1Enemy_Left;
+            }
+
+            EnergyBall.ChangeAction();
+        }
+    }
+
+    // Unused
+    private void FireEnergyBall()
+    {
+        if (EnergyBall != null)
+        {
+            Ammo--;
+            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Laser3_Mix03);
+            
+            if (Speed.X <= 0)
+            {
+                EnergyBall.ActionId = EnergyBall.Action.Shot1Enemy_Left;
+                EnergyBall.MechModel.Speed = new Vector2(-4, 0);
+            }
+            else
+            {
+                EnergyBall.ActionId = EnergyBall.Action.Shot1Enemy_Right;
+                EnergyBall.MechModel.Speed = new Vector2(4, 0);
+            }
+
+            if (EnergyBall != null)
+                EnergyBall.ChangeAction();
+        }
+    }
+
+    private void ToggleNoClip()
+    {
+        if (InputManager.IsButtonJustPressed(Input.Debug_ToggleNoClip))
+        {
+            Debug_NoClip = !Debug_NoClip;
+
+            if (Debug_NoClip)
+            {
+                ActionId = IsFacingRight ? Action.Idle_Right : Action.Idle_Left;
+                ChangeAction();
+                MechModel.Speed = Vector2.Zero;
+            }
+            else
+            {
+                State.MoveTo(Fsm_Fly);
+                ChangeAction();
+            }
+        }
+    }
+
+    private void DoNoClipBehavior()
+    {
+        int speed = JoyPad.IsButtonPressed(GbaInput.A) ? 7 : 4;
+
+        if (JoyPad.IsButtonPressed(GbaInput.Up))
+            Position -= new Vector2(0, speed);
+        else if (JoyPad.IsButtonPressed(GbaInput.Down))
+            Position += new Vector2(0, speed);
+
+        if (JoyPad.IsButtonPressed(GbaInput.Left))
+            Position -= new Vector2(speed, 0);
+        else if (JoyPad.IsButtonPressed(GbaInput.Right))
+            Position += new Vector2(speed, 0);
+    }
+
+    protected override bool ProcessMessageImpl(object sender, Message message, object param)
+    {
+        if (base.ProcessMessageImpl(sender, message, param))
+            return false;
+
+        switch (message)
+        {
+            case Message.Main_LevelEnd:
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Motor01_Mix12);
+
+                if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
+                    State.MoveTo(Fsm_GameCubeEndMap);
+                else
+                    Frame.Current.EndOfFrame = true;
+                return false;
+
+            case Message.Damaged:
+                if (State != Fsm_Crash)
+                    State.MoveTo(Fsm_Crash);
+                return false;
+
+            case Message.Main_Stop:
+                State.MoveTo(Fsm_Stop);
+                return false;
+
+            case Message.Main_ExitStopOrCutscene:
+                if (State != Fsm_Crash)
+                    State.MoveTo(Fsm_Fly);
+                return false;
+
+            case Message.FlyingShell_RefillAmmo:
+                Ammo = 3;
+                return false;
+
+            default:
+                return false;
+        }
+    }
+
+    // Disable collision when debug mode is on
+    public override Box GetAttackBox() => Debug_NoClip ? Box.Empty : base.GetAttackBox();
+    public override Box GetVulnerabilityBox() => Debug_NoClip ? Box.Empty : base.GetVulnerabilityBox();
+    public override Box GetDetectionBox() => Debug_NoClip ? Box.Empty : base.GetDetectionBox();
+    public override Box GetActionBox() => Debug_NoClip ? Box.Empty : base.GetActionBox();
+
+    public override void DoBehavior()
+    {
+        if (Debug_NoClip)
+            DoNoClipBehavior();
+        else
+            base.DoBehavior();
+    }
+
+    public override void Step()
+    {
+        base.Step();
+        ToggleNoClip();
+    }
+}

@@ -90,7 +90,7 @@ public enum ActorType
     Balloon = 85,
     ScalemanShadow = 86,
     ItemsMulti = 87,
-    FlyingShell = 88, // TODO: Implement
+    FlyingShell = 88,
     Skull = 89,
     UnusedEnemyMode7 = 90, // Unused
     SpikyBag = 91,

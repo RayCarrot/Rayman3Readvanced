@@ -139,7 +139,7 @@ public class Rayman3 : GbaGame
             { ActorType.Balloon, (instanceId, scene, resource) => new Balloon(instanceId, scene, resource) },
             { ActorType.ScalemanShadow, (instanceId, scene, resource) => new ScalemanShadow(instanceId, scene, resource) },
             { ActorType.ItemsMulti, (instanceId, scene, resource) => new ItemsMulti(instanceId, scene, resource) },
-            // TODO: FlyingShell
+            { ActorType.FlyingShell, (instanceId, scene, resource) => new FlyingShell(instanceId, scene, resource) },
             { ActorType.Skull, (instanceId, scene, resource) => new Skull(instanceId, scene, resource) },
             { ActorType.UnusedEnemyMode7, (instanceId, scene, resource) => new UnusedEnemyMode7(instanceId, scene, resource) },
             { ActorType.SpikyBag, (instanceId, scene, resource) => new SpikyBag(instanceId, scene, resource) },

@@ -249,7 +249,7 @@
 | Balloon                   | 🟩     |                                              |
 | ScalemanShadow            | 🟩     |                                              |
 | ItemsMulti                | 🟩     |                                              |
-| FlyingShell               | 🟥     |                                              |
+| FlyingShell               | 🟩     |                                              |
 | Skull                     | 🟩     |                                              |
 | UnusedEnemyMode7          | 🟩     |                                              |
 | SpikyBag                  | 🟩     |                                              |

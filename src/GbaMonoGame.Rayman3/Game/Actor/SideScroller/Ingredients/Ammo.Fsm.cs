@@ -24,8 +24,8 @@ public partial class Ammo
 
                     if (viewBox.Intersects(mainActorVulnerabilityBox))
                     {
-                        Scene.Camera.LinkedObject.ProcessMessage(this, Message.Message_1066);
-                        Scene.GetGameObject(1).ProcessMessage(this, Message.Message_1066);
+                        Scene.Camera.LinkedObject.ProcessMessage(this, Message.FlyingShell_RefillAmmo);
+                        Scene.GetGameObject(1).ProcessMessage(this, Message.FlyingShell_RefillAmmo);
                         Timer = 0;
 
                         float[] yPositions = [90, 170, 260];
