@@ -11,7 +11,7 @@
 | FrameManager           | 🟩     |                                              |
 | Gfx                    | 🟩     |                                              |
 | Multiplayer            | 🟨     |                                              |
-| SoundEngine            | 🟨     |                                              |
+| SoundEngine            | 🟩     |                                              |
 | AnimationPlayer        | 🟩     |                                              |
 | Scene2D                | 🟩     |                                              |
 | GameObject             | 🟩     |                                              |
@@ -20,10 +20,20 @@
 | TgxCamera2D            | 🟩     |                                              |
 | TgxCameraMode7         | 🟩     |                                              |
 
+## Bonus
+| Name                   | State   | Info                                         |
+| ---------------------- | ------- | -------------------------------------------- |
+| Achievements           | 🟥     |                                              |
+| Time trials            | 🟥     |                                              |
+| Challenges             | 🟥     |                                              |
+| Mod support            | 🟥     |                                              |
+| Level editor           | 🟥     |                                              |
+
 ## Frames
 | Name                   | State   | Info                                         |
 | ---------------------- | ------- | -------------------------------------------- |
 | Intro                  | 🟩     |                                              |
+| ModernMenuAll          | 🟨     |                                              |
 | MenuAll                | 🟩     |                                              |
 | GameCubeMenu           | 🟩     |                                              |
 | Act                    | 🟩     |                                              |
@@ -146,6 +156,7 @@
 | BossRockAndLavaBar     | 🟩     |                                              |
 | BossScalemanBar        | 🟩     |                                              |
 | WorldNameBar           | 🟩     |                                              |
+| FlagBar                | 🟥     |                                              |
 
 ## Actors
 | Name                      | State   | Info                                         |
