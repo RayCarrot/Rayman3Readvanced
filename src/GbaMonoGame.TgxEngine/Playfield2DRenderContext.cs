@@ -59,6 +59,9 @@ public class Playfield2DRenderContext : RenderContext
                 resolution = new Vector2(resolution.X, min.Y);
         }
 
+        if (resolution != Engine.InternalGameResolution)
+            Logger.Info($"Playfield resolution {resolution.X}x{resolution.Y} is different from internal resolution {Engine.InternalGameResolution.X}x{Engine.InternalGameResolution.Y}");
+
         return resolution;
     }
 
