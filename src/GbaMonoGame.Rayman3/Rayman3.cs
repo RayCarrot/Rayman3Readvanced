@@ -144,8 +144,8 @@ public class Rayman3 : GbaGame
             { ActorType.UnusedEnemyMode7, (instanceId, scene, resource) => new UnusedEnemyMode7(instanceId, scene, resource) },
             { ActorType.SpikyBag, (instanceId, scene, resource) => new SpikyBag(instanceId, scene, resource) },
             { ActorType.MurfyStone, (instanceId, scene, resource) => new MurfyStone(instanceId, scene, resource) },
-            // TODO: Grolgoth
-            // TODO: GrolgothBomb
+            { ActorType.Grolgoth, (instanceId, scene, resource) => new Grolgoth(instanceId, scene, resource) },
+            { ActorType.GrolgothProjectile, (instanceId, scene, resource) => new GrolgothProjectile(instanceId, scene, resource) },
             { ActorType.Teensies, (instanceId, scene, resource) => new Teensies(instanceId, scene, resource) },
             { ActorType.Ammo, (instanceId, scene, resource) => new Ammo(instanceId, scene, resource) },
             { ActorType.Rocky, (instanceId, scene, resource) => new Rocky(instanceId, scene, resource) },

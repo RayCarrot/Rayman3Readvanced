@@ -1,0 +1,83 @@
+﻿namespace GbaMonoGame.Rayman3;
+
+public partial class Grolgoth
+{
+    public new Action ActionId
+    {
+        get => (Action)base.ActionId;
+        set => base.ActionId = (int)value;
+    }
+
+    // TODO: Name
+    public enum Action
+    {
+        Ground_Idle_Right = 0,
+        Ground_Idle_Left = 1,
+        Action2 = 2,
+        Action3 = 3,
+        Action4 = 4,
+        Action5 = 5,
+        Ground_BeginDeployBomb_Right = 6,
+        Ground_BeginDeployBomb_Left = 7,
+        Ground_DeployBomb_Right = 8,
+        Ground_DeployBomb_Left = 9,
+        Action10 = 10,
+        Action11 = 11,
+        Action12 = 12,
+        Action13 = 13,
+        Action14 = 14,
+        Action15 = 15,
+        Action16 = 16,
+        Action17 = 17,
+        Action18 = 18,
+        Action19 = 19,
+        Ground_Land_Right = 20,
+        Ground_Land_Left = 21,
+        Action22 = 22,
+        Action23 = 23,
+        Action24 = 24,
+        Action25 = 25,
+        Action26 = 26,
+        Action27 = 27,
+        Action28 = 28,
+        Action29 = 29,
+        Action30 = 30,
+        Action31 = 31,
+        Action32 = 32,
+        Action33 = 33,
+        Action34 = 34,
+        Action35 = 35,
+        Action36 = 36,
+        Ground_Fall_Right = 37,
+        Ground_Fall_Left = 38,
+        Action39 = 39,
+        Action40 = 40,
+        Action41 = 41,
+        Action42 = 42,
+        Action43 = 43,
+        Action44 = 44,
+        Action45 = 45,
+        Action46 = 46,
+        Ground_BeginShootEnergyShotsHigh_Right = 47,
+        Ground_BeginShootEnergyShotsHigh_Left = 48,
+        Ground_ShootEnergyShotsHigh_Right = 49,
+        Ground_ShootEnergyShotsHigh_Left = 50,
+        Ground_BeginShootEnergyShotsLow_Right = 51,
+        Ground_BeginShootEnergyShotsLow_Left = 52,
+        Ground_ShootEnergyShotsLow_Right = 53,
+        Ground_ShootEnergyShotsLow_Left = 54,
+        Action55 = 55,
+        Action56 = 56,
+        Action57 = 57,
+        Action58 = 58,
+        Action59 = 59,
+        Action60 = 60,
+        Action61 = 61,
+        Action62 = 62,
+        Action63 = 63,
+        Action64 = 64,
+        Action65 = 65,
+        Action66 = 66,
+        Action67 = 67,
+    }
+}

@@ -95,8 +95,8 @@ public enum ActorType
     UnusedEnemyMode7 = 90, // Unused
     SpikyBag = 91,
     MurfyStone = 92,
-    Grolgoth = 93, // TODO: Implement
-    GrolgothBomb = 94, // TODO: Implement
+    Grolgoth = 93,
+    GrolgothProjectile = 94,
     Teensies = 95,
     Ammo = 96, // Unused (used in ETSC prototype)
     Rocky = 97,
