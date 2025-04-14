@@ -12,7 +12,7 @@ public partial class Grolgoth
         if (Scene.IsHitMainActor(this))
         {
             // Why is there a check for a non-boss map?
-            if (ActionId is Action.Ground_Fall_Right or Action.Ground_Fall_Left || GameInfo.MapId == MapId.IronMountains_M2)
+            if (ActionId is Action.Ground_FallDown_Right or Action.Ground_FallDown_Left || GameInfo.MapId == MapId.IronMountains_M2)
             {
                 Scene.MainActor.ProcessMessage(this, Message.Exploded);
             }
@@ -30,8 +30,7 @@ public partial class Grolgoth
         return true;
     }
 
-    // FUN_0804e8b4
-    public bool FUN_10019370(FsmAction action)
+    public bool Fsm_Invalid(FsmAction action)
     {
         switch (action)
         {
@@ -68,6 +67,7 @@ public partial class Grolgoth
 
                 int rand = Random.GetNumber(101);
 
+                // Deploy bomb
                 if (IsActionFinished && Timer > 5 && AttackCount == 0)
                 {
                     State.MoveTo(Fsm_GroundDeployBomb);
@@ -82,13 +82,15 @@ public partial class Grolgoth
                     return false;
                 }
 
+                // Shoot lasers
                 if ((AttackCount != 0 && BossHealth < 3 && rand <= 25) ||
                     (AttackCount == 1 && BossHealth >= 3 && BossHealth != 5))
                 {
-                    State.MoveTo(FUN_10019938);
+                    State.MoveTo(Fsm_GroundShootLasers);
                     return false;
                 }
 
+                // Deploy bomb
                 if (IsActionFinished && Timer > 5 && AttackCount == 1 && BossHealth == 5)
                 {
                     State.MoveTo(Fsm_GroundDeployBomb);
@@ -168,22 +170,52 @@ public partial class Grolgoth
         return true;
     }
 
-    // TODO: Implement
-    // FUN_0804ef8c
-    public bool FUN_10019938(FsmAction action)
+    public bool Fsm_GroundShootLasers(FsmAction action)
     {
         switch (action)
         {
             case FsmAction.Init:
-
+                SavedAttackCount = AttackCount;
+                AttackCount = 4;
+                ActionId = IsFacingRight ? Action.Ground_BeginShootLasers_Right : Action.Ground_BeginShootLasers_Left;
                 break;
 
             case FsmAction.Step:
+                if (!FsmStep_CheckHitMainActor())
+                    return false;
 
+                Timer++;
+
+                if (ActionId is Action.Ground_ShootLasers_Right or Action.Ground_ShootLasers_Left && Timer > 10 && AttackCount != 0)
+                {
+                    ShootFromGround();
+                    Timer = 0;
+                }
+                
+                if (IsActionFinished)
+                {
+                    if (AttackCount == 0 && ActionId is Action.Ground_ShootLasers_Right or Action.Ground_ShootLasers_Left)
+                    {
+                        ActionId = IsFacingRight ? Action.Ground_EndShootLasers_Right : Action.Ground_EndShootLasers_Left;
+                        ChangeAction();
+                    }
+                    else if (ActionId is Action.Ground_BeginShootLasers_Right or Action.Ground_BeginShootLasers_Left)
+                    {
+                        ActionId = IsFacingRight ? Action.Ground_ShootLasers_Right : Action.Ground_ShootLasers_Left;
+                        Timer = 0;
+                    }
+                }
+
+                if (IsActionFinished && ActionId is Action.Ground_EndShootLasers_Right or Action.Ground_EndShootLasers_Left)
+                {
+                    State.MoveTo(Fsm_GroundDefault);
+                    return false;
+                }
                 break;
 
             case FsmAction.UnInit:
-
+                SavedAttackCount--;
+                AttackCount = SavedAttackCount;
                 break;
         }
 
@@ -240,7 +272,7 @@ public partial class Grolgoth
                 BossHealth--;
                 ((FrameSideScroller)Frame.Current).UserInfo.BossHit();
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BossHurt_Mix02);
-                ActionId = IsFacingRight ? Action.Action10 : Action.Action11;
+                ActionId = IsFacingRight ? Action.Ground_Hit1_Right : Action.Ground_Hit1_Left;
                 break;
 
             case FsmAction.Step:
@@ -248,7 +280,31 @@ public partial class Grolgoth
                     return false;
 
                 Timer++;
-                // TODO: Implement
+
+                if (IsActionFinished)
+                {
+                    if (ActionId is Action.Ground_Hit1_Right or Action.Ground_Hit1_Left)
+                    {
+                        ActionId = IsFacingRight ? Action.Ground_Hit2_Right : Action.Ground_Hit2_Left;
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BossVO03_Mix01);
+                    }
+                    else if (ActionId is Action.Ground_Hit2_Right or Action.Ground_Hit2_Left)
+                    {
+                        ActionId = IsFacingRight ? Action.Ground_Hit3_Right : Action.Ground_Hit3_Left;
+                        Timer = 0;
+                    }
+                    else if (ActionId is Action.Ground_Hit3_Right or Action.Ground_Hit3_Left && Timer > 30)
+                    {
+                        ActionId = IsFacingRight ? Action.Ground_Hit4_Right : Action.Ground_Hit4_Left;
+                        ChangeAction();
+                    }
+                }
+
+                if (IsActionFinished && ActionId is Action.Ground_Hit4_Right or Action.Ground_Hit4_Left)
+                {
+                    State.MoveTo(Fsm_GroundFlyUp);
+                    return false;
+                }
                 break;
 
             case FsmAction.UnInit:
@@ -259,29 +315,68 @@ public partial class Grolgoth
         return true;
     }
 
-    // TODO: Implement
-    public bool FUN_10019f48(FsmAction action)
+    public bool Fsm_GroundFlyUp(FsmAction action)
     {
         switch (action)
         {
             case FsmAction.Init:
-
+                ActionId = IsFacingRight ? Action.Ground_PrepareFlyUp_Right : Action.Ground_PrepareFlyUp_Left;
+                Timer = 0;
                 break;
 
             case FsmAction.Step:
+                if (!FsmStep_CheckHitMainActor())
+                    return false;
 
+                if (ActionId is Action.Ground_PrepareFlyUp_Right or Action.Ground_PrepareFlyUp_Left)
+                {
+                    if (IsActionFinished)
+                    {
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Laser4_Mix01);
+                        ActionId = IsFacingRight ? Action.Ground_FlyUp_Right : Action.Ground_FlyUp_Left;
+                    }
+                }
+                else if (ActionId is Action.Ground_FlyUp_Right or Action.Ground_FlyUp_Left)
+                {
+                    // Check if off-screen
+                    if (!Scene.Camera.IsActorFramed(this))
+                    {
+                        ActionId = IsFacingRight ? Action.Ground_FallDown_Left : Action.Ground_FallDown_Right;
+                        Position = Position with
+                        {
+                            X = Rom.Platform switch
+                            {
+                                Platform.GBA => IsFacingRight ? 200 : 40,
+                                Platform.NGage => IsFacingRight ? 151 : 25,
+                                _ => throw new UnsupportedPlatformException()
+                            }
+                        };
+                        Timer = 0;
+                    }
+                }
+
+                if (ActionId is Action.Ground_FallDown_Right or Action.Ground_FallDown_Left && BossHealth != 0)
+                {
+                    State.MoveTo(Fsm_GroundFallDown);
+                    return false;
+                }
+
+                if (ActionId is Action.Ground_FallDown_Right or Action.Ground_FallDown_Left && BossHealth == 0)
+                {
+                    State.MoveTo(Fsm_GroundDying);
+                    return false;
+                }
                 break;
 
             case FsmAction.UnInit:
-
+                // Do nothing
                 break;
         }
 
         return true;
     }
 
-    // FUN_0804fbc0
-    public bool FUN_1001a1d4(FsmAction action)
+    public bool Fsm_GroundFallDown(FsmAction action)
     {
         switch (action)
         {
@@ -292,12 +387,12 @@ public partial class Grolgoth
                 {
                     case 1:
                         AttackCount = 2;
-                        DeployFallingBombs();
+                        DeployBigGroundBombs();
                         break;
 
                     case 2:
                         AttackCount = 1;
-                        DeployFallingBombs();
+                        DeployBigGroundBombs();
                         break;
 
                     case 3:
@@ -307,7 +402,7 @@ public partial class Grolgoth
                             Platform.NGage => 5,
                             _ => throw new UnsupportedPlatformException(),
                         };
-                        DeployBigGroundBombs();
+                        DeployFallingBombs();
                         break;
 
                     case 4:
@@ -317,7 +412,7 @@ public partial class Grolgoth
                             Platform.NGage => 3,
                             _ => throw new UnsupportedPlatformException(),
                         };
-                        DeployBigGroundBombs();
+                        DeployFallingBombs();
                         break;
 
                     default:
@@ -330,10 +425,12 @@ public partial class Grolgoth
                 if (!FsmStep_CheckHitMainActor())
                     return false;
 
+                // Keep in the air if still attacking
                 if (AttackCount != 0)
                 {
                     Position -= new Vector2(0, 4);
                 }
+                // Land
                 else if (InitialYPosition < Position.Y)
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BigFoot1_Mix02);
@@ -366,22 +463,22 @@ public partial class Grolgoth
         return true;
     }
 
-    // TODO: Implement
-    // ?
-    public bool FUN_1001a418(FsmAction action)
+    public bool Fsm_GroundDying(FsmAction action)
     {
         switch (action)
         {
             case FsmAction.Init:
-
+                // Do nothing
                 break;
 
             case FsmAction.Step:
-
-                break;
+                Scene.MainActor.ProcessMessage(this, Message.Main_LevelEnd);
+                ProcessMessage(this, Message.Destroy);
+                State.MoveTo(Fsm_GroundDefault);
+                return false;
 
             case FsmAction.UnInit:
-
+                // Do nothing
                 break;
         }
 

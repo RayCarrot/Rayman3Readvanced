@@ -1,4 +1,5 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using System;
+using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
@@ -10,7 +11,7 @@ public sealed partial class Grolgoth : MovableActor
     public Grolgoth(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
         InitialYPosition = Position.Y;
-        Field_67 = 0;
+        SavedAttackCount = 0;
 
         if (GameInfo.MapId == MapId.BossFinal_M1)
         {
@@ -20,11 +21,11 @@ public sealed partial class Grolgoth : MovableActor
                 Platform.NGage => Position with { X = 151 },
                 _ => throw new UnsupportedPlatformException(),
             };
-            ActionId = Action.Ground_Fall_Left;
+            ActionId = Action.Ground_FallDown_Left;
             AttackCount = 8;
             BossHealth = 5;
             Timer = 0;
-            State.SetTo(FUN_1001a1d4);
+            State.SetTo(Fsm_GroundFallDown);
             Position = Position with { Y = -30 };
         }
         else if (GameInfo.MapId == MapId.BossFinal_M2)
@@ -47,14 +48,15 @@ public sealed partial class Grolgoth : MovableActor
         }
         else
         {
-            State.SetTo(FUN_10019370);
+            // Not sure why this is here? The Grolgoth is randomly added to a lot of non-boss levels.
+            State.SetTo(Fsm_Invalid);
         }
     }
 
     public float InitialYPosition { get; set; }
     public ushort Timer { get; set; }
     public byte AttackCount { get; set; }
-    public byte Field_67 { get; set; } // TODO: Name
+    public byte SavedAttackCount { get; set; }
     public byte BossHealth { get; set; }
     public byte Field_69 { get; set; } // TODO: Name
 
@@ -68,7 +70,7 @@ public sealed partial class Grolgoth : MovableActor
             if (IsFacingRight)
             {
                 // Laser
-                if (ActionId is Action.Action41 or Action.Action42)
+                if (ActionId is Action.Ground_ShootLasers_Right or Action.Ground_ShootLasers_Left)
                 {
                     projectile.Position = new Vector2(Position.X + 16, InitialYPosition + (Random.GetNumber(3) + 8) * 8);
                     projectile.ActionId = GrolgothProjectile.Action.Laser_Right;
@@ -101,7 +103,7 @@ public sealed partial class Grolgoth : MovableActor
             else
             {
                 // Laser
-                if (ActionId is Action.Action41 or Action.Action42)
+                if (ActionId is Action.Ground_ShootLasers_Right or Action.Ground_ShootLasers_Left)
                 {
                     projectile.Position = new Vector2(Position.X - 16, InitialYPosition + (Random.GetNumber(3) + 8) * 8);
                     projectile.ActionId = GrolgothProjectile.Action.Laser_Left;
@@ -141,22 +143,89 @@ public sealed partial class Grolgoth : MovableActor
 
     private void DeployFallingBombs()
     {
-        // TODO: Implement
-    }
+        float[] bombXPositions = Rom.Platform switch
+        {
+            Platform.GBA => [25, 70, 115, 160, 185, 230],
+            Platform.NGage => [15, 30, 55, 80, 105, 155],
+            _ => throw new UnsupportedPlatformException(),
+        };
 
-    private void DeployBigGroundBombs()
-    {
-        // TODO: Implement
-    }
+        bool[] availableBombPositions = new bool[6];
+        Array.Fill(availableBombPositions, true);
 
-    private void CreateUnusedAttack()
-    {
-        // TODO: Implement
-    }
+        if (GameInfo.MapId == MapId.BossFinal_M1 && AttackCount == Rom.Platform switch 
+            {
+                Platform.GBA => 6,
+                Platform.NGage => 5,
+                _ => throw new UnsupportedPlatformException(),
+            })
+        {
+            availableBombPositions[Random.GetNumber(AttackCount)] = false;
+        }
 
-    private void CreateMissile()
-    {
-        // TODO: Implement
+        for (int i = 0; i < AttackCount; i++)
+        {
+            GrolgothProjectile projectile = Scene.CreateProjectile<GrolgothProjectile>(ActorType.GrolgothProjectile);
+            if (projectile != null)
+            {
+                projectile.ActionId = GrolgothProjectile.Action.FallingBomb;
+                projectile.ChangeAction();
+                
+                if (GameInfo.MapId == MapId.BossFinal_M1)
+                {
+                    float yPos = -(10 + Random.GetNumber(51));
+                    
+                    if (AttackCount == Rom.Platform switch
+                        {
+                            Platform.GBA => 4,
+                            Platform.NGage => 3,
+                            _ => throw new UnsupportedPlatformException(),
+                        })
+                    {
+                        int index;
+                        do
+                        {
+                            index = Random.GetNumber(Rom.Platform switch
+                            {
+                                Platform.GBA => 6,
+                                Platform.NGage => 5,
+                                _ => throw new UnsupportedPlatformException(),
+                            });
+                        } while (!availableBombPositions[index]);
+
+                        projectile.Position = new Vector2(bombXPositions[index], yPos);
+                        availableBombPositions[index] = false;
+
+                        projectile.MechModel.Speed = new Vector2(0, MathHelpers.FromFixedPoint(0x5000 + Random.GetNumber(-0x3fff)));
+                    }
+                    else
+                    {
+                        projectile.Position = new Vector2(bombXPositions[i], yPos);
+
+                        if (availableBombPositions[i])
+                            projectile.MechModel.Speed = new Vector2(0, MathHelpers.FromFixedPoint(0x7000 + Random.GetNumber(0x7001)));
+                        else
+                            projectile.MechModel.Speed = new Vector2(0, MathHelpers.FromFixedPoint(0x5000));
+                    }
+                }
+                else
+                {
+                    // TODO: Implement
+                    //pFVar5 = GameObject::GetPosition((GameObject*)projectile);
+                    //iVar3 = Random::GetNumber(0x33);
+                    //pFVar5->y = (iVar3 + 0x32) * -0x10000 + 0x140000;
+                    //pFVar5 = GameObject::GetPosition((GameObject*)projectile);
+                    //pFVar5->x = 0x320000;
+                    //pFVar5 = GameObject::GetPosition((GameObject*)projectile);
+                    //pFVar5->x = pFVar5->x + uVar7 * 0x230000;
+                    //pMVar4 = Actor::GetMechModel(projectile);
+                    //iVar3 = Random::GetNumber(-0x3fff);
+                    //iVar3 = iVar3 + 0x5000;
+                    //(pMVar4->speed).y = iVar3;
+                } 
+                
+            }
+        }
     }
 
     private void DeploySmallGroundBomb()
@@ -195,6 +264,67 @@ public sealed partial class Grolgoth : MovableActor
         }
     }
 
+    private void DeployBigGroundBombs()
+    {
+        for (int i = 0; i < AttackCount; i++)
+        {
+            GrolgothProjectile projectile = Scene.CreateProjectile<GrolgothProjectile>(ActorType.GrolgothProjectile);
+            if (projectile != null)
+            {
+                float yPos = Rom.Platform switch
+                {
+                    Platform.GBA => 112,
+                    Platform.NGage => 160,
+                    _ => throw new UnsupportedPlatformException()
+                };
+
+                if (ActionId is Action.Ground_BeginDeployBomb_Right or Action.Ground_BeginDeployBomb_Left)
+                {
+                    if (IsFacingRight)
+                    {
+                        projectile.Position = new Vector2(Position.X + 48, yPos);
+                        projectile.ActionId = GrolgothProjectile.Action.BigGroundBomb_Right;
+                    }
+                    else
+                    {
+                        projectile.Position = new Vector2(Position.X - 48, yPos);
+                        projectile.ActionId = GrolgothProjectile.Action.BigGroundBomb_Left;
+                    }
+
+                    projectile.ChangeAction();
+
+                    if (BossHealth == 1)
+                        projectile.MechModel.Speed = projectile.MechModel.Speed with { X = -1 };
+                }
+                else
+                {
+                    if (IsFacingRight && (i != 0 || AttackCount != 2))
+                    {
+                        projectile.Position = new Vector2(0, yPos);
+                        projectile.ActionId = GrolgothProjectile.Action.BigGroundBomb_Right;
+                    }
+                    else
+                    {
+                        projectile.Position = new Vector2(Scene.Resolution.X, yPos);
+                        projectile.ActionId = GrolgothProjectile.Action.BigGroundBomb_Left;
+                    }
+
+                    projectile.ChangeAction();
+                }
+            }
+        }
+    }
+
+    private void CreateMissile()
+    {
+        // TODO: Implement
+    }
+
+    private void CreateUnusedAttack()
+    {
+        // TODO: Implement
+    }
+
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {
         if (base.ProcessMessageImpl(sender, message, param))
@@ -202,6 +332,7 @@ public sealed partial class Grolgoth : MovableActor
 
         switch (message)
         {
+            // Hit by projectile
             case Message.Damaged:
                 if (State == Fsm_GroundDeployBomb) 
                     State.MoveTo(Fsm_GroundHit);
@@ -209,10 +340,11 @@ public sealed partial class Grolgoth : MovableActor
                     State.MoveTo(FUN_1001aa10);
                 return false;
 
+            // Projectile attack finished
             case Message.Main_Damaged2:
                 if (State == Fsm_GroundDeployBomb) 
                     State.MoveTo(Fsm_GroundDefault);
-                else if ((State == FUN_1001a1d4 || State == FUN_1001aec8) && AttackCount != 0)
+                else if ((State == Fsm_GroundFallDown || State == FUN_1001aec8) && AttackCount != 0)
                     AttackCount--;
                 return false;
 
@@ -223,7 +355,6 @@ public sealed partial class Grolgoth : MovableActor
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
-        // TODO: Implement
-        base.Draw(animationPlayer, forceDraw);
+        DrawLarge(animationPlayer, forceDraw);
     }
 }

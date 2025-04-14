@@ -116,8 +116,16 @@ public partial class GrolgothProjectile
                             UpdateBombSound();
                             break;
 
-                        case Action.Action10:
-                            // TODO: Implement
+                        case Action.FallingBomb:
+                            UpdateBombSound();
+
+                            PhysicalType type = Scene.GetPhysicalType(Position);
+                            if (type.IsSolid || type == PhysicalTypeValue.InstaKill)
+                            {
+                                // Send message to the boss
+                                Scene.GetGameObject(1).ProcessMessage(this, Message.Main_Damaged2);
+                                Explode();
+                            }
                             break;
 
                         case Action.Action12:

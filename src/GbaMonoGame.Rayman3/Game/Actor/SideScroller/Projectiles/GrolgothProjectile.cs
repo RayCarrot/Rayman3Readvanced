@@ -146,7 +146,7 @@ public sealed partial class GrolgothProjectile : MovableActor
 
                     State.MoveTo(Fsm_Default);
                 }
-                else if (ActionId != Action.Action10)
+                else if (ActionId != Action.FallingBomb)
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MetlImp1_PiraHit3_Mix03);
                 }

@@ -21,7 +21,7 @@ public partial class GrolgothProjectile
         Laser_Left = 7,
         BigGroundBomb_Right = 8,
         BigGroundBomb_Left = 9,
-        Action10 = 10,
+        FallingBomb = 10,
         Action11 = 11,
         Action12 = 12,
         Action13 = 13,

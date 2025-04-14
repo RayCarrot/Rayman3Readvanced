@@ -12,6 +12,6 @@ public static class Random
     public static int GetNumber(int max)
     {
         _seed = _seed * 0x19660d + 0x3c6ef35f;
-        return (int)((_seed >> 0x10) % max);
+        return MathHelpers.Mod((int)(_seed >> 0x10), max);
     }
 }
