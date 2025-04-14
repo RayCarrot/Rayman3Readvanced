@@ -82,6 +82,9 @@ public class TitleScreen : Frame
 
         if (LoadLastSave && lastSaveSlot != null && SaveGameManager.SlotExists(lastSaveSlot.Value))
         {
+            // The seed normally gets set in the intro, so do it now instead since we're skipping that
+            Random.SetSeed((uint)System.Random.Shared.Next());
+
             // Load the save slot
             GameInfo.Load(lastSaveSlot.Value);
             GameInfo.GotoLastSaveGame();
