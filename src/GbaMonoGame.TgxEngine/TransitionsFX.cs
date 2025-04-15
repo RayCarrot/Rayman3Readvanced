@@ -43,8 +43,8 @@ public static class TransitionsFX
         {
             BrightnessCoefficient += stepSize;
 
-            if (FadeCoefficient > MaxAlpha)
-                FadeCoefficient = MaxAlpha;
+            if (BrightnessCoefficient > MaxAlpha)
+                BrightnessCoefficient = MaxAlpha;
 
             Gfx.GbaFade = BrightnessCoefficient;
         }
@@ -77,8 +77,8 @@ public static class TransitionsFX
         {
             FadeCoefficient -= stepSize;
 
-            if (FadeCoefficient < 0)
-                FadeCoefficient = 0;
+            if (FadeCoefficient < MinAlpha)
+                FadeCoefficient = MinAlpha;
 
             Gfx.GbaFade = FadeCoefficient;
         }
@@ -93,8 +93,8 @@ public static class TransitionsFX
         {
             BrightnessCoefficient += stepSize;
 
-            if (BrightnessCoefficient > 1)
-                BrightnessCoefficient = 1;
+            if (BrightnessCoefficient > MaxAlpha)
+                BrightnessCoefficient = MaxAlpha;
 
             Gfx.GbaFade = BrightnessCoefficient;
         }
@@ -158,7 +158,7 @@ public static class TransitionsFX
                     AlphaStep = 0;
 
                     Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-                    Gfx.Fade = MinAlpha;
+                    Gfx.GbaFade = MinAlpha;
                 }
             }
             else
@@ -172,7 +172,7 @@ public static class TransitionsFX
     public static void FadeInInit(float stepSize)
     {
         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-        Gfx.Fade = MaxAlpha;
+        Gfx.GbaFade = MaxAlpha;
 
         FadeCoefficient = MaxAlpha;
         FadeStepSize = stepSize;
@@ -183,7 +183,7 @@ public static class TransitionsFX
         if (Screns.Count == 0)
         {
             Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-            Gfx.Fade = MinAlpha;
+            Gfx.GbaFade = MinAlpha;
 
             BrightnessCoefficient = MinAlpha;
             FadeStepSize = stepSize;
