@@ -180,16 +180,27 @@ public static class GameOptions
             ]),
             new GameOptionsGroup("DEBUG",
             [
-                // TODO: Implement
-                new MultiSelectionOptionsMenuOption<object>(
-                    text: "TEMP",
-                    infoText: "TEMP",
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "DEBUG MODE",
+                    infoText: "Indicates if debug features are enabled. Some features require the game the game to restart.",
                     items:
                     [
-                        new MultiSelectionOptionsMenuOption<object>.Item("TEMP", null),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
                     ],
-                    getData: _ => null,
-                    setData: _ => { },
+                    getData: _ => Engine.Config.DebugModeEnabled,
+                    setData: data => Engine.Config.DebugModeEnabled = data,
+                    getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "SERIALIZER LOG",
+                    infoText: "If enabled then any serialized data from the game will be logged to a file. Note that this makes loading levels slower.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
+                    ],
+                    getData: _ => Engine.Config.WriteSerializerLog,
+                    setData: data => Engine.Config.WriteSerializerLog = data,
                     getCustomName: _ => null),
             ]),
         ];

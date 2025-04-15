@@ -43,6 +43,7 @@ public class GameConfig
         MusicVolume = 1;
         
         // Debug
+        DebugModeEnabled = false;
         WriteSerializerLog = false;
     }
 
@@ -87,6 +88,7 @@ public class GameConfig
     public float SfxVolume { get; set; }
 
     // Debug
+    public bool DebugModeEnabled { get; set; }
     public bool WriteSerializerLog { get; set; }
 
     #endregion
@@ -122,6 +124,7 @@ public class GameConfig
         SfxVolume = serializer.Serialize<float>(SfxVolume, SoundSection, "SfxVolume");
 
         // Debug
+        DebugModeEnabled = serializer.Serialize<bool>(DebugModeEnabled, DebugSection, "DebugModeEnabled");
         WriteSerializerLog = serializer.Serialize<bool>(WriteSerializerLog, DebugSection, "WriteSerializerLog");
 
         // Make sure all inputs are defined

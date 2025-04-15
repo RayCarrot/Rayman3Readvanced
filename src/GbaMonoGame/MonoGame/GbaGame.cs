@@ -75,17 +75,20 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
         // Load the game
         LoadGame();
 
-        // Load the debug layout
-        _debugLayout = new DebugLayout();
-        _debugLayout.AddWindow(new GameDebugWindow(_debugGameRenderTarget));
-        _debugLayout.AddWindow(_performanceWindow = new PerformanceDebugWindow());
-        _debugLayout.AddWindow(new LoggerDebugWindow());
-        _debugLayout.AddWindow(new GfxDebugWindow());
-        _debugLayout.AddWindow(new SoundDebugWindow());
-        _debugLayout.AddWindow(new MultiplayerDebugWindow());
-        _debugLayout.AddMenu(new WindowsDebugMenu());
-        AddDebugWindowsAndMenus(_debugLayout);
-        _debugLayout.LoadContent(this);
+        if (Engine.Config.DebugModeEnabled)
+        {
+            // Load the debug layout
+            _debugLayout = new DebugLayout();
+            _debugLayout.AddWindow(new GameDebugWindow(_debugGameRenderTarget));
+            _debugLayout.AddWindow(_performanceWindow = new PerformanceDebugWindow());
+            _debugLayout.AddWindow(new LoggerDebugWindow());
+            _debugLayout.AddWindow(new GfxDebugWindow());
+            _debugLayout.AddWindow(new SoundDebugWindow());
+            _debugLayout.AddWindow(new MultiplayerDebugWindow());
+            _debugLayout.AddMenu(new WindowsDebugMenu());
+            AddDebugWindowsAndMenus(_debugLayout);
+            _debugLayout.LoadContent(this);
+        }
 
         // Check launch arguments
         string[] args = Environment.GetCommandLineArgs();
@@ -224,7 +227,9 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
 
         // Load the renderer
         _gfxRenderer = new GfxRenderer(GraphicsDevice);
-        _debugGameRenderTarget = new GameRenderTarget(GraphicsDevice, Engine.GameViewPort);
+
+        if (Engine.Config.DebugModeEnabled)
+            _debugGameRenderTarget = new GameRenderTarget(GraphicsDevice, Engine.GameViewPort);
     }
 
     protected override void Update(Microsoft.Xna.Framework.GameTime gameTime)
@@ -276,46 +281,49 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
             Pause();
         }
 
-        // Toggle debug mode
-        if (InputManager.IsButtonJustPressed(Keys.Tab) && _debugLayout != null)
+        if (Engine.Config.DebugModeEnabled)
         {
-            DebugMode = !DebugMode;
-
-            if (DebugMode)
+            // Toggle debug mode
+            if (InputManager.IsButtonJustPressed(Keys.Tab) && _debugLayout != null)
             {
-                foreach (DebugWindow window in _debugLayout.GetWindows())
-                    window.OnWindowOpened();
+                DebugMode = !DebugMode;
+
+                if (DebugMode)
+                {
+                    foreach (DebugWindow window in _debugLayout.GetWindows())
+                        window.OnWindowOpened();
+                }
+                else
+                {
+                    foreach (DebugWindow window in _debugLayout.GetWindows())
+                        window.OnWindowClosed();
+                }
+
+                // Reset
+                _prevWindowResolution = default;
             }
-            else
+
+            // Toggle pause
+            if (InputManager.IsButtonPressed(Keys.LeftControl) && InputManager.IsButtonJustPressed(Keys.P))
             {
-                foreach (DebugWindow window in _debugLayout.GetWindows())
-                    window.OnWindowClosed();
+                if (!IsPaused)
+                    Pause();
+                else
+                    Resume();
             }
 
-            // Reset
-            _prevWindowResolution = default;
-        }
+            // Speed up game
+            if (InputManager.IsButtonPressed(Keys.LeftShift))
+                _speedUp = true;
+            else if (InputManager.IsButtonJustReleased(Keys.LeftShift))
+                _speedUp = false;
 
-        // Toggle pause
-        if (InputManager.IsButtonPressed(Keys.LeftControl) && InputManager.IsButtonJustPressed(Keys.P))
-        {
-            if (!IsPaused)
-                Pause();
-            else
-                Resume();
-        }
-
-        // Speed up game
-        if (InputManager.IsButtonPressed(Keys.LeftShift))
-            _speedUp = true;
-        else if (InputManager.IsButtonJustReleased(Keys.LeftShift))
-            _speedUp = false;
-
-        // Run one frame
-        if (InputManager.IsButtonPressed(Keys.LeftControl) && InputManager.IsButtonJustPressed(Keys.F))
-        {
-            IsPaused = false;
-            RunSingleFrame = true;
+            // Run one frame
+            if (InputManager.IsButtonPressed(Keys.LeftControl) && InputManager.IsButtonJustPressed(Keys.F))
+            {
+                IsPaused = false;
+                RunSingleFrame = true;
+            }
         }
 
         StepEngine();
