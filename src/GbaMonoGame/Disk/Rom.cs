@@ -5,6 +5,7 @@ using BinarySerializer.Ubisoft.GbaEngine;
 
 namespace GbaMonoGame;
 
+// TODO: Change how Context caches data from ROM to avoid unnecessary memory, like we don't need to cache the music resources on N-Gage
 public static class Rom
 {
     #region Fields
