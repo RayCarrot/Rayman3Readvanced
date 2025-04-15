@@ -357,13 +357,13 @@ public class PauseDialogOptionsMenu
 
         // Create animations
         AnimatedObjectResource propsAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuPropAnimations);
-        Texture2D canvasTexture = Engine.FixContentManager.Load<Texture2D>("OptionsDialogBoard");
+        Texture2D canvasTexture = Engine.FixContentManager.Load<Texture2D>(Assets.OptionsDialogBoardTexture);
         AnimatedObjectResource startEraseAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuStartEraseAnimations);
-        Texture2D tabHeadersTexture = Engine.FixContentManager.Load<Texture2D>("OptionsMenuTabs");
-        Texture2D infoTextBoxTexture = Engine.FixContentManager.Load<Texture2D>("MenuTextBox");
+        Texture2D tabHeadersTexture = Engine.FixContentManager.Load<Texture2D>(Assets.OptionsMenuTabsTexture);
+        Texture2D infoTextBoxTexture = Engine.FixContentManager.Load<Texture2D>(Assets.MenuTextBoxTexture);
         AnimatedObjectResource multiplayerTypeFrameAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerTypeFrameAnimations);
-        Texture2D scrollBarTexture = Engine.FixContentManager.Load<Texture2D>("ScrollBar");
-        Texture2D scrollBarThumbTexture = Engine.FixContentManager.Load<Texture2D>("ScrollBarThumb");
+        Texture2D scrollBarTexture = Engine.FixContentManager.Load<Texture2D>(Assets.ScrollBarTexture);
+        Texture2D scrollBarThumbTexture = Engine.FixContentManager.Load<Texture2D>(Assets.ScrollBarThumbTexture);
 
         Canvas = new SpriteTextureObject
         {

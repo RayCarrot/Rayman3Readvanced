@@ -3,12 +3,11 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <LangVersion>13.0</LangVersion>
   </PropertyGroup>
+
   <ItemGroup>
-    <None Remove="Content\Content.mgcb" />
+    <MonoGameContentReference Include="Assets\Assets.mgcb" />
   </ItemGroup>
-  <ItemGroup>
-    <MonoGameContentReference Include="Content\Content.mgcb" />
-  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.2.1105">
       <PrivateAssets>All</PrivateAssets>

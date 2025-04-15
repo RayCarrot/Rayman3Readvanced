@@ -17,17 +17,17 @@ public class BonusMenuPage : MenuPage
         // Add menu options
         AddOption(new BonusTextMenuOption("ACHIEVEMENTS", 
         [
-            new BonusTextMenuOption.Collection("SaveSlotTime", "10/55"),
+            new BonusTextMenuOption.Collection(Assets.SaveSlotTimeTexture, "10/55"),
         ]));
         AddOption(new BonusTextMenuOption("CHALLENGES",
         [
-            new BonusTextMenuOption.Collection("SaveSlotTime", "3/10"),
+            new BonusTextMenuOption.Collection(Assets.SaveSlotTimeTexture, "3/10"),
         ]));
         AddOption(new BonusTextMenuOption("TIME ATTACK",
         [
-            new BonusTextMenuOption.Collection("SaveSlotTime", "40/45"),
-            new BonusTextMenuOption.Collection("SaveSlotTime", "25/45"),
-            new BonusTextMenuOption.Collection("SaveSlotTime", "2/45"),
+            new BonusTextMenuOption.Collection(Assets.SaveSlotTimeTexture, "40/45"),
+            new BonusTextMenuOption.Collection(Assets.SaveSlotTimeTexture, "25/45"),
+            new BonusTextMenuOption.Collection(Assets.SaveSlotTimeTexture, "2/45"),
         ]));
         AddOption(new TextMenuOption("LEVEL EDITOR"));
         AddOption(new TextMenuOption("SAVE TRANSFER"));

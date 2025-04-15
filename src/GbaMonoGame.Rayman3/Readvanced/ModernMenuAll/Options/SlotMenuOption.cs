@@ -1,4 +1,5 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using System;
+using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -44,7 +45,12 @@ public class SlotMenuOption : MenuOption
             {
                 BgPriority = bgPriority,
                 ObjPriority = 0,
-                Texture = Engine.FrameContentManager.Load<Texture2D>($"SaveSlotIcon_{index + 1}"),
+                Texture = index switch
+                {
+                    3 => Engine.FrameContentManager.Load<Texture2D>(Assets.SaveSlotIcon_4Texture),
+                    4 => Engine.FrameContentManager.Load<Texture2D>(Assets.SaveSlotIcon_5Texture),
+                    _ => throw new Exception(),
+                },
                 RenderContext = renderContext,
             };
         }
@@ -86,7 +92,7 @@ public class SlotMenuOption : MenuOption
         {
             BgPriority = bgPriority,
             ObjPriority = 0,
-            Texture = Engine.FrameContentManager.Load<Texture2D>("SaveSlotTime"),
+            Texture = Engine.FrameContentManager.Load<Texture2D>(Assets.SaveSlotTimeTexture),
             RenderContext = renderContext,
         };
         TimeText = new SpriteTextObject()

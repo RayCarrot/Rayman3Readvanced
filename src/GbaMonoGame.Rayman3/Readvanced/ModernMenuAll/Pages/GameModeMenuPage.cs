@@ -150,7 +150,7 @@ public class GameModeMenuPage : MenuPage
         Engine.TextureCache.SetObject(
             GameLogo.Resource.Offset,
             baseCacheId,
-            Engine.FrameContentManager.Load<Texture2D>("MenuLogo"));
+            Engine.FrameContentManager.Load<Texture2D>(Assets.MenuLogoTexture));
     }
 
     protected override void Init()

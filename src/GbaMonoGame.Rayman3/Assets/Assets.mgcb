@@ -23,7 +23,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Cursor.png
+/build:Textures/Cursor.png
 
 #begin Font_MenuWhite.png
 /importer:TextureImporter
@@ -35,7 +35,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Font_MenuWhite.png
+/build:Textures/Font_MenuWhite.png
 
 #begin Font_MenuYellow.png
 /importer:TextureImporter
@@ -47,7 +47,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Font_MenuYellow.png
+/build:Textures/Font_MenuYellow.png
 
 #begin IntroLogo_Part1.png
 /importer:TextureImporter
@@ -59,7 +59,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:IntroLogo_Part1.png
+/build:Textures/IntroLogo_Part1.png
 
 #begin IntroLogo_Part2.png
 /importer:TextureImporter
@@ -71,7 +71,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:IntroLogo_Part2.png
+/build:Textures/IntroLogo_Part2.png
 
 #begin IntroLogo_Part3.png
 /importer:TextureImporter
@@ -83,7 +83,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:IntroLogo_Part3.png
+/build:Textures/IntroLogo_Part3.png
 
 #begin IntroLogo_Part4.png
 /importer:TextureImporter
@@ -95,7 +95,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:IntroLogo_Part4.png
+/build:Textures/IntroLogo_Part4.png
 
 #begin IntroLogo_Part5.png
 /importer:TextureImporter
@@ -107,7 +107,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:IntroLogo_Part5.png
+/build:Textures/IntroLogo_Part5.png
 
 #begin IntroLogo_Part6.png
 /importer:TextureImporter
@@ -119,7 +119,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:IntroLogo_Part6.png
+/build:Textures/IntroLogo_Part6.png
 
 #begin IntroLogo_Part7.png
 /importer:TextureImporter
@@ -131,7 +131,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:IntroLogo_Part7.png
+/build:Textures/IntroLogo_Part7.png
 
 #begin IntroLogo_Part8.png
 /importer:TextureImporter
@@ -143,7 +143,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:IntroLogo_Part8.png
+/build:Textures/IntroLogo_Part8.png
 
 #begin MenuCurtain.png
 /importer:TextureImporter
@@ -155,7 +155,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:MenuCurtain.png
+/build:Textures/MenuCurtain.png
 
 #begin MenuLogo.png
 /importer:TextureImporter
@@ -167,7 +167,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:MenuLogo.png
+/build:Textures/MenuLogo.png
 
 #begin MenuTextBox.png
 /importer:TextureImporter
@@ -179,7 +179,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:MenuTextBox.png
+/build:Textures/MenuTextBox.png
 
 #begin MenuWoodenFrame.png
 /importer:TextureImporter
@@ -191,7 +191,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:MenuWoodenFrame.png
+/build:Textures/MenuWoodenFrame.png
 
 #begin OptionsDialogBoard.png
 /importer:TextureImporter
@@ -203,7 +203,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:OptionsDialogBoard.png
+/build:Textures/OptionsDialogBoard.png
 
 #begin OptionsMenuTabs.png
 /importer:TextureImporter
@@ -215,7 +215,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:OptionsMenuTabs.png
+/build:Textures/OptionsMenuTabs.png
 
 #begin SaveSlotIcon_4.png
 /importer:TextureImporter
@@ -227,7 +227,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:SaveSlotIcon_4.png
+/build:Textures/SaveSlotIcon_4.png
 
 #begin SaveSlotIcon_5.png
 /importer:TextureImporter
@@ -239,7 +239,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:SaveSlotIcon_5.png
+/build:Textures/SaveSlotIcon_5.png
 
 #begin SaveSlotTime.png
 /importer:TextureImporter
@@ -251,7 +251,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:SaveSlotTime.png
+/build:Textures/SaveSlotTime.png
 
 #begin ScrollBar.png
 /importer:TextureImporter
@@ -263,7 +263,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:ScrollBar.png
+/build:Textures/ScrollBar.png
 
 #begin ScrollBarThumb.png
 /importer:TextureImporter
@@ -275,7 +275,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:ScrollBarThumb.png
+/build:Textures/ScrollBarThumb.png
 
 #begin TitleScreen.png
 /importer:TextureImporter
@@ -287,13 +287,13 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:TitleScreen.png
+/build:Textures/TitleScreen.png
 
 #begin TitleScreenCloudsShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:TitleScreenCloudsShader.fx
+/build:Shaders/TitleScreenCloudsShader.fx
 
 #begin TitleScreenGBAClouds.png
 /importer:TextureImporter
@@ -305,7 +305,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:TitleScreenGBAClouds.png
+/build:Textures/TitleScreenGBAClouds.png
 
 #begin TitleScreenNGageClouds.png
 /importer:TextureImporter
@@ -317,5 +317,5 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:TitleScreenNGageClouds.png
+/build:Textures/TitleScreenNGageClouds.png
 

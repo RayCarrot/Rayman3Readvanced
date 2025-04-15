@@ -110,7 +110,7 @@ public static class ReadvancedFonts
 
     public static void Load()
     {
-        MenuYellow = new Font(Engine.FixContentManager.Load<Texture2D>("Font_MenuYellow"), _menuGlyphs, 15);
-        MenuWhite = new Font(Engine.FixContentManager.Load<Texture2D>("Font_MenuWhite"), _menuGlyphs, 15);
+        MenuYellow = new Font(Engine.FixContentManager.Load<Texture2D>(Assets.Font_MenuYellowTexture), _menuGlyphs, 15);
+        MenuWhite = new Font(Engine.FixContentManager.Load<Texture2D>(Assets.Font_MenuWhiteTexture), _menuGlyphs, 15);
     }
 }

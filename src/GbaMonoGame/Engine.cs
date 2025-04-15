@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame;
@@ -8,7 +7,7 @@ public static class Engine
 {
     #region Paths
 
-    public static string AssetsDirectoryName => "Content";
+    public static string AssetsDirectoryName => "Assets";
     public static string ConfigFileName => "Config.ini";
     public static string ImgGuiConfigFileName => "imgui.ini";
     public static string SerializerLogFileName => "SerializerLog.txt";

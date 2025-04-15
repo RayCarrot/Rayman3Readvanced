@@ -286,8 +286,8 @@ public class ModernMenuAll : Frame, IHasPlayfield
 
         AnimatedObjectResource propsAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuPropAnimations);
         AnimatedObjectResource steamAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuSteamAnimations);
-        Texture2D scrollBarTexture = Engine.FixContentManager.Load<Texture2D>("ScrollBar");
-        Texture2D scrollBarThumbTexture = Engine.FixContentManager.Load<Texture2D>("ScrollBarThumb");
+        Texture2D scrollBarTexture = Engine.FixContentManager.Load<Texture2D>(Assets.ScrollBarTexture);
+        Texture2D scrollBarThumbTexture = Engine.FixContentManager.Load<Texture2D>(Assets.ScrollBarThumbTexture);
 
         Wheel1 = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
         {
@@ -421,7 +421,7 @@ public class ModernMenuAll : Frame, IHasPlayfield
 
         // Replace the curtain with a new widescreen texture
         GfxScreen curtainScreen = Playfield.TileLayers[1].Screen;
-        Texture2D curtainTexture = Engine.FrameContentManager.Load<Texture2D>("MenuCurtain");
+        Texture2D curtainTexture = Engine.FrameContentManager.Load<Texture2D>(Assets.MenuCurtainTexture);
         curtainScreen.Renderer = new TextureScreenRenderer(curtainTexture);
         curtainScreen.RenderOptions.PaletteTexture = null;
         curtainScreen.RenderOptions.RenderContext = renderContext;
@@ -433,7 +433,7 @@ public class ModernMenuAll : Frame, IHasPlayfield
 
         // Replace the wooden frame with a new widescreen texture
         GfxScreen woodenFrameScreen = Playfield.TileLayers[2].Screen;
-        Texture2D woodenFrameTexture = Engine.FrameContentManager.Load<Texture2D>("MenuWoodenFrame");
+        Texture2D woodenFrameTexture = Engine.FrameContentManager.Load<Texture2D>(Assets.MenuWoodenFrameTexture);
         woodenFrameScreen.Renderer = new TextureScreenRenderer(woodenFrameTexture);
         woodenFrameScreen.RenderOptions.PaletteTexture = null;
         woodenFrameScreen.RenderOptions.RenderContext = renderContext;

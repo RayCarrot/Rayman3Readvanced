@@ -59,7 +59,7 @@ public class Intro : Frame, IHasPlayfield
                 HideTiles = new[] { 426, 688 },
                 OriginalOffset = new Point(-110, -46),
                 NewOffset = new Point(2, 6),
-                FileName = "IntroLogo_Part1"
+                FileName = Assets.IntroLogo_Part1Texture
             },
             // A
             new
@@ -68,7 +68,7 @@ public class Intro : Frame, IHasPlayfield
                 HideTiles = new[] { 462 },
                 OriginalOffset = new Point(-76, -27),
                 NewOffset = new Point(33, 17),
-                FileName = "IntroLogo_Part2"
+                FileName = Assets.IntroLogo_Part2Texture
             },
             // Y
             new
@@ -77,7 +77,7 @@ public class Intro : Frame, IHasPlayfield
                 HideTiles = new[] { 482, 490 },
                 OriginalOffset = new Point(-53, -28),
                 NewOffset = new Point(56, 21),
-                FileName = "IntroLogo_Part3"
+                FileName = Assets.IntroLogo_Part3Texture
             },
             // M
             new
@@ -86,7 +86,7 @@ public class Intro : Frame, IHasPlayfield
                 HideTiles = Array.Empty<int>(),
                 OriginalOffset = new Point(-25, -30),
                 NewOffset = new Point(86, 22),
-                FileName = "IntroLogo_Part4"
+                FileName = Assets.IntroLogo_Part4Texture
             },
             // A
             new
@@ -95,7 +95,7 @@ public class Intro : Frame, IHasPlayfield
                 HideTiles = Array.Empty<int>(),
                 OriginalOffset = new Point(3, -30),
                 NewOffset = new Point(117, 21),
-                FileName = "IntroLogo_Part5"
+                FileName = Assets.IntroLogo_Part5Texture
             },
             // N
             new
@@ -104,7 +104,7 @@ public class Intro : Frame, IHasPlayfield
                 HideTiles = new[] { 588 },
                 OriginalOffset = new Point(30, -27),
                 NewOffset = new Point(142, 19),
-                FileName = "IntroLogo_Part6"
+                FileName = Assets.IntroLogo_Part6Texture
             },
             // ®
             new
@@ -122,7 +122,7 @@ public class Intro : Frame, IHasPlayfield
                 HideTiles = new[] { 660, 676, 684 },
                 OriginalOffset = new Point(62, -52),
                 NewOffset = new Point(174, 5),
-                FileName = "IntroLogo_Part7"
+                FileName = Assets.IntroLogo_Part7Texture
             },
         };
 
@@ -199,7 +199,7 @@ public class Intro : Frame, IHasPlayfield
         Engine.TextureCache.SetObject(
             BlackLumAndLogoObj.Resource.Offset,
             baseCacheId + letters.Length,
-            Engine.FrameContentManager.Load<Texture2D>("IntroLogo_Part8"));
+            Engine.FrameContentManager.Load<Texture2D>(Assets.IntroLogo_Part8Texture));
 
         Point newOffset = new(44, 67);
         Point offset = originalBaseOffset + (newOffset - newBaseOffset);

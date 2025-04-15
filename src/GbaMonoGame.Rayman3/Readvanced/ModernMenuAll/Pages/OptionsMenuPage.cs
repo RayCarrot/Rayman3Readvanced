@@ -119,8 +119,8 @@ public class OptionsMenuPage : MenuPage
 
         // Create animations
         AnimatedObjectResource startEraseAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuStartEraseAnimations);
-        Texture2D tabHeadersTexture = Engine.FixContentManager.Load<Texture2D>("OptionsMenuTabs");
-        Texture2D infoTextBoxTexture = Engine.FixContentManager.Load<Texture2D>("MenuTextBox");
+        Texture2D tabHeadersTexture = Engine.FixContentManager.Load<Texture2D>(Assets.OptionsMenuTabsTexture);
+        Texture2D infoTextBoxTexture = Engine.FixContentManager.Load<Texture2D>(Assets.MenuTextBoxTexture);
         AnimatedObjectResource multiplayerTypeFrameAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerTypeFrameAnimations);
 
         TabsCursor = new AnimatedObject(startEraseAnimations, startEraseAnimations.IsDynamic)

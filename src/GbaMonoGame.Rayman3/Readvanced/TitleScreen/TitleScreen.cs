@@ -221,11 +221,11 @@ public class TitleScreen : Frame
         AnimationPlayer = new AnimationPlayer(false, null);
         TransitionsFX.Init(true);
 
-        CloudsShader = Engine.FrameContentManager.Load<Effect>("TitleScreenCloudsShader");
+        CloudsShader = Engine.FrameContentManager.Load<Effect>(Assets.TitleScreenCloudsShader);
 
-        Texture2D gbaClouds = Engine.FrameContentManager.Load<Texture2D>("TitleScreenGBAClouds");
-        Texture2D nGageClouds = Engine.FrameContentManager.Load<Texture2D>("TitleScreenNGageClouds");
-        Texture2D background = Engine.FrameContentManager.Load<Texture2D>("TitleScreen");
+        Texture2D gbaClouds = Engine.FrameContentManager.Load<Texture2D>(Assets.TitleScreenGBACloudsTexture);
+        Texture2D nGageClouds = Engine.FrameContentManager.Load<Texture2D>(Assets.TitleScreenNGageCloudsTexture);
+        Texture2D background = Engine.FrameContentManager.Load<Texture2D>(Assets.TitleScreenTexture);
 
         CloudsShader.Parameters["SecondaryTexture"].SetValue(nGageClouds);
 
