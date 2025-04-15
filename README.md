@@ -61,6 +61,7 @@ Pressing the `tab` key while playing will toggle the debug mode. This is set up 
 - **MilesTheCreator**: Extracting the GBA sounds
 - **Robin**: General MonoGame and shader help
 - **zelenbug**: Widescreen menu assets
+- **Fancy2209**: General MonoGame and audio help
 
 ## Want to help?
 Do you want to help out? Feel free to contact me if so! This is currently a side project and might take a long time to finish, especially when being worked on by only myself.
