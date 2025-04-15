@@ -8,15 +8,14 @@ public partial class Grolgoth
         set => base.ActionId = (int)value;
     }
 
-    // TODO: Name
     public enum Action
     {
         Ground_Idle_Right = 0,
         Ground_Idle_Left = 1,
-        Action2 = 2,
-        Action3 = 3,
-        Action4 = 4,
-        Action5 = 5,
+        Action2 = 2, // Unused
+        Action3 = 3, // Unused
+        Action4 = 4, // Unused
+        Action5 = 5, // Unused
         Ground_BeginDeployBomb_Right = 6,
         Ground_BeginDeployBomb_Left = 7,
         Ground_DeployBomb_Right = 8,
@@ -33,21 +32,21 @@ public partial class Grolgoth
         Ground_PrepareFlyUp_Left = 19,
         Ground_Land_Right = 20,
         Ground_Land_Left = 21,
-        Action22 = 22,
-        Action23 = 23,
-        Action24 = 24,
-        Action25 = 25,
-        Action26 = 26,
-        Action27 = 27,
-        Action28 = 28,
-        Action29 = 29,
-        Action30 = 30,
-        Action31 = 31,
-        Action32 = 32,
-        Action33 = 33,
-        Action34 = 34,
-        Action35 = 35,
-        Action36 = 36,
+        Air_Idle_Left = 22,
+        Action23 = 23, // Unused
+        Action24 = 24, // Unused
+        Air_ShootMissile_Left = 25,
+        Action26 = 26, // Unused
+        Air_IdleDamaged_Left = 27,
+        Air_Hit1_Left = 28,
+        Air_Hit2_Left = 29,
+        Air_Hit3_Left = 30,
+        Air_Hit4_Left = 31,
+        Air_BeginFlyUp_Left = 32,
+        Air_FlyUp_Left = 33,
+        Air_FallDown_Left = 34,
+        Air_Dying1_Left = 35,
+        Air_Dying2_Left = 36,
         Ground_FallDown_Right = 37,
         Ground_FallDown_Left = 38,
         Ground_FlyUp_Right = 39,
@@ -66,18 +65,18 @@ public partial class Grolgoth
         Ground_BeginShootEnergyShotsLow_Left = 52,
         Ground_ShootEnergyShotsLow_Right = 53,
         Ground_ShootEnergyShotsLow_Left = 54,
-        Action55 = 55,
-        Action56 = 56,
-        Action57 = 57,
-        Action58 = 58,
-        Action59 = 59,
-        Action60 = 60,
-        Action61 = 61,
-        Action62 = 62,
-        Action63 = 63,
-        Action64 = 64,
-        Action65 = 65,
-        Action66 = 66,
-        Action67 = 67,
+        Air_Idle_Right = 55,
+        Action56 = 56, // Unused
+        Action57 = 57, // Unused
+        Air_ShootMissile_Right = 58,
+        Action59 = 59, // Unused
+        Air_IdleDamaged_Right = 60,
+        Air_Hit1_Right = 61,
+        Air_Hit2_Right = 62,
+        Air_Hit3_Right = 63,
+        Air_Hit4_Right = 64,
+        Air_BeginFlyUp_Right = 65,
+        Air_FlyUp_Right = 66,
+        Air_FallDown_Right = 67,
     }
 }

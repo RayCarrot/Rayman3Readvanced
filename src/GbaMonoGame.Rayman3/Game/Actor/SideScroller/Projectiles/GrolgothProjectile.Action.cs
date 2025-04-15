@@ -8,7 +8,6 @@ public partial class GrolgothProjectile
         set => base.ActionId = (int)value;
     }
 
-    // TODO: Name
     public enum Action
     {
         SmallGroundBomb_Right = 0,
@@ -22,12 +21,12 @@ public partial class GrolgothProjectile
         BigGroundBomb_Right = 8,
         BigGroundBomb_Left = 9,
         FallingBomb = 10,
-        Action11 = 11,
-        Action12 = 12,
-        Action13 = 13,
-        Action14 = 14,
-        Action15 = 15,
-        Action16 = 16,
-        Action17 = 17,
+        BigExplodingBomb = 11, // Unused
+        MissileDefault = 12,
+        MissileSmoke1 = 13,
+        MissileSmoke2 = 14,
+        MissileSmoke3 = 15,
+        MissileBeep = 16,
+        MissileLockedIn = 17,
     }
 }

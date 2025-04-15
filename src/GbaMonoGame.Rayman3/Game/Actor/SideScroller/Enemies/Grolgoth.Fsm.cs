@@ -4,7 +4,6 @@ using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
 
-// TODO: Name functions
 public partial class Grolgoth
 {
     private bool FsmStep_CheckHitMainActor()
@@ -485,176 +484,377 @@ public partial class Grolgoth
         return true;
     }
 
-    // TODO: Implement
-    // ?
-    public bool FUN_1001a4ac(FsmAction action)
+    public bool Fsm_AirInit(FsmAction action)
     {
         switch (action)
         {
             case FsmAction.Init:
-
+                Timer = 0;
+                Scene.MainActor.ProcessMessage(this, Message.Main_Stop);
                 break;
 
             case FsmAction.Step:
+                if (!FsmStep_CheckHitMainActor())
+                    return false;
 
+                Timer++;
+
+                if (Timer == 60)
+                {
+                    Vector2 camTarget = Position + new Vector2(-60, 20);
+                    Position = Position with { Y = InitialYPosition - 250 };
+                    Scene.Camera.ProcessMessage(this, Message.Cam_MoveToTarget, camTarget);
+                }
+                else if (Timer == 120)
+                {
+                    Position = Position with { Y = InitialYPosition };
+                    ActionId = Action.Air_FallDown_Left;
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MachAtk1_Mix01);
+                    ChangeAction();
+                }
+
+                if (IsActionFinished && ActionId == Action.Air_FallDown_Left)
+                {
+                    State.MoveTo(Fsm_AirShootMissile);
+                    return false;
+                }
                 break;
 
             case FsmAction.UnInit:
-
+                // Do nothing
                 break;
         }
 
         return true;
     }
 
-    // TODO: Implement
-    // ?
-    public bool FUN_1001a660(FsmAction action)
+    public bool Fsm_AirDefault(FsmAction action)
     {
         switch (action)
         {
             case FsmAction.Init:
+                Timer = 0;
 
+                if (BossHealth == 5)
+                    ActionId = IsFacingRight ? Action.Air_Idle_Right : Action.Air_Idle_Left;
+                else
+                    ActionId = IsFacingRight ? Action.Air_IdleDamaged_Right : Action.Air_IdleDamaged_Left;
                 break;
 
             case FsmAction.Step:
+                if (!FsmStep_CheckHitMainActor())
+                    return false;
 
+                Timer++;
+                if ((Timer > 300 && BossHealth > 1) ||
+                    (Timer > 75 && BossHealth == 1))
+                {
+                    State.MoveTo(Fsm_AirShootMissile);
+                    return false;
+                }
                 break;
 
             case FsmAction.UnInit:
-
+                // Do nothing
                 break;
         }
 
         return true;
     }
 
-    // TODO: Implement
-    // ?
-    public bool FUN_1001a7a4(FsmAction action)
+    public bool Fsm_AirShootMissile(FsmAction action)
     {
         switch (action)
         {
             case FsmAction.Init:
-
+                Timer = 0;
+                ActionId = IsFacingRight ? Action.Air_ShootMissile_Right : Action.Air_ShootMissile_Left;
                 break;
 
             case FsmAction.Step:
+                if (!FsmStep_CheckHitMainActor())
+                    return false;
 
+                if (Timer == 0 && AnimatedObject.CurrentFrame == 4)
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BossVO03_Mix01);
+
+                if (Timer == 0 && AnimatedObject.CurrentFrame == 5)
+                {
+                    ShootMissile();
+                    Timer = 1;
+                    
+                    if (GameInfo.LastGreenLumAlive == 0)
+                    {
+                        Scene.Camera.ProcessMessage(this, Message.Cam_MoveToLinkedObject);
+                        GameInfo.GreenLumTouchedByRayman(0, Vector2.Zero);
+                    }
+                }
+                if (IsActionFinished)
+                {
+                    State.MoveTo(Fsm_AirDefault);
+                    return false;
+                }
                 break;
 
             case FsmAction.UnInit:
-
+                AttackCount = 8;
                 break;
         }
 
         return true;
     }
 
-    // TODO: Implement
-    // ?
-    public bool FUN_1001a940(FsmAction action)
+    // Unused
+    public bool Fsm_AirUnused(FsmAction action)
     {
         switch (action)
         {
             case FsmAction.Init:
-
+                ActionId = IsFacingRight ? Action.Action59 : Action.Action26;
                 break;
 
             case FsmAction.Step:
+                if (!FsmStep_CheckHitMainActor())
+                    return false;
 
+                if (IsActionFinished)
+                {
+                    State.MoveTo(Fsm_AirDefault);
+                    return false;
+                }
                 break;
 
             case FsmAction.UnInit:
-
+                // Do nothing
                 break;
         }
 
         return true;
     }
 
-    // TODO: Implement
-    // ?
-    public bool FUN_1001aa10(FsmAction action)
+    public bool Fsm_AirHit1(FsmAction action)
     {
         switch (action)
         {
             case FsmAction.Init:
+                Timer = 0;
+                ActionId = IsFacingRight ? Action.Air_Hit1_Right : Action.Air_Hit1_Left;
+                
+                BossHealth--;
+                ((FrameSideScroller)Frame.Current).UserInfo.BossHit();
 
+                Scene.Camera.LinkedObject = this;
+                Scene.Camera.ProcessMessage(this, Message.Cam_FollowPositionY, 80);
+                Scene.MainActor.ProcessMessage(this, Message.Main_Stop);
                 break;
 
             case FsmAction.Step:
+                Timer++;
 
+                if (Timer == 20)
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BossHurt_Mix02);
+
+                Box detectionBox = GetDetectionBox();
+
+                PhysicalType type = Scene.GetPhysicalType(new Vector2(Position.X, detectionBox.MaxY - 30));
+                
+                if (IsActionFinished && ActionId is Action.Air_Hit1_Right or Action.Air_Hit1_Left)
+                    ActionId = IsFacingRight ? Action.Air_Hit2_Right : Action.Air_Hit2_Left;
+
+                if (type == PhysicalTypeValue.InstaKill && BossHealth != 0)
+                {
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BossHurt_Mix02);
+                    State.MoveTo(Fsm_AirHit2);
+                    return false;
+                }
+
+                if (type == PhysicalTypeValue.InstaKill && BossHealth == 0)
+                {
+                    State.MoveTo(Fsm_AirDying);
+                    return false;
+                }
                 break;
 
             case FsmAction.UnInit:
-
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BigSplsh_SplshGen_Mix04);
+                Timer = 0;
                 break;
         }
 
         return true;
     }
 
-    // TODO: Implement
-    // ?
-    public bool FUN_1001acc4(FsmAction action)
+    public bool Fsm_AirHit2(FsmAction action)
     {
         switch (action)
         {
             case FsmAction.Init:
-
+                Timer = 0;
+                Position = Position with
+                {
+                    Y = Rom.Platform switch
+                    {
+                        Platform.GBA => 42,
+                        Platform.NGage => 90,
+                        _ => throw new UnsupportedPlatformException()
+                    }
+                };
+                ActionId = IsFacingRight ? Action.Air_Hit3_Right : Action.Air_Hit3_Left;
                 break;
 
             case FsmAction.Step:
+                Timer++;
 
+                if (Timer == 90)
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BossHurt_Mix02);
+
+                if (IsActionFinished)
+                {
+                    if (ActionId is Action.Air_Hit3_Right or Action.Air_Hit3_Left)
+                    {
+                        ActionId = IsFacingRight ? Action.Air_Hit4_Right : Action.Air_Hit4_Left;
+                        Timer = 0;
+                    }
+                    else if (ActionId is Action.Air_Hit4_Right or Action.Air_Hit4_Left && Timer > 120)
+                    {
+                        ActionId = IsFacingRight ? Action.Air_BeginFlyUp_Right : Action.Air_BeginFlyUp_Left;
+                        ChangeAction();
+                    }
+                }
+
+                if (ActionId is Action.Air_BeginFlyUp_Right or Action.Air_BeginFlyUp_Left && IsActionFinished)
+                {
+                    State.MoveTo(Fsm_AirAttack);
+                    return false;
+                }
                 break;
 
             case FsmAction.UnInit:
-
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Laser4_Mix01);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Laser4_Mix01);
                 break;
         }
 
         return true;
     }
 
-    // TODO: Implement
-    // ?
-    public bool FUN_1001aec8(FsmAction action)
+    public bool Fsm_AirAttack(FsmAction action)
     {
         switch (action)
         {
             case FsmAction.Init:
-
+                ActionId = IsFacingRight ? Action.Air_FlyUp_Right : Action.Air_FlyUp_Left;
+                AttackCount = 0xFF;
                 break;
 
             case FsmAction.Step:
+                if (ActionId is Action.Air_Idle_Right or Action.Air_Idle_Left && AttackCount == 0xff)
+                {
+                    if (BossHealth < 2)
+                    {
+                        if (Scene.MainActor.Position.Y > 75)
+                        {
+                            AttackCount = Rom.Platform switch
+                            {
+                                Platform.GBA => 10,
+                                Platform.NGage => 6,
+                                _ => throw new UnsupportedPlatformException()
+                            };
+                            DeployFallingBombs();
+                        }
+                    }
+                    else
+                    {
+                        if (Scene.MainActor.Position.X is > 100 and < 380)
+                        {
+                            if (BossHealth == 4)
+                            {
+                                AttackCount = 3;
+                                ShootFromAir();
+                            }
+                            else if (BossHealth == 3)
+                            {
+                                AttackCount = 3;
+                                ShootFromAir();
+                            }
+                            else if (BossHealth == 2)
+                            {
+                                AttackCount = 6;
+                                ShootFromAir();
+                            }
+                        }
+                    }
+                }
 
+                if (Position.Y < InitialYPosition - 250 && ActionId is not (Action.Air_Idle_Right or Action.Air_Idle_Left))
+                {
+                    Scene.MainActor.ProcessMessage(this, Message.Main_ExitStopOrCutscene);
+                    Scene.Camera.LinkedObject = Scene.MainActor;
+                    Scene.Camera.ProcessMessage(this, Message.Cam_FollowPositionY, 80);
+
+                    ActionId = IsFacingRight ? Action.Air_Idle_Left : Action.Air_Idle_Right;
+                }
+                else if (AttackCount == 0 && ActionId is not (Action.Air_FallDown_Right or Action.Air_FallDown_Left))
+                {
+                    Position = Position with { Y = InitialYPosition };
+                    ChangeAction();
+
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MachAtk1_Mix01);
+
+                    if ((BossHealth & 1) == 0)
+                    {
+                        ActionId = Action.Air_FallDown_Right;
+                        Position = Position with { X = 50 };
+                    }
+                    else
+                    {
+                        ActionId = Action.Air_FallDown_Left;
+                        Position = Position with { X = 423 };
+                    }
+                }
+
+                if (ActionId is Action.Air_FallDown_Right or Action.Air_FallDown_Left && IsActionFinished)
+                {
+                    Unused = 0;
+                    State.MoveTo(Fsm_AirShootMissile);
+                    return false;
+                }
                 break;
 
             case FsmAction.UnInit:
-
+                // Do nothing
                 break;
         }
 
         return true;
     }
 
-    // TODO: Implement
-    // ?
-    public bool FUN_1001b1c0(FsmAction action)
+    public bool Fsm_AirDying(FsmAction action)
     {
         switch (action)
         {
             case FsmAction.Init:
-
+                ActionId = Action.Air_Dying1_Left;
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalDead_Mix02);
                 break;
 
             case FsmAction.Step:
-
+                if (IsActionFinished)
+                {
+                    if (ActionId != Action.Air_Dying2_Left)
+                    {
+                        ActionId = Action.Air_Dying2_Left;
+                    }
+                    else
+                    {
+                        Scene.MainActor.ProcessMessage(this, Message.Main_LevelEnd);
+                        ProcessMessage(this, Message.Destroy);
+                    }
+                }
                 break;
 
             case FsmAction.UnInit:
-
+                // Do nothing
                 break;
         }
 

@@ -254,8 +254,8 @@
 | UnusedEnemyMode7          | 🟩     |                                              |
 | SpikyBag                  | 🟩     |                                              |
 | MurfyStone                | 🟩     |                                              |
-| Grolgoth                  | 🟥     |                                              |
-| GrolgothBomb              | 🟥     |                                              |
+| Grolgoth                  | 🟩     |                                              |
+| GrolgothProjectile        | 🟩     |                                              |
 | Teensies                  | 🟩     |                                              |
 | Ammo                      | 🟩     |                                              |
 | Rocky                     | 🟩     |                                              |

@@ -17,9 +17,9 @@ public partial class GrolgothProjectile
                 UpdateVerticalOscillation();
 
                 // Check for out of range
-                if (ActionId != Action.Action12 &&
-                    ActionId != Action.Action16 &&
-                    ActionId != Action.Action17 &&
+                if (ActionId != Action.MissileDefault &&
+                    ActionId != Action.MissileBeep &&
+                    ActionId != Action.MissileLockedIn &&
                     ((ScreenPosition.X > Scene.Resolution.X + 1 && Speed.X > 0) || (ScreenPosition.X < 0 && Speed.X < 0)))
                 {
                     // Send message to the boss
@@ -29,7 +29,7 @@ public partial class GrolgothProjectile
                 // Check for hit main actor
                 else if (Scene.IsHitMainActor(this))
                 {
-                    if (ActionId != Action.Action11 || Scale <= MathHelpers.FromFixedPoint(0xa000))
+                    if (ActionId != Action.BigExplodingBomb || Scale <= MathHelpers.FromFixedPoint(0xa000))
                     {
                         Scene.MainActor.ReceiveDamage(Rom.Platform switch
                         {
@@ -83,16 +83,16 @@ public partial class GrolgothProjectile
                             if (Scale != 1 && AnimatedObject.AffineMatrix != null)
                                 AnimatedObject.AffineMatrix = new AffineMatrix(0, Scale, Scale);
 
-                            if (Scene.IsHitActor(this) is { Type: (int)ActorType.Grolgoth } grolgoth)
+                            if (Scene.IsHitActor(this) is { Type: (int)ActorType.Grolgoth } hitActor)
                             {
-                                grolgoth.ProcessMessage(this, Message.Damaged);
+                                hitActor.ProcessMessage(this, Message.Damaged);
                                 Explode();
                             } 
                             break;
 
                         case Action.BigGroundBomb_Right:
                         case Action.BigGroundBomb_Left:
-                        case Action.Action11:
+                        case Action.BigExplodingBomb:
                             if (ActionId is Action.BigGroundBomb_Right or Action.BigGroundBomb_Left)
                                 ManageHitBomb(true);
 
@@ -110,7 +110,7 @@ public partial class GrolgothProjectile
                             if (Scale > 0.625f)
                                 Scale -= MathHelpers.FromFixedPoint(0x100);
 
-                            if (Timer > 180 && ActionId == Action.Action11)
+                            if (Timer > 180 && ActionId == Action.BigExplodingBomb)
                                 Explode();
 
                             UpdateBombSound();
@@ -128,16 +128,35 @@ public partial class GrolgothProjectile
                             }
                             break;
 
-                        case Action.Action12:
-                        case Action.Action16:
-                        case Action.Action17:
-                            // TODO: Implement
+                        case Action.MissileDefault:
+                        case Action.MissileBeep:
+                        case Action.MissileLockedIn:
+                            UpdateMissile();
+
+                            Grolgoth grolgoth = Scene.GetGameObject<Grolgoth>(1);
+                            if (grolgoth.ActionId is
+                                Grolgoth.Action.Action26 or Grolgoth.Action.Action59 or
+                                Grolgoth.Action.Air_Hit1_Left or Grolgoth.Action.Air_Hit1_Right)
+                            {
+                                Explode();
+                            }
+
+                            if (Scene.IsHitActor(this) is { Type: (int)ActorType.Grolgoth } hitGrolgoth &&
+                                MissileTimer > 240 && MissileTimer != -1)
+                            {
+                                hitGrolgoth.ProcessMessage(this, Message.Damaged);
+                                Explode();
+                            }
+                            else if (Scene.MainActor.HitPoints == 0)
+                            {
+                                Explode();
+                            }
                             break;
 
-                        case Action.Action13:
-                        case Action.Action14:
-                        case Action.Action15:
-                            // TODO: Implement
+                        case Action.MissileSmoke1:
+                        case Action.MissileSmoke2:
+                        case Action.MissileSmoke3:
+                            UpdateMissileSmoke();
                             break;
                     }
                 }
@@ -152,10 +171,11 @@ public partial class GrolgothProjectile
             case FsmAction.UnInit:
                 AnimatedObject.ScreenPos = AnimatedObject.ScreenPos with { X = 0 };
                 Scale = 1;
+                MissileTimer = -1;
                 AnimatedObject.AffineMatrix = null;
                 ProcessMessage(this, Message.Destroy);
                 Timer = 0;
-                Field_0x6c = 0;
+                Rotation = Angle256.Zero;
                 VerticalOscillationAmplitude = 0;
                 IsVerticalOscillationMovingDown = true;
                 VerticalOscillationOffset = 0;
