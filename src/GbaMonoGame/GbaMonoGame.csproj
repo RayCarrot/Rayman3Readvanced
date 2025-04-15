@@ -25,14 +25,9 @@
     <ProjectReference Include="..\..\sub-modules\BinarySerializer\src\BinarySerializer.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="libopenmpt.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="libopenmpt_license.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="soloud.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <ContentWithTargetPath Include="Libraries\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
+    </ContentWithTargetPath>
   </ItemGroup>
 </Project>
