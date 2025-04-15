@@ -161,9 +161,22 @@ public sealed partial class FlyingShell : MovableActor
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Motor01_Mix12);
 
                 if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
+                {
                     State.MoveTo(Fsm_GameCubeEndMap);
+                }
                 else
+                {
                     Frame.Current.EndOfFrame = true;
+
+                    if (Engine.Config.FixBugs)
+                    {
+                        if (GameInfo.IsFirstTimeCompletingLevel())
+                            GameInfo.UpdateLastCompletedLevel();
+
+                        GameInfo.PersistentInfo.LastPlayedLevel = (byte)GameInfo.MapId;
+                        GameInfo.Save(GameInfo.CurrentSlot);
+                    }
+                }
                 return false;
 
             case Message.Damaged:
