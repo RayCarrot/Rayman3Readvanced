@@ -125,6 +125,17 @@ public static class FontManager
         _font32 = new LoadedFont(font32, CreateFontTexture(font32, Color.White, Color.Transparent), GetFontCharacterRectangles(font32));
     }
 
+    public static void Unload()
+    {
+        _font8?.Texture.Dispose();
+        _font16?.Texture.Dispose();
+        _font32?.Texture.Dispose();
+        
+        _font8 = null;
+        _font16 = null;
+        _font32 = null;
+    }
+
     public static byte[] GetTextBytes(string text)
     {
         return Encoding.GetBytes(text);

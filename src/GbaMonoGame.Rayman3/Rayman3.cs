@@ -288,6 +288,12 @@ public class Rayman3 : GbaGame
         ]);
     }
 
+    protected override void UnloadGame()
+    {
+        SoundEventsManager.Unload();
+        FontManager.Unload();
+    }
+
     protected override void Initialize()
     {
         base.Initialize();

@@ -5,7 +5,6 @@ using BinarySerializer.Ubisoft.GbaEngine;
 
 namespace GbaMonoGame;
 
-// TODO: Change how Context caches data from ROM to avoid unnecessary memory, like we don't need to cache the music resources on N-Gage
 public static class Rom
 {
     #region Fields
@@ -43,6 +42,7 @@ public static class Rom
     #region Events
 
     public static event EventHandler Loaded;
+    public static event EventHandler Unloaded;
 
     #endregion
 
@@ -151,6 +151,25 @@ public static class Rom
             IsLoaded = false;
             throw;
         }
+    }
+
+    public static void UnInit()
+    {
+        IsLoaded = false;
+
+        _context?.Dispose();
+
+        _gameDirectory = default;
+        _gameFileNames = default;
+        _game = default;
+        _platform = default;
+        _originalResolution = default;
+        _originalGameRenderContext = default;
+        _originalScaledGameRenderContext = default;
+        _context = default;
+        _loader = default;
+
+        Unloaded?.Invoke(null, EventArgs.Empty);
     }
 
     /// <summary>

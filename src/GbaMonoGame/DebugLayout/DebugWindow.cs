@@ -12,4 +12,6 @@ public abstract class DebugWindow
 
     public virtual void OnWindowOpened() { }
     public virtual void OnWindowClosed() { }
+
+    public virtual void Unload() { }
 }

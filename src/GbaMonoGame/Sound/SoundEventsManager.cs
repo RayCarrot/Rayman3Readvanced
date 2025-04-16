@@ -32,6 +32,7 @@ public abstract class SoundEventsManager
     protected abstract void ForcePauseAllSongsImpl();
     protected abstract void ForceResumeAllSongsImpl();
     protected abstract void DrawDebugLayoutImpl();
+    protected abstract void UnloadImpl();
 
     #endregion
 
@@ -41,6 +42,12 @@ public abstract class SoundEventsManager
     {
         SoundEngineInterface.Load();
         Current = manager;
+    }
+
+    public static void Unload()
+    {
+        Current?.UnloadImpl();
+        Current = null;
     }
 
     public static void RefreshEventSet() => Current.RefreshEventSetImpl();

@@ -36,7 +36,7 @@ public class NGageSoundEventsManager : SoundEventsManager
 
     #region Private Fields
 
-    private readonly Soloud _soloud; // TODO: Deinit! With Rom.UnInit
+    private readonly Soloud _soloud;
 
     private readonly Dictionary<int, Music> _musicTable;
     private readonly Dictionary<int, SoundEffect> _soundEffectsTable;
@@ -418,6 +418,11 @@ public class NGageSoundEventsManager : SoundEventsManager
 
             ImGui.EndTable();
         }
+    }
+
+    protected override void UnloadImpl()
+    {
+        _soloud.deinit();
     }
 
     #endregion

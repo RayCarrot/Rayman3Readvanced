@@ -79,5 +79,10 @@ public class LoggerDebugWindow : DebugWindow
         }
     }
 
+    public override void Unload()
+    {
+        Logger.Log -= Logger_Log;
+    }
+
     private record struct Log(string Message, LogType Type, Vector4 Color);
 }

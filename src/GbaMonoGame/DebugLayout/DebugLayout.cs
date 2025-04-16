@@ -23,6 +23,17 @@ public class DebugLayout
     public T GetMenu<T>() where T : DebugMenu => _menus.FirstOrDefault(x => x is T) as T;
     public IReadOnlyCollection<DebugMenu> GetMenus() => _menus;
 
+    public void Clear()
+    {
+        foreach (DebugWindow debugWindow in _windows)
+            debugWindow.Unload();
+        foreach (DebugMenu debugMenu in _menus)
+            debugMenu.Unload();
+
+        _windows.Clear();
+        _menus.Clear();
+    }
+
     public unsafe void LoadContent(Game game)
     {
         _guiRenderer = new ImGuiRenderer(game);

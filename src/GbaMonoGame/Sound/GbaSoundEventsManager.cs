@@ -34,7 +34,7 @@ public class GbaSoundEventsManager : SoundEventsManager
 
     #region Private Fields
 
-    private readonly Soloud _soloud; // TODO: Deinit! With Rom.UnInit
+    private readonly Soloud _soloud;
     private readonly Dictionary<int, Song> _songTable;
     private readonly SoundBank _soundBank;
     private readonly float[] _volumePerType;
@@ -567,6 +567,11 @@ public class GbaSoundEventsManager : SoundEventsManager
 
             ImGui.EndTable();
         }
+    }
+
+    protected override void UnloadImpl()
+    {
+        _soloud.deinit();
     }
 
     #endregion

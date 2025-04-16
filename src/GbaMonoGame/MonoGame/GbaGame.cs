@@ -78,7 +78,12 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
         if (Engine.Config.DebugModeEnabled)
         {
             // Load the debug layout
-            _debugLayout = new DebugLayout();
+            if (_debugLayout == null)
+            {
+                _debugLayout = new DebugLayout();
+                _debugLayout.LoadContent(this);
+            }
+
             _debugLayout.AddWindow(new GameDebugWindow(_debugGameRenderTarget));
             _debugLayout.AddWindow(_performanceWindow = new PerformanceDebugWindow());
             _debugLayout.AddWindow(new LoggerDebugWindow());
@@ -87,7 +92,6 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
             _debugLayout.AddWindow(new MultiplayerDebugWindow());
             _debugLayout.AddMenu(new WindowsDebugMenu());
             AddDebugWindowsAndMenus(_debugLayout);
-            _debugLayout.LoadContent(this);
         }
 
         // Check launch arguments
@@ -98,6 +102,19 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
             if (arg.EndsWith(".bk2") && File.Exists(arg))
                 LoadBizHawkTas(arg);
         }
+    }
+
+    private void Rom_Unloaded(object sender, EventArgs e)
+    {
+        // Unload the game
+        UnloadGame();
+
+        // Clear debug windows and menus
+        _debugLayout?.Clear();
+
+        // Clear the cache
+        Engine.TextureCache.Clear();
+        Engine.PaletteCache.Clear();
     }
 
     #endregion
@@ -196,6 +213,7 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
 
     protected abstract Frame CreateInitialFrame();
     protected virtual void LoadGame() { }
+    protected virtual void UnloadGame() { }
     protected virtual void AddDebugWindowsAndMenus(DebugLayout debugLayout) { }
 
     protected override void Initialize()
@@ -215,6 +233,7 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
         // Subscribe to events
         Exiting += GbaGame_Exiting;
         Rom.Loaded += Rom_Loaded;
+        Rom.Unloaded += Rom_Unloaded;
 
         // Load the config
         Engine.LoadConfig();
@@ -390,6 +409,7 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
 
     protected override void Dispose(bool disposing)
     {
+        Rom.UnInit();
         Engine.UnInit();
         base.Dispose(disposing);
     }
