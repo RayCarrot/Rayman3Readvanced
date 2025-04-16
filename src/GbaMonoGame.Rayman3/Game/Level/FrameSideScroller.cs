@@ -214,8 +214,13 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         }
 
         // Pause
-        if (JoyPad.IsButtonJustPressed(GbaInput.Start) && CircleTransitionMode == TransitionMode.None && CanPause)
+        if ((JoyPad.IsButtonJustPressed(GbaInput.Start) || (Rom.Platform == Platform.NGage && PauseFrame)) && 
+            CircleTransitionMode == TransitionMode.None && 
+            CanPause)
         {
+            if (Rom.Platform == Platform.NGage)
+                PauseFrame = false;
+
             GameTime.Pause();
             CurrentStepAction = Fog != null ? Step_Pause_DisableFog : Step_Pause_Init;
         }
@@ -262,7 +267,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.AddDialog(PauseDialog, true, false);
 
         if (Rom.Platform == Platform.NGage)
-            NGage_0x4 = true;
+            BlockPauseFrame = true;
 
         Scene.Step();
         UserInfo.Draw(Scene.AnimationPlayer);
@@ -292,7 +297,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.RemoveLastDialog();
 
         if (Rom.Platform == Platform.NGage)
-            NGage_0x4 = false;
+            BlockPauseFrame = false;
 
         Scene.RefreshDialogs();
         Scene.ProcessDialogs();

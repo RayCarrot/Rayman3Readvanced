@@ -1583,9 +1583,6 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
 
-        if (Rom.Platform == Platform.NGage)
-            NGage_0x4 = false;
-
         CurrentStepAction = Step_Normal;
         GameTime.Resume();
     }

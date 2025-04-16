@@ -212,7 +212,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.AddDialog(PauseDialog, true, false);
 
         if (Rom.Platform == Platform.NGage)
-            NGage_0x4 = true;
+            BlockPauseFrame = true;
 
         Scene.Step();
         UserInfo.Draw(Scene.AnimationPlayer);
@@ -237,7 +237,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.RemoveLastDialog();
 
         if (Rom.Platform == Platform.NGage)
-            NGage_0x4 = false;
+            BlockPauseFrame = false;
 
         Scene.RefreshDialogs();
 
@@ -246,7 +246,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.ProcessDialogs();
 
         if (Rom.Platform == Platform.NGage)
-            NGage_0x4 = false;
+            BlockPauseFrame = false;
 
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();

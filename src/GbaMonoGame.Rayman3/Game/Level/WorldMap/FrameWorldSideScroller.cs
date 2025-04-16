@@ -112,8 +112,12 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.AnimationPlayer.Execute();
         LevelMusicManager.Step();
 
-        if (JoyPad.IsButtonJustPressed(GbaInput.Start) && !BlockPause)
+        if ((JoyPad.IsButtonJustPressed(GbaInput.Start) || (Rom.Platform == Platform.NGage && PauseFrame)) && 
+            !BlockPause)
         {
+            if (Rom.Platform == Platform.NGage)
+                PauseFrame = false;
+
             CurrentStepAction = Step_Pause_Init;
             GameTime.Pause();
         }
@@ -144,7 +148,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.AddDialog(PauseDialog, true, false);
 
         if (Rom.Platform == Platform.NGage)
-            NGage_0x4 = true;
+            BlockPauseFrame = true;
 
         Scene.Step();
         UserInfo.Draw(Scene.AnimationPlayer);
@@ -174,7 +178,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.RemoveLastDialog();
 
         if (Rom.Platform == Platform.NGage)
-            NGage_0x4 = false;
+            BlockPauseFrame = false;
 
         Scene.RefreshDialogs();
         Scene.ProcessDialogs();
@@ -204,7 +208,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.AnimationPlayer.Execute();
 
         if (Rom.Platform == Platform.NGage)
-            NGage_0x4 = false;
+            BlockPauseFrame = false;
 
         CurrentStepAction = Step_Normal;
         GameTime.Resume();
