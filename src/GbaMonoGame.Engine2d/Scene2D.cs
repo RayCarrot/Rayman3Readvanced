@@ -564,15 +564,15 @@ public class Scene2D
     public GameObject GetGameObject(int instanceId) => KnotManager.GetGameObject(instanceId);
     public T GetGameObject<T>(int instanceId) where T : GameObject => (T)KnotManager.GetGameObject(instanceId);
 
-    public T CreateProjectile<T>(Enum actorType)
+    public T CreateProjectile<T>(Enum actorType, bool allowAddWhenNeeded = true)
         where T : BaseActor
     {
-        return (T)KnotManager.CreateProjectile(this, (int)(object)actorType);
+        return (T)KnotManager.CreateProjectile(this, (int)(object)actorType, allowAddWhenNeeded);
     }
 
-    public BaseActor CreateProjectile(int actorType)
+    public BaseActor CreateProjectile(int actorType, bool allowAddWhenNeeded = true)
     {
-        return KnotManager.CreateProjectile(this, actorType);
+        return KnotManager.CreateProjectile(this, actorType, allowAddWhenNeeded);
     }
 
     public PhysicalType GetPhysicalType(Vector2 position)

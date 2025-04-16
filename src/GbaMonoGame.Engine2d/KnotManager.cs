@@ -192,7 +192,7 @@ public class KnotManager
         PendingAddedProjectiles.Clear();
     }
 
-    public BaseActor CreateProjectile(Scene2D scene, int actorType)
+    public BaseActor CreateProjectile(Scene2D scene, int actorType, bool allowAddWhenNeeded)
     {
         foreach (BaseActor actor in new DisabledActorIterator(scene))
         {
@@ -212,7 +212,7 @@ public class KnotManager
             }
         }
 
-        if (Engine.Config.AddProjectilesWhenNeeded)
+        if (allowAddWhenNeeded && Engine.Config.AddProjectilesWhenNeeded)
         {
             // Custom code to remove the limit of only spawning already allocated projectiles. This is needed if the game runs
             // at a higher resolution as it might need more projectiles to be active at the same time due to more actors being

@@ -8,7 +8,7 @@ public class SanctuaryOfBigTree : FrameSideScroller
     {
         base.Step();
 
-        Leaf leaf = Scene.CreateProjectile<Leaf>(ActorType.Leaf);
+        Leaf leaf = Scene.CreateProjectile<Leaf>(ActorType.Leaf, allowAddWhenNeeded: false);
         if (leaf != null)
         {
             Vector2 camPos = Scene.Playfield.Camera.Position;
