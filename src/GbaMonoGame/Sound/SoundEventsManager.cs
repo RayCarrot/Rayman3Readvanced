@@ -3,8 +3,6 @@ using BinarySerializer.Ubisoft.GbaEngine;
 
 namespace GbaMonoGame;
 
-// TODO: Find better C# audio library since the MonoGame one is too limiting. We need to support loop points and ideally fade-out.
-
 public abstract class SoundEventsManager
 {
     #region Public Properties

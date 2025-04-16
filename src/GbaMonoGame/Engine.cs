@@ -7,6 +7,7 @@ public static class Engine
 {
     #region Paths
 
+    public static string DataDirectoryName => "Data";
     public static string AssetsDirectoryName => "Assets";
     public static string ConfigFileName => "Config.ini";
     public static string ImgGuiConfigFileName => "imgui.ini";

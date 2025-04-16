@@ -6,7 +6,7 @@ public static class FileManager
 {
     public static string GetDataDirectory()
     {
-        return "Data";
+        return Engine.DataDirectoryName;
     }
 
     public static string GetDataDirectory(string dir)

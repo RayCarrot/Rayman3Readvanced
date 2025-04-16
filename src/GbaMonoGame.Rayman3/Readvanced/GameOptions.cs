@@ -193,7 +193,7 @@ public static class GameOptions
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "SERIALIZER LOG",
-                    infoText: "If enabled then any serialized data from the game will be logged to a file. Note that this makes loading levels slower.",
+                    infoText: "If enabled then any serialized data from the game will be logged to a file. Note that this makes loading levels slower. This won't go into effect until the game is restarted.",
                     items:
                     [
                         new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),

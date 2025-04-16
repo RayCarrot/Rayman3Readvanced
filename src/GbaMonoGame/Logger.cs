@@ -13,20 +13,32 @@ public static class Logger
     }
 
     [StringFormatMethod("message")]
-    public static void NotImplemented(string message, params object[] args) => 
-        OnLog(new LogEventArgs(message, args, LogType.NotImplemented));
+    public static void NotImplemented(string message, params object[] args)
+    {
+        if (Engine.Config.DebugModeEnabled)
+            OnLog(new LogEventArgs(message, args, LogType.NotImplemented));
+    }
 
     [StringFormatMethod("message")]
-    public static void Debug(string message, params object[] args) => 
-        OnLog(new LogEventArgs(message, args, LogType.Debug));
+    public static void Debug(string message, params object[] args)
+    {
+        if (Engine.Config.DebugModeEnabled)
+            OnLog(new LogEventArgs(message, args, LogType.Debug));
+    }
 
     [StringFormatMethod("message")]
-    public static void Info(string message, params object[] args) => 
-        OnLog(new LogEventArgs(message, args, LogType.Info));
+    public static void Info(string message, params object[] args)
+    {
+        if (Engine.Config.DebugModeEnabled)
+            OnLog(new LogEventArgs(message, args, LogType.Info));
+    }
 
     [StringFormatMethod("message")]
-    public static void Error(string message, params object[] args) => 
-        OnLog(new LogEventArgs(message, args, LogType.Error));
+    public static void Error(string message, params object[] args)
+    {
+        if (Engine.Config.DebugModeEnabled)
+            OnLog(new LogEventArgs(message, args, LogType.Error));
+    }
 
     [Flags]
     public enum LogType
