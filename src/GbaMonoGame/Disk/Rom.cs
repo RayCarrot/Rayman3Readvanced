@@ -132,8 +132,8 @@ public static class Rom
             // Set the original game resolution
             _originalResolution = Platform switch
             {
-                Platform.GBA => new Vector2(240, 160),
-                Platform.NGage => new Vector2(176, 208),
+                Platform.GBA => Resolution.Gba,
+                Platform.NGage => Resolution.NGage,
                 _ => throw new UnsupportedPlatformException(),
             };
 

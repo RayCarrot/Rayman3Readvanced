@@ -14,7 +14,7 @@ public class PauseDialogOptionsMenu
 {
     public PauseDialogOptionsMenu()
     {
-        RenderContext = new FixedResolutionRenderContext(new Vector2(384, 216), verticalAlignment: VerticalAlignment.Top);
+        RenderContext = new FixedResolutionRenderContext(Resolution.Modern, verticalAlignment: VerticalAlignment.Top);
     }
 
     private const float TransitionHeight = 220;

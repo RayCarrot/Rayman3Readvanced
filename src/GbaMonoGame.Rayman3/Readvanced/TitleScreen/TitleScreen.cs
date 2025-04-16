@@ -216,7 +216,7 @@ public class TitleScreen : Frame
 
     public override void Init()
     {
-        RenderContext renderContext = new FixedResolutionRenderContext(new Vector2(384, 216));
+        RenderContext renderContext = new FixedResolutionRenderContext(Resolution.Modern);
 
         AnimationPlayer = new AnimationPlayer(false, null);
         TransitionsFX.Init(true);

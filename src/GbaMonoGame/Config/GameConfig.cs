@@ -13,7 +13,7 @@ public class GameConfig
     public GameConfig()
     {
         Microsoft.Xna.Framework.Graphics.DisplayMode defaultDisplayMode = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode;
-        Vector2 defaultResolution = new(384, 216);
+        Vector2 defaultResolution = Resolution.Modern;
         const int defaultWindowScale = 4;
 
         // Display

@@ -77,7 +77,7 @@ public static class Engine
 
         // If the internal resolution is null then we default to the original resolution
         if (config.InternalGameResolution == null)
-            InternalGameResolution = Rom.IsLoaded ? Rom.OriginalResolution : new Vector2(384, 216);
+            InternalGameResolution = Rom.IsLoaded ? Rom.OriginalResolution : Resolution.Modern;
         else
             InternalGameResolution = config.InternalGameResolution.Value;
     }

@@ -12,6 +12,7 @@ public static class GameOptions
         // Get graphics properties
         GraphicsAdapter adapter = Engine.GbaGame.GraphicsDevice.Adapter;
         Vector2 originalRes = Rom.OriginalResolution;
+        Vector2 modernRes = Resolution.Modern;
         Vector2 screenRes = new(adapter.CurrentDisplayMode.Width, adapter.CurrentDisplayMode.Height);
         int windowResCount = Math.Min((int)(screenRes.X / originalRes.X), (int)(screenRes.Y / originalRes.Y));
 
@@ -84,7 +85,7 @@ public static class GameOptions
                     items:
                     [
                         new MultiSelectionOptionsMenuOption<Vector2>.Item($"ORIGINAL ({originalRes.X} x {originalRes.Y})", originalRes),
-                        new MultiSelectionOptionsMenuOption<Vector2>.Item("MODERN (384 x 216)", new Vector2(384, 216)), // 16:9
+                        new MultiSelectionOptionsMenuOption<Vector2>.Item($"MODERN ({modernRes.X} x {modernRes.Y})", modernRes), // 16:9
                     ],
                     getData: _ => Engine.InternalGameResolution,
                     setData: data =>

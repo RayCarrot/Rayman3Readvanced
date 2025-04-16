@@ -278,7 +278,7 @@ public class ModernMenuAll : Frame, IHasPlayfield
 
     public override void Init()
     {
-        RenderContext renderContext = new FixedResolutionRenderContext(new Vector2(384, 216));
+        RenderContext renderContext = new FixedResolutionRenderContext(Resolution.Modern);
 
         LoadGameInfo();
 
