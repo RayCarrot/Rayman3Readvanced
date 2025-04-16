@@ -1,4 +1,5 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using System;
+using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 
 namespace GbaMonoGame.Rayman3;
@@ -103,7 +104,12 @@ public class MenuAllAnimations
                 IsFramed = true,
                 BgPriority = 0,
                 ObjPriority = 0,
-                ScreenPos = new Vector2(120, 28),
+                ScreenPos = new Vector2(120, Rom.Region switch
+                {
+                    Region.Usa => 80,
+                    Region.Europe => 28,
+                    _ => throw new ArgumentOutOfRangeException()
+                }),
                 CurrentAnimation = 0,
                 RenderContext = renderContext,
             };

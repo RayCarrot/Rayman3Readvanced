@@ -48,6 +48,21 @@ The button mapping will be made customizable in the future, along with controlle
 
 You can also launch the game with a BizHawk .bk2 TAS file which will have it play the button inputs from that.
 
+## Supported platforms
+The following platforms are currently supported. More platforms are planned in the future.
+
+- Windows 7 and above (x64)
+
+## Supported game ROMs
+The following ROMs are supported. Prototype ROMs will not work due to them using different addresses and earlier game data.
+
+- Rayman 3 (GBA - Europe)
+- Rayman 3 (GBA - USA)
+- Rayman 10th Anniversary (GBA - Europe)
+- Rayman 10th Anniversary (GBA - USA)
+- Winnie the Pooh's Rumbly Tumbly Adventure & Rayman 3 (GBA - Europe)
+- Rayman 3 (N-Gage)
+
 ## Debug mode
 Pressing the `tab` key while playing will toggle the debug mode. This is set up using ImGUI and is meant to help debugging the game.
 

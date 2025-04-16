@@ -141,8 +141,12 @@ public partial class GameCubeMenu : Frame
         
         JoyBus = new JoyBus();
         JoyBus.Connect();
-        // TODO: If we use this we should allow both PAL and NTSC regions. Currently this is for the PAL region (AYZP & GRHP).
-        JoyBus.SetRegion(0x41595a50, 0x47524850);
+
+        if (Rom.Region == Region.Europe)
+            JoyBus.SetRegion(0x41595a50, 0x47524850); // AYZP GRHP
+        else if (Rom.Region == Region.Usa)
+            JoyBus.SetRegion(0x41595a45, 0x47524845); // AYZE GRHE
+
         IsJoyBusActive = true;
         
         MapScroll = 0;

@@ -13,6 +13,7 @@ public static class Rom
     private static string[] _gameFileNames;
     private static Game _game;
     private static Platform _platform;
+    private static Region _region;
     private static Vector2 _originalResolution;
     private static RenderContext _originalGameRenderContext;
     private static RenderContext _originalScaledGameRenderContext;
@@ -29,6 +30,7 @@ public static class Rom
     public static string[] GameFileNames => IsLoaded ? _gameFileNames : throw new RomNotInitializedException();
     public static Game Game => IsLoaded ? _game : throw new RomNotInitializedException();
     public static Platform Platform => IsLoaded ? _platform : throw new RomNotInitializedException();
+    public static Region Region => IsLoaded ? _region : throw new RomNotInitializedException();
 
     public static Vector2 OriginalResolution => IsLoaded ? _originalResolution : throw new RomNotInitializedException();
     public static RenderContext OriginalGameRenderContext => IsLoaded ? _originalGameRenderContext : throw new RomNotInitializedException();
@@ -64,12 +66,22 @@ public static class Rom
 
             context.AddPreDefinedPointers(Game switch
             {
-                Game.Rayman3 when gameCode is "AYZP" => DefinedPointers.Rayman3_GBA_EU,
-                //Game.Rayman3 when gameCode is "AYZE" => DefinedPointers.Rayman3_GBA_US, // TODO: Support US version
+                Game.Rayman3 when gameCode is "AYZP" => DefinedPointers.Rayman3_GBA_EU, // Rayman 3 (Europe)
+                Game.Rayman3 when gameCode is "AYZE" => DefinedPointers.Rayman3_GBA_US, // Rayman 3 (USA)
+                Game.Rayman3 when gameCode is "BX5P" => DefinedPointers.Rayman3_GBA_10thAnniversary_EU, // Rayman 10th Anniversary (Europe)
+                Game.Rayman3 when gameCode is "BX5E" => DefinedPointers.Rayman3_GBA_10thAnniversary_US, // Rayman 10th Anniversary (USA)
+                Game.Rayman3 when gameCode is "BWZP" => DefinedPointers.Rayman3_GBA_WinnieThePoohPack_EU, // Winnie the Pooh's Rumbly Tumbly Adventure & Rayman 3 (Europe)
                 _ => throw new Exception($"Unsupported game {Game} and/or code {gameCode}")
             });
 
             loader.LoadData(romFileName);
+
+            _region = gameCode[3] switch
+            {
+                'P' => Region.Europe,
+                'E' => Region.Usa,
+                _ => throw new Exception($"Unsupported game code {gameCode}")
+            };
             _loader = loader;
         }
         else if (Platform == Platform.NGage)
@@ -87,6 +99,8 @@ public static class Rom
             });
 
             loader.LoadData(appFileName, dataFileName);
+
+            _region = Region.Europe;
             _loader = loader;
         }
         else
@@ -162,6 +176,7 @@ public static class Rom
         _gameDirectory = default;
         _gameFileNames = default;
         _game = default;
+        _region = default;
         _platform = default;
         _originalResolution = default;
         _originalGameRenderContext = default;

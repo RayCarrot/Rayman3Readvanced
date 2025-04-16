@@ -1,4 +1,5 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using System;
+using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.TgxEngine;
 
@@ -10,14 +11,16 @@ public partial class MenuAll
 
     public int LanguagesCount { get; } = Rom.Platform switch
     {
-        Platform.GBA => 10, // TODO: 3 for US version
+        Platform.GBA when Rom.Region == Region.Europe => 10,
+        Platform.GBA when Rom.Region == Region.Usa => 3,
         Platform.NGage => 6,
         _ => throw new UnsupportedPlatformException()
     };
 
     public int LanguagesBaseAnimation { get; } = Rom.Platform switch
     {
-        Platform.GBA => 0, // TODO: 10 for US version
+        Platform.GBA when Rom.Region == Region.Europe => 0,
+        Platform.GBA when Rom.Region == Region.Usa => 10,
         Platform.NGage => 10 + 3,
         _ => throw new UnsupportedPlatformException()
     };
@@ -179,7 +182,15 @@ public partial class MenuAll
             TgxCluster mainCluster = Playfield.Camera.GetMainCluster();
             mainCluster.Position += new Vector2(0, 3);
 
-            Anims.LanguageList.ScreenPos = Anims.LanguageList.ScreenPos with { Y = TransitionValue + 28 };
+            Anims.LanguageList.ScreenPos = Anims.LanguageList.ScreenPos with 
+            { 
+                Y = TransitionValue + Rom.Region switch 
+                {
+                    Region.Usa => 80,
+                    Region.Europe => 28,
+                    _ => throw new ArgumentOutOfRangeException()
+                }
+            };
             Anims.LanguageList.FrameChannelSprite();
             AnimationPlayer.Play(Anims.LanguageList);
 
