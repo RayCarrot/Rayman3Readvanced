@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using BinarySerializer.Ubisoft.GbaEngine;
@@ -29,7 +30,13 @@ public class NGageSoundEventsManager : SoundEventsManager
         MusicVolume = SoundEngineInterface.MaxVolume;
         SoundEffectsVolume = SoundEngineInterface.MaxVolume;
 
+        Stopwatch sw = Stopwatch.StartNew();
+
         LoadSongs(songFileNames, soundEvents);
+
+        sw.Stop();
+
+        Logger.Info("Loaded songs in {0} ms", sw.ElapsedMilliseconds);
     }
 
     #endregion

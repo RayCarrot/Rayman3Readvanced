@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -27,7 +28,13 @@ public class GbaSoundEventsManager : SoundEventsManager
         
         _songInstances = new List<SongInstance>();
 
+        Stopwatch sw = Stopwatch.StartNew();
+        
         LoadSongs(songFileNames);
+        
+        sw.Stop();
+
+        Logger.Info("Loaded songs in {0} ms", sw.ElapsedMilliseconds);
     }
 
     #endregion
@@ -83,6 +90,8 @@ public class GbaSoundEventsManager : SoundEventsManager
 
     private void LoadSongs(Dictionary<int, string> songFileNames)
     {
+        //StringBuilder sb = new();
+
         Dictionary<string, Song> loadedSounds = new();
         foreach (var songTableEntry in songFileNames)
         {
@@ -105,12 +114,17 @@ public class GbaSoundEventsManager : SoundEventsManager
                 string fileName = $"{songTableEntry.Value}.wav";
 
                 song.WavSound.load(fileName);
-                song.WavSound.setLoopPoint(GetLoopPointInSeconds(fileName));
+
+                double loopPoint = GetLoopPointInSeconds(fileName);
+                //sb.AppendLine($"[\"{songTableEntry.Value}\"] = {loopPoint.ToString(CultureInfo.InvariantCulture)}d,");
+                song.WavSound.setLoopPoint(loopPoint);
 
                 loadedSounds[songTableEntry.Value] = song;
                 _songTable[songTableEntry.Key] = song;
             }
         }
+
+        //File.WriteAllText("LoopPoints.txt", sb.ToString());
     }
 
     private double GetLoopPointInSeconds(string fileName)

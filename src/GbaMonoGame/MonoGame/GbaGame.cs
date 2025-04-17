@@ -35,6 +35,7 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
     private GfxRenderer _gfxRenderer;
     private DebugLayout _debugLayout;
     private GameRenderTarget _debugGameRenderTarget;
+    private LoggerDebugWindow _loggerWindow;
     private PerformanceDebugWindow _performanceWindow;
     private int _skippedDraws = -1;
     private float _fps = 60;
@@ -86,7 +87,7 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
 
             _debugLayout.AddWindow(new GameDebugWindow(_debugGameRenderTarget));
             _debugLayout.AddWindow(_performanceWindow = new PerformanceDebugWindow());
-            _debugLayout.AddWindow(new LoggerDebugWindow());
+            _debugLayout.AddWindow(_loggerWindow);
             _debugLayout.AddWindow(new GfxDebugWindow());
             _debugLayout.AddWindow(new SoundDebugWindow());
             _debugLayout.AddWindow(new MultiplayerDebugWindow());
@@ -237,6 +238,10 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
 
         // Load the config
         Engine.LoadConfig();
+
+        // Create the logger window now so we can start receiving logs during initialization
+        if (Engine.Config.DebugModeEnabled)
+            _loggerWindow = new LoggerDebugWindow();
 
         // Load the engine
         Engine.Init(this, _gameWindow, CreateInitialFrame());

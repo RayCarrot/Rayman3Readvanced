@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame;
@@ -64,9 +65,15 @@ public static class FrameManager
             // Initializing a new frame might take longer than 1/60th of a second, so we mark it as a load
             Engine.BeginLoad();
 
+            Stopwatch sw = Stopwatch.StartNew();
+
             CurrentFrame = NextFrame;
             NextFrame.Init();
             NextFrame = null;
+
+            sw.Stop();
+
+            Logger.Info("Loaded new frame in {0} ms", sw.ElapsedMilliseconds);
 
             // The game doesn't return here, but it always calls VSync in the init function, so this
             // will basically do the same thing. And this way we limit the loading to a single
