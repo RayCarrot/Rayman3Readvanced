@@ -66,8 +66,9 @@ public class GfxScreen
         if (Renderer == null)
             return;
 
-        // TODO: Add config option to use GBA fading on N-Gage
-        if (Rom.IsLoaded && Rom.Platform == Platform.GBA && RenderOptions.BlendMode != BlendMode.None)
+        if (Rom.IsLoaded &&
+            (Rom.Platform == Platform.GBA || Engine.Config.UseGbaEffectsOnNGage) && 
+            RenderOptions.BlendMode != BlendMode.None)
             color = new Color(color, Alpha);
 
         // We can't wrap if the camera is in 3D

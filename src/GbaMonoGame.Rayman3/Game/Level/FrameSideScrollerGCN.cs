@@ -92,13 +92,9 @@ public class FrameSideScrollerGCN : FrameSideScroller
                 break;
             
             case 1:
-                // TODO: Add config option for scrolling on N-Gage
-                if (Rom.Platform == Platform.GBA)
-                {
-                    TgxTileLayer cloudsLayer = ((TgxPlayfield2D)Scene.Playfield).TileLayers[0];
-                    TextureScreenRenderer renderer = (TextureScreenRenderer)cloudsLayer.Screen.Renderer;
-                    cloudsLayer.Screen.Renderer = new LevelCloudsRenderer(renderer.Texture, [32, 120, 227]);
-                }
+                TgxTileLayer cloudsLayer = ((TgxPlayfield2D)Scene.Playfield).TileLayers[0];
+                TextureScreenRenderer renderer = (TextureScreenRenderer)cloudsLayer.Screen.Renderer;
+                cloudsLayer.Screen.Renderer = new LevelCloudsRenderer(renderer.Texture, [32, 120, 227]);
                 break;
             
             case 2:

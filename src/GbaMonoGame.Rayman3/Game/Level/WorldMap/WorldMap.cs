@@ -242,8 +242,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
         Vector2 size = lightningRenderer.GetSize(lightningLayer.Screen);
 
-        // TODO: Allow this effect on N-Gage
-        if (Rom.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA || Engine.Config.UseGbaEffectsOnNGage)
         {
             // NOTE: The game only does this if ScrollX > 152, but we can ignore that
 

@@ -77,8 +77,10 @@ public static class Gfx
 
     private static void DrawFade(GfxRenderer renderer)
     {
-        // TODO: Add config option to use GBA fading on N-Gage
-        if (Rom.IsLoaded && Rom.Platform == Platform.GBA && FadeControl.Mode != FadeMode.None && Fade is > 0 and <= 1)
+        if (Rom.IsLoaded && 
+            (Rom.Platform == Platform.GBA || Engine.Config.UseGbaEffectsOnNGage) && 
+            FadeControl.Mode != FadeMode.None && 
+            Fade is > 0 and <= 1)
         {
             renderer.BeginRender(new RenderOptions()
             {
@@ -88,7 +90,7 @@ public static class Gfx
             switch (FadeControl.Mode)
             {
                 case FadeMode.AlphaBlending:
-                    throw new NotImplementedException();
+                    throw new InvalidOperationException("Alpha blending should be handled per screen and object!");
 
                 case FadeMode.BrightnessIncrease:
                     renderer.DrawFilledRectangle(Vector2.Zero, Engine.GameRenderContext.Resolution, Color.White * Fade);
@@ -164,9 +166,8 @@ public static class Gfx
         if (FadeControl.Flags == FadeFlags.Default)
             DrawFade(renderer);
 
-        // TODO: Add option to use this on N-Gage
         // Draw the screen effect on GBA if there is one
-        if (Rom.IsLoaded && Rom.Platform == Platform.GBA)
+        if (Rom.IsLoaded && (Rom.Platform == Platform.GBA || Engine.Config.UseGbaEffectsOnNGage))
             ScreenEffect?.Draw(renderer);
     }
 }

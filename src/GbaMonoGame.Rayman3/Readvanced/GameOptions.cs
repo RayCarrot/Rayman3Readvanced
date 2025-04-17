@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
+// TODO: Rewrite most text and re-order options
 public static class GameOptions
 {
     public static GameOptionsGroup[] Create()
@@ -150,6 +151,18 @@ public static class GameOptions
                     ],
                     getData: _ => Engine.Config.FixBugs,
                     setData: data => Engine.Config.FixBugs = data,
+                    getCustomName: _ => null),
+                // TODO: This should only appear for the N-Gage version
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "USE GBA EFFECTS",
+                    infoText: "By default the N-Gage version has fewer visual effects than the GBA version. Using this option you can restore them. Some visual effects won't be changed until a new level is loaded.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
+                    ],
+                    getData: _ => Engine.Config.UseGbaEffectsOnNGage,
+                    setData: data => Engine.Config.UseGbaEffectsOnNGage = data,
                     getCustomName: _ => null),
             ]),
             new GameOptionsGroup("CONTROLS",

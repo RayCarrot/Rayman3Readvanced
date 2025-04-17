@@ -15,6 +15,11 @@ public class Intro : Frame, IHasPlayfield
 {
     #region Constant Fields
 
+    private const int SkyTileLayerId = 0;
+    private const int MainTileLayerId = 1;
+    private const int UbisoftLogoTileLayerId = 2;
+    private const int CloudsTileLayerId = 3;
+
     // NOTE: The game uses 16, but it only updates every 2 frames. We instead update every frame.
     private const int PaletteFadeMaxValue = 16 * 2;
 
@@ -354,29 +359,30 @@ public class Intro : Frame, IHasPlayfield
         Playfield.Camera.Position = Vector2.Zero;
         Playfield.Step();
 
-        if (Rom.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA || Engine.Config.UseGbaEffectsOnNGage)
         {
-            Playfield.TileLayers[0].Screen.IsEnabled = false;
-            Playfield.TileLayers[1].Screen.IsEnabled = false;
-            Playfield.TileLayers[3].Screen.IsEnabled = false;
+            Playfield.TileLayers[SkyTileLayerId].Screen.IsEnabled = false;
+            Playfield.TileLayers[MainTileLayerId].Screen.IsEnabled = false;
         }
         else if (Rom.Platform == Platform.NGage)
         {
-            Playfield.TileLayers[0].Screen.IsEnabled = true;
-            Playfield.TileLayers[1].Screen.IsEnabled = true;
-            Playfield.TileLayers[2].Screen.IsEnabled = false;
-            Playfield.TileLayers[3].Screen.IsEnabled = false;
+            Playfield.TileLayers[SkyTileLayerId].Screen.IsEnabled = true;
+            Playfield.TileLayers[MainTileLayerId].Screen.IsEnabled = true;
         }
         else
         {
             throw new UnsupportedPlatformException();
         }
 
-        // TODO: Allow scrolling on N-Gage too?
-        if (Rom.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.NGage)
+            Playfield.TileLayers[UbisoftLogoTileLayerId].Screen.IsEnabled = false;
+
+        Playfield.TileLayers[CloudsTileLayerId].Screen.IsEnabled = false;
+
+        if (Rom.Platform == Platform.GBA || Engine.Config.UseGbaEffectsOnNGage)
         {
-            TextureScreenRenderer renderer = ((TextureScreenRenderer)Playfield.TileLayers[3].Screen.Renderer);
-            Playfield.TileLayers[3].Screen.Renderer = new IntroCloudsRenderer(renderer.Texture);
+            TextureScreenRenderer renderer = ((TextureScreenRenderer)Playfield.TileLayers[CloudsTileLayerId].Screen.Renderer);
+            Playfield.TileLayers[CloudsTileLayerId].Screen.Renderer = new IntroCloudsRenderer(renderer.Texture);
         }
 
         Gfx.FadeControl = FadeControl.None;
@@ -435,20 +441,21 @@ public class Intro : Frame, IHasPlayfield
 
     private void Step_1()
     {
-        if (Rom.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA || Engine.Config.UseGbaEffectsOnNGage)
         {
             Timer++;
 
-            if (Timer > 60)
+            // Skip timer if on N-Gage with GBA effects enabled since the Ubisoft logo doesn't show
+            if (Timer > 60 || Rom.Platform == Platform.NGage)
             {
                 Timer = 0;
                 CurrentStepAction = Step_2;
 
-                Playfield.TileLayers[0].Screen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
-                Playfield.TileLayers[0].Screen.GbaAlpha = 0;
+                Playfield.TileLayers[SkyTileLayerId].Screen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                Playfield.TileLayers[SkyTileLayerId].Screen.GbaAlpha = 0;
 
-                Playfield.TileLayers[0].Screen.IsEnabled = true;
-                Playfield.TileLayers[1].Screen.IsEnabled = true;
+                Playfield.TileLayers[SkyTileLayerId].Screen.IsEnabled = true;
+                Playfield.TileLayers[MainTileLayerId].Screen.IsEnabled = true;
             }
         }
         else if (Rom.Platform == Platform.NGage)
@@ -463,7 +470,7 @@ public class Intro : Frame, IHasPlayfield
 
     private void Step_2()
     {
-        if (Rom.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA || Engine.Config.UseGbaEffectsOnNGage)
         {
             Timer++;
 
@@ -472,13 +479,13 @@ public class Intro : Frame, IHasPlayfield
                 Timer = 0;
                 CurrentStepAction = Step_3;
 
-                Playfield.TileLayers[0].Screen.RenderOptions.BlendMode = BlendMode.None;
-                Playfield.TileLayers[2].Screen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
-                Playfield.TileLayers[2].Screen.GbaAlpha = 16;
+                Playfield.TileLayers[SkyTileLayerId].Screen.RenderOptions.BlendMode = BlendMode.None;
+                Playfield.TileLayers[UbisoftLogoTileLayerId].Screen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                Playfield.TileLayers[UbisoftLogoTileLayerId].Screen.GbaAlpha = 16;
             }
             else
             {
-                Playfield.TileLayers[0].Screen.GbaAlpha = Timer / 4f;
+                Playfield.TileLayers[SkyTileLayerId].Screen.GbaAlpha = Timer / 4f;
             }
         }
         else if (Rom.Platform == Platform.NGage)
@@ -501,19 +508,19 @@ public class Intro : Frame, IHasPlayfield
             AlphaTimer = 0;
             CurrentStepAction = Step_4;
 
-            Playfield.TileLayers[2].Screen.RenderOptions.BlendMode = BlendMode.None;
-            Playfield.TileLayers[3].Screen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
-            Playfield.TileLayers[3].Screen.GbaAlpha = 0;
+            Playfield.TileLayers[UbisoftLogoTileLayerId].Screen.RenderOptions.BlendMode = BlendMode.None;
+            Playfield.TileLayers[CloudsTileLayerId].Screen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+            Playfield.TileLayers[CloudsTileLayerId].Screen.GbaAlpha = 0;
 
-            Playfield.TileLayers[2].Screen.IsEnabled = false;
+            Playfield.TileLayers[UbisoftLogoTileLayerId].Screen.IsEnabled = false;
 
             // Only show clouds on GBA
-            if (Rom.Platform == Platform.GBA)
-                Playfield.TileLayers[3].Screen.IsEnabled = true;
+            if (Rom.Platform == Platform.GBA || Engine.Config.UseGbaEffectsOnNGage)
+                Playfield.TileLayers[CloudsTileLayerId].Screen.IsEnabled = true;
         }
         else
         {
-            Playfield.TileLayers[2].Screen.GbaAlpha = 16 - (Timer / 4f);
+            Playfield.TileLayers[UbisoftLogoTileLayerId].Screen.GbaAlpha = 16 - (Timer / 4f);
         }
 
         // N-Gage allows the intro to be skipped from here
@@ -538,12 +545,12 @@ public class Intro : Frame, IHasPlayfield
         {
             ScrollY++;
             Playfield.Camera.Position += new Vector2(0, 1);
-            Gfx.GetScreen(3).Offset = new Vector2(0, ScrollY);
+            Gfx.GetScreen(CloudsTileLayerId).Offset = new Vector2(0, ScrollY);
         }
 
         if (ScrollY > 600 && AlphaTimer <= 0x80)
         {
-            Playfield.TileLayers[3].Screen.GbaAlpha = AlphaTimer / 32f;
+            Playfield.TileLayers[CloudsTileLayerId].Screen.GbaAlpha = AlphaTimer / 32f;
             AlphaTimer++;
         }
 
@@ -654,7 +661,7 @@ public class Intro : Frame, IHasPlayfield
         if (SkippedTimer == 10)
         {
             AlphaTimer = 0x80;
-            Playfield.TileLayers[3].Screen.GbaAlpha = AlphaTimer / 32f;
+            Playfield.TileLayers[CloudsTileLayerId].Screen.GbaAlpha = AlphaTimer / 32f;
             BlackLumAndLogoObj.CurrentAnimation = 8;
             BlackLumAndLogoObj.CurrentFrame = 5;
             BlackLumAndLogoObj.ScreenPos = Rom.Platform switch

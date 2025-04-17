@@ -34,6 +34,7 @@ public class GameConfig
         CanSkipTextBoxes = true;
         AddProjectilesWhenNeeded = true;
         FixBugs = true;
+        UseGbaEffectsOnNGage = true;
 
         // Controls
         Controls = new Dictionary<Input, Keys>();
@@ -79,6 +80,7 @@ public class GameConfig
     public bool CanSkipTextBoxes { get; set; }
     public bool AddProjectilesWhenNeeded { get; set; }
     public bool FixBugs { get; set; }
+    public bool UseGbaEffectsOnNGage { get; set; }
 
     // Controls
     public Dictionary<Input, Keys> Controls { get; set; }
@@ -115,6 +117,7 @@ public class GameConfig
         CanSkipTextBoxes = serializer.Serialize<bool>(CanSkipTextBoxes, GameSection, "CanSkipTextBoxes");
         AddProjectilesWhenNeeded = serializer.Serialize<bool>(AddProjectilesWhenNeeded, GameSection, "AddProjectilesWhenNeeded");
         FixBugs = serializer.Serialize<bool>(FixBugs, GameSection, "FixBugs");
+        UseGbaEffectsOnNGage = serializer.Serialize<bool>(UseGbaEffectsOnNGage, GameSection, "UseGbaEffectsOnNGage");
 
         // Controls
         Controls = serializer.SerializeDictionary<Input, Keys>(Controls, ControlsSection);

@@ -10,6 +10,8 @@ public class CavesOfBadDreams : FrameSideScroller
 
     private const bool ScaleSkulls = true;
 
+    public bool UseSinWaveEffect { get; set; } // Custom
+
     public byte SineWavePhase { get; set; }
     public Vector2 Offset { get; set; }
     public FadeMode Mode { get; set; }
@@ -28,7 +30,9 @@ public class CavesOfBadDreams : FrameSideScroller
         skullScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
         skullScreen.GbaAlpha = 0;
 
-        if (Rom.Platform == Platform.GBA)
+        UseSinWaveEffect = Rom.Platform == Platform.GBA || Engine.Config.UseGbaEffectsOnNGage;
+
+        if (UseSinWaveEffect)
             skullScreen.IsEnabled = false;
         else
             skullScreen.IsEnabled = true;
@@ -36,8 +40,7 @@ public class CavesOfBadDreams : FrameSideScroller
         if (!ScaleSkulls)
             skullScreen.RenderOptions.RenderContext = Scene.RenderContext;
 
-        // TODO: Add config option for sine wave on N-Gage
-        if (Rom.Platform == Platform.GBA)
+        if (UseSinWaveEffect)
         {
             TextureScreenRenderer renderer = ((TextureScreenRenderer)skullScreen.Renderer);
             skullScreen.Renderer = new SineWaveRenderer(renderer.Texture)
@@ -54,14 +57,14 @@ public class CavesOfBadDreams : FrameSideScroller
         GfxScreen skullScreen = Gfx.GetScreen(1);
 
         // Don't show skull screen on GBA if transitioning or paused
-        if (Rom.Platform == Platform.GBA && 
+        if (UseSinWaveEffect && 
             (CircleTransitionMode != TransitionMode.None || CurrentStepAction != Step_Normal))
         {
             skullScreen.IsEnabled = false;
             return;
         }
 
-        if (Rom.Platform == Platform.GBA)
+        if (UseSinWaveEffect)
             skullScreen.IsEnabled = true;
 
         Vector2 camPos = Scene.Playfield.Camera.Position;

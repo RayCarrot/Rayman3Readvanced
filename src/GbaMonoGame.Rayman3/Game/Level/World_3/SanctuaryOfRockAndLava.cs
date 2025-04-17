@@ -18,8 +18,7 @@ public class SanctuaryOfRockAndLava : FrameSideScroller
     {
         base.Init();
 
-        // TODO: Add config option for lava scrolling on N-Gage
-        if (Rom.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA || Engine.Config.UseGbaEffectsOnNGage)
         {
             TgxTileLayer lavaLayer = ((TgxPlayfield2D)Scene.Playfield).TileLayers[0];
             TextureScreenRenderer renderer;
@@ -38,7 +37,7 @@ public class SanctuaryOfRockAndLava : FrameSideScroller
     {
         base.Step();
 
-        if (Rom.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA || Engine.Config.UseGbaEffectsOnNGage)
         {
             Vector2 camPos = Scene.Playfield.Camera.Position;
             TgxTileLayer lavaLayer = ((TgxPlayfield2D)Scene.Playfield).TileLayers[0];
@@ -48,7 +47,7 @@ public class SanctuaryOfRockAndLava : FrameSideScroller
         }
 
         // TODO: Add config option for fading out on N-Gage
-        if (Rom.Platform == Platform.GBA && FadeOutTimer != 0xFF)
+        if ((Rom.Platform == Platform.GBA || Engine.Config.UseGbaEffectsOnNGage) && FadeOutTimer != 0xFF)
         {
             if (FadeOutTimer < 16)
             {
