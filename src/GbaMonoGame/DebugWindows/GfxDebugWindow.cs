@@ -1,13 +1,57 @@
-using System.Linq;
 using System;
+using System.IO;
+using System.Linq;
 using ImGuiNET;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame;
 
 public class GfxDebugWindow : DebugWindow
 {
     public override string Name => "Gfx";
+
+    private void ExportScreen(GfxScreen screen)
+    {
+        GraphicsDevice graphicsDevice = Engine.GraphicsDevice;
+        Vector2 size = screen.Renderer.GetSize(screen);
+
+        using RenderTarget2D renderTarget = new(
+            graphicsDevice: graphicsDevice,
+            width: (int)size.X,
+            height: (int)size.Y,
+            mipMap: false,
+            preferredFormat: graphicsDevice.PresentationParameters.BackBufferFormat,
+            preferredDepthFormat: DepthFormat.Depth24);
+
+        graphicsDevice.SetRenderTarget(renderTarget);
+        graphicsDevice.DepthStencilState = new DepthStencilState() { DepthBufferEnable = true };
+
+        Vector2 oldResolution = Engine.InternalGameResolution;
+        Vector2 oldOffset = screen.Offset;
+        RenderContext oldRenderContext = screen.RenderOptions.RenderContext;
+
+        Engine.InternalGameResolution = size;
+        screen.Offset = Vector2.Zero;
+        screen.RenderOptions.RenderContext = new FixedResolutionRenderContext(size);
+
+        Engine.GameViewPort.Resize(size);
+
+        GfxRenderer renderer = new(graphicsDevice);
+        screen.Draw(renderer, Color.White);
+        renderer.EndRender();
+
+        Engine.InternalGameResolution = oldResolution;
+        screen.Offset = oldOffset;
+        screen.RenderOptions.RenderContext = oldRenderContext;
+
+        const string outputDir = "Screens";
+        Directory.CreateDirectory(outputDir);
+        using (Stream stream = File.Create(Path.Combine(outputDir, $"{screen.Id}.png")))
+            renderTarget.SaveAsPng(stream, renderTarget.Width, renderTarget.Height);
+
+        graphicsDevice.SetRenderTarget(null);
+    }
 
     public override void Draw(DebugLayout debugLayout, DebugLayoutTextureManager textureManager)
     {
@@ -72,7 +116,7 @@ public class GfxDebugWindow : DebugWindow
             {
                 ImGui.SeparatorText("Screens");
 
-                if (ImGui.BeginTable("_screens", 10))
+                if (ImGui.BeginTable("_screens", 11))
                 {
                     ImGui.TableSetupColumn("Enabled", ImGuiTableColumnFlags.WidthFixed);
                     ImGui.TableSetupColumn("Wrap", ImGuiTableColumnFlags.WidthFixed);
@@ -84,6 +128,7 @@ public class GfxDebugWindow : DebugWindow
                     ImGui.TableSetupColumn("Bpp", ImGuiTableColumnFlags.WidthFixed);
                     ImGui.TableSetupColumn("Render context");
                     ImGui.TableSetupColumn("Renderer");
+                    ImGui.TableSetupColumn("Actions");
                     ImGui.TableHeadersRow();
 
                     foreach (GfxScreen screen in Gfx.Screens.OrderBy(x => x.Id))
@@ -120,10 +165,14 @@ public class GfxDebugWindow : DebugWindow
                         });
 
                         ImGui.TableNextColumn();
-                        ImGui.Text($"{screen.RenderOptions.RenderContext.GetType().Name}");
+                        ImGui.Text($"{screen.RenderOptions.RenderContext.GetType().Name.Replace("RenderContext", String.Empty)}");
 
                         ImGui.TableNextColumn();
-                        ImGui.Text($"{screen.Renderer?.GetType().Name}");
+                        ImGui.Text($"{screen.Renderer?.GetType().Name.Replace("ScreenRenderer", String.Empty)}");
+
+                        ImGui.TableNextColumn();
+                        if (screen.Renderer != null && ImGui.Button($"Export##{screen.Id}"))
+                            ExportScreen(screen);
                     }
                     ImGui.EndTable();
                 }
