@@ -3,7 +3,7 @@ using System.Text;
 
 internal class Program
 {
-#if DIRECTX
+#if WINDOWSDX
     [STAThread] // Required to use Windows Forms dialogs
 #endif
     public static void Main(string[] args)

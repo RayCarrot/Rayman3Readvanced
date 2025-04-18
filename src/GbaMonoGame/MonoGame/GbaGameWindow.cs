@@ -1,9 +1,12 @@
 ﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Point = Microsoft.Xna.Framework.Point;
+
+#if WINDOWSDX
+using System.Windows.Forms;
+#elif DESKTOPGL
+using System.Runtime.InteropServices;
+#endif
 
 namespace GbaMonoGame;
 
@@ -13,12 +16,33 @@ public class GbaGameWindow
     {
         _window = window;
         _graphics = graphics;
+
+#if WINDOWSDX
         _form = (Form)Control.FromHandle(_window.Handle);
+#elif DESKTOPGL
+        _sdlWindowHandle = window.Handle;
+#endif
     }
+
+#if DESKTOPGL
+    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl)]
+    public static extern uint SDL_GetWindowFlags(IntPtr window);
+
+    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl)]
+    public static extern void SDL_RestoreWindow(IntPtr window);
+
+    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl)]
+    public static extern void SDL_MaximizeWindow(IntPtr window);
+#endif
 
     private GameWindow _window { get; }
     private GraphicsDeviceManager _graphics { get; }
+
+#if WINDOWSDX
     private Form _form { get; }
+#elif DESKTOPGL
+    private IntPtr _sdlWindowHandle { get; }
+#endif
 
     public Point WindowResolution
     {
@@ -36,8 +60,15 @@ public class GbaGameWindow
 
             if (DisplayMode == DisplayMode.Windowed)
             {
+#if WINDOWSDX
                 if (_form.WindowState != FormWindowState.Normal)
                     _form.WindowState = FormWindowState.Normal;
+#elif DESKTOPGL
+                SDL_WindowFlags flags = GetWindowFlags();
+                if ((flags & SDL_WindowFlags.SDL_WINDOW_MAXIMIZED) != 0 ||
+                    (flags & SDL_WindowFlags.SDL_WINDOW_MINIMIZED) != 0)
+                    SDL_RestoreWindow(_sdlWindowHandle);
+#endif
 
                 SetResolution(value, DisplayMode.Windowed);
             }
@@ -86,6 +117,13 @@ public class GbaGameWindow
         }
     }
 
+#if DESKTOPGL
+    private SDL_WindowFlags GetWindowFlags()
+    {
+        return (SDL_WindowFlags)SDL_GetWindowFlags(_sdlWindowHandle);
+    }
+#endif
+
     private void SetResolution(Point size, DisplayMode displayMode)
     {
         switch (displayMode)
@@ -125,14 +163,26 @@ public class GbaGameWindow
 
     public bool IsResizable()
     {
-        return _form.WindowState == FormWindowState.Normal && !_graphics.IsFullScreen;
+#if WINDOWSDX
+        if (_form.WindowState != FormWindowState.Normal)
+            return false;
+#elif DESKTOPGL
+        SDL_WindowFlags flags = GetWindowFlags();
+        if ((flags & SDL_WindowFlags.SDL_WINDOW_MAXIMIZED) != 0 ||
+            (flags & SDL_WindowFlags.SDL_WINDOW_MINIMIZED) != 0)
+            return false;
+#endif
+
+        return !_graphics.IsFullScreen;
     }
 
     public void SetResizeMode(bool allowResize, Point minSize, Point maxSize)
     {
         _window.AllowUserResizing = allowResize;
-        _form.MinimumSize = new Size(minSize.X, minSize.Y);
-        _form.MaximumSize = new Size(maxSize.X, maxSize.Y);
+
+        // TODO: Implement
+        //_form.MinimumSize = new Size(minSize.X, minSize.Y);
+        //_form.MaximumSize = new Size(maxSize.X, maxSize.Y);
     }
 
     public void SaveState()
@@ -154,7 +204,13 @@ public class GbaGameWindow
             Engine.Config.DisplayMode = DisplayMode.Windowed;
             Engine.Config.WindowPosition = _window.Position;
             Engine.Config.WindowResolution = GetResolution();
+
+#if WINDOWSDX
             Engine.Config.WindowIsMaximized = _form.WindowState == FormWindowState.Maximized;
+#elif DESKTOPGL
+            SDL_WindowFlags flags = GetWindowFlags();
+            Engine.Config.WindowIsMaximized = (flags & SDL_WindowFlags.SDL_WINDOW_MAXIMIZED) != 0;
+#endif
         }
     }
 
@@ -168,7 +224,14 @@ public class GbaGameWindow
                 if (Engine.Config.WindowPosition != Point.Zero)
                     _window.Position = Engine.Config.WindowPosition;
 
+#if WINDOWSDX
                 _form.WindowState = Engine.Config.WindowIsMaximized ? FormWindowState.Maximized : FormWindowState.Normal;
+#elif DESKTOPGL
+                if (Engine.Config.WindowIsMaximized)
+                    SDL_MaximizeWindow(_sdlWindowHandle);
+                else
+                    SDL_RestoreWindow(_sdlWindowHandle);
+#endif
                 break;
 
             case DisplayMode.Fullscreen:
@@ -184,4 +247,35 @@ public class GbaGameWindow
                 throw new ArgumentOutOfRangeException();
         }
     }
+
+#if DESKTOPGL
+    [Flags]
+    private enum SDL_WindowFlags
+    {
+        SDL_WINDOW_FULLSCREEN = 0x00000001,
+        SDL_WINDOW_OPENGL = 0x00000002,
+        SDL_WINDOW_SHOWN = 0x00000004,
+        SDL_WINDOW_HIDDEN = 0x00000008,
+        SDL_WINDOW_BORDERLESS = 0x00000010,
+        SDL_WINDOW_RESIZABLE = 0x00000020,
+        SDL_WINDOW_MINIMIZED = 0x00000040,
+        SDL_WINDOW_MAXIMIZED = 0x00000080,
+        SDL_WINDOW_MOUSE_GRABBED = 0x00000100,
+        SDL_WINDOW_INPUT_FOCUS = 0x00000200,
+        SDL_WINDOW_MOUSE_FOCUS = 0x00000400,
+        SDL_WINDOW_FULLSCREEN_DESKTOP = (SDL_WINDOW_FULLSCREEN | 0x00001000),
+        SDL_WINDOW_FOREIGN = 0x00000800,
+        SDL_WINDOW_ALLOW_HIGHDPI = 0x00002000,
+        SDL_WINDOW_MOUSE_CAPTURE = 0x00004000,
+        SDL_WINDOW_ALWAYS_ON_TOP = 0x00008000,
+        SDL_WINDOW_SKIP_TASKBAR = 0x00010000,
+        SDL_WINDOW_UTILITY = 0x00020000,
+        SDL_WINDOW_TOOLTIP = 0x00040000,
+        SDL_WINDOW_POPUP_MENU = 0x00080000,
+        SDL_WINDOW_KEYBOARD_GRABBED = 0x00100000,
+        SDL_WINDOW_VULKAN = 0x10000000,
+        SDL_WINDOW_METAL = 0x20000000,
+        SDL_WINDOW_INPUT_GRABBED = SDL_WINDOW_MOUSE_GRABBED,
+    }
+#endif
 }

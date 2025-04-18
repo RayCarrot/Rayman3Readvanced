@@ -1,12 +1,15 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework.Graphics;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
+
+#if WINDOWSDX
+using System.Windows.Forms;
+#endif
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
@@ -141,6 +144,7 @@ public class TitleScreen : Frame
         {
             game.SetOptions(
             [
+#if WINDOWSDX
                 new TitleScreenOptionsList.Option("LOCATE ROM", () =>
                 {
                     // Force windowed mode for this
@@ -210,6 +214,10 @@ public class TitleScreen : Frame
                     if (prevDisplayMode != DisplayMode.Windowed)
                         Engine.GameWindow.DisplayMode = prevDisplayMode;
                 }),
+#elif DESKTOPGL
+                // TODO: Allow picking ROM on DesktopGL too
+                new TitleScreenOptionsList.Option("NO ROM", () => { }),
+#endif
             ]);
         }
     }

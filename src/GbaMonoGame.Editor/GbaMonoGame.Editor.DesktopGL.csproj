@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>13.0</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DefineConstants>DESKTOPGL</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.2.1105">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\sub-modules\BinarySerializer.Nintendo\src\BinarySerializer.Nintendo.csproj" />
+    <ProjectReference Include="..\..\sub-modules\BinarySerializer.Ubisoft.GbaEngine\src\BinarySerializer.Ubisoft.GbaEngine.csproj" />
+    <ProjectReference Include="..\..\sub-modules\BinarySerializer\src\BinarySerializer.csproj" />
+    <ProjectReference Include="..\GbaMonoGame.AnimEngine\GbaMonoGame.AnimEngine.DesktopGL.csproj" />
+    <ProjectReference Include="..\GbaMonoGame.TgxEngine\GbaMonoGame.TgxEngine.DesktopGL.csproj" />
+    <ProjectReference Include="..\GbaMonoGame.Engine2d\GbaMonoGame.Engine2d.DesktopGL.csproj" />
+    <ProjectReference Include="..\GbaMonoGame\GbaMonoGame.DesktopGL.csproj" />
+  </ItemGroup>
+</Project>

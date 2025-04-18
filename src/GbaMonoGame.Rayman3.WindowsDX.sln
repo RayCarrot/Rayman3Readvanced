@@ -1,0 +1,87 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34202.233
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Binary", "Binary", "{F7CF6CF7-EC90-4E79-BB41-2BC62D787CDE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinarySerializer", "..\sub-modules\BinarySerializer\src\BinarySerializer.csproj", "{A38143E9-4098-4098-9161-79976D8C0E2E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinarySerializer.Nintendo", "..\sub-modules\BinarySerializer.Nintendo\src\BinarySerializer.Nintendo.csproj", "{DDA45C89-D467-4208-98D7-329B7D2ECF23}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Engine", "Engine", "{6288C123-A744-4A0B-9C84-E2916B1C3820}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinarySerializer.Ubisoft.GbaEngine", "..\sub-modules\BinarySerializer.Ubisoft.GbaEngine\src\BinarySerializer.Ubisoft.GbaEngine.csproj", "{57BD0528-551C-4811-9888-2F38F3B8CDCA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GbaMonoGame.WindowsDX", "GbaMonoGame\GbaMonoGame.WindowsDX.csproj", "{C5405881-FE1D-E24F-3D02-23E3BCC36B86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GbaMonoGame.AnimEngine.WindowsDX", "GbaMonoGame.AnimEngine\GbaMonoGame.AnimEngine.WindowsDX.csproj", "{F8FB06A3-F358-CB50-E583-65DA72620680}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GbaMonoGame.Editor.WindowsDX", "GbaMonoGame.Editor\GbaMonoGame.Editor.WindowsDX.csproj", "{C980B026-18A2-8F5A-8C36-E9FA81217452}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GbaMonoGame.Engine2d.WindowsDX", "GbaMonoGame.Engine2d\GbaMonoGame.Engine2d.WindowsDX.csproj", "{0D9BD9CA-5CF0-4011-7828-79EAAEF84865}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GbaMonoGame.TgxEngine.WindowsDX", "GbaMonoGame.TgxEngine\GbaMonoGame.TgxEngine.WindowsDX.csproj", "{1C2AA4B5-37E0-ACC8-3956-EAC70B939F3B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GbaMonoGame.Rayman3.WindowsDX", "GbaMonoGame.Rayman3\GbaMonoGame.Rayman3.WindowsDX.csproj", "{3AEBDB99-5BB4-FB14-CCE6-595590436034}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A38143E9-4098-4098-9161-79976D8C0E2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A38143E9-4098-4098-9161-79976D8C0E2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A38143E9-4098-4098-9161-79976D8C0E2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A38143E9-4098-4098-9161-79976D8C0E2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDA45C89-D467-4208-98D7-329B7D2ECF23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDA45C89-D467-4208-98D7-329B7D2ECF23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDA45C89-D467-4208-98D7-329B7D2ECF23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDA45C89-D467-4208-98D7-329B7D2ECF23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57BD0528-551C-4811-9888-2F38F3B8CDCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57BD0528-551C-4811-9888-2F38F3B8CDCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57BD0528-551C-4811-9888-2F38F3B8CDCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57BD0528-551C-4811-9888-2F38F3B8CDCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5405881-FE1D-E24F-3D02-23E3BCC36B86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5405881-FE1D-E24F-3D02-23E3BCC36B86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5405881-FE1D-E24F-3D02-23E3BCC36B86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5405881-FE1D-E24F-3D02-23E3BCC36B86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8FB06A3-F358-CB50-E583-65DA72620680}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8FB06A3-F358-CB50-E583-65DA72620680}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8FB06A3-F358-CB50-E583-65DA72620680}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8FB06A3-F358-CB50-E583-65DA72620680}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C980B026-18A2-8F5A-8C36-E9FA81217452}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C980B026-18A2-8F5A-8C36-E9FA81217452}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C980B026-18A2-8F5A-8C36-E9FA81217452}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C980B026-18A2-8F5A-8C36-E9FA81217452}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D9BD9CA-5CF0-4011-7828-79EAAEF84865}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D9BD9CA-5CF0-4011-7828-79EAAEF84865}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D9BD9CA-5CF0-4011-7828-79EAAEF84865}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D9BD9CA-5CF0-4011-7828-79EAAEF84865}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C2AA4B5-37E0-ACC8-3956-EAC70B939F3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C2AA4B5-37E0-ACC8-3956-EAC70B939F3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C2AA4B5-37E0-ACC8-3956-EAC70B939F3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C2AA4B5-37E0-ACC8-3956-EAC70B939F3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AEBDB99-5BB4-FB14-CCE6-595590436034}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AEBDB99-5BB4-FB14-CCE6-595590436034}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AEBDB99-5BB4-FB14-CCE6-595590436034}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AEBDB99-5BB4-FB14-CCE6-595590436034}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A38143E9-4098-4098-9161-79976D8C0E2E} = {F7CF6CF7-EC90-4E79-BB41-2BC62D787CDE}
+		{DDA45C89-D467-4208-98D7-329B7D2ECF23} = {F7CF6CF7-EC90-4E79-BB41-2BC62D787CDE}
+		{57BD0528-551C-4811-9888-2F38F3B8CDCA} = {F7CF6CF7-EC90-4E79-BB41-2BC62D787CDE}
+		{C5405881-FE1D-E24F-3D02-23E3BCC36B86} = {6288C123-A744-4A0B-9C84-E2916B1C3820}
+		{F8FB06A3-F358-CB50-E583-65DA72620680} = {6288C123-A744-4A0B-9C84-E2916B1C3820}
+		{C980B026-18A2-8F5A-8C36-E9FA81217452} = {6288C123-A744-4A0B-9C84-E2916B1C3820}
+		{0D9BD9CA-5CF0-4011-7828-79EAAEF84865} = {6288C123-A744-4A0B-9C84-E2916B1C3820}
+		{1C2AA4B5-37E0-ACC8-3956-EAC70B939F3B} = {6288C123-A744-4A0B-9C84-E2916B1C3820}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D959129D-FCC4-446F-92A4-2104209B8C64}
+	EndGlobalSection
+EndGlobal

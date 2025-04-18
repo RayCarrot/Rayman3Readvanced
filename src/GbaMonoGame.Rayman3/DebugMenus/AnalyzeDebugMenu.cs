@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if WINDOWSDX
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -227,3 +228,4 @@ public class AnalyzeDebugMenu : DebugMenu
             AnalyzeRoms();
     }
 }
+#endif

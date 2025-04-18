@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <LangVersion>13.0</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DefineConstants>WINDOWSDX</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.2.1105">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\sub-modules\BinarySerializer.Nintendo\src\BinarySerializer.Nintendo.csproj" />
+    <ProjectReference Include="..\..\sub-modules\BinarySerializer.Ubisoft.GbaEngine\src\BinarySerializer.Ubisoft.GbaEngine.csproj" />
+    <ProjectReference Include="..\..\sub-modules\BinarySerializer\src\BinarySerializer.csproj" />
+    <ProjectReference Include="..\GbaMonoGame.AnimEngine\GbaMonoGame.AnimEngine.WindowsDX.csproj" />
+    <ProjectReference Include="..\GbaMonoGame.TgxEngine\GbaMonoGame.TgxEngine.WindowsDX.csproj" />
+    <ProjectReference Include="..\GbaMonoGame.Engine2d\GbaMonoGame.Engine2d.WindowsDX.csproj" />
+    <ProjectReference Include="..\GbaMonoGame\GbaMonoGame.WindowsDX.csproj" />
+  </ItemGroup>
+</Project>
