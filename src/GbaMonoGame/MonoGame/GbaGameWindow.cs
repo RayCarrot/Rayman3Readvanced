@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 #if WINDOWSDX
+using Point = Microsoft.Xna.Framework.Point;
+using System.Drawing;
 using System.Windows.Forms;
 #elif DESKTOPGL
 using System.Runtime.InteropServices;
@@ -10,6 +12,7 @@ using System.Runtime.InteropServices;
 
 namespace GbaMonoGame;
 
+// TODO: None of the P/Invoke calls for SDL2 work
 public class GbaGameWindow
 {
     public GbaGameWindow(GameWindow window, GraphicsDeviceManager graphics)
@@ -25,13 +28,19 @@ public class GbaGameWindow
     }
 
 #if DESKTOPGL
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport("SDL2.dll", CallingConvention = CallingConvention.Cdecl)]
     public static extern uint SDL_GetWindowFlags(IntPtr window);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport("SDL2.dll", CallingConvention = CallingConvention.Cdecl)]
+    public static extern void SDL_SetWindowMinimumSize(IntPtr window, int min_w, int min_h);
+
+    [DllImport("SDL2.dll", CallingConvention = CallingConvention.Cdecl)]
+    public static extern void SDL_SetWindowMaximumSize(IntPtr window, int max_w, int max_h);
+
+    [DllImport("SDL2.dll", CallingConvention = CallingConvention.Cdecl)]
     public static extern void SDL_RestoreWindow(IntPtr window);
 
-    [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport("SDL2.dll", CallingConvention = CallingConvention.Cdecl)]
     public static extern void SDL_MaximizeWindow(IntPtr window);
 #endif
 
@@ -180,9 +189,13 @@ public class GbaGameWindow
     {
         _window.AllowUserResizing = allowResize;
 
-        // TODO: Implement
-        //_form.MinimumSize = new Size(minSize.X, minSize.Y);
-        //_form.MaximumSize = new Size(maxSize.X, maxSize.Y);
+#if WINDOWSDX
+        _form.MinimumSize = new Size(minSize.X, minSize.Y);
+        _form.MaximumSize = new Size(maxSize.X, maxSize.Y);
+#elif DESKTOPGL
+        SDL_SetWindowMinimumSize(_sdlWindowHandle, minSize.X, minSize.Y);
+        SDL_SetWindowMaximumSize(_sdlWindowHandle, maxSize.X, maxSize.Y);
+#endif
     }
 
     public void SaveState()
