@@ -18,7 +18,6 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
     {
         _graphics = new GraphicsDeviceManager(this);
         _updateTimeStopWatch = new Stopwatch();
-        _gameWindow = new GbaGameWindow(Window, _graphics);
     }
 
     #endregion
@@ -30,8 +29,8 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
 
     private readonly GraphicsDeviceManager _graphics;
     private readonly Stopwatch _updateTimeStopWatch;
-    private readonly GbaGameWindow _gameWindow;
 
+    private GbaGameWindow _gameWindow;
     private GfxRenderer _gfxRenderer;
     private DebugLayout _debugLayout;
     private GameRenderTarget _debugGameRenderTarget;
@@ -225,6 +224,7 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
         SetFramerate(Framerate);
 
         // Initialize the window
+        _gameWindow = new GbaGameWindow(Window, _graphics);
         _gameWindow.SetTitle(Title);
         _gameWindow.SetResizeMode(
             allowResize: true, 
