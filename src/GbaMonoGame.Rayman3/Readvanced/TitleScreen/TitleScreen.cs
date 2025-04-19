@@ -343,7 +343,7 @@ public class TitleScreen : Frame
                     game.Step();
             }
         }
-        else if (LoadRomTask is { IsCompleted: true } && !TransitionsFX.IsFadingOut)
+        else if (LoadRomTask is { IsCompletedSuccessfully: true } && !TransitionsFX.IsFadingOut)
         {
             StartGame();
         }
