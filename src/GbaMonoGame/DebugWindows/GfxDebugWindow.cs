@@ -11,6 +11,7 @@ public class GfxDebugWindow : DebugWindow
 {
     public override string Name => "Gfx";
 
+    // NOTE: This seems to have some issue where the screen is shifted one pixel down on the texture - not sure why
     private void ExportScreen(GfxScreen screen)
     {
         GraphicsDevice graphicsDevice = Engine.GraphicsDevice;
@@ -30,20 +31,26 @@ public class GfxDebugWindow : DebugWindow
         Vector2 oldResolution = Engine.InternalGameResolution;
         Vector2 oldOffset = screen.Offset;
         RenderContext oldRenderContext = screen.RenderOptions.RenderContext;
+        BlendMode oldBlendMode = screen.RenderOptions.BlendMode;
 
         Engine.InternalGameResolution = size;
         screen.Offset = Vector2.Zero;
         screen.RenderOptions.RenderContext = new FixedResolutionRenderContext(size);
+        screen.RenderOptions.BlendMode = BlendMode.None;
 
         Engine.GameViewPort.Resize(size);
 
+        graphicsDevice.Clear(Color.Transparent);
+
         GfxRenderer renderer = new(graphicsDevice);
+        
         screen.Draw(renderer, Color.White);
         renderer.EndRender();
 
         Engine.InternalGameResolution = oldResolution;
         screen.Offset = oldOffset;
         screen.RenderOptions.RenderContext = oldRenderContext;
+        screen.RenderOptions.BlendMode = oldBlendMode;
 
         const string outputDir = "Screens";
         Directory.CreateDirectory(outputDir);

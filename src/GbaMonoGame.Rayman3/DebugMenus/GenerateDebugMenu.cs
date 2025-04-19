@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using BinarySerializer.Ubisoft.GbaEngine;
+using GbaMonoGame.TgxEngine;
 using ImGuiNET;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
@@ -166,6 +167,118 @@ public class GenerateDebugMenu : DebugMenu
         void writeJson<T>(T obj, string filePath) => WriteJson(obj, Path.Combine("GameData", filePath));
     }
 
+    private void GenerateTileLayerImages()
+    {
+        for (int mapId = 0; mapId < GameInfo.Levels.Length; mapId++)
+        {
+            Scene2DResource scene = Rom.LoadResource<Scene2DResource>(mapId);
+
+            if (scene.Playfield.Type == PlayfieldType.Playfield2D)
+            {
+                Playfield2D playfield = scene.Playfield.Playfield2D;
+
+                GfxTileKitManager tileKitManager = new();
+                tileKitManager.LoadTileKit(playfield.TileKit, playfield.TileMappingTable, 0x180, false, playfield.DefaultPalette);
+
+                for (int layerId = 0; layerId < playfield.Layers.Length; layerId++)
+                {
+                    GameLayer layer = playfield.Layers[layerId];
+
+                    if (layer.Type == GameLayerType.TileLayer)
+                    {
+                        TileLayer tileLayer = layer.TileLayer;
+
+                        if (tileLayer.IsDynamic)
+                        {
+                            byte[] tileSet = tileLayer.Is8Bit ? playfield.TileKit.Tiles8bpp : playfield.TileKit.Tiles4bpp;
+
+                            using Texture2D texture = new TiledTexture2D(
+                                width: layer.Width,
+                                height: layer.Height,
+                                tileSet: tileSet,
+                                tileMap: tileLayer.TileMap,
+                                baseTileIndex: -1,
+                                palette: tileKitManager.SelectedPalette,
+                                is8Bit: tileLayer.Is8Bit,
+                                ignoreZero: true);
+
+                            exportTexture(mapId, layerId, texture);
+                        }
+                        else
+                        {
+                            using Texture2D texture = new TiledTexture2D(
+                                width: layer.Width, 
+                                height: layer.Height, 
+                                tileSet: tileKitManager.TileSet, 
+                                tileMap: tileLayer.TileMap, 
+                                palette: tileKitManager.SelectedPalette, 
+                                is8Bit: tileLayer.Is8Bit,
+                                ignoreZero: true);
+
+                            exportTexture(mapId, layerId, texture);
+                        }
+                    }
+                }
+            }
+            else if (scene.Playfield.Type == PlayfieldType.PlayfieldMode7)
+            {
+                PlayfieldMode7 playfield = scene.Playfield.PlayfieldMode7;
+
+                GfxTileKitManager tileKitManager = new();
+                tileKitManager.LoadTileKit(playfield.TileKit, playfield.TileMappingTable, 0x100, true, playfield.DefaultPalette);
+
+                for (int layerId = 0; layerId < playfield.Layers.Length; layerId++)
+                {
+                    GameLayer layer = playfield.Layers[layerId];
+
+                    if (layer.Type == GameLayerType.RotscaleLayerMode7)
+                    {
+                        RotscaleLayerMode7 rotscaleLayer = layer.RotscaleLayerMode7;
+
+                        using Texture2D texture = new TiledTexture2D(
+                            width: layer.Width,
+                            height: layer.Height,
+                            tileSet: tileKitManager.TileSet,
+                            tileMap: rotscaleLayer.TileMap,
+                            baseTileIndex: 512,
+                            palette: tileKitManager.SelectedPalette,
+                            is8Bit: true,
+                            ignoreZero: true);
+
+                        exportTexture(mapId, layerId, texture);
+                    }
+                    else if (layer.Type == GameLayerType.TextLayerMode7)
+                    {
+                        TextLayerMode7 textLayer = layer.TextLayerMode7;
+
+                        using Texture2D texture = new TiledTexture2D(
+                            width: layer.Width,
+                            height: layer.Height,
+                            tileSet: tileKitManager.TileSet,
+                            tileMap: TgxTextLayerMode7.CreateTileMap(playfield, layer),
+                            baseTileIndex: 0,
+                            palette: tileKitManager.SelectedPalette,
+                            is8Bit: textLayer.Is8Bit,
+                            ignoreZero: true);
+
+                        exportTexture(mapId, layerId, texture);
+                    }
+                }
+            }
+        }
+
+        void exportTexture(int mapId, int layerId, Texture2D texture)
+        {
+            string outputDir = Path.Combine("Layers", $"Map {mapId:00}");
+            Directory.CreateDirectory(outputDir);
+            
+            string outputFile = Path.Combine(outputDir, $"Layer {layerId}.png");
+            
+            using Stream fileStream = File.Create(outputFile);
+            texture.SaveAsPng(fileStream, texture.Width, texture.Height);
+        }
+    }
+
     private void GenerateCreditsWheelMesh()
     {
         const string exportDir = "Models";
@@ -279,6 +392,9 @@ public class GenerateDebugMenu : DebugMenu
 
         if (ImGui.MenuItem("Game data"))
             GenerateGameData();
+
+        if (ImGui.MenuItem("Tile layer images"))
+            GenerateTileLayerImages();
 
         if (ImGui.MenuItem("Credits wheel mesh"))
             GenerateCreditsWheelMesh();

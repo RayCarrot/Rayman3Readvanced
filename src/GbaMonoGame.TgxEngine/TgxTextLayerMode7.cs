@@ -56,7 +56,7 @@ public class TgxTextLayerMode7 : TgxGameLayer
     public float RotationFactor { get; }
     public bool IsStatic { get; set; }
 
-    private static MapTile[] CreateTileMap(PlayfieldMode7Resource playfieldResource, GameLayerResource gameLayerResource)
+    public static MapTile[] CreateTileMap(PlayfieldMode7Resource playfieldResource, GameLayerResource gameLayerResource)
     {
         // Get the resource
         TextLayerMode7Resource resource = gameLayerResource.TextLayerMode7;
