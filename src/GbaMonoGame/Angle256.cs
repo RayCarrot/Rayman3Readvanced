@@ -32,5 +32,4 @@ public readonly struct Angle256
 
     public static implicit operator Angle256(float value) => new(value);
     public static implicit operator float(Angle256 angle) => angle.Value;
-
 }

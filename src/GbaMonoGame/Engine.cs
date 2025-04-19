@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame;
 
+// TODO: Handle exceptions for loading/saving config
 public static class Engine
 {
     #region Paths

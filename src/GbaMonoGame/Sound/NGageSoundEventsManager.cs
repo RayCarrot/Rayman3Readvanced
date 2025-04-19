@@ -9,6 +9,7 @@ using SoLoud;
 
 namespace GbaMonoGame;
 
+// TODO: Sound volume mixing seems off for sound effects vs music
 public class NGageSoundEventsManager : SoundEventsManager
 {
     #region Constructor
