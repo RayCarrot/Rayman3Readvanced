@@ -164,9 +164,12 @@ public partial class JanoSkullPlatform
                         if (activeFist != null)
                         {
                             Box fistBox = activeFist.GetDetectionBox();
-
+                            
                             // Extend by 5 in all directions
-                            fistBox = new Box(fistBox.MinX - 5, fistBox.MinY - 5, fistBox.MaxX + 5, fistBox.MaxY + 5);
+                            fistBox.MinX -= 5;
+                            fistBox.MinY -= 5;
+                            fistBox.MaxX += 5;
+                            fistBox.MaxY += 5;
 
                             if (fistBox.Intersects(detectionBox))
                             {
@@ -187,7 +190,10 @@ public partial class JanoSkullPlatform
                         Box skullBox = skullPlatform.GetDetectionBox();
 
                         // Extend
-                        skullBox = new Box(skullBox.MinX - 15, skullBox.MinY - 10, skullBox.MaxX + 15, skullBox.MaxY + 10);
+                        skullBox.MinX -= 15;
+                        skullBox.MinY -= 10;
+                        skullBox.MaxX += 15;
+                        skullBox.MaxY += 10;
 
                         if (skullBox.Intersects(detectionBox))
                         {

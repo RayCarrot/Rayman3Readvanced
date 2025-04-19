@@ -36,8 +36,11 @@ public partial class PurpleLum
                         Box detectionBox = activeFist.GetDetectionBox();
                         if (!detectionBox.Intersects(viewBox)) 
                             continue;
-                        
-                        viewBox = new Box(viewBox.MinX + 16, viewBox.MinY + 8, viewBox.MaxX - 16, viewBox.MaxY + 4);
+
+                        viewBox.MinX += 16;
+                        viewBox.MinY += 8;
+                        viewBox.MaxX -= 16;
+                        viewBox.MaxY += 4;
 
                         if (!detectionBox.Intersects(viewBox)) 
                             continue;

@@ -23,7 +23,7 @@ public partial class Keg
                 Timer++;
 
                 Box actionBox = GetActionBox();
-                actionBox = new Box(actionBox.MinX, actionBox.MinY, actionBox.MaxX, actionBox.MaxY + 100);
+                actionBox.MaxY += 100;
 
                 // Spawn debris
                 if (Timer >= 30 && SpawnedDebrisCount < 2 && Scene.MainActor.GetDetectionBox().Intersects(actionBox))

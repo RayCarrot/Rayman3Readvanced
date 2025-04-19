@@ -219,11 +219,10 @@ public static class LevelMusicManager
         // Extend the box if playing
         if (IsPlayingSpecialMusic)
         {
-            objBox = new Box(
-                minX: objBox.MinX - 64,
-                minY: objBox.MinY - 64,
-                maxX: objBox.MaxX + 64,
-                maxY: objBox.MaxY + 64);
+            objBox.MinX -= 64;
+            objBox.MinY -= 64;
+            objBox.MaxX += 64;
+            objBox.MaxY += 64;
         }
 
         Box mainActorDetectionBox = obj.Scene.MainActor.GetDetectionBox();
@@ -234,16 +233,15 @@ public static class LevelMusicManager
 
     public static void PlaySpecialMusicIfDetectedWith(GameObject obj, Box box)
     {
-        Box objBox = box.Offset(obj.Position);
+        Box objBox = Box.Offset(box, obj.Position);
 
         // Extend the box if playing
         if (IsPlayingSpecialMusic)
         {
-            objBox = new Box(
-                minX: objBox.MinX - 64,
-                minY: objBox.MinY - 64,
-                maxX: objBox.MaxX + 64,
-                maxY: objBox.MaxY + 64);
+            objBox.MinX -= 64;
+            objBox.MinY -= 64;
+            objBox.MaxX += 64;
+            objBox.MaxY += 64;
         }
 
         Box mainActorDetectionBox = obj.Scene.MainActor.GetDetectionBox();

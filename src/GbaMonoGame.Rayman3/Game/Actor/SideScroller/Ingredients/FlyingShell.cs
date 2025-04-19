@@ -29,7 +29,7 @@ public sealed partial class FlyingShell : MovableActor
     private bool IsCollidingWithWall()
     {
         Box detectionBox = GetDetectionBox();
-        detectionBox = new Box(detectionBox.MinX, detectionBox.MinY, detectionBox.MaxX, detectionBox.MaxY - Tile.Size);
+        detectionBox.MaxY -= Tile.Size;
 
         if (Scene.GetPhysicalType(detectionBox.BottomRight) == PhysicalTypeValue.InstaKill) 
             return true;

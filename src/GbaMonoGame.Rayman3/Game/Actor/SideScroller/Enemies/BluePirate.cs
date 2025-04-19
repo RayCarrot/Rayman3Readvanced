@@ -23,17 +23,13 @@ public sealed partial class BluePirate : PirateBaseActor
 
     private Box GetChainAttackBox(float offsetX)
     {
-        float minX = offsetX;
-        float maxX = minX + 16;
-        const float minY = -16;
-        const float maxY = 0;
+        Box box = new(offsetX, -16, offsetX + 16, 0);
 
         if (AnimatedObject.FlipX)
-            (minX, maxX) = (-maxX, -minX);
+            box = Box.FlipX(box);
 
-        Box box = new(minX, minY, maxX, maxY);
         _lastChainAttackBox = box;
-        return box.Offset(Position);
+        return Box.Offset(box, Position);
     }
 
     public override void DoBehavior()

@@ -478,11 +478,10 @@ public class Scene2D
         Box mainActorDetectionBox = MainActor.GetDetectionBox();
         Box actionBox = actor.GetActionBox();
 
-        actionBox = new Box(
-            minX: actionBox.MinX + addMinX,
-            minY: actionBox.MinY + addMinY,
-            maxX: actionBox.MaxX + addMaxX,
-            maxY: actionBox.MaxY + addMaxY);
+        actionBox.MinX += addMinX;
+        actionBox.MinY += addMinY;
+        actionBox.MaxX += addMaxX;
+        actionBox.MaxY += addMaxY;
 
         return mainActorDetectionBox.Intersects(actionBox);
     }

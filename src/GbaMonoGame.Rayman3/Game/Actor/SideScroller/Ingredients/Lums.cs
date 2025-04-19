@@ -88,7 +88,11 @@ public sealed partial class Lums : BaseActor
     private Box GetCollisionBox()
     {
         Box viewBox = GetViewBox();
-        return new Box(viewBox.MinX + 16, viewBox.MinY + 16, viewBox.MaxX - 16, viewBox.MaxY - 16);
+        viewBox.MinX += 16;
+        viewBox.MinY += 16;
+        viewBox.MaxX -= 16;
+        viewBox.MaxY -= 16;
+        return viewBox;
     }
 
     private bool CheckCollision()

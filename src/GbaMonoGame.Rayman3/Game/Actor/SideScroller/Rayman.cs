@@ -613,7 +613,7 @@ public sealed partial class Rayman : MovableActor
     private void CheckForTileDamage()
     {
         Box box = GetVulnerabilityBox();
-        box = new Box(box.MinX, box.MinY, box.MaxX, box.MaxY - Tile.Size);
+        box.MaxY -= Tile.Size;
 
         if (Scene.GetPhysicalType(box.BottomRight) == PhysicalTypeValue.Damage ||
             Scene.GetPhysicalType(box.MiddleRight) == PhysicalTypeValue.Damage ||

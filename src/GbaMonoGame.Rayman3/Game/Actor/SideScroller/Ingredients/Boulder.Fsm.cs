@@ -42,7 +42,8 @@ public partial class Boulder
         else if (GameInfo.MapId == MapId.Bonus4)
         {
             Box attackBox = GetAttackBox();
-            attackBox = new Box(attackBox.MinX, attackBox.MinY + 16, attackBox.MaxX, attackBox.MaxY + 16);
+            attackBox.MinY += 16;
+            attackBox.MaxY += 16;
 
             Box mainActorVulnerabilityBox = Scene.MainActor.GetVulnerabilityBox();
 

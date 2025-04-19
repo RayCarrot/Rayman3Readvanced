@@ -28,7 +28,7 @@ public class EditableActor : EditableGameObject
     public ActorModel ActorModel { get; }
     public AnimatedObject AnimatedObject { get; }
 
-    public Box GetViewBox() => _viewBox.Offset(Position);
+    public Box GetViewBox() => Box.Offset(_viewBox, Position);
     public override Box GetSelectionBox() => GetViewBox();
 
     public void Draw(AnimationPlayer animationPlayer)

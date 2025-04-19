@@ -35,9 +35,15 @@ public partial class ZombieChicken
                 Box actionBox = GetActionBox();
 
                 if (IsFacingRight)
-                    actionBox = new Box(actionBox.MinX - Scene.Resolution.X, actionBox.MinY, actionBox.MaxX + 75, actionBox.MaxY);
+                {
+                    actionBox.MinX -= Scene.Resolution.X;
+                    actionBox.MaxX += 75;
+                }
                 else
-                    actionBox = new Box(actionBox.MinX - 75, actionBox.MinY, actionBox.MaxX + Scene.Resolution.X, actionBox.MaxY);
+                {
+                    actionBox.MinX -= 75;
+                    actionBox.MaxX += Scene.Resolution.X;
+                }
 
                 if (Scene.MainActor.GetDetectionBox().Intersects(actionBox))
                 {

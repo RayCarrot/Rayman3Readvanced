@@ -92,11 +92,10 @@ public partial class BreakableGround
                 bool outOfView = true;
 
                 Box viewBox = GetViewBox();
-                viewBox = new Box(
-                    minX: viewBox.MinX - Scene.Resolution.X,
-                    minY: viewBox.MinY - Scene.Resolution.Y,
-                    maxX: viewBox.MaxX + Scene.Resolution.X,
-                    maxY: viewBox.MaxY + Scene.Resolution.Y);
+                viewBox.MinX -= Scene.Resolution.X;
+                viewBox.MinY -= Scene.Resolution.Y;
+                viewBox.MaxX += Scene.Resolution.X;
+                viewBox.MaxY += Scene.Resolution.Y;
                 
                 for (int playerId = 0; playerId < RSMultiplayer.PlayersCount; playerId++)
                 {

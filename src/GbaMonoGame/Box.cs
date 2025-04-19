@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace GbaMonoGame;
 
-public readonly struct Box
+public struct Box
 {
     public Box(float minX, float minY, float maxX, float maxY)
     {
@@ -40,10 +40,10 @@ public readonly struct Box
 
     public static Box Empty { get; } = new(0, 0, 0, 0);
 
-    public float MinX { get; }
-    public float MinY { get; }
-    public float MaxX { get; }
-    public float MaxY { get; }
+    public float MinX;
+    public float MinY;
+    public float MaxX;
+    public float MaxY;
 
     [JsonIgnore]
     public float Width => MaxX - MinX;
@@ -81,32 +81,26 @@ public readonly struct Box
     [JsonIgnore]
     public Vector2 Size => new(Width, Height);
 
-    public Box Offset(Vector2 offset) => new(MinX + offset.X, MinY + offset.Y, MaxX + offset.X, MaxY + offset.Y);
-    public Box FlipX() => new(MaxX * -1, MinY, MinX * -1, MaxY);
-    public Box FlipY() => new(MinX, MaxY * -1, MaxX, MinX * -1);
-    public bool Intersects(Box otherBox)
+    public static Box Offset(Box box, Vector2 offset)
     {
-        float largestXMin = otherBox.MinX;
-        if (largestXMin < MinX)
-            largestXMin = MinX;
-
-        float largestYMin = otherBox.MinY;
-        if (largestYMin < MinY)
-            largestYMin = MinY;
-
-        float smallestXMax = otherBox.MaxX;
-        if (MaxX < smallestXMax)
-            smallestXMax = MaxX;
-
-        float smallestYMax = otherBox.MaxY;
-        if (MaxY < smallestYMax)
-            smallestYMax = MaxY;
-
-        return largestXMin < smallestXMax && largestYMin < smallestYMax;
+        box.MinX += offset.X;
+        box.MinY += offset.Y;
+        box.MaxX += offset.X;
+        box.MaxY += offset.Y;
+        return box;
     }
-    public bool Contains(Vector2 position) => MinX <= position.X && position.X < MaxX && MinY <= position.Y && position.Y < MaxY;
 
-    public Rectangle ToRectangle() => new((int)MinX, (int)MinY, (int)Width, (int)Height);
+    public static Box FlipX(Box box)
+    {
+        (box.MinX, box.MaxX) = (-box.MaxX, -box.MinX);
+        return box;
+    }
+
+    public static Box FlipY(Box box)
+    {
+        (box.MinY, box.MaxY) = (-box.MaxY, -box.MinY);
+        return box;
+    }
 
     public static Box Intersect(Box box1, Box box2)
     {
@@ -160,4 +154,28 @@ public readonly struct Box
         return (((17 * 23 + MinX.GetHashCode()) * 23 + MinY.GetHashCode()) * 23 + MaxX.GetHashCode()) * 23 + MaxY.GetHashCode();
     }
 
+    public bool Intersects(Box otherBox)
+    {
+        float largestXMin = otherBox.MinX;
+        if (largestXMin < MinX)
+            largestXMin = MinX;
+
+        float largestYMin = otherBox.MinY;
+        if (largestYMin < MinY)
+            largestYMin = MinY;
+
+        float smallestXMax = otherBox.MaxX;
+        if (MaxX < smallestXMax)
+            smallestXMax = MaxX;
+
+        float smallestYMax = otherBox.MaxY;
+        if (MaxY < smallestYMax)
+            smallestYMax = MaxY;
+
+        return largestXMin < smallestXMax && largestYMin < smallestYMax;
+    }
+
+    public bool Contains(Vector2 position) => MinX <= position.X && position.X < MaxX && MinY <= position.Y && position.Y < MaxY;
+
+    public Rectangle ToRectangle() => new((int)MinX, (int)MinY, (int)Width, (int)Height);
 }

@@ -30,7 +30,10 @@ public sealed partial class Skull : MovableActor
         Box detectionBox = GetDetectionBox();
 
         // Extend by 5 in all directions
-        detectionBox = new Box(detectionBox.MinX - 5, detectionBox.MinY - 5, detectionBox.MaxX + 5, detectionBox.MaxY + 5);
+        detectionBox.MinX -= 5;
+        detectionBox.MinY -= 5;
+        detectionBox.MaxX += 5;
+        detectionBox.MaxY += 5;
 
         Rayman rayman = (Rayman)Scene.MainActor;
 

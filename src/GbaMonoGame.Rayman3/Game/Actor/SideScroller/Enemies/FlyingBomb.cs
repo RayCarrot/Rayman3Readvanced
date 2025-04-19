@@ -57,12 +57,10 @@ public sealed partial class FlyingBomb : MovableActor
     private bool HitWall()
     {
         Box vulnerabilityBox = GetVulnerabilityBox();
-
-        vulnerabilityBox = new Box(
-            minX: vulnerabilityBox.MinX - 8, 
-            minY: vulnerabilityBox.MinY - 8, 
-            maxX: vulnerabilityBox.MaxX + 8,
-            maxY: vulnerabilityBox.MaxY - 8);
+        vulnerabilityBox.MinX -= 8;
+        vulnerabilityBox.MinY -= 8;
+        vulnerabilityBox.MaxX += 8;
+        vulnerabilityBox.MaxY -= 8;
 
         // Check bottom-right
         PhysicalType type = Scene.GetPhysicalType(vulnerabilityBox.BottomRight);

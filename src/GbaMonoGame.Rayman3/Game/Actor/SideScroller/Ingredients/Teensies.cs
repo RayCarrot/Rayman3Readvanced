@@ -195,7 +195,8 @@ public sealed partial class Teensies : ActionActor
     private bool HasLeftMainActorView()
     {
         Box viewBox = GetViewBox();
-        viewBox = new Box(viewBox.MinX + 45, viewBox.MinY, viewBox.MaxX - 45, viewBox.MaxY);
+        viewBox.MinX += 45;
+        viewBox.MaxX -= 45;
 
         return !Scene.MainActor.GetDetectionBox().Intersects(viewBox);
     }

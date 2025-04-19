@@ -34,12 +34,12 @@ public abstract class InteractableActor : ActionActor
         Box box = _animationBoxTable.AttackBox;
 
         if (AnimatedObject.FlipX)
-            box = box.FlipX();
+            box = Box.FlipX(box);
 
         if (AnimatedObject.FlipY)
-            box = box.FlipY();
+            box = Box.FlipY(box);
 
-        return box.Offset(Position);
+        return Box.Offset(box, Position);
     }
 
     public virtual Box GetVulnerabilityBox()
@@ -47,12 +47,12 @@ public abstract class InteractableActor : ActionActor
         Box box = _animationBoxTable.VulnerabilityBox;
 
         if (AnimatedObject.FlipX)
-            box = box.FlipX();
+            box = Box.FlipX(box);
 
         if (AnimatedObject.FlipY)
-            box = box.FlipY();
+            box = Box.FlipY(box);
 
-        return box.Offset(Position);
+        return Box.Offset(box, Position);
     }
 
     public override void DrawDebugBoxes(AnimationPlayer animationPlayer)

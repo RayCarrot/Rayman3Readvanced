@@ -105,9 +105,9 @@ public abstract class ActionActor : BaseActor
         }
     }
 
-    public virtual Box GetDetectionBox() => _detectionBox.Offset(Position);
+    public virtual Box GetDetectionBox() => Box.Offset(_detectionBox, Position);
     public virtual Box SetDetectionBox(Box detectionBox) => _detectionBox = detectionBox;
-    public virtual Box GetActionBox() => _actionBox.Offset(Position);
+    public virtual Box GetActionBox() => Box.Offset(_actionBox, Position);
 
     public void ChangeAction()
     {

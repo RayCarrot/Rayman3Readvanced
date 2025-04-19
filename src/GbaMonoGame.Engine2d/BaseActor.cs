@@ -93,7 +93,7 @@ public abstract class BaseActor : GameObject
             ProcessMessage(this, Message.Destroy);
     }
 
-    public Box GetViewBox() => _viewBox.Offset(Position);
+    public Box GetViewBox() => Box.Offset(_viewBox, Position);
 
     public void RewindAction()
     {

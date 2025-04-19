@@ -65,8 +65,8 @@ public partial class Balloon
                 if (LinkedBalloonId != null)
                 {
                     Box detectionBox = GetDetectionBox();
-
-                    detectionBox = new Box(detectionBox.MinX, detectionBox.MinY - 16, detectionBox.MaxX, detectionBox.MaxY - 32);
+                    detectionBox.MinY -= 16;
+                    detectionBox.MaxY -= 32;
 
                     if (mainActorDetectionBox.Intersects(detectionBox))
                         Scene.GetGameObject(LinkedBalloonId.Value).ProcessMessage(this, Message.ResurrectWakeUp);

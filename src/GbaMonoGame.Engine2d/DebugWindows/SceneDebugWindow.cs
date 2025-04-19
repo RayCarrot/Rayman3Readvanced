@@ -18,7 +18,7 @@ public class SceneDebugWindow : DebugWindow
         if (box == Box.Empty)
             return;
 
-        box = box.Offset(-playfield.Camera.Position);
+        box = Box.Offset(box, -playfield.Camera.Position);
         renderer.DrawRectangle(box.ToRectangle(), color);
     }
 
@@ -43,7 +43,7 @@ public class SceneDebugWindow : DebugWindow
 
         foreach (GameObject gameObject in new EnabledAlwaysActorIterator(scene).Concat(new EnabledActorCaptorIterator(scene)))
         {
-            Box box = GetObjBox(gameObject).Offset(-scene.Playfield.Camera.Position);
+            Box box = Box.Offset(GetObjBox(gameObject) , - scene.Playfield.Camera.Position);
 
             if (box.Contains(mousePos))
             {
