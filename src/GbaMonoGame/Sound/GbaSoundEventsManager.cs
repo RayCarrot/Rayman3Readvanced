@@ -47,6 +47,8 @@ public class GbaSoundEventsManager : SoundEventsManager
     private readonly float[] _volumePerType;
     private readonly List<SongInstance> _songInstances; // On GBA this is max 4 songs, but we don't need that limit
     private CallBackSet _callBacks;
+    private bool _hasSetRandomSeed;
+    private uint _randomSeed;
     
     private readonly int[] _rollOffTable =
     [
@@ -204,10 +206,22 @@ public class GbaSoundEventsManager : SoundEventsManager
         }
     }
 
+    private int GetRandomNumber(int max)
+    {
+        if (!_hasSetRandomSeed)
+        {
+            // NOTE: In the original game the initial seed is set to VCOUNT
+            _randomSeed = (uint)Random.Shared.Next(228);
+            _hasSetRandomSeed = true;
+        }
+
+        _randomSeed = _randomSeed * 0x19660d + 0x3c6ef35f;
+        return MathHelpers.Mod((int)(_randomSeed >> 0x10), max);
+    }
+
     private ushort? GetRandomResourceId(SoundResource res)
     {
-        // TODO: Use Random.Shared or game's random implementation? It matters less here than in the game code though.
-        int rand = Random.Shared.Next(100);
+        int rand = GetRandomNumber(100);
 
         for (int i = 0; i < res.ResourceIdsCount; i++)
         {
