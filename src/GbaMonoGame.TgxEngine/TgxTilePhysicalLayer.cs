@@ -8,33 +8,41 @@ public class TgxTilePhysicalLayer : TgxGameLayer
     {
         CollisionMap = gameLayerResource.PhysicalLayer.CollisionMap;
 
-        // TODO: Log not implemented if we have undefined collision types
-
-        // TODO: Don't do this unless some debug mode is enabled or it'll impact performance
-        // Collision map screen for debugging
-        DebugScreen = new GfxScreen(-1)
+        if (Engine.Config.DebugModeEnabled)
         {
-            IsEnabled = false,
-            Offset = Vector2.Zero,
-            Priority = 0,
-            Wrap = false,
-            Is8Bit = null,
-            Renderer = new CollisionMapScreenRenderer(Width, Height, CollisionMap),
-            RenderOptions = { RenderContext = renderContext },
-        };
-        Gfx.AddScreen(DebugScreen);
+            // Collision map screen for debugging
+            DebugScreen = new GfxScreen(-1)
+            {
+                IsEnabled = false,
+                Offset = Vector2.Zero,
+                Priority = 0,
+                Wrap = false,
+                Is8Bit = null,
+                Renderer = new CollisionMapScreenRenderer(Width, Height, CollisionMap),
+                RenderOptions = { RenderContext = renderContext },
+            };
+            Gfx.AddScreen(DebugScreen);
+        }
     }
 
     public GfxScreen DebugScreen { get; }
     public byte[] CollisionMap { get; }
 
+    public void ToggleScreenVisibility()
+    {
+        if (DebugScreen != null)
+            DebugScreen.IsEnabled = !DebugScreen.IsEnabled;
+    }
+
     public override void SetOffset(Vector2 offset)
     {
-        DebugScreen.Offset = offset;
+        if (DebugScreen != null)
+            DebugScreen.Offset = offset;
     }
 
     public override void SetWorldViewProjMatrix(Matrix worldViewProj)
     {
-        DebugScreen.RenderOptions.WorldViewProj = worldViewProj;
+        if (DebugScreen != null)
+            DebugScreen.RenderOptions.WorldViewProj = worldViewProj;
     }
 }

@@ -108,7 +108,7 @@ public abstract class CameraActorMode7 : CameraActor
         obj.ScreenPos = Vector2.Zero;
         obj.RenderOptions.WorldViewProj = world * view * projection;
 
-        // TODO: Optimize by only returning true if in view
+        // Could optimize by only returning true if in view, but not necessary since it's just for debugging
         return true;
     }
 }

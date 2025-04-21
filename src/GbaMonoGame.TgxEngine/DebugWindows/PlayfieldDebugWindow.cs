@@ -9,7 +9,7 @@ public class PlayfieldDebugWindow : DebugWindow
 {
     public override string Name => "Playfield";
 
-    private void DrawPlayfield2D(DebugLayout debugLayout, TgxPlayfield2D playfield2D)
+    private void DrawPlayfield2D(TgxPlayfield2D playfield2D)
     {
         Vector2 pos = playfield2D.Camera.Position;
 
@@ -68,7 +68,7 @@ public class PlayfieldDebugWindow : DebugWindow
         }
     }
 
-    private void DrawPlayfieldMode7(DebugLayout debugLayout, TgxPlayfieldMode7 playfieldMode7)
+    private void DrawPlayfieldMode7(TgxPlayfieldMode7 playfieldMode7)
     {
         Vector2 pos = playfieldMode7.Camera.Position;
 
@@ -112,8 +112,8 @@ public class PlayfieldDebugWindow : DebugWindow
     public override void Draw(DebugLayout debugLayout, DebugLayoutTextureManager textureManager)
     {
         if (Frame.Current is IHasPlayfield { Playfield: TgxPlayfield2D playfield2D }) 
-            DrawPlayfield2D(debugLayout, playfield2D);
+            DrawPlayfield2D(playfield2D);
         else if (Frame.Current is IHasPlayfield { Playfield: TgxPlayfieldMode7 playfieldMode7 })
-            DrawPlayfieldMode7(debugLayout, playfieldMode7);
+            DrawPlayfieldMode7(playfieldMode7);
     }
 }

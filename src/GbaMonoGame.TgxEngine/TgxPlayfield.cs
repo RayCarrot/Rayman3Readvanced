@@ -32,8 +32,8 @@ public abstract class TgxPlayfield
         {
             PlayfieldType.Playfield2D => new TgxPlayfield2D(playfieldResource.Playfield2D),
             PlayfieldType.PlayfieldMode7 => new TgxPlayfieldMode7(playfieldResource.PlayfieldMode7),
-            PlayfieldType.PlayfieldScope => throw new NotImplementedException("Not implemented loading PlayfieldScope"),
-            _ => throw new NotImplementedException($"Unsupported playfield type {playfieldResource.Type}")
+            PlayfieldType.PlayfieldScope => throw new InvalidOperationException("PlayfieldScope type is currently not supported"),
+            _ => throw new InvalidOperationException($"Unsupported playfield type {playfieldResource.Type}")
         };
 
         return playfield as T ?? throw new Exception($"Playfield of type {playfield.GetType()} is not of expected type {typeof(T)}");
@@ -58,14 +58,13 @@ public abstract class TgxPlayfield
         return PhysicalLayer.CollisionMap[mapPoint.Y * PhysicalLayer.Width + mapPoint.X];
     }
 
-    // TODO: Remove?
     public void UnInit() { }
 
     public void Step()
     {
         // Toggle showing debug collision screen
         if (InputManager.IsButtonJustPressed(Input.Debug_ToggleCollision))
-            PhysicalLayer.DebugScreen.IsEnabled = !PhysicalLayer.DebugScreen.IsEnabled;
+            PhysicalLayer.ToggleScreenVisibility();
 
         AnimatedTilekitManager?.Step();
     }

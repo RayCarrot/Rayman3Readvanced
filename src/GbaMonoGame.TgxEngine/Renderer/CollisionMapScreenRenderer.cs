@@ -8,6 +8,7 @@ public class CollisionMapScreenRenderer : IScreenRenderer
 {
     public CollisionMapScreenRenderer(int width, int height, byte[] collisionMap)
     {
+        TileSetTexture = Engine.FixContentManager.Load<Texture2D>(Assets.CollisionTileSetTexture);
         Width = width;
         Height = height;
         CollisionMap = collisionMap;
@@ -16,9 +17,7 @@ public class CollisionMapScreenRenderer : IScreenRenderer
     private const int CollisionTileSize = 16;
     private const int CollisionTileSetWidth = 16;
 
-    // TODO: Don't make this static - the content manager already caches it
-    private static readonly Texture2D _tex = Engine.FixContentManager.Load<Texture2D>(Assets.CollisionTileSetTexture);
-
+    public Texture2D TileSetTexture { get; }
     public int Width { get; }
     public int Height { get; }
     public byte[] CollisionMap { get; }
@@ -60,7 +59,7 @@ public class CollisionMapScreenRenderer : IScreenRenderer
                 if (type != 0xFF)
                 {
                     renderer.Draw(
-                        texture: _tex, 
+                        texture: TileSetTexture, 
                         position: new Vector2(absTileX, absTileY), 
                         sourceRectangle: new Rectangle((type % CollisionTileSetWidth) * CollisionTileSize, (type / CollisionTileSetWidth) * CollisionTileSize, CollisionTileSize, CollisionTileSize), 
                         rotation: 0,

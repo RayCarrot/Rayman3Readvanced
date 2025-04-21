@@ -36,12 +36,12 @@ public abstract class GameObject : Object
     // Flags
     public bool IsEnabled { get; set; }
     public bool IsAwake { get; set; }
-    public bool Flag_2 { get; set; }
+    public bool Flag_2 { get; set; } // Unused and unreferenced in Rayman 3
     public bool IsProjectile { get; set; }
     public bool ResurrectsImmediately { get; set; }
     public bool ResurrectsLater { get; set; }
-    public bool Flag_6 { get; set; }
-    public bool Flag_7 { get; set; }
+    public bool Flag_6 { get; set; } // Unused in Rayman 3
+    public bool Flag_7 { get; set; } // Unused in Rayman 3
 
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {

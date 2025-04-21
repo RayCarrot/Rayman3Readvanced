@@ -36,7 +36,7 @@ public class MechModel
             Mode7_SetAccelerationX_SetTargetSpeedX_ResetSpeedY,
             Mode7_SetAccelerationY_SetTargetSpeedY_ResetSpeedX,
             Mode7_SetAccelerationX_SetTargetSpeedX,
-            Mode7_SetAccelerationY_SetTargetSpeedY_ResetSpeedX, // Bug in the game? Shouldn't this be Mode7_SetAccelerationY_SetTargetSpeedY?
+            Mode7_SetAccelerationY_SetTargetSpeedY_ResetSpeedX, // NOTE: Bug in the game? Shouldn't this be Mode7_SetAccelerationY_SetTargetSpeedY?
             Mode7_SetSpeedXY_SetAccelerationXY_SetTargetSpeedXY,
             Mode7_SetSpeedX_SetAccelerationX_SetTargetSpeedX_ResetSpeedY,
             Mode7_SetSpeedY_SetAccelerationY_SetTargetSpeedY_ResetSpeedX,
@@ -459,6 +459,7 @@ public class MechModel
         UpdateSpeedAction = Mode7_SetAcceleratedSpeedXY;
     }
 
+    // Unused due to bug mentioned above
     private void Mode7_SetAccelerationY_SetTargetSpeedY(float[] mechParams, int offset)
     {
         Acceleration = Acceleration with { Y = mechParams[offset + 0] };

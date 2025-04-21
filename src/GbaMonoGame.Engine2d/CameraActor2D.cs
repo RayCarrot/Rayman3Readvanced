@@ -26,7 +26,7 @@ public abstract class CameraActor2D : CameraActor
 
         obj.ScreenPos = position - cam.Position;
 
-        // TODO: Optimize by only returning true if in view
+        // Could optimize by only returning true if in view, but not necessary since it's just for debugging
         return true;
     }
 }

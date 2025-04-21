@@ -4,8 +4,6 @@ namespace GbaMonoGame.AnimEngine;
 
 public abstract class AObject
 {
-    // TODO: Do we keep these prio names or rename to ScreenPriority and SpritePriority to match our GFX names?
-
     // 1100 0000 0000 0000 (0-3)
     public int BgPriority { get; set; }
 
