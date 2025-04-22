@@ -40,11 +40,45 @@ public partial class BoulderMode7
                         ActionId = Action.Move_Left;
                 }
 
-                // TODO: This rotation code is only correct from one direction. Fix by using camera angle?
-                if (ActionId is Action.Move_Right or Action.Move_Up)
-                    Rotation -= 3;
-                else if (ActionId is Action.Move_Left or Action.Move_Down)
-                    Rotation += 3;
+                // The original code doesn't account for the camera view, so the rotation will sometimes be reversed. Optionally fix this.
+                if (Engine.Config.FixBugs)
+                {
+                    if (ActionId == Action.Move_Right)
+                    {
+                        if (CamAngle > Angle256.Half)
+                            Rotation += RotationSpeed;
+                        else
+                            Rotation -= RotationSpeed;
+                    }
+                    else if (ActionId == Action.Move_Left)
+                    {
+                        if (CamAngle > Angle256.Half)
+                            Rotation -= RotationSpeed;
+                        else
+                            Rotation += RotationSpeed;
+                    }
+                    else if (ActionId == Action.Move_Up)
+                    {
+                        if (CamAngle > Angle256.Quarter && CamAngle < Angle256.Quarter * 3)
+                            Rotation += RotationSpeed;
+                        else
+                            Rotation -= RotationSpeed;
+                    }
+                    else if (ActionId == Action.Move_Down)
+                    {
+                        if (CamAngle > Angle256.Quarter && CamAngle < Angle256.Quarter * 3)
+                            Rotation -= RotationSpeed;
+                        else
+                            Rotation += RotationSpeed;
+                    }
+                }
+                else
+                {
+                    if (ActionId is Action.Move_Right or Action.Move_Up)
+                        Rotation -= RotationSpeed;
+                    else if (ActionId is Action.Move_Left or Action.Move_Down)
+                        Rotation += RotationSpeed;
+                }
                 break;
 
             case FsmAction.UnInit:
@@ -60,11 +94,11 @@ public partial class BoulderMode7
         switch (action)
         {
             case FsmAction.Init:
-                BounceSpeed = -8;
+                BounceSpeed = InitialBounceSpeed;
                 break;
 
             case FsmAction.Step:
-                BounceSpeed += 0.25f;
+                BounceSpeed += BounceSpeedAcceleration;
                 ZPos -= BounceSpeed;
 
                 // Check player collision when in the air
