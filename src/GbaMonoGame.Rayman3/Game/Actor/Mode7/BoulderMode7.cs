@@ -1,6 +1,7 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -33,10 +34,10 @@ public sealed partial class BoulderMode7 : Mode7Actor
         if (viewBox.Intersects(playerViewBox))
         {
             // Get the angle
-            float angle = MathHelpers.Atan2_256((Position - player.Position) * new Vector2(1, -1));
+            Angle256 angle = MathHelpers.Atan2_256(TgxCameraMode7.ToMathSpace(Position - player.Position));
             
             // Rotate 180 degrees
-            angle += 128;
+            angle += Angle256.Half;
 
             Vector2 angleVector = MathHelpers.DirectionalVector256(angle);
 
@@ -45,7 +46,7 @@ public sealed partial class BoulderMode7 : Mode7Actor
 
             if (force < 0)
             {
-                player.MechModel.Speed -= angleVector * new Vector2(1, -1) * force;
+                player.MechModel.Speed -= TgxCameraMode7.ToGameSpace(angleVector) * force;
                 player.MechModel.Acceleration = Vector2.Zero;
 
                 if (SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__PinBall_Mix02))

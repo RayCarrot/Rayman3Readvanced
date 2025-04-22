@@ -22,7 +22,7 @@ public abstract class Mode7Actor : MovableActor
     public bool IsAffine { get; set; }
     public int RenderHeight { get; set; }
     public Angle256 Direction { get; set; }
-    public float CamAngle { get; set; }
+    public Angle256 CamAngle { get; set; }
 
     public Angle256 GetCamDirection()
     {
