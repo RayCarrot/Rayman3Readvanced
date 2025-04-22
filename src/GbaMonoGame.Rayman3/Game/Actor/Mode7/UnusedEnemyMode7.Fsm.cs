@@ -13,7 +13,7 @@ public partial class UnusedEnemyMode7
                 break;
 
             case FsmAction.Step:
-                if (Scene.IsDetectedMainActor(this) && ((Mode7Actor)Scene.MainActor).ZPos <= 15)
+                if (Scene.IsDetectedMainActor(this) && ((Mode7Actor)Scene.MainActor).ZPos < 16)
                     Scene.MainActor.ReceiveDamage(AttackPoints);
                 break;
 

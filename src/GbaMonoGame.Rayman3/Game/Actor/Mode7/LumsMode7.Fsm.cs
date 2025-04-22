@@ -14,7 +14,7 @@ public partial class LumsMode7
                 break;
 
             case FsmAction.Step:
-                if (Scene.IsDetectedMainActor(this) && ((Mode7Actor)Scene.MainActor).ZPos <= 23)
+                if (Scene.IsDetectedMainActor(this) && ((Mode7Actor)Scene.MainActor).ZPos < 24)
                 {
                     State.MoveTo(Fsm_Collected);
                     return false;
@@ -104,7 +104,7 @@ public partial class LumsMode7
                     Mode7Actor player = Scene.GetGameObject<Mode7Actor>(id);
                     Box playerDetectionBox = player.GetDetectionBox();
 
-                    if (player.HitPoints != 0 && actionBox.Intersects(playerDetectionBox) && player.ZPos < 23)
+                    if (player.HitPoints != 0 && actionBox.Intersects(playerDetectionBox) && player.ZPos < 24)
                     {
                         if (ActionId == Action.BlueLum)
                         {

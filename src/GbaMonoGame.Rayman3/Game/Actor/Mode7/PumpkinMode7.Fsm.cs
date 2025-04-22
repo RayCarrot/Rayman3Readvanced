@@ -14,7 +14,7 @@ public partial class PumpkinMode7
                 break;
 
             case FsmAction.Step:
-                if (Scene.IsDetectedMainActor(this) && ((Mode7Actor)Scene.MainActor).ZPos <= 23)
+                if (Scene.IsDetectedMainActor(this) && ((Mode7Actor)Scene.MainActor).ZPos < 24)
                 {
                     State.MoveTo(Fsm_Break);
                     return false;

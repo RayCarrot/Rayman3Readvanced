@@ -13,7 +13,7 @@ public partial class FlyingBombMode7
                 break;
 
             case FsmAction.Step:
-                if (Scene.IsDetectedMainActor(this) && ((Mode7Actor)Scene.MainActor).ZPos <= 23)
+                if (Scene.IsDetectedMainActor(this) && ((Mode7Actor)Scene.MainActor).ZPos < 24)
                 {
                     State.MoveTo(Fsm_Destroyed);
                     return false;
@@ -83,7 +83,7 @@ public partial class FlyingBombMode7
                     _ => Direction
                 };
 
-                if (Scene.IsDetectedMainActor(this) && ((Mode7Actor)Scene.MainActor).ZPos <= 23)
+                if (Scene.IsDetectedMainActor(this) && ((Mode7Actor)Scene.MainActor).ZPos < 24)
                 {
                     State.MoveTo(Fsm_Destroyed);
                     return false;

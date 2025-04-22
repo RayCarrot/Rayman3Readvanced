@@ -102,7 +102,7 @@ public partial class BoulderMode7
                 ZPos -= BounceSpeed;
 
                 // Check player collision when in the air
-                if (ZPos <= 15 && BounceSpeed > 0)
+                if (ZPos < 16 && BounceSpeed > 0)
                 {
                     if (RSMultiplayer.IsActive)
                     {
