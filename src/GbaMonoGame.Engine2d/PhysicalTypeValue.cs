@@ -1,5 +1,7 @@
 ﻿namespace GbaMonoGame.Engine2d;
 
+// Types 0-31 are reserved for the engine, with 32+ being for the game. Ideally we shouldn't be including the Rayman 3 types
+// in the base library here, but it's more convenient to have them all in the same enum rather than doing something like constant fields.
 public enum PhysicalTypeValue : byte
 {
     // Fully solid
@@ -53,9 +55,9 @@ public enum PhysicalTypeValue : byte
 
     MovingPlatform_CounterClockwise45 = 81,
     MovingPlatform_CounterClockwise90 = 82,
-    MovingPlatform_CounterClockwise135 = 83, // TODO: Add to collision tile set
-    MovingPlatform_CounterClockwise180 = 84, // TODO: Add to collision tile set
-    MovingPlatform_CounterClockwise225 = 85, // TODO: Add to collision tile set
+    MovingPlatform_CounterClockwise135 = 83, // Unused TODO: Add to collision tile set
+    MovingPlatform_CounterClockwise180 = 84, // Unused TODO: Add to collision tile set
+    MovingPlatform_CounterClockwise225 = 85, // Unused TODO: Add to collision tile set
     MovingPlatform_CounterClockwise270 = 86,
     MovingPlatform_CounterClockwise315 = 87,
 

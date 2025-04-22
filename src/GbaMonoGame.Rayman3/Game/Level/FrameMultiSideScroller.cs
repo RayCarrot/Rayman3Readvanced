@@ -272,7 +272,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         {
             // TODO: Set user info animation
 
-            Scene.NGage_Flag_6 = true;
+            Scene.IsMultiplayerPaused = true;
         }
     }
 

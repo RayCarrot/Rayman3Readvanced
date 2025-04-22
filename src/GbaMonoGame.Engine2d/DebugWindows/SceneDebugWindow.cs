@@ -82,7 +82,7 @@ public class SceneDebugWindow : DebugWindow
             foreach (BaseActor actor in scene2D.KnotManager.AlwaysActors)
             {
                 bool isSelected = SelectedGameObject == actor;
-                if (ImGui.Selectable($"{actor.InstanceId}. {ObjectFactory.GetActorTypeName(actor.Type)}", isSelected))
+                if (ImGui.Selectable($"{actor.InstanceId}. {ActorFactory.GetActorTypeName(actor.Type)}", isSelected))
                     SelectedGameObject = actor;
             }
 
@@ -100,7 +100,7 @@ public class SceneDebugWindow : DebugWindow
             foreach (BaseActor actor in scene2D.KnotManager.Actors)
             {
                 bool isSelected = SelectedGameObject == actor;
-                if (ImGui.Selectable($"{actor.InstanceId}. {ObjectFactory.GetActorTypeName(actor.Type)}", isSelected))
+                if (ImGui.Selectable($"{actor.InstanceId}. {ActorFactory.GetActorTypeName(actor.Type)}", isSelected))
                     SelectedGameObject = actor;
             }
 
@@ -136,7 +136,7 @@ public class SceneDebugWindow : DebugWindow
             foreach (BaseActor actor in scene2D.KnotManager.AddedProjectiles)
             {
                 bool isSelected = SelectedGameObject == actor;
-                if (ImGui.Selectable($"{actor.InstanceId}. {ObjectFactory.GetActorTypeName(actor.Type)}", isSelected))
+                if (ImGui.Selectable($"{actor.InstanceId}. {ActorFactory.GetActorTypeName(actor.Type)}", isSelected))
                     SelectedGameObject = actor;
             }
 

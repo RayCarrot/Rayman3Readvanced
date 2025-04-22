@@ -104,7 +104,7 @@ public partial class Arrive
                 break;
 
             case FsmAction.Step:
-                if (Scene.GetDialog<TextBoxDialog>().IsFinished)
+                if (Scene.GetRequiredDialog<TextBoxDialog>().IsFinished)
                 {
                     State.MoveTo(Fsm_EndLevel);
                     return false;

@@ -55,7 +55,7 @@ public sealed partial class Machine : MovableActor
     private void InitTextBox()
     {
         MurfySpawned = false;
-        TextBox = Scene.GetDialog<TextBoxDialog>();
+        TextBox = Scene.GetRequiredDialog<TextBoxDialog>();
         TextBox.MoveInOurOut(true);
         Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginCutscene);
     }

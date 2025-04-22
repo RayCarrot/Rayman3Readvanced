@@ -49,7 +49,7 @@ public class Rayman3 : GbaGame
         // Load fonts
         FontManager.Load(Rom.Loader.Font8, Rom.Loader.Font16, Rom.Loader.Font32);
 
-        ObjectFactory.Init(new Dictionary<ActorType, ObjectFactory.CreateActor>()
+        ActorFactory.Init(new Dictionary<ActorType, ActorFactory.CreateActor>()
         {
             { ActorType.Rayman, (instanceId, scene, resource) => new Rayman(instanceId, scene, resource) },
             { ActorType.RaymanBody, (instanceId, scene, resource) => new RaymanBody(instanceId, scene, resource) },

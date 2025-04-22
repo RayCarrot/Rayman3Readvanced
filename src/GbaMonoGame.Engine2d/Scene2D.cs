@@ -34,8 +34,9 @@ public class Scene2D
 
         Camera.LinkedObject = MainActor;
 
-        // Game does this ugly hack here for some reason to disable background scrolling in Cave of Bad Dreams 1 TODO: Allow this to be be ignored
-        if (id == 11)
+        // The game does this ugly hack here to disable background scrolling in Cave of Bad Dreams 1. This was added late during
+        // development and the reason is unknown. We'll ignore this if set to fix bugs since this seems unnecessary.
+        if (id == 11 && !Engine.Config.FixBugs)
             ((TgxPlayfield2D)Playfield).Camera.GetCluster(1).ScrollFactor = Vector2.Zero;
 
         Camera.SetFirstPosition();
@@ -83,8 +84,8 @@ public class Scene2D
     public bool AllowModalDialogs { get; set; }
     public bool PendingDialogRefresh { get; set; }
     public bool InitializeNewModalDialog { get; set; }
-    public bool ReloadPlayfield { get; set; }
-    public bool NGage_Flag_6 { get; set; }
+    public bool ReloadPlayfield { get; set; } // Unused in Rayman 3
+    public bool IsMultiplayerPaused { get; set; } // N-Gage only
 
     public RenderContext RenderContext => Playfield.RenderContext;
     public Vector2 Resolution => RenderContext.Resolution;
@@ -134,7 +135,7 @@ public class Scene2D
         }
         else if (Rom.Platform == Platform.NGage)
         {
-            if (InDialogModalMode || NGage_Flag_6)
+            if (InDialogModalMode || IsMultiplayerPaused)
             {
                 ProcessDialogs();
             }
@@ -285,17 +286,25 @@ public class Scene2D
     {
         if (!PendingDialogRefresh) 
             return;
-        
-        // Game resets the animation palette and sprite managers here
 
+        // Game resets the AnimationPaletteManager and AnimationSpriteManager here
+
+        // Unused in Rayman 3
         if (ReloadPlayfield)
-            throw new NotImplementedException();
+        {
+            // The game unloads the playfield here
+            throw new InvalidOperationException("Reloading the playfield is currently not supported");
+        }
 
         // If we're exiting modal mode we want to reload animation data
         if (!InDialogModalMode)
         {
+            // Unused in Rayman 3
             if (ReloadPlayfield)
-                throw new NotImplementedException();
+            {
+                // The game reloads the playfield here
+                throw new InvalidOperationException("Reloading the playfield is currently not supported");
+            }
 
             KnotManager.ReloadAnimations();
 

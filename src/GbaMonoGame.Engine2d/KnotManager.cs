@@ -85,7 +85,7 @@ public class KnotManager
         // Create always actors
         for (int i = 0; i < sceneResource.AlwaysActors.Length; i++)
         {
-            AlwaysActors[i] = ObjectFactory.Create(instanceId, scene, sceneResource.AlwaysActors[i]);
+            AlwaysActors[i] = ActorFactory.Create(instanceId, scene, sceneResource.AlwaysActors[i]);
             GameObjects.Add(AlwaysActors[i]);
             instanceId++;
         }
@@ -93,7 +93,7 @@ public class KnotManager
         // Create actors
         for (int i = 0; i < sceneResource.Actors.Length; i++)
         {
-            Actors[i] = ObjectFactory.Create(instanceId, scene, sceneResource.Actors[i]);
+            Actors[i] = ActorFactory.Create(instanceId, scene, sceneResource.Actors[i]);
             GameObjects.Add(Actors[i]);
             instanceId++;
         }
@@ -225,7 +225,7 @@ public class KnotManager
                 return null;
 
             int instanceId = GameObjectsCount + PendingAddedProjectiles.Count;
-            BaseActor projectile = ObjectFactory.Create(instanceId, scene, actorResource);
+            BaseActor projectile = ActorFactory.Create(instanceId, scene, actorResource);
 
             PendingAddedProjectiles.Add(projectile);
             projectile.Init(actorResource);

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace GbaMonoGame.Engine2d;
 
-public static class ObjectFactory
+public static class ActorFactory
 {
     private static Dictionary<int, CreateActor> _actorCreations;
     private static Func<int, string> _getActorTypeNameFunc;

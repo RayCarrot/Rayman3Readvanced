@@ -38,10 +38,10 @@ public abstract class MovableActor : InteractableActor
         float width = intersectBox.Width;
         float height = intersectBox.Height;
 
+        // Moving down
         if (Speed.Y > 0 &&
             otherDetectionBox.MinY > actorDetectionBox.MinY &&
             otherDetectionBox.MaxY > actorDetectionBox.MaxY &&
-            // TODO: Should we remove this? Only there in base engine because of limitations.
             height < Tile.Size)
         {
             Speed -= new Vector2(0, height);
@@ -52,6 +52,7 @@ public abstract class MovableActor : InteractableActor
             return true;
         }
 
+        // Moving up
         if (Speed.Y < 0 &&
             actorDetectionBox.MaxY > otherDetectionBox.MaxY &&
             actorDetectionBox.MinY > otherDetectionBox.MinY)
@@ -64,6 +65,7 @@ public abstract class MovableActor : InteractableActor
             return true;
         }
 
+        // Moving right
         if (Speed.X > 0)
         {
             if (otherDetectionBox.MaxX > actorDetectionBox.MaxX)
@@ -74,6 +76,7 @@ public abstract class MovableActor : InteractableActor
                 // NOTE: The original engine casts speed x and pos x to integers here (floor if positive, ceil if negative)
             }
         }
+        // Moving left
         else if (Speed.X < 0)
         {
             if (actorDetectionBox.MinX > otherDetectionBox.MinX)
@@ -97,15 +100,16 @@ public abstract class MovableActor : InteractableActor
 
         float width = intersectBox.Width;
 
-        // TODO: Should we remove this? Only there in base engine because of limitations.
         if (width > Tile.Size - 1)
             width = Tile.Size - 1;
 
+        // Moving left
         if (Position.X > otherDetectionBox.Center.X)
         {
             Speed += new Vector2(width, 0);
             Position += new Vector2(width, 0);
         }
+        // Moving right
         else
         {
             Speed -= new Vector2(width, 0);
@@ -278,6 +282,7 @@ public abstract class MovableActor : InteractableActor
         }
     }
 
+    // Unused in Rayman 3
     private void CheckMapCollision_Complex()
     {
         throw new NotImplementedException();

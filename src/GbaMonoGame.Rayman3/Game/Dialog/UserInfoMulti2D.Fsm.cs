@@ -60,7 +60,7 @@ public partial class UserInfoMulti2D
                         StartCountdownValue--;
 
                         if (Rom.Platform == Platform.NGage)
-                            Scene.NGage_Flag_6 = false;
+                            Scene.IsMultiplayerPaused = false;
                     }
                     else
                     {

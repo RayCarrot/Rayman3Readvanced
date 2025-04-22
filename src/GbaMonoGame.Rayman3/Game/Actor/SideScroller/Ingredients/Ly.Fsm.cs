@@ -15,7 +15,7 @@ public partial class Ly
                 break;
 
             case FsmAction.Step:
-                TextBox = Scene.GetDialog<TextBoxDialog>();
+                TextBox = Scene.GetRequiredDialog<TextBoxDialog>();
                 State.MoveTo(Fsm_Idle);
                 return false;
 
