@@ -49,7 +49,7 @@ public sealed partial class Barrel : MovableActor
 
         switch (message)
         {
-            case Message.Hit:
+            case Message.Actor_Hit:
                 RaymanBody body = (RaymanBody)param;
                 RaymanBody.RaymanBodyPartType bodyPartType = body.BodyPartType;
 

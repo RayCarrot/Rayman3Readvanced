@@ -21,7 +21,7 @@ public partial class FlyingShell
                 return false;
 
             case FsmAction.UnInit:
-                Scene.MainActor.ProcessMessage(this, Message.Main_Hide); // Unused, since this is the main actor
+                Scene.MainActor.ProcessMessage(this, Message.Rayman_Hide); // Unused, since this is the main actor
                 Scene.Camera.LinkedObject = this;
                 Scene.Camera.ProcessMessage(this, Message.Cam_FollowPositionY, 80);
                 break;

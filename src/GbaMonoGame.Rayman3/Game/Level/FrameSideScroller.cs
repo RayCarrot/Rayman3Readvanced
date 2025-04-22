@@ -228,7 +228,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         // TODO: Only allow this if in debug mode
         // NOTE: These cheats are not included in the retail versions of the games
         if (JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.L))
-            Scene.MainActor.ProcessMessage(this, Message.Main_LevelEnd);
+            Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
 
         if (JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.R))
             GameInfo.EnableCheat(Scene, Cheat.Invulnerable);
@@ -305,7 +305,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         // We probably don't need to do this, but in the original game it needs to reload things like
         // palette indexes since it might be allocated differently in VRAM after unpausing.
         foreach (GameObject gameObj in Scene.KnotManager.GameObjects)
-            gameObj.ProcessMessage(this, Message.ReloadAnimation);
+            gameObj.ProcessMessage(this, Message.Actor_ReloadAnimation);
 
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();

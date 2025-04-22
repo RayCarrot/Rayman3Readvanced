@@ -29,9 +29,9 @@ public partial class EnergyBall
                     if (hitActor != null && hitActor != Scene.MainActor)
                     {
                         hitActor.ReceiveDamage(AttackPoints);
-                        hitActor.ProcessMessage(this, Message.Damaged);
+                        hitActor.ProcessMessage(this, Message.Actor_Hurt);
                         Explosion explosion = Scene.CreateProjectile<Explosion>(ActorType.Explosion);
-                        hitActor.ProcessMessage(this, Message.Hit);
+                        hitActor.ProcessMessage(this, Message.Actor_Hit);
                         
                         if (explosion != null)
                             explosion.Position = Position;
@@ -43,7 +43,7 @@ public partial class EnergyBall
                     {
                         Scene.MainActor.ReceiveDamage(AttackPoints);
                         Explosion explosion = Scene.CreateProjectile<Explosion>(ActorType.Explosion);
-                        Scene.MainActor.ProcessMessage(this, Message.Damaged);
+                        Scene.MainActor.ProcessMessage(this, Message.Actor_Hurt);
                         
                         if (explosion != null)
                             explosion.Position = Position;

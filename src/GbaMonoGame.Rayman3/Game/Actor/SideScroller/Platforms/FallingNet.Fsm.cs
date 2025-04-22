@@ -17,7 +17,7 @@ public partial class FallingNet
             case FsmAction.Step:
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.Main_BeginHang, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginHang, this);
                     State.MoveTo(Fsm_Timed);
                     return false;
                 }
@@ -47,9 +47,9 @@ public partial class FallingNet
                 Timer++;
 
                 if (Scene.IsDetectedMainActor(this))
-                    Scene.MainActor.ProcessMessage(this, Message.Main_BeginHang, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginHang, this);
                 else
-                    Scene.MainActor.ProcessMessage(this, Message.Main_EndHang, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_EndHang, this);
 
                 if (Timer > 90)
                 {
@@ -65,8 +65,8 @@ public partial class FallingNet
                 break;
             
             case FsmAction.UnInit:
-                Scene.MainActor.ProcessMessage(this, Message.Main_AllowCoyoteJump);
-                Scene.MainActor.ProcessMessage(this, Message.Main_EndHang);
+                Scene.MainActor.ProcessMessage(this, Message.Rayman_AllowSafetyJump);
+                Scene.MainActor.ProcessMessage(this, Message.Rayman_EndHang);
                 break;
         }
 

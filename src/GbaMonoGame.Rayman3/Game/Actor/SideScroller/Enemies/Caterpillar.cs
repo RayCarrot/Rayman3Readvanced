@@ -140,20 +140,20 @@ public sealed partial class Caterpillar : MovableActor
 
         switch (message)
         {
-            case Message.ThrowObjectUp:
+            case Message.Actor_ThrowUp:
                 State.MoveTo(Fsm_ThrownUp);
                 return false;
 
-            case Message.ThrowObjectForward:
+            case Message.Actor_ThrowForward:
                 State.MoveTo(Fsm_ThrownForward);
                 return false;
 
-            case Message.DropObject:
+            case Message.Actor_Drop:
                 State.MoveTo(Fsm_Projectile);
                 return false;
 
             // Unused
-            case Message.HitActorOfSameType:
+            case Message.Actor_CollideWithSameType:
                 State.MoveTo(Fsm_Dying);
                 return false;
 

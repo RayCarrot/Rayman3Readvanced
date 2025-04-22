@@ -27,7 +27,7 @@ public partial class RaymanBody
                     damage = 5;
 
                 hitActor.ReceiveDamage(damage);
-                hitActor.ProcessMessage(this, Message.Hit, this);
+                hitActor.ProcessMessage(this, Message.Actor_Hit, this);
                 SpawnHitEffect();
             }
 
@@ -40,7 +40,7 @@ public partial class RaymanBody
                 {
                     if (hitActor is { Type: (int)ActorType.BreakableGround } && ((BreakableGround)hitActor).QuickFinishBodyAttack)
                     {
-                        Scene.MainActor.ProcessMessage(this, Message.Main_QuickFinishBodyShotAttack);
+                        Scene.MainActor.ProcessMessage(this, Message.Rayman_QuickFinishBodyShotAttack);
                     }
                     else
                     {
@@ -255,7 +255,7 @@ public partial class RaymanBody
                 else if (BodyPartType == RaymanBodyPartType.SecondSuperFist)
                     BodyPartType = RaymanBodyPartType.SecondFist;
                 
-                Rayman.ProcessMessage(this, Message.RaymanBody_FinishedAttack, BodyPartType);
+                Rayman.ProcessMessage(this, Message.RaymanBody_FinishAttack, BodyPartType);
 
                 HitActor = null;
                 CheckAgainstMapCollision = true;

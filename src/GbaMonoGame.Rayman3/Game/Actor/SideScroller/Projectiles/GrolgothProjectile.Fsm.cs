@@ -23,7 +23,7 @@ public partial class GrolgothProjectile
                     ((ScreenPosition.X > Scene.Resolution.X + 1 && Speed.X > 0) || (ScreenPosition.X < 0 && Speed.X < 0)))
                 {
                     // Send message to the boss
-                    Scene.GetGameObject(1).ProcessMessage(this, Message.Main_Damaged2);
+                    Scene.GetGameObject(1).ProcessMessage(this, Message.Actor_End);
                     IsDead = true;
                 }
                 // Check for hit main actor
@@ -37,14 +37,14 @@ public partial class GrolgothProjectile
                             Platform.NGage => 1,
                             _ => throw new UnsupportedPlatformException()
                         });
-                        Scene.MainActor.ProcessMessage(this, Message.Damaged);
+                        Scene.MainActor.ProcessMessage(this, Message.Actor_Hurt);
 
                         if (ActionId is not (
                             Action.EnergyBall_Right or Action.EnergyBall_Left or
                             Action.Laser_Right or Action.Laser_Left))
                         {
                             // Send message to the boss
-                            Scene.GetGameObject(1).ProcessMessage(this, Message.Main_Damaged2);
+                            Scene.GetGameObject(1).ProcessMessage(this, Message.Actor_End);
                         }
 
                         Explode();
@@ -85,7 +85,7 @@ public partial class GrolgothProjectile
 
                             if (Scene.IsHitActor(this) is { Type: (int)ActorType.Grolgoth } hitActor)
                             {
-                                hitActor.ProcessMessage(this, Message.Damaged);
+                                hitActor.ProcessMessage(this, Message.Actor_Hurt);
                                 Explode();
                             } 
                             break;
@@ -123,7 +123,7 @@ public partial class GrolgothProjectile
                             if (type.IsSolid || type == PhysicalTypeValue.InstaKill)
                             {
                                 // Send message to the boss
-                                Scene.GetGameObject(1).ProcessMessage(this, Message.Main_Damaged2);
+                                Scene.GetGameObject(1).ProcessMessage(this, Message.Actor_End);
                                 Explode();
                             }
                             break;
@@ -144,7 +144,7 @@ public partial class GrolgothProjectile
                             if (Scene.IsHitActor(this) is { Type: (int)ActorType.Grolgoth } hitGrolgoth &&
                                 MissileTimer > 240 && MissileTimer != -1)
                             {
-                                hitGrolgoth.ProcessMessage(this, Message.Damaged);
+                                hitGrolgoth.ProcessMessage(this, Message.Actor_Hurt);
                                 Explode();
                             }
                             else if (Scene.MainActor.HitPoints == 0)

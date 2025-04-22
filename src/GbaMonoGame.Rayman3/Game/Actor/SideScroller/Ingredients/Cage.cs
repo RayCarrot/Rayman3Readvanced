@@ -31,14 +31,14 @@ public sealed partial class Cage : InteractableActor
 
         switch (message)
         {
-            case Message.Damaged:
+            case Message.Actor_Hurt:
                 BaseActor actor = (BaseActor)param;
                 HitAction = actor.IsFacingLeft ? 3 : 0;
                 State.MoveTo(Fsm_Damaged);
                 HitPoints--;
                 return false;
 
-            case Message.Hit:
+            case Message.Actor_Hit:
                 RaymanBody raymanBody = (RaymanBody)param;
 
                 HitAction = raymanBody.IsFacingLeft ? 3 : 0;

@@ -60,7 +60,7 @@ public sealed partial class Slapdash : MovableActor
                 }
                 return false;
 
-            case Message.Hit:
+            case Message.Actor_Hit:
                 if (State != Fsm_Hit && !IsInvulnerable)
                 {
                     Vector2 hitPos = ((GameObject)param).Position;

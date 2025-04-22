@@ -62,7 +62,7 @@ public partial class Wall
 
             case FsmAction.Step:
                 if (Scene.IsDetectedMainActor(this) && !Scene.IsHitMainActor(this))
-                    Scene.MainActor.ProcessMessage(this, Message.Main_PreventWallJumps, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Actor_Fall, this);
 
                 if (IsActionFinished)
                 {
@@ -83,7 +83,7 @@ public partial class Wall
     public bool Fsm_Variant1State4(FsmAction action)
     {
         if (Scene.IsDetectedMainActor(this))
-            Scene.MainActor.ProcessMessage(this, Message.Main_PreventWallJumps, this);
+            Scene.MainActor.ProcessMessage(this, Message.Actor_Fall, this);
 
         return true;
     }
@@ -148,7 +148,7 @@ public partial class Wall
 
             case FsmAction.Step:
                 if (Scene.IsDetectedMainActor(this))
-                    Scene.MainActor.ProcessMessage(this, Message.Main_PreventWallJumps, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Actor_Fall, this);
 
                 if (IsActionFinished)
                 {
@@ -176,7 +176,7 @@ public partial class Wall
 
             case FsmAction.Step:
                 if (Scene.IsDetectedMainActor(this))
-                    Scene.MainActor.ProcessMessage(this, Message.Main_PreventWallJumps, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Actor_Fall, this);
 
                 if (GameTime.ElapsedFrames - Timer >= 240)
                 {
@@ -203,7 +203,7 @@ public partial class Wall
 
             case FsmAction.Step:
                 if (Scene.IsDetectedMainActor(this))
-                    Scene.MainActor.ProcessMessage(this, Message.Main_PreventWallJumps, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Actor_Fall, this);
 
                 if (IsActionFinished)
                 {

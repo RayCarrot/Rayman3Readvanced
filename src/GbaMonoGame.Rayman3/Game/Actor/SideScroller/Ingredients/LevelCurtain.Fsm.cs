@@ -29,7 +29,7 @@ public partial class LevelCurtain
                             if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__Tag_Mix02))
                                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Tag_Mix02);
 
-                            mainActor.ProcessMessage(this, Message.Main_LockedLevelCurtain);
+                            mainActor.ProcessMessage(this, Message.Rayman_EnterLockedLevel);
                         }
                     }
                 }
@@ -57,7 +57,7 @@ public partial class LevelCurtain
                 if (Scene.IsDetectedMainActor(this) && Scene.MainActor.Speed.Y == 0)
                 {
                     ((World)Frame.Current).UserInfo.SetLevelInfoBar(InitialActionId);
-                    Scene.MainActor.ProcessMessage(this, Message.Main_BeginInFrontOfLevelCurtain);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginInFrontOfLevelCurtain);
 
                     if ((JoyPad.IsButtonPressed(GbaInput.Up) || JoyPad.IsButtonPressed(GbaInput.A)) &&
                         JoyPad.IsButtonReleased(GbaInput.Left) &&
@@ -83,12 +83,12 @@ public partial class LevelCurtain
                     // If set to keep all objects active we only want to do this if framed. Otherwise this will overwrite
                     // if another level curtain is on screen and Rayman is in front of that one.
                     if (!Scene.KeepAllObjectsActive || AnimatedObject.IsFramed)
-                        Scene.MainActor.ProcessMessage(this, Message.Main_EndInFrontOfLevelCurtain);
+                        Scene.MainActor.ProcessMessage(this, Message.Rayman_EndInFrontOfLevelCurtain);
                 }
 
                 if (enterCurtain)
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.Main_Stop);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_Stop);
                     State.MoveTo(Fsm_EnterCurtain);
                     return false;
                 }
@@ -110,7 +110,7 @@ public partial class LevelCurtain
                 if (ActionId != 33)
                 {
                     ActionId = 31;
-                    Scene.MainActor.ProcessMessage(this, Message.Main_EnterLevelCurtain);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_EnterLevel);
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Curtain_YoyoMove_Mix02);
                 }
                 break;
@@ -123,7 +123,7 @@ public partial class LevelCurtain
                     if (ActionId == 33)
                     {
                         ActionId = 31;
-                        Scene.MainActor.ProcessMessage(this, Message.Main_EnterLevelCurtain);
+                        Scene.MainActor.ProcessMessage(this, Message.Rayman_EnterLevel);
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Curtain_YoyoMove_Mix02);
                     }
                     else if (ActionId == 31)

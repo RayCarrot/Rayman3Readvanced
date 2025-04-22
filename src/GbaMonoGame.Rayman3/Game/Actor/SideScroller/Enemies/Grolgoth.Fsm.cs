@@ -13,11 +13,11 @@ public partial class Grolgoth
             // Why is there a check for a non-boss map?
             if (ActionId is Action.Ground_FallDown_Right or Action.Ground_FallDown_Left || GameInfo.MapId == MapId.IronMountains_M2)
             {
-                Scene.MainActor.ProcessMessage(this, Message.Exploded);
+                Scene.MainActor.ProcessMessage(this, Message.Actor_Explode);
             }
             else
             {
-                Scene.MainActor.ProcessMessage(this, Message.Damaged);
+                Scene.MainActor.ProcessMessage(this, Message.Actor_Hurt);
                 Scene.MainActor.ReceiveDamage(AttackPoints);
             }
         }
@@ -471,7 +471,7 @@ public partial class Grolgoth
                 break;
 
             case FsmAction.Step:
-                Scene.MainActor.ProcessMessage(this, Message.Main_LevelEnd);
+                Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
                 ProcessMessage(this, Message.Destroy);
                 State.MoveTo(Fsm_GroundDefault);
                 return false;
@@ -490,7 +490,7 @@ public partial class Grolgoth
         {
             case FsmAction.Init:
                 Timer = 0;
-                Scene.MainActor.ProcessMessage(this, Message.Main_Stop);
+                Scene.MainActor.ProcessMessage(this, Message.Rayman_Stop);
                 break;
 
             case FsmAction.Step:
@@ -645,7 +645,7 @@ public partial class Grolgoth
 
                 Scene.Camera.LinkedObject = this;
                 Scene.Camera.ProcessMessage(this, Message.Cam_FollowPositionY, 80);
-                Scene.MainActor.ProcessMessage(this, Message.Main_Stop);
+                Scene.MainActor.ProcessMessage(this, Message.Rayman_Stop);
                 break;
 
             case FsmAction.Step:
@@ -788,7 +788,7 @@ public partial class Grolgoth
 
                 if (Position.Y < InitialYPosition - 250 && ActionId is not (Action.Air_Idle_Right or Action.Air_Idle_Left))
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.Main_ExitStopOrCutscene);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_Resume);
                     Scene.Camera.LinkedObject = Scene.MainActor;
                     Scene.Camera.ProcessMessage(this, Message.Cam_FollowPositionY, 80);
 
@@ -847,7 +847,7 @@ public partial class Grolgoth
                     }
                     else
                     {
-                        Scene.MainActor.ProcessMessage(this, Message.Main_LevelEnd);
+                        Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
                         ProcessMessage(this, Message.Destroy);
                     }
                 }

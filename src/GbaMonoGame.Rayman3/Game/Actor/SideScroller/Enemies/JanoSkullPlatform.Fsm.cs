@@ -29,7 +29,7 @@ public partial class JanoSkullPlatform
 
                     if (activeFist != null && activeFist.GetDetectionBox().Intersects(detectionBox))
                     {
-                        activeFist.ProcessMessage(this, Message.RaymanBody_FinishedAttack);
+                        activeFist.ProcessMessage(this, Message.RaymanBody_FinishAttack);
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SkullHit_Mix02);
                         isHit = true;
                         break;
@@ -173,7 +173,7 @@ public partial class JanoSkullPlatform
 
                             if (fistBox.Intersects(detectionBox))
                             {
-                                activeFist.ProcessMessage(this, Message.RaymanBody_FinishedAttack);
+                                activeFist.ProcessMessage(this, Message.RaymanBody_FinishAttack);
                                 break;
                             }
                         }
@@ -197,7 +197,7 @@ public partial class JanoSkullPlatform
 
                         if (skullBox.Intersects(detectionBox))
                         {
-                            skullPlatform.ProcessMessage(this, Message.HitActorOfSameType);
+                            skullPlatform.ProcessMessage(this, Message.Actor_CollideWithSameType);
                             ActionId = Action.Collided;
                             isCollided = true;
                             break;
@@ -210,11 +210,11 @@ public partial class JanoSkullPlatform
                 // Link with main actor if it collides with it
                 if (Scene.IsDetectedMainActor(this) && mainActor.LinkedMovementActor != this && mainActor.Position.Y <= Position.Y)
                 {
-                    mainActor.ProcessMessage(this, Message.Main_LinkMovement, this);
+                    mainActor.ProcessMessage(this, Message.Rayman_LinkMovement, this);
 
                     if (ActionId == Action.SolidMove_Stationary)
                     {
-                        Jano.ProcessMessage(this, Message.Exploded);
+                        Jano.ProcessMessage(this, Message.Actor_Explode);
                         isOnSolidMove = true;
                     }
                 }
@@ -223,13 +223,13 @@ public partial class JanoSkullPlatform
                 {
                     if (!Scene.IsDetectedMainActor(this) || mainActor.Position.Y > Position.Y)
                     {
-                        mainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                        mainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
                     }
                 }
 
                 if (Timer > 780)
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
                     State.MoveTo(Fsm_DespawnDown);
                     return false;
                 }
@@ -242,7 +242,7 @@ public partial class JanoSkullPlatform
 
                 if (isCollided)
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
                     State.MoveTo(Fsm_FallDown);
                     return false;
                 }
@@ -288,13 +288,13 @@ public partial class JanoSkullPlatform
                 // Link with main actor if it collides with it
                 if (Scene.IsDetectedMainActor(this) && mainActor.LinkedMovementActor != this && mainActor.Position.Y <= Position.Y)
                 {
-                    mainActor.ProcessMessage(this, Message.Main_LinkMovement, this);
+                    mainActor.ProcessMessage(this, Message.Rayman_LinkMovement, this);
                 }
                 // Unlink from main actor if no longer colliding
                 else if (mainActor.LinkedMovementActor == this)
                 {
                     if (!Scene.IsDetectedMainActor(this) || mainActor.Position.Y > Position.Y)
-                        mainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                        mainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
                 }
 
                 if (isStopped)
@@ -348,7 +348,7 @@ public partial class JanoSkullPlatform
 
                 Timer = 0;
 
-                Scene.MainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                Scene.MainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
                 break;
 
             case FsmAction.Step:
@@ -405,7 +405,7 @@ public partial class JanoSkullPlatform
 
                 Timer = 0;
 
-                Scene.MainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                Scene.MainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
                 break;
 
             case FsmAction.Step:

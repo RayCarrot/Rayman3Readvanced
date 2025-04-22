@@ -18,12 +18,12 @@ public sealed partial class BreakableDoor : InteractableActor
 
         switch (message)
         {
-            case Message.Damaged:
+            case Message.Actor_Hurt:
                 if (State == Fsm_Idle)
                     ActionId = IsFacingRight ? Action.Break_Right : Action.Break_Left;
                 return false;
 
-            case Message.Hit:
+            case Message.Actor_Hit:
                 RaymanBody bodyPart = (RaymanBody)param;
 
                 if (bodyPart.BodyPartType is not (RaymanBody.RaymanBodyPartType.SuperFist or RaymanBody.RaymanBodyPartType.SecondSuperFist))

@@ -28,7 +28,7 @@ public partial class Electricity
                      Scene.MainActor.GetVulnerabilityBox().Intersects(AdditionalAttackBox)))
                 {
                     Scene.MainActor.ReceiveDamage(AttackPoints);
-                    Scene.MainActor.ProcessMessage(this, Message.Main_DamagedShock);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_HurtShock);
                 }
 
                 if (HitPoints == 0)
@@ -66,7 +66,7 @@ public partial class Electricity
                 if (Scene.IsHitMainActor(this))
                 {
                     Scene.MainActor.ReceiveDamage(AttackPoints);
-                    Scene.MainActor.ProcessMessage(this, Message.Main_DamagedShock);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_HurtShock);
                 }
                 break;
 

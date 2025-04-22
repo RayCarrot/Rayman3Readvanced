@@ -48,7 +48,7 @@ public partial class Jano
                 // Begin intro sequence when Rayman reaches its position
                 if (Scene.MainActor.Position.X > 375 && Timer == 0)
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.Main_Stop);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_Stop);
 
                     if (Scene.MainActor.IsFacingLeft)
                         Scene.MainActor.AnimatedObject.FlipX = false;
@@ -304,7 +304,7 @@ public partial class Jano
                 break;
 
             case FsmAction.UnInit:
-                Scene.MainActor.ProcessMessage(this, Message.Main_ExitStopOrCutscene);
+                Scene.MainActor.ProcessMessage(this, Message.Rayman_Resume);
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Grimace1_Mix04);
                 break;
         }
@@ -769,7 +769,7 @@ public partial class Jano
             case FsmAction.Init:
                 ActionId = Action.Complete;
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalDead_Mix02);
-                Scene.MainActor.ProcessMessage(this, Message.Main_LevelEnd);
+                Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
                 Timer = 0;
                 Position = Position with { Y = OffsetY + 150 };
                 break;

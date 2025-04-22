@@ -34,7 +34,7 @@ public sealed partial class BreakableGround : MovableActor
         // Handle messages
         switch (message)
         {
-            case Message.Hit:
+            case Message.Actor_Hit:
                 if (State == Fsm_Idle && ((RaymanBody)param).BodyPartType == RaymanBody.RaymanBodyPartType.Torso)
                     ActionId = Action.Destroyed;
                 return false;

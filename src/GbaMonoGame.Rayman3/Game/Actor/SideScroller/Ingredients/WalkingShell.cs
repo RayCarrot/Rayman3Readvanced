@@ -82,7 +82,7 @@ public sealed partial class WalkingShell : MovableActor
         BaseActor hitActor = Scene.IsHitActor(this);
         if (hitActor is { Type: (int)ActorType.BreakableDoor })
         {
-            hitActor.ProcessMessage(this, Message.Damaged);
+            hitActor.ProcessMessage(this, Message.Actor_Hurt);
             return true;
         }
         else

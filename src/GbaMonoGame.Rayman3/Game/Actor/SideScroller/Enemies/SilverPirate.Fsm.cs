@@ -15,7 +15,7 @@ public partial class SilverPirate
         if (Scene.IsHitMainActor(this))
         {
             Scene.MainActor.ReceiveDamage(AttackPoints);
-            Scene.MainActor.ProcessMessage(this, Message.Damaged, this);
+            Scene.MainActor.ProcessMessage(this, Message.Actor_Hurt, this);
         }
 
         // Killed

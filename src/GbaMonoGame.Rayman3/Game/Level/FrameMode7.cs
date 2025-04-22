@@ -250,7 +250,7 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
         // We probably don't need to do this, but in the original game it needs to reload things like
         // palette indexes since it might be allocated differently in VRAM after unpausing.
         foreach (GameObject gameObj in Scene.KnotManager.GameObjects)
-            gameObj.ProcessMessage(this, Message.ReloadAnimation);
+            gameObj.ProcessMessage(this, Message.Actor_ReloadAnimation);
 
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();

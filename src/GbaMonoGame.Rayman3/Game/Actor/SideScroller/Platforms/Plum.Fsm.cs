@@ -115,7 +115,7 @@ public partial class Plum
                     if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__VibraFLW_Mix02) && Scene.MainActor.HitPoints != 0)
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__VibraFLW_Mix02);
 
-                    mainActor.ProcessMessage(this, Message.Main_AttachPlum, this);
+                    mainActor.ProcessMessage(this, Message.Rayman_AttachPlum, this);
 
                     // Set initial speed
                     if (ShouldSetInitialSpeed)
@@ -211,8 +211,8 @@ public partial class Plum
                         // Detach main actor from plum
                         if ((JoyPad.IsButtonJustPressed(GbaInput.A) || Timer == 8) && mainActor.AttachedObject == this)
                         {
-                            mainActor.ProcessMessage(this, Message.Main_DetachPlum);
-                            mainActor.ProcessMessage(this, Message.Main_AllowCoyoteJump, this);
+                            mainActor.ProcessMessage(this, Message.Rayman_DetachPlum);
+                            mainActor.ProcessMessage(this, Message.Rayman_AllowSafetyJump, this);
                         }
                     }
                 }
@@ -232,8 +232,8 @@ public partial class Plum
                         // Detach main actor from plum
                         if (mainActor.AttachedObject == this)
                         {
-                            mainActor.ProcessMessage(this, Message.Main_DetachPlum);
-                            mainActor.ProcessMessage(this, Message.Main_AllowCoyoteJump, this);
+                            mainActor.ProcessMessage(this, Message.Rayman_DetachPlum);
+                            mainActor.ProcessMessage(this, Message.Rayman_AllowSafetyJump, this);
                         }
 
                         // Reset

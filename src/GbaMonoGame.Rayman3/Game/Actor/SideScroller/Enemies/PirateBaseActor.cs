@@ -80,7 +80,7 @@ public abstract class PirateBaseActor : MovableActor
         // Handle messages
         switch (message)
         {
-            case Message.Hit:
+            case Message.Actor_Hit:
                 BaseActor hitActor = (BaseActor)param;
 
                 if ((hitActor.IsFacingLeft && IsFacingRight) ||

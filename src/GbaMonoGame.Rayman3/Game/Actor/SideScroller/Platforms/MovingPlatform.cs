@@ -183,11 +183,11 @@ public sealed partial class MovingPlatform : MovableActor
 
         if (Timer == 120)
         {
-            Fire.ProcessMessage(this, Message.LightOnFire_Right);
+            Fire.ProcessMessage(this, Message.Actor_LightOnFireRight);
 
             if (Scene.MainActor.LinkedMovementActor == this)
             {
-                Scene.MainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                Scene.MainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
             }
             else
             {
@@ -199,8 +199,8 @@ public sealed partial class MovingPlatform : MovableActor
         }
         else if (Timer == 121)
         {
-            Scene.MainActor.ProcessMessage(this, Message.Main_AllowCoyoteJump, this);
-            Scene.MainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+            Scene.MainActor.ProcessMessage(this, Message.Rayman_AllowSafetyJump, this);
+            Scene.MainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
 
             Explosion explosion = Scene.CreateProjectile<Explosion>(ActorType.Explosion);
             if (explosion != null)

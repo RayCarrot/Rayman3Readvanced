@@ -70,7 +70,7 @@ public sealed partial class Plum : MovableActor
                     FloatSpeedX = 6;
                 return false;
 
-            case Message.Hit:
+            case Message.Actor_Hit:
                 if (ActionId == Action.Grow)
                 {
                     ActionId = Action.Hit;

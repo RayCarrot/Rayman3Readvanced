@@ -40,7 +40,7 @@ public partial class RockyFlame
                 {
                     if (Scene.MainActor.Position.Y <= 100)
                     {
-                        Scene.MainActor.ProcessMessage(this, Message.Main_Damaged4);
+                        Scene.MainActor.ProcessMessage(this, Message.Actor_HurtKnockback);
                         Timer = 2;
                     }
                     else

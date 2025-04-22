@@ -38,7 +38,7 @@ public sealed partial class MechanicalPlatform : MovableActor
 
         switch (message)
         {
-            case Message.Hit:
+            case Message.Actor_Hit:
                 RaymanBody body = (RaymanBody)param;
                 if ((Scene.MainActor.LinkedMovementActor == this || IsSolid) && 
                     body.State != body.Fsm_MoveBackwards)

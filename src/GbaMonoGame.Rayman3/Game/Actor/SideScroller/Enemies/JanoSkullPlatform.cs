@@ -35,7 +35,7 @@ public sealed partial class JanoSkullPlatform : MovableActor
 
         switch (message)
         {
-            case Message.HitActorOfSameType:
+            case Message.Actor_CollideWithSameType:
                 State.MoveTo(Fsm_FallDown);
                 ActionId = Action.FallDown;
                 return false;

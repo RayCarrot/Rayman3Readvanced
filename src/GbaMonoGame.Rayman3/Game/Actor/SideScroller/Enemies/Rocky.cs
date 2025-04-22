@@ -137,7 +137,7 @@ public sealed partial class Rocky : MovableActor
         // Handle messages
         switch (message)
         {
-            case Message.Hit:
+            case Message.Actor_Hit:
                 Vector2 hitPos = ((GameObject)param).Position;
                 if (State == Fsm_Default && hitPos.Y < Position.Y - 30)
                     State.MoveTo(Fsm_Hit);

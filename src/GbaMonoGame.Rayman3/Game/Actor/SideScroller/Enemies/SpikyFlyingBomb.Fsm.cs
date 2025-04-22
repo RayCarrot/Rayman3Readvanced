@@ -12,7 +12,7 @@ public partial class SpikyFlyingBomb
         if (Scene.IsHitMainActor(this))
         {
             Scene.MainActor.ReceiveDamage(AttackPoints);
-            Scene.MainActor.ProcessMessage(this, Message.Damaged);
+            Scene.MainActor.ProcessMessage(this, Message.Actor_Hurt);
         }
         // Destroyed by boulder
         else if (Scene.IsHitActor(this) is { Type: (int)ActorType.Boulder })

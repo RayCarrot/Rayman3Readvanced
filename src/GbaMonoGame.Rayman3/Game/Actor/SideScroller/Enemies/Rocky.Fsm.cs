@@ -55,7 +55,7 @@ public partial class Rocky
                 if (Scene.IsHitMainActor(this))
                 {
                     Scene.MainActor.ReceiveDamage(1);
-                    Scene.MainActor.ProcessMessage(this, Message.Damaged);
+                    Scene.MainActor.ProcessMessage(this, Message.Actor_Hurt);
                 }
 
                 Rayman rayman = (Rayman)Scene.MainActor;
@@ -113,7 +113,7 @@ public partial class Rocky
                 if (Scene.IsHitMainActor(this))
                 {
                     Scene.MainActor.ReceiveDamage(1);
-                    Scene.MainActor.ProcessMessage(this, Message.Damaged);
+                    Scene.MainActor.ProcessMessage(this, Message.Actor_Hurt);
                 }
 
                 if (AnimatedObject.CurrentFrame == 9 && Timer == 0)
@@ -157,7 +157,7 @@ public partial class Rocky
                 if (Scene.IsHitMainActor(this))
                 {
                     Scene.MainActor.ReceiveDamage(1);
-                    Scene.MainActor.ProcessMessage(this, Message.Damaged);
+                    Scene.MainActor.ProcessMessage(this, Message.Actor_Hurt);
                 }
 
                 if (ActionId is Action.Punch_Right or Action.Punch_Left)
@@ -193,7 +193,7 @@ public partial class Rocky
                 if (Scene.IsHitMainActor(this) && !Scene.MainActor.IsInvulnerable)
                 {
                     Scene.MainActor.ReceiveDamage(1);
-                    Scene.MainActor.ProcessMessage(this, Message.Main_Damaged3);
+                    Scene.MainActor.ProcessMessage(this, Message.Actor_HurtPassthrough);
                 }
 
                 if (IsActionFinished && ActionId is Action.PrepareCharge_Right or Action.PrepareCharge_Left)
@@ -266,7 +266,7 @@ public partial class Rocky
                 Scene.Camera.ProcessMessage(this, Message.Cam_FollowPositionY, 155);
 
                 if (Scene.IsHitMainActor(this))
-                    Scene.MainActor.ProcessMessage(this, Message.Exploded);
+                    Scene.MainActor.ProcessMessage(this, Message.Actor_Explode);
 
                 Timer++;
 
@@ -305,7 +305,7 @@ public partial class Rocky
                 BossHealth--;
                 ((FrameSideScroller)Frame.Current).UserInfo.BossHit();
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumTimer_Mix02);
-                Scene.MainActor.ProcessMessage(this, Message.Main_EndSuperHelico);
+                Scene.MainActor.ProcessMessage(this, Message.Rayman_EndSuperHelico);
                 break;
 
             case FsmAction.Step:
@@ -314,7 +314,7 @@ public partial class Rocky
                 if (Scene.IsHitMainActor(this))
                 {
                     Scene.MainActor.ReceiveDamage(1);
-                    Scene.MainActor.ProcessMessage(this, Message.Damaged);
+                    Scene.MainActor.ProcessMessage(this, Message.Actor_Hurt);
                 }
 
                 Rayman rayman = (Rayman)Scene.MainActor;
@@ -361,7 +361,7 @@ public partial class Rocky
                 break;
 
             case FsmAction.UnInit:
-                Scene.MainActor.ProcessMessage(this, Message.Main_LevelEnd);
+                Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
                 ProcessMessage(this, Message.Destroy);
                 break;
         }

@@ -16,7 +16,7 @@ public sealed partial class BreakableWall : InteractableActor
 
         switch (message)
         {
-            case Message.Hit:
+            case Message.Actor_Hit:
                 RaymanBody bodyPart = (RaymanBody)param;
 
                 if (State == Fsm_Idle && 

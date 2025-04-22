@@ -19,7 +19,7 @@ public partial class LavaFall
                 Timer++;
 
                 if (Scene.IsHitMainActor(this))
-                    Scene.MainActor.ProcessMessage(this, Message.Exploded);
+                    Scene.MainActor.ProcessMessage(this, Message.Actor_Explode);
 
                 if (Timer == 60)
                 {

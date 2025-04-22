@@ -36,7 +36,7 @@ public partial class LumsMode7
             case FsmAction.Init:
                 if (ActionId == Action.YellowLum)
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.MainMode7_CollectedYellowLum);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_CollectMode7YellowLum);
 
                     if (GameInfo.LevelType == LevelType.Race)
                         ((FrameSingleMode7)Frame.Current).KillLum(LumId);
@@ -51,11 +51,11 @@ public partial class LumsMode7
                 // Unused
                 else if (!RSMultiplayer.IsActive && ActionId == Action.BlueLum)
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.MissileMode7_CollectedBlueLum);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_CollectMode7BlueLum);
                 }
                 else if (!RSMultiplayer.IsActive && ActionId == Action.RedLum)
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.MissileMode7_CollectedRedLum);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_CollectRedLum);
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumRed_Mix03);
                 }
 
@@ -108,11 +108,11 @@ public partial class LumsMode7
                     {
                         if (ActionId == Action.BlueLum)
                         {
-                            player.ProcessMessage(this, Message.MissileMode7_CollectedBlueLum);
+                            player.ProcessMessage(this, Message.Rayman_CollectMode7BlueLum);
                         }
                         else if (ActionId == Action.RedLum)
                         {
-                            player.ProcessMessage(this, Message.MissileMode7_CollectedRedLum);
+                            player.ProcessMessage(this, Message.Rayman_CollectRedLum);
                          
                             if (id == MultiplayerManager.MachineId)
                                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumRed_Mix03);

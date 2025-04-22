@@ -148,7 +148,7 @@ public sealed partial class Lums : BaseActor
                     State.MoveTo(Fsm_Idle);
                 return false;
 
-            case Message.ReloadAnimation:
+            case Message.Actor_ReloadAnimation:
                 // Don't need to do anything. The original game sets the palette index again, but we're using local indexes, so it never changes.
                 return false;
 

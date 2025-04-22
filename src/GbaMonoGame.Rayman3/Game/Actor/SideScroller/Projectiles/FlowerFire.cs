@@ -32,7 +32,7 @@ public sealed partial class FlowerFire : BaseActor
         // Handle messages
         switch (message)
         {
-            case Message.LightOnFire_Right:
+            case Message.Actor_LightOnFireRight:
                 State.MoveTo(Fsm_End);
                 return false;
 

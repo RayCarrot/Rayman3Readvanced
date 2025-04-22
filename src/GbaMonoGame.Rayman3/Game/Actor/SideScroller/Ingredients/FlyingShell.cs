@@ -157,7 +157,7 @@ public sealed partial class FlyingShell : MovableActor
 
         switch (message)
         {
-            case Message.Main_LevelEnd:
+            case Message.Rayman_FinishLevel:
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Motor01_Mix12);
 
                 if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
@@ -179,16 +179,16 @@ public sealed partial class FlyingShell : MovableActor
                 }
                 return false;
 
-            case Message.Damaged:
+            case Message.Actor_Hurt:
                 if (State != Fsm_Crash)
                     State.MoveTo(Fsm_Crash);
                 return false;
 
-            case Message.Main_Stop:
+            case Message.Rayman_Stop:
                 State.MoveTo(Fsm_Stop);
                 return false;
 
-            case Message.Main_ExitStopOrCutscene:
+            case Message.Rayman_Resume:
                 if (State != Fsm_Crash)
                     State.MoveTo(Fsm_Fly);
                 return false;

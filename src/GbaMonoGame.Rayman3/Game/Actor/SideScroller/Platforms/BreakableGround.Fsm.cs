@@ -16,16 +16,16 @@ public partial class BreakableGround
 
             case FsmAction.Step:
                 if (Scene.IsDetectedMainActor(this))
-                    Scene.MainActor.ProcessMessage(this, Message.Main_1056);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_SetUnknownFlag);
 
                 if (Scene.IsDetectedMainActor(this) && Scene.MainActor.LinkedMovementActor != this && Scene.MainActor.Position.Y <= Position.Y)
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.Main_LinkMovement, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_LinkMovement, this);
                 }
                 else if (Scene.MainActor.LinkedMovementActor == this && 
                          (!Scene.IsDetectedMainActor(this) || Scene.MainActor.Position.Y > Position.Y))
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
                 }
 
                 if (ActionId == Action.Destroyed)
@@ -37,7 +37,7 @@ public partial class BreakableGround
 
             case FsmAction.UnInit:
                 if (Scene.IsDetectedMainActor(this))
-                    Scene.MainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
                 break;
         }
 

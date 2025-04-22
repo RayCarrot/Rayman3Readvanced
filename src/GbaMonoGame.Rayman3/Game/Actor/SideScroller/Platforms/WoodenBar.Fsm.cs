@@ -25,7 +25,7 @@ public partial class WoodenBar
                 if (Scene.IsDetectedMainActor(this) &&
                     Position.Y + 40 < Scene.MainActor.Position.Y)
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.Main_BeginHang, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginHang, this);
                     State.MoveTo(Fsm_Grabbed);
                     return false;
                 }
@@ -50,7 +50,7 @@ public partial class WoodenBar
             case FsmAction.Step:
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.Main_BeginHang, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginHang, this);
 
                     if (PreviousFrame != AnimatedObject.CurrentFrame)
                     {
@@ -161,7 +161,7 @@ public partial class WoodenBar
 
                 if (!Scene.IsDetectedMainActor(this))
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.Main_EndHang, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_EndHang, this);
                     State.MoveTo(Fsm_Idle);
                     return false;
                 }

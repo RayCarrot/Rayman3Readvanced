@@ -15,7 +15,7 @@ public partial class Sphere
 
             case FsmAction.Step:
                 if (Scene.IsDetectedMainActor(this) && ((Rayman)Scene.MainActor).AttachedObject == null)
-                    Scene.MainActor.ProcessMessage(this, Message.Main_PickUpObject, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_PickUpObject, this);
 
                 if (Scene.IsDetectedMainActor(this) && ((Rayman)Scene.MainActor).AttachedObject == this)
                 {
@@ -106,7 +106,7 @@ public partial class Sphere
                     Speed.Y > 0 &&
                     ActionId != Action.Land)
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.Main_CatchObject, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_CatchObject, this);
                 }
 
                 if (type.Value is PhysicalTypeValue.InstaKill or PhysicalTypeValue.MoltenLava)

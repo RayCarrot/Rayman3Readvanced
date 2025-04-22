@@ -132,13 +132,13 @@ public partial class Lums
 
                 Scene.MainActor.ProcessMessage(this, ActionId switch
                 {
-                    Action.YellowLum => Message.Main_CollectedYellowLum,
-                    Action.RedLum => Message.Main_CollectedRedLum,
-                    Action.GreenLum => Message.Main_CollectedGreenLum,
-                    Action.BlueLum => Message.Main_CollectedBlueLum,
-                    Action.WhiteLum => Message.Main_CollectedWhiteLum,
-                    Action.BigYellowLum => Message.Main_CollectedBigYellowLum,
-                    Action.BigBlueLum => Message.Main_CollectedBigBlueLum,
+                    Action.YellowLum => Message.Rayman_CollectYellowLum,
+                    Action.RedLum => Message.Rayman_CollectRedLum,
+                    Action.GreenLum => Message.Rayman_CollectGreenLum,
+                    Action.BlueLum => Message.Rayman_CollectBlueLum,
+                    Action.WhiteLum => Message.Rayman_CollectWhiteLum,
+                    Action.BigYellowLum => Message.Rayman_CollectBigYellowLum,
+                    Action.BigBlueLum => Message.Rayman_CollectBigBlueLum,
                     _ => throw new ArgumentOutOfRangeException(nameof(ActionId), ActionId, null)
                 });
                 AnimatedObject.CurrentAnimation = 9;
@@ -283,13 +283,13 @@ public partial class Lums
 
                 Scene.GetGameObject(Timer).ProcessMessage(this, ActionId switch
                 {
-                    Action.YellowLum => Message.Main_CollectedYellowLum,
-                    Action.RedLum => Message.Main_CollectedRedLum,
-                    Action.GreenLum => Message.Main_CollectedGreenLum,
-                    Action.BlueLum => Message.Main_CollectedBlueLum,
-                    Action.WhiteLum => Message.Main_CollectedWhiteLum,
-                    Action.BigYellowLum => Message.Main_CollectedBigYellowLum,
-                    Action.BigBlueLum => Message.Main_CollectedBigBlueLum,
+                    Action.YellowLum => Message.Rayman_CollectYellowLum,
+                    Action.RedLum => Message.Rayman_CollectRedLum,
+                    Action.GreenLum => Message.Rayman_CollectGreenLum,
+                    Action.BlueLum => Message.Rayman_CollectBlueLum,
+                    Action.WhiteLum => Message.Rayman_CollectWhiteLum,
+                    Action.BigYellowLum => Message.Rayman_CollectBigYellowLum,
+                    Action.BigBlueLum => Message.Rayman_CollectBigBlueLum,
                     _ => throw new ArgumentOutOfRangeException(nameof(ActionId), ActionId, null)
                 });
                 AnimatedObject.CurrentAnimation = 9;

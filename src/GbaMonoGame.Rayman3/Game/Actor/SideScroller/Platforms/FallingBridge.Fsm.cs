@@ -21,10 +21,10 @@ public partial class FallingBridge
                     if (Link != null)
                     {
                         GameObject linkedObj = Scene.GetGameObject(Link.Value);
-                        linkedObj.ProcessMessage(this, Message.FallingBridge_Fall);
+                        linkedObj.ProcessMessage(this, Message.Actor_Fall);
                     }
 
-                    Scene.MainActor.ProcessMessage(this, Message.Main_LinkMovement, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_LinkMovement, this);
                     State.MoveTo(Fsm_Timed);
                     return false;
                 }
@@ -58,14 +58,14 @@ public partial class FallingBridge
                 // Link with main actor if it collides with it
                 if (Scene.IsDetectedMainActor(this) && mainActor.LinkedMovementActor != this && mainActor.Position.Y <= Position.Y)
                 {
-                    mainActor.ProcessMessage(this, Message.Main_LinkMovement, this);
+                    mainActor.ProcessMessage(this, Message.Rayman_LinkMovement, this);
                 }
                 // Unlink from main actor if no longer colliding
                 else if (mainActor.LinkedMovementActor == this)
                 {
                     if (!Scene.IsDetectedMainActor(this) || mainActor.Position.Y > Position.Y)
                     {
-                        mainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                        mainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
                     }
                 }
 
@@ -93,8 +93,8 @@ public partial class FallingBridge
 
                 if (Scene.MainActor.LinkedMovementActor == this)
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.Main_AllowCoyoteJump, this);
-                    Scene.MainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_AllowSafetyJump, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
                 }
 
                 if (AnimatedObject.IsFramed && !SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__PF2Fall_Mix03))
@@ -109,14 +109,14 @@ public partial class FallingBridge
                 // Link with main actor if it collides with it
                 if (Scene.IsDetectedMainActor(this) && mainActor.LinkedMovementActor != this && mainActor.Position.Y <= Position.Y)
                 {
-                    mainActor.ProcessMessage(this, Message.Main_LinkMovement, this);
+                    mainActor.ProcessMessage(this, Message.Rayman_LinkMovement, this);
                 }
                 // Unlink from main actor if no longer colliding
                 else if (mainActor.LinkedMovementActor == this)
                 {
                     if (!Scene.IsDetectedMainActor(this) || mainActor.Position.Y > Position.Y)
                     {
-                        mainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                        mainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
                     }
                 }
 

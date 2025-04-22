@@ -92,11 +92,11 @@ public sealed partial class SamMode7 : Mode7Actor
 
         switch (message)
         {
-            case Message.Main_Damaged2:
+            case Message.Actor_End:
                 DrawTetherSparkles = false;
                 return true;
 
-            case Message.ReloadAnimation:
+            case Message.Actor_ReloadAnimation:
                 // Don't need to do anything. The original game reloads the tether animations here.
                 return false;
 

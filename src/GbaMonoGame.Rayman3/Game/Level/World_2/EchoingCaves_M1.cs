@@ -60,7 +60,7 @@ public class EchoingCaves_M1 : FrameSideScroller
             Scene.Playfield.Step();
 
             // Stop the main actor
-            Scene.MainActor.ProcessMessage(this, Message.Main_Stop);
+            Scene.MainActor.ProcessMessage(this, Message.Rayman_Stop);
 
             // Don't allow pausing
             CanPause = false;

@@ -200,7 +200,7 @@ public partial class UserInfoMulti2D : Dialog
         for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
         {
             if (id != TagId)
-                Scene.GetGameObject(id).ProcessMessage(this, Message.Main_MultiplayerTagMoved);
+                Scene.GetGameObject(id).ProcessMessage(this, Message.Rayman_MultiplayerTagMoved);
         }
     }
 
@@ -340,7 +340,7 @@ public partial class UserInfoMulti2D : Dialog
             ChainedSparkles.UpdateTarget();
 
             for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
-                Scene.GetGameObject(id).ProcessMessage(this, Message.Main_MultiplayerGameOver);
+                Scene.GetGameObject(id).ProcessMessage(this, Message.Rayman_MultiplayerGameOver);
         }
         else
         {
@@ -355,7 +355,7 @@ public partial class UserInfoMulti2D : Dialog
             if (TagId == machineId)
                 SetTagId(GetNewTagId());
 
-            Scene.GetGameObject(machineId).ProcessMessage(this, Message.Exploded);
+            Scene.GetGameObject(machineId).ProcessMessage(this, Message.Actor_Explode);
         }
 
         int hudIndex = MachineIdToHudIndex(machineId);
@@ -413,7 +413,7 @@ public partial class UserInfoMulti2D : Dialog
         }
 
         for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
-            Scene.GetGameObject(id).ProcessMessage(this, Message.Main_MultiplayerGameOver);
+            Scene.GetGameObject(id).ProcessMessage(this, Message.Rayman_MultiplayerGameOver);
 
         State.MoveTo(Fsm_GameOver);
     }

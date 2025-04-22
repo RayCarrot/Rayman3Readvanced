@@ -41,7 +41,7 @@ public sealed partial class RaymanBody : MovableActor
         // Handle messages
         switch (message)
         {
-            case Message.RaymanBody_FinishedAttack:
+            case Message.RaymanBody_FinishAttack:
                 if (State != Fsm_MoveBackwards)
                 {
                     if (BodyPartType == RaymanBodyPartType.Torso)

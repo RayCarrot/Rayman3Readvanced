@@ -213,7 +213,7 @@ public partial class Caterpillar
                     ((Rayman)Scene.MainActor).AttachedObject == null &&
                     ActionId is Action.KnockedDown_Left or Action.KnockedDown_Right)
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.Main_PickUpObject, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_PickUpObject, this);
                 }
 
                 if (Timer >= 240)
@@ -361,7 +361,7 @@ public partial class Caterpillar
                     ((Rayman)Scene.MainActor).AttachedObject == null &&
                     Speed.Y > 0)
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.Main_CatchObject, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_CatchObject, this);
                 }
 
                 if (hitOtherObj || Scene.GetPhysicalType(new Vector2(Position.X, GetDetectionBox().MaxY)).IsSolid)

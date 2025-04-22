@@ -58,7 +58,7 @@ public partial class Balloon
                     Box detectionBox = GetDetectionBox();
 
                     if (mainActorDetectionBox.Intersects(detectionBox))
-                        Scene.MainActor.ProcessMessage(this, Message.Damaged, this);
+                        Scene.MainActor.ProcessMessage(this, Message.Actor_Hurt, this);
                 }
 
                 // Enable next balloon
@@ -102,7 +102,7 @@ public partial class Balloon
 
                 Box detectionBox = GetDetectionBox();
                 Scene.MainActor.Position = Scene.MainActor.Position with { Y = detectionBox.MinY };
-                Scene.MainActor.ProcessMessage(this, Message.Main_Bounce);
+                Scene.MainActor.ProcessMessage(this, Message.Rayman_Bounce);
                 
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Bounce02_Mix03);
                 

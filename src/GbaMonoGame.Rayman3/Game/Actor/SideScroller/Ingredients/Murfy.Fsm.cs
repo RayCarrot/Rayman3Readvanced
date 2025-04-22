@@ -118,7 +118,7 @@ public partial class Murfy
                 if (TargetActor == Scene.MainActor)
                 {
                     ManageFirstCutscene();
-                    Scene.MainActor.ProcessMessage(this, Message.Main_EnterCutscene);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginCutscene);
                     if (TargetActor.Position.X < 120)
                     {
                         ((ActionActor)TargetActor).ChangeAction();
@@ -414,11 +414,11 @@ public partial class Murfy
                 if (GameInfo.MapId is MapId.ChallengeLy1 or MapId.ChallengeLy2)
                 {
                     Debug.Assert(TargetActor == Scene.MainActor, "Murfy incoherent behavior");
-                    Scene.MainActor.ProcessMessage(this, Message.Main_LevelEnd);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
                 }
                 else if (TargetActor == Scene.MainActor)
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.Main_ExitStopOrCutscene);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_Resume);
                 }
 
                 // Restore being able to pause

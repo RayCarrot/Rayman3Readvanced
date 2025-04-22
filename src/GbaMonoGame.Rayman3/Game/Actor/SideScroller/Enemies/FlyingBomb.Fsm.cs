@@ -61,7 +61,7 @@ public partial class FlyingBomb
                 {
                     Scene.MainActor.ReceiveDamage(AttackPoints);
                     Destroyed = true;
-                    Scene.MainActor.ProcessMessage(this, Message.Damaged);
+                    Scene.MainActor.ProcessMessage(this, Message.Actor_Hurt);
                 }
 
                 // Boss machine
@@ -90,7 +90,7 @@ public partial class FlyingBomb
                         if (!activeFist.GetAttackBox().Intersects(vulnerabilityBox)) 
                             continue;
                         
-                        activeFist.ProcessMessage(this, Message.RaymanBody_FinishedAttack);
+                        activeFist.ProcessMessage(this, Message.RaymanBody_FinishAttack);
                         Destroyed = true;
                         break;
                     }
@@ -253,7 +253,7 @@ public partial class FlyingBomb
                 {
                     Scene.MainActor.ReceiveDamage(AttackPoints);
                     Destroyed = true;
-                    Scene.MainActor.ProcessMessage(this, Message.Damaged);
+                    Scene.MainActor.ProcessMessage(this, Message.Actor_Hurt);
                 }
 
                 if (Destroyed || HitWall())
@@ -288,7 +288,7 @@ public partial class FlyingBomb
                 {
                     Scene.MainActor.ReceiveDamage(AttackPoints);
                     Destroyed = true;
-                    Scene.MainActor.ProcessMessage(this, Message.Damaged);
+                    Scene.MainActor.ProcessMessage(this, Message.Actor_Hurt);
                 }
 
                 if (Destroyed)

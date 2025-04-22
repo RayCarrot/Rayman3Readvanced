@@ -40,7 +40,7 @@ public partial class JanoShot
                     if (Scene.IsHitMainActor(this) && !Scene.MainActor.IsInvulnerable)
                     {
                         Scene.MainActor.ReceiveDamage(AttackPoints);
-                        Scene.MainActor.ProcessMessage(this, Message.Damaged);
+                        Scene.MainActor.ProcessMessage(this, Message.Actor_Hurt);
                         ActionId = Action.Hit;
                     }
 
@@ -68,7 +68,7 @@ public partial class JanoShot
                     if (Scene.IsHitMainActor(this) && !Scene.MainActor.IsInvulnerable)
                     {
                         Scene.MainActor.ReceiveDamage(AttackPoints);
-                        Scene.MainActor.ProcessMessage(this, Message.Damaged);
+                        Scene.MainActor.ProcessMessage(this, Message.Actor_Hurt);
                         ActionId = Action.Hit;
                     }
                 }

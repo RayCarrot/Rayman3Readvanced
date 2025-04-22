@@ -31,21 +31,21 @@ public partial class Teensies
 
                 if (Scene.IsDetectedMainActor(this) && InitialActionId is Action.Init_World1_Right or Action.Init_World1_Left)
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.Main_EnterCutscene);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginCutscene);
                     State.MoveTo(Fsm_World1IntroText);
                     return false;
                 }
 
                 if (Scene.IsDetectedMainActor(this) && requirementMet)
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.Main_EnterCutscene);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginCutscene);
                     State.MoveTo(Fsm_ShowRequirementMetText);
                     return false;
                 }
 
                 if (Scene.IsDetectedMainActor(this) && !requirementMet)
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.Main_EnterCutscene);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginCutscene);
                     State.MoveTo(Fsm_ShowRequirementNotMetText);
                     return false;
                 }
@@ -134,7 +134,7 @@ public partial class Teensies
                     if (TextBox.IsFinished)
                     {
                         TextBox.MoveInOurOut(false);
-                        Scene.MainActor.ProcessMessage(this, Message.Main_ExitStopOrCutscene);
+                        Scene.MainActor.ProcessMessage(this, Message.Rayman_Resume);
                         IsMovingOutTextBox = true;
 
                         // Restore being able to pause
@@ -213,7 +213,7 @@ public partial class Teensies
                 if (TextBox.IsFinished)
                 {
                     TextBox.MoveInOurOut(false);
-                    Scene.MainActor.ProcessMessage(this, Message.Main_ExitStopOrCutscene);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_Resume);
                     finished = true;
 
                     // Restore being able to pause

@@ -57,12 +57,12 @@ public sealed partial class Machine : MovableActor
         MurfySpawned = false;
         TextBox = Scene.GetDialog<TextBoxDialog>();
         TextBox.MoveInOurOut(true);
-        Scene.MainActor.ProcessMessage(this, Message.Main_EnterCutscene);
+        Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginCutscene);
     }
 
     private void UnInitTextBox()
     {
-        Scene.MainActor.ProcessMessage(this, Message.Main_ExitStopOrCutscene);
+        Scene.MainActor.ProcessMessage(this, Message.Rayman_Resume);
         TextBox = null;
     }
 
@@ -105,11 +105,11 @@ public sealed partial class Machine : MovableActor
 
         switch (message)
         {
-            case Message.Damaged:
+            case Message.Actor_Hurt:
                 if (State == Fsm_CogWheelSpinning)
                 {
                     CogDestroyed = true;
-                    Parent.ProcessMessage(this, Message.Exploded);
+                    Parent.ProcessMessage(this, Message.Actor_Explode);
                 }
                 return false;
 
@@ -117,7 +117,7 @@ public sealed partial class Machine : MovableActor
                 MurfySpawned = true;
                 return false;
 
-            case Message.Exploded:
+            case Message.Actor_Explode:
                 BossHealth--;
                 ((FrameSideScroller)Frame.Current).UserInfo.BossHit();
                 return false;

@@ -100,7 +100,7 @@ public sealed partial class GrolgothProjectile : MovableActor
 
             if (activeFist != null && activeFist.GetDetectionBox().Intersects(vulnerabilityBox) && IsFacingLeft != activeFist.IsFacingLeft)
             {
-                activeFist.ProcessMessage(this, Message.RaymanBody_FinishedAttack);
+                activeFist.ProcessMessage(this, Message.RaymanBody_FinishAttack);
                 return !requireSuperFist || 
                        activeFist.BodyPartType is RaymanBody.RaymanBodyPartType.SuperFist or RaymanBody.RaymanBodyPartType.SecondSuperFist;
             }
@@ -306,7 +306,7 @@ public sealed partial class GrolgothProjectile : MovableActor
 
         switch (message)
         {
-            case Message.Hit:
+            case Message.Actor_Hit:
                 RaymanBody raymanBody = (RaymanBody)sender;
                 if (((ActionId is Action.BigGroundBomb_Right or Action.BigGroundBomb_Left && 
                      raymanBody.BodyPartType is RaymanBody.RaymanBodyPartType.SuperFist or RaymanBody.RaymanBodyPartType.SecondSuperFist) || 

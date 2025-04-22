@@ -13,7 +13,7 @@ public partial class Boulder
             ActionId = Action.Fall;
             MechModel.Speed = MechModel.Speed with { X = 0 };
             Scene.Camera.ProcessMessage(this, Message.Cam_MoveToTarget, Position + new Vector2(-60, 20));
-            Scene.MainActor.ProcessMessage(this, Message.Main_Stop);
+            Scene.MainActor.ProcessMessage(this, Message.Rayman_Stop);
             Timer++;
         }
         // Wait
@@ -35,7 +35,7 @@ public partial class Boulder
             if (hitActor != null && hitActor != this)
             {
                 hitActor.ReceiveDamage(hitActor.HitPoints);
-                hitActor.ProcessMessage(this, Message.Hit, this);
+                hitActor.ProcessMessage(this, Message.Actor_Hit, this);
             }
         }
         // Lower hitbox so they're easier to jump over
@@ -48,13 +48,13 @@ public partial class Boulder
             Box mainActorVulnerabilityBox = Scene.MainActor.GetVulnerabilityBox();
 
             if (attackBox.Intersects(mainActorVulnerabilityBox))
-                Scene.MainActor.ProcessMessage(this, Message.Exploded, this);
+                Scene.MainActor.ProcessMessage(this, Message.Actor_Explode, this);
         }
         // Default
         else
         {
             if (Scene.IsHitMainActor(this))
-                Scene.MainActor.ProcessMessage(this, Message.Exploded, this);
+                Scene.MainActor.ProcessMessage(this, Message.Actor_Explode, this);
         }
 
         return true;

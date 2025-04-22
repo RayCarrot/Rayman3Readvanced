@@ -153,7 +153,7 @@ public partial class Keg
 
             case FsmAction.Step:
                 if (Scene.IsDetectedMainActor(this) && ((Rayman)Scene.MainActor).AttachedObject == null)
-                    Scene.MainActor.ProcessMessage(this, Message.Main_PickUpObject, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_PickUpObject, this);
 
                 if (Scene.IsDetectedMainActor(this) && ((Rayman)Scene.MainActor).AttachedObject == this)
                 {
@@ -244,7 +244,7 @@ public partial class Keg
                     ((Rayman)Scene.MainActor).AttachedObject == null &&
                     Speed.Y > 0)
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.Main_CatchObject, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_CatchObject, this);
                 }
 
                 bool landed = IsTouchingMap || Scene.GetPhysicalType(mapPos).IsSolid;
@@ -255,7 +255,7 @@ public partial class Keg
                         ActorType.Machine or 
                         ActorType.Cage)
                     {
-                        hitObj.ProcessMessage(this, Message.Damaged, this);
+                        hitObj.ProcessMessage(this, Message.Actor_Hurt, this);
                         landed = true;
                     }
                     else if ((ActorType)hitObj.Type is 
@@ -267,7 +267,7 @@ public partial class Keg
                              ActorType.RotatedHelicopterBomb)
                     {
                         hitObj.ReceiveDamage(50);
-                        hitObj.ProcessMessage(this, Message.Hit, this);
+                        hitObj.ProcessMessage(this, Message.Actor_Hit, this);
                         landed = true;
                     }
                 }
@@ -319,7 +319,7 @@ public partial class Keg
                         ActorType.Machine or 
                         ActorType.Cage)
                     {
-                        hitObj.ProcessMessage(this, Message.Damaged);
+                        hitObj.ProcessMessage(this, Message.Actor_Hurt);
                         landed = true;
                     }
                     else if ((ActorType)hitObj.Type is 
@@ -331,7 +331,7 @@ public partial class Keg
                              ActorType.RotatedHelicopterBomb)
                     {
                         hitObj.ReceiveDamage(50);
-                        hitObj.ProcessMessage(this, Message.Hit, this);
+                        hitObj.ProcessMessage(this, Message.Actor_Hit, this);
                         landed = true;
                     }
                 }
@@ -440,7 +440,7 @@ public partial class Keg
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Combust1_Mix02);
                     ActionId = IsFacingRight ? Action.Flying_Right : Action.Flying_Left;
-                    Scene.MainActor.ProcessMessage(this, IsFacingRight ? Message.Main_StartFlyingWithKegRight : Message.Main_StartFlyingWithKegLeft);
+                    Scene.MainActor.ProcessMessage(this, IsFacingRight ? Message.Rayman_FlyWithKegRight : Message.Rayman_FlyWithKegLeft);
                     SpawnedDebrisCount = 0;
                 }
                 // Flying for 10.5 seconds
@@ -448,7 +448,7 @@ public partial class Keg
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Combust1_Mix02);
                     ActionId = IsFacingRight ? Action.StopFlying_Right : Action.StopFlying_Left;
-                    Scene.MainActor.ProcessMessage(this, Message.Main_StopFlyingWithKeg);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_EndFlyWithKeg);
                 }
                 // If flying...
                 else if (ActionId is Action.Flying_Right or Action.Flying_Left or Action.StopFlying_Right or Action.StopFlying_Left)
@@ -456,14 +456,14 @@ public partial class Keg
                     // End flight if it's been over 12 seconds or no longer attached to the main actor
                     if (Timer > 720 || ((Rayman)Scene.MainActor).AttachedObject != this)
                     {
-                        Scene.MainActor.ProcessMessage(this, Message.DropObject);
+                        Scene.MainActor.ProcessMessage(this, Message.Actor_Drop);
                         endFlight = true;
                     }
                     // If the main actor touches the map or is dead
                     else if ((Scene.MainActor.IsTouchingMap && Timer > 75) || Scene.MainActor.HitPoints == 0)
                     {
                         SpawnExplosion(true);
-                        Scene.MainActor.ProcessMessage(this, Message.Exploded);
+                        Scene.MainActor.ProcessMessage(this, Message.Actor_Explode);
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Combust1_Mix02);
                         respawn = true;
                     }
@@ -505,7 +505,7 @@ public partial class Keg
                 if (hitPirate != null)
                 {
                     hitPirate.ReceiveDamage(50);
-                    hitPirate.ProcessMessage(this, Message.Hit, this);
+                    hitPirate.ProcessMessage(this, Message.Actor_Hit, this);
                     respawn = true;
                 }
 

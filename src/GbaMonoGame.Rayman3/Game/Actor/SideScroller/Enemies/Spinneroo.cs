@@ -33,7 +33,7 @@ public sealed partial class Spinneroo : MovableActor
         // Handle messages
         switch (message)
         {
-            case Message.Hit:
+            case Message.Actor_Hit:
                 // Reset hitpoints since you can't deal damage by hitting the enemy
                 HitPoints = 5;
 

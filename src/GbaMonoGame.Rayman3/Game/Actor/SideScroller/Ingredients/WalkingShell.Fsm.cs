@@ -36,7 +36,7 @@ public partial class WalkingShell
 
                 ((CameraSideScroller)Scene.Camera).HorizontalOffset = CameraOffset.Default;
 
-                Scene.MainActor.ProcessMessage(this, Message.Main_UnmountWalkingShell, this);
+                Scene.MainActor.ProcessMessage(this, Message.Rayman_UnmountWalkingShell, this);
 
                 Explode();
                 isDead = true;
@@ -69,7 +69,7 @@ public partial class WalkingShell
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__HorseCry_Mix02);
 
-                    Scene.MainActor.ProcessMessage(this, Message.Main_MountWalkingShell, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_MountWalkingShell, this);
                     Rayman.Position = Position;
                     IsRaymanMounted = true;
 
@@ -283,7 +283,7 @@ public partial class WalkingShell
                     IsRaymanMounted = false;
                     ((CameraSideScroller)Scene.Camera).HorizontalOffset = CameraOffset.Default;
                     Rayman.PreviousXSpeed = Speed.X;
-                    Scene.MainActor.ProcessMessage(this, Message.Main_JumpOffWalkingShell, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_JumpOffWalkingShell, this);
                 }
                 break;
 
@@ -336,7 +336,7 @@ public partial class WalkingShell
                     Explode();
                     IsRaymanMounted = false;
                     ((CameraSideScroller)Scene.Camera).HorizontalOffset = CameraOffset.Default;
-                    Scene.MainActor.ProcessMessage(this, Message.Main_UnmountWalkingShell, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_UnmountWalkingShell, this);
                     State.MoveTo(null);
                     return false;
                 }
@@ -445,7 +445,7 @@ public partial class WalkingShell
                 {
                     MechModel.Speed = MechModel.Speed with { X = -1 };
                     IsRaymanMounted = false;
-                    Scene.MainActor.ProcessMessage(this, Message.Main_UnmountWalkingShell, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_UnmountWalkingShell, this);
                     State.MoveTo(Fsm_Fall);
                     return false;
                 }
@@ -500,7 +500,7 @@ public partial class WalkingShell
                 if (Speed.Y == 0 && 0x1e < Timer)
                 {
                     IsRaymanMounted = false;
-                    Scene.MainActor.ProcessMessage(this, Message.Main_UnmountWalkingShell, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_UnmountWalkingShell, this);
                     Explode();
                 }
 
@@ -519,7 +519,7 @@ public partial class WalkingShell
                         Explode();
                         IsRaymanMounted = false;
                         ((CameraSideScroller)Scene.Camera).HorizontalOffset = CameraOffset.Default;
-                        Scene.MainActor.ProcessMessage(this, Message.Main_UnmountWalkingShell, this);
+                        Scene.MainActor.ProcessMessage(this, Message.Rayman_UnmountWalkingShell, this);
                         State.MoveTo(null);
                         return false;
                     }

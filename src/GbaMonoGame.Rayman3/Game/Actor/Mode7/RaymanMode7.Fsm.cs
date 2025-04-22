@@ -275,7 +275,7 @@ public partial class RaymanMode7
                 GameInfo.ModifyLives(-1);
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__RaDeath_Mix03);
                 ReceiveDamage(255);
-                Scene.GetGameObject(SamActorId).ProcessMessage(this, Message.Main_Damaged2);
+                Scene.GetGameObject(SamActorId).ProcessMessage(this, Message.Actor_End);
                 ActionId = Action.Dying;
                 MechModel.Speed = MechModel.Speed with { Y = 0 };
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__SkiLoop1);

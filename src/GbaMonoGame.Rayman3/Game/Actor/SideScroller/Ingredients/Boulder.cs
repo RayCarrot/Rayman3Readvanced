@@ -40,7 +40,7 @@ public sealed partial class Boulder : MovableActor
 
         switch (message)
         {
-            case Message.Boulder_Start:
+            case Message.Actor_Start:
                 if (State == Fsm_Wait)
                 {
                     Timer = 0;

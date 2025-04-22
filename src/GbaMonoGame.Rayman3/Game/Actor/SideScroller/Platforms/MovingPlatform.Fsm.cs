@@ -63,7 +63,7 @@ public partial class MovingPlatform
                     if (InitialAction is Action.WaitForContact or Action.WaitForContactWithReturn)
                         IsActivated = true;
 
-                    mainActor.ProcessMessage(this, Message.Main_LinkMovement, this);
+                    mainActor.ProcessMessage(this, Message.Rayman_LinkMovement, this);
 
                     // Check for impact if the main actor is moving downwards
                     if (mainActor.Speed.Y > 0)
@@ -79,7 +79,7 @@ public partial class MovingPlatform
                 {
                     if (!Scene.IsDetectedMainActor(this) || mainActor.Position.Y > Position.Y)
                     {
-                        mainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                        mainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
                     }
                 }
 
@@ -216,7 +216,7 @@ public partial class MovingPlatform
                     if (InitialAction is Action.WaitForContact or Action.WaitForContactWithReturn)
                         IsActivated = true;
 
-                    mainActor.ProcessMessage(this, Message.Main_LinkMovement, this);
+                    mainActor.ProcessMessage(this, Message.Rayman_LinkMovement, this);
                     collided = true;
 
                     // Check for impact if the main actor is moving downwards
@@ -233,7 +233,7 @@ public partial class MovingPlatform
                 {
                     if (!Scene.IsDetectedMainActor(this) || mainActor.Position.Y > Position.Y)
                     {
-                        mainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                        mainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
                     }
                 }
 
@@ -308,7 +308,7 @@ public partial class MovingPlatform
                 // Link with main actor if it collides with it
                 if (Scene.IsDetectedMainActor(this) && mainActor.LinkedMovementActor != this && mainActor.Position.Y <= Position.Y)
                 {
-                    mainActor.ProcessMessage(this, Message.Main_LinkMovement, this);
+                    mainActor.ProcessMessage(this, Message.Rayman_LinkMovement, this);
 
                     // Check for impact if the main actor is moving downwards
                     if (mainActor.Speed.Y > 0)
@@ -324,7 +324,7 @@ public partial class MovingPlatform
                 {
                     if (!Scene.IsDetectedMainActor(this) || mainActor.Position.Y > Position.Y)
                     {
-                        mainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                        mainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
                     }
                 }
                 break;
@@ -383,14 +383,14 @@ public partial class MovingPlatform
                 // Link with main actor if it collides with it
                 if (Scene.IsDetectedMainActor(this) && mainActor.LinkedMovementActor != this && mainActor.Position.Y <= Position.Y)
                 {
-                    mainActor.ProcessMessage(this, Message.Main_LinkMovement, this);
+                    mainActor.ProcessMessage(this, Message.Rayman_LinkMovement, this);
                 }
                 // Unlink from main actor if no longer colliding
                 else if (mainActor.LinkedMovementActor == this)
                 {
                     if (!Scene.IsDetectedMainActor(this) || mainActor.Position.Y > Position.Y)
                     {
-                        mainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                        mainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
                     }
                 }
 
@@ -492,7 +492,7 @@ public partial class MovingPlatform
                 // Link with main actor if it collides with it
                 if (Scene.IsDetectedMainActor(this) && mainActor.LinkedMovementActor != this && mainActor.Position.Y <= Position.Y)
                 {
-                    mainActor.ProcessMessage(this, Message.Main_LinkMovement, this);
+                    mainActor.ProcessMessage(this, Message.Rayman_LinkMovement, this);
 
                     // Check for impact if the main actor is moving downwards
                     if (mainActor.Speed.Y > 0)
@@ -508,7 +508,7 @@ public partial class MovingPlatform
                 {
                     if (!Scene.IsDetectedMainActor(this) || mainActor.Position.Y > Position.Y)
                     {
-                        mainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                        mainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
                     }
                 }
 

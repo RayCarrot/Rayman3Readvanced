@@ -270,7 +270,7 @@ public partial class CameraSideScroller
                     if ((Timer == 6 && Speed.X == 0) ||
                         (RSMultiplayer.IsActive && Speed == Vector2.Zero))
                     {
-                        Scene.MainActor.ProcessMessage(this, Message.Main_ExitStopOrCutscene);
+                        Scene.MainActor.ProcessMessage(this, Message.Rayman_Resume);
                         State.MoveTo(Fsm_Follow);
                         return false;
                     }

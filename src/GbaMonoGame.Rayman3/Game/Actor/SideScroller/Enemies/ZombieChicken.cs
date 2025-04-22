@@ -48,7 +48,7 @@ public sealed partial class ZombieChicken : MovableActor
 
         switch (message)
         {
-            case Message.Hit:
+            case Message.Actor_Hit:
                 FaceLeftWhenDying = ((BaseActor)param).IsFacingRight;
                 return false;
 

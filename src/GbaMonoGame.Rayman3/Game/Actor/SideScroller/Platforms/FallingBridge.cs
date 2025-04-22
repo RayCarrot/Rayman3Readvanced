@@ -28,7 +28,7 @@ public sealed partial class FallingBridge : MovableActor
 
         switch (message)
         {
-            case Message.FallingBridge_Fall:
+            case Message.Actor_Fall:
                 if (State == Fsm_Idle)
                     State.MoveTo(Fsm_Timed);
                 return false;

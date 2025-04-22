@@ -16,7 +16,7 @@ public partial class Arrive
             case FsmAction.Step:
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.Main_LevelEnd);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
                     State.MoveTo(Fsm_EndLevel);
                     return false;
                 }
@@ -60,7 +60,7 @@ public partial class Arrive
                     }
                     else if (GameInfo.MapId == MapId.ChallengeLyGCN)
                     {
-                        Scene.MainActor.ProcessMessage(this, Message.Main_EnterCutscene);
+                        Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginCutscene);
                         GameInfo.PersistentInfo.FinishedLyChallengeGCN = true;
                         skipCutscene = true;
                     }
@@ -133,12 +133,12 @@ public partial class Arrive
                     if (Rom.Platform == Platform.GBA)
                     {
                         if (GameInfo.MapId == MapId.ChallengeLyGCN)
-                            Scene.MainActor.ProcessMessage(this, Message.Main_LevelEnd);
+                            Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
                     }
                     else if (Rom.Platform == Platform.NGage)
                     {
                         if (GameInfo.MapId is MapId.ChallengeLy1 or MapId.ChallengeLy2 or MapId.ChallengeLyGCN)
-                            Scene.MainActor.ProcessMessage(this, Message.Main_LevelEnd);
+                            Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
                     }
                     else
                     {

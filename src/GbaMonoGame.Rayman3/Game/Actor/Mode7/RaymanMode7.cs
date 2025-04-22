@@ -101,22 +101,22 @@ public sealed partial class RaymanMode7 : Mode7Actor
 
         switch (message)
         {
-            case Message.MainMode7_CollectedYellowLum:
+            case Message.Rayman_CollectMode7YellowLum:
                 ((FrameWaterSkiMode7)Frame.Current).UserInfo.LumsBar.AddLums(1);
                 return true;
 
-            case Message.Main_LevelEnd:
+            case Message.Rayman_FinishLevel:
                 ProcessJoypad = false;
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02);
                 SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.Play__win3, 0);
                 LevelMusicManager.HasOverridenLevelMusic = false;
                 return true;
 
-            case Message.MainMode7_LevelStart:
+            case Message.Actor_Start:
                 ProcessJoypad = true;
                 return true;
 
-            case Message.MainMode7_ShowTextBox:
+            case Message.RaymanMode7_ShowTextBox:
                 // Unused and does nothing in the final game. This used to trigger the tutorial textbox with Murfy.
                 return true;
 

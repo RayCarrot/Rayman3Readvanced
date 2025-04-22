@@ -14,7 +14,7 @@ public partial class KegFire
 
             case FsmAction.Step:
                 InteractableActor hitKeg = Scene.IsHitActorOfType(this, (int)ActorType.Keg);
-                hitKeg?.ProcessMessage(this, IsFacingRight ? Message.LightOnFire_Right : Message.LightOnFire_Left);
+                hitKeg?.ProcessMessage(this, IsFacingRight ? Message.Actor_LightOnFireRight : Message.Actor_LightOnFireLeft);
                 break;
 
             case FsmAction.UnInit:

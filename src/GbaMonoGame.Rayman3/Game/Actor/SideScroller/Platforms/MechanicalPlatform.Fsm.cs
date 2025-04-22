@@ -63,14 +63,14 @@ public partial class MechanicalPlatform
                 if (Scene.IsDetectedMainActor(this) && mainActor.LinkedMovementActor != this && mainActor.Position.Y <= Position.Y)
                 {
                     if (!IsSolid)
-                        mainActor.ProcessMessage(this, Message.Main_LinkMovement, this);
+                        mainActor.ProcessMessage(this, Message.Rayman_LinkMovement, this);
                 }
                 // Unlink from main actor if no longer colliding
                 else if (mainActor.LinkedMovementActor == this)
                 {
                     if (!Scene.IsDetectedMainActor(this) || mainActor.Position.Y > Position.Y)
                     {
-                        mainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                        mainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
                     }
                 }
                 break;

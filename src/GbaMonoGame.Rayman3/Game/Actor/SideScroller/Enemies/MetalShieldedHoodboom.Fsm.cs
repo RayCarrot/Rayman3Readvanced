@@ -13,7 +13,7 @@ public partial class MetalShieldedHoodboom
         if (Scene.IsHitMainActor(this))
         {
             Scene.MainActor.ReceiveDamage(AttackPoints);
-            Scene.MainActor.ProcessMessage(this, Message.Damaged, this);
+            Scene.MainActor.ProcessMessage(this, Message.Actor_Hurt, this);
         }
 
         Box detectionBox = GetDetectionBox();
@@ -42,7 +42,7 @@ public partial class MetalShieldedHoodboom
                 InvulnerabilityTimer = GameTime.ElapsedFrames;
             }
 
-            activeFist.ProcessMessage(this, Message.RaymanBody_FinishedAttack);
+            activeFist.ProcessMessage(this, Message.RaymanBody_FinishAttack);
             break;
         }
 

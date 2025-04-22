@@ -401,7 +401,7 @@ public sealed partial class Grolgoth : MovableActor
         switch (message)
         {
             // Hit by projectile
-            case Message.Damaged:
+            case Message.Actor_Hurt:
                 if (State == Fsm_GroundDeployBomb) 
                     State.MoveTo(Fsm_GroundHit);
                 else if (State == Fsm_AirDefault || State == Fsm_AirShootMissile)
@@ -409,7 +409,7 @@ public sealed partial class Grolgoth : MovableActor
                 return false;
 
             // Projectile attack finished
-            case Message.Main_Damaged2:
+            case Message.Actor_End:
                 if (State == Fsm_GroundDeployBomb) 
                     State.MoveTo(Fsm_GroundDefault);
                 else if ((State == Fsm_GroundFallDown || State == Fsm_AirAttack) && AttackCount != 0)

@@ -22,7 +22,7 @@ public partial class Slapdash
             else
                 Scene.MainActor.Position = Scene.MainActor.Position with { X = Position.X - 10 };
 
-            Scene.MainActor.ProcessMessage(this, Message.Main_Damaged3, this);
+            Scene.MainActor.ProcessMessage(this, Message.Actor_HurtPassthrough, this);
         }
 
         if (HitPoints == 0)

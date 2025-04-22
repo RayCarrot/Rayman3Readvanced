@@ -43,7 +43,7 @@ public class FrameNewPower : Frame, IHasScene, IHasPlayfield
         if (JoyPad.IsReplayFinished)
         {
             Timer = 1;
-            Scene.MainActor.ProcessMessage(this, Message.Main_Stop);
+            Scene.MainActor.ProcessMessage(this, Message.Rayman_Stop);
         }
     }
 
@@ -65,7 +65,7 @@ public class FrameNewPower : Frame, IHasScene, IHasPlayfield
         Scene.AnimationPlayer.Execute();
         GameInfo.PlayLevelMusic();
 
-        Scene.MainActor.ProcessMessage(this, Message.Main_Stop);
+        Scene.MainActor.ProcessMessage(this, Message.Rayman_Stop);
         ((Rayman)Scene.MainActor).ActionId = Rayman.Action.Walk_Right;
 
         Timer = 0;

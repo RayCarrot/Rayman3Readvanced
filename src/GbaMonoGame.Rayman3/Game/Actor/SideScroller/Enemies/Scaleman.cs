@@ -58,7 +58,7 @@ public sealed partial class Scaleman : MovableActor
 
         switch (message)
         {
-            case Message.Hit:
+            case Message.Actor_Hit:
                 RaymanBody raymanBody = (RaymanBody)param;
 
                 // Shrink when hit while big

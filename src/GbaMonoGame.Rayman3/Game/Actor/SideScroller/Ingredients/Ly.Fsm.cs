@@ -56,7 +56,7 @@ public partial class Ly
         switch (action)
         {
             case FsmAction.Init:
-                Scene.MainActor.ProcessMessage(this, Message.Main_EnterCutscene);
+                Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginCutscene);
                 ActionId = Action.BeginTalk;
                 Timer = 0;
                 TextBox.SetCutsceneCharacter(TextBoxCutsceneCharacter.Ly);
@@ -192,7 +192,7 @@ public partial class Ly
 
                 if (Scene.MainActor.IsActionFinished && ((Rayman)Scene.MainActor).ActionId == Rayman.Action.NewPower_Right)
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.Main_ExitStopOrCutscene);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_Resume);
                     StartCutScene();
                 }
 

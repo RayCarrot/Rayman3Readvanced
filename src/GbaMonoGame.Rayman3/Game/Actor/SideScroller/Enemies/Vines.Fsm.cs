@@ -9,7 +9,7 @@ public partial class Vines
     {
         if (Scene.IsHitMainActor(this))
         {
-            Scene.MainActor.ProcessMessage(this, Message.Damaged);
+            Scene.MainActor.ProcessMessage(this, Message.Actor_Hurt);
             Scene.MainActor.ReceiveDamage(AttackPoints);
         }
 

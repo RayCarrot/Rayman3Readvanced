@@ -169,14 +169,14 @@ public partial class Skull
                 // Link with main actor if it collides with it
                 if (Scene.IsDetectedMainActor(this) && mainActor.LinkedMovementActor != this && mainActor.Position.Y <= Position.Y)
                 {
-                    mainActor.ProcessMessage(this, Message.Main_LinkMovement, this);
+                    mainActor.ProcessMessage(this, Message.Rayman_LinkMovement, this);
                 }
                 // Unlink from main actor if no longer colliding
                 else if (mainActor.LinkedMovementActor == this)
                 {
                     if (!Scene.IsDetectedMainActor(this) || mainActor.Position.Y > Position.Y)
                     {
-                        mainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                        mainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
                     }
                 }
 
@@ -209,7 +209,7 @@ public partial class Skull
                 ActionId = Action.Despawn;
 
                 if (Scene.IsDetectedMainActor(this))
-                    Scene.MainActor.ProcessMessage(this, Message.Main_AllowCoyoteJump, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_AllowSafetyJump, this);
                 
                 Timer = 0;
                 break;
@@ -223,7 +223,7 @@ public partial class Skull
                     if (Timer == 15)
                     {
                         if (Scene.MainActor.LinkedMovementActor == this)
-                            Scene.MainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                            Scene.MainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
                     }
                 }
 
@@ -286,7 +286,7 @@ public partial class Skull
                 // Link with main actor if it collides with it
                 if (Scene.IsDetectedMainActor(this) && mainActor.LinkedMovementActor != this && mainActor.Position.Y <= Position.Y)
                 {
-                    mainActor.ProcessMessage(this, Message.Main_LinkMovement, this);
+                    mainActor.ProcessMessage(this, Message.Rayman_LinkMovement, this);
 
                     if (ActionId == Action.SolidMove_Wait)
                     {
@@ -299,7 +299,7 @@ public partial class Skull
                 {
                     if (!Scene.IsDetectedMainActor(this) || mainActor.Position.Y > Position.Y)
                     {
-                        mainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                        mainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
                     }
                 }
                 break;

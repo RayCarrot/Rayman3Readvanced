@@ -3362,7 +3362,7 @@ public partial class Rayman
 
                 if (Speed.Y > 1)
                 {
-                    AttachedObject.ProcessMessage(this, Message.DropObject);
+                    AttachedObject.ProcessMessage(this, Message.Actor_Drop);
                     AttachedObject = null;
                 }
 
@@ -3453,7 +3453,7 @@ public partial class Rayman
                     else if (AttachedObject != null)
                     {
                         PlaySound(Rayman3SoundEvent.Play__GenWoosh_LumSwing_Mix03);
-                        AttachedObject.ProcessMessage(this, Message.ThrowObjectForward);
+                        AttachedObject.ProcessMessage(this, Message.Actor_ThrowForward);
                         AttachedObject = null;
                     }
                 }
@@ -3484,7 +3484,7 @@ public partial class Rayman
                     }
                     else if (AttachedObject != null)
                     {
-                        AttachedObject.ProcessMessage(this, Message.ThrowObjectUp);
+                        AttachedObject.ProcessMessage(this, Message.Actor_ThrowUp);
                         AttachedObject = null;
                     }
                 }
@@ -4324,7 +4324,7 @@ public partial class Rayman
 
                 if (AttachedObject != null)
                 {
-                    AttachedObject.ProcessMessage(this, Message.DropObject);
+                    AttachedObject.ProcessMessage(this, Message.Actor_Drop);
                     AttachedObject = null;
                 }
                 break;

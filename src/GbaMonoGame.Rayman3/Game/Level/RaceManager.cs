@@ -72,7 +72,7 @@ public class RaceManager
         {
             if (RemainingTime <= 0)
             {
-                Scene.MainActor.ProcessMessage(this, Message.Exploded);
+                Scene.MainActor.ProcessMessage(this, Message.Actor_Explode);
             }
             else
             {

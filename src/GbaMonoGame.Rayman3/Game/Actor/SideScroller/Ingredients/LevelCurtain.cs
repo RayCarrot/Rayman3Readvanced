@@ -141,7 +141,7 @@ public sealed partial class LevelCurtain : ActionActor
         // Handle messages
         switch (message)
         {
-            case Message.ReloadAnimation:
+            case Message.Actor_ReloadAnimation:
                 // Don't need to do anything. The original game sets the palette index again, but we're using local indexes, so it never changes.
                 return false;
 

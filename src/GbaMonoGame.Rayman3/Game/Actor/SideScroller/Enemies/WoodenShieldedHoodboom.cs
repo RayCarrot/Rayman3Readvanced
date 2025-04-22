@@ -38,7 +38,7 @@ public sealed partial class WoodenShieldedHoodboom : InteractableActor
         // Handle messages
         switch (message)
         {
-            case Message.Hit:
+            case Message.Actor_Hit:
                 if (!IsInvulnerable)
                 {
                     // Can't take damage while shield is still there

@@ -164,7 +164,7 @@ public partial class Machine
         switch (action)
         {
             case FsmAction.Init:
-                Scene.MainActor.ProcessMessage(this, Message.Main_Stop);
+                Scene.MainActor.ProcessMessage(this, Message.Rayman_Stop);
                 Timer = 0;
                 break;
 
@@ -312,7 +312,7 @@ public partial class Machine
                 {
                     Rayman rayman = (Rayman)Scene.MainActor;
                     if (rayman.State != rayman.Fsm_Dying && rayman.State != rayman.Fsm_EndMap)
-                        rayman.ProcessMessage(this, Message.Main_LevelEnd);
+                        rayman.ProcessMessage(this, Message.Rayman_FinishLevel);
                 }
 
                 // Fall down

@@ -34,7 +34,7 @@ public partial class UnusedBouncyPlatform
         {
             case FsmAction.Init:
                 ActionId = Action.Bounce;
-                Scene.MainActor.ProcessMessage(this, Message.Main_Bounce);
+                Scene.MainActor.ProcessMessage(this, Message.Rayman_Bounce);
                 break;
 
             case FsmAction.Step:

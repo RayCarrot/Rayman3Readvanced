@@ -208,11 +208,11 @@ public sealed partial class Jano : MovableActor
 
         switch (message)
         {
-            case Message.Hit:
+            case Message.Actor_Hit:
                 // Empty
                 return true;
 
-            case Message.Exploded:
+            case Message.Actor_Explode:
                 ShootMultiple();
                 return true;
 

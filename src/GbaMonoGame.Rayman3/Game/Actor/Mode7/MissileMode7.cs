@@ -263,7 +263,7 @@ public sealed partial class MissileMode7 : Mode7Actor
 
         switch (message)
         {
-            case Message.MissileMode7_CollectedBlueLum:
+            case Message.Rayman_CollectMode7BlueLum:
                 if (CollectedBlueLums < 3)
                 {
                     CollectedBlueLums++;
@@ -285,14 +285,14 @@ public sealed partial class MissileMode7 : Mode7Actor
                     BoostTimer = 192;
                 return true;
 
-            case Message.MissileMode7_CollectedRedLum:
+            case Message.Rayman_CollectRedLum:
                 if (HitPoints < 5)
                     HitPoints++;
 
                 PrevHitPoints = HitPoints;
                 return true;
 
-            case Message.MainMode7_CollectedYellowLum:
+            case Message.Rayman_CollectMode7YellowLum:
                 ((FrameSingleMode7)Frame.Current).UserInfo.LumsBar.AddLums(1);
                 return true;
 

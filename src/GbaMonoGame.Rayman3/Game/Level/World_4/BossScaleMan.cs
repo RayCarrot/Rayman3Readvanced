@@ -10,6 +10,6 @@ public class BossScaleMan : FrameSideScroller
     {
         base.Init();
         Scene.Camera.LinkedObject = Scene.GetGameObject<MovableActor>(1);
-        Scene.MainActor.ProcessMessage(this, Message.Main_Stop);
+        Scene.MainActor.ProcessMessage(this, Message.Rayman_Stop);
     }
 }

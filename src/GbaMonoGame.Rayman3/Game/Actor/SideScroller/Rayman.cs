@@ -661,7 +661,7 @@ public sealed partial class Rayman : MovableActor
             if (AttachedObject != null)
             {
                 if ((ActorType)AttachedObject.Type is ActorType.Keg or ActorType.Caterpillar or ActorType.Sphere)
-                    AttachedObject.ProcessMessage(this, Message.DropObject);
+                    AttachedObject.ProcessMessage(this, Message.Actor_Drop);
                 AttachedObject = null;
             }
 
@@ -1207,7 +1207,7 @@ public sealed partial class Rayman : MovableActor
             if (AttachedObject != null)
             {
                 if ((ActorType)AttachedObject.Type is ActorType.Keg or ActorType.Caterpillar or ActorType.Sphere)
-                    AttachedObject.ProcessMessage(this, Message.DropObject);
+                    AttachedObject.ProcessMessage(this, Message.Actor_Drop);
                 AttachedObject = null;
             }
 
@@ -1327,7 +1327,7 @@ public sealed partial class Rayman : MovableActor
 
         switch (message)
         {
-            case Message.RaymanBody_FinishedAttack:
+            case Message.RaymanBody_FinishAttack:
                 RaymanBody.RaymanBodyPartType bodyPartType = (RaymanBody.RaymanBodyPartType)param;
                 ActiveBodyParts[(int)bodyPartType] = null;
 
@@ -1357,7 +1357,7 @@ public sealed partial class Rayman : MovableActor
                 }
                 return false;
 
-            case Message.Main_LinkMovement:
+            case Message.Rayman_LinkMovement:
                 if (State != Fsm_Dying)
                 {
                     if (State == Fsm_Jump && Speed.Y < 1)
@@ -1377,12 +1377,12 @@ public sealed partial class Rayman : MovableActor
                 }
                 return false;
 
-            case Message.Main_UnlinkMovement:
+            case Message.Rayman_UnlinkMovement:
                 LinkedMovementActor = null;
                 CanJump = true;
                 return false;
 
-            case Message.Main_BeginBounce:
+            case Message.Rayman_BeginBounce:
                 if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive)
                 {
                     if (State == Fsm_Swing || 
@@ -1402,7 +1402,7 @@ public sealed partial class Rayman : MovableActor
                 State.MoveTo(Fsm_Bounce);
                 return false;
 
-            case Message.Main_Bounce:
+            case Message.Rayman_Bounce:
                 if (State == Fsm_Bounce)
                 {
                     Flag1_5 = true;
@@ -1422,18 +1422,18 @@ public sealed partial class Rayman : MovableActor
                 State.MoveTo(Fsm_Jump);
                 return false;
 
-            case Message.Main_CollectedYellowLum:
+            case Message.Rayman_CollectYellowLum:
                 ((FrameSideScroller)Frame.Current).UserInfo.AddLums(1);
                 return false;
 
-            case Message.Main_CollectedRedLum:
+            case Message.Rayman_CollectRedLum:
                 if (HitPoints < 5)
                     HitPoints++;
 
                 ((FrameSideScroller)Frame.Current).UserInfo.UpdateLife();
                 return false;
 
-            case Message.Main_CollectedBlueLum:
+            case Message.Rayman_CollectBlueLum:
                 if (!HasPower(Power.SuperHelico)) 
                     return false;
                 
@@ -1444,16 +1444,17 @@ public sealed partial class Rayman : MovableActor
                 MultiplayerBlueLumTimer = 300;
                 return false;
 
-            case Message.Main_CollectedWhiteLum:
+            case Message.Rayman_CollectWhiteLum:
                 if (!RSMultiplayer.IsActive)
                     GameInfo.ModifyLives(1);
                 return false;
 
-            case Message.Main_CollectedBigYellowLum:
+            // Unused
+            case Message.Rayman_CollectBigYellowLum:
                 ((FrameSideScroller)Frame.Current).UserInfo.AddLums(10);
                 return false;
 
-            case Message.Main_CollectedBigBlueLum:
+            case Message.Rayman_CollectBigBlueLum:
                 if (!HasPower(Power.SuperHelico))
                     return false;
 
@@ -1462,21 +1463,21 @@ public sealed partial class Rayman : MovableActor
                 return false;
 
             // Unused
-            case Message.Main_Victory:
+            case Message.Rayman_Victory:
                 State.MoveTo(Fsm_Victory);
                 return false;
 
             // Unused
-            case Message.Main_Determined:
+            case Message.Rayman_Determined:
                 State.MoveTo(Fsm_Determined);
                 return false;
 
-            case Message.Main_LevelEnd:
+            case Message.Rayman_FinishLevel:
                 FinishedMap = true;
                 State.MoveTo(Fsm_EndMap);
                 return false;
 
-            case Message.Main_PickUpObject:
+            case Message.Rayman_PickUpObject:
                 if (State == Fsm_Walk || State == Fsm_Crawl)
                 {
                     AttachedObject = (BaseActor)param;
@@ -1484,7 +1485,7 @@ public sealed partial class Rayman : MovableActor
                 }
                 return false;
 
-            case Message.Main_CatchObject:
+            case Message.Rayman_CatchObject:
                 if (State == Fsm_Default || State == Fsm_Walk)
                 {
                     AttachedObject = (BaseActor)param;
@@ -1492,14 +1493,14 @@ public sealed partial class Rayman : MovableActor
                 }
                 return false;
 
-            case Message.DropObject:
+            case Message.Actor_Drop:
                 DropObject = true;
                 return false;
 
-            case Message.Damaged:
-            case Message.Main_Damaged2:
-            case Message.Main_Damaged3:
-            case Message.Main_Damaged4:
+            case Message.Actor_Hurt:
+            case Message.Actor_End: // Unused
+            case Message.Actor_HurtPassthrough:
+            case Message.Actor_HurtKnockback:
                 if (State == Fsm_HitKnockback || State == Fsm_Dying || State == Fsm_EndMap || InvulnerabilityDuration != 0)
                     return false;
 
@@ -1519,13 +1520,13 @@ public sealed partial class Rayman : MovableActor
                 if (((BaseActor)sender).Type == (int)ActorType.SpikyFlyingBomb && !IsInvulnerable)
                     InvulnerabilityDuration = 60;
 
-                if (message == Message.Main_Damaged3)
+                if (message == Message.Actor_HurtPassthrough)
                     CheckAgainstObjectCollision = false;
-                else if (message == Message.Main_Damaged4)
+                else if (message == Message.Actor_HurtKnockback)
                     Flag1_C = true;
 
                 if (AttachedObject != null && (ActorType)AttachedObject.Type is ActorType.Keg or ActorType.Caterpillar or ActorType.Sphere)
-                    AttachedObject.ProcessMessage(this, Message.DropObject);
+                    AttachedObject.ProcessMessage(this, Message.Actor_Drop);
 
                 AttachedObject = (BaseActor)sender;
 
@@ -1535,46 +1536,46 @@ public sealed partial class Rayman : MovableActor
                 State.MoveTo(Fsm_HitKnockback);
                 return false;
 
-            case Message.Main_PreventWallJumps:
+            case Message.Actor_Fall:
                 PreventWallJumps = true;
                 return false;
 
-            case Message.Main_BeginHang:
+            case Message.Rayman_BeginHang:
                 IsHanging = true;
                 AttachedObject = (BaseActor)param;
                 return false;
 
-            case Message.Main_EndHang:
+            case Message.Rayman_EndHang:
                 IsHanging = false;
                 return false;
 
-            case Message.Main_LevelExit:
+            case Message.Rayman_ExitLevel:
                 State.MoveTo(Fsm_EndMap);
                 return false;
 
-            case Message.Main_CollectedCage:
+            case Message.Rayman_CollectCage:
                 ((FrameSideScroller)Frame.Current).UserInfo.AddCages(1);
                 return false;
 
-            case Message.LightOnFire_Right:
-            case Message.LightOnFire_Left:
+            case Message.Actor_LightOnFireRight:
+            case Message.Actor_LightOnFireLeft:
                 if (State != Fsm_HitKnockback && State != Fsm_Dying)
                     State.MoveTo(Fsm_FlyWithKeg);
                 return false;
 
-            case Message.Main_StartFlyingWithKegRight:
+            case Message.Rayman_FlyWithKegRight:
                 StartFlyingWithKegRight = true;
                 return false;
 
-            case Message.Main_StartFlyingWithKegLeft:
+            case Message.Rayman_FlyWithKegLeft:
                 StartFlyingWithKegLeft = true;
                 return false;
 
-            case Message.Main_StopFlyingWithKeg:
+            case Message.Rayman_EndFlyWithKeg:
                 StopFlyingWithKeg = true;
                 return false;
 
-            case Message.Hit:
+            case Message.Actor_Hit:
                 if (RSMultiplayer.IsActive)
                 {
                     int tagId = ((FrameMultiSideScroller)Frame.Current).UserInfo.TagId;
@@ -1607,7 +1608,7 @@ public sealed partial class Rayman : MovableActor
                 }
                 return false;
 
-            case Message.Main_BeginSwing:
+            case Message.Rayman_BeginSwing:
                 if (!HasPower(Power.Grab))
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumVioNP_SkulShak_Mix01);
@@ -1634,7 +1635,7 @@ public sealed partial class Rayman : MovableActor
                 State.MoveTo(Fsm_Swing);
                 return false;
 
-            case Message.Main_DetachPlum:
+            case Message.Rayman_DetachPlum:
                 if (AttachedObject is { Type: (int)ActorType.Plum })
                 {
                     State.MoveTo(Fsm_Default);
@@ -1642,7 +1643,7 @@ public sealed partial class Rayman : MovableActor
                 }
                 return false;
 
-            case Message.Main_AttachPlum:
+            case Message.Rayman_AttachPlum:
                 if (State != Fsm_Dying && AttachedObject is not { Type: (int)ActorType.Plum })
                 {
                     NextActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
@@ -1651,25 +1652,25 @@ public sealed partial class Rayman : MovableActor
                 }
                 return false;
 
-            case Message.Main_AllowCoyoteJump:
+            case Message.Rayman_AllowSafetyJump:
                 if (State != Fsm_Jump && State != Fsm_JumpSlide)
                     CanSafetyJump = true;
                 return false;
 
-            case Message.Main_QuickFinishBodyShotAttack:
+            case Message.Rayman_QuickFinishBodyShotAttack:
                 if (State == Fsm_BodyShotAttack)
                     State.MoveTo(Fsm_QuickFinishBodyShotAttack);
                 return false;
 
-            case Message.Main_1056:
+            case Message.Rayman_SetUnknownFlag:
                 Flag1_0 = true;
                 return false;
 
-            case Message.Main_Stop:
+            case Message.Rayman_Stop:
                 State.MoveTo(Fsm_Stop);
                 return false;
 
-            case Message.Main_ExitStopOrCutscene:
+            case Message.Rayman_Resume:
                 if (State == Fsm_Stop || State == Fsm_Cutscene)
                 {
                     if (IsOnClimbableVertical() != 0)
@@ -1679,7 +1680,7 @@ public sealed partial class Rayman : MovableActor
                 }
                 return false;
 
-            case Message.Exploded:
+            case Message.Actor_Explode:
                 if (RSMultiplayer.IsActive)
                 {
                     State.MoveTo(Fsm_MultiplayerDying);
@@ -1691,12 +1692,12 @@ public sealed partial class Rayman : MovableActor
                 }
                 return false;
 
-            case Message.Main_MountWalkingShell:
+            case Message.Rayman_MountWalkingShell:
                 if (State != Fsm_RidingWalkingShell && State != Fsm_Dying)
                     State.MoveTo(Fsm_RidingWalkingShell);
                 return false;
 
-            case Message.Main_UnmountWalkingShell:
+            case Message.Rayman_UnmountWalkingShell:
                 if (State == Fsm_RidingWalkingShell)
                 {
                     AttachedObject = (BaseActor)param;
@@ -1705,39 +1706,39 @@ public sealed partial class Rayman : MovableActor
                 }
                 return false;
 
-            case Message.Main_CollectedMultiItemGlobox:
+            case Message.Rayman_CollectMultiItemGlobox:
                 ((FrameMultiSideScroller)Frame.Current).UserInfo.InitGlobox(InstanceId);
                 PlaySound(Rayman3SoundEvent.Play__LumRed_Mix03);
                 return false;
 
-            case Message.Main_CollectedMultiItemReverse:
+            case Message.Rayman_CollectMultiItemReverse:
                 ReverseControlsTimer = 360;
                 PlaySound(Rayman3SoundEvent.Play__LumMauve_Mix02);
                 return false;
 
-            case Message.Main_CollectedMultiItemInvisibility:
+            case Message.Rayman_CollectMultiItemInvisibility:
                 InvisibilityTimer = 480;
                 AnimatedObject.RenderOptions.BlendMode = BlendMode.AlphaBlend;
                 ((FrameMultiSideScroller)Frame.Current).InvisibleActorId = InstanceId;
                 PlaySound(Rayman3SoundEvent.Play__LumGreen_Mix04);
                 return false;
 
-            case Message.Main_CollectedMultiItemFist:
+            case Message.Rayman_CollectMultiItemFist:
                 ((FrameMultiSideScroller)Frame.Current).UserInfo.AddEnergyShots(InstanceId, 3);
                 PlaySound(Rayman3SoundEvent.Play__LumSlvr_Mix02);
                 return false;
 
             // Unused
-            case Message.Main_Hide:
+            case Message.Rayman_Hide:
                 State.MoveTo(Fsm_Hide);
                 return false;
 
-            case Message.Main_MultiplayerGameOver:
+            case Message.Rayman_MultiplayerGameOver:
                 if (State != Fsm_MultiplayerGameOver)
                     State.MoveTo(Fsm_MultiplayerGameOver);
                 return false;
 
-            case Message.Main_MultiplayerTagMoved:
+            case Message.Rayman_MultiplayerTagMoved:
                 if (State == Fsm_MultiplayerDying && IsLocalPlayer)
                 {
                     Scene.Camera.LinkedObject = Scene.GetGameObject<MovableActor>(((FrameMultiSideScroller)Frame.Current).UserInfo.TagId);
@@ -1746,7 +1747,7 @@ public sealed partial class Rayman : MovableActor
                 }
                 return false;
 
-            case Message.Main_JumpOffWalkingShell:
+            case Message.Rayman_JumpOffWalkingShell:
                 if (State == Fsm_RidingWalkingShell)
                 {
                     ActionId = IsFacingRight ? Action.BouncyJump_Right : Action.BouncyJump_Left;
@@ -1754,62 +1755,62 @@ public sealed partial class Rayman : MovableActor
                 }
                 return false;
 
-            case Message.Main_EndSuperHelico:
+            case Message.Rayman_EndSuperHelico:
                 GameInfo.ResetBlueLumsTime();
                 return false;
 
-            case Message.Main_EnterLevelCurtain:
+            case Message.Rayman_EnterLevel:
                 if (State != Fsm_EnterLevelCurtain)
                     State.MoveTo(Fsm_EnterLevelCurtain);
                 return false;
 
-            case Message.Main_BeginInFrontOfLevelCurtain:
+            case Message.Rayman_BeginInFrontOfLevelCurtain:
                 IsInFrontOfLevelCurtain = true;
                 return false;
 
-            case Message.Main_EndInFrontOfLevelCurtain:
+            case Message.Rayman_EndInFrontOfLevelCurtain:
                 IsInFrontOfLevelCurtain = false;
                 return false;
 
-            case Message.Main_EnterCutscene:
+            case Message.Rayman_BeginCutscene:
                 State.MoveTo(Fsm_Cutscene);
                 return false;
 
-            case Message.Main_DamagedShock:
+            case Message.Rayman_HurtShock:
                 if (ActionId is not (Action.Damage_Shock_Right or Action.Damage_Shock_Left) && State != Fsm_Climb)
                     ActionId = IsFacingRight ? Action.Damage_Shock_Right : Action.Damage_Shock_Left;
                 return false;
 
-            case Message.Main_LockedLevelCurtain:
+            case Message.Rayman_EnterLockedLevel:
                 if (State != Fsm_LockedLevelCurtain)
                     State.MoveTo(Fsm_LockedLevelCurtain);
                 return false;
 
-            case Message.Main_1095:
+            case Message.Rayman_1095:
                 // TODO: Implement
                 return false;
 
-            case Message.Main_1102:
+            case Message.Rayman_1102:
                 // TODO: Implement
                 return false;
 
-            case Message.Main_1103:
+            case Message.Rayman_1103:
                 // TODO: Implement
                 return false;
 
-            case Message.Main_1112:
+            case Message.Rayman_1112:
                 // TODO: Implement
                 return false;
 
-            case Message.Main_1113:
+            case Message.Rayman_1113:
                 // TODO: Implement
                 return false;
 
-            case Message.Main_1115:
+            case Message.Rayman_1115:
                 // TODO: Implement
                 return false;
 
-            case Message.Main_1116:
+            case Message.Rayman_1116:
                 // TODO: Implement
                 return false;
 

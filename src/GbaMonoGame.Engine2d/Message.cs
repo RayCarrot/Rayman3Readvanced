@@ -1,6 +1,7 @@
 ﻿namespace GbaMonoGame.Engine2d;
 
-// TODO: Since messages are implemented across different libraries maybe this should be constants instead of an enum?
+// Messages 0-999 are reserved for the engine, with 1000+ being for the game. Ideally we shouldn't be including the Rayman 3 messages
+// in the base library here, but it's more convenient to have them all in the same enum rather than doing something like constant fields.
 public enum Message
 {
     None = 0,
@@ -20,119 +21,115 @@ public enum Message
     Captor_Trigger_SendMessageWithCaptorParam = 204,
     
     // Rayman 3
-    RaymanBody_FinishedAttack = 1002,
-    Main_LinkMovement = 1003,
-    Main_UnlinkMovement = 1004,
-    Main_BeginBounce = 1005,
-    Main_Bounce = 1006,
+    // 1000 and 1001 are unused
+    RaymanBody_FinishAttack = 1002,
+    Rayman_LinkMovement = 1003,
+    Rayman_UnlinkMovement = 1004,
+    Rayman_BeginBounce = 1005,
+    Rayman_Bounce = 1006,
     Gate_Open = 1007,
-    Gate_Close = 1008,
-    Main_CollectedYellowLum = 1009,
-    MissileMode7_CollectedBlueLum = 1009,
-    Main_CollectedRedLum = 1010,
-    MissileMode7_CollectedRedLum = 1010,
-    Main_CollectedGreenLum = 1011,
-    Main_CollectedBlueLum = 1012,
-    Main_CollectedWhiteLum = 1013,
-    MainMode7_CollectedYellowLum = 1014,
-    Main_CollectedBigYellowLum = 1015, // Unused
-    Main_CollectedBigBlueLum = 1016,
-    Main_Victory = 1017, // Unused
-    Main_Determined = 1018, // Unused
-    Main_LevelEnd = 1019,
-    Main_PickUpObject = 1020,
-    Main_CatchObject = 1021,
-    ThrowObjectUp = 1022,
-    ThrowObjectForward = 1023,
-    DropObject = 1024,
-    Damaged = 1025,
+    Gate_Close = 1008, // Unused
+    Rayman_CollectYellowLum = 1009,
+    Rayman_CollectMode7BlueLum = 1009,
+    Rayman_CollectRedLum = 1010,
+    Rayman_CollectGreenLum = 1011,
+    Rayman_CollectBlueLum = 1012,
+    Rayman_CollectWhiteLum = 1013,
+    Rayman_CollectMode7YellowLum = 1014,
+    Rayman_CollectBigYellowLum = 1015, // Unused
+    Rayman_CollectBigBlueLum = 1016,
+    Rayman_Victory = 1017, // Unused
+    Rayman_Determined = 1018, // Unused
+    Rayman_FinishLevel = 1019,
+    Rayman_PickUpObject = 1020,
+    Rayman_CatchObject = 1021,
+    Actor_ThrowUp = 1022,
+    Actor_ThrowForward = 1023,
+    Actor_Drop = 1024,
+    Actor_Hurt = 1025,
     Cam_CenterPositionX = 1026,
     Cam_ResetPositionX = 1027,
-    FallingBridge_Fall = 1028,
-    Main_PreventWallJumps = 1028,
-    Main_BeginHang = 1029,
-    Main_EndHang = 1030,
-    Main_LevelExit = 1031,
-    MainMode7_LevelStart = 1031,
-    Spider_Spawn = 1031,
-    Boulder_Start = 1031,
-
-    Main_CollectedCage = 1033,
-    LightOnFire_Right = 1034,
-    LightOnFire_Left = 1035,
-    Main_StartFlyingWithKegRight = 1036,
+    Actor_Fall = 1028,
+    Rayman_BeginHang = 1029,
+    Rayman_EndHang = 1030,
+    Rayman_ExitLevel = 1031,
+    Actor_Start = 1031,
+    // 1032 is unused
+    Rayman_CollectCage = 1033,
+    Actor_LightOnFireRight = 1034,
+    Actor_LightOnFireLeft = 1035,
+    Rayman_FlyWithKegRight = 1036,
     Plum_HitRight = 1036,
-    Main_StartFlyingWithKegLeft = 1037,
+    Rayman_FlyWithKegLeft = 1037,
     Plum_HitLeft = 1037,
-    HitActorOfSameType = 1038,
+    Actor_CollideWithSameType = 1038,
     Cam_DoNotFollowPositionY = 1039,
     Cam_FollowPositionY = 1040,
     Cam_FollowPositionYUntilNearby = 1041,
-    Main_StopFlyingWithKeg = 1042,
-    Hit = 1043,
-    Main_BeginSwing = 1044,
-    Main_Damaged2 = 1045,
-    Main_DetachPlum = 1046,
-    Main_AttachPlum = 1047,
-    Main_AllowCoyoteJump = 1048,
+    Rayman_EndFlyWithKeg = 1042,
+    Actor_Hit = 1043,
+    Rayman_BeginSwing = 1044,
+    Actor_End = 1045,
+    Rayman_DetachPlum = 1046,
+    Rayman_AttachPlum = 1047,
+    Rayman_AllowSafetyJump = 1048,
     Murfy_Spawn = 1049,
-    Main_QuickFinishBodyShotAttack = 1050,
-
+    Rayman_QuickFinishBodyShotAttack = 1050,
+    // 1051 and 1052 are unused
     CamMode7_Spin = 1053,
     Cam_Shake = 1054,
     Cam_MoveToTarget = 1055,
-    Main_1056 = 1056, // TODO: Name
-    Main_Stop = 1057,
+    Rayman_SetUnknownFlag = 1056,
+    Rayman_Stop = 1057,
     Cam_MoveToLinkedObject = 1058,
-    Main_ExitStopOrCutscene = 1059,
-    Exploded = 1060,
+    Rayman_Resume = 1059,
+    Actor_Explode = 1060,
     CamMode7_Reset = 1061,
     Cam_SetPosition = 1062,
     Lum_ToggleVisibility = 1063,
-    Main_MountWalkingShell = 1064,
-    Main_UnmountWalkingShell = 1065,
+    Rayman_MountWalkingShell = 1064,
+    Rayman_UnmountWalkingShell = 1065,
     FlyingShell_RefillAmmo = 1066,
-    Main_CollectedMultiItemGlobox = 1067,
-    Main_CollectedMultiItemReverse = 1068,
-    Main_CollectedMultiItemInvisibility = 1069,
-    Main_CollectedMultiItemFist = 1070,
-
-    Main_Hide = 1072, // Unused
+    Rayman_CollectMultiItemGlobox = 1067,
+    Rayman_CollectMultiItemReverse = 1068,
+    Rayman_CollectMultiItemInvisibility = 1069,
+    Rayman_CollectMultiItemFist = 1070,
+    // 1071 is unused
+    Rayman_Hide = 1072, // Unused
     MissileMode7_StartRace = 1073,
     MissileMode7_EndRace = 1074,
-
-    Main_MultiplayerGameOver = 1075,
-    Main_MultiplayerTagMoved = 1076,
-    Main_JumpOffWalkingShell = 1077,
-    Main_EndSuperHelico = 1078,
+    Rayman_MultiplayerGameOver = 1075,
+    Rayman_MultiplayerTagMoved = 1076,
+    Rayman_JumpOffWalkingShell = 1077,
+    Rayman_EndSuperHelico = 1078,
     UserInfo_Pause = 1079,
     UserInfo_Unpause = 1080,
     UserInfo_GameCubeLevel = 1081,
-    Main_EnterLevelCurtain = 1081,
-    Main_BeginInFrontOfLevelCurtain = 1082,
-    Main_EndInFrontOfLevelCurtain = 1083,
-    Main_Damaged3 = 1084,
-    MainMode7_ShowTextBox = 1085,
-    Main_Damaged4 = 1086,
-    ReloadAnimation = 1087,
-    Main_EnterCutscene = 1088,
-    Main_DamagedShock = 1089,
+    Rayman_EnterLevel = 1081,
+    Rayman_BeginInFrontOfLevelCurtain = 1082,
+    Rayman_EndInFrontOfLevelCurtain = 1083,
+    Actor_HurtPassthrough = 1084,
+    RaymanMode7_ShowTextBox = 1085, // Unused
+    Actor_HurtKnockback = 1086,
+    Actor_ReloadAnimation = 1087,
+    Rayman_BeginCutscene = 1088,
+    Rayman_HurtShock = 1089,
     Cam_Lock = 1090,
     Cam_Unlock = 1091,
-
-    Main_LockedLevelCurtain = 1093,
+    // 1092 is unused
+    Rayman_EnterLockedLevel = 1093,
 
     // N-Gage exclusive
-    Main_1095 = 1095, // TODO: Name
+    Rayman_1095 = 1095, // TODO: Name
 
-    Main_1102 = 1102, // TODO: Name
-    Main_1103 = 1103, // TODO: Name
+    Rayman_1102 = 1102, // TODO: Name
+    Rayman_1103 = 1103, // TODO: Name
 
-    Main_1112 = 1112, // TODO: Name
-    Main_1113 = 1113, // TODO: Name
+    Rayman_1112 = 1112, // TODO: Name
+    Rayman_1113 = 1113, // TODO: Name
     
-    Main_1115 = 1115, // TODO: Name
-    Main_1116 = 1116, // TODO: Name
+    Rayman_1115 = 1115, // TODO: Name
+    Rayman_1116 = 1116, // TODO: Name
 }
 
 /*

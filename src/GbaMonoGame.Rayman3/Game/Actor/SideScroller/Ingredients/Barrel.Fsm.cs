@@ -230,12 +230,12 @@ public partial class Barrel
                 bool linkedMovement = false;
                 if (Scene.IsDetectedMainActor(this) && Scene.MainActor.LinkedMovementActor != this)
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.Main_LinkMovement, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_LinkMovement, this);
                     linkedMovement = true;
                 }
                 else if (!Scene.IsDetectedMainActor(this) && Scene.MainActor.LinkedMovementActor == this)
                 {
-                    Scene.MainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
                 }
 
                 Timer++;
@@ -282,9 +282,9 @@ public partial class Barrel
                 }
 
                 if (Scene.IsDetectedMainActor(this) && Scene.MainActor.LinkedMovementActor != this)
-                    Scene.MainActor.ProcessMessage(this, Message.Main_LinkMovement, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_LinkMovement, this);
                 else if (!Scene.IsDetectedMainActor(this) && Scene.MainActor.LinkedMovementActor == this)
-                    Scene.MainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
 
                 Timer++;
 
@@ -329,9 +329,9 @@ public partial class Barrel
                     physicalPos = Position + new Vector2(-78, -16);
 
                 if (Scene.IsDetectedMainActor(this) && Scene.MainActor.LinkedMovementActor != this)
-                    Scene.MainActor.ProcessMessage(this, Message.Main_LinkMovement, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_LinkMovement, this);
                 else if (!Scene.IsDetectedMainActor(this) && Scene.MainActor.LinkedMovementActor == this)
-                    Scene.MainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
 
                 Timer++;
 
@@ -369,9 +369,9 @@ public partial class Barrel
 
             case FsmAction.Step:
                 if (Scene.IsDetectedMainActor(this) && Scene.MainActor.LinkedMovementActor != this)
-                    Scene.MainActor.ProcessMessage(this, Message.Main_LinkMovement, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_LinkMovement, this);
                 else if (!Scene.IsDetectedMainActor(this) && Scene.MainActor.LinkedMovementActor == this)
-                    Scene.MainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
 
                 Timer++;
 
@@ -399,7 +399,7 @@ public partial class Barrel
                         waterSplash.Position = Position - new Vector2(0, 48);
 
                     if (Scene.MainActor.LinkedMovementActor == this)
-                        Scene.MainActor.ProcessMessage(this, Message.Main_UnlinkMovement, this);
+                        Scene.MainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
 
                     ProcessMessage(this, Message.Destroy);
                 }

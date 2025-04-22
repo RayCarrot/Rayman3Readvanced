@@ -108,7 +108,7 @@ public partial class BlackLum
                 if (Scene.IsHitMainActor(this))
                 {
                     Scene.MainActor.ReceiveDamage(AttackPoints);
-                    Scene.MainActor.ProcessMessage(this, Message.Damaged);
+                    Scene.MainActor.ProcessMessage(this, Message.Actor_Hurt);
                     isDead = true;
                 }
                 else

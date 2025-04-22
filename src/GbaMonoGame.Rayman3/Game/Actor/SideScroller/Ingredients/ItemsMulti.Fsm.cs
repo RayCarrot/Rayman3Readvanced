@@ -46,10 +46,10 @@ public partial class ItemsMulti
                         // Collect
                         player.ProcessMessage(this, ActionId switch
                         {
-                            Action.Globox => Message.Main_CollectedMultiItemGlobox,
-                            Action.Reverse => Message.Main_CollectedMultiItemReverse,
-                            Action.Invisibility => Message.Main_CollectedMultiItemInvisibility,
-                            Action.Fist => Message.Main_CollectedMultiItemFist,
+                            Action.Globox => Message.Rayman_CollectMultiItemGlobox,
+                            Action.Reverse => Message.Rayman_CollectMultiItemReverse,
+                            Action.Invisibility => Message.Rayman_CollectMultiItemInvisibility,
+                            Action.Fist => Message.Rayman_CollectMultiItemFist,
                             _ => throw new ArgumentOutOfRangeException(nameof(ActionId), ActionId, null)
                         });
 

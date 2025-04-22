@@ -43,7 +43,7 @@ public sealed partial class Skull : MovableActor
 
             if (activeFist != null && activeFist.GetDetectionBox().Intersects(detectionBox))
             {
-                activeFist.ProcessMessage(this, Message.RaymanBody_FinishedAttack);
+                activeFist.ProcessMessage(this, Message.RaymanBody_FinishAttack);
                 return true;
             }
         }

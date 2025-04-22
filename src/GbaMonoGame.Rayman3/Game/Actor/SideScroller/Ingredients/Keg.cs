@@ -71,20 +71,20 @@ public sealed partial class Keg : MovableActor
 
         switch (message)
         {
-            case Message.ThrowObjectUp:
+            case Message.Actor_ThrowUp:
                 State.MoveTo(Fsm_ThrownUp);
                 return false;
 
-            case Message.ThrowObjectForward:
+            case Message.Actor_ThrowForward:
                 State.MoveTo(Fsm_ThrownForward);
                 return false;
 
-            case Message.DropObject:
+            case Message.Actor_Drop:
                 if (State != Fsm_Fly)
                     State.MoveTo(Fsm_Drop);
                 return false;
 
-            case Message.Damaged:
+            case Message.Actor_Hurt:
                 Explosion explosion = Scene.CreateProjectile<Explosion>(ActorType.Explosion);
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07);
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07);
@@ -95,11 +95,11 @@ public sealed partial class Keg : MovableActor
                 State.MoveTo(Fsm_Respawn);
                 return false;
 
-            case Message.LightOnFire_Right:
-            case Message.LightOnFire_Left:
+            case Message.Actor_LightOnFireRight:
+            case Message.Actor_LightOnFireLeft:
                 if (State == Fsm_PickedUp)
                 {
-                    ActionId = message == Message.LightOnFire_Right ? Action.Ignite_Right : Action.Ignite_Left;
+                    ActionId = message == Message.Actor_LightOnFireRight ? Action.Ignite_Right : Action.Ignite_Left;
                     Scene.MainActor.ProcessMessage(this, message);
                     State.MoveTo(Fsm_Fly);
                 }

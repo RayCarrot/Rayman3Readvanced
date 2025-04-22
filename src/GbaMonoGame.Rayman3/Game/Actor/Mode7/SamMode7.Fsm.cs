@@ -112,7 +112,7 @@ public partial class SamMode7
         {
             case FsmAction.Init:
                 Scene.Camera.ProcessMessage(this, Message.CamMode7_Spin, true);
-                Scene.MainActor.ProcessMessage(this, Message.Main_LevelEnd);
+                Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
                 Timer = 0;
                 break;
 

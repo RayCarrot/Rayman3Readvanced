@@ -76,7 +76,7 @@ public partial class Scaleman
                 if (Scene.IsHitMainActor(this))
                 {
                     Scene.MainActor.ReceiveDamage(AttackPoints);
-                    Scene.MainActor.ProcessMessage(this, Message.Damaged);
+                    Scene.MainActor.ProcessMessage(this, Message.Actor_Hurt);
                 }
 
                 if (IsActionFinished)
@@ -453,7 +453,7 @@ public partial class Scaleman
                 if (Scene.IsHitMainActor(this))
                 {
                     Scene.MainActor.ReceiveDamage(AttackPoints);
-                    Scene.MainActor.ProcessMessage(this, Message.Damaged);
+                    Scene.MainActor.ProcessMessage(this, Message.Actor_Hurt);
                 }
 
                 if (IsActionFinished)
@@ -658,7 +658,7 @@ public partial class Scaleman
                 if (IsActionFinished)
                 {
                     ProcessMessage(this, Message.Destroy);
-                    Scene.MainActor.ProcessMessage(this, Message.Main_LevelEnd);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
                 }
                 break;
 

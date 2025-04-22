@@ -45,7 +45,7 @@ public sealed partial class CameraSideScroller : CameraActor2D
     public float TargetX { get; set; }
     public float TargetY { get; set; }
     public FollowMode FollowYMode { get; set; }
-    public byte field16_0x2e { get; set; }
+    public byte field16_0x2e { get; set; } // TODO: Name
     public Vector2 PreviousLinkedObjectPosition { get; set; }
     public bool IsFacingRight { get; set; }
     public uint Timer { get; set; }

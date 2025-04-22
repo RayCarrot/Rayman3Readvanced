@@ -31,19 +31,19 @@ public sealed partial class Sphere : MovableActor
 
         switch (message)
         {
-            case Message.ThrowObjectUp:
+            case Message.Actor_ThrowUp:
                 State.MoveTo(Fsm_ThrownUp);
                 return false;
 
-            case Message.ThrowObjectForward:
+            case Message.Actor_ThrowForward:
                 State.MoveTo(Fsm_ThrownForward);
                 return false;
 
-            case Message.DropObject:
+            case Message.Actor_Drop:
                 State.MoveTo(Fsm_Drop);
                 return false;
 
-            case Message.ReloadAnimation:
+            case Message.Actor_ReloadAnimation:
                 // Don't need to do anything. The original game sets the palette index again, but we're using local indexes, so it never changes.
                 return false;
 

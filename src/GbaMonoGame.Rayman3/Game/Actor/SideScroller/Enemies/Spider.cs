@@ -105,7 +105,7 @@ public sealed partial class Spider : MovableActor
         // Handle messages
         switch (message)
         {
-            case Message.Spider_Spawn:
+            case Message.Actor_Start:
                 if (State == Fsm_ChaseSpawn)
                 {
                     Rayman rayman = (Rayman)Scene.MainActor;
@@ -114,7 +114,7 @@ public sealed partial class Spider : MovableActor
                         SpawnTimer = 0;
                         
                         Scene.Camera.ProcessMessage(this, Message.Cam_MoveToTarget, InititialPosition - new Vector2(60, 60));
-                        Scene.MainActor.ProcessMessage(this, Message.Main_Stop);
+                        Scene.MainActor.ProcessMessage(this, Message.Rayman_Stop);
 
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__ancients);
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Horror_Mix08);
