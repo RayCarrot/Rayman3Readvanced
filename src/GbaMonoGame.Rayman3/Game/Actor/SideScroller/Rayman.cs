@@ -613,7 +613,7 @@ public sealed partial class Rayman : MovableActor
     private void CheckForTileDamage()
     {
         Box box = GetVulnerabilityBox();
-        box.MaxY -= Tile.Size;
+        box.Bottom -= Tile.Size;
 
         if (Scene.GetPhysicalType(box.BottomRight) == PhysicalTypeValue.Damage ||
             Scene.GetPhysicalType(box.MiddleRight) == PhysicalTypeValue.Damage ||
@@ -1366,10 +1366,10 @@ public sealed partial class Rayman : MovableActor
                     MovableActor actorToLink = ((MovableActor)param);
                     Box actorToLinkBox = actorToLink.GetDetectionBox();
 
-                    if (Position.Y < actorToLinkBox.MinY + 7)
+                    if (Position.Y < actorToLinkBox.Top + 7)
                     {
                         LinkedMovementActor = actorToLink;
-                        Position = Position with { Y = actorToLinkBox.MinY };
+                        Position = Position with { Y = actorToLinkBox.Top };
                     }
 
                     if (State == Fsm_HangOnEdge)
@@ -1514,7 +1514,7 @@ public sealed partial class Rayman : MovableActor
                 {
                     Box box = ((ActionActor)AttachedObject).GetActionBox(); // TODO: Cast to Plum when we create a class for it
                     LinkedMovementActor = null; // TODO: Huh? Isn't this meant to be setting attached object to null?
-                    Position = Position with { Y = box.MinY - 16 };
+                    Position = Position with { Y = box.Top - 16 };
                 }
 
                 if (((BaseActor)sender).Type == (int)ActorType.SpikyFlyingBomb && !IsInvulnerable)

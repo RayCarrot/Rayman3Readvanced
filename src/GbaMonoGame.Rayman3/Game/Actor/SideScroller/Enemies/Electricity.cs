@@ -10,22 +10,22 @@ public sealed partial class Electricity : InteractableActor
     {
         InitialActionId = (Action)actorResource.FirstActionId;
 
-        float minX = Position.X;
+        float left = Position.X;
         if (InitialActionId == Action.DoubleActivated_Left)
         {
             // TODO: The hitbox is misaligned here in the original game - fix?
-            minX += 58;
+            left += 58;
         }
         else if (InitialActionId == Action.DoubleActivated_Right)
         {
-            minX -= 58;
+            left -= 58;
         }
 
         AdditionalAttackBox = new Box(
-            minX: minX, 
-            minY: Position.Y - 12, 
-            maxX: minX + 12, 
-            maxY: Position.Y + 20);
+            left: left, 
+            top: Position.Y - 12, 
+            right: left + 12, 
+            bottom: Position.Y + 20);
 
         State.SetTo(Fsm_Activated);
 

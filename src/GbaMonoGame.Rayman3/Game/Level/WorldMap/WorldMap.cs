@@ -1390,10 +1390,10 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             Vector2 scale = range / (Rom.OriginalResolution - max);
 
             GameCubeTransitionScreenEffect.Square = new Box(
-                minX: Timer * 8 / 120f,
-                minY: Timer * 72 / 120f,
-                maxX: GameCubeTransitionScreenEffect.RenderContext.Resolution.X - Timer * scale.X,
-                maxY: GameCubeTransitionScreenEffect.RenderContext.Resolution.Y - Timer * 8 / 120f * scale.Y);
+                left: Timer * 8 / 120f,
+                top: Timer * 72 / 120f,
+                right: GameCubeTransitionScreenEffect.RenderContext.Resolution.X - Timer * scale.X,
+                bottom: GameCubeTransitionScreenEffect.RenderContext.Resolution.Y - Timer * 8 / 120f * scale.Y);
 
             if (Timer < 120)
             {
@@ -1409,10 +1409,10 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         else if (EnterGameCubeMenuStep == 2)
         {
             GameCubeTransitionScreenEffect.Square = new Box(
-                minX: 8,
-                minY: 72 + Timer * 8 / 64f,
-                maxX: 120 - Timer,
-                maxY: 152 - Timer * 24 / 64f);
+                left: 8,
+                top: 72 + Timer * 8 / 64f,
+                right: 120 - Timer,
+                bottom: 152 - Timer * 24 / 64f);
 
             if (Timer < 64)
             {
@@ -1437,10 +1437,10 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         else
         {
             GameCubeTransitionScreenEffect.Square = new Box(
-                minX: MathF.Min(Timer + 8, 32),
-                minY: MathF.Min(Timer + 80, 104),
-                maxX: MathF.Max(56 - Timer, 32),
-                maxY: MathF.Max(128 - Timer, 104));
+                left: MathF.Min(Timer + 8, 32),
+                top: MathF.Min(Timer + 80, 104),
+                right: MathF.Max(56 - Timer, 32),
+                bottom: MathF.Max(128 - Timer, 104));
 
             if (Timer >= 48)
                 FrameManager.SetNextFrame(new GameCubeMenu());

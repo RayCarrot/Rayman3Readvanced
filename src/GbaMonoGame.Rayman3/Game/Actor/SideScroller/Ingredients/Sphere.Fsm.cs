@@ -61,7 +61,7 @@ public partial class Sphere
                 break;
 
             case FsmAction.Step:
-                Vector2 mapPos = new(Position.X, GetDetectionBox().MaxY);
+                Vector2 mapPos = new(Position.X, GetDetectionBox().Bottom);
                 PhysicalType type = Scene.GetPhysicalType(mapPos);
 
                 if (type.IsSolid)
@@ -92,7 +92,7 @@ public partial class Sphere
             case FsmAction.Step:
                 bool shouldRespawn = false;
 
-                Vector2 mapPos = new(Position.X, GetDetectionBox().MaxY);
+                Vector2 mapPos = new(Position.X, GetDetectionBox().Bottom);
                 PhysicalType type = Scene.GetPhysicalType(mapPos);
 
                 if (type.IsSolid && ActionId != Action.Land)
@@ -153,7 +153,7 @@ public partial class Sphere
             case FsmAction.Step:
                 bool shouldRespawn = false;
 
-                Vector2 mapPos = new(Position.X, GetDetectionBox().MaxY);
+                Vector2 mapPos = new(Position.X, GetDetectionBox().Bottom);
                 PhysicalType type = Scene.GetPhysicalType(mapPos);
 
                 if (type.IsSolid && ActionId is Action.Land_Right or Action.Land_Left && !HasPlayedLandingSound)

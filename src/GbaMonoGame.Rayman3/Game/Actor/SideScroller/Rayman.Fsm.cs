@@ -463,7 +463,7 @@ public partial class Rayman
                 NextActionId = null;
 
                 Box detectionBox = GetDetectionBox();
-                PhysicalType rightType = Scene.GetPhysicalType(new Vector2(detectionBox.MaxX, detectionBox.MaxY));
+                PhysicalType rightType = Scene.GetPhysicalType(new Vector2(detectionBox.Right, detectionBox.Bottom));
 
                 if (rightType.IsSolid)
                     ActionId = IsFacingRight ? Action.NearEdgeBehind_Right : Action.NearEdgeFront_Left;
@@ -1043,10 +1043,10 @@ public partial class Rayman
                     ActionId = IsFacingRight ? Action.HangOnEdge_Begin_Right : Action.HangOnEdge_Begin_Left;
 
                 SetDetectionBox(new Box(
-                    minX: ActorModel.DetectionBox.MinX,
-                    minY: ActorModel.DetectionBox.MaxY - 16,
-                    maxX: ActorModel.DetectionBox.MaxX,
-                    maxY: ActorModel.DetectionBox.MaxY + 16));
+                    left: ActorModel.DetectionBox.Left,
+                    top: ActorModel.DetectionBox.Bottom - 16,
+                    right: ActorModel.DetectionBox.Right,
+                    bottom: ActorModel.DetectionBox.Bottom + 16));
                 break;
 
             case FsmAction.Step:
@@ -1697,10 +1697,10 @@ public partial class Rayman
 
                 // Custom detection box for when crouching
                 SetDetectionBox(new Box(
-                    minX: ActorModel.DetectionBox.MinX,
-                    minY: ActorModel.DetectionBox.MaxY - 16,
-                    maxX: ActorModel.DetectionBox.MaxX,
-                    maxY: ActorModel.DetectionBox.MaxY));
+                    left: ActorModel.DetectionBox.Left,
+                    top: ActorModel.DetectionBox.Bottom - 16,
+                    right: ActorModel.DetectionBox.Right,
+                    bottom: ActorModel.DetectionBox.Bottom));
                 break;
 
             case FsmAction.Step:
@@ -1817,10 +1817,10 @@ public partial class Rayman
 
                 // Custom detection box for when crouching
                 SetDetectionBox(new Box(
-                    minX: ActorModel.DetectionBox.MinX,
-                    minY: ActorModel.DetectionBox.MaxY - 16,
-                    maxX: ActorModel.DetectionBox.MaxX,
-                    maxY: ActorModel.DetectionBox.MaxY));
+                    left: ActorModel.DetectionBox.Left,
+                    top: ActorModel.DetectionBox.Bottom - 16,
+                    right: ActorModel.DetectionBox.Right,
+                    bottom: ActorModel.DetectionBox.Bottom));
                 break;
 
             case FsmAction.Step:
@@ -3531,10 +3531,10 @@ public partial class Rayman
                     AttachedObject.Position = Position + new Vector2(-8, -22);
 
                 SetDetectionBox(new Box(
-                    minX: ActorModel.DetectionBox.MinX - 10,
-                    minY: ActorModel.DetectionBox.MinY - 22,
-                    maxX: ActorModel.DetectionBox.MaxX,
-                    maxY: ActorModel.DetectionBox.MaxY - 22));
+                    left: ActorModel.DetectionBox.Left - 10,
+                    top: ActorModel.DetectionBox.Top - 22,
+                    right: ActorModel.DetectionBox.Right,
+                    bottom: ActorModel.DetectionBox.Bottom - 22));
                 break;
 
             case FsmAction.Step:
@@ -3706,7 +3706,7 @@ public partial class Rayman
                 // Jump
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A))
                 {
-                    Position = Position with { Y = GetActionBox().MinY - 16 };
+                    Position = Position with { Y = GetActionBox().Top - 16 };
 
                     if (Rom.Platform == Platform.NGage)
                         ForceDefaultCameraTimer = 0x3c;
@@ -3758,10 +3758,10 @@ public partial class Rayman
 
                 // Custom detection box for when crouching
                 SetDetectionBox(new Box(
-                    minX: ActorModel.DetectionBox.MinX,
-                    minY: ActorModel.DetectionBox.MaxY - 32,
-                    maxX: ActorModel.DetectionBox.MaxX,
-                    maxY: ActorModel.DetectionBox.MaxY));
+                    left: ActorModel.DetectionBox.Left,
+                    top: ActorModel.DetectionBox.Bottom - 32,
+                    right: ActorModel.DetectionBox.Right,
+                    bottom: ActorModel.DetectionBox.Bottom));
 
                 Flag1_D = false;
                 break;
@@ -3810,7 +3810,7 @@ public partial class Rayman
                 // Jump
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A) && !topType.IsSolid)
                 {
-                    Position = Position with { Y = GetActionBox().MinY - 20 };
+                    Position = Position with { Y = GetActionBox().Top - 20 };
                     if (Rom.Platform == Platform.NGage)
                         ForceDefaultCameraTimer = 0x3c;
                     PreviousXSpeed = ((MovableActor)AttachedObject).Speed.X;

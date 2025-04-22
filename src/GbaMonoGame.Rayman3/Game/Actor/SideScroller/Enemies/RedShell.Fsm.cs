@@ -46,20 +46,20 @@ public partial class RedShell
                 if (!FsmStep_CheckDeath())
                     return false;
 
-                float addMinX;
-                float addMaxX;
+                float addLeft;
+                float addRight;
                 if (IsFacingRight)
                 {
-                    addMinX = 0;
-                    addMaxX = 20;
+                    addLeft = 0;
+                    addRight = 20;
                 }
                 else
                 {
-                    addMinX = -20;
-                    addMaxX = 0;
+                    addLeft = -20;
+                    addRight = 0;
                 }
 
-                if (Scene.IsDetectedMainActor(this, 0, 0, addMinX, addMaxX))
+                if (Scene.IsDetectedMainActor(this, 0, 0, addLeft, addRight))
                 {
                     State.MoveTo(Fsm_ChargeAttack);
                     return false;
@@ -110,20 +110,20 @@ public partial class RedShell
                 if (!FsmStep_CheckDeath())
                     return false;
 
-                float addMinX;
-                float addMaxX;
+                float addLeft;
+                float addRight;
                 if (IsFacingRight)
                 {
-                    addMinX = 0;
-                    addMaxX = 30;
+                    addLeft = 0;
+                    addRight = 30;
                 }
                 else
                 {
-                    addMinX = -30;
-                    addMaxX = 0;
+                    addLeft = -30;
+                    addRight = 0;
                 }
 
-                if (Scene.IsDetectedMainActor(this, 0, 0, addMinX, addMaxX))
+                if (Scene.IsDetectedMainActor(this, 0, 0, addLeft, addRight))
                 {
                     State.MoveTo(Fsm_Patrolling);
                     return false;

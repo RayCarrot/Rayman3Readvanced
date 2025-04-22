@@ -482,15 +482,15 @@ public class Scene2D
         return mainActorDetectionBox.Intersects(actionBox);
     }
 
-    public bool IsDetectedMainActor(ActionActor actor, float addMaxY, float addMinY, float addMinX, float addMaxX)
+    public bool IsDetectedMainActor(ActionActor actor, float addBottom, float addTop, float addLeft, float addRight)
     {
         Box mainActorDetectionBox = MainActor.GetDetectionBox();
         Box actionBox = actor.GetActionBox();
 
-        actionBox.MinX += addMinX;
-        actionBox.MinY += addMinY;
-        actionBox.MaxX += addMaxX;
-        actionBox.MaxY += addMaxY;
+        actionBox.Left += addLeft;
+        actionBox.Top += addTop;
+        actionBox.Right += addRight;
+        actionBox.Bottom += addBottom;
 
         return mainActorDetectionBox.Intersects(actionBox);
     }

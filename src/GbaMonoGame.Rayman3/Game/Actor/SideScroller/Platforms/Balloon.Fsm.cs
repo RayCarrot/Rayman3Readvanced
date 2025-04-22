@@ -65,8 +65,8 @@ public partial class Balloon
                 if (LinkedBalloonId != null)
                 {
                     Box detectionBox = GetDetectionBox();
-                    detectionBox.MinY -= 16;
-                    detectionBox.MaxY -= 32;
+                    detectionBox.Top -= 16;
+                    detectionBox.Bottom -= 32;
 
                     if (mainActorDetectionBox.Intersects(detectionBox))
                         Scene.GetGameObject(LinkedBalloonId.Value).ProcessMessage(this, Message.ResurrectWakeUp);
@@ -101,7 +101,7 @@ public partial class Balloon
                 IsSolid = false;
 
                 Box detectionBox = GetDetectionBox();
-                Scene.MainActor.Position = Scene.MainActor.Position with { Y = detectionBox.MinY };
+                Scene.MainActor.Position = Scene.MainActor.Position with { Y = detectionBox.Top };
                 Scene.MainActor.ProcessMessage(this, Message.Rayman_Bounce);
                 
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Bounce02_Mix03);

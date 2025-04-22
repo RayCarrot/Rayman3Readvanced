@@ -40,8 +40,8 @@ public abstract class MovableActor : InteractableActor
 
         // Moving down
         if (Speed.Y > 0 &&
-            otherDetectionBox.MinY > actorDetectionBox.MinY &&
-            otherDetectionBox.MaxY > actorDetectionBox.MaxY &&
+            otherDetectionBox.Top > actorDetectionBox.Top &&
+            otherDetectionBox.Bottom > actorDetectionBox.Bottom &&
             height < Tile.Size)
         {
             Speed -= new Vector2(0, height);
@@ -54,8 +54,8 @@ public abstract class MovableActor : InteractableActor
 
         // Moving up
         if (Speed.Y < 0 &&
-            actorDetectionBox.MaxY > otherDetectionBox.MaxY &&
-            actorDetectionBox.MinY > otherDetectionBox.MinY)
+            actorDetectionBox.Bottom > otherDetectionBox.Bottom &&
+            actorDetectionBox.Top > otherDetectionBox.Top)
         {
             Speed += new Vector2(0, height);
             Position += new Vector2(0, height);
@@ -68,7 +68,7 @@ public abstract class MovableActor : InteractableActor
         // Moving right
         if (Speed.X > 0)
         {
-            if (otherDetectionBox.MaxX > actorDetectionBox.MaxX)
+            if (otherDetectionBox.Right > actorDetectionBox.Right)
             {
                 Speed -= new Vector2(width, 0);
                 Position -= new Vector2(width, 0);
@@ -79,7 +79,7 @@ public abstract class MovableActor : InteractableActor
         // Moving left
         else if (Speed.X < 0)
         {
-            if (actorDetectionBox.MinX > otherDetectionBox.MinX)
+            if (actorDetectionBox.Left > otherDetectionBox.Left)
             {
                 Speed += new Vector2(width, 0);
                 Position += new Vector2(width, 0);
@@ -157,14 +157,14 @@ public abstract class MovableActor : InteractableActor
         {
             PhysicalType type = Scene.GetPhysicalType(detectionBox.MiddleLeft);
             if (type.IsSolid && type != PhysicalTypeValue.Grab && type != PhysicalTypeValue.Passthrough)
-                PushOutOfTile(detectionBox.MinX, Direction.Right);
+                PushOutOfTile(detectionBox.Left, Direction.Right);
         }
         // Moving right
         else
         {
             PhysicalType type = Scene.GetPhysicalType(detectionBox.MiddleRight);
             if (type.IsSolid && type != PhysicalTypeValue.Grab && type != PhysicalTypeValue.Passthrough)
-                PushOutOfTile(detectionBox.MaxX, Direction.Left);
+                PushOutOfTile(detectionBox.Right, Direction.Left);
         }
     }
 
@@ -177,14 +177,14 @@ public abstract class MovableActor : InteractableActor
         {
             PhysicalType type = Scene.GetPhysicalType(detectionBox.TopCenter);
             if (type.IsFullySolid && type != PhysicalTypeValue.Grab && type != PhysicalTypeValue.Passthrough)
-                PushOutOfTile(detectionBox.MinY, Direction.Down);
+                PushOutOfTile(detectionBox.Top, Direction.Down);
         }
         // Moving down
         else
         {
             PhysicalType type = Scene.GetPhysicalType(detectionBox.BottomCenter);
             if (type.IsSolid)
-                PushOutOfTile(detectionBox.MaxY, Direction.Up);
+                PushOutOfTile(detectionBox.Bottom, Direction.Up);
         }
     }
 
@@ -245,7 +245,7 @@ public abstract class MovableActor : InteractableActor
             }
 
             if (type.IsSolid)
-                PushOutOfTile(detectionBox.MaxY, Direction.Up);
+                PushOutOfTile(detectionBox.Bottom, Direction.Up);
         }
 
         // Moving left
@@ -262,7 +262,7 @@ public abstract class MovableActor : InteractableActor
             }
 
             if (type.IsSolid && type != PhysicalTypeValue.Grab && type != PhysicalTypeValue.Passthrough)
-                PushOutOfTile(detectionBox.MinX, Direction.Right);
+                PushOutOfTile(detectionBox.Left, Direction.Right);
         }
         // Moving right
         else if (Speed.X > 0)
@@ -278,7 +278,7 @@ public abstract class MovableActor : InteractableActor
             }
 
             if (type.IsSolid && type != PhysicalTypeValue.Grab && type != PhysicalTypeValue.Passthrough)
-                PushOutOfTile(detectionBox.MinX, Direction.Left);
+                PushOutOfTile(detectionBox.Left, Direction.Left);
         }
     }
 
@@ -337,7 +337,7 @@ public abstract class MovableActor : InteractableActor
             }
 
             if (type.IsFullySolid && type != PhysicalTypeValue.Grab && type != PhysicalTypeValue.Passthrough)
-                PushOutOfTile(detectionBox.MinY, Direction.Down);
+                PushOutOfTile(detectionBox.Top, Direction.Down);
         }
         // Moving down or still
         else
@@ -351,7 +351,7 @@ public abstract class MovableActor : InteractableActor
                 if (Speed.Y == 0 && tileHeight != 0)
                     Position -= new Vector2(0, tileHeight);
                 else
-                    Position -= new Vector2(0, tileHeight + MathHelpers.Mod(detectionBox.MaxY, Tile.Size));
+                    Position -= new Vector2(0, tileHeight + MathHelpers.Mod(detectionBox.Bottom, Tile.Size));
 
                 Speed = Speed with { Y = 0 };
                 IsTouchingMap = true;
@@ -362,7 +362,7 @@ public abstract class MovableActor : InteractableActor
 
                 if (type.IsFullySolid)
                 {
-                    PushOutOfTile(detectionBox.MaxY, Direction.Up, resetSpeed: true);
+                    PushOutOfTile(detectionBox.Bottom, Direction.Up, resetSpeed: true);
                 }
                 else if (type.IsAngledSolid)
                 {
@@ -370,13 +370,13 @@ public abstract class MovableActor : InteractableActor
 
                     if (Speed.Y == 0)
                     {
-                        Position += new Vector2(0, tileHeight - MathHelpers.Mod(detectionBox.MaxY, Tile.Size));
+                        Position += new Vector2(0, tileHeight - MathHelpers.Mod(detectionBox.Bottom, Tile.Size));
                         Speed = Speed with { Y = 0 };
                         IsTouchingMap = true;
                     }
-                    else if (MathHelpers.Mod(detectionBox.MaxY, Tile.Size) > tileHeight)
+                    else if (MathHelpers.Mod(detectionBox.Bottom, Tile.Size) > tileHeight)
                     {
-                        Position -= new Vector2(0, MathHelpers.Mod(detectionBox.MaxY, Tile.Size) - tileHeight);
+                        Position -= new Vector2(0, MathHelpers.Mod(detectionBox.Bottom, Tile.Size) - tileHeight);
                         Speed = Speed with { Y = 0 };
                         IsTouchingMap = true;
                     }
@@ -419,7 +419,7 @@ public abstract class MovableActor : InteractableActor
                     }
 
                     if (type.IsFullySolid)
-                        PushOutOfTile(detectionBox.MaxY, Direction.Up, resetSpeed: true);
+                        PushOutOfTile(detectionBox.Bottom, Direction.Up, resetSpeed: true);
                 }
             }
         }
@@ -428,7 +428,7 @@ public abstract class MovableActor : InteractableActor
             return;
 
         // Get the x position to detect
-        float detectionX = Speed.X > 0 ? detectionBox.MaxX : detectionBox.MinX;
+        float detectionX = Speed.X > 0 ? detectionBox.Right : detectionBox.Left;
 
         // Get bottom-center type
         PhysicalType typeX = Scene.GetPhysicalType(detectionBox.BottomCenter);
@@ -436,17 +436,17 @@ public abstract class MovableActor : InteractableActor
         if (typeX.IsAngledSolid)
             return;
 
-        typeX = Scene.GetPhysicalType(new Vector2(detectionBox.Center.X, detectionBox.MaxY - Tile.Size));
+        typeX = Scene.GetPhysicalType(new Vector2(detectionBox.Center.X, detectionBox.Bottom - Tile.Size));
 
         if (typeX.IsAngledSolid)
             return;
 
-        typeX = Scene.GetPhysicalType(new Vector2(detectionBox.Center.X, detectionBox.MaxY + Tile.Size));
+        typeX = Scene.GetPhysicalType(new Vector2(detectionBox.Center.X, detectionBox.Bottom + Tile.Size));
 
         if (typeX.IsAngledSolid)
             return;
 
-        typeX = Scene.GetPhysicalType(new Vector2(detectionBox.Center.X, detectionBox.MaxY + Tile.Size * 2));
+        typeX = Scene.GetPhysicalType(new Vector2(detectionBox.Center.X, detectionBox.Bottom + Tile.Size * 2));
 
         if (typeX.IsAngledSolid)
             return;
@@ -454,7 +454,7 @@ public abstract class MovableActor : InteractableActor
         // Moving up or still
         if (Speed.Y <= 0)
         {
-            float y = detectionBox.MinY + Tile.Size;
+            float y = detectionBox.Top + Tile.Size;
             int count = (int)(detectionBox.Height / Tile.Size) - 1;
 
             for (int i = 0; i < count; i++)
@@ -469,11 +469,11 @@ public abstract class MovableActor : InteractableActor
         // Moving down
         else
         {
-            typeX = Scene.GetPhysicalType(new Vector2(detectionX, detectionBox.MaxY));
+            typeX = Scene.GetPhysicalType(new Vector2(detectionX, detectionBox.Bottom));
 
             if (!typeX.IsFullySolid || typeX.Value == PhysicalTypeValue.Grab || typeX.Value == PhysicalTypeValue.Passthrough)
             {
-                float y = detectionBox.MinY + Tile.Size;
+                float y = detectionBox.Top + Tile.Size;
                 int count = (int)(detectionBox.Height / Tile.Size) - 1;
 
                 for (int i = 0; i < count; i++)

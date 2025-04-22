@@ -10,10 +10,10 @@ public class EditorCamera
     public EditorCamera(Vector2 mapSize)
     {
         ScrollBounds = new Box(
-            minX: 0 - ScrollMargin,
-            minY: 0 - ScrollMargin,
-            maxX: mapSize.X + ScrollMargin,
-            maxY: mapSize.Y + ScrollMargin);
+            left: 0 - ScrollMargin,
+            top: 0 - ScrollMargin,
+            right: mapSize.X + ScrollMargin,
+            bottom: mapSize.Y + ScrollMargin);
         RenderContext = new EditorRenderContext
         {
             EditorScale = Scale,
@@ -37,7 +37,7 @@ public class EditorCamera
         set
         {
             Vector2 minPos = ScrollBounds.Position;
-            Vector2 maxPos = new(Math.Max(minPos.X, ScrollBounds.MaxX - RenderContext.Resolution.X), Math.Max(minPos.Y, ScrollBounds.MaxY - RenderContext.Resolution.Y));
+            Vector2 maxPos = new(Math.Max(minPos.X, ScrollBounds.Right - RenderContext.Resolution.X), Math.Max(minPos.Y, ScrollBounds.Bottom - RenderContext.Resolution.Y));
 
             _position = Vector2.Clamp(value, minPos, maxPos);
 

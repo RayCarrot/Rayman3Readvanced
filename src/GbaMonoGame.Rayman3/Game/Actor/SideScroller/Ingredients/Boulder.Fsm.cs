@@ -42,8 +42,8 @@ public partial class Boulder
         else if (GameInfo.MapId == MapId.Bonus4)
         {
             Box attackBox = GetAttackBox();
-            attackBox.MinY += 16;
-            attackBox.MaxY += 16;
+            attackBox.Top += 16;
+            attackBox.Bottom += 16;
 
             Box mainActorVulnerabilityBox = Scene.MainActor.GetVulnerabilityBox();
 
@@ -119,11 +119,11 @@ public partial class Boulder
 
                     Box detectionBox = GetDetectionBox();
 
-                    PhysicalType type = Scene.GetPhysicalType(new Vector2(Position.X, detectionBox.MaxY));
+                    PhysicalType type = Scene.GetPhysicalType(new Vector2(Position.X, detectionBox.Bottom));
 
                     if (type == PhysicalTypeValue.Solid)
                     {
-                        type = Scene.GetPhysicalType(new Vector2(Position.X, detectionBox.MaxY) + Tile.Up);
+                        type = Scene.GetPhysicalType(new Vector2(Position.X, detectionBox.Bottom) + Tile.Up);
                     }
 
                     if (type.Value is PhysicalTypeValue.SolidAngle30Right1 or PhysicalTypeValue.SolidAngle30Right2)
@@ -140,7 +140,7 @@ public partial class Boulder
                 else
                 {
                     Box detectionBox = GetDetectionBox();
-                    PhysicalType type = Scene.GetPhysicalType(new Vector2(Position.X, detectionBox.MaxY));
+                    PhysicalType type = Scene.GetPhysicalType(new Vector2(Position.X, detectionBox.Bottom));
 
                     if (type.Value is PhysicalTypeValue.InstaKill or PhysicalTypeValue.MoltenLava)
                     {

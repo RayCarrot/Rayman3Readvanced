@@ -59,7 +59,7 @@ public partial class Plum
 
             case FsmAction.Step:
                 Box detectionBox = GetDetectionBox();
-                PhysicalType groundType = Scene.GetPhysicalType(new Vector2(Position.X, detectionBox.MaxY));
+                PhysicalType groundType = Scene.GetPhysicalType(new Vector2(Position.X, detectionBox.Bottom));
 
                 // Land in lava
                 if (groundType == PhysicalTypeValue.Lava)
@@ -142,15 +142,15 @@ public partial class Plum
 
                 // Set main actor position
                 if (mainActor.AttachedObject == this)
-                    mainActor.Position = new Vector2(Position.X, detectionBox.MinY);
+                    mainActor.Position = new Vector2(Position.X, detectionBox.Top);
 
                 // Update speed
                 MechModel.Speed = new Vector2(FloatSpeedX, 2);
 
-                PhysicalType groundType = Scene.GetPhysicalType(new Vector2(Position.X, detectionBox.MaxY));
+                PhysicalType groundType = Scene.GetPhysicalType(new Vector2(Position.X, detectionBox.Bottom));
                 if (groundType == PhysicalTypeValue.Solid)
                 {
-                    groundType = Scene.GetPhysicalType(new Vector2(Position.X, detectionBox.MaxY) + Tile.Up);
+                    groundType = Scene.GetPhysicalType(new Vector2(Position.X, detectionBox.Bottom) + Tile.Up);
 
                     if (groundType == PhysicalTypeValue.Lava)
                         groundType = PhysicalTypeValue.Solid;
@@ -328,9 +328,9 @@ public partial class Plum
             case FsmAction.Step:
                 Box detectionBox = GetDetectionBox();
 
-                PhysicalType groundType = Scene.GetPhysicalType(new Vector2(Position.X, detectionBox.MaxY));
-                PhysicalType leftType = Scene.GetPhysicalType(new Vector2(detectionBox.MinX - 1, detectionBox.MaxY));
-                PhysicalType rightType = Scene.GetPhysicalType(new Vector2(detectionBox.MaxX + 1, detectionBox.MaxY));
+                PhysicalType groundType = Scene.GetPhysicalType(new Vector2(Position.X, detectionBox.Bottom));
+                PhysicalType leftType = Scene.GetPhysicalType(new Vector2(detectionBox.Left - 1, detectionBox.Bottom));
+                PhysicalType rightType = Scene.GetPhysicalType(new Vector2(detectionBox.Right + 1, detectionBox.Bottom));
 
                 if (IsActionFinished && ActionId == Action.BounceGround)
                 {

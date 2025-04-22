@@ -74,19 +74,19 @@ public partial class MetalShieldedHoodboom
                 uint time = GameTime.ElapsedFrames - Timer;
                 bool readyToAttack = (EarlyAttack && time > 25) || time > 100;
 
-                float addMinX;
-                float addMaxX;
+                float addLeft;
+                float addRight;
                 if (Position.X - Scene.MainActor.Position.X < 0)
                 {
-                    addMinX = 0;
-                    addMaxX = 100;
+                    addLeft = 0;
+                    addRight = 100;
                 }
                 else
                 {
-                    addMinX = -100;
-                    addMaxX = 0;
+                    addLeft = -100;
+                    addRight = 0;
                 }
-                bool detectedMainActor = Scene.IsDetectedMainActor(this, 0, 0, addMinX, addMaxX);
+                bool detectedMainActor = Scene.IsDetectedMainActor(this, 0, 0, addLeft, addRight);
 
                 Rayman rayman = (Rayman)Scene.MainActor;
                 bool isAttacked = false;

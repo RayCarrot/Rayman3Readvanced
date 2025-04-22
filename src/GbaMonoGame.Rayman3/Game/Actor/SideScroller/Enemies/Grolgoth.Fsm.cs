@@ -656,7 +656,7 @@ public partial class Grolgoth
 
                 Box detectionBox = GetDetectionBox();
 
-                PhysicalType type = Scene.GetPhysicalType(new Vector2(Position.X, detectionBox.MaxY - 30));
+                PhysicalType type = Scene.GetPhysicalType(new Vector2(Position.X, detectionBox.Bottom - 30));
                 
                 if (IsActionFinished && ActionId is Action.Air_Hit1_Right or Action.Air_Hit1_Left)
                     ActionId = IsFacingRight ? Action.Air_Hit2_Right : Action.Air_Hit2_Left;

@@ -104,13 +104,13 @@ public class GfxScreen
             // NOTE: This only accounts for if the render box is bigger than then the size, which we do to prevent pop-in.
             //       But it does not account for if it's smaller. If it's smaller, then this isn't fully optimized as we might
             //       be performing unnecessary draw calls.
-            if (renderBox.MinX < 0 && endX + renderBox.MinX < maxResX)
+            if (renderBox.Left < 0 && endX + renderBox.Left < maxResX)
                 endX += size.X;
-            if (renderBox.MinY < 0 && endY + renderBox.MinY < maxResY)
+            if (renderBox.Top < 0 && endY + renderBox.Top < maxResY)
                 endY += size.Y;
-            if (renderBox.MaxX > size.X && startX + renderBox.MaxX > camMinX)
+            if (renderBox.Right > size.X && startX + renderBox.Right > camMinX)
                 startX -= size.X;
-            if (renderBox.MaxY > size.Y && startY + renderBox.MaxY > camMinY)
+            if (renderBox.Bottom > size.Y && startY + renderBox.Bottom > camMinY)
                 startY -= size.Y;
 
             // Draw the background to fill out the visible range

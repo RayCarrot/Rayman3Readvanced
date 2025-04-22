@@ -75,20 +75,20 @@ public partial class WoodenShieldedHoodboom
                                      ((Flags & 0x20) != 0 && 25 < GameTime.ElapsedFrames - Timer) || 
                                      100 < GameTime.ElapsedFrames - Timer;
 
-                float addMinX;
-                float addMaxX;
+                float addLeft;
+                float addRight;
                 if (Position.X - Scene.MainActor.Position.X < 0)
                 {
-                    addMinX = 0;
-                    addMaxX = 100;
+                    addLeft = 0;
+                    addRight = 100;
                 }
                 else
                 {
-                    addMinX = -100;
-                    addMaxX = 0;
+                    addLeft = -100;
+                    addRight = 0;
                 }
 
-                bool detectedMainActor = Scene.IsDetectedMainActor(this, 0, 0, addMinX, addMaxX);
+                bool detectedMainActor = Scene.IsDetectedMainActor(this, 0, 0, addLeft, addRight);
 
                 if ((detectedMainActor && readyToAttack) || 
                     (IsActionFinished && (Flags & 0x80) != 0))

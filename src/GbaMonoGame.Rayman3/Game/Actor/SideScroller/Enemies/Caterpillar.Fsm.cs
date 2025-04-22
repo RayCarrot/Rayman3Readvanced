@@ -231,7 +231,7 @@ public partial class Caterpillar
                 }
 
                 if (Rom.Platform == Platform.NGage &&
-                    Scene.GetPhysicalType(new Vector2(Position.X, GetDetectionBox().MaxY)) == PhysicalTypeValue.MoltenLava)
+                    Scene.GetPhysicalType(new Vector2(Position.X, GetDetectionBox().Bottom)) == PhysicalTypeValue.MoltenLava)
                 {
                     State.MoveTo(Fsm_Dying);
                     return false;
@@ -364,7 +364,7 @@ public partial class Caterpillar
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_CatchObject, this);
                 }
 
-                if (hitOtherObj || Scene.GetPhysicalType(new Vector2(Position.X, GetDetectionBox().MaxY)).IsSolid)
+                if (hitOtherObj || Scene.GetPhysicalType(new Vector2(Position.X, GetDetectionBox().Bottom)).IsSolid)
                 {
                     State.MoveTo(Fsm_Dying);
                     return false;
@@ -404,7 +404,7 @@ public partial class Caterpillar
                     hitOtherObj = true;
                 }
 
-                PhysicalType type = Scene.GetPhysicalType(new Vector2(Position.X, GetDetectionBox().MaxY));
+                PhysicalType type = Scene.GetPhysicalType(new Vector2(Position.X, GetDetectionBox().Bottom));
 
                 // NOTE: Checking for the InstaKill type appears to be a mistake in the original code (it checking for <= 32 instead of < 32)
                 if (hitOtherObj || type.IsSolid || type.Value is PhysicalTypeValue.InstaKill or PhysicalTypeValue.MoltenLava)

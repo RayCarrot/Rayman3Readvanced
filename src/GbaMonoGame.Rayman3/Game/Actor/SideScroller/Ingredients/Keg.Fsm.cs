@@ -23,7 +23,7 @@ public partial class Keg
                 Timer++;
 
                 Box actionBox = GetActionBox();
-                actionBox.MaxY += 100;
+                actionBox.Bottom += 100;
 
                 // Spawn debris
                 if (Timer >= 30 && SpawnedDebrisCount < 2 && Scene.MainActor.GetDetectionBox().Intersects(actionBox))
@@ -65,7 +65,7 @@ public partial class Keg
 
             case FsmAction.Step:
                 if (Scene.IsHitMainActor(this) ||
-                    Scene.GetPhysicalType(new Vector2(Position.X, GetDetectionBox().MaxY)).IsSolid)
+                    Scene.GetPhysicalType(new Vector2(Position.X, GetDetectionBox().Bottom)).IsSolid)
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BarlFall_Mix04);
 
@@ -238,7 +238,7 @@ public partial class Keg
 
             case FsmAction.Step:
                 Box detectionBox = GetDetectionBox();
-                Vector2 mapPos = new(Position.X, detectionBox.MaxY);
+                Vector2 mapPos = new(Position.X, detectionBox.Bottom);
 
                 if (Scene.IsDetectedMainActor(this) &&
                     ((Rayman)Scene.MainActor).AttachedObject == null &&

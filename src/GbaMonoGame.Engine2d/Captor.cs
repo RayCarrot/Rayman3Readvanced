@@ -19,7 +19,7 @@ public class Captor : GameObject
 
         Debug.Assert(EventsToTrigger > 0, "The captor has no event");
 
-        _captorBox = new Box(captorResource.BoxMinX, captorResource.BoxMinY, captorResource.BoxMaxX, captorResource.BoxMaxY);
+        _captorBox = new Box(captorResource.BoxLeft, captorResource.BoxTop, captorResource.BoxRight, captorResource.BoxBottom);
 
         _debugCaptorBoxAObject = new DebugBoxAObject()
         {

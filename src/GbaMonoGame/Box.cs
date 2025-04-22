@@ -6,129 +6,129 @@ namespace GbaMonoGame;
 
 public struct Box
 {
-    public Box(float minX, float minY, float maxX, float maxY)
+    public Box(float left, float top, float right, float bottom)
     {
-        MinX = minX;
-        MinY = minY;
-        MaxX = maxX;
-        MaxY = maxY;
+        Left = left;
+        Top = top;
+        Right = right;
+        Bottom = bottom;
     }
 
     public Box(Vector2 position, Vector2 size)
     {
-        MinX = position.X;
-        MinY = position.Y;
-        MaxX = position.X + size.X;
-        MaxY = position.Y + size.Y;
+        Left = position.X;
+        Top = position.Y;
+        Right = position.X + size.X;
+        Bottom = position.Y + size.Y;
     }
 
     public Box(EngineBox engineBox)
     {
-        MinX = engineBox.MinX;
-        MinY = engineBox.MinY;
-        MaxX = engineBox.MaxX;
-        MaxY = engineBox.MaxY;
+        Left = engineBox.Left;
+        Top = engineBox.Top;
+        Right = engineBox.Right;
+        Bottom = engineBox.Bottom;
     }
 
     public Box(ChannelBox channelBox)
     {
-        MinX = channelBox.MinX;
-        MinY = channelBox.MinY;
-        MaxX = channelBox.MaxX;
-        MaxY = channelBox.MaxY;
+        Left = channelBox.Left;
+        Top = channelBox.Top;
+        Right = channelBox.Right;
+        Bottom = channelBox.Bottom;
     }
 
     public static Box Empty { get; } = new(0, 0, 0, 0);
 
-    public float MinX;
-    public float MinY;
-    public float MaxX;
-    public float MaxY;
+    public float Left;
+    public float Top;
+    public float Right;
+    public float Bottom;
 
     [JsonIgnore]
-    public float Width => MaxX - MinX;
+    public float Width => Right - Left;
     [JsonIgnore]
-    public float Height => MaxY - MinY;
+    public float Height => Bottom - Top;
 
     [JsonIgnore]
-    public float CenterX => Width / 2 + MinX;
+    public float CenterX => Width / 2 + Left;
     [JsonIgnore]
-    public float CenterY => Height / 2 + MinY;
+    public float CenterY => Height / 2 + Top;
 
     [JsonIgnore]
-    public Vector2 TopLeft => new(MinX, MinY);
+    public Vector2 TopLeft => new(Left, Top);
     [JsonIgnore]
-    public Vector2 TopCenter => new(CenterX, MinY);
+    public Vector2 TopCenter => new(CenterX, Top);
     [JsonIgnore]
-    public Vector2 TopRight => new(MaxX, MinY);
+    public Vector2 TopRight => new(Right, Top);
 
     [JsonIgnore]
-    public Vector2 MiddleLeft => new(MinX, CenterY);
+    public Vector2 MiddleLeft => new(Left, CenterY);
     [JsonIgnore]
     public Vector2 Center => new(CenterX, CenterY);
     [JsonIgnore]
-    public Vector2 MiddleRight => new(MaxX, CenterY);
+    public Vector2 MiddleRight => new(Right, CenterY);
 
     [JsonIgnore]
-    public Vector2 BottomLeft => new(MinX, MaxY);
+    public Vector2 BottomLeft => new(Left, Bottom);
     [JsonIgnore]
-    public Vector2 BottomCenter => new(CenterX, MaxY);
+    public Vector2 BottomCenter => new(CenterX, Bottom);
     [JsonIgnore]
-    public Vector2 BottomRight => new(MaxX, MaxY);
+    public Vector2 BottomRight => new(Right, Bottom);
 
     [JsonIgnore]
-    public Vector2 Position => new(MinX, MinY);
+    public Vector2 Position => new(Left, Top);
     [JsonIgnore]
     public Vector2 Size => new(Width, Height);
 
     public static Box Offset(Box box, Vector2 offset)
     {
-        box.MinX += offset.X;
-        box.MinY += offset.Y;
-        box.MaxX += offset.X;
-        box.MaxY += offset.Y;
+        box.Left += offset.X;
+        box.Top += offset.Y;
+        box.Right += offset.X;
+        box.Bottom += offset.Y;
         return box;
     }
 
     public static Box FlipX(Box box)
     {
-        (box.MinX, box.MaxX) = (-box.MaxX, -box.MinX);
+        (box.Left, box.Right) = (-box.Right, -box.Left);
         return box;
     }
 
     public static Box FlipY(Box box)
     {
-        (box.MinY, box.MaxY) = (-box.MaxY, -box.MinY);
+        (box.Top, box.Bottom) = (-box.Bottom, -box.Top);
         return box;
     }
 
     public static Box Intersect(Box box1, Box box2)
     {
-        float largestXMin = box2.MinX;
-        if (largestXMin < box1.MinX)
-            largestXMin = box1.MinX;
+        float maxLeft = box2.Left;
+        if (maxLeft < box1.Left)
+            maxLeft = box1.Left;
 
-        float largestYMin = box2.MinY;
-        if (largestYMin < box1.MinY)
-            largestYMin = box1.MinY;
+        float maxTop = box2.Top;
+        if (maxTop < box1.Top)
+            maxTop = box1.Top;
 
-        float smallestXMax = box2.MaxX;
-        if (box1.MaxX < smallestXMax)
-            smallestXMax = box1.MaxX;
+        float minRight = box2.Right;
+        if (box1.Right < minRight)
+            minRight = box1.Right;
 
-        float smallestYMax = box2.MaxY;
-        if (box1.MaxY < smallestYMax)
-            smallestYMax = box1.MaxY;
+        float minBottom = box2.Bottom;
+        if (box1.Bottom < minBottom)
+            minBottom = box1.Bottom;
 
-        if (largestXMin < smallestXMax && largestYMin < smallestYMax)
-            return new Box(largestXMin, largestYMin, smallestXMax, smallestYMax);
+        if (maxLeft < minRight && maxTop < minBottom)
+            return new Box(maxLeft, maxTop, minRight, minBottom);
         else
             return Empty;
     }
 
     public static bool operator ==(Box a, Box b)
     {
-        return a.MinX == b.MinX && a.MinY == b.MinY && a.MaxX == b.MaxX && a.MaxY == b.MaxY;
+        return a.Left == b.Left && a.Top == b.Top && a.Right == b.Right && a.Bottom == b.Bottom;
     }
 
     public static bool operator !=(Box a, Box b)
@@ -151,31 +151,31 @@ public struct Box
 
     public override int GetHashCode()
     {
-        return (((17 * 23 + MinX.GetHashCode()) * 23 + MinY.GetHashCode()) * 23 + MaxX.GetHashCode()) * 23 + MaxY.GetHashCode();
+        return (((17 * 23 + Left.GetHashCode()) * 23 + Top.GetHashCode()) * 23 + Right.GetHashCode()) * 23 + Bottom.GetHashCode();
     }
 
     public bool Intersects(Box otherBox)
     {
-        float largestXMin = otherBox.MinX;
-        if (largestXMin < MinX)
-            largestXMin = MinX;
+        float largestXMin = otherBox.Left;
+        if (largestXMin < Left)
+            largestXMin = Left;
 
-        float largestYMin = otherBox.MinY;
-        if (largestYMin < MinY)
-            largestYMin = MinY;
+        float largestYMin = otherBox.Top;
+        if (largestYMin < Top)
+            largestYMin = Top;
 
-        float smallestXMax = otherBox.MaxX;
-        if (MaxX < smallestXMax)
-            smallestXMax = MaxX;
+        float smallestXMax = otherBox.Right;
+        if (Right < smallestXMax)
+            smallestXMax = Right;
 
-        float smallestYMax = otherBox.MaxY;
-        if (MaxY < smallestYMax)
-            smallestYMax = MaxY;
+        float smallestYMax = otherBox.Bottom;
+        if (Bottom < smallestYMax)
+            smallestYMax = Bottom;
 
         return largestXMin < smallestXMax && largestYMin < smallestYMax;
     }
 
-    public bool Contains(Vector2 position) => MinX <= position.X && position.X < MaxX && MinY <= position.Y && position.Y < MaxY;
+    public bool Contains(Vector2 position) => Left <= position.X && position.X < Right && Top <= position.Y && position.Y < Bottom;
 
-    public Rectangle ToRectangle() => new((int)MinX, (int)MinY, (int)Width, (int)Height);
+    public Rectangle ToRectangle() => new((int)Left, (int)Top, (int)Width, (int)Height);
 }

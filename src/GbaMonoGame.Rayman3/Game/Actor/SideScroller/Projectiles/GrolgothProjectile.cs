@@ -87,10 +87,10 @@ public sealed partial class GrolgothProjectile : MovableActor
     private bool CheckHit(bool requireSuperFist)
     {
         Box vulnerabilityBox = GetVulnerabilityBox();
-        vulnerabilityBox.MinX -= 5;
-        vulnerabilityBox.MinY -= 5;
-        vulnerabilityBox.MaxX += 5;
-        vulnerabilityBox.MaxY += 5;
+        vulnerabilityBox.Left -= 5;
+        vulnerabilityBox.Top -= 5;
+        vulnerabilityBox.Right += 5;
+        vulnerabilityBox.Bottom += 5;
 
         Rayman rayman = (Rayman)Scene.MainActor;
 

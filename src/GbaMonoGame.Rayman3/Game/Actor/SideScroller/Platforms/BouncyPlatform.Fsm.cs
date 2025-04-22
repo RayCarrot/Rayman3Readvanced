@@ -118,10 +118,10 @@ public partial class BouncyPlatform
                 {
                     case 0:
                         SetDetectionBox(new Box(
-                            minX: ActorModel.DetectionBox.MinX, 
-                            minY: ActorModel.DetectionBox.MaxY - 20, 
-                            maxX: ActorModel.DetectionBox.MaxX, 
-                            maxY: ActorModel.DetectionBox.MaxY));
+                            left: ActorModel.DetectionBox.Left, 
+                            top: ActorModel.DetectionBox.Bottom - 20, 
+                            right: ActorModel.DetectionBox.Right, 
+                            bottom: ActorModel.DetectionBox.Bottom));
                         break;
 
                     case 1:
@@ -130,19 +130,19 @@ public partial class BouncyPlatform
                     case 4:
                     case 5:
                         SetDetectionBox(new Box(
-                            minX: ActorModel.DetectionBox.MinX,
-                            minY: ActorModel.DetectionBox.MaxY - 14,
-                            maxX: ActorModel.DetectionBox.MaxX,
-                            maxY: ActorModel.DetectionBox.MaxY));
+                            left: ActorModel.DetectionBox.Left,
+                            top: ActorModel.DetectionBox.Bottom - 14,
+                            right: ActorModel.DetectionBox.Right,
+                            bottom: ActorModel.DetectionBox.Bottom));
                         break;
 
                     case 6:
                     case 7:
                         SetDetectionBox(new Box(
-                            minX: ActorModel.DetectionBox.MinX,
-                            minY: ActorModel.DetectionBox.MaxY - 52,
-                            maxX: ActorModel.DetectionBox.MaxX,
-                            maxY: ActorModel.DetectionBox.MaxY));
+                            left: ActorModel.DetectionBox.Left,
+                            top: ActorModel.DetectionBox.Bottom - 52,
+                            right: ActorModel.DetectionBox.Right,
+                            bottom: ActorModel.DetectionBox.Bottom));
                         break;
 
                     default:

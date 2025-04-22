@@ -141,7 +141,7 @@ public partial class Barrel
                 ActionId = Action.FallRight;
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodImp_Mix03);
                 EngineBox originalDetectionBox = ActorModel.DetectionBox;
-                SetDetectionBox(new Box(-20, originalDetectionBox.MaxY - 38, 20, originalDetectionBox.MaxY));
+                SetDetectionBox(new Box(-20, originalDetectionBox.Bottom - 38, 20, originalDetectionBox.Bottom));
                 break;
 
             case FsmAction.Step:
@@ -362,7 +362,7 @@ public partial class Barrel
                 ActionId = Action.IdleFloat;
                 MechModel.Speed = MechModel.Speed with { X = 0 };
                 EngineBox originalDetectionBox = ActorModel.DetectionBox;
-                SetDetectionBox(new Box(-20, originalDetectionBox.MaxY - 38, 20, originalDetectionBox.MaxY));
+                SetDetectionBox(new Box(-20, originalDetectionBox.Bottom - 38, 20, originalDetectionBox.Bottom));
                 Timer = 0;
                 InitialHitPoints = 0;
                 break;

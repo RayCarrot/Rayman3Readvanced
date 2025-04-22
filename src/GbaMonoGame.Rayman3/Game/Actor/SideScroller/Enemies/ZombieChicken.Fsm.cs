@@ -36,13 +36,13 @@ public partial class ZombieChicken
 
                 if (IsFacingRight)
                 {
-                    actionBox.MinX -= Scene.Resolution.X;
-                    actionBox.MaxX += 75;
+                    actionBox.Left -= Scene.Resolution.X;
+                    actionBox.Right += 75;
                 }
                 else
                 {
-                    actionBox.MinX -= 75;
-                    actionBox.MaxX += Scene.Resolution.X;
+                    actionBox.Left -= 75;
+                    actionBox.Right += Scene.Resolution.X;
                 }
 
                 if (Scene.MainActor.GetDetectionBox().Intersects(actionBox))

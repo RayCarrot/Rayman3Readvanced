@@ -211,18 +211,18 @@ public static class LevelMusicManager
     public static void PlaySpecialMusicIfDetected(GameObject obj)
     {
         Box objBox = new(
-            minX: obj.Position.X - Rom.OriginalResolution.X,
-            minY: obj.Position.Y - Rom.OriginalResolution.Y / 2,
-            maxX: obj.Position.X + Rom.OriginalResolution.X,
-            maxY: obj.Position.Y + 5);
+            left: obj.Position.X - Rom.OriginalResolution.X,
+            top: obj.Position.Y - Rom.OriginalResolution.Y / 2,
+            right: obj.Position.X + Rom.OriginalResolution.X,
+            bottom: obj.Position.Y + 5);
 
         // Extend the box if playing
         if (IsPlayingSpecialMusic)
         {
-            objBox.MinX -= 64;
-            objBox.MinY -= 64;
-            objBox.MaxX += 64;
-            objBox.MaxY += 64;
+            objBox.Left -= 64;
+            objBox.Top -= 64;
+            objBox.Right += 64;
+            objBox.Bottom += 64;
         }
 
         Box mainActorDetectionBox = obj.Scene.MainActor.GetDetectionBox();
@@ -238,10 +238,10 @@ public static class LevelMusicManager
         // Extend the box if playing
         if (IsPlayingSpecialMusic)
         {
-            objBox.MinX -= 64;
-            objBox.MinY -= 64;
-            objBox.MaxX += 64;
-            objBox.MaxY += 64;
+            objBox.Left -= 64;
+            objBox.Top -= 64;
+            objBox.Right += 64;
+            objBox.Bottom += 64;
         }
 
         Box mainActorDetectionBox = obj.Scene.MainActor.GetDetectionBox();

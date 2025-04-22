@@ -303,12 +303,12 @@ public partial class WalkingShell
                     type = Scene.GetPhysicalType(pos);
                     if (!type.IsSolid)
                     {
-                        pos = pos with { X = detectionBox.MinX };
+                        pos = pos with { X = detectionBox.Left };
 
                         type = Scene.GetPhysicalType(pos);
                         if (!type.IsSolid)
                         {
-                            pos = pos with { X = detectionBox.MaxX };
+                            pos = pos with { X = detectionBox.Right };
                             type = Scene.GetPhysicalType(pos);
                         }
                     }

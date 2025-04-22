@@ -37,10 +37,10 @@ public partial class PurpleLum
                         if (!detectionBox.Intersects(viewBox)) 
                             continue;
 
-                        viewBox.MinX += 16;
-                        viewBox.MinY += 8;
-                        viewBox.MaxX -= 16;
-                        viewBox.MaxY += 4;
+                        viewBox.Left += 16;
+                        viewBox.Top += 8;
+                        viewBox.Right -= 16;
+                        viewBox.Bottom += 4;
 
                         if (!detectionBox.Intersects(viewBox)) 
                             continue;

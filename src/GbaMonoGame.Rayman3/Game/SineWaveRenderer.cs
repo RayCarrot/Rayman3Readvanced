@@ -36,7 +36,7 @@ public class SineWaveRenderer : IScreenRenderer
             phase++;
         }
 
-        // The skull in the Cave of Bad Dreams is only on the bottom-right of the map, so we can ignore MinX
+        // The skull in the Cave of Bad Dreams is only on the bottom-right of the map, so we can ignore left
         return new Box(0, 0, maxStartX + Texture.Width, Texture.Height);
     }
 
