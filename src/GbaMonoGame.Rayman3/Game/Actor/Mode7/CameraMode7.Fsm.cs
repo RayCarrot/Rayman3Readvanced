@@ -59,10 +59,7 @@ public partial class CameraMode7
                 cam.Direction = ((Mode7Actor)LinkedObject).Direction.Inverse();
 
                 Vector2 directionalVector = cam.Direction.Inverse().ToDirectionalVector();
-
-                cam.Position = new Vector2(
-                    x: LinkedObject.Position.X - directionalVector.X * MainActorDistance,
-                    y: LinkedObject.Position.Y + directionalVector.Y * MainActorDistance);
+                cam.Position = LinkedObject.Position - (directionalVector * MainActorDistance).FlipY();
                 break;
 
             case FsmAction.Step:
@@ -83,13 +80,13 @@ public partial class CameraMode7
                 {
                     if (linkedObjDir + cam.Direction < Angle256.Half)
                     {
-                        DirectionDelta += 0.25f + (linkedObjDir + cam.Direction) * 0.0625f;
-                        cam.Direction = (DirectionDelta - cam.Direction).Inverse();
+                        DirectionDelta += 0.25f + (cam.Direction + linkedObjDir) * 0.0625f;
+                        cam.Direction = (cam.Direction.Inverse() + DirectionDelta).Inverse();
                     }
                     else
                     {
                         DirectionDelta += 0.25f + (cam.Direction.Inverse() - linkedObjDir) * 0.0625f;
-                        cam.Direction = (DirectionDelta.Inverse() - cam.Direction).Inverse();
+                        cam.Direction = (cam.Direction.Inverse() + DirectionDelta.Inverse()).Inverse();
                     }
 
                     DirectionDelta %= 1;
@@ -103,9 +100,7 @@ public partial class CameraMode7
                 float targetLength = MainActorDistance + speedLength;
                 Vector2 camDirectionalVector = cam.Direction.Inverse().ToDirectionalVector();
 
-                Vector2 posDelta = new(
-                    x: LinkedObject.Position.X - (targetLength * camDirectionalVector.X + camDirectionalVector.X / 2) - cam.Position.X,
-                    y: LinkedObject.Position.Y + (targetLength * camDirectionalVector.Y + camDirectionalVector.Y / 2) - cam.Position.Y);
+                Vector2 posDelta = LinkedObject.Position - (targetLength * camDirectionalVector + camDirectionalVector / 2).FlipY() - cam.Position;
 
                 // Clamp the movement
                 posDelta = new Vector2(Math.Clamp(posDelta.X, -15, 15), Math.Clamp(posDelta.Y, -15, 15));
@@ -136,19 +131,11 @@ public partial class CameraMode7
                 if (ResetPosition)
                 {
                     ResetPosition = false;
-
-                    cam.Position = new Vector2(
-                        x: LinkedObject.Position.X - camDirectionalVector.X * MainActorDistance,
-                        y: LinkedObject.Position.Y + camDirectionalVector.Y * MainActorDistance);
+                    cam.Position = LinkedObject.Position - (MainActorDistance * camDirectionalVector).FlipY();
                 }
 
-                cam.Direction = (1 - cam.Direction).Inverse();
-
-                Vector2 posDelta = new(
-                    x: LinkedObject.Position.X - (MainActorDistance * camDirectionalVector.X + camDirectionalVector.X / 2) - cam.Position.X,
-                    y: LinkedObject.Position.Y + (MainActorDistance * camDirectionalVector.Y + camDirectionalVector.Y / 2) - cam.Position.Y);
-
-                cam.Position += posDelta;
+                cam.Direction = (cam.Direction.Inverse() + 1).Inverse();
+                cam.Position = LinkedObject.Position - (MainActorDistance * camDirectionalVector + camDirectionalVector / 2).FlipY();
                 break;
 
             case FsmAction.UnInit:
@@ -191,15 +178,7 @@ public partial class CameraMode7
                 Vector2 camDirectionalVector = cam.Direction.Inverse().ToDirectionalVector();
                 Vector2 targetPos = (LinkedObject.Position + sam.Position) / 2;
 
-                Vector2 posDelta = new(
-                    x: targetPos.X -
-                       (MainActorDistance * camDirectionalVector.X + camDirectionalVector.X / 2) - 
-                       cam.Position.X,
-                    y: targetPos.Y + 
-                       (MainActorDistance * camDirectionalVector.Y + camDirectionalVector.Y / 2) - 
-                       cam.Position.Y);
-
-                cam.Position += posDelta;
+                cam.Position = targetPos - (MainActorDistance * camDirectionalVector + camDirectionalVector / 2).FlipY();
                 break;
 
             case FsmAction.UnInit:

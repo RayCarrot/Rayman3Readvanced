@@ -62,7 +62,6 @@ public partial class CameraMode7 : CameraActorMode7
             throw new Exception("The camera has no linked actor");
 
         TgxCameraMode7 cam = (TgxCameraMode7)Scene.Playfield.Camera;
-
         Mode7Actor linkedActor = (Mode7Actor)LinkedObject;
 
         // Set the direction as the inverse of the direction of the linked actor
@@ -70,10 +69,9 @@ public partial class CameraMode7 : CameraActorMode7
 
         // Set the camera position
         Vector2 directionalVector = cam.Direction.Inverse().ToDirectionalVector();
-        cam.Position = new Vector2(
-            x: linkedActor.Position.X - directionalVector.X * (MainActorDistance + 90),
-            y: linkedActor.Position.Y + directionalVector.Y * (MainActorDistance + 90));
+        cam.Position = LinkedObject.Position - (directionalVector * (MainActorDistance + 90)).FlipY();
 
+        // Set the initial state
         State.SetTo(Fsm_Init);
     }
 }
