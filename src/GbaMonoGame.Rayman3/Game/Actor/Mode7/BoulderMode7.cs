@@ -21,9 +21,13 @@ public sealed partial class BoulderMode7 : Mode7Actor
             State.SetTo(Fsm_Move);
     }
 
-    private const float RotationSpeed = 3;
-    private const float InitialBounceSpeed = -8;
-    private const float BounceSpeedAcceleration = 0.25f;
+    private const float COLLISION_HEIGHT = 16;
+    private const float ROTATION_SPEED = 3;
+    private const float INITIAL_BOUNCE_SPEED = -8;
+    private const float BOUNCE_SPEED_ACCELERATION = 1 / 4f;
+    private const float SCALE_DELTA_X = -1 / 32f;
+    private const float SCALE_DELTA_Y = 1 / 4f;
+    private const float MAX_SCALE_Y = 2.5f;
 
     public float Rotation { get; set; }
     public Vector2 Scale { get; set; }
