@@ -13,6 +13,4 @@ public sealed partial class BrokenFenceMode7 : Mode7Actor
 
         State.SetTo(Fsm_Default);
     }
-
-    private const float COLLISION_HEIGHT = 16;
 }

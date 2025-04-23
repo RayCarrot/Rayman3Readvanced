@@ -46,38 +46,38 @@ public partial class BoulderMode7
                     if (ActionId == Action.Move_Right)
                     {
                         if (CamAngle > Angle256.Half)
-                            Rotation += ROTATION_SPEED;
+                            Rotation += 3;
                         else
-                            Rotation -= ROTATION_SPEED;
+                            Rotation -= 3;
                     }
                     else if (ActionId == Action.Move_Left)
                     {
                         if (CamAngle > Angle256.Half)
-                            Rotation -= ROTATION_SPEED;
+                            Rotation -= 3;
                         else
-                            Rotation += ROTATION_SPEED;
+                            Rotation += 3;
                     }
                     else if (ActionId == Action.Move_Up)
                     {
                         if (CamAngle > Angle256.Quarter && CamAngle < Angle256.Quarter * 3)
-                            Rotation += ROTATION_SPEED;
+                            Rotation += 3;
                         else
-                            Rotation -= ROTATION_SPEED;
+                            Rotation -= 3;
                     }
                     else if (ActionId == Action.Move_Down)
                     {
                         if (CamAngle > Angle256.Quarter && CamAngle < Angle256.Quarter * 3)
-                            Rotation -= ROTATION_SPEED;
+                            Rotation -= 3;
                         else
-                            Rotation += ROTATION_SPEED;
+                            Rotation += 3;
                     }
                 }
                 else
                 {
                     if (ActionId is Action.Move_Right or Action.Move_Up)
-                        Rotation -= ROTATION_SPEED;
+                        Rotation -= 3;
                     else if (ActionId is Action.Move_Left or Action.Move_Down)
-                        Rotation += ROTATION_SPEED;
+                        Rotation += 3;
                 }
                 break;
 
@@ -94,15 +94,15 @@ public partial class BoulderMode7
         switch (action)
         {
             case FsmAction.Init:
-                BounceSpeed = INITIAL_BOUNCE_SPEED;
+                BounceSpeed = -8;
                 break;
 
             case FsmAction.Step:
-                BounceSpeed += BOUNCE_SPEED_ACCELERATION;
+                BounceSpeed += 1 / 4f;
                 ZPos -= BounceSpeed;
 
                 // Check player collision when in the air
-                if (ZPos < COLLISION_HEIGHT && BounceSpeed > 0)
+                if (ZPos < 16 && BounceSpeed > 0)
                 {
                     if (RSMultiplayer.IsActive)
                     {
@@ -173,14 +173,14 @@ public partial class BoulderMode7
 
                 if (IsSquashing)
                 {
-                    Scale += new Vector2(SCALE_DELTA_X, SCALE_DELTA_Y);
+                    Scale += new Vector2(-1 / 32f, 1 / 4f);
 
-                    if (Scale.Y >= MAX_SCALE_Y)
+                    if (Scale.Y >= 2.5f)
                         IsSquashing = false;
                 }
                 else
                 {
-                    Scale -= new Vector2(SCALE_DELTA_X, SCALE_DELTA_Y);
+                    Scale -= new Vector2(-1 / 32f, 1 / 4f);
                 }
 
                 if (Scale.Y <= 1 && !IsSquashing)

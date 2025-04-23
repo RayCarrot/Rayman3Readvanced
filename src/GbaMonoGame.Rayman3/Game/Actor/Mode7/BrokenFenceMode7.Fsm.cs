@@ -13,7 +13,7 @@ public partial class BrokenFenceMode7
                 break;
 
             case FsmAction.Step:
-                if (Scene.IsDetectedMainActor(this) && ((Mode7Actor)Scene.MainActor).ZPos < COLLISION_HEIGHT)
+                if (Scene.IsDetectedMainActor(this) && ((Mode7Actor)Scene.MainActor).ZPos < 16)
                     Scene.MainActor.ReceiveDamage(AttackPoints);
                 break;
 
