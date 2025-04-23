@@ -9,6 +9,17 @@ public static class Vector2Extensions
     public static Point ToFloorPoint(this Vector2 point) => new((int)Math.Floor(point.X), (int)Math.Floor(point.Y));
     public static Point ToCeilingPoint(this Vector2 point) => new((int)Math.Ceiling(point.X), (int)Math.Ceiling(point.Y));
 
+    public static Vector2 FlipX(this Vector2 vector)
+    {
+        vector.X = -vector.X;
+        return vector;
+    }
+    public static Vector2 FlipY(this Vector2 vector)
+    {
+        vector.Y = -vector.Y;
+        return vector;
+    }
+
     public static Vector2 ShrinkToAspectRatio(this Vector2 vector, Vector2 aspectRatio)
     {
         float oldRatio = vector.X / vector.Y;

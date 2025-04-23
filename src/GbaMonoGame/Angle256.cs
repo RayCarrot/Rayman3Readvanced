@@ -18,6 +18,7 @@ public readonly struct Angle256
 
     public float Value { get; }
 
+    // Similarly to how the Y position gets flipped we sometimes inverse the angle
     public Angle256 Inverse() => new(Max - Value);
     public Vector2 ToDirectionalVector() => MathHelpers.DirectionalVector256(Value);
 

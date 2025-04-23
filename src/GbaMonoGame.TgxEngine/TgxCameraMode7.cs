@@ -14,7 +14,6 @@ public class TgxCameraMode7 : TgxCamera
     }
 
     private const float DefaultHorizon = 62;
-    private static readonly Vector2 _flipY = new(1, -1);
 
     private bool _isProjectionDirty = true;
     private bool _isViewDirty = true;
@@ -156,10 +155,6 @@ public class TgxCameraMode7 : TgxCamera
     // Layers
     public List<TgxGameLayer> RotScaleLayers { get; } = new();
     public List<TgxTextLayerMode7> TextLayers { get; } = new();
-
-    // Y is by default pointing down, but for math operations dealing with rotations etc. we need Y to point up
-    public static Vector2 ToMathSpace(Vector2 v) => v * _flipY;
-    public static Vector2 ToGameSpace(Vector2 v) => v * _flipY;
 
     private void UpdateProjectionMatrix()
     {

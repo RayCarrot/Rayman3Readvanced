@@ -1,6 +1,5 @@
 ﻿using System;
 using BinarySerializer;
-using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Engine2d;
 
@@ -173,7 +172,7 @@ public class MechModel
     private Vector2 Mode7_SetConstSpeedXY(MovableActor actor)
     {
         Mode7Actor mode7Actor = (Mode7Actor)actor;
-        return TgxCameraMode7.ToGameSpace(MathHelpers.Rotate256(Speed, mode7Actor.Direction));
+        return MathHelpers.Rotate256(Speed, mode7Actor.Direction).FlipY();
     }
 
     private Vector2 Mode7_SetAcceleratedSpeedX(MovableActor actor)
@@ -198,7 +197,7 @@ public class MechModel
         }
 
         Mode7Actor mode7Actor = (Mode7Actor)actor;
-        return TgxCameraMode7.ToGameSpace(MathHelpers.Rotate256(Speed, mode7Actor.Direction));
+        return MathHelpers.Rotate256(Speed, mode7Actor.Direction).FlipY();
     }
 
     private Vector2 Mode7_SetAcceleratedSpeedY(MovableActor actor)
@@ -223,7 +222,7 @@ public class MechModel
         }
 
         Mode7Actor mode7Actor = (Mode7Actor)actor;
-        return TgxCameraMode7.ToGameSpace(MathHelpers.Rotate256(Speed, mode7Actor.Direction));
+        return MathHelpers.Rotate256(Speed, mode7Actor.Direction).FlipY();
     }
 
     private Vector2 Mode7_SetAcceleratedSpeedXY(MovableActor actor)
@@ -287,7 +286,7 @@ public class MechModel
         }
 
         Mode7Actor mode7Actor = (Mode7Actor)actor;
-        return TgxCameraMode7.ToGameSpace(MathHelpers.Rotate256(Speed, mode7Actor.Direction));
+        return MathHelpers.Rotate256(Speed, mode7Actor.Direction).FlipY();
     }
 
     private void Reset(float[] mechParams, int offset)
