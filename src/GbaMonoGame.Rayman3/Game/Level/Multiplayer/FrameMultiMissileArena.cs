@@ -1,0 +1,53 @@
+﻿using GbaMonoGame.Rayman3.Readvanced;
+using Microsoft.Xna.Framework;
+
+namespace GbaMonoGame.Rayman3;
+
+public class FrameMultiMissileArena : FrameMissileMultiMode7
+{
+    public FrameMultiMissileArena() : base(MapId.GbaMulti_MissileArena, 3) { }
+
+    public override void Init()
+    {
+        Gfx.ClearColor = Color.Black;
+        base.Init();
+
+        MultiplayerManager.Init();
+
+        // TODO: There's also an empty area on the bottom-right of the map that we need to fill since it's visible
+        ExtendMap(
+        [
+            new(3), new(4), new(5),
+            new(2), new(8), new(1),
+            new(7), new(9), new(6)
+        ], 3, 3);
+    }
+
+    public override void Step()
+    {
+        MubState state = MultiplayerManager.Step();
+
+        if (state == MubState.Connected && !EndOfFrame)
+        {
+            if (MultiplayerManager.HasReadJoyPads())
+            {
+                GameTime.Resume();
+                base.Step();
+                MultiplayerManager.FrameProcessed();
+            }
+            else
+            {
+                GameTime.Pause();
+            }
+        }
+        else
+        {
+            SoundEventsManager.StopAllSongs();
+
+            InitialMenuPage menuPage = EndOfFrame
+                ? InitialMenuPage.Multiplayer
+                : InitialMenuPage.MultiplayerLostConnection;
+            FrameManager.SetNextFrame(new ModernMenuAll(menuPage));
+        }
+    }
+}

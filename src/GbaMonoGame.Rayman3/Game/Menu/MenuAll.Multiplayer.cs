@@ -168,7 +168,10 @@ public partial class MenuAll
             case 2 when Rom.Platform == Platform.GBA:
                 MultiplayerInfo.SetGameType(MultiplayerGameType.Missile);
 
-                throw new NotImplementedException("Not implemented loading multiplayer missile maps");
+                if (MultiplayerMapId == 0)
+                    FrameManager.SetNextFrame(new FrameMultiMissileRace());
+                else if (MultiplayerMapId == 1)
+                    FrameManager.SetNextFrame(new FrameMultiMissileArena());
                 break;
 
             case 0 when Rom.Platform == Platform.NGage:

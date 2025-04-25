@@ -250,9 +250,8 @@ public class Rayman3 : GbaGame
         switch (Rom.Platform)
         {
             case Platform.GBA:
-                // TODO: Create classes
-                //levelCreations.Add(MapId.GbaMulti_MissileRace, mapId => new (mapId));
-                //levelCreations.Add(MapId.GbaMulti_MissileArena, mapId => new (mapId));
+                levelCreations.Add(MapId.GbaMulti_MissileRace, mapId => new FrameMultiMissileRace());
+                levelCreations.Add(MapId.GbaMulti_MissileArena, mapId => new FrameMultiMissileArena());
                 levelCreations.Add(MapId.GbaMulti_TagWeb, mapId => new FrameMultiTag(mapId));
                 levelCreations.Add(MapId.GbaMulti_TagSlide, mapId => new FrameMultiTag(mapId));
                 levelCreations.Add(MapId.GbaMulti_CatAndMouseSlide, mapId => new FrameMultiCatAndMouse(mapId));
