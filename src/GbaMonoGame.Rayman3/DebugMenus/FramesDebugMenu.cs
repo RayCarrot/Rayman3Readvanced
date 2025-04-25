@@ -113,6 +113,11 @@ public class FramesDebugMenu : DebugMenu
                 MapId mapId = (MapId)i;
 
                 // Initialize multiplayer
+                RSMultiplayer.UnInit();
+                RSMultiplayer.Init();
+                RSMultiplayer.MachineId = 0;
+                RSMultiplayer.PlayersCount = 4;
+                RSMultiplayer.MubState = MubState.Connected;
                 MultiplayerInfo.Init();
 
                 MultiplayerInfo.MapId = (i - 1) % 2; // Hack
