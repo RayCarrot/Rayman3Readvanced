@@ -165,7 +165,7 @@ public class Rayman3 : GbaGame
             // TODO: CaptureTheFlagFlag
             { ActorType.CaptureTheFlagRaymanSolo, (instanceId, scene, resource) => new Rayman(instanceId, scene, resource) },
             // TODO: CaptureTheFlagFlagBase
-            // TODO: CaptureTheFlagItems
+            { ActorType.CaptureTheFlagItems, (instanceId, scene, resource) => new CaptureTheFlagItems(instanceId, scene, resource) },
             { ActorType.CaptureTheFlagRaymanTeams, (instanceId, scene, resource) => new Rayman(instanceId, scene, resource) },
         }, x => ((ActorType)x).ToString());
         

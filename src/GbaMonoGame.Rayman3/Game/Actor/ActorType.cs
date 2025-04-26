@@ -118,6 +118,6 @@ public enum ActorType
     CaptureTheFlagFlag = 111, // TODO: Implement
     CaptureTheFlagRaymanSolo = 112,
     CaptureTheFlagFlagBase = 113, // TODO: Implement
-    CaptureTheFlagItems = 114, // TODO: Implement
+    CaptureTheFlagItems = 114,
     CaptureTheFlagRaymanTeams = 115,
 }

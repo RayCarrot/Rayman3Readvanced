@@ -122,7 +122,7 @@ public enum Message
     // N-Gage exclusive
     Rayman_1095 = 1095, // TODO: Name
 
-    Rayman_1102 = 1102, // TODO: Name
+    Rayman_CollectCaptureTheFlagItem = 1102,
     Rayman_1103 = 1103, // TODO: Name
 
     Rayman_1112 = 1112, // TODO: Name

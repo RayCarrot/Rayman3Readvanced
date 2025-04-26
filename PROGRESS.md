@@ -275,5 +275,5 @@
 | CaptureTheFlagFlag        | 🟥     |                                              |
 | CaptureTheFlagRaymanSolo  | 🟩     |                                              |
 | CaptureTheFlagFlagBase    | 🟥     |                                              |
-| CaptureTheFlagItems       | 🟥     |                                              |
+| CaptureTheFlagItems       | 🟩     |                                              |
 | CaptureTheFlagRaymanTeams | 🟩     |                                              |

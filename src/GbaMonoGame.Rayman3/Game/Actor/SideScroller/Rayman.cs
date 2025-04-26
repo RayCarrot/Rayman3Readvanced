@@ -1790,8 +1790,28 @@ public sealed partial class Rayman : MovableActor
                 // TODO: Implement
                 return false;
 
-            case Message.Rayman_1102:
-                // TODO: Implement
+            case Message.Rayman_CollectCaptureTheFlagItem:
+                CaptureTheFlagItems.Action itemAction = (CaptureTheFlagItems.Action)param;
+
+                // The duration is always 300
+                const uint duration = 300;
+
+                if (itemAction == CaptureTheFlagItems.Action.Invincibility)
+                {
+                    if (FlagData.SpeedUpTimer == 0)
+                        FlagData.SpeedUp = true;
+
+                    FlagData.SpeedUpTimer = duration;
+                }
+                else if (itemAction == CaptureTheFlagItems.Action.MagicShoes)
+                {
+                    FlagData.InvincibilityTimer = duration;
+                }
+                else if (itemAction == CaptureTheFlagItems.Action.Unused)
+                {
+                    if (IsLocalPlayer)
+                        FlagData.UnusedItemTimer = duration;
+                }
                 return false;
 
             case Message.Rayman_1103:
@@ -2006,22 +2026,22 @@ public sealed partial class Rayman : MovableActor
 
             if (RSMultiplayer.IsActive && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             {
-                if (FlagData.field_ac != 0)
-                    FlagData.field_ac--;
+                if (FlagData.InvincibilityTimer != 0)
+                    FlagData.InvincibilityTimer--;
 
-                if (FlagData.field_b0 != 0)
-                    FlagData.field_b0--;
+                if (FlagData.SpeedUpTimer != 0)
+                    FlagData.SpeedUpTimer--;
 
-                if (FlagData.field_b9)
+                if (FlagData.SpeedUp)
                 {
-                    if (FlagData.field_b0 != 0)
+                    if (FlagData.SpeedUpTimer != 0)
                         MechModel.Speed = MechModel.Speed with { X = MechModel.Speed.X * 3 / 2 };
 
-                    FlagData.field_b9 = false;
+                    FlagData.SpeedUp = false;
                 }
                 else
                 {
-                    if (FlagData.field_b0 % 256 != 0 && FlagData.field_b0 == 0)
+                    if (FlagData.SpeedUpTimer % 256 != 0 && FlagData.SpeedUpTimer == 0)
                         MechModel.Speed = MechModel.Speed with { X = MechModel.Speed.X * 2 / 3 };
                 }
             }
@@ -2038,9 +2058,9 @@ public sealed partial class Rayman : MovableActor
             else
                 AnimatedObject.ActivateChannel(4);
 
-            if (FlagData.field_b4 != 0 && IsLocalPlayer)
+            if (FlagData.UnusedItemTimer != 0 && IsLocalPlayer)
             {
-                FlagData.field_b4--;
+                FlagData.UnusedItemTimer--;
                 DrawFlagArrows();
             }
         }
@@ -2065,7 +2085,7 @@ public sealed partial class Rayman : MovableActor
             if (Rom.Platform == Platform.NGage &&
                 RSMultiplayer.IsActive &&
                 MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag &&
-                FlagData.field_ac != 0 &&
+                FlagData.InvincibilityTimer != 0 &&
                 (GameTime.ElapsedFrames & 1) != 0)
             {
                 draw = false;
@@ -2090,11 +2110,11 @@ public sealed partial class Rayman : MovableActor
         // TODO: Name these properties
         public BaseActor PickedUpFlag { get; set; }
         public AnimatedObject[] FlagArrows { get; } = new AnimatedObject[RSMultiplayer.MaxPlayersCount - 1];
-        public uint field_ac { get; set; }
-        public uint field_b0 { get; set; }
-        public uint field_b4 { get; set; }
+        public uint InvincibilityTimer { get; set; }
+        public uint SpeedUpTimer { get; set; }
+        public uint UnusedItemTimer { get; set; }
         public byte field_b8 { get; set; }
-        public bool field_b9 { get; set; }
+        public bool SpeedUp { get; set; }
         public byte PlayerPaletteId { get; set; } // TODO: Probably don't need this
         public Power Powers { get; set; }
         public byte field_bc { get; set; }
