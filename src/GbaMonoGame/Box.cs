@@ -102,7 +102,7 @@ public struct Box
         return box;
     }
 
-    public static Box Intersect(Box box1, Box box2)
+    public static bool Intersect(Box box1, Box box2, out Box intersectBox)
     {
         float maxLeft = box2.Left;
         if (maxLeft < box1.Left)
@@ -121,9 +121,15 @@ public struct Box
             minBottom = box1.Bottom;
 
         if (maxLeft < minRight && maxTop < minBottom)
-            return new Box(maxLeft, maxTop, minRight, minBottom);
+        {
+            intersectBox = new Box(maxLeft, maxTop, minRight, minBottom);
+            return true;
+        }
         else
-            return Empty;
+        {
+            intersectBox = Empty;
+            return false;
+        }
     }
 
     public static bool operator ==(Box a, Box b)

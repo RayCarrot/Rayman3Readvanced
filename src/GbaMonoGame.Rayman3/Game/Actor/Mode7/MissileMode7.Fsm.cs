@@ -78,7 +78,7 @@ public partial class MissileMode7
 
             if (HitPoints == 0 && RSMultiplayer.IsActive)
             {
-                State.MoveTo(FUN_08085394);
+                State.MoveTo(Fsm_MultiplayerDying);
                 return false;
             }
 
@@ -374,7 +374,21 @@ public partial class MissileMode7
 
                     if (RSMultiplayer.IsActive)
                     {
-                        // TODO: Implement
+                        FrameMissileMultiMode7 frame = (FrameMissileMultiMode7)Frame.Current;
+                        MultiRaceManager raceManager = frame.RaceManager;
+
+                        int rank = Array.IndexOf(raceManager.PlayerRanks, InstanceId);
+                        if (rank == -1)
+                            rank = 0;
+
+                        if (rank != 0)
+                        {
+                            LevelMusicManager.OverrideLevelMusic(Rayman3SoundEvent.Play__win3);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02);
+                        }
+
+                        if (MultiplayerManager.MachineId == InstanceId) 
+                            Scene.Camera.ProcessMessage(this, Message.CamMode7_Spin, true);
                     }
                     else
                     {
@@ -401,14 +415,31 @@ public partial class MissileMode7
 
                 UpdateJump();
 
+                // Make sure all players have finished the race
                 if (RSMultiplayer.IsActive)
                 {
-                    // TODO: Implement
+                    FrameMissileMultiMode7 frame = (FrameMissileMultiMode7)Frame.Current;
+                    MultiRaceManager raceManager = frame.RaceManager;
+
+                    bool raceFinished = true;
+                    for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
+                    {
+                        if (raceManager.PlayersCurrentTempLap[id] <= raceManager.LapsCount && 
+                            Scene.GetGameObject<MissileMode7>(id).HitPoints != 0)
+                        {
+                            raceFinished = false;
+                            break;
+                        }
+                    }
+
+                    if (!raceFinished)
+                        return true;
                 }
 
                 if (RSMultiplayer.IsActive)
                 {
-                    // TODO: Implement
+                    FrameMissileMultiMode7 frame = (FrameMissileMultiMode7)Frame.Current;
+                    frame.UserInfo.IsGameOver = true;
                 }
 
                 InvulnerabilityTimer++;
@@ -454,9 +485,122 @@ public partial class MissileMode7
         return true;
     }
 
-    public bool FUN_08085394(FsmAction action)
+    public bool Fsm_MultiplayerDying(FsmAction action)
     {
-        // TODO: Implement
+        switch (action)
+        {
+            case FsmAction.Init:
+                MultiplayerDeathFadeFlag = false;
+                MultiplayerDeathSpectatePlayer = (byte)InstanceId;
+                MultiplayerDeathTimer = 0;
+
+                if (InstanceId == Scene.Camera.LinkedObject.InstanceId)
+                {
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Motor01_Mix12);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__RaDeath_Mix03);
+                }
+
+                FrameMissileMultiMode7 frame = (FrameMissileMultiMode7)Frame.Current;
+                MultiRaceManager raceManager = frame.RaceManager;
+
+                raceManager.PlayersIsDead[InstanceId] = true;
+
+                int deadPlayers = 0;
+                int alivePlayer = 0;
+                int prevAlivePlayer = alivePlayer;
+                for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
+                {
+                    alivePlayer = id;
+                    if (raceManager.PlayersIsDead[id])
+                    {
+                        deadPlayers++;
+                        alivePlayer = prevAlivePlayer;
+                    }
+                    prevAlivePlayer = alivePlayer;
+                }
+
+                // If only 1 player is left alive
+                if (deadPlayers == MultiplayerManager.PlayersCount - 1)
+                {
+                    raceManager.Data4[alivePlayer] = 32000;
+                    raceManager.PlayersCurrentTempLap[alivePlayer] = raceManager.LapsCount + 1;
+                    raceManager.Data8 = alivePlayer;
+                    raceManager.UpdateRankings(alivePlayer, true);
+                }
+
+                if (GameInfo.MapId == MapId.GbaMulti_MissileArena)
+                {
+                    for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
+                    {
+                        if (Scene.GetGameObject<MissileMode7>(id).HitPoints != 0)
+                            raceManager.UpdateRankings(id, true);
+                    }
+                }
+                break;
+
+            case FsmAction.Step:
+                SetMode7DirectionalAction((int)Action.Default, ActionRotationSize);
+
+                MechModel.Speed -= MechModel.Speed / 64;
+
+                // Gradually return to normal scale
+                if (1 < Scale.Y)
+                    Scale += new Vector2(8, -16) / 256;
+                else
+                    Scale = Vector2.One;
+
+                if (MultiplayerDeathFadeFlag)
+                    MultiplayerDeathTimer++;
+
+                // Change player to spectate
+                if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A) && InstanceId == MultiplayerManager.MachineId && !MultiplayerDeathFadeFlag) 
+                {
+                    TransitionsFX.FadeOutInit(2);
+                    MultiplayerDeathFadeFlag = true;
+                }
+
+                // TODO: Bug fix to update timer values to actually match fade?
+
+                // Update player to spectate
+                if (MultiplayerDeathTimer == 15)
+                {
+                    MultiplayerDeathSpectatePlayer++;
+                    MultiplayerDeathSpectatePlayer %= MultiplayerManager.PlayersCount;
+
+                    if (Scene.GetGameObject<MissileMode7>(MultiplayerDeathSpectatePlayer).HitPoints == 0) 
+                    {
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Motor01_Mix12);
+                    }
+                    else
+                    {
+                        if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__Motor01_Mix12))
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Motor01_Mix12);
+                    }
+
+                    Scene.Camera.LinkedObject = Scene.GetGameObject<MissileMode7>(MultiplayerDeathSpectatePlayer);
+                    Scene.Camera.ProcessMessage(this, Message.CamMode7_Reset);
+                }
+                // Fade in
+                else if (MultiplayerDeathTimer == 20)
+                {
+                    TransitionsFX.FadeInInit(2);
+                    
+                    UserInfoMultiMode7 userInfo = ((FrameMissileMultiMode7)Frame.Current).UserInfo;
+                    userInfo.MainActor = Scene.GetGameObject<MissileMode7>(MultiplayerDeathSpectatePlayer);
+                    userInfo.HitPointsChanged = false;
+                }
+                // Reset
+                else if (MultiplayerDeathTimer == 35)
+                {
+                    MultiplayerDeathTimer = 0;
+                    MultiplayerDeathFadeFlag = false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
 
         return true;
     }

@@ -30,9 +30,7 @@ public abstract class MovableActor : InteractableActor
 
     private bool CheckObjectCollisionXY(Box actorDetectionBox, Box otherDetectionBox)
     {
-        Box intersectBox = Box.Intersect(actorDetectionBox, otherDetectionBox);
-
-        if (intersectBox == Box.Empty)
+        if (!Box.Intersect(actorDetectionBox, otherDetectionBox, out Box intersectBox))
             return false;
 
         float width = intersectBox.Width;
@@ -93,9 +91,7 @@ public abstract class MovableActor : InteractableActor
 
     private bool CheckObjectCollisionX(Box actorDetectionBox, Box otherDetectionBox)
     {
-        Box intersectBox = Box.Intersect(actorDetectionBox, otherDetectionBox);
-
-        if (intersectBox == Box.Empty)
+        if (!Box.Intersect(actorDetectionBox, otherDetectionBox, out Box intersectBox))
             return false;
 
         float width = intersectBox.Width;

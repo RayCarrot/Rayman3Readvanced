@@ -20,10 +20,10 @@ public sealed partial class MissileMode7 : Mode7Actor
         {
             Direction = new Angle256(InstanceId switch
             {
-                0 => 224,
-                1 => 160,
-                2 => 96,
-                3 => 32,
+                0 => Angle256.Max / 8 * 7,
+                1 => Angle256.Max / 8 * 5,
+                2 => Angle256.Max / 8 * 3,
+                3 => Angle256.Max / 8 * 1,
                 _ => throw new Exception("Invalid instance id")
             });
         }
@@ -32,15 +32,15 @@ public sealed partial class MissileMode7 : Mode7Actor
             AnimatedObject.BasePaletteIndex = InstanceId;
 
         CollectedBlueLums = 0;
-        field_0x8c = 0;
-        field_0x88 = 0;
+        Unused1 = 0;
+        Unused2 = 0;
         Scale = Vector2.One;
         RaceDirection = MissileMode7PhysicalTypeDefine.TypeDirection.Right;
         PrevPhysicalType = MissileMode7PhysicalTypeDefine.Empty;
         PrevHitPoints = HitPoints;
         CurrentTempLap = 0;
         BoostTimer = 0;
-        Acceleration = 0.0625f;
+        Acceleration = 1 / 16f;
         WahooSoundTimer = 0;
         JumpSoundTimer = 0;
         CustomScaleTimer = 0;
@@ -62,6 +62,10 @@ public sealed partial class MissileMode7 : Mode7Actor
     public float ZPosSpeed { get; set; }
     public float ZPosDeacceleration { get; set; }
     public float Acceleration { get; set; }
+    
+    public ushort MultiplayerDeathTimer { get; set; } // NOTE: In the original game it reuses the Acceleration value
+    public bool MultiplayerDeathFadeFlag { get; set; } // NOTE: In the original game it reuses the IsOnCorrectLap value
+    public int MultiplayerDeathSpectatePlayer { get; set; } // NOTE: In the original game it reuses the BoostTimer value
 
     public Vector2 Scale { get; set; }
     public byte CustomScaleTimer { get; set; }
@@ -72,9 +76,9 @@ public sealed partial class MissileMode7 : Mode7Actor
     public byte CurrentTempLap { get; set; }
     public bool IsOnCorrectLap { get; set; }
 
-    // TODO: Name
-    public byte field_0x8c { get; set; }
-    public byte field_0x88 { get; set; }
+    // Unused
+    public byte Unused1 { get; set; }
+    public byte Unused2 { get; set; }
 
     public bool Debug_NoClip { get; set; } // Custom no-clip mode
 
@@ -97,7 +101,7 @@ public sealed partial class MissileMode7 : Mode7Actor
     private bool IsFacingTheRightDirection(MissileMode7PhysicalTypeDefine.TypeDirection raceDirection)
     {
         Angle256 v1 = (int)raceDirection * 32 + 80;
-        Angle256 v2 = (int)raceDirection * 32 + 176;
+        Angle256 v2 = (int)raceDirection * 32 + (Angle256.Max - 80);
         
         if (v1 < v2)
             return v1 > Direction || Direction > v2;
@@ -216,8 +220,148 @@ public sealed partial class MissileMode7 : Mode7Actor
 
     private bool DoMultiRace()
     {
-        // TODO: Implement
+        FrameMissileMultiMode7 frame = (FrameMissileMultiMode7)Frame.Current;
+        MultiRaceManager raceManager = frame.RaceManager;
+
+        // Get the current physical type
+        MissileMode7PhysicalTypeDefine physicalType = MissileMode7PhysicalTypeDefine.FromPhysicalType(Scene.GetPhysicalType(Position));
+
+        if (physicalType.Directional && !PrevPhysicalType.Directional)
+            RaceDirection = physicalType.Direction;
+
+        bool isMovingTheRightDirection = IsMovingTheRightDirection(RaceDirection);
+
+        if (InstanceId == Scene.Camera.LinkedObject.InstanceId)
+        {
+            float pitch = Speed.Length() * 512;
+            if (IsJumping)
+                pitch += 256;
+            SoundEventsManager.SetSoundPitch(Rayman3SoundEvent.Play__Motor01_Mix12, pitch);
+
+            // Update if we're facing the right direction
+            raceManager.DrivingTheRightWay = IsFacingTheRightDirection(RaceDirection);
+        }
+
+        if (physicalType.Directional != PrevPhysicalType.Directional)
+            raceManager.UpdateRankings(InstanceId, isMovingTheRightDirection);
+
+        // Check if we passed the finish line
+        if (physicalType.RaceEnd != PrevPhysicalType.RaceEnd)
+        {
+            if (isMovingTheRightDirection)
+            {
+                CurrentTempLap++;
+
+                if ((CurrentTempLap & 1) == 0 && IsOnCorrectLap)
+                {
+                    raceManager.PlayersCurrentTempLap[InstanceId]++;
+
+                    bool finishedRace;
+
+                    if (raceManager.LapsCount < raceManager.PlayersCurrentTempLap[InstanceId])
+                    {
+                        raceManager.PlayersCurrentLap[InstanceId] = raceManager.LapsCount;
+                        
+                        int v = 0;
+
+                        for (int i = 0; i < MultiplayerManager.PlayersCount; i++)
+                        {
+                            if (raceManager.LapsCount < raceManager.PlayersCurrentTempLap[i])
+                                v += 1;
+                        }
+
+                        raceManager.Data4[InstanceId] = 2000 - v;
+
+                        if (InstanceId == MultiplayerManager.MachineId)
+                        {
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02);
+                            raceManager.IsRacing = false;
+                        }
+
+                        finishedRace = true;
+                    }
+                    else
+                    {
+                        if (raceManager.PlayersCurrentLap[InstanceId] < raceManager.PlayersCurrentTempLap[InstanceId])
+                        {
+                            if (InstanceId == MultiplayerManager.MachineId)
+                            {
+                                if (raceManager.PlayersCurrentTempLap[InstanceId] == 2)
+                                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LineFX01_Mix02_P1_);
+                                else if (raceManager.PlayersCurrentTempLap[InstanceId] == 3)
+                                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LineFX01_Mix02_P2_);
+                            }
+
+                            raceManager.Data1[InstanceId] = raceManager.RemainingTime;
+                            raceManager.PlayersCurrentLap[InstanceId] = raceManager.PlayersCurrentTempLap[InstanceId];
+                        }
+
+                        finishedRace = false;
+                    }
+
+                    if (finishedRace)
+                        State.MoveTo(Fsm_FinishedRace);
+
+                    raceManager.UpdateRankings(InstanceId, true);
+                }
+
+                IsOnCorrectLap = true;
+            }
+            else
+            {
+                CurrentTempLap--;
+
+                if ((CurrentTempLap & 1) == 0 && !IsOnCorrectLap)
+                {
+                    raceManager.PlayersCurrentTempLap[InstanceId]--;
+                    raceManager.UpdateRankings(InstanceId, false);
+                }
+
+                IsOnCorrectLap = false;
+            }
+        }
+
+        PrevPhysicalType = physicalType;
+
+        Acceleration = MathHelpers.FromFixedPoint((raceManager.Data4[raceManager.PlayerRanks[0]] - raceManager.Data4[InstanceId]) * 0x80 + 0x1000);
+        const float max = 5 / 64f;
+        if (Acceleration > max)
+            Acceleration = max;
+
         return true;
+    }
+
+    private Vector2 UpdateCollidedPosition(Vector2 pos, Vector2 speed, Box actorDetectionBox, Box otherDetectionBox)
+    {
+        if (!Box.Intersect(actorDetectionBox, otherDetectionBox, out Box intersectBox))
+            return pos;
+
+        if (speed.Y > 0 &&
+            actorDetectionBox.Top < otherDetectionBox.Top &&
+            actorDetectionBox.Bottom < otherDetectionBox.Bottom &&
+            intersectBox.Height < 8)
+        {
+            pos -= new Vector2(0, intersectBox.Height);
+        }
+        else if (speed.Y < 0 && 
+                 actorDetectionBox.Bottom > otherDetectionBox.Bottom && 
+                 actorDetectionBox.Top > otherDetectionBox.Top)
+        {
+            pos += new Vector2(0, intersectBox.Height);
+        }
+        else if (speed.X > 0 && 
+                 actorDetectionBox.Right < otherDetectionBox.Right)
+        {
+            pos -= new Vector2(intersectBox.Width, 0);
+        }
+        else if (speed.X < 0 && 
+                 actorDetectionBox.Left > otherDetectionBox.Left)
+        {
+            pos += new Vector2(intersectBox.Width, 0);
+        }
+
+        // NOTE: The original engine casts the position to an integer here (floor if positive, ceil if negative)
+        return pos;
     }
 
     private void ToggleNoClip()
@@ -235,8 +379,8 @@ public sealed partial class MissileMode7 : Mode7Actor
 
     private void DoNoClipBehavior()
     {
-        Vector2 direction = Direction.ToDirectionalVector() * new Vector2(1, -1);
-        Vector2 sideDirection = (Direction + Angle256.Quarter).ToDirectionalVector() * new Vector2(1, -1);
+        Vector2 direction = Direction.ToDirectionalVector().FlipY();
+        Vector2 sideDirection = (Direction + Angle256.Quarter).ToDirectionalVector().FlipY();
 
         int speed = JoyPad.IsButtonPressed(GbaInput.A) ? 4 : 2;
 
@@ -328,9 +472,54 @@ public sealed partial class MissileMode7 : Mode7Actor
 
     public override void Step()
     {
-        if (RSMultiplayer.IsActive)
+        // Check for collision with other karts
+        if (RSMultiplayer.IsActive && InstanceId == 0)
         {
-            // TODO: Implement
+            for (int id1 = 0; id1 < MultiplayerManager.PlayersCount; id1++)
+            {
+                MissileMode7 actor1 = Scene.GetGameObject<MissileMode7>(id1);
+                Box actor1ViewBox = actor1.GetViewBox();
+
+                for (int id2 = id1; id2 < MultiplayerManager.PlayersCount; id2++)
+                {
+                    MissileMode7 actor2 = Scene.GetGameObject<MissileMode7>(id2);
+                    Box actor2ViewBox = actor2.GetViewBox();
+
+                    if (actor1ViewBox.Intersects(actor2ViewBox) && Math.Abs(actor1.ZPos - actor2.ZPos) < 16)
+                    {
+                        Angle256 angle = MathHelpers.Atan2_256((actor2.Position - actor1.Position).FlipY());
+                        angle += Angle256.Half;
+                        Vector2 directionalVector = angle.ToDirectionalVector().FlipY();
+
+                        Vector2 speedDiff = actor1.Speed - actor2.Speed;
+                        
+                        float force;
+                        if (GameInfo.MapId == MapId.GbaMulti_MissileArena)
+                            force = (directionalVector.X * speedDiff.X + directionalVector.Y * speedDiff.Y) * 2;
+                        else
+                            force = directionalVector.X * speedDiff.X + directionalVector.Y * speedDiff.Y;
+
+                        if (force < 0)
+                        {
+                            actor1.MechModel.Speed -= directionalVector * force;
+                            actor1.MechModel.Acceleration = Vector2.Zero;
+
+                            actor2.MechModel.Speed += directionalVector * force;
+                            actor2.MechModel.Acceleration = Vector2.Zero;
+
+                            if (actor1.InstanceId == Scene.Camera.LinkedObject.InstanceId || 
+                                actor2.InstanceId == Scene.Camera.LinkedObject.InstanceId) 
+                            {
+                                if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__PinBall_Mix02)) 
+                                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PinBall_Mix02);
+                            }
+                        }
+
+                        actor1.Position = UpdateCollidedPosition(actor1.Position, actor1.Speed, actor1.GetDetectionBox(), actor2.GetDetectionBox());
+                        actor2.Position = UpdateCollidedPosition(actor2.Position, actor2.Speed, actor2.GetDetectionBox(), actor1.GetDetectionBox());
+                    }
+                }
+            }
         }
 
         base.Step();

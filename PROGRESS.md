@@ -101,8 +101,8 @@
 | World3                     | 🟩     |                                              |
 | World4                     | 🟩     |                                              |
 | WorldMap                   | 🟩     |                                              |
-| Multi_MissileRace          | 🟥     |                                              |
-| Multi_MissileArena         | 🟥     |                                              |
+| Multi_MissileRace          | 🟩     |                                              |
+| Multi_MissileArena         | 🟩     |                                              |
 | Multi_RayTag1              | 🟩     |                                              |
 | Multi_RayTag2              | 🟩     |                                              |
 | Multi_CatAndMouse1         | 🟩     |                                              |
@@ -132,7 +132,7 @@
 | UserInfoMulti2D        | 🟩     |                                              |
 | UserInfoWaterskiMode7  | 🟩     |                                              |
 | UserInfoSingleMode7    | 🟩     |                                              |
-| UserInfoMultiMode7     | 🟥     |                                              |
+| UserInfoMultiMode7     | 🟩     |                                              |
 | PauseDialog            | 🟩     |                                              |
 | FogDialog              | 🟩     |                                              |
 | LyTimerDialog          | 🟩     |                                              |
@@ -235,7 +235,7 @@
 | PumpkinMode7              | 🟩     |                                              |
 | Bats                      | 🟩     |                                              |
 | Sparkle                   | 🟩     |                                              |
-| MissileMode7              | 🟨     | Not implemented multiplayer states           |
+| MissileMode7              | 🟩     |                                              |
 | Impact                    | 🟩     |                                              |
 | WalkingShell              | 🟩     |                                              |
 | WoodenBar                 | 🟩     |                                              |

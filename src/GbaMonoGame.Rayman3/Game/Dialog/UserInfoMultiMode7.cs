@@ -68,7 +68,7 @@ public class UserInfoMultiMode7 : Dialog
         {
             PreviousHitPoints = MainActor.HitPoints;
             HitPoints.CurrentAnimation = MainActor.HitPoints + 10;
-                HitPoints.DeactivateChannel(0);
+            HitPoints.DeactivateChannel(0);
 
             if (MainActor.HitPoints != 0)
                 HitPointsChanged = true;
