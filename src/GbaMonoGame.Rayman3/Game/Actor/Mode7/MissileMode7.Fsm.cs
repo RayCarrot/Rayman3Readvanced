@@ -134,7 +134,7 @@ public partial class MissileMode7
                 if (physicalType.BumperLeft && !PrevPhysicalType.BumperLeft)
                 {
                     MechModel.Speed = -new Vector2(MechModel.Speed.Y, MechModel.Speed.X);
-                    Direction = Angle256.FromVector(MechModel.Speed * new Vector2(1, -16));
+                    Direction = Angle256.FromVector((MechModel.Speed * new Vector2(1, 16)).FlipY());
 
                     if (InstanceId == Scene.Camera.LinkedObject.InstanceId)
                     {
@@ -145,7 +145,7 @@ public partial class MissileMode7
                 else if (physicalType.BumperRight && !PrevPhysicalType.BumperRight) 
                 {
                     MechModel.Speed = new Vector2(MechModel.Speed.Y, MechModel.Speed.X);
-                    Direction = Angle256.FromVector(MechModel.Speed * new Vector2(1, -16));
+                    Direction = Angle256.FromVector((MechModel.Speed * new Vector2(1, 16)).FlipY());
 
                     if (InstanceId == Scene.Camera.LinkedObject.InstanceId)
                     {
@@ -169,7 +169,7 @@ public partial class MissileMode7
                     // Accelerate when holding A
                     if (MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.A))
                     {
-                        MechModel.Acceleration = Direction.ToDirectionalVector() * Acceleration * new Vector2(1, -1);
+                        MechModel.Acceleration = (Direction.ToDirectionalVector() * Acceleration).FlipY();
 
                         if (BoostTimer != 0)
                             MechModel.Acceleration *= 2;
@@ -181,11 +181,9 @@ public partial class MissileMode7
                     }
 
                     // Round speed to 0 if too low
-                    float minSpeed = MathHelpers.FromFixedPoint(0x40); // 0.0009765625
-                    if (MechModel.Speed.X < minSpeed &&
-                        MechModel.Speed.X > -minSpeed &&
-                        MechModel.Speed.Y < minSpeed &&
-                        MechModel.Speed.Y > -minSpeed)
+                    const float minSpeed = 1 / 1024f;
+                    if (MechModel.Speed.X is < minSpeed and > -minSpeed &&
+                        MechModel.Speed.Y is < minSpeed and > -minSpeed)
                     {
                         MechModel.Speed = Vector2.Zero;
                     }
@@ -193,14 +191,12 @@ public partial class MissileMode7
                     // Brake when holding B or on damage tiles
                     if (MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.B) || physicalType.Damage)
                     {
-                        float factor = MathHelpers.FromFixedPoint(0xC00); // 0.046875
-                        MechModel.Speed -= MechModel.Speed * factor;
+                        MechModel.Speed -= MechModel.Speed * (12 / 256f);
                     }
                     // Apply friction
                     else
                     {
-                        float factor = MathHelpers.FromFixedPoint(0x500); // 0.01953125
-                        MechModel.Speed -= MechModel.Speed * factor;
+                        MechModel.Speed -= MechModel.Speed * (5 / 256f);
                     }
 
                     // Update speed
@@ -225,17 +221,9 @@ public partial class MissileMode7
                         Direction -= 2;
 
                     if (CustomScaleTimer == 0)
-                    {
-                        // Gradually return to normal scale
-                        if (1 < Scale.Y)
-                            Scale += new Vector2(8, -16) / 256;
-                        else
-                            Scale = Vector2.One;
-                    }
+                        RestoreScale();
                     else
-                    {
                         CustomScaleTimer--;
-                    }
 
                     if (physicalType.Bounce)
                     {
@@ -265,7 +253,7 @@ public partial class MissileMode7
                 }
 
                 ZPosSpeed = 8;
-                ZPosDeacceleration = 0.375f;
+                ZPosDeacceleration = 3 / 8f;
                 Scale = new Vector2(288, 224) / 256;
                 IsJumping = true;
                 break;
@@ -343,6 +331,8 @@ public partial class MissileMode7
                 //       The problem is we calculate the ZPos in 3D while the game does it in screen
                 //       coordinates (more or less), which makes us travel upwards at a much slower pace.
                 //       This sort of replicates the original look, but not fully (you still move up too fast).
+                // Scale = Vector2.One + new Vector2(InvulnerabilityTimer * 64, InvulnerabilityTimer * -8) / 256;
+                // ZPos = InvulnerabilityTimer * 8;
                 if (InvulnerabilityTimer > 30)
                 {
                     Scale = Vector2.Zero;
@@ -407,12 +397,7 @@ public partial class MissileMode7
 
                 MechModel.Speed -= MechModel.Speed / 64;
 
-                // Gradually return to normal scale
-                if (1 < Scale.Y)
-                    Scale += new Vector2(8, -16) / 256;
-                else
-                    Scale = Vector2.One;
-
+                RestoreScale();
                 UpdateJump();
 
                 // Make sure all players have finished the race
@@ -543,11 +528,7 @@ public partial class MissileMode7
 
                 MechModel.Speed -= MechModel.Speed / 64;
 
-                // Gradually return to normal scale
-                if (1 < Scale.Y)
-                    Scale += new Vector2(8, -16) / 256;
-                else
-                    Scale = Vector2.One;
+                RestoreScale();
 
                 if (MultiplayerDeathFadeFlag)
                     MultiplayerDeathTimer++;
@@ -555,11 +536,11 @@ public partial class MissileMode7
                 // Change player to spectate
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A) && InstanceId == MultiplayerManager.MachineId && !MultiplayerDeathFadeFlag) 
                 {
-                    TransitionsFX.FadeOutInit(2);
+                    // The code is written as if the fade lasts 16 frames, yet it's set to 2 which lasts 32 frames. This makes the
+                    // transition looks broken, so we optionally fix it. Same below for the fade in.
+                    TransitionsFX.FadeOutInit(Engine.Config.FixBugs ? 4 : 2);
                     MultiplayerDeathFadeFlag = true;
                 }
-
-                // TODO: Bug fix to update timer values to actually match fade?
 
                 // Update player to spectate
                 if (MultiplayerDeathTimer == 15)
@@ -583,7 +564,7 @@ public partial class MissileMode7
                 // Fade in
                 else if (MultiplayerDeathTimer == 20)
                 {
-                    TransitionsFX.FadeInInit(2);
+                    TransitionsFX.FadeInInit(Engine.Config.FixBugs ? 4 : 2);
                     
                     UserInfoMultiMode7 userInfo = ((FrameMissileMultiMode7)Frame.Current).UserInfo;
                     userInfo.MainActor = Scene.GetGameObject<MissileMode7>(MultiplayerDeathSpectatePlayer);

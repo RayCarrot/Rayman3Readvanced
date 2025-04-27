@@ -126,6 +126,15 @@ public sealed partial class MissileMode7 : Mode7Actor
         }
     }
 
+    private void RestoreScale()
+    {
+        // Gradually return to normal scale
+        if (1 < Scale.Y)
+            Scale += new Vector2(8, -16) / 256;
+        else
+            Scale = Vector2.One;
+    }
+
     private bool DoSingleRace()
     {
         FrameSingleMode7 frame = (FrameSingleMode7)Frame.Current;
