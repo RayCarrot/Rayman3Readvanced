@@ -76,16 +76,16 @@ public partial class CameraMode7
 
                 // NOTE: The game has no tolerance and uses a direct equality comparison. But that's because
                 //       it doesn't store a fractional value for the direction.
-                if (Math.Abs(linkedObjDir - cam.Direction.Inverse()) >= 1)
+                if (Math.Abs((linkedObjDir - cam.Direction.Inverse()).SignedValue) >= 1)
                 {
                     if (linkedObjDir + cam.Direction < Angle256.Half)
                     {
-                        DirectionDelta += 0.25f + (cam.Direction + linkedObjDir) * 0.0625f;
+                        DirectionDelta += (1 / 4f) + (cam.Direction + linkedObjDir) * (1 / 16f);
                         cam.Direction = (cam.Direction.Inverse() + DirectionDelta).Inverse();
                     }
                     else
                     {
-                        DirectionDelta += 0.25f + (cam.Direction.Inverse() - linkedObjDir) * 0.0625f;
+                        DirectionDelta += (1 / 4f) + (cam.Direction.Inverse() - linkedObjDir) * (1 / 16f);
                         cam.Direction = (cam.Direction.Inverse() + DirectionDelta.Inverse()).Inverse();
                     }
 

@@ -17,7 +17,7 @@ public readonly struct Angle256
     public static Angle256 Quarter { get; } = new(Max / 4);
 
     public float Value { get; }
-    public float SignedValue => Value < 128 ? Value : Value - 256;
+    public float SignedValue => Value < Max / 2 ? Value : Value - Max;
 
     // Similarly to how the Y position gets flipped we sometimes inverse the angle
     public Angle256 Inverse() => new(Max - Value);
