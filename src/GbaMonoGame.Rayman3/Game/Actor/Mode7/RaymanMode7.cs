@@ -50,10 +50,7 @@ public sealed partial class RaymanMode7 : Mode7Actor
         TgxPlayfieldMode7 playfield = (TgxPlayfieldMode7)Scene.Playfield;
         TgxCameraMode7 cam = playfield.Camera;
 
-        // Workaround for the game casting to a signed byte
-        float x = PrevCamAngle - cam.Direction.Inverse();
-        if (x >= 128)
-            x -= 256;
+        float x = (PrevCamAngle - cam.Direction.Inverse()).SignedValue;
 
         // NOTE: The game scrolls by 1 every 4 frames
         x += 0.25f;
