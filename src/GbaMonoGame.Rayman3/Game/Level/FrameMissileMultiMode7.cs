@@ -16,7 +16,7 @@ public class FrameMissileMultiMode7 : FrameMode7
     }
 
     public int LapsCount { get; }
-    public MultiRaceManager RaceManager { get; set; }
+    public RaceManagerMulti RaceManager { get; set; }
 
     public GfxScreen FogScreen { get; set; }
     public Mode7RedFogScreenRenderer FogScreenRenderer { get; set; }
@@ -96,7 +96,7 @@ public class FrameMissileMultiMode7 : FrameMode7
         Timer = 0;
         CommonInit();
         UserInfo = new UserInfoMultiMode7(Scene);
-        RaceManager = new MultiRaceManager(Scene, UserInfo, LapsCount);
+        RaceManager = new RaceManagerMulti(Scene, UserInfo, LapsCount);
         Scene.AddDialog(UserInfo, false, false);
 
         // NOTE: The game does this in the level classes instead of this base class

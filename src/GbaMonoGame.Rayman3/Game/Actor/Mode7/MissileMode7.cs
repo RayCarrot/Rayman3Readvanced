@@ -230,7 +230,7 @@ public sealed partial class MissileMode7 : Mode7Actor
     private bool DoMultiRace()
     {
         FrameMissileMultiMode7 frame = (FrameMissileMultiMode7)Frame.Current;
-        MultiRaceManager raceManager = frame.RaceManager;
+        RaceManagerMulti raceManager = frame.RaceManager;
 
         // Get the current physical type
         MissileMode7PhysicalTypeDefine physicalType = MissileMode7PhysicalTypeDefine.FromPhysicalType(Scene.GetPhysicalType(Position));

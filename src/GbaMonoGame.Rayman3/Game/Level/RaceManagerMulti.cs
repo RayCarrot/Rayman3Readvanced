@@ -3,9 +3,9 @@ using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
 
-public class MultiRaceManager
+public class RaceManagerMulti
 {
-    public MultiRaceManager(Scene2D scene, UserInfoMultiMode7 userInfo, int lapsCount)
+    public RaceManagerMulti(Scene2D scene, UserInfoMultiMode7 userInfo, int lapsCount)
     {
         Scene = scene;
         UserInfo = userInfo;

@@ -365,7 +365,7 @@ public partial class MissileMode7
                     if (RSMultiplayer.IsActive)
                     {
                         FrameMissileMultiMode7 frame = (FrameMissileMultiMode7)Frame.Current;
-                        MultiRaceManager raceManager = frame.RaceManager;
+                        RaceManagerMulti raceManager = frame.RaceManager;
 
                         int rank = Array.IndexOf(raceManager.PlayerRanks, InstanceId);
                         if (rank == -1)
@@ -404,7 +404,7 @@ public partial class MissileMode7
                 if (RSMultiplayer.IsActive)
                 {
                     FrameMissileMultiMode7 frame = (FrameMissileMultiMode7)Frame.Current;
-                    MultiRaceManager raceManager = frame.RaceManager;
+                    RaceManagerMulti raceManager = frame.RaceManager;
 
                     bool raceFinished = true;
                     for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
@@ -486,7 +486,7 @@ public partial class MissileMode7
                 }
 
                 FrameMissileMultiMode7 frame = (FrameMissileMultiMode7)Frame.Current;
-                MultiRaceManager raceManager = frame.RaceManager;
+                RaceManagerMulti raceManager = frame.RaceManager;
 
                 raceManager.PlayersIsDead[InstanceId] = true;
 

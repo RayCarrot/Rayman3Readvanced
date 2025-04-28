@@ -250,7 +250,7 @@ public class UserInfoMultiMode7 : Dialog
 
     public override void Draw(AnimationPlayer animationPlayer)
     {
-        MultiRaceManager raceManager = ((FrameMissileMultiMode7)Frame.Current).RaceManager;
+        RaceManagerMulti raceManager = ((FrameMissileMultiMode7)Frame.Current).RaceManager;
 
         if (GameInfo.MapId != MapId.GbaMulti_MissileArena)
         {
