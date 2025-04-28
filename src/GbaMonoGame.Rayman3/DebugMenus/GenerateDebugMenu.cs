@@ -86,6 +86,43 @@ public class GenerateDebugMenu : DebugMenu
         File.WriteAllText("actors.csv", sb.ToString());
     }
 
+    private void GenerateActorsInstancesCsv()
+    {
+        HashSet<ActorInstance> actorInstances = [];
+
+        for (int i = 0; i < GameInfo.Levels.Length; i++)
+        {
+            Scene2DResource scene = Rom.LoadResource<Scene2DResource>(i);
+
+            foreach (Actor actor in scene.Actors.Concat(scene.AlwaysActors))
+                actorInstances.Add(new ActorInstance(actor.Type, actor.FirstActionId, actor.ResurrectsImmediately, actor.ResurrectsLater));
+        }
+
+        StringBuilder sb = new();
+
+        void addValue(string value) => sb.Append($"{value},");
+
+        // Header
+        addValue("Type Id");
+        addValue("Type Name");
+        addValue("Action ID");
+        addValue("Resurrects Immediately");
+        addValue("Resurrects Later");
+        sb.AppendLine();
+
+        foreach (ActorInstance actorInstance in actorInstances.OrderBy(x => x.Type).ThenBy(x => x.Action))
+        {
+            addValue($"{actorInstance.Type}");
+            addValue(Enum.IsDefined(typeof(ActorType), actorInstance.Type) ? $"{(ActorType)actorInstance.Type}" : "");
+            addValue($"{actorInstance.Action}");
+            addValue(actorInstance.ResurrectsImmediately ? "✔️" : "");
+            addValue(actorInstance.ResurrectsLater ? "✔️" : "");
+            sb.AppendLine();
+        }
+
+        File.WriteAllText("actor_instances.csv", sb.ToString());
+    }
+
     private void GenerateGameData()
     {
         List<ActorModel>[] actorModels = new List<ActorModel>[256];
@@ -390,6 +427,9 @@ public class GenerateDebugMenu : DebugMenu
         if (ImGui.MenuItem("Actors CSV"))
             GenerateActorsCsv();
 
+        if (ImGui.MenuItem("Actor Instances CSV"))
+            GenerateActorsInstancesCsv();
+
         if (ImGui.MenuItem("Game data"))
             GenerateGameData();
 
@@ -399,4 +439,6 @@ public class GenerateDebugMenu : DebugMenu
         if (ImGui.MenuItem("Credits wheel mesh"))
             GenerateCreditsWheelMesh();
     }
+
+    private record ActorInstance(int Type, int Action, bool ResurrectsImmediately, bool ResurrectsLater);
 }
