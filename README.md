@@ -13,7 +13,7 @@ You can view the current progress of this port in [the progress document](PROGRE
 ## GbaEngine
 The original game uses [Ubisoft's GbaEngine](https://raymanpc.com/wiki/en/GbaEngine), an engine which was written in C and built from Ubisoft's Game Boy Color engine. The engine is object-oriented, which makes it work well for a C# re-creation, and consists of several, mostly independent, modules.
 
-See the [documentation](gbaengine/documentation.md) for more information on the engine, what code changes this port has made and other technical details.
+See the [documentation](gbaengine/documentation.md) for more information on the engine, what code changes this port has made and other technical details. You can also check the [discoveries](gbaengine/discoveries.md) to see things such as unused contents, bugs and other oddities found in the game's code.
 
 ## Enhancements
 This version contains several optional enhancements over the original game. The most notable is that the game can be played in high resolution and widescreen. This provides a much better experience on modern devices as you're no longer limited to the small screen of the GBA.
