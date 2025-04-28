@@ -1,8 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.TgxEngine;
+using Vector3 = Microsoft.Xna.Framework.Vector3;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -80,7 +82,7 @@ public partial class RaymanMode7
 
         SamMode7 sam = Scene.GetGameObject<SamMode7>(SamActorId);
 
-        Vector2 posDiff = (sam.Position - Position) * new Vector2(1, -1);
+        Vector2 posDiff = (sam.Position - Position).FlipY();
         
         Direction = Angle256.FromVector(posDiff);
 
@@ -148,7 +150,15 @@ public partial class RaymanMode7
 
                 if (SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__SkiLoop1))
                 {
-                    // TODO: Set sound pitch
+                    Vector3 screenPos = ((TgxPlayfieldMode7)Scene.Playfield).Camera.Project(new Vector3(Position, 0));
+                    float screenX = Math.Abs(Scene.Resolution.X / 2 - screenPos.X);
+
+                    // TODO: Update this if we adjust the zoom
+                    // NOTE: The screen pos produces slightly different offsets from the original game due to the zoom being different. In
+                    //       the original game the range is usually around +/- 40 while we get +/- 30. We multiply here to adjust this.
+                    screenX *= 40 / 30f;
+
+                    SoundEventsManager.SetSoundPitch(Rayman3SoundEvent.Play__SkiLoop1, screenX * 16 + 192);
                 }
 
                 if (MechModel.Speed.X <= 1)
@@ -165,6 +175,9 @@ public partial class RaymanMode7
                         waterSplash.Position = Position;
                         waterSplash.ChangeAction();
                     }
+
+                    if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__SkiLoop1))
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SkiLoop1);
                 }
 
                 if (JoyPad.IsButtonJustPressed(GbaInput.A) && ProcessJoypad)
@@ -190,7 +203,7 @@ public partial class RaymanMode7
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__SkiLoop1);
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01);
                 ZPosSpeed = 8;
-                ZPosDeacceleration = 0.375f; 
+                ZPosDeacceleration = 3 / 8f; 
                 break;
 
             case FsmAction.Step:

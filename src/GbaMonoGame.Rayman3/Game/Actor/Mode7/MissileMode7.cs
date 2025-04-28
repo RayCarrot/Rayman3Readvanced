@@ -20,10 +20,10 @@ public sealed partial class MissileMode7 : Mode7Actor
         {
             Direction = new Angle256(InstanceId switch
             {
-                0 => Angle256.Max / 8 * 7,
-                1 => Angle256.Max / 8 * 5,
-                2 => Angle256.Max / 8 * 3,
-                3 => Angle256.Max / 8 * 1,
+                0 => Angle256.OneEighth * 7,
+                1 => Angle256.OneEighth * 5,
+                2 => Angle256.OneEighth * 3,
+                3 => Angle256.OneEighth * 1,
                 _ => throw new Exception("Invalid instance id")
             });
         }

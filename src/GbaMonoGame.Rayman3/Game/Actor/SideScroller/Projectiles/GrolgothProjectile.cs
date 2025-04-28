@@ -199,7 +199,7 @@ public sealed partial class GrolgothProjectile : MovableActor
                 MechModel.Speed = new Vector2(speed, 0);
 
                 // NOTE: The original game doesn't have a tolerance check, but we need one since we use floats
-                if (Math.Abs(Rotation - Angle256.Half) >= 1)
+                if (Math.Abs((Rotation - Angle256.Half).SignedValue) >= 1)
                 {
                     if (Rotation >= Angle256.Half)
                         Rotation--;
@@ -216,7 +216,7 @@ public sealed partial class GrolgothProjectile : MovableActor
                 MechModel.Speed = new Vector2(-speed, 0);
 
                 // NOTE: The original game doesn't have a tolerance check, but we need one since we use floats
-                if (Math.Abs(Rotation - Angle256.Zero) >= 1)
+                if (Math.Abs((Rotation - Angle256.Zero).SignedValue) >= 1)
                 {
                     if (Rotation >= Angle256.Half)
                         Rotation++;

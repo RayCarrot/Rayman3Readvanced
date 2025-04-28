@@ -15,6 +15,7 @@ public readonly struct Angle256
     public static Angle256 Zero { get; } = new(0);
     public static Angle256 Half { get; } = new(Max / 2);
     public static Angle256 Quarter { get; } = new(Max / 4);
+    public static Angle256 OneEighth { get; } = new(Max / 8);
 
     public float Value { get; }
     public float SignedValue => Value < Max / 2 ? Value : Value - Max;

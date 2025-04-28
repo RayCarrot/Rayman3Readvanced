@@ -50,24 +50,24 @@ public partial class SamMode7
 
                 // NOTE: The game uses 18.98828125 (fixed-point 0x12FD00) instead of 18. However this causes marshes 2 to break due
                 //       to it being off by 1 pixel and Sam going off course. Using 18 fixes this.
-                Vector2 pos = Position + Direction.ToDirectionalVector() * new Vector2(18) * new Vector2(1, -1);
+                Vector2 pos = Position + (Direction.ToDirectionalVector() * new Vector2(18)).FlipY();
                 PhysicalType type = Scene.GetPhysicalType(pos);
 
                 TargetDirection = type.Value switch
                 {
-                    PhysicalTypeValue.MovingPlatform_Left => 0x80,
-                    PhysicalTypeValue.MovingPlatform_Right => 0,
-                    PhysicalTypeValue.MovingPlatform_Up => 0x40,
-                    PhysicalTypeValue.MovingPlatform_Down => 0xC0,
-                    PhysicalTypeValue.MovingPlatform_DownLeft => 0xA0,
-                    PhysicalTypeValue.MovingPlatform_DownRight => 0xE0,
-                    PhysicalTypeValue.MovingPlatform_UpRight => 0x20,
-                    PhysicalTypeValue.MovingPlatform_UpLeft => 0x60,
+                    PhysicalTypeValue.MovingPlatform_Left => Angle256.OneEighth * 4,
+                    PhysicalTypeValue.MovingPlatform_Right => Angle256.OneEighth * 0,
+                    PhysicalTypeValue.MovingPlatform_Up => Angle256.OneEighth * 2,
+                    PhysicalTypeValue.MovingPlatform_Down => Angle256.OneEighth * 6,
+                    PhysicalTypeValue.MovingPlatform_DownLeft => Angle256.OneEighth * 5,
+                    PhysicalTypeValue.MovingPlatform_DownRight => Angle256.OneEighth * 7,
+                    PhysicalTypeValue.MovingPlatform_UpRight => Angle256.OneEighth * 1,
+                    PhysicalTypeValue.MovingPlatform_UpLeft => Angle256.OneEighth * 3,
                     _ => TargetDirection
                 };
 
                 // NOTE: The game has no tolerance check, but it doesn't use floats so it doesn't need to
-                if (Math.Abs(Direction - TargetDirection) >= 1)
+                if (Math.Abs((Direction - TargetDirection).SignedValue) >= 1)
                 {
                     if (Direction - TargetDirection < Angle256.Half)
                         Direction -= 2;
@@ -121,7 +121,7 @@ public partial class SamMode7
 
                 // Slow down
                 if (MechModel.Speed.X > 0)
-                    MechModel.Speed -= new Vector2(MathHelpers.FromFixedPoint(0x800), 0);
+                    MechModel.Speed -= new Vector2(1 / 32f, 0);
 
                 Timer++;
 

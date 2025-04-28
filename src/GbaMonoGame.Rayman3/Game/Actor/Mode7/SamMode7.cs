@@ -24,7 +24,6 @@ public sealed partial class SamMode7 : Mode7Actor
             Color = DebugBoxColor.DetectionBox,
             RenderContext = Scene.RenderContext,
         };
-
     }
 
     private readonly DebugPointAObject _debugCollisionPositionPointAObject;
@@ -62,8 +61,8 @@ public sealed partial class SamMode7 : Mode7Actor
 
     private void DoNoClipBehavior()
     {
-        Vector2 direction = Direction.ToDirectionalVector() * new Vector2(1, -1);
-        Vector2 sideDirection = (Direction + Angle256.Quarter).ToDirectionalVector() * new Vector2(1, -1);
+        Vector2 direction = Direction.ToDirectionalVector().FlipY();
+        Vector2 sideDirection = (Direction + Angle256.Quarter).ToDirectionalVector().FlipY();
 
         int speed = JoyPad.IsButtonPressed(GbaInput.A) ? 4 : 2;
 
@@ -205,7 +204,7 @@ public sealed partial class SamMode7 : Mode7Actor
     {
         base.DrawDebugBoxes(animationPlayer);
 
-        Vector2 pos = Position + Direction.ToDirectionalVector() * new Vector2(MathHelpers.FromFixedPoint(0x12FD00)) * new Vector2(1, -1);
+        Vector2 pos = Position + Direction.ToDirectionalVector() * new Vector2(MathHelpers.FromFixedPoint(0x12FD00)).FlipY();
 
         if (Scene.Camera.IsDebugBoxFramed(_debugCollisionPositionPointAObject, pos))
             animationPlayer.PlayFront(_debugCollisionPositionPointAObject);
