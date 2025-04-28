@@ -44,19 +44,19 @@ public class WoodLight_M2 : FrameSideScroller
         // Create the target colors for sub-palette 7 (starting from color 2)
         Color[] targetColors =
         [
-            new RGB555Color(0x51ea).ToColor(),
-            new RGB555Color(0x4dc9).ToColor(),
-            new RGB555Color(0x4524).ToColor(),
-            new RGB555Color(0x562c).ToColor(),
-            new RGB555Color(0x4987).ToColor(),
-            new RGB555Color(0x4586).ToColor(),
-            new RGB555Color(0xdf).ToColor(), // Weird red color
-            new RGB555Color(0x4a4c).ToColor(),
-            new RGB555Color(0x49a7).ToColor(),
-            new RGB555Color(0x5a4e).ToColor(),
-            new RGB555Color(0x4565).ToColor(),
-            new RGB555Color(0x49a8).ToColor(),
-            new RGB555Color(0x4e90).ToColor(),
+            ColorHelpers.FromRGB555(0x51ea),
+            ColorHelpers.FromRGB555(0x4dc9),
+            ColorHelpers.FromRGB555(0x4524),
+            ColorHelpers.FromRGB555(0x562c),
+            ColorHelpers.FromRGB555(0x4987),
+            ColorHelpers.FromRGB555(0x4586),
+            ColorHelpers.FromRGB555(0xdf), // Weird red color
+            ColorHelpers.FromRGB555(0x4a4c),
+            ColorHelpers.FromRGB555(0x49a7),
+            ColorHelpers.FromRGB555(0x5a4e),
+            ColorHelpers.FromRGB555(0x4565),
+            ColorHelpers.FromRGB555(0x49a8),
+            ColorHelpers.FromRGB555(0x4e90),
         ];
 
         // Create an array for the new colors

@@ -363,7 +363,7 @@ public class LevelSelect : Frame
         TransitionsFX.Init(true);
         TransitionsFX.FadeInInit(2);
         AnimationPlayer = new AnimationPlayer(false, null);
-        Gfx.ClearColor = new RGB555Color(0x5555).ToColor();
+        Gfx.ClearColor = ColorHelpers.FromRGB555(0x5555);
 
         Header = new SpriteTextObject()
         {

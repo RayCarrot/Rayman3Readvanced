@@ -335,22 +335,22 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         // Create the target colors for sub-palette 4
         Color[] targetColors =
         [
-            new RGB555Color(0x3c0c).ToColor(),
-            new RGB555Color(0x32).ToColor(),
-            new RGB555Color(0x72).ToColor(),
-            new RGB555Color(0x115).ToColor(),
-            new RGB555Color(0x94).ToColor(),
-            new RGB555Color(0x2193).ToColor(),
-            new RGB555Color(0xd0).ToColor(),
-            new RGB555Color(0x175).ToColor(),
-            new RGB555Color(0x172).ToColor(),
-            new RGB555Color(0xe).ToColor(),
-            new RGB555Color(0x117).ToColor(),
-            new RGB555Color(0x1d6).ToColor(),
-            new RGB555Color(0x219).ToColor(),
-            new RGB555Color(0x178).ToColor(),
-            new RGB555Color(0x51).ToColor(),
-            new RGB555Color(0x53).ToColor(),
+            ColorHelpers.FromRGB555(0x3c0c),
+            ColorHelpers.FromRGB555(0x32),
+            ColorHelpers.FromRGB555(0x72),
+            ColorHelpers.FromRGB555(0x115),
+            ColorHelpers.FromRGB555(0x94),
+            ColorHelpers.FromRGB555(0x2193),
+            ColorHelpers.FromRGB555(0xd0),
+            ColorHelpers.FromRGB555(0x175),
+            ColorHelpers.FromRGB555(0x172),
+            ColorHelpers.FromRGB555(0xe),
+            ColorHelpers.FromRGB555(0x117),
+            ColorHelpers.FromRGB555(0x1d6),
+            ColorHelpers.FromRGB555(0x219),
+            ColorHelpers.FromRGB555(0x178),
+            ColorHelpers.FromRGB555(0x51),
+            ColorHelpers.FromRGB555(0x53),
         ];
 
         // Create an array for the new colors
