@@ -21,7 +21,7 @@ public enum Message
     Captor_Trigger_SendMessageWithCaptorParam = 204,
     
     // Rayman 3
-    // 1000 and 1001 are unused
+    // 1000-1001 are unused
     RaymanBody_FinishAttack = 1002,
     Rayman_LinkMovement = 1003,
     Rayman_UnlinkMovement = 1004,
@@ -75,7 +75,7 @@ public enum Message
     Rayman_AllowSafetyJump = 1048,
     Murfy_Spawn = 1049,
     Rayman_QuickFinishBodyShotAttack = 1050,
-    // 1051 and 1052 are unused
+    // 1051-1052 are unused
     CamMode7_Spin = 1053,
     Cam_Shake = 1054,
     Cam_MoveToTarget = 1055,
@@ -118,16 +118,21 @@ public enum Message
     Cam_Unlock = 1091,
     // 1092 is unused
     Rayman_EnterLockedLevel = 1093,
+    // 1094 is unused
 
     // N-Gage exclusive
     Rayman_1095 = 1095, // TODO: Name
-
+    // 1096-1099 are unused
+    CaptureTheFlagFlagBase_1100 = 1100, // TODO: Name
+    // 1101 is unused
     Rayman_CollectCaptureTheFlagItem = 1102,
     Rayman_1103 = 1103, // TODO: Name
-
+    // 1104-1109 are unused
+    CaptureTheFlagFlag_1110 = 1110, // TODO: Name
+    CaptureTheFlagFlag_1111 = 1111, // TODO: Name
     Rayman_1112 = 1112, // TODO: Name
     Rayman_1113 = 1113, // TODO: Name
-    
+    CaptureTheFlagFlagBase_1114 = 1114, // TODO: Name
     Rayman_1115 = 1115, // TODO: Name
     Rayman_1116 = 1116, // TODO: Name
 }
