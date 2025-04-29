@@ -12,7 +12,7 @@
     - 1096-1099
     - 1101
     - 1104-1109
-- The `Scene2D` constructor for some reason disables the background scrolling for the first map of `Cave of Bad Dreams`. This was added late during development judging by the prototypes.
+- The `Scene2D` constructor for some reason disables the background scrolling for the first map of `Void of Bones`. This was added late during development judging by the prototypes.
 - The Mode7 camera has 3 unused states for a free-cam like mode. These were used in the early prototypes.
 
 ### Actors
@@ -53,5 +53,30 @@ Most actors have the first animation be unused and just single frame, most likel
 - One of the hitboxes for the big variant when facing left is misaligned. This is due to the code not correctly flipping the hitbox, making it appear more to the right than it should.
 
 ![Misaligned hitbox](discoveries_assets/Electricity_Misaligned_Hitbox.png)
+
+#### FlyingBomb
+- Action 8 is unused. It's only defined for the helicopter bombs and is always the same as action 6.
+- The actor is hard-coded to immediately destroy one of the actors in the first map of `River of Fire` (instance ID 63) and modify one of the actors in the first map of `The Underlands` (instance ID 68) to be stationary rather than moving.
+
+#### GreenPirate
+- The actor can optionally be configured to drop a red lum after being defeated, but this is never used.
+
+#### Grolgoth
+- For some reason the Grolgoth is added as an actor to most maps in the game even though he doesn't appear. This even includes some Mode7 maps and the worldmap where he wouldn't function anyway. By looking at the prototypes it seems he was progressively added to more and more maps towards the end. The initialization code was later updated to handle him being in a non-boss map, although it doesn't do anything besides force him to transition to the state of being on the ground, like in the first map of the final boss. There is oddly also a check in the code for if the current map is the second map of `The Mettleworks`, in which case he's set to always instantly kill Rayman on touch rather than just deal damage.
+- Actions 2, 3, 4, 5, 23, 24, 26, 56, 57 and 59 are unused. That makes the following animations also unused:
+
+![Animation 0](discoveries_assets/Grolgoth_Anim_0.gif)
+![Animation 6](discoveries_assets/Grolgoth_Anim_6.gif)
+![Animation 8](discoveries_assets/Grolgoth_Anim_8.gif)
+![Animation 12](discoveries_assets/Grolgoth_Anim_12.gif)
+![Animation 20](discoveries_assets/Grolgoth_Anim_20.gif)
+
+- There is an unused attack function where a big exploding bomb spawns at a random point on the map (with it having a check to make sure it's not too close to Rayman). This was most likely meant to appear in the second map of the final boss.
+- There is an unused state for the Grolgoth being in the air and using action 59 or 26 (depending on the direction) before transition back to the default air state.
+
+#### Hoodstormer
+- There is an unused state that uses the unused actions 4 and 5. It appears to have been a state where the enemy taunts Rayman if out of reach. That makes the following animation unused:
+
+![Animation 3](discoveries_assets/Hoodstormer_Anim_3.gif)
 
 ...

@@ -18,6 +18,6 @@ public partial class FlyingBomb
         Stationary = 5,
         Shake = 6,
         Attack = 7,
-        Action_8 = 8, // Unused
+        Action_8 = 8, // Unused - only defined for the helicopter bombs and always the same as action 6
     }
 }

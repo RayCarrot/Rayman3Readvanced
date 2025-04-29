@@ -221,7 +221,7 @@ public partial class FlyingBomb
                 
                 MechModel.Speed = speed;
 
-                if ((ActorType)Type == ActorType.SpikyBomb)
+                if ((ActorType)Type == ActorType.Mine)
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Laser4_Mix01);
                 break;
 

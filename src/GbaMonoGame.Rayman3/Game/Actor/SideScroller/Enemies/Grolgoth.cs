@@ -257,8 +257,7 @@ public sealed partial class Grolgoth : MovableActor
                 {
                     projectile.Position = new Vector2(50 + i * 35, 20 - (50 + Random.GetNumber(51)));
                     projectile.MechModel.Speed = new Vector2(0, MathHelpers.FromFixedPoint(0x5000 + Random.GetNumber(-0x3fff)));
-                } 
-                
+                }
             }
         }
     }

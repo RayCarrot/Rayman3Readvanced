@@ -6,6 +6,7 @@ using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
 
+// TODO: Check for unused states
 public partial class Rayman
 {
     private bool FsmStep_DoOnTheGround()

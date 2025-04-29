@@ -153,7 +153,7 @@ public class Rayman3 : GbaGame
             { ActorType.MechanicalPlatform, (instanceId, scene, resource) => new MechanicalPlatform(instanceId, scene, resource) },
             { ActorType.Urchin, (instanceId, scene, resource) => new Urchin(instanceId, scene, resource) },
             { ActorType.Arrive, (instanceId, scene, resource) => new Arrive(instanceId, scene, resource) },
-            { ActorType.SpikyBomb, (instanceId, scene, resource) => new FlyingBomb(instanceId, scene, resource) },
+            { ActorType.Mine, (instanceId, scene, resource) => new FlyingBomb(instanceId, scene, resource) },
             { ActorType.RaymanWorldMap, (instanceId, scene, resource) => new RaymanWorldMap(instanceId, scene, resource) },
             { ActorType.BumperMode7, (instanceId, scene, resource) => new SceneryMode7(instanceId, scene, resource) },
             { ActorType.BoulderMode7, (instanceId, scene, resource) => new BoulderMode7(instanceId, scene, resource) },

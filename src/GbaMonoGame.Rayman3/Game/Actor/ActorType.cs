@@ -104,7 +104,7 @@ public enum ActorType
     MechanicalPlatform = 99,
     Urchin = 100,
     Arrive = 101,
-    SpikyBomb = 102,
+    Mine = 102,
     RaymanWorldMap = 103,
     BumperMode7 = 104,
     BoulderMode7 = 105,
