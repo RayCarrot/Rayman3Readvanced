@@ -77,7 +77,7 @@ public sealed partial class Machine : MovableActor
         {
             TextBox.MoveInOurOut(false);
             Timer = 0;
-            GameInfo.field7_0x7 = false;
+            GameInfo.CanShowMurfyHelp = false;
         }
     }
 

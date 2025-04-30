@@ -41,7 +41,7 @@ public partial class Machine
                 }
 
                 // Show text box if player has died
-                if (GameInfo.LastGreenLumAlive != 0 && GameInfo.field7_0x7)
+                if (GameInfo.LastGreenLumAlive != 0 && GameInfo.CanShowMurfyHelp)
                     InitTextBox();
 
                 // Cog wheel part
@@ -135,12 +135,15 @@ public partial class Machine
                 // Fall down
                 Position += new Vector2(0, 4);
 
-                // TODO: This doesn't use the same scales as the previous state. Bug in the original game? Fix?
                 float scale;
                 if (BossHealth == 3)
                     scale = MathHelpers.FromFixedPoint(0x9999);
                 else
                     scale = MathHelpers.FromFixedPoint(0x10000);
+
+                // The original game has a bug where it doesn't set the scale for the small cog
+                if (Engine.Config.FixBugs && BossHealth is not (2 or 3))
+                    scale = MathHelpers.FromFixedPoint(0x15000);
 
                 AnimatedObject.AffineMatrix = new AffineMatrix(Rotation, scale, scale);
 
@@ -173,7 +176,7 @@ public partial class Machine
 
                 if (Timer == 60)
                 {
-                    Scene.Camera.ProcessMessage(this, Message.Cam_MoveToTarget, Position + new Vector2(-60, 20)); // TODO: No y on GBA? Is it 0?
+                    Scene.Camera.ProcessMessage(this, Message.Cam_MoveToTarget, Position + new Vector2(-60, 20));
                 }
                 else if (Timer > 190 && ActionId == Action.CannonIdle2 && IsActionFinished)
                 {
@@ -235,7 +238,7 @@ public partial class Machine
 
                 if (TextBox != null)
                 {
-                    if (GameInfo.field7_0x7)
+                    if (GameInfo.CanShowMurfyHelp)
                         ManageTextBox();
                     else if (Timer > 30)
                         UnInitTextBox();
@@ -325,7 +328,6 @@ public partial class Machine
 
                     if (explosion != null)
                     {
-                        // TODO: This makes no sense - why is only X set on certain frames??
                         if (BossHealth % 4 == 0 && BossHealth < 30)
                             explosion.Position = explosion.Position with { X = Position.X + 16 + _explosionOffsets[BossHealth % 8].X };
                         

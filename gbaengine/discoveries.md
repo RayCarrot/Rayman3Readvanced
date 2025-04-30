@@ -75,8 +75,60 @@ Most actors have the first animation be unused and just single frame, most likel
 - There is an unused state for the Grolgoth being in the air and using action 59 or 26 (depending on the direction) before transition back to the default air state.
 
 #### Hoodstormer
-- There is an unused state that uses the unused actions 4 and 5. It appears to have been a state where the enemy taunts Rayman if out of reach. That makes the following animation unused:
+- There is an unused state that uses the unused actions 4 and 5. It appears to have been a state where the enemy taunts Rayman if out of reach. That makes the following animation also unused:
 
 ![Animation 3](discoveries_assets/Hoodstormer_Anim_3.gif)
+
+#### Jano
+- Action 8 is unused. That makes the following animation also unused:
+
+![Animation 5](discoveries_assets/Jano_Anim_5.gif)
+
+#### JanoSkullPlatform
+- Actions 4, 6 and 7 are unused. Action 4 has the solid version of the platform moving to the left (in the game it only moves to the right). Actions 6 and 7 have the platform move upwards and downwards respectively. Additionally there are 4 unused animations for this actor due to it using the same animations as the normal Skull actor.
+
+#### Machine
+- There are 5 unused animations, but three of them just have the cannon not moving, one is empty and the last is nearly identical to the animation of the cannon shaking.
+- When defeated the actor has a table of position offsets to use for the explosion effects. This table has 10 entries, yet only 8 are used. Several of the X positions are also unused due to it updating the X position less often than the Y position.
+- There is unused code for showing the Murfy help text if hit by a bomb.
+- When the small cog gets hit and falls down it uses the wrong size, making it suddenly appear bigger. That's because of the state for the cog falling only sets the size for the other cogs, leaving that one at the default size.
+
+#### MetalShieldedHoodboom
+- There is a boolean value which determines if the actor should start its attack quicker than normal. This value is only ever set to false and thus remains unused.
+
+#### RedPirate
+- Actions 4, 5, 6, 7, 8, 9, 16, 17, 26 and 27 are unused. That makes the following animations also unused:
+
+![Animation 1](discoveries_assets/RedPirate_Anim_1.gif)
+![Animation 4](discoveries_assets/RedPirate_Anim_4.gif)
+![Animation 5](discoveries_assets/RedPirate_Anim_5.gif)
+![Animation 9](discoveries_assets/RedPirate_Anim_9.gif)
+![Animation 10](discoveries_assets/RedPirate_Anim_10.gif)
+
+- Like many enemy actors which shoot projectiles, this one has a value to keep track of how many shots it has left to shoot in the current attack cycle. This value is however only set, and never checked for, and thus remains unused.
+
+#### RedShell
+- The red shell has 3 states it can be initially set to, but only one of them is actually used. The unused ones are one where it walks towards you instead of charging and another one where it's first sleeping and then flies up. That makes the following animations unused:
+
+![Animation 0](discoveries_assets/RedShell_Anim_0.gif)
+![Animation 4](discoveries_assets/RedShell_Anim_4.gif)
+![Animation 5](discoveries_assets/RedShell_Anim_5.gif)
+![Animation 6](discoveries_assets/RedShell_Anim_6.gif)
+
+- Additionally there is a completely unused animation of the shell turning around:
+
+![Animation 1](discoveries_assets/RedShell_Anim_1.gif)
+
+- Actions 14 and 15 are unused, but they both use an existing animation.
+
+#### Rocky
+- The blue lum only makes a sparkling sound the first time it appears. This is probably an oversight.
+- Actions 20 and 21 are unused. That makes the following animation unused:
+
+![Animation 6](discoveries_assets/Rocky_Anim_6.gif)
+
+- The actor initializes to a state where it plays a sleeping animation until Rayman comes close enough. However Rayman spawns within the distance it checks, meaning that you never get to see this state. That makes the following animation unused:
+
+![Animation 6](discoveries_assets/Rocky_Anim_8.gif)
 
 ...

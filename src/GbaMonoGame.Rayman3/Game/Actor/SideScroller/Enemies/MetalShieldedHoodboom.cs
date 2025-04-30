@@ -7,8 +7,7 @@ namespace GbaMonoGame.Rayman3;
 // Original name: CagoulardDeux
 public sealed partial class MetalShieldedHoodboom : InteractableActor
 {
-    public MetalShieldedHoodboom(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene,
-        actorResource)
+    public MetalShieldedHoodboom(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
         PrevHitPoints = HitPoints;
         IsHoodboomInvulnerable = false;
@@ -52,8 +51,30 @@ public sealed partial class MetalShieldedHoodboom : InteractableActor
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
-        // The ame implements this as a custom function for this class, but it's just the same as
-        // the standard invulnerability drawing function but with it checking the timer instead
-        DrawWithInvulnerability(animationPlayer, forceDraw, GameTime.ElapsedFrames - InvulnerabilityTimer < 90);
+        CameraActor camera = Scene.Camera;
+
+        bool draw = camera.IsActorFramed(this) || forceDraw;
+
+        // Conditionally don't draw every second frame during invulnerability
+        if (draw)
+        {
+            if (GameTime.ElapsedFrames - InvulnerabilityTimer < 90 &&
+                HitPoints != 0 &&
+                (GameTime.ElapsedFrames & 1) == 0)
+            {
+                draw = false;
+            }
+        }
+
+        if (draw)
+        {
+            AnimatedObject.IsFramed = true;
+            animationPlayer.Play(AnimatedObject);
+        }
+        else
+        {
+            AnimatedObject.IsFramed = false;
+            AnimatedObject.ComputeNextFrame();
+        }
     }
 }

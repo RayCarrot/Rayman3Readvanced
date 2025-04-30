@@ -153,7 +153,6 @@ public partial class RedShell
                 if (!FsmStep_CheckDeath())
                     return false;
 
-                // TODO: Scale this? Check other actors with similar pos offsets.
                 float mainActorOffset = Rom.Platform switch
                 {
                     Platform.GBA => 100,

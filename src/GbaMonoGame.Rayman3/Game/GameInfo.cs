@@ -25,7 +25,7 @@ public static class GameInfo
     public static int LastGreenLumAlive { get; set; }
     public static Vector2 CheckpointPosition { get; set; }
     public static int RemainingTime { get; set; }
-    public static bool field7_0x7 { get; set; }
+    public static bool CanShowMurfyHelp { get; set; }
     public static bool IsInWorldMap { get; set; }
     public static bool HasCollectedWhiteLum { get; set; }
     public static ushort BlueLumsTimer { get; set; }
@@ -52,7 +52,7 @@ public static class GameInfo
         Powers = Power.None;
         Cheats = Cheat.None;
         HasCollectedWhiteLum = false;
-        field7_0x7 = true;
+        CanShowMurfyHelp = true;
         IsInWorldMap = false;
         ResetPersistentInfo();
     }
