@@ -6,7 +6,6 @@ using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
 
-// TODO: Check for unused states
 public partial class Rayman
 {
     private bool FsmStep_DoOnTheGround()
@@ -3078,13 +3077,9 @@ public partial class Rayman
                 if (!FsmStep_DoInTheAir())
                     return false;
 
-                if (Flag1_5)
+                if (IsBouncing)
                 {
-                    Flag1_5 = false;
-
-                    if (Rom.Platform == Platform.NGage)
-                        ActionId = IsFacingRight ? Action.BouncyJump_Right : Action.BouncyJump_Left;
-
+                    BounceJump();
                     State.MoveTo(Fsm_Jump);
                     return false;
                 }
@@ -4773,6 +4768,33 @@ public partial class Rayman
 
             case FsmAction.Step:
                 AnimatedObject.IsFramed = false;
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
+
+        return true;
+    }
+
+    // Unused
+    public bool Fsm_NewPower(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                PlaySound(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02);
+                ActionId = IsFacingRight ? Action.NewPower_Right : Action.NewPower_Left;
+                NextActionId = null;
+                break;
+
+            case FsmAction.Step:
+                if (IsActionFinished)
+                {
+                    State.MoveTo(Fsm_Default);
+                    return false;
+                }
                 break;
 
             case FsmAction.UnInit:

@@ -145,7 +145,7 @@ public sealed partial class Rayman : MovableActor
     public bool IsHanging { get; set; }
     public bool PreventWallJumps { get; set; }
     public bool Flag1_4 { get; set; }
-    public bool Flag1_5 { get; set; }
+    public bool IsBouncing { get; set; }
     public bool IsInFrontOfLevelCurtain { get; set; }
     public bool StartFlyingWithKegRight { get; set; }
     public bool StartFlyingWithKegLeft { get; set; }
@@ -230,6 +230,22 @@ public sealed partial class Rayman : MovableActor
         else
         {
             return JoyPad.IsButtonJustPressed(input);
+        }
+    }
+
+    // Unused
+    private bool IsDirectionalButtonJustReleased(GbaInput input)
+    {
+        if (RSMultiplayer.IsActive)
+        {
+            if (ReverseControlsTimer != 0)
+                input = ReverseControls(input);
+
+            return MultiJoyPad.GetSimpleJoyPadForCurrentFrame(InstanceId).IsButtonJustReleased(input);
+        }
+        else
+        {
+            return JoyPad.IsButtonJustReleased(input);
         }
     }
 
@@ -518,6 +534,12 @@ public sealed partial class Rayman : MovableActor
         MechModel.Speed = MechModel.Speed with { X = speedX };
     }
 
+    // Unused
+    private bool IsFalling()
+    {
+        return Speed.Y > 1;
+    }
+
     private bool HasLanded()
     {
         if (Speed.Y != 0 || PrevSpeedY < 0)
@@ -560,6 +582,14 @@ public sealed partial class Rayman : MovableActor
         }
 
         return false;
+    }
+
+    private void BounceJump()
+    {
+        IsBouncing = false;
+
+        if (Rom.Platform == Platform.NGage)
+            ActionId = IsFacingRight ? Action.BouncyJump_Right : Action.BouncyJump_Left;
     }
 
     private void SlowdownAirSpeed()
@@ -1405,7 +1435,7 @@ public sealed partial class Rayman : MovableActor
             case Message.Rayman_Bounce:
                 if (State == Fsm_Bounce)
                 {
-                    Flag1_5 = true;
+                    IsBouncing = true;
                     return false;
                 }
 
@@ -1871,7 +1901,7 @@ public sealed partial class Rayman : MovableActor
         IsHanging = false;
         PreventWallJumps = false;
         Flag1_4 = false;
-        Flag1_5 = false;
+        IsBouncing = false;
         IsInFrontOfLevelCurtain = false;
         StartFlyingWithKegRight = false;
         StartFlyingWithKegLeft = false;
