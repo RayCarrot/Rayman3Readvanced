@@ -131,9 +131,9 @@ public enum Message
     CaptureTheFlagFlag_1110 = 1110, // TODO: Name
     CaptureTheFlagFlag_1111 = 1111, // TODO: Name
     Rayman_1112 = 1112, // TODO: Name
-    Rayman_1113 = 1113, // TODO: Name
+    Rayman_PickUpFlag = 1113,
     CaptureTheFlagFlagBase_1114 = 1114, // TODO: Name
-    Rayman_1115 = 1115, // TODO: Name
+    Rayman_CaptureFlag = 1115,
     Rayman_1116 = 1116, // TODO: Name
 }
 

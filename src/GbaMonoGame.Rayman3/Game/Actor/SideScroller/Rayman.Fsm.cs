@@ -2032,7 +2032,6 @@ public partial class Rayman
                     }
                 }
 
-                // TODO: Sound loops wrong
                 // Super fist after 20 frames
                 if (HasPower(Power.SuperFist) && GameTime.ElapsedFrames - Timer == 20)
                 {
@@ -4564,9 +4563,9 @@ public partial class Rayman
 
                 if (IsActionFinished)
                 {
-                    // TODO: Update for Capture the Flag
                     if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && userInfo.GetTime(InstanceId) != 0) ||
-                        MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse)
+                        MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse ||
+                        (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && userInfo.CaptureTheFlagTime != 0))
                     {
                         // Re-init Rayman
                         Position = Resource.Pos.ToVector2();
@@ -4648,9 +4647,27 @@ public partial class Rayman
             case FsmAction.Init:
                 int winnerId = ((FrameMultiSideScroller)Frame.Current).UserInfo.GetWinnerId();
 
-                // TODO: Update for Capture the Flag
+                bool isWinner;
+
+                if (Rom.Platform == Platform.GBA)
+                {
+                    isWinner = winnerId == InstanceId;
+                }
+                else if (Rom.Platform == Platform.NGage)
+                {
+                    bool isCaptureTheFlag = MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag;
+                    bool isTeams = MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Teams;
+
+                    isWinner = (winnerId == InstanceId && (!isCaptureTheFlag || !isTeams)) ||
+                               (isCaptureTheFlag && isTeams && winnerId / 2 == InstanceId / 2);
+                }
+                else
+                {
+                    throw new UnsupportedPlatformException();
+                }
+
                 // We are the winner
-                if (winnerId == InstanceId)
+                if (isWinner)
                 {
                     ActionId = IsFacingRight ? Action.Victory_Right : Action.Victory_Left;
 
@@ -4683,20 +4700,154 @@ public partial class Rayman
             case FsmAction.Step:
                 Timer++;
 
+                uint targetTime = 420; // 7 seconds
+
                 if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
                 {
-                    // TODO: Implement
+                    if (!((FrameMultiCaptureTheFlag)Frame.Current).IsMatchFinished)
+                    {
+                        // Change target time to 2 seconds if the match isn't finished yet
+                        targetTime = 120;
+                    }
                 }
 
-                // Fade out after 7 seconds
-                if (Timer == 420)
+                // Fade out when reaching target time
+                if (Timer == targetTime)
                     TransitionsFX.FadeOutInit(2);
-                else if (Timer > 420 && !TransitionsFX.IsFadingOut)
+                else if (Timer > targetTime && !TransitionsFX.IsFadingOut)
                     Frame.Current.EndOfFrame = true;
                 break;
 
             case FsmAction.UnInit:
                 // Do nothing
+                break;
+        }
+
+        return true;
+    }
+
+    // N-Gage exclusive
+    public bool Fsm_MultiplayerCapturedFlag(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                if (!HasLanded())
+                    ActionId = IsFacingRight ? Action.Fall_Right : Action.Fall_Left;
+                break;
+
+            case FsmAction.Step:
+                if (HasLanded())
+                {
+                    if (ActionId is Action.Land_Right or Action.Land_Left)
+                    {
+                        ActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
+                    }
+                    else if ((ActionId is Action.Land_Right or Action.Land_Left && IsActionFinished) ||
+                             (ActionId is not (Action.Land_Right or Action.Land_Left or Action.Victory_Right or Action.Victory_Left)))
+                    {
+                        ActionId = IsFacingRight ? Action.Victory_Right : Action.Victory_Left;
+                        ((FrameMultiCaptureTheFlag)Frame.Current).AddFlag(InstanceId);
+                    }
+                }
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
+
+        return true;
+    }
+
+    // N-Gage exclusive
+    public bool Fsm_MultiplayerHit(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                NextActionId = null;
+                ActionId = IsFacingRight ? Action.Multiplayer_Hit_Right : Action.Multiplayer_Hit_Left;
+                
+                // Let go of flag
+                if (FlagData.PickedUpFlag != null)
+                {
+                    AnimatedObject.DeactivateChannel(4);
+                    FlagData.PickedUpFlag.ProcessMessage(this, Message.CaptureTheFlagFlag_1111);
+                    FlagData.PickedUpFlag = null;
+                }
+                FlagData.field_b8 = 0;
+                SetPower(Power.All);
+                break;
+
+            case FsmAction.Step:
+                if (IsActionFinished)
+                {
+                    State.MoveTo(Fsm_MultiplayerStunned);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
+
+        return true;
+    }
+
+    // N-Gage exclusive
+    public bool Fsm_MultiplayerStunned(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                Timer = 0;
+                NextActionId = null;
+                ActionId = IsFacingRight ? Action.Multiplayer_Stunned_Right : Action.Multiplayer_Stunned_Left;
+                break;
+
+            case FsmAction.Step:
+                Timer++;
+
+                if (Timer > 50)
+                {
+                    State.MoveTo(Fsm_MultiplayerGetUp);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
+
+        return true;
+    }
+
+    // N-Gage exclusive
+    public bool Fsm_MultiplayerGetUp(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                NextActionId = null;
+                ActionId = IsFacingRight ? Action.Multiplayer_GetUp_Right : Action.Multiplayer_GetUp_Left;
+                break;
+
+            case FsmAction.Step:
+                if (IsActionFinished)
+                {
+                    State.MoveTo(Fsm_Default);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                FlagData.field_b8 = 1;
+
+                if (FlagData.InvincibilityTimer < 100)
+                    FlagData.InvincibilityTimer = 100;
                 break;
         }
 
@@ -4804,9 +4955,4 @@ public partial class Rayman
 
         return true;
     }
-
-    // TODO: Implement all of these
-    public bool FUN_1005dea0(FsmAction action) => true;
-    public bool FUN_1005dfa4(FsmAction action) => true;
-    public bool FUN_1005e04c(FsmAction action) => true;
 }

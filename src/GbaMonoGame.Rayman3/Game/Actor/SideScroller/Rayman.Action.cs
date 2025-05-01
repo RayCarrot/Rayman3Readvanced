@@ -229,5 +229,13 @@ public partial class Rayman
         ReturnFromLevel_Left = 220,
         LockedLevelCurtain_Right = 221,
         LockedLevelCurtain_Left = 222,
+
+        // N-Gage exclusive
+        Multiplayer_Hit_Right = 223,
+        Multiplayer_Hit_Left = 224,
+        Multiplayer_Stunned_Right = 225,
+        Multiplayer_Stunned_Left = 226,
+        Multiplayer_GetUp_Right = 227,
+        Multiplayer_GetUp_Left = 228,
     }
 }

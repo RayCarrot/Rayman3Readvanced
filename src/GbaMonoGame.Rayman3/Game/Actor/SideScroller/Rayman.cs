@@ -1417,9 +1417,9 @@ public sealed partial class Rayman : MovableActor
                 {
                     if (State == Fsm_Swing || 
                         State == Fsm_Dying || 
-                        State == FUN_1005dea0 || 
-                        State == FUN_1005dfa4 || 
-                        State == FUN_1005e04c)
+                        State == Fsm_MultiplayerHit || 
+                        State == Fsm_MultiplayerStunned || 
+                        State == Fsm_MultiplayerGetUp)
                         return false;
                 }
                 else
@@ -1441,9 +1441,9 @@ public sealed partial class Rayman : MovableActor
 
                 if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive)
                 {
-                    if (State == FUN_1005dea0 ||
-                        State == FUN_1005dfa4 ||
-                        State == FUN_1005e04c)
+                    if (State == Fsm_MultiplayerHit ||
+                        State == Fsm_MultiplayerStunned ||
+                        State == Fsm_MultiplayerGetUp)
                         return false;
                 }
 
@@ -1542,7 +1542,7 @@ public sealed partial class Rayman : MovableActor
 
                 if (AttachedObject is { Type: (int)ActorType.Plum })
                 {
-                    Box box = ((ActionActor)AttachedObject).GetActionBox(); // TODO: Cast to Plum when we create a class for it
+                    Box box = ((Plum)AttachedObject).GetActionBox();
                     LinkedMovementActor = null; // TODO: Huh? Isn't this meant to be setting attached object to null?
                     Position = Position with { Y = box.Top - 16 };
                 }
@@ -1609,6 +1609,7 @@ public sealed partial class Rayman : MovableActor
                 if (RSMultiplayer.IsActive)
                 {
                     int tagId = ((FrameMultiSideScroller)Frame.Current).UserInfo.TagId;
+                    RaymanBody raymanBody = (RaymanBody)param;
                     Rayman attacker = ((RaymanBody)param).Rayman;
 
                     switch (MultiplayerInfo.GameType)
@@ -1632,7 +1633,22 @@ public sealed partial class Rayman : MovableActor
                             break;
 
                         case MultiplayerGameType.CaptureTheFlag when MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag:
-                            // TODO: Implement
+                            if (MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Solo)
+                            {
+                                if (FlagData.InvincibilityTimer == 0 && State != Fsm_MultiplayerCapturedFlag)
+                                {
+                                    AnimatedObject.FlipX = raymanBody.MechModel.Speed.X >= 0;
+                                    State.MoveTo(Fsm_MultiplayerHit);
+                                }
+                            }
+                            else
+                            {
+                                if (FlagData.InvincibilityTimer == 0 && attacker.InstanceId / 2 != InstanceId / 2)
+                                {
+                                    AnimatedObject.FlipX = raymanBody.MechModel.Speed.X >= 0;
+                                    State.MoveTo(Fsm_MultiplayerHit);
+                                }
+                            }
                             break;
                     }
                 }
@@ -1852,16 +1868,32 @@ public sealed partial class Rayman : MovableActor
                 // TODO: Implement
                 return false;
 
-            case Message.Rayman_1113:
-                // TODO: Implement
+            case Message.Rayman_PickUpFlag:
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play_NGage_Unnamed1);
+                RemovePower(Power.All);
+                FlagData.PickedUpFlag = (BaseActor)param;
+                FlagData.field_b8 = 0;
                 return false;
 
-            case Message.Rayman_1115:
-                // TODO: Implement
+            case Message.Rayman_CaptureFlag:
+                if (State != Fsm_MultiplayerCapturedFlag)
+                    State.MoveTo(Fsm_MultiplayerCapturedFlag);
                 return false;
 
             case Message.Rayman_1116:
-                // TODO: Implement
+                if (FlagData.PickedUpFlag != null)
+                {
+                    AnimatedObject.DeactivateChannel(4);
+                    FlagData.PickedUpFlag.ProcessMessage(this, Message.CaptureTheFlagFlag_1111);
+                    FlagData.PickedUpFlag = null;
+                }
+
+                FlagData.field_b8 = 0;
+
+                if (State != Fsm_MultiplayerDying) 
+                    State.MoveTo(Fsm_MultiplayerDying);
+                
+                FlagData.field_bc = (int)param; 
                 return false;
 
             default:
@@ -1875,6 +1907,14 @@ public sealed partial class Rayman : MovableActor
             FlagData.Powers |= power;
         else
             GameInfo.EnablePower(power);
+    }
+
+    public void RemovePower(Power power)
+    {
+        if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+            FlagData.Powers &= ~power;
+        else
+            GameInfo.DisablePower(power);
     }
 
     // Disable collision when debug mode is on
@@ -2137,16 +2177,15 @@ public sealed partial class Rayman : MovableActor
 
     public class CaptureTheFlagData
     {
-        // TODO: Name these properties
-        public BaseActor PickedUpFlag { get; set; }
+        public BaseActor PickedUpFlag { get; set; } // TODO: Change type
         public AnimatedObject[] FlagArrows { get; } = new AnimatedObject[RSMultiplayer.MaxPlayersCount - 1];
         public uint InvincibilityTimer { get; set; }
         public uint SpeedUpTimer { get; set; }
-        public uint UnusedItemTimer { get; set; }
-        public byte field_b8 { get; set; }
+        public uint UnusedItemTimer { get; set; } // TODO: Name
+        public byte field_b8 { get; set; } // TODO: Name
         public bool SpeedUp { get; set; }
         public byte PlayerPaletteId { get; set; } // TODO: Probably don't need this
         public Power Powers { get; set; }
-        public byte field_bc { get; set; }
+        public int field_bc { get; set; } // TODO: Name
     }
 }

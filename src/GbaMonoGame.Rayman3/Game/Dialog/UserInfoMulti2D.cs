@@ -1162,7 +1162,7 @@ public partial class UserInfoMulti2D : Dialog
 
             if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             {
-                if (((FrameMultiCaptureTheFlag)Frame.Current).field_0x5b)
+                if (((FrameMultiCaptureTheFlag)Frame.Current).IsMatchFinished)
                 {
                     if (MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Teams)
                         ScoreBar.DrawTeamsScore(animationPlayer, PlayerRanks);
