@@ -14,9 +14,10 @@ public sealed partial class SpikyFlyingBomb : MovableActor
 
         Action firstActionId = (Action)actorResource.FirstActionId;
 
-        if (firstActionId == Action.Action_4)
+        // Unused
+        if (firstActionId == Action.WaitToAttack)
         {
-            State.SetTo(FUN_10010ac4);
+            State.SetTo(Fsm_Wait);
         }
         else if (firstActionId == Action.Stationary)
         {

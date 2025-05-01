@@ -99,10 +99,96 @@ public partial class SpikyFlyingBomb
         return true;
     }
 
-    // FUN_08049b58
-    public bool FUN_10010ac4(FsmAction action)
+    // Unused
+    public bool Fsm_Wait(FsmAction action)
     {
-        throw new NotImplementedException();
+        switch (action)
+        {
+            case FsmAction.Init:
+                // Do nothing
+                break;
+
+            case FsmAction.Step:
+                if (!FsmStep_CheckDeath())
+                    return false;
+
+                if (Scene.IsDetectedMainActor(this))
+                {
+                    State.MoveTo(Fsm_PrepareAttack);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
+
+        return true;
+    }
+
+    // Unused
+    public bool Fsm_PrepareAttack(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                // Do nothing
+                break;
+
+            case FsmAction.Step:
+                if (IsActionFinished)
+                {
+                    State.MoveTo(Fsm_Attack);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
+
+        return true;
+    }
+
+    // Unused
+    public bool Fsm_Attack(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                ActionId = Action.Attack;
+                ChangeAction();
+
+                Vector2 dist = Scene.MainActor.Position - Position;
+
+                Vector2 speed = Math.Abs(dist.Y) < Math.Abs(dist.X)
+                    ? new Vector2(2, 1)
+                    : new Vector2(1, 2);
+
+                if (dist.X < 0)
+                    speed.X = -speed.X;
+
+                if (dist.Y < 0)
+                    speed.Y = -speed.Y;
+
+                MechModel.Speed = speed;
+                break;
+
+            case FsmAction.Step:
+                if (!FsmStep_CheckDeath())
+                    return false;
+
+                ManageSound();
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
+
+        return true;
     }
 
     public bool Fsm_Stationary(FsmAction action)
