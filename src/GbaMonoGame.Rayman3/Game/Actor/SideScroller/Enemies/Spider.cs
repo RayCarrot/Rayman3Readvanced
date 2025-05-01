@@ -11,8 +11,8 @@ public sealed partial class Spider : MovableActor
         SpawnTimer = 0xFF;
         SoundTimer = 0;
 
-        // NOTE: The game doesn't set this, but rather keeps it uninitialized which means it defaults to 0xCD (the default allocation values)
-        //       and it needs to be set to a non-zero value for the spider to start moving after it spawns.
+        // NOTE: The game doesn't set this, but rather keeps it uninitialized which means it defaults to 0xCD (the
+        //       default allocation value), which is seen as true (non-zero).
         ShouldJump = true;
 
         // Guard

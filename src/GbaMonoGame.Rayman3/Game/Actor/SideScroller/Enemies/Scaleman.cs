@@ -7,8 +7,7 @@ namespace GbaMonoGame.Rayman3;
 // TODO: There's a visual bug with the shadow when the Scaleman fall down. The last frame has a 1-pixel gap between the sprites due to the scaling.
 public sealed partial class Scaleman : MovableActor
 {
-    public Scaleman(int instanceId, Scene2D scene, ActorResource actorResource) 
-        : base(instanceId, scene, actorResource)
+    public Scaleman(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
         IsInvulnerable = true;
 

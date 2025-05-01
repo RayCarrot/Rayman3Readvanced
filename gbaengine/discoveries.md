@@ -131,4 +131,24 @@ Most actors have the first animation be unused and just single frame, most likel
 
 ![Animation 6](discoveries_assets/Rocky_Anim_8.gif)
 
+#### Scaleman
+- There is a boolean value which determines if the camera should be centered. This value is only ever set to true and thus remains unused.
+- The following animations are unused:
+
+![Animation 1](discoveries_assets/Scaleman_Anim_1.gif)
+![Animation 6](discoveries_assets/Scaleman_Anim_6.gif)
+![Animation 23](discoveries_assets/Scaleman_Anim_23.gif)
+![Animation 26](discoveries_assets/Scaleman_Anim_26.gif)
+![Animation 28](discoveries_assets/Scaleman_Anim_28.gif)
+
+- There's a bug in the code for the shadow when the Scaleman lands on the ground. The shadow animation of it shrinking should change to an animation where it's stationary, but the incorrect function is used, referencing the `Actor` as an `AnimatedObject`, thus causing it to never run. This makes the shadow animation keep looping, which is noticeable for a few frames as the Scaleman lands.
+
+#### SilverPirate
+- The actor can optionally be configured to drop a red lum after being defeated, but this is never used.
+
+#### Spider
+- The boolean value indicating if the spider should jump is not initialized, meaning it defaults to the default allocation values, which is 0xCD and seen as being true (non-zero). Because of this the spider jumps immediately after spawning.
+- Actions 2, 3, 4, 5, 6, 7, 15, 23, 25, 26, 29 and 30 are unused. They all use existing animations, except for two of them which use an animation of the spider being completely still and not moving.
+- There's an impossible state transition condition in the chasing state. Similarly there's a state transition condition in another state that'll always be true. These are either leftovers from earlier versions of the game or unintentional mistakes.
+
 ...
