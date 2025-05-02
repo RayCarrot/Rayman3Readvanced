@@ -41,7 +41,7 @@ public partial class MenuAll
     public int HostsCount { get; set; }
     public bool FinishedSearchingForHosts { get; set; }
     public int CaptureTheFlagTargetFlagsCount { get; set; }
-    public int CaptureTheFlagTargetTime { get; set; }
+    public ushort CaptureTheFlagTargetTime { get; set; }
     public CaptureTheFlagMode CaptureTheFlagMode { get; set; }
     public int CaptureTheFlagSoloMode { get; set; }
     public int[] ArrowYPositions { get; } = [74, 107, 138, 140];
@@ -179,7 +179,9 @@ public partial class MenuAll
                 MultiplayerInfo.CaptureTheFlagMode = CaptureTheFlagMode;
 
                 MapId mapId = MapId.NGageMulti_CaptureTheFlagMiddleGround + CaptureTheFlagSoloMode * 2 + (int)CaptureTheFlagMode * 4 + MultiplayerMapId;
-                FrameManager.SetNextFrame(new FrameMultiCaptureTheFlag(mapId));
+                FrameMultiCaptureTheFlag frame = new(mapId);
+                FrameManager.SetNextFrame(frame);
+                frame.InitNewGame(CaptureTheFlagTargetTime, CaptureTheFlagTargetFlagsCount, CaptureTheFlagMode);
                 break;
         }
     }

@@ -48,7 +48,38 @@ public partial class UserInfoMulti2D
                                     break;
                                 
                                 case MultiplayerGameType.CaptureTheFlag when Rom.Platform == Platform.NGage:
-                                    // TODO: Implement
+                                    FrameMultiCaptureTheFlag frame = ((FrameMultiCaptureTheFlag)Frame.Current);
+
+                                    if (CaptureTheFlagTime != 0)
+                                    {
+                                        CaptureTheFlagTime--;
+                                        
+                                        // Time out...
+                                        if (CaptureTheFlagTime == 0)
+                                        {
+                                            int winnerId = frame.GetWinnerFromTimeOut();
+
+                                            // There's a tie! Begin sudden death mode.
+                                            if (winnerId == -1)
+                                            {
+                                                IsSuddenDeath = true;
+                                            }
+                                            // There's a winner!
+                                            else
+                                            {
+                                                IsSuddenDeath = false;
+                                                frame.IsMatchOver = true;
+                                                frame.LastPlayerToGetFlag = winnerId;
+                                            }
+                                        }
+                                    }
+
+                                    // The entire match is over
+                                    if (frame.IsMatchOver)
+                                        CaptureTheFlagMatchOver(frame.LastPlayerToGetFlag);
+                                    // The current round is over
+                                    else if (frame.IsCurrentRoundOver)
+                                        CaptureTheFlagRoundOver();
                                     break;
                             }
 

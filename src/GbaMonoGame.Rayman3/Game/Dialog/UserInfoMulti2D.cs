@@ -22,7 +22,7 @@ public partial class UserInfoMulti2D : Dialog
         }
         else if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
         {
-            CaptureTheFlagTime = ((FrameMultiCaptureTheFlag)Frame.Current).Time;
+            CaptureTheFlagTime = (ushort)((FrameMultiCaptureTheFlag)Frame.Current).RemainingTime;
             SuddenDeathDisplayCountdown = 100;
             FlagBar = new FlagBar(Scene);
         }
@@ -53,7 +53,7 @@ public partial class UserInfoMulti2D : Dialog
         IsPlayerDead = false;
 
         if (Rom.Platform == Platform.NGage)
-            UnknownCaptureTheFlagValue2 = false;
+            IsSuddenDeath = false;
         
         Unused2 = -1;
         StartCountdownValue = 4;
@@ -117,7 +117,7 @@ public partial class UserInfoMulti2D : Dialog
 
     // // N-Gage exclusive
     public ushort CaptureTheFlagTime { get; set; }
-    public bool UnknownCaptureTheFlagValue2 { get; set; }
+    public bool IsSuddenDeath { get; set; }
     public byte SuddenDeathDisplayCountdown { get; set; }
 
     #endregion
@@ -418,12 +418,14 @@ public partial class UserInfoMulti2D : Dialog
         State.MoveTo(Fsm_GameOver);
     }
 
-    public void GameOverCaptureTheFlag1(int machineId)
+    // N-Gage exclusive
+    public void CaptureTheFlagRoundOver()
     {
         throw new NotImplementedException();
     }
 
-    public void GameOverCaptureTheFlag2()
+    // N-Gage exclusive
+    public void CaptureTheFlagMatchOver(int machineId)
     {
         throw new NotImplementedException();
     }
@@ -516,7 +518,7 @@ public partial class UserInfoMulti2D : Dialog
                 GameOverSign.ScreenPos -= new Vector2(0, 2);
         }
 
-        if (Rom.Platform == Platform.NGage && UnknownCaptureTheFlagValue2)
+        if (Rom.Platform == Platform.NGage && IsSuddenDeath)
         {
             if (SuddenDeathSign.ScreenPos.Y > signTargetY || (SuddenDeathSign.ScreenPos.Y > -8 && SuddenDeathDisplayCountdown == 0))
                 SuddenDeathSign.ScreenPos -= new Vector2(0, 2);
@@ -1022,7 +1024,7 @@ public partial class UserInfoMulti2D : Dialog
                 BgPriority = 0,
                 ObjPriority = 2,
                 CurrentAnimation = Localization.LanguageUiIndex,
-                ScreenPos = new Vector2(0, UnknownCaptureTheFlagValue2 ? 36 : 180),
+                ScreenPos = new Vector2(0, IsSuddenDeath ? 36 : 180),
                 HorizontalAnchor = HorizontalAnchorMode.Center,
                 VerticalAnchor = VerticalAnchorMode.Scale,
                 RenderContext = Scene.HudRenderContext,
@@ -1162,7 +1164,7 @@ public partial class UserInfoMulti2D : Dialog
 
             if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             {
-                if (((FrameMultiCaptureTheFlag)Frame.Current).IsMatchFinished)
+                if (((FrameMultiCaptureTheFlag)Frame.Current).IsMatchOver)
                 {
                     if (MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Teams)
                         ScoreBar.DrawTeamsScore(animationPlayer, PlayerRanks);

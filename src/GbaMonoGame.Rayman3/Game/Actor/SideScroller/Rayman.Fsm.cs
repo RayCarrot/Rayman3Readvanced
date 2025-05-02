@@ -4704,7 +4704,7 @@ public partial class Rayman
 
                 if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
                 {
-                    if (!((FrameMultiCaptureTheFlag)Frame.Current).IsMatchFinished)
+                    if (!((FrameMultiCaptureTheFlag)Frame.Current).IsMatchOver)
                     {
                         // Change target time to 2 seconds if the match isn't finished yet
                         targetTime = 120;
