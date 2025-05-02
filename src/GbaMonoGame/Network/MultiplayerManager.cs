@@ -19,6 +19,9 @@ public static class MultiplayerManager
     public static bool field_0x1a { get; set; }
     public static byte field_0x1b { get; set; }
     
+    public static bool NGage_PendingSystemSyncPause { get; set; }
+    public static byte NGage_SyncTime { get; set; }
+
     public static void Init()
     {
         InitialGameTime = 0;

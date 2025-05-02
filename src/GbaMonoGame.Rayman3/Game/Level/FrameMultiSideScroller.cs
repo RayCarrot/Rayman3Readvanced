@@ -126,20 +126,90 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
         if (state == MubState.Connected && (Rom.Platform == Platform.NGage || !EndOfFrame))
         {
-            // TODO: This code is very different on N-Gage
-
-            if (MultiplayerManager.HasReadJoyPads())
+            if (Rom.Platform == Platform.GBA)
             {
-                GameTime.Resume();
-                CurrentStepAction();
-                MultiplayerManager.FrameProcessed();
+                if (MultiplayerManager.HasReadJoyPads())
+                {
+                    GameTime.Resume();
+                    CurrentStepAction();
+                    MultiplayerManager.FrameProcessed();
+                }
+                else
+                {
+                    GameTime.Pause();
+                }
+
+                LevelMusicManager.Step();
+            }
+            else if (Rom.Platform == Platform.NGage)
+            {
+                if (!IsShowingPauseSign && MultiplayerManager.NGage_SyncTime != 0)
+                {
+                    // NOTE: The game loads the PauseSign animated object here
+                }
+
+                if (MultiplayerManager.NGage_SyncTime != 0)
+                {
+                    Scene.AnimationPlayer.PlayFront(PauseSign);
+
+                    if (!IsShowingPauseSign)
+                        ((NGageSoundEventsManager)SoundEventsManager.Current).PauseLoopingSoundEffects();
+
+                    IsShowingPauseSign = true;
+                }
+                else
+                {
+                    if (IsShowingPauseSign)
+                        ((NGageSoundEventsManager)SoundEventsManager.Current).ResumeLoopingSoundEffects();
+
+                    IsShowingPauseSign = false;
+                }
+
+                if (MultiplayerManager.HasReadJoyPads())
+                {
+                    if (EndOfFrame)
+                    {
+                        if (MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && !((FrameMultiCaptureTheFlag)Current).IsMatchOver)
+                        {
+                            FrameManager.ReloadCurrentFrame();
+                        }
+                        else
+                        {
+                            FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.Multiplayer));
+
+                            Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
+                            Gfx.Fade = 1;
+                        }
+                    }
+                    else
+                    {
+                        GameTime.Resume();
+
+                        if (MultiplayerManager.NGage_PendingSystemSyncPause && CurrentStepAction == Step_Normal && !UserInfo.IsGameOver)
+                        {
+                            Current.PauseFrame = false;
+                            PausedMachineId = 0;
+                            CurrentStepAction = Step_Pause_Init;
+                        }
+
+                        CurrentStepAction();
+                        MultiplayerManager.FrameProcessed();
+                        LevelMusicManager.Step();
+                    }
+                }
+                else
+                {
+                    if (MultiplayerManager.NGage_SyncTime != 0)
+                        Scene.AnimationPlayer.Execute();
+
+                    GameTime.Pause();
+                    LevelMusicManager.Step();
+                }
             }
             else
             {
-                GameTime.Pause();
+                throw new UnsupportedPlatformException();
             }
-
-            LevelMusicManager.Step();
         }
         else
         {
@@ -270,7 +340,8 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
         if (Rom.Platform == Platform.NGage)
         {
-            // TODO: Set user info animation
+            UserInfo.StartCountdownValue = 5;
+            UserInfo.StartCountdown.CurrentAnimation = 3;
 
             Scene.IsMultiplayerPaused = true;
         }
