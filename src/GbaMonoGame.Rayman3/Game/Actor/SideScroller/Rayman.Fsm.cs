@@ -4577,10 +4577,11 @@ public partial class Rayman
                     {
                         ProcessMessage(this, Message.Destroy);
 
+                        // Spectate
                         if (IsLocalPlayer)
                         {
                             int id = Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag 
-                                ? FlagData.field_bc
+                                ? FlagData.SpectatePlayerId
                                 : userInfo.TagId;
                             Scene.Camera.LinkedObject = Scene.GetGameObject<MovableActor>(id);
                             ((CameraSideScroller)Scene.Camera).HorizontalOffset = CameraOffset.Multiplayer;
@@ -4773,10 +4774,10 @@ public partial class Rayman
                 if (FlagData.PickedUpFlag != null)
                 {
                     AnimatedObject.DeactivateChannel(4);
-                    FlagData.PickedUpFlag.ProcessMessage(this, Message.CaptureTheFlagFlag_1111);
+                    FlagData.PickedUpFlag.ProcessMessage(this, Message.CaptureTheFlagFlag_Drop);
                     FlagData.PickedUpFlag = null;
                 }
-                FlagData.field_b8 = 0;
+                FlagData.CanPickUpDroppedFlag = false;
                 SetPower(Power.All);
                 break;
 
@@ -4844,7 +4845,7 @@ public partial class Rayman
                 break;
 
             case FsmAction.UnInit:
-                FlagData.field_b8 = 1;
+                FlagData.CanPickUpDroppedFlag = true;
 
                 if (FlagData.InvincibilityTimer < 100)
                     FlagData.InvincibilityTimer = 100;

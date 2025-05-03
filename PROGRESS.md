@@ -107,12 +107,12 @@
 | Multi_RayTag2              | 🟩     |                                              |
 | Multi_CatAndMouse1         | 🟩     |                                              |
 | Multi_CatAndMouse2         | 🟩     |                                              |
-| Multi_CaptureTheFlag1      | 🟨     |                                              |
-| Multi_CaptureTheFlag2      | 🟨     |                                              |
-| Multi_CaptureTheFlag3      | 🟨     |                                              |
-| Multi_CaptureTheFlag4      | 🟨     |                                              |
-| Multi_CaptureTheFlag5      | 🟨     |                                              |
-| Multi_CaptureTheFlag6      | 🟨     |                                              |
+| Multi_CaptureTheFlag1      | 🟩     |                                              |
+| Multi_CaptureTheFlag2      | 🟩     |                                              |
+| Multi_CaptureTheFlag3      | 🟩     |                                              |
+| Multi_CaptureTheFlag4      | 🟩     |                                              |
+| Multi_CaptureTheFlag5      | 🟩     |                                              |
+| Multi_CaptureTheFlag6      | 🟩     |                                              |
 | GameCube_Bonus1            | 🟩     |                                              |
 | GameCube_Bonus2            | 🟩     |                                              |
 | GameCube_Bonus3            | 🟨     |                                              |
@@ -156,12 +156,12 @@
 | BossRockAndLavaBar     | 🟩     |                                              |
 | BossScalemanBar        | 🟩     |                                              |
 | WorldNameBar           | 🟩     |                                              |
-| FlagBar                | 🟥     |                                              |
+| FlagBar                | 🟩     |                                              |
 
 ## Actors
 | Name                      | State   | Info                                         |
 | ------------------------- | ------- | -------------------------------------------- |
-| Rayman                    | 🟨     | Not implemented all states                   |
+| Rayman                    | 🟩     |                                              |
 | RaymanBody                | 🟩     |                                              |
 | RedPirate                 | 🟩     |                                              |
 | Piranha                   | 🟩     |                                              |
@@ -272,8 +272,8 @@
 | Leaf                      | 🟩     |                                              |
 | JanoShot                  | 🟩     |                                              |
 | MetalShieldedHoodboom     | 🟩     |                                              |
-| CaptureTheFlagFlag        | 🟥     |                                              |
+| CaptureTheFlagFlag        | 🟩     |                                              |
 | CaptureTheFlagRaymanSolo  | 🟩     |                                              |
-| CaptureTheFlagFlagBase    | 🟥     |                                              |
+| CaptureTheFlagFlagBase    | 🟩     |                                              |
 | CaptureTheFlagItems       | 🟩     |                                              |
 | CaptureTheFlagRaymanTeams | 🟩     |                                              |

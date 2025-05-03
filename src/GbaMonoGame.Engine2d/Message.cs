@@ -118,23 +118,24 @@ public enum Message
     Cam_Unlock = 1091,
     // 1092 is unused
     Rayman_EnterLockedLevel = 1093,
+    CaptureTheFlagFlagBase_LinkFlag = 1093,
     // 1094 is unused
 
     // N-Gage exclusive
-    Rayman_1095 = 1095, // TODO: Name
+    Rayman_GetPlayerPaletteId = 1095,
     // 1096-1099 are unused
-    CaptureTheFlagFlagBase_1100 = 1100, // TODO: Name
+    CaptureTheFlagFlagBase_ResetFlag = 1100,
     // 1101 is unused
     Rayman_CollectCaptureTheFlagItem = 1102,
-    Rayman_1103 = 1103, // TODO: Name
+    Rayman_GetPickedUpFlag = 1103,
     // 1104-1109 are unused
-    CaptureTheFlagFlag_1110 = 1110, // TODO: Name
-    CaptureTheFlagFlag_1111 = 1111, // TODO: Name
-    Rayman_1112 = 1112, // TODO: Name
+    CaptureTheFlagFlag_AttachToPlayer = 1110,
+    CaptureTheFlagFlag_Drop = 1111,
+    Rayman_GetCanPickUpDroppedFlag = 1112,
     Rayman_PickUpFlag = 1113,
-    CaptureTheFlagFlagBase_1114 = 1114, // TODO: Name
+    CaptureTheFlagFlagBase_GetCapturableFlag = 1114,
     Rayman_CaptureFlag = 1115,
-    Rayman_1116 = 1116, // TODO: Name
+    Rayman_SpectateTiedPlayer = 1116,
 }
 
 /*

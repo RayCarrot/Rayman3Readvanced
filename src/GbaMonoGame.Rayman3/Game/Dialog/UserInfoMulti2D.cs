@@ -122,30 +122,6 @@ public partial class UserInfoMulti2D : Dialog
 
     #endregion
 
-    #region Private Methods
-
-    private int HudIndexToMachineId(int hudIndex)
-    {
-        if (hudIndex == 0)
-            return MultiplayerManager.MachineId;
-        else if (hudIndex <= MultiplayerManager.MachineId)
-            return hudIndex - 1;
-        else
-            return hudIndex;
-    }
-
-    private int MachineIdToHudIndex(int machineId)
-    {
-        if (machineId == MultiplayerManager.MachineId)
-            return 0;
-        else if (machineId <= MultiplayerManager.MachineId)
-            return machineId + 1;
-        else
-            return machineId;
-    }
-
-    #endregion
-
     #region Methods
 
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
@@ -329,7 +305,7 @@ public partial class UserInfoMulti2D : Dialog
             if (lastAlivePlayer != MultiplayerManager.MachineId && machineId == MultiplayerManager.MachineId)
                 IsPlayerDead = true;
 
-            TagIdHudIndex = MachineIdToHudIndex(lastAlivePlayer);
+            TagIdHudIndex = MultiplayerHelpers.MachineIdToHudIndex(lastAlivePlayer);
 
             IsGameOver = true;
             TagId = lastAlivePlayer;
@@ -358,7 +334,7 @@ public partial class UserInfoMulti2D : Dialog
             Scene.GetGameObject(machineId).ProcessMessage(this, Message.Actor_Explode);
         }
 
-        int hudIndex = MachineIdToHudIndex(machineId);
+        int hudIndex = MultiplayerHelpers.MachineIdToHudIndex(machineId);
 
         PlayerIcons[hudIndex].CurrentAnimation = machineId + 4;
         foreach (AnimatedObject digit in TimerDigits[hudIndex])
@@ -383,7 +359,7 @@ public partial class UserInfoMulti2D : Dialog
 
         ChainedSparkles.UpdateTarget();
 
-        TagIdHudIndex = MachineIdToHudIndex(machineId);
+        TagIdHudIndex = MultiplayerHelpers.MachineIdToHudIndex(machineId);
 
         // Update the player icons
         for (int hudIndex = 0; hudIndex < MultiplayerManager.PlayersCount; hudIndex++)
@@ -421,13 +397,39 @@ public partial class UserInfoMulti2D : Dialog
     // N-Gage exclusive
     public void CaptureTheFlagRoundOver()
     {
-        throw new NotImplementedException();
+        FrameMultiCaptureTheFlag frame = (FrameMultiCaptureTheFlag)Frame.Current;
+
+        if (MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Teams)
+            FlagBar.BlinkPlayerId = frame.LastPlayerToGetFlag / 2;
+        else
+            FlagBar.BlinkPlayerId = frame.LastPlayerToGetFlag;
+
+        IsGameOver = true;
+        TagId = frame.LastPlayerToGetFlag;
+
+        frame.RemainingTime = CaptureTheFlagTime;
+
+        for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
+            Scene.GetGameObject(id).ProcessMessage(this, Message.Rayman_MultiplayerGameOver);
+
+        State.MoveTo(Fsm_GameOver);
     }
 
     // N-Gage exclusive
     public void CaptureTheFlagMatchOver(int machineId)
     {
-        throw new NotImplementedException();
+        IsGameOver = true;
+        TagId = machineId;
+
+        FlagBar.BlinkPlayerId = machineId;
+
+        FrameMultiCaptureTheFlag frame = (FrameMultiCaptureTheFlag)Frame.Current;
+        frame.SetPlayerRanks(PlayerRanks);
+
+        for (int i = 0; i < MultiplayerManager.PlayersCount; i++)
+            Scene.GetGameObject(i).ProcessMessage(this, Message.Rayman_MultiplayerGameOver);
+
+        State.MoveTo(Fsm_GameOver);
     }
 
     public void InitGlobox(int machineId)
@@ -466,7 +468,7 @@ public partial class UserInfoMulti2D : Dialog
                 {
                     int v1 = Times[id] / 60;
                     int v2 = Times[id] + v1 * -60;
-                    int hudIndex = MachineIdToHudIndex(id);
+                    int hudIndex = MultiplayerHelpers.MachineIdToHudIndex(id);
 
                     TimerDigits[hudIndex][0].CurrentAnimation = v1;
 
@@ -685,10 +687,15 @@ public partial class UserInfoMulti2D : Dialog
 
         TimerFrames[0].CurrentAnimation = 10;
         if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
-            TimerFrames[0].ScreenPos = new Vector2(66, 18);
+        {
+            TimerFrames[0].ScreenPos = new Vector2(-22, 18);
+            TimerFrames[0].HorizontalAnchor = HorizontalAnchorMode.Center;
+        }
         else
+        {
             TimerFrames[0].ScreenPos = new Vector2(13, 18);
-        
+        }
+
         TimerFrames[1].CurrentAnimation = 11;
         TimerFrames[1].ScreenPos = new Vector2(-13, 18);
         TimerFrames[1].HorizontalAnchor = HorizontalAnchorMode.Right;
@@ -759,7 +766,7 @@ public partial class UserInfoMulti2D : Dialog
         }
 
         if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
-            setTimerDigitPositions(0, 78, HorizontalAnchorMode.Left);
+            setTimerDigitPositions(0, -10, HorizontalAnchorMode.Center);
         else
             setTimerDigitPositions(0, 25, HorizontalAnchorMode.Left);
 
@@ -805,10 +812,15 @@ public partial class UserInfoMulti2D : Dialog
         }
 
         if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
-            TimerColons[0].ScreenPos = TimerColons[0].ScreenPos with { X = 86 };
+        {
+            TimerColons[0].ScreenPos = TimerColons[0].ScreenPos with { X = -2 };
+            TimerColons[0].HorizontalAnchor = HorizontalAnchorMode.Center;
+        }
         else
+        {
             TimerColons[0].ScreenPos = TimerColons[0].ScreenPos with { X = 33 };
-        
+        }
+
         TimerColons[1].ScreenPos = TimerColons[1].ScreenPos with { X = -50 };
         TimerColons[1].HorizontalAnchor = HorizontalAnchorMode.Right;
 
@@ -945,7 +957,7 @@ public partial class UserInfoMulti2D : Dialog
         else
         {
             for (int i = 0; i < PlayerIcons.Length; i++)
-                PlayerIcons[i].CurrentAnimation = HudIndexToMachineId(i);
+                PlayerIcons[i].CurrentAnimation = MultiplayerHelpers.HudIndexToMachineId(i);
 
             PlayerIcons[0].ScreenPos = new Vector2(0, 6);
 

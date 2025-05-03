@@ -116,7 +116,12 @@ public class FramesDebugMenu : DebugMenu
                 RSMultiplayer.UnInit();
                 RSMultiplayer.Init();
                 RSMultiplayer.MachineId = 0;
-                RSMultiplayer.PlayersCount = 4;
+
+                if (Rom.Platform == Platform.NGage && mapId is MapId.NGageMulti_CaptureTheFlagMiddleGround or MapId.NGageMulti_CaptureTheFlagFloors)
+                    RSMultiplayer.PlayersCount = 2;
+                else
+                    RSMultiplayer.PlayersCount = 4;
+
                 RSMultiplayer.MubState = MubState.Connected;
                 MultiplayerInfo.Init();
 
@@ -150,6 +155,17 @@ public class FramesDebugMenu : DebugMenu
 
                 // Create the level frame
                 Frame frame = LevelFactory.Create(mapId);
+
+                if (MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+                {
+                    MultiplayerInfo.CaptureTheFlagMode = mapId is MapId.NGageMulti_CaptureTheFlagTeamWork or MapId.NGageMulti_CaptureTheFlagTeamPlayer
+                        ? CaptureTheFlagMode.Teams
+                        : CaptureTheFlagMode.Solo;
+                    ((FrameMultiCaptureTheFlag)frame).InitNewGame(
+                        remainingTime: 300, 
+                        targetFlagsCount: 5, 
+                        mode: MultiplayerInfo.CaptureTheFlagMode);
+                }
 
                 // Set all powers
                 GameInfo.EnablePower(Power.All);

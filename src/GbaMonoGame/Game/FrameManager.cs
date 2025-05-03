@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using BinarySerializer.Ubisoft.GbaEngine;
 using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame;
@@ -70,6 +71,9 @@ public static class FrameManager
             CurrentFrame = NextFrame;
             NextFrame.Init();
             NextFrame = null;
+
+            if (Rom.IsLoaded && Rom.Platform == Platform.NGage)
+                CurrentFrame.EndOfFrame = false;
 
             sw.Stop();
 

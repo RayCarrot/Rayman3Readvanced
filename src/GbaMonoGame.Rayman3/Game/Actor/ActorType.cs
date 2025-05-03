@@ -115,9 +115,9 @@ public enum ActorType
     MetalShieldedHoodboom = 110,
 
     // N-Gage exclusive
-    CaptureTheFlagFlag = 111, // TODO: Implement
+    CaptureTheFlagFlag = 111,
     CaptureTheFlagRaymanSolo = 112,
-    CaptureTheFlagFlagBase = 113, // TODO: Implement
+    CaptureTheFlagFlagBase = 113,
     CaptureTheFlagItems = 114,
     CaptureTheFlagRaymanTeams = 115,
 }

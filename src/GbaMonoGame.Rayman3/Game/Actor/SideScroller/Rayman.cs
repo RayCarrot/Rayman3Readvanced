@@ -26,7 +26,7 @@ public sealed partial class Rayman : MovableActor
             {
                 FlagData = new CaptureTheFlagData()
                 {
-                    field_b8 = 1,
+                    CanPickUpDroppedFlag = true,
                 };
             }
 
@@ -1832,11 +1832,11 @@ public sealed partial class Rayman : MovableActor
                     State.MoveTo(Fsm_LockedLevelCurtain);
                 return false;
 
-            case Message.Rayman_1095:
-                // TODO: Implement
+            case Message.Rayman_GetPlayerPaletteId when Rom.Platform == Platform.NGage:
+                ((MessageRefParam<int>)param).Value = FlagData.PlayerPaletteId;
                 return false;
 
-            case Message.Rayman_CollectCaptureTheFlagItem:
+            case Message.Rayman_CollectCaptureTheFlagItem when Rom.Platform == Platform.NGage:
                 CaptureTheFlagItems.Action itemAction = (CaptureTheFlagItems.Action)param;
 
                 // The duration is always 300
@@ -1860,40 +1860,42 @@ public sealed partial class Rayman : MovableActor
                 }
                 return false;
 
-            case Message.Rayman_1103:
-                // TODO: Implement
+            case Message.Rayman_GetPickedUpFlag when Rom.Platform == Platform.NGage:
+                ((MessageRefParam<CaptureTheFlagFlag>)param).Value = FlagData.PickedUpFlag;
                 return false;
 
-            case Message.Rayman_1112:
-                // TODO: Implement
+            case Message.Rayman_GetCanPickUpDroppedFlag when Rom.Platform == Platform.NGage:
+                ((MessageRefParam<bool>)param).Value = FlagData.CanPickUpDroppedFlag;
                 return false;
 
-            case Message.Rayman_PickUpFlag:
+            case Message.Rayman_PickUpFlag when Rom.Platform == Platform.NGage:
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play_NGage_Unnamed1);
                 RemovePower(Power.All);
-                FlagData.PickedUpFlag = (BaseActor)param;
-                FlagData.field_b8 = 0;
+                FlagData.PickedUpFlag = (CaptureTheFlagFlag)param;
+                FlagData.CanPickUpDroppedFlag = false;
                 return false;
 
-            case Message.Rayman_CaptureFlag:
+            case Message.Rayman_CaptureFlag when Rom.Platform == Platform.NGage:
                 if (State != Fsm_MultiplayerCapturedFlag)
                     State.MoveTo(Fsm_MultiplayerCapturedFlag);
                 return false;
 
-            case Message.Rayman_1116:
+            case Message.Rayman_SpectateTiedPlayer when Rom.Platform == Platform.NGage:
+                // Drop the flag if one is picked up
                 if (FlagData.PickedUpFlag != null)
                 {
                     AnimatedObject.DeactivateChannel(4);
-                    FlagData.PickedUpFlag.ProcessMessage(this, Message.CaptureTheFlagFlag_1111);
+                    FlagData.PickedUpFlag.ProcessMessage(this, Message.CaptureTheFlagFlag_Drop);
                     FlagData.PickedUpFlag = null;
                 }
 
-                FlagData.field_b8 = 0;
+                // Can't pick up a flag again
+                FlagData.CanPickUpDroppedFlag = false;
 
                 if (State != Fsm_MultiplayerDying) 
                     State.MoveTo(Fsm_MultiplayerDying);
                 
-                FlagData.field_bc = (int)param; 
+                FlagData.SpectatePlayerId = (int)param;
                 return false;
 
             default:
@@ -2178,15 +2180,15 @@ public sealed partial class Rayman : MovableActor
 
     public class CaptureTheFlagData
     {
-        public BaseActor PickedUpFlag { get; set; } // TODO: Change type
+        public CaptureTheFlagFlag PickedUpFlag { get; set; }
         public AnimatedObject[] FlagArrows { get; } = new AnimatedObject[RSMultiplayer.MaxPlayersCount - 1];
         public uint InvincibilityTimer { get; set; }
         public uint SpeedUpTimer { get; set; }
-        public uint UnusedItemTimer { get; set; } // TODO: Name
-        public byte field_b8 { get; set; } // TODO: Name
+        public uint UnusedItemTimer { get; set; }
+        public bool CanPickUpDroppedFlag { get; set; }
         public bool SpeedUp { get; set; }
-        public byte PlayerPaletteId { get; set; } // TODO: Probably don't need this
+        public byte PlayerPaletteId { get; set; }
         public Power Powers { get; set; }
-        public int field_bc { get; set; } // TODO: Name
+        public int SpectatePlayerId { get; set; }
     }
 }

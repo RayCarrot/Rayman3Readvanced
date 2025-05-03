@@ -162,9 +162,9 @@ public class Rayman3 : GbaGame
             { ActorType.Leaf, (instanceId, scene, resource) => new Leaf(instanceId, scene, resource) },
             { ActorType.JanoShot, (instanceId, scene, resource) => new JanoShot(instanceId, scene, resource) },
             { ActorType.MetalShieldedHoodboom, (instanceId, scene, resource) => new MetalShieldedHoodboom(instanceId, scene, resource) },
-            // TODO: CaptureTheFlagFlag
+            { ActorType.CaptureTheFlagFlag, (instanceId, scene, resource) => new CaptureTheFlagFlag(instanceId, scene, resource) },
             { ActorType.CaptureTheFlagRaymanSolo, (instanceId, scene, resource) => new Rayman(instanceId, scene, resource) },
-            // TODO: CaptureTheFlagFlagBase
+            { ActorType.CaptureTheFlagFlagBase, (instanceId, scene, resource) => new CaptureTheFlagFlagBase(instanceId, scene, resource) },
             { ActorType.CaptureTheFlagItems, (instanceId, scene, resource) => new CaptureTheFlagItems(instanceId, scene, resource) },
             { ActorType.CaptureTheFlagRaymanTeams, (instanceId, scene, resource) => new Rayman(instanceId, scene, resource) },
         }, x => ((ActorType)x).ToString());

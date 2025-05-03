@@ -1,4 +1,5 @@
-﻿using GbaMonoGame.Engine2d;
+﻿using System;
+using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -115,6 +116,7 @@ public class FrameMultiCaptureTheFlag : FrameMultiSideScroller
 
         if (isTie)
         {
+            // If it's a tie and a solo match, then the players with a loosing score will spectate the tied players
             if (MultiplayerInfo.CaptureTheFlagMode != CaptureTheFlagMode.Teams)
             {
                 for (int i = 0; i < MultiplayerManager.PlayersCount; i++)
@@ -123,13 +125,13 @@ public class FrameMultiCaptureTheFlag : FrameMultiSideScroller
                     {
                         Rayman player = Scene.GetGameObject<Rayman>(i);
 
-                        int otherPlayerId;
+                        int tiedPlayerId;
                         do
                         {
-                            otherPlayerId = Random.GetNumber(MultiplayerManager.PlayersCount);
-                        } while (playersIsLoosing[otherPlayerId]);
+                            tiedPlayerId = Random.GetNumber(MultiplayerManager.PlayersCount);
+                        } while (playersIsLoosing[tiedPlayerId]);
 
-                        player.ProcessMessage(this, Message.Rayman_1116, otherPlayerId);
+                        player.ProcessMessage(this, Message.Rayman_SpectateTiedPlayer, tiedPlayerId);
                     }
                 }
             }
@@ -138,6 +140,44 @@ public class FrameMultiCaptureTheFlag : FrameMultiSideScroller
         }
 
         return winnerId;
+    }
+
+    public void SetPlayerRanks(int[] playerRanks)
+    {
+        if (MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Solo)
+        {
+            int[] playerFlagCountsCopy = new int[PlayerFlagCounts.Length];
+            Array.Copy(PlayerFlagCounts, playerFlagCountsCopy, PlayerFlagCounts.Length);
+
+            for (int i = 0; i < MultiplayerManager.PlayersCount; i++)
+            {
+                for (int j = 0; j < MultiplayerManager.PlayersCount - 1; j++)
+                {
+                    if (playerFlagCountsCopy[j] < playerFlagCountsCopy[j + 1])
+                    {
+                        (playerFlagCountsCopy[j], playerFlagCountsCopy[j + 1]) = (playerFlagCountsCopy[j + 1], playerFlagCountsCopy[j]);
+                        (playerRanks[j], playerRanks[j + 1]) = (playerRanks[j + 1], playerRanks[j]);
+                    }
+                }
+            }
+        }
+        else
+        {
+            if (PlayerFlagCounts[0] < PlayerFlagCounts[1])
+            {
+                playerRanks[0] = 2;
+                playerRanks[1] = 3;
+                playerRanks[2] = 0;
+                playerRanks[3] = 1;
+            }
+            else
+            {
+                playerRanks[0] = 0;
+                playerRanks[1] = 1;
+                playerRanks[2] = 2;
+                playerRanks[3] = 3;
+            }
+        }
     }
 
     public override void Init()
