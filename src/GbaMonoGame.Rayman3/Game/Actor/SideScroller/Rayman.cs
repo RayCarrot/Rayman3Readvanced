@@ -2026,7 +2026,8 @@ public sealed partial class Rayman : MovableActor
     {
         base.Step();
 
-        ToggleNoClip();
+        if (InstanceId == Scene.Camera.LinkedObject.InstanceId)
+            ToggleNoClip();
 
         if (SlideType != null && NewAction)
             MechModel.Init(1);

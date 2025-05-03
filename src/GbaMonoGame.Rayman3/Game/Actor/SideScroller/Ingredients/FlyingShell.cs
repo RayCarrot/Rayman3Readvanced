@@ -219,6 +219,8 @@ public sealed partial class FlyingShell : MovableActor
     public override void Step()
     {
         base.Step();
-        ToggleNoClip();
+
+        if (InstanceId == Scene.Camera.LinkedObject.InstanceId)
+            ToggleNoClip();
     }
 }
