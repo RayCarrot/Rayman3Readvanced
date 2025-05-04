@@ -881,15 +881,13 @@ public partial class UserInfoMulti2D : Dialog
         EnergyShotsCounterDigits[0].ScreenPos = EnergyShotsCounterDigits[0].ScreenPos with { X = 33 };
         EnergyShotsCounterDigits[1].ScreenPos = EnergyShotsCounterDigits[1].ScreenPos with { X = 42 };
 
-        // Hacky code, but the game uses Rayman's palettes for the icons
-        iconsResource.Palettes = Scene.MainActor.AnimatedObject.Resource.Palettes;
-
         EnergyShotsIcon = new AnimatedObject(iconsResource, iconsResource.IsDynamic)
         {
             IsFramed = true,
             BgPriority = 0,
             ObjPriority = 6,
             CurrentAnimation = 0,
+            OverridePalettes = Scene.MainActor.AnimatedObject.Palettes,
             RenderContext = Scene.HudRenderContext,
         };
 

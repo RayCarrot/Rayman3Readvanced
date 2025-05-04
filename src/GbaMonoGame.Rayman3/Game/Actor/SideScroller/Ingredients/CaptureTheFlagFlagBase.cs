@@ -41,6 +41,7 @@ public sealed partial class CaptureTheFlagFlagBase : ActionActor
                     MessageRefParam<int> param = new();
                     AttachedObject.ProcessMessage(this, Message.Rayman_GetPlayerPaletteId, param);
                     AnimatedObject.BasePaletteIndex = param.Value;
+                    AnimatedObject.OverridePalettes = AttachedObject.AnimatedObject.Palettes;
 
                     // Hide the flag from the base animation
                     AnimatedObject.DeactivateChannel(0);
@@ -64,6 +65,7 @@ public sealed partial class CaptureTheFlagFlagBase : ActionActor
             MessageRefParam<int> param = new();
             TeamPlayer1.ProcessMessage(this, Message.Rayman_GetPlayerPaletteId, param);
             AnimatedObject.BasePaletteIndex = param.Value;
+            AnimatedObject.OverridePalettes = TeamPlayer1.AnimatedObject.Palettes;
             TeamId = param.Value / 2;
 
             State.SetTo(Fsm_Teams);

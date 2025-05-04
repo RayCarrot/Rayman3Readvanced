@@ -41,24 +41,28 @@ public class SwitchBar : Bar
         // The original game dynamically modifies the loaded palette in the Draw method to make
         // the switches appear like they're glowing. The easiest way to replicate it here is to
         // create separate palettes that we cycle between.
-        if (Switches.Resource.PalettesCount == 1)
+        PaletteResource originalPalette = Switches.Resource.Palettes.Palettes[0];
+        SpritePalettes newPalettes = new()
         {
-            PaletteResource originalPalette = Switches.Resource.Palettes.Palettes[0];
+            Palettes = new PaletteResource[9],
+        };
 
-            Switches.Resource.PalettesCount = 9;
-            Switches.Resource.Palettes.Palettes = new PaletteResource[Switches.Resource.PalettesCount];
+        for (int i = 0; i < newPalettes.Palettes.Length; i++)
+        {
+            RGB555Color[] colors = new RGB555Color[originalPalette.Colors.Length];
+            Array.Copy(originalPalette.Colors, colors, originalPalette.Colors.Length);
 
-            for (int i = 0; i < Switches.Resource.Palettes.Palettes.Length; i++)
-            {
-                RGB555Color[] colors = new RGB555Color[originalPalette.Colors.Length];
-                Array.Copy(originalPalette.Colors, colors, originalPalette.Colors.Length);
+            colors[2] = new RGB555Color((uint)((i + 23) * 0x20));
+            colors[9] = new RGB555Color((uint)((i + 4) * 0x400 | 0x160 | i + 23));
 
-                colors[2] = new RGB555Color((uint)((i + 23) * 0x20));
-                colors[9] = new RGB555Color((uint)((i + 4) * 0x400 | 0x160 | i + 23));
-
-                Switches.Resource.Palettes.Palettes[i] = new PaletteResource { Colors = colors };
-            }
+            newPalettes.Palettes[i] = new PaletteResource { Colors = colors };
         }
+
+        // Set the pointer as the original plus 1 so it gets cached differently
+        newPalettes.Init(Switches.Resource.Palettes.Offset + 1);
+
+        // Override the palettes
+        Switches.OverridePalettes = newPalettes;
 
         PaletteShiftValue = 0;
         PaletteShiftDirection = 0;

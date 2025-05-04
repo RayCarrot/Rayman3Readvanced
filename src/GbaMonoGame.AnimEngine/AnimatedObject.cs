@@ -124,6 +124,9 @@ public class AnimatedObject : AObject
 
     public bool OverrideGfxColor { get; set; } // Needed for the curtains in the worldmap which are not effected by the palette fading
 
+    public SpritePalettes Palettes => OverridePalettes ?? Resource.Palettes;
+    public SpritePalettes OverridePalettes { get; set; } // Used to override the palettes
+
     public BoxTable BoxTable { get; set; }
 
     // Custom - allows animations to be replaced with new ones
@@ -402,6 +405,8 @@ public class AnimatedObject : AObject
                     if (paletteIndex > 0)
                         Debug.Assert(!Resource.Is8Bit, "Can't use a palette index when 8-bit");
 
+                    SpritePalettes palettes = Palettes;
+
                     PaletteTexture paletteTexture;
                     if (texture is not IndexedSpriteTexture2D)
                     {
@@ -412,9 +417,9 @@ public class AnimatedObject : AObject
                     {
                         paletteTexture = new PaletteTexture(
                             Texture: Engine.TextureCache.GetOrCreateObject(
-                                pointer: Resource.Palettes.Offset,
+                                pointer: palettes.Offset,
                                 id: 0,
-                                data: Resource.Palettes,
+                                data: palettes,
                                 createObjFunc: static p => new PaletteTexture2D(p.Palettes)),
                             PaletteIndex: paletteIndex);
                     }
@@ -424,7 +429,7 @@ public class AnimatedObject : AObject
                             Texture: Engine.TextureCache.GetOrCreateObject(
                                 pointer: anim.PaletteCycleAnimation.Offset,
                                 id: PaletteCycleIndex,
-                                data: new PaletteAnimationDefine(Resource.Palettes, anim.PaletteCycleAnimation, PaletteCycleIndex),
+                                data: new PaletteAnimationDefine(palettes, anim.PaletteCycleAnimation, PaletteCycleIndex),
                                 createObjFunc: static data =>
                                 {
                                     PaletteCycleAnimation palAnim = data.PaletteCycleAnimation;
