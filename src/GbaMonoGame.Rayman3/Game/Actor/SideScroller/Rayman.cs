@@ -135,13 +135,14 @@ public sealed partial class Rayman : MovableActor
 
                     for (int i = 0; i < RSMultiplayer.PlayersCount - 1; i++)
                     {
-                        FlagData!.FlagArrows[i] = new AnimatedObject(arrowResource, arrowResource.IsDynamic)
+                        FlagData!.PlayerArrows[i] = new AnimatedObject(arrowResource, arrowResource.IsDynamic)
                         {
                             IsFramed = true,
                             BgPriority = 0,
                             ObjPriority = 2,
                             CurrentAnimation = 1,
                             AffineMatrix = AffineMatrix.Identity,
+                            OverridePalettes = AnimatedObject.Palettes,
                             RenderContext = AnimatedObject.RenderContext,
                         };
                     }
@@ -1350,9 +1351,142 @@ public sealed partial class Rayman : MovableActor
         }
     }
 
-    private void DrawFlagArrows()
+    private bool TryFindPlayerArrowScreenEdgePosition(Vector2 origin, Vector2 dist, Box screenBox, out Vector2 screenEdgePos)
     {
-        // TODO: Implement
+        Box playerArrowBox;
+        if (dist.X < 0)
+        {
+            if (dist.Y < 0)
+                playerArrowBox = new Box(origin.X + dist.X, origin.Y + dist.Y, origin.X, origin.Y);
+            else
+                playerArrowBox = new Box(origin.X + dist.X, origin.Y, origin.X, origin.Y + dist.Y);
+        }
+        else
+        {
+            if (dist.Y < 0)
+                playerArrowBox = new Box(origin.X, origin.Y + dist.Y, origin.X + dist.X, origin.Y);
+            else
+                playerArrowBox = new Box(origin.X, origin.Y, origin.X + dist.X, origin.Y + dist.Y);
+        }
+
+        if (!DoBoxesIntersect(playerArrowBox, screenBox))
+        {
+            screenEdgePos = default;
+            return false;
+        }
+
+        float length = dist.Length();
+
+        if (length == 0)
+        {
+            screenEdgePos = default;
+            return false;
+        }
+
+        Vector2 dir = Vector2.Normalize(dist).FlipY();
+
+        Vector2 currentPos = origin;
+        for (int i = 0; i < 300; i++)
+        {
+            BoxOutCode boxOutcode = GetBoxOutcode(currentPos, screenBox);
+
+            if (boxOutcode != BoxOutCode.Inside)
+            {
+                float yFactor;
+                if (dist.Y < 0 && boxOutcode == BoxOutCode.Above)
+                    yFactor = -20;
+                else
+                    yFactor = -12;
+
+                screenEdgePos = new Vector2(
+                    x: currentPos.X + dir.X * -12,
+                    y: currentPos.Y + dir.Y * yFactor);
+                return true;
+            }
+
+            currentPos += dir;
+        }
+
+        screenEdgePos = default;
+        return false;
+    }
+
+    private bool DoBoxesIntersect(Box box1, Box box2)
+    {
+        if (box2.Bottom < box1.Top && 
+            box2.Right < box1.Left &&
+            box1.Bottom < box2.Top &&
+            box1.Right < box2.Left)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private BoxOutCode GetBoxOutcode(Vector2 pos, Box box)
+    {
+        BoxOutCode boxOutCode = BoxOutCode.Inside;
+
+        if (pos.X < box.Left)
+            boxOutCode |= BoxOutCode.Left;
+        
+        if (pos.X >= box.Right)
+            boxOutCode |= BoxOutCode.Right;
+        
+        if (pos.Y < box.Top)
+            boxOutCode |= BoxOutCode.Above;
+        
+        if (pos.Y >= box.Bottom)
+            boxOutCode |= BoxOutCode.Below;
+        
+        return boxOutCode;
+    }
+
+    private void DrawPlayerArrows(AnimationPlayer animationPlayer)
+    {
+        int flagIndex = 0;
+        for (int i = 0; i < MultiplayerManager.PlayersCount; i++)
+        {
+            Rayman player = Scene.GetGameObject<Rayman>(i);
+            bool isFramed = Scene.Camera.IsActorFramed(player);
+
+            // Draw the arrow if the player is not on screen and it's not the local player
+            if (!isFramed && !player.IsLocalPlayer)
+            {
+                Vector2 origin = Position - Scene.Playfield.Camera.Position;
+                Vector2 dist = (player.Position - Position).FlipY();
+                Box screenBox = new(Vector2.Zero, Scene.Resolution);
+
+                if (TryFindPlayerArrowScreenEdgePosition(origin, dist, screenBox, out Vector2 screenEdgePos))
+                {
+                    // Don't overlap with the HUD
+                    if (screenEdgePos.Y < 38)
+                    {
+                        screenEdgePos.Y = 38;
+                    }
+                    else if (screenEdgePos.Y > 170 && 
+                             MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Solo && 
+                             MultiplayerManager.PlayersCount > 2)
+                    {
+                        screenEdgePos.Y = 170;
+                    }
+
+                    AnimatedObject playerArrow = FlagData.PlayerArrows[flagIndex];
+
+                    playerArrow.ScreenPos = screenEdgePos;
+
+                    Angle256 dirAngle = MathHelpers.Atan2_256((player.Position - Position).FlipY());
+                    playerArrow.AffineMatrix = new AffineMatrix(dirAngle.Inverse(), 1, 1);
+
+                    playerArrow.BasePaletteIndex = player.FlagData.PlayerPaletteId;
+
+                    animationPlayer.Play(playerArrow);
+
+                    flagIndex++;
+                }
+            }
+        }
     }
 
     private void ToggleNoClip()
@@ -1894,10 +2028,10 @@ public sealed partial class Rayman : MovableActor
                 {
                     FlagData.InvincibilityTimer = duration;
                 }
-                else if (itemAction == CaptureTheFlagItems.Action.Unused)
+                else if (itemAction == CaptureTheFlagItems.Action.PlayerArrows)
                 {
                     if (IsLocalPlayer)
-                        FlagData.UnusedItemTimer = duration;
+                        FlagData.PlayerArrowsTimer = duration;
                 }
                 return false;
 
@@ -2177,10 +2311,11 @@ public sealed partial class Rayman : MovableActor
             else
                 AnimatedObject.ActivateChannel(4);
 
-            if (FlagData.UnusedItemTimer != 0 && IsLocalPlayer)
+            // Unused
+            if (FlagData.PlayerArrowsTimer != 0 && IsLocalPlayer)
             {
-                FlagData.UnusedItemTimer--;
-                DrawFlagArrows();
+                FlagData.PlayerArrowsTimer--;
+                DrawPlayerArrows(animationPlayer);
             }
         }
 
@@ -2227,14 +2362,24 @@ public sealed partial class Rayman : MovableActor
     public class CaptureTheFlagData
     {
         public CaptureTheFlagFlag PickedUpFlag { get; set; }
-        public AnimatedObject[] FlagArrows { get; } = new AnimatedObject[RSMultiplayer.MaxPlayersCount - 1];
+        public AnimatedObject[] PlayerArrows { get; } = new AnimatedObject[RSMultiplayer.MaxPlayersCount - 1];
         public uint InvincibilityTimer { get; set; }
         public uint SpeedUpTimer { get; set; }
-        public uint UnusedItemTimer { get; set; }
+        public uint PlayerArrowsTimer { get; set; }
         public bool CanPickUpDroppedFlag { get; set; }
         public bool NewState { get; set; }
         public int PlayerPaletteId { get; set; }
         public Power Powers { get; set; }
         public int SpectatePlayerId { get; set; }
+    }
+
+    [Flags]
+    private enum BoxOutCode
+    {
+        Inside = 0,
+        Right = 1,
+        Above = 2,
+        Left = 4,
+        Below = 8
     }
 }

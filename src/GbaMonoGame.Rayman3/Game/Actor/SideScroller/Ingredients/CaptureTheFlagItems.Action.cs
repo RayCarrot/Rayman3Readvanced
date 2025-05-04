@@ -12,6 +12,6 @@ public partial class CaptureTheFlagItems
     {
         Invincibility = 0,
         MagicShoes = 1,
-        Unused = 2,
+        PlayerArrows = 2, // Unused
     }
 }
