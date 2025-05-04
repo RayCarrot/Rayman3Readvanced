@@ -117,7 +117,7 @@ public class FrameMultiCaptureTheFlag : FrameMultiSideScroller
         if (isTie)
         {
             // If it's a tie and a solo match, then the players with a loosing score will spectate the tied players
-            if (MultiplayerInfo.CaptureTheFlagMode != CaptureTheFlagMode.Teams)
+            if (MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Solo)
             {
                 for (int i = 0; i < MultiplayerManager.PlayersCount; i++)
                 {

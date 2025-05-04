@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using BinarySerializer;
 using BinarySerializer.Nintendo.GBA;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
@@ -42,48 +41,90 @@ public sealed partial class Rayman : MovableActor
                     AnimatedObject.IsSoundEnabled = false;
                 }
 
+                // This is some hacky code to add the additional multiplayer palettes. The game doesn't store this
+                // in the animated object resource to avoid them being allocated in single player. So the game
+                // manually allocates them to vram here. We however can't just modify this actor's animations since
+                // we cache sprites between all actors that share the same animated object. So the easiest solution
+                // is to add the palettes to the animated object and then just change the base pal index.
                 if (Rom.Platform == Platform.NGage &&
                     MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag &&
-                    MultiplayerInfo.CaptureTheFlagMode != CaptureTheFlagMode.Solo)
+                    MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Teams)
                 {
-                    // TODO: Implement setting palettes
+                    // Load the palette resources
+                    Palette16 pal3 = Rom.LoadResource<Resource<Palette16>>(GameResource.Player3RaymanPalette).Value;
+
+                    // Create a new sprite palette combining the multiplayer ones
+                    SpritePalettes multiplayerPalettes = new()
+                    {
+                        Palettes =
+                        [
+                            // Team 1
+                            AnimatedObject.Resource.Palettes.Palettes[0],
+                            AnimatedObject.Resource.Palettes.Palettes[1],
+                            pal3,
+                            
+                            // Team 2
+                            AnimatedObject.Resource.Palettes.Palettes[0],
+                            pal3,
+                            AnimatedObject.Resource.Palettes.Palettes[1],
+                        ]
+                    };
+
+                    // Set the pointer as the original plus 2 so it gets cached differently
+                    multiplayerPalettes.Init(AnimatedObject.Resource.Palettes.Offset + 2);
+
+                    // Override the palettes
+                    AnimatedObject.OverridePalettes = multiplayerPalettes;
+
+                    // Set the base palette index
+                    if (InstanceId is 0 or 1)
+                        AnimatedObject.BasePaletteIndex = 0;
+                    else if (InstanceId is 2 or 3)
+                        AnimatedObject.BasePaletteIndex = 3;
+
+                    FlagData!.PlayerPaletteId = AnimatedObject.BasePaletteIndex + 1;
                 }
                 else
                 {
-                    // This is some hacky code to add the additional multiplayer palettes. The game doesn't store this
-                    // in the animated object resource to avoid them being allocated in single player. So the game
-                    // manually allocates them to vram here. We however can't just modify this actor's animations since
-                    // we cache sprites between all actors that share the same animated object. So the easiest solution
-                    // is to add the palettes to the animated object resource and then just change the base pal index.
-                    if (AnimatedObject.Resource.PalettesCount == 2)
+                    // Load the palette resources
+                    Palette16 pal2 = Rom.LoadResource<Resource<Palette16>>(GameResource.Player2RaymanPalette).Value;
+                    Palette16 pal3 = Rom.LoadResource<Resource<Palette16>>(GameResource.Player3RaymanPalette).Value;
+                    Palette16 pal4 = Rom.LoadResource<Resource<Palette16>>(GameResource.Player4RaymanPalette).Value;
+
+                    // Create a new sprite palette combining the multiplayer ones
+                    SpritePalettes multiplayerPalettes = new()
                     {
-                        Palette16 pal2 = Rom.LoadResource<Resource<Palette16>>(GameResource.Player2RaymanPalette).Value;
-                        Palette16 pal3 = Rom.LoadResource<Resource<Palette16>>(GameResource.Player3RaymanPalette).Value;
-                        Palette16 pal4 = Rom.LoadResource<Resource<Palette16>>(GameResource.Player4RaymanPalette).Value;
+                        Palettes =
+                        [
+                            // Player 1
+                            AnimatedObject.Resource.Palettes.Palettes[0],
+                            AnimatedObject.Resource.Palettes.Palettes[1],
 
-                        Pointer palettesPointer = AnimatedObject.Resource.Palettes.Offset;
-                        AnimatedObject.Resource.PalettesCount = 2 * 4;
-                        AnimatedObject.Resource.Palettes = new SpritePalettes
-                        {
-                            Palettes = new[]
-                            {
-                                AnimatedObject.Resource.Palettes.Palettes[0],
-                                AnimatedObject.Resource.Palettes.Palettes[1],
+                            // Player 2
+                            AnimatedObject.Resource.Palettes.Palettes[0],
+                            pal2,
 
-                                AnimatedObject.Resource.Palettes.Palettes[0],
-                                pal2,
+                            // Player 3
+                            AnimatedObject.Resource.Palettes.Palettes[0],
+                            pal3,
 
-                                AnimatedObject.Resource.Palettes.Palettes[0],
-                                pal3,
+                            // PLayer 4
+                            AnimatedObject.Resource.Palettes.Palettes[0],
+                            pal4
+                        ]
+                    };
 
-                                AnimatedObject.Resource.Palettes.Palettes[0],
-                                pal4,
-                            }
-                        };
-                        AnimatedObject.Resource.Palettes.Init(palettesPointer);
-                    }
+                    // Set the pointer as the original plus 1 so it gets cached differently
+                    multiplayerPalettes.Init(AnimatedObject.Resource.Palettes.Offset + 1);
 
+                    // Override the palettes
+                    AnimatedObject.OverridePalettes = multiplayerPalettes;
+
+                    // Set the base palette index
                     AnimatedObject.BasePaletteIndex = InstanceId * 2;
+
+                    if (Rom.Platform == Platform.NGage)
+                        FlagData!.PlayerPaletteId = AnimatedObject.BasePaletteIndex + 1;
                 }
 
                 if (Rom.Platform == Platform.NGage &&
@@ -1845,7 +1886,7 @@ public sealed partial class Rayman : MovableActor
                 if (itemAction == CaptureTheFlagItems.Action.Invincibility)
                 {
                     if (FlagData.SpeedUpTimer == 0)
-                        FlagData.SpeedUp = true;
+                        FlagData.NewState = true;
 
                     FlagData.SpeedUpTimer = duration;
                 }
@@ -2102,20 +2143,25 @@ public sealed partial class Rayman : MovableActor
                 if (FlagData.InvincibilityTimer != 0)
                     FlagData.InvincibilityTimer--;
 
+                uint prevSpeedUpTimer = FlagData.SpeedUpTimer;
+
                 if (FlagData.SpeedUpTimer != 0)
                     FlagData.SpeedUpTimer--;
 
-                if (FlagData.SpeedUp)
+                // Rayman has entered a new state
+                if (FlagData.NewState)
                 {
+                    // Speed up horizontal speed by 1.5 if using magic shoes power-up
                     if (FlagData.SpeedUpTimer != 0)
-                        MechModel.Speed = MechModel.Speed with { X = MechModel.Speed.X * 3 / 2 };
+                        MechModel.Speed *= new Vector2(1.5f, 1);
 
-                    FlagData.SpeedUp = false;
+                    FlagData.NewState = false;
                 }
                 else
                 {
-                    if (FlagData.SpeedUpTimer % 256 != 0 && FlagData.SpeedUpTimer == 0)
-                        MechModel.Speed = MechModel.Speed with { X = MechModel.Speed.X * 2 / 3 };
+                    // If the magic shoes has just run out, then slow back down
+                    if (prevSpeedUpTimer != 0 && FlagData.SpeedUpTimer == 0)
+                        MechModel.Speed *= new Vector2(1 / 1.5f, 1);
                 }
             }
         }
@@ -2186,8 +2232,8 @@ public sealed partial class Rayman : MovableActor
         public uint SpeedUpTimer { get; set; }
         public uint UnusedItemTimer { get; set; }
         public bool CanPickUpDroppedFlag { get; set; }
-        public bool SpeedUp { get; set; }
-        public byte PlayerPaletteId { get; set; }
+        public bool NewState { get; set; }
+        public int PlayerPaletteId { get; set; }
         public Power Powers { get; set; }
         public int SpectatePlayerId { get; set; }
     }
