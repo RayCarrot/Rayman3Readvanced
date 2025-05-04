@@ -63,7 +63,7 @@ public partial class CaptureTheFlagFlag
                             MessageRefParam<BaseActor> baseParam = new() { Value = player };
                             Scene.GetGameObject(BaseActorId).ProcessMessage(this, Message.CaptureTheFlagFlagBase_GetCapturableFlag, baseParam);
 
-                            if (baseParam.Value == null || baseParam.Value == this)
+                            if (baseParam.Value == null || baseParam.Value != this)
                             {
                                 reset = true;
                             }
