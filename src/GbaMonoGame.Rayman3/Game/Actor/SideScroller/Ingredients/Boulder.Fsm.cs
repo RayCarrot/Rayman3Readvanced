@@ -28,7 +28,7 @@ public partial class Boulder
             Timer++;
         }
 
-        // This is probably unused, cause this is when the actor is hidden which makes it not have an attack box yet
+        // This is unused, cause this is when the actor is hidden which makes it not have an attack box yet
         if (Timer == 0xFF)
         {
             InteractableActor hitActor = Scene.IsHitActor(this);

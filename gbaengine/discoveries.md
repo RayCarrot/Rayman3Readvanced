@@ -151,4 +151,41 @@ Most actors have the first animation be unused and just single frame, most likel
 - Actions 2, 3, 4, 5, 6, 7, 15, 23, 25, 26, 29 and 30 are unused. They all use existing animations, except for two of them which use an animation of the spider being completely still and not moving.
 - There's an impossible state transition condition in the chasing state. Similarly there's a state transition condition in another state that'll always be true. These are either leftovers from earlier versions of the game or unintentional mistakes.
 
+#### SpikyFlyingBomb
+- The flying bomb has 3 states it can be initially set to, with one of them being unused. It has the flying bomb behave like a mine bomb, targeting the player and moving towards it in a straight line. That makes actions 4 and 6 unused, but they both use existing animations.
+- Action 7 is unused, but it uses an existing animation.
+
+#### Spinneroo
+- Actions 4, 5, 8 and 9 are unused, with the last two using an unused animation. That makes the following animation unused:
+
+![Animation 3](discoveries_assets/Spinneroo_Anim_3.gif)
+
+- Additionally there are 2 completely unused animation:
+
+![Animation 1](discoveries_assets/Spinneroo_Anim_1.gif)
+![Animation 2](discoveries_assets/Spinneroo_Anim_2.gif)
+
+- There are 2 unused states which use the unused actions. No special code besides that exist in the states though.
+
+#### Ammo
+- The actor is unused. It's meant to appear in the final boss and give you ammo to shoot from the flying shell as it does in the ETSC prototype.
+- There is a value that saves the initial Y position. This goes unused as when the ammo respawns it sets a random Y position from a list, ignoring the initial one.
+- The timer value for when it respawns is not initialized, meaning it defaults to the default allocation values, which is 0xCD. This would be an issue if not for the fact that it's stored as a byte, meaning it'll quickly wrap back down to 0 again and function like normal.
+
+#### Arrive
+- There are 3 unused animations, but they're all empty.
+
+#### Barrel
+- The barrel can optionally be set to break on impact rather than float in the water. This is unused in the final game and was meant to be used to block your path between the first and second levels in the first hub world, as seen in the prototypes. In the final game the animations for these states are broken.
+- There are 3 unused animations. 2 of them just have the barrel standing still without moving, while the third one has it bouncing around while floating:
+
+![Animation 7](discoveries_assets/Barrel_Anim_7.gif)
+
+#### BlackLum
+- The black lum can optionally be linked to a red lum which spawns after having been defeated. This is however never used.
+- There is a boolean value which determines if the actor should be drawn (i.e. not hidden). This value is only ever set to true and thus remains unused.
+
+#### Boulder
+- There is code to manage the boulder's hitbox before it spawns, which is unused since it doesn't have an attack hitbox yet then. The code here oddly makes it damage any actor it comes into contact with and not just the main actor as it does after spawning.
+
 ...

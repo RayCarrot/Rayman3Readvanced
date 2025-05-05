@@ -10,7 +10,7 @@ public partial class Cage
         switch (action)
         {
             case FsmAction.Init:
-                ActionId = InitialActionId;
+                ActionId = IsGrounded ? Action.GroundedIdle : Action.HangingIdle;
                 Timer = 0;
                 break;
             
@@ -49,7 +49,7 @@ public partial class Cage
                 // If all objects are kept active we only want to make this sound when framed
                 if (!Scene.KeepAllObjectsActive || AnimatedObject.IsFramed)
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CageSnd1_Mix02__or__CageSnd2_Mix02);
-                ActionId = InitialActionId + 1;
+                ActionId = IsGrounded ? Action.GroundedBlink : Action.HangingBlink;
                 break;
 
             case FsmAction.Step:
@@ -83,7 +83,12 @@ public partial class Cage
         {
             case FsmAction.Init:
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CageHit_Mix07);
-                ActionId = InitialActionId + 2 + HitAction;
+
+                if (IsGrounded)
+                    ActionId = IsHitToLeft ? Action.GroundedHitLeft : Action.GroundedHitRight;
+                else
+                    ActionId = IsHitToLeft ? Action.HangingHitLeft : Action.HangingHitRight;
+                
                 PrevHitPoints = HitPoints;
                 break;
 
@@ -115,18 +120,23 @@ public partial class Cage
         switch (action)
         {
             case FsmAction.Init:
-                ActionId = InitialActionId + 3;
+                ActionId = IsGrounded ? Action.GroundedBlinkDamaged : Action.HangingBlinkDamaged;
                 break;
 
             case FsmAction.Step:
                 if (PrevHitPoints != HitPoints)
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CageHit_Mix07);
-                    ActionId = InitialActionId + 2 + HitAction;
+
+                    if (IsGrounded)
+                        ActionId = IsHitToLeft ? Action.GroundedHitLeft : Action.GroundedHitRight;
+                    else
+                        ActionId = IsHitToLeft ? Action.HangingHitLeft : Action.HangingHitRight;
+
                     PrevHitPoints = HitPoints;
                 }
 
-                if (IsActionFinished && ActionId is 2 or 5 or 8 or 11)
+                if (IsActionFinished && ActionId is Action.GroundedHitRight or Action.GroundedHitLeft or Action.HangingHitRight or Action.HangingHitLeft)
                 {
                     PrevHitPoints = HitPoints;
                     State.MoveTo(Fsm_Destroyed);
@@ -149,7 +159,7 @@ public partial class Cage
             case FsmAction.Init:
                 GameInfo.KillCage(CageId);
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CageTrsh_Mix05);
-                ActionId = InitialActionId + 4;
+                ActionId = IsGrounded ? Action.GroundedBreak : Action.HangingBreak;
                 Scene.MainActor.ProcessMessage(this, Message.Rayman_CollectCage);
                 break;
 

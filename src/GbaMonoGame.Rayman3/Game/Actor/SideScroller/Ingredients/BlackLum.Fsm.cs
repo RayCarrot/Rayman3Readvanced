@@ -144,7 +144,7 @@ public partial class BlackLum
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    // Spawn red lum (unused I think?)
+                    // Spawn red lum (unused)
                     if (Resource.Links[0] != null)
                     {
                         GameObject linkedObj = Scene.GetGameObject(Resource.Links[0].Value);

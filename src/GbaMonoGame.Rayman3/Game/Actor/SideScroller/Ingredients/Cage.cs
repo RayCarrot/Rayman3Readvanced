@@ -6,7 +6,7 @@ public sealed partial class Cage : InteractableActor
 {
     public Cage(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
-        InitialActionId = actorResource.FirstActionId == 0 ? 0 : 6;
+        IsGrounded = actorResource.FirstActionId == 0;
         PrevHitPoints = HitPoints;
         
         CageId = GameInfo.GetCageId();
@@ -18,11 +18,11 @@ public sealed partial class Cage : InteractableActor
     }
 
     public int CageId { get; }
-    public int InitialActionId { get; }
+    public bool IsGrounded { get; } // NOTE: In the original game this is a base action id of 0 or 6
 
     public int PrevHitPoints { get; set; }
     public int Timer { get; set; }
-    public int HitAction { get; set; }
+    public bool IsHitToLeft { get; set; } // NOTE: In the original game this is a base action id of 0 or 3
 
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {
@@ -33,7 +33,7 @@ public sealed partial class Cage : InteractableActor
         {
             case Message.Actor_Hurt:
                 BaseActor actor = (BaseActor)param;
-                HitAction = actor.IsFacingLeft ? 3 : 0;
+                IsHitToLeft = actor.IsFacingLeft;
                 State.MoveTo(Fsm_Damaged);
                 HitPoints--;
                 return false;
@@ -41,7 +41,7 @@ public sealed partial class Cage : InteractableActor
             case Message.Actor_Hit:
                 RaymanBody raymanBody = (RaymanBody)param;
 
-                HitAction = raymanBody.IsFacingLeft ? 3 : 0;
+                IsHitToLeft = raymanBody.IsFacingLeft;
 
                 if (raymanBody.BodyPartType is RaymanBody.RaymanBodyPartType.SuperFist or RaymanBody.RaymanBodyPartType.SecondSuperFist)
                 {
