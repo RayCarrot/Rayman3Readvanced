@@ -492,7 +492,14 @@ public sealed partial class Rayman : MovableActor
 
         if (RSMultiplayer.IsActive && Rom.Platform == Platform.NGage)
         {
-            // TODO: Implement
+            bodyPart.AnimatedObject.OverridePalettes = AnimatedObject.Palettes;
+            bodyPart.AnimatedObject.BasePaletteIndex = FlagData.PlayerPaletteId - 1;
+        }
+        // Optionally fix colors for GBA too, so the body-shot matches the player color
+        else if (Engine.Config.FixBugs && RSMultiplayer.IsActive && Rom.Platform == Platform.GBA)
+        {
+            bodyPart.AnimatedObject.OverridePalettes = AnimatedObject.Palettes;
+            bodyPart.AnimatedObject.BasePaletteIndex = AnimatedObject.BasePaletteIndex;
         }
     }
 
