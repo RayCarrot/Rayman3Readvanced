@@ -37,11 +37,30 @@ public partial class CaptureTheFlagFlag
         {
             case FsmAction.Init:
                 Position = AttachedPlayer.Position;
+
+                // Optionally fix the palette being wrong
+                SavedPaletteIndex = AnimatedObject.BasePaletteIndex;
+                if (Engine.Config.FixBugs)
+                {
+                    if (MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Solo)
+                    {
+                        AnimatedObject.BasePaletteIndex = 0;
+                    }
+                    else
+                    {
+                        MessageRefParam<int> param = new();
+                        AttachedPlayer.ProcessMessage(this, Message.Rayman_GetPlayerPaletteId, param);
+                        AnimatedObject.BasePaletteIndex = param.Value + 1;
+                    }
+                }
+                else
+                {
+                    AnimatedObject.BasePaletteIndex = 1;
+                }
+
                 AttachedPlayer = null;
                 ActionId = Action.Fall_Left;
                 DroppedWithoutFalling = true;
-                SavedPaletteIndex = AnimatedObject.BasePaletteIndex;
-                AnimatedObject.BasePaletteIndex = 1;
                 break;
             
             case FsmAction.Step:

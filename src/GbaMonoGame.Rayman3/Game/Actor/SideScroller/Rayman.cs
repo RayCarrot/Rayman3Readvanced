@@ -53,6 +53,41 @@ public sealed partial class Rayman : MovableActor
                     // Load the palette resources
                     Palette16 pal3 = Rom.LoadResource<Resource<Palette16>>(GameResource.Player3RaymanPalette).Value;
 
+                    // In the original game there is a bug causing the flags to render using the wrong colors. This is because the sprite
+                    // data does not match the palettes. The correct colors are there though, so we can fix it by re-ordering them.
+                    PaletteResource fixPalette(PaletteResource pal)
+                    {
+                        if (Engine.Config.FixBugs)
+                        {
+                            return new PaletteResource()
+                            {
+                                Colors =
+                                [
+                                    pal.Colors[0],
+                                    pal.Colors[3], // 1 -> 3
+                                    pal.Colors[2],
+                                    pal.Colors[3],
+                                    pal.Colors[4],
+                                    pal.Colors[5],
+                                    pal.Colors[6],
+                                    pal.Colors[7],
+                                    pal.Colors[8],
+                                    pal.Colors[9],
+                                    pal.Colors[4], // 10 -> 4
+                                    pal.Colors[15], // 11 -> 15
+                                    pal.Colors[12],
+                                    pal.Colors[6], // 13 -> 6
+                                    pal.Colors[7], // 14 -> 7
+                                    pal.Colors[8], // 15 -> 8
+                                ]
+                            };
+                        }
+                        else
+                        {
+                            return pal;
+                        }
+                    }
+
                     // Create a new sprite palette combining the multiplayer ones
                     SpritePalettes multiplayerPalettes = new()
                     {
@@ -61,12 +96,12 @@ public sealed partial class Rayman : MovableActor
                             // Team 1
                             AnimatedObject.Resource.Palettes.Palettes[0],
                             AnimatedObject.Resource.Palettes.Palettes[1],
-                            pal3,
+                            fixPalette(pal3),
                             
                             // Team 2
                             AnimatedObject.Resource.Palettes.Palettes[0],
                             pal3,
-                            AnimatedObject.Resource.Palettes.Palettes[1],
+                            fixPalette(AnimatedObject.Resource.Palettes.Palettes[1]),
                         ]
                     };
 

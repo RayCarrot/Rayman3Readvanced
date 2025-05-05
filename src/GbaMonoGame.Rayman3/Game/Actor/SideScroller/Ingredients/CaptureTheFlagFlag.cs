@@ -7,6 +7,8 @@ public sealed partial class CaptureTheFlagFlag : MovableActor
 {
     public CaptureTheFlagFlag(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        AnimatedObject.OverridePalettes = Scene.MainActor.AnimatedObject.Palettes;
+
         Unused = null;
         AttachedPlayer = null;
         BaseActorId = actorResource.Links[0]!.Value;
@@ -18,7 +20,7 @@ public sealed partial class CaptureTheFlagFlag : MovableActor
     public object Unused { get; set; } // Unused
     public bool DroppedWithoutFalling { get; set; } // This seems weird? TODO: Look into
     public int BaseActorId { get; set; }
-    public int SavedPaletteIndex { get; set; } // What's this for? Seems unused since it's only drawn when dropped. TODO: Look into
+    public int SavedPaletteIndex { get; set; } // Never used
 
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {
