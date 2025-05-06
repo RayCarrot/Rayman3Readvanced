@@ -25,7 +25,7 @@ public sealed partial class ItemsMulti : BaseActor
         if (ActionId is Action.Globox or Action.Reverse or Action.Invisibility)
         {
             MultiplayerInfo.TagInfo.RegisterItem(instanceId);
-            SpawnCountdown = 0xff;
+            SpawnCountdown = 0xFF;
         }
         else
         {

@@ -60,7 +60,7 @@ public partial class CaptureTheFlagFlag
 
                 AttachedPlayer = null;
                 ActionId = Action.Fall_Left;
-                DroppedWithoutFalling = true;
+                IsMovingUp = true;
                 break;
             
             case FsmAction.Step:
@@ -98,9 +98,9 @@ public partial class CaptureTheFlagFlag
                 }
 
                 if (Speed.Y > 0)
-                    DroppedWithoutFalling = false;
+                    IsMovingUp = false;
 
-                if (Speed == Vector2.Zero && !DroppedWithoutFalling && ActionId is Action.Fall_Right or Action.Fall_Left)
+                if (Speed == Vector2.Zero && !IsMovingUp && ActionId is Action.Fall_Right or Action.Fall_Left)
                     ActionId = IsFacingRight ? Action.Idle_Right : Action.Idle_Left;
 
                 if (AttachedPlayer != null)

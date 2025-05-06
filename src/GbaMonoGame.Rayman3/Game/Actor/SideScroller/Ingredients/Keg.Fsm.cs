@@ -109,11 +109,21 @@ public partial class Keg
             case FsmAction.Step:
                 Timer++;
 
-                if (Timer == 60 &&
-                    // TODO: This is probably a typo in the game code. On GBA this has been optimized away since it's
-                    //       always 0. Most likely it should check the position of the main actor. But then it wouldn't
-                    //       work since this only happens when timer is 60, which is only once...
-                    Math.Abs(Position.X - Position.X) < 180)
+                // NOTE: The original code here is probably bugged, cause it checks if the different between the same x-positions
+                //       are less than 180, which is always true. The code is even optimized out from the GBA version because of
+                //       this. Most likely it's meant to check if the main actor is close to the keg when it respawns, so you
+                //       actually see it happening, but then more code needs to be updated, like the timer check and an additional
+                //       check for the action so it doesn't keep triggering.
+                bool ejectFromDispenser;
+                if (Engine.Config.FixBugs)
+                    ejectFromDispenser = ActionId == Action.Respawn && 
+                                         Timer >= 60 && 
+                                         Math.Abs(Position.X - Scene.MainActor.Position.X) < 180;
+                else
+                    ejectFromDispenser = Timer == 60 && 
+                                         Math.Abs(Position.X - Position.X) < 180;
+
+                if (ejectFromDispenser)
                 {
                     ActionId = Action.EjectFromDispenser;
                 }

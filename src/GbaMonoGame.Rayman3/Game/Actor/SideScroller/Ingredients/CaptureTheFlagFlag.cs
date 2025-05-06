@@ -18,9 +18,9 @@ public sealed partial class CaptureTheFlagFlag : MovableActor
 
     public Rayman AttachedPlayer { get; set; }
     public object Unused { get; set; } // Unused
-    public bool DroppedWithoutFalling { get; set; } // This seems weird? TODO: Look into
+    public bool IsMovingUp { get; set; }
     public int BaseActorId { get; set; }
-    public int SavedPaletteIndex { get; set; } // Never used
+    public int SavedPaletteIndex { get; set; } // Used, but has no purpose
 
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {

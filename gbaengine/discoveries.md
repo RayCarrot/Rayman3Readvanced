@@ -188,4 +188,57 @@ Most actors have the first animation be unused and just single frame, most likel
 #### Boulder
 - There is code to manage the boulder's hitbox before it spawns, which is unused since it doesn't have an attack hitbox yet then. The code here oddly makes it damage any actor it comes into contact with and not just the main actor as it does after spawning.
 
+#### CaptureTheFlagFlag
+- There is an unused value that gets set to null and then never used again.
+- When displaying after being dropped it saves the original palette ID so it can be restored afterwards. This however serves no purpose since the flag is only ever drawn on screen when dropped. While being carried by a player it is part of Rayman's sprite animations instead.
+- When dropped the flag is set to always use palette ID 1. This corresponds to the second palette for player 1, used for Rayman's body, and is incorrect for the flag, making it render incorrectly. Instead it should be using palette ID 0, the first palette for player 1, to correctly render as a red flag. In order to render as a colored flag, in teams mode, it instead has to use the third palette of the player that picked up the flag.
+
+#### CaptureTheFlagFlagBase
+- There are 3 unused animations of the base without the flag. In the game it removes the flag from the normal animations by hiding its animation channel instead of playing a different animation.
+
+![Animation 0](discoveries_assets/CaptureTheFlagFlagBase_Anim_0.gif)
+![Animation 3](discoveries_assets/CaptureTheFlagFlagBase_Anim_3.gif)
+![Animation 4](discoveries_assets/CaptureTheFlagFlagBase_Anim_4.gif)
+
+- There is an unused value for the current team id in teams mode. This is only ever set.
+
+#### CaptureTheFlagItems
+- Action 2 is unused and would have been used for an item that makes arrows appear on the sides of the screen, pointing to the other players. An animation exists for this item, but it appears to be using the wrong sprites:
+
+![Animation 2](discoveries_assets/CaptureTheFlagItems_Anim_2.gif)
+
+- When the item is collected by a player it sends a message to the player actor with the item type and duration it should last for. The duration is determined from a table with a value for each type. However each value in this table is set to 300, making it completely unnecessary.
+
+#### Depart
+- There's an action where the signpost is facing to the right. Using this makes the signpost end the level rather than exit from it.
+- There is 1 unused animation:
+
+![Animation 1](discoveries_assets/Depart_Anim_1.gif)
+
+#### Explosion
+- The `ProcessMessage` function is overridden, yet no messages are checked for.
+
+#### FlyingShell
+- There are 2 unused animations, but they're just the shell not moving, with one of them having broken graphics.
+- There is unused code for using ammo and firing energy shots. This was used in the ETSC prototype.
+- There's an initialization state for the shell which immediately transitions to the flying state and then also sends a message to the main actor to hide. However the main actor is the shell itself, and it doesn't check for the hide message. This seems to suggest that originally the Rayman actor was meant to appear in these levels, perhaps having you mount the shell before flying with it.
+
+#### Gate
+- The actor can be initialized to requiring 1, 3 or 4 switches to have it open, yet only the variants with 1 or 4 switches are used.
+- The gate can receive a message to close itself after having opened. This is never used. If this happens it also incorrectly plays the opening animation when closing, instead of the closing one.
+
+#### ItemsMulti
+- The state function is incorrectly implemented, having the same code run no matter if the state is in the `Init`, `Step` or `UnInit` mode. This causes the state code to run an extra time during initialization, which results in it using a null pointer to the `UserInfo` as it hasn't been created yet. In the N-Gage version a null check was added here to avoid crashing.
+
+#### Keg
+- There is 1 unused animation:
+
+![Animation 1](discoveries_assets/Keg_Anim_1.gif)
+
+- Action 15 is unused, which makes the following animation also unused. It appears nearly identical to that which appears in the separate actor for the keg debris.
+
+![Animation 6](discoveries_assets/Keg_Anim_6.gif)
+
+- When the keg respawns from the dispenser in the Garish Gears boss there is a bug in the code. It waits with respawning until the difference between its X position and the same X position is less than 180, which is always true. This was most likely meant to check the difference between its X position and that of the player.
+
 ...

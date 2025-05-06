@@ -54,6 +54,7 @@ public sealed partial class Gate : InteractableActor
                 }
                 return false;
 
+            // Unused
             case Message.Gate_Close:
                 IsOpen = false;
                 return false;
