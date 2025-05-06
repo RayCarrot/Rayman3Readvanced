@@ -164,7 +164,7 @@ public class GameModeMenuPage : MenuPage
         AddOption(new TextMenuOption("QUIT GAME"));
 
         // Create animations
-        AnimatedObjectResource gameLogoAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuGameLogoAnimations);
+        AnimatedObjectResource gameLogoAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuGameLogoAnimations);
 
         GameLogo = new AnimatedObject(gameLogoAnimations, gameLogoAnimations.IsDynamic)
         {

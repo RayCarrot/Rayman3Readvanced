@@ -356,12 +356,12 @@ public class PauseDialogOptionsMenu
         Tabs = GameOptions.Create();
 
         // Create animations
-        AnimatedObjectResource propsAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuPropAnimations);
+        AnimatedObjectResource propsAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuPropAnimations);
         Texture2D canvasTexture = Engine.FixContentManager.Load<Texture2D>(Assets.OptionsDialogBoardTexture);
-        AnimatedObjectResource startEraseAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuStartEraseAnimations);
+        AnimatedObjectResource startEraseAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuStartEraseAnimations);
         Texture2D tabHeadersTexture = Engine.FixContentManager.Load<Texture2D>(Assets.OptionsMenuTabsTexture);
         Texture2D infoTextBoxTexture = Engine.FixContentManager.Load<Texture2D>(Assets.MenuTextBoxTexture);
-        AnimatedObjectResource multiplayerTypeFrameAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerTypeFrameAnimations);
+        AnimatedObjectResource multiplayerTypeFrameAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerTypeFrameAnimations);
         Texture2D scrollBarTexture = Engine.FixContentManager.Load<Texture2D>(Assets.ScrollBarTexture);
         Texture2D scrollBarThumbTexture = Engine.FixContentManager.Load<Texture2D>(Assets.ScrollBarThumbTexture);
 

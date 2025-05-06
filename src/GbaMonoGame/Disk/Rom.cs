@@ -53,6 +53,7 @@ public static class Rom
     private static void LoadRom()
     {
         using Context context = Context;
+        GbaEngineSettings settings = context.GetRequiredSettings<GbaEngineSettings>();
 
         if (Platform == Platform.GBA)
         {
@@ -73,6 +74,8 @@ public static class Rom
                 Game.Rayman3 when gameCode is "BWZP" => DefinedPointers.Rayman3_GBA_WinnieThePoohPack_EU, // Winnie the Pooh's Rumbly Tumbly Adventure & Rayman 3 (Europe)
                 _ => throw new Exception($"Unsupported game {Game} and/or code {gameCode}")
             });
+
+            settings.SetDefinedResources(DefinedResources.Rayman3_GBA);
 
             loader.LoadData(romFileName);
 
@@ -97,6 +100,8 @@ public static class Rom
                 Game.Rayman3 => DefinedPointers.Rayman3_NGage,
                 _ => throw new Exception($"Unsupported game {Game}")
             });
+
+            settings.SetDefinedResources(DefinedResources.Rayman3_NGage);
 
             loader.LoadData(appFileName, dataFileName);
 
@@ -201,11 +206,11 @@ public static class Rom
         return Loader.GameOffsetTable.ReadResource<T>(Context, index, name: $"Resource_{index}");
     }
 
-    public static T LoadResource<T>(GameResource gameResource)
+    public static T LoadResource<T>(Rayman3DefinedResource definedResource)
         where T : Resource, new()
     {
         using Context context = Context;
-        return Loader.GameOffsetTable.ReadResource<T>(Context, gameResource, name: gameResource.ToString());
+        return Loader.GameOffsetTable.ReadResource<T>(Context, definedResource, name: definedResource.ToString());
     }
 
     public static Stream LoadResourceStream(int index)
@@ -214,9 +219,9 @@ public static class Rom
         return new MemoryStream(res.RawData);
     }
 
-    public static Stream LoadResourceStream(GameResource gameResource)
+    public static Stream LoadResourceStream(Rayman3DefinedResource definedResource)
     {
-        RawResource res = LoadResource<RawResource>(gameResource);
+        RawResource res = LoadResource<RawResource>(definedResource);
         return new MemoryStream(res.RawData);
     }
 

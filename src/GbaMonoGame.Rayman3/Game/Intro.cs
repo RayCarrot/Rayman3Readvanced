@@ -300,7 +300,7 @@ public class Intro : Frame, IHasPlayfield
 
         AnimationPlayer = new AnimationPlayer(true, SoundEventsManager.ProcessEvent);
 
-        AnimatedObjectResource introAnimResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.IntroAnimations);
+        AnimatedObjectResource introAnimResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.IntroAnimations);
 
         PressStartObj = new AnimatedObject(introAnimResource, false)
         {
@@ -350,7 +350,7 @@ public class Intro : Frame, IHasPlayfield
             RenderContext = Rom.OriginalGameRenderContext,
         };
 
-        PlayfieldResource introPlayfield = Rom.LoadResource<PlayfieldResource>(GameResource.IntroPlayfield);
+        PlayfieldResource introPlayfield = Rom.LoadResource<PlayfieldResource>(Rayman3DefinedResource.IntroPlayfield);
         Playfield = TgxPlayfield.Load<TgxPlayfield2D>(introPlayfield);
         Playfield.RenderContext.SetFixedResolution(Rom.OriginalResolution);
 

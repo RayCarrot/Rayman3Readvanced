@@ -7,8 +7,8 @@ public class GameCubeMenuAnimations
 {
     public GameCubeMenuAnimations(RenderContext renderContext)
     {
-        AnimatedObjectResource animations = Rom.LoadResource<AnimatedObjectResource>(GameResource.GameCubeMenuAnimations);
-        AnimatedObjectResource levelCheckAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.GameCubeMenuLevelCheckAnimations);
+        AnimatedObjectResource animations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.GameCubeMenuAnimations);
+        AnimatedObjectResource levelCheckAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.GameCubeMenuLevelCheckAnimations);
 
         ReusableTexts = new SpriteTextObject[4];
         for (int i = 0; i < ReusableTexts.Length; i++)

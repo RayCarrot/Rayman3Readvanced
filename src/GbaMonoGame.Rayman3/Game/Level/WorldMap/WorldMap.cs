@@ -743,7 +743,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         UserInfo = new UserInfoWorldMap(Scene, GameInfo.GetLevelHasBlueLum());
         Scene.AddDialog(UserInfo, false, false);
 
-        AnimatedObjectResource raymanResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.RaymanWorldMapAnimations);
+        AnimatedObjectResource raymanResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.RaymanWorldMapAnimations);
         Rayman = new AnimatedObject(raymanResource, raymanResource.IsDynamic)
         {
             IsFramed = true,
@@ -754,7 +754,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             RenderContext = Scene.RenderContext,
         };
 
-        AnimatedObjectResource worldPathsResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.WorldMapPathAnimations);
+        AnimatedObjectResource worldPathsResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.WorldMapPathAnimations);
         WorldPaths = new AnimatedObject[3];
         for (int i = 0; i < WorldPaths.Length; i++)
         {

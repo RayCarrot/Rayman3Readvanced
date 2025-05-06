@@ -180,7 +180,7 @@ public partial class PauseDialog : Dialog
         if (Rom.Platform == Platform.NGage)
             ((NGageSoundEventsManager)SoundEventsManager.Current).PauseLoopingSoundEffects();
 
-        AnimatedObjectResource canvasResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.PauseCanvasAnimations);
+        AnimatedObjectResource canvasResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.PauseCanvasAnimations);
         Canvas = new AnimatedObject(canvasResource, false)
         {
             IsFramed = true,
@@ -210,7 +210,7 @@ public partial class PauseDialog : Dialog
 
         CursorOffsetY = 0;
 
-        AnimatedObjectResource selectionsResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.PauseSelectionAnimations);
+        AnimatedObjectResource selectionsResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.PauseSelectionAnimations);
         PauseSelection = new AnimatedObject(selectionsResource, true)
         {
             IsFramed = true,
@@ -249,7 +249,7 @@ public partial class PauseDialog : Dialog
         }
         else if (Rom.Platform == Platform.NGage)
         {
-            AnimatedObjectResource symbolsResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.NGageButtonSymbols);
+            AnimatedObjectResource symbolsResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.NGageButtonSymbolAnimations);
             SelectSymbol = new AnimatedObject(symbolsResource, false)
             {
                 IsFramed = true,

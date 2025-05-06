@@ -31,7 +31,7 @@ public class CagesBar : Bar
 
     public override void Load()
     {
-        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.HudAnimations);
+        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.HudAnimations);
 
         CageIcon = new AnimatedObject(resource, false)
         {

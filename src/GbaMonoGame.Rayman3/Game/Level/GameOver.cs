@@ -133,9 +133,9 @@ public class GameOver : Frame
 
         AnimationPlayer = new AnimationPlayer(false, SoundEventsManager.ProcessEvent);
 
-        AnimatedObjectResource raymanAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.GameOverRaymanAnimations);
-        AnimatedObjectResource countdownAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.GameOverCountdownAnimations);
-        AnimatedObjectResource butterflyAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.GameOverButterflyAnimations);
+        AnimatedObjectResource raymanAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.GameOverRaymanAnimations);
+        AnimatedObjectResource countdownAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.GameOverCountdownAnimations);
+        AnimatedObjectResource butterflyAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.GameOverButterflyAnimations);
 
         Rayman = new AnimatedObject(raymanAnimations, raymanAnimations.IsDynamic)
         {

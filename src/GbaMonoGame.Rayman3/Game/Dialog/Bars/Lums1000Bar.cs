@@ -33,7 +33,7 @@ public class Lums1000Bar : Bar
 
     public override void Load()
     {
-        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.HudAnimations);
+        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.HudAnimations);
 
         LumsIcon = new AnimatedObject(resource, false)
         {

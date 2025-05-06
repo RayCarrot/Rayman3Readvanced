@@ -284,8 +284,8 @@ public class ModernMenuAll : Frame, IHasPlayfield
 
         AnimationPlayer = new AnimationPlayer(false, null);
 
-        AnimatedObjectResource propsAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuPropAnimations);
-        AnimatedObjectResource steamAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuSteamAnimations);
+        AnimatedObjectResource propsAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuPropAnimations);
+        AnimatedObjectResource steamAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuSteamAnimations);
         Texture2D scrollBarTexture = Engine.FixContentManager.Load<Texture2D>(Assets.ScrollBarTexture);
         Texture2D scrollBarThumbTexture = Engine.FixContentManager.Load<Texture2D>(Assets.ScrollBarThumbTexture);
 
@@ -395,7 +395,7 @@ public class ModernMenuAll : Frame, IHasPlayfield
         WheelRotation = 0;
 
         // Load the playfield
-        PlayfieldResource menuPlayField = Rom.LoadResource<PlayfieldResource>(GameResource.MenuPlayfield);
+        PlayfieldResource menuPlayField = Rom.LoadResource<PlayfieldResource>(Rayman3DefinedResource.MenuPlayfield);
         Playfield = TgxPlayfield.Load<TgxPlayfield2D>(menuPlayField);
         Playfield.RenderContext.SetFixedResolution(renderContext.Resolution);
 

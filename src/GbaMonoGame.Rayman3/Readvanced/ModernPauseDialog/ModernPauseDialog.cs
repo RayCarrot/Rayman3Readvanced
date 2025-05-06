@@ -102,7 +102,7 @@ public partial class ModernPauseDialog : Dialog
         if (Rom.Platform == Platform.NGage)
             ((NGageSoundEventsManager)SoundEventsManager.Current).PauseLoopingSoundEffects();
 
-        AnimatedObjectResource canvasResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.PauseCanvasAnimations);
+        AnimatedObjectResource canvasResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.PauseCanvasAnimations);
         Canvas = new AnimatedObject(canvasResource, false)
         {
             IsFramed = true,

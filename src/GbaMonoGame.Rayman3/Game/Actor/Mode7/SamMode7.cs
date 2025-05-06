@@ -108,7 +108,7 @@ public sealed partial class SamMode7 : Mode7Actor
     {
         TetherSparkles ??= new AnimatedObject[8];
 
-        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.WaterskiSparkleAnimations);
+        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.WaterskiSparkleAnimations);
 
         for (int i = 0; i < TetherSparkles.Length; i++)
         {

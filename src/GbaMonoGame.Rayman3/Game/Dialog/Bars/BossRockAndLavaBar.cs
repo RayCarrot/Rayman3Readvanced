@@ -12,7 +12,7 @@ public class BossRockAndLavaBar : Bar
 
     public override void Load()
     {
-        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.BossRockAndLavaBarAnimations);
+        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.BossRockAndLavaBarAnimations);
 
         BossHealthBar = new AnimatedObject(resource, false)
         {

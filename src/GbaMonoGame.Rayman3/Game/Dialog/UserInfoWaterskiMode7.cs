@@ -75,7 +75,7 @@ public class UserInfoWaterskiMode7 : Dialog
         LifeBar.SetToStayVisible();
         LumsBar.SetToStayVisible();
 
-        AnimatedObjectResource countdownResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.CountdownAnimations);
+        AnimatedObjectResource countdownResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.CountdownAnimations);
 
         Countdown = new AnimatedObject(countdownResource, true)
         {
@@ -88,7 +88,7 @@ public class UserInfoWaterskiMode7 : Dialog
             RenderContext = Scene.HudRenderContext,
         };
 
-        AnimatedObjectResource birdsResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.WaterskiBirdAnimations);
+        AnimatedObjectResource birdsResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.WaterskiBirdAnimations);
 
         Birds = new AnimatedObject(birdsResource, false)
         {

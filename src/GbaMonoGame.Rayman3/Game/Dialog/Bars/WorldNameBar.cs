@@ -59,7 +59,7 @@ public class WorldNameBar : Bar
         // NOTE: Game has it set up so Load can be called multiple times. Dynamic objects don't get recreated after the first time, but instead
         //       reloaded into VRAM. We don't need to do that though due to how the graphics system works here, so just always create everything.
 
-        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.WorldDashboardAnimations);
+        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.WorldDashboardAnimations);
 
         Canvas = new AnimatedObject(resource, false)
         {

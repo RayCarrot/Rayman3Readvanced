@@ -87,7 +87,7 @@ public class LevelInfoBar : Bar
         // NOTE: Game has it set up so Load can be called multiple times. Dynamic objects don't get recreated after the first time, but instead
         //       reloaded into VRAM. We don't need to do that though due to how the graphics system works here, so just always create everything.
 
-        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.LevelDashboardAnimations);
+        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.LevelDashboardAnimations);
 
         Canvas = new AnimatedObject(resource, false)
         {

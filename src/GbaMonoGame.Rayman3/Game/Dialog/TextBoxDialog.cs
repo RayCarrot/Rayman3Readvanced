@@ -205,7 +205,7 @@ public partial class TextBoxDialog : Dialog
         // NOTE: Game has it set up so Load can be called multiple times. Dynamic objects don't get recreated after the first time, but instead
         //       reloaded into VRAM. We don't need to do that though due to how the graphics system works here, so just always create everything.
 
-        AnimatedObjectResource canvasResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.TextBoxCanvasAnimations);
+        AnimatedObjectResource canvasResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.TextBoxCanvasAnimations);
         Canvas = new AnimatedObject(canvasResource, false)
         {
             IsFramed = true,
@@ -215,7 +215,7 @@ public partial class TextBoxDialog : Dialog
             RenderContext = Scene.HudRenderContext,
         };
 
-        AnimatedObjectResource raymanIconResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.TextBoxRaymanIconAnimations);
+        AnimatedObjectResource raymanIconResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.TextBoxRaymanIconAnimations);
         RaymanIcon = new AnimatedObject(raymanIconResource, true)
         {
             IsFramed = true,
@@ -246,7 +246,7 @@ public partial class TextBoxDialog : Dialog
             };
         }
 
-        AnimatedObjectResource murfyIconResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.TextBoxMurfyIconAnimations);
+        AnimatedObjectResource murfyIconResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.TextBoxMurfyIconAnimations);
         MurfyIcon = new AnimatedObject(murfyIconResource, true)
         {
             IsFramed = true,
@@ -257,7 +257,7 @@ public partial class TextBoxDialog : Dialog
         };
 
         // NOTE: The game only creates the two icons below if map id is not certain levels. We can ignore that as it's probably for vram allocation.
-        AnimatedObjectResource lyIconResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.TextBoxLyIconAnimations);
+        AnimatedObjectResource lyIconResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.TextBoxLyIconAnimations);
         LyIcon = new AnimatedObject(lyIconResource, true)
         {
             IsFramed = true,
@@ -267,7 +267,7 @@ public partial class TextBoxDialog : Dialog
             RenderContext = Scene.HudRenderContext,
         };
 
-        AnimatedObjectResource teensiesIconResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.TextBoxTeensiesIconAnimations);
+        AnimatedObjectResource teensiesIconResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.TextBoxTeensiesIconAnimations);
         TeensiesIcon = new AnimatedObject(teensiesIconResource, true)
         {
             IsFramed = true,

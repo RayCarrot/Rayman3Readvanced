@@ -359,9 +359,9 @@ public class Credits : Frame
     private void InitWheel()
     {
         // Load resources
-        AnimActorResource animActorResource = Rom.LoadResource<AnimActorResource>(GameResource.CreditsWheelAnimActor);
-        TextureTable textureTable = Rom.LoadResource<TextureTable>(GameResource.CreditsWheelTextureTable);
-        PaletteTable paletteTable = Rom.LoadResource<PaletteTable>(GameResource.CreditsWheelPaletteTable);
+        AnimActorResource animActorResource = Rom.LoadResource<AnimActorResource>(Rayman3DefinedResource.CreditsWheelAnimActor);
+        TextureTable textureTable = Rom.LoadResource<TextureTable>(Rayman3DefinedResource.CreditsWheelTextureTable);
+        PaletteTable paletteTable = Rom.LoadResource<PaletteTable>(Rayman3DefinedResource.CreditsWheelPaletteTable);
 
         // Create textures
         Texture2D[] textures = new Texture2D[textureTable.TexturesCount];
@@ -473,7 +473,7 @@ public class Credits : Frame
 
         AnimationPlayer = new AnimationPlayer(false, null);
 
-        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.CreditsAnimations);
+        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.CreditsAnimations);
 
         BackgroundStructure = new AnimatedObject(resource, false)
         {

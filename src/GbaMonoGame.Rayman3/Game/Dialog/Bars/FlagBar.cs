@@ -73,7 +73,7 @@ public class FlagBar : Bar
         {
             FlagBarPlayer player = new();
 
-            AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(GameResource.HudAnimations);
+            AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.HudAnimations);
 
             player.FlagsDigit2 = new AnimatedObject(resource, false)
             {

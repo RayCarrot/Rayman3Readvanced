@@ -118,10 +118,10 @@ public class OptionsMenuPage : MenuPage
         Tabs = GameOptions.Create();
 
         // Create animations
-        AnimatedObjectResource startEraseAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuStartEraseAnimations);
+        AnimatedObjectResource startEraseAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuStartEraseAnimations);
         Texture2D tabHeadersTexture = Engine.FixContentManager.Load<Texture2D>(Assets.OptionsMenuTabsTexture);
         Texture2D infoTextBoxTexture = Engine.FixContentManager.Load<Texture2D>(Assets.MenuTextBoxTexture);
-        AnimatedObjectResource multiplayerTypeFrameAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuMultiplayerTypeFrameAnimations);
+        AnimatedObjectResource multiplayerTypeFrameAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerTypeFrameAnimations);
 
         TabsCursor = new AnimatedObject(startEraseAnimations, startEraseAnimations.IsDynamic)
         {

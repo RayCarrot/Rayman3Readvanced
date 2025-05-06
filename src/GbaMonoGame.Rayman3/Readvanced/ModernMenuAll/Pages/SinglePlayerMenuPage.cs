@@ -66,7 +66,7 @@ public class SinglePlayerMenuPage : MenuPage
             AddOption(new SlotMenuOption(slot));
 
         // Create animations
-        AnimatedObjectResource startEraseAnimations = Rom.LoadResource<AnimatedObjectResource>(GameResource.MenuStartEraseAnimations);
+        AnimatedObjectResource startEraseAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuStartEraseAnimations);
 
         StartEraseSelection = new AnimatedObject(startEraseAnimations, startEraseAnimations.IsDynamic)
         {

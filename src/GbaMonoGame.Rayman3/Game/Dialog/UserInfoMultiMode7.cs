@@ -100,13 +100,13 @@ public class UserInfoMultiMode7 : Dialog
         // NOTE: Game has it set up so Load can be called multiple times. Dynamic objects don't get recreated after the first time, but instead
         //       reloaded into VRAM. We don't need to do that though due to how the graphics system works here, so just always create everything.
 
-        AnimatedObjectResource countdownResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.CountdownAnimations);
-        AnimatedObjectResource gameOverSignResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerGameOverSignAnimations);
-        AnimatedObjectResource mapsResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.MissileMapAnimations);
-        AnimatedObjectResource hudResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.HudAnimations);
-        AnimatedObjectResource lapsResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.LapAndTimerAnimations);
-        AnimatedObjectResource playerIconsResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerPlayerIconAnimations);
-        AnimatedObjectResource ranksResource = Rom.LoadResource<AnimatedObjectResource>(GameResource.MultiplayerRankAnimations);
+        AnimatedObjectResource countdownResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.CountdownAnimations);
+        AnimatedObjectResource gameOverSignResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MultiplayerGameOverSignAnimations);
+        AnimatedObjectResource mapsResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MissileMapAnimations);
+        AnimatedObjectResource hudResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.HudAnimations);
+        AnimatedObjectResource lapsResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.LapAndTimerAnimations);
+        AnimatedObjectResource playerIconsResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MultiplayerPlayerIconAnimations);
+        AnimatedObjectResource ranksResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MultiplayerRankAnimations);
 
         Countdown = new AnimatedObject(countdownResource, false)
         {
