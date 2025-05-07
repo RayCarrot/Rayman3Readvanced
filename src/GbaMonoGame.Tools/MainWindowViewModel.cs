@@ -18,8 +18,7 @@ using Game = BinarySerializer.Ubisoft.GbaEngine.Game;
 
 namespace GbaMonoGame.Tools;
 
-// TODO: Add exports for sprite animations
-// TODO: Analyse all the game resources
+// TODO: Add export for sprite animations
 public partial class MainWindowViewModel : ObservableObject
 {
     #region Properties
@@ -117,7 +116,7 @@ public partial class MainWindowViewModel : ObservableObject
         RawResource resource = offsetTable.ReadResource<RawResource>(context, id);
         int dependenciesCount = resource.OffsetTable.Count;
 
-        // Check if it's a scene
+        // Scene2D
         if (resource.RawData.Length >= 10)
         {
             byte idxPlayfield = resource.RawData[0];
@@ -138,7 +137,102 @@ public partial class MainWindowViewModel : ObservableObject
             }
         }
 
-        // TODO: Check for other types
+        // SoundBank
+        if (resource.OffsetTable.Count == 0 && resource.RawData.Length >= 12)
+        {
+            ushort eventsCount = BitConverter.ToUInt16(resource.RawData, 0);
+            uint eventsPointer = BitConverter.ToUInt32(resource.RawData, 4);
+            uint resourcesPointer = BitConverter.ToUInt32(resource.RawData, 8);
+
+            if (eventsPointer == 16 && resourcesPointer == eventsPointer + eventsCount * 4)
+            {
+                return ResourceType.SoundBank;
+            }
+        }
+
+        // Palette16
+        if (resource.OffsetTable.Count == 0 && resource.RawData.Length == 32)
+        {
+            return ResourceType.Palette16;
+        }
+
+        // AnimatedObject
+        if (resource.OffsetTable.Count > 2 && resource.RawData.Length >= 4)
+        {
+            byte idxSpriteTable = resource.RawData[2];
+            byte idxPalette = resource.RawData[3];
+
+            if (idxSpriteTable == resource.OffsetTable.Count - 2 && idxPalette == resource.OffsetTable.Count - 1)
+            {
+                return ResourceType.AnimatedObject;
+            }
+        }
+
+        // Playfield
+        if (resource.OffsetTable.Count > 2 && resource.RawData.Length == 16)
+        {
+            byte type = resource.RawData[0];
+            byte idxTileKit = resource.RawData[1];
+            byte idxTileMappingTable = resource.RawData[2];
+            byte layersCount = resource.RawData[5];
+
+            if (idxTileKit == resource.OffsetTable.Count - 1 && idxTileMappingTable == resource.OffsetTable.Count - 2)
+            {
+                if (layersCount is >= 1 and <= 5)
+                {
+                    return ResourceType.Playfield;
+                }
+            }
+        }
+
+        // AnimActor
+        if (resource.OffsetTable.Count > 1 && resource.RawData.Length >= 6)
+        {
+            byte idxGeometryTable = resource.RawData[0];
+            byte animationsCount = resource.RawData[5];
+
+            if (idxGeometryTable == 0 && animationsCount == resource.OffsetTable.Count - 1)
+            {
+                return ResourceType.AnimActor;
+            }
+        }
+
+        // PaletteTable
+        if (resource.OffsetTable.Count == 0 && resource.RawData.Length == 520)
+        {
+            return ResourceType.PaletteTable;
+        }
+
+        // TextureTable
+        if (resource.OffsetTable.Count == 0 && resource.RawData.Length >= 4)
+        {
+            ushort texturesCount = BitConverter.ToUInt16(resource.RawData, 0);
+
+            int alignedTexturesCount = texturesCount;
+            if (texturesCount % 2 != 0)
+                alignedTexturesCount++;
+
+            if (resource.RawData.Length >= 4 + alignedTexturesCount * 2)
+            {
+                bool isValid = true;
+                short prevOffset = (short)(4 + alignedTexturesCount * 2 - 4100);
+                for (int i = 0; i < texturesCount; i++)
+                {
+                    short offset = BitConverter.ToInt16(resource.RawData, 4 + i * 2);
+                    if (offset != prevOffset + 4100)
+                    {
+                        isValid = false;
+                        break;
+                    }
+                    prevOffset = offset;
+                }
+
+                if (isValid)
+                {
+                    return ResourceType.TextureTable;
+                }
+            }
+        }
 
         return ResourceType.Unknown;
     }
@@ -283,6 +377,47 @@ public partial class MainWindowViewModel : ObservableObject
     #region Commands
 
     [RelayCommand]
+    private async Task ExportRootResourcesAsync()
+    {
+        await ExportFromRomsAsync(rom =>
+        {
+            for (int i = 0; i < rom.OffsetTable.Count; i++)
+            {
+                RawResource resource = rom.OffsetTable.ReadResource<RawResource>(rom.Context, i);
+                File.WriteAllBytes(GetExportFilePath(Path.Combine("RootResources", rom.FileName), $"{i}.dat"), resource.RawData);
+            }
+        });
+    }
+
+    [RelayCommand]
+    private async Task ExportResourceTypesAsync()
+    {
+        HashSet<string> texts = new();
+
+        await ExportFromRomsAsync(rom =>
+        {
+            StringBuilder sb = new();
+            
+            for (int i = 0; i < rom.OffsetTable.Count; i++)
+            {
+                ResourceType resourceType = GetResourceType(rom.Context, rom.OffsetTable, i);
+                RawResource resource = rom.OffsetTable.ReadResource<RawResource>(rom.Context, i);
+                sb.AppendLine($"{i}: {resourceType} of size {resource.RawData.Length} with {resource.OffsetTable.Count} dependencies");
+            }
+
+            string text = sb.ToString();
+
+            if (RemoveDuplicates)
+            {
+                if (!texts.Add(text))
+                    return;
+            }
+
+            File.WriteAllText(GetExportFilePath("ResourceTypes", $"{rom.FileName}.txt"), text);
+        });
+    }
+
+    [RelayCommand]
     private async Task ExportActorsCsvAsync()
     {
         await ExportFromRomsAsync(rom =>
@@ -396,7 +531,7 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task ExportRawDataAsync()
+    private async Task ExportSerializedDataAsync()
     {
         await ExportFromRomsAsync(rom =>
         {
@@ -535,26 +670,39 @@ public partial class MainWindowViewModel : ObservableObject
 
         await ExportFromRomsAsync(rom =>
         {
+            int separatePlayfieldIndex = 0;
             for (int i = 0; i < rom.OffsetTable.Count; i++)
             {
                 ResourceType resourceType = GetResourceType(rom.Context, rom.OffsetTable, i);
 
+                int mapId = i;
+                Playfield? playfield = null;
                 if (resourceType == ResourceType.Scene2D)
                 {
                     Scene2D scene = rom.OffsetTable.ReadResource<Scene2D>(rom.Context, i);
+                    playfield = scene.Playfield;
+                }
+                else if (resourceType == ResourceType.Playfield)
+                {
+                    playfield = rom.OffsetTable.ReadResource<Playfield>(rom.Context, i);
+                    mapId = 100 + separatePlayfieldIndex;
+                    separatePlayfieldIndex++;
+                }
 
-                    if (scene.Playfield.Type == PlayfieldType.Playfield2D)
+                if (playfield != null)
+                {
+                    if (playfield.Type == PlayfieldType.Playfield2D)
                     {
-                        Playfield2D playfield = scene.Playfield.Playfield2D;
+                        Playfield2D playfield2D = playfield.Playfield2D;
 
                         GfxTileKitManager tileKitManager = new();
-                        tileKitManager.LoadTileKit(playfield.TileKit, playfield.TileMappingTable, 0x180, false, playfield.DefaultPalette);
+                        tileKitManager.LoadTileKit(playfield2D.TileKit, playfield2D.TileMappingTable, 0x180, false, playfield2D.DefaultPalette);
 
-                        for (int layerId = 0; layerId < playfield.Layers.Length; layerId++)
+                        for (int layerId = 0; layerId < playfield2D.Layers.Length; layerId++)
                         {
                             try
                             {
-                                GameLayer layer = playfield.Layers[layerId];
+                                GameLayer layer = playfield2D.Layers[layerId];
 
                                 if (layer.Type == GameLayerType.TileLayer)
                                 {
@@ -562,7 +710,7 @@ public partial class MainWindowViewModel : ObservableObject
 
                                     if (tileLayer.IsDynamic)
                                     {
-                                        byte[] tileSet = tileLayer.Is8Bit ? playfield.TileKit.Tiles8bpp : playfield.TileKit.Tiles4bpp;
+                                        byte[] tileSet = tileLayer.Is8Bit ? playfield2D.TileKit.Tiles8bpp : playfield2D.TileKit.Tiles4bpp;
 
                                         Color[] texture = CreateTiledTexture(
                                             width: layer.Width,
@@ -574,7 +722,7 @@ public partial class MainWindowViewModel : ObservableObject
                                             is8Bit: tileLayer.Is8Bit,
                                             ignoreZero: true);
 
-                                        exportTexture(i, layerId, layer.Width * Tile.Size, layer.Height * Tile.Size, texture);
+                                        exportTexture(mapId, layerId, layer.Width * Tile.Size, layer.Height * Tile.Size, texture);
                                     }
                                     else
                                     {
@@ -588,28 +736,28 @@ public partial class MainWindowViewModel : ObservableObject
                                             is8Bit: tileLayer.Is8Bit,
                                             ignoreZero: true);
 
-                                        exportTexture(i, layerId, layer.Width * Tile.Size, layer.Height * Tile.Size, texture);
+                                        exportTexture(mapId, layerId, layer.Width * Tile.Size, layer.Height * Tile.Size, texture);
                                     }
                                 }
                             }
                             catch (Exception ex)
                             {
-                                Log($"Error exporting layer {layerId} for map {i} in {rom.FileName} ({ex.Message})");
+                                Log($"Error exporting layer {layerId} for map {mapId} in {rom.FileName} ({ex.Message})");
                             }
                         }
                     }
-                    else if (scene.Playfield.Type == PlayfieldType.PlayfieldMode7)
+                    else if (playfield.Type == PlayfieldType.PlayfieldMode7)
                     {
-                        PlayfieldMode7 playfield = scene.Playfield.PlayfieldMode7;
+                        PlayfieldMode7 playfieldMode7 = playfield.PlayfieldMode7;
 
                         GfxTileKitManager tileKitManager = new();
-                        tileKitManager.LoadTileKit(playfield.TileKit, playfield.TileMappingTable, 0x100, true, playfield.DefaultPalette);
+                        tileKitManager.LoadTileKit(playfieldMode7.TileKit, playfieldMode7.TileMappingTable, 0x100, true, playfieldMode7.DefaultPalette);
 
-                        for (int layerId = 0; layerId < playfield.Layers.Length; layerId++)
+                        for (int layerId = 0; layerId < playfieldMode7.Layers.Length; layerId++)
                         {
                             try
                             {
-                                GameLayer layer = playfield.Layers[layerId];
+                                GameLayer layer = playfieldMode7.Layers[layerId];
 
                                 if (layer.Type == GameLayerType.RotscaleLayerMode7)
                                 {
@@ -625,7 +773,7 @@ public partial class MainWindowViewModel : ObservableObject
                                         is8Bit: true,
                                         ignoreZero: true);
 
-                                    exportTexture(i, layerId, layer.Width * Tile.Size, layer.Height * Tile.Size, texture);
+                                    exportTexture(mapId, layerId, layer.Width * Tile.Size, layer.Height * Tile.Size, texture);
                                 }
                                 else if (layer.Type == GameLayerType.TextLayerMode7)
                                 {
@@ -635,18 +783,18 @@ public partial class MainWindowViewModel : ObservableObject
                                         width: layer.Width,
                                         height: layer.Height,
                                         tileSet: tileKitManager.TileSet,
-                                        tileMap: TgxTextLayerMode7.CreateTileMap(playfield, layer),
+                                        tileMap: TgxTextLayerMode7.CreateTileMap(playfieldMode7, layer),
                                         baseTileIndex: 0,
                                         palette: tileKitManager.SelectedPalette,
                                         is8Bit: textLayer.Is8Bit,
                                         ignoreZero: true);
 
-                                    exportTexture(i, layerId, layer.Width * Tile.Size, layer.Height * Tile.Size, texture);
+                                    exportTexture(mapId, layerId, layer.Width * Tile.Size, layer.Height * Tile.Size, texture);
                                 }
                             }
                             catch (Exception ex)
                             {
-                                Log($"Error exporting layer {layerId} for map {i} in {rom.FileName} ({ex.Message})");
+                                Log($"Error exporting layer {layerId} for map {mapId} in {rom.FileName} ({ex.Message})");
                             }
                         }
                     }
@@ -695,6 +843,158 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private async Task ExportAnimActorTexturesAsync()
+    {
+        await ExportFromRomsAsync(rom =>
+        {
+            TextureTable? textureTable = null;
+            PaletteTable? paletteTable = null;
+            for (int i = 0; i < rom.OffsetTable.Count; i++)
+            {
+                ResourceType resourceType = GetResourceType(rom.Context, rom.OffsetTable, i);
+
+                if (resourceType == ResourceType.TextureTable)
+                    textureTable = rom.OffsetTable.ReadResource<TextureTable>(rom.Context, i);
+                else if (resourceType == ResourceType.PaletteTable)
+                    paletteTable = rom.OffsetTable.ReadResource<PaletteTable>(rom.Context, i);
+            }
+
+            if (textureTable != null && paletteTable != null)
+            {
+                for (int textureIndex = 0; textureIndex < textureTable.TexturesCount; textureIndex++)
+                {
+                    Texture texture = textureTable.Textures[textureIndex]!;
+                    Palette pal = new(paletteTable.Palettes[0]);
+
+                    byte[] rawImgData = new byte[texture.ImgData.Length * 4];
+                    for (int i = 0; i < texture.ImgData.Length; i++)
+                    {
+                        Color c = pal.Colors[texture.ImgData[i]];
+                        rawImgData[i * 4 + 0] = c.R;
+                        rawImgData[i * 4 + 1] = c.G;
+                        rawImgData[i * 4 + 2] = c.B;
+                        rawImgData[i * 4 + 3] = c.A;
+                    }
+
+                    // Export
+                    using MagickImage image = new(rawImgData, new MagickReadSettings()
+                    {
+                        Format = MagickFormat.Rgba,
+                        Width = texture.Width,
+                        Height = texture.Height,
+                    });
+
+                    image.Flip();
+
+                    image.Write(GetExportFilePath(Path.Combine("AnimActorTextures", rom.FileName), $"{textureIndex}.png"));
+                }
+            }
+        });
+    }
+
+    [RelayCommand]
+    private async Task ExportSoundBanksAsync()
+    {
+        HashSet<string> texts = new();
+
+        await ExportFromRomsAsync(rom =>
+        {
+            for (int i = 0; i < rom.OffsetTable.Count; i++)
+            {
+                ResourceType resourceType = GetResourceType(rom.Context, rom.OffsetTable, i);
+
+                if (resourceType == ResourceType.SoundBank)
+                {
+                    SoundBank soundBank = rom.OffsetTable.ReadResource<SoundBank>(rom.Context, i);
+
+                    StringBuilder sb = new();
+
+                    sb.AppendLine($"{soundBank.EventsCount} events");
+                    sb.AppendLine();
+
+                    for (int evtId = 0; evtId < soundBank.Events.Length; evtId++)
+                    {
+                        SoundEvent? evt = soundBank.Events[evtId];
+
+                        sb.Append($"{evtId:000} = ");
+                        if (evt == null)
+                        {
+                            sb.Append("NULL");
+                        }
+                        else
+                        {
+                            switch (evt.Type)
+                            {
+                                case SoundEvent.SoundEventType.Play:
+                                    sb.Append($"Play res {evt.ResourceId} as {evt.SoundType}");
+                                    break;
+
+                                case SoundEvent.SoundEventType.Stop:
+                                    sb.Append($"Stop event {evt.StopEventId} with fadeout {evt.FadeOutTime}");
+                                    break;
+
+                                case SoundEvent.SoundEventType.StopAndGo:
+                                    sb.Append($"Stop event {evt.StopEventId} and play {evt.NextEventId} with fadeout {evt.FadeOutTime}");
+                                    break;
+                            }
+                        }
+
+                        sb.AppendLine();
+                    }
+
+                    sb.AppendLine();
+                    sb.AppendLine();
+
+                    sb.AppendLine($"{soundBank.ResourcesCount} resources");
+                    sb.AppendLine();
+
+                    for (int resId = 0; resId < soundBank.Resources.Length; resId++)
+                    {
+                        SoundResource? res = soundBank.Resources[resId];
+
+                        sb.Append($"{resId:000} = ");
+                        if (res == null)
+                        {
+                            sb.Append("NULL");
+                        }
+                        else
+                        {
+                            switch (res.Type)
+                            {
+                                case SoundResource.ResourceType.Song:
+                                    sb.Append($"Song {res.SongTableIndex}");
+
+                                    if (res.IsMusic)
+                                        sb.Append(" (music)");
+                                    else
+                                        sb.Append(" (sfx)");
+                                    break;
+                                
+                                case SoundResource.ResourceType.Random:
+                                    sb.Append($"Random resource [ {String.Join(" ", res.ResourceIds.Select(x => $"{x:000}"))} ]");
+                                    break;
+                            }
+                        }
+
+                        sb.AppendLine();
+                    }
+
+                    string text = sb.ToString();
+
+                    if (RemoveDuplicates)
+                    {
+                        if (!texts.Add(text))
+                            return;
+                    }
+
+                    File.WriteAllText(GetExportFilePath("SoundBanks", $"{rom.FileName}.txt"), text);
+
+                }
+            }
+        });
+    }
+
+    [RelayCommand]
     private void OpenExportFolder()
     {
         Process.Start(new ProcessStartInfo()
@@ -709,7 +1009,7 @@ public partial class MainWindowViewModel : ObservableObject
 
     #region Data Types
 
-    private enum ResourceType { Unknown, Scene2D, }
+    private enum ResourceType { Unknown, Scene2D, SoundBank, Palette16, AnimatedObject, Playfield, AnimActor, PaletteTable, TextureTable, }
     private record Rom(string FileName, Context Context, OffsetTable OffsetTable);
     private record ActorInstance(int Type, int Action, bool ResurrectsImmediately, bool ResurrectsLater);
 
