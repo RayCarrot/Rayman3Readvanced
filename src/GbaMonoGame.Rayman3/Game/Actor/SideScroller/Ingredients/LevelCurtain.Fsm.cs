@@ -56,8 +56,15 @@ public partial class LevelCurtain
 
                 if (Scene.IsDetectedMainActor(this) && Scene.MainActor.Speed.Y == 0)
                 {
-                    ((World)Frame.Current).UserInfo.SetLevelInfoBar(InitialActionId);
-                    Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginInFrontOfLevelCurtain);
+                    ((World)Frame.Current).UserInfo.SetLevelInfoBar((int)InitialActionId);
+
+                    // If we keep all objects active we only want to send the message the first frame Rayman is
+                    // in front of the curtain or else it might conflict with other curtains also active.
+                    if (!Scene.KeepAllObjectsActive || !IsRaymanInFront)
+                    {
+                        Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginInFrontOfLevelCurtain);
+                        IsRaymanInFront = true;
+                    }
 
                     if ((JoyPad.IsButtonPressed(GbaInput.Up) || JoyPad.IsButtonPressed(GbaInput.A)) &&
                         JoyPad.IsButtonReleased(GbaInput.Left) &&
@@ -69,21 +76,21 @@ public partial class LevelCurtain
                     else
                     {
                         Rayman rayman = (Rayman)Scene.MainActor;
-                        if (ActionId != 33 && rayman.State != rayman.Fsm_Default)
-                            ActionId = 33;
+                        if (ActionId != Action.Sparkle && rayman.State != rayman.Fsm_Default)
+                            ActionId = Action.Sparkle;
                         else if (IsActionFinished)
                             ActionId = InitialActionId;
                     }
                 }
                 else
                 {
-                    // TODO: This solution won't work if camera scale is too high and multiple level curtains are on screen at once!
-                    //       Perhaps we should rewrite this so it keeps track of when Rayman enters and leaves the detection zone?
-
-                    // If set to keep all objects active we only want to do this if framed. Otherwise this will overwrite
-                    // if another level curtain is on screen and Rayman is in front of that one.
-                    if (!Scene.KeepAllObjectsActive || AnimatedObject.IsFramed)
+                    // If we keep all objects active we only want to send the message the first frame Rayman is
+                    // not in front of the curtain or else it might conflict with other curtains also active.
+                    if (!Scene.KeepAllObjectsActive || IsRaymanInFront)
+                    {
                         Scene.MainActor.ProcessMessage(this, Message.Rayman_EndInFrontOfLevelCurtain);
+                        IsRaymanInFront = false;
+                    }
                 }
 
                 if (enterCurtain)
@@ -107,9 +114,9 @@ public partial class LevelCurtain
         switch (action)
         {
             case FsmAction.Init:
-                if (ActionId != 33)
+                if (ActionId != Action.Sparkle)
                 {
-                    ActionId = 31;
+                    ActionId = Action.EnterCurtain1;
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_EnterLevel);
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Curtain_YoyoMove_Mix02);
                 }
@@ -120,16 +127,16 @@ public partial class LevelCurtain
 
                 if (IsActionFinished)
                 {
-                    if (ActionId == 33)
+                    if (ActionId == Action.Sparkle)
                     {
-                        ActionId = 31;
+                        ActionId = Action.EnterCurtain1;
                         Scene.MainActor.ProcessMessage(this, Message.Rayman_EnterLevel);
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Curtain_YoyoMove_Mix02);
                     }
-                    else if (ActionId == 31)
+                    else if (ActionId == Action.EnterCurtain1)
                     {
                         AnimatedObject.ObjPriority = 0;
-                        ActionId = 32;
+                        ActionId = Action.EnterCurtain2;
                     }
                     else
                     {

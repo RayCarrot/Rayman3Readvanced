@@ -5,6 +5,7 @@ using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using ImGuiNET;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -2399,6 +2400,12 @@ public sealed partial class Rayman : MovableActor
             AnimatedObject.PlayChannelBox();
             AnimatedObject.ComputeNextFrame();
         }
+    }
+
+    public override void DrawDebugLayout(DebugLayout debugLayout, DebugLayoutTextureManager textureManager)
+    {
+        base.DrawDebugLayout(debugLayout, textureManager);
+        ImGui.Text($"IsInFrontOfLevelCurtain: {IsInFrontOfLevelCurtain}");
     }
 
     public class CaptureTheFlagData

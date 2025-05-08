@@ -4,7 +4,6 @@ using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
 
-// TODO: Create action enum
 public sealed partial class LevelCurtain : ActionActor
 {
     public LevelCurtain(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
@@ -12,37 +11,37 @@ public sealed partial class LevelCurtain : ActionActor
         InitialActionId = ActionId;
         MapId = ActionId switch
         {
-            0  => MapId.WoodLight_M1,
-            1  => MapId.FairyGlade_M1,
-            2  => MapId.MarshAwakening1,
-            3  => MapId.SanctuaryOfBigTree_M1,
-            4  => MapId.BossMachine,
-            5  => MapId.Bonus1,
-            6  => MapId.MissileRace1,
-            7  => MapId.EchoingCaves_M1,
-            8  => MapId.CavesOfBadDreams_M1,
-            9  => MapId.MenhirHills_M1,
-            10 => MapId.MarshAwakening2,
-            11 => MapId.BossBadDreams,
-            12 => MapId.Bonus2,
-            13 => MapId.ChallengeLy1,
-            14 => MapId.SanctuaryOfRockAndLava_M1,
-            15 => MapId.BeneathTheSanctuary_M1,
-            16 => MapId.ThePrecipice_M1,
-            17 => MapId.TheCanopy_M1,
-            18 => MapId.SanctuaryOfStoneAndFire_M1,
-            19 => MapId.BossRockAndLava,
-            20 => MapId.Bonus3,
-            21 => MapId.TombOfTheAncients_M1,
-            22 => MapId.IronMountains_M1,
-            23 => MapId.MissileRace2,
-            24 => MapId.PirateShip_M1,
-            25 => MapId.BossScaleMan,
-            26 => MapId.BossFinal_M1,
-            27 => MapId.Bonus4,
-            28 => MapId.ChallengeLy2,
-            29 => MapId._1000Lums,
-            30 => MapId.ChallengeLyGCN,
+            Action.Level_WoodLight => MapId.WoodLight_M1,
+            Action.Level_FairyGlade => MapId.FairyGlade_M1,
+            Action.Level_MarshAwakening1 => MapId.MarshAwakening1,
+            Action.Level_SanctuaryOfBigTree => MapId.SanctuaryOfBigTree_M1,
+            Action.Level_BossMachine => MapId.BossMachine,
+            Action.Level_Bonus1 => MapId.Bonus1,
+            Action.Level_MissileRace1 => MapId.MissileRace1,
+            Action.Level_EchoingCaves => MapId.EchoingCaves_M1,
+            Action.Level_CavesOfBadDreams => MapId.CavesOfBadDreams_M1,
+            Action.Level_MenhirHills => MapId.MenhirHills_M1,
+            Action.Level_MarshAwakening2 => MapId.MarshAwakening2,
+            Action.Level_BossBadDreams => MapId.BossBadDreams,
+            Action.Level_Bonus2 => MapId.Bonus2,
+            Action.Level_ChallengeLy1 => MapId.ChallengeLy1,
+            Action.Level_SanctuaryOfRockAndLava => MapId.SanctuaryOfRockAndLava_M1,
+            Action.Level_BeneathTheSanctuary => MapId.BeneathTheSanctuary_M1,
+            Action.Level_ThePrecipice => MapId.ThePrecipice_M1,
+            Action.Level_TheCanopy => MapId.TheCanopy_M1,
+            Action.Level_SanctuaryOfStoneAndFire => MapId.SanctuaryOfStoneAndFire_M1,
+            Action.Level_BossRockAndLava => MapId.BossRockAndLava,
+            Action.Level_Bonus3 => MapId.Bonus3,
+            Action.Level_TombOfTheAncients => MapId.TombOfTheAncients_M1,
+            Action.Level_IronMountains => MapId.IronMountains_M1,
+            Action.Level_MissileRace2 => MapId.MissileRace2,
+            Action.Level_PirateShip => MapId.PirateShip_M1,
+            Action.Level_BossScaleMan => MapId.BossScaleMan,
+            Action.Level_BossFinal => MapId.BossFinal_M1,
+            Action.Level_Bonus4 => MapId.Bonus4,
+            Action.Level_ChallengeLy2 => MapId.ChallengeLy2,
+            Action.Level_1000Lums => MapId._1000Lums,
+            Action.Level_ChallengeLyGCN => MapId.ChallengeLyGCN,
             _ => throw new ArgumentOutOfRangeException(nameof(ActionId), ActionId, "Invalid action id"),
         };
 
@@ -129,9 +128,12 @@ public sealed partial class LevelCurtain : ActionActor
         AnimatedObject.BasePaletteIndex = IsLocked ? 1 : 0;
     }
 
-    public int InitialActionId { get; }
+    public Action InitialActionId { get; }
     public MapId MapId { get; }
     public bool IsLocked { get; set; }
+
+    // Custom property to fix issue in high res
+    public bool IsRaymanInFront { get; set; }
 
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {
