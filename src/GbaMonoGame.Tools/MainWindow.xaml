@@ -46,6 +46,9 @@
             <Button Content="Export sound banks (TXT)*"
                     Command="{Binding Path=ExportSoundBanksCommand, Mode=OneTime}"
                     Margin="0 0 8 8" />
+            <Button Content="Export sprite animations (GIF)*"
+                    Command="{Binding Path=ExportSpriteAnimationsCommand, Mode=OneTime}"
+                    Margin="0 0 8 8" />
         </WrapPanel>
 
         <CheckBox Grid.Row="1"

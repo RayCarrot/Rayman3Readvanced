@@ -18,7 +18,6 @@ using Game = BinarySerializer.Ubisoft.GbaEngine.Game;
 
 namespace GbaMonoGame.Tools;
 
-// TODO: Add export for sprite animations
 public partial class MainWindowViewModel : ObservableObject
 {
     #region Properties
@@ -59,7 +58,7 @@ public partial class MainWindowViewModel : ObservableObject
 
     private static long FindOffsetTable(byte[] rom)
     {
-        const int minLength = 5;
+        const int minLength = 4;
         const int maxLength = 200;
         const int minResourceSize = 4;
         const int maxResourceSize = 0x100000;
@@ -113,6 +112,8 @@ public partial class MainWindowViewModel : ObservableObject
 
     private static ResourceType GetResourceType(Context context, OffsetTable offsetTable, int id)
     {
+        GbaEngineSettings settings = context.GetRequiredSettings<GbaEngineSettings>();
+
         RawResource resource = offsetTable.ReadResource<RawResource>(context, id);
         int dependenciesCount = resource.OffsetTable.Count;
 
@@ -159,8 +160,22 @@ public partial class MainWindowViewModel : ObservableObject
         // AnimatedObject
         if (resource.OffsetTable.Count > 2 && resource.RawData.Length >= 4)
         {
-            byte idxSpriteTable = resource.RawData[2];
-            byte idxPalette = resource.RawData[3];
+            byte idxSpriteTable;
+            byte idxPalette;
+            if (settings.Game is 
+                Game.Rayman3_20020118_DemoRLE or
+                Game.Rayman3_20020301_PreAlpha or
+                Game.Rayman3_20020418_NintendoE3Approval or
+                Game.Rayman3_20020513_E3GameCube)
+            {
+                idxSpriteTable = resource.RawData[0];
+                idxPalette = resource.RawData[1];
+            }
+            else
+            {
+                idxSpriteTable = resource.RawData[2];
+                idxPalette = resource.RawData[3];
+            }
 
             if (idxSpriteTable == resource.OffsetTable.Count - 2 && idxPalette == resource.OffsetTable.Count - 1)
             {
@@ -168,15 +183,24 @@ public partial class MainWindowViewModel : ObservableObject
             }
         }
 
+        // ActorModel
+        if (resource.OffsetTable.Count > 0 && resource.RawData.Length >= 12 && settings.Game == Game.Rayman3_20020118_DemoRLE)
+        {
+            byte idxAnimatedObject = resource.RawData[8];
+
+            if (idxAnimatedObject == resource.OffsetTable.Count - 1)
+                return ResourceType.ActorModel;
+        }
+
         // Playfield
-        if (resource.OffsetTable.Count > 2 && resource.RawData.Length == 16)
+        if (resource.OffsetTable.Count > 2 && (resource.RawData.Length == 16 || (settings.Game is Game.Rayman3_20020118_DemoRLE or Game.Rayman3_20020301_PreAlpha && resource.RawData.Length == 15)))
         {
             byte type = resource.RawData[0];
             byte idxTileKit = resource.RawData[1];
             byte idxTileMappingTable = resource.RawData[2];
             byte layersCount = resource.RawData[5];
 
-            if (idxTileKit == resource.OffsetTable.Count - 1 && idxTileMappingTable == resource.OffsetTable.Count - 2)
+            if (type is 0 or 1 && idxTileKit == resource.OffsetTable.Count - 1 && idxTileMappingTable == resource.OffsetTable.Count - 2)
             {
                 if (layersCount is >= 1 and <= 5)
                 {
@@ -264,7 +288,18 @@ public partial class MainWindowViewModel : ObservableObject
                 using Context context = new(dir);
 
                 // Create and add the game settings
-                GbaEngineSettings settings = new() { Game = Game.Rayman3, Platform = Platform.GBA };
+                Game game = romData.Length switch
+                {
+                    1627308 => Game.Rayman3_20020118_DemoRLE,
+                    2227428 => Game.Rayman3_20020301_PreAlpha,
+                    2273420 => Game.Rayman3_20020301_PreAlpha,
+                    1879888 => Game.Rayman3_20020301_PreAlpha,
+                    2768568 => Game.Rayman3_20020418_NintendoE3Approval,
+                    3674712 => Game.Rayman3_20020513_E3GameCube,
+                    3589480 => Game.Rayman3_20020513_E3GameCube,
+                    _ => Game.Rayman3,
+                };
+                GbaEngineSettings settings = new() { Game = game, Platform = Platform.GBA };
                 context.AddSettings(settings);
 
                 MemoryMappedStreamFile file = context.AddFile(new MemoryMappedStreamFile(context, fileName,
@@ -433,7 +468,7 @@ public partial class MainWindowViewModel : ObservableObject
                     Scene2D scene = rom.OffsetTable.ReadResource<Scene2D>(rom.Context, i);
 
                     // NOTE: Some actors types have multiple models, but they all appear the same
-                    foreach (Actor actor in scene.Actors.Concat(scene.AlwaysActors))
+                    foreach (Actor actor in scene.Actors.Concat(scene.AlwaysActors).Concat(scene.ProjectileActors))
                     {
                         ActorModel model = actor.Model;
                         actorModels[actor.Type] = model;
@@ -499,7 +534,7 @@ public partial class MainWindowViewModel : ObservableObject
                 {
                     Scene2D scene = rom.OffsetTable.ReadResource<Scene2D>(rom.Context, i);
 
-                    foreach (Actor actor in scene.Actors.Concat(scene.AlwaysActors))
+                    foreach (Actor actor in scene.Actors.Concat(scene.AlwaysActors).Concat(scene.ProjectileActors))
                         actorInstances.Add(new ActorInstance(actor.Type, actor.FirstActionId, actor.ResurrectsImmediately, actor.ResurrectsLater));
                 }
             }
@@ -546,7 +581,7 @@ public partial class MainWindowViewModel : ObservableObject
                 {
                     Scene2D scene = rom.OffsetTable.ReadResource<Scene2D>(rom.Context, i);
 
-                    foreach (Actor actor in scene.Actors.Concat(scene.AlwaysActors))
+                    foreach (Actor actor in scene.Actors.Concat(scene.AlwaysActors).Concat(scene.ProjectileActors))
                     {
                         ActorModel model = actor.Model;
 
@@ -995,6 +1030,357 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private async Task ExportSpriteAnimationsAsync()
+    {
+        Dictionary<int, HashSet<string>> hashes = new();
+
+        await ExportFromRomsAsync(rom =>
+        {
+            Pointer?[] exportedActorTypes = new Pointer?[256];
+
+            for (int i = 0; i < rom.OffsetTable.Count; i++)
+            {
+                ResourceType resourceType = GetResourceType(rom.Context, rom.OffsetTable, i);
+
+                if (resourceType == ResourceType.Scene2D)
+                {
+                    Scene2D scene = rom.OffsetTable.ReadResource<Scene2D>(rom.Context, i);
+
+                    foreach (Actor actor in scene.Actors.Concat(scene.AlwaysActors).Concat(scene.ProjectileActors))
+                    {
+                        Pointer? exportedPointer = exportedActorTypes[actor.Type];
+                        Pointer pointer = actor.Model.AnimatedObject.Offset;
+
+                        if (exportedPointer == null)
+                        {
+                            exportedActorTypes[actor.Type] = pointer;
+                            exportAnimatedObject(actor.Model.AnimatedObject, actor.Type, $"{actor.Type} - {(ActorType)actor.Type}");
+                        }
+                        else if (exportedPointer != pointer)
+                        {
+                            Log($"WARNING: Actor {actor.Type} has multiple animated objects in {rom.FileName}");
+                        }
+                    }
+                }
+                else if (resourceType == ResourceType.AnimatedObject)
+                {
+                    AnimatedObject animatedObject = rom.OffsetTable.ReadResource<AnimatedObject>(rom.Context, i);
+                    exportAnimatedObject(animatedObject, 1000, $"AnimatedObject {i}");
+                }
+                else if (resourceType == ResourceType.ActorModel)
+                {
+                    ActorModel actorModel = rom.OffsetTable.ReadResource<ActorModel>(rom.Context, i);
+                    exportAnimatedObject(actorModel.AnimatedObject, 1000, $"ActorModel {i}");
+                }
+            }
+
+            void exportAnimatedObject(AnimatedObject animatedObject, int cacheId, string dirName)
+            {
+                byte[] tileSet = animatedObject.SpriteTable.Data;
+
+                for (int animId = 0; animId < animatedObject.Animations.Length; animId++)
+                {
+                    Animation anim = animatedObject.Animations[animId];
+
+                    // Calculate min/max positions
+                    int minX = 0;
+                    int minY = 0;
+                    int maxX = 0;
+                    int maxY = 0;
+                    foreach (AnimationChannel channel in anim.Channels)
+                    {
+                        if (channel.ChannelType == AnimationChannelType.Sprite)
+                        {
+                            Constants.Size size = Constants.GetSpriteShape(channel.SpriteShape, channel.SpriteSize);
+
+                            int startX = channel.XPosition;
+                            int startY = channel.YPosition;
+
+                            if (channel.ObjectMode == OBJ_ATTR_ObjectMode.AFF_DBL)
+                            {
+                                startX -= size.Width / 2;
+                                startY -= size.Height / 2;
+                            }
+
+                            if (startX < minX) 
+                                minX = startX;
+                            if (startY < minY) 
+                                minY = startY;
+
+                            int endX = startX + size.Width;
+                            int endY = startY + size.Height;
+
+                            if (channel.ObjectMode == OBJ_ATTR_ObjectMode.AFF_DBL)
+                            {
+                                endX += size.Width;
+                                endY += size.Height;
+                            }
+
+                            if (endX > maxX)
+                                maxX = endX;
+                            if (endY > maxY)
+                                maxY = endY;
+                        }
+                    }
+
+                    int animWidth = maxX - minX;
+                    int animHeight = maxY - minY;
+
+                    // Skip empty animation
+                    if (animWidth == 0 && animHeight == 0)
+                        continue;
+
+                    MagickImage[] frames = new MagickImage[anim.FramesCount];
+
+                    // Enumerate each frame
+                    int channelOffset = 0;
+                    for (int frameId = 0; frameId < anim.FramesCount; frameId++)
+                    {
+                        Color[] imgData = new Color[animWidth * animHeight];
+
+                        // Enumerate each channel
+                        for (int channelId = anim.ChannelsPerFrame[frameId] - 1; channelId >= 0; channelId--)
+                        {
+                            AnimationChannel channel = anim.Channels[channelOffset + channelId];
+
+                            if (channel.ChannelType == AnimationChannelType.Sprite && channel.ObjectMode != OBJ_ATTR_ObjectMode.HIDE)
+                            {
+                                // Get the size
+                                Constants.Size size = Constants.GetSpriteShape(channel.SpriteShape, channel.SpriteSize);
+
+                                // Get the positions
+                                int xPos = channel.XPosition - minX;
+                                int yPos = channel.YPosition - minY;
+
+                                if (channel.ObjectMode == OBJ_ATTR_ObjectMode.AFF_DBL)
+                                {
+                                    xPos -= size.Width / 2;
+                                    yPos -= size.Height / 2;
+                                }
+
+                                int tileSetIndex = channel.TileIndex * 0x20;
+                                Palette palette = new(animatedObject.Palettes.Palettes[channel.PalIndex]);
+
+                                if (channel.ObjectMode is OBJ_ATTR_ObjectMode.AFF or OBJ_ATTR_ObjectMode.AFF_DBL)
+                                {
+                                    var matrix = anim.AffineMatrices.Matrices[channel.AffineMatrixIndex];
+                                    int pa = matrix.Pa.Value;
+                                    int pb = matrix.Pb.Value;
+                                    int pc = matrix.Pc.Value;
+                                    int pd = matrix.Pd.Value;
+
+                                    bool doubleSize = channel.ObjectMode == OBJ_ATTR_ObjectMode.AFF_DBL;
+
+                                    int width = doubleSize ? size.Width * 2 : size.Width;
+                                    int height = doubleSize ? size.Height * 2 : size.Height;
+
+                                    for (int sprY = 0; sprY < height; sprY++)
+                                    {
+                                        int absY = yPos + sprY;
+
+                                        int xofs, yofs;
+                                        int xfofs, yfofs;
+
+                                        if (doubleSize)
+                                        {
+                                            xofs = size.Width;
+                                            yofs = size.Height;
+
+                                            xfofs = -xofs / 2;
+                                            yfofs = -yofs / 2;
+                                        }
+                                        else
+                                        {
+                                            xofs = size.Width / 2;
+                                            yofs = size.Height / 2;
+
+                                            xfofs = 0;
+                                            yfofs = 0;
+                                        }
+
+                                        // Left edge
+                                        int origXEdge0 = 0 - xofs;
+                                        int origY = sprY - yofs;
+
+                                        // Calculate starting parameters for matrix multiplications
+                                        int shiftedXOfs = xofs + xfofs << 8;
+                                        int shiftedYOfs = yofs + yfofs << 8;
+                                        int pBYOffset = pb * origY + shiftedXOfs;
+                                        int pDYOffset = pd * origY + shiftedYOfs;
+
+                                        int objPixelXEdge0 = pa * origXEdge0 + pBYOffset;
+                                        int objPixelYEdge0 = pc * origXEdge0 + pDYOffset;
+
+                                        for (int sprX = 0; sprX < width; sprX++)
+                                        {
+                                            int absX = xPos + sprX;
+
+                                            int lerpedObjPixelX = objPixelXEdge0 >> 8;
+                                            int lerpedObjPixelY = objPixelYEdge0 >> 8;
+
+                                            if (lerpedObjPixelX >= 0 && lerpedObjPixelX < size.Width &&
+                                                lerpedObjPixelY >= 0 && lerpedObjPixelY < size.Height)
+                                            {
+                                                int intraTileX = lerpedObjPixelX & 7;
+                                                int intraTileY = lerpedObjPixelY & 7;
+
+                                                int tileX = lerpedObjPixelX / 8;
+                                                int tileY = lerpedObjPixelY / 8;
+
+                                                tileX += tileY * (size.Width / 8);
+
+                                                if (animatedObject.Is8Bit)
+                                                {
+                                                    byte colorIndex = tileSet[tileSetIndex + tileX * 0x40 + intraTileY * 8 + intraTileX];
+
+                                                    if (colorIndex != 0)
+                                                        imgData[absY * animWidth + absX] = palette.Colors[colorIndex];
+                                                }
+                                                else
+                                                {
+                                                    byte colorIndex = tileSet[tileSetIndex + tileX * 0x20 + intraTileY * 4 + intraTileX / 2];
+                                                    colorIndex = (byte)((colorIndex >> ((intraTileX & 1) * 4)) & 0xF);
+
+                                                    if (colorIndex != 0)
+                                                        imgData[absY * animWidth + absX] = palette.Colors[colorIndex];
+                                                }
+                                            }
+
+                                            objPixelXEdge0 += pa;
+                                            objPixelYEdge0 += pc;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    bool flipX = channel.FlipX;
+                                    bool flipY = channel.FlipY;
+
+                                    int absY = !flipY ? yPos : yPos + size.Height - Tile.Size;
+                                    for (int tileY = 0; tileY < size.TilesHeight; tileY++)
+                                    {
+                                        int absX = !flipX ? xPos : xPos + size.Width - Tile.Size;
+                                        for (int tileX = 0; tileX < size.TilesWidth; tileX++)
+                                        {
+                                            if (animatedObject.Is8Bit)
+                                            {
+                                                if (flipX && flipY)
+                                                {
+                                                    DrawHelpers.DrawTile_8bpp_FlipXY(imgData, absX, absY, animWidth, tileSet, ref tileSetIndex, palette);
+                                                }
+                                                else if (flipX)
+                                                {
+                                                    DrawHelpers.DrawTile_8bpp_FlipX(imgData, absX, absY, animWidth, tileSet, ref tileSetIndex, palette);
+                                                }
+                                                else if (flipY)
+                                                {
+                                                    DrawHelpers.DrawTile_8bpp_FlipY(imgData, absX, absY, animWidth, tileSet, ref tileSetIndex, palette);
+                                                }
+                                                else
+                                                {
+                                                    DrawHelpers.DrawTile_8bpp(imgData, absX, absY, animWidth, tileSet, ref tileSetIndex, palette);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (flipX && flipY)
+                                                {
+                                                    DrawHelpers.DrawTile_4bpp_FlipXY(imgData, absX, absY, animWidth, tileSet, ref tileSetIndex, palette, 0);
+                                                }
+                                                else if (flipX)
+                                                {
+                                                    DrawHelpers.DrawTile_4bpp_FlipX(imgData, absX, absY, animWidth, tileSet, ref tileSetIndex, palette, 0);
+                                                }
+                                                else if (flipY)
+                                                {
+                                                    DrawHelpers.DrawTile_4bpp_FlipY(imgData, absX, absY, animWidth, tileSet, ref tileSetIndex, palette, 0);
+                                                }
+                                                else
+                                                {
+                                                    DrawHelpers.DrawTile_4bpp(imgData, absX, absY, animWidth, tileSet, ref tileSetIndex, palette, 0);
+                                                }
+                                            }
+
+                                            if (!flipX)
+                                                absX += Tile.Size;
+                                            else
+                                                absX -= Tile.Size;
+                                        }
+
+                                        if (!flipY)
+                                            absY += Tile.Size;
+                                        else
+                                            absY -= Tile.Size;
+                                    }
+                                }
+                            }
+                        }
+
+                        // Convert to RGBA
+                        byte[] rawImgData = new byte[imgData.Length * 4];
+                        for (int i = 0; i < imgData.Length; i++)
+                        {
+                            rawImgData[i * 4 + 0] = imgData[i].R;
+                            rawImgData[i * 4 + 1] = imgData[i].G;
+                            rawImgData[i * 4 + 2] = imgData[i].B;
+                            rawImgData[i * 4 + 3] = imgData[i].A;
+                        }
+
+                        // Create image
+                        frames[frameId] = new(rawImgData, new MagickReadSettings()
+                        {
+                            Format = MagickFormat.Rgba,
+                            Width = (uint?)animWidth,
+                            Height = (uint?)animHeight
+                        });
+
+                        channelOffset += anim.ChannelsPerFrame[frameId];
+                    }
+
+                    using MagickImageCollection imgCollection = new();
+
+                    int index = 0;
+                    foreach (MagickImage frame in frames)
+                    {
+                        imgCollection.Add(frame);
+                        imgCollection[index].AnimationDelay = (uint)(anim.Speed + 1);
+                        imgCollection[index].AnimationTicksPerSecond = 60;
+                        imgCollection[index].GifDisposeMethod = GifDisposeMethod.Background;
+                        index++;
+                    }
+
+                    string dirPath = Path.Combine("SpriteAnimations", $"{dirName}");
+                    string filePath = GetExportFilePath(dirPath, $"{animId} - {rom.FileName}.gif");
+
+                    using MemoryStream stream = new();
+                    imgCollection.Write(stream, MagickFormat.Gif);
+
+                    // Check for duplicates
+                    if (RemoveDuplicates)
+                    {
+                        using SHA512 sha512 = SHA512.Create();
+                        stream.Position = 0;
+                        string hash = Convert.ToBase64String(sha512.ComputeHash(stream));
+
+                        if (!hashes.TryGetValue(cacheId, out HashSet<string>? hashSet))
+                        {
+                            hashSet = new HashSet<string>();
+                            hashes.Add(cacheId, hashSet);
+                        }
+
+                        if (!hashSet.Add(hash))
+                            continue;
+                    }
+
+                    stream.Position = 0;
+                    using FileStream fileStream = File.Create(filePath);
+                    stream.CopyTo(fileStream);
+                }
+            }
+        });
+    }
+
+    [RelayCommand]
     private void OpenExportFolder()
     {
         Process.Start(new ProcessStartInfo()
@@ -1009,7 +1395,7 @@ public partial class MainWindowViewModel : ObservableObject
 
     #region Data Types
 
-    private enum ResourceType { Unknown, Scene2D, SoundBank, Palette16, AnimatedObject, Playfield, AnimActor, PaletteTable, TextureTable, }
+    private enum ResourceType { Unknown, Scene2D, SoundBank, Palette16, AnimatedObject, ActorModel, Playfield, AnimActor, PaletteTable, TextureTable, }
     private record Rom(string FileName, Context Context, OffsetTable OffsetTable);
     private record ActorInstance(int Type, int Action, bool ResurrectsImmediately, bool ResurrectsLater);
 
