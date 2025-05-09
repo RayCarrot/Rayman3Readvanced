@@ -1,5 +1,7 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+﻿using BinarySerializer.Nintendo.GBA;
+using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.TgxEngine;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -22,6 +24,8 @@ public class FrameSingleMode7 : FrameMode7
 
     public GfxScreen FogScreen { get; set; }
     public Mode7RedFogScreenRenderer FogScreenRenderer { get; set; }
+    public GfxScreen WallsScreen { get; set; }
+    public Mode7WallsScreenRenderer WallsScreenRenderer { get; set; }
     public int ColorAdd { get; set; }
     public int ColorAddDelta { get; set; }
 
@@ -92,6 +96,53 @@ public class FrameSingleMode7 : FrameMode7
         }
     }
 
+    private void InitWalls()
+    {
+        TgxPlayfieldMode7 playfield = (TgxPlayfieldMode7)Scene.Playfield;
+        TgxRotscaleLayerMode7 layer = playfield.RotScaleLayers[0];
+
+        MapTile[] wallTiles = new MapTile[3 * 3];
+        for (int y = 0; y < 3; y++)
+        {
+            for (int x = 0; x < 3; x++)
+            {
+                int absX = 1 + x; // TODO: magic coordinate (1,22)
+                int absY = 22 + y;
+
+                int index = absX + absY * layer.Width;
+                MapTile tile = layer.TileMap[index];
+
+                wallTiles[x + y * 3] = tile;
+            }
+        }
+
+        Texture2D texture = new TiledTexture2D(
+            width: 3, // TODO: Magic number
+            height: 3, // TODO: Magic number
+            tileSet: playfield.GfxTileKitManager.TileSet,
+            tileMap: wallTiles,
+            baseTileIndex: 512, // TODO: Magic number
+            palette: playfield.GfxTileKitManager.SelectedPalette,
+            is8Bit: true,
+            ignoreZero: true);
+
+        WallsScreenRenderer = new Mode7WallsScreenRenderer(layer.TileMap, texture, (TgxPlayfieldMode7)Scene.Playfield);
+
+        WallsScreen = new GfxScreen(6)
+        {
+          Priority = 0,
+          Wrap = false,
+          Is8Bit = null,
+          Offset = Vector2.Zero,
+          GbaAlpha = 16, // TODO: Magic number
+          IsEnabled = true,
+          Renderer = WallsScreenRenderer,
+          RenderOptions = { BlendMode = BlendMode.None, RenderContext = Scene.RenderContext }
+        };
+
+        Gfx.AddScreen(WallsScreen);
+    }
+
     public void KillLum(int lumId)
     {
         CollectedLums[lumId] = true;
@@ -131,6 +182,7 @@ public class FrameSingleMode7 : FrameMode7
         Scene.AddDialog(UserInfo, false, false);
 
         InitFog();
+        InitWalls();
     }
 
     public override void Step()
