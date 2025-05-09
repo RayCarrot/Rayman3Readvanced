@@ -216,7 +216,7 @@ public partial class Murfy
                 if (Position.Y < TargetPosition.Y - 5)
                 {
                     if (SavedSpeed.Y < 2)
-                        SavedSpeed += new Vector2(0, 0.05859375f);
+                        SavedSpeed += new Vector2(0, 15 / 256f);
                     else
                         SavedSpeed = SavedSpeed with { Y = 2 };
                 }
@@ -225,7 +225,7 @@ public partial class Murfy
                     if (SavedSpeed.Y <= -2)
                         SavedSpeed = SavedSpeed with { Y = -2 };
                     else
-                        SavedSpeed -= new Vector2(0, 0.05859375f);
+                        SavedSpeed -= new Vector2(0, 15 / 256f);
                 }
                 else
                 {
@@ -333,6 +333,7 @@ public partial class Murfy
         return true;
     }
 
+    // Unused
     public bool Fsm_AvoidAttack(FsmAction action)
     {
         switch (action)

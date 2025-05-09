@@ -241,4 +241,53 @@ Most actors have the first animation be unused and just single frame, most likel
 
 - When the keg respawns from the dispenser in the Garish Gears boss there is a bug in the code. It waits with respawning until the difference between its X position and the same X position is less than 180, which is always true. This was most likely meant to check the difference between its X position and that of the player.
 
+#### KegFire
+- The actor is set up with actions for facing both right and left, yet it's hard-coded to only ever face right.
+
+#### Lums
+- There's an unused versions of the yellow lum that's bigger and is worth 10 lums when collected:
+
+![Animation 10](discoveries_assets/Lums_Anim_10.gif)
+
+- The multiplayer states have leftover checks for big blue lums even if it's unused. The code isn't fully functional though and will set the wrong animation.
+
+#### Murfy
+- The N-Gage version has an additional boolean value which is set to true and never used again.
+- While Murfy is talking to Rayman there is code checking for if you have moved away from Murfy or if you're attacking him, both of which are impossible to do. If it detects you attacking him then he will move out of the way to avoid the fist and then move back in.
+
+#### MurfyStone
+- When spawning in Murfy it sets Murfy to appear just outside of the screen above you. However it incorrectly uses the horizontal resolution to calculate this rather than the vertical one, meaning he gets set to further away than intended.
+- There's an unused state that does nothing, suggesting that the stones would originally only have been interactable once and then not again.
+
+#### PurpleLum
+- There's unused code in the N-Gage version to handle the purple lums in multiplayer. They however don't appear in any of the multiplayer maps, making it unused. The code is also bugged, making it not work for all players.
+
+#### RaymanWorldMap
+- The actor appears in the worldmap, but is never used. It's probably just a placeholder since each scene needs a main actor.
+
+#### Butterfly
+- The following animations are not used in any level:
+
+![Animation 3](discoveries_assets/Butterfly_Anim_3.gif)
+![Animation 4](discoveries_assets/Butterfly_Anim_4.gif)
+![Animation 13](discoveries_assets/Butterfly_Anim_13.gif)
+![Animation 14](discoveries_assets/Butterfly_Anim_14.gif)
+![Animation 15](discoveries_assets/Butterfly_Anim_15.gif)
+![Animation 16](discoveries_assets/Butterfly_Anim_16.gif)
+![Animation 17](discoveries_assets/Butterfly_Anim_17.gif)
+
+#### Snail
+- The actor is unused. It's meant to appear as a scenery element in the forest levels as seen in the Focus Test prototype.
+
+#### Sparkle
+- The following animations are not used in any level:
+
+![Animation 0](discoveries_assets/Sparkle_Anim_0.gif)
+![Animation 1](discoveries_assets/Sparkle_Anim_1.gif)
+
+- The timer value for when it should show is not initialized, meaning it defaults to the default allocation values, which is 0xCD.
+
+#### SwingSparkle
+- There's a bug causing the sparkles to sometimes show at the wrong position during the first frame. This due to the position of each sparkle being retained from the last time they were shown, and them not being updated until the next frame. However, due to another bug, a lack of a null check, this isn't very common since the position value will usually have been set to random data from an invalid pointer.
+
 ...

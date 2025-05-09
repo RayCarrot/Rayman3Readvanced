@@ -1,5 +1,4 @@
-﻿using System;
-using BinarySerializer.Ubisoft.GbaEngine;
+﻿using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
@@ -17,9 +16,38 @@ public partial class PurpleLum
             case FsmAction.Step:
                 Box viewBox = GetViewBox();
 
+                // Unused - purple lums don't appear in multiplayer
                 if (RSMultiplayer.IsActive && Rom.Platform == Platform.NGage)
                 {
-                    throw new NotImplementedException();
+                    for (int i = 0; i < MultiplayerManager.PlayersCount; i++)
+                    {
+                        Rayman player = Scene.GetGameObject<Rayman>(i);
+
+                        // NOTE: There's a bug here - it reuses the index from the outer loop! Not worth fixing though since it's unused.
+                        for (i = 0; i < 2; i++)
+                        {
+                            RaymanBody activeFist = player.ActiveBodyParts[i];
+
+                            if (activeFist == null) 
+                                continue;
+
+                            Box detectionBox = activeFist.GetDetectionBox();
+                            if (!detectionBox.Intersects(viewBox)) 
+                                continue;
+                            
+                            viewBox.Left += 16;
+                            viewBox.Top += 8;
+                            viewBox.Right -= 16;
+                            viewBox.Bottom += 4;
+
+                            if (!detectionBox.Intersects(viewBox)) 
+                                continue;
+                            
+                            player.ProcessMessage(this, Message.Rayman_BeginSwing, this);
+                            activeFist.ProcessMessage(this, Message.RaymanBody_FinishAttack, this);
+                            break;
+                        }
+                    }
                 }
                 else
                 {

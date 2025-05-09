@@ -12,10 +12,14 @@ public sealed partial class Murfy : MovableActor
     public Murfy(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
         TargetActor = (Rayman)Scene.MainActor;
+        ShouldSpawn = false;
+        MainActorPosition = Vector2.Zero;
+        HasPlayedCutscene = false;
+        MoveTextBoxIn = false;
         IsForBonusInWorld1 = true;
 
         if (Rom.Platform == Platform.NGage)
-            NGage_Byte_8E = 1;
+            NGage_Unused = true;
 
         State.SetTo(Fsm_PreInit);
     }
@@ -31,7 +35,7 @@ public sealed partial class Murfy : MovableActor
     public bool HasPlayedCutscene { get; set; }
     public bool IsTargetActorFacingRight { get; set; }
     public bool ShouldSpawn { get; set; }
-    public byte NGage_Byte_8E { get; set; }
+    public bool NGage_Unused { get; set; } // Unused
     
     public bool IsForBonusInWorld1 { get; set; }
     public bool SavedBlockPause { get; set; }

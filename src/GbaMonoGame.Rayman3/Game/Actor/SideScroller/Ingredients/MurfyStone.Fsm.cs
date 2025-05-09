@@ -36,9 +36,11 @@ public partial class MurfyStone
                             HasTriggered = true;
                             GameObject murfy = Scene.GetGameObject(MurfyId.Value);
 
-                            // TODO: This is probably a typo in the original code and explains why Murfy takes a while to appear. Fix?
-                            // Why is the horizontal resolution used for the y position??
-                            murfy.Position = murfy.Position with { Y = Position.Y - Scene.Resolution.X };
+                            // The horizontal resolution is incorrectly used here
+                            if (Engine.Config.FixBugs)
+                                murfy.Position = murfy.Position with { Y = Position.Y - Scene.Resolution.Y };
+                            else
+                                murfy.Position = murfy.Position with { Y = Position.Y - Scene.Resolution.X };
                             murfy.ProcessMessage(this, Message.Murfy_Spawn);
                         }
                     }
