@@ -1,7 +1,6 @@
-﻿using BinarySerializer.Nintendo.GBA;
-using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.TgxEngine;
-using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -99,34 +98,8 @@ public class FrameSingleMode7 : FrameMode7
     private void InitWalls()
     {
         TgxPlayfieldMode7 playfield = (TgxPlayfieldMode7)Scene.Playfield;
-        TgxRotscaleLayerMode7 layer = playfield.RotScaleLayers[0];
 
-        MapTile[] wallTiles = new MapTile[3 * 3];
-        for (int y = 0; y < 3; y++)
-        {
-            for (int x = 0; x < 3; x++)
-            {
-                int absX = 1 + x; // TODO: magic coordinate (1,22)
-                int absY = 22 + y;
-
-                int index = absX + absY * layer.Width;
-                MapTile tile = layer.TileMap[index];
-
-                wallTiles[x + y * 3] = tile;
-            }
-        }
-
-        Texture2D texture = new TiledTexture2D(
-            width: 3, // TODO: Magic number
-            height: 3, // TODO: Magic number
-            tileSet: playfield.GfxTileKitManager.TileSet,
-            tileMap: wallTiles,
-            baseTileIndex: 512, // TODO: Magic number
-            palette: playfield.GfxTileKitManager.SelectedPalette,
-            is8Bit: true,
-            ignoreZero: true);
-
-        WallsScreenRenderer = new Mode7WallsScreenRenderer(layer, playfield.Camera, texture);
+        WallsScreenRenderer = new Mode7WallsScreenRenderer(playfield, new Point(1, 22), new Point(3, 3), 3);
 
         WallsScreen = new GfxScreen(6)
         {
@@ -134,10 +107,9 @@ public class FrameSingleMode7 : FrameMode7
             Wrap = false,
             Is8Bit = null,
             Offset = Vector2.Zero,
-            GbaAlpha = 16, // TODO: Magic number
             IsEnabled = true,
             Renderer = WallsScreenRenderer,
-            RenderOptions = { BlendMode = BlendMode.None, RenderContext = Scene.RenderContext }
+            RenderOptions = { RenderContext = Scene.RenderContext }
         };
 
         Gfx.AddScreen(WallsScreen);

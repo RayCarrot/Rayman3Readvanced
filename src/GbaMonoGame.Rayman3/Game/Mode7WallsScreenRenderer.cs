@@ -9,20 +9,20 @@ namespace GbaMonoGame.Rayman3;
 
 public class Mode7WallsScreenRenderer : IScreenRenderer
 {
-    public Mode7WallsScreenRenderer(TgxRotscaleLayerMode7 layer, TgxCameraMode7 camera, Texture2D wallTexture)
+    public Mode7WallsScreenRenderer(TgxPlayfieldMode7 playfield, Point wallPoint, Point wallSize, float wallHeight)
     {
-        Camera = camera;
+        Camera = playfield.Camera;
 
         // TODO: Dispose shader
         Shader = new BasicEffect(Engine.GraphicsDevice)
         {
             TextureEnabled = true,
         };
-        Shader.Texture = wallTexture;
 
-        MapTile wallTile = layer.TileMap[1 + 22 * layer.Width]; // TODO: magic coordinate (1, 22)
+        TgxRotscaleLayerMode7 layer = playfield.RotScaleLayers[0];
 
-        CreateMesh(layer.TileMap.Select(t => t.TileIndex == wallTile.TileIndex).ToArray(), layer.Width, layer.Height, Tile.Size * 3);
+        CreateTexture(playfield.GfxTileKitManager, layer.TileMap, layer.Width, wallPoint, wallSize);
+        CreateMesh(layer.TileMap, layer.Width, layer.Height, wallPoint, new Vector3(wallSize.X, wallSize.Y, wallHeight) * Tile.Size);
     }
 
     public TgxCameraMode7 Camera { get; }
@@ -30,7 +30,33 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
     public VertexBuffer VertexBuffer { get; set; }
     public IndexBuffer IndexBuffer { get; set; }
 
-    private void CreateMesh(bool[] boxMap, int boxMapWidth, int boxMapHeight, float boxSize)
+    private void CreateTexture(GfxTileKitManager tileKitManager, MapTile[] tileMap, int tileMapWidth, Point wallPoint, Point wallSize)
+    {
+        MapTile[] wallTiles = new MapTile[wallSize.X * wallSize.Y];
+        TileMapHelpers.CopyRegion(
+            sourceMap: tileMap,
+            sourceWidth: tileMapWidth,
+            sourcePoint: wallPoint,
+            destMap: wallTiles,
+            destWidth: wallSize.X,
+            destPoint: Point.Zero,
+            regionSize: wallSize);
+
+        // TODO: Dispose
+        Texture2D wallTexture = new TiledTexture2D(
+            width: wallSize.X,
+            height: wallSize.Y,
+            tileSet: tileKitManager.TileSet,
+            tileMap: wallTiles,
+            baseTileIndex: 512,
+            palette: tileKitManager.SelectedPalette,
+            is8Bit: true,
+            ignoreZero: true);
+
+        Shader.Texture = wallTexture;
+    }
+
+    private void CreateMesh(MapTile[] tileMap, int tileMapWidth, int tileMapHeight, Point wallPoint, Vector3 wallBoxSize)
     {
         var topFace = new (Vector3 Position, Vector2 TexCoord)[]
         {
@@ -80,7 +106,7 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
 
         int vertexOffset = 0;
 
-        List<VertexPositionNormalTexture> vertices = [];
+        List<VertexPositionTexture> vertices = [];
         List<ushort> indices = [];
 
         // Helper method to add a face of the box mesh
@@ -89,9 +115,9 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
             // Add vertices
             foreach ((Vector3 v, Vector2 uv) in face)
             {
-                vertices.Add(new VertexPositionNormalTexture(
-                    new Vector3(pos.X, pos.Y, -boxSize * 0.5f) + v * boxSize,
-                    Vector3.Zero, uv)
+                vertices.Add(new VertexPositionTexture(
+                    position: new Vector3(pos.X, pos.Y, -wallBoxSize.Z * 0.5f) + v * wallBoxSize,
+                    textureCoordinate: uv)
                 );
             }
 
@@ -101,12 +127,13 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
             vertexOffset += (ushort)face.Length;
         }
 
-        // Add the boxes
-        for (int y = 0; y < boxMapHeight; y++)
+        // Add the wall boxes
+        MapTile wallTile = tileMap[wallPoint.X + wallPoint.Y * tileMapWidth];
+        for (int y = 0; y < tileMapHeight; y++)
         {
-            for (int x = 0; x < boxMapWidth; x++)
+            for (int x = 0; x < tileMapWidth; x++)
             {
-                if (boxMap[x + y * boxMapWidth])
+                if (tileMap[x + y * tileMapWidth].TileIndex == wallTile.TileIndex)
                 {
                     Vector2 pos = new(x * Tile.Size, y * Tile.Size);
                     
@@ -120,7 +147,7 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
         }
 
         // Create the vertex buffer
-        VertexBuffer = new VertexBuffer(Engine.GraphicsDevice, VertexPositionNormalTexture.VertexDeclaration, vertices.Count, BufferUsage.WriteOnly);
+        VertexBuffer = new VertexBuffer(Engine.GraphicsDevice, VertexPositionTexture.VertexDeclaration, vertices.Count, BufferUsage.WriteOnly);
         VertexBuffer.SetData(vertices.ToArray());
 
         // Create the index buffer
