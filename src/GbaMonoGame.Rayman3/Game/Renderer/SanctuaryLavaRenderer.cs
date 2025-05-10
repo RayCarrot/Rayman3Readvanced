@@ -19,7 +19,7 @@ public class SanctuaryLavaRenderer : IScreenRenderer
 
     public void Draw(GfxRenderer renderer, GfxScreen screen, Vector2 position, Color color)
     {
-        renderer.BeginRender(screen.RenderOptions);
+        renderer.BeginSpriteRender(screen.RenderOptions);
 
         // Render top part normally
         renderer.Draw(Texture, position, new Rectangle(0, 0, Texture.Width, 160), color);

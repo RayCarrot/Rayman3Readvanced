@@ -26,7 +26,7 @@ public class GfxDebugWindow : DebugWindow
             preferredDepthFormat: DepthFormat.Depth24);
 
         graphicsDevice.SetRenderTarget(renderTarget);
-        graphicsDevice.DepthStencilState = new DepthStencilState() { DepthBufferEnable = true };
+        graphicsDevice.DepthStencilState = DepthStencilState.Default;
 
         Vector2 oldResolution = Engine.InternalGameResolution;
         Vector2 oldOffset = screen.Offset;

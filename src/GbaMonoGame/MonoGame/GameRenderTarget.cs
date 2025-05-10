@@ -43,7 +43,7 @@ public class GameRenderTarget
         }
 
         GraphicsDevice.SetRenderTarget(RenderTarget);
-        GraphicsDevice.DepthStencilState = new DepthStencilState() { DepthBufferEnable = true };
+        GraphicsDevice.DepthStencilState = DepthStencilState.Default;
     }
 
     public void EndRender()

@@ -19,7 +19,7 @@ public class Mode7RedFogScreenRenderer : IScreenRenderer
 
     public void Draw(GfxRenderer renderer, GfxScreen screen, Vector2 position, Color color)
     {
-        renderer.BeginRender(screen.RenderOptions);
+        renderer.BeginSpriteRender(screen.RenderOptions);
 
         Vector2 res = screen.RenderOptions.RenderContext.Resolution;
 

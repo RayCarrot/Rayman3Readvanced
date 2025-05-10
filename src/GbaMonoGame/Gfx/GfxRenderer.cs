@@ -10,8 +10,9 @@ public class GfxRenderer
 
     public GfxRenderer(GraphicsDevice graphicsDevice)
     {
+        _graphicsDevice = graphicsDevice;
         _spriteBatch = new SpriteBatch(graphicsDevice);
-        _rasterizerState = new RasterizerState() { CullMode = CullMode.None };
+        _spriteRasterizerState = RasterizerState.CullNone;
 
         _paletteShader = Engine.FixContentManager.Load<Effect>(Assets.PaletteShader);
         _paletteShaderPaletteTextureParam = _paletteShader.Parameters["PaletteTexture"];
@@ -32,9 +33,10 @@ public class GfxRenderer
 
     #region Private Fields
 
+    private readonly GraphicsDevice _graphicsDevice;
     private readonly SpriteBatch _spriteBatch;
-    private readonly RasterizerState _rasterizerState;
-    private RenderOptions _renderOptions;
+    private readonly RasterizerState _spriteRasterizerState;
+    private RenderOptions _spriteBatchRenderOptions;
 
     private readonly Effect _paletteShader;
     private readonly EffectParameter _paletteShaderPaletteTextureParam;
@@ -52,23 +54,44 @@ public class GfxRenderer
 
     #endregion
 
+    #region Private Helpers
+
+    private BlendState GetBlendState(BlendMode blendMode)
+    {
+        return blendMode switch
+        {
+            BlendMode.None => BlendState.AlphaBlend, // Default SpriteBatch value
+            BlendMode.AlphaBlend => new BlendState
+            {
+                ColorSourceBlend = Blend.SourceAlpha,
+                ColorDestinationBlend = Blend.InverseSourceAlpha,
+                AlphaSourceBlend = Blend.One,
+                AlphaDestinationBlend = Blend.InverseSourceAlpha,
+            },
+            BlendMode.Additive => BlendState.Additive,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
+
+    #endregion
+
     #region Standard
 
-    public void BeginRender(RenderOptions options)
+    public void BeginSpriteRender(RenderOptions options)
     {
         // If we have new render options then we need to begin a new batch
-        if (_renderOptions != options)
+        if (_spriteBatchRenderOptions != options)
         {
             // End previous batch
-            if (_renderOptions != null)
+            if (_spriteBatchRenderOptions != null)
                 _spriteBatch.End();
 
             // Set the new render options
-            _renderOptions = options;
+            _spriteBatchRenderOptions = options;
 
             // Set the screen area to draw to
             Viewport viewport = options.RenderContext.Viewport;
-            _spriteBatch.GraphicsDevice.Viewport = viewport;
+            _graphicsDevice.Viewport = viewport;
 
             // Get the shader
             Effect shader;
@@ -120,32 +143,38 @@ public class GfxRenderer
             _spriteBatch.Begin(
                 samplerState: SamplerState.PointClamp,
                 effect: shader,
-                blendState: options.BlendMode switch
-                {
-                    BlendMode.None => null,
-                    BlendMode.AlphaBlend => new BlendState
-                    {
-                        ColorSourceBlend = Blend.SourceAlpha,
-                        ColorDestinationBlend = Blend.InverseSourceAlpha,
-                        AlphaSourceBlend = Blend.One,
-                        AlphaDestinationBlend = Blend.InverseSourceAlpha,
-                    },
-                    BlendMode.Additive => BlendState.Additive,
-                    _ => throw new ArgumentOutOfRangeException()
-                },
+                blendState: GetBlendState(options.BlendMode),
                 transformMatrix: view,
-                rasterizerState: _rasterizerState);
+                rasterizerState: _spriteRasterizerState);
         }
+    }
+
+    public void BeginMeshRender(RenderOptions options, RasterizerState rasterizerState)
+    {
+        // End previous batch
+        if (_spriteBatchRenderOptions != null)
+            _spriteBatch.End();
+
+        _spriteBatchRenderOptions = null;
+
+        // Set the screen area to draw to
+        Viewport viewport = options.RenderContext.Viewport;
+        _graphicsDevice.Viewport = viewport;
+
+        // Set the graphics device values
+        _graphicsDevice.BlendState = GetBlendState(options.BlendMode);
+        _graphicsDevice.DepthStencilState = DepthStencilState.Default;
+        _graphicsDevice.RasterizerState = rasterizerState;
     }
 
     public void EndRender()
     {
-        // Ignore if we never began a render batch
-        if (_renderOptions == null) 
-            return;
-        
-        _spriteBatch.End();
-        _renderOptions = null;
+        // End the current sprite batch if there is one
+        if (_spriteBatchRenderOptions != null)
+        {
+            _spriteBatch.End();
+            _spriteBatchRenderOptions = null;
+        }
     }
 
     #endregion

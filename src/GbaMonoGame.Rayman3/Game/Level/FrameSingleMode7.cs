@@ -126,18 +126,18 @@ public class FrameSingleMode7 : FrameMode7
             is8Bit: true,
             ignoreZero: true);
 
-        WallsScreenRenderer = new Mode7WallsScreenRenderer(layer.TileMap, texture, (TgxPlayfieldMode7)Scene.Playfield);
+        WallsScreenRenderer = new Mode7WallsScreenRenderer(layer, playfield.Camera, texture);
 
         WallsScreen = new GfxScreen(6)
         {
-          Priority = 0,
-          Wrap = false,
-          Is8Bit = null,
-          Offset = Vector2.Zero,
-          GbaAlpha = 16, // TODO: Magic number
-          IsEnabled = true,
-          Renderer = WallsScreenRenderer,
-          RenderOptions = { BlendMode = BlendMode.None, RenderContext = Scene.RenderContext }
+            Priority = 0,
+            Wrap = false,
+            Is8Bit = null,
+            Offset = Vector2.Zero,
+            GbaAlpha = 16, // TODO: Magic number
+            IsEnabled = true,
+            Renderer = WallsScreenRenderer,
+            RenderOptions = { BlendMode = BlendMode.None, RenderContext = Scene.RenderContext }
         };
 
         Gfx.AddScreen(WallsScreen);

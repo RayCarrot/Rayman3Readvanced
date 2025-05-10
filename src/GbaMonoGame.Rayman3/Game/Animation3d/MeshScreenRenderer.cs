@@ -7,6 +7,7 @@ public class MeshScreenRenderer : IScreenRenderer
 {
     public MeshScreenRenderer()
     {
+        // TODO: Dispose shader
         Shader = new BasicEffect(Engine.GraphicsDevice)
         {
             TextureEnabled = true,
@@ -26,18 +27,11 @@ public class MeshScreenRenderer : IScreenRenderer
 
     public void Draw(GfxRenderer renderer, GfxScreen screen, Vector2 position, Color color)
     {
-        // End previous render batch
-        renderer.EndRender();
+        // Begin rendering the mesh, culling clockwise
+        renderer.BeginMeshRender(screen.RenderOptions, RasterizerState.CullClockwise);
 
-        // Get the render context
         RenderContext renderContext = screen.RenderOptions.RenderContext;
 
-        // Set the viewport
-        Engine.GraphicsDevice.Viewport = renderContext.Viewport;
-        
-        // Set the culling to clockwise
-        Engine.GraphicsDevice.RasterizerState = RasterizerState.CullClockwise;
-        
         // Update the shader
         Shader.Projection = Matrix.CreateOrthographicOffCenter(0, renderContext.Viewport.Width, renderContext.Viewport.Height, 0, -1000, 1000);
         Shader.View = Matrix.CreateScale(renderContext.Scale);

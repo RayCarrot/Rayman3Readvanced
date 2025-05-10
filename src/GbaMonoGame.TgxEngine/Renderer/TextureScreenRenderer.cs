@@ -19,7 +19,7 @@ public class TextureScreenRenderer : IScreenRenderer
 
     public void Draw(GfxRenderer renderer, GfxScreen screen, Vector2 position, Color color)
     {
-        renderer.BeginRender(screen.RenderOptions);
+        renderer.BeginSpriteRender(screen.RenderOptions);
 
         renderer.Draw(Texture, position, TextureRectangle, 0, Vector2.Zero, Scale, SpriteEffects.None, color);
     }

@@ -82,7 +82,7 @@ public static class Gfx
             FadeControl.Mode != FadeMode.None && 
             Fade is > 0 and <= 1)
         {
-            renderer.BeginRender(new RenderOptions()
+            renderer.BeginSpriteRender(new RenderOptions()
             {
                 RenderContext = Engine.GameRenderContext,
             });
@@ -135,7 +135,7 @@ public static class Gfx
         // Draw clear color on GBA
         if (Rom.IsLoaded && Rom.Platform == Platform.GBA)
         {
-            renderer.BeginRender(new RenderOptions()
+            renderer.BeginSpriteRender(new RenderOptions()
             {
                 RenderContext = Engine.GameRenderContext,
             });

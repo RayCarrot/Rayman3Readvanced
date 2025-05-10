@@ -162,7 +162,7 @@ public class SceneDebugWindow : DebugWindow
         if (Frame.Current is not IHasScene { Scene: { Playfield: TgxPlayfield2D } scene2D }) 
             return;
 
-        renderer.BeginRender(new RenderOptions()
+        renderer.BeginSpriteRender(new RenderOptions()
         {
             RenderContext = scene2D.RenderContext,
         });

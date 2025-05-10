@@ -24,7 +24,7 @@ public class Sprite
 
     public void Draw(GfxRenderer renderer, Color color)
     {
-        renderer.BeginRender(RenderOptions);
+        renderer.BeginSpriteRender(RenderOptions);
 
         if (OverrideGfxColor)
             color = Color;
