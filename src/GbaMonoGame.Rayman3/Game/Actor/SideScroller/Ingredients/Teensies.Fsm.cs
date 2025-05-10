@@ -22,8 +22,9 @@ public partial class Teensies
                     HasSetTextBox = true;
                 }
 
-                // Why is this called a second time...? Probably a mistake.
-                LevelMusicManager.PlaySpecialMusicIfDetected(this);
+                // This is incorrectly called twice in this state
+                if (!Engine.Config.FixBugs)
+                    LevelMusicManager.PlaySpecialMusicIfDetected(this);
 
                 SetMasterAction();
 
@@ -80,7 +81,14 @@ public partial class Teensies
                 LevelMusicManager.PlaySpecialMusicIfDetected(this);
 
                 if (IsActionFinished)
-                    ActionId = Random.GetNumber(3) * 2 + (IsFacingRight ? Action.Init_World1_Right : Action.Init_World1_Left);
+                {
+                    ActionId = Random.GetNumber(3) switch
+                    {
+                        0 => IsFacingRight ? Action.Init_World1_Right : Action.Init_World1_Left,
+                        1 => IsFacingRight ? Action.Init_World2_Right : Action.Init_World2_Left,
+                        _ => IsFacingRight ? Action.Init_World3_Right : Action.Init_World3_Left
+                    };
+                }
 
                 if (JoyPad.IsButtonJustPressed(GbaInput.A))
                     TextBox.MoveToNextText();
@@ -119,7 +127,7 @@ public partial class Teensies
         switch (action)
         {
             case FsmAction.Init:
-                ActionId = IsFacingRight ? Action.Init_ShowRequirementMet_Right : Action.Init_ShowRequirementMet_Left;
+                ActionId = IsFacingRight ? Action.ShowRequirementMet_Right : Action.ShowRequirementMet_Left;
                 IsSolid = false;
                 SetRequirementMetText();
                 break;
@@ -199,7 +207,7 @@ public partial class Teensies
         switch (action)
         {
             case FsmAction.Init:
-                ActionId = IsFacingRight ? Action.Init_ShowRequirementNotMet_Left : Action.Init_ShowRequirementNotMet_Right;
+                ActionId = IsFacingRight ? Action.ShowRequirementNotMet_Left : Action.ShowRequirementNotMet_Right;
                 SetRequirementNotMetText();
                 break;
 
@@ -305,7 +313,7 @@ public partial class Teensies
         return true;
     }
 
-    // Appears unused
+    // Unused
     public bool Fsm_VictoryDance(FsmAction action)
     {
         switch (action)
@@ -317,7 +325,13 @@ public partial class Teensies
             case FsmAction.Step:
                 LevelMusicManager.PlaySpecialMusicIfDetected(this);
                 if (IsActionFinished)
-                    ActionId = Random.GetNumber(2) * 2 + (IsFacingRight ? Action.Victory1_Right : Action.Victory1_Left);
+                {
+                    ActionId = Random.GetNumber(2) switch
+                    {
+                        0 => IsFacingRight ? Action.Victory1_Right : Action.Victory1_Left,
+                        _ => IsFacingRight ? Action.Victory2_Right : Action.Victory2_Left
+                    };
+                }
                 break;
 
             case FsmAction.UnInit:

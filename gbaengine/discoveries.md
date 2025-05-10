@@ -290,4 +290,26 @@ Most actors have the first animation be unused and just single frame, most likel
 #### SwingSparkle
 - There's a bug causing the sparkles to sometimes show at the wrong position during the first frame. This due to the position of each sparkle being retained from the last time they were shown, and them not being updated until the next frame. However, due to another bug, a lack of a null check, this isn't very common since the position value will usually have been set to random data from an invalid pointer.
 
+#### Teensies
+- There is an unused state it can be set to where it cycles between 2 random victory animations. That makes the following animations unused:
+
+![Animation 1](discoveries_assets/Teensies_Anim_1.gif)
+![Animation 14](discoveries_assets/Teensies_Anim_14.gif)
+
+- Additionally the following idle animations are not used in any level:
+
+![Animation 15](discoveries_assets/Teensies_Anim_15.gif)
+![Animation 16](discoveries_assets/Teensies_Anim_16.gif)
+![Animation 19](discoveries_assets/Teensies_Anim_19.gif)
+
+- And finally the following animations are complete unused:
+
+![Animation 17](discoveries_assets/Teensies_Anim_17.gif)
+![Animation 20](discoveries_assets/Teensies_Anim_20.gif)
+![Animation 22](discoveries_assets/Teensies_Anim_22.gif)
+![Animation 24](discoveries_assets/Teensies_Anim_24.gif)
+![Animation 25](discoveries_assets/Teensies_Anim_25.gif)
+![Animation 26](discoveries_assets/Teensies_Anim_26.gif)
+
+
 ...

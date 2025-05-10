@@ -30,6 +30,7 @@ public sealed partial class Teensies : ActionActor
                 State.SetTo(Fsm_WaitMaster);
             }
         }
+        // Unused
         else if (ActionId is Action.Init_Victory_Right or Action.Init_Victory_Left)
         {
             State.SetTo(Fsm_VictoryDance);
@@ -51,7 +52,16 @@ public sealed partial class Teensies : ActionActor
     private void SetMasterAction()
     {
         if (IsActionFinished)
-            ActionId = Random.GetNumber(5) * 2 + (IsFacingRight ? Action.Master1_Right : Action.Master1_Left);
+        {
+            ActionId = Random.GetNumber(5) switch
+            {
+                0 => IsFacingRight ? Action.Master1_Right : Action.Master1_Left,
+                1 => IsFacingRight ? Action.Master2_Right : Action.Master2_Left,
+                2 => IsFacingRight ? Action.Master3_Right : Action.Master3_Left,
+                3 => IsFacingRight ? Action.Master4_Right : Action.Master4_Left,
+                _ => IsFacingRight ? Action.Master5_Right : Action.Master5_Left
+            };
+        }
     }
 
     private bool IsMapRequirementFulfilled()

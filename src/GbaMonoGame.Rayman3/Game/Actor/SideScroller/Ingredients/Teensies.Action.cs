@@ -41,7 +41,7 @@ public partial class Teensies
         Master4_Left = 26,
         Master4_Right = 27,
         Master5_Left = 28,
-        Master6_Right = 29,
+        Master5_Right = 29,
 
         Init_World1_Left = 30,
         Init_World1_Right = 31,
@@ -52,9 +52,9 @@ public partial class Teensies
         Init_World4_Left = 36,
         Init_World4_Right = 37,
 
-        Init_ShowRequirementMet_Left = 38,
-        Init_ShowRequirementMet_Right = 39,
-        Init_ShowRequirementNotMet_Right = 40,
-        Init_ShowRequirementNotMet_Left = 41,
+        ShowRequirementMet_Left = 38,
+        ShowRequirementMet_Right = 39,
+        ShowRequirementNotMet_Right = 40,
+        ShowRequirementNotMet_Left = 41,
     }
 }
