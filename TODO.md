@@ -5,11 +5,11 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
 - Show icon with animation in the screen corner when saving.
 - If you change the button mapping then the in-game tutorial texts are wrong, such as when Murfy or Ly explain how to perform a move. Find a way to replace this.
 - The camera doesn't work as well on N-Gage when playing in widescreen due to it being optimized for a portrait aspect ratio. Fix by having a setting for the camera where it's either in GBA, N-Gage or Adaptive mode.
-- Option to convert save file between GBA and N-Gage. The save data is the same, so should be easy.
-- Option to export/import saves to/from emulator saves.
+- Add option in the menu to convert save files between GBA and N-Gage as well as importing/exporting between Readvanced and emulators. The save data is the same, so should be easy.
 - Move hard-coded values to constants. There are a lot of these in the game!
 - Add a cheat menu?
 - When rendering in a resolution that's not a factor of the internal resolution then the sprites in animations don't always align correctly and there may be a 1 pixel gap. Fix by always rendering to the highest possible factor of the internal resolution and then scaling to the actual resolution?
+- Add more Murfy help messages throughout the game since they mostly appear in the beginning and don't explain later mechanics. For example, explain that in the race levels you can press L and R to strafe to the sides.
 
 ## 🎮 Multiplayer
 Implementing local multiplayer, using multiple game instances (through named pipes) or through LAN, shouldn't be too hard. The game's multiplayer code is very simple, with it usually just sending a single 16-bit value between clients each frame.
@@ -20,9 +20,8 @@ However online multiplayer would be much more complicated. The game expects the 
 
 ## ⚙️ Options
 ### 📃 General
-- Have option presets, such as "Modern" and "Original". Also clarify for each option which value is the original one.
+- Have option presets, such as "Modern" and "Original". Also clarify for each option which value is the original one. In the code we give each option a tag to indicate which preset it's included in.
 - Option to disable camera shaking as it can cause nausea for some players.
-- Option to enable debug features. This allows you to toggle the debug mode, use debug cheats etc. The collision tileset should only be loaded if this option is enabled.
 
 ### ⌚ Performance
 - Option not to clear cache between Frame instances.
@@ -32,10 +31,10 @@ However online multiplayer would be much more complicated. The game expects the 
 - Use single texture sheets for AnimatedObject and maybe tiles too as to avoid creating too many textures.
 
 ### ✨ Optional improvements
-The following are ideas for optional improvements which the player can toggle on to enhance/modernize the game experience:
+The following are ideas for optional improvements which the player can toggle on to enhance/modernize the game experience. To avoid too many options we should probably bundle some of these together into common options such as "Rebalance game".
 
 - Play unused level start animation.
-- Infinite lives.
+- Infinite lives. Have silver lums fully restore health instead and add achievement for collecting them all so they still have a purpose.
 - Fix the helico animation hitbox for Rayman.
 - Slightly increase hitbox width for moving platforms.
 - Move faster in worldmap (when holding down button?).
@@ -49,6 +48,9 @@ The following are ideas for optional improvements which the player can toggle on
 - Option to use GBA sounds for the N-Gage version.
 - Option to not show N-Gage button prompts in the corners.
 - Option to use Rayman 2's health system where you don't instantly die when falling into pit, and max HP increases from cages.
+- Option for less insta-kill, such as with the flying shell.
+- Option for visual enhancements, such as not disabling the Mode7 fog effect when you die.
+- Option to remove stray pixels and fix bad tiling in some levels.
 
 ## ⭐ Bonus
 ### Achievements
@@ -56,7 +58,7 @@ Rewarded for things such as:
 - Game progress (finish world, beating boss, unlocking new power etc.).
 - Completion (all lums/cages in word, 100% game etc.).
 - Gameplay (defeat enemies, performing common actions like jumping etc.).
-- Specifics (complete a level in a special way, such as not defeating any enemies or not using purple lums etc.).
+- Specifics (complete a level in a special way, such as not defeating any enemies or not using purple lums, riding a keg backwards, defeating an enemy with a keg/sphere etc.).
 
 ### Time trials
 List of time trials which you can play from different pre-selected levels. Probably not the entire levels since that doesn't sound fun. Have it be more like Rayman Origins where it's only part of a level.
@@ -85,3 +87,5 @@ The actors could be selected from a list, where each actor has a list of valid i
 
 ## 🐞 Bugs
 - Is keg collision wrong when flying? See Mega Havoc 2. It seems more strict than the original game.
+- An exception gets thrown if closing the game while it's loading the rom.
+- The music and sfx volumes aren't balanced for N-Gage.
