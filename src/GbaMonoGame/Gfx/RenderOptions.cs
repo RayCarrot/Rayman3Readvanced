@@ -11,4 +11,5 @@ public record RenderOptions
     public BlendMode BlendMode { get; set; }
     public PaletteTexture PaletteTexture { get; set; }
     public Matrix? WorldViewProj { get; set; }
+    public bool UseDepthStencil { get; set; }
 }

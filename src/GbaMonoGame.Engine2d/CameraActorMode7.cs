@@ -67,6 +67,7 @@ public abstract class CameraActorMode7 : CameraActor
 
         // Set the WorldViewProj matrix
         animatedObject.RenderOptions.WorldViewProj = world * view * projection;
+        animatedObject.RenderOptions.UseDepthStencil = true;
 
         // Set the Y priority, used for sorting the objects based on distance
         animatedObject.YPriority = camDist;

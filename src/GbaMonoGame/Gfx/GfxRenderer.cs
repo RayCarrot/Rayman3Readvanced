@@ -144,6 +144,7 @@ public class GfxRenderer
                 samplerState: SamplerState.PointClamp,
                 effect: shader,
                 blendState: GetBlendState(options.BlendMode),
+                depthStencilState: options.UseDepthStencil ? DepthStencilState.Default : DepthStencilState.None,
                 transformMatrix: view,
                 rasterizerState: _spriteRasterizerState);
         }
