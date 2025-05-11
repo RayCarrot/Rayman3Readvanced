@@ -22,7 +22,7 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
         TgxRotscaleLayerMode7 layer = playfield.RotScaleLayers[0];
 
         CreateTexture(playfield.GfxTileKitManager, layer.TileMap, layer.Width, wallPoint, wallSize);
-        CreateMesh(layer.TileMap, layer.Width, layer.Height, wallPoint, new Vector3(wallSize.X, wallSize.Y, wallHeight) * Tile.Size);
+        CreateMesh(layer.TileMap, layer.Width, layer.Height, wallPoint, wallSize, new Vector3(wallSize.X, wallSize.Y, wallHeight) * Tile.Size);
     }
 
     public TgxCameraMode7 Camera { get; }
@@ -56,7 +56,7 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
         Shader.Texture = wallTexture;
     }
 
-    private void CreateMesh(MapTile[] tileMap, int tileMapWidth, int tileMapHeight, Point wallPoint, Vector3 wallBoxSize)
+    private void CreateMesh(MapTile[] tileMap, int tileMapWidth, int tileMapHeight, Point wallPoint, Point wallSize, Vector3 wallBoxSize)
     {
         var topFace = new (Vector3 Position, Vector2 TexCoord)[]
         {
@@ -129,19 +129,35 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
 
         // Add the wall boxes
         MapTile wallTile = tileMap[wallPoint.X + wallPoint.Y * tileMapWidth];
+
+        bool isWall(int x, int y) => x >= 0 && y >= 0 && x<tileMapWidth && y<tileMapHeight && tileMap[x + y * tileMapWidth].TileIndex == wallTile.TileIndex;
+
         for (int y = 0; y < tileMapHeight; y++)
         {
             for (int x = 0; x < tileMapWidth; x++)
             {
-                if (tileMap[x + y * tileMapWidth].TileIndex == wallTile.TileIndex)
+                if (isWall(x, y))
                 {
                     Vector2 pos = new(x * Tile.Size, y * Tile.Size);
-                    
+
                     addFace(pos, topFace);
-                    addFace(pos, leftFace);
-                    addFace(pos, rightFace);
-                    addFace(pos, frontFace);
-                    addFace(pos, backFace);
+
+                    if (!isWall(x - wallSize.X, y))
+                    {
+                        addFace(pos, leftFace);
+                    }
+                    if (!isWall(x + wallSize.X, y))
+                    {
+                        addFace(pos, rightFace);
+                    }
+                    if (!isWall(x, y - wallSize.Y))
+                    {
+                        addFace(pos, frontFace);
+                    }
+                    if (!isWall(x, y + wallSize.Y))
+                    {
+                        addFace(pos, backFace);
+                    }
                 }
             }
         }
