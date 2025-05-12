@@ -82,18 +82,18 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
 
         var frontFace = new (Vector3 Position, Vector2 TexCoord)[]
         {
-            (new Vector3(1.0f, 0.0f, 0.0f), new Vector2(1, 1)),
-            (new Vector3(1.0f, 0.0f, 0.5f), new Vector2(1, 0.5f)),
-            (new Vector3(0.0f, 0.0f, 0.5f), new Vector2(0, 0.5f)),
-            (new Vector3(0.0f, 0.0f, 0.0f), new Vector2(0, 1)),
+            (new Vector3(1.0f, 0.0f, 0.0f), new Vector2(1, 0.5f)),
+            (new Vector3(1.0f, 0.0f, 0.5f), new Vector2(1, 1)),
+            (new Vector3(0.0f, 0.0f, 0.5f), new Vector2(0, 1)),
+            (new Vector3(0.0f, 0.0f, 0.0f), new Vector2(0, 0.5f)),
         };
 
         var leftFace = new (Vector3 Position, Vector2 TexCoord)[]
         {
-            (new Vector3(0.0f, 0.0f, 0.0f), new Vector2(1, 1)),
-            (new Vector3(0.0f, 0.0f, 0.5f), new Vector2(1, 0.5f)),
-            (new Vector3(0.0f, 1.0f, 0.5f), new Vector2(0, 0.5f)),
-            (new Vector3(0.0f, 1.0f, 0.0f), new Vector2(0, 1)),
+            (new Vector3(0.0f, 0.0f, 0.0f), new Vector2(1, 0.5f)),
+            (new Vector3(0.0f, 0.0f, 0.5f), new Vector2(1, 1)),
+            (new Vector3(0.0f, 1.0f, 0.5f), new Vector2(0, 1)),
+            (new Vector3(0.0f, 1.0f, 0.0f), new Vector2(0, 0.5f)),
         };
 
         var rightFace = new (Vector3 Position, Vector2 TexCoord)[]
