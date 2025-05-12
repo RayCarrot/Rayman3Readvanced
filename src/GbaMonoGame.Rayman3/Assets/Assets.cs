@@ -19,6 +19,7 @@ public static class Assets
     public const string MenuLogoTexture = "Textures/MenuLogo";
     public const string MenuTextBoxTexture = "Textures/MenuTextBox";
     public const string MenuWoodenFrameTexture = "Textures/MenuWoodenFrame";
+    public const string Mode7WallSideTexture = "Textures/Mode7WallSide";
     public const string OptionsDialogBoardTexture = "Textures/OptionsDialogBoard";
     public const string OptionsMenuTabsTexture = "Textures/OptionsMenuTabs";
     public const string SaveSlotIcon_4Texture = "Textures/SaveSlotIcon_4";

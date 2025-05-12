@@ -418,7 +418,19 @@ public class Credits : Frame
                 }
             }
 
-            meshFragments[globalTriIndex / trianglesPerTexture] = new MeshFragment(PrimitiveType.TriangleList, vertexData, trianglesPerTexture, tex);
+            VertexBuffer vertexBuffer = new(
+                graphicsDevice: Engine.GraphicsDevice, 
+                vertexDeclaration: VertexPositionColorTexture.VertexDeclaration, 
+                vertexCount: vertexData.Length, 
+                bufferUsage: BufferUsage.WriteOnly);
+            vertexBuffer.SetData(vertexData);
+
+            meshFragments[globalTriIndex / trianglesPerTexture] = new MeshFragment(
+                primitiveType: PrimitiveType.TriangleList, 
+                vertexBuffer: vertexBuffer, 
+                indexBuffer: null, 
+                primitivesCount: trianglesPerTexture, 
+                texture: tex);
         }
 
         // Create a screen renderer for the mesh

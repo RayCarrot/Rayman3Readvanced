@@ -99,7 +99,7 @@ public class FrameSingleMode7 : FrameMode7
     {
         TgxPlayfieldMode7 playfield = (TgxPlayfieldMode7)Scene.Playfield;
 
-        WallsScreenRenderer = new Mode7WallsScreenRenderer(playfield, new Point(1, 22), new Point(3, 3), 3);
+        WallsScreenRenderer = new Mode7WallsScreenRenderer(playfield, new Point(1, 22), new Point(3, 3), 1.5f);
 
         WallsScreen = new GfxScreen(6)
         {

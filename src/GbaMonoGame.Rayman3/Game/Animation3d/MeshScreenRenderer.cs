@@ -48,14 +48,7 @@ public class MeshScreenRenderer : IScreenRenderer
             foreach (EffectPass pass in passes)
             {
                 pass.Apply();
-
-                Engine.GraphicsDevice.Textures[0] = meshFragment.Texture;
-
-                Engine.GraphicsDevice.DrawUserPrimitives(
-                    meshFragment.PrimitiveType,
-                    meshFragment.VertexData,
-                    0,
-                    meshFragment.PrimitivesCount);
+                meshFragment.Draw(Engine.GraphicsDevice);
             }
         }
     }

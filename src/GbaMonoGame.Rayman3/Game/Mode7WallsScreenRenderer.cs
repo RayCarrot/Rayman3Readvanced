@@ -13,7 +13,7 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
     {
         Camera = playfield.Camera;
 
-        // TODO: Dispose shader
+        // TODO: Dispose shader - keep instance in GfxRenderer?
         Shader = new BasicEffect(Engine.GraphicsDevice)
         {
             TextureEnabled = true,
@@ -21,16 +21,24 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
 
         TgxRotscaleLayerMode7 layer = playfield.RotScaleLayers[0];
 
-        CreateTexture(playfield.GfxTileKitManager, layer.TileMap, layer.Width, wallPoint, wallSize);
-        CreateMesh(layer.TileMap, layer.Width, layer.Height, wallPoint, wallSize, new Vector3(wallSize.X, wallSize.Y, wallHeight) * Tile.Size);
+        // Create the textures (use a separate one for the sides since we want it to be smaller)
+        Texture2D topTexture = CreateTexture(playfield.GfxTileKitManager, layer.TileMap, layer.Width, wallPoint, wallSize);
+        Texture2D sideTexture = Engine.FrameContentManager.Load<Texture2D>(Assets.Mode7WallSideTexture);
+
+        Vector3 wallBoxSize = new Vector3(wallSize.X, wallSize.Y, wallHeight) * Tile.Size;
+
+        MeshFragments =
+        [
+            CreateMesh(layer.TileMap, layer.Width, layer.Height, wallPoint, wallSize, wallBoxSize, topTexture, true),
+            CreateMesh(layer.TileMap, layer.Width, layer.Height, wallPoint, wallSize, wallBoxSize, sideTexture, false)
+        ];
     }
 
     public TgxCameraMode7 Camera { get; }
     public BasicEffect Shader { get; }
-    public VertexBuffer VertexBuffer { get; set; }
-    public IndexBuffer IndexBuffer { get; set; }
+    public MeshFragment[] MeshFragments { get; }
 
-    private void CreateTexture(GfxTileKitManager tileKitManager, MapTile[] tileMap, int tileMapWidth, Point wallPoint, Point wallSize)
+    private static Texture2D CreateTexture(GfxTileKitManager tileKitManager, MapTile[] tileMap, int tileMapWidth, Point wallPoint, Point wallSize)
     {
         MapTile[] wallTiles = new MapTile[wallSize.X * wallSize.Y];
         TileMapHelpers.CopyRegion(
@@ -42,8 +50,8 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
             destPoint: Point.Zero,
             regionSize: wallSize);
 
-        // TODO: Dispose
-        Texture2D wallTexture = new TiledTexture2D(
+        // TODO: Dispose - add to cache
+        return new TiledTexture2D(
             width: wallSize.X,
             height: wallSize.Y,
             tileSet: tileKitManager.TileSet,
@@ -52,11 +60,17 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
             palette: tileKitManager.SelectedPalette,
             is8Bit: true,
             ignoreZero: true);
-
-        Shader.Texture = wallTexture;
     }
 
-    private void CreateMesh(MapTile[] tileMap, int tileMapWidth, int tileMapHeight, Point wallPoint, Point wallSize, Vector3 wallBoxSize)
+    private static MeshFragment CreateMesh(
+        MapTile[] tileMap, 
+        int tileMapWidth, 
+        int tileMapHeight, 
+        Point wallPoint, 
+        Point wallSize, 
+        Vector3 wallBoxSize,
+        Texture2D texture,
+        bool isTop)
     {
         var topFace = new (Vector3 Position, Vector2 TexCoord)[]
         {
@@ -76,18 +90,18 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
 
         var leftFace = new (Vector3 Position, Vector2 TexCoord)[]
         {
-            (new Vector3(0.0f, 0.0f, 0.0f), new Vector2(0, 0)),
-            (new Vector3(0.0f, 0.0f, 0.5f), new Vector2(0.5f, 0)),
-            (new Vector3(0.0f, 1.0f, 0.5f), new Vector2(0.5f, 1)),
+            (new Vector3(0.0f, 0.0f, 0.0f), new Vector2(1, 1)),
+            (new Vector3(0.0f, 0.0f, 0.5f), new Vector2(1, 0.5f)),
+            (new Vector3(0.0f, 1.0f, 0.5f), new Vector2(0, 0.5f)),
             (new Vector3(0.0f, 1.0f, 0.0f), new Vector2(0, 1)),
         };
 
         var rightFace = new (Vector3 Position, Vector2 TexCoord)[]
         {
             (new Vector3(1.0f, 0.0f, 0.5f), new Vector2(0, 0)),
-            (new Vector3(1.0f, 0.0f, 0.0f), new Vector2(0.5f, 0)),
-            (new Vector3(1.0f, 1.0f, 0.0f), new Vector2(0.5f, 1)),
-            (new Vector3(1.0f, 1.0f, 0.5f), new Vector2(0, 1)),
+            (new Vector3(1.0f, 0.0f, 0.0f), new Vector2(0, 0.5f)),
+            (new Vector3(1.0f, 1.0f, 0.0f), new Vector2(1, 0.5f)),
+            (new Vector3(1.0f, 1.0f, 0.5f), new Vector2(1, 0)),
         };
 
         var backFace = new (Vector3 Position, Vector2 TexCoord)[]
@@ -143,30 +157,37 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
                 {
                     Vector2 pos = new(x * Tile.Size, y * Tile.Size);
 
-                    addFace(pos, topFace);
+                    if (isTop)
+                    {
+                        addFace(pos, topFace);
+                    }
+                    else
+                    {
+                        if (!isWall(x - wallSize.X, y))
+                            addFace(pos, leftFace);
 
-                    if (!isWall(x - wallSize.X, y))
-                        addFace(pos, leftFace);
+                        if (!isWall(x + wallSize.X, y))
+                            addFace(pos, rightFace);
 
-                    if (!isWall(x + wallSize.X, y))
-                        addFace(pos, rightFace);
+                        if (!isWall(x, y - wallSize.Y))
+                            addFace(pos, frontFace);
 
-                    if (!isWall(x, y - wallSize.Y))
-                        addFace(pos, frontFace);
-
-                    if (!isWall(x, y + wallSize.Y))
-                        addFace(pos, backFace);
+                        if (!isWall(x, y + wallSize.Y))
+                            addFace(pos, backFace);
+                    }
                 }
             }
         }
 
         // Create the vertex buffer
-        VertexBuffer = new VertexBuffer(Engine.GraphicsDevice, VertexPositionTexture.VertexDeclaration, vertices.Count, BufferUsage.WriteOnly);
-        VertexBuffer.SetData(vertices.ToArray());
+        VertexBuffer vertexBuffer = new(Engine.GraphicsDevice, VertexPositionTexture.VertexDeclaration, vertices.Count, BufferUsage.WriteOnly);
+        vertexBuffer.SetData(vertices.ToArray());
 
         // Create the index buffer
-        IndexBuffer = new IndexBuffer(Engine.GraphicsDevice, IndexElementSize.SixteenBits, indices.Count, BufferUsage.WriteOnly);
-        IndexBuffer.SetData(indices.ToArray());
+        IndexBuffer indexBuffer = new(Engine.GraphicsDevice, IndexElementSize.SixteenBits, indices.Count, BufferUsage.WriteOnly);
+        indexBuffer.SetData(indices.ToArray());
+
+        return new MeshFragment(PrimitiveType.TriangleList, vertexBuffer, indexBuffer, indices.Count / 3, texture);
     }
 
     public Vector2 GetSize(GfxScreen screen)
@@ -176,25 +197,21 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
 
     public void Draw(GfxRenderer renderer, GfxScreen screen, Vector2 position, Color color)
     {
-        GraphicsDevice graphicsDevice = Engine.GraphicsDevice;
-
         // Begin rendering the mesh, culling clockwise
         renderer.BeginMeshRender(screen.RenderOptions, RasterizerState.CullClockwise);
 
         // Update the shader
         Shader.Projection = Camera.ViewProjectionMatrix;
 
-        // Set the mesh data
-        graphicsDevice.SetVertexBuffer(VertexBuffer);
-        graphicsDevice.Indices = IndexBuffer;
-        graphicsDevice.DepthStencilState = DepthStencilState.Default;
-
-        // Draw the mesh
-        EffectPassCollection passes = Shader.CurrentTechnique.Passes;
-        foreach (EffectPass pass in passes)
+        // Draw each mesh fragment
+        foreach (MeshFragment meshFragment in MeshFragments)
         {
-            pass.Apply();
-            graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, IndexBuffer.IndexCount / 3);
+            EffectPassCollection passes = Shader.CurrentTechnique.Passes;
+            foreach (EffectPass pass in passes)
+            {
+                pass.Apply();
+                meshFragment.Draw(Engine.GraphicsDevice);
+            }
         }
     }
 }
