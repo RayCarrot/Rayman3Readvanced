@@ -1,4 +1,5 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+﻿using System;
+using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -9,9 +10,14 @@ public partial class Urchin
         switch (action)
         {
             case FsmAction.Init:
-                // TODO: What's the point of this? All 3 actions are identical... There are
-                //       however unused animations - maybe they were meant to play in a cycle?
-                ActionId = (ActionId + 1) % 3;
+                // NOTE: All 3 actions are identical, so this does nothing
+                ActionId = ActionId switch
+                {
+                    Action.Idle1 => Action.Idle2,
+                    Action.Idle2 => Action.Idle3,
+                    Action.Idle3 => Action.Idle1,
+                    _ => throw new Exception("Invalid action id")
+                };
                 break;
 
             case FsmAction.Step:

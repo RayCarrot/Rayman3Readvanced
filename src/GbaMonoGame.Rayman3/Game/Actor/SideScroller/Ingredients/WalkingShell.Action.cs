@@ -11,11 +11,11 @@ public partial class WalkingShell
     public enum Action
     {
         Idle = 0,
-        Action1 = 1, // Unused
+        PrepareWalk = 1, // Unused
         Walk = 2,
         ShortBoost = 3,
-        Action4 = 4,
-        Action5 = 5,
+        Loop = 4,
+        Jump = 5,
         Action6 = 6, // Unused
         Action7 = 7, // Unused
         Action8 = 8, // Unused

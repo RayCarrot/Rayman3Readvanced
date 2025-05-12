@@ -26,7 +26,7 @@ public sealed partial class WalkingShell : MovableActor
     public Rayman Rayman { get; }
     public Vector2 LoopPosition { get; set; }
     public byte Timer { get; set; }
-    public bool HasBoostedInLoop { get; set; }
+    public bool HasBoostedInLoop { get; set; } // Unused behavior
     public bool IsRaymanMounted { get; set; }
     public byte LoopAngle { get; set; }
     public byte SafetyJumpTimer { get; set; } // Coyote jump

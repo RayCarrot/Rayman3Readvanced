@@ -311,5 +311,37 @@ Most actors have the first animation be unused and just single frame, most likel
 ![Animation 25](discoveries_assets/Teensies_Anim_25.gif)
 ![Animation 26](discoveries_assets/Teensies_Anim_26.gif)
 
+#### Urchin
+- The actor cycles between the 3 available actions. However they're all identical, playing the same animation.
+- There are 3 unused animations:
+
+![Animation 0](discoveries_assets/Urchin_Anim_0.gif)
+![Animation 1](discoveries_assets/Urchin_Anim_1.gif)
+![Animation 2](discoveries_assets/Urchin_Anim_2.gif)
+
+#### WalkingShell
+- Actions 1, 6, 7 and 8 are unused. That makes the following animations also unused:
+
+![Animation 4](discoveries_assets/WalkingShell_Anim_4.gif)
+![Animation 8](discoveries_assets/WalkingShell_Anim_8.gif)
+![Animation 15](discoveries_assets/WalkingShell_Anim_15.gif)
+
+- There are 4 unused animations, not including 2 ones where the shell doesn't move:
+
+![Animation 12](discoveries_assets/WalkingShell_Anim_12.gif)
+![Animation 13](discoveries_assets/WalkingShell_Anim_13.gif)
+![Animation 14](discoveries_assets/WalkingShell_Anim_14.gif)
+![Animation 16](discoveries_assets/WalkingShell_Anim_16.gif)
+
+- There's an unused behavior where you would need to boost while in a loop or else the shell wouldn't make it and fall off.
+- This is one of the few actors that was quite substantially updated in the N-Gage version. It appears to have fixed various bugs with it.
+
+#### Wall
+- The actor is unused. It appears to be related to wall-jumping.
+
+#### WaterSplash
+- There is 1 unused animation:
+
+![Animation 1](discoveries_assets/WaterSplash_Anim_1.gif)
 
 ...

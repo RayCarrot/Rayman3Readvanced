@@ -4,6 +4,7 @@ using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
 
+// TODO: We should maybe use some of the N-Gage specific code here if the option to fix bugs is enabled
 public partial class WalkingShell
 {
     private bool FsmStep_CheckDeath()
@@ -269,7 +270,7 @@ public partial class WalkingShell
             case FsmAction.Init:
                 Timer = 0;
                 LoopAngle = 0;
-                ActionId = Action.Action5;
+                ActionId = Action.Jump;
 
                 if (IsRaymanMounted)
                     Rayman.ActionId = Rayman.Action.WalkingShell_Jump;
@@ -375,7 +376,7 @@ public partial class WalkingShell
 
                 Timer = 0;
                 HasBoostedInLoop = true; // Set to false to re-enable unused behavior
-                ActionId = Action.Action4;
+                ActionId = Action.Loop;
 
                 if (IsRaymanMounted)
                     Rayman.ActionId = Rayman.Action.WalkingShell_Loop;
