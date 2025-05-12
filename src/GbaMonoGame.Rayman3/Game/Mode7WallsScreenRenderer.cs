@@ -130,7 +130,10 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
         // Add the wall boxes
         MapTile wallTile = tileMap[wallPoint.X + wallPoint.Y * tileMapWidth];
 
-        bool isWall(int x, int y) => x >= 0 && y >= 0 && x<tileMapWidth && y<tileMapHeight && tileMap[x + y * tileMapWidth].TileIndex == wallTile.TileIndex;
+        bool isWall(int x, int y) => 
+            x >= 0 && y >= 0 && 
+            x < tileMapWidth && y < tileMapHeight && 
+            tileMap[x + y * tileMapWidth].TileIndex == wallTile.TileIndex;
 
         for (int y = 0; y < tileMapHeight; y++)
         {
@@ -143,21 +146,16 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
                     addFace(pos, topFace);
 
                     if (!isWall(x - wallSize.X, y))
-                    {
                         addFace(pos, leftFace);
-                    }
+
                     if (!isWall(x + wallSize.X, y))
-                    {
                         addFace(pos, rightFace);
-                    }
+
                     if (!isWall(x, y - wallSize.Y))
-                    {
                         addFace(pos, frontFace);
-                    }
+
                     if (!isWall(x, y + wallSize.Y))
-                    {
                         addFace(pos, backFace);
-                    }
                 }
             }
         }
