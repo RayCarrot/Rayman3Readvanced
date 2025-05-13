@@ -6,11 +6,11 @@ public sealed partial class BouncyPlatform : InteractableActor
 {
     public BouncyPlatform(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
-        HasTrap = actorResource.FirstActionId != 0;
+        HasTrap = (Action)actorResource.FirstActionId != Action.Idle;
         State.SetTo(Fsm_Idle);
     }
 
-    public bool HasTrap { get; }
+    public bool HasTrap { get; } // Unused trap behavior
     public byte Timer { get; set; }
     public bool HasTriggeredBounce { get; set; }
     public Vector2 InitialMainActorSpeed { get; set; }

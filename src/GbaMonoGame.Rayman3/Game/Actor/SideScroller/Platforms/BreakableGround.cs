@@ -12,7 +12,7 @@ public sealed partial class BreakableGround : MovableActor
 
         AnimatedObject.ObjPriority = 60;
 
-        // Destroy actor if the one in the hub world and we've defeated the boss
+        // Destroy actor if it's the one in the hub world and we've defeated the boss
         if ((Action)actorResource.FirstActionId == Action.Idle_World &&
             (GameInfo.PersistentInfo.LastCompletedLevel > (int)MapId.BossRockAndLava ||
              GameInfo.PersistentInfo.LastPlayedLevel > (int)MapId.BossRockAndLava))

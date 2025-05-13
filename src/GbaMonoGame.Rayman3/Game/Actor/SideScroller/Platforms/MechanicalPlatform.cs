@@ -91,26 +91,22 @@ public sealed partial class MechanicalPlatform : MovableActor
 
             float yDist = InitialPosition.Y - Position.Y;
 
-            float rotation = 206;
+            Angle256 rotation = 206;
             if (yDist >= 1)
-            {
                 rotation += yDist * 113 * MathHelpers.FromFixedPoint(0x16c);
-                rotation %= 256;
-            }
 
             SpeedPointer.AffineMatrix = new AffineMatrix(rotation, 1, 1);
 
-            float angle = rotation - 61;
+            Angle256 angle = rotation - 61;
             float radius = MathHelpers.FromFixedPoint(0xe0900);
-            SpeedPointer.ScreenPos = AnimatedObject.ScreenPos + new Vector2(
-                x: MathHelpers.Cos256(angle) * radius + 1,
-                y: MathHelpers.Sin256(angle) * radius + 8);
+            SpeedPointer.ScreenPos = AnimatedObject.ScreenPos + angle.ToDirectionalVector() * radius + new Vector2(1, 8);
 
-            // TODO: For some reason in-game this seems to play ever second time? Why? Bug?
             // NOTE: In the game it checks if the rotation is equal to 62, but since we're using floats we can't do that, so
             //       we check with a tolerance of 1.0 to get it close to it, which is good enough. It's supposed to trigger
-            //       when it has rotated all the way, i.e. yDist is at its max.
-            if (Math.Abs(rotation - 62) < 1.0 && !SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__Cloche01_Mix01))
+            //       when it has rotated all the way, i.e. yDist is at its max. It's however bugged in the original game as
+            //       it only triggers every second time the platform is punched. This is because the platform doesn't land
+            //       at the same height from the ground each time.
+            if (Math.Abs(rotation.Value - 62) < 1.0 && !SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__Cloche01_Mix01))
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Cloche01_Mix01);
         }
         else

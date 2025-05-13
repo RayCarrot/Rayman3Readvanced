@@ -344,4 +344,35 @@ Most actors have the first animation be unused and just single frame, most likel
 
 ![Animation 1](discoveries_assets/WaterSplash_Anim_1.gif)
 
+#### BouncyPlatform
+- The actor has an unused mode it can be set to where it reveals a trap after you bounce on it. That makes the following animations unused:
+
+![Animation 1](discoveries_assets/BouncyPlatform_Anim_1.gif)
+![Animation 3](discoveries_assets/BouncyPlatform_Anim_3.gif)
+![Animation 4](discoveries_assets/BouncyPlatform_Anim_4.gif)
+
+#### BreakableGround
+- There's unused code in the N-Gage version to handle the actor in multiplayer. It however doesn't appear in any of the multiplayer maps, making it unused. Unlike in the single player levels it was meant to respawn after having been broken.
+
+#### FallingNet
+- Action 2 is unused. That makes the following animation also unused:
+
+![Animation 4](discoveries_assets/FallingNet_Anim_4.gif)
+
+- There is 1 unused animation:
+
+![Animation 3](discoveries_assets/FallingNet_Anim_3.gif)
+
+#### FallingPlatform
+- Action 4 is unused. That makes the following animation for the chained variant also unused. The wooden variant doesn't have a unique animation for this action.
+
+![Animation 1](discoveries_assets/FallingChainedPlatform_Anim_1.gif)
+
+- There is an unused state of the platform beginning to fall. That makes action 2 unused and the animation it uses for the chained variant also unused. The wooden variant doesn't have a unique animation for this action.
+
+![Animation 2](discoveries_assets/FallingChainedPlatform_Anim_2.gif)
+
+#### MechanicalPlatform
+- The platform is rather inconsistent with how it lands, meaning it doesn't always land on the same height from the ground as it starts. This subsequently causes a bug where the sound effect for it being fully raised only plays every second time. This is because the condition for the sound effect playing uses a direct equality check, which doesn't match if the start height is wrong.
+
 ...
