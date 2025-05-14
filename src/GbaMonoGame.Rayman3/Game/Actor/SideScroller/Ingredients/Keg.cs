@@ -31,6 +31,9 @@ public sealed partial class Keg : MovableActor
         }
     }
 
+    // Custom value to fix bug - has to be static to work across all kegs
+    public static int LastActorToPlayFallSound { get; set; }
+
     public byte?[] Links { get; }
     public bool ShouldDraw { get; set; }
     public ushort Timer { get; set; }

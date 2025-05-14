@@ -61,13 +61,16 @@ public partial class Keg
                 Position = InitialPos;
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BarlFall_Mix04);
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BarlFall_Mix04);
+                LastActorToPlayFallSound = InstanceId;
                 break;
 
             case FsmAction.Step:
                 if (Scene.IsHitMainActor(this) ||
                     Scene.GetPhysicalType(new Vector2(Position.X, GetDetectionBox().Bottom)).IsSolid)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BarlFall_Mix04);
+                    // Optionally fix a bug where the keg might stop the sound of another keg if another one has spawned
+                    if (Engine.Config.FixBugs && LastActorToPlayFallSound == InstanceId)
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BarlFall_Mix04);
 
                     if (Scene.IsHitMainActor(this))
                         Scene.MainActor.ReceiveDamage(AttackPoints);

@@ -240,6 +240,7 @@ Most actors have the first animation be unused and just single frame, most likel
 ![Animation 6](discoveries_assets/Keg_Anim_6.gif)
 
 - When the keg respawns from the dispenser in the Garish Gears boss there is a bug in the code. It waits with respawning until the difference between its X position and the same X position is less than 180, which is always true. This was most likely meant to check the difference between its X position and that of the player.
+- There is a bug with the falling keg where if there are multiple on screen at once then one keg can interrupt the falling sound for another keg.
 
 #### KegFire
 - The actor is set up with actions for facing both right and left, yet it's hard-coded to only ever face right.
