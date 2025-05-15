@@ -402,4 +402,29 @@ Most actors have the first animation be unused and just single frame, most likel
 - The actor is unused. It appears to have allowed you to bounce on it, before it would become deadly and damage the player on contact.
 - Action 1 is unused.
 
+#### EnergyBall
+- There is 1 unused animation:
+
+![Animation 2](discoveries_assets/EnergyBall_Anim_2.gif)
+
+- When checking for if the actor is off-screen, and thus despawning it, it hard-codes the vertical resolution to 160, even in the N-Gage version where it's supposed to be different.
+
+#### FlowerFire
+- There are 2 unused animations:
+
+![Animation 3](discoveries_assets/FlowerFire_Anim_3.gif)
+![Animation 4](discoveries_assets/FlowerFire_Anim_4.gif)
+
+#### GrolgothProjectile
+- There is a bug which causes the small bombs on the ground to vertically shake while moving. They're instead meant to fly up or down to get to the target height and then stop moving vertically.
+- There is 1 unused animation:
+
+![Animation 7](discoveries_assets/GrolgothProjectile_Anim_7.gif)
+
+#### JanoShot
+- Like with the energy ball actor, when checking for if the actor is off-screen, and thus despawning it, it hard-codes the vertical resolution to 160, even in the N-Gage version where it's supposed to be different.
+
+#### RaymanBody
+- When drawing the actor it calls `PlayChannelBox` if the actor is not framed (not on screen). This is however unnecessary since it gets called when computing the next frame. This means it gets called twice each frame (which doesn't change anything).
+
 ...

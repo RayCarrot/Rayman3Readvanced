@@ -58,19 +58,38 @@ public partial class GrolgothProjectile
                         case Action.SmallGroundBomb_Left:
                             if (IsVerticalOscillationMovingDown)
                             {
-                                if (Position.Y > VerticalOscillationOffset - 2)
+                                // There's a bug where the final else condition never gets hit, making the bomb keep vertically shaking
+                                if (Engine.Config.FixBugs)
                                 {
-                                    Position -= new Vector2(0, 1.5f);
+                                    if (Position.Y > VerticalOscillationOffset + 2)
+                                    {
+                                        Position -= new Vector2(0, 1.5f);
+                                    }
+                                    else if (Position.Y < VerticalOscillationOffset - 2)
+                                    {
+                                        Position += new Vector2(0, 1.5f);
+                                    }
+                                    else
+                                    {
+                                        Position = Position with { Y = VerticalOscillationOffset };
+                                        IsVerticalOscillationMovingDown = false;
+                                    }
                                 }
-                                else if (Position.Y < VerticalOscillationOffset + 2)
-                                {
-                                    Position += new Vector2(0, 1.5f);
-                                }
-                                // TODO: This never gets hit. Bug? Fix?
                                 else
                                 {
-                                    Position = Position with { Y = VerticalOscillationOffset };
-                                    IsVerticalOscillationMovingDown = false;
+                                    if (Position.Y > VerticalOscillationOffset - 2)
+                                    {
+                                        Position -= new Vector2(0, 1.5f);
+                                    }
+                                    else if (Position.Y < VerticalOscillationOffset + 2)
+                                    {
+                                        Position += new Vector2(0, 1.5f);
+                                    }
+                                    else
+                                    {
+                                        Position = Position with { Y = VerticalOscillationOffset };
+                                        IsVerticalOscillationMovingDown = false;
+                                    }
                                 }
                             }
 

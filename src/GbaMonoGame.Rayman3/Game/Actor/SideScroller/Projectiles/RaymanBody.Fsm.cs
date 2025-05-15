@@ -17,21 +17,20 @@ public partial class RaymanBody
             if (hitActor != null && hitActor != Rayman && hitActor != HitActor)
             {
                 HitActor = hitActor;
-                
-                int damage;
-                if (BodyPartType is RaymanBodyPartType.Fist or RaymanBodyPartType.Foot)
-                    damage = 2;
-                else if (BodyPartType is RaymanBodyPartType.SecondFist)
-                    damage = 3;
-                else
-                    damage = 5;
+
+                int damage = BodyPartType switch
+                {
+                    RaymanBodyPartType.Fist or RaymanBodyPartType.Foot => 2,
+                    RaymanBodyPartType.SecondFist => 3,
+                    _ => 5
+                };
 
                 hitActor.ReceiveDamage(damage);
                 hitActor.ProcessMessage(this, Message.Actor_Hit, this);
                 SpawnHitEffect();
             }
 
-            if (ActionId != BaseActionId + 3 && ActionId != BaseActionId + 4)
+            if (ActionId != (Action)(BaseActionId + 3) && ActionId != (Action)(BaseActionId + 4))
             {
                 if (IsTouchingMap)
                     SpawnHitEffect();
@@ -44,13 +43,13 @@ public partial class RaymanBody
                     }
                     else
                     {
-                        ActionId = IsFacingRight ? 15 : 16;
+                        ActionId = IsFacingRight ? Action.Torso_MoveBackwards_Right : Action.Torso_MoveBackwards_Left;
                         moveBackwards = true;
                     }
                 }
                 else
                 {
-                    ActionId = BaseActionId + (IsFacingRight ? 4 : 3);
+                    ActionId = (Action)(BaseActionId + (IsFacingRight ? 4 : 3));
                     moveBackwards = true;
                 }
             }
@@ -70,7 +69,7 @@ public partial class RaymanBody
         switch (action)
         {
             case FsmAction.Init:
-                ActionId = 0;
+                ActionId = Action.Idle;
                 break;
 
             case FsmAction.Step:
@@ -80,7 +79,7 @@ public partial class RaymanBody
                     return false;
                 }
                 
-                if (ActionId != 0)
+                if (ActionId != Action.Idle)
                 {
                     State.MoveTo(Fsm_MoveForward);
                     return false;
@@ -124,14 +123,14 @@ public partial class RaymanBody
 
                 // Go from accelerating action to decelerating action
                 if (ChargePower == 0)
-                    ActionId = BaseActionId + (IsFacingRight ? 5 : 6);
+                    ActionId = (Action)(BaseActionId + (IsFacingRight ? 5 : 6));
 
                 // Turn around torso
                 if (BodyPartType == RaymanBodyPartType.Torso)
                 {
                     if (Speed.Y < 2)
                     {
-                        ActionId = IsFacingRight ? 15 : 16;
+                        ActionId = IsFacingRight ? Action.Torso_MoveBackwards_Right : Action.Torso_MoveBackwards_Left;
                         reverseDirection = true;
                     }
                 }
@@ -140,12 +139,12 @@ public partial class RaymanBody
                 {
                     if (IsFacingRight && Speed.X < 2)
                     {
-                        ActionId = BaseActionId + 4;
+                        ActionId = (Action)(BaseActionId + 4);
                         reverseDirection = true;
                     }
                     else if (IsFacingLeft && Speed.X > -2)
                     {
-                        ActionId = BaseActionId + 3;
+                        ActionId = (Action)(BaseActionId + 3);
                         reverseDirection = true;
                     }
                 }
@@ -204,7 +203,8 @@ public partial class RaymanBody
                 float targetPos1 = raymanPos1 - targetOffset1;
                 float speed;
 
-                if (bodyPos1 == targetPos1)
+                // NOTE: The game doesn't do a tolerance check, but we have to since we use floats
+                if (Math.Abs(bodyPos1 - targetPos1) < 1)
                 {
                     speed = 0;
                 }

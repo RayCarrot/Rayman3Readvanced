@@ -249,8 +249,7 @@ public sealed partial class GrolgothProjectile : MovableActor
                     break;
                 
                 default:
-                    float value = angleDiff >= 128 ? angleDiff.Value - 256 : angleDiff;
-                    Rotation += -value / 10;
+                    Rotation += -angleDiff.SignedValue / 10;
                     break;
             }
 

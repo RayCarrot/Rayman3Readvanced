@@ -22,7 +22,7 @@ public sealed partial class JanoSkullPlatform : MovableActor
 
         if (body != null)
         {
-            body.ActionId = 25;
+            body.ActionId = RaymanBody.Action.HitEffect;
             body.BodyPartType = RaymanBody.RaymanBodyPartType.HitEffect;
             body.Position = Position + new Vector2(16, 0);
         }

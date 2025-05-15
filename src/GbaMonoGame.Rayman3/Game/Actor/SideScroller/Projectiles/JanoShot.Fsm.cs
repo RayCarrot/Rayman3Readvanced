@@ -49,11 +49,20 @@ public partial class JanoShot
                 }
                 else
                 {
+                    // In the original game the max y value is hard-coded to 160, even on N-Gage. But it should be the vertical screen resolution + margin.
+                    const float marginY = 10;
+                    const float minY = 0 - marginY;
+                    float maxY;
+                    if (Engine.Config.FixBugs)
+                        maxY = Scene.Resolution.Y + marginY;
+                    else
+                        maxY = 160 + marginY;
+
                     if (ScreenPosition.X > Scene.Resolution.X + 1 && Speed.X > 0 || 
                         ScreenPosition.X < 0 && Speed.X < 0 ||
                         Speed.X == 0 || 
-                        ScreenPosition.Y <= -10 || 
-                        ScreenPosition.Y >= Scene.Resolution.Y + 10) // TODO: This is incorrectly set to 170 (GBA + 10) on N-Gage - should we keep that?
+                        ScreenPosition.Y <= minY || 
+                        ScreenPosition.Y >= maxY)
                     {
                         if (Speed.X == 0)
                         {

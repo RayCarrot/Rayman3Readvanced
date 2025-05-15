@@ -15,13 +15,20 @@ public partial class EnergyBall
                 break;
 
             case FsmAction.Step:
+                // In the original game the max y value is hard-coded to 160, even on N-Gage. But it should be the vertical screen resolution + margin.
+                const float marginY = 10;
+                const float minY = 0 - marginY;
+                float maxY;
+                if (Engine.Config.FixBugs)
+                    maxY = Scene.Resolution.Y + marginY;
+                else
+                    maxY = 160 + marginY;
+
                 bool finished = (ScreenPosition.X >= Scene.Resolution.X && Speed.X > 0) || 
                                 (ScreenPosition.X < 0 && Speed.X < 0) ||
                                 Speed.X == 0 ||
-                                // TODO: Have these match resolution? In the original game they're the same on both
-                                //       GBA and N-Gage. Though they seem to be GBA res with a margin of 10.
-                                ScreenPosition.Y <= -10 ||
-                                ScreenPosition.Y >= 170;
+                                ScreenPosition.Y <= minY ||
+                                ScreenPosition.Y >= maxY;
 
                 if (ActionId is Action.Shot1Enemy_Right or Action.Shot1Enemy_Left)
                 {

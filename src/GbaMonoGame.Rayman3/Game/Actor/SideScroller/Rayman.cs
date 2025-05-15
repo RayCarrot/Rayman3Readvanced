@@ -489,7 +489,7 @@ public sealed partial class Rayman : MovableActor
 
         bodyPart.Position = Position + offset;
 
-        bodyPart.ActionId = bodyPart.BaseActionId + (IsFacingRight ? 1 : 2);
+        bodyPart.ActionId = (RaymanBody.Action)(bodyPart.BaseActionId + (IsFacingRight ? 1 : 2));
 
         if (RSMultiplayer.IsActive && Rom.Platform == Platform.NGage)
         {

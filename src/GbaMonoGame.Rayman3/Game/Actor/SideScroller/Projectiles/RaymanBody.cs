@@ -9,6 +9,7 @@ public sealed partial class RaymanBody : MovableActor
     {
         Rayman = (Rayman)Scene.MainActor;
         AnimatedObject.ObjPriority = 18;
+
         State.SetTo(Fsm_Wait);
     }
 
@@ -27,7 +28,7 @@ public sealed partial class RaymanBody : MovableActor
             hitEffectActor.BodyPartType = RaymanBodyPartType.HitEffect;
             hitEffectActor.Position = Position;
             hitEffectActor.CheckAgainstMapCollision = false;
-            hitEffectActor.ActionId = 25;
+            hitEffectActor.ActionId = Action.HitEffect;
             hitEffectActor.AnimatedObject.ObjPriority = 1;
             hitEffectActor.ChangeAction();
         }
@@ -45,9 +46,9 @@ public sealed partial class RaymanBody : MovableActor
                 if (State != Fsm_MoveBackwards)
                 {
                     if (BodyPartType == RaymanBodyPartType.Torso)
-                        ActionId = IsFacingRight ? 15 : 16;
+                        ActionId = IsFacingRight ? Action.Torso_MoveBackwards_Right : Action.Torso_MoveBackwards_Left;
                     else
-                        ActionId = BaseActionId + (IsFacingRight ? 4 : 3);
+                        ActionId = (Action)(BaseActionId + (IsFacingRight ? 4 : 3));
 
                     ChangeAction();
                     State.MoveTo(Fsm_MoveBackwards);
