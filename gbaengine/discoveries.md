@@ -72,7 +72,7 @@ Most actors have the first animation be unused and just single frame, most likel
 ![Animation 20](discoveries_assets/Grolgoth_Anim_20.gif)
 
 - There is an unused attack function where a big exploding bomb spawns at a random point on the map (with it having a check to make sure it's not too close to Rayman). This was most likely meant to appear in the second map of the final boss.
-- There is an unused state for the Grolgoth being in the air and using action 59 or 26 (depending on the direction) before transition back to the default air state.
+- There is an unused state for the Grolgoth being in the air and using action 59 or 26 (depending on the direction) before transitioning back to the default air state.
 
 #### Hoodstormer
 - There is an unused state that uses the unused actions 4 and 5. It appears to have been a state where the enemy taunts Rayman if out of reach. That makes the following animation also unused:
@@ -375,5 +375,31 @@ Most actors have the first animation be unused and just single frame, most likel
 
 #### MechanicalPlatform
 - The platform is rather inconsistent with how it lands, meaning it doesn't always land on the same height from the ground as it starts. This subsequently causes a bug where the sound effect for it being fully raised only plays every second time. This is because the condition for the sound effect playing uses a direct equality check, which doesn't match if the start height is wrong.
+
+#### MovingPlatform
+- There is 1 unused animation for the wooden variant:
+
+![Animation 3](discoveries_assets/MovingPlatform_Anim_3.gif)
+
+- The moving platform can be initialized to multiple different modes. 2 of these are unused. The first one makes the platform move with acceleration and deceleration, while the other one has no implementation.
+
+#### Plum
+- There is unused behavior for the plum landing on solid ground, making it bounce like Rayman 1 and allowing you to hit it so it can fall into the lava. It also supports bouncing on slopes.
+
+#### Skull
+- There's an unused function which implements overriding `ProcessMessage` and handles the message for if an actor collides with another actor of the same type. This would have caused the skull to fall down, like it does in the Jano boss. This also makes action 11 and the falling down state unused.
+- There's a state the skull can be initialized to which is not used in any level. It has it spin in place until hit, making it solid. That makes the following animations, which are broken in the final game, also unused
+
+![Animation 6](discoveries_assets/Skull_Anim_6.gif)
+![Animation 9](discoveries_assets/Skull_Anim_9.gif)
+![Animation 10](discoveries_assets/Skull_Anim_10.gif)
+
+- There is 1 fully unused animation, which is broken in the final game:
+
+![Animation 3](discoveries_assets/Skull_Anim_3.gif)
+
+#### UnusedBouncyPlatform
+- The actor is unused. It appears to have allowed you to bounce on it, before it would become deadly and damage the player on contact.
+- Action 1 is unused.
 
 ...

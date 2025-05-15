@@ -17,7 +17,13 @@ public sealed partial class Skull : MovableActor
         else
             State.SetTo(Fsm_Spawn);
 
-        if ((Action)actorResource.FirstActionId > Action.SpinStart)
+        if ((Action)actorResource.FirstActionId is not (
+            Action.SolidMove_Stationary or 
+            Action.Move_Left or 
+            Action.Move_Right or 
+            Action.Move_Up or 
+            Action.Move_Down or 
+            Action.SpinStart))
             throw new Exception("Invalid initial action for the skull actor");
     }
 
@@ -60,7 +66,7 @@ public sealed partial class Skull : MovableActor
 
         switch (message)
         {
-            case Message.HitActorOfSameType:
+            case Message.Actor_CollideWithSameType:
                 State.MoveTo(Fsm_FallDown);
                 return false;
 

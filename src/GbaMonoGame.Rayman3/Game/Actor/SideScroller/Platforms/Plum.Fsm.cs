@@ -29,7 +29,6 @@ public partial class Plum
                     else
                     {
                         AnimatedObject.CurrentFrame = 0;
-
                     }
                 }
 
@@ -71,7 +70,7 @@ public partial class Plum
                     return false;
                 }
 
-                // Land on solid
+                // Land on solid (not used in any level)
                 if (groundType.IsSolid)
                 {
                     State.MoveTo(Fsm_Bounce);

@@ -25,7 +25,7 @@ public partial class Skull
 
                 if (isActionFinished && InitialAction == Action.SpinStart)
                 {
-                    State.MoveTo(Fsm_Rotate);
+                    State.MoveTo(Fsm_Spin);
                     return false;
                 }
 
@@ -45,7 +45,7 @@ public partial class Skull
     }
 
     // Unused
-    public bool Fsm_Rotate(FsmAction action)
+    public bool Fsm_Spin(FsmAction action)
     {
         switch (action)
         {

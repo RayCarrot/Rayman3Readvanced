@@ -18,6 +18,7 @@ public sealed partial class MovingPlatform : MovableActor
         Setup();
     }
 
+    // Not used in any level
     private readonly Dictionary<Action, AcceleratedInfo> _acceleratedInfos = new()
     {
         [Action.MoveAccelerated_Left] = new AcceleratedInfo(
