@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GbaMonoGame.Rayman3;
 
-// TODO: Can probably rewrite some of this to use floats and be smoother
 public sealed partial class CameraSideScroller : CameraActor2D
 {
     public CameraSideScroller(Scene2D scene) : base(scene)
@@ -14,6 +13,7 @@ public sealed partial class CameraSideScroller : CameraActor2D
 
         PreviousLinkedObjectPosition = Vector2.Zero;
 
+        // Impossible condition - the linked object can't be set yet
         if (LinkedObject != null)
             PreviousLinkedObjectPosition = LinkedObject.Position;
 
@@ -21,12 +21,12 @@ public sealed partial class CameraSideScroller : CameraActor2D
         Timer = 0;
         TargetY = 120;
         FollowYMode = FollowMode.Follow;
-        ShakeTargetTime = 0;
+        ShakeLength = 0;
 
         HorizontalOffset = RSMultiplayer.IsActive ? CameraOffset.Multiplayer : CameraOffset.Default;
     }
 
-    private static readonly float[] ShakeTable =
+    private static readonly float[] _shakeTable =
     [
         1.00f, 2.00f, 4.00f, 6.00f,
         6.00f, 6.00f, 6.00f, 6.00f,
@@ -45,7 +45,7 @@ public sealed partial class CameraSideScroller : CameraActor2D
     public float TargetX { get; set; }
     public float TargetY { get; set; }
     public FollowMode FollowYMode { get; set; }
-    public byte field16_0x2e { get; set; } // TODO: Name
+    public UnknownMode Unknown { get; set; } // What is this?
     public Vector2 PreviousLinkedObjectPosition { get; set; }
     public bool IsFacingRight { get; set; }
     public uint Timer { get; set; }
@@ -53,9 +53,9 @@ public sealed partial class CameraSideScroller : CameraActor2D
 
     public Vector2 MoveTargetPos { get; set; }
 
-    public int ShakeTargetTime { get; set; }
+    public int ShakeLength { get; set; }
     public ushort ShakeTimer { get; set; }
-    public byte UnknownShakeValue { get; set; }
+    public byte ShakeFrame { get; set; }
     public bool HasStartedShake { get; set; }
 
     public bool Debug_FreeMoveCamera { get; set; } // Custom free move camera
@@ -76,27 +76,32 @@ public sealed partial class CameraSideScroller : CameraActor2D
 
     private Vector2 VerticalShake(Vector2 speed)
     {
-        if (ShakeTargetTime != 0)
+        if (ShakeLength != 0)
         {
+            // Increment the timer
             ShakeTimer++;
 
-            int index = (UnknownShakeValue % 128) * 2;
+            // The shake changes 16 times
+            const int framesCount = 16;
+            int shakeSpeed = ShakeLength / framesCount;
 
-            if (ShakeTimer == (UnknownShakeValue + 1) * (ShakeTargetTime / 16))
+            int shakeTableIndex = ShakeFrame % 128 * 2;
+
+            if (ShakeTimer == (ShakeFrame + 1) * shakeSpeed)
             {
-                UnknownShakeValue++;
-                index = (UnknownShakeValue % 128) * 2;
+                ShakeFrame++;
+                shakeTableIndex = ShakeFrame % 128 * 2;
             }
-            else if (ShakeTimer > UnknownShakeValue * (ShakeTargetTime / 16))
+            else if (ShakeTimer > ShakeFrame * shakeSpeed)
             {
-                index++;
+                shakeTableIndex++;
             }
             
-            index %= 256;
+            shakeTableIndex %= 256;
 
             // Check to stop the shake
-            if (ShakeTargetTime - 1 <= ShakeTimer)
-                ShakeTargetTime = 0;
+            if (ShakeTimer >= ShakeLength - 1)
+                ShakeLength = 0;
 
             if (HasStartedShake || (ShakeTimer & 7) == 4)
             {
@@ -104,10 +109,10 @@ public sealed partial class CameraSideScroller : CameraActor2D
 
                 // Down
                 if ((ShakeTimer & 7) == 0)
-                    return speed + new Vector2(0, ShakeTable[index]);
+                    return speed + new Vector2(0, _shakeTable[shakeTableIndex]);
                 // Up
                 else if ((ShakeTimer & 7) == 4)
-                    return speed + new Vector2(0, -ShakeTable[index]);
+                    return speed + new Vector2(0, -_shakeTable[shakeTableIndex]);
             }
         }
 
@@ -121,18 +126,28 @@ public sealed partial class CameraSideScroller : CameraActor2D
 
         switch (message)
         {
-            // TODO: How can this be triggered? The captor can't send message to the camera...
+            // NOTE: This can't be triggered, cause the captor can't send messages to the camera
             case Message.Captor_Trigger_SendMessageWithCaptorParam:
-                throw new NotImplementedException();
+                if (Timer != 7)
+                {
+                    Captor captor = (Captor)param;
+                    Box captorBox = captor.GetCaptorBox();
+
+                    MoveTargetPos = captorBox.Center - new Vector2(Scene.Resolution.X / 2, (int)(Scene.Resolution.X / 3));
+                    Timer = 7;
+
+                    State.MoveTo(Fsm_MoveToTarget);
+                }
                 return true;
 
             case Message.Cam_CenterPositionX:
-                field16_0x2e = 4;
+                Unknown = UnknownMode.PendingReset;
                 HorizontalOffset = CameraOffset.Center;
                 return true;
 
-            case Message.Cam_ResetPositionX:
-                field16_0x2e = 1;
+            // Seems to serve no purpose
+            case Message.Cam_ResetUnknownMode:
+                Unknown = UnknownMode.Default;
                 return true;
 
             case Message.Cam_DoNotFollowPositionY:
@@ -151,10 +166,10 @@ public sealed partial class CameraSideScroller : CameraActor2D
                 return true;
 
             case Message.Cam_Shake:
-                ShakeTargetTime = (int)param;
+                ShakeLength = (int)param;
                 HasStartedShake = false;
                 ShakeTimer = 0;
-                UnknownShakeValue = 0;
+                ShakeFrame = 0;
                 return true;
 
             case Message.Cam_MoveToTarget:
@@ -267,6 +282,8 @@ public sealed partial class CameraSideScroller : CameraActor2D
     {
         base.DrawDebugLayout(debugLayout, textureManager);
 
+        ImGui.Text($"State: {State}");
+
         bool freeMove = Debug_FreeMoveCamera;
         ImGui.Checkbox("Free move (right mouse button)", ref freeMove);
         Debug_FreeMoveCamera = freeMove;
@@ -280,5 +297,13 @@ public sealed partial class CameraSideScroller : CameraActor2D
         DoNotFollow = 0,
         Follow = 1,
         FollowUntilNearby = 2,
+    }
+
+    public enum UnknownMode
+    {
+        Default = 1,
+        Unused = 2,
+        UnusedWithInputs = 3,
+        PendingReset = 4,
     }
 }

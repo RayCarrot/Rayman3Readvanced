@@ -48,7 +48,7 @@ public enum Message
     Actor_Drop = 1024,
     Actor_Hurt = 1025,
     Cam_CenterPositionX = 1026,
-    Cam_ResetPositionX = 1027,
+    Cam_ResetUnknownMode = 1027,
     Actor_Fall = 1028,
     Rayman_BeginHang = 1029,
     Rayman_EndHang = 1030,

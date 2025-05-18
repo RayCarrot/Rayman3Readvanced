@@ -1,10 +1,10 @@
 ﻿using System;
+using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
 
-// NOTE: There is 1 unused state which hasn't been re-implemented here
 public partial class CameraSideScroller
 {
     public bool Fsm_Follow(FsmAction action)
@@ -190,10 +190,10 @@ public partial class CameraSideScroller
                     return false;
                 }
 
-                if (field16_0x2e == 4)
+                if (Unknown == UnknownMode.PendingReset)
                 {
                     HorizontalOffset = CameraOffset.Default;
-                    field16_0x2e = 1;
+                    Unknown = UnknownMode.Default;
                 }
                 break;
 
@@ -286,5 +286,121 @@ public partial class CameraSideScroller
         }
 
         return true;
+    }
+
+    // Unused
+    public bool Fsm_Unused(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                PreviousLinkedObjectPosition = LinkedObject.Position;
+                Timer = 0;
+                break;
+
+            case FsmAction.Step:
+                float targetX;
+                if (Unknown is UnknownMode.Default or UnknownMode.UnusedWithInputs)
+                {
+                    if (JoyPad.IsButtonPressed(GbaInput.Left))
+                    {
+                        targetX = Scene.Resolution.X - Rom.Platform switch
+                        {
+                            Platform.GBA => RSMultiplayer.IsActive ? CameraOffset.Multiplayer : CameraOffset.Default,
+                            Platform.NGage => RSMultiplayer.IsActive ? CameraOffset.Multiplayer : CameraOffset.Default,
+                            _ => throw new UnsupportedPlatformException()
+                        };
+                    }
+                    else if (JoyPad.IsButtonPressed(GbaInput.Right))
+                    {
+                        targetX = Rom.Platform switch
+                        {
+                            Platform.GBA => RSMultiplayer.IsActive ? CameraOffset.Multiplayer : CameraOffset.Default,
+                            Platform.NGage => RSMultiplayer.IsActive ? CameraOffset.Multiplayer : CameraOffset.Default,
+                            _ => throw new UnsupportedPlatformException()
+                        };
+                    }
+                    else
+                    {
+                        targetX = CameraOffset.Center;
+                    }
+                }
+                else
+                {
+                    targetX = CameraOffset.Center;
+                }
+
+                TargetX = ScaleXValue(targetX);
+
+                if (Unknown == UnknownMode.PendingReset)
+                    TargetY = 70;
+                else
+                    TargetY = 80;
+
+                TgxCamera2D tgxCam = ((TgxPlayfield2D)Scene.Playfield).Camera;
+                Vector2 camDelta = Vector2.Zero;
+
+                float diffX = LinkedObject.Position.X - TargetX;
+                if (diffX > tgxCam.Position.X)
+                {
+                    if (diffX - tgxCam.Position.X < 3)
+                        camDelta.X = LinkedObject.Position.X - PreviousLinkedObjectPosition.X;
+                    else
+                        camDelta.X = 3;
+                }
+                else if (diffX < tgxCam.Position.X)
+                {
+                    if (tgxCam.Position.X - diffX < 3)
+                        camDelta.X = LinkedObject.Position.X - PreviousLinkedObjectPosition.X;
+                    else
+                        camDelta.X = -3;
+                }
+
+                float diffY = LinkedObject.Position.Y - TargetY;
+                if (diffY - 48 > tgxCam.Position.Y)
+                {
+                    if (diffY - (tgxCam.Position.Y + 48) < 3)
+                        camDelta.Y = LinkedObject.Position.Y - PreviousLinkedObjectPosition.Y;
+                    else
+                        camDelta.Y = 3;
+                }
+                else if (diffY - 48 < tgxCam.Position.Y)
+                {
+
+                    if (tgxCam.Position.Y + 48 - diffY < 3)
+                        camDelta.Y = LinkedObject.Position.Y - PreviousLinkedObjectPosition.Y;
+                    else
+                        camDelta.Y = -3;
+                }
+
+                camDelta = VerticalShake(camDelta);
+
+                // Clamp speed
+                camDelta = new Vector2(Math.Clamp(camDelta.X, -7, 7), Math.Clamp(camDelta.Y, -7, 7));
+
+                // Move camera
+                tgxCam.Position += camDelta;
+
+                PreviousLinkedObjectPosition = LinkedObject.Position;
+
+                if (Timer == 0 && Unknown == UnknownMode.Default)
+                    Timer = GameTime.ElapsedFrames;
+                else if (Timer != 0 && Unknown is UnknownMode.Unused or UnknownMode.UnusedWithInputs)
+                    Timer = 0;
+
+                if (Unknown == UnknownMode.Default && GameTime.ElapsedFrames - Timer > 60)
+                {
+                    State.MoveTo(Fsm_Follow);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
+
+        return true;
+
     }
 }
