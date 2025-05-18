@@ -55,11 +55,8 @@ public partial class MissileMode7
 
                 if (physicalType.Damage && State != Fsm_Jump && !IsInvulnerable)
                 {
-                    if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__SplshGen_Mix04) &&
-                        InstanceId == Scene.Camera.LinkedObject.InstanceId)
-                    {
+                    if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__SplshGen_Mix04) && IsLinkedCameraObject())
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SplshGen_Mix04);
-                    }
 
                     ReceiveDamage(1);
                 }
@@ -69,7 +66,7 @@ public partial class MissileMode7
             {
                 PrevHitPoints = HitPoints;
                 
-                if (InstanceId == Scene.Camera.LinkedObject.InstanceId)
+                if (IsLinkedCameraObject())
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoRcvH1_Mix04);
 
                 InvulnerabilityTimer = 0;
@@ -136,7 +133,7 @@ public partial class MissileMode7
                     MechModel.Speed = -new Vector2(MechModel.Speed.Y, MechModel.Speed.X);
                     Direction = Angle256.FromVector((MechModel.Speed * new Vector2(1, 16)).FlipY());
 
-                    if (InstanceId == Scene.Camera.LinkedObject.InstanceId)
+                    if (IsLinkedCameraObject())
                     {
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PinBall_Mix02);
                         WahooSoundTimer = 15;
@@ -147,7 +144,7 @@ public partial class MissileMode7
                     MechModel.Speed = new Vector2(MechModel.Speed.Y, MechModel.Speed.X);
                     Direction = Angle256.FromVector((MechModel.Speed * new Vector2(1, 16)).FlipY());
 
-                    if (InstanceId == Scene.Camera.LinkedObject.InstanceId)
+                    if (IsLinkedCameraObject())
                     {
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PinBall_Mix02);
                         WahooSoundTimer = 15;
@@ -246,7 +243,7 @@ public partial class MissileMode7
         switch (action)
         {
             case FsmAction.Init:
-                if (InstanceId == Scene.Camera.LinkedObject.InstanceId) 
+                if (IsLinkedCameraObject()) 
                 {
                     JumpSoundTimer = 15;
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PinBall_Mix02);
@@ -357,7 +354,7 @@ public partial class MissileMode7
         switch (action)
         {
             case FsmAction.Init:
-                if (!RSMultiplayer.IsActive || InstanceId == Scene.Camera.LinkedObject.InstanceId)
+                if (!RSMultiplayer.IsActive || IsLinkedCameraObject())
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Motor01_Mix12);
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumTimer_Mix02);
@@ -479,7 +476,7 @@ public partial class MissileMode7
                 MultiplayerDeathSpectatePlayer = (byte)InstanceId;
                 MultiplayerDeathTimer = 0;
 
-                if (InstanceId == Scene.Camera.LinkedObject.InstanceId)
+                if (IsLinkedCameraObject())
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Motor01_Mix12);
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__RaDeath_Mix03);

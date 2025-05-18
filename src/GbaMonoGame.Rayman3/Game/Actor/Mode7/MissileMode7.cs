@@ -240,7 +240,7 @@ public sealed partial class MissileMode7 : Mode7Actor
 
         bool isMovingTheRightDirection = IsMovingTheRightDirection(RaceDirection);
 
-        if (InstanceId == Scene.Camera.LinkedObject.InstanceId)
+        if (IsLinkedCameraObject())
         {
             float pitch = Speed.Length() * 512;
             if (IsJumping)
@@ -422,7 +422,7 @@ public sealed partial class MissileMode7 : Mode7Actor
                     CollectedBlueLums++;
 
                     // Play sound
-                    if (!RSMultiplayer.IsActive || InstanceId == Scene.Camera.LinkedObject.InstanceId)
+                    if (!RSMultiplayer.IsActive || IsLinkedCameraObject())
                     {
                         if (CollectedBlueLums == 1)
                             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumBoost_Mix01GEN_P1);
@@ -452,7 +452,7 @@ public sealed partial class MissileMode7 : Mode7Actor
             case Message.MissileMode7_StartRace:
                 State.MoveTo(Fsm_Default);
 
-                if (!RSMultiplayer.IsActive || InstanceId == Scene.Camera.LinkedObject.InstanceId)
+                if (!RSMultiplayer.IsActive || IsLinkedCameraObject())
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Motor01_Mix12);
                 return true;
 
@@ -516,8 +516,7 @@ public sealed partial class MissileMode7 : Mode7Actor
                             actor2.MechModel.Speed += directionalVector * force;
                             actor2.MechModel.Acceleration = Vector2.Zero;
 
-                            if (actor1.InstanceId == Scene.Camera.LinkedObject.InstanceId || 
-                                actor2.InstanceId == Scene.Camera.LinkedObject.InstanceId) 
+                            if (actor1.IsLinkedCameraObject() || actor2.IsLinkedCameraObject()) 
                             {
                                 if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__PinBall_Mix02)) 
                                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PinBall_Mix02);
@@ -533,7 +532,7 @@ public sealed partial class MissileMode7 : Mode7Actor
 
         base.Step();
         
-        if (InstanceId == Scene.Camera.LinkedObject.InstanceId)
+        if (IsLinkedCameraObject())
             ToggleNoClip();
     }
 

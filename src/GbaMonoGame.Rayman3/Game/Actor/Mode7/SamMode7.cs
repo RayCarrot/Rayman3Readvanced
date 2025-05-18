@@ -146,7 +146,7 @@ public sealed partial class SamMode7 : Mode7Actor
     {
         base.Step();
 
-        if (InstanceId == Scene.Camera.LinkedObject.InstanceId)
+        if (IsLinkedCameraObject())
             ToggleNoClip();
     }
 

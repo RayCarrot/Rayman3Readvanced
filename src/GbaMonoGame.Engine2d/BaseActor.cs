@@ -93,6 +93,11 @@ public abstract class BaseActor : GameObject
             ProcessMessage(this, Message.Destroy);
     }
 
+    public bool IsLinkedCameraObject()
+    {
+        return InstanceId == Scene.Camera.LinkedObject.InstanceId;
+    }
+
     public Box GetViewBox() => Box.Offset(_viewBox, Position);
 
     public void RewindAction()

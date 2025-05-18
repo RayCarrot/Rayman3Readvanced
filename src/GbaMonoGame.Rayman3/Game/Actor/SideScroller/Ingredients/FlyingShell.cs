@@ -220,7 +220,7 @@ public sealed partial class FlyingShell : MovableActor
     {
         base.Step();
 
-        if (InstanceId == Scene.Camera.LinkedObject.InstanceId)
+        if (IsLinkedCameraObject())
             ToggleNoClip();
     }
 }
