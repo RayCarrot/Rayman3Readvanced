@@ -13,6 +13,7 @@
     - 1101
     - 1104-1109
 - The `Scene2D` constructor for some reason disables the background scrolling for the first map of `Void of Bones`. This was added late during development judging by the prototypes.
+- The sidescroller camera has some leftover code from either earlier games or the early production of this game. There's an unused camera state and some code that can never run due to the conditions not being met.
 - The Mode7 camera has 3 unused states for a free-cam like mode. These were used in the early prototypes.
 
 ### Actors

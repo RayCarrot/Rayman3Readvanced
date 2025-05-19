@@ -289,7 +289,9 @@ public sealed partial class CameraSideScroller : CameraActor2D
         Debug_FreeMoveCamera = freeMove;
 
         ImGui.Text($"Speed: {Speed.X} x {Speed.Y}");
-        ImGui.Text($"Target: {TargetX} x {TargetY}");
+        ImGui.Text($"Target: {TargetX} x {ScaledTargetY}");
+        ImGui.Text($"HorizontalOffset: {HorizontalOffset}");
+        ImGui.Text($"ScaledHorizontalOffset: {ScaledHorizontalOffset}");
     }
 
     public enum FollowMode

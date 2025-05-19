@@ -2025,6 +2025,7 @@ public partial class Rayman
                         Timer = GameTime.ElapsedFrames;
                     }
 
+                    // This seems to get overriden the next frame anyway, so rather pointless...
                     if (Rom.Platform == Platform.NGage && AttachedObject?.Type == (int)ActorType.Plum && IsLocalPlayer)
                     {
                         CameraSideScroller cam = (CameraSideScroller)Scene.Camera;

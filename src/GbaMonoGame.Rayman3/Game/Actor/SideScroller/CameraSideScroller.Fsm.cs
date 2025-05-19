@@ -303,27 +303,11 @@ public partial class CameraSideScroller
                 if (Unknown is UnknownMode.Default or UnknownMode.UnusedWithInputs)
                 {
                     if (JoyPad.IsButtonPressed(GbaInput.Left))
-                    {
-                        targetX = Scene.Resolution.X - Rom.Platform switch
-                        {
-                            Platform.GBA => RSMultiplayer.IsActive ? CameraOffset.Multiplayer : CameraOffset.Default,
-                            Platform.NGage => RSMultiplayer.IsActive ? CameraOffset.Multiplayer : CameraOffset.Default,
-                            _ => throw new UnsupportedPlatformException()
-                        };
-                    }
+                        targetX = Scene.Resolution.X - (RSMultiplayer.IsActive ? CameraOffset.Multiplayer : CameraOffset.Default);
                     else if (JoyPad.IsButtonPressed(GbaInput.Right))
-                    {
-                        targetX = Rom.Platform switch
-                        {
-                            Platform.GBA => RSMultiplayer.IsActive ? CameraOffset.Multiplayer : CameraOffset.Default,
-                            Platform.NGage => RSMultiplayer.IsActive ? CameraOffset.Multiplayer : CameraOffset.Default,
-                            _ => throw new UnsupportedPlatformException()
-                        };
-                    }
+                        targetX = RSMultiplayer.IsActive ? CameraOffset.Multiplayer : CameraOffset.Default;
                     else
-                    {
                         targetX = CameraOffset.Center;
-                    }
                 }
                 else
                 {

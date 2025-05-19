@@ -2294,8 +2294,7 @@ public sealed partial class Rayman : MovableActor
         {
             CameraSideScroller cam = (CameraSideScroller)Scene.Camera;
 
-            // Force default camera for certain actions on N-Gage, except if attached to a plum since that has
-            // its own camera code which is based on the plum's direction instead of Rayman's direction
+            // Force default camera offset when jumping off of a plum on N-Gage
             if (ForceDefaultCameraTimer != 0 && 
                 (AttachedObject == null || (ActorType)AttachedObject.Type != ActorType.Plum))
             {
