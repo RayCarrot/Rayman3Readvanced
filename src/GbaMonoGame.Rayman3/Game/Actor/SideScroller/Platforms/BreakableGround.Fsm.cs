@@ -15,8 +15,9 @@ public partial class BreakableGround
                 break;
 
             case FsmAction.Step:
+                // Disable Rayman being near an edge if the breakable ground is there
                 if (Scene.IsDetectedMainActor(this))
-                    Scene.MainActor.ProcessMessage(this, Message.Rayman_SetUnknownFlag);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_DisableNearEdge);
 
                 if (Scene.IsDetectedMainActor(this) && Scene.MainActor.LinkedMovementActor != this && Scene.MainActor.Position.Y <= Position.Y)
                 {

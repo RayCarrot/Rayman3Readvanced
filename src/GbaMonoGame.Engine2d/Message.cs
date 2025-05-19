@@ -79,7 +79,7 @@ public enum Message
     CamMode7_Spin = 1053,
     Cam_Shake = 1054,
     Cam_MoveToTarget = 1055,
-    Rayman_SetUnknownFlag = 1056,
+    Rayman_DisableNearEdge = 1056,
     Rayman_Stop = 1057,
     Cam_MoveToLinkedObject = 1058,
     Rayman_Resume = 1059,

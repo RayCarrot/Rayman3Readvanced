@@ -66,8 +66,8 @@ public partial class Rayman
             cam.HorizontalOffset = CameraOffset.Center;
         }
 
-        if (field23_0x98 != 0)
-            field23_0x98--;
+        if (DisableAttackTimer != 0)
+            DisableAttackTimer--;
 
         ManageHit();
 
@@ -84,14 +84,15 @@ public partial class Rayman
     {
         CameraSideScroller cam = (CameraSideScroller)Scene.Camera;
 
-        if (Flag1_D)
+        // Reset the camera offset after 1 second if flagged to do so
+        if (ResetCameraOffset)
         {
-            field16_0x91++;
+            ResetCameraOffsetTimer++;
 
-            if (field16_0x91 > 60)
+            if (ResetCameraOffsetTimer > 60)
             {
                 cam.HorizontalOffset = CameraOffset.Default;
-                Flag1_D = false;
+                ResetCameraOffset = false;
             }
         }
 
@@ -141,8 +142,8 @@ public partial class Rayman
             cam.ProcessMessage(this, message, CameraTargetY);
         }
 
-        if (field23_0x98 != 0)
-            field23_0x98--;
+        if (DisableAttackTimer != 0)
+            DisableAttackTimer--;
 
         if (CheckDeath())
         {
@@ -388,7 +389,7 @@ public partial class Rayman
                 }
 
                 // Punch
-                if (field23_0x98 == 0 && MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.B) && CanAttackWithFist(2))
+                if (DisableAttackTimer == 0 && MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.B) && CanAttackWithFist(2))
                 {
                     PlaySound(Rayman3SoundEvent.Stop__Grimace1_Mix04);
                     State.MoveTo(Fsm_Attack);
@@ -396,7 +397,7 @@ public partial class Rayman
                 }
 
                 // Walking off edge
-                if (PreviousXSpeed != 0 && IsNearEdge() != 0 && !Flag1_1)
+                if (PreviousXSpeed != 0 && IsNearEdge() != 0 && !DisableNearEdge)
                 {
                     PlaySound(Rayman3SoundEvent.Stop__Grimace1_Mix04);
                     Position += new Vector2(PreviousXSpeed < 0 ? -16 : 16, 0);
@@ -405,7 +406,7 @@ public partial class Rayman
                 }
 
                 // Standing near edge
-                if (PreviousXSpeed == 0 && IsNearEdge() != 0 && !Flag1_1)
+                if (PreviousXSpeed == 0 && IsNearEdge() != 0 && !DisableNearEdge)
                 {
                     PlaySound(Rayman3SoundEvent.Stop__Grimace1_Mix04);
                     State.MoveTo(Fsm_StandingNearEdge);
@@ -428,7 +429,8 @@ public partial class Rayman
                     return false;
                 }
 
-                Flag1_1 = false;
+                // Reset
+                DisableNearEdge = false;
                 break;
 
             case FsmAction.UnInit:
@@ -581,7 +583,7 @@ public partial class Rayman
                             else
                                 ActionId = IsFacingRight ? Action.Walk_Right : Action.Walk_Left;
 
-                            field22_0x97 = 0;
+                            FirstLevelIdleTimer = 0;
                         }
                         else
                         {
@@ -626,21 +628,21 @@ public partial class Rayman
                 // Randomly look around for Globox in the first level
                 if (GameInfo.MapId == MapId.WoodLight_M1 && GameInfo.LastGreenLumAlive == 0)
                 {
-                    field22_0x97++;
+                    FirstLevelIdleTimer++;
 
                     if (IsActionFinished)
                     {
                         if (ActionId is Action.Walk_Right or Action.Walk_Left &&
-                            field22_0x97 > Random.GetNumber(121) + 120)
+                            FirstLevelIdleTimer > Random.GetNumber(121) + 120)
                         {
                             ActionId = IsFacingRight ? Action.Walk_LookAround_Right : Action.Walk_LookAround_Left;
-                            field22_0x97 = 0;
+                            FirstLevelIdleTimer = 0;
                         }
                         else if (ActionId is Action.Walk_LookAround_Right or Action.Walk_LookAround_Left && 
-                                 field22_0x97 > Random.GetNumber(121) + 60)
+                                 FirstLevelIdleTimer > Random.GetNumber(121) + 60)
                         {
                             ActionId = IsFacingRight ? Action.Walk_Right : Action.Walk_Left;
-                            field22_0x97 = 0;
+                            FirstLevelIdleTimer = 0;
                         }
                     }
                 }
@@ -689,21 +691,21 @@ public partial class Rayman
                 {
                     Charge++;
                 }
-                else if (MultiJoyPad.IsButtonJustReleased(InstanceId, GbaInput.B) && field23_0x98 == 0)
+                else if (MultiJoyPad.IsButtonJustReleased(InstanceId, GbaInput.B) && DisableAttackTimer == 0)
                 {
                     Charge = 0;
 
                     if (CanAttackWithFist(1))
                     {
                         Attack(0, RaymanBody.RaymanBodyPartType.Fist, new Vector2(16, -16), false);
-                        field23_0x98 = 0;
+                        DisableAttackTimer = 0;
                     }
                     else if (CanAttackWithFist(2))
                     {
                         Attack(0, RaymanBody.RaymanBodyPartType.SecondFist, new Vector2(16, -16), false);
 
                         if (!GameInfo.IsPowerEnabled(Power.DoubleFist))
-                            field23_0x98 = 0;
+                            DisableAttackTimer = 0;
                     }
                 }
 
@@ -812,7 +814,7 @@ public partial class Rayman
                 }
 
                 // Charge punch
-                if (field23_0x98 == 0 && Charge > 10 && IsDirectionalButtonPressed(GbaInput.B) && CanAttackWithFist(2))
+                if (DisableAttackTimer == 0 && Charge > 10 && IsDirectionalButtonPressed(GbaInput.B) && CanAttackWithFist(2))
                 {
                     State.MoveTo(Fsm_Attack);
                     return false;
@@ -865,10 +867,10 @@ public partial class Rayman
                 if (ActionId is Action.Jump_Right or Action.Jump_Left &&
                     MultiJoyPad.IsButtonReleased(InstanceId, GbaInput.A) && 
                     MechModel.Speed.Y < -4 && 
-                    !Flag2_0)
+                    !HasSetJumpSpeed)
                 {
                     MechModel.Speed = MechModel.Speed with { Y = -4 };
-                    Flag2_0 = true;
+                    HasSetJumpSpeed = true;
                 }
 
                 if (Speed.Y == 0 && MechModel.Speed.Y < 0)
@@ -916,7 +918,7 @@ public partial class Rayman
                     return false;
                 }
 
-                if (GameTime.ElapsedFrames - Timer > 10 && IsOnClimbableVertical() == 1)
+                if (GameTime.ElapsedFrames - Timer > 10 && IsOnClimbableVertical() == ClimbDirection.TopAndBottom)
                 {
                     State.MoveTo(Fsm_Climb);
                     return false;
@@ -937,7 +939,7 @@ public partial class Rayman
                 break;
 
             case FsmAction.UnInit:
-                Flag2_0 = false;
+                HasSetJumpSpeed = false;
                 break;
         }
 
@@ -952,7 +954,7 @@ public partial class Rayman
                 PlaySound(Rayman3SoundEvent.Stop__SldGreen_SkiLoop1);
                 ActionId = IsFacingRight ? Action.Sliding_Jump_Right : Action.Sliding_Jump_Left;
                 NextActionId = null;
-                Flag2_0 = false;
+                HasSetJumpSpeed = false;
                 Timer = GameTime.ElapsedFrames;
                 SlideType = null;
                 PreviousXSpeed /= 2;
@@ -1013,7 +1015,7 @@ public partial class Rayman
                     State.MoveTo(Fsm_Hang);
                 }
 
-                if (IsOnClimbableVertical() == 1)
+                if (IsOnClimbableVertical() == ClimbDirection.TopAndBottom)
                 {
                     PreviousXSpeed = 0;
                     State.MoveTo(Fsm_Climb);
@@ -1022,7 +1024,7 @@ public partial class Rayman
                 break;
 
             case FsmAction.UnInit:
-                Flag2_0 = false;
+                HasSetJumpSpeed = false;
                 break;
         }
 
@@ -1154,7 +1156,7 @@ public partial class Rayman
                     return false;
                 }
 
-                if (IsOnClimbableVertical() == 1)
+                if (IsOnClimbableVertical() == ClimbDirection.TopAndBottom)
                 {
                     State.MoveTo(Fsm_Climb);
                     return false;
@@ -1234,7 +1236,7 @@ public partial class Rayman
                     return false;
                 }
 
-                if (IsOnClimbableVertical() == 1)
+                if (IsOnClimbableVertical() == ClimbDirection.TopAndBottom)
                 {
                     State.MoveTo(Fsm_Climb);
                     return false;
@@ -1485,7 +1487,7 @@ public partial class Rayman
                     return false;
                 }
 
-                if (IsOnClimbableVertical() == 1)
+                if (IsOnClimbableVertical() == ClimbDirection.TopAndBottom)
                 {
                     State.MoveTo(Fsm_Climb);
                     return false;
@@ -1547,7 +1549,7 @@ public partial class Rayman
                     return false;
                 }
 
-                if (IsOnClimbableVertical() == 1)
+                if (IsOnClimbableVertical() == ClimbDirection.TopAndBottom)
                 {
                     State.MoveTo(Fsm_Climb);
                     return false;
@@ -1618,7 +1620,7 @@ public partial class Rayman
                     return false;
                 }
 
-                if (IsOnClimbableVertical() == 1)
+                if (IsOnClimbableVertical() == ClimbDirection.TopAndBottom)
                 {
                     State.MoveTo(Fsm_Climb);
                     return false;
@@ -2078,7 +2080,7 @@ public partial class Rayman
                         NextActionId = IsFacingRight ? Action.EndChargeFist_Right : Action.EndChargeFist_Left;
 
                         if (!GameInfo.IsPowerEnabled(Power.DoubleFist))
-                            field23_0x98 = 0;
+                            DisableAttackTimer = 0;
                         type = 1;
                     }
                     else if (ActionId is 
@@ -2088,7 +2090,7 @@ public partial class Rayman
                         Attack(chargePower, RaymanBody.RaymanBodyPartType.SecondFist, new Vector2(16, -16), ActionId is Action.ChargeSecondFist_Right or Action.ChargeSecondFist_Left);
                         NextActionId = IsFacingRight ? Action.EndChargeSecondFist_Right : Action.EndChargeSecondFist_Left;
 
-                        field23_0x98 = 0;
+                        DisableAttackTimer = 0;
                         type = 1;
                     }
                     else if (ActionId is Action.ChargeSuperFist_Right or Action.ChargeSuperFist_Left)
@@ -2103,7 +2105,7 @@ public partial class Rayman
                         Attack(chargePower, RaymanBody.RaymanBodyPartType.SecondSuperFist, new Vector2(16, -16), true);
                         NextActionId = IsFacingRight ? Action.EndChargeFist_Right : Action.EndChargeFist_Left;
 
-                        field23_0x98 = 0;
+                        DisableAttackTimer = 0;
                         type = 1;
                     }
                     else if (ActionId is Action.Hang_ChargeAttack_Right or Action.Hang_ChargeAttack_Left)
@@ -2208,8 +2210,8 @@ public partial class Rayman
                     else
                     {
                         cam.HorizontalOffset = CameraOffset.Default;
-                        Flag1_D = true;
-                        field16_0x91 = 0;
+                        ResetCameraOffset = true;
+                        ResetCameraOffsetTimer = 0;
                     }
                 }
                 break;
@@ -2379,9 +2381,9 @@ public partial class Rayman
                     return false;
                 }
 
-                if (PreventWallJumps)
+                if (DisableWallJumps)
                 {
-                    PreventWallJumps = false;
+                    DisableWallJumps = false;
                     State.MoveTo(Fsm_WallJumpFall);
                     return false;
                 }
@@ -2458,8 +2460,8 @@ public partial class Rayman
                 int animFrame = AnimatedObject.CurrentFrame;
                 bool jump = MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A);
 
-                int climbHoriontal = IsOnClimbableHorizontal();
-                int climbVertical = IsOnClimbableVertical();
+                ClimbDirection climbHoriontal = IsOnClimbableHorizontal();
+                ClimbDirection climbVertical = IsOnClimbableVertical();
 
                 PhysicalType type = PhysicalTypeValue.None;
 
@@ -2470,7 +2472,7 @@ public partial class Rayman
                     if (IsDirectionalButtonJustPressed(GbaInput.Left))
                         Timer = 0;
 
-                    if (climbHoriontal is 4 or 6)
+                    if (climbHoriontal is ClimbDirection.RightAndLeft or ClimbDirection.Left)
                     {
                         if (!RSMultiplayer.IsActive)
                         {
@@ -2508,7 +2510,7 @@ public partial class Rayman
                     if (IsDirectionalButtonJustPressed(GbaInput.Right))
                         Timer = 0;
 
-                    if (climbHoriontal is 4 or 5)
+                    if (climbHoriontal is ClimbDirection.RightAndLeft or ClimbDirection.Right)
                     {
                         if (!RSMultiplayer.IsActive)
                         {
@@ -2550,7 +2552,7 @@ public partial class Rayman
                     Timer = 0;
                 }
 
-                if (IsDirectionalButtonPressed(GbaInput.Up) && climbVertical is 1 or 2)
+                if (IsDirectionalButtonPressed(GbaInput.Up) && climbVertical is ClimbDirection.TopAndBottom or ClimbDirection.Top)
                 {
                     if (!RSMultiplayer.IsActive)
                     {
@@ -2580,7 +2582,7 @@ public partial class Rayman
                         AnimatedObject.CurrentFrame = animFrame;
                     }
                 }
-                else if (IsDirectionalButtonPressed(GbaInput.Down) && climbVertical is 1 or 3)
+                else if (IsDirectionalButtonPressed(GbaInput.Down) && climbVertical is ClimbDirection.TopAndBottom or ClimbDirection.Bottom)
                 {
                     if (!RSMultiplayer.IsActive)
                     {
@@ -2625,7 +2627,7 @@ public partial class Rayman
                         AnimatedObject.CurrentFrame = animFrame;
                     }
 
-                    if (IsDirectionalButtonPressed(GbaInput.Down) && climbVertical is not (1 or 3))
+                    if (IsDirectionalButtonPressed(GbaInput.Down) && climbVertical is not (ClimbDirection.TopAndBottom or ClimbDirection.Bottom))
                     {
                         type = Scene.GetPhysicalType(Position + new Vector2(0, 32));
                     }
@@ -2668,35 +2670,35 @@ public partial class Rayman
                 }
 
                 // Jump left
-                if (jump && IsDirectionalButtonPressed(GbaInput.Left) && climbHoriontal is not (4 or 6))
+                if (jump && IsDirectionalButtonPressed(GbaInput.Left) && climbHoriontal is not (ClimbDirection.RightAndLeft or ClimbDirection.Left))
                 {
                     State.MoveTo(Fsm_Jump);
                     return false;
                 }
 
                 // Jump right
-                if (jump && IsDirectionalButtonPressed(GbaInput.Right) && climbHoriontal is not (4 or 5))
+                if (jump && IsDirectionalButtonPressed(GbaInput.Right) && climbHoriontal is not (ClimbDirection.RightAndLeft or ClimbDirection.Right))
                 {
                     State.MoveTo(Fsm_Jump);
                     return false;
                 }
 
                 // Jump up
-                if (jump && IsDirectionalButtonPressed(GbaInput.Up) && climbVertical is not (1 or 2))
+                if (jump && IsDirectionalButtonPressed(GbaInput.Up) && climbVertical is not (ClimbDirection.TopAndBottom or ClimbDirection.Top))
                 {
                     State.MoveTo(Fsm_Jump);
                     return false;
                 }
 
                 // Move down
-                if (type.IsSolid && IsDirectionalButtonPressed(GbaInput.Down) && climbVertical is not (1 or 3))
+                if (type.IsSolid && IsDirectionalButtonPressed(GbaInput.Down) && climbVertical is not (ClimbDirection.TopAndBottom or ClimbDirection.Bottom))
                 {
                     State.MoveTo(Fsm_Fall);
                     return false;
                 }
 
                 // Jump down
-                if (jump && IsDirectionalButtonPressed(GbaInput.Down) && climbVertical is not (1 or 3))
+                if (jump && IsDirectionalButtonPressed(GbaInput.Down) && climbVertical is not (ClimbDirection.TopAndBottom or ClimbDirection.Bottom))
                 {
                     PlaySound(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01);
                     State.MoveTo(Fsm_Fall);
@@ -2898,7 +2900,7 @@ public partial class Rayman
 
                 if (Position.X < AttachedObject.Position.X)
                 {
-                    Flag2_1 = true;
+                    TempFlag = true;
 
                     if (Timer > 128)
                     {
@@ -2912,7 +2914,7 @@ public partial class Rayman
                 }
                 else
                 {
-                    Flag2_1 = false;
+                    TempFlag = false;
 
                     if (Timer > 128)
                     {
@@ -2944,11 +2946,11 @@ public partial class Rayman
                     cam.HorizontalOffset = CameraOffset.Default;
                 }
 
-                if (Flag2_1)
+                if (TempFlag)
                 {
                     if (Timer == 0)
                     {
-                        Flag2_1 = false;
+                        TempFlag = false;
                         Timer = 0;
                         AnimatedObject.CurrentFrame = 19;
                     }
@@ -2992,7 +2994,7 @@ public partial class Rayman
                 {
                     if (Timer >= 128)
                     {
-                        Flag2_1 = true;
+                        TempFlag = true;
                         Timer = 128;
                         AnimatedObject.CurrentFrame = 39;
                     }
@@ -3044,7 +3046,7 @@ public partial class Rayman
                 AttachedObject = null;
 
                 // Momentum and direction
-                if (Flag2_1)
+                if (TempFlag)
                 {
                     PreviousXSpeed = 1;
                 }
@@ -3055,7 +3057,7 @@ public partial class Rayman
                     ChangeAction();
                 }
 
-                Flag2_1 = false;
+                TempFlag = false;
 
                 cam.HorizontalOffset = GameInfo.MapId == MapId.TheCanopy_M2 ? CameraOffset.Center : CameraOffset.Default;
                 break;
@@ -3495,7 +3497,7 @@ public partial class Rayman
 
                 if (MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.B) &&
                     CanAttackWithFist(2) &&
-                    field23_0x98 == 0 &&
+                    DisableAttackTimer == 0 &&
                     ActionId is Action.ThrowObjectUp_Right or Action.ThrowObjectUp_Left &&
                     AnimatedObject.CurrentFrame > 6)
                 {
@@ -3658,7 +3660,7 @@ public partial class Rayman
                 else
                     ActionId = NextActionId.Value;
 
-                Flag1_D = false;
+                ResetCameraOffset = false;
                 break;
 
             case FsmAction.Step:
@@ -3705,7 +3707,7 @@ public partial class Rayman
                     Position = Position with { Y = GetActionBox().Top - 16 };
 
                     if (Rom.Platform == Platform.NGage)
-                        ForceDefaultCameraTimer = 0x3c;
+                        PlumCameraTimer = 0x3c;
 
                     PreviousXSpeed = ((MovableActor)AttachedObject).Speed.X;
                     AttachedObject = null;
@@ -3715,7 +3717,7 @@ public partial class Rayman
                 }
 
                 // Attack
-                if (field23_0x98 == 0 && MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.B) && CanAttackWithFist(2))
+                if (DisableAttackTimer == 0 && MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.B) && CanAttackWithFist(2))
                 {
                     State.MoveTo(Fsm_Attack);
                     return false;
@@ -3733,8 +3735,8 @@ public partial class Rayman
             case FsmAction.UnInit:
                 if (IsLocalPlayer)
                 {
-                    Flag1_D = true;
-                    field16_0x91 = 0;
+                    ResetCameraOffset = true;
+                    ResetCameraOffsetTimer = 0;
                 }
                 break;
         }
@@ -3759,7 +3761,7 @@ public partial class Rayman
                     right: ActorModel.DetectionBox.Right,
                     bottom: ActorModel.DetectionBox.Bottom));
 
-                Flag1_D = false;
+                ResetCameraOffset = false;
                 break;
 
             case FsmAction.Step:
@@ -3808,7 +3810,7 @@ public partial class Rayman
                 {
                     Position = Position with { Y = GetActionBox().Top - 20 };
                     if (Rom.Platform == Platform.NGage)
-                        ForceDefaultCameraTimer = 0x3c;
+                        PlumCameraTimer = 0x3c;
                     PreviousXSpeed = ((MovableActor)AttachedObject).Speed.X;
                     AttachedObject = null;
                     State.MoveTo(Fsm_Jump);
@@ -3825,8 +3827,8 @@ public partial class Rayman
 
                 if (IsLocalPlayer)
                 {
-                    Flag1_D = true;
-                    field16_0x91 = 0;
+                    ResetCameraOffset = true;
+                    ResetCameraOffsetTimer = 0;
                 }
                 break;
         }
@@ -3842,7 +3844,7 @@ public partial class Rayman
                 // NOTE: The game doesn't check the class, and will end up writing to other memory if of type FrameWorldSideScroller
                 if (Frame.Current is FrameSideScroller sideScroller)
                     sideScroller.CanPause = false;
-                Flag2_1 = false;
+                TempFlag = false;
                 NextActionId = null;
                 PreviousXSpeed = 0;
                 if (HasLanded())
@@ -3964,10 +3966,10 @@ public partial class Rayman
                         Timer = 0;
                     }
 
-                    if (Flag2_1)
+                    if (TempFlag)
                         return true;
 
-                    Flag2_1 = true;
+                    TempFlag = true;
 
                     if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
                         ((FrameSideScrollerGCN)Frame.Current).FUN_0808a9f4();
@@ -4142,15 +4144,15 @@ public partial class Rayman
                 LinkedMovementActor = null;
                 Timer = 0;
 
-                if (Flag1_4)
+                if (IsInstaKillKnockback)
                 {
                     CheckAgainstMapCollision = false;
                     CheckAgainstObjectCollision = false;
                     ReceiveDamage(HitPoints);
-                    Flag1_4 = false;
+                    IsInstaKillKnockback = false;
                 }
 
-                if (!Flag1_C)
+                if (!IsHurtKnockback)
                 {
                     // Due to the lack of some null checks on GBA this code works differently on GBA and N-Gage if there is no attached object
                     bool right;
@@ -4216,8 +4218,8 @@ public partial class Rayman
                 Timer++;
 
                 // TODO: Seems to be a bug - fix? The flag is true if you started out climbing. This should probably set it to false after 25 frames.
-                if (!Flag2_1 && Timer > 25)
-                    Flag2_1 = false;
+                if (!TempFlag && Timer > 25)
+                    TempFlag = false;
 
                 if (HitPoints == 0 && Timer > 20)
                 {
@@ -4263,7 +4265,7 @@ public partial class Rayman
                     return false;
                 }
 
-                if (HitPoints != 0 && !Flag2_1 && IsOnClimbableVertical() == 1)
+                if (HitPoints != 0 && !TempFlag && IsOnClimbableVertical() == ClimbDirection.TopAndBottom)
                 {
                     State.MoveTo(Fsm_Climb);
                     return false;
@@ -4279,7 +4281,7 @@ public partial class Rayman
             case FsmAction.UnInit:
                 CheckAgainstMapCollision = true;
                 CheckAgainstObjectCollision = true;
-                Flag2_1 = false;
+                TempFlag = false;
                 break;
         }
 
@@ -4357,7 +4359,7 @@ public partial class Rayman
                 NextActionId = null;
                 PreviousXSpeed = 0;
 
-                if (IsOnClimbableVertical() != 0)
+                if (IsOnClimbableVertical() != ClimbDirection.None)
                 {
                     ActionId = IsFacingRight ? Action.Climb_Idle_Right : Action.Climb_Idle_Left;
                     MechModel.Speed = Vector2.Zero;
@@ -4376,7 +4378,7 @@ public partial class Rayman
                 if (ActionId is Action.Fall_Right or Action.Fall_Left)
                     MechModel.Speed = MechModel.Speed with { X = 0 };
 
-                if (IsOnClimbableVertical() == 1)
+                if (IsOnClimbableVertical() == ClimbDirection.TopAndBottom)
                 {
                     if (ActionId is not (Action.Climb_Idle_Right or Action.Climb_Idle_Left))
                         ActionId = IsFacingRight ? Action.Climb_Idle_Right : Action.Climb_Idle_Left;
@@ -4413,7 +4415,7 @@ public partial class Rayman
                 NextActionId = null;
                 PreviousXSpeed = 0;
 
-                if (IsOnClimbableVertical() != 0)
+                if (IsOnClimbableVertical() != ClimbDirection.None)
                 {
                     ActionId = IsFacingRight ? Action.Climb_Idle_Right : Action.Climb_Idle_Left;
                     MechModel.Speed = Vector2.Zero;
@@ -4432,7 +4434,7 @@ public partial class Rayman
                 if (ActionId is Action.Fall_Right or Action.Fall_Left)
                     MechModel.Speed = MechModel.Speed with { X = 0 };
 
-                if (IsOnClimbableVertical() == 1)
+                if (IsOnClimbableVertical() == ClimbDirection.TopAndBottom)
                 {
                     if (ActionId is not (Action.Climb_Idle_Right or Action.Climb_Idle_Left))
                         ActionId = IsFacingRight ? Action.Climb_Idle_Right : Action.Climb_Idle_Left;

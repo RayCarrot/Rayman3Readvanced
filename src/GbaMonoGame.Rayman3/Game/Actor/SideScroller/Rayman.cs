@@ -9,7 +9,6 @@ using ImGuiNET;
 
 namespace GbaMonoGame.Rayman3;
 
-// TODO: Move values, such as different speeds, to constants
 public sealed partial class Rayman : MovableActor
 {
     public Rayman(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
@@ -212,17 +211,20 @@ public sealed partial class Rayman : MovableActor
     public ushort ReverseControlsTimer { get; set; }
     public ushort MultiplayerBlueLumTimer { get; set; }
     public int InitialHitPoints { get; set; }
-    public ushort ForceDefaultCameraTimer { get; set; } // N-Gage only
+    public byte ResetCameraOffsetTimer { get; set; }
+    public byte FirstLevelIdleTimer { get; set; }
+    public byte DisableAttackTimer { get; set; } // Never set to a non-zero value, making it unused
+    public bool IsSuperHelicoActive { get; set; }
+    public ushort PlumCameraTimer { get; set; } // N-Gage only
 
     public bool Debug_NoClip { get; set; } // Custom no-clip mode
 
-    // TODO: Name flags
-    // Unknown flags 1
-    public bool Flag1_0 { get; set; }
-    public bool Flag1_1 { get; set; }
+    // Flags 1
+    public bool DisableNearEdge { get; set; }
+    public bool UnusedFlag1_1 { get; set; } // Unused
     public bool IsHanging { get; set; }
-    public bool PreventWallJumps { get; set; }
-    public bool Flag1_4 { get; set; }
+    public bool DisableWallJumps { get; set; }
+    public bool IsInstaKillKnockback { get; set; } // Never set to true
     public bool IsBouncing { get; set; }
     public bool IsInFrontOfLevelCurtain { get; set; }
     public bool StartFlyingWithKegRight { get; set; }
@@ -230,26 +232,16 @@ public sealed partial class Rayman : MovableActor
     public bool StopFlyingWithKeg { get; set; }
     public bool DropObject { get; set; }
     public bool SongAlternation { get; set; }
-    public bool Flag1_C { get; set; }
-    public bool Flag1_D { get; set; }
+    public bool IsHurtKnockback { get; set; } // Never set to false once set to true
+    public bool ResetCameraOffset { get; set; }
     public bool FinishedMap { get; set; }
-    public bool Flag1_F { get; set; }
 
-    // Unknown flags 2
-    public bool Flag2_0 { get; set; }
-    public bool Flag2_1 { get; set; } // TODO: Seems to be some general purpose flag. Name something like "TestFlag" or "TempFlag"?
+    // Flags 2
+    public bool HasSetJumpSpeed { get; set; }
+    public bool TempFlag { get; set; } // General purpose flag, differs depending on the state
     public bool CanJump { get; set; }
     public bool IsLocalPlayer { get; set; }
     public bool CanSafetyJump { get; set; } // Coyote jump
-    public bool Flag2_5 { get; set; }
-    public bool Flag2_6 { get; set; }
-    public bool Flag2_7 { get; set; }
-
-    // Unknown fields
-    public byte field16_0x91 { get; set; }
-    public byte field22_0x97 { get; set; }
-    public byte field23_0x98 { get; set; }
-    public bool IsSuperHelicoActive { get; set; }
 
     private void EnableCheats()
     {
@@ -1033,7 +1025,7 @@ public sealed partial class Rayman : MovableActor
     }
 
     // 0 = false, 1 = top and bottom, 2 = top, 3 = bottom
-    private int IsOnClimbableVertical()
+    private ClimbDirection IsOnClimbableVertical()
     {
         Vector2 pos = Position;
 
@@ -1065,19 +1057,19 @@ public sealed partial class Rayman : MovableActor
         }
 
         if (bottomType == PhysicalTypeValue.Climb && topType == PhysicalTypeValue.Climb)
-            return 1;
+            return ClimbDirection.TopAndBottom;
 
         if (bottomType == PhysicalTypeValue.Climb)
-            return 3;
+            return ClimbDirection.Bottom;
 
         if (topType == PhysicalTypeValue.Climb)
-            return 2;
+            return ClimbDirection.Top;
 
         return 0;
     }
 
     // 0 = false, 4 = right and left, 5 = right, 6 = left
-    private int IsOnClimbableHorizontal()
+    private ClimbDirection IsOnClimbableHorizontal()
     {
         Vector2 pos = Position;
 
@@ -1109,13 +1101,13 @@ public sealed partial class Rayman : MovableActor
         }
 
         if (leftType == PhysicalTypeValue.Climb && rightType == PhysicalTypeValue.Climb)
-            return 4;
+            return ClimbDirection.RightAndLeft;
 
         if (leftType == PhysicalTypeValue.Climb)
-            return 6;
+            return ClimbDirection.Left;
 
         if (rightType == PhysicalTypeValue.Climb)
-            return 5;
+            return ClimbDirection.Right;
 
         return 0;
     }
@@ -1152,7 +1144,7 @@ public sealed partial class Rayman : MovableActor
         if (!HasPower(Power.WallJump))
             return false;
 
-        if (PreventWallJumps)
+        if (DisableWallJumps)
             return false;
 
         return Scene.GetPhysicalType(Position) == PhysicalTypeValue.WallJump;
@@ -1771,7 +1763,7 @@ public sealed partial class Rayman : MovableActor
                 if (message == Message.Actor_HurtPassthrough)
                     CheckAgainstObjectCollision = false;
                 else if (message == Message.Actor_HurtKnockback)
-                    Flag1_C = true;
+                    IsHurtKnockback = true;
 
                 if (AttachedObject != null && (ActorType)AttachedObject.Type is ActorType.Keg or ActorType.Caterpillar or ActorType.Sphere)
                     AttachedObject.ProcessMessage(this, Message.Actor_Drop);
@@ -1779,13 +1771,13 @@ public sealed partial class Rayman : MovableActor
                 AttachedObject = (BaseActor)sender;
 
                 if (State == Fsm_Climb)
-                    Flag2_1 = true;
+                    TempFlag = true;
 
                 State.MoveTo(Fsm_HitKnockback);
                 return false;
 
             case Message.Actor_Fall:
-                PreventWallJumps = true;
+                DisableWallJumps = true;
                 return false;
 
             case Message.Rayman_BeginHang:
@@ -1926,8 +1918,8 @@ public sealed partial class Rayman : MovableActor
                     State.MoveTo(Fsm_QuickFinishBodyShotAttack);
                 return false;
 
-            case Message.Rayman_SetUnknownFlag:
-                Flag1_0 = true;
+            case Message.Rayman_DisableNearEdge:
+                DisableNearEdge = true;
                 return false;
 
             case Message.Rayman_Stop:
@@ -1937,7 +1929,7 @@ public sealed partial class Rayman : MovableActor
             case Message.Rayman_Resume:
                 if (State == Fsm_Stop || State == Fsm_Cutscene)
                 {
-                    if (IsOnClimbableVertical() != 0)
+                    if (IsOnClimbableVertical() != ClimbDirection.None)
                         State.MoveTo(Fsm_Climb);
                     else
                         State.MoveTo(Fsm_Default);
@@ -2152,15 +2144,17 @@ public sealed partial class Rayman : MovableActor
         MultiplayerBlueLumTimer = 0;
         
         if (Rom.Platform == Platform.NGage)
-            ForceDefaultCameraTimer = 0;
+            PlumCameraTimer = 0;
 
         NextActionId = null;
         Array.Clear(ActiveBodyParts);
-        Flag1_0 = false;
-        Flag1_1 = false;
+
+        // Reset flags
+        DisableNearEdge = false;
+        UnusedFlag1_1 = false;
         IsHanging = false;
-        PreventWallJumps = false;
-        Flag1_4 = false;
+        DisableWallJumps = false;
+        IsInstaKillKnockback = false;
         IsBouncing = false;
         IsInFrontOfLevelCurtain = false;
         StartFlyingWithKegRight = false;
@@ -2168,10 +2162,10 @@ public sealed partial class Rayman : MovableActor
         StopFlyingWithKeg = false;
         DropObject = false;
         SongAlternation = false;
-        Flag1_C = false;
-        Flag1_D = false;
+        IsHurtKnockback = false;
+        ResetCameraOffset = false;
         FinishedMap = false;
-        Flag1_F = false;
+
         PrevHitPoints = HitPoints;
         PrevSpeedY = 0;
         PreviousXSpeed = 0;
@@ -2181,51 +2175,50 @@ public sealed partial class Rayman : MovableActor
         InvisibilityTimer = 0;
         ReverseControlsTimer = 0;
         InitialHitPoints = HitPoints;
-        field23_0x98 = 0;
+        DisableAttackTimer = 0;
         HangOnEdgeDelay = 0;
         InvulnerabilityDuration = 0;
         Charge = 0;
-        field22_0x97 = 0;
+        FirstLevelIdleTimer = 0;
 
-        Flag2_0 = false;
+        // Reset flags
+        HasSetJumpSpeed = false;
         IsSuperHelicoActive = false;
-        Flag2_1 = false;
+        TempFlag = false;
         CanJump = true;
 
         CheckAgainstMapCollision = true;
         CheckAgainstObjectCollision = true;
 
+        // Set the initial action
         ActionId = (Action)Resource.FirstActionId;
         ChangeAction();
 
-        if (GameInfo.LastGreenLumAlive == 0)
-        {
-            // Start facing left when returning from certain levels
-            if (GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4 && !GameInfo.IsInWorldMap)
-            {
-                if ((MapId)GameInfo.PersistentInfo.LastPlayedLevel is 
-                    MapId.MarshAwakening1 or 
-                    MapId.BossMachine or 
-                    MapId.MissileRace1 or 
-                    MapId.MarshAwakening2 or 
-                    MapId.BeneathTheSanctuary_M1 or 
-                    MapId.BeneathTheSanctuary_M2 or 
-                    MapId.BossRockAndLava or 
-                    MapId.SanctuaryOfRockAndLava_M1 or 
-                    MapId.SanctuaryOfRockAndLava_M3 or 
-                    MapId.BossScaleMan or 
-                    MapId.Bonus4 or 
-                    MapId.Power4)
-                {
-                    ActionId = Action.Idle_Left;
-                    ChangeAction();
-                }
-            }
-        }
-        else
+        // Respawn at last green lum
+        if (GameInfo.LastGreenLumAlive != 0)
         {
             Position = GameInfo.CheckpointPosition;
             ActionId = Action.Idle_Right;
+            ChangeAction();
+        }
+        // Start facing left when returning from certain levels
+        else if (GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4 &&
+                 !GameInfo.IsInWorldMap &&
+                 (MapId)GameInfo.PersistentInfo.LastPlayedLevel is 
+                 MapId.MarshAwakening1 or
+                 MapId.BossMachine or
+                 MapId.MissileRace1 or
+                 MapId.MarshAwakening2 or
+                 MapId.BeneathTheSanctuary_M1 or
+                 MapId.BeneathTheSanctuary_M2 or
+                 MapId.BossRockAndLava or
+                 MapId.SanctuaryOfRockAndLava_M1 or
+                 MapId.SanctuaryOfRockAndLava_M3 or
+                 MapId.BossScaleMan or
+                 MapId.Bonus4 or
+                 MapId.Power4)
+        {
+            ActionId = Action.Idle_Left;
             ChangeAction();
         }
 
@@ -2295,7 +2288,7 @@ public sealed partial class Rayman : MovableActor
             CameraSideScroller cam = (CameraSideScroller)Scene.Camera;
 
             // Force default camera offset when jumping off of a plum on N-Gage
-            if (ForceDefaultCameraTimer != 0 && 
+            if (PlumCameraTimer != 0 && 
                 (AttachedObject == null || (ActorType)AttachedObject.Type != ActorType.Plum))
             {
                 if (IsFacingRight)
@@ -2303,7 +2296,7 @@ public sealed partial class Rayman : MovableActor
                 else
                     cam.HorizontalOffset = Speed.X < 0 ? CameraOffset.Default : CameraOffset.DefaultReversed;
 
-                ForceDefaultCameraTimer--;
+                PlumCameraTimer--;
             }
 
             // Special camera code for the exclusive N-Gage falling levels
@@ -2429,5 +2422,16 @@ public sealed partial class Rayman : MovableActor
         Above = 2,
         Left = 4,
         Below = 8
+    }
+
+    private enum ClimbDirection
+    {
+        None = 0,
+        TopAndBottom = 1,
+        Top = 2,
+        Bottom = 3,
+        RightAndLeft = 4,
+        Right = 5,
+        Left = 6,
     }
 }
