@@ -4152,7 +4152,7 @@ public partial class Rayman
                     IsInstaKillKnockback = false;
                 }
 
-                if (!IsHurtKnockback)
+                if (!IsSmallKnockback)
                 {
                     // Due to the lack of some null checks on GBA this code works differently on GBA and N-Gage if there is no attached object
                     bool right;

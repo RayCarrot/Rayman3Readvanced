@@ -23,9 +23,14 @@ public sealed partial class Rayman : MovableActor
         {
             if (Rom.Platform == Platform.NGage)
             {
-                FlagData = new CaptureTheFlagData()
+                FlagData = new CaptureTheFlagData
                 {
+                    PickedUpFlag = null,
+                    InvincibilityTimer = 0,
+                    SpeedUpTimer = 0,
                     CanPickUpDroppedFlag = true,
+                    PlayerPaletteId = 0,
+                    Powers = Power.None,
                 };
             }
 
@@ -35,17 +40,17 @@ public sealed partial class Rayman : MovableActor
             }
             else
             {
+                // Disable animation sounds if not the local player
                 if (instanceId != RSMultiplayer.MachineId)
                 {
                     IsLocalPlayer = false;
                     AnimatedObject.IsSoundEnabled = false;
                 }
 
-                // This is some hacky code to add the additional multiplayer palettes. The game doesn't store this
-                // in the animated object resource to avoid them being allocated in single player. So the game
-                // manually allocates them to vram here. We however can't just modify this actor's animations since
-                // we cache sprites between all actors that share the same animated object. So the easiest solution
-                // is to add the palettes to the animated object and then just change the base pal index.
+                // This is some semi-hacky code to add the additional multiplayer palettes. The game doesn't store this
+                // in the animated object resource to avoid them being allocated in single player. So the game instead
+                // manually allocates them to vram here. The easiest solution for us is to override the palettes, appending
+                // the multiplayer palettes and then just changing the base palette index based on the player.
                 if (Rom.Platform == Platform.NGage &&
                     MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag &&
                     MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Teams)
@@ -111,7 +116,7 @@ public sealed partial class Rayman : MovableActor
                     // Override the palettes
                     AnimatedObject.OverridePalettes = multiplayerPalettes;
 
-                    // Set the base palette index
+                    // Set the base palette index based on the team
                     if (InstanceId is 0 or 1)
                         AnimatedObject.BasePaletteIndex = 0;
                     else if (InstanceId is 2 or 3)
@@ -232,7 +237,7 @@ public sealed partial class Rayman : MovableActor
     public bool StopFlyingWithKeg { get; set; }
     public bool DropObject { get; set; }
     public bool SongAlternation { get; set; }
-    public bool IsHurtKnockback { get; set; } // Never set to false once set to true
+    public bool IsSmallKnockback { get; set; } // Never set to false once it has been set to true
     public bool ResetCameraOffset { get; set; }
     public bool FinishedMap { get; set; }
 
@@ -389,13 +394,9 @@ public sealed partial class Rayman : MovableActor
     private bool HasPower(Power power)
     {
         if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
-        {
             return (FlagData.Powers & power) != 0;
-        }
         else
-        {
             return GameInfo.IsPowerEnabled(power);
-        }
     }
 
     private void Attack(uint chargePower, RaymanBody.RaymanBodyPartType type, Vector2 offset, bool hasCharged)
@@ -411,6 +412,7 @@ public sealed partial class Rayman : MovableActor
         bodyPart.Rayman = this;
         bodyPart.BaseActionId = 0;
 
+        // Hide the body part from Rayman's animations
         switch (type)
         {
             case RaymanBody.RaymanBodyPartType.Fist:
@@ -477,7 +479,7 @@ public sealed partial class Rayman : MovableActor
         bodyPart.HasCharged = hasCharged;
 
         if (IsFacingLeft)
-            offset *= new Vector2(-1, 1); // Flip x
+            offset.X = -offset.X; // Flip x
 
         bodyPart.Position = Position + offset;
 
@@ -532,7 +534,6 @@ public sealed partial class Rayman : MovableActor
             SlideType = null;
             PlaySound(Rayman3SoundEvent.Stop__SldGreen_SkiLoop1);
         }
-
     }
 
     private void ManageSlide()
@@ -540,7 +541,7 @@ public sealed partial class Rayman : MovableActor
         if (SlideType == null)
             return;
 
-        MechModel.Speed = new Vector2(PreviousXSpeed, 5.62501525879f);
+        MechModel.Speed = new Vector2(PreviousXSpeed, MathHelpers.FromFixedPoint(0x5a001));
 
         if (IsDirectionalButtonPressed(GbaInput.Left))
         {
@@ -554,6 +555,7 @@ public sealed partial class Rayman : MovableActor
         }
         else
         {
+            // Friction
             if (PreviousXSpeed >= 0.05859375f)
             {
                 PreviousXSpeed -= 0.015625f;
@@ -765,6 +767,7 @@ public sealed partial class Rayman : MovableActor
             if (InvulnerabilityDuration == 0)
                 InvulnerabilityDuration = 120;
 
+            // Drop object if carrying one
             if (AttachedObject != null)
             {
                 if ((ActorType)AttachedObject.Type is ActorType.Keg or ActorType.Caterpillar or ActorType.Sphere)
@@ -788,6 +791,66 @@ public sealed partial class Rayman : MovableActor
         PrevHitPoints = HitPoints;
 
         return takenDamage;
+    }
+
+    private bool CheckDeath()
+    {
+        Box detectionBox = GetDetectionBox();
+
+        PhysicalTypeValue type = PhysicalTypeValue.None;
+        for (int i = 0; i < 3; i++)
+        {
+            type = Scene.GetPhysicalType(detectionBox.BottomLeft + new Vector2(16 * i, -1));
+
+            if (type is PhysicalTypeValue.InstaKill or PhysicalTypeValue.Lava or PhysicalTypeValue.Water or PhysicalTypeValue.MoltenLava)
+                break;
+        }
+
+        if (HitPoints == 0 || type is PhysicalTypeValue.InstaKill or PhysicalTypeValue.Lava or PhysicalTypeValue.Water or PhysicalTypeValue.MoltenLava)
+        {
+            if (State == Fsm_RidingWalkingShell && type is PhysicalTypeValue.InstaKill or PhysicalTypeValue.MoltenLava)
+                return false;
+
+            // Drop object if carrying one
+            if (AttachedObject != null)
+            {
+                if ((ActorType)AttachedObject.Type is ActorType.Keg or ActorType.Caterpillar or ActorType.Sphere)
+                    AttachedObject.ProcessMessage(this, Message.Actor_Drop);
+                AttachedObject = null;
+            }
+
+            // Handle drowning
+            if (IsLavaInLevel() && type is PhysicalTypeValue.Lava or PhysicalTypeValue.MoltenLava)
+            {
+                LavaSplash lavaSplash = Scene.CreateProjectile<LavaSplash>(ActorType.LavaSplash);
+                if (lavaSplash != null)
+                {
+                    lavaSplash.Position = Position;
+                    lavaSplash.ActionId = LavaSplash.Action.DrownSplash;
+                    lavaSplash.ChangeAction();
+                }
+
+                ActionId = IsFacingRight ? Action.Drown_Right : Action.Drown_Left;
+            }
+            else if (type == PhysicalTypeValue.Water)
+            {
+                WaterSplash waterSplash = Scene.CreateProjectile<WaterSplash>(ActorType.WaterSplash);
+                if (waterSplash != null)
+                    waterSplash.Position = Position;
+
+                ActionId = IsFacingRight ? Action.Drown_Right : Action.Drown_Left;
+            }
+            else if (type == PhysicalTypeValue.MoltenLava)
+            {
+                ActionId = IsFacingRight ? Action.Drown_Right : Action.Drown_Left;
+            }
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     private bool ShouldAutoJump()
@@ -1024,7 +1087,6 @@ public sealed partial class Rayman : MovableActor
         return false;
     }
 
-    // 0 = false, 1 = top and bottom, 2 = top, 3 = bottom
     private ClimbDirection IsOnClimbableVertical()
     {
         Vector2 pos = Position;
@@ -1068,7 +1130,6 @@ public sealed partial class Rayman : MovableActor
         return 0;
     }
 
-    // 0 = false, 4 = right and left, 5 = right, 6 = left
     private ClimbDirection IsOnClimbableHorizontal()
     {
         Vector2 pos = Position;
@@ -1215,171 +1276,53 @@ public sealed partial class Rayman : MovableActor
 
     private bool IsLavaInLevel()
     {
-        return GameInfo.MapId switch
-        {
-            MapId.WoodLight_M1 => false,
-            MapId.WoodLight_M2 => false,
-            MapId.FairyGlade_M1 => false,
-            MapId.FairyGlade_M2 => false,
-            MapId.MarshAwakening1 => false,
-            MapId.BossMachine => false,
-            MapId.SanctuaryOfBigTree_M1 => false,
-            MapId.SanctuaryOfBigTree_M2 => false,
-            MapId.MissileRace1 => false,
-            MapId.EchoingCaves_M1 => false,
-            MapId.EchoingCaves_M2 => false,
-            MapId.CavesOfBadDreams_M1 => false,
-            MapId.CavesOfBadDreams_M2 => false,
-            MapId.BossBadDreams => false,
-            MapId.MenhirHills_M1 => false,
-            MapId.MenhirHills_M2 => false,
-            MapId.MarshAwakening2 => false,
-
-            MapId.SanctuaryOfStoneAndFire_M1 => true,
-            MapId.SanctuaryOfStoneAndFire_M2 => true,
-            MapId.SanctuaryOfStoneAndFire_M3 => true,
-            MapId.BeneathTheSanctuary_M1 => true,
-            MapId.BeneathTheSanctuary_M2 => true,
-
-            MapId.ThePrecipice_M1 => false,
-            MapId.ThePrecipice_M2 => false,
-            MapId.BossRockAndLava => true,
-            MapId.TheCanopy_M1 => false,
-            MapId.TheCanopy_M2 => false,
-
-            MapId.SanctuaryOfRockAndLava_M1 => true,
-            MapId.SanctuaryOfRockAndLava_M2 => true,
-            MapId.SanctuaryOfRockAndLava_M3 => true,
-
-            MapId.TombOfTheAncients_M1 => false,
-            MapId.TombOfTheAncients_M2 => false,
-            MapId.BossScaleMan => false,
-
-            MapId.IronMountains_M1 => true,
-            MapId.IronMountains_M2 => true,
-            MapId.MissileRace2 => true,
-            MapId.PirateShip_M1 => true,
-            MapId.PirateShip_M2 => true,
-            MapId.BossFinal_M1 => true,
-
-            MapId.BossFinal_M2 => false,
-            MapId.Bonus1 => false,
-            MapId.Bonus2 => false,
-
-            MapId.Bonus3 => true,
-
-            MapId.Bonus4 => false,
-
-            MapId._1000Lums => true,
-
-            MapId.ChallengeLy1 => false,
-            MapId.ChallengeLy2 => false,
-            MapId.ChallengeLyGCN => false,
-            MapId.Power1 => false,
-            MapId.Power2 => false,
-            MapId.Power3 => false,
-            MapId.Power4 => false,
-            MapId.Power5 => false,
-            MapId.Power6 => false,
-            MapId.World1 => false,
-            MapId.World2 => false,
-            MapId.World3 => false,
-            MapId.World4 => false,
-            MapId.WorldMap => false,
-
-            MapId.GameCube_Bonus6 => true,
-
-            _ => false
-        };
-    }
-
-    private bool CheckDeath()
-    {
-        Box detectionBox = GetDetectionBox();
-
-        PhysicalTypeValue type = PhysicalTypeValue.None;
-        for (int i = 0; i < 3; i++)
-        {
-            type = Scene.GetPhysicalType(detectionBox.BottomLeft + new Vector2(16 * i, -1));
-
-            if (type is PhysicalTypeValue.InstaKill or PhysicalTypeValue.Lava or PhysicalTypeValue.Water or PhysicalTypeValue.MoltenLava)
-                break;
-        }
-
-        if (HitPoints == 0 || type is PhysicalTypeValue.InstaKill or PhysicalTypeValue.Lava or PhysicalTypeValue.Water or PhysicalTypeValue.MoltenLava)
-        {
-            if (State == Fsm_RidingWalkingShell && type is PhysicalTypeValue.InstaKill or PhysicalTypeValue.MoltenLava)
-                return false;
-
-            if (AttachedObject != null)
-            {
-                if ((ActorType)AttachedObject.Type is ActorType.Keg or ActorType.Caterpillar or ActorType.Sphere)
-                    AttachedObject.ProcessMessage(this, Message.Actor_Drop);
-                AttachedObject = null;
-            }
-
-            // Handle drowning
-            if (IsLavaInLevel() && type is PhysicalTypeValue.Lava or PhysicalTypeValue.MoltenLava)
-            {
-                LavaSplash lavaSplash = Scene.CreateProjectile<LavaSplash>(ActorType.LavaSplash);
-                if (lavaSplash != null)
-                {
-                    lavaSplash.Position = Position;
-                    lavaSplash.ActionId = LavaSplash.Action.DrownSplash;
-                    lavaSplash.ChangeAction();
-                }
-
-                ActionId = IsFacingRight ? Action.Drown_Right : Action.Drown_Left;
-            }
-            else if (type == PhysicalTypeValue.Water)
-            {
-                WaterSplash waterSplash = Scene.CreateProjectile<WaterSplash>(ActorType.WaterSplash);
-                if (waterSplash != null)
-                    waterSplash.Position = Position;
-
-                ActionId = IsFacingRight ? Action.Drown_Right : Action.Drown_Left;
-            }
-            else if (type == PhysicalTypeValue.MoltenLava)
-            {
-                ActionId = IsFacingRight ? Action.Drown_Right : Action.Drown_Left;
-            }
-
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return GameInfo.MapId is 
+            MapId.SanctuaryOfStoneAndFire_M1 or 
+            MapId.SanctuaryOfStoneAndFire_M2 or 
+            MapId.SanctuaryOfStoneAndFire_M3 or 
+            MapId.BeneathTheSanctuary_M1 or 
+            MapId.BeneathTheSanctuary_M2 or 
+            MapId.BossRockAndLava or // Has no lava
+            MapId.SanctuaryOfRockAndLava_M1 or 
+            MapId.SanctuaryOfRockAndLava_M2 or 
+            MapId.SanctuaryOfRockAndLava_M3 or 
+            MapId.IronMountains_M1 or 
+            MapId.IronMountains_M2 or 
+            MapId.MissileRace2 or // Mode7 level, doesn't use the Rayman actor
+            MapId.PirateShip_M1 or 
+            MapId.PirateShip_M2 or 
+            MapId.BossFinal_M1 or // Has no lava
+            MapId.Bonus3 or 
+            MapId._1000Lums or 
+            MapId.GameCube_Bonus6;
     }
 
     private void AutoSave()
     {
-        if (FinishedMap)
-        {
-            switch (GameInfo.MapId)
-            {
-                case MapId.WoodLight_M1:
-                case MapId.FairyGlade_M1:
-                case MapId.SanctuaryOfBigTree_M1:
-                case MapId.EchoingCaves_M1:
-                case MapId.CavesOfBadDreams_M1:
-                case MapId.MenhirHills_M1:
-                case MapId.SanctuaryOfStoneAndFire_M1:
-                case MapId.SanctuaryOfStoneAndFire_M2:
-                case MapId.BeneathTheSanctuary_M1:
-                case MapId.ThePrecipice_M1:
-                case MapId.TheCanopy_M1:
-                case MapId.SanctuaryOfRockAndLava_M1:
-                case MapId.SanctuaryOfRockAndLava_M2:
-                case MapId.TombOfTheAncients_M1:
-                case MapId.IronMountains_M1:
-                case MapId.PirateShip_M1:
-                case MapId.BossFinal_M1:
-                    return;
-            }
-        }
-
-        if (GameInfo.MapId is not (MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4 or MapId.WorldMap))
+        if ((!FinishedMap || GameInfo.MapId is not (
+                MapId.WoodLight_M1 or
+                MapId.FairyGlade_M1 or
+                MapId.SanctuaryOfBigTree_M1 or
+                MapId.EchoingCaves_M1 or
+                MapId.CavesOfBadDreams_M1 or
+                MapId.MenhirHills_M1 or
+                MapId.SanctuaryOfStoneAndFire_M1 or
+                MapId.SanctuaryOfStoneAndFire_M2 or
+                MapId.BeneathTheSanctuary_M1 or
+                MapId.ThePrecipice_M1 or
+                MapId.TheCanopy_M1 or
+                MapId.SanctuaryOfRockAndLava_M1 or
+                MapId.SanctuaryOfRockAndLava_M2 or
+                MapId.TombOfTheAncients_M1 or
+                MapId.IronMountains_M1 or
+                MapId.PirateShip_M1 or
+                MapId.BossFinal_M1)) && 
+            GameInfo.MapId is not (
+                MapId.World1 or 
+                MapId.World2 or 
+                MapId.World3 or 
+                MapId.World4 or 
+                MapId.WorldMap))
         {
             GameInfo.PersistentInfo.LastPlayedLevel = (byte)GameInfo.MapId;
             GameInfo.Save(GameInfo.CurrentSlot);
@@ -1740,7 +1683,7 @@ public sealed partial class Rayman : MovableActor
             case Message.Actor_Hurt:
             case Message.Actor_End: // Unused
             case Message.Actor_HurtPassthrough:
-            case Message.Actor_HurtKnockback:
+            case Message.Actor_HurtSmallKnockback:
                 if (State == Fsm_HitKnockback || State == Fsm_Dying || State == Fsm_EndMap || InvulnerabilityDuration != 0)
                     return false;
 
@@ -1753,7 +1696,11 @@ public sealed partial class Rayman : MovableActor
                 if (AttachedObject is { Type: (int)ActorType.Plum })
                 {
                     Box box = ((Plum)AttachedObject).GetActionBox();
-                    LinkedMovementActor = null; // TODO: Huh? Isn't this meant to be setting attached object to null?
+
+                    // NOTE: This is probably a mistake in the original code and meant to set AttachedObject to null. However it
+                    //       doesn't matter since the AttachedObject gets overriden further down anyway.
+                    LinkedMovementActor = null;
+
                     Position = Position with { Y = box.Top - 16 };
                 }
 
@@ -1762,8 +1709,8 @@ public sealed partial class Rayman : MovableActor
 
                 if (message == Message.Actor_HurtPassthrough)
                     CheckAgainstObjectCollision = false;
-                else if (message == Message.Actor_HurtKnockback)
-                    IsHurtKnockback = true;
+                else if (message == Message.Actor_HurtSmallKnockback)
+                    IsSmallKnockback = true;
 
                 if (AttachedObject != null && (ActorType)AttachedObject.Type is ActorType.Keg or ActorType.Caterpillar or ActorType.Sphere)
                     AttachedObject.ProcessMessage(this, Message.Actor_Drop);
@@ -1842,7 +1789,7 @@ public sealed partial class Rayman : MovableActor
                             }
                             break;
 
-                        case MultiplayerGameType.CaptureTheFlag when MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag:
+                        case MultiplayerGameType.CaptureTheFlag when Rom.Platform == Platform.NGage:
                             if (MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Solo)
                             {
                                 if (FlagData.InvincibilityTimer == 0 && State != Fsm_MultiplayerCapturedFlag)
@@ -2162,7 +2109,7 @@ public sealed partial class Rayman : MovableActor
         StopFlyingWithKeg = false;
         DropObject = false;
         SongAlternation = false;
-        IsHurtKnockback = false;
+        IsSmallKnockback = false;
         ResetCameraOffset = false;
         FinishedMap = false;
 

@@ -199,7 +199,7 @@ public partial class Rayman
         BouncyHelico_Right = 189,
         BouncyHelico_Left = 190,
         EnterCurtain_Right = 191,
-        EnterCurtain_Left = 192,
+        EnterCurtain_Left = 192, // Unused
         Idle_LookAround_Right = 193,
         Idle_LookAround_Left = 194,
         Walk_LookAround_Right = 195,

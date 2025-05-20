@@ -110,7 +110,7 @@ public enum Message
     Rayman_EndInFrontOfLevelCurtain = 1083,
     Actor_HurtPassthrough = 1084,
     RaymanMode7_ShowTextBox = 1085, // Unused
-    Actor_HurtKnockback = 1086,
+    Actor_HurtSmallKnockback = 1086,
     Actor_ReloadAnimation = 1087,
     Rayman_BeginCutscene = 1088,
     Rayman_HurtShock = 1089,

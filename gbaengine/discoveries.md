@@ -19,6 +19,27 @@
 ### Actors
 Most actors have the first animation be unused and just single frame, most likely for their level editor. This is not included when mentioning unused animations for each actor.
 
+#### Rayman
+- In the N-Gage version the palette used for the flags is wrong when in teams mode as the palette doesn't match the sprite data. This causes the flags to render incorrectly.
+- There's a timer value for you not being able to attack. This is however never set, thus making it unused.
+- There's an unused flag which is only ever set to false during initialization.
+- There's an unused flag which is only ever set to false for if the knockback from taking damage should insta-kill you.
+- There's a flag for if the knockback from taking damage should be smaller and without resetting the speed which is only ever used when the flames in the Rocky boss fight damage you.. Once this has been set it does however not get unset, making it stay until a new level is loaded.
+- There's an unused function that checks if you're moving downwards.
+- There's a function which checks if the current level has lava in it, used to determine the drowning animation. This however includes two levels which don't have lava, those being `Den of Rocky` and the first part of `Heart of the Ancients`, as well a Mode7 map which doesn't even use the Rayman actor, that being `Magma Mayhem 2`.
+- The N-Gage version has an unused item which would make arrows appear on the screen, pointing towards the other players. The code for these arrows is fully implemented and there are animations for them too, with the color changing based on the player:
+
+![Animation 0](discoveries_assets/PlayerArrow_Anim_0.gif)
+![Animation 1](discoveries_assets/PlayerArrow_Anim_1.gif)
+
+- There are various unused message handlers:
+    - Message 1015 would have been used for collecting a big yellow lum and increases the lums count by 10.
+    - Message 1017 sets the state to an otherwise unused one where Rayman plays the victory animation and then returns to the default state.
+    - Message 1018 sets the state to an otherwise unused one where Rayman plays the determined animation and then returns to the default state.
+    - Message 1045 does the same as message 1025, used when Rayman takes damage.
+    - Message 1072 sets the state for an otherwise unused one where Rayman is hidden on the screen. This gets called from the flying shell actor, but since the Rayman actor isn't in that level it never gets received.
+- When taking damage and on a plum the game incorrectly sets the linked movement actor to null rather than the attached object (the plum in this case). However it doesn't cause any issues since the attached object gets overridden later on anyway and the linked movement actor already being null.
+
 #### BoulderMode7
 - The boulder sprite rotates either left or right depending on its direction. It however doesn't take the camera into account, meaning that the rotating will only look correct from one direction. This is very noticeable as several of the boulders will look as if they're rotating in the opposite direction from where they're moving.
 
@@ -427,5 +448,4 @@ Most actors have the first animation be unused and just single frame, most likel
 
 #### RaymanBody
 - When drawing the actor it calls `PlayChannelBox` if the actor is not framed (not on screen). This is however unnecessary since it gets called when computing the next frame. This means it gets called twice each frame (which doesn't change anything).
-
-...
+- During multiplayer the actor doesn't change its palette, meaning that if you perform the body shot attack then the body part color might not match the color of Rayman. This was fixed in the N-Gage version.
