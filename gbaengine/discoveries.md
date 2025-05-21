@@ -289,12 +289,10 @@ Most actors have the first animation be unused and just single frame, most likel
 - The actor appears in the worldmap, but is never used. It's probably just a placeholder since each scene needs a main actor.
 
 #### Butterfly
-- The following animations are not used in any level:
+- The following animations are not used in any level (there are 2 more, but they're identical to animations which are used):
 
 ![Animation 3](discoveries_assets/Butterfly_Anim_3.gif)
 ![Animation 4](discoveries_assets/Butterfly_Anim_4.gif)
-![Animation 13](discoveries_assets/Butterfly_Anim_13.gif)
-![Animation 14](discoveries_assets/Butterfly_Anim_14.gif)
 ![Animation 15](discoveries_assets/Butterfly_Anim_15.gif)
 ![Animation 16](discoveries_assets/Butterfly_Anim_16.gif)
 ![Animation 17](discoveries_assets/Butterfly_Anim_17.gif)
