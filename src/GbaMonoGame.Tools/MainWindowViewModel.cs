@@ -266,7 +266,7 @@ public partial class MainWindowViewModel : ObservableObject
         OpenFileDialog fileDialog = new()
         {
             Multiselect = true,
-            Filter = "GBA files|*.gba;*.bin"
+            Filter = "GBA files|*.gba;*.bin|N-Gage files|*.dat"
         };
 
         if (fileDialog.ShowDialog() != true)
@@ -276,9 +276,11 @@ public partial class MainWindowViewModel : ObservableObject
 
         foreach (string romFilePath in fileDialog.FileNames)
         {
+            bool isNGage = romFilePath.EndsWith(".dat", StringComparison.InvariantCultureIgnoreCase);
+
             byte[] romData = await File.ReadAllBytesAsync(romFilePath);
 
-            long offset = FindOffsetTable(romData);
+            long offset = isNGage ? 0 : FindOffsetTable(romData);
 
             string dir = Path.GetDirectoryName(romFilePath)!;
             string fileName = Path.GetFileName(romFilePath);
@@ -288,7 +290,7 @@ public partial class MainWindowViewModel : ObservableObject
                 using Context context = new(dir);
 
                 // Create and add the game settings
-                Game game = romData.Length switch
+                Game game = isNGage ? Game.Rayman3 : romData.Length switch
                 {
                     1627308 => Game.Rayman3_20020118_DemoRLE,
                     2227428 => Game.Rayman3_20020301_PreAlpha,
@@ -299,11 +301,12 @@ public partial class MainWindowViewModel : ObservableObject
                     3589480 => Game.Rayman3_20020513_E3GameCube,
                     _ => Game.Rayman3,
                 };
-                GbaEngineSettings settings = new() { Game = game, Platform = Platform.GBA };
+                GbaEngineSettings settings = new() { Game = game, Platform = isNGage ? Platform.NGage : Platform.GBA };
                 context.AddSettings(settings);
 
-                MemoryMappedStreamFile file = context.AddFile(new MemoryMappedStreamFile(context, fileName,
-                    Constants.Address_ROM, new MemoryStream(romData)));
+                VirtualFile file = context.AddFile<VirtualFile>(isNGage 
+                    ? new StreamFile(context, fileName, new MemoryStream(romData)) 
+                    : new MemoryMappedStreamFile(context, fileName, Constants.Address_ROM, new MemoryStream(romData)));
 
                 OffsetTable gameOffsetTable = FileFactory.Read<OffsetTable>(context, new Pointer(offset, file));
                 settings.RootTable = gameOffsetTable;
