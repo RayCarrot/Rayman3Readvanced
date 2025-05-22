@@ -39,6 +39,58 @@ Most actors have the first animation be unused and just single frame, most likel
     - Message 1045 does the same as message 1025, used when Rayman takes damage.
     - Message 1072 sets the state for an otherwise unused one where Rayman is hidden on the screen. This gets called from the flying shell actor, but since the Rayman actor isn't in that level it never gets received.
 - When taking damage and on a plum the game incorrectly sets the linked movement actor to null rather than the attached object (the plum in this case). However it doesn't cause any issues since the attached object gets overridden later on anyway and the linked movement actor already being null.
+- Actions 48, 49, 60, 61, 98, 99, 119, 120, 150, 151, 171, 172, 192, 207 and 208 are unused. That makes the following animations also unused:
+
+![Animation 12](discoveries_assets/Rayman_Anim_12.gif)
+![Animation 28](discoveries_assets/Rayman_Anim_28.gif)
+![Animation 44](discoveries_assets/Rayman_Anim_44.gif)
+![Animation 119](discoveries_assets/Rayman_Anim_119.gif)
+![Animation 162](discoveries_assets/Rayman_Anim_162.gif)
+
+- The following animations are completely unused:
+
+![Animation 1](discoveries_assets/Rayman_Anim_1.gif)
+![Animation 20](discoveries_assets/Rayman_Anim_20.gif)
+![Animation 26](discoveries_assets/Rayman_Anim_26.gif)
+![Animation 31](discoveries_assets/Rayman_Anim_31.gif)
+![Animation 32](discoveries_assets/Rayman_Anim_32.gif)
+![Animation 42](discoveries_assets/Rayman_Anim_42.gif)
+![Animation 48](discoveries_assets/Rayman_Anim_48.gif)
+![Animation 59](discoveries_assets/Rayman_Anim_59.gif)
+![Animation 61](discoveries_assets/Rayman_Anim_61.gif)
+![Animation 71](discoveries_assets/Rayman_Anim_71.gif)
+![Animation 75](discoveries_assets/Rayman_Anim_75.gif)
+![Animation 84](discoveries_assets/Rayman_Anim_84.gif)
+![Animation 89](discoveries_assets/Rayman_Anim_89.gif)
+![Animation 91](discoveries_assets/Rayman_Anim_91.gif)
+![Animation 92](discoveries_assets/Rayman_Anim_92.gif)
+![Animation 93](discoveries_assets/Rayman_Anim_93.gif)
+![Animation 105](discoveries_assets/Rayman_Anim_105.gif)
+![Animation 106](discoveries_assets/Rayman_Anim_106.gif)
+![Animation 107](discoveries_assets/Rayman_Anim_107.gif)
+![Animation 108](discoveries_assets/Rayman_Anim_108.gif)
+![Animation 109](discoveries_assets/Rayman_Anim_109.gif)
+![Animation 110](discoveries_assets/Rayman_Anim_110.gif)
+![Animation 111](discoveries_assets/Rayman_Anim_111.gif)
+![Animation 112](discoveries_assets/Rayman_Anim_112.gif)
+![Animation 114](discoveries_assets/Rayman_Anim_114.gif)
+![Animation 118](discoveries_assets/Rayman_Anim_118.gif)
+![Animation 122](discoveries_assets/Rayman_Anim_122.gif)
+![Animation 123](discoveries_assets/Rayman_Anim_123.gif)
+![Animation 130](discoveries_assets/Rayman_Anim_130.gif)
+![Animation 131](discoveries_assets/Rayman_Anim_131.gif)
+![Animation 134](discoveries_assets/Rayman_Anim_134.gif)
+![Animation 135](discoveries_assets/Rayman_Anim_135.gif)
+![Animation 136](discoveries_assets/Rayman_Anim_136.gif)
+![Animation 137](discoveries_assets/Rayman_Anim_137.gif)
+![Animation 141](discoveries_assets/Rayman_Anim_141.gif)
+![Animation 142](discoveries_assets/Rayman_Anim_142.gif)
+![Animation 150](discoveries_assets/Rayman_Anim_150.gif)
+![Animation 152](discoveries_assets/Rayman_Anim_152.gif)
+![Animation 154](discoveries_assets/Rayman_Anim_154.gif)
+![Animation 168](discoveries_assets/Rayman_Anim_168.gif)
+
+- The following animations are completely unused and empty in the final game (most have animations in the prototypes): 9, 51, 52, 53, 54, 55, 56, 57, 58, 73, 76, 77, 78, 79, 81, 86, 125, 153, 155, 156, 157, 160
 
 #### BoulderMode7
 - The boulder sprite rotates either left or right depending on its direction. It however doesn't take the camera into account, meaning that the rotating will only look correct from one direction. This is very noticeable as several of the boulders will look as if they're rotating in the opposite direction from where they're moving.

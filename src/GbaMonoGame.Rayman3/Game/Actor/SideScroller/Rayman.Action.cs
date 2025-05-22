@@ -8,7 +8,6 @@ public partial class Rayman
         set => base.ActionId = (int)value;
     }
 
-    // TODO: Fill out remaining actions, 223 in total
     public enum Action
     {
         Idle_Right = 0,
@@ -59,7 +58,8 @@ public partial class Rayman
         NearEdgeFront_Left = 45,
         Damage_Hit_Right = 46,
         Damage_Hit_Left = 47,
-
+        Dance_Right = 48, // Unused
+        Dance_Left = 49, // Unused
         Victory_Right = 50,
         Victory_Left = 51,
         Hang_Move_Right = 52,
@@ -70,8 +70,8 @@ public partial class Rayman
         Hang_ChargeAttack_Left = 57,
         Hang_Attack_Right = 58,
         Hang_Attack_Left = 59,
-        Hang_BeginMove_Right = 60,
-        Hang_BeginMove_Left = 61,
+        Hang_BeginMove_Right = 60, // Unused
+        Hang_BeginMove_Left = 61, // Unused
         Hang_EndMove_Right = 62,
         Hang_EndMove_Left = 63,
         Idle_VeryDetermined_Right = 64,
@@ -82,7 +82,7 @@ public partial class Rayman
         Sliding_Jump_Left = 69,
         Sliding_Land_Right = 70,
         Sliding_Land_Left = 71,
-        Spawn_Right = 72, // Unused
+        Spawn_Right = 72,
         Spawn_Left = 73,
         Sliding_Slow_Right = 74,
         Sliding_Slow_Left = 75,
@@ -108,7 +108,8 @@ public partial class Rayman
         CarryObject_Left = 95,
         WalkWithObject_Right = 96,
         WalkWithObject_Left = 97,
-
+        BeginWalkWithObject_Right = 98, // Unused
+        BeginWalkWithObject_Left = 99, // Unused
         Damage_Knockback_Right = 100,
         Damage_Knockback_Left = 101,
         WallJump_Fall = 102,
@@ -128,8 +129,8 @@ public partial class Rayman
         KnockbackBackwards_Left = 116,
         KnockbackForwards_Right = 117,
         KnockbackForwards_Left = 118,
-        UnknownKnockback_Right = 119, // TODO: Unused?
-        UnknownKnockback_Left = 120,
+        StationaryKnockback_Right = 119, // Unused
+        StationaryKnockback_Left = 120, // Unused
         Swing = 121,
         HangOnEdge_ChargeAttack_Right = 122,
         HangOnEdge_ChargeAttack_Left = 123,
@@ -159,7 +160,8 @@ public partial class Rayman
         Idle_Bored_Left = 147,
         SuperHelico_BeginThrowFist_Right = 148,
         SuperHelico_BeginThrowFist_Left = 149,
-
+        SuperHelico_Idle_Right = 150, // Unused
+        SuperHelico_Idle_Left = 151, // Unused
         Idle_Yoyo_Right = 152,
         Idle_Yoyo_Left = 153,
         Plum_Crouch_Right = 154,
@@ -179,7 +181,8 @@ public partial class Rayman
         ChargeSuperFist_Left = 168,
         ChargeSecondSuperFist_Right = 169,
         ChargeSecondSuperFist_Left = 170,
-
+        Hang_Idle_LookAround_Right = 171, // Unused
+        Hang_Idle_LookAround_Left = 172, // Unused
         Idle_BasketBall_Right = 173,
         Idle_BasketBall_Left = 174,
         NewPower_Right = 175,
@@ -214,7 +217,8 @@ public partial class Rayman
         Idle_BeginCutscene_Left = 204,
         Idle_Cutscene_Right = 205,
         Idle_Cutscene_Left = 206,
-
+        Action207 = 207, // Unused
+        Action208 = 208, // Unused
         SmallKnockbackBackwards_Right = 209,
         SmallKnockbackBackwards_Left = 210,
         SmallKnockbackForwards_Right = 211,
