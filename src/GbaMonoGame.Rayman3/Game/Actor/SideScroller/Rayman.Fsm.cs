@@ -13,21 +13,25 @@ public partial class Rayman
         if (!FsmStep_DoDefault())
             return false;
 
+        // Slide
         CheckSlide();
         ManageSlide();
 
+        // Check for hit
         if (ManageHit())
         {
             State.MoveTo(Fsm_Hit);
             return false;
         }
 
+        // Jump while sliding
         if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A) && SlideType != null)
         {
             State.MoveTo(Fsm_JumpSlide);
             return false;
         }
 
+        // Auto-jump
         if (ShouldAutoJump())
         {
             PlaySound(Rayman3SoundEvent.Stop__SldGreen_SkiLoop1);
@@ -41,6 +45,7 @@ public partial class Rayman
 
     private bool FsmStep_DoInTheAir()
     {
+        // Check for hit
         if (ManageHit() &&
             (State == Fsm_StopHelico ||
              State == Fsm_Helico ||
@@ -55,7 +60,10 @@ public partial class Rayman
             ActionId = IsFacingRight ? Action.Damage_Knockback_Right : Action.Damage_Knockback_Left;
         }
 
-        return FsmStep_DoDefault();
+        if (!FsmStep_DoDefault()) 
+            return false;
+        
+        return true;
     }
 
     private bool FsmStep_DoStandingOnPlum()
@@ -69,8 +77,10 @@ public partial class Rayman
         if (DisableAttackTimer != 0)
             DisableAttackTimer--;
 
+        // Check for hit
         ManageHit();
 
+        // Check if dead
         if (HitPoints == 0)
         {
             State.MoveTo(Fsm_Dying);
@@ -96,6 +106,7 @@ public partial class Rayman
             }
         }
 
+        // Update the camera
         if (IsLocalPlayer &&
             State != Fsm_Jump &&
             State != Fsm_BodyShotAttack &&
@@ -104,47 +115,44 @@ public partial class Rayman
             State != Fsm_LockedLevelCurtain &&
             !IsInFrontOfLevelCurtain)
         {
-            Message message;
-
             if (State != Fsm_SuperHelico &&
                 IsDirectionalButtonPressed(GbaInput.Down) &&
                 (Speed.Y > 0 || State == Fsm_Crouch) &&
                 State != Fsm_Climb)
             {
                 CameraTargetY = 70;
-                message = Message.Cam_FollowPositionY;
+                cam.ProcessMessage(this, Message.Cam_FollowPositionY, CameraTargetY);
             }
             else if (IsDirectionalButtonPressed(GbaInput.Up) && (State == Fsm_Default || State == Fsm_HangOnEdge))
             {
                 CameraTargetY = 160;
-                message = Message.Cam_FollowPositionY;
+                cam.ProcessMessage(this, Message.Cam_FollowPositionY, CameraTargetY);
             }
             else if (State == Fsm_Helico && !IsSuperHelicoActive)
             {
-                message = Message.Cam_DoNotFollowPositionY;
+                cam.ProcessMessage(this, Message.Cam_DoNotFollowPositionY, CameraTargetY);
             }
             else if (State == Fsm_Swing)
             {
                 CameraTargetY = 65;
-                message = Message.Cam_FollowPositionY;
+                cam.ProcessMessage(this, Message.Cam_FollowPositionY, CameraTargetY);
             }
             else if (State == Fsm_Climb || State == Fsm_SuperHelico)
             {
                 CameraTargetY = 112;
-                message = Message.Cam_FollowPositionY;
+                cam.ProcessMessage(this, Message.Cam_FollowPositionY, CameraTargetY);
             }
             else
             {
                 CameraTargetY = 120;
-                message = Message.Cam_FollowPositionY;
+                cam.ProcessMessage(this, Message.Cam_FollowPositionY, CameraTargetY);
             }
-
-            cam.ProcessMessage(this, message, CameraTargetY);
         }
 
         if (DisableAttackTimer != 0)
             DisableAttackTimer--;
 
+        // Check if dead
         if (CheckDeath())
         {
             if (!RSMultiplayer.IsActive)
@@ -163,7 +171,7 @@ public partial class Rayman
         switch (action)
         {
             case FsmAction.Init:
-                // This never actually has a chance to play due to the Init function being called afterwards and overriding this
+                // NOTE: This never actually has a chance to play due to the Init function being called afterwards and overriding this
                 ActionId = IsFacingRight ? Action.Spawn_Right : Action.Spawn_Left;
                 ChangeAction();
 
@@ -194,15 +202,10 @@ public partial class Rayman
                 if (IsInFrontOfLevelCurtain)
                 {
                     // Hide while fading and then show spawn animation
-                    if (!TransitionsFX.IsFadingIn)
-                    {
-                        if (ActionId is not (Action.Spawn_Curtain_Right or Action.Spawn_Curtain_Left))
-                            ActionId = IsFacingRight ? Action.Spawn_Curtain_Right : Action.Spawn_Curtain_Left;
-                    }
-                    else
-                    {
+                    if (TransitionsFX.IsFadingIn)
                         ActionId = IsFacingRight ? Action.Hidden_Right : Action.Hidden_Left;
-                    }
+                    else if (ActionId is not (Action.Spawn_Curtain_Right or Action.Spawn_Curtain_Left))
+                        ActionId = IsFacingRight ? Action.Spawn_Curtain_Right : Action.Spawn_Curtain_Left;
                 }
 
                 Timer++;
@@ -243,7 +246,14 @@ public partial class Rayman
                     if (SlideType == null)
                         PreviousXSpeed = 0;
 
-                    if (!IsBossFight())
+                    if (IsBossFight())
+                    {
+                        if (NextActionId is Action.Idle_Determined_Right or Action.Idle_Determined_Left)
+                            ActionId = NextActionId.Value;
+                        else
+                            ActionId = IsFacingRight ? Action.Idle_ReadyToFight_Right : Action.Idle_ReadyToFight_Left;
+                    }
+                    else
                     {
                         if (NextActionId == null)
                         {
@@ -257,14 +267,6 @@ public partial class Rayman
                         {
                             ActionId = NextActionId.Value;
                         }
-                    }
-                    else if (NextActionId is Action.Idle_Determined_Right or Action.Idle_Determined_Left)
-                    {
-                        ActionId = NextActionId.Value;
-                    }
-                    else
-                    {
-                        ActionId = IsFacingRight ? Action.Idle_ReadyToFight_Right : Action.Idle_ReadyToFight_Left;
                     }
                 }
 
@@ -282,9 +284,12 @@ public partial class Rayman
                 {
                     if (ActionId is not (Action.LookUp_Right or Action.LookUp_Left) && SlideType == null)
                     {
-                        // TODO: If you look up while the grimace sfx is playing then it loop. This is a bug from the original game. Fix?
                         ActionId = IsFacingRight ? Action.LookUp_Right : Action.LookUp_Left;
                         NextActionId = null;
+
+                        // Optionally fix bug of grimace sound continuing to play when looking up
+                        if (Engine.Config.FixBugs)
+                            PlaySound(Rayman3SoundEvent.Stop__Grimace1_Mix04);
                     }
                 }
                 else
@@ -295,18 +300,18 @@ public partial class Rayman
 
                 // Play idle animation
                 if (IsActionFinished && 
-                    (ActionId == NextActionId && ActionId is not (
+                    ActionId == NextActionId && ActionId is not (
                         Action.Idle_Bored_Right or Action.Idle_Bored_Left or
-                        Action.Idle_LookAround_Right or Action.Idle_LookAround_Left)) &&
+                        Action.Idle_LookAround_Right or Action.Idle_LookAround_Left) &&
                     (ActionId is not (
                          Action.Idle_BasketBall_Right or Action.Idle_BasketBall_Left or
                          Action.Idle_Grimace_Right or Action.Idle_Grimace_Left) ||
                      Timer > 180))
                 {
-                    if (!IsBossFight())
-                        ActionId = IsFacingRight ? Action.Idle_Right : Action.Idle_Left;
-                    else
+                    if (IsBossFight())
                         ActionId = IsFacingRight ? Action.Idle_ReadyToFight_Right : Action.Idle_ReadyToFight_Left;
+                    else
+                        ActionId = IsFacingRight ? Action.Idle_Right : Action.Idle_Left;
 
                     NextActionId = null;
 
@@ -331,13 +336,14 @@ public partial class Rayman
                                  Action.Idle_ReadyToFight_Right or Action.Idle_ReadyToFight_Left) &&
                              ActionId != NextActionId)
                     {
-                        if (!IsBossFight())
-                            ActionId = IsFacingRight ? Action.Idle_Right : Action.Idle_Left;
-                        else
+                        if (IsBossFight())
                             ActionId = IsFacingRight ? Action.Idle_ReadyToFight_Right : Action.Idle_ReadyToFight_Left;
+                        else
+                            ActionId = IsFacingRight ? Action.Idle_Right : Action.Idle_Left;
                     }
                 }
 
+                // Change direction
                 if (IsDirectionalButtonPressed(GbaInput.Left) && IsFacingRight)
                 {
                     ActionId = Action.Walk_Left;
@@ -418,11 +424,11 @@ public partial class Rayman
                          Action.LookUp_Right or Action.LookUp_Left or
                          Action.Idle_Bored_Right or Action.Idle_Bored_Left or
                          Action.Idle_LookAround_Right or Action.Idle_LookAround_Left) &&
-                     360 < Timer) ||
+                     Timer > 360) ||
                     (IsActionFinished && ActionId is
                          Action.Idle_Bored_Right or Action.Idle_Bored_Left or
                          Action.Idle_LookAround_Right or Action.Idle_LookAround_Left &&
-                     720 < Timer))
+                     Timer > 720))
                 {
                     SetRandomIdleAction();
                     State.MoveTo(Fsm_Default);
@@ -578,7 +584,7 @@ public partial class Rayman
                         // Randomly look around for Globox in the first level
                         if (GameInfo.MapId == MapId.WoodLight_M1 && GameInfo.LastGreenLumAlive == 0)
                         {
-                            if (Random.GetNumber(501) >= 401)
+                            if (Random.GetNumber(501) > 400)
                                 ActionId = IsFacingRight ? Action.Walk_LookAround_Right : Action.Walk_LookAround_Left;
                             else
                                 ActionId = IsFacingRight ? Action.Walk_Right : Action.Walk_Left;
@@ -592,19 +598,10 @@ public partial class Rayman
                     }
                     else
                     {
-                        UserInfoMulti2D userInfo = ((FrameMultiSideScroller)Frame.Current).UserInfo;
-                        int tagId = userInfo.GetTagId();
-
-                        if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == tagId) ||
-                            (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != tagId) ||
-                            (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && FlagData.PickedUpFlag == null))
-                        {
+                        if (MultiplayerMoveFaster())
                             ActionId = IsFacingRight ? Action.WalkFast_Right : Action.WalkFast_Left;
-                        }
                         else
-                        {
                             ActionId = IsFacingRight ? Action.Walk_Right : Action.Walk_Left;
-                        }
 
                         if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
                             FlagData.NewState = true;
@@ -691,6 +688,7 @@ public partial class Rayman
                 {
                     Charge++;
                 }
+                // NOTE: IsButtonJustReleased shouldn't be used in gameplay since pausing breaks it! But it seems fine here.
                 else if (MultiJoyPad.IsButtonJustReleased(InstanceId, GbaInput.B) && DisableAttackTimer == 0)
                 {
                     Charge = 0;
@@ -745,22 +743,13 @@ public partial class Rayman
                             Action.Walk_Right or Action.Walk_Left or
                             Action.WalkFast_Right or Action.WalkFast_Left))
                         {
-                            UserInfoMulti2D userInfo = ((FrameMultiSideScroller)Frame.Current).UserInfo;
-                            int tagId = userInfo.GetTagId();
-
-                            if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == tagId) ||
-                                (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != tagId) ||
-                                (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && FlagData.PickedUpFlag == null))
-                            {
+                            if (MultiplayerMoveFaster())
                                 ActionId = IsFacingRight ? Action.WalkFast_Right : Action.WalkFast_Left;
-                            }
                             else
-                            {
                                 ActionId = IsFacingRight ? Action.Walk_Right : Action.Walk_Left;
-                            }
 
                             if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
-                                FlagData.NewState = true;
+                                FlagData!.NewState = true;
                         }
                     }
                 }
@@ -814,7 +803,7 @@ public partial class Rayman
                 }
 
                 // Charge punch
-                if (DisableAttackTimer == 0 && Charge > 10 && IsDirectionalButtonPressed(GbaInput.B) && CanAttackWithFist(2))
+                if (DisableAttackTimer == 0 && Charge > 10 && MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.B) && CanAttackWithFist(2))
                 {
                     State.MoveTo(Fsm_Attack);
                     return false;
@@ -880,6 +869,7 @@ public partial class Rayman
                 SlowdownAirSpeed();
                 AttackInTheAir();
 
+                // Land
                 if (HasLanded())
                 {
                     NextActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
@@ -887,30 +877,35 @@ public partial class Rayman
                     return false;
                 }
 
+                // Fall
                 if (GameTime.ElapsedFrames - Timer > 50)
                 {
                     State.MoveTo(Fsm_Fall);
                     return false;
                 }
 
+                // Hang on edge
                 if (IsNearHangableEdge())
                 {
                     State.MoveTo(Fsm_HangOnEdge);
                     return false;
                 }
 
+                // Helico
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A) && !IsSuperHelicoActive)
                 {
                     State.MoveTo(Fsm_Helico);
                     return false;
                 }
 
+                // Super helico
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A) && IsSuperHelicoActive)
                 {
                     State.MoveTo(Fsm_SuperHelico);
                     return false;
                 }
 
+                // Hang
                 if (IsOnHangable())
                 {
                     BeginHang();
@@ -918,12 +913,14 @@ public partial class Rayman
                     return false;
                 }
 
+                // Climb
                 if (GameTime.ElapsedFrames - Timer > 10 && IsOnClimbableVertical() == ClimbDirection.TopAndBottom)
                 {
                     State.MoveTo(Fsm_Climb);
                     return false;
                 }
 
+                // Wall-jump
                 if (MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.L) && IsOnWallJumpable())
                 {
                     BeginWallJump();
@@ -931,6 +928,7 @@ public partial class Rayman
                     return false;
                 }
 
+                // Attack with body
                 if (speedY < 4 && MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.R) && HasPower(Power.BodyShot) && CanAttackWithBody())
                 {
                     State.MoveTo(Fsm_BodyShotAttack);
@@ -994,21 +992,21 @@ public partial class Rayman
                 }
 
                 // Helico
-                if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A) && !IsSuperHelicoActive && GameTime.ElapsedFrames - Timer >= 6)
+                if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A) && !IsSuperHelicoActive && GameTime.ElapsedFrames - Timer > 5)
                 {
                     State.MoveTo(Fsm_Helico);
                     return false;
                 }
 
                 // Super helico
-                if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A) && IsSuperHelicoActive && GameTime.ElapsedFrames - Timer >= 6)
+                if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A) && IsSuperHelicoActive && GameTime.ElapsedFrames - Timer > 5)
                 {
                     State.MoveTo(Fsm_SuperHelico);
                     return false;
                 }
 
                 // Hang
-                if (GameTime.ElapsedFrames - Timer >= 11 && IsOnHangable())
+                if (GameTime.ElapsedFrames - Timer > 10 && IsOnHangable())
                 {
                     PreviousXSpeed = 0;
                     BeginHang();
@@ -1111,6 +1109,7 @@ public partial class Rayman
 
                 Timer++;
 
+                // Safety jumps, if enabled, are allowed for 16 frames
                 if (CanSafetyJump && Timer > 15)
                     CanSafetyJump = false;
 
@@ -1118,30 +1117,35 @@ public partial class Rayman
                 SlowdownAirSpeed();
                 AttackInTheAir();
 
+                // Jump
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A) && CanSafetyJump)
                 {
                     State.MoveTo(Fsm_Jump);
                     return false;
                 }
 
+                // Helico
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A) && !IsSuperHelicoActive)
                 {
                     State.MoveTo(Fsm_Helico);
                     return false;
                 }
 
+                // Super helico
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A) && IsSuperHelicoActive)
                 {
                     State.MoveTo(Fsm_SuperHelico);
                     return false;
                 }
 
+                // Hang on edge
                 if (IsNearHangableEdge())
                 {
                     State.MoveTo(Fsm_HangOnEdge);
                     return false;
                 }
 
+                // Land
                 if (HasLanded())
                 {
                     NextActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
@@ -1149,6 +1153,7 @@ public partial class Rayman
                     return false;
                 }
 
+                // Hang
                 if (IsOnHangable())
                 {
                     BeginHang();
@@ -1156,12 +1161,14 @@ public partial class Rayman
                     return false;
                 }
 
+                // Climb
                 if (IsOnClimbableVertical() == ClimbDirection.TopAndBottom)
                 {
                     State.MoveTo(Fsm_Climb);
                     return false;
                 }
 
+                // Wall jump
                 if (MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.L) && IsOnWallJumpable())
                 {
                     BeginWallJump();
@@ -1204,12 +1211,14 @@ public partial class Rayman
                 SlowdownAirSpeed();
                 MoveInTheAir(PreviousXSpeed);
 
+                // Hang on edge
                 if (IsNearHangableEdge())
                 {
                     State.MoveTo(Fsm_HangOnEdge);
                     return false;
                 }
 
+                // Land
                 if (HasLanded())
                 {
                     NextActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
@@ -1217,18 +1226,21 @@ public partial class Rayman
                     return false;
                 }
 
+                // Stop helico
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A) || MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.B))
                 {
                     State.MoveTo(Fsm_StopHelico);
                     return false;
                 }
 
+                // Helico time out
                 if (GameTime.ElapsedFrames - Timer > 40)
                 {
                     State.MoveTo(Fsm_TimeoutHelico);
                     return false;
                 }
 
+                // Hang
                 if (IsOnHangable())
                 {
                     BeginHang();
@@ -1236,12 +1248,14 @@ public partial class Rayman
                     return false;
                 }
 
+                // Climb
                 if (IsOnClimbableVertical() == ClimbDirection.TopAndBottom)
                 {
                     State.MoveTo(Fsm_Climb);
                     return false;
                 }
 
+                // Wall jump
                 if (MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.L) && IsOnWallJumpable())
                 {
                     BeginWallJump();
@@ -1249,12 +1263,14 @@ public partial class Rayman
                     return false;
                 }
 
+                // Attack with body
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.R) && HasPower(Power.BodyShot) && CanAttackWithBody())
                 {
                     State.MoveTo(Fsm_BodyShotAttack);
                     return false;
                 }
 
+                // Super helico
                 if (IsSuperHelicoActive)
                 {
                     State.MoveTo(Fsm_SuperHelico);
@@ -1460,12 +1476,14 @@ public partial class Rayman
                     }
                 }
 
+                // Hang on edge
                 if (IsNearHangableEdge())
                 {
                     State.MoveTo(Fsm_HangOnEdge);
                     return false;
                 }
 
+                // Land
                 if (HasLanded())
                 {
                     NextActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
@@ -1473,6 +1491,7 @@ public partial class Rayman
                     return false;
                 }
 
+                // Stop super helico
                 if (!IsSuperHelicoActive)
                 {
                     PlaySound(Rayman3SoundEvent.Play__Tag_Mix02);
@@ -1480,6 +1499,7 @@ public partial class Rayman
                     return false;
                 }
 
+                // Hang
                 if (IsOnHangable())
                 {
                     BeginHang();
@@ -1487,12 +1507,14 @@ public partial class Rayman
                     return false;
                 }
 
+                // Climb
                 if (IsOnClimbableVertical() == ClimbDirection.TopAndBottom)
                 {
                     State.MoveTo(Fsm_Climb);
                     return false;
                 }
 
+                // Wall jump
                 if (MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.L) && IsOnWallJumpable())
                 {
                     BeginWallJump();
@@ -1589,6 +1611,7 @@ public partial class Rayman
                     return false;
 
                 Timer++;
+
                 AttackInTheAir();
                 SlowdownAirSpeed();
                 MoveInTheAir(PreviousXSpeed);
@@ -1931,8 +1954,8 @@ public partial class Rayman
                          Action.Hang_Attack_Right or Action.Hang_Attack_Left or
                          Action.Hang_EndMove_Right or Action.Hang_EndMove_Left)
                 {
-                    // Probably a bug in the GBA code since this causes the sound to play twice. This was fixed for N-Gage.
-                    if (Rom.Platform == Platform.GBA)
+                    // NOTE: Probably a bug in the GBA code since this causes the sound to play twice. This was fixed for N-Gage.
+                    if (Rom.Platform == Platform.GBA && !Engine.Config.FixBugs)
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Charge_Mix05);
 
                     ActionId = IsFacingRight ? Action.Hang_ChargeAttack_Right : Action.Hang_ChargeAttack_Left;
@@ -2483,20 +2506,10 @@ public partial class Rayman
                         }
                         else
                         {
-                            UserInfoMulti2D userInfo = ((FrameMultiSideScroller)Frame.Current).UserInfo;
-                            int tagId = userInfo.GetTagId();
-
-                            if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == tagId) ||
-                                (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != tagId) ||
-                                // NOTE: This appears to be a bug/oversight - tagId is always -1 for capture the flag
-                                (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && InstanceId != tagId))
-                            {
+                            if (MultiplayerMoveFaster(hasNGageBug: true))
                                 MechModel.Speed = MechModel.Speed with { X = -2f };
-                            }
                             else
-                            {
                                 MechModel.Speed = MechModel.Speed with { X = -1.5f };
-                            }
                         }
                     }
                     else if (Timer > 50 && !RSMultiplayer.IsActive)
@@ -2521,20 +2534,10 @@ public partial class Rayman
                         }
                         else
                         {
-                            UserInfoMulti2D userInfo = ((FrameMultiSideScroller)Frame.Current).UserInfo;
-                            int tagId = userInfo.GetTagId();
-
-                            if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == tagId) ||
-                                (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != tagId) ||
-                                // NOTE: This appears to be a bug/oversight - tagId is always -1 for capture the flag
-                                (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && InstanceId != tagId))
-                            {
+                            if (MultiplayerMoveFaster(hasNGageBug: true))
                                 MechModel.Speed = MechModel.Speed with { X = 2f };
-                            }
                             else
-                            {
                                 MechModel.Speed = MechModel.Speed with { X = 1.5f };
-                            }
                         }
                     }
                     else if (Timer > 50 && !RSMultiplayer.IsActive)
@@ -2560,20 +2563,10 @@ public partial class Rayman
                     }
                     else
                     {
-                        UserInfoMulti2D userInfo = ((FrameMultiSideScroller)Frame.Current).UserInfo;
-                        int tagId = userInfo.GetTagId();
-
-                        if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == tagId) ||
-                            (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != tagId) ||
-                            // NOTE: This appears to be a bug/oversight - tagId is always -1 for capture the flag
-                            (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && InstanceId != tagId))
-                        {
+                        if (MultiplayerMoveFaster(hasNGageBug: true))
                             MechModel.Speed = MechModel.Speed with { Y = -2f };
-                        }
                         else
-                        {
                             MechModel.Speed = MechModel.Speed with { Y = -1.5f };
-                        }
                     }
 
                     if (ActionId is not (Action.Climb_Up_Right or Action.Climb_Up_Left))
@@ -2590,20 +2583,10 @@ public partial class Rayman
                     }
                     else
                     {
-                        UserInfoMulti2D userInfo = ((FrameMultiSideScroller)Frame.Current).UserInfo;
-                        int tagId = userInfo.GetTagId();
-
-                        if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && InstanceId == tagId) ||
-                            (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && InstanceId != tagId) ||
-                            // NOTE: This appears to be a bug/oversight - tagId is always -1 for capture the flag
-                            (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && InstanceId != tagId))
-                        {
+                        if (MultiplayerMoveFaster(hasNGageBug: true))
                             MechModel.Speed = MechModel.Speed with { Y = 2f };
-                        }
                         else
-                        {
                             MechModel.Speed = MechModel.Speed with { Y = 1.5f };
-                        }
                     }
 
                     if (ActionId is not (Action.Climb_Down_Right or Action.Climb_Down_Left))
@@ -2956,22 +2939,23 @@ public partial class Rayman
                     }
                     else
                     {
-                        float xPos = AttachedObject.Position.X + MathHelpers.Cos256(Timer) * PreviousXSpeed;
-                        float yPos = AttachedObject.Position.Y + MathHelpers.Sin256(Timer) * PreviousXSpeed;
-                        Position = new Vector2(xPos, yPos);
+                        // Set the position
+                        Position = AttachedObject.Position + MathHelpers.DirectionalVector256(Timer) * PreviousXSpeed;
 
+                        // Too close to the purple lum - move away
                         if (PreviousXSpeed < 80)
                         {
-                            // TODO: This is a bug in the src code! It's supposed to use Timer, not ActionId. Fix?
-                            int value = (int)ActionId;
-                            if (value is (< 10 or > 14) and (< 27 or > 34))
-                                PreviousXSpeed += 0.5f;
-                            else
+                            // NOTE: Bug in the original game where it uses the wrong variable!
+                            int value = Engine.Config.FixBugs ? AnimatedObject.CurrentFrame : (int)ActionId;
+                            if (value is >= 10 and <= 14 or >= 27 and <= 34)
                                 PreviousXSpeed += 4;
+                            else
+                                PreviousXSpeed += 0.5f;
 
                             if (PreviousXSpeed > 80)
                                 PreviousXSpeed = 80;
                         }
+                        // Too far away from the purple lum - move closer
                         else if (PreviousXSpeed > 80)
                         {
                             PreviousXSpeed -= 1;
@@ -2980,6 +2964,7 @@ public partial class Rayman
                                 PreviousXSpeed = 80;
                         }
 
+                        // Rotate
                         if (Timer is < 4 or >= 125)
                             Timer -= 1;
                         else if (Timer is < 25 or >= 103)
@@ -3000,22 +2985,23 @@ public partial class Rayman
                     }
                     else
                     {
-                        float xPos = AttachedObject.Position.X + MathHelpers.Cos256(Timer) * PreviousXSpeed;
-                        float yPos = AttachedObject.Position.Y + MathHelpers.Sin256(Timer) * PreviousXSpeed;
-                        Position = new Vector2(xPos, yPos);
+                        // Set the position
+                        Position = AttachedObject.Position + MathHelpers.DirectionalVector256(Timer) * PreviousXSpeed;
 
+                        // Too close to the purple lum - move away
                         if (PreviousXSpeed < 80)
                         {
-                            // TODO: This is a bug in the src code! It's supposed to use Timer, not ActionId. Fix?
-                            int value = (int)ActionId;
-                            if (value is (< 10 or > 14) and (< 27 or > 34))
-                                PreviousXSpeed += 0.5f;
-                            else
+                            // NOTE: Bug in the original game where it uses the wrong variable!
+                            int value = Engine.Config.FixBugs ? AnimatedObject.CurrentFrame : (int)ActionId;
+                            if (value is >= 10 and <= 14 or >= 27 and <= 34)
                                 PreviousXSpeed += 4;
+                            else
+                                PreviousXSpeed += 0.5f;
 
                             if (PreviousXSpeed > 80)
                                 PreviousXSpeed = 80;
                         }
+                        // Too far away from the purple lum - move closer
                         else if (PreviousXSpeed > 80)
                         {
                             PreviousXSpeed -= 1;
@@ -3024,6 +3010,7 @@ public partial class Rayman
                                 PreviousXSpeed = 80;
                         }
 
+                        // Rotate
                         if (Timer is < 4 or >= 125)
                             Timer += 1;
                         else if (Timer is < 25 or >= 103)

@@ -324,6 +324,25 @@ public sealed partial class Rayman : MovableActor
         }
     }
 
+    private bool MultiplayerMoveFaster(bool hasNGageBug = false)
+    {
+        // Get the current tag id
+        UserInfoMulti2D userInfo = ((FrameMultiSideScroller)Frame.Current).UserInfo;
+        int tagId = userInfo.GetTagId();
+
+        // If you move faster depends on the game type
+        return MultiplayerInfo.GameType switch
+        {
+            MultiplayerGameType.RayTag => InstanceId == tagId,
+            MultiplayerGameType.CatAndMouse => InstanceId != tagId,
+            // NOTE: Some checks are bugged in the N-Gage version and use the same condition as for Cat and Mouse!
+            MultiplayerGameType.CaptureTheFlag when Rom.Platform == Platform.NGage => hasNGageBug && !Engine.Config.FixBugs 
+                ? InstanceId != tagId 
+                : FlagData.PickedUpFlag == null,
+            _ => false
+        };
+    }
+
     private void PlaySound(Rayman3SoundEvent soundEventId)
     {
         if (Scene.Camera.LinkedObject == this)
@@ -2345,6 +2364,8 @@ public sealed partial class Rayman : MovableActor
     {
         base.DrawDebugLayout(debugLayout, textureManager);
         ImGui.Text($"IsInFrontOfLevelCurtain: {IsInFrontOfLevelCurtain}");
+        ImGui.Text($"PreviousXSpeed: {PreviousXSpeed}");
+        ImGui.Text($"Timer: {Timer}");
     }
 
     public class CaptureTheFlagData

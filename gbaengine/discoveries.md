@@ -39,6 +39,10 @@ Most actors have the first animation be unused and just single frame, most likel
     - Message 1045 does the same as message 1025, used when Rayman takes damage.
     - Message 1072 sets the state for an otherwise unused one where Rayman is hidden on the screen. This gets called from the flying shell actor, but since the Rayman actor isn't in that level it never gets received.
 - When taking damage and on a plum the game incorrectly sets the linked movement actor to null rather than the attached object (the plum in this case). However it doesn't cause any issues since the attached object gets overridden later on anyway and the linked movement actor already being null.
+- The first state of the actor sets it to an action which plays an animation for spawning into the level. This however gets overridden before it has a chance to play, making it go unused.
+
+![Animation 65](discoveries_assets/Rayman_Anim_65.gif)
+
 - Actions 48, 49, 60, 61, 98, 99, 119, 120, 150, 151, 171, 172, 192, 207 and 208 are unused. That makes the following animations also unused:
 
 ![Animation 12](discoveries_assets/Rayman_Anim_12.gif)
@@ -90,7 +94,11 @@ Most actors have the first animation be unused and just single frame, most likel
 ![Animation 154](discoveries_assets/Rayman_Anim_154.gif)
 ![Animation 168](discoveries_assets/Rayman_Anim_168.gif)
 
-- The following animations are completely unused and empty in the final game (most have animations in the prototypes): 9, 51, 52, 53, 54, 55, 56, 57, 58, 73, 76, 77, 78, 79, 81, 86, 125, 153, 155, 156, 157, 160
+- The following animations are completely unused and empty in the final game (most have animations in the prototypes): 9, 51, 52, 53, 54, 55, 56, 57, 58, 73, 76, 77, 78, 79, 81, 86, 125, 153, 155, 156, 157, 160.
+- There's a bug where if you look up while the grimace animation is playing then the sound effect for it will keep looping.
+- In the GBA version only there is a bug where if you charge an attack while hanging then the charging sound will play twice, making it sound louder than usual.
+- In multiplayer your movement speed is determined by different conditions based on the game type. In the `Tag` and `Burglar` modes it depends on if you have the tag, while in the N-Gage exclusive `Capture the Flag` mode it depends on if you have the flag. There's however a bug in the climbing state where it checks for the tag even in the `Capture the Flag` mode.
+- There's a bug in the code where it uses the wrong variable for a condition. This results in you moving away from the purple lum very slowly if you start swinging very close to it.
 
 #### BoulderMode7
 - The boulder sprite rotates either left or right depending on its direction. It however doesn't take the camera into account, meaning that the rotating will only look correct from one direction. This is very noticeable as several of the boulders will look as if they're rotating in the opposite direction from where they're moving.
