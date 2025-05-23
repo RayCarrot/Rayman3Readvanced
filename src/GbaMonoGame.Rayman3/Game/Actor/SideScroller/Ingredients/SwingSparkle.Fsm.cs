@@ -17,19 +17,15 @@ public partial class SwingSparkle
             case FsmAction.Step:
                 Rayman rayman = (Rayman)Scene.MainActor;
                 if (rayman.AttachedObject != null)
-                {
-                    float xPos = rayman.AttachedObject.Position.X + MathHelpers.Cos256(rayman.Timer) * Value;
-                    float yPos = rayman.AttachedObject.Position.Y + MathHelpers.Sin256(rayman.Timer) * Value;
-                    Position = new Vector2(xPos, yPos);
-                }
+                    Position = rayman.AttachedObject.Position + MathHelpers.DirectionalVector256(rayman.Timer) * Distance;
 
                 bool finished = rayman.AttachedObject == null || 
                                 (AnimatedObject.CurrentAnimation != 1 && 
-                                 Value > rayman.PreviousXSpeed - 32 && 
+                                 Distance > rayman.PreviousXSpeed - 32 && 
                                  rayman.PreviousXSpeed >= 80);
 
                 if (AnimatedObject.CurrentAnimation == 1)
-                    Value = rayman.PreviousXSpeed - 30;
+                    Distance = rayman.PreviousXSpeed - 30;
 
                 if (finished)
                 {

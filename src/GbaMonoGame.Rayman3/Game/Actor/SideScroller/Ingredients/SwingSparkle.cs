@@ -12,13 +12,13 @@ public sealed partial class SwingSparkle : BaseActor
         State.SetTo(Fsm_Default);
     }
 
-    public float Value { get; set; }
+    public float Distance { get; set; }
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
         if (Scene.Camera.IsActorFramed(this) || forceDraw)
         {
-            if (AnimatedObject.CurrentAnimation == 1 || Value < ((Rayman)Scene.MainActor).PreviousXSpeed - 32)
+            if (AnimatedObject.CurrentAnimation == 1 || Distance < ((Rayman)Scene.MainActor).PreviousXSpeed - 32)
             {
                 AnimatedObject.IsFramed = true;
                 animationPlayer.Play(AnimatedObject);

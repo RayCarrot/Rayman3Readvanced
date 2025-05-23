@@ -988,25 +988,36 @@ public sealed partial class Rayman : MovableActor
         int index = 0;
         while (true)
         {
-            float v = index * 16;
-            if (PreviousXSpeed < 80)
-                v = 64 - v;
-            else
-                v = PreviousXSpeed - v - 16;
+            float dist = index * 16;
 
-            if (v <= 2)
+            // If close to the purple lum then add sparkles from 64 and downwards
+            if (PreviousXSpeed < 80)
+                dist = 64 - dist;
+            // If far away from the purple lum then add sparkles from the current distance and downwards
+            else
+                dist = PreviousXSpeed - dist - 16;
+
+            // Stop if the distance is too low
+            if (dist <= 2)
                 break;
 
             swingSparkle = Scene.CreateProjectile<SwingSparkle>(ActorType.SwingSparkle);
-            swingSparkle.Value = v;
+            swingSparkle.Distance = dist;
             
             index++;
-            if (index > 8)
+            
+            // Normally we only allow a maximum of 8 sparkles, but if Rayman is too far away from the purple lum
+            // then this can cause the sparkles to not even reach the purple lum, and the fist projectile won't be
+            // created either. So if you have the options set to fix bugs, and also to add projectiles when needed
+            // (since we need more than 8!) then allow it to continue creating new sparkle projectiles until
+            // reaching the minimum distance.
+            if (index > 8 && !(Engine.Config.FixBugs && Engine.Config.AddProjectilesWhenNeeded))
                 return;
         }
 
+        // Create the fist
         swingSparkle = Scene.CreateProjectile<SwingSparkle>(ActorType.SwingSparkle);
-        swingSparkle.Value = PreviousXSpeed - 30;
+        swingSparkle.Distance = PreviousXSpeed - 30;
         swingSparkle.AnimatedObject.CurrentAnimation = 1;
     }
 

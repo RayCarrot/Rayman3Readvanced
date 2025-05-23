@@ -370,6 +370,7 @@ Most actors have the first animation be unused and just single frame, most likel
 
 #### SwingSparkle
 - There's a bug causing the sparkles to sometimes show at the wrong position during the first frame. This due to the position of each sparkle being retained from the last time they were shown, and them not being updated until the next frame. However, due to another bug, a lack of a null check, this isn't very common since the position value will usually have been set to random data from an invalid pointer.
+- If Rayman is too far away from the purple lum when hitting it then the sparkles created won't be enough to reach the purple lum. This is because it only creates a certain amount of them and they start by going from Rayman's position. This also causes the sparkle with the fist animation not to be created either. It's easy to reproduce this glitch in the first hub world by charging your fist and hitting the purple lum from the right side of it.
 
 #### Teensies
 - There is an unused state it can be set to where it cycles between 2 random victory animations. That makes the following animations unused:
