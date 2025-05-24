@@ -53,11 +53,15 @@ public static class FrameManager
             Gfx.Color = Color.White;
 
             // TODO: Add option not to clear cache? Makes loading faster, but uses more memory.
-            // Clear cache if loading a new frame
+            // If loading a new frame...
             if (CurrentFrame != NextFrame)
             {
+                // Clear cache
                 Engine.TextureCache.Clear();
                 Engine.PaletteCache.Clear();
+
+                // Dispose resources
+                Engine.DisposableResources.DisposeAll();
             }
 
             // Unload contents loaded by the previous frame

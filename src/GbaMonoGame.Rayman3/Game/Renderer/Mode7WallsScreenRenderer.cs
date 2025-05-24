@@ -13,7 +13,6 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
     {
         Camera = playfield.Camera;
 
-        // TODO: Dispose shader - keep instance in GfxRenderer?
         Shader = new BasicEffect(Engine.GraphicsDevice)
         {
             TextureEnabled = true,
@@ -32,6 +31,9 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
             CreateMesh(layer.TileMap, layer.Width, layer.Height, wallPoint, wallSize, wallBoxSize, topTexture, true),
             CreateMesh(layer.TileMap, layer.Width, layer.Height, wallPoint, wallSize, wallBoxSize, sideTexture, false)
         ];
+
+        Engine.DisposableResources.Register(Shader);
+        Engine.DisposableResources.Register(topTexture);
     }
 
     public TgxCameraMode7 Camera { get; }
@@ -50,7 +52,6 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
             destPoint: Point.Zero,
             regionSize: wallSize);
 
-        // TODO: Dispose - add to cache
         return new TiledTexture2D(
             width: wallSize.X,
             height: wallSize.Y,
@@ -186,6 +187,9 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
         // Create the index buffer
         IndexBuffer indexBuffer = new(Engine.GraphicsDevice, IndexElementSize.SixteenBits, indices.Count, BufferUsage.WriteOnly);
         indexBuffer.SetData(indices.ToArray());
+
+        Engine.DisposableResources.Register(vertexBuffer);
+        Engine.DisposableResources.Register(indexBuffer);
 
         return new MeshFragment(PrimitiveType.TriangleList, vertexBuffer, indexBuffer, indices.Count / 3, texture);
     }

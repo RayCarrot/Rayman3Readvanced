@@ -425,6 +425,8 @@ public class Credits : Frame
                 bufferUsage: BufferUsage.WriteOnly);
             vertexBuffer.SetData(vertexData);
 
+            Engine.DisposableResources.Register(vertexBuffer);
+
             meshFragments[globalTriIndex / trianglesPerTexture] = new MeshFragment(
                 primitiveType: PrimitiveType.TriangleList, 
                 vertexBuffer: vertexBuffer, 

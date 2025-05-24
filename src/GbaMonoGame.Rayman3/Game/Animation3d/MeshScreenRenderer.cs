@@ -7,11 +7,12 @@ public class MeshScreenRenderer : IScreenRenderer
 {
     public MeshScreenRenderer()
     {
-        // TODO: Dispose shader
         Shader = new BasicEffect(Engine.GraphicsDevice)
         {
             TextureEnabled = true,
         };
+
+        Engine.DisposableResources.Register(Shader);
     }
 
     public BasicEffect Shader { get; }

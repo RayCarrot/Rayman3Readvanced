@@ -14,8 +14,8 @@ public class MeshFragment
     }
 
     public PrimitiveType PrimitiveType { get; }
-    public VertexBuffer VertexBuffer { get; } // TODO: Dispose
-    public IndexBuffer IndexBuffer { get; } // TODO: Dispose
+    public VertexBuffer VertexBuffer { get; }
+    public IndexBuffer IndexBuffer { get; }
     public int PrimitivesCount { get; }
     public Texture2D Texture { get; }
 

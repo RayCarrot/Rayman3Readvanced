@@ -115,6 +115,9 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
         // Clear the cache
         Engine.TextureCache.Clear();
         Engine.PaletteCache.Clear();
+
+        // Dispose resources
+        Engine.DisposableResources.DisposeAll();
     }
 
     #endregion

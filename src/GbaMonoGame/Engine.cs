@@ -60,6 +60,11 @@ public static class Engine
     public static Cache<Texture2D> TextureCache { get; } = new();
     public static Cache<Palette> PaletteCache { get; } = new();
 
+    /// <summary>
+    /// Disposable resources to dispose when loading a new frame
+    /// </summary>
+    public static DisposableResources DisposableResources { get; } = new();
+
     #endregion
 
     #region Methods
