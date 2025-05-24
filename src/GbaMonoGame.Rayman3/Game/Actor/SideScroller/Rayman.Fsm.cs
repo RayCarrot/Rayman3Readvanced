@@ -3353,9 +3353,11 @@ public partial class Rayman
 
                 OffsetCarryingObject();
 
-                // TODO: There's a bug here which causes a crash. Same in the original game. If falling it might still enter this state with attached obj null.
                 // Stop walking
-                if (IsDirectionalButtonReleased(GbaInput.Left) && IsDirectionalButtonReleased(GbaInput.Right))
+                if (IsDirectionalButtonReleased(GbaInput.Left) && IsDirectionalButtonReleased(GbaInput.Right) &&
+                    // NOTE: There is a bug here where if you've just started falling then the attached object is null
+                    //       which will cause the next state to crash due to a null pointer!
+                    !(Engine.Config.FixBugs && AttachedObject == null))
                 {
                     State.MoveTo(Fsm_CarryObject);
                     return false;
@@ -3882,12 +3884,14 @@ public partial class Rayman
 
                 Timer++;
 
+                // Land
                 if (HasLanded() && ActionId is Action.Fall_Right or Action.Fall_Left)
                 {
                     ActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
                     return true;
                 }
 
+                // Finished landing
                 if (ActionId is Action.Land_Right or Action.Land_Left && IsActionFinished)
                 {
                     if (FinishedMap)
@@ -3923,6 +3927,7 @@ public partial class Rayman
                     return true;
                 }
 
+                // Handle music
                 if (ActionId is Action.Idle_Right or Action.Idle_Left or Action.ReturnFromLevel_Right or Action.ReturnFromLevel_Left &&
                     ((!FinishedMap && Timer == 150) || (FinishedMap && Timer == 100)))
                 {
@@ -3941,13 +3946,14 @@ public partial class Rayman
                     return true;
                 }
 
+                // Transition out
                 if (ActionId is not (Action.Idle_Right or Action.Idle_Left or Action.ReturnFromLevel_Right or Action.ReturnFromLevel_Left) ||
                     ((FinishedMap || Timer <= 150) && (!FinishedMap || Timer <= 100)))
                 {
                     if (!IsActionFinished)
                         return true;
 
-                    if (ActionId is (Action.Victory_Right or Action.Victory_Left))
+                    if (ActionId is Action.Victory_Right or Action.Victory_Left)
                     {
                         ActionId = IsFacingRight ? Action.Idle_Right : Action.Idle_Left;
                         Timer = 0;
@@ -4141,7 +4147,8 @@ public partial class Rayman
 
                 if (!IsSmallKnockback)
                 {
-                    // Due to the lack of some null checks on GBA this code works differently on GBA and N-Gage if there is no attached object
+                    // Due to the lack of some null checks on GBA this code works differently on GBA and N-Gage if there is no attached object. It
+                    // does however seem impossible to get here without an attached object...
                     bool right;
                     if (Rom.Platform == Platform.GBA)
                     {
@@ -4173,8 +4180,10 @@ public partial class Rayman
                 }
                 else
                 {
+                    // Right
                     if (Position.X - AttachedObject.Position.X >= 0)
                         ActionId = IsFacingRight ? Action.SmallKnockbackForwards_Right : Action.SmallKnockbackBackwards_Left;
+                    // Left
                     else
                         ActionId = IsFacingRight ? Action.SmallKnockbackBackwards_Right : Action.SmallKnockbackForwards_Left;
                 }
@@ -4204,9 +4213,18 @@ public partial class Rayman
 
                 Timer++;
 
-                // TODO: Seems to be a bug - fix? The flag is true if you started out climbing. This should probably set it to false after 25 frames.
-                if (!TempFlag && Timer > 25)
-                    TempFlag = false;
+                // NOTE: The original code is bugged here - it checks if the flag is false instead of true! This causes it to not work. The flag
+                // is meant to be true if you started out climbing, and then set to false after 25 frames, allowing you to climb again.
+                if (Engine.Config.FixBugs)
+                {
+                    if (TempFlag && Timer > 25)
+                        TempFlag = false;
+                }
+                else
+                {
+                    if (!TempFlag && Timer > 25)
+                        TempFlag = false;
+                }
 
                 if (HitPoints == 0 && Timer > 20)
                 {
@@ -4280,7 +4298,6 @@ public partial class Rayman
         switch (action)
         {
             case FsmAction.Init:
-                // NOTE: The game doesn't check the class, and will end up writing to other memory if of type FrameWorldSideScroller
                 if (Frame.Current is FrameSideScroller sideScroller)
                     sideScroller.CanPause = false;
 

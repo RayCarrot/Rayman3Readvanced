@@ -1712,8 +1712,8 @@ public sealed partial class Rayman : MovableActor
 
             case Message.Actor_Hurt:
             case Message.Actor_End: // Unused
-            case Message.Actor_HurtPassthrough:
-            case Message.Actor_HurtSmallKnockback:
+            case Message.Rayman_HurtPassthrough:
+            case Message.Rayman_HurtSmallKnockback:
                 if (State == Fsm_HitKnockback || State == Fsm_Dying || State == Fsm_EndMap || InvulnerabilityDuration != 0)
                     return false;
 
@@ -1737,9 +1737,9 @@ public sealed partial class Rayman : MovableActor
                 if (((BaseActor)sender).Type == (int)ActorType.SpikyFlyingBomb && !IsInvulnerable)
                     InvulnerabilityDuration = 60;
 
-                if (message == Message.Actor_HurtPassthrough)
+                if (message == Message.Rayman_HurtPassthrough)
                     CheckAgainstObjectCollision = false;
-                else if (message == Message.Actor_HurtSmallKnockback)
+                else if (message == Message.Rayman_HurtSmallKnockback)
                     IsSmallKnockback = true;
 
                 if (AttachedObject != null && (ActorType)AttachedObject.Type is ActorType.Keg or ActorType.Caterpillar or ActorType.Sphere)

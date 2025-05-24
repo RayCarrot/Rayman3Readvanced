@@ -99,6 +99,20 @@ Most actors have the first animation be unused and just single frame, most likel
 - In the GBA version only there is a bug where if you charge an attack while hanging then the charging sound will play twice, making it sound louder than usual.
 - In multiplayer your movement speed is determined by different conditions based on the game type. In the `Tag` and `Burglar` modes it depends on if you have the tag, while in the N-Gage exclusive `Capture the Flag` mode it depends on if you have the flag. There's however a bug in the climbing state where it checks for the tag even in the `Capture the Flag` mode.
 - There's a bug in the code where it uses the wrong variable for a condition. This results in you moving away from the purple lum very slowly if you start swinging very close to it.
+- If you're carrying an object, such as a keg, and stop moving right as you fall from a ledge then the game will crash. This is because the game checks for if you've let go of the directional buttons first, making it move into the wrong state. In this state it still references the object you were carrying, which is now null as Rayman let go of it when falling.
+- The state function for throwing an object doesn't have proper null checks for the object you're throwing, making it sometimes try to write values to invalid memory regions (which just get discarded). This was fixed in the N-Gage version since it would cause a crash there.
+- When ending the current map the game gets the current `Frame` instance, assumes it's of type `FrameSideScroller`, and sets the flags for if you can pause the game and if the timer is running to false. The problem is that in the hub worlds the type is `FrameWorldSideScroller`, meaning that it then writes to out of bounds memory instead. The same thing happens when dying, although you can't die in the hub worlds so it doesn't matter there.
+- When transition out from the current map there is a check for if you're on the worldmap. This is unused since the Rayman actor does not appear there.
+- When knocked back from taking a hit there is no null check for the object that hit you, which is used to determine the direction to get knocked back to. However it doesn't seem the object can ever be null, so it shouldn't matter. Still a null check was added to the N-Gage version.
+- If climbing when knocked back from getting hit then a flag is set. After 25 frames this flag is meant to be cleared, allowing you to climb again, thus making you not fall too far. However the code is bugged and won't ever set the flag to false.
+- There are 4 unused states:
+    - The first one sets an action which plays the animation for when finishing a level, and then returns to the default state once it has finished. It also plays the win sound.
+    - The second one sets an action which plays an otherwise unused animation which is similar to the one for when fighting a boss. Then it returns to the default state. The makes the animation unused:
+
+    ![Animation 43](discoveries_assets/Rayman_Anim_43.gif)
+
+    - The third one hides Rayman.
+    - The fourth one sets an action which plays the animation for when getting a new power, and then returns to the default state once it has finished. It also plays the win sound.
 
 #### BoulderMode7
 - The boulder sprite rotates either left or right depending on its direction. It however doesn't take the camera into account, meaning that the rotating will only look correct from one direction. This is very noticeable as several of the boulders will look as if they're rotating in the opposite direction from where they're moving.

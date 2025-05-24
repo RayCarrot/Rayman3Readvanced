@@ -193,7 +193,7 @@ public partial class Rocky
                 if (Scene.IsHitMainActor(this) && !Scene.MainActor.IsInvulnerable)
                 {
                     Scene.MainActor.ReceiveDamage(1);
-                    Scene.MainActor.ProcessMessage(this, Message.Actor_HurtPassthrough);
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_HurtPassthrough);
                 }
 
                 if (IsActionFinished && ActionId is Action.PrepareCharge_Right or Action.PrepareCharge_Left)
