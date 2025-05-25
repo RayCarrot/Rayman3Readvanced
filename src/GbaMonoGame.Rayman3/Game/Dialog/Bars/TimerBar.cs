@@ -11,7 +11,7 @@ public class TimerBar : Bar
 
     public AnimatedObject TimerFrame { get; set; }
     public AnimatedObject[] Digits { get; set; }
-    public int NGage_Value { get; set; }
+    public int PreviousSecondsValue { get; set; } // N-Gage only
 
     public override void Load()
     {
@@ -67,48 +67,57 @@ public class TimerBar : Bar
         if (time < 0)
             time = 0;
 
-        // Code copied from the N-Gage decompilation. Could probably be cleaned up a bit.
-        int iVar1 = time / 3600;
-        int uVar2 = time % 3600;
-        int digit3 = uVar2 / 60;
-        int iVar3 = uVar2 % 60;
-        iVar3 = iVar3 * 100 / 60;
+        // Get the minutes value
+        int minutes = time / (60 * 60);
 
-        // TODO: What is this? Why is it not on GBA?
+        // Get the seconds value
+        int minutesRemainingTime = time % (60 * 60);
+        int seconds = minutesRemainingTime / 60;
+        
+        // Get the centiseconds value
+        int secondsRemainingTime = minutesRemainingTime % 60;
+        int centiSeconds = secondsRemainingTime * 100 / 60;
+
+        // On N-Gage it plays a beep every second for the last 10 seconds
         if (Rom.Platform == Platform.NGage)
         {
-            if (iVar1 == 0 && digit3 < 11 && digit3 != 0 && iVar3 == 0 && NGage_Value != digit3)
+            if (minutes == 0 && seconds <= 10 && seconds != 0 && centiSeconds == 0 && PreviousSecondsValue != seconds)
             {
-                NGage_Value = digit3;
+                PreviousSecondsValue = seconds;
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__GameOver_BeepFX01_Mix02);
             }
         }
 
-        int digit0 = iVar1 / 10;
-        int digit2 = digit3 / 10;
-        int digit4 = iVar3 / 10;
+        int minutesDigit1 = minutes / 10;
+        int secondsDigit1 = seconds / 10;
+        int centisecondsDigit1 = centiSeconds / 10;
         
-        int digit1 = iVar1 + digit0 * -10;
-        if (9 < digit1)
-            digit1 = 9;
+        int minutesDigit2 = minutes + minutesDigit1 * -10;
+        if (minutesDigit2 > 9)
+            minutesDigit2 = 9;
 
-        digit3 += digit2 * -10;
-        if (9 < digit3)
-            digit3 = 9;
+        int secondsDigit2 = seconds + secondsDigit1 * -10;
+        if (secondsDigit2 > 9)
+            secondsDigit2 = 9;
 
-        int digit5 = iVar3 + digit4 * -10;
-        if (9 < digit5)
-            digit5 = 9;
+        int centisecondsDigit2 = centiSeconds + centisecondsDigit1 * -10;
+        if (centisecondsDigit2 > 9)
+            centisecondsDigit2 = 9;
 
-        if (10 < digit4)
-            digit4 = 9;
+        if (centisecondsDigit1 > 10)
+            centisecondsDigit1 = 9;
 
-        Digits[0].CurrentAnimation = digit0;
-        Digits[1].CurrentAnimation = digit1;
-        Digits[2].CurrentAnimation = digit2;
-        Digits[3].CurrentAnimation = digit3;
-        Digits[4].CurrentAnimation = digit4;
-        Digits[5].CurrentAnimation = digit5;
+        // Minutes
+        Digits[0].CurrentAnimation = minutesDigit1;
+        Digits[1].CurrentAnimation = minutesDigit2;
+
+        // Seconds
+        Digits[2].CurrentAnimation = secondsDigit1;
+        Digits[3].CurrentAnimation = secondsDigit2;
+        
+        // Centiseconds
+        Digits[4].CurrentAnimation = centisecondsDigit1;
+        Digits[5].CurrentAnimation = centisecondsDigit2;
 
         animationPlayer.PlayFront(TimerFrame);
         foreach (AnimatedObject digit in Digits)

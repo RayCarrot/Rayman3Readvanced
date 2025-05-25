@@ -15,6 +15,9 @@
 - The `Scene2D` constructor for some reason disables the background scrolling for the first map of `Void of Bones`. This was added late during development judging by the prototypes.
 - The sidescroller camera has some leftover code from either earlier games or the early production of this game. There's an unused camera state and some code that can never run due to the conditions not being met.
 - The Mode7 camera has 3 unused states for a free-cam like mode. These were used in the early prototypes.
+- When initializing `AObjectChain`, used to create chained animations for actors such as the caterpillars, it has a bug when allocating an array. It sets the size to the number of children when it's supposed to be one more than that since the main parent object is also included. This however doesn't cause any issue in the game since the number of children is always 6, and due to memory alignment it ends up allocating 8 bytes then.
+- For some reason the animations for the Caterpillar enemy is referenced from the root resource table, yet it's never used from there.
+- The order of the levels ids from the curtains in the hub worlds reflect the original order rather than the order they appear in the final game.
 
 ### Actors
 Most actors have the first animation be unused and just single frame, most likely for their level editor. This is not included when mentioning unused animations for each actor.
@@ -318,6 +321,7 @@ Most actors have the first animation be unused and just single frame, most likel
 - There are 2 unused animations, but they're just the shell not moving, with one of them having broken graphics.
 - There is unused code for using ammo and firing energy shots. This was used in the ETSC prototype.
 - There's an initialization state for the shell which immediately transitions to the flying state and then also sends a message to the main actor to hide. However the main actor is the shell itself, and it doesn't check for the hide message. This seems to suggest that originally the Rayman actor was meant to appear in these levels, perhaps having you mount the shell before flying with it.
+- When finishing the map the actor is missing the code for saving the game like all main actors should have. Due to this the game never saves that you've beaten the final boss, making the level text always remain in white and not allowing all GameCube bonuses to be unlocked.
 
 #### Gate
 - The actor can be initialized to requiring 1, 3 or 4 switches to have it open, yet only the variants with 1 or 4 switches are used.
@@ -522,3 +526,25 @@ Most actors have the first animation be unused and just single frame, most likel
 #### RaymanBody
 - When drawing the actor it calls `PlayChannelBox` if the actor is not framed (not on screen). This is however unnecessary since it gets called when computing the next frame. This means it gets called twice each frame (which doesn't change anything).
 - During multiplayer the actor doesn't change its palette, meaning that if you perform the body shot attack then the body part color might not match the color of Rayman. This was fixed in the N-Gage version.
+
+### Dialogs
+- The blue lums bar creates and plays an animation which is empty. This is most likely some leftover.
+- The bar for the final boss has unused animations for the boss having 3 health:
+
+![Animation 0](discoveries_assets/BossFinalBar_Anim_0.gif)
+![Animation 1](discoveries_assets/BossFinalBar_Anim_1.gif)
+![Animation 2](discoveries_assets/BossFinalBar_Anim_2.gif)
+![Animation 3](discoveries_assets/BossFinalBar_Anim_3.gif)
+
+- When you only have 1 hp left then the life bar is set to play a heartbeat sound effect every 64 frames. It uses the global timer to check for this. There's however a bug here, cause when pausing the game the global timer also pauses, meaning that if you pause at the exact frame as the sound is playing then it'll keep playing every frame.
+- There are various animations for the HUD that are unused. They oddly include health indicators where the max health is 2 rather than 5, and a cage counter with space for two digits before the slash:
+
+![Animation 23](discoveries_assets/UserInfo_Anim_23.gif)
+![Animation 25](discoveries_assets/UserInfo_Anim_25.gif)
+![Animation 26](discoveries_assets/UserInfo_Anim_26.gif)
+![Animation 27](discoveries_assets/UserInfo_Anim_27.gif)
+![Animation 28](discoveries_assets/UserInfo_Anim_28.gif)
+![Animation 29](discoveries_assets/UserInfo_Anim_29.gif)
+![Animation 30](discoveries_assets/UserInfo_Anim_30.gif)
+![Animation 31](discoveries_assets/UserInfo_Anim_31.gif)
+![Animation 40](discoveries_assets/UserInfo_Anim_40.gif)

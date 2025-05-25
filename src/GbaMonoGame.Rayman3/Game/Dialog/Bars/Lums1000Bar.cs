@@ -4,7 +4,6 @@ using GbaMonoGame.AnimEngine;
 
 namespace GbaMonoGame.Rayman3;
 
-// TODO: Allow this to be moved out when the options menu shows
 public class Lums1000Bar : Bar
 {
     public Lums1000Bar(Scene2D scene) : base(scene) { }

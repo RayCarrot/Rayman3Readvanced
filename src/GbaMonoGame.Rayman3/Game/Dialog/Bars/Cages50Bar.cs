@@ -3,7 +3,6 @@ using GbaMonoGame.AnimEngine;
 
 namespace GbaMonoGame.Rayman3;
 
-// TODO: Allow this to be moved out when the options menu shows
 public class Cages50Bar : Bar
 {
     public Cages50Bar(Scene2D scene) : base(scene) { }

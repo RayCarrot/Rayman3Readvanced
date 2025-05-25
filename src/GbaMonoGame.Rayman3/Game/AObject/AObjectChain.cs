@@ -63,7 +63,7 @@ public class AObjectChain : AnimatedObject
             PriosBuffer = new bool[BufferLength];
 
             // NOTE: In the original game this is bugged and will allocate 1 less than needed. This
-            //       however won't cause any overflow issues because the count if always 6 and when
+            //       however won't cause any overflow issues because the count is always 6 and when
             //       allocating it aligns it to 4, meaning it allocates 2 additional bytes (8 total).
             Prios = new bool[ChildrenCount + 1];
         }

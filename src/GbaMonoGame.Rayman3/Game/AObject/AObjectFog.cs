@@ -18,11 +18,11 @@ public class AObjectFog : AObject
         Resource = resource;
 
         // The sprites in the first two channels are the only unique sprites. So we can use these and tile them across.
-        SpriteChannels = new[]
-        {
+        SpriteChannels =
+        [
             resource.Animations[0].Channels[0],
-            resource.Animations[0].Channels[1],
-        };
+            resource.Animations[0].Channels[1]
+        ];
     }
 
     #endregion
