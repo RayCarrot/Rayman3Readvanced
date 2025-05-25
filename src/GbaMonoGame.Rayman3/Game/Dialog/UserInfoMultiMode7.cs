@@ -267,7 +267,7 @@ public class UserInfoMultiMode7 : Dialog
             animationPlayer.PlayFront(LapDigits[1]);
         }
 
-        Rank.CurrentAnimation = Array.IndexOf(raceManager.PlayerRanks, MainActor.InstanceId);
+        Rank.CurrentAnimation = raceManager.GetGridPos(MainActor.InstanceId);
 
         float mapScale = GameInfo.MapId == MapId.GbaMulti_MissileArena ? 16 : 32;
         for (int id = 0; id < MultiplayerManager.PlayersCount; id++)

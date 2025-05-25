@@ -252,7 +252,12 @@ public sealed partial class MissileMode7 : Mode7Actor
         }
 
         if (physicalType.Directional != PrevPhysicalType.Directional)
-            raceManager.UpdateRankings(InstanceId, isMovingTheRightDirection);
+        {
+            if (isMovingTheRightDirection)
+                raceManager.IncDistance(InstanceId);
+            else
+                raceManager.DecDistance(InstanceId);
+        }
 
         // Check if we passed the finish line
         if (physicalType.RaceEnd != PrevPhysicalType.RaceEnd)
@@ -279,7 +284,7 @@ public sealed partial class MissileMode7 : Mode7Actor
                                 v += 1;
                         }
 
-                        raceManager.Data4[InstanceId] = 2000 - v;
+                        raceManager.PlayerDistances[InstanceId] = 2000 - v;
 
                         if (InstanceId == MultiplayerManager.MachineId)
                         {
@@ -311,7 +316,7 @@ public sealed partial class MissileMode7 : Mode7Actor
                     if (finishedRace)
                         State.MoveTo(Fsm_FinishedRace);
 
-                    raceManager.UpdateRankings(InstanceId, true);
+                    raceManager.IncDistance(InstanceId);
                 }
 
                 IsOnCorrectLap = true;
@@ -323,7 +328,7 @@ public sealed partial class MissileMode7 : Mode7Actor
                 if ((CurrentTempLap & 1) == 0 && !IsOnCorrectLap)
                 {
                     raceManager.PlayersCurrentTempLap[InstanceId]--;
-                    raceManager.UpdateRankings(InstanceId, false);
+                    raceManager.DecDistance(InstanceId);
                 }
 
                 IsOnCorrectLap = false;
@@ -332,7 +337,7 @@ public sealed partial class MissileMode7 : Mode7Actor
 
         PrevPhysicalType = physicalType;
 
-        Acceleration = MathHelpers.FromFixedPoint((raceManager.Data4[raceManager.PlayerRanks[0]] - raceManager.Data4[InstanceId]) * 0x80 + 0x1000);
+        Acceleration = MathHelpers.FromFixedPoint((raceManager.PlayerDistances[raceManager.PlayerRanks[0]] - raceManager.PlayerDistances[InstanceId]) * 0x80 + 0x1000);
         const float max = 5 / 64f;
         if (Acceleration > max)
             Acceleration = max;

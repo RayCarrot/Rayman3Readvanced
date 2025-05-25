@@ -1,4 +1,6 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+﻿using System;
+using System.Diagnostics;
+using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
@@ -19,7 +21,7 @@ public class RaceManagerMulti
 
         PlayersCurrentLap = new int[RSMultiplayer.MaxPlayersCount];
         PlayersCurrentTempLap = new int[RSMultiplayer.MaxPlayersCount];
-        Data4 = new int[RSMultiplayer.MaxPlayersCount];
+        PlayerDistances = new int[RSMultiplayer.MaxPlayersCount];
         PlayerRanks = new int[RSMultiplayer.MaxPlayersCount];
         PlayersIsDead = new bool[RSMultiplayer.MaxPlayersCount];
         Data5 = new int[RSMultiplayer.MaxPlayersCount];
@@ -28,7 +30,7 @@ public class RaceManagerMulti
         {
             PlayersCurrentLap[i] = 1;
             PlayersCurrentTempLap[i] = 0;
-            Data4[i] = 0;
+            PlayerDistances[i] = 0;
             PlayerRanks[i] = i;
             PlayersIsDead[i] = false;
             Data5[i] = Data7;
@@ -49,7 +51,7 @@ public class RaceManagerMulti
     public bool IsRacing { get; set; }
     public bool DrivingTheRightWay { get; set; }
     public bool[] PlayersIsDead { get; set; }
-    public int[] Data4 { get; set; }
+    public int[] PlayerDistances { get; set; }
     public int[] Data5 { get; set; }
     public int[] PlayerRanks { get; set; }
     public int Data7 { get; set; }
@@ -109,13 +111,9 @@ public class RaceManagerMulti
         }
     }
 
-    public void UpdateRankings(int machineId, bool increment)
+    public void IncDistance(int machineId)
     {
-        if (increment)
-            Data4[machineId]++;
-        else
-            Data4[machineId]--;
-
+        PlayerDistances[machineId]++;
         Data5[machineId] = Data7;
         Data7--;
 
@@ -129,13 +127,81 @@ public class RaceManagerMulti
                 int current = PlayerRanks[j];
                 int next = PlayerRanks[j + 1];
 
-                if (Data4[current] * 0x10000 + Data5[current] <
-                    Data4[next] * 0x10000 + Data5[next])
+                if (PlayerDistances[current] * 0x10000 + Data5[current] <
+                    PlayerDistances[next] * 0x10000 + Data5[next])
                 {
                     PlayerRanks[j] = next;
                     PlayerRanks[j + 1] = current;
                 }
             }
+        }
+    }
+
+    public void DecDistance(int machineId)
+    {
+        PlayerDistances[machineId]--;
+        Data5[machineId] = Data7;
+        Data7--;
+
+        for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
+            PlayerRanks[id] = id;
+
+        for (int i = 0; i < MultiplayerManager.PlayersCount - 1; i++)
+        {
+            for (int j = 0; j < MultiplayerManager.PlayersCount - 1 - i; j++)
+            {
+                int current = PlayerRanks[j];
+                int next = PlayerRanks[j + 1];
+
+                if (PlayerDistances[current] * 0x10000 + Data5[current] <
+                    PlayerDistances[next] * 0x10000 + Data5[next])
+                {
+                    PlayerRanks[j] = next;
+                    PlayerRanks[j + 1] = current;
+                }
+            }
+        }
+    }
+
+    public int GetGridPos(int machineId)
+    {
+        int pos = Array.IndexOf(PlayerRanks, machineId);
+
+        Debug.Assert(pos >= 0, "There Should be a player 1st in the race");
+
+        if (pos == -1)
+            pos = 0;
+
+        return pos;
+    }
+
+    public void SetPlayerOut(int machineId)
+    {
+        PlayersIsDead[machineId] = true;
+
+        int deadPlayers = 0;
+        int alivePlayer = 0;
+        int prevAlivePlayer = alivePlayer;
+        for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
+        {
+            alivePlayer = id;
+            if (PlayersIsDead[id])
+            {
+                deadPlayers++;
+                alivePlayer = prevAlivePlayer;
+            }
+            prevAlivePlayer = alivePlayer;
+        }
+
+        Debug.Assert(deadPlayers < MultiplayerManager.PlayersCount, "Too many players are out... no winner");
+
+        // If only 1 player is left alive
+        if (deadPlayers == MultiplayerManager.PlayersCount - 1)
+        {
+            PlayerDistances[alivePlayer] = 32000;
+            PlayersCurrentTempLap[alivePlayer] = LapsCount + 1;
+            Data8 = alivePlayer;
+            IncDistance(alivePlayer);
         }
     }
 }

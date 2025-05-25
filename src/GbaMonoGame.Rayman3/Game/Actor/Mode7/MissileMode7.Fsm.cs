@@ -364,9 +364,7 @@ public partial class MissileMode7
                         FrameMissileMultiMode7 frame = (FrameMissileMultiMode7)Frame.Current;
                         RaceManagerMulti raceManager = frame.RaceManager;
 
-                        int rank = Array.IndexOf(raceManager.PlayerRanks, InstanceId);
-                        if (rank == -1)
-                            rank = 0;
+                        int rank = raceManager.GetGridPos(InstanceId);
 
                         if (rank != 0)
                         {
@@ -485,37 +483,14 @@ public partial class MissileMode7
                 FrameMissileMultiMode7 frame = (FrameMissileMultiMode7)Frame.Current;
                 RaceManagerMulti raceManager = frame.RaceManager;
 
-                raceManager.PlayersIsDead[InstanceId] = true;
-
-                int deadPlayers = 0;
-                int alivePlayer = 0;
-                int prevAlivePlayer = alivePlayer;
-                for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
-                {
-                    alivePlayer = id;
-                    if (raceManager.PlayersIsDead[id])
-                    {
-                        deadPlayers++;
-                        alivePlayer = prevAlivePlayer;
-                    }
-                    prevAlivePlayer = alivePlayer;
-                }
-
-                // If only 1 player is left alive
-                if (deadPlayers == MultiplayerManager.PlayersCount - 1)
-                {
-                    raceManager.Data4[alivePlayer] = 32000;
-                    raceManager.PlayersCurrentTempLap[alivePlayer] = raceManager.LapsCount + 1;
-                    raceManager.Data8 = alivePlayer;
-                    raceManager.UpdateRankings(alivePlayer, true);
-                }
+                raceManager.SetPlayerOut(InstanceId);
 
                 if (GameInfo.MapId == MapId.GbaMulti_MissileArena)
                 {
                     for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
                     {
                         if (Scene.GetGameObject<MissileMode7>(id).HitPoints != 0)
-                            raceManager.UpdateRankings(id, true);
+                            raceManager.IncDistance(id);
                     }
                 }
                 break;
