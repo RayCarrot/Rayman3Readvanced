@@ -256,26 +256,31 @@ public partial class TextBoxDialog : Dialog
             RenderContext = Scene.HudRenderContext,
         };
 
-        // NOTE: The game only creates the two icons below if map id is not certain levels. We can ignore that as it's probably for vram allocation.
-        AnimatedObjectResource lyIconResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.TextBoxLyIconAnimations);
-        LyIcon = new AnimatedObject(lyIconResource, true)
+        if (GameInfo.MapId is not (MapId.FairyGlade_M2 or MapId.World3 or MapId.BossMachine or MapId.MarshAwakening1))
         {
-            IsFramed = true,
-            CurrentAnimation = 0,
-            ScreenPos = new Vector2(8, 8 - OffsetY),
-            HorizontalAnchor = HorizontalAnchorMode.Scale,
-            RenderContext = Scene.HudRenderContext,
-        };
+            AnimatedObjectResource lyIconResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.TextBoxLyIconAnimations);
+            LyIcon = new AnimatedObject(lyIconResource, true)
+            {
+                IsFramed = true,
+                CurrentAnimation = 0,
+                ScreenPos = new Vector2(8, 8 - OffsetY),
+                HorizontalAnchor = HorizontalAnchorMode.Scale,
+                RenderContext = Scene.HudRenderContext,
+            };
+        }
 
-        AnimatedObjectResource teensiesIconResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.TextBoxTeensiesIconAnimations);
-        TeensiesIcon = new AnimatedObject(teensiesIconResource, true)
+        if (GameInfo.MapId is not (MapId.FairyGlade_M2 or MapId.BossMachine or MapId.MarshAwakening1))
         {
-            IsFramed = true,
-            CurrentAnimation = 0,
-            ScreenPos = new Vector2(8, 8 - OffsetY),
-            HorizontalAnchor = HorizontalAnchorMode.Scale,
-            RenderContext = Scene.HudRenderContext,
-        };
+            AnimatedObjectResource teensiesIconResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.TextBoxTeensiesIconAnimations);
+            TeensiesIcon = new AnimatedObject(teensiesIconResource, true)
+            {
+                IsFramed = true,
+                CurrentAnimation = 0,
+                ScreenPos = new Vector2(8, 8 - OffsetY),
+                HorizontalAnchor = HorizontalAnchorMode.Scale,
+                RenderContext = Scene.HudRenderContext,
+            };
+        }
     }
 
     public override void Draw(AnimationPlayer animationPlayer)

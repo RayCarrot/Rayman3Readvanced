@@ -35,13 +35,7 @@ public partial class UserInfoMulti2D : Dialog
         else
         {
             TagId = (int)(MultiplayerInfo.InitialGameTime % RSMultiplayer.PlayersCount);
-
-            if (TagId == RSMultiplayer.MachineId)
-                TagIdHudIndex = 0;
-            else if (TagId <= RSMultiplayer.MachineId)
-                TagIdHudIndex = TagId + 1;
-            else
-                TagIdHudIndex = TagId;
+            TagIdHudIndex = MultiplayerHelpers.MachineIdToHudIndex(TagId);
         }
 
         LastTimeChangeTime = 0;
@@ -111,11 +105,12 @@ public partial class UserInfoMulti2D : Dialog
 
     public int[] PlayerRanks { get; set; }
 
+    // Unused
     public int Unused1 { get; set; }
     public int Unused2 { get; set; }
     public int Unused3 { get; set; }
 
-    // // N-Gage exclusive
+    // N-Gage exclusive
     public ushort CaptureTheFlagTime { get; set; }
     public bool IsSuddenDeath { get; set; }
     public byte SuddenDeathDisplayCountdown { get; set; }

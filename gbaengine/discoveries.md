@@ -548,3 +548,7 @@ Most actors have the first animation be unused and just single frame, most likel
 ![Animation 30](discoveries_assets/UserInfo_Anim_30.gif)
 ![Animation 31](discoveries_assets/UserInfo_Anim_31.gif)
 ![Animation 40](discoveries_assets/UserInfo_Anim_40.gif)
+
+- The multiplayer HUD class `UserInfoMulti2D` has three unused variables which are only ever set and not read. It also has two unused functions. The first is `AddTime` which would add time to your clock, something which can't happen in the final game. The second one is `PrintInfo` which is mostly empty in the final game, but implemented in some of the earlier prototypes.
+- The Mode7 multiplayer HUD class `UserInfoMultiMode7` has an unused text object which has the default text set as "Winner P1!". There's also a function that gets called for drawing the current time which is empty in the final game.
+- The value for the current horizontal position of the birds in the waterski Mode7 levels is uninitialized, meaning it can start at any value. However this gets set to value between 0-255 after drawing the first frame, thus correcting any out of bounds values.
