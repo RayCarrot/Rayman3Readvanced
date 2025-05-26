@@ -22,6 +22,7 @@ public partial class PauseDialog : Dialog
     public AnimatedObject BackSymbol { get; set; }
     public AnimatedObject MusicVolume { get; set; }
     public AnimatedObject SfxVolume { get; set; }
+    public bool IsQuittingGame { get; set; } // Appears unused?
 
     // Custom properties to simulate sleep mode
     public bool IsInSleepMode { get; set; }
@@ -301,13 +302,9 @@ public partial class PauseDialog : Dialog
         DrawStep = PauseDialogDrawStep.MoveIn;
 
         if (RSMultiplayer.IsActive)
-        {
-            // TODO: Implement Fsm_CheckSelectionMulti
-        }
+            State.SetTo(Fsm_CheckSelectionMulti);
         else
-        {
             State.SetTo(Fsm_CheckSelection);
-        }
 
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
     }

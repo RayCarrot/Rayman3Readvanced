@@ -16,6 +16,9 @@ public partial class PauseDialog
                 break;
 
             case FsmAction.Step:
+                if (Rom.Platform == Platform.NGage)
+                    IsQuittingGame = false;
+
                 int maxOption = Rom.Platform switch
                 {
                     Platform.GBA => 2,
@@ -277,6 +280,9 @@ public partial class PauseDialog
                 break;
 
             case FsmAction.Step:
+                if (Rom.Platform == Platform.NGage)
+                    IsQuittingGame = true;
+
                 bool goBack = false;
 
                 int resumeOptionIndex = Rom.Platform switch
@@ -370,6 +376,331 @@ public partial class PauseDialog
                 if (goBack)
                 {
                     State.MoveTo(Fsm_CheckSelection);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
+
+        return true;
+    }
+
+    public bool Fsm_CheckSelectionMulti(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                // Do nothing
+                break;
+
+            case FsmAction.Step:
+                if (Rom.Platform == Platform.NGage)
+                    IsQuittingGame = false;
+
+                int maxOption = Rom.Platform switch
+                {
+                    Platform.GBA => 1,
+                    Platform.NGage => 3,
+                    _ => throw new UnsupportedPlatformException()
+                };
+
+                bool resume = false;
+                bool quitGame = false;
+
+                if (MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.Up))
+                {
+                    PrevSelectedOption = SelectedOption;
+                    if (SelectedOption == 0)
+                        SelectedOption = maxOption;
+                    else
+                        SelectedOption--;
+
+                    if (Rom.Platform == Platform.GBA)
+                        PauseSelection.CurrentAnimation = SelectedOption switch
+                        {
+                            0 => 50 + Localization.LanguageUiIndex,
+                            1 => 60 + Localization.LanguageUiIndex,
+                            _ => throw new IndexOutOfRangeException(),
+                        };
+                    else if (Rom.Platform == Platform.NGage)
+                        PauseSelection.CurrentAnimation = SelectedOption switch
+                        {
+                            0 => 0 + Localization.LanguageUiIndex,
+                            1 => 5 + Localization.LanguageUiIndex,
+                            2 => 25 + Localization.LanguageUiIndex,
+                            3 => 10 + Localization.LanguageUiIndex,
+                            _ => throw new IndexOutOfRangeException(),
+                        };
+                    else
+                        throw new UnsupportedPlatformException();
+
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                }
+                else if (MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.Down))
+                {
+                    PrevSelectedOption = SelectedOption;
+                    if (SelectedOption == maxOption)
+                        SelectedOption = 0;
+                    else
+                        SelectedOption++;
+
+                    if (Rom.Platform == Platform.GBA)
+                        PauseSelection.CurrentAnimation = SelectedOption switch
+                        {
+                            0 => 50 + Localization.LanguageUiIndex,
+                            1 => 60 + Localization.LanguageUiIndex,
+                            _ => throw new IndexOutOfRangeException(),
+                        };
+                    else if (Rom.Platform == Platform.NGage)
+                        PauseSelection.CurrentAnimation = SelectedOption switch
+                        {
+                            0 => 0 + Localization.LanguageUiIndex,
+                            1 => 5 + Localization.LanguageUiIndex,
+                            2 => 25 + Localization.LanguageUiIndex,
+                            3 => 10 + Localization.LanguageUiIndex,
+                            _ => throw new IndexOutOfRangeException(),
+                        };
+                    else
+                        throw new UnsupportedPlatformException();
+
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                }
+                else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(GbaInput.Left))
+                {
+                    if (SelectedOption == 1)
+                    {
+                        ModifyMusicVolume(-1);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                    }
+                    else if (SelectedOption == 2)
+                    {
+                        ModifySfxVolume(-1);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                    }
+                }
+                else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(GbaInput.Right))
+                {
+                    if (SelectedOption == 1)
+                    {
+                        ModifyMusicVolume(1);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                    }
+                    else if (SelectedOption == 2)
+                    {
+                        ModifySfxVolume(1);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                    }
+                }
+                else if (MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.B) || 
+                         MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.Start))
+                {
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
+                    DrawStep = PauseDialogDrawStep.MoveOut;
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+
+                    if (Rom.Platform == Platform.NGage)
+                        ((NGageSoundEventsManager)SoundEventsManager.Current).ResumeLoopingSoundEffects();
+
+                    resume = true;
+                }
+                else if (MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.A))
+                {
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+
+                    switch (SelectedOption)
+                    {
+                        // Continue
+                        case 0:
+                            DrawStep = PauseDialogDrawStep.MoveOut;
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+
+                            if (Rom.Platform == Platform.NGage)
+                                ((NGageSoundEventsManager)SoundEventsManager.Current).ResumeLoopingSoundEffects();
+
+                            resume = true;
+                            break;
+
+                        // Quit game
+                        case 1 when Rom.Platform == Platform.GBA:
+                        case 3 when Rom.Platform == Platform.NGage:
+                            // In the original game it sets the x positions to 200 so that they're off-screen. But that
+                            // won't work due to custom resolutions being possible, so we instead hide all sprite channels.
+                            if (Rom.Platform == Platform.NGage)
+                            {
+                                MusicVolume.ActiveChannels = 0;
+                                SfxVolume.ActiveChannels = 0;
+                            }
+
+                            quitGame = true;
+                            break;
+                    }
+                }
+
+                if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(GbaInput.A))
+                {
+                    switch (SelectedOption)
+                    {
+                        // Music volume
+                        case 1:
+                            if (((NGageSoundEventsManager)SoundEventsManager.Current).MusicVolume < SoundEngineInterface.MaxVolume)
+                                ModifyMusicVolume(1);
+                            else
+                                ModifyMusicVolume(-3);
+                            break;
+
+                        // Sfx volume
+                        case 2:
+                            if (((NGageSoundEventsManager)SoundEventsManager.Current).SoundEffectsVolume < SoundEngineInterface.MaxVolume)
+                                ModifySfxVolume(1);
+                            else
+                                ModifySfxVolume(-3);
+                            break;
+                    }
+                }
+
+                if (Rom.Platform == Platform.NGage)
+                {
+                    SetMusicVolumeAnimation();
+                    SetSfxVolumeAnimation();
+                }
+
+                if (resume)
+                {
+                    State.MoveTo(null);
+                    return false;
+                }
+
+                if (quitGame)
+                {
+                    State.MoveTo(Fsm_QuitGameMulti);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                if (Rom.Platform == Platform.NGage)
+                {
+                    // NOTE: The game sets the KEYINPUT register to 0 here
+                }
+                break;
+        }
+
+        return true;
+    }
+
+    public bool Fsm_QuitGameMulti(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                PrevSelectedOption = SelectedOption;
+
+                if (Rom.Platform == Platform.GBA)
+                {
+                    SelectedOption = 1;
+                    PauseSelection.CurrentAnimation = 40 + Localization.LanguageUiIndex;
+                }
+                else if (Rom.Platform == Platform.NGage)
+                {
+                    SelectedOption = 0;
+                    PauseSelection.CurrentAnimation = 15 + Localization.LanguageUiIndex;
+                }
+                else
+                {
+                    throw new UnsupportedPlatformException();
+                }
+                break;
+
+            case FsmAction.Step:
+                if (Rom.Platform == Platform.NGage)
+                    IsQuittingGame = true;
+
+                bool goBack = false;
+
+                int resumeOptionIndex = Rom.Platform switch
+                {
+                    Platform.GBA => 1,
+                    Platform.NGage => 0,
+                    _ => throw new UnsupportedPlatformException(),
+                };
+                int quitOptionIndex = Rom.Platform switch
+                {
+                    Platform.GBA => 0,
+                    Platform.NGage => 1,
+                    _ => throw new UnsupportedPlatformException(),
+                };
+
+                if (MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.Up) || 
+                    MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.Down))
+                {
+                    if (Rom.Platform == Platform.GBA)
+                    {
+                        if (SelectedOption == 0)
+                            PauseSelection.CurrentAnimation = 40 + Localization.LanguageUiIndex;
+                        else
+                            PauseSelection.CurrentAnimation = 30 + Localization.LanguageUiIndex;
+                    }
+                    else if (Rom.Platform == Platform.NGage)
+                    {
+                        if (SelectedOption == 0)
+                            PauseSelection.CurrentAnimation = 20 + Localization.LanguageUiIndex;
+                        else
+                            PauseSelection.CurrentAnimation = 15 + Localization.LanguageUiIndex;
+                    }
+                    else
+                    {
+                        throw new UnsupportedPlatformException();
+                    }
+
+                    PrevSelectedOption = SelectedOption;
+                    SelectedOption = SelectedOption == 0 ? 1 : 0;
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                }
+                else if (MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.B) || 
+                         (MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.A) && SelectedOption == resumeOptionIndex))
+                {
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
+
+                    if (Rom.Platform == Platform.GBA)
+                    {
+                        PauseSelection.CurrentAnimation = 60 + Localization.LanguageUiIndex;
+                        PrevSelectedOption = SelectedOption;
+                        SelectedOption = 1;
+                    }
+                    else if (Rom.Platform == Platform.NGage)
+                    {
+                        // Unhide
+                        MusicVolume.ActiveChannels = UInt32.MaxValue;
+                        SfxVolume.ActiveChannels = UInt32.MaxValue;
+
+                        PauseSelection.CurrentAnimation = 10 + Localization.LanguageUiIndex;
+                        PrevSelectedOption = SelectedOption;
+                        SelectedOption = 3;
+                    }
+                    else
+                    {
+                        throw new UnsupportedPlatformException();
+                    }
+
+                    goBack = true;
+                }
+                else if (MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.A) && SelectedOption == quitOptionIndex)
+                {
+                    Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
+                    Gfx.Fade = 1;
+
+                    FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.Multiplayer));
+
+                    if (Rom.Platform == Platform.GBA)
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                }
+
+                if (goBack)
+                {
+                    State.MoveTo(Fsm_CheckSelectionMulti);
                     return false;
                 }
                 break;
