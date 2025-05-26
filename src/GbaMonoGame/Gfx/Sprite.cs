@@ -29,7 +29,7 @@ public class Sprite
         if (OverrideGfxColor)
             color = Color;
         else
-            color = new Color(Color.ToVector4() * color.ToVector4());
+            color = Color * color;
         
         if (RenderOptions.BlendMode != BlendMode.None)
             color = new Color(color, Alpha);
