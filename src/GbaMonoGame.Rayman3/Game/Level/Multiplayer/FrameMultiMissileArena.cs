@@ -14,13 +14,13 @@ public class FrameMultiMissileArena : FrameMissileMultiMode7
 
         MultiplayerManager.Init();
 
-        // TODO: There's also an empty area on the bottom-right of the map that we need to fill since it's visible
+        // The map data is 128x128, but the actual map is only 100x100, so we need to override the dimensions to avoid you seeing outside the map!
         ExtendMap(
         [
             new(3), new(4), new(5),
             new(2), new(8), new(1),
             new(7), new(9), new(6)
-        ], 3, 3);
+        ], 3, 3, overrideMapWidth: 100, overrideMapHeight: 100);
     }
 
     public override void Step()

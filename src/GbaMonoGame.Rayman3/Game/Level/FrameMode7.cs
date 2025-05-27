@@ -67,7 +67,7 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
         CurrentStepAction = Step_Normal;
     }
 
-    protected void ExtendMap(MapTile[] repeatSection, int repeatSectionWidth, int repeatSectionHeight)
+    protected void ExtendMap(MapTile[] repeatSection, int repeatSectionWidth, int repeatSectionHeight, int overrideMapWidth = -1, int overrideMapHeight = -1)
     {
         // In the original game if you see outside the map then it wraps whatever is loaded in VRAM, which will usually
         // be leftover tiles from before. This isn't very noticeable due to the low resolution, but here it is. So instead
@@ -76,13 +76,19 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
         // Get the main map layer
         TgxRotscaleLayerMode7 rotScaleLayer = ((TgxPlayfieldMode7)Scene.Playfield).RotScaleLayers[0];
 
+        // Get the dimensions
+        int mapWidth = overrideMapWidth != -1 ? overrideMapWidth : rotScaleLayer.Width;
+        int mapHeight = overrideMapHeight != -1 ? overrideMapHeight : rotScaleLayer.Height;
+        int mapPixelWidth = mapWidth * Tile.Size;
+        int mapPixelHeight = mapHeight * Tile.Size;
+
         // Create a new map, same size as the original, with the repeat pattern
-        MapTile[] overflowTileMap = new MapTile[rotScaleLayer.Width * rotScaleLayer.Height];
-        for (int y = 0; y < rotScaleLayer.Height; y++)
+        MapTile[] overflowTileMap = new MapTile[mapWidth * mapHeight];
+        for (int y = 0; y < mapHeight; y++)
         {
-            for (int x = 0; x < rotScaleLayer.Width; x++)
+            for (int x = 0; x < mapWidth; x++)
             {
-                overflowTileMap[y * rotScaleLayer.Width + x] = repeatSection[(y % repeatSectionHeight) * repeatSectionWidth + (x % repeatSectionWidth)];
+                overflowTileMap[y * mapWidth + x] = repeatSection[(y % repeatSectionHeight) * repeatSectionWidth + (x % repeatSectionWidth)];
             }
         }
 
@@ -91,8 +97,8 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
             renderOptions: rotScaleLayer.Screen.RenderOptions,
             animatedTilekitManager: Scene.Playfield.AnimatedTilekitManager,
             layerCachePointer: rotScaleLayer.Resource.Offset + 1, // A bit hacky, but we need a unique cache id for this
-            width: rotScaleLayer.Width,
-            height: rotScaleLayer.Height,
+            width: mapWidth,
+            height: mapHeight,
             tileMap: overflowTileMap,
             baseTileIndex: 512,
             is8Bit: rotScaleLayer.Is8Bit,
@@ -114,14 +120,14 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
                 if (x == 0 && y == 0)
                     continue;
 
-                sections[i] = new MultiScreenRenderer.Section(overflowRenderer, new Vector2(rotScaleLayer.PixelWidth * x, rotScaleLayer.PixelHeight * y));
+                sections[i] = new MultiScreenRenderer.Section(overflowRenderer, new Vector2(mapPixelWidth * x, mapPixelHeight * y));
 
                 i++;
             }
         }
 
         // Replace the renderer
-        rotScaleLayer.Screen.Renderer = new MultiScreenRenderer(sections, new Vector2(rotScaleLayer.PixelWidth * 3, rotScaleLayer.PixelHeight * 3));
+        rotScaleLayer.Screen.Renderer = new MultiScreenRenderer(sections, new Vector2(mapPixelWidth * 3, mapPixelHeight * 3));
     }
 
     #endregion
