@@ -6,7 +6,6 @@ using Action = System.Action;
 
 namespace GbaMonoGame.Rayman3;
 
-// TODO: Scale camera positions?
 // NOTE: In the original game it calls message Cam_SetPosition (1062) on the camera instead of Cam_Lock (1090) like we do. The reason the
 //       camera doesn't move back to Rayman in the original game is because Rayman's screen position doesn't update when he isn't framed.
 //       However, we update the screen positions regardless, and also allow you to play in any resolution, so we need to make sure it locks.
@@ -39,6 +38,29 @@ public class EchoingCaves_M1 : FrameSideScroller
 
     #endregion
 
+    #region Private Methods
+
+    private Vector2 GetCameraRelativePos(bool isGate)
+    {
+        if (Engine.Config.FixBugs)
+        {
+            if (isGate)
+                return -new Vector2(Scene.Resolution.X / 2, Scene.Resolution.Y * (3 / 4f));
+            else
+                return -Scene.Resolution / 2;
+        }
+        else
+        {
+            // By default the values are hard-coded based on the GBA resolution
+            if (isGate)
+                return -new Vector2(120, 120);
+            else
+                return -new Vector2(120, 80);
+        }
+    }
+
+    #endregion
+
     #region Public Methods
 
     public override void Init()
@@ -49,9 +71,7 @@ public class EchoingCaves_M1 : FrameSideScroller
         {
             // Move camera to the gate
             Gate gate = Scene.GetGameObject<Gate>(GateActorId);
-            Vector2 gatePos = gate.Position;
-            gatePos -= new Vector2(120, 120);
-            Scene.Camera.ProcessMessage(this, Message.Cam_Lock, gatePos);
+            Scene.Camera.ProcessMessage(this, Message.Cam_Lock, gate.Position + GetCameraRelativePos(true));
             
             // Change the position of the circle transition
             CircleTransitionScreenEffect.Init(CircleTransitionValue, new Vector2(120, 80));
@@ -155,9 +175,9 @@ public class EchoingCaves_M1 : FrameSideScroller
         Vector2 pos = Vector2.Zero;
 
         if (CameraTargetIndex < 5)
-            pos = Scene.GetGameObject(SwitchActorIds[CameraTargetIndex - 1]).Position - new Vector2(120, 80);
+            pos = Scene.GetGameObject(SwitchActorIds[CameraTargetIndex - 1]).Position + GetCameraRelativePos(false);
         else if (CameraTargetIndex == 5)
-            pos = Scene.GetGameObject(GateActorId).Position - new Vector2(120, 120);
+            pos = Scene.GetGameObject(GateActorId).Position + GetCameraRelativePos(true);
 
         Scene.Camera.ProcessMessage(this, Message.Cam_Lock, pos);
 
@@ -213,7 +233,8 @@ public class EchoingCaves_M1 : FrameSideScroller
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LightFX1_Mix01);
             }
         }
-        else
+
+        if (CameraTargetIndex == 5)
         {
             Gate gate = Scene.GetGameObject<Gate>(GateActorId);
 

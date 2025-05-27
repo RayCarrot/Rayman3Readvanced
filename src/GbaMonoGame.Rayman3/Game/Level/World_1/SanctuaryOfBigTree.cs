@@ -13,8 +13,11 @@ public class SanctuaryOfBigTree : FrameSideScroller
         {
             Vector2 camPos = Scene.Playfield.Camera.Position;
 
-            // TODO: Both GBA and N-Gage use 240, but it should probably be the screen resolution
-            leaf.Position = new Vector2(camPos.X + Random.GetNumber(241), camPos.Y + Random.GetNumber(1));
+            // NOTE: In the original game it's hard-coded to 240, even on N-Gage!
+            int maxX = Engine.Config.FixBugs ? (int)Scene.Resolution.X : 240;
+            const int maxY = 0; // Huh?
+
+            leaf.Position = new Vector2(camPos.X + Random.GetNumber(maxX + 1), camPos.Y + Random.GetNumber(maxY + 1));
 
             leaf.AnimationSet = Random.GetNumber(9) / 3;
             leaf.ActionId = (Leaf.Action)(leaf.AnimationSet * 3);

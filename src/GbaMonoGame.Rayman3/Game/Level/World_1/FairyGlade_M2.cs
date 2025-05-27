@@ -1,5 +1,4 @@
 ﻿using System;
-using BinarySerializer;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
