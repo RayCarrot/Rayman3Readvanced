@@ -16,7 +16,7 @@ public abstract class TgxGameLayer
         Height = height;
     }
 
-    public virtual Vector2 Origin => Vector2.Zero;
+    public Vector2 Origin { get; set; }
 
     public int Width { get; }
     public int Height { get; }

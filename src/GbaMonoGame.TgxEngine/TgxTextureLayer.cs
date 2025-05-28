@@ -6,11 +6,9 @@ namespace GbaMonoGame.TgxEngine;
 // Custom class for extended layers
 public class TgxTextureLayer : TgxGameLayer
 {
-    public TgxTextureLayer(RenderContext renderContext, Texture2D texture, int layerId, int priority, Vector2 origin) 
+    public TgxTextureLayer(RenderContext renderContext, Texture2D texture, int layerId, int priority) 
         : base(texture.Width / Tile.Size, texture.Height / Tile.Size)
     {
-        Origin = origin;
-
         Screen = new GfxScreen(layerId)
         {
             IsEnabled = true,
@@ -23,8 +21,6 @@ public class TgxTextureLayer : TgxGameLayer
 
         Gfx.AddScreen(Screen);
     }
-
-    public override Vector2 Origin { get; }
 
     public GfxScreen Screen { get; }
 

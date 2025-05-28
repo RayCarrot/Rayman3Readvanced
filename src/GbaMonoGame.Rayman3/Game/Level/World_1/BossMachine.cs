@@ -49,8 +49,10 @@ public class BossMachine : FrameSideScroller
             renderContext: Scene.RenderContext, 
             texture: extendedLayerTexture, 
             layerId: 4, 
-            priority: originalLayer.Screen.Priority, 
-            origin: origin);
+            priority: originalLayer.Screen.Priority)
+        {
+            Origin = origin
+        };
 
         // Add the layer to the main cluster
         camera.AddLayer(0, extendedLayer);
@@ -92,7 +94,6 @@ public class BossMachine : FrameSideScroller
     {
         base.Step();
 
-        // Update the size of the crates cluster based on the resolution so it stays at the bottom
         TgxPlayfield2D playfield = (TgxPlayfield2D)Scene.Playfield;
         TgxCluster cratesCluster = Rom.Platform switch
         {
@@ -101,6 +102,14 @@ public class BossMachine : FrameSideScroller
             _ => throw new UnsupportedPlatformException()
         };
 
+        // Update the size of the crates cluster based on the resolution so it stays at the bottom
         cratesCluster.Size = cratesCluster.Size with { Y = Scene.Resolution.Y + 8 };
+
+        // The hatch is misaligned - optionally fix it
+        if (Rom.Platform == Platform.NGage)
+        {
+            TgxTileLayer hatchLayer = playfield.TileLayers[1];
+            hatchLayer.Origin = Engine.Config.FixBugs ? new Vector2(-8, 1) : Vector2.Zero;
+        }
     }
 }
