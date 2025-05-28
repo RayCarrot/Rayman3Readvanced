@@ -4,6 +4,8 @@ public static class Assets
 {
     public const string TitleScreenCloudsShader = "Shaders/TitleScreenCloudsShader";
 
+    public const string BossMachine_ExtendedLayer0_GBA = "Textures/BossMachine_ExtendedLayer0_GBA";
+    public const string BossMachine_ExtendedLayer0_NGage = "Textures/BossMachine_ExtendedLayer0_NGage";
     public const string CursorTexture = "Textures/Cursor";
     public const string Font_MenuWhiteTexture = "Textures/Font_MenuWhite";
     public const string Font_MenuYellowTexture = "Textures/Font_MenuYellow";

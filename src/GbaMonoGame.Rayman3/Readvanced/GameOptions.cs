@@ -164,6 +164,17 @@ public static class GameOptions
                     getData: _ => Engine.Config.UseGbaEffectsOnNGage,
                     setData: data => Engine.Config.UseGbaEffectsOnNGage = data,
                     getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "USE EXTENDED BACKGROUNDS",
+                    infoText: "Replaces the backgrounds of some levels with extended ones to better fit higher resolution. Doesn't go into effect until the level is restarted.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
+                    ],
+                    getData: _ => Engine.Config.UseExtendedBackgrounds,
+                    setData: data => Engine.Config.UseExtendedBackgrounds = data,
+                    getCustomName: _ => null),
             ]),
             new GameOptionsGroup("CONTROLS",
             [

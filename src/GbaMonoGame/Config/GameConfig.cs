@@ -35,6 +35,7 @@ public class GameConfig
         AddProjectilesWhenNeeded = true;
         FixBugs = true;
         UseGbaEffectsOnNGage = true;
+        UseExtendedBackgrounds = true;
 
         // Controls
         Controls = new Dictionary<Input, Keys>();
@@ -81,6 +82,7 @@ public class GameConfig
     public bool AddProjectilesWhenNeeded { get; set; }
     public bool FixBugs { get; set; }
     public bool UseGbaEffectsOnNGage { get; set; }
+    public bool UseExtendedBackgrounds { get; set; }
 
     // Controls
     public Dictionary<Input, Keys> Controls { get; set; }
@@ -118,6 +120,7 @@ public class GameConfig
         AddProjectilesWhenNeeded = serializer.Serialize<bool>(AddProjectilesWhenNeeded, GameSection, "AddProjectilesWhenNeeded");
         FixBugs = serializer.Serialize<bool>(FixBugs, GameSection, "FixBugs");
         UseGbaEffectsOnNGage = serializer.Serialize<bool>(UseGbaEffectsOnNGage, GameSection, "UseGbaEffectsOnNGage");
+        UseExtendedBackgrounds = serializer.Serialize<bool>(UseExtendedBackgrounds, GameSection, "UseExtendedBackgrounds");
 
         // Controls
         Controls = serializer.SerializeDictionary<Input, Keys>(Controls, ControlsSection);

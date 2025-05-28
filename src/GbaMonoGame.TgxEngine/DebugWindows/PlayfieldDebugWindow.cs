@@ -28,15 +28,16 @@ public class PlayfieldDebugWindow : DebugWindow
         ImGui.Spacing();
         ImGui.SeparatorText("Clusters");
 
-        if (ImGui.BeginTable("_clusters", 8))
+        if (ImGui.BeginTable("_clusters", 9))
         {
             ImGui.TableSetupColumn("Id", ImGuiTableColumnFlags.WidthFixed);
             ImGui.TableSetupColumn("Layers", ImGuiTableColumnFlags.WidthFixed);
             ImGui.TableSetupColumn("Position");
+            ImGui.TableSetupColumn("Size");
             ImGui.TableSetupColumn("Min position");
             ImGui.TableSetupColumn("Max position");
             ImGui.TableSetupColumn("Scroll factor");
-            ImGui.TableSetupColumn("Type");
+            ImGui.TableSetupColumn("Scrolls", ImGuiTableColumnFlags.WidthFixed);
             ImGui.TableSetupColumn("Render context");
             ImGui.TableHeadersRow();
 
@@ -49,10 +50,13 @@ public class PlayfieldDebugWindow : DebugWindow
                 ImGui.Text($"{(i == 0 ? "Main" : $"{i}")}");
 
                 ImGui.TableNextColumn();
-                ImGui.Text($"{String.Join(", ", cluster.Layers.Where(x => x is TgxTileLayer).Select(x => ((TgxTileLayer)x).LayerId))}");
+                ImGui.Text($"{String.Join(", ", cluster.Layers.Where(x => x is TgxTileLayer).Select(x => (int)((TgxTileLayer)x).LayerId).Concat(cluster.Layers.Where(x => x is TgxTextureLayer).Select(x => ((TgxTextureLayer)x).Screen.Id)))}");
 
                 ImGui.TableNextColumn();
                 ImGui.Text($"{cluster.Position.X:0.00} x {cluster.Position.Y:0.00}");
+
+                ImGui.TableNextColumn();
+                ImGui.Text($"{cluster.Size.X:0.} x {cluster.Size.Y:0.}");
 
                 ImGui.TableNextColumn();
                 ImGui.Text($"{cluster.MinPosition.X:0.00} x {cluster.MinPosition.Y:0.00}");
@@ -64,10 +68,10 @@ public class PlayfieldDebugWindow : DebugWindow
                 ImGui.Text($"{cluster.ScrollFactor.X:0.00} x {cluster.ScrollFactor.Y:0.00}");
 
                 ImGui.TableNextColumn();
-                ImGui.Text($"{(cluster.Stationary ? "Stationary" : "Scrollable")}");
+                ImGui.Text($"{(cluster.Stationary ? "No" : "Yes")}");
 
                 ImGui.TableNextColumn();
-                ImGui.Text($"{cluster.RenderContext.GetType().Name}");
+                ImGui.Text($"{cluster.RenderContext.GetType().Name.Replace("RenderContext", String.Empty)}");
 
                 i++;
             }
