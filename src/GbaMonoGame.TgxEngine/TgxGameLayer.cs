@@ -10,6 +10,14 @@ public abstract class TgxGameLayer
         Height = gameLayerResource.Height;
     }
 
+    protected TgxGameLayer(int width, int height)
+    {
+        Width = width;
+        Height = height;
+    }
+
+    public virtual Vector2 Origin => Vector2.Zero;
+
     public int Width { get; }
     public int Height { get; }
 

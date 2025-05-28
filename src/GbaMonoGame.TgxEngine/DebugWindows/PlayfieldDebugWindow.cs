@@ -15,8 +15,11 @@ public class PlayfieldDebugWindow : DebugWindow
 
         ImGui.SeparatorText("Camera");
 
-        bool modifiedX = ImGui.SliderFloat("Camera X", ref pos.X, 0, playfield2D.Camera.GetMainCluster().MaxPosition.X);
-        bool modifiedY = ImGui.SliderFloat("Camera Y", ref pos.Y, 0, playfield2D.Camera.GetMainCluster().MaxPosition.Y);
+        Vector2 minPos = playfield2D.Camera.GetMainCluster().MinPosition;
+        Vector2 maxPos = playfield2D.Camera.GetMainCluster().MaxPosition;
+
+        bool modifiedX = ImGui.SliderFloat("Camera X", ref pos.X, minPos.X, maxPos.X);
+        bool modifiedY = ImGui.SliderFloat("Camera Y", ref pos.Y, minPos.Y, maxPos.Y);
 
         if (modifiedX || modifiedY)
             playfield2D.Camera.Position = pos;
@@ -25,11 +28,12 @@ public class PlayfieldDebugWindow : DebugWindow
         ImGui.Spacing();
         ImGui.SeparatorText("Clusters");
 
-        if (ImGui.BeginTable("_clusters", 7))
+        if (ImGui.BeginTable("_clusters", 8))
         {
             ImGui.TableSetupColumn("Id", ImGuiTableColumnFlags.WidthFixed);
             ImGui.TableSetupColumn("Layers", ImGuiTableColumnFlags.WidthFixed);
             ImGui.TableSetupColumn("Position");
+            ImGui.TableSetupColumn("Min position");
             ImGui.TableSetupColumn("Max position");
             ImGui.TableSetupColumn("Scroll factor");
             ImGui.TableSetupColumn("Type");
@@ -49,6 +53,9 @@ public class PlayfieldDebugWindow : DebugWindow
 
                 ImGui.TableNextColumn();
                 ImGui.Text($"{cluster.Position.X:0.00} x {cluster.Position.Y:0.00}");
+
+                ImGui.TableNextColumn();
+                ImGui.Text($"{cluster.MinPosition.X:0.00} x {cluster.MinPosition.Y:0.00}");
 
                 ImGui.TableNextColumn();
                 ImGui.Text($"{cluster.MaxPosition.X:0.00} x {cluster.MaxPosition.Y:0.00}");

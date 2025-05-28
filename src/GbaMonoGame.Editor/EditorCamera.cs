@@ -42,7 +42,7 @@ public class EditorCamera
             _position = Vector2.Clamp(value, minPos, maxPos);
 
             foreach (TgxGameLayer gameLayer in GameLayers)
-                gameLayer.SetOffset(_position);
+                gameLayer.SetOffset(_position - gameLayer.Origin);
         }
     }
     public List<TgxGameLayer> GameLayers { get; }

@@ -60,7 +60,7 @@ public class TgxCamera2D : TgxCamera
                     scrollFactor = cluster.ScrollFactor;
                 }
 
-                cluster.Position = mainCluster.Position * scrollFactor;
+                cluster.Position = (mainCluster.Position - mainCluster.Origin) * scrollFactor;
             }
         }
     }
