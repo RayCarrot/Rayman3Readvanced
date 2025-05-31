@@ -556,5 +556,8 @@ Most actors have the first animation be unused and just single frame, most likel
 ### Levels
 - The N-Gage `Capture the Flag` levels have a boolean indicating if it's the first round of the match. This is however never checked against and is thus unused.
 - The second map of `Wanderwood Forest` and both maps of `Shining Glade` have unused code for updating the water palette to give it a glowing effect. One color is however bugged, making parts appear red.
+- In `Garish Gears` the hatch layer is misaligned in the N-Gage version, making it not cover the actual hatch.
 - In the `Hoodlum Hideout` level there is code for spawning leaves which fall to the ground. The random range for the x-position is incorrectly hard-coded to 0-240 in the N-Gage version since the resolution is different there. The y-position also has a random range of 0-0, making the randomization pointless.
 - In the first map of `Vertigo Wastes` the camera offset for the introduction sequence are all based on the GBA screen resolution, even in the N-Gage version. There's also a bug where it'll index out of bounds of an array, but it luckily doesn't cause any issues. This was fixed in the N-Gage version.
+- In the first map of `Boulder Brink` there are leftover variables that get initialized for the lightning effect, even if it's not used in this map. In the second map, which does use the lightning effect, they forgot to update the code for the N-Gage version, where the effect is not used, causing graphical glitches to appear in the background when the lightning should appear.
+- In the `World Map` there's a visual bug where the clipping regions for the lightning isn't correctly positioned, making it leave small artifacts of the lightning based on which one is showing.

@@ -191,7 +191,15 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
         }
         else
         {
-            // TODO: Implement
+            for (int id = 0; id < RSMultiplayer.MaxPlayersCount; id++)
+            {
+                if (MultiJoyPad.IsButtonJustPressed(id, GbaInput.Start) && CanPause && !((UserInfoMultiMode7)UserInfo).IsGameOver)
+                {
+                    PausedMachineId = id;
+                    CurrentStepAction = Step_Pause_Init;
+                    break;
+                }
+            }
         }
     }
 

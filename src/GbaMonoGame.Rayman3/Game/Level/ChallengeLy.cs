@@ -31,7 +31,8 @@ public class ChallengeLy : FrameSideScroller
         if (Timer == 60)
             IsTimed = true;
 
+        // Kill Rayman if time has run out
         if (GameInfo.RemainingTime == 0)
-            Scene.MainActor.ProcessMessage(this, (Message)1060); // TODO: Name and implement
+            Scene.MainActor.ProcessMessage(this, Message.Actor_Explode);
     }
 }

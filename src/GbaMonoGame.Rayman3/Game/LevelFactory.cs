@@ -22,7 +22,7 @@ public static class LevelFactory
     public static Frame Create(MapId mapId)
     {
         if (!_levelCreations.TryGetValue((int)mapId, out CreateLevel create))
-            return new DummyLevel(mapId);
+            throw new Exception($"The level {mapId} is not defined");
 
         return create(mapId);
     }

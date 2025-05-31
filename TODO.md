@@ -89,3 +89,4 @@ The actors could be selected from a list, where each actor has a list of valid i
 - Is keg collision wrong when flying? See Mega Havoc 2. It seems more strict than the original game.
 - An exception gets thrown if closing the game while it's loading the rom.
 - The music and sfx volumes aren't balanced for N-Gage.
+- In levels where the cycles of objects matters, like the flying keg ones, it doesn't line up well if all objects are always loaded, making some parts impossible to beat

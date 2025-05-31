@@ -46,7 +46,6 @@ public class SanctuaryOfRockAndLava : FrameSideScroller
             ((SanctuaryLavaRenderer)lavaLayer.Screen.Renderer).SinValue++;
         }
 
-        // TODO: Add config option for fading out on N-Gage
         if ((Rom.Platform == Platform.GBA || Engine.Config.UseGbaEffectsOnNGage) && FadeOutTimer != 0xFF)
         {
             if (FadeOutTimer < 16)

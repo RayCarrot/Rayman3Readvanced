@@ -74,7 +74,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
         // NOTE: The game calls vsync, steps the playfield and executes the animations here, but we do
         //       that in the derived classed instead since this is all to be run in one game frame.
 
-        if (!SoundEventsManager.IsSongPlaying(GameInfo.GetLevelMusicSoundEvent())) // TODO: N-Gage doesn't have this condition - why?
+        if (Rom.Platform == Platform.NGage || !SoundEventsManager.IsSongPlaying(GameInfo.GetLevelMusicSoundEvent()))
             GameInfo.PlayLevelMusic();
 
         BlockPause = false;

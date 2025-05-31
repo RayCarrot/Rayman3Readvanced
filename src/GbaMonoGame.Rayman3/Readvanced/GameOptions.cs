@@ -143,7 +143,7 @@ public static class GameOptions
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "FIX BUGS",
-                    infoText: "Indicates if you want to play with the bugs in the game fixed or not.",
+                    infoText: "Indicates if you want to play with the bugs in the game fixed or not. Some bugs are always fixed.",
                     items:
                     [
                         new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
