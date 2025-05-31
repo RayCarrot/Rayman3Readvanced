@@ -63,7 +63,7 @@ public class ThePrecipice_M2 : FrameSideScroller
         {
             // NOTE: The N-Gage version forgot to remove this code (which they did for The Echoing Caves 2), meaning it
             //       causes graphical glitches! But we remove it here since the draw buffer works differently.
-            if (Rom.Platform == Platform.GBA)
+            if (Rom.Platform == Platform.GBA || Engine.Config.UseGbaEffectsOnNGage)
                 bgScreen.IsEnabled = false;
 
             // TODO: We don't need to disable the rain blending - option not to?
@@ -81,7 +81,7 @@ public class ThePrecipice_M2 : FrameSideScroller
         {
             Gfx.GbaFade = 15;
 
-            if (Rom.Platform == Platform.GBA)
+            if (Rom.Platform == Platform.GBA || Engine.Config.UseGbaEffectsOnNGage)
                 Gfx.ClearColor = Color.White;
             return;
         }
@@ -130,7 +130,7 @@ public class ThePrecipice_M2 : FrameSideScroller
             return;
         }
 
-        if (Rom.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA || Engine.Config.UseGbaEffectsOnNGage)
             Gfx.ClearColor = Color.White;
     }
 }

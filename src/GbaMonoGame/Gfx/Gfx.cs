@@ -133,7 +133,7 @@ public static class Gfx
     public static void Draw(GfxRenderer renderer)
     {
         // Draw clear color on GBA
-        if (Rom.IsLoaded && Rom.Platform == Platform.GBA)
+        if (Rom.IsLoaded && (Rom.Platform == Platform.GBA || Engine.Config.UseGbaEffectsOnNGage))
         {
             renderer.BeginSpriteRender(new RenderOptions()
             {
