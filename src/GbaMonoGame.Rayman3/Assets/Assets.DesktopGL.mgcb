@@ -295,6 +295,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/TitleScreenCloudsShader.fx
 
+#begin FogVertexShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/FogVertexShader.fx
+
 #begin TitleScreenGBAClouds.png
 /importer:TextureImporter
 /processor:TextureProcessor

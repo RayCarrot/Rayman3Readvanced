@@ -13,7 +13,7 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
     {
         Camera = playfield.Camera;
 
-        Shader = Engine.FixContentManager.Load<Effect>(GbaMonoGame.Assets.VertexShaderFog);
+        Shader = Engine.FrameContentManager.Load<Effect>(Assets.FogVertexShader);
 
         TgxRotscaleLayerMode7 layer = playfield.RotScaleLayers[0];
 

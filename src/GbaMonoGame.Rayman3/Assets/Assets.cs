@@ -2,6 +2,7 @@
 
 public static class Assets
 {
+    public const string FogVertexShader = "Shaders/FogVertexShader";
     public const string TitleScreenCloudsShader = "Shaders/TitleScreenCloudsShader";
 
     public const string BossMachine_ExtendedLayer0_GBA = "Textures/BossMachine_ExtendedLayer0_GBA";
