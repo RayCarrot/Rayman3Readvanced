@@ -6,6 +6,7 @@ public static class JoyPad
 {
     public static SimpleJoyPad Current { get; } = new();
 
+    public static bool IsInReplayMode => Current.IsInReplayMode;
     public static bool IsReplayFinished => Current.IsReplayFinished;
 
     public static void SetReplayData(GbaInput[] replayData) => Current.SetReplayData(replayData);

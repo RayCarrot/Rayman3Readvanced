@@ -22,6 +22,7 @@ public class FrameNewPower : Frame, IHasScene, IHasPlayfield
     public Scene2D Scene { get; set; }
     public ushort Timer { get; set; }
     public bool HasStoppedMusic { get; set; }
+    public bool HasRunFirstScan { get; set; } // N-Gage only
 
     #endregion
 
@@ -36,11 +37,15 @@ public class FrameNewPower : Frame, IHasScene, IHasPlayfield
 
     private void CheckForEndOfLevel()
     {
-        // TODO: On N-Gage it has additional code here. The very first replay frame it forces a re-scan of the JoyPad,
-        //       essentially skipping the first replay frame. Why is this needed? Because of port differences, but if
-        //       so do we need to do something similar?
+        // NOTE: Not sure why the N-Gage version forces the JoyPad to run an extra time when starting the replay?
+        if (Rom.Platform == Platform.NGage && !HasRunFirstScan && JoyPad.IsInReplayMode)
+        {
+            HasRunFirstScan = true;
+            JoyPad.Scan();
+        }
 
-        if (JoyPad.IsReplayFinished)
+        if ((Rom.Platform == Platform.GBA && JoyPad.IsReplayFinished) ||
+            (Rom.Platform == Platform.NGage && HasRunFirstScan && JoyPad.IsReplayFinished))
         {
             Timer = 1;
             Scene.MainActor.ProcessMessage(this, Message.Rayman_Stop);
@@ -70,7 +75,8 @@ public class FrameNewPower : Frame, IHasScene, IHasPlayfield
 
         Timer = 0;
         HasStoppedMusic = false;
-        
+        HasRunFirstScan = false;
+
         Scene.AddDialog(new TextBoxDialog(Scene), false, false);
 
         SoundEngineInterface.SetNbVoices(10);

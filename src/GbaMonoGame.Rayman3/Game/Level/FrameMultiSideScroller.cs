@@ -96,11 +96,9 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
         Scene.Playfield.Step();
 
+        // On N-Gage it hides the island/mountains background for one of the maps
         if (Rom.Platform == Platform.NGage && GameInfo.MapId == MapId.NGageMulti_CaptureTheFlagTeamPlayer)
-        {
-            // TODO: Why does the game do this?
             Gfx.GetScreen(1).IsEnabled = false;
-        }
 
         Scene.AnimationPlayer.Execute();
 

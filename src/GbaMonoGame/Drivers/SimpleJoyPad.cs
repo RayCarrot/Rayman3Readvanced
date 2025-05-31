@@ -10,6 +10,7 @@ public class SimpleJoyPad
     public GbaInput[] ReplayData { get; set; }
     public int ReplayDataIndex { get; set; }
 
+    public bool IsInReplayMode => ReplayData != null;
     public bool IsReplayFinished => KeyStatus == GbaInput.None;
 
     public void SetReplayData(GbaInput[] replayData)
@@ -22,7 +23,7 @@ public class SimpleJoyPad
     {
         GbaInput inputs;
 
-        if (ReplayData == null)
+        if (!IsInReplayMode)
         {
             inputs = InputManager.GetGbaInputs();
         }
