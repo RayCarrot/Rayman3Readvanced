@@ -13,21 +13,27 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin PaletteShader.fx
+#begin Shaders/PaletteShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shaders/PaletteShader.fx
 
-#begin PaletteVertexShader.fx
+#begin Shaders/PaletteVertexShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shaders/PaletteVertexShader.fx
 
-#begin VertexShader.fx
+#begin Shaders/VertexShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shaders/VertexShader.fx
+
+#begin Shaders/VertexShaderFog.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/VertexShaderFog.fx
 

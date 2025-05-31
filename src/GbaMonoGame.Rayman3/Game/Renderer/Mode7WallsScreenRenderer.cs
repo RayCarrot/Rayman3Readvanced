@@ -13,10 +13,7 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
     {
         Camera = playfield.Camera;
 
-        Shader = new BasicEffect(Engine.GraphicsDevice)
-        {
-            TextureEnabled = true,
-        };
+        Shader = Engine.FixContentManager.Load<Effect>(GbaMonoGame.Assets.VertexShaderFog);
 
         TgxRotscaleLayerMode7 layer = playfield.RotScaleLayers[0];
 
@@ -37,7 +34,7 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
     }
 
     public TgxCameraMode7 Camera { get; }
-    public BasicEffect Shader { get; }
+    public Effect Shader { get; }
     public MeshFragment[] MeshFragments { get; }
 
     private static Texture2D CreateTexture(GfxTileKitManager tileKitManager, MapTile[] tileMap, int tileMapWidth, Point wallPoint, Point wallSize)
@@ -204,8 +201,12 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
         // Begin rendering the mesh, culling clockwise
         renderer.BeginMeshRender(screen.RenderOptions, RasterizerState.CullClockwise);
 
+        Engine.GraphicsDevice.BlendState = BlendState.NonPremultiplied;
+        Engine.GraphicsDevice.BlendFactor = Color.White;
+
         // Update the shader
-        Shader.Projection = Camera.ViewProjectionMatrix;
+        Shader.Parameters["WorldViewProj"].SetValue(Camera.ViewProjectionMatrix);
+        Shader.Parameters["FarPlane"].SetValue(Camera.CameraFar);
 
         // Draw each mesh fragment
         foreach (MeshFragment meshFragment in MeshFragments)
