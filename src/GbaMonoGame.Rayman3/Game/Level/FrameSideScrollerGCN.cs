@@ -1,11 +1,13 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using System;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.Rayman3.Readvanced;
 using GbaMonoGame.TgxEngine;
+using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.Rayman3;
 
+// TODO: You can't see the lava in map 2 in modern resolution!
 public class FrameSideScrollerGCN : FrameSideScroller
 {
     public FrameSideScrollerGCN(GameCubeMapInfo mapInfo, GameCubeMap map, int gcnMapId) : base(default)
@@ -15,6 +17,8 @@ public class FrameSideScrollerGCN : FrameSideScroller
         GcnMapId = gcnMapId;
     }
 
+    private const bool ScaleSkulls = true;
+
     public GameCubeMap Map { get; }
 
     public MapId PreviousMapId { get; set; }
@@ -23,17 +27,38 @@ public class FrameSideScrollerGCN : FrameSideScroller
     public int GcnMapId { get; }
     public GameCubeMapInfo MapInfo { get; }
 
+    // Lava
+    public byte LavaFadeOutTimer { get; set; }
+
+    // Skull
+    public byte SkullSineWavePhase { get; set; }
+    public Vector2 SkullOffset { get; set; }
+    public CavesOfBadDreams.FadeMode SkullMode { get; set; }
+    public int SkullTimer { get; set; }
+
+    // Lightning and rain
+    public byte RainScrollY { get; set; }
+    public ushort LightningTime { get; set; }
+    public ushort LightningTimer { get; set; }
+
     public void RestoreMapAndPowers()
     {
         GameInfo.MapId = PreviousMapId;
         GameInfo.Powers = PreviousPowers;
     }
 
-    public void FUN_0808a9f4()
+    public void FadeOut()
     {
-        if (GcnMapId == 3)
+        // NOTE: The original code here incorrectly checks for map 3!
+        if (Engine.Config.FixBugs)
         {
-            // TODO: Implement
+            if (GcnMapId == 2)
+                LavaFadeOutTimer = 0;
+        }
+        else
+        {
+            if (GcnMapId == 3)
+                LavaFadeOutTimer = 0;
         }
     }
 
@@ -85,28 +110,68 @@ public class FrameSideScrollerGCN : FrameSideScroller
 
         switch (GcnMapId)
         {
+            // Fog
             case 0:
-                // Add fog
                 Fog = new FogDialog(Scene);
                 Scene.AddDialog(Fog, false, false);
                 break;
             
+            // Scrolling clouds
             case 1:
                 TgxTileLayer cloudsLayer = ((TgxPlayfield2D)Scene.Playfield).TileLayers[0];
-                TextureScreenRenderer renderer = (TextureScreenRenderer)cloudsLayer.Screen.Renderer;
-                cloudsLayer.Screen.Renderer = new LevelCloudsRenderer(renderer.Texture, [32, 120, 227]);
+                TextureScreenRenderer cloudsLayerRenderer = (TextureScreenRenderer)cloudsLayer.Screen.Renderer;
+                cloudsLayer.Screen.Renderer = new LevelCloudsRenderer(cloudsLayerRenderer.Texture, [32, 120, 227]);
                 break;
             
+            // Lava
             case 2:
-                // TODO: Implement
+                TgxTileLayer lavaLayer = ((TgxPlayfield2D)Scene.Playfield).TileLayers[0];
+                TextureScreenRenderer lavaLayerRenderer;
+                if (lavaLayer.Screen.Renderer is MultiScreenRenderer multiScreenRenderer)
+                    lavaLayerRenderer = (TextureScreenRenderer)multiScreenRenderer.Sections[0].ScreenRenderer;
+                else
+                    lavaLayerRenderer = (TextureScreenRenderer)lavaLayer.Screen.Renderer;
+
+                lavaLayer.Screen.Renderer = new SanctuaryLavaRenderer(lavaLayerRenderer.Texture);
+
+                LavaFadeOutTimer = 0xFF;
                 break;
-            
-            case 4:
-                // TODO: Implement
-                break;
-            
+
+            // Skull
             case 3 or 6:
-                // TODO: Implement
+                SkullSineWavePhase = 0;
+                SkullOffset = Vector2.Zero;
+                SkullMode = CavesOfBadDreams.FadeMode.Invisible;
+                SkullTimer = 120;
+
+                GfxScreen skullScreen = Gfx.GetScreen(1);
+                skullScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                skullScreen.GbaAlpha = 0;
+
+                if (!ScaleSkulls)
+                    skullScreen.RenderOptions.RenderContext = Scene.RenderContext;
+
+                TextureScreenRenderer renderer = ((TextureScreenRenderer)skullScreen.Renderer);
+                skullScreen.Renderer = new SineWaveRenderer(renderer.Texture)
+                {
+                    Amplitude = 24
+                };
+
+                // NOTE: There's a bug where the level data has alpha blending enabled, which conflicts with the code here!
+                if (Engine.Config.FixBugs)
+                    TransitionsFX.Screns.Remove(skullScreen);
+                break;
+
+            // Lightning and rain
+            case 4:
+                LightningTime = (ushort)Random.GetNumber(127);
+                LightningTimer = 0;
+                // NOTE: The RainScrollY value is not initialized, meaning it can start at anything
+
+                // Make the rain semi-transparent
+                GfxScreen rainScreen = Gfx.GetScreen(3);
+                rainScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                rainScreen.GbaAlpha = 6;
                 break;
         }
     }
@@ -115,6 +180,240 @@ public class FrameSideScrollerGCN : FrameSideScroller
     {
         base.Step();
 
-        // TODO: Level-specific code
+        switch (GcnMapId)
+        {
+            // Lava
+            case 2:
+            {
+                Vector2 camPos = Scene.Playfield.Camera.Position;
+                TgxTileLayer lavaLayer = ((TgxPlayfield2D)Scene.Playfield).TileLayers[0];
+
+                lavaLayer.Screen.Offset = lavaLayer.Screen.Offset with { Y = camPos.Y * MathHelpers.FromFixedPoint(0x7332) };
+
+                if (CircleTransitionMode == TransitionMode.None && CurrentStepAction == Step_Normal)
+                    ((SanctuaryLavaRenderer)lavaLayer.Screen.Renderer).SinValue++;
+
+                // Unused due to a bug
+                if (LavaFadeOutTimer != 0xFF)
+                {
+                    if (LavaFadeOutTimer < 16)
+                    {
+                        LavaFadeOutTimer++;
+
+                        foreach (GfxScreen screen in Gfx.Screens)
+                        {
+                            if (screen.RenderOptions.BlendMode != BlendMode.None)
+                                screen.GbaAlpha = 16 - LavaFadeOutTimer;
+                        }
+                    }
+
+                    if (LavaFadeOutTimer == 6)
+                    {
+                        if (Engine.Config.FixBugs)
+                            ((Rayman)Scene.MainActor).Timer = 0;
+
+                        InitNewCircleTransition(false);
+                    }
+                }
+
+                break;
+            }
+
+            // Skull
+            case 3 or 6:
+            {
+                GfxScreen skullScreen = Gfx.GetScreen(1);
+
+                // Don't show skull screen if transitioning or paused
+                if (CircleTransitionMode != TransitionMode.None || CurrentStepAction != Step_Normal)
+                {
+                    skullScreen.IsEnabled = false;
+                    return;
+                }
+
+                skullScreen.IsEnabled = true;
+
+                Vector2 camPos = Scene.Playfield.Camera.Position;
+
+                if (ScaleSkulls)
+                {
+                    TgxCluster skullScreenCluster = ((TgxCamera2D)Scene.Playfield.Camera).GetCluster(2);
+                    camPos *= skullScreenCluster.RenderContext.Resolution / Scene.Resolution;
+                }
+
+                skullScreen.Offset = new Vector2(camPos.X % 256, camPos.Y % 256) + SkullOffset;
+
+                if (skullScreen.Renderer is SineWaveRenderer sineWave)
+                    sineWave.Phase = SkullSineWavePhase;
+
+                SkullSineWavePhase += 2;
+
+                // NOTE: The original game does 1 step every second frame
+                SkullOffset += new Vector2(-0.5f, 0.5f);
+
+                switch (SkullMode)
+                {
+                    case CavesOfBadDreams.FadeMode.FadeIn:
+                        skullScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                        skullScreen.GbaAlpha = (28 - SkullTimer) / 4f;
+
+                        SkullTimer--;
+
+                        if (SkullTimer == 0)
+                        {
+                            // The game doesn't do this, but since we use floats it will cause the value to be stuck at a fractional value, so force to the max
+                            skullScreen.GbaAlpha = 7;
+
+                            SkullTimer = 120;
+                            SkullMode = CavesOfBadDreams.FadeMode.Visible;
+                        }
+                        break;
+
+                    case CavesOfBadDreams.FadeMode.Visible:
+                        SkullTimer--;
+
+                        if (SkullTimer == 0)
+                        {
+                            SkullTimer = 28;
+                            SkullMode = CavesOfBadDreams.FadeMode.FadeOut;
+                        }
+                        break;
+
+                    case CavesOfBadDreams.FadeMode.FadeOut:
+                        skullScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                        skullScreen.GbaAlpha = SkullTimer / 4f;
+
+                        SkullTimer--;
+
+                        if (SkullTimer == 0)
+                        {
+                            // The game doesn't do this, but since we use floats it will cause the value to be stuck at a fractional value, so force to the min
+                            skullScreen.GbaAlpha = 0;
+
+                            SkullTimer = Random.GetNumber(120) + 30;
+                            SkullMode = CavesOfBadDreams.FadeMode.Invisible;
+                        }
+                        break;
+
+                    case CavesOfBadDreams.FadeMode.Invisible:
+                        SkullTimer--;
+
+                        if (SkullTimer == 0)
+                        {
+                            SkullTimer = 28;
+                            SkullMode = CavesOfBadDreams.FadeMode.FadeIn;
+                        }
+                        break;
+
+                    default:
+                        throw new Exception("Invalid mode");
+                }
+                break;
+            }
+
+            // Lightning and rain
+            case 4:
+            {
+                GfxScreen bgScreen = Gfx.GetScreen(0);
+                GfxScreen rainScreen = Gfx.GetScreen(3);
+
+                // NOTE: The lightning and rain code shouldn't run when paused, but they forgot to add a check for it! This causes
+                //       different bugs depending on when you pause, such as continues thunder sounds and a white screen.
+                if (Engine.Config.FixBugs && CurrentStepAction != Step_Normal)
+                {
+                    rainScreen.IsEnabled = false;
+                    return;
+                }
+
+                // Scroll the rain
+                Vector2 camPos = Scene.Playfield.Camera.Position;
+                rainScreen.Offset = new Vector2(camPos.X, RainScrollY);
+                RainScrollY -= 3;
+
+                // Toggle rain visibility
+                rainScreen.IsEnabled = (GameTime.ElapsedFrames & 2) == 0;
+
+                if (LightningTimer < 120 || CircleTransitionMode is TransitionMode.Out or TransitionMode.FinishedOut)
+                {
+                    LightningTimer++;
+                    bgScreen.IsEnabled = true;
+                    return;
+                }
+
+                Gfx.ClearColor = Color.White;
+
+                uint time = GameTime.ElapsedFrames % 512;
+
+                // Frame 0
+                if (time == LightningTime)
+                {
+                    bgScreen.IsEnabled = false;
+
+                    // TODO: We don't need to disable the rain blending - option not to?
+                    rainScreen.RenderOptions.BlendMode = BlendMode.None;
+
+                    Gfx.FadeControl = new FadeControl(FadeMode.BrightnessIncrease);
+                    Gfx.Fade = 1;
+
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Thunder1_Mix04);
+                    return;
+                }
+
+                // Frame 1
+                if (time == LightningTime + 1)
+                {
+                    Gfx.GbaFade = 15;
+                    Gfx.ClearColor = Color.White;
+                    return;
+                }
+
+                // Frame 2-7
+                if (time >= LightningTime + 2 && time < LightningTime + 8)
+                {
+                    Gfx.GbaFade = (31 - (time - LightningTime)) / 2f;
+                    return;
+                }
+
+                // Frame 8-15
+                if (time >= LightningTime + 8 && time < LightningTime + 16)
+                {
+                    bgScreen.IsEnabled = true;
+                    Gfx.GbaFade = (31 - (time - LightningTime)) / 2f;
+                    return;
+                }
+
+                // Frame 16-30
+                if (time >= LightningTime + 16 && time < LightningTime + 31)
+                {
+                    Gfx.GbaFade = (31 - (time - LightningTime)) / 2f;
+                    return;
+                }
+
+                // Frame 31
+                if (time == LightningTime + 31)
+                {
+                    // Make the rain semi-transparent again
+                    rainScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                    rainScreen.GbaAlpha = 6;
+
+                    Gfx.FadeControl = FadeControl.None;
+
+                    if (LightningTimer == 121 || (Random.GetNumber(31) & 0x10) == 0)
+                    {
+                        LightningTime = (ushort)(Random.GetNumber(359) + 120);
+                        LightningTimer = LightningTime < 447 ? (ushort)120 : (ushort)121;
+                    }
+                    else
+                    {
+                        LightningTime += 32;
+                        LightningTimer = 121;
+                    }
+                    return;
+                }
+
+                Gfx.ClearColor = Color.White;
+                break;
+            }
+        }
     }
 }

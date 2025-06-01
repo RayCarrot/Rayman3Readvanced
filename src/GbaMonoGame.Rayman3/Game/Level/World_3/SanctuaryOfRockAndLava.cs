@@ -43,7 +43,9 @@ public class SanctuaryOfRockAndLava : FrameSideScroller
             TgxTileLayer lavaLayer = ((TgxPlayfield2D)Scene.Playfield).TileLayers[0];
             
             lavaLayer.Screen.Offset = lavaLayer.Screen.Offset with { Y = camPos.Y * MathHelpers.FromFixedPoint(0x7332) };
-            ((SanctuaryLavaRenderer)lavaLayer.Screen.Renderer).SinValue++;
+
+            if (CircleTransitionMode == TransitionMode.None && CurrentStepAction == Step_Normal)
+                ((SanctuaryLavaRenderer)lavaLayer.Screen.Renderer).SinValue++;
         }
 
         if ((Rom.Platform == Platform.GBA || Engine.Config.UseGbaEffectsOnNGage) && FadeOutTimer != 0xFF)
@@ -57,12 +59,12 @@ public class SanctuaryOfRockAndLava : FrameSideScroller
                     if (screen.RenderOptions.BlendMode != BlendMode.None)
                         screen.GbaAlpha = 16 - FadeOutTimer;
                 }
+            }
 
-                if (FadeOutTimer == 6)
-                {
-                    ((Rayman)Scene.MainActor).Timer = 0;
-                    InitNewCircleTransition(false);
-                }
+            if (FadeOutTimer == 6)
+            {
+                ((Rayman)Scene.MainActor).Timer = 0;
+                InitNewCircleTransition(false);
             }
         }
     }

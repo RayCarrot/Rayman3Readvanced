@@ -1306,6 +1306,13 @@ public sealed partial class Rayman : MovableActor
 
     private bool IsLavaInLevel()
     {
+        // The game forgets to check for this level, making it not spawn the lava splash!
+        if (Engine.Config.FixBugs)
+        {
+            if (GameInfo.MapId is MapId.GameCube_Bonus3)
+                return true;
+        }
+
         return GameInfo.MapId is 
             MapId.SanctuaryOfStoneAndFire_M1 or 
             MapId.SanctuaryOfStoneAndFire_M2 or 

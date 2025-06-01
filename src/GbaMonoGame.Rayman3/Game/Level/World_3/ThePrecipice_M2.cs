@@ -18,6 +18,7 @@ public class ThePrecipice_M2 : FrameSideScroller
 
         LightningTime = (ushort)Random.GetNumber(127);
         Timer = 0;
+        // NOTE: The RainScrollY value is not initialized, meaning it can start at anything
 
         // Make the rain semi-transparent
         GfxScreen rainScreen = Gfx.GetScreen(3);

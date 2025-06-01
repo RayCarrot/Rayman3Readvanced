@@ -3965,7 +3965,7 @@ public partial class Rayman
                     TempFlag = true;
 
                     if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
-                        ((FrameSideScrollerGCN)Frame.Current).FUN_0808a9f4();
+                        ((FrameSideScrollerGCN)Frame.Current).FadeOut();
 
                     switch (GameInfo.MapId)
                     {
@@ -4012,6 +4012,11 @@ public partial class Rayman
                         // NOTE: This is unused - the Rayman actor does not appear in the worldmap
                         case MapId.WorldMap:
                             TransitionsFX.FadeOutInit(1);
+                            break;
+
+                        // NOTE: The original game doesn't do this, meaning that the transition would play twice!
+                        case MapId.GameCube_Bonus3 when Engine.Config.FixBugs:
+                            // Do nothing - FrameSideScrollerGCN.FadeOut handles it
                             break;
 
                         default:
@@ -4317,12 +4322,21 @@ public partial class Rayman
                 NextActionId = null;
 
                 if (GameInfo.LevelType == LevelType.GameCube)
-                    ((FrameSideScrollerGCN)Frame.Current).FUN_0808a9f4();
+                    ((FrameSideScrollerGCN)Frame.Current).FadeOut();
 
                 if (GameInfo.MapId is MapId.SanctuaryOfRockAndLava_M1 or MapId.SanctuaryOfRockAndLava_M2 or MapId.SanctuaryOfRockAndLava_M3)
+                {
                     ((SanctuaryOfRockAndLava)Frame.Current).FadeOut();
+                }
+                // NOTE: The original game doesn't do this, meaning that the transition would play twice!
+                else if (GameInfo.MapId == MapId.GameCube_Bonus3 && Engine.Config.FixBugs)
+                {
+                    // Do nothing - FrameSideScrollerGCN.FadeOut handles it
+                }
                 else
+                {
                     ((FrameSideScroller)Frame.Current).InitNewCircleTransition(false);
+                }
 
                 if (AttachedObject != null)
                 {

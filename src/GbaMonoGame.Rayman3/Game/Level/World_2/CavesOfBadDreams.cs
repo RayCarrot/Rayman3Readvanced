@@ -135,7 +135,7 @@ public class CavesOfBadDreams : FrameSideScroller
                 if (Timer == 0)
                 {
                     Timer = 28;
-                    Mode = 0;
+                    Mode = FadeMode.FadeIn;
                 }
                 break;
             
