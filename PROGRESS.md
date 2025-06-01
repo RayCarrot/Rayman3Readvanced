@@ -115,11 +115,11 @@
 | Multi_CaptureTheFlag6      | 🟩     |                                              |
 | GameCube_Bonus1            | 🟩     |                                              |
 | GameCube_Bonus2            | 🟩     |                                              |
-| GameCube_Bonus3            | 🟨     |                                              |
-| GameCube_Bonus4            | 🟨     |                                              |
-| GameCube_Bonus5            | 🟨     |                                              |
+| GameCube_Bonus3            | 🟩     |                                              |
+| GameCube_Bonus4            | 🟩     |                                              |
+| GameCube_Bonus5            | 🟩     |                                              |
 | GameCube_Bonus6            | 🟩     |                                              |
-| GameCube_Bonus7            | 🟨     |                                              |
+| GameCube_Bonus7            | 🟩     |                                              |
 | GameCube_Bonus8            | 🟩     |                                              |
 | GameCube_Bonus9            | 🟩     |                                              |
 | GameCube_Bonus10           | 🟩     |                                              |
