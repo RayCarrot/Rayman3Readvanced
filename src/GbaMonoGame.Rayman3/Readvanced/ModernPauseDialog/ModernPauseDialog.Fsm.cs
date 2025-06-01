@@ -157,9 +157,14 @@ public partial class ModernPauseDialog
                         SoundEventsManager.StopAllSongs();
 
                         if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
+                        {
+                            ((FrameSideScrollerGCN)Frame.Current).RestoreMapAndPowers();
                             FrameManager.SetNextFrame(new GameCubeMenu());
+                        }
                         else
+                        {
                             GameInfo.LoadLevel(MapId.World1 + (int)GameInfo.WorldId);
+                        }
 
                         GameInfo.PersistentInfo.LastPlayedLevel = (byte)GameInfo.MapId;
                         GameInfo.Save(GameInfo.CurrentSlot);

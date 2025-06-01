@@ -204,8 +204,7 @@ public partial class FlyingShell
                 if (EndTimer == 240)
                 {
                     FrameSideScrollerGCN frame = (FrameSideScrollerGCN)Frame.Current;
-                    GameInfo.MapId = frame.PreviousMapId;
-                    GameInfo.Powers = frame.PreviousPowers;
+                    frame.RestoreMapAndPowers();
 
                     if (GameInfo.PersistentInfo.CompletedGCNBonusLevels < frame.GcnMapId + 1)
                         GameInfo.PersistentInfo.CompletedGCNBonusLevels = (byte)(frame.GcnMapId + 1);
