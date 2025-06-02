@@ -1,4 +1,6 @@
-﻿namespace GbaMonoGame.Rayman3;
+﻿using Microsoft.Xna.Framework;
+
+namespace GbaMonoGame.Rayman3;
 
 public class MissileRace1 : FrameSingleMode7
 {
@@ -7,6 +9,8 @@ public class MissileRace1 : FrameSingleMode7
     public override void Init()
     {
         base.Init();
+
+        AddWalls(new Point(1, 22), new Point(3, 3));
 
         ExtendMap(
         [

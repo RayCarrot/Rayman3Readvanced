@@ -4,6 +4,7 @@ using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.Rayman3.Readvanced;
 using GbaMonoGame.TgxEngine;
+using Microsoft.Xna.Framework;
 using Action = System.Action;
 
 namespace GbaMonoGame.Rayman3;
@@ -128,6 +129,28 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
 
         // Replace the renderer
         rotScaleLayer.Screen.Renderer = new MultiScreenRenderer(sections, new Vector2(mapPixelWidth * 3, mapPixelHeight * 3));
+    }
+
+    // TODO: Make optional
+    // TODO: Fix bumper positions so they don't overlap with walls
+    protected void AddWalls(Point wallPoint, Point wallSize)
+    {
+        // Create the renderer
+        Mode7WallsScreenRenderer wallsScreenRenderer = new((TgxPlayfieldMode7)Scene.Playfield, wallPoint, wallSize, 1.5f);
+
+        // Create the screen and use ID 6 (5 is used for the fog)
+        GfxScreen wallsScreen = new(6)
+        {
+            Priority = 0,
+            Wrap = false,
+            Offset = Vector2.Zero,
+            IsEnabled = true,
+            Renderer = wallsScreenRenderer,
+            RenderOptions = { RenderContext = Scene.RenderContext }
+        };
+
+        // Add the screen
+        Gfx.AddScreen(wallsScreen);
     }
 
     #endregion

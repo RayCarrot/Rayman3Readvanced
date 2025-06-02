@@ -14,6 +14,8 @@ public class FrameMultiMissileArena : FrameMissileMultiMode7
 
         MultiplayerManager.Init();
 
+        AddWalls(new Point(2, 4), new Point(3, 3));
+
         // The map data is 128x128, but the actual map is only 100x100, so we need to override the dimensions to avoid you seeing outside the map!
         ExtendMap(
         [

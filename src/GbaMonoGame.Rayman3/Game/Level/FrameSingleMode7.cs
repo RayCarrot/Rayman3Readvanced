@@ -1,6 +1,5 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.TgxEngine;
-using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -23,8 +22,6 @@ public class FrameSingleMode7 : FrameMode7
 
     public GfxScreen FogScreen { get; set; }
     public Mode7RedFogScreenRenderer FogScreenRenderer { get; set; }
-    public GfxScreen WallsScreen { get; set; }
-    public Mode7WallsScreenRenderer WallsScreenRenderer { get; set; }
     public int ColorAdd { get; set; }
     public int ColorAddDelta { get; set; }
 
@@ -56,7 +53,6 @@ public class FrameSingleMode7 : FrameMode7
         {
             Priority = 0,
             Wrap = false,
-            Is8Bit = null,
             Offset = Vector2.Zero,
             GbaAlpha = 12,
             IsEnabled = true,
@@ -93,26 +89,6 @@ public class FrameSingleMode7 : FrameMode7
 
             FogScreen.IsEnabled = false;
         }
-    }
-
-    private void InitWalls()
-    {
-        TgxPlayfieldMode7 playfield = (TgxPlayfieldMode7)Scene.Playfield;
-
-        WallsScreenRenderer = new Mode7WallsScreenRenderer(playfield, new Point(1, 22), new Point(3, 3), 1.5f);
-
-        WallsScreen = new GfxScreen(6)
-        {
-            Priority = 0,
-            Wrap = false,
-            Is8Bit = null,
-            Offset = Vector2.Zero,
-            IsEnabled = true,
-            Renderer = WallsScreenRenderer,
-            RenderOptions = { RenderContext = Scene.RenderContext }
-        };
-
-        Gfx.AddScreen(WallsScreen);
     }
 
     public void KillLum(int lumId)
@@ -154,7 +130,6 @@ public class FrameSingleMode7 : FrameMode7
         Scene.AddDialog(UserInfo, false, false);
 
         InitFog();
-        InitWalls();
     }
 
     public override void Step()

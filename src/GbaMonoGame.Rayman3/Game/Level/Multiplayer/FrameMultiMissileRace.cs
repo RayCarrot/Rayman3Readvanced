@@ -14,6 +14,8 @@ public class FrameMultiMissileRace : FrameMissileMultiMode7
 
         MultiplayerManager.Init();
 
+        AddWalls(new Point(1, 22), new Point(3, 3));
+
         ExtendMap(
         [
             new(2), new(3), new(4),
