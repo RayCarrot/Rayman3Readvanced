@@ -13,19 +13,19 @@ public class RaceManagerMulti
         UserInfo = userInfo;
         Timer = 0;
         LapsCount = lapsCount;
-        RemainingTime = -1;
+        RaceTime = -1;
         IsRacing = false;
         DrivingTheRightWay = true;
-        Data8 = 0xff;
-        Data7 = -1;
+        LastAlivePlayer = -1;
+        PlayersOrder = -1;
 
         PlayersCurrentLap = new int[RSMultiplayer.MaxPlayersCount];
         PlayersCurrentTempLap = new int[RSMultiplayer.MaxPlayersCount];
         PlayerDistances = new int[RSMultiplayer.MaxPlayersCount];
         PlayerRanks = new int[RSMultiplayer.MaxPlayersCount];
         PlayersIsDead = new bool[RSMultiplayer.MaxPlayersCount];
-        Data5 = new int[RSMultiplayer.MaxPlayersCount];
-        Data1 = new int[RSMultiplayer.MaxPlayersCount];
+        PlayersOrderTimer = new int[RSMultiplayer.MaxPlayersCount];
+        PlayersLastLapRaceTime = new int[RSMultiplayer.MaxPlayersCount];
         for (int i = 0; i < RSMultiplayer.MaxPlayersCount; i++)
         {
             PlayersCurrentLap[i] = 1;
@@ -33,18 +33,17 @@ public class RaceManagerMulti
             PlayerDistances[i] = 0;
             PlayerRanks[i] = i;
             PlayersIsDead[i] = false;
-            Data5[i] = Data7;
-            Data7--;
-            Data1[i] = 0;
+            PlayersOrderTimer[i] = PlayersOrder;
+            PlayersOrder--;
+            PlayersLastLapRaceTime[i] = 0;
         }
     }
 
-    // TODO: Name
     public Scene2D Scene { get; }
     public UserInfoMultiMode7 UserInfo { get; }
     public uint Timer { get; set; }
-    public int RemainingTime { get; set; }
-    public int[] Data1 { get; set; }
+    public int RaceTime { get; set; } // Unused
+    public int[] PlayersLastLapRaceTime { get; set; } // Unused
     public int LapsCount { get; set; }
     public int[] PlayersCurrentTempLap { get; set; }
     public int[] PlayersCurrentLap { get; set; }
@@ -52,10 +51,10 @@ public class RaceManagerMulti
     public bool DrivingTheRightWay { get; set; }
     public bool[] PlayersIsDead { get; set; }
     public int[] PlayerDistances { get; set; }
-    public int[] Data5 { get; set; }
+    public int[] PlayersOrderTimer { get; set; }
     public int[] PlayerRanks { get; set; }
-    public int Data7 { get; set; }
-    public int Data8 { get; set; }
+    public int PlayersOrder { get; set; }
+    public int LastAlivePlayer { get; set; }
 
     public void Step()
     {
@@ -64,7 +63,7 @@ public class RaceManagerMulti
         switch (Timer)
         {
             case 1:
-                RemainingTime = 0;
+                RaceTime = 0;
                 break;
 
             case 60:
@@ -97,9 +96,10 @@ public class RaceManagerMulti
         }
 
         if (IsRacing)
-            RemainingTime++;
+            RaceTime++;
 
-        if (Data8 != 0xFF)
+        // End race if only 1 player is left alive
+        if (LastAlivePlayer != -1)
         {
             UserInfo.IsGameOver = true;
 
@@ -107,15 +107,15 @@ public class RaceManagerMulti
                 Scene.GetGameObject(id).ProcessMessage(this, Message.MissileMode7_EndRace);
 
             IsRacing = false;
-            Data8 = 0xFF;
+            LastAlivePlayer = -1;
         }
     }
 
     public void IncDistance(int machineId)
     {
         PlayerDistances[machineId]++;
-        Data5[machineId] = Data7;
-        Data7--;
+        PlayersOrderTimer[machineId] = PlayersOrder;
+        PlayersOrder--;
 
         for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
             PlayerRanks[id] = id;
@@ -127,8 +127,8 @@ public class RaceManagerMulti
                 int current = PlayerRanks[j];
                 int next = PlayerRanks[j + 1];
 
-                if (PlayerDistances[current] * 0x10000 + Data5[current] <
-                    PlayerDistances[next] * 0x10000 + Data5[next])
+                if (PlayerDistances[current] * 0x10000 + PlayersOrderTimer[current] <
+                    PlayerDistances[next] * 0x10000 + PlayersOrderTimer[next])
                 {
                     PlayerRanks[j] = next;
                     PlayerRanks[j + 1] = current;
@@ -140,8 +140,8 @@ public class RaceManagerMulti
     public void DecDistance(int machineId)
     {
         PlayerDistances[machineId]--;
-        Data5[machineId] = Data7;
-        Data7--;
+        PlayersOrderTimer[machineId] = PlayersOrder;
+        PlayersOrder--;
 
         for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
             PlayerRanks[id] = id;
@@ -153,8 +153,8 @@ public class RaceManagerMulti
                 int current = PlayerRanks[j];
                 int next = PlayerRanks[j + 1];
 
-                if (PlayerDistances[current] * 0x10000 + Data5[current] <
-                    PlayerDistances[next] * 0x10000 + Data5[next])
+                if (PlayerDistances[current] * 0x10000 + PlayersOrderTimer[current] <
+                    PlayerDistances[next] * 0x10000 + PlayersOrderTimer[next])
                 {
                     PlayerRanks[j] = next;
                     PlayerRanks[j + 1] = current;
@@ -200,7 +200,7 @@ public class RaceManagerMulti
         {
             PlayerDistances[alivePlayer] = 32000;
             PlayersCurrentTempLap[alivePlayer] = LapsCount + 1;
-            Data8 = alivePlayer;
+            LastAlivePlayer = alivePlayer;
             IncDistance(alivePlayer);
         }
     }

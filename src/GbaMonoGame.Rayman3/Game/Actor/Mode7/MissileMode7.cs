@@ -272,6 +272,7 @@ public sealed partial class MissileMode7 : Mode7Actor
 
                     bool finishedRace;
 
+                    // Finish race
                     if (raceManager.LapsCount < raceManager.PlayersCurrentTempLap[InstanceId])
                     {
                         raceManager.PlayersCurrentLap[InstanceId] = raceManager.LapsCount;
@@ -294,8 +295,10 @@ public sealed partial class MissileMode7 : Mode7Actor
 
                         finishedRace = true;
                     }
+                    // Finish lap
                     else
                     {
+                        // New lap
                         if (raceManager.PlayersCurrentLap[InstanceId] < raceManager.PlayersCurrentTempLap[InstanceId])
                         {
                             if (InstanceId == MultiplayerManager.MachineId)
@@ -306,7 +309,7 @@ public sealed partial class MissileMode7 : Mode7Actor
                                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LineFX01_Mix02_P2_);
                             }
 
-                            raceManager.Data1[InstanceId] = raceManager.RemainingTime;
+                            raceManager.PlayersLastLapRaceTime[InstanceId] = raceManager.RaceTime;
                             raceManager.PlayersCurrentLap[InstanceId] = raceManager.PlayersCurrentTempLap[InstanceId];
                         }
 

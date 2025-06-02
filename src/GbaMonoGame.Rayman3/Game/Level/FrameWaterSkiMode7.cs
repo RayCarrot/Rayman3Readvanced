@@ -79,24 +79,28 @@ public class FrameWaterSkiMode7 : FrameMode7
 
             if (WaterskiTimer <= 200)
             {
+                // 1
                 if (WaterskiTimer == 32)
                 {
                     UserInfo.CountdownValue = 1;
                     UserInfo.ShowCountdown = true;
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CountDwn_Mix07_P1_);
                 }
+                // 2
                 else if (WaterskiTimer == 64)
                 {
                     UserInfo.CountdownValue = 2;
                     UserInfo.ShowCountdown = true;
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CountDwn_Mix07_P2_);
                 }
+                // 3
                 else if (WaterskiTimer == 96)
                 {
                     UserInfo.CountdownValue = 3;
                     UserInfo.ShowCountdown = true;
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CountDwn_Mix07_P3_);
                 }
+                // GO!
                 else if (WaterskiTimer == 128)
                 {
                     Scene.Camera.ProcessMessage(this, Message.CamMode7_Reset);
