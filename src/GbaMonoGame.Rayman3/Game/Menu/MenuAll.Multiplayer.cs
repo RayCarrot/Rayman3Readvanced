@@ -3,6 +3,7 @@ using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.TgxEngine;
+using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -11,6 +12,7 @@ public partial class MenuAll
     #region Constant Fields
 
     private const ushort MultiPakConnectedMessage = 0xace;
+    private const ushort MaxMultiplayerMapHighlightValue = 16;
 
     #endregion
 
@@ -24,6 +26,8 @@ public partial class MenuAll
     public byte MultiplayerConnectionTimer { get; set; }
     public byte MultiplayerLostConnectionTimer { get; set; }
     public uint LastConnectionTime { get; set; }
+    public bool HasInitializedMultiplayerMapHighlightPalettes { get; set; } // Custom
+    public int MultiplayerMapHighlightPalettesCount { get; set; } // Custom
     public byte MultiplayerMapHighlightValue { get; set; }
     public bool HasProcessedPackets { get; set; }
     public int MultiplayerType { get; set; } // Int instead of enum since the order is different for GBA and N-Gage
@@ -113,9 +117,58 @@ public partial class MenuAll
         }
     }
 
+    private void InitSelectedMultiplayerMapPalettes()
+    {
+        MultiplayerMapHighlightValue = 0;
+
+        if (!HasInitializedMultiplayerMapHighlightPalettes)
+        {
+            HasInitializedMultiplayerMapHighlightPalettes = true;
+
+            // The original game dynamically modifies the loaded palette to make the outline
+            // appear as if it's glowing. The easiest way to replicate it here is to create
+            // separate palettes that we cycle between.
+            Palette[] originalPalettes = Anims.MultiplayerMapSelection.Palettes.Palettes;
+            SpritePalettes newPalettes = new(
+                palettes: new Palette[(MaxMultiplayerMapHighlightValue + 1) * originalPalettes.Length],
+                // Set the pointer as the original plus 1 so it gets cached differently
+                cachePointer: Anims.MultiplayerMapSelection.Palettes.CachePointer + 1);
+
+            MultiplayerMapHighlightPalettesCount = originalPalettes.Length;
+
+            Color originalColor = originalPalettes[0].Colors[1];
+            Color targetColor = Color.White;
+
+            for (int value = 0; value < MaxMultiplayerMapHighlightValue + 1; value++)
+            {
+                for (int subPalette = 0; subPalette < MultiplayerMapHighlightPalettesCount; subPalette++)
+                {
+                    Color[] colors = new Color[originalPalettes[subPalette].Colors.Length];
+                    Array.Copy(originalPalettes[subPalette].Colors, colors, originalPalettes[subPalette].Colors.Length);
+
+                    colors[1] = Color.Lerp(originalColor, targetColor, value / (float)MaxMultiplayerMapHighlightValue);
+
+                    newPalettes.Palettes[value * MultiplayerMapHighlightPalettesCount + subPalette] = new Palette(colors, null);
+                }
+            }
+
+            // Override the palettes
+            Anims.MultiplayerMapSelection.Palettes = newPalettes;
+        }
+    }
+
     private void AnimateSelectedMultiplayerMapPalette()
     {
-        // TODO: Implement
+        int factor = MultiplayerMapHighlightValue;
+        if (factor > MaxMultiplayerMapHighlightValue)
+            factor = MaxMultiplayerMapHighlightValue * 2 - factor;
+
+        Anims.MultiplayerMapSelection.BasePaletteIndex = factor * MultiplayerMapHighlightPalettesCount;
+
+        MultiplayerMapHighlightValue++;
+
+        if (MultiplayerMapHighlightValue > MaxMultiplayerMapHighlightValue * 2)
+            MultiplayerMapHighlightValue = 0;
     }
 
     private void StartMultiplayerGame()
@@ -1869,7 +1922,8 @@ public partial class MenuAll
         SetBackgroundPalette(2);
         MultiplayerPlayersOffsetY = 112;
         ResetStem();
-        MultiplayerMapHighlightValue = 0;
+        
+        InitSelectedMultiplayerMapPalettes();
 
         if (Rom.Platform == Platform.GBA)
         {

@@ -45,7 +45,7 @@ public class SwitchBar : Bar
         SpritePalettes newPalettes = new(
             palettes: new Palette[9],
             // Set the pointer as the original plus 1 so it gets cached differently
-            cachePointer: Switches.Resource.Palettes.Offset + 1);
+            cachePointer: Switches.Palettes.CachePointer + 1);
 
         for (int i = 0; i < newPalettes.Palettes.Length; i++)
         {
