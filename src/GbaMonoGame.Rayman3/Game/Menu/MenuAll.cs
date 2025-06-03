@@ -294,30 +294,30 @@ public partial class MenuAll : Frame, IHasPlayfield
     {
         RGB555Color[] colors = index switch
         {
-            0 => new RGB555Color[]
-            {
+            0 =>
+            [
                 new(0x25ee), new(0x8ba), new(0x1dae), new(0x1dae), new(0x2632), new(0x2211), new(0x21cf),
                 new(0x196b), new(0x154a), new(0x3695), new(0x2e54), new(0x198c), new(0x10e7), new(0x1509),
-                new(0x21f0), new(0x196c), new(0x1d8d), new(0x3f21),
-            },
-            1 => new RGB555Color[]
-            {
+                new(0x21f0), new(0x196c), new(0x1d8d), new(0x3f21)
+            ],
+            1 =>
+            [
                 new(0x2653), new(0x249d), new(0x1db2), new(0x1d91), new(0x2216), new(0x21f5), new(0x1dd3),
                 new(0x196f), new(0x154d), new(0x369a), new(0x2e58), new(0x1970), new(0x10e9), new(0x150b),
-                new(0x21f4), new(0x196f), new(0x1990), new(0x23a2),
-            },
-            2 => new RGB555Color[]
-            {
+                new(0x21f4), new(0x196f), new(0x1990), new(0x23a2)
+            ],
+            2 =>
+            [
                 new(0x3f28), new(0x6568), new(0x3d4d), new(0x394c), new(0x4990), new(0x498f), new(0x416e),
                 new(0x310b), new(0x2d0a), new(0x5a34), new(0x55d2), new(0x352b), new(0x20a7), new(0x28e8),
-                new(0x456f), new(0x352b), new(0x392c), new(0x1d97),
-            },
-            3 => new RGB555Color[]
-            {
+                new(0x456f), new(0x352b), new(0x392c), new(0x1d97)
+            ],
+            3 =>
+            [
                 new(0x29b2), new(0x645f), new(0x2111), new(0x2110), new(0x2955), new(0x2534), new(0x2532),
                 new(0x1cee), new(0x18cc), new(0x3df8), new(0x3197), new(0x1cef), new(0x14a9), new(0x18cb),
-                new(0x2533), new(0x1cee), new(0x1cef), new(0x7ca),
-            },
+                new(0x2533), new(0x1cee), new(0x1cef), new(0x7ca)
+            ],
             _ => throw new ArgumentOutOfRangeException(nameof(index), index, null)
         };
 
@@ -532,6 +532,7 @@ public partial class MenuAll : Frame, IHasPlayfield
         switch (InitialPage)
         {
             case InitialMenuPage.Language:
+                // TODO: Only if option to have improvements enabled
                 // NOTE: The game doesn't do this, but this allows the saved language to be pre-selected
                 SelectedOption = Localization.LanguageId;
                 Anims.LanguageList.CurrentAnimation = LanguagesBaseAnimation + SelectedOption;

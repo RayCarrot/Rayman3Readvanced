@@ -30,7 +30,8 @@ public partial class GameCubeMenu : Frame
     public GameCubeMenuTransitionInScreenEffect TransitionInScreenEffect { get; set; }
     public GameCubeMenuTransitionOutScreenEffect TransitionOutScreenEffect { get; set; }
 
-    public bool UseJoyBus { get; set; }
+    public bool UseJoyBus { get; set; } // Custom
+
     public JoyBus JoyBus { get; set; }
     public bool IsJoyBusActive { get; set; }
     public bool WaitingForConnection { get; set; }

@@ -79,7 +79,7 @@ public partial class MenuAll
 
                 Anims.LanguageList.CurrentAnimation = LanguagesBaseAnimation + SelectedOption;
 
-                // TODO: Game passes in 0 as obj here, but that's probably a mistake
+                // NOTE: The game mistakenly passes in 0 as obj here, but nothing happens since pan and roll-off aren't enabled for this event
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
             }
             else if (JoyPad.IsButtonJustPressed(GbaInput.Down))
@@ -97,7 +97,7 @@ public partial class MenuAll
 
                 Anims.LanguageList.CurrentAnimation = LanguagesBaseAnimation + SelectedOption;
 
-                // TODO: Game passes in 0 as obj here, but that's probably a mistake
+                // NOTE: The game mistakenly passes in 0 as obj here, but nothing happens since pan and roll-off aren't enabled for this event
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
             }
             else if (JoyPad.IsButtonJustPressed(GbaInput.A))

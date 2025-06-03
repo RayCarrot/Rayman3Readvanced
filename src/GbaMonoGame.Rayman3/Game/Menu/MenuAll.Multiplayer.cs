@@ -906,7 +906,7 @@ public partial class MenuAll
             }
         }
         // Slave
-        else if (RSMultiplayer.MachineId is >= 1 and <= 4) // TODO: Why is id 4 valid?
+        else if (RSMultiplayer.MachineId is >= 1 and <= 4)
         {
             if (RSMultiplayer.MubState == MubState.Connected)
             {
@@ -921,7 +921,6 @@ public partial class MenuAll
         if (RSMultiplayer.MubState == MubState.EstablishConnections)
         {
             if ((!RSMultiplayer.IsSlave && GameTime.ElapsedFrames - MultiplayerInititialGameTime > 50) ||
-                // TODO: Why is id 4 valid?
                 (RSMultiplayer.MachineId is >= 1 and <= 4 && GameTime.ElapsedFrames - MultiplayerInititialGameTime > 55))
             {
                 IsMultiplayerConnected = null;
@@ -1927,11 +1926,30 @@ public partial class MenuAll
 
         if (Rom.Platform == Platform.GBA)
         {
+            Anims.MultiplayerMapSelection.ActiveChannels = UInt32.MaxValue;
+
+            // Hide the second option
             if ((MultiplayerType == 0 && !FinishedLyChallenge1) ||
                 (MultiplayerType == 1 && !FinishedLyChallenge2) ||
                 (MultiplayerType == 2 && !HasAllCages))
             {
-                // TODO: Remove second option
+                // NOTE: The game hides the second option by creating a window covering the bottom half
+                if (MultiplayerType == 0)
+                {
+                    Anims.MultiplayerMapSelection.DeactivateChannel(1);
+                    Anims.MultiplayerMapSelection.DeactivateChannel(2);
+                    Anims.MultiplayerMapSelection.DeactivateChannel(3);
+                }
+                else if (MultiplayerType == 1)
+                {
+                    Anims.MultiplayerMapSelection.DeactivateChannel(0);
+                }
+                else if (MultiplayerType == 2)
+                {
+                    Anims.MultiplayerMapSelection.DeactivateChannel(0);
+                }
+
+                Anims.MultiplayerMapName2.Text = "";
             }
         }
     }
