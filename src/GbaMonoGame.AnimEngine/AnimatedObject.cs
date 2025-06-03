@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using BinarySerializer;
 using BinarySerializer.Nintendo.GBA;
 using BinarySerializer.Ubisoft.GbaEngine;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.AnimEngine;
@@ -27,6 +27,9 @@ public class AnimatedObject : AObject
         IsDynamic = isDynamic;
         Resource = resource;
         ActiveChannels = UInt32.MaxValue;
+
+        // Load palettes
+        Palettes = new SpritePalettes(resource.Palettes);
     }
 
     #endregion
@@ -41,6 +44,7 @@ public class AnimatedObject : AObject
     #region Public Properties
 
     public AnimatedObjectResource Resource { get; }
+    public SpritePalettes Palettes { get; set; }
 
     // Flags
     public bool IsSoundEnabled { get; set; }
@@ -123,9 +127,6 @@ public class AnimatedObject : AObject
     }
 
     public bool OverrideGfxColor { get; set; } // Needed for the curtains in the worldmap which are not effected by the palette fading
-
-    public SpritePalettes Palettes => OverridePalettes ?? Resource.Palettes;
-    public SpritePalettes OverridePalettes { get; set; } // Used to override the palettes
 
     public BoxTable BoxTable { get; set; }
 
@@ -405,8 +406,6 @@ public class AnimatedObject : AObject
                     if (paletteIndex > 0)
                         Debug.Assert(!Resource.Is8Bit, "Can't use a palette index when 8-bit");
 
-                    SpritePalettes palettes = Palettes;
-
                     PaletteTexture paletteTexture;
                     if (texture is not IndexedSpriteTexture2D)
                     {
@@ -417,9 +416,9 @@ public class AnimatedObject : AObject
                     {
                         paletteTexture = new PaletteTexture(
                             Texture: Engine.TextureCache.GetOrCreateObject(
-                                pointer: palettes.Offset,
+                                pointer: Palettes.CachePointer,
                                 id: 0,
-                                data: palettes,
+                                data: Palettes,
                                 createObjFunc: static p => new PaletteTexture2D(p.Palettes)),
                             PaletteIndex: paletteIndex);
                     }
@@ -429,13 +428,13 @@ public class AnimatedObject : AObject
                             Texture: Engine.TextureCache.GetOrCreateObject(
                                 pointer: anim.PaletteCycleAnimation.Offset,
                                 id: PaletteCycleIndex,
-                                data: new PaletteAnimationDefine(palettes, anim.PaletteCycleAnimation, PaletteCycleIndex),
+                                data: new PaletteAnimationDefine(Palettes, anim.PaletteCycleAnimation, PaletteCycleIndex),
                                 createObjFunc: static data =>
                                 {
                                     PaletteCycleAnimation palAnim = data.PaletteCycleAnimation;
 
-                                    RGB555Color[] originalPal = data.SpritePalettes.Palettes[palAnim.PaletteIndex].Colors;
-                                    RGB555Color[] newPal = new RGB555Color[originalPal.Length];
+                                    Color[] originalPal = data.SpritePalettes.Palettes[palAnim.PaletteIndex].Colors;
+                                    Color[] newPal = new Color[originalPal.Length];
                                     Array.Copy(originalPal, newPal, originalPal.Length);
 
                                     int length = palAnim.ColorEndIndex - palAnim.ColorStartIndex + 1;

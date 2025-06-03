@@ -94,9 +94,8 @@ public sealed partial class Rayman : MovableActor
                     }
 
                     // Create a new sprite palette combining the multiplayer ones
-                    SpritePalettes multiplayerPalettes = new()
-                    {
-                        Palettes =
+                    SpritePalettes multiplayerPalettes = new(
+                        palettes:
                         [
                             // Team 1
                             AnimatedObject.Resource.Palettes.Palettes[0],
@@ -107,14 +106,12 @@ public sealed partial class Rayman : MovableActor
                             AnimatedObject.Resource.Palettes.Palettes[0],
                             pal3,
                             fixPalette(AnimatedObject.Resource.Palettes.Palettes[1]),
-                        ]
-                    };
-
-                    // Set the pointer as the original plus 2 so it gets cached differently
-                    multiplayerPalettes.Init(AnimatedObject.Resource.Palettes.Offset + 2);
+                        ],
+                        // Set the pointer as the original plus 2 so it gets cached differently
+                        cachePointer: AnimatedObject.Resource.Palettes.Offset + 2);
 
                     // Override the palettes
-                    AnimatedObject.OverridePalettes = multiplayerPalettes;
+                    AnimatedObject.Palettes = multiplayerPalettes;
 
                     // Set the base palette index based on the team
                     if (InstanceId is 0 or 1)
@@ -132,9 +129,8 @@ public sealed partial class Rayman : MovableActor
                     Palette16 pal4 = Rom.LoadResource<Resource<Palette16>>(Rayman3DefinedResource.Player4RaymanPalette).Value;
 
                     // Create a new sprite palette combining the multiplayer ones
-                    SpritePalettes multiplayerPalettes = new()
-                    {
-                        Palettes =
+                    SpritePalettes multiplayerPalettes = new(
+                        palettes:
                         [
                             // Player 1
                             AnimatedObject.Resource.Palettes.Palettes[0],
@@ -151,14 +147,12 @@ public sealed partial class Rayman : MovableActor
                             // PLayer 4
                             AnimatedObject.Resource.Palettes.Palettes[0],
                             pal4
-                        ]
-                    };
-
-                    // Set the pointer as the original plus 1 so it gets cached differently
-                    multiplayerPalettes.Init(AnimatedObject.Resource.Palettes.Offset + 1);
+                        ],
+                        // Set the pointer as the original plus 1 so it gets cached differently
+                        cachePointer: AnimatedObject.Resource.Palettes.Offset + 1);
 
                     // Override the palettes
-                    AnimatedObject.OverridePalettes = multiplayerPalettes;
+                    AnimatedObject.Palettes = multiplayerPalettes;
 
                     // Set the base palette index
                     AnimatedObject.BasePaletteIndex = InstanceId * 2;
@@ -182,7 +176,7 @@ public sealed partial class Rayman : MovableActor
                             ObjPriority = 2,
                             CurrentAnimation = 1,
                             AffineMatrix = AffineMatrix.Identity,
-                            OverridePalettes = AnimatedObject.Palettes,
+                            Palettes = AnimatedObject.Palettes,
                             RenderContext = AnimatedObject.RenderContext,
                         };
                     }
@@ -506,13 +500,13 @@ public sealed partial class Rayman : MovableActor
 
         if (RSMultiplayer.IsActive && Rom.Platform == Platform.NGage)
         {
-            bodyPart.AnimatedObject.OverridePalettes = AnimatedObject.Palettes;
+            bodyPart.AnimatedObject.Palettes = AnimatedObject.Palettes;
             bodyPart.AnimatedObject.BasePaletteIndex = FlagData.PlayerPaletteId - 1;
         }
         // Optionally fix colors for GBA too, so the body-shot matches the player color
         else if (Engine.Config.FixBugs && RSMultiplayer.IsActive && Rom.Platform == Platform.GBA)
         {
-            bodyPart.AnimatedObject.OverridePalettes = AnimatedObject.Palettes;
+            bodyPart.AnimatedObject.Palettes = AnimatedObject.Palettes;
             bodyPart.AnimatedObject.BasePaletteIndex = AnimatedObject.BasePaletteIndex;
         }
     }

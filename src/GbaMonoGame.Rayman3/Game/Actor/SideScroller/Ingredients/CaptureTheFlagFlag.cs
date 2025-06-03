@@ -7,7 +7,7 @@ public sealed partial class CaptureTheFlagFlag : MovableActor
 {
     public CaptureTheFlagFlag(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
-        AnimatedObject.OverridePalettes = Scene.MainActor.AnimatedObject.Palettes;
+        AnimatedObject.Palettes = Scene.MainActor.AnimatedObject.Palettes;
 
         Unused = null;
         AttachedPlayer = null;

@@ -882,7 +882,7 @@ public partial class UserInfoMulti2D : Dialog
             BgPriority = 0,
             ObjPriority = 6,
             CurrentAnimation = 0,
-            OverridePalettes = Scene.MainActor.AnimatedObject.Palettes,
+            Palettes = Scene.MainActor.AnimatedObject.Palettes,
             RenderContext = Scene.HudRenderContext,
         };
 

@@ -1,4 +1,5 @@
 ﻿global using AnimatedObject = GbaMonoGame.AnimEngine.AnimatedObject;
+global using SpritePalettes = GbaMonoGame.AnimEngine.SpritePalettes;
 global using Palette = GbaMonoGame.Palette;
 global using Vector2 = Microsoft.Xna.Framework.Vector2;
 global using Scene2D = GbaMonoGame.Engine2d.Scene2D;
@@ -9,6 +10,7 @@ global using AnimActor = GbaMonoGame.Rayman3.AnimActor;
 
 global using AnimatedObjectResource = BinarySerializer.Ubisoft.GbaEngine.AnimatedObject;
 global using PlayfieldResource = BinarySerializer.Ubisoft.GbaEngine.Playfield;
+global using SpritePalettesResource = BinarySerializer.Ubisoft.GbaEngine.SpritePalettes;
 global using PaletteResource = BinarySerializer.Nintendo.GBA.Palette;
 global using GameObjectResource = BinarySerializer.Ubisoft.GbaEngine.GameObject;
 global using ActorResource = BinarySerializer.Ubisoft.GbaEngine.Actor;

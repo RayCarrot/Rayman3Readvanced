@@ -16,6 +16,12 @@ public class Palette
             Colors[i] = colors[i].ToColor();
     }
 
+    public Palette(Color[] colors, Pointer cachePointer)
+    {
+        CachePointer = cachePointer;
+        Colors = colors;
+    }
+
     public Color[] Colors { get; }
     public Pointer CachePointer { get; }
 }

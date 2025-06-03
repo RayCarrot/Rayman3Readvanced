@@ -1,7 +1,7 @@
 ﻿using System;
-using BinarySerializer;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
+using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -41,28 +41,25 @@ public class SwitchBar : Bar
         // The original game dynamically modifies the loaded palette in the Draw method to make
         // the switches appear like they're glowing. The easiest way to replicate it here is to
         // create separate palettes that we cycle between.
-        PaletteResource originalPalette = Switches.Resource.Palettes.Palettes[0];
-        SpritePalettes newPalettes = new()
-        {
-            Palettes = new PaletteResource[9],
-        };
+        Color[] originalPalette = Switches.Palettes.Palettes[0].Colors;
+        SpritePalettes newPalettes = new(
+            palettes: new Palette[9],
+            // Set the pointer as the original plus 1 so it gets cached differently
+            cachePointer: Switches.Resource.Palettes.Offset + 1);
 
         for (int i = 0; i < newPalettes.Palettes.Length; i++)
         {
-            RGB555Color[] colors = new RGB555Color[originalPalette.Colors.Length];
-            Array.Copy(originalPalette.Colors, colors, originalPalette.Colors.Length);
+            Color[] colors = new Color[originalPalette.Length];
+            Array.Copy(originalPalette, colors, originalPalette.Length);
 
-            colors[2] = new RGB555Color((uint)((i + 23) * 0x20));
-            colors[9] = new RGB555Color((uint)((i + 4) * 0x400 | 0x160 | i + 23));
+            colors[2] = ColorHelpers.FromRGB555((i + 23) * 0x20);
+            colors[9] = ColorHelpers.FromRGB555((i + 4) * 0x400 | 0x160 | i + 23);
 
-            newPalettes.Palettes[i] = new PaletteResource { Colors = colors };
+            newPalettes.Palettes[i] = new Palette(colors, null);
         }
 
-        // Set the pointer as the original plus 1 so it gets cached differently
-        newPalettes.Init(Switches.Resource.Palettes.Offset + 1);
-
         // Override the palettes
-        Switches.OverridePalettes = newPalettes;
+        Switches.Palettes = newPalettes;
 
         PaletteShiftValue = 0;
         PaletteShiftDirection = 0;
