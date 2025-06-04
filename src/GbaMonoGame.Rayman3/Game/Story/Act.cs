@@ -188,8 +188,8 @@ public abstract class Act : Frame
 
         if (Rom.Platform == Platform.GBA)
         {
-            TextObjects = new[]
-            {
+            TextObjects =
+            [
                 new SpriteTextObject()
                 {
                     AffineMatrix = AffineMatrix.Identity,
@@ -206,13 +206,13 @@ public abstract class Act : Frame
                     Color = TextColor.Story,
                     RenderContext = Rom.OriginalGameRenderContext,
                 }
-            };
+            ];
         }
         else if (Rom.Platform == Platform.NGage)
         {
             // N-Gage has 3 lines of text
-            TextObjects = new[]
-            {
+            TextObjects =
+            [
                 new SpriteTextObject()
                 {
                     AffineMatrix = AffineMatrix.Identity,
@@ -237,7 +237,7 @@ public abstract class Act : Frame
                     Color = TextColor.Story,
                     RenderContext = Rom.OriginalGameRenderContext,
                 }
-            };
+            ];
         }
         else
         {
@@ -312,7 +312,7 @@ public abstract class Act : Frame
         else
         {
             // Skip cutscene
-            if (!IsAutomatic && JoyPad.IsButtonJustPressed(GbaInput.Start)) // TODO: N-Gage checks other input?
+            if (!IsAutomatic && JoyPad.IsButtonJustPressed(GbaInput.Start))
             {
                 CurrentFrameIndex = ActResource.LastFrameIndex;
                 TransitionsFX.FadeOutInit(1);
@@ -328,7 +328,7 @@ public abstract class Act : Frame
             {
                 TransitionTextIn();
             }
-            else if (!IsAutomatic && JoyPad.IsButtonJustPressed(GbaInput.A)) // TODO: N-Gage allows a lot more buttons here
+            else if (!IsAutomatic && JoyPad.IsButtonJustPressed(GbaInput.A))
             {
                 if (ActResource.Frames.Value[CurrentFrameIndex].TextId == -1 ||
                     CurrentTextLine >= CurrentText.Length)
