@@ -53,7 +53,7 @@ public sealed partial class ItemsMulti : BaseActor
 
         if (IsRandomized)
         {
-            ActionId = (Action)MultiplayerInfo.TagInfo.GetRandomActionId();
+            ActionId = MultiplayerInfo.TagInfo.GetRandomActionId();
             AnimatedObject.CurrentAnimation = (int)ActionId;
         }
 

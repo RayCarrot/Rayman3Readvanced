@@ -329,6 +329,7 @@ Most actors have the first animation be unused and just single frame, most likel
 
 #### ItemsMulti
 - The state function is incorrectly implemented, having the same code run no matter if the state is in the `Init`, `Step` or `UnInit` mode. This causes the state code to run an extra time during initialization, which results in it using a null pointer to the `UserInfo` as it hasn't been created yet. In the N-Gage version a null check was added here to avoid crashing.
+- When setting the action for items with a randomized action there is a bug in the code. It has a value to keep track of the last randomized action to avoid getting the same one twice in a row, but it assigns the wrong variable, making this system not work.
 
 #### Keg
 - There is 1 unused animation:

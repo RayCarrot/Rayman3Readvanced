@@ -10,16 +10,16 @@ public class TagInfo
     public TagInfo(MultiplayerGameType gameType, int mapId)
     {
         LumsTable = new List<LumPosition>(GetLumsCount(gameType, mapId));
+        LastSpawnedItemId = -1;
         LastActionId = -1;
-        field8_0xe = -1;
         ItemsIdList = new List<int>(GetItemsCount(gameType, mapId));
         Timer = 0;
     }
 
     public List<LumPosition> LumsTable { get; }
 
+    public int LastSpawnedItemId { get; set; }
     public int LastActionId { get; set; }
-    public int field8_0xe { get; set; } // TODO: Name. Why is it never set?
     public List<int> ItemsIdList { get; }
 
     private uint Timer { get; set; }
@@ -70,7 +70,7 @@ public class TagInfo
             Timer = GameTime.ElapsedFrames;
 
         int randItemIndex = Random.GetNumber(ItemsIdList.Count - 1);
-        if (randItemIndex >= LastActionId)
+        if (randItemIndex >= LastSpawnedItemId)
             randItemIndex++;
 
         ItemsMulti obj = scene.GetGameObject<ItemsMulti>(ItemsIdList[randItemIndex]);
@@ -82,7 +82,7 @@ public class TagInfo
             for (int i = 0; i < ItemsIdList.Count; i++)
             {
                 if (i != randItemIndex &&
-                    i != LastActionId &&
+                    i != LastSpawnedItemId &&
                     !scene.GetGameObject<ItemsMulti>(ItemsIdList[i]).IsInvisibleItem())
                 {
                     validItems.Add(i);
@@ -97,29 +97,42 @@ public class TagInfo
         }
 
         obj.Spawn();
-        LastActionId = randItemIndex;
+        LastSpawnedItemId = randItemIndex;
     }
 
-    public int GetRandomActionId()
+    public ItemsMulti.Action GetRandomActionId()
     {
+        // Get a random value, 0 or 1
+        int newActionId = Random.GetNumber(2);
+
+        // Don't allow invisible item to spawn yet...
         if (Timer != 0 && GameTime.ElapsedFrames - Timer <= 600)
         {
-            int newActionId = Random.GetNumber(2);
-            if (newActionId == field8_0xe)
-                newActionId = (newActionId + 1) % 2;
+            // If it's the same as the last action then increment to the next one
+            if (newActionId == LastActionId)
+            {
+                newActionId++;
 
-            Debug.Assert(newActionId != 2, "Invisible item should not be spawned");
+                // Maintain the range of 0-1
+                newActionId %= 2;
+            }
 
-            LastActionId = newActionId;
-            return newActionId;
+            Debug.Assert((ItemsMulti.Action)newActionId != ItemsMulti.Action.Invisibility, "Invisible item should not be spawned");
         }
+        // Allow invisible item to spawn
         else
         {
-            int newActionId = Random.GetNumber(2);
-            if (newActionId >= field8_0xe)
+            // If the same or greater than the last action then increment to the next one
+            if (newActionId >= LastActionId)
                 newActionId++;
-            LastActionId = newActionId;
-            return newActionId;
         }
+
+        // NOTE: The original game assigns the wrong variable here, causing the randomization not to fully work!
+        if (Engine.Config.FixBugs)
+            LastActionId = newActionId;
+        else
+            LastSpawnedItemId = newActionId;
+
+        return (ItemsMulti.Action)newActionId;
     }
 }
