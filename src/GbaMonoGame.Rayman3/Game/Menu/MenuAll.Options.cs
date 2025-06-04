@@ -448,7 +448,7 @@ public partial class MenuAll
             }
             else if (JoyPad.IsButtonJustPressed(GbaInput.B) && Anims.Cursor.CurrentAnimation == 0)
             {
-                // TODO: N-Gage auto-saves the option here
+                // NOTE: N-Gage auto-saves the option here
 
                 NextStepAction = Step_InitializeTransitionToGameMode;
                 CurrentStepAction = Step_TransitionOutOfOptions;

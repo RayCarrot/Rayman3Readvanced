@@ -287,7 +287,7 @@ public partial class MenuAll
                     {
                         SelectStartEraseOption(0);
                         Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 20;
-                        // TODO: Game passes in 0 as obj here, but that's probably a mistake
+                        // NOTE: The game mistakenly passes in 0 as obj here, but nothing happens since pan and roll-off aren't enabled for this event
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
                 }
@@ -298,7 +298,7 @@ public partial class MenuAll
                     {
                         SelectStartEraseOption(1);
                         Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 21;
-                        // TODO: Game passes in 0 as obj here, but that's probably a mistake
+                        // NOTE: The game mistakenly passes in 0 as obj here, but nothing happens since pan and roll-off aren't enabled for this event
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
                 }

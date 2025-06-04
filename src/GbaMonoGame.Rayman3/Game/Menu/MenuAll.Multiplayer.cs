@@ -2136,7 +2136,9 @@ public partial class MenuAll
             if (Rom.Platform == Platform.NGage && false)
             {
                 NextStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;
-                CurrentStepAction = Step_TransitionOutOfMultiplayerTypeSelection; // NOTE: This seems to be wrong? Bug?
+                CurrentStepAction = Engine.Config.FixBugs
+                    ? Step_TransitionOutOfMultiplayerMapSelection
+                    : Step_TransitionOutOfMultiplayerTypeSelection;
             }
         }
         else
@@ -2415,7 +2417,9 @@ public partial class MenuAll
             if (Rom.Platform == Platform.NGage && false)
             {
                 NextStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;
-                CurrentStepAction = Step_TransitionOutOfMultiplayerTypeSelection; // NOTE: This seems to be wrong? Bug?
+                CurrentStepAction = Engine.Config.FixBugs
+                    ? Step_TransitionOutOfMultiplayerFlagOptions
+                    : Step_TransitionOutOfMultiplayerTypeSelection;
             }
         }
         else
