@@ -51,9 +51,10 @@ public partial class MenuAll
     public int[] ArrowYPositions { get; } = [74, 107, 138, 140];
 
     // Single-pak
+    public SinglePakLoader SinglePakLoader { get; set; }
     public int SinglePakPlayersOffsetY { get; set; }
-    public byte MultiplayerSinglePakConnectionTimer { get; set; }
-    public byte field_0xe1 { get; set; } // TODO: Name
+    public byte MultiplayerSinglePakConnectionResetTimer { get; set; }
+    public byte MultiplayerSinglePakConnectionTooManyPlayersTimer { get; set; }
 
     #endregion
 
@@ -2577,9 +2578,9 @@ public partial class MenuAll
     {
         SetMenuText(3, false); // Please Wait...
 
-        MultiplayerSinglePakConnectionTimer = 125;
+        MultiplayerSinglePakConnectionResetTimer = 125;
         NextTextId = -1;
-        field_0xe1 = 0;
+        MultiplayerSinglePakConnectionTooManyPlayersTimer = 0;
 
         Anims.MultiplayerSinglePakPlayers.CurrentAnimation = 11;
         SinglePakPlayersOffsetY = 0x46;
@@ -2602,9 +2603,9 @@ public partial class MenuAll
         if (TransitionValue >= 160)
         {
             TransitionValue = 0;
-            // NOTE: Game gets the pointer and position to the SinglePak ROM here
+            // NOTE: Game gets the pointer and position to the SinglePak loader ROM here
             RSMultiplayer.UnInit();
-            // NOTE: Game creates the SinglePakManager class for transferring the SinglePak ROM here
+            SinglePakLoader = new SinglePakLoader();
             CurrentStepAction = Step_MultiplayerSinglePak;
         }
 
@@ -2616,7 +2617,10 @@ public partial class MenuAll
 
     private void Step_MultiplayerSinglePak()
     {
-        // TODO: Implement
+        // NOTE: Hard-code these for now
+        const bool hasConnected = true;
+        const bool tooManyPlayers = false;
+        const bool otherPlayerHasGamePak = false;
 
         if (NextTextId != -1)
         {
@@ -2624,8 +2628,99 @@ public partial class MenuAll
             NextTextId = -1;
         }
 
-        // TODO: Implement
+        if (PreviousTextId != 128)
+        {
+            // The other player has a game pak inserted!
+            if (otherPlayerHasGamePak)
+            {
+                if (MultiplayerSinglePakConnectionTooManyPlayersTimer < 10)
+                {
+                    MultiplayerSinglePakConnectionTooManyPlayersTimer++;
+                }
+                else if (MultiplayerSinglePakConnectionTooManyPlayersTimer == 10)
+                {
+                    MultiplayerSinglePakConnectionResetTimer = 30;
+                    NextTextId = 17; // Please use only one Game Pak in one Game Boy Advance
+                    PreviousTextId = 4; // Please connect 2 players to the Game Boy Advance Game Link cable.
+                    MultiplayerSinglePakConnectionTooManyPlayersTimer = 11;
+                }
+                else
+                {
+                    MultiplayerSinglePakConnectionResetTimer = 30;
+                }
 
+                if (MultiplayerSinglePakConnectionResetTimer != 0)
+                    MultiplayerSinglePakConnectionResetTimer--;
+            }
+            // Too many players connected!
+            else if (tooManyPlayers)
+            {
+                MultiplayerSinglePakConnectionResetTimer = 30;
+
+                // Move out
+                if (SinglePakPlayersOffsetY <= 70)
+                    SinglePakPlayersOffsetY += 8;
+                else
+                    SinglePakPlayersOffsetY = 70;
+
+                if (PreviousTextId != 1)
+                    NextTextId = 5; // Please connect no more than 2 players to the Game Boy Advance Game Link cable.
+
+                PreviousTextId = 1;
+                MultiplayerSinglePakConnectionTooManyPlayersTimer = 0;
+
+                if (MultiplayerSinglePakConnectionResetTimer != 0)
+                    MultiplayerSinglePakConnectionResetTimer--;
+            }
+            // Connected!
+            else if (hasConnected)
+            {
+                // Move in
+                SinglePakPlayersOffsetY -= 8;
+                if (SinglePakPlayersOffsetY < 0)
+                    SinglePakPlayersOffsetY = 0;
+
+                if (PreviousTextId != 2)
+                    SetMenuText(2, true); // Press START
+
+                PreviousTextId = 2;
+                MultiplayerSinglePakConnectionTooManyPlayersTimer = 0;
+
+                if (MultiplayerSinglePakConnectionResetTimer != 0)
+                    MultiplayerSinglePakConnectionResetTimer--;
+            }
+            else if (MultiplayerSinglePakConnectionResetTimer == 0)
+            {
+                // Move out
+                if (SinglePakPlayersOffsetY <= 70)
+                    SinglePakPlayersOffsetY += 8;
+                else
+                    SinglePakPlayersOffsetY = 70;
+
+                if (PreviousTextId != 3) // Please Wait...
+                    NextTextId = 4; // Please connect 2 players to the Game Boy Advance Game Link cable.
+
+                PreviousTextId = 3;
+                MultiplayerSinglePakConnectionTooManyPlayersTimer = 0;
+                if (MultiplayerSinglePakConnectionResetTimer != 0)
+                    MultiplayerSinglePakConnectionResetTimer--;
+            }
+        }
+
+        // Start
+        if (JoyPad.IsButtonJustPressed(GbaInput.Start) && hasConnected)
+        {
+            SinglePakLoader.BeginDownloadLoader();
+            SetMenuText(3, false); // Please Wait...
+            PreviousTextId = 128;
+        }
+
+        SinglePakLoader.Step();
+
+        if (SinglePakLoader.HasFinishedDownload())
+            SinglePakLoader.DecompressAndPlay(Localization.LanguageId);
+
+        // Go back
         if (JoyPad.IsButtonJustPressed(GbaInput.B))
         {
             RSMultiplayer.Init();
@@ -2660,6 +2755,8 @@ public partial class MenuAll
             SinglePakPlayersOffsetY += 8;
         else
             SinglePakPlayersOffsetY = 70;
+
+        Anims.MultiplayerSinglePakPlayers.ScreenPos = Anims.MultiplayerSinglePakPlayers.ScreenPos with { Y = 40 - SinglePakPlayersOffsetY };
 
         DrawText(false);
         AnimationPlayer.Play(Anims.MultiplayerSinglePakPlayers);
