@@ -4,6 +4,7 @@ using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
 
+// TODO: Make fixed tiling optional based on option to fix bugs? Is it possible with how the wrapping works?
 public class FogDialog : Dialog
 {
     public FogDialog(Scene2D scene) : base(scene)
