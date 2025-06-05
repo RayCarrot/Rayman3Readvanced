@@ -301,8 +301,7 @@ public class TgxCameraMode7 : TgxCamera
             TextLayerRenderContext.Horizon = Horizon;
             TextLayerRenderContext.UpdateResolution();
 
-            // NOTE: It should be horizon+1, but there can be slight scaling artifacts, so better doing two pixels behind the background to ensure there's no empty space in-between
-            Vector3 world = Unproject(new Vector2(res.X / 2, Horizon - 1), true);
+            Vector3 world = Unproject(new Vector2(res.X / 2, Horizon + 1), true);
 
             if (world != Vector3.Zero)
             {

@@ -1,4 +1,5 @@
 ﻿using GbaMonoGame.TgxEngine;
+using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -103,6 +104,7 @@ public class FrameMissileMultiMode7 : FrameMode7
         ColorAddDelta = -1;
         ColorAdd = 0;
         InitFog();
+        SetBackgroundColor(new Color(139, 24, 24));
     }
 
     public override void Step()

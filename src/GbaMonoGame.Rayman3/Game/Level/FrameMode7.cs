@@ -131,6 +131,13 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
         rotScaleLayer.Screen.Renderer = new MultiScreenRenderer(sections, new Vector2(mapPixelWidth * 3, mapPixelHeight * 3));
     }
 
+    protected void SetBackgroundColor(Color color)
+    {
+        // The game doesn't do this, but depending on how things get scaled on screen you might see a tiny gap between
+        // the map and the background. So we make sure it has a color that blends in rather than being black.
+        Gfx.ClearColor = color;
+    }
+
     // TODO: Make optional
     // TODO: Fix bumper positions so they don't overlap with walls
     protected void AddWalls(Point wallPoint, Point wallSize)

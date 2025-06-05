@@ -1,6 +1,7 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.TgxEngine;
+using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -69,6 +70,8 @@ public class FrameWaterSkiMode7 : FrameMode7
 
         WaterskiTimer = 0;
         FadeDecrease = 10;
+
+        SetBackgroundColor(new Color(213, 213, 189));
     }
 
     public override void Step()

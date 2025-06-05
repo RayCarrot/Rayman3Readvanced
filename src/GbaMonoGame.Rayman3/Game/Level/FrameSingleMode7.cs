@@ -1,5 +1,6 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.TgxEngine;
+using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -130,6 +131,7 @@ public class FrameSingleMode7 : FrameMode7
         Scene.AddDialog(UserInfo, false, false);
 
         InitFog();
+        SetBackgroundColor(new Color(139, 24, 24));
     }
 
     public override void Step()
