@@ -143,7 +143,7 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
     protected void AddWalls(Point wallPoint, Point wallSize)
     {
         // Create the renderer
-        Mode7WallsScreenRenderer wallsScreenRenderer = new((TgxPlayfieldMode7)Scene.Playfield, wallPoint, wallSize, 1.5f);
+        Mode7WallsScreenRenderer wallsScreenRenderer = new((TgxPlayfieldMode7)Scene.Playfield, wallPoint, wallSize, 1.5f, ((CameraMode7)Scene.Camera).FadeDistance);
 
         // Create the screen and use ID 6 (5 is used for the fog)
         GfxScreen wallsScreen = new(6)

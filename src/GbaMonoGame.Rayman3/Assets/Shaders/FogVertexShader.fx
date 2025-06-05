@@ -10,6 +10,7 @@
 // Matrix for transforming vertex positions
 float4x4 WorldViewProj;
 float FarPlane;
+float FadeDistance;
 Texture2D SpriteTexture;
 
 sampler2D SpriteTextureSampler = sampler_state
@@ -45,10 +46,14 @@ VertexShaderOutput MainVS(VertexShaderInput input)
 // Pixel shader
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
-    float distance = input.DepthInfo.x;
-    float normDistance = distance / FarPlane;
-    float sqNormDistance = normDistance * normDistance;
-    float alpha = saturate(1.0 - sqNormDistance); // clamp to 0-1
+    float distance = FarPlane - input.DepthInfo.x;
+    
+    float alpha;
+    if (distance < FadeDistance)
+        alpha = distance / FadeDistance;
+    else
+        alpha = 1;
+    
     float4 color = tex2D(SpriteTextureSampler, input.TextureCoordinates);
     color.a = alpha;
     return color;

@@ -10,6 +10,8 @@ public abstract class CameraActorMode7 : CameraActor
 {
     protected CameraActorMode7(Scene2D scene) : base(scene) { }
 
+    public float FadeDistance { get; set; } = 40;
+
     // TODO: Currently we ignore if the object should use affine rendering or not and always render it in 3D. In the
     //       original game this would determine if the object should be scaled based on the camera distance. Usually
     //       this was disabled due to rendering limitations on the GBA, but it does make the sprites render at a
@@ -39,9 +41,8 @@ public abstract class CameraActorMode7 : CameraActor
 
         // TODO: Add this as an option, enabled by default for modern mode
         // The game doesn't do this, but it looks nicer if we fade in the objects as they enter the view
-        const float fadeDist = 40f;
         animatedObject.RenderOptions.BlendMode = BlendMode.AlphaBlend;
-        animatedObject.Alpha = MathF.Min((cam.CameraFar - camDist) / fadeDist, 1);
+        animatedObject.Alpha = MathF.Min((cam.CameraFar - camDist) / FadeDistance, 1);
 
         // Get the projection and view from the camera
         Matrix projection = cam.ProjectionMatrix;

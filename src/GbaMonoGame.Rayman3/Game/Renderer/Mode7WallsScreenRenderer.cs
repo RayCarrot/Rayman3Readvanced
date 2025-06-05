@@ -9,11 +9,14 @@ namespace GbaMonoGame.Rayman3;
 
 public class Mode7WallsScreenRenderer : IScreenRenderer
 {
-    public Mode7WallsScreenRenderer(TgxPlayfieldMode7 playfield, Point wallPoint, Point wallSize, float wallHeight)
+    public Mode7WallsScreenRenderer(TgxPlayfieldMode7 playfield, Point wallPoint, Point wallSize, float wallHeight, float fadeDistance)
     {
         Camera = playfield.Camera;
 
         Shader = Engine.FrameContentManager.Load<Effect>(Assets.FogVertexShader);
+
+        // TODO: Add this as an option, enabled by default for modern mode
+        Shader.Parameters["FadeDistance"].SetValue(fadeDistance);
 
         TgxRotscaleLayerMode7 layer = playfield.RotScaleLayers[0];
 
