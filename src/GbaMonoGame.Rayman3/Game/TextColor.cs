@@ -17,4 +17,5 @@ public static class TextColor
     public static Color GameCubeMenu { get; } = ColorHelpers.FromRGB555(0xe1f);
     public static Color GameCubeMenuFaded { get; } = ColorHelpers.FromRGB555(0x553);
     public static Color Credits { get; } = ColorHelpers.FromRGB555(0xffff);
+    public static Color SinglePak { get; } = ColorHelpers.FromRGB555(0x8420);
 }

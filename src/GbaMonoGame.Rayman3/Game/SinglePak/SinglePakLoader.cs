@@ -1,4 +1,6 @@
-﻿namespace GbaMonoGame.Rayman3;
+﻿using GbaMonoGame.Rayman3.SinglePak;
+
+namespace GbaMonoGame.Rayman3;
 
 // Skeleton class to re-implement the structure of the loader for the SinglePak game
 public class SinglePakLoader
@@ -25,6 +27,6 @@ public class SinglePakLoader
     public void DecompressAndPlay(int language)
     {
         // The game loads some graphics and then creates an infinite game loop for loading the game, decompressing it into RAM and running it
-        FrameManager.SetNextFrame(new SinglePak());
+        FrameManager.SetNextFrame(new FrameSinglePak());
     }
 }
