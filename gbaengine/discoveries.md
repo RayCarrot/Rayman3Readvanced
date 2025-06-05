@@ -18,6 +18,7 @@
 - When initializing `AObjectChain`, used to create chained animations for actors such as the caterpillars, it has a bug when allocating an array. It sets the size to the number of children when it's supposed to be one more than that since the main parent object is also included. This however doesn't cause any issue in the game since the number of children is always 6, and due to memory alignment it ends up allocating 8 bytes then.
 - For some reason the animations for the Caterpillar enemy is referenced from the root resource table, yet it's never used from there.
 - The order of the levels ids from the curtains in the hub worlds reflect the original order rather than the order they appear in the final game.
+- The Single Pak multiplayer mode normally downloads a compressed ROM into WRAM and plays from that. However there still exists uncompressed code for the Single Pak mode in the normal ROM which appears to be an earlier version of it, perhaps for testing it without the connectivity (since the code is missing that part, among other things).
 
 ### Actors
 Most actors have the first animation be unused and just single frame, most likely for their level editor. This is not included when mentioning unused animations for each actor.
