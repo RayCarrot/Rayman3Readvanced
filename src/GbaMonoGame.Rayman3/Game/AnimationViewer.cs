@@ -77,7 +77,6 @@ public class AnimationViewer : Frame
         {
             Text = String.Empty,
             Color = Color.White,
-            FontSize = FontSize.Font16,
             ScreenPos = new Vector2(0, 10),
             HorizontalAnchor = HorizontalAnchorMode.Center,
             RenderContext = Engine.GameRenderContext,

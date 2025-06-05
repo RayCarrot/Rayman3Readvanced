@@ -151,7 +151,6 @@ public class UserInfoSingleMode7 : Dialog
         WrongWayText = new SpriteTextObject()
         {
             Color = TextColor.RaceWrongWayText,
-            FontSize = FontSize.Font16,
             Text = Localization.GetText(TextBankId.Connectivity, 16)[0],
             ScreenPos = new Vector2(0, 70),
             HorizontalAnchor = HorizontalAnchorMode.Center,

@@ -76,7 +76,6 @@ public class Credits : Frame
                 RenderContext = Rom.OriginalGameRenderContext,
                 Text = String.Empty,
                 Color = TextColor.Credits,
-                FontSize = FontSize.Font16,
             };
             TextOffsetsX[i] = 0;
             TextOffsetsY[i] = 0;

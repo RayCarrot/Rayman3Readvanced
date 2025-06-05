@@ -1,5 +1,4 @@
 ﻿using System;
-using BinarySerializer;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
@@ -369,7 +368,6 @@ public class LevelSelect : Frame
         {
             Text = "Select a savegame slot:",
             Color = TextColor.LevelSelect,
-            FontSize = FontSize.Font16,
             ScreenPos = new Vector2(60, 20),
             RenderContext = Engine.GameRenderContext,
         };
@@ -381,7 +379,6 @@ public class LevelSelect : Frame
             {
                 Text = "WoodLight #1",
                 Color = TextColor.LevelSelect,
-                FontSize = FontSize.Font16,
                 ScreenPos = new Vector2(30, 60 + RowHeight * i),
                 RenderContext = Engine.GameRenderContext,
             };
@@ -392,7 +389,6 @@ public class LevelSelect : Frame
             Text = "->",
             // NOTE: The color is supposed to be red, but the color gets set after the text is drawn, so it's never used
             Color = TextColor.LevelSelect,
-            FontSize = FontSize.Font16,
             ScreenPos = new Vector2(10, 60),
             RenderContext = Engine.GameRenderContext,
         };

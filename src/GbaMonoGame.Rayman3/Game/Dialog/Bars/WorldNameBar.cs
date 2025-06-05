@@ -76,7 +76,6 @@ public class WorldNameBar : Bar
         WorldName = new SpriteTextObject()
         {
             Color = TextColor.WorldName,
-            FontSize = FontSize.Font16,
             ScreenPos = new Vector2(0, -16),
             HorizontalAnchor = HorizontalAnchorMode.Center,
             VerticalAnchor = VerticalAnchorMode.Bottom,

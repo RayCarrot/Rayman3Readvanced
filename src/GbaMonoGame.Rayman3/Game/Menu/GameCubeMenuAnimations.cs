@@ -16,7 +16,6 @@ public class GameCubeMenuAnimations
             ReusableTexts[i] = new SpriteTextObject()
             {
                 Text = "",
-                FontSize = FontSize.Font16,
                 Color = TextColor.GameCubeMenu,
                 RenderContext = renderContext,
             };
@@ -29,7 +28,6 @@ public class GameCubeMenuAnimations
             {
                 Text = "",
                 ScreenPos = new Vector2(192, 36 + i * 24),
-                FontSize = FontSize.Font16,
                 Color = TextColor.GameCubeMenu,
                 RenderContext = renderContext,
             };
@@ -40,7 +38,6 @@ public class GameCubeMenuAnimations
         {
             Text = collectedYellowLums.ToString(),
             ScreenPos = new Vector2(36, 16),
-            FontSize = FontSize.Font16,
             Color = TextColor.GameCubeMenu,
             RenderContext = renderContext,
         };
@@ -48,7 +45,6 @@ public class GameCubeMenuAnimations
         StatusText = new SpriteTextObject()
         {
             Text = "",
-            FontSize = FontSize.Font16,
             Color = TextColor.GameCubeMenu,
             RenderContext = renderContext,
         };

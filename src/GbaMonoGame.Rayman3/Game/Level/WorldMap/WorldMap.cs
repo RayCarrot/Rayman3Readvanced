@@ -791,7 +791,6 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         FullWorldName = new SpriteTextObject()
         {
             Color = TextColor.FullWorldName,
-            FontSize = FontSize.Font16,
             ScreenPos = new Vector2(120, 60),
             HorizontalAnchor = HorizontalAnchorMode.Center,
             Text = "",

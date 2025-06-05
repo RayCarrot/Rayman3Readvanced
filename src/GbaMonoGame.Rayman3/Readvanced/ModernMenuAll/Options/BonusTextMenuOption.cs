@@ -39,7 +39,6 @@ public class BonusTextMenuOption : TextMenuOption
                 ObjPriority = 0,
                 RenderContext = renderContext,
                 Text = Collections[i].Text,
-                FontSize = FontSize.Font16,
                 Color = TextColor.Menu,
             };
         }

@@ -206,7 +206,6 @@ public class LevelInfoBar : Bar
         LevelName = new SpriteTextObject()
         {
             Color = TextColor.LevelName,
-            FontSize = FontSize.Font16,
             ScreenPos = new Vector2(0, -32),
             HorizontalAnchor = HorizontalAnchorMode.Center,
             VerticalAnchor = VerticalAnchorMode.Bottom,

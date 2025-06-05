@@ -205,7 +205,6 @@ public class MenuAllAnimations
                     ObjPriority = 0,
                     ScreenPos = new Vector2(129, 55 + i * 18),
                     Text = "1000",
-                    FontSize = FontSize.Font16,
                     Color = TextColor.Menu,
                     RenderContext = renderContext,
                 };
@@ -215,7 +214,6 @@ public class MenuAllAnimations
                     ObjPriority = 0,
                     ScreenPos = new Vector2(190, 55 + i * 18),
                     Text = "50",
-                    FontSize = FontSize.Font16,
                     Color = TextColor.Menu,
                     RenderContext = renderContext,
                 };
@@ -278,7 +276,6 @@ public class MenuAllAnimations
                     BgPriority = 3,
                     ObjPriority = 0,
                     ScreenPos = new Vector2(70, 32 + i * 16),
-                    FontSize = FontSize.Font16,
                     Color = TextColor.Menu,
                     RenderContext = renderContext,
                 };
@@ -393,7 +390,6 @@ public class MenuAllAnimations
                 BgPriority = 3,
                 ObjPriority = 0,
                 ScreenPos = new Vector2(80, 56),
-                FontSize = FontSize.Font16,
                 Color = TextColor.Menu,
                 RenderContext = renderContext,
             };
@@ -403,7 +399,6 @@ public class MenuAllAnimations
                 BgPriority = 3,
                 ObjPriority = 0,
                 ScreenPos = new Vector2(70, 96),
-                FontSize = FontSize.Font16,
                 Color = TextColor.Menu,
                 RenderContext = renderContext,
             };
@@ -737,7 +732,6 @@ public class MenuAllAnimations
                     ObjPriority = 0,
                     ScreenPos = new Vector2(96, 65 + i * 18),
                     Text = "1000",
-                    FontSize = FontSize.Font16,
                     Color = TextColor.Menu,
                     RenderContext = renderContext,
                 };
@@ -747,7 +741,6 @@ public class MenuAllAnimations
                     ObjPriority = 0,
                     ScreenPos = new Vector2(149, 65 + i * 18),
                     Text = "50",
-                    FontSize = FontSize.Font16,
                     Color = TextColor.Menu,
                     RenderContext = renderContext,
                 };
@@ -810,7 +803,6 @@ public class MenuAllAnimations
                     BgPriority = 3,
                     ObjPriority = 0,
                     ScreenPos = new Vector2(70, 48 + i * 16),
-                    FontSize = FontSize.Font16,
                     Color = TextColor.Menu,
                     RenderContext = renderContext,
                 };
@@ -881,7 +873,6 @@ public class MenuAllAnimations
                 BgPriority = 3,
                 ObjPriority = 0,
                 ScreenPos = new Vector2(48, 80),
-                FontSize = FontSize.Font16,
                 Color = TextColor.Menu,
                 RenderContext = renderContext,
             };
@@ -891,7 +882,6 @@ public class MenuAllAnimations
                 BgPriority = 3,
                 ObjPriority = 0,
                 ScreenPos = new Vector2(38, 120),
-                FontSize = FontSize.Font16,
                 Color = TextColor.Menu,
                 RenderContext = renderContext,
             };

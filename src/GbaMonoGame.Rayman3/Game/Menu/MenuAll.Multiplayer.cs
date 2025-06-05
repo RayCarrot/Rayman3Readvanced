@@ -1553,7 +1553,7 @@ public partial class MenuAll
         {
             ShouldTextBlink = true;
             string text = Localization.GetText(TextBankId.Connectivity, 34)[0]; // Please wait
-            int width = FontManager.GetStringWidth(FontSize.Font16, text);
+            int width = FontManager.GetStringWidth(Anims.Texts[4].FontSize, text);
             Anims.Texts[4].ScreenPos = new Vector2(108 - width / 2f, 110);
             Anims.Texts[4].Text = text;
         }
@@ -1908,7 +1908,7 @@ public partial class MenuAll
 
             ShouldTextBlink = true;
             string text = Localization.GetText(TextBankId.Connectivity, 34)[0]; // Please wait
-            int width = FontManager.GetStringWidth(FontSize.Font16, text);
+            int width = FontManager.GetStringWidth(Anims.Texts[4].FontSize, text);
             Anims.Texts[4].ScreenPos = new Vector2(108 - width / 2f, 136);
             Anims.Texts[4].Text = text;
         }

@@ -240,7 +240,6 @@ public partial class TextBoxDialog : Dialog
                 AffineMatrix = AffineMatrix.Identity,
                 ScreenPos = new Vector2(38, 7 + 14 * i - OffsetY),
                 HorizontalAnchor = HorizontalAnchorMode.Scale,
-                FontSize = FontSize.Font16,
                 Color = TextColor.TextBox,
                 RenderContext = Scene.HudRenderContext,
             };

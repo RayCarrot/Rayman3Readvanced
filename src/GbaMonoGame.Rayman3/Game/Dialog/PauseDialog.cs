@@ -241,7 +241,6 @@ public partial class PauseDialog : Dialog
                     BgPriority = 0,
                     ObjPriority = 0,
                     Color = TextColor.SleepMode,
-                    FontSize = FontSize.Font16,
                     RenderContext = Rom.OriginalScaledGameRenderContext,
                 };
 

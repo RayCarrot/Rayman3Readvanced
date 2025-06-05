@@ -67,7 +67,6 @@ public class SlotMenuOption : MenuOption
             BgPriority = bgPriority,
             ObjPriority = 0,
             Text = Slot?.LumsCount.ToString() ?? "0",
-            FontSize = FontSize.Font16,
             Color = TextColor.Menu,
             RenderContext = renderContext,
         };
@@ -84,7 +83,6 @@ public class SlotMenuOption : MenuOption
             BgPriority = bgPriority,
             ObjPriority = 0,
             Text = Slot?.CagesCount.ToString() ?? "0",
-            FontSize = FontSize.Font16,
             Color = TextColor.Menu,
             RenderContext = renderContext,
         };
@@ -100,7 +98,6 @@ public class SlotMenuOption : MenuOption
             BgPriority = bgPriority,
             ObjPriority = 0,
             Text = "1:54:03", // TODO: Get actual time from save slot
-            FontSize = FontSize.Font16,
             Color = TextColor.Menu,
             RenderContext = renderContext,
         };

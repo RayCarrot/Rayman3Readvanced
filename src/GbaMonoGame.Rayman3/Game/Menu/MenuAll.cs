@@ -149,6 +149,8 @@ public partial class MenuAll : Frame, IHasPlayfield
     // N-Gage uses a more complex method for setting text, with wrapping and optional params
     public void NGageSetMenuText(int textId, bool blink, int? baseY, int maxLineWidth, params object[] paramsBuffer)
     {
+        FontSize fontSize = Anims.Texts[0].FontSize;
+
         ShouldTextBlink = blink;
 
         string[] text = Localization.GetText(TextBankId.Connectivity, textId);
@@ -199,7 +201,7 @@ public partial class MenuAll : Frame, IHasPlayfield
                         reachedTheEnd = true;
                     }
 
-                    currentLineWidth = FontManager.GetStringWidth(FontSize.Font16, str[..i]);
+                    currentLineWidth = FontManager.GetStringWidth(fontSize, str[..i]);
 
                     if (currentLineWidth < maxLineWidth)
                     {
@@ -241,7 +243,7 @@ public partial class MenuAll : Frame, IHasPlayfield
                         if (i == str.Length)
                             reachedTheEnd = true;
 
-                        currentLineWidth = FontManager.GetStringWidth(FontSize.Font16, str[..i]);
+                        currentLineWidth = FontManager.GetStringWidth(fontSize, str[..i]);
 
                         if (currentLineWidth < maxLineWidth)
                         {
@@ -270,7 +272,7 @@ public partial class MenuAll : Frame, IHasPlayfield
         // Helper method for drawing text
         void drawText(int index, string str)
         {
-            int lineWidth = FontManager.GetStringWidth(FontSize.Font16, str);
+            int lineWidth = FontManager.GetStringWidth(Anims.Texts[index].FontSize, str);
             Anims.Texts[index].ScreenPos = new Vector2(108 - lineWidth / 2f, baseY.Value + 48 + index * 16);
             Anims.Texts[index].Text = str;
         }

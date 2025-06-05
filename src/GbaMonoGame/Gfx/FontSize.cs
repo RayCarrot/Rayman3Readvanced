@@ -2,7 +2,7 @@
 
 public enum FontSize
 {
-    Font8,
-    Font16,
-    Font32,
+    Font8 = 0,
+    Font16 = 1,
+    Font32 = 2,
 }

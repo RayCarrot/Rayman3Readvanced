@@ -6,6 +6,11 @@ namespace GbaMonoGame.AnimEngine;
 // On GBA setting the position is inlined. X is set using the mask 0xfe00 and Y is set using the mask 0xff00.
 public class SpriteTextObject : AObject
 {
+    public SpriteTextObject()
+    {
+        FontSize = FontSize.Font16;
+    }
+
     private string _text;
 
     private byte[] TextBytes { get; set; }
