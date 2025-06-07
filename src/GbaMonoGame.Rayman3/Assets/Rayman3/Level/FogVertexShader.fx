@@ -39,7 +39,7 @@ VertexShaderOutput MainVS(VertexShaderInput input)
     VertexShaderOutput output;
     output.Position = mul(input.Position, WorldViewProj);
     output.TextureCoordinates = input.TextureCoordinates;
-    output.DepthInfo.x = output.Position.w;
+    output.DepthInfo = float4(output.Position.w, 0, 0, 0);
     return output;
 }
 
