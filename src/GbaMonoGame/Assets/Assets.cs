@@ -2,7 +2,7 @@
 
 public static class Assets
 {
-    public const string PaletteShader = "Shaders/PaletteShader";
-    public const string PaletteVertexShader = "Shaders/PaletteVertexShader";
-    public const string VertexShader = "Shaders/VertexShader";
+    public const string PaletteShader = "Gfx/PaletteShader";
+    public const string PaletteVertexShader = "Gfx/PaletteVertexShader";
+    public const string VertexShader = "Gfx/VertexShader";
 }

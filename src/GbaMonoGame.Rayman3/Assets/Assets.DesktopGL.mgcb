@@ -23,9 +23,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Cursor.png
+/build:Rayman3/Menu/Cursor.png
 
-#begin Font_MenuWhite.png
+#begin MenuFont_White.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -35,9 +35,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Font_MenuWhite.png
+/build:Rayman3/Font/MenuFont_White.png
 
-#begin Font_MenuYellow.png
+#begin MenuFont_Yellow.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -47,7 +47,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Font_MenuYellow.png
+/build:Rayman3/Font/MenuFont_Yellow.png
 
 #begin IntroLogo_Part1.png
 /importer:TextureImporter
@@ -59,7 +59,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/IntroLogo_Part1.png
+/build:Rayman3/Intro/IntroLogo_Part1.png
 
 #begin IntroLogo_Part2.png
 /importer:TextureImporter
@@ -71,7 +71,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/IntroLogo_Part2.png
+/build:Rayman3/Intro/IntroLogo_Part2.png
 
 #begin IntroLogo_Part3.png
 /importer:TextureImporter
@@ -83,7 +83,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/IntroLogo_Part3.png
+/build:Rayman3/Intro/IntroLogo_Part3.png
 
 #begin IntroLogo_Part4.png
 /importer:TextureImporter
@@ -95,7 +95,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/IntroLogo_Part4.png
+/build:Rayman3/Intro/IntroLogo_Part4.png
 
 #begin IntroLogo_Part5.png
 /importer:TextureImporter
@@ -107,7 +107,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/IntroLogo_Part5.png
+/build:Rayman3/Intro/IntroLogo_Part5.png
 
 #begin IntroLogo_Part6.png
 /importer:TextureImporter
@@ -119,7 +119,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/IntroLogo_Part6.png
+/build:Rayman3/Intro/IntroLogo_Part6.png
 
 #begin IntroLogo_Part7.png
 /importer:TextureImporter
@@ -131,7 +131,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/IntroLogo_Part7.png
+/build:Rayman3/Intro/IntroLogo_Part7.png
 
 #begin IntroLogo_Part8.png
 /importer:TextureImporter
@@ -143,7 +143,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/IntroLogo_Part8.png
+/build:Rayman3/Intro/IntroLogo_Part8.png
 
 #begin MenuCurtain.png
 /importer:TextureImporter
@@ -155,7 +155,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/MenuCurtain.png
+/build:Rayman3/Menu/MenuCurtain.png
 
 #begin MenuLogo.png
 /importer:TextureImporter
@@ -167,7 +167,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/MenuLogo.png
+/build:Rayman3/Menu/MenuLogo.png
 
 #begin MenuTextBox.png
 /importer:TextureImporter
@@ -179,7 +179,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/MenuTextBox.png
+/build:Rayman3/Menu/MenuTextBox.png
 
 #begin MenuWoodenFrame.png
 /importer:TextureImporter
@@ -191,7 +191,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/MenuWoodenFrame.png
+/build:Rayman3/Menu/MenuWoodenFrame.png
 
 #begin OptionsDialogBoard.png
 /importer:TextureImporter
@@ -203,7 +203,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/OptionsDialogBoard.png
+/build:Rayman3/Menu/OptionsDialogBoard.png
 
 #begin OptionsMenuTabs.png
 /importer:TextureImporter
@@ -215,7 +215,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/OptionsMenuTabs.png
+/build:Rayman3/Menu/OptionsMenuTabs.png
 
 #begin SaveSlotIcon_4.png
 /importer:TextureImporter
@@ -227,7 +227,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/SaveSlotIcon_4.png
+/build:Rayman3/Menu/SaveSlotIcon_4.png
 
 #begin SaveSlotIcon_5.png
 /importer:TextureImporter
@@ -239,7 +239,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/SaveSlotIcon_5.png
+/build:Rayman3/Menu/SaveSlotIcon_5.png
 
 #begin SaveSlotTime.png
 /importer:TextureImporter
@@ -251,7 +251,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/SaveSlotTime.png
+/build:Rayman3/Menu/SaveSlotTime.png
 
 #begin ScrollBar.png
 /importer:TextureImporter
@@ -263,7 +263,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/ScrollBar.png
+/build:Rayman3/Menu/ScrollBar.png
 
 #begin ScrollBarThumb.png
 /importer:TextureImporter
@@ -275,7 +275,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/ScrollBarThumb.png
+/build:Rayman3/Menu/ScrollBarThumb.png
 
 #begin TitleScreen.png
 /importer:TextureImporter
@@ -287,21 +287,21 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/TitleScreen.png
+/build:Rayman3/TitleScreen/TitleScreen.png
 
 #begin TitleScreenCloudsShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:Shaders/TitleScreenCloudsShader.fx
+/build:Rayman3/TitleScreen/TitleScreenCloudsShader.fx
 
 #begin FogVertexShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:Shaders/FogVertexShader.fx
+/build:Rayman3/Level/FogVertexShader.fx
 
-#begin TitleScreenGBAClouds.png
+#begin GBAClouds.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -311,9 +311,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/TitleScreenGBAClouds.png
+/build:Rayman3/TitleScreen/GBAClouds.png
 
-#begin TitleScreenNGageClouds.png
+#begin NGageClouds.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -323,7 +323,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/TitleScreenNGageClouds.png
+/build:Rayman3/TitleScreen/NGageClouds.png
 
 #begin Mode7WallSide.png
 /importer:TextureImporter
@@ -335,7 +335,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Mode7WallSide.png
+/build:Rayman3/Level/Mode7WallSide.png
 
 #begin BossMachine_ExtendedLayer0_GBA.png
 /importer:TextureImporter
@@ -347,7 +347,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/BossMachine_ExtendedLayer0_GBA.png
+/build:Rayman3/Level/BossMachine_ExtendedLayer0_GBA.png
 
 #begin BossMachine_ExtendedLayer0_NGage.png
 /importer:TextureImporter
@@ -359,4 +359,4 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/BossMachine_ExtendedLayer0_NGage.png
+/build:Rayman3/Level/BossMachine_ExtendedLayer0_NGage.png
