@@ -2,5 +2,5 @@
 
 public static class Assets
 {
-    public const string CollisionTileSetTexture = "Textures/CollisionTileSet";
+    public const string CollisionTileSetTexture = "Playfield/CollisionTileSet";
 }

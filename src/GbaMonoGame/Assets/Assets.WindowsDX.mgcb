@@ -17,16 +17,16 @@
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:Shaders/PaletteShader.fx
+/build:Gfx/PaletteShader.fx
 
 #begin PaletteVertexShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:Shaders/PaletteVertexShader.fx
+/build:Gfx/PaletteVertexShader.fx
 
 #begin VertexShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:Shaders/VertexShader.fx
+/build:Gfx/VertexShader.fx
