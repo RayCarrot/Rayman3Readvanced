@@ -50,7 +50,7 @@ struct VertexShaderOutput
 
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
-    // Get the alpha value from the sprite texture. This is out palette index, in a range from 0-1.
+    // Get the alpha value from the sprite texture. This is our palette index, in a range from 0-1.
     float colorIndex = tex2D(SpriteTextureSampler, input.TextureCoordinates).a;
     
     // Multiply by 255 to get a range from 0-255, thus getting the original byte value.

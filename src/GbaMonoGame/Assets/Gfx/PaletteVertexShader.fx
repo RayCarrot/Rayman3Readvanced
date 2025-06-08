@@ -13,13 +13,14 @@ extern Texture2D SpriteTexture;
 // The palette parameters
 extern Texture2D PaletteTexture;
 extern int PaletteIndex;
-const float PaletteWidth = 16;
 extern float PaletteHeight;
+
+#define PaletteWidth 16.0f; // const float doesn't work in OpenGL
 
 // Matrix parameters
 extern float4x4 WorldViewProj;
 
-sampler2D SpriteTextureSampler = sampler_state
+sampler2D SpriteTextureSampler : register(s0) = sampler_state
 {
     Texture = <SpriteTexture>;
 
@@ -31,7 +32,7 @@ sampler2D SpriteTextureSampler = sampler_state
     mipfilter = POINT;
 };
 
-sampler2D PaletteTextureSampler = sampler_state
+sampler2D PaletteTextureSampler : register(s1) = sampler_state
 {
     Texture = <PaletteTexture>;
 
@@ -69,7 +70,7 @@ PixelShaderInput MainVS(VertexShaderInput v)
 
 float4 MainPS(PixelShaderInput input) : COLOR
 {
-    // Get the alpha value from the sprite texture. This is out palette index, in a range from 0-1.
+    // Get the alpha value from the sprite texture. This is our palette index, in a range from 0-1.
     float colorIndex = tex2D(SpriteTextureSampler, input.TextureCoordinates).a;
     
     // Multiply by 255 to get a range from 0-255, thus getting the original byte value.

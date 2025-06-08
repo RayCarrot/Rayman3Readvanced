@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using BinarySerializer.Nintendo.GBA;
+﻿using BinarySerializer.Nintendo.GBA;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.AnimEngine;
@@ -11,9 +10,20 @@ public class IndexedSpriteTexture2D : Texture2D
     { }
 
     public IndexedSpriteTexture2D(AnimatedObjectResource resource, Constants.Size shape, int tileIndex) :
-        base(Engine.GraphicsDevice, shape.Width, shape.Height, false, SurfaceFormat.Color)
+        base(Engine.GraphicsDevice, shape.Width, shape.Height, false,
+#if DESKTOPGL // Alpha8 binds to GL_LUMINANCE on OpenGL which is deprecated
+            SurfaceFormat.Color
+#else
+            SurfaceFormat.Alpha8
+#endif
+            )
     {
+#if DESKTOPGL
+        int[] texColorIndexes = new int[Width * Height];
+#else
         byte[] texColorIndexes = new byte[Width * Height];
+#endif
+
         byte[] tileSet = resource.SpriteTable.Data;
         int tileSetIndex = tileIndex * 0x20;
 
@@ -27,7 +37,7 @@ public class IndexedSpriteTexture2D : Texture2D
 
                 for (int tileX = 0; tileX < shape.TilesWidth; tileX++)
                 {
-                    DrawHelpers.DrawTile_8bpp(texColorIndexes, absTileX, absTileY, Width, tileSet, ref tileSetIndex);
+                    DrawHelpers.DrawIndexedTile_8bpp(texColorIndexes, absTileX, absTileY, Width, tileSet, ref tileSetIndex);
 
                     absTileX += Tile.Size;
                 }
@@ -45,7 +55,7 @@ public class IndexedSpriteTexture2D : Texture2D
 
                 for (int tileX = 0; tileX < shape.TilesWidth; tileX++)
                 {
-                    DrawHelpers.DrawTile_4bpp(texColorIndexes, absTileX, absTileY, Width, tileSet, ref tileSetIndex, 0);
+                    DrawHelpers.DrawIndexedTile_4bpp(texColorIndexes, absTileX, absTileY, Width, tileSet, ref tileSetIndex, 0);
 
                     absTileX += Tile.Size;
                 }
@@ -54,6 +64,6 @@ public class IndexedSpriteTexture2D : Texture2D
             }
         }
 
-        SetData(texColorIndexes.SelectMany(b=>new byte[] {0,0,0,b}).ToArray());
+        SetData(texColorIndexes);
     }
 }
