@@ -7,10 +7,6 @@ using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework.Graphics;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 
-#if WINDOWSDX
-using System.Windows.Forms;
-#endif
-
 namespace GbaMonoGame.Rayman3.Readvanced;
 
 // TODO: Default to select last played version
@@ -144,27 +140,14 @@ public class TitleScreen : Frame
         {
             game.SetOptions(
             [
-#if WINDOWSDX
                 new TitleScreenOptionsList.Option("LOCATE ROM", () =>
                 {
-                    // Force windowed mode for this
-                    DisplayMode prevDisplayMode = Engine.GameWindow.DisplayMode;
-                    if (Engine.GameWindow.DisplayMode != DisplayMode.Windowed)
-                        Engine.GameWindow.DisplayMode = DisplayMode.Windowed;
-
                     if (game.Platform == Platform.GBA)
                     {
-                        OpenFileDialog fileDialog = new()
-                        {
-                            Title = "Select the game ROM",
-                            Filter = "gba files (*.gba)|*.gba|All files (*.*)|*.*",
-                        };
+                        string selectedFilePath = FileDialog.OpenFile("Select the game ROM", new FileDialog.FileFilter("gba", "GBA ROM files"));
 
-                        if (fileDialog.ShowDialog() == DialogResult.OK)
+                        if (selectedFilePath != null)
                         {
-                            // Get the selected file
-                            string selectedFilePath = fileDialog.FileName;
-
                             // TODO: Verify the file
 
                             // TODO: Try/catch
@@ -174,21 +157,14 @@ public class TitleScreen : Frame
 
                             // Update
                             UpdateGameOptions(game);
-
                         }
                     }
                     else if (game.Platform == Platform.NGage)
                     {
-                        FolderBrowserDialog folderDialog = new()
-                        {
-                            Description = "Select the game folder",
-                        };
+                        string selectedDirectoryPath = FileDialog.OpenFolder("Select the game folder");
 
-                        if (folderDialog.ShowDialog() == DialogResult.OK)
+                        if (selectedDirectoryPath != null)
                         {
-                            // Get the selected directory
-                            string selectedDirectoryPath = folderDialog.SelectedPath;
-
                             // The user might have selected the game root directory, in which case we need to navigate down
                             if (Directory.Exists(Path.Combine(selectedDirectoryPath, "system")))
                                 selectedDirectoryPath = Path.Combine(selectedDirectoryPath, "system", "apps", "rayman3");
@@ -209,15 +185,7 @@ public class TitleScreen : Frame
                     {
                         throw new UnsupportedPlatformException();
                     }
-
-                    // Restore the display mode
-                    if (prevDisplayMode != DisplayMode.Windowed)
-                        Engine.GameWindow.DisplayMode = prevDisplayMode;
                 }),
-#elif DESKTOPGL
-                // TODO: Allow picking ROM on DesktopGL too
-                new TitleScreenOptionsList.Option("NO ROM", () => { }),
-#endif
             ]);
         }
     }
