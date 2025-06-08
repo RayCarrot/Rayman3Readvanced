@@ -13,10 +13,11 @@ extern Texture2D SpriteTexture;
 // The palette parameters
 extern Texture2D PaletteTexture;
 extern int PaletteIndex;
-const float PaletteWidth = 16;
 extern float PaletteHeight;
 
-sampler2D SpriteTextureSampler = sampler_state
+#define PaletteWidth 16.0f; // const float doesn't work in OpenGL
+
+sampler2D SpriteTextureSampler : register(s0) = sampler_state
 {
     Texture = <SpriteTexture>;
 
@@ -28,7 +29,7 @@ sampler2D SpriteTextureSampler = sampler_state
     mipfilter = POINT;
 };
 
-sampler2D PaletteTextureSampler = sampler_state
+sampler2D PaletteTextureSampler : register(s1) = sampler_state
 {
     Texture = <PaletteTexture>;
 

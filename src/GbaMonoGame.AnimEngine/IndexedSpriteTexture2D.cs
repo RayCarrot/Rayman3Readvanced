@@ -1,4 +1,5 @@
-﻿using BinarySerializer.Nintendo.GBA;
+﻿using System.Linq;
+using BinarySerializer.Nintendo.GBA;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.AnimEngine;
@@ -10,7 +11,7 @@ public class IndexedSpriteTexture2D : Texture2D
     { }
 
     public IndexedSpriteTexture2D(AnimatedObjectResource resource, Constants.Size shape, int tileIndex) :
-        base(Engine.GraphicsDevice, shape.Width, shape.Height, false, SurfaceFormat.Alpha8)
+        base(Engine.GraphicsDevice, shape.Width, shape.Height, false, SurfaceFormat.Color)
     {
         byte[] texColorIndexes = new byte[Width * Height];
         byte[] tileSet = resource.SpriteTable.Data;
@@ -53,6 +54,6 @@ public class IndexedSpriteTexture2D : Texture2D
             }
         }
 
-        SetData(texColorIndexes);
+        SetData(texColorIndexes.SelectMany(b=>new byte[] {0,0,0,b}).ToArray());
     }
 }
