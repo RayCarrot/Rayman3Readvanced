@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
+using System.Reflection.Metadata.Ecma335;
 using BinarySerializer;
 using BinarySerializer.Nintendo.GBA;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace GbaMonoGame.TgxEngine;
 
@@ -25,6 +28,26 @@ public class TileMapScreenRenderer : IScreenRenderer
         Is8Bit = is8Bit;
 
         _replacedTiles = new Dictionary<int, int>();
+
+        // TODO: Cache texture
+        int tileSize = is8Bit ? 0x40 : 0x20;
+        int tilesCount = tileSet.Length / tileSize;
+        const int tileSetWidth = 32;
+        int tileSetHeight = (int)BitOperations.RoundUpToPowerOf2((uint)Math.Ceiling(tilesCount / (float)tileSetWidth));
+        int[] colorOffsets = null;
+        if (!is8Bit)
+        {
+            colorOffsets = new int[tilesCount];
+            foreach (MapTile mapTile in tileMap)
+            {
+                if (mapTile.TileIndex != 0)
+                    colorOffsets[mapTile.TileIndex - 1] = mapTile.PaletteIndex * 16;
+            }
+        }
+        TileSetTexture = new IndexedTiledTexture2D(tileSetWidth, tileSetHeight, tileSet, is8Bit, colorOffsets);
+        TileRectangles = new Rectangle[tilesCount];
+        for (int i = 0; i < tilesCount; i++)
+            TileRectangles[i] = new Rectangle((i % 32) * Tile.Size, (i / 32) * Tile.Size, Tile.Size, Tile.Size);
     }
 
     private readonly Dictionary<int, int> _replacedTiles;
@@ -36,6 +59,8 @@ public class TileMapScreenRenderer : IScreenRenderer
     public byte[] TileSet { get; }
     public bool Is8Bit { get; }
     public Rectangle? TilesClip { get; set; } // Optional
+    public Texture2D TileSetTexture { get; }
+    public Rectangle[] TileRectangles { get; }
 
     private Rectangle GetVisibleTilesArea(Vector2 position, GfxScreen screen)
     {
@@ -88,15 +113,6 @@ public class TileMapScreenRenderer : IScreenRenderer
                     if (_replacedTiles.TryGetValue(tileIndex, out int newTileIndex))
                         tileIndex = newTileIndex;
 
-                    Texture2D tex = textureCache.GetOrCreateObject(
-                        id: tileIndex,
-                        data: new TileDefine(TileSet, tileIndex, tile.PaletteIndex, Is8Bit),
-                        createObjFunc: static t => new IndexedTiledTexture2D(
-                            tileSet: t.TileSet, 
-                            tileIndex: t.TileIndex - 1, 
-                            is8Bit: t.Is8Bit,
-                            colorOffset: t.PaletteIndex * 16));
-
                     SpriteEffects effects = SpriteEffects.None;
 
                     if (tile.FlipX)
@@ -104,7 +120,7 @@ public class TileMapScreenRenderer : IScreenRenderer
                     if (tile.FlipY)
                         effects |= SpriteEffects.FlipVertically;
 
-                    renderer.Draw(tex, new Vector2(absTileX, absTileY), effects, color);
+                    renderer.Draw(TileSetTexture, new Vector2(absTileX, absTileY), TileRectangles[tileIndex - 1], effects, color);
                 }
 
                 absTileX += Tile.Size;

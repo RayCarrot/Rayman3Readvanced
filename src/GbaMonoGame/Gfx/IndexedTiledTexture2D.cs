@@ -121,4 +121,61 @@ public class IndexedTiledTexture2D : Texture2D
 
         SetData(texColorIndexes);
     }
+
+    public IndexedTiledTexture2D(int width, int height, byte[] tileSet, bool is8Bit, int[] colorOffsets) :
+        base(Engine.GraphicsDevice, width * Tile.Size, height * Tile.Size, false,
+#if DESKTOPGL // Alpha8 binds to GL_LUMINANCE on OpenGL which is deprecated
+            SurfaceFormat.Color
+#else
+            SurfaceFormat.Alpha8
+#endif
+        )
+    {
+#if DESKTOPGL
+        int[] texColorIndexes = new int[Width * Height];
+#else
+        byte[] texColorIndexes = new byte[Width * Height];
+#endif
+
+        if (is8Bit)
+        {
+            int xPos = 0;
+            int yPos = 0;
+            int tilePixelIndex = 0;
+            while (tilePixelIndex < tileSet.Length)
+            {
+                DrawHelpers.DrawIndexedTile_8bpp(texColorIndexes, xPos, yPos, Width, tileSet, ref tilePixelIndex);
+
+                xPos += Tile.Size;
+
+                if (xPos >= Width)
+                {
+                    xPos = 0;
+                    yPos += Tile.Size;
+                }
+            }
+        }
+        else
+        {
+            int xPos = 0;
+            int yPos = 0;
+            int tileIndex = 0;
+            int tilePixelIndex = 0;
+            while (tilePixelIndex < tileSet.Length)
+            {
+                DrawHelpers.DrawIndexedTile_4bpp(texColorIndexes, xPos, yPos, Width, tileSet, ref tilePixelIndex, colorOffsets[tileIndex]);
+
+                tileIndex++;
+                xPos += Tile.Size;
+
+                if (xPos >= Width)
+                {
+                    xPos = 0;
+                    yPos += Tile.Size;
+                }
+            }
+        }
+
+        SetData(texColorIndexes);
+    }
 }
