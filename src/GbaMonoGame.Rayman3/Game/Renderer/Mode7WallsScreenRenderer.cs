@@ -59,8 +59,7 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
             tileMap: wallTiles,
             baseTileIndex: 512,
             palette: tileKitManager.SelectedPalette,
-            is8Bit: true,
-            ignoreZero: true);
+            is8Bit: true);
     }
 
     private static MeshFragment CreateMesh(

@@ -25,10 +25,10 @@ public class TiledTexture2D : Texture2D
         SetData(texColors);
     }
 
-    public TiledTexture2D(int width, int height, byte[] tileSet, MapTile[] tileMap, Palette palette, bool is8Bit, bool ignoreZero) :
-        this(width, height, tileSet, tileMap, 0, palette, is8Bit, ignoreZero) { }
+    public TiledTexture2D(int width, int height, byte[] tileSet, MapTile[] tileMap, Palette palette, bool is8Bit) :
+        this(width, height, tileSet, tileMap, 0, palette, is8Bit) { }
 
-    public TiledTexture2D(int width, int height, byte[] tileSet, MapTile[] tileMap, int baseTileIndex, Palette palette, bool is8Bit, bool ignoreZero) :
+    public TiledTexture2D(int width, int height, byte[] tileSet, MapTile[] tileMap, int baseTileIndex, Palette palette, bool is8Bit) :
         base(Engine.GraphicsDevice, width * Tile.Size, height * Tile.Size)
     {
         Color[] texColors = new Color[Width * Height];
@@ -45,19 +45,16 @@ public class TiledTexture2D : Texture2D
                 {
                     MapTile tile = tileMap[tileY * width + tileX];
 
-                    if (!ignoreZero || tile.TileIndex != 0)
-                    {
-                        int tilePixelIndex = (baseTileIndex + tile.TileIndex) * 0x40;
+                    int tilePixelIndex = (baseTileIndex + tile.TileIndex) * 0x40;
 
-                        if (tile.FlipX && tile.FlipY)
-                            DrawHelpers.DrawTile_8bpp_FlipXY(texColors, absTileX, absTileY, Width, tileSet, ref tilePixelIndex, palette);
-                        else if (tile.FlipX)
-                            DrawHelpers.DrawTile_8bpp_FlipX(texColors, absTileX, absTileY, Width, tileSet, ref tilePixelIndex, palette);
-                        else if (tile.FlipY)
-                            DrawHelpers.DrawTile_8bpp_FlipY(texColors, absTileX, absTileY, Width, tileSet, ref tilePixelIndex, palette);
-                        else
-                            DrawHelpers.DrawTile_8bpp(texColors, absTileX, absTileY, Width, tileSet, ref tilePixelIndex, palette);
-                    }
+                    if (tile.FlipX && tile.FlipY)
+                        DrawHelpers.DrawTile_8bpp_FlipXY(texColors, absTileX, absTileY, Width, tileSet, ref tilePixelIndex, palette);
+                    else if (tile.FlipX)
+                        DrawHelpers.DrawTile_8bpp_FlipX(texColors, absTileX, absTileY, Width, tileSet, ref tilePixelIndex, palette);
+                    else if (tile.FlipY)
+                        DrawHelpers.DrawTile_8bpp_FlipY(texColors, absTileX, absTileY, Width, tileSet, ref tilePixelIndex, palette);
+                    else
+                        DrawHelpers.DrawTile_8bpp(texColors, absTileX, absTileY, Width, tileSet, ref tilePixelIndex, palette);
 
                     absTileX += Tile.Size;
                 }
@@ -77,20 +74,17 @@ public class TiledTexture2D : Texture2D
                 {
                     MapTile tile = tileMap[tileY * width + tileX];
 
-                    if (!ignoreZero || tile.TileIndex != 0)
-                    {
-                        int tilePixelIndex = (baseTileIndex + tile.TileIndex) * 0x20;
-                        int palOffset = tile.PaletteIndex * 16;
+                    int tilePixelIndex = (baseTileIndex + tile.TileIndex) * 0x20;
+                    int palOffset = tile.PaletteIndex * 16;
 
-                        if (tile.FlipX && tile.FlipY)
-                            DrawHelpers.DrawTile_4bpp_FlipXY(texColors, absTileX, absTileY, Width, tileSet, ref tilePixelIndex, palette, palOffset);
-                        else if (tile.FlipX)
-                            DrawHelpers.DrawTile_4bpp_FlipX(texColors, absTileX, absTileY, Width, tileSet, ref tilePixelIndex, palette, palOffset);
-                        else if (tile.FlipY)
-                            DrawHelpers.DrawTile_4bpp_FlipY(texColors, absTileX, absTileY, Width, tileSet, ref tilePixelIndex, palette, palOffset);
-                        else
-                            DrawHelpers.DrawTile_4bpp(texColors, absTileX, absTileY, Width, tileSet, ref tilePixelIndex, palette, palOffset);
-                    }
+                    if (tile.FlipX && tile.FlipY)
+                        DrawHelpers.DrawTile_4bpp_FlipXY(texColors, absTileX, absTileY, Width, tileSet, ref tilePixelIndex, palette, palOffset);
+                    else if (tile.FlipX)
+                        DrawHelpers.DrawTile_4bpp_FlipX(texColors, absTileX, absTileY, Width, tileSet, ref tilePixelIndex, palette, palOffset);
+                    else if (tile.FlipY)
+                        DrawHelpers.DrawTile_4bpp_FlipY(texColors, absTileX, absTileY, Width, tileSet, ref tilePixelIndex, palette, palOffset);
+                    else
+                        DrawHelpers.DrawTile_4bpp(texColors, absTileX, absTileY, Width, tileSet, ref tilePixelIndex, palette, palOffset);
 
                     absTileX += Tile.Size;
                 }
