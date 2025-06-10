@@ -19,7 +19,9 @@ public class GfxTileKitManager
 
     public TileKit TileKit { get; set; }
 
-    public byte[] TileSet { get; set; }
+    public byte[] StaticTileSet { get; set; }
+    public byte[] DynamicTileSet8bpp { get; set; }
+    public byte[] DynamicTileSet4bpp { get; set; }
     public int[] GameToVramMappingTable4bpp { get; set; }
     public int[] GameToVramMappingTable8bpp { get; set; }
 
@@ -133,8 +135,7 @@ public class GfxTileKitManager
         // used for backgrounds.
         if (isDynamic)
         {
-            // If it's dynamic then we read the tiles directly from the tilekit rather than the allocated ones in VRAM
-            byte[] tileSet = is8Bit ? TileKit.Tiles8bpp : TileKit.Tiles4bpp;
+            byte[] tileSet = is8Bit ? DynamicTileSet8bpp : DynamicTileSet4bpp;
 
             TileMapScreenRenderer renderer = new(
                 // Use the tilekit as the cache pointer since multiple layers can share the same tilekit and we're
@@ -173,8 +174,8 @@ public class GfxTileKitManager
                 byte[] sourceTileSet = is8Bit ? TileKit.Tiles8bpp : TileKit.Tiles4bpp;
                 int[] mappingTable = is8Bit ? GameToVramMappingTable8bpp : GameToVramMappingTable4bpp;
 
-                byte[] tileSet = new byte[TileSet.Length];
-                Array.Copy(TileSet, tileSet, TileSet.Length);
+                byte[] tileSet = new byte[StaticTileSet.Length];
+                Array.Copy(StaticTileSet, tileSet, StaticTileSet.Length);
 
                 for (int frame = 0; frame < layerScreenRenderers.Length; frame++)
                 {
@@ -213,7 +214,7 @@ public class GfxTileKitManager
                     layerCachePointer: layerCachePointer, 
                     cacheId: 0, 
                     maxCacheId: 1, 
-                    tileSet: TileSet, 
+                    tileSet: StaticTileSet, 
                     width: width, 
                     height: height, 
                     tileMap: tileMap, 
@@ -275,7 +276,11 @@ public class GfxTileKitManager
 
         // Set properties
         TileKit = tileKit;
-        TileSet = tileSet;
+        StaticTileSet = tileSet;
+        DynamicTileSet8bpp = new byte[tileKit.Tiles8bpp.Length + TileSize8bpp];
+        Array.Copy(tileKit.Tiles8bpp, 0, DynamicTileSet8bpp, TileSize8bpp, tileKit.Tiles8bpp.Length);
+        DynamicTileSet4bpp = new byte[tileKit.Tiles4bpp.Length + TileSize4bpp];
+        Array.Copy(tileKit.Tiles4bpp, 0, DynamicTileSet4bpp, TileSize4bpp, tileKit.Tiles4bpp.Length);
         GameToVramMappingTable4bpp = mappingTable4bpp;
         GameToVramMappingTable8bpp = mappingTable8bpp;
         Palettes = palettes;

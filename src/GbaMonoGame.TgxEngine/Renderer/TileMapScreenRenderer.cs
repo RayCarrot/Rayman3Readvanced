@@ -93,7 +93,7 @@ public class TileMapScreenRenderer : IScreenRenderer
                         data: new TileDefine(TileSet, tileIndex, tile.PaletteIndex, Is8Bit),
                         createObjFunc: static t => new IndexedTiledTexture2D(
                             tileSet: t.TileSet, 
-                            tileIndex: t.TileIndex - 1, 
+                            tileIndex: t.TileIndex, 
                             is8Bit: t.Is8Bit,
                             colorOffset: t.PaletteIndex * 16));
 

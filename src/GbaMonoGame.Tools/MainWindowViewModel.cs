@@ -767,7 +767,7 @@ public partial class MainWindowViewModel : ObservableObject
                                         Color[] texture = CreateTiledTexture(
                                             width: layer.Width,
                                             height: layer.Height,
-                                            tileSet: tileKitManager.TileSet,
+                                            tileSet: tileKitManager.StaticTileSet,
                                             tileMap: tileLayer.TileMap,
                                             baseTileIndex: 0,
                                             palette: tileKitManager.SelectedPalette,
@@ -804,7 +804,7 @@ public partial class MainWindowViewModel : ObservableObject
                                     Color[] texture = CreateTiledTexture(
                                         width: layer.Width,
                                         height: layer.Height,
-                                        tileSet: tileKitManager.TileSet,
+                                        tileSet: tileKitManager.StaticTileSet,
                                         tileMap: rotscaleLayer.TileMap,
                                         baseTileIndex: 512,
                                         palette: tileKitManager.SelectedPalette,
@@ -820,7 +820,7 @@ public partial class MainWindowViewModel : ObservableObject
                                     Color[] texture = CreateTiledTexture(
                                         width: layer.Width,
                                         height: layer.Height,
-                                        tileSet: tileKitManager.TileSet,
+                                        tileSet: tileKitManager.StaticTileSet,
                                         tileMap: TgxTextLayerMode7.CreateTileMap(playfieldMode7, layer),
                                         baseTileIndex: 0,
                                         palette: tileKitManager.SelectedPalette,

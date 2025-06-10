@@ -55,7 +55,7 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
         return new TiledTexture2D(
             width: wallSize.X,
             height: wallSize.Y,
-            tileSet: tileKitManager.TileSet,
+            tileSet: tileKitManager.StaticTileSet,
             tileMap: wallTiles,
             baseTileIndex: 512,
             palette: tileKitManager.SelectedPalette,
