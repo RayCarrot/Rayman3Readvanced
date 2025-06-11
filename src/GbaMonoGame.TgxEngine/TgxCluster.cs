@@ -87,7 +87,7 @@ public class TgxCluster
 
     public bool IsOnLimit(Edge limit)
     {
-        Vector2 minPos = MaxPosition;
+        Vector2 minPos = MinPosition;
         Vector2 maxPos = MaxPosition;
 
         return limit switch
