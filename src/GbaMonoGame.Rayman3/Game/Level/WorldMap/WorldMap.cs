@@ -226,12 +226,13 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         TgxTileLayer lightningSkyLayer = playfield.TileLayers[0];
         GfxScreen lightningSkyScreen = lightningSkyLayer.Screen;
         TgxTileLayer lightningLayer = playfield.TileLayers[1];
-        TileMapScreenRenderer lightningRenderer = (TileMapScreenRenderer)lightningLayer.Screen.Renderer;
+        TextureScreenRenderer lightningRenderer = (TextureScreenRenderer)lightningLayer.Screen.Renderer;
 
         // NOTE: In the original game the clip, which is done using a window, is set to mask away 392-420 or 420-464.
-        //       This however masks half tiles which would be really annoying to implement, since we'd need to clip
-        //       individual tiles then, and also seems to be a miscalculation by the game since it produces graphical
-        //       artifact of a few pixels that are left on both sides.
+        //       This however is a miscalculation by the game since it splits it by half a tile. It's meant to be 4
+        //       more tiles to the left. Due to this it produces graphical artifact of a few pixels that are left on
+        //       both sides. We don't re-implement that since creating a mask is annoying, so we instead just define
+        //       the areas to draw instead.
         int lightningClip = Rom.Platform switch
         {
             Platform.GBA => 416,
@@ -239,7 +240,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             _ => throw new ArgumentOutOfRangeException()
         };
 
-        Vector2 size = lightningRenderer.GetSize(lightningLayer.Screen);
+        Point size = lightningRenderer.Texture.Bounds.Size;
 
         if (Rom.Platform == Platform.GBA || Engine.Config.UseGbaEffectsOnNGage)
         {
@@ -248,20 +249,22 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             // Show the right flash
             if (LightningAlternation)
             {
-                lightningRenderer.TilesClip = new Rectangle(
-                    x: lightningClip / Tile.Size, 
-                    y: 0, 
-                    width: ((int)size.X - lightningClip) / Tile.Size, 
-                    height: (int)size.Y / Tile.Size);
+                lightningRenderer.TextureRectangle = new Rectangle(
+                    x: lightningClip,
+                    y: 0,
+                    width: size.X - lightningClip,
+                    height: size.Y);
+                lightningRenderer.Offset = lightningRenderer.TextureRectangle.Location.ToVector2();
             }
             // Show the left flash
             else
             {
-                lightningRenderer.TilesClip = new Rectangle(
-                    x: 0, 
-                    y: 0, 
-                    width: lightningClip / Tile.Size, 
-                    height: (int)size.Y / Tile.Size);
+                lightningRenderer.TextureRectangle = new Rectangle(
+                    x: 0,
+                    y: 0,
+                    width: lightningClip,
+                    height: size.Y);
+                lightningRenderer.Offset = lightningRenderer.TextureRectangle.Location.ToVector2();
             }
         }
 

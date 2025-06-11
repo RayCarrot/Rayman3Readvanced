@@ -33,9 +33,6 @@ public class AnimatedTilekitManager
         bool is8Bit, 
         bool isDynamic)
     {
-        if (isDynamic)
-            throw new NotSupportedException("Getting used animations for dynamic layers is currently not supported");
-
         // Keep track of all used animations
         List<TileKitAnimation> animations = new();
 
@@ -52,7 +49,7 @@ public class AnimatedTilekitManager
                 List<int> animatedVramTiles = new();
                 foreach (ushort tile in anim.TileKit.Tiles)
                 {
-                    int value = mappingTable[tile - 1];
+                    int value = isDynamic ? tile : mappingTable[tile - 1];
                     
                     // The value might be 0 if there is no mapping (i.e. the tile is only used dynamically)
                     if (value != 0)

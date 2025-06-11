@@ -80,7 +80,7 @@ public class GfxTileKitManager
 
                     sections.Add(new MultiScreenRenderer.Section(
                         screenRenderer: new TextureScreenRenderer(layerSectionTexture), 
-                        position: new Vector2(x * Tile.Size, y * Tile.Size)));
+                        position: new Vector2(width, height) * Tile.Size));
                 }
             }
 
@@ -130,33 +130,126 @@ public class GfxTileKitManager
                 createObjFunc: static p => new PaletteTexture2D(p)),
             PaletteIndex: 0);
 
-        // If the tile map is dynamic then we create a tile map renderer for it and render it tile by tile. This is
-        // usually used for the level maps. If it's static then we create a texture for the entire map. This is usually
-        // used for backgrounds.
+        // Get the animations used by this layer
+        IReadOnlyList<TileKitAnimation> animations = animatedTilekitManager?.GetUsedAnimations(this, TileKit, tileMap, baseTileIndex, is8Bit, isDynamic);
+
+        // Dynamic tile maps are normally used for levels maps, while static ones are normally used for backgrounds
+        // as well as affine (Mode7) maps. We turn the tilemap into a texture for both these types, but handle animated
+        // tiles differently. If it's dynamic then we draw the animated tiles one by one on top of the map, while if it's
+        // static then we create separate copies of the full map based on the "animation frame". This is mainly for
+        // optimization reasons as when an affine map is animated we don't want to draw the tiles one by one.
         if (isDynamic)
         {
+            // Get the tileset
             byte[] tileSet = is8Bit ? DynamicTileSet8bpp : DynamicTileSet4bpp;
 
-            TileMapScreenRenderer renderer = new(
-                // Use the tilekit as the cache pointer since multiple layers can share the same tilekit and we're
-                // caching per tile, but make the pointer differ depending on if it's 4-bit or 8-bit.
-                cachePointer: TileKit.Offset + (is8Bit ? 1 : 0),
-                width: width,
-                height: height,
-                tileMap: tileMap,
-                tileSet: tileSet,
-                is8Bit: is8Bit);
+            // Handle animated tiles
+            if (animations?.Count > 0)
+            {
+                MapTile emptyTile = default;
 
-            // Add the renderer to the animated tilekit manager if one exists
-            animatedTilekitManager?.AddTileMapRenderer(renderer, true);
+                // Create two copies of the tilemap, one for non-animated tiles and one for animated tiles
+                MapTile[] nonAnimatedTileMap = new MapTile[tileMap.Length];
+                Array.Copy(tileMap, nonAnimatedTileMap, tileMap.Length);
+                MapTile[] animatedTileMap = new MapTile[tileMap.Length];
+                Array.Copy(tileMap, animatedTileMap, tileMap.Length);
 
-            return renderer;
+                // Get a list of all the tiles which are animated
+                List<int> animatedTiles = new();
+                foreach (TileKitAnimation anim in animations)
+                {
+                    foreach (ushort tile in anim.TileKit.Tiles)
+                    {
+                        animatedTiles.Add(tile);
+                    }
+                }
+
+                // Update tilemaps and get tile palettes
+                int[] tilePalettes = new int[tileSet.Length / (is8Bit ? TileSize8bpp : TileSize4bpp)];
+                for (int i = 0; i < tileMap.Length; i++)
+                {
+                    int tileIndex = baseTileIndex + tileMap[i].TileIndex;
+
+                    // Animated
+                    if (animatedTiles.Contains(tileIndex))
+                        nonAnimatedTileMap[i] = emptyTile;
+                    // Not animated
+                    else
+                        animatedTileMap[i] = emptyTile;
+
+                    tilePalettes[tileIndex] = tileMap[i].PaletteIndex;
+                }
+
+                // Create textures for the animated tiles
+                Dictionary<int, Texture2D> animatedTileTextures = new();
+                foreach (TileKitAnimation anim in animations)
+                {
+                    foreach (ushort baseTile in anim.TileKit.Tiles)
+                    {
+                        int pal = tilePalettes[baseTile];
+
+                        for (int i = 0; i < anim.TileKit.FramesCount; i++)
+                        {
+                            int tile = baseTile + i * anim.TileKit.TilesStep;
+
+                            animatedTileTextures[tile] = Engine.TextureCache.GetOrCreateObject(
+                                // Use the tilekit as the cache pointer since multiple layers can share the same tilekit and we're
+                                // caching per tile, but make the pointer differ depending on if it's 4-bit or 8-bit.
+                                pointer: TileKit.Offset + (is8Bit ? 1 : 0),
+                                id: tile,
+                                data: (TileSet: tileSet, TileIndex: tile, Is8Bit: is8Bit, PaletteIndex: pal),
+                                createObjFunc: static t => new IndexedTiledTexture2D(
+                                    tileSet: t.TileSet,
+                                    tileIndex: t.TileIndex,
+                                    is8Bit: t.Is8Bit,
+                                    colorOffset: t.PaletteIndex * 16));
+                        }
+                    }
+                }
+
+                // Create two renderers, one for non-animated tiles and for animated tiles
+                IScreenRenderer nonAnimatedRenderer = CreateTextureScreenRenderer(
+                    layerCachePointer: layerCachePointer,
+                    cacheId: 0,
+                    maxCacheId: 1,
+                    tileSet: tileSet,
+                    width: width,
+                    height: height,
+                    tileMap: nonAnimatedTileMap,
+                    baseTileIndex: baseTileIndex,
+                    is8Bit: is8Bit);
+                TileMapScreenRenderer animatedRenderer = new(
+                    width: width,
+                    height: height,
+                    tileMap: animatedTileMap,
+                    is8Bit: is8Bit,
+                    tileTextures: animatedTileTextures);
+
+                // Add the renderer to the animated tilekit manager
+                animatedTilekitManager.AddTileMapRenderer(animatedRenderer, true);
+
+                return new MultiScreenRenderer(
+                [
+                    new MultiScreenRenderer.Section(nonAnimatedRenderer, Vector2.Zero),
+                    new MultiScreenRenderer.Section(animatedRenderer, Vector2.Zero)
+                ], new Vector2(width, height) * Tile.Size);
+            }
+            else
+            {
+                return CreateTextureScreenRenderer(
+                    layerCachePointer: layerCachePointer,
+                    cacheId: 0,
+                    maxCacheId: 1,
+                    tileSet: tileSet,
+                    width: width,
+                    height: height,
+                    tileMap: tileMap,
+                    baseTileIndex: baseTileIndex,
+                    is8Bit: is8Bit);
+            }
         }
         else
         {
-            // Get the animations used by this layer
-            IReadOnlyList<TileKitAnimation> animations = animatedTilekitManager?.GetUsedAnimations(this, TileKit, tileMap, baseTileIndex, is8Bit, false);
-
             // If it's animated then we create a separate texture for each animation frame
             if (animations?.Count > 0)
             {
