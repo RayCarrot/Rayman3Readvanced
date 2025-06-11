@@ -80,11 +80,11 @@ public class GfxTileKitManager
 
                     sections.Add(new MultiScreenRenderer.Section(
                         screenRenderer: new TextureScreenRenderer(layerSectionTexture), 
-                        position: new Vector2(width, height) * Tile.Size));
+                        position: new Vector2(x, y) * Tile.Size));
                 }
             }
 
-            return new MultiScreenRenderer(sections.ToArray(), new Vector2(width * Tile.Size, height * Tile.Size));
+            return new MultiScreenRenderer(sections.ToArray(), new Vector2(width, height) * Tile.Size);
         }
         else
         {
