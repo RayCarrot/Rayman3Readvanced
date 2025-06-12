@@ -461,6 +461,8 @@ public class Credits : Frame
         // Set the animation to 1 and default the speed to half
         Wheel.SetAnimation(1);
         Wheel.AnimSpeed = 0.5f;
+
+        Gfx.ClearColor = Color.Black;
     }
 
     private void StepWheel()

@@ -171,9 +171,6 @@ public abstract class Act : Frame
 
     protected void Init(ActResource resource)
     {
-        // NOTE: The game doesn't do this, but we have to since we might be showing more of the screen
-        Gfx.ClearColor = Color.Black;
-
         TransitionsFX.Init(false);
         TransitionsFX.FadeInInit(1);
         
