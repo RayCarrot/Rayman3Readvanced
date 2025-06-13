@@ -113,7 +113,7 @@ public class GbaSoundEventsManager : SoundEventsManager
                     FileName = songTableEntry.Value
                 };
 
-                string fileName = $"{songTableEntry.Value}.wav";
+                string fileName = $"Assets/Rayman3/{songTableEntry.Value}.wav";
 
                 song.WavSound.load(fileName);
 

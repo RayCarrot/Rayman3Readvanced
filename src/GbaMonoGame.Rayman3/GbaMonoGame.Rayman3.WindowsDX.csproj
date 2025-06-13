@@ -54,10 +54,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Music\*.wav">
+    <None Update="Assets\Rayman3\Music\*.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Sfx\*.wav">
+    <None Update="Assets\Rayman3\Sfx\*.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
