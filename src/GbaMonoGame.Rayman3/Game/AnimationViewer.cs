@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.TgxEngine;
@@ -6,8 +7,6 @@ using Microsoft.Xna.Framework;
 using Action = System.Action;
 
 namespace GbaMonoGame.Rayman3;
-
-// TODO: This could be improved a lot, adding options to show actor animations, set the palette index etc.
 
 // Custom Frame class for viewing animations
 public class AnimationViewer : Frame
@@ -19,10 +18,14 @@ public class AnimationViewer : Frame
     public AnimationPlayer AnimationPlayer { get; set; }
 
     public SpriteTextObject SelectionText { get; set; }
+    public Actor[] Actors { get; set; }
     public AnimatedObject Animation { get; set; }
 
     public int SelectedResourceIndex { get; set; }
+    public int SelectedActorIndex { get; set; }
     public int SelectedAnimationIndex { get; set; }
+
+    public int HoldButtonTimer { get; set; }
 
     #endregion
 
@@ -31,14 +34,38 @@ public class AnimationViewer : Frame
     private void InitSelectResource()
     {
         int resourcesCount = Rom.Loader.GameOffsetTable.Count;
-        SetText($"Resource {SelectedResourceIndex}/{resourcesCount - 1}");
+        SetText($"Resource {SelectedResourceIndex}/{resourcesCount - 1} ({GetCurrentResourceType().Name})");
 
         CurrentStepAction = Step_SelectResource;
     }
 
+    private void InitSelectActor()
+    {
+        Scene2DResource resource = Rom.LoadResource<Scene2DResource>(SelectedResourceIndex);
+
+        SelectedActorIndex = 0;
+        Actors = resource.Actors.
+            Concat(resource.AlwaysActors).
+            DistinctBy(x => x.Type).
+            OrderBy(x => x.Type).
+            ToArray();
+
+        SetText($"Actor #{Actors[SelectedActorIndex].Type} ({(ActorType)Actors[SelectedActorIndex].Type})");
+
+        CurrentStepAction = Step_SelectActor;
+    }
+
     private void InitSelectAnimation()
     {
-        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(SelectedResourceIndex);
+        AnimatedObjectResource resource;
+
+        if (GetCurrentResourceType() == typeof(AnimatedObjectResource))
+            resource = Rom.LoadResource<AnimatedObjectResource>(SelectedResourceIndex);
+        else if (GetCurrentResourceType() == typeof(Scene2DResource))
+            resource = Actors[SelectedActorIndex].Model.AnimatedObject;
+        else
+            throw new Exception("Invalid resource type");
+
         Animation = new AnimatedObject(resource, resource.IsDynamic)
         {
             BgPriority = 0,
@@ -62,6 +89,42 @@ public class AnimationViewer : Frame
         SelectionText.ScreenPos = SelectionText.ScreenPos with { X = -SelectionText.GetStringWidth() / 2f };
     }
 
+    private bool IsDirectionalButtonPressed(GbaInput input)
+    {
+        bool left = JoyPad.IsButtonJustPressed(GbaInput.Left);
+        bool right = JoyPad.IsButtonJustPressed(GbaInput.Right);
+        if (!left && !right)
+        {
+            if (JoyPad.IsButtonPressed(GbaInput.Left))
+            {
+                if (HoldButtonTimer > 20)
+                    left = GameTime.ElapsedFrames % 5 == 0;
+                else
+                    HoldButtonTimer++;
+            }
+            else if (JoyPad.IsButtonPressed(GbaInput.Right))
+            {
+                if (HoldButtonTimer > 15)
+                    right = GameTime.ElapsedFrames % 5 == 0;
+                else
+                    HoldButtonTimer++;
+            }
+            else
+            {
+                HoldButtonTimer = 0;
+            }
+        }
+
+        return left && input == GbaInput.Left ||
+               right && input == GbaInput.Right;
+    }
+
+    private Type GetCurrentResourceType()
+    {
+        GbaEngineSettings settings = Rom.Context.GetRequiredSettings<GbaEngineSettings>();
+        return settings.GetDefinedResourceType(SelectedResourceIndex);
+    }
+
     #endregion
 
     #region Public Methods
@@ -81,6 +144,8 @@ public class AnimationViewer : Frame
             HorizontalAnchor = HorizontalAnchorMode.Center,
             RenderContext = Engine.GameRenderContext,
         };
+
+        HoldButtonTimer = 0;
 
         InitSelectResource();
     }
@@ -103,27 +168,74 @@ public class AnimationViewer : Frame
     {
         int resourcesCount = Rom.Loader.GameOffsetTable.Count;
 
-        if (JoyPad.IsButtonJustPressed(GbaInput.Left))
+        if (IsDirectionalButtonPressed(GbaInput.Left))
         {
-            SelectedResourceIndex--;
+            Type resourceType;
+            do
+            {
+                SelectedResourceIndex--;
 
-            if (SelectedResourceIndex < 0)
-                SelectedResourceIndex = resourcesCount - 1;
+                if (SelectedResourceIndex < 0)
+                    SelectedResourceIndex = resourcesCount - 1;
 
-            SetText($"Resource {SelectedResourceIndex}/{resourcesCount - 1}");
+                resourceType = GetCurrentResourceType();
+            } while (resourceType != typeof(Scene2DResource) && resourceType != typeof(AnimatedObjectResource));
+
+            SetText($"Resource {SelectedResourceIndex}/{resourcesCount - 1} ({resourceType.Name})");
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.Right))
+        else if (IsDirectionalButtonPressed(GbaInput.Right))
         {
-            SelectedResourceIndex++;
+            Type resourceType;
+            do
+            {
+                SelectedResourceIndex++;
 
-            if (SelectedResourceIndex > resourcesCount - 1)
-                SelectedResourceIndex = 0;
+                if (SelectedResourceIndex > resourcesCount - 1)
+                    SelectedResourceIndex = 0;
 
-            SetText($"Resource {SelectedResourceIndex}/{resourcesCount - 1}");
+                resourceType = GetCurrentResourceType();
+            } while (resourceType != typeof(Scene2DResource) && resourceType != typeof(AnimatedObjectResource));
+
+            SetText($"Resource {SelectedResourceIndex}/{resourcesCount - 1} ({resourceType.Name})");
+        }
+        else if (JoyPad.IsButtonJustPressed(GbaInput.A))
+        {
+            if (GetCurrentResourceType() == typeof(AnimatedObjectResource))
+                InitSelectAnimation();
+            else if (GetCurrentResourceType() == typeof(Scene2DResource))
+                InitSelectActor();
+        }
+    }
+
+    public void Step_SelectActor()
+    {
+        int actorsCount = Actors.Length;
+
+        if (IsDirectionalButtonPressed(GbaInput.Left))
+        {
+            SelectedActorIndex--;
+
+            if (SelectedActorIndex < 0)
+                SelectedActorIndex = actorsCount - 1;
+
+            SetText($"Actor #{Actors[SelectedActorIndex].Type} ({(ActorType)Actors[SelectedActorIndex].Type})");
+        }
+        else if (IsDirectionalButtonPressed(GbaInput.Right))
+        {
+            SelectedActorIndex++;
+
+            if (SelectedActorIndex > actorsCount - 1)
+                SelectedActorIndex = 0;
+
+            SetText($"Actor #{Actors[SelectedActorIndex].Type} ({(ActorType)Actors[SelectedActorIndex].Type})");
         }
         else if (JoyPad.IsButtonJustPressed(GbaInput.A))
         {
             InitSelectAnimation();
+        }
+        else if (JoyPad.IsButtonJustPressed(GbaInput.B))
+        {
+            InitSelectResource();
         }
     }
 
@@ -131,7 +243,7 @@ public class AnimationViewer : Frame
     {
         int animationsCount = Animation.Resource.AnimationsCount;
 
-        if (JoyPad.IsButtonJustPressed(GbaInput.Left))
+        if (IsDirectionalButtonPressed(GbaInput.Left))
         {
             SelectedAnimationIndex--;
 
@@ -141,7 +253,7 @@ public class AnimationViewer : Frame
             SetText($"Animation {SelectedAnimationIndex}/{animationsCount - 1}");
             Animation.CurrentAnimation = SelectedAnimationIndex;
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.Right))
+        else if (IsDirectionalButtonPressed(GbaInput.Right))
         {
             SelectedAnimationIndex++;
 
@@ -153,7 +265,10 @@ public class AnimationViewer : Frame
         }
         else if (JoyPad.IsButtonJustPressed(GbaInput.B))
         {
-            InitSelectResource();
+            if (GetCurrentResourceType() == typeof(Scene2DResource))
+                InitSelectActor();
+            else
+                InitSelectResource();
         }
 
         AnimationPlayer.Play(Animation);
