@@ -1384,6 +1384,72 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private async Task ExportSpriteAnimationInfoAsync()
+    {
+        await ExportFromRomsAsync(rom =>
+        {
+            Pointer?[] exportedActorTypes = new Pointer?[256];
+
+            for (int i = 0; i < rom.OffsetTable.Count; i++)
+            {
+                ResourceType resourceType = GetResourceType(rom.Context, rom.OffsetTable, i);
+
+                if (resourceType == ResourceType.Scene2D)
+                {
+                    Scene2D scene = rom.OffsetTable.ReadResource<Scene2D>(rom.Context, i);
+
+                    foreach (Actor actor in scene.Actors.Concat(scene.AlwaysActors).Concat(scene.ProjectileActors))
+                    {
+                        Pointer? exportedPointer = exportedActorTypes[actor.Type];
+                        Pointer pointer = actor.Model.AnimatedObject.Offset;
+
+                        if (exportedPointer == null)
+                        {
+                            exportedActorTypes[actor.Type] = pointer;
+                            exportAnimatedObject(actor.Model.AnimatedObject, $"{actor.Type} - {(ActorType)actor.Type}");
+                        }
+                        else if (exportedPointer != pointer)
+                        {
+                            Log($"WARNING: Actor {actor.Type} has multiple animated objects in {rom.FileName}");
+                        }
+                    }
+                }
+                else if (resourceType == ResourceType.AnimatedObject)
+                {
+                    AnimatedObject animatedObject = rom.OffsetTable.ReadResource<AnimatedObject>(rom.Context, i);
+                    exportAnimatedObject(animatedObject, $"AnimatedObject {i}");
+                }
+                else if (resourceType == ResourceType.ActorModel)
+                {
+                    ActorModel actorModel = rom.OffsetTable.ReadResource<ActorModel>(rom.Context, i);
+                    exportAnimatedObject(actorModel.AnimatedObject, $"ActorModel {i}");
+                }
+            }
+
+            void exportAnimatedObject(AnimatedObject animatedObject, string fileName)
+            {
+                StringBuilder sb = new();
+                for (int animId = 0; animId < animatedObject.Animations.Length; animId++)
+                {
+                    Animation anim = animatedObject.Animations[animId];
+                    sb.Append($"{animId:000}: {anim.FramesCount} frames");
+
+                    if (anim.AffineMatrices != null)
+                        sb.Append(", affine");
+
+                    if (anim.PaletteCycleAnimation != null)
+                        sb.Append(", palette-cycling");
+
+                    sb.AppendLine();
+                }
+
+                string exportFilePath = GetExportFilePath(Path.Combine("SpriteAnimationsInfo", rom.FileName), $"{fileName}.txt");
+                File.WriteAllText(exportFilePath, sb.ToString());
+            }
+        });
+    }
+
+    [RelayCommand]
     private void OpenExportFolder()
     {
         Process.Start(new ProcessStartInfo()
