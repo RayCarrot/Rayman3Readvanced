@@ -18,7 +18,7 @@ public class AnimationViewer : Frame
     public AnimationPlayer AnimationPlayer { get; set; }
 
     public SpriteTextObject SelectionText { get; set; }
-    public Actor[] Actors { get; set; }
+    public ActorResource[] Actors { get; set; }
     public AnimatedObject Animation { get; set; }
 
     public int SelectedResourceIndex { get; set; }
@@ -134,7 +134,7 @@ public class AnimationViewer : Frame
         TransitionsFX.Init(true);
         TransitionsFX.FadeInInit(2);
         AnimationPlayer = new AnimationPlayer(false, SoundEventsManager.ProcessEvent);
-        Gfx.ClearColor = Color.Black;
+        Gfx.ClearColor = Color.Fuchsia;
 
         SelectionText = new SpriteTextObject()
         {
@@ -262,6 +262,10 @@ public class AnimationViewer : Frame
 
             SetText($"Animation {SelectedAnimationIndex}/{animationsCount - 1}");
             Animation.CurrentAnimation = SelectedAnimationIndex;
+        }
+        else if (JoyPad.IsButtonJustPressed(GbaInput.A))
+        {
+            Animation.CurrentFrame = 0;
         }
         else if (JoyPad.IsButtonJustPressed(GbaInput.B))
         {
