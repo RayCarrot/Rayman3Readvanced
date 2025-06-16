@@ -2,8 +2,8 @@
 
 public enum LevelType
 {
-    Normal,
-    GameCube,
-    Multiplayer,
-    Race,
+    Normal = 0,
+    GameCube = 1,
+    Multiplayer = 2,
+    Race = 3,
 }

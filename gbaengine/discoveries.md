@@ -571,7 +571,6 @@ Most actors have the first animation be unused and just single frame, most likel
 
 ![Animation 19](discoveries_assets/RaymanWorldMap_Anim_19.gif)
 
-
 ### Menu
 - Some sound events are mistakenly called with the object parameter set to 0 instead of -1. This however doesn't cause any changes in the event processing since the object is only used when pan or roll-off are enabled for the event.
 - When selecting the multiplayer mode on GBA there's a typo where "Burglar Mode" is spelt as "Buglar Mode". This was fixed in the N-Gage version.
