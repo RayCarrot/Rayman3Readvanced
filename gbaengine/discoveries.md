@@ -567,6 +567,10 @@ Most actors have the first animation be unused and just single frame, most likel
 - In the third GameCube bonus map it doesn't correctly handle the fading out when dying or finishing the map. This is because the map ID check incorrectly checks for map ID 3, rather than 2. Even if this did work it would however still be bugged! Cause the circle transition would then happen twice.
 - In the fourth and seventh GameCube bonus levels it uses the floating skull effect in the background. They're meant to fade in and then out, which is handled from the code. However the level data here incorrectly defines this map as having alpha blending managed by the `TransitionsFX` system. This causes a conflict with the level-specific code, making the transparency be incorrect at the beginning of the level.
 - In the fifth GameCube bonus level there is a lightning and rain effect. However unlike in `Boulder Brink` there is no check for if the game is paused. Because of this different glitched effects might show when pausing on specific frames during the lightning cycles. If you pause at the very first frame the screen turns white and the thunder sound effect keeps plying every frame.
+- The worldmap has 3 unused animations for Rayman. One of them is however empty and another one is identical to another animation. The remaining one has Rayman standing at the entrance to the volcano, which is never shown in the game:
+
+![Animation 19](discoveries_assets/RaymanWorldMap_Anim_19.gif)
+
 
 ### Menu
 - Some sound events are mistakenly called with the object parameter set to 0 instead of -1. This however doesn't cause any changes in the event processing since the object is only used when pan or roll-off are enabled for the event.
