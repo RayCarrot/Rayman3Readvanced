@@ -125,9 +125,7 @@ public class GameModeMenuPage : MenuPage
         const int animId = 0;
         const int baseCacheId = 1000;
 
-        Animation anim = Rom.CopyResource(GameLogo.Resource.Animations[animId]);
-        anim.AffineMatrices = GameLogo.Resource.Animations[animId].AffineMatrices;
-        anim.PaletteCycleAnimation = GameLogo.Resource.Animations[animId].PaletteCycleAnimation;
+        Animation anim = GameLogo.CopyAnimation(animId);
 
         anim.ChannelsPerFrame = [1];
         anim.Channels =

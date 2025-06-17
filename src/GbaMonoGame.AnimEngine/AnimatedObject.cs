@@ -161,6 +161,15 @@ public class AnimatedObject : AObject
             return Resource.Animations[CurrentAnimation];
     }
 
+    public Animation CopyAnimation(int id)
+    {
+        Animation originalAnim = Resource.Animations[id];
+        Animation animCopy = Rom.CopyResource(originalAnim);
+        animCopy.AffineMatrices = originalAnim.AffineMatrices;
+        animCopy.PaletteCycleAnimation = originalAnim.PaletteCycleAnimation;
+        return animCopy;
+    }
+
     public void ReplaceAnimation(int id, Animation animation)
     {
         ReplacedAnimations ??= new Dictionary<int, Animation>();

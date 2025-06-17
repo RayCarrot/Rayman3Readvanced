@@ -158,9 +158,7 @@ public class Intro : Frame, IHasPlayfield
                 return;
 
             // Create a copy of the animation
-            Animation anim = Rom.CopyResource(BlackLumAndLogoObj.Resource.Animations[animId]);
-            anim.AffineMatrices = BlackLumAndLogoObj.Resource.Animations[animId].AffineMatrices;
-            anim.PaletteCycleAnimation = BlackLumAndLogoObj.Resource.Animations[animId].PaletteCycleAnimation;
+            Animation anim = BlackLumAndLogoObj.CopyAnimation(animId);
 
             // Enumerate every frame
             int channelIndex = 0;
