@@ -133,6 +133,8 @@ public class AnimatedObject : AObject
     // Custom - allows animations to be replaced with new ones
     public Dictionary<int, Animation> ReplacedAnimations { get; set; }
 
+    public Dictionary<int, AffineMatrix> AffineMatrixCache { get; set; }
+
     // TODO: Check if this needs to be applied to more animations
     // Custom. This is used to fix sprite wrapping. For bigger animations, like bosses, the sprites sometimes
     // wrap around to the other side due to the position values being stored as signed bytes.
@@ -140,6 +142,15 @@ public class AnimatedObject : AObject
     public float WrapMinY { get; set; } = Single.NaN;
     public float WrapMaxX { get; set; } = Single.NaN;
     public float WrapMaxY { get; set; } = Single.NaN;
+
+    #endregion
+
+    #region Private Methods
+
+    private int GetAffineMatrixCacheId(int animId, int affineMatrixIndex)
+    {
+        return CurrentAnimation * 10_000 + affineMatrixIndex;
+    }
 
     #endregion
 
@@ -155,10 +166,15 @@ public class AnimatedObject : AObject
 
     public Animation GetAnimation()
     {
-        if (ReplacedAnimations != null && ReplacedAnimations.TryGetValue(CurrentAnimation, out Animation anim))
+        return GetAnimation(CurrentAnimation);
+    }
+
+    public Animation GetAnimation(int id)
+    {
+        if (ReplacedAnimations != null && ReplacedAnimations.TryGetValue(id, out Animation anim))
             return anim;
         else
-            return Resource.Animations[CurrentAnimation];
+            return Resource.Animations[id];
     }
 
     public Animation CopyAnimation(int id)
@@ -184,6 +200,23 @@ public class AnimatedObject : AObject
     public Animation GetReplacedAnimation(int id)
     {
         return ReplacedAnimations[id];
+    }
+
+    public AffineMatrix GetAffineMatrix(int index)
+    {
+        AffineMatrixCache ??= new Dictionary<int, AffineMatrix>();
+
+        int cacheId = GetAffineMatrixCacheId(CurrentAnimation, index);
+
+        if (AffineMatrixCache.TryGetValue(cacheId, out AffineMatrix matrix))
+            return matrix;
+
+        Animation anim = GetAnimation();
+        AffineMatrixResource matrixRessource = anim.AffineMatrices.Matrices[index];
+
+        matrix = new AffineMatrix(matrixRessource.Pa, matrixRessource.Pb, matrixRessource.Pc, matrixRessource.Pd);
+        AffineMatrixCache[cacheId] = matrix;
+        return matrix;
     }
 
     public bool IsChannelVisible(int channel) => (ActiveChannels & (1 << channel)) != 0;
@@ -382,18 +415,9 @@ public class AnimatedObject : AObject
 
                     // Get the matrix if it's affine
                     if (channel.ObjectMode == OBJ_ATTR_ObjectMode.REG && AffineMatrix != null)
-                    {
                         affineMatrix = AffineMatrix.Value;
-                    }
                     else if (channel.ObjectMode is OBJ_ATTR_ObjectMode.AFF or OBJ_ATTR_ObjectMode.AFF_DBL)
-                    {
-                        AffineMatrixResource matrix = anim.AffineMatrices.Matrices[channel.AffineMatrixIndex];
-                        affineMatrix = new AffineMatrix(
-                            pa: matrix.Pa,
-                            pb: matrix.Pb,
-                            pc: matrix.Pc,
-                            pd: matrix.Pd);
-                    }
+                        affineMatrix = GetAffineMatrix(channel.AffineMatrixIndex);
 
                     // Get or create the sprite texture
                     Texture2D texture = Engine.TextureCache.GetOrCreateObject(
