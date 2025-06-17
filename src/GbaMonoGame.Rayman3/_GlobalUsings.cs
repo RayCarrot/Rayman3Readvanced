@@ -9,6 +9,7 @@ global using Act = GbaMonoGame.Rayman3.Act;
 global using AnimActor = GbaMonoGame.Rayman3.AnimActor;
 
 global using AnimatedObjectResource = BinarySerializer.Ubisoft.GbaEngine.AnimatedObject;
+global using AffineMatrixResource = BinarySerializer.Ubisoft.GbaEngine.AffineMatrix;
 global using PlayfieldResource = BinarySerializer.Ubisoft.GbaEngine.Playfield;
 global using SpritePalettesResource = BinarySerializer.Ubisoft.GbaEngine.SpritePalettes;
 global using PaletteResource = BinarySerializer.Nintendo.GBA.Palette;

@@ -126,9 +126,9 @@ public class AnimatedObject : AObject
         set => Alpha = value / 16;
     }
 
-    public bool OverrideGfxColor { get; set; } // Needed for the curtains in the worldmap which are not effected by the palette fading
-
     public BoxTable BoxTable { get; set; }
+
+    public bool OverrideGfxColor { get; set; } // Needed for the curtains in the worldmap which are not effected by the palette fading
 
     // Custom - allows animations to be replaced with new ones
     public Dictionary<int, Animation> ReplacedAnimations { get; set; }
@@ -143,19 +143,15 @@ public class AnimatedObject : AObject
 
     #endregion
 
-    #region Private Methods
+    #region Public Methods
 
-    private IEnumerable<AnimationChannel> EnumerateCurrentChannels()
+    public IEnumerable<AnimationChannel> EnumerateCurrentChannels()
     {
         Animation anim = GetAnimation();
 
         for (int i = 0; i < anim.ChannelsPerFrame[CurrentFrame]; i++)
             yield return anim.Channels[i + ChannelIndex];
     }
-
-    #endregion
-
-    #region Public Methods
 
     public Animation GetAnimation()
     {

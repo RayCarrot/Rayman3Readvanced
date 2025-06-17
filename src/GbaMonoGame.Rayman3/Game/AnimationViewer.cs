@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using BinarySerializer.Nintendo.GBA;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.TgxEngine;
@@ -18,6 +19,7 @@ public class AnimationViewer : Frame
     public AnimationPlayer AnimationPlayer { get; set; }
 
     public SpriteTextObject SelectionText { get; set; }
+    public SpriteTextObject InfoText { get; set; }
     public ActorResource[] Actors { get; set; }
     public AnimatedObject Animation { get; set; }
 
@@ -34,7 +36,7 @@ public class AnimationViewer : Frame
     private void InitSelectResource()
     {
         int resourcesCount = Rom.Loader.GameOffsetTable.Count;
-        SetText($"Resource {SelectedResourceIndex}/{resourcesCount - 1} ({GetCurrentResourceType().Name})");
+        SetSelectionText($"Resource {SelectedResourceIndex}/{resourcesCount - 1} ({GetCurrentResourceType().Name})");
 
         CurrentStepAction = Step_SelectResource;
     }
@@ -50,7 +52,7 @@ public class AnimationViewer : Frame
             OrderBy(x => x.Type).
             ToArray();
 
-        SetText($"Actor #{Actors[SelectedActorIndex].Type} ({(ActorType)Actors[SelectedActorIndex].Type})");
+        SetSelectionText($"Actor #{Actors[SelectedActorIndex].Type} ({(ActorType)Actors[SelectedActorIndex].Type})");
 
         CurrentStepAction = Step_SelectActor;
     }
@@ -78,15 +80,20 @@ public class AnimationViewer : Frame
         SelectedAnimationIndex = 0;
 
         int animationsCount = Animation.Resource.AnimationsCount;
-        SetText($"Animation {SelectedAnimationIndex}/{animationsCount - 1}");
+        SetSelectionText($"Animation {SelectedAnimationIndex}/{animationsCount - 1}");
 
         CurrentStepAction = Step_SelectAnimation;
     }
 
-    private void SetText(string text)
+    private void SetSelectionText(string text)
     {
         SelectionText.Text = text;
         SelectionText.ScreenPos = SelectionText.ScreenPos with { X = -SelectionText.GetStringWidth() / 2f };
+    }
+
+    private void SetInfoText(string text)
+    {
+        InfoText.Text = text;
     }
 
     private bool IsDirectionalButtonPressed(GbaInput input)
@@ -139,10 +146,20 @@ public class AnimationViewer : Frame
         SelectionText = new SpriteTextObject()
         {
             Text = String.Empty,
+            FontSize = FontSize.Font32,
             Color = Color.White,
             ScreenPos = new Vector2(0, 10),
             HorizontalAnchor = HorizontalAnchorMode.Center,
-            RenderContext = Engine.GameRenderContext,
+            RenderContext = new FixedResolutionRenderContext(Engine.InternalGameResolution * 2),
+        };
+
+        InfoText = new SpriteTextObject()
+        {
+            Text = String.Empty,
+            FontSize = FontSize.Font32,
+            Color = Color.White,
+            ScreenPos = new Vector2(30, 30),
+            RenderContext = new FixedResolutionRenderContext(Engine.InternalGameResolution * 6),
         };
 
         HoldButtonTimer = 0;
@@ -181,7 +198,7 @@ public class AnimationViewer : Frame
                 resourceType = GetCurrentResourceType();
             } while (resourceType != typeof(Scene2DResource) && resourceType != typeof(AnimatedObjectResource));
 
-            SetText($"Resource {SelectedResourceIndex}/{resourcesCount - 1} ({resourceType.Name})");
+            SetSelectionText($"Resource {SelectedResourceIndex}/{resourcesCount - 1} ({resourceType.Name})");
         }
         else if (IsDirectionalButtonPressed(GbaInput.Right))
         {
@@ -196,7 +213,7 @@ public class AnimationViewer : Frame
                 resourceType = GetCurrentResourceType();
             } while (resourceType != typeof(Scene2DResource) && resourceType != typeof(AnimatedObjectResource));
 
-            SetText($"Resource {SelectedResourceIndex}/{resourcesCount - 1} ({resourceType.Name})");
+            SetSelectionText($"Resource {SelectedResourceIndex}/{resourcesCount - 1} ({resourceType.Name})");
         }
         else if (JoyPad.IsButtonJustPressed(GbaInput.A))
         {
@@ -218,7 +235,7 @@ public class AnimationViewer : Frame
             if (SelectedActorIndex < 0)
                 SelectedActorIndex = actorsCount - 1;
 
-            SetText($"Actor #{Actors[SelectedActorIndex].Type} ({(ActorType)Actors[SelectedActorIndex].Type})");
+            SetSelectionText($"Actor #{Actors[SelectedActorIndex].Type} ({(ActorType)Actors[SelectedActorIndex].Type})");
         }
         else if (IsDirectionalButtonPressed(GbaInput.Right))
         {
@@ -227,7 +244,7 @@ public class AnimationViewer : Frame
             if (SelectedActorIndex > actorsCount - 1)
                 SelectedActorIndex = 0;
 
-            SetText($"Actor #{Actors[SelectedActorIndex].Type} ({(ActorType)Actors[SelectedActorIndex].Type})");
+            SetSelectionText($"Actor #{Actors[SelectedActorIndex].Type} ({(ActorType)Actors[SelectedActorIndex].Type})");
         }
         else if (JoyPad.IsButtonJustPressed(GbaInput.A))
         {
@@ -239,6 +256,7 @@ public class AnimationViewer : Frame
         }
     }
 
+    private bool b = false;
     public void Step_SelectAnimation()
     {
         int animationsCount = Animation.Resource.AnimationsCount;
@@ -250,7 +268,7 @@ public class AnimationViewer : Frame
             if (SelectedAnimationIndex < 0)
                 SelectedAnimationIndex = animationsCount - 1;
 
-            SetText($"Animation {SelectedAnimationIndex}/{animationsCount - 1}");
+            SetSelectionText($"Animation {SelectedAnimationIndex}/{animationsCount - 1}");
             Animation.CurrentAnimation = SelectedAnimationIndex;
         }
         else if (IsDirectionalButtonPressed(GbaInput.Right))
@@ -260,7 +278,7 @@ public class AnimationViewer : Frame
             if (SelectedAnimationIndex > animationsCount - 1)
                 SelectedAnimationIndex = 0;
 
-            SetText($"Animation {SelectedAnimationIndex}/{animationsCount - 1}");
+            SetSelectionText($"Animation {SelectedAnimationIndex}/{animationsCount - 1}");
             Animation.CurrentAnimation = SelectedAnimationIndex;
         }
         else if (JoyPad.IsButtonJustPressed(GbaInput.A))
@@ -275,7 +293,32 @@ public class AnimationViewer : Frame
                 InitSelectResource();
         }
 
+        SetInfoText($"Frame: {Animation.CurrentFrame}\n" +
+                    $"DelayMode: {Animation.IsDelayMode}\n" +
+                    $"Timer: {Animation.Timer}\n" +
+                    $"ChannelIndex: {Animation.ChannelIndex}\n\n" +
+                    $"{String.Join("\n", Animation.EnumerateCurrentChannels().
+                        Select((x, i) => 
+                        {
+                            string str = $"{i}: {x.ChannelType} {x.XPosition} x {x.YPosition}";
+
+                            if (x.ObjectMode is OBJ_ATTR_ObjectMode.AFF or OBJ_ATTR_ObjectMode.AFF_DBL)
+                            {
+                                AffineMatrixResource matrix = Animation.GetAnimation().AffineMatrices.Matrices[x.AffineMatrixIndex];
+                                AffineMatrix affineMatrix = new(
+                                    pa: matrix.Pa,
+                                    pb: matrix.Pb,
+                                    pc: matrix.Pc,
+                                    pd: matrix.Pd);
+
+                                str += $" | Scale: {affineMatrix.Scale.X} x {affineMatrix.Scale.Y} | Rot: {affineMatrix.Rotation}";
+                            }
+
+                            return str;
+                        }))}");
+
         AnimationPlayer.Play(Animation);
+        AnimationPlayer.Play(InfoText);
     }
 
     #endregion
