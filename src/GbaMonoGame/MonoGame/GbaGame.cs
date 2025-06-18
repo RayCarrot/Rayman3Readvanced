@@ -9,7 +9,6 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GbaMonoGame;
 
-// TODO: Create crash screen in case of exception, during update or load
 public abstract class GbaGame : Microsoft.Xna.Framework.Game
 {
     #region Constructor
@@ -190,14 +189,21 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
         if (DebugMode)
             _updateTimeStopWatch.Restart();
 
-        if (!_speedUp)
+        try
         {
-            Engine.Step();
-        }
-        else
-        {
-            for (int i = 0; i < 4; i++)
+            if (!_speedUp)
+            {
                 Engine.Step();
+            }
+            else
+            {
+                for (int i = 0; i < 4; i++)
+                    Engine.Step();
+            }
+        }
+        catch (Exception ex)
+        {
+            FrameManager.SetNextFrame(CreateFatalErrorFrame(ex));
         }
 
         // If this frame did a load, and thus might have taken longer than 1/60th of a second, then
@@ -215,6 +221,7 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
     #region Protected Methods
 
     protected abstract Frame CreateInitialFrame();
+    protected abstract Frame CreateFatalErrorFrame(Exception exception);
     protected virtual void LoadGame() { }
     protected virtual void UnloadGame() { }
     protected virtual void AddDebugWindowsAndMenus(DebugLayout debugLayout) { }

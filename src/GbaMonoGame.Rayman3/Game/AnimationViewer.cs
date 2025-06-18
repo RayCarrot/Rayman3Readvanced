@@ -256,7 +256,6 @@ public class AnimationViewer : Frame
         }
     }
 
-    private bool b = false;
     public void Step_SelectAnimation()
     {
         int animationsCount = Animation.Resource.AnimationsCount;

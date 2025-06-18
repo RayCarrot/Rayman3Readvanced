@@ -12,6 +12,14 @@ public class SpriteFontTextObject : AObject
     public AffineMatrix? AffineMatrix { get; set; }
     public float Alpha { get; set; } = 1;
 
+    public void WrapText(float width)
+    {
+        if (AffineMatrix != null)
+            width *= 1 / AffineMatrix.Value.Scale.X;
+
+        Text = Font.WrapText(Text, width);
+    }
+
     public override void Execute(Action<short> soundEventCallback)
     {
         if (Text == null)

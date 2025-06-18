@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -18,26 +19,86 @@ public class Font
     public Dictionary<char, Glyph> Glyphs { get; }
     public float LineHeight { get; }
 
+    public float GetWidth(string text, int charIndex)
+    {
+        float width = 0;
+        char c = text[charIndex];
+
+        if (!Glyphs.TryGetValue(c, out Glyph glyph))
+            throw new Exception($"The character '{c}' is not defined for this font");
+
+        Rectangle bounds = glyph.Bounds;
+
+        if (charIndex > 0 && glyph.GlyphSpecificLayoutOffsets?.TryGetValue(text[charIndex - 1], out float off) == true)
+            width += off;
+
+        width += bounds.Width + glyph.LayoutOffset;
+
+        return width;
+    }
+
     public float GetWidth(string text)
     {
         float width = 0;
 
         for (int charIndex = 0; charIndex < text.Length; charIndex++)
-        {
-            char c = text[charIndex];
-
-            if (!Glyphs.TryGetValue(c, out Glyph glyph))
-                throw new Exception($"The character '{c}' is not defined for this font");
-
-            Rectangle bounds = glyph.Bounds;
-
-            if (charIndex > 0 && glyph.GlyphSpecificLayoutOffsets?.TryGetValue(text[charIndex - 1], out float off) == true)
-                width += off;
-
-            width += bounds.Width + glyph.LayoutOffset;
-        }
+            width += GetWidth(text, charIndex);
 
         return width;
+    }
+
+    public string WrapText(string text, float width)
+    {
+        StringBuilder wrappedText = new();
+
+        float xPos = 0;
+        int startIndex = 0;
+
+        for (int charIndex = 0; charIndex < text.Length; charIndex++)
+        {
+            if (text[charIndex] == '\r' || text[charIndex] == '\n')
+            {
+                wrappedText.AppendLine(text[startIndex..charIndex]);
+
+                if (charIndex + 1 < text.Length && text[charIndex] == '\r' && text[charIndex + 1] == '\n')
+                    charIndex += 2;
+                else
+                    charIndex += 1;
+
+                startIndex = charIndex;
+                xPos = 0;
+                continue;
+            }
+
+            xPos += GetWidth(text, charIndex);
+
+            if (xPos >= width)
+            {
+                for (int i = charIndex; i >= 0; i--)
+                {
+                    if (text[i] == ' ')
+                    {
+                        wrappedText.AppendLine(text[startIndex..i]);
+                        charIndex = i + 1;
+                        startIndex = charIndex;
+                        xPos = 0;
+                        break;
+                    }
+                }
+
+                if (xPos != 0)
+                {
+                    wrappedText.AppendLine(text[startIndex..(charIndex - 1)]);
+                    charIndex--;
+                    startIndex = charIndex;
+                    xPos = 0;
+                }
+            }
+        }
+
+        wrappedText.AppendLine(text[startIndex..]);
+
+        return wrappedText.ToString();
     }
 
     public Sprite GetCharacterSprite(

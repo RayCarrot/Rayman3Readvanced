@@ -1,5 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
@@ -51,7 +53,6 @@ public class TitleScreen : Frame
 
     private void LoadRom(Platform platform)
     {
-        // TODO: Handle exceptions - right now they'll be ignored since we're not awaiting the task
         // Load the rom asynchronously while fading out
         LoadRomTask = Task.Run(() =>
         {
@@ -62,7 +63,7 @@ public class TitleScreen : Frame
             Rom.Init(gameDirectory, gameFileNames, Game.Rayman3, platform);
         });
 
-        TransitionsFX.FadeOutInit(1);
+        TransitionsFX.FadeOutInit(2);
     }
 
     private void StartGame()
@@ -150,7 +151,6 @@ public class TitleScreen : Frame
                         {
                             // TODO: Verify the file
 
-                            // TODO: Try/catch
                             // Copy the file
                             Directory.CreateDirectory(gameDirectory);
                             File.Copy(selectedFilePath, Path.Combine(gameDirectory, gameFileNames[0]));
@@ -171,7 +171,6 @@ public class TitleScreen : Frame
 
                             // TODO: Verify the directory
 
-                            // TODO: Try/catch
                             // Copy the files
                             Directory.CreateDirectory(gameDirectory);
                             foreach (string gameFileName in gameFileNames)
@@ -283,10 +282,12 @@ public class TitleScreen : Frame
     {
         TransitionsFX.StepAll();
 
+        // Quit game
         if (SelectedGameIndex == -1)
         {
             QuitGameOptionsList.Step();
         }
+        // Select game
         else if (!Cursor.IsMoving && LoadRomTask == null)
         {
             // Change selected game
@@ -311,7 +312,16 @@ public class TitleScreen : Frame
                     game.Step();
             }
         }
-        else if (LoadRomTask is { IsCompletedSuccessfully: true } && !TransitionsFX.IsFadingOut)
+        // Error
+        else if (LoadRomTask is { IsFaulted: true })
+        {
+            if (LoadRomTask.Exception?.InnerException != null)
+                ExceptionDispatchInfo.Capture(LoadRomTask.Exception.InnerException).Throw();
+            else
+                throw new Exception("Unknown error when loading the ROM");
+        }
+        // Loaded
+        else if (LoadRomTask is { IsCompletedSuccessfully: true })
         {
             StartGame();
         }

@@ -77,8 +77,7 @@ public static class Gfx
 
     private static void DrawFade(GfxRenderer renderer)
     {
-        if (Rom.IsLoaded && 
-            (Rom.Platform == Platform.GBA || Engine.Config.UseGbaEffectsOnNGage) && 
+        if ((!Rom.IsLoaded || Rom.Platform == Platform.GBA || Engine.Config.UseGbaEffectsOnNGage) && 
             FadeControl.Mode != FadeMode.None && 
             Fade is > 0 and <= 1)
         {

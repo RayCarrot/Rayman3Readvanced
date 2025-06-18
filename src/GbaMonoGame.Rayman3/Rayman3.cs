@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.Editor;
 using GbaMonoGame.Engine2d;
@@ -18,6 +19,7 @@ public class Rayman3 : GbaGame
     #region Protected Methods
 
     protected override Frame CreateInitialFrame() => new TitleScreen();
+    protected override Frame CreateFatalErrorFrame(Exception exception) => new FrameFatalError(exception);
 
     protected override void LoadGame()
     {
