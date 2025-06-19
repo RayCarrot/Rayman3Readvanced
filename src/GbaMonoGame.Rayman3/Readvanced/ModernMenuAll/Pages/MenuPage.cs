@@ -25,7 +25,7 @@ public abstract class MenuPage
     public int SelectedOption { get; set; }
     public int ScrollOffset { get; set; }
     public bool HasScrollableContent => Options.Count > MaxOptions;
-    public int MaxScrollOffset => Options.Count - MaxOptions;
+    public int MaxScrollOffset => Math.Max(Options.Count - MaxOptions, 0);
 
     public abstract bool UsesCursor { get; }
     public abstract int BackgroundPalette { get; }

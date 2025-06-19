@@ -62,7 +62,7 @@ public class PauseDialogOptionsMenu
     public int SelectedOption { get; set; }
     public int ScrollOffset { get; set; }
     public bool HasScrollableContent => Options.Length > MaxOptions;
-    public int MaxScrollOffset => Options.Length - MaxOptions;
+    public int MaxScrollOffset => Math.Max(Options.Length - MaxOptions, 0);
 
     public SpriteTextureObject Canvas { get; set; }
     public AnimatedObject Cursor { get; set; }
