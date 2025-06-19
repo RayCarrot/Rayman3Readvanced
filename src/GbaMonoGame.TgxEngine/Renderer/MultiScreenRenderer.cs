@@ -17,6 +17,7 @@ public class MultiScreenRenderer : IScreenRenderer
 
     public void Draw(GfxRenderer renderer, GfxScreen screen, Vector2 position, Color color)
     {
+        // TODO: Only render if on screen
         foreach (Section section in Sections)
             section.ScreenRenderer.Draw(renderer, screen, position + section.Position, color);
     }
