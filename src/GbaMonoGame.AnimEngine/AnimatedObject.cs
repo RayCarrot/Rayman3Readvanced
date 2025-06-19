@@ -8,6 +8,21 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.AnimEngine;
 
+// TODO: Some animations have sub-pixel gaps between sprites in high resolution if they're affine:
+//
+//       LevelCurtain Animation 1
+//       MovingWoodenPlatform Animation 6 (not affine issue, but could be optionally fixed as it's misaligned)
+//       ScalemanShadow Animation 13
+//       Spinerro Animations 1, 3, 4, 6, 7, 8, 9, 10, 12
+//       Plum Animation 0 (seems to just be how the animation is though)
+//       ItemsMulti Animation 0
+//       MechanicalPlatform Animations 1, 2
+//       HUD Animation 38
+// 
+//       For the HUD animation:
+//       99 + 3.60563372 = 102.60563372
+//       110 - 7.21126744 = 102.78873256
+
 // The game has different types of AnimatedObject. They however all act the same, just with some different properties
 // depending on the class type. Doing that here would be a mess, so better we handle it using properties in this class.
 
@@ -217,6 +232,26 @@ public class AnimatedObject : AObject
         matrix = new AffineMatrix(matrixRessource.Pa, matrixRessource.Pb, matrixRessource.Pc, matrixRessource.Pd);
         AffineMatrixCache[cacheId] = matrix;
         return matrix;
+    }
+
+    public void ReplaceAffineMatrix(int animId, int frameId, int channelId, AffineMatrix matrix)
+    {
+        Animation anim = GetAnimation(animId);
+
+        for (int i = 0; i < frameId; i++)
+            channelId += anim.ChannelsPerFrame[i];
+
+        int affineMatrixIndex = anim.Channels[channelId].AffineMatrixIndex;
+
+        ReplaceAffineMatrix(animId, affineMatrixIndex, matrix);
+    }
+
+    public void ReplaceAffineMatrix(int animId, int affineMatrixIndex, AffineMatrix matrix)
+    {
+        AffineMatrixCache ??= new Dictionary<int, AffineMatrix>();
+
+        int cacheId = GetAffineMatrixCacheId(animId, affineMatrixIndex);
+        AffineMatrixCache[cacheId] = matrix;
     }
 
     public bool IsChannelVisible(int channel) => (ActiveChannels & (1 << channel)) != 0;

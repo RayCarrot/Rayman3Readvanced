@@ -31,6 +31,23 @@ public class Cages50Bar : Bar
             RenderContext = Scene.HudRenderContext,
         };
 
+        const int sparkleAnimId = 38;
+        CagesIcon.ReplaceAffineMatrix(
+            animId: sparkleAnimId, 
+            frameId: 5,
+            channelId: 11,
+            matrix: new AffineMatrix(0, new Vector2(1.0534979f, 0.92f))); // Original Y scale is 0.90140843
+        CagesIcon.ReplaceAffineMatrix(
+            animId: sparkleAnimId,
+            frameId: 5,
+            channelId: 12,
+            matrix: new AffineMatrix(0, new Vector2(1.0534979f, 0.92f))); // Original Y scale is 0.90140843
+        CagesIcon.ReplaceAffineMatrix(
+            animId: sparkleAnimId,
+            frameId: 5,
+            channelId: 13,
+            matrix: new AffineMatrix(0, new Vector2(1.0534979f, 0.92f))); // Original Y scale is 0.90140843
+
         CollectedCagesDigit1 = new AnimatedObject(resource, false)
         {
             IsFramed = true,
