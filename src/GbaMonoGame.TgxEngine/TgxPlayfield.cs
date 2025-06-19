@@ -63,7 +63,7 @@ public abstract class TgxPlayfield
     public void Step()
     {
         // Toggle showing debug collision screen
-        if (InputManager.IsButtonJustPressed(Input.Debug_ToggleCollision))
+        if (Engine.Config.DebugModeEnabled && InputManager.IsButtonJustPressed(Input.Debug_ToggleCollision))
             PhysicalLayer.ToggleScreenVisibility();
 
         AnimatedTilekitManager?.Step();
