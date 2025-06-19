@@ -12,7 +12,6 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
 - Add more Murfy help messages throughout the game since they mostly appear in the beginning and don't explain later mechanics. For example, explain that in the race levels you can press L and R to strafe to the sides.
 - Translate new text to the available languages.
 - Make sure the gameplay is the same for things like multiplayer, time trials etc. so that actor cycles and such stay the consistent. Also disable debug features then to prevent cheating.
-- Only check for debug inputs, like for showing hitboxes and toggling no-clip, when in debug mode.
 
 ## 🎮 Multiplayer
 Implementing local multiplayer, using multiple game instances (through named pipes) or through LAN, shouldn't be too hard. The game's multiplayer code is very simple, with it usually just sending a single 16-bit value between clients each frame.

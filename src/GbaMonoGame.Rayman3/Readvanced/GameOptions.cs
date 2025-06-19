@@ -66,7 +66,7 @@ public static class GameOptions
             ]),
             new GameOptionsGroup("GAME",
             [
-                // TODO: Add more game options
+                // TODO: Add more game options and look into how these work when changed while in a level
                 new MultiSelectionOptionsMenuOption<Language>(
                     text: "LANGUAGE",
                     infoText: "The language to use for any localized text.",
@@ -107,7 +107,6 @@ public static class GameOptions
                     getData: _ => Engine.Config.UseReadvancedLogo,
                     setData: data => Engine.Config.UseReadvancedLogo = data,
                     getCustomName: _ => null),
-                // TODO: If the user changes this while in a level then the pause dialog should be re-created?
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "PAUSE MENU",
                     infoText: "Determines if the game should use the original or updated pause menu. The updated one provides access to the game options and the ability to exit a level.",
