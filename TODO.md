@@ -10,6 +10,9 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
 - Add a cheat menu?
 - When rendering in a resolution that's not a factor of the internal resolution then the sprites in animations don't always align correctly and there may be a 1 pixel gap. Fix by always rendering to the highest possible factor of the internal resolution and then scaling to the actual resolution?
 - Add more Murfy help messages throughout the game since they mostly appear in the beginning and don't explain later mechanics. For example, explain that in the race levels you can press L and R to strafe to the sides.
+- Translate new text to the available languages.
+- Make sure the gameplay is the same for things like multiplayer, time trials etc. so that actor cycles and such stay the consistent. Also disable debug features then to prevent cheating.
+- Only check for debug inputs, like for showing hitboxes and toggling no-clip, when in debug mode.
 
 ## 🎮 Multiplayer
 Implementing local multiplayer, using multiple game instances (through named pipes) or through LAN, shouldn't be too hard. The game's multiplayer code is very simple, with it usually just sending a single 16-bit value between clients each frame.
@@ -51,6 +54,17 @@ The following are ideas for optional improvements which the player can toggle on
 - Option for less insta-kill, such as with the flying shell.
 - Option for visual enhancements, such as not disabling the Mode7 fog effect when you die.
 - Option to remove stray pixels and fix bad tiling in some levels.
+- Extend backgrounds so that they can render in the modern widescreen resolution without scaling:
+    - BossMachine ✔️
+    - BossRockAndLava
+    - BossFinal_M1
+    - BossFinal_M2
+    - Power2
+    - Power5
+    - Power6
+    - Worldmap
+    - Check multiplayer, menus etc. and check N-Gage
+- GBA effects can be used in the N-Gage version, but sometimes the N-Gage version improves things too. Allow these to be used in the GBA version.
 
 ## ⭐ Bonus
 ### Achievements
@@ -76,6 +90,7 @@ List of challenges you can play. These put you into a level and has you attempti
 - Beat level while playing as Murfy (new gameplay style where you fly).
 - Collect all yellow lums in race during one lap.
 - Beat Marshes of Awakening 1 without moving to the side (so only jumping).
+- Find hidden collectible in level.
 
 ### Mods
 Allow you to install mods to the game by creating a folder for each mod which can they contain replaced textures, text, sounds etc. as well as new languages for fan-translations.

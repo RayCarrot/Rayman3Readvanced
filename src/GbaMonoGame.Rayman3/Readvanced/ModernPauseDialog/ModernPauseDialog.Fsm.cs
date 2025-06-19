@@ -10,6 +10,8 @@ public partial class ModernPauseDialog
         switch (action)
         {
             case FsmAction.Init:
+                // TODO: Add option to restart level
+                // TODO: Add option to view achievements
                 SetOptions(
                 [
                     "CONTINUE",
