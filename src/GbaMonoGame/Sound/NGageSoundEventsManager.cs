@@ -430,7 +430,14 @@ public class NGageSoundEventsManager : SoundEventsManager
 
     protected override void UnloadImpl()
     {
+        foreach (Music music in _musicTable.Values)
+            music.XmSound.Dispose();
+
+        foreach (SoundEffect soundEffect in _soundEffectsTable.Values)
+            soundEffect.WavSound.Dispose();
+
         _soloud.deinit();
+        _soloud.Dispose();
     }
 
     #endregion

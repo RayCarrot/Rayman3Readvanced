@@ -599,7 +599,11 @@ public class GbaSoundEventsManager : SoundEventsManager
 
     protected override void UnloadImpl()
     {
+        foreach (Song song in _songTable.Values)
+            song.WavSound.Dispose();
+
         _soloud.deinit();
+        _soloud.Dispose();
     }
 
     #endregion
