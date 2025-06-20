@@ -93,4 +93,12 @@ public static class Localization
 
         _textBanks = Rom.Loader.Rayman3_LocalizedTextBanks.TextBanks[languageId].Value.Select(x => x.Value).ToArray();
     }
+
+    public static void UnInit()
+    {
+        Language = null;
+        LanguageId = 0;
+        LanguageUiIndex = 0;
+        _textBanks = null;
+    }
 }

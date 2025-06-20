@@ -7,7 +7,7 @@ public static class TransitionsFX
 {
     public static void Init(bool clear)
     {
-        Screns = new List<GfxScreen>();
+        Screns = new List<int>();
         AlphaStep = null;
         BrightnessCoefficient = MaxAlpha;
         FadeCoefficient = MinAlpha;
@@ -31,7 +31,7 @@ public static class TransitionsFX
     // Background alpha blending
     public static float? AlphaStep { get; set; }
     public static float AlphaCoefficient { get; set; }
-    public static List<GfxScreen> Screns { get; set; }
+    public static List<int> Screns { get; set; }
 
     public static void StepAll()
     {
@@ -105,13 +105,13 @@ public static class TransitionsFX
         AlphaStep = 0;
         AlphaCoefficient = alphaCoefficient;
         screen.IsEnabled = false;
-        Screns.Add(screen);
+        Screns.Add(screen.Id);
     }
 
     public static void ApplyAlphaSettings(float coefficient)
     {
-        foreach (GfxScreen screen in Screns)
-            screen.GbaAlpha = coefficient;
+        foreach (int screen in Screns)
+            Gfx.GetScreen(screen).GbaAlpha = coefficient;
     }
 
     public static void AlphaBlendingStep()
@@ -135,8 +135,8 @@ public static class TransitionsFX
                 ApplyAlphaSettings(AlphaStep.Value);
 
                 if (AlphaStep == 0)
-                    foreach (GfxScreen screen in Screns)
-                        screen.IsEnabled = true;
+                    foreach (int screen in Screns)
+                        Gfx.GetScreen(screen).IsEnabled = true;
 
                 AlphaStep += speed;
             }
@@ -148,8 +148,8 @@ public static class TransitionsFX
             {
                 AlphaStep = null;
 
-                foreach (GfxScreen screen in Screns)
-                    screen.IsEnabled = false;
+                foreach (int screen in Screns)
+                    Gfx.GetScreen(screen).IsEnabled = false;
 
                 if (BrightnessCoefficient > MaxAlpha)
                 {

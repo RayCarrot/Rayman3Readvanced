@@ -291,6 +291,8 @@ public class Rayman3 : GbaGame
 
     protected override void UnloadGame()
     {
+        GameInfo.UnInit();
+        Localization.UnInit();
         SoundEventsManager.Unload();
         FontManager.Unload();
     }

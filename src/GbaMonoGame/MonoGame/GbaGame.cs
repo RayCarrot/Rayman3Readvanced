@@ -111,6 +111,9 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
         // Clear debug windows and menus
         _debugLayout?.Clear();
 
+        // Clear graphics
+        Gfx.Clear();
+
         // Clear the cache
         Engine.TextureCache.Clear();
         Engine.PaletteCache.Clear();

@@ -57,6 +57,15 @@ public static class GameInfo
         ResetPersistentInfo();
     }
 
+    public static void UnInit()
+    {
+        PersistentInfo = new SaveGameSlot()
+        {
+            Lums = new byte[125],
+            Cages = new byte[7],
+        };
+    }
+
     public static void ResetPersistentInfo()
     {
         PersistentInfo.Lums ??= new byte[125];

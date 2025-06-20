@@ -159,7 +159,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
 
                 // NOTE: There's a bug where the level data has alpha blending enabled, which conflicts with the code here!
                 if (Engine.Config.FixBugs)
-                    TransitionsFX.Screns.Remove(skullScreen);
+                    TransitionsFX.Screns.Remove(skullScreen.Id);
                 break;
 
             // Lightning and rain

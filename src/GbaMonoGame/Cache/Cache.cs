@@ -70,5 +70,7 @@ public class Cache<T>
     {
         foreach (LocationCache<T> locationCache in Locations.Values)
             locationCache.Clear();
+
+        Locations.Clear();
     }
 }

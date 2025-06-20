@@ -129,6 +129,17 @@ public static class Gfx
     public static void SetScreenEffect(ScreenEffect screenEffect) => ScreenEffect = screenEffect;
     public static void ClearScreenEffect() => ScreenEffect = null;
 
+    public static void Clear()
+    {
+        ClearScreens();
+        ClearSprites();
+        ClearScreenEffect();
+        Color = Color.White;
+        ClearColor = Color.Black;
+        Fade = 0;
+        FadeControl = FadeControl.None;
+    }
+
     public static void Draw(GfxRenderer renderer)
     {
         // Draw clear color on GBA
