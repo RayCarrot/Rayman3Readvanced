@@ -11,7 +11,6 @@ public class FramesDebugMenu : DebugMenu
 {
     private FrameMenuItem[] Menu { get; } =
     [
-        new("Title Screen", () => new TitleScreen()),
         new("Intro", () => new Intro()),
         new("GameCubeMenu", () => new GameCubeMenu()),
         new("Game Over", () => new GameOver()),

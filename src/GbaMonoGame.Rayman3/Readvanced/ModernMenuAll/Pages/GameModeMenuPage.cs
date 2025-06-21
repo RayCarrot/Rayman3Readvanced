@@ -230,9 +230,15 @@ public class GameModeMenuPage : MenuPage
                     });
                     break;
 
-                // TODO: Implement quit game menu
                 case 5:
-                    Menu.ChangePage(new GameModeMenuPage(Menu), NewPageMode.Next);
+                    CursorClick(() =>
+                    {
+                        FadeOut(4, () =>
+                        {
+                            Rom.UnInit();
+                            FrameManager.SetNextFrame(new TitleScreen(true));
+                        });
+                    });
                     break;
 
                 default:

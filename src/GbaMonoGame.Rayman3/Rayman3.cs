@@ -18,7 +18,7 @@ public class Rayman3 : GbaGame
 
     #region Protected Methods
 
-    protected override Frame CreateInitialFrame() => new TitleScreen();
+    protected override Frame CreateInitialFrame() => new TitleScreen(false);
     protected override Frame CreateFatalErrorFrame(Exception exception) => new FrameFatalError(exception);
 
     protected override void LoadGame()

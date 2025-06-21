@@ -220,7 +220,6 @@ public class SinglePlayerMenuPage : MenuPage
                     {
                         SelectStartEraseOption(0);
                         StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 20;
-                        // TODO: Game passes in 0 as obj here, but that's probably a mistake
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
                 }
@@ -231,7 +230,6 @@ public class SinglePlayerMenuPage : MenuPage
                     {
                         SelectStartEraseOption(1);
                         StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 21;
-                        // TODO: Game passes in 0 as obj here, but that's probably a mistake
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
                 }

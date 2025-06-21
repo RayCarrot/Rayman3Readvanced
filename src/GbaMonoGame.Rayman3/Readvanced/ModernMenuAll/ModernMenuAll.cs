@@ -489,7 +489,6 @@ public class ModernMenuAll : Frame, IHasPlayfield
             !SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__sadslide))
         {
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__raytheme);
-            SoundEngineInterface.SetNbVoices(10);
         }
 
         RSMultiplayer.UnInit();
@@ -512,15 +511,14 @@ public class ModernMenuAll : Frame, IHasPlayfield
 
     public override void UnInit()
     {
-        SoundEngineInterface.SetNbVoices(7);
-
         if (!IsLoadingMultiplayerMap)
         {
             RSMultiplayer.UnInit();
             GameTime.Resume();
         }
 
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__raytheme);
+        if (SoundEventsManager.IsLoaded)
+            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__raytheme);
 
         Playfield.UnInit();
     }

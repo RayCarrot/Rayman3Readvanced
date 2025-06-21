@@ -14,6 +14,13 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 // TODO: Default to select last played version
 public class TitleScreen : Frame
 {
+    public TitleScreen(bool fadeIn)
+    {
+        FadeIn = fadeIn;
+    }
+
+    public bool FadeIn { get; }
+
     public AnimationPlayer AnimationPlayer { get; set; }
 
     public Task LoadRomTask { get; set; }
@@ -195,6 +202,9 @@ public class TitleScreen : Frame
 
         AnimationPlayer = new AnimationPlayer(false, null);
         TransitionsFX.Init(true);
+
+        if (FadeIn)
+            TransitionsFX.FadeInInit(4);
 
         CloudsShader = Engine.FrameContentManager.Load<Effect>(Assets.TitleScreenCloudsShader);
 
