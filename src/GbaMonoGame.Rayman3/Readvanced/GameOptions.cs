@@ -22,6 +22,19 @@ public static class GameOptions
         [
             new GameOptionsGroup("DISPLAY",
             [
+                new MultiSelectionOptionsMenuOption<Language>(
+                    text: "LANGUAGE",
+                    infoText: "The language to use for any localized text.",
+                    items: Localization.GetLanguages().
+                        Select(x => new MultiSelectionOptionsMenuOption<Language>.Item(x.EnglishName.ToUpper(), x)).
+                        ToArray(),
+                    getData: _ => Localization.Language,
+                    setData: data =>
+                    {
+                        Localization.SetLanguage(data);
+                        Engine.Config.Language = data.Locale;
+                    },
+                    getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<DisplayMode>(
                     text: "DISPLAY MODE",
                     infoText: "In borderless mode the resolution can not be changed as it will always use the screen resolution.",
@@ -64,22 +77,38 @@ public static class GameOptions
                     setData: data => Engine.Config.LockWindowAspectRatio = data,
                     getCustomName: _ => null),
             ]),
-            new GameOptionsGroup("GAME",
+            new GameOptionsGroup("CONTROLS",
             [
-                // TODO: Add more game options and look into how these work when changed while in a level
-                new MultiSelectionOptionsMenuOption<Language>(
-                    text: "LANGUAGE",
-                    infoText: "The language to use for any localized text.",
-                    items: Localization.GetLanguages().
-                        Select(x => new MultiSelectionOptionsMenuOption<Language>.Item(x.EnglishName.ToUpper(), x)).
-                        ToArray(),
-                    getData: _ => Localization.Language,
-                    setData: data =>
-                    {
-                        Localization.SetLanguage(data);
-                        Engine.Config.Language = data.Locale;
-                    },
+                // TODO: Implement
+                new MultiSelectionOptionsMenuOption<object>(
+                    text: "TEMP",
+                    infoText: "TEMP",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<object>.Item("TEMP", null),
+                    ],
+                    getData: _ => null,
+                    setData: _ => { },
                     getCustomName: _ => null),
+            ]),
+            new GameOptionsGroup("SOUND",
+            [
+                new VolumeSelectionOptionsMenuOption(
+                    text: "MUSIC VOLUME",
+                    infoText: "The volume for music.",
+                    getVolume: () => Engine.Config.MusicVolume,
+                    setVolume: data => Engine.Config.MusicVolume = data),
+                new VolumeSelectionOptionsMenuOption(
+                    text: "SOUND FX VOLUME",
+                    infoText: "The volume for sound effects.",
+                    getVolume: () => Engine.Config.SfxVolume,
+                    setVolume: data => Engine.Config.SfxVolume = data),
+            ]),
+            // TODO: Look into how these work when changed while in a level
+            // TODO: Add presets (Original, Modern/Readvanced, Custom)
+            // TODO: Add option to keep all objects enabled, and force it on when in a custom resolution
+            new GameOptionsGroup("TWEAKS",
+            [
                 new MultiSelectionOptionsMenuOption<Vector2>(
                     text: "INTERNAL RESOLUTION",
                     infoText: "Determines the game's aspect ratio and scale. A higher resolution will result in a higher FOV for the sidescroller levels. For Mode7 levels only the aspect ratio is changed. Note that this does not effect the resolution the game renders at.",
@@ -151,7 +180,7 @@ public static class GameOptions
                     getData: _ => Engine.Config.FixBugs,
                     setData: data => Engine.Config.FixBugs = data,
                     getCustomName: _ => null),
-                // TODO: This should only appear for the N-Gage version
+                // TODO: This should only appear for the N-Gage version - unless we use same option for using best features from both versions?
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "USE GBA EFFECTS",
                     infoText: "By default the N-Gage version has fewer visual effects than the GBA version. Using this option you can restore them. Some visual effects won't be changed until a new level is loaded.",
@@ -175,7 +204,8 @@ public static class GameOptions
                     setData: data => Engine.Config.UseExtendedBackgrounds = data,
                     getCustomName: _ => null),
             ]),
-            new GameOptionsGroup("CONTROLS",
+            // TODO: Add presets (Original, Rebalanced/Readvanced, Custom)
+            new GameOptionsGroup("DIFFICULTY",
             [
                 // TODO: Implement
                 new MultiSelectionOptionsMenuOption<object>(
@@ -187,44 +217,6 @@ public static class GameOptions
                     ],
                     getData: _ => null,
                     setData: _ => { },
-                    getCustomName: _ => null),
-            ]),
-            new GameOptionsGroup("SOUND",
-            [
-                new VolumeSelectionOptionsMenuOption(
-                    text: "MUSIC VOLUME",
-                    infoText: "The volume for music.",
-                    getVolume: () => Engine.Config.MusicVolume,
-                    setVolume: data => Engine.Config.MusicVolume = data),
-                new VolumeSelectionOptionsMenuOption(
-                    text: "SOUND FX VOLUME",
-                    infoText: "The volume for sound effects.",
-                    getVolume: () => Engine.Config.SfxVolume,
-                    setVolume: data => Engine.Config.SfxVolume = data),
-            ]),
-            new GameOptionsGroup("DEBUG",
-            [
-                new MultiSelectionOptionsMenuOption<bool>(
-                    text: "DEBUG MODE",
-                    infoText: "Indicates if debug features are enabled. Some features require the game the game to restart.",
-                    items:
-                    [
-                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
-                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
-                    ],
-                    getData: _ => Engine.Config.DebugModeEnabled,
-                    setData: data => Engine.Config.DebugModeEnabled = data,
-                    getCustomName: _ => null),
-                new MultiSelectionOptionsMenuOption<bool>(
-                    text: "SERIALIZER LOG",
-                    infoText: "If enabled then any serialized data from the game will be logged to a file. Note that this makes loading levels slower. This won't go into effect until the game is restarted.",
-                    items:
-                    [
-                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
-                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
-                    ],
-                    getData: _ => Engine.Config.WriteSerializerLog,
-                    setData: data => Engine.Config.WriteSerializerLog = data,
                     getCustomName: _ => null),
             ]),
         ];

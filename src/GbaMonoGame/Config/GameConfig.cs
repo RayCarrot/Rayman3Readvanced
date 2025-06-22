@@ -16,7 +16,12 @@ public class GameConfig
         Vector2 defaultResolution = Resolution.Modern;
         const int defaultWindowScale = 4;
 
+        // General
+        LastPlayedGbaSaveSlot = null;
+        LastPlayedNGageSaveSlot = null;
+
         // Display
+        Language = "en";
         DisplayMode = DisplayMode.Fullscreen;
         FullscreenResolution = new Point(defaultDisplayMode.Width, defaultDisplayMode.Height);
         WindowPosition = new Point(0, 0);
@@ -24,10 +29,14 @@ public class GameConfig
         WindowIsMaximized = false;
         LockWindowAspectRatio = true;
         
-        // Game
-        LastPlayedGbaSaveSlot = null;
-        LastPlayedNGageSaveSlot = null;
-        Language = "en";
+        // Controls
+        Controls = new Dictionary<Input, Keys>();
+        
+        // Sound
+        SfxVolume = 1;
+        MusicVolume = 1;
+
+        // Tweaks
         InternalGameResolution = defaultResolution;
         UseReadvancedLogo = true;
         UseModernPauseDialog = true;
@@ -37,13 +46,6 @@ public class GameConfig
         UseGbaEffectsOnNGage = true;
         UseExtendedBackgrounds = true;
 
-        // Controls
-        Controls = new Dictionary<Input, Keys>();
-        
-        // Sound
-        SfxVolume = 1;
-        MusicVolume = 1;
-        
         // Debug
         DebugModeEnabled = false;
         WriteSerializerLog = false;
@@ -53,8 +55,9 @@ public class GameConfig
 
     #region Private Constant Fields
 
+    private const string GeneralSection = "General";
     private const string DisplaySection = "Display";
-    private const string GameSection = "Game";
+    private const string TweaksSection = "Tweaks";
     private const string ControlsSection = "Controls";
     private const string SoundSection = "Sound";
     private const string DebugSection = "Debug";
@@ -63,7 +66,12 @@ public class GameConfig
 
     #region Public Properties
 
+    // General
+    public int? LastPlayedGbaSaveSlot { get; set; }
+    public int? LastPlayedNGageSaveSlot { get; set; }
+
     // Display
+    public string Language { get; set; }
     public DisplayMode DisplayMode { get; set; }
     public Point FullscreenResolution { get; set; }
     public Point WindowPosition { get; set; }
@@ -71,10 +79,14 @@ public class GameConfig
     public bool WindowIsMaximized { get; set; }
     public bool LockWindowAspectRatio { get; set; }
 
-    // Game
-    public int? LastPlayedGbaSaveSlot { get; set; }
-    public int? LastPlayedNGageSaveSlot { get; set; }
-    public string Language { get; set; }
+    // Controls
+    public Dictionary<Input, Keys> Controls { get; set; }
+
+    // Sound
+    public float MusicVolume { get; set; }
+    public float SfxVolume { get; set; }
+
+    // Tweaks
     public Vector2? InternalGameResolution { get; set; } // Null to use original resolution
     public bool UseReadvancedLogo { get; set; }
     public bool UseModernPauseDialog { get; set; }
@@ -84,14 +96,7 @@ public class GameConfig
     public bool UseGbaEffectsOnNGage { get; set; }
     public bool UseExtendedBackgrounds { get; set; }
 
-    // Controls
-    public Dictionary<Input, Keys> Controls { get; set; }
-
-    // Sound
-    public float MusicVolume { get; set; }
-    public float SfxVolume { get; set; }
-
-    // Debug
+    // Debug (can only be manually modified)
     public bool DebugModeEnabled { get; set; }
     public bool WriteSerializerLog { get; set; }
 
@@ -101,7 +106,12 @@ public class GameConfig
 
     public void Serialize(BaseIniSerializer serializer)
     {
+        // General
+        LastPlayedGbaSaveSlot = serializer.Serialize<int?>(LastPlayedGbaSaveSlot, GeneralSection, "LastPlayedGbaSaveSlot");
+        LastPlayedNGageSaveSlot = serializer.Serialize<int?>(LastPlayedNGageSaveSlot, GeneralSection, "LastPlayedNGageSaveSlot");
+
         // Display
+        Language = serializer.Serialize<string>(Language, DisplaySection, "Language");
         DisplayMode = serializer.Serialize<DisplayMode>(DisplayMode, DisplaySection, "DisplayMode");
         FullscreenResolution = serializer.Serialize<Point>(FullscreenResolution, DisplaySection, "FullscreenResolution");
         WindowPosition = serializer.Serialize<Point>(WindowPosition, DisplaySection, "WindowPosition");
@@ -109,25 +119,22 @@ public class GameConfig
         WindowIsMaximized = serializer.Serialize<bool>(WindowIsMaximized, DisplaySection, "WindowIsMaximized");
         LockWindowAspectRatio = serializer.Serialize<bool>(LockWindowAspectRatio, DisplaySection, "LockWindowAspectRatio");
 
-        // Game
-        LastPlayedGbaSaveSlot = serializer.Serialize<int?>(LastPlayedGbaSaveSlot, GameSection, "LastPlayedGbaSaveSlot");
-        LastPlayedNGageSaveSlot = serializer.Serialize<int?>(LastPlayedNGageSaveSlot, GameSection, "LastPlayedNGageSaveSlot");
-        Language = serializer.Serialize<string>(Language, GameSection, "Language");
-        InternalGameResolution = serializer.Serialize<Vector2?>(InternalGameResolution, GameSection, "InternalGameResolution");
-        UseReadvancedLogo = serializer.Serialize<bool>(UseReadvancedLogo, GameSection, "UseReadvancedLogo");
-        UseModernPauseDialog = serializer.Serialize<bool>(UseModernPauseDialog, GameSection, "UseModernPauseDialog");
-        CanSkipTextBoxes = serializer.Serialize<bool>(CanSkipTextBoxes, GameSection, "CanSkipTextBoxes");
-        AddProjectilesWhenNeeded = serializer.Serialize<bool>(AddProjectilesWhenNeeded, GameSection, "AddProjectilesWhenNeeded");
-        FixBugs = serializer.Serialize<bool>(FixBugs, GameSection, "FixBugs");
-        UseGbaEffectsOnNGage = serializer.Serialize<bool>(UseGbaEffectsOnNGage, GameSection, "UseGbaEffectsOnNGage");
-        UseExtendedBackgrounds = serializer.Serialize<bool>(UseExtendedBackgrounds, GameSection, "UseExtendedBackgrounds");
-
         // Controls
         Controls = serializer.SerializeDictionary<Input, Keys>(Controls, ControlsSection);
 
         // Sound
         MusicVolume = serializer.Serialize<float>(MusicVolume, SoundSection, "MusicVolume");
         SfxVolume = serializer.Serialize<float>(SfxVolume, SoundSection, "SfxVolume");
+
+        // Tweaks
+        InternalGameResolution = serializer.Serialize<Vector2?>(InternalGameResolution, TweaksSection, "InternalGameResolution");
+        UseReadvancedLogo = serializer.Serialize<bool>(UseReadvancedLogo, TweaksSection, "UseReadvancedLogo");
+        UseModernPauseDialog = serializer.Serialize<bool>(UseModernPauseDialog, TweaksSection, "UseModernPauseDialog");
+        CanSkipTextBoxes = serializer.Serialize<bool>(CanSkipTextBoxes, TweaksSection, "CanSkipTextBoxes");
+        AddProjectilesWhenNeeded = serializer.Serialize<bool>(AddProjectilesWhenNeeded, TweaksSection, "AddProjectilesWhenNeeded");
+        FixBugs = serializer.Serialize<bool>(FixBugs, TweaksSection, "FixBugs");
+        UseGbaEffectsOnNGage = serializer.Serialize<bool>(UseGbaEffectsOnNGage, TweaksSection, "UseGbaEffectsOnNGage");
+        UseExtendedBackgrounds = serializer.Serialize<bool>(UseExtendedBackgrounds, TweaksSection, "UseExtendedBackgrounds");
 
         // Debug
         DebugModeEnabled = serializer.Serialize<bool>(DebugModeEnabled, DebugSection, "DebugModeEnabled");
