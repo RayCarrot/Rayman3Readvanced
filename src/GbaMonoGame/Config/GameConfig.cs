@@ -28,6 +28,7 @@ public class GameConfig
         WindowResolution = (defaultResolution * defaultWindowScale).ToPoint();
         WindowIsMaximized = false;
         LockWindowAspectRatio = true;
+        DisableCameraShake = false;
         
         // Controls
         Controls = new Dictionary<Input, Keys>();
@@ -78,6 +79,7 @@ public class GameConfig
     public Point WindowResolution { get; set; }
     public bool WindowIsMaximized { get; set; }
     public bool LockWindowAspectRatio { get; set; }
+    public bool DisableCameraShake { get; set; }
 
     // Controls
     public Dictionary<Input, Keys> Controls { get; set; }
@@ -118,6 +120,7 @@ public class GameConfig
         WindowResolution = serializer.Serialize<Point>(WindowResolution, DisplaySection, "WindowResolution");
         WindowIsMaximized = serializer.Serialize<bool>(WindowIsMaximized, DisplaySection, "WindowIsMaximized");
         LockWindowAspectRatio = serializer.Serialize<bool>(LockWindowAspectRatio, DisplaySection, "LockWindowAspectRatio");
+        DisableCameraShake = serializer.Serialize<bool>(DisableCameraShake, DisplaySection, "DisableCameraShake");
 
         // Controls
         Controls = serializer.SerializeDictionary<Input, Keys>(Controls, ControlsSection);

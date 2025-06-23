@@ -76,6 +76,17 @@ public static class GameOptions
                     getData: _ => Engine.Config.LockWindowAspectRatio,
                     setData: data => Engine.Config.LockWindowAspectRatio = data,
                     getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "DISABLE CAMERA SHAKE",
+                    infoText: "Disables the camera shaking effect which is used in some parts of the game to indicate a big impact. This can help for people who suffer from motion sickness.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true)
+                    ],
+                    getData: _ => Engine.Config.DisableCameraShake,
+                    setData: data => Engine.Config.DisableCameraShake = data,
+                    getCustomName: _ => null),
             ]),
             new GameOptionsGroup("CONTROLS",
             [

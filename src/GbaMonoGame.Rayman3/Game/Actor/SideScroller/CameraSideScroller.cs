@@ -166,10 +166,13 @@ public sealed partial class CameraSideScroller : CameraActor2D
                 return true;
 
             case Message.Cam_Shake:
-                ShakeLength = (int)param;
-                HasStartedShake = false;
-                ShakeTimer = 0;
-                ShakeFrame = 0;
+                if (!Engine.Config.DisableCameraShake)
+                {
+                    ShakeLength = (int)param;
+                    HasStartedShake = false;
+                    ShakeTimer = 0;
+                    ShakeFrame = 0;
+                }
                 return true;
 
             case Message.Cam_MoveToTarget:

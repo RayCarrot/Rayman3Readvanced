@@ -23,7 +23,6 @@ However online multiplayer would be much more complicated. The game expects the 
 ## ⚙️ Options
 ### 📃 General
 - Have option presets, such as "Modern" and "Original". Also clarify for each option which value is the original one. In the code we give each option a tag to indicate which preset it's included in.
-- Option to disable camera shaking as it can cause nausea for some players.
 
 ### ⌚ Performance
 - Option not to clear cache between Frame instances.
