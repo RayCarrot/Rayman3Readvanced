@@ -4,7 +4,6 @@ using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
@@ -30,11 +29,6 @@ public class PauseDialogOptionsMenu
     private const float TabsCursorBaseY = 12;
     private const float InfoTextBoxBaseY = 112;
     private const float InfoTextLinesBaseY = 109;
-    private const float ScrollBarBaseY = 40;
-    private const float ScrollBarThumbBaseY = 56;
-
-    private const int MaxOptions = 4;
-    private const float ScrollBarLength = 32;
 
     private const float LineHeight = 12;
 
@@ -51,6 +45,7 @@ public class PauseDialogOptionsMenu
     public GameOptions.GameOptionsGroup[] Tabs { get; set; }
     public int SelectedTab { get; set; }
     public bool IsEditingOption { get; set; }
+    public bool ShowInfoText { get; set; }
 
     public float? CursorStartY { get; set; }
     public float? CursorDestY { get; set; }
@@ -60,6 +55,7 @@ public class PauseDialogOptionsMenu
 
     public OptionsMenuOption[] Options { get; set; }
     public int SelectedOption { get; set; }
+    public int MaxOptions => ShowInfoText ? 4 : 8;
     public int ScrollOffset { get; set; }
     public bool HasScrollableContent => Options.Length > MaxOptions;
     public int MaxScrollOffset => Math.Max(Options.Length - MaxOptions, 0);
@@ -76,8 +72,7 @@ public class PauseDialogOptionsMenu
     public AnimatedObject ArrowLeft { get; set; }
     public AnimatedObject ArrowRight { get; set; }
 
-    public SpriteTextureObject ScrollBar { get; set; }
-    public SpriteTextureObject ScrollBarThumb { get; set; }
+    public MenuScrollBar ScrollBar { get; set; }
 
     public float OffsetY { get; set; }
     public float CursorOffsetY { get; set; }
@@ -237,10 +232,19 @@ public class PauseDialogOptionsMenu
         OptionsMenuOption option = Options[SelectedOption];
 
         // Set the info text
-        byte[][] textLines = FontManager.GetWrappedStringLines(FontSize.Font32, option.InfoText, InfoTextMaxWidth * (1 / InfoTextScale));
-        Debug.Assert(textLines.Length <= InfoTextMaxLines, "Info text has too many lines");
-        for (int i = 0; i < InfoTextLines.Length; i++)
-            InfoTextLines[i].Text = i < textLines.Length ? FontManager.GetTextString(textLines[i]) : String.Empty;
+        if (option.InfoText != null)
+        {
+            ShowInfoText = true;
+
+            byte[][] textLines = FontManager.GetWrappedStringLines(FontSize.Font32, option.InfoText, InfoTextMaxWidth * (1 / InfoTextScale));
+            Debug.Assert(textLines.Length <= InfoTextMaxLines, "Info text has too many lines");
+            for (int i = 0; i < InfoTextLines.Length; i++)
+                InfoTextLines[i].Text = i < textLines.Length ? FontManager.GetTextString(textLines[i]) : String.Empty;
+        }
+        else
+        {
+            ShowInfoText = false;
+        }
     }
 
     public void MoveIn()
@@ -362,8 +366,6 @@ public class PauseDialogOptionsMenu
         Texture2D tabHeadersTexture = Engine.FixContentManager.Load<Texture2D>(Assets.OptionsMenuTabsTexture);
         Texture2D infoTextBoxTexture = Engine.FixContentManager.Load<Texture2D>(Assets.MenuTextBoxTexture);
         AnimatedObjectResource multiplayerTypeFrameAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerTypeFrameAnimations);
-        Texture2D scrollBarTexture = Engine.FixContentManager.Load<Texture2D>(Assets.ScrollBarTexture);
-        Texture2D scrollBarThumbTexture = Engine.FixContentManager.Load<Texture2D>(Assets.ScrollBarThumbTexture);
 
         Canvas = new SpriteTextureObject
         {
@@ -465,23 +467,7 @@ public class PauseDialogOptionsMenu
             RenderContext = arrowRenderContext,
         };
 
-        ScrollBar = new SpriteTextureObject
-        {
-            BgPriority = 0,
-            ObjPriority = 0,
-            ScreenPos = new Vector2(352, ScrollBarBaseY),
-            Texture = scrollBarTexture,
-            RenderContext = RenderContext,
-        };
-
-        ScrollBarThumb = new SpriteTextureObject
-        {
-            BgPriority = 0,
-            ObjPriority = 0,
-            ScreenPos = new Vector2(357, ScrollBarThumbBaseY),
-            Texture = scrollBarThumbTexture,
-            RenderContext = RenderContext,
-        };
+        ScrollBar = new MenuScrollBar(RenderContext, new Vector2(352, 40), 0);
 
         // Reset values
         IsEditingOption = false;
@@ -643,11 +629,6 @@ public class PauseDialogOptionsMenu
             for (int i = 0; i < InfoTextLines.Length; i++)
                 InfoTextLines[i].ScreenPos = InfoTextLines[i].ScreenPos with { Y = InfoTextLinesBaseY + height * i - OffsetY };
 
-            ScrollBar.ScreenPos = ScrollBar.ScreenPos with { Y = ScrollBarBaseY - OffsetY };
-
-            float scrollY = MathHelper.Lerp(0, ScrollBarLength, ScrollOffset / (float)MaxScrollOffset);
-            ScrollBarThumb.ScreenPos = ScrollBarThumb.ScreenPos with { Y = ScrollBarThumbBaseY + scrollY - OffsetY };
-
             // Draw
             animationPlayer.Play(Canvas);
             animationPlayer.Play(Cursor);
@@ -661,9 +642,12 @@ public class PauseDialogOptionsMenu
 
             animationPlayer.Play(TabsCursor);
 
-            animationPlayer.Play(InfoTextBox);
-            foreach (SpriteTextObject infoTextLine in InfoTextLines)
-                animationPlayer.Play(infoTextLine);
+            if (ShowInfoText)
+            {
+                animationPlayer.Play(InfoTextBox);
+                foreach (SpriteTextObject infoTextLine in InfoTextLines)
+                    animationPlayer.Play(infoTextLine);
+            }
 
             if (IsEditingOption)
             {
@@ -677,9 +661,19 @@ public class PauseDialogOptionsMenu
                 animationPlayer.Play(ArrowRight);
             }
 
-            animationPlayer.Play(ScrollBar);
             if (HasScrollableContent)
-                animationPlayer.Play(ScrollBarThumb);
+            {
+                ScrollBar.ScrollOffset = ScrollOffset;
+                ScrollBar.MaxScrollOffset = MaxScrollOffset;
+            }
+            else
+            {
+                ScrollBar.ScrollOffset = 0;
+                ScrollBar.MaxScrollOffset = 0;
+            }
+
+            ScrollBar.Size = ShowInfoText ? MenuScrollBarSize.Small : MenuScrollBarSize.Big;
+            ScrollBar.Draw(animationPlayer);
         }
     }
 }

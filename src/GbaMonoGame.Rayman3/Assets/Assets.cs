@@ -29,7 +29,8 @@ public static class Assets
     public const string SaveSlotIcon_4Texture = "Rayman3/Menu/SaveSlotIcon_4";
     public const string SaveSlotIcon_5Texture = "Rayman3/Menu/SaveSlotIcon_5";
     public const string SaveSlotTimeTexture = "Rayman3/Menu/SaveSlotTime";
-    public const string ScrollBarTexture = "Rayman3/Menu/ScrollBar";
+    public const string ScrollBarBigTexture = "Rayman3/Menu/ScrollBarBig";
+    public const string ScrollBarSmallTexture = "Rayman3/Menu/ScrollBarSmall";
     public const string ScrollBarThumbTexture = "Rayman3/Menu/ScrollBarThumb";
 
     public const string TitleScreenTexture = "Rayman3/TitleScreen/TitleScreen";

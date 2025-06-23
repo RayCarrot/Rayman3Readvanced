@@ -22,12 +22,14 @@ public class OptionsMenuPage : MenuPage
     public override bool UsesCursor => true;
     public override int BackgroundPalette => 1;
     public override int LineHeight => 12;
-    public override int MaxOptions => 4;
+    public override int MaxOptions => ShowInfoText ? 4 : 8;
     public override bool HasScrollBar => true;
+    public override MenuScrollBarSize ScrollBarSize => ShowInfoText ? MenuScrollBarSize.Small : MenuScrollBarSize.Big;
 
     public GameOptions.GameOptionsGroup[] Tabs { get; set; }
     public int SelectedTab { get; set; }
     public bool IsEditingOption { get; set; }
+    public bool ShowInfoText { get; set; }
 
     public float? TabsCursorStartX { get; set; }
     public float? TabsCursorDestX { get; set; }
@@ -104,10 +106,19 @@ public class OptionsMenuPage : MenuPage
         OptionsMenuOption option = (OptionsMenuOption)Options[SelectedOption];
 
         // Set the info text
-        byte[][] textLines = FontManager.GetWrappedStringLines(FontSize.Font32, option.InfoText, InfoTextMaxWidth * (1 / InfoTextScale));
-        Debug.Assert(textLines.Length <= InfoTextMaxLines, "Info text has too many lines");
-        for (int i = 0; i < InfoTextLines.Length; i++)
-            InfoTextLines[i].Text = i < textLines.Length ? FontManager.GetTextString(textLines[i]) : String.Empty;
+        if (option.InfoText != null)
+        {
+            ShowInfoText = true;
+
+            byte[][] textLines = FontManager.GetWrappedStringLines(FontSize.Font32, option.InfoText, InfoTextMaxWidth * (1 / InfoTextScale));
+            Debug.Assert(textLines.Length <= InfoTextMaxLines, "Info text has too many lines");
+            for (int i = 0; i < InfoTextLines.Length; i++)
+                InfoTextLines[i].Text = i < textLines.Length ? FontManager.GetTextString(textLines[i]) : String.Empty;
+        }
+        else
+        {
+            ShowInfoText = false;
+        }
 
         return true;
     }
@@ -320,9 +331,12 @@ public class OptionsMenuPage : MenuPage
 
         animationPlayer.Play(TabsCursor);
 
-        animationPlayer.Play(InfoTextBox);
-        foreach (SpriteTextObject infoTextLine in InfoTextLines)
-            animationPlayer.Play(infoTextLine);
+        if (ShowInfoText)
+        {
+            animationPlayer.Play(InfoTextBox);
+            foreach (SpriteTextObject infoTextLine in InfoTextLines)
+                animationPlayer.Play(infoTextLine);
+        }
 
         if (IsEditingOption)
         {

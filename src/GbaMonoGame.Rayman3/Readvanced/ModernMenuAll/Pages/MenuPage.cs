@@ -32,6 +32,7 @@ public abstract class MenuPage
     public abstract int LineHeight { get; }
     public virtual int MaxOptions => 6;
     public virtual bool HasScrollBar => false;
+    public virtual MenuScrollBarSize ScrollBarSize => MenuScrollBarSize.Big;
     
     private Vector2 GetOptionPosition(int index) => new(75, 54 + LineHeight * index);
 
