@@ -525,28 +525,23 @@ public class PauseDialogOptionsMenu
         // Editing
         else
         {
-            if (JoyPad.IsButtonJustPressed(GbaInput.A))
+            OptionsMenuOption option = Options[SelectedOption];
+            OptionsMenuOption.EditStepResult result = option.EditStep();
+
+            if (result is OptionsMenuOption.EditStepResult.Confirm or OptionsMenuOption.EditStepResult.ConfirmResetAll)
             {
+                if (result == OptionsMenuOption.EditStepResult.ConfirmResetAll)
+                    foreach (OptionsMenuOption o in Options)
+                        o.Reset();
+
                 IsEditingOption = false;
-
-                OptionsMenuOption option = Options[SelectedOption];
-                option.Apply();
-
                 CursorClick();
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.B))
+            else if (result == OptionsMenuOption.EditStepResult.Cancel)
             {
                 IsEditingOption = false;
-
-                OptionsMenuOption option = Options[SelectedOption];
                 option.Reset();
-
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
-            }
-            else
-            {
-                OptionsMenuOption option = Options[SelectedOption];
-                option.Step();
             }
         }
 
@@ -653,12 +648,15 @@ public class PauseDialogOptionsMenu
             {
                 OptionsMenuOption option = Options[SelectedOption];
 
-                // Set the arrow positions
-                ArrowLeft.ScreenPos = option.ArrowLeftPosition * (1 / ArrowScale);
-                ArrowRight.ScreenPos = option.ArrowRightPosition * (1 / ArrowScale);
+                if (option.ShowArrows)
+                {
+                    // Set the arrow positions
+                    ArrowLeft.ScreenPos = option.ArrowLeftPosition * (1 / ArrowScale);
+                    ArrowRight.ScreenPos = option.ArrowRightPosition * (1 / ArrowScale);
 
-                animationPlayer.Play(ArrowLeft);
-                animationPlayer.Play(ArrowRight);
+                    animationPlayer.Play(ArrowLeft);
+                    animationPlayer.Play(ArrowRight);
+                }
             }
 
             if (HasScrollableContent)

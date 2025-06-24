@@ -27,6 +27,8 @@ public class MultiSelectionOptionsMenuOption<T> : OptionsMenuOption
     private int _prevSelectedIndex;
     private int _selectedIndex;
 
+    public override bool ShowArrows => true;
+
     private void UpdateSelection()
     {
         ValueTextObject.Text = _displayNames[_selectedIndex];
@@ -45,15 +47,6 @@ public class MultiSelectionOptionsMenuOption<T> : OptionsMenuOption
         else
         {
             return _items[_selectedIndex].Data;
-        }
-    }
-
-    public override void Apply()
-    {
-        if (_selectedIndex != _prevSelectedIndex)
-        {
-            _setData(GetSelectedData());
-            _prevSelectedIndex = _selectedIndex;
         }
     }
 
@@ -81,9 +74,23 @@ public class MultiSelectionOptionsMenuOption<T> : OptionsMenuOption
         UpdateSelection();
     }
 
-    public override void Step()
+    public override EditStepResult EditStep()
     {
-        if (JoyPad.IsButtonJustPressed(GbaInput.Left))
+        if (JoyPad.IsButtonJustPressed(GbaInput.A))
+        {
+            if (_selectedIndex != _prevSelectedIndex)
+            {
+                _setData(GetSelectedData());
+                _prevSelectedIndex = _selectedIndex;
+            }
+
+            return EditStepResult.Confirm;
+        }
+        else if (JoyPad.IsButtonJustPressed(GbaInput.B))
+        {
+            return EditStepResult.Cancel;
+        }
+        else if (JoyPad.IsButtonJustPressed(GbaInput.Left))
         {
             _selectedIndex--;
             if (_selectedIndex < 0)
@@ -101,12 +108,8 @@ public class MultiSelectionOptionsMenuOption<T> : OptionsMenuOption
             UpdateSelection();
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
         }
-    }
 
-    public override void Init(int bgPriority, RenderContext renderContext, int index)
-    {
-        base.Init(bgPriority, renderContext, index);
-        Reset();
+        return EditStepResult.None;
     }
 
     public class Item(string displayName, T data)

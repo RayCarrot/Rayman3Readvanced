@@ -7,18 +7,18 @@ namespace GbaMonoGame;
 
 public static class InputManager
 {
-    private static readonly Dictionary<GbaInput, Input> _gbaInputMapping = new()
+    private static readonly Dictionary<Input, GbaInput> _gbaInputMapping = new()
     {
-        [GbaInput.A] = Input.Gba_A,
-        [GbaInput.B] = Input.Gba_B,
-        [GbaInput.Select] = Input.Gba_Select,
-        [GbaInput.Start] = Input.Gba_Start,
-        [GbaInput.Right] = Input.Gba_Right,
-        [GbaInput.Left] = Input.Gba_Left,
-        [GbaInput.Up] = Input.Gba_Up,
-        [GbaInput.Down] = Input.Gba_Down,
-        [GbaInput.R] = Input.Gba_R,
-        [GbaInput.L] = Input.Gba_L,
+        [Input.Gba_A] = GbaInput.A,
+        [Input.Gba_B] = GbaInput.B,
+        [Input.Gba_Select] = GbaInput.Select,
+        [Input.Gba_Start] = GbaInput.Start,
+        [Input.Gba_Right] = GbaInput.Right,
+        [Input.Gba_Left] = GbaInput.Left,
+        [Input.Gba_Up] = GbaInput.Up,
+        [Input.Gba_Down] = GbaInput.Down,
+        [Input.Gba_R] = GbaInput.R,
+        [Input.Gba_L] = GbaInput.L,
     };
 
     private static KeyboardState _previousKeyboardState;
@@ -54,6 +54,12 @@ public static class InputManager
         };
     }
     public static Keys GetKey(Input input) => Engine.Config.Controls[input];
+    public static GbaInput GetGbaInput(Input input) => _gbaInputMapping[input];
+
+    // TODO: Improve
+    public static string GetKeyName(Keys key) => key.ToString();
+
+    public static Keys[] GetPressedKeys() => _keyboardState.GetPressedKeys();
 
     public static bool IsButtonPressed(Keys input) => _keyboardState.IsKeyDown(input);
     public static bool IsButtonReleased(Keys input) => _keyboardState.IsKeyUp(input);
@@ -65,14 +71,14 @@ public static class InputManager
     public static bool IsButtonJustPressed(Input input) => IsButtonJustPressed(GetKey(input));
     public static bool IsButtonJustReleased(Input input) => IsButtonJustReleased(GetKey(input));
 
-    public static GbaInput GetGbaInputs()
+    public static GbaInput GetPressedGbaInputs()
     {
         GbaInput inputs = GbaInput.Valid;
 
-        foreach (KeyValuePair<GbaInput, Input> input in _gbaInputMapping)
+        foreach (KeyValuePair<Input, GbaInput> input in _gbaInputMapping)
         {
-            if (IsButtonPressed(input.Value))
-                inputs |= input.Key;
+            if (IsButtonPressed(input.Key))
+                inputs |= input.Value;
         }
 
         // Cancel out if opposite directions are pressed

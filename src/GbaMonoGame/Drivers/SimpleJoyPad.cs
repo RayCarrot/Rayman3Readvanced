@@ -25,7 +25,7 @@ public class SimpleJoyPad
 
         if (!IsInReplayMode)
         {
-            inputs = InputManager.GetGbaInputs();
+            inputs = InputManager.GetPressedGbaInputs();
         }
         else
         {

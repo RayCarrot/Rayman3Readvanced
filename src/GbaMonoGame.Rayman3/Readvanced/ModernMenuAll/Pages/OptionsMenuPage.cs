@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
@@ -277,28 +278,23 @@ public class OptionsMenuPage : MenuPage
         // Editing
         else
         {
-            if (JoyPad.IsButtonJustPressed(GbaInput.A))
+            OptionsMenuOption option = (OptionsMenuOption)Options[SelectedOption];
+            OptionsMenuOption.EditStepResult result = option.EditStep();
+
+            if (result is OptionsMenuOption.EditStepResult.Confirm or OptionsMenuOption.EditStepResult.ConfirmResetAll)
             {
+                if (result == OptionsMenuOption.EditStepResult.ConfirmResetAll)
+                    foreach (OptionsMenuOption o in Options.OfType<OptionsMenuOption>())
+                        o.Reset();
+
                 IsEditingOption = false;
-
-                OptionsMenuOption option = (OptionsMenuOption)Options[SelectedOption];
-                option.Apply();
-
                 CursorClick(null);
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.B))
+            else if (result == OptionsMenuOption.EditStepResult.Cancel)
             {
                 IsEditingOption = false;
-
-                OptionsMenuOption option = (OptionsMenuOption)Options[SelectedOption];
                 option.Reset();
-
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
-            }
-            else
-            {
-                OptionsMenuOption option = (OptionsMenuOption)Options[SelectedOption];
-                option.Step();
             }
         }
 
@@ -342,12 +338,15 @@ public class OptionsMenuPage : MenuPage
         {
             OptionsMenuOption option = (OptionsMenuOption)Options[SelectedOption];
 
-            // Set the arrow positions
-            ArrowLeft.ScreenPos = option.ArrowLeftPosition * (1 / ArrowScale);
-            ArrowRight.ScreenPos = option.ArrowRightPosition * (1 / ArrowScale);
+            if (option.ShowArrows)
+            {
+                // Set the arrow positions
+                ArrowLeft.ScreenPos = option.ArrowLeftPosition * (1 / ArrowScale);
+                ArrowRight.ScreenPos = option.ArrowRightPosition * (1 / ArrowScale);
 
-            animationPlayer.Play(ArrowLeft);
-            animationPlayer.Play(ArrowRight);
+                animationPlayer.Play(ArrowLeft);
+                animationPlayer.Play(ArrowRight);
+            }
         }
     }
 }

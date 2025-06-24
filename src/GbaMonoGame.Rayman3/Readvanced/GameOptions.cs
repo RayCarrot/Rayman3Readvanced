@@ -90,17 +90,37 @@ public static class GameOptions
             ]),
             new GameOptionsGroup("CONTROLS",
             [
-                // TODO: Implement
-                new MultiSelectionOptionsMenuOption<object>(
-                    text: "TEMP",
-                    infoText: "TEMP",
-                    items:
-                    [
-                        new MultiSelectionOptionsMenuOption<object>.Item("TEMP", null),
-                    ],
-                    getData: _ => null,
-                    setData: _ => { },
-                    getCustomName: _ => null),
+                new ControlOptionsMenuOption(
+                    text: "UP",
+                    input: Input.Gba_Up),
+                new ControlOptionsMenuOption(
+                    text: "DOWN",
+                    input: Input.Gba_Down),
+                new ControlOptionsMenuOption(
+                    text: "RIGHT",
+                    input: Input.Gba_Right),
+                new ControlOptionsMenuOption(
+                    text: "LEFT",
+                    input: Input.Gba_Left),
+                new ControlOptionsMenuOption(
+                    text: "JUMP/CONFIRM (A)",
+                    input: Input.Gba_A),
+                new ControlOptionsMenuOption(
+                    text: "ATTACK/BACK (B)",
+                    input: Input.Gba_B),
+                new ControlOptionsMenuOption(
+                    text: "BODYSHOT/RIGHT (R)",
+                    input: Input.Gba_R),
+                new ControlOptionsMenuOption(
+                    text: "WALL CLIMB/LEFT (L)",
+                    input: Input.Gba_L),
+                new ControlOptionsMenuOption(
+                    text: "PAUSE/SELECT (START)",
+                    input: Input.Gba_Start),
+                new ControlOptionsMenuOption(
+                    text: "SPECIAL/BACK (SELECT)",
+                    input: Input.Gba_Select),
+                // TODO: Add other inputs
             ]),
             new GameOptionsGroup("SOUND",
             [

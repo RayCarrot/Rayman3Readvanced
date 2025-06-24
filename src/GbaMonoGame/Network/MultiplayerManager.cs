@@ -93,7 +93,7 @@ public static class MultiplayerManager
                     }
                     else
                     {
-                        MultiJoyPad.Read(MachineId, time.Value, InputManager.GetGbaInputs());
+                        MultiJoyPad.Read(MachineId, time.Value, InputManager.GetPressedGbaInputs());
                         
                         GbaInput input = MultiJoyPad.GetInput(MachineId, time.Value);
 

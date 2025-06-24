@@ -21,6 +21,7 @@ public abstract class OptionsMenuOption : MenuOption
     public SpriteFontTextObject TextObject { get; set; }
     public SpriteFontTextObject ValueTextObject { get; set; }
     
+    public abstract bool ShowArrows { get; }
     public Vector2 ArrowLeftPosition { get; set; }
     public Vector2 ArrowRightPosition { get; set; }
 
@@ -31,9 +32,8 @@ public abstract class OptionsMenuOption : MenuOption
         ArrowRightPosition = ValueTextObject.ScreenPos + new Vector2(valueTextWidth + ValueTextPadding, -1);
     }
 
-    public abstract void Apply();
     public abstract void Reset();
-    public abstract void Step();
+    public abstract EditStepResult EditStep();
 
     public override void Init(int bgPriority, RenderContext renderContext, int index)
     {
@@ -55,6 +55,8 @@ public abstract class OptionsMenuOption : MenuOption
             AffineMatrix = new AffineMatrix(0, new Vector2(ValueTextScale), false, false),
             Font = ReadvancedFonts.MenuYellow,
         };
+
+        Reset();
     }
 
     public override void SetPosition(Vector2 position)
@@ -73,5 +75,13 @@ public abstract class OptionsMenuOption : MenuOption
     {
         animationPlayer.Play(TextObject);
         animationPlayer.Play(ValueTextObject);
+    }
+
+    public enum EditStepResult
+    {
+        None,
+        Confirm,
+        ConfirmResetAll,
+        Cancel,
     }
 }
