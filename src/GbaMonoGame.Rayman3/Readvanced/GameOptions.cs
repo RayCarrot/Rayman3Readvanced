@@ -154,7 +154,7 @@ public static class GameOptions
                     items:
                     [
                         new MultiSelectionOptionsMenuOption<Vector2>.Item($"ORIGINAL ({originalRes.X}x{originalRes.Y})", originalRes, TweaksPreset.Original),
-                        new MultiSelectionOptionsMenuOption<Vector2>.Item($"READVANCED ({modernRes.X}x{modernRes.Y})", modernRes, TweaksPreset.Readvanced), // 16:9
+                        new MultiSelectionOptionsMenuOption<Vector2>.Item($"WIDESCREEN ({modernRes.X}x{modernRes.Y})", modernRes, TweaksPreset.Readvanced), // 16:9
                     ],
                     getData: _ => Engine.InternalGameResolution,
                     setData: data =>
@@ -169,8 +169,8 @@ public static class GameOptions
                     infoText: "Replaces the backgrounds of some levels with extended ones to better fit higher resolution. Doesn't go into effect until the level is restarted.",
                     items:
                     [
-                        new MultiSelectionOptionsMenuOption<bool>.Item("ORIGINAL (OFF)", false, TweaksPreset.Original),
-                        new MultiSelectionOptionsMenuOption<bool>.Item("READVANCED (ON)", true, TweaksPreset.Readvanced),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, TweaksPreset.Readvanced),
                     ],
                     getData: _ => Engine.Config.UseExtendedBackgrounds,
                     setData: data => Engine.Config.UseExtendedBackgrounds = data,
@@ -180,8 +180,8 @@ public static class GameOptions
                     infoText: "By default the N-Gage version has fewer visual effects than the GBA version. Using this option you can restore them. Some visual effects won't be changed until a new level is loaded.",
                     items:
                     [
-                        new MultiSelectionOptionsMenuOption<bool>.Item("ORIGINAL (OFF)", false, TweaksPreset.Original),
-                        new MultiSelectionOptionsMenuOption<bool>.Item("READVANCED (ON)", true, TweaksPreset.Readvanced),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, TweaksPreset.Readvanced),
                     ],
                     getData: _ => Engine.Config.UseGbaEffectsOnNGage,
                     setData: data => Engine.Config.UseGbaEffectsOnNGage = data,
@@ -192,7 +192,7 @@ public static class GameOptions
                     items:
                     [
                         new MultiSelectionOptionsMenuOption<bool>.Item("ORIGINAL", false, TweaksPreset.Original),
-                        new MultiSelectionOptionsMenuOption<bool>.Item("READVANCED", true, TweaksPreset.Readvanced),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("UPDATED", true, TweaksPreset.Readvanced),
                     ],
                     getData: _ => Engine.Config.UseModernPauseDialog,
                     setData: data => Engine.Config.UseModernPauseDialog = data,
@@ -213,8 +213,8 @@ public static class GameOptions
                     infoText: "If enabled then you can skip textboxes instead of pausing.",
                     items:
                     [
-                        new MultiSelectionOptionsMenuOption<bool>.Item("ORIGINAL (OFF)", false, TweaksPreset.Original),
-                        new MultiSelectionOptionsMenuOption<bool>.Item("READVANCED (ON)", true, TweaksPreset.Readvanced),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, TweaksPreset.Readvanced),
                     ],
                     getData: _ => Engine.Config.CanSkipTextBoxes,
                     setData: data => Engine.Config.CanSkipTextBoxes = data,
@@ -224,8 +224,8 @@ public static class GameOptions
                     infoText: "Indicates if you want to play with the bugs in the game fixed or not. Some bugs are always fixed.",
                     items:
                     [
-                        new MultiSelectionOptionsMenuOption<bool>.Item("ORIGINAL (OFF)", false, TweaksPreset.Original),
-                        new MultiSelectionOptionsMenuOption<bool>.Item("READVANCED (ON)", true, TweaksPreset.Readvanced),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, TweaksPreset.Readvanced),
                     ],
                     getData: _ => Engine.Config.FixBugs,
                     setData: data => Engine.Config.FixBugs = data,
@@ -235,8 +235,8 @@ public static class GameOptions
                     infoText: "If enabled then new projectile objects will be created in the level if there aren't enough available to show on screen. This helps avoid enemy shots not firing if playing in a higher internal resolution.",
                     items:
                     [
-                        new MultiSelectionOptionsMenuOption<bool>.Item("ORIGINAL (OFF)", false, TweaksPreset.Original),
-                        new MultiSelectionOptionsMenuOption<bool>.Item("READVANCED (ON)", true, TweaksPreset.Readvanced),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, TweaksPreset.Readvanced),
                     ],
                     getData: _ => Engine.Config.AddProjectilesWhenNeeded,
                     setData: data => Engine.Config.AddProjectilesWhenNeeded = data,
