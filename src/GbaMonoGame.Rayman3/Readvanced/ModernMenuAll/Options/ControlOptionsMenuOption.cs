@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework.Input;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
@@ -20,7 +22,7 @@ public class ControlOptionsMenuOption : OptionsMenuOption
         ValueTextObject.Text = InputManager.GetKeyName(key).ToUpper();
     }
 
-    private bool UpdateInput(Keys key)
+    private void UpdateInput(Keys key, IReadOnlyList<OptionsMenuOption> options)
     {
         Keys prevKey = Engine.Config.Controls[Input];
         Engine.Config.Controls[Input] = key;
@@ -36,19 +38,19 @@ public class ControlOptionsMenuOption : OptionsMenuOption
             {
                 Engine.Config.Controls[input] = prevKey;
                 JoyPad.Current.KeyStatus |= InputManager.GetGbaInput(input);
-                return true;
+
+                ControlOptionsMenuOption option = options.OfType<ControlOptionsMenuOption>().FirstOrDefault(x => x.Input == input);
+                option?.UpdateSelection();
             }
         }
-
-        return false;
     }
 
-    public override void Reset()
+    public override void Reset(IReadOnlyList<OptionsMenuOption> options)
     {
         UpdateSelection();
     }
 
-    public override EditStepResult EditStep()
+    public override EditStepResult EditStep(IReadOnlyList<OptionsMenuOption> options)
     {
         ValueTextObject.Text = "PRESS A KEY";
 
@@ -62,9 +64,9 @@ public class ControlOptionsMenuOption : OptionsMenuOption
         if (!InputManager.IsButtonJustPressed(key))
             return EditStepResult.None;
 
-        bool resetAll = UpdateInput(key);
+        UpdateInput(key, options);
         UpdateSelection();
 
-        return resetAll ? EditStepResult.ConfirmResetAll : EditStepResult.Confirm;
+        return EditStepResult.Apply;
     }
 }

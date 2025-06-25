@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
@@ -28,6 +27,7 @@ public class OptionsMenuPage : MenuPage
     public override MenuScrollBarSize ScrollBarSize => ShowInfoText ? MenuScrollBarSize.Small : MenuScrollBarSize.Big;
 
     public GameOptions.GameOptionsGroup[] Tabs { get; set; }
+    public OptionsMenuOption[] OptionsMenuOptions => Tabs[SelectedTab].Options;
     public int SelectedTab { get; set; }
     public bool IsEditingOption { get; set; }
     public bool ShowInfoText { get; set; }
@@ -40,7 +40,7 @@ public class OptionsMenuPage : MenuPage
     public SpriteFontTextObject[] TabHeaderTexts { get; set; }
 
     public SpriteTextureObject InfoTextBox { get; set; }
-    public SpriteTextObject[] InfoTextLines { get; set; }
+    public SpriteTextObject InfoText { get; set; }
     public AnimatedObject ArrowLeft { get; set; }
     public AnimatedObject ArrowRight { get; set; }
 
@@ -58,6 +58,10 @@ public class OptionsMenuPage : MenuPage
         ClearOptions();
         foreach (OptionsMenuOption menuOption in Tabs[selectedTab].Options)
             AddOption(menuOption);
+
+        // Reset all options when switching to the tab (handling presets last!)
+        foreach (OptionsMenuOption option in OptionsMenuOptions.OrderBy(x => x is PresetSelectionOptionsMenuOption ? 1 : 0))
+            option.Reset(OptionsMenuOptions);
 
         SetSelectedOption(0, playSound: false, forceUpdate: true);
 
@@ -111,10 +115,9 @@ public class OptionsMenuPage : MenuPage
         {
             ShowInfoText = true;
 
-            byte[][] textLines = FontManager.GetWrappedStringLines(FontSize.Font32, option.InfoText, InfoTextMaxWidth * (1 / InfoTextScale));
-            Debug.Assert(textLines.Length <= InfoTextMaxLines, "Info text has too many lines");
-            for (int i = 0; i < InfoTextLines.Length; i++)
-                InfoTextLines[i].Text = i < textLines.Length ? FontManager.GetTextString(textLines[i]) : String.Empty;
+            string wrappedInfoText = FontManager.WrapText(InfoText.FontSize, option.InfoText, InfoTextMaxWidth * (1 / InfoTextScale));
+            Debug.Assert(wrappedInfoText.Count(x => x == '\n') + 1 <= InfoTextMaxLines, "Info text has too many lines");
+            InfoText.Text = wrappedInfoText;
         }
         else
         {
@@ -179,23 +182,17 @@ public class OptionsMenuPage : MenuPage
             Texture = infoTextBoxTexture,
         };
 
-        InfoTextLines = new SpriteTextObject[InfoTextMaxLines];
-        for (int i = 0; i < InfoTextLines.Length; i++)
+        InfoText = new SpriteTextObject
         {
-            float height = FontManager.GetFontHeight(FontSize.Font32) * InfoTextScale;
-
-            InfoTextLines[i] = new SpriteTextObject
-            {
-                BgPriority = 3,
-                ObjPriority = 0,
-                YPriority = 0,
-                ScreenPos = new Vector2(75, 109 + height * i),
-                RenderContext = RenderContext,
-                AffineMatrix = new AffineMatrix(0, new Vector2(InfoTextScale), false, false),
-                Color = TextColor.TextBox,
-                FontSize = FontSize.Font32,
-            };
-        }
+            BgPriority = 3,
+            ObjPriority = 0,
+            YPriority = 0,
+            ScreenPos = new Vector2(75, 109),
+            RenderContext = RenderContext,
+            AffineMatrix = new AffineMatrix(0, new Vector2(InfoTextScale)),
+            Color = TextColor.TextBox,
+            FontSize = FontSize.Font32,
+        };
 
         // A bit hacky, but create a new render context for the arrows in order to scale them. We could do it through the
         // affine matrix, but that will misalign the animation sprites.
@@ -260,8 +257,9 @@ public class OptionsMenuPage : MenuPage
             {
                 IsEditingOption = true;
 
+                // Reset option before editing in case it has changed (like the window might have been resized)
                 OptionsMenuOption option = (OptionsMenuOption)Options[SelectedOption];
-                option.Reset();
+                option.Reset(OptionsMenuOptions);
 
                 CursorClick(null);
 
@@ -279,13 +277,16 @@ public class OptionsMenuPage : MenuPage
         else
         {
             OptionsMenuOption option = (OptionsMenuOption)Options[SelectedOption];
-            OptionsMenuOption.EditStepResult result = option.EditStep();
+            OptionsMenuOption.EditStepResult result = option.EditStep(OptionsMenuOptions);
 
-            if (result is OptionsMenuOption.EditStepResult.Confirm or OptionsMenuOption.EditStepResult.ConfirmResetAll)
+            if (result == OptionsMenuOption.EditStepResult.Apply)
             {
-                if (result == OptionsMenuOption.EditStepResult.ConfirmResetAll)
-                    foreach (OptionsMenuOption o in Options.OfType<OptionsMenuOption>())
-                        o.Reset();
+                // Reset preset options
+                foreach (OptionsMenuOption o in OptionsMenuOptions)
+                {
+                    if (o != option && o is PresetSelectionOptionsMenuOption)
+                        o.Reset(OptionsMenuOptions);
+                }
 
                 IsEditingOption = false;
                 CursorClick(null);
@@ -293,7 +294,7 @@ public class OptionsMenuPage : MenuPage
             else if (result == OptionsMenuOption.EditStepResult.Cancel)
             {
                 IsEditingOption = false;
-                option.Reset();
+                option.Reset(OptionsMenuOptions);
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
             }
         }
@@ -330,8 +331,7 @@ public class OptionsMenuPage : MenuPage
         if (ShowInfoText)
         {
             animationPlayer.Play(InfoTextBox);
-            foreach (SpriteTextObject infoTextLine in InfoTextLines)
-                animationPlayer.Play(infoTextLine);
+            animationPlayer.Play(InfoText);
         }
 
         if (IsEditingOption)

@@ -96,7 +96,7 @@ public class Font
             }
         }
 
-        wrappedText.AppendLine(text[startIndex..]);
+        wrappedText.Append(text[startIndex..]);
 
         return wrappedText.ToString();
     }

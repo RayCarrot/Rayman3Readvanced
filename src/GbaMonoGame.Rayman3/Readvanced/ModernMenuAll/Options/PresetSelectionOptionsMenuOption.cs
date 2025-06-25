@@ -6,23 +6,16 @@ using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
-public class MultiSelectionOptionsMenuOption<T> : OptionsMenuOption
+public class PresetSelectionOptionsMenuOption : OptionsMenuOption
 {
-    public MultiSelectionOptionsMenuOption(string text, string infoText, Item[] items, Func<Item[], T> getData, Action<T> setData, Func<T, string> getCustomName) : base(text, infoText)
+    public PresetSelectionOptionsMenuOption(string text, string infoText, PresetItem[] presetItems) : base(text, infoText)
     {
-        _items = items;
-        _getData = getData;
-        _setData = setData;
-        _getCustomName = getCustomName;
+        _presetItems = presetItems;
     }
 
-    private readonly Item[] _items;
-    private readonly Func<Item[], T> _getData;
-    private readonly Action<T> _setData;
-    private readonly Func<T, string> _getCustomName;
+    private readonly PresetItem[] _presetItems;
 
     private string[] _displayNames;
-    private T _customData;
     private bool _hasCustom;
 
     private int _prevSelectedIndex;
@@ -36,68 +29,65 @@ public class MultiSelectionOptionsMenuOption<T> : OptionsMenuOption
         UpdateArrowPositions();
     }
 
-    public T GetSelectedData()
-    {
-        if (_hasCustom)
-        {
-            if (_selectedIndex == 0)
-                return _customData;
-            else
-                return _items[_selectedIndex - 1].Data;
-        }
-        else
-        {
-            return _items[_selectedIndex].Data;
-        }
-    }
-
-    public override void Reset(IReadOnlyList<OptionsMenuOption> options)
-    {
-        T selectedData = _getData(_items);
-        int itemIndex = Array.FindIndex(_items, x => (x.Data == null && selectedData == null) || x.Data?.Equals(selectedData) == true);
-
-        if (itemIndex == -1)
-        {
-            _customData = selectedData;
-            _selectedIndex = 0;
-            _hasCustom = true;
-            string name = _getCustomName(selectedData);
-            _displayNames = _items.Select(x => x.DisplayName).Prepend(name == null ? "CUSTOM" : $"CUSTOM ({name})").ToArray();
-        }
-        else
-        {
-            _selectedIndex = itemIndex;
-            _hasCustom = false;
-            _displayNames = _items.Select(x => x.DisplayName).ToArray();
-        }
-
-        _prevSelectedIndex = _selectedIndex;
-        UpdateSelection();
-    }
-
-    public override Enum GetUsedPreset()
+    public Enum GetSelectedPreset()
     {
         if (_hasCustom)
         {
             if (_selectedIndex == 0)
                 return null;
             else
-                return _items[_selectedIndex - 1].Preset;
+                return _presetItems[_selectedIndex - 1].Preset;
         }
         else
         {
-            return _items[_selectedIndex].Preset;
+            return _presetItems[_selectedIndex].Preset;
         }
     }
 
-    public override void ApplyFromPreset(IReadOnlyList<OptionsMenuOption> options, Enum preset)
+    public override void Reset(IReadOnlyList<OptionsMenuOption> options)
     {
-        int index = Array.FindIndex(_items, x => Equals(x.Preset, preset));
-        if (index != -1)
+        Enum currentPreset = null;
+        foreach (OptionsMenuOption option in options)
         {
-            _setData(_items[index].Data);
-            Reset(options);
+            if (option is PresetSelectionOptionsMenuOption)
+                continue;
+
+            Enum usedPreset = option.GetUsedPreset();
+
+            if (usedPreset == null)
+            {
+                currentPreset = null;
+                break;
+            }
+
+            if (currentPreset == null)
+            {
+                currentPreset = usedPreset;
+            }
+            else if (!Equals(currentPreset, usedPreset))
+            {
+                currentPreset = null;
+                break;
+            }
         }
+
+        int itemIndex = Array.FindIndex(_presetItems, x => (x.Preset == null && currentPreset == null) || x.Preset?.Equals(currentPreset) == true);
+
+        if (itemIndex == -1)
+        {
+            _selectedIndex = 0;
+            _hasCustom = true;
+            _displayNames = _presetItems.Select(x => x.DisplayName).Prepend("CUSTOM").ToArray();
+        }
+        else
+        {
+            _selectedIndex = itemIndex;
+            _hasCustom = false;
+            _displayNames = _presetItems.Select(x => x.DisplayName).ToArray();
+        }
+
+        _prevSelectedIndex = _selectedIndex;
+        UpdateSelection();
     }
 
     public override EditStepResult EditStep(IReadOnlyList<OptionsMenuOption> options)
@@ -106,7 +96,12 @@ public class MultiSelectionOptionsMenuOption<T> : OptionsMenuOption
         {
             if (_selectedIndex != _prevSelectedIndex)
             {
-                _setData(GetSelectedData());
+                // Apply preset
+                Enum selectedPreset = GetSelectedPreset();
+                if (selectedPreset != null)
+                    foreach (OptionsMenuOption option in options)
+                        option.ApplyFromPreset(options, selectedPreset);
+
                 _prevSelectedIndex = _selectedIndex;
             }
 
@@ -138,10 +133,9 @@ public class MultiSelectionOptionsMenuOption<T> : OptionsMenuOption
         return EditStepResult.None;
     }
 
-    public class Item(string displayName, T data, Enum preset = null)
+    public class PresetItem(string displayName, Enum preset)
     {
         public string DisplayName { get; } = displayName;
-        public T Data { get; } = data;
         public Enum Preset { get; } = preset;
     }
 }

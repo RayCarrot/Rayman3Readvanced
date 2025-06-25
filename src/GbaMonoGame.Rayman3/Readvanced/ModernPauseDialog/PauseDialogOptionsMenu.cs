@@ -68,7 +68,7 @@ public class PauseDialogOptionsMenu
     public SpriteFontTextObject[] TabHeaderTexts { get; set; }
 
     public SpriteTextureObject InfoTextBox { get; set; }
-    public SpriteTextObject[] InfoTextLines { get; set; }
+    public SpriteTextObject InfoText { get; set; }
     public AnimatedObject ArrowLeft { get; set; }
     public AnimatedObject ArrowRight { get; set; }
 
@@ -106,6 +106,10 @@ public class PauseDialogOptionsMenu
 
             option.ChangeIsSelected(false);
         }
+
+        // Reset all options when switching to the tab (handling presets last!)
+        foreach (OptionsMenuOption option in Options.OrderBy(x => x is PresetSelectionOptionsMenuOption ? 1 : 0))
+            option.Reset(Options);
 
         SetSelectedOption(0, false);
 
@@ -236,10 +240,9 @@ public class PauseDialogOptionsMenu
         {
             ShowInfoText = true;
 
-            byte[][] textLines = FontManager.GetWrappedStringLines(FontSize.Font32, option.InfoText, InfoTextMaxWidth * (1 / InfoTextScale));
-            Debug.Assert(textLines.Length <= InfoTextMaxLines, "Info text has too many lines");
-            for (int i = 0; i < InfoTextLines.Length; i++)
-                InfoTextLines[i].Text = i < textLines.Length ? FontManager.GetTextString(textLines[i]) : String.Empty;
+            string wrappedInfoText = FontManager.WrapText(InfoText.FontSize, option.InfoText, InfoTextMaxWidth * (1 / InfoTextScale));
+            Debug.Assert(wrappedInfoText.Count(x => x == '\n') + 1 <= InfoTextMaxLines, "Info text has too many lines");
+            InfoText.Text = wrappedInfoText;
         }
         else
         {
@@ -430,23 +433,18 @@ public class PauseDialogOptionsMenu
             Texture = infoTextBoxTexture,
         };
 
-        InfoTextLines = new SpriteTextObject[InfoTextMaxLines];
-        for (int i = 0; i < InfoTextLines.Length; i++)
+        InfoText = new SpriteTextObject
         {
-            float height = FontManager.GetFontHeight(FontSize.Font32) * InfoTextScale;
+            BgPriority = 0,
+            ObjPriority = 0,
+            YPriority = 0,
+            ScreenPos = new Vector2(75, InfoTextLinesBaseY),
+            RenderContext = RenderContext,
+            AffineMatrix = new AffineMatrix(0, new Vector2(InfoTextScale)),
+            Color = TextColor.TextBox,
+            FontSize = FontSize.Font32,
+        };
 
-            InfoTextLines[i] = new SpriteTextObject
-            {
-                BgPriority = 0,
-                ObjPriority = 0,
-                YPriority = 0,
-                ScreenPos = new Vector2(75, InfoTextLinesBaseY + height * i),
-                RenderContext = RenderContext,
-                AffineMatrix = new AffineMatrix(0, new Vector2(InfoTextScale), false, false),
-                Color = TextColor.TextBox,
-                FontSize = FontSize.Font32,
-            };
-        }
         // A bit hacky, but create a new render context for the arrows in order to scale them. We could do it through the
         // affine matrix, but that will misalign the animation sprites.
         RenderContext arrowRenderContext = new FixedResolutionRenderContext(RenderContext.Resolution * (1 / ArrowScale), verticalAlignment: VerticalAlignment.Top);
@@ -506,8 +504,9 @@ public class PauseDialogOptionsMenu
             {
                 IsEditingOption = true;
 
+                // Reset option before editing in case it has changed (like the window might have been resized)
                 OptionsMenuOption option = Options[SelectedOption];
-                option.Reset();
+                option.Reset(Options);
 
                 CursorClick();
 
@@ -526,13 +525,16 @@ public class PauseDialogOptionsMenu
         else
         {
             OptionsMenuOption option = Options[SelectedOption];
-            OptionsMenuOption.EditStepResult result = option.EditStep();
+            OptionsMenuOption.EditStepResult result = option.EditStep(Options);
 
-            if (result is OptionsMenuOption.EditStepResult.Confirm or OptionsMenuOption.EditStepResult.ConfirmResetAll)
+            if (result == OptionsMenuOption.EditStepResult.Apply)
             {
-                if (result == OptionsMenuOption.EditStepResult.ConfirmResetAll)
-                    foreach (OptionsMenuOption o in Options)
-                        o.Reset();
+                // Reset preset options
+                foreach (OptionsMenuOption o in Options)
+                {
+                    if (o != option && o is PresetSelectionOptionsMenuOption)
+                        o.Reset(Options);
+                }
 
                 IsEditingOption = false;
                 CursorClick();
@@ -540,7 +542,7 @@ public class PauseDialogOptionsMenu
             else if (result == OptionsMenuOption.EditStepResult.Cancel)
             {
                 IsEditingOption = false;
-                option.Reset();
+                option.Reset(Options);
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
             }
         }
@@ -619,10 +621,7 @@ public class PauseDialogOptionsMenu
             
             TabsCursor.ScreenPos = TabsCursor.ScreenPos with { Y = TabsCursorBaseY - TabHeadersOffsetY };
             InfoTextBox.ScreenPos = InfoTextBox.ScreenPos with { Y = InfoTextBoxBaseY - OffsetY };
-            
-            float height = FontManager.GetFontHeight(FontSize.Font32) * InfoTextScale;
-            for (int i = 0; i < InfoTextLines.Length; i++)
-                InfoTextLines[i].ScreenPos = InfoTextLines[i].ScreenPos with { Y = InfoTextLinesBaseY + height * i - OffsetY };
+            InfoText.ScreenPos = InfoText.ScreenPos with { Y = InfoTextLinesBaseY - OffsetY };
 
             // Draw
             animationPlayer.Play(Canvas);
@@ -640,8 +639,7 @@ public class PauseDialogOptionsMenu
             if (ShowInfoText)
             {
                 animationPlayer.Play(InfoTextBox);
-                foreach (SpriteTextObject infoTextLine in InfoTextLines)
-                    animationPlayer.Play(infoTextLine);
+                animationPlayer.Play(InfoText);
             }
 
             if (IsEditingOption)

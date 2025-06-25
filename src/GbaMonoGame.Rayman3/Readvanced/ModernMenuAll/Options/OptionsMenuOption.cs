@@ -1,4 +1,6 @@
-﻿using GbaMonoGame.AnimEngine;
+﻿using System;
+using System.Collections.Generic;
+using GbaMonoGame.AnimEngine;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
@@ -32,8 +34,10 @@ public abstract class OptionsMenuOption : MenuOption
         ArrowRightPosition = ValueTextObject.ScreenPos + new Vector2(valueTextWidth + ValueTextPadding, -1);
     }
 
-    public abstract void Reset();
-    public abstract EditStepResult EditStep();
+    public abstract void Reset(IReadOnlyList<OptionsMenuOption> options);
+    public virtual Enum GetUsedPreset() => null;
+    public virtual void ApplyFromPreset(IReadOnlyList<OptionsMenuOption> options, Enum preset) { }
+    public abstract EditStepResult EditStep(IReadOnlyList<OptionsMenuOption> options);
 
     public override void Init(int bgPriority, RenderContext renderContext, int index)
     {
@@ -55,8 +59,6 @@ public abstract class OptionsMenuOption : MenuOption
             AffineMatrix = new AffineMatrix(0, new Vector2(ValueTextScale), false, false),
             Font = ReadvancedFonts.MenuYellow,
         };
-
-        Reset();
     }
 
     public override void SetPosition(Vector2 position)
@@ -80,8 +82,7 @@ public abstract class OptionsMenuOption : MenuOption
     public enum EditStepResult
     {
         None,
-        Confirm,
-        ConfirmResetAll,
+        Apply,
         Cancel,
     }
 }
