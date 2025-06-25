@@ -55,6 +55,7 @@ public static class InputManager
     }
     public static Keys GetKey(Input input) => Engine.Config.Controls[input];
     public static GbaInput GetGbaInput(Input input) => _gbaInputMapping[input];
+    public static bool TryGetGbaInput(Input input, out GbaInput gbaInput) => _gbaInputMapping.TryGetValue(input, out gbaInput);
 
     // TODO: Improve
     public static string GetKeyName(Keys key) => key.ToString();

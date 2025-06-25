@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BinarySerializer.Ubisoft.GbaEngine;
 using Microsoft.Xna.Framework.Input;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
@@ -28,7 +29,8 @@ public class ControlOptionsMenuOption : OptionsMenuOption
         Engine.Config.Controls[Input] = key;
 
         // Set as pressed key to avoid it being seen as just having pressed this input
-        JoyPad.Current.KeyStatus |= InputManager.GetGbaInput(Input);
+        if (InputManager.TryGetGbaInput(Input, out GbaInput gbaInput))
+            JoyPad.Current.KeyStatus |= gbaInput;
 
         // Check if key is used elsewhere
         foreach (Input input in Enum.GetValues<Input>())
@@ -37,7 +39,9 @@ public class ControlOptionsMenuOption : OptionsMenuOption
             if (input != Input && Engine.Config.Controls[input] == key)
             {
                 Engine.Config.Controls[input] = prevKey;
-                JoyPad.Current.KeyStatus |= InputManager.GetGbaInput(input);
+
+                if (InputManager.TryGetGbaInput(input, out GbaInput gbaInput2))
+                    JoyPad.Current.KeyStatus |= gbaInput2;
 
                 ControlOptionsMenuOption option = options.OfType<ControlOptionsMenuOption>().FirstOrDefault(x => x.Input == input);
                 option?.UpdateSelection();
