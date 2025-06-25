@@ -83,10 +83,10 @@ public static class Engine
         Config = config;
 
         // If the internal resolution is null then we default to the original resolution
-        if (config.InternalGameResolution == null)
+        if (config.Tweaks.InternalGameResolution == null)
             InternalGameResolution = Rom.IsLoaded ? Rom.OriginalResolution : Resolution.Modern;
         else
-            InternalGameResolution = config.InternalGameResolution.Value;
+            InternalGameResolution = config.Tweaks.InternalGameResolution.Value;
     }
 
     public static void SaveConfig()

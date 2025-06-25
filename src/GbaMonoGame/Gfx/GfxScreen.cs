@@ -67,7 +67,7 @@ public class GfxScreen
             return;
 
         if (Rom.IsLoaded &&
-            (Rom.Platform == Platform.GBA || Engine.Config.UseGbaEffectsOnNGage) && 
+            (Rom.Platform == Platform.GBA || Engine.Config.Tweaks.UseGbaEffectsOnNGage) && 
             RenderOptions.BlendMode != BlendMode.None)
             color = new Color(color, Alpha);
 

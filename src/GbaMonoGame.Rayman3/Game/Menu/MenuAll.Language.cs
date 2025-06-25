@@ -111,7 +111,7 @@ public partial class MenuAll
                 }
 
                 Localization.SetLanguage(SelectedOption);
-                Engine.Config.Language = Localization.Language.Locale;
+                Engine.Config.Display.Language = Localization.Language.Locale;
                 Engine.SaveConfig();
 
                 TransitionValue = 0;

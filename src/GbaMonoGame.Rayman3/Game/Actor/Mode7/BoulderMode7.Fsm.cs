@@ -41,7 +41,7 @@ public partial class BoulderMode7
                 }
 
                 // The original code doesn't account for the camera view, so the rotation will sometimes be reversed. Optionally fix this.
-                if (Engine.Config.FixBugs)
+                if (Engine.Config.Tweaks.FixBugs)
                 {
                     if (ActionId == Action.Move_Right)
                     {

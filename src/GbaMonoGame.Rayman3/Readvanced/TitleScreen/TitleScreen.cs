@@ -76,14 +76,14 @@ public class TitleScreen : Frame
     private void StartGame()
     {
         // Load the language
-        Localization.SetLanguage(Engine.Config.Language);
+        Localization.SetLanguage(Engine.Config.Display.Language);
 
         // TODO: Load saved volume
 
         int? lastSaveSlot = Games[SelectedGameIndex].Platform switch
         {
-            Platform.GBA => Engine.Config.LastPlayedGbaSaveSlot,
-            Platform.NGage => Engine.Config.LastPlayedNGageSaveSlot,
+            Platform.GBA => Engine.Config.General.LastPlayedGbaSaveSlot,
+            Platform.NGage => Engine.Config.General.LastPlayedNGageSaveSlot,
             _ => throw new UnsupportedPlatformException()
         };
 
@@ -122,8 +122,8 @@ public class TitleScreen : Frame
         {
             int? lastSaveSlot = game.Platform switch
             {
-                Platform.GBA => Engine.Config.LastPlayedGbaSaveSlot,
-                Platform.NGage => Engine.Config.LastPlayedNGageSaveSlot,
+                Platform.GBA => Engine.Config.General.LastPlayedGbaSaveSlot,
+                Platform.NGage => Engine.Config.General.LastPlayedNGageSaveSlot,
                 _ => throw new UnsupportedPlatformException()
             };
 

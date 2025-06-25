@@ -69,7 +69,7 @@ public partial class Keg
                     Scene.GetPhysicalType(new Vector2(Position.X, GetDetectionBox().Bottom)).IsSolid)
                 {
                     // Optionally fix a bug where the keg might stop the sound of another keg if another one has spawned
-                    if (Engine.Config.FixBugs && LastActorToPlayFallSound == InstanceId)
+                    if (Engine.Config.Tweaks.FixBugs && LastActorToPlayFallSound == InstanceId)
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BarlFall_Mix04);
 
                     if (Scene.IsHitMainActor(this))
@@ -118,7 +118,7 @@ public partial class Keg
                 //       actually see it happening, but then more code needs to be updated, like the timer check and an additional
                 //       check for the action so it doesn't keep triggering.
                 bool ejectFromDispenser;
-                if (Engine.Config.FixBugs)
+                if (Engine.Config.Tweaks.FixBugs)
                     ejectFromDispenser = ActionId == Action.Respawn && 
                                          Timer >= 60 && 
                                          Math.Abs(Position.X - Scene.MainActor.Position.X) < 180;

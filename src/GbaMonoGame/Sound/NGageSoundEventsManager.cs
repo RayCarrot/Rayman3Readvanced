@@ -189,7 +189,7 @@ public class NGageSoundEventsManager : SoundEventsManager
 
         // Set sound parameters
         //_soloud.setLooping(_musicVoiceHandle, _doesCurrentMusicLoop); // Doesn't work, so ignore
-        _soloud.setVolume(_musicVoiceHandle, _currentMusicVolume * (_musicFadeVolume / SoundEngineInterface.MaxVolume) * Engine.Config.MusicVolume);
+        _soloud.setVolume(_musicVoiceHandle, _currentMusicVolume * (_musicFadeVolume / SoundEngineInterface.MaxVolume) * Engine.Config.Sound.MusicVolume);
 
         // Un-pause
         _soloud.setPause(_musicVoiceHandle, false);
@@ -227,7 +227,7 @@ public class NGageSoundEventsManager : SoundEventsManager
 
             // Set sound parameters
             _soloud.setLooping(handle, loop);
-            _soloud.setVolume(handle, volume * (SoundEffectsVolume / SoundEngineInterface.MaxVolume) * Engine.Config.SfxVolume);
+            _soloud.setVolume(handle, volume * (SoundEffectsVolume / SoundEngineInterface.MaxVolume) * Engine.Config.Sound.SfxVolume);
 
             // Un-pause
             _soloud.setPause(handle, false);
@@ -291,7 +291,7 @@ public class NGageSoundEventsManager : SoundEventsManager
         }
 
         // Update music volume
-        _soloud.setVolume(_musicVoiceHandle, _currentMusicVolume * (_musicFadeVolume / SoundEngineInterface.MaxVolume) * Engine.Config.MusicVolume);
+        _soloud.setVolume(_musicVoiceHandle, _currentMusicVolume * (_musicFadeVolume / SoundEngineInterface.MaxVolume) * Engine.Config.Sound.MusicVolume);
 
         // Update sound effect volumes
         foreach (SoundEffectInstance soundEffectInstance in _soundEffectInstances.Values.ToArray())
@@ -300,7 +300,7 @@ public class NGageSoundEventsManager : SoundEventsManager
             {
                 float volume = soundEffectInstance.Volume *
                                (SoundEffectsVolume / SoundEngineInterface.MaxVolume) *
-                               Engine.Config.SfxVolume;
+                               Engine.Config.Sound.SfxVolume;
                 _soloud.setVolume(soundEffectInstance.VoiceHandle, volume);
             }
             else

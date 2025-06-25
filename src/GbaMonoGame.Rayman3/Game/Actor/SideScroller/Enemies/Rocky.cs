@@ -122,7 +122,7 @@ public sealed partial class Rocky : MovableActor
                 BlueLum.ProcessMessage(this, Message.Resurrect);
 
                 // It's probably an oversight to not have the sound play here
-                if (Engine.Config.FixBugs)
+                if (Engine.Config.Tweaks.FixBugs)
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Appear_SocleFX1_Mix01);
             }
 

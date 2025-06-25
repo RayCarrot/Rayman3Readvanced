@@ -360,9 +360,9 @@ public class GbaSoundEventsManager : SoundEventsManager
         vol *= GetVolumeForType(songInstance.SoundType) / SoundEngineInterface.MaxVolume;
 
         if (songInstance.SoundType == SoundType.Sfx)
-            vol *= Engine.Config.SfxVolume;
+            vol *= Engine.Config.Sound.SfxVolume;
         else if (songInstance.SoundType == SoundType.Music)
-            vol *= Engine.Config.MusicVolume;
+            vol *= Engine.Config.Sound.MusicVolume;
 
         if (songInstance.Volume != vol || songInstance.Pan != pan)
         {

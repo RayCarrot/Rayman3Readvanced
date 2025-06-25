@@ -107,9 +107,9 @@ public static class GameInfo
         SaveGameManager.SaveSlot(saveSlot, PersistentInfo);
 
         if (Rom.Platform == Platform.GBA)
-            Engine.Config.LastPlayedGbaSaveSlot = CurrentSlot;
+            Engine.Config.General.LastPlayedGbaSaveSlot = CurrentSlot;
         else if (Rom.Platform == Platform.NGage)
-            Engine.Config.LastPlayedNGageSaveSlot = CurrentSlot;
+            Engine.Config.General.LastPlayedNGageSaveSlot = CurrentSlot;
         else
             throw new UnsupportedPlatformException();
     }

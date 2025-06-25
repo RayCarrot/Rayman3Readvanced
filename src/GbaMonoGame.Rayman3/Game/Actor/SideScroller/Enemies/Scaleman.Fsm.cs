@@ -392,7 +392,7 @@ public partial class Scaleman
 
                 // NOTE: This code is bugged in the original game and doesn't run. This
                 //       is due to it referencing the shadow actor as an animated object.
-                if (Engine.Config.FixBugs && ScalemanShadow.AnimatedObject.EndOfAnimation && ScalemanShadow.AnimatedObject.CurrentAnimation == 11)
+                if (Engine.Config.Tweaks.FixBugs && ScalemanShadow.AnimatedObject.EndOfAnimation && ScalemanShadow.AnimatedObject.CurrentAnimation == 11)
                     ScalemanShadow.AnimatedObject.CurrentAnimation = 13;
 
                 ScalemanShadow.Position = ScalemanShadow.Position with { X = Position.X };

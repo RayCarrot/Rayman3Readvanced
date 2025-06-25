@@ -48,7 +48,7 @@ public sealed partial class SamMode7 : Mode7Actor
 
     private void ToggleNoClip()
     {
-        if (Engine.Config.DebugModeEnabled && InputManager.IsButtonJustPressed(Input.Debug_ToggleNoClip))
+        if (Engine.Config.Debug.DebugModeEnabled && InputManager.IsButtonJustPressed(Input.Debug_ToggleNoClip))
         {
             Debug_NoClip = !Debug_NoClip;
 

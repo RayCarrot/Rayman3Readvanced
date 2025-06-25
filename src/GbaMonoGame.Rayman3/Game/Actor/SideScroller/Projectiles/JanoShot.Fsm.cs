@@ -53,7 +53,7 @@ public partial class JanoShot
                     const float marginY = 10;
                     const float minY = 0 - marginY;
                     float maxY;
-                    if (Engine.Config.FixBugs)
+                    if (Engine.Config.Tweaks.FixBugs)
                         maxY = Scene.Resolution.Y + marginY;
                     else
                         maxY = 160 + marginY;

@@ -84,13 +84,13 @@ public class GfxDebugWindow : DebugWindow
                 if (ImGui.SliderFloat("Internal resolution X", ref resX, Single.Epsilon, 1000))
                 {
                     Engine.InternalGameResolution = new Vector2(resX, resY);
-                    Engine.Config.InternalGameResolution = new Vector2(resX, resY);
+                    Engine.Config.Tweaks.InternalGameResolution = new Vector2(resX, resY);
                     Engine.GameViewPort.UpdateRenderBox();
                 }
                 if (ImGui.SliderFloat("Internal resolution Y", ref resY, Single.Epsilon, 1000))
                 {
                     Engine.InternalGameResolution = new Vector2(resX, resY);
-                    Engine.Config.InternalGameResolution = new Vector2(resX, resY);
+                    Engine.Config.Tweaks.InternalGameResolution = new Vector2(resX, resY);
                     Engine.GameViewPort.UpdateRenderBox();
                 }
 

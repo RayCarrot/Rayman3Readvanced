@@ -248,7 +248,7 @@ public class Credits : Frame
             case TextMode.Wait:
                 int waitTime = 0;
 
-                if (Engine.Config.FixBugs)
+                if (Engine.Config.Tweaks.FixBugs)
                 {
                     waitTime = NamesCount * 30;
                 }

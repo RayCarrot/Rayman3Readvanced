@@ -12,7 +12,7 @@ public partial class Murfy
         if (JoyPad.IsButtonJustPressed(GbaInput.A))
             TextBox.MoveToNextText();
 
-        if (Engine.Config.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(GbaInput.Start))
+        if (Engine.Config.Tweaks.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(GbaInput.Start))
         {
             if (Frame.Current is FrameSideScroller frameSideScroller)
                 frameSideScroller.CanPause = false;
@@ -149,13 +149,13 @@ public partial class Murfy
                 if (Frame.Current is FrameSideScroller frameSideScroller)
                 {
                     SavedBlockPause = !frameSideScroller.CanPause;
-                    if (Engine.Config.CanSkipTextBoxes)
+                    if (Engine.Config.Tweaks.CanSkipTextBoxes)
                         frameSideScroller.CanPause = false;
                 }
                 else if (Frame.Current is FrameWorldSideScroller frameWorldSideScroller)
                 {
                     SavedBlockPause = frameWorldSideScroller.BlockPause;
-                    if (Engine.Config.CanSkipTextBoxes)
+                    if (Engine.Config.Tweaks.CanSkipTextBoxes)
                         frameWorldSideScroller.BlockPause = true;
                 }
                 else
@@ -423,7 +423,7 @@ public partial class Murfy
                 }
 
                 // Restore being able to pause
-                if (Engine.Config.CanSkipTextBoxes)
+                if (Engine.Config.Tweaks.CanSkipTextBoxes)
                 {
                     if (Frame.Current is FrameSideScroller frameSideScroller)
                         frameSideScroller.CanPause = !SavedBlockPause;

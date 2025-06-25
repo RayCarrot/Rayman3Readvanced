@@ -242,7 +242,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
         Point size = lightningRenderer.Texture.Bounds.Size;
 
-        if (Rom.Platform == Platform.GBA || Engine.Config.UseGbaEffectsOnNGage)
+        if (Rom.Platform == Platform.GBA || Engine.Config.Tweaks.UseGbaEffectsOnNGage)
         {
             // NOTE: The game only does this if ScrollX > 152, but we can ignore that
 
@@ -732,7 +732,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         ((TgxPlayfield2D)Scene.Playfield).RenderContext.MaxResolution = maxRes;
 
         // Create pause dialog, but don't add yet
-        PauseDialog = Engine.Config.UseModernPauseDialog ? new ModernPauseDialog(Scene, false) : new PauseDialog(Scene);
+        PauseDialog = Engine.Config.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, false) : new PauseDialog(Scene);
 
         Scene.Init();
         Scene.Playfield.Step();

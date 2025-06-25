@@ -39,7 +39,7 @@ public partial class SwingSparkle
                 AnimatedObject.CurrentAnimation = 0;
                 ProcessMessage(this, Message.Destroy);
 
-                if (Rom.Platform == Platform.GBA || Engine.Config.FixBugs)
+                if (Rom.Platform == Platform.GBA || Engine.Config.Tweaks.FixBugs)
                 {
                     // NOTE: The game doesn't do this, however we have to do this to re-produce a bugged, but desirable, behavior. Basically,
                     //       in the original GBA code it doesn't do a null check on ´rayman.AttachedObject´ when setting the position. This

@@ -68,7 +68,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
         }
 
         // Create pause dialog, but don't add yet
-        PauseDialog = Engine.Config.UseModernPauseDialog ? new ModernPauseDialog(Scene, false) : new PauseDialog(Scene);
+        PauseDialog = Engine.Config.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, false) : new PauseDialog(Scene);
 
         Scene.Init();
         // NOTE: The game calls vsync, steps the playfield and executes the animations here, but we do

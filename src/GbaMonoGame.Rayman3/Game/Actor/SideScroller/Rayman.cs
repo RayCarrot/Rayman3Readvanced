@@ -62,7 +62,7 @@ public sealed partial class Rayman : MovableActor
                     // data does not match the palettes. The correct colors are there though, so we can fix it by re-ordering them.
                     PaletteResource fixPalette(PaletteResource pal)
                     {
-                        if (Engine.Config.FixBugs)
+                        if (Engine.Config.Tweaks.FixBugs)
                         {
                             return new PaletteResource()
                             {
@@ -330,7 +330,7 @@ public sealed partial class Rayman : MovableActor
             MultiplayerGameType.RayTag => InstanceId == tagId,
             MultiplayerGameType.CatAndMouse => InstanceId != tagId,
             // NOTE: Some checks are bugged in the N-Gage version and use the same condition as for Cat and Mouse!
-            MultiplayerGameType.CaptureTheFlag when Rom.Platform == Platform.NGage => hasNGageBug && !Engine.Config.FixBugs 
+            MultiplayerGameType.CaptureTheFlag when Rom.Platform == Platform.NGage => hasNGageBug && !Engine.Config.Tweaks.FixBugs 
                 ? InstanceId != tagId 
                 : FlagData.PickedUpFlag == null,
             _ => false
@@ -504,7 +504,7 @@ public sealed partial class Rayman : MovableActor
             bodyPart.AnimatedObject.BasePaletteIndex = FlagData.PlayerPaletteId - 1;
         }
         // Optionally fix colors for GBA too, so the body-shot matches the player color
-        else if (Engine.Config.FixBugs && RSMultiplayer.IsActive && Rom.Platform == Platform.GBA)
+        else if (Engine.Config.Tweaks.FixBugs && RSMultiplayer.IsActive && Rom.Platform == Platform.GBA)
         {
             bodyPart.AnimatedObject.Palettes = AnimatedObject.Palettes;
             bodyPart.AnimatedObject.BasePaletteIndex = AnimatedObject.BasePaletteIndex;
@@ -1005,7 +1005,7 @@ public sealed partial class Rayman : MovableActor
             // created either. So if you have the options set to fix bugs, and also to add projectiles when needed
             // (since we need more than 8!) then allow it to continue creating new sparkle projectiles until
             // reaching the minimum distance.
-            if (index > 8 && !(Engine.Config.FixBugs && Engine.Config.AddProjectilesWhenNeeded))
+            if (index > 8 && !(Engine.Config.Tweaks.FixBugs && Engine.Config.Tweaks.AddProjectilesWhenNeeded))
                 return;
         }
 
@@ -1301,7 +1301,7 @@ public sealed partial class Rayman : MovableActor
     private bool IsLavaInLevel()
     {
         // The game forgets to check for this level, making it not spawn the lava splash!
-        if (Engine.Config.FixBugs)
+        if (Engine.Config.Tweaks.FixBugs)
         {
             if (GameInfo.MapId is MapId.GameCube_Bonus3)
                 return true;
@@ -1500,7 +1500,7 @@ public sealed partial class Rayman : MovableActor
 
     private void ToggleNoClip()
     {
-        if (Engine.Config.DebugModeEnabled && InputManager.IsButtonJustPressed(Input.Debug_ToggleNoClip))
+        if (Engine.Config.Debug.DebugModeEnabled && InputManager.IsButtonJustPressed(Input.Debug_ToggleNoClip))
         {
             Debug_NoClip = !Debug_NoClip;
 

@@ -288,7 +288,7 @@ public partial class Rayman
                         NextActionId = null;
 
                         // Optionally fix bug of grimace sound continuing to play when looking up
-                        if (Engine.Config.FixBugs)
+                        if (Engine.Config.Tweaks.FixBugs)
                             PlaySound(Rayman3SoundEvent.Stop__Grimace1_Mix04);
                     }
                 }
@@ -1955,7 +1955,7 @@ public partial class Rayman
                          Action.Hang_EndMove_Right or Action.Hang_EndMove_Left)
                 {
                     // NOTE: Probably a bug in the GBA code since this causes the sound to play twice. This was fixed for N-Gage.
-                    if (Rom.Platform == Platform.GBA && !Engine.Config.FixBugs)
+                    if (Rom.Platform == Platform.GBA && !Engine.Config.Tweaks.FixBugs)
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Charge_Mix05);
 
                     ActionId = IsFacingRight ? Action.Hang_ChargeAttack_Right : Action.Hang_ChargeAttack_Left;
@@ -2946,7 +2946,7 @@ public partial class Rayman
                         if (PreviousXSpeed < 80)
                         {
                             // NOTE: Bug in the original game where it uses the wrong variable!
-                            int value = Engine.Config.FixBugs ? AnimatedObject.CurrentFrame : (int)ActionId;
+                            int value = Engine.Config.Tweaks.FixBugs ? AnimatedObject.CurrentFrame : (int)ActionId;
                             if (value is >= 10 and <= 14 or >= 27 and <= 34)
                                 PreviousXSpeed += 4;
                             else
@@ -2992,7 +2992,7 @@ public partial class Rayman
                         if (PreviousXSpeed < 80)
                         {
                             // NOTE: Bug in the original game where it uses the wrong variable!
-                            int value = Engine.Config.FixBugs ? AnimatedObject.CurrentFrame : (int)ActionId;
+                            int value = Engine.Config.Tweaks.FixBugs ? AnimatedObject.CurrentFrame : (int)ActionId;
                             if (value is >= 10 and <= 14 or >= 27 and <= 34)
                                 PreviousXSpeed += 4;
                             else
@@ -3357,7 +3357,7 @@ public partial class Rayman
                 if (IsDirectionalButtonReleased(GbaInput.Left) && IsDirectionalButtonReleased(GbaInput.Right) &&
                     // NOTE: There is a bug here where if you've just started falling then the attached object is null
                     //       which will cause the next state to crash due to a null pointer!
-                    !(Engine.Config.FixBugs && AttachedObject == null))
+                    !(Engine.Config.Tweaks.FixBugs && AttachedObject == null))
                 {
                     State.MoveTo(Fsm_CarryObject);
                     return false;
@@ -4015,7 +4015,7 @@ public partial class Rayman
                             break;
 
                         // NOTE: The original game doesn't do this, meaning that the transition would play twice!
-                        case MapId.GameCube_Bonus3 when Engine.Config.FixBugs:
+                        case MapId.GameCube_Bonus3 when Engine.Config.Tweaks.FixBugs:
                             // Do nothing - FrameSideScrollerGCN.FadeOut handles it
                             break;
 
@@ -4220,7 +4220,7 @@ public partial class Rayman
 
                 // NOTE: The original code is bugged here - it checks if the flag is false instead of true! This causes it to not work. The flag
                 // is meant to be true if you started out climbing, and then set to false after 25 frames, allowing you to climb again.
-                if (Engine.Config.FixBugs)
+                if (Engine.Config.Tweaks.FixBugs)
                 {
                     if (TempFlag && Timer > 25)
                         TempFlag = false;
@@ -4329,7 +4329,7 @@ public partial class Rayman
                     ((SanctuaryOfRockAndLava)Frame.Current).FadeOut();
                 }
                 // NOTE: The original game doesn't do this, meaning that the transition would play twice!
-                else if (GameInfo.MapId == MapId.GameCube_Bonus3 && Engine.Config.FixBugs)
+                else if (GameInfo.MapId == MapId.GameCube_Bonus3 && Engine.Config.Tweaks.FixBugs)
                 {
                     // Do nothing - FrameSideScrollerGCN.FadeOut handles it
                 }

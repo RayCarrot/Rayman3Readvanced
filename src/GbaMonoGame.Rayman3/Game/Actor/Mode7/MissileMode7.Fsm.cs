@@ -510,7 +510,7 @@ public partial class MissileMode7
                 {
                     // The code is written as if the fade lasts 16 frames, yet it's set to 2 which lasts 32 frames. This makes the
                     // transition looks broken, so we optionally fix it. Same below for the fade in.
-                    TransitionsFX.FadeOutInit(Engine.Config.FixBugs ? 4 : 2);
+                    TransitionsFX.FadeOutInit(Engine.Config.Tweaks.FixBugs ? 4 : 2);
                     MultiplayerDeathFadeFlag = true;
                 }
 
@@ -536,7 +536,7 @@ public partial class MissileMode7
                 // Fade in
                 else if (MultiplayerDeathTimer == 20)
                 {
-                    TransitionsFX.FadeInInit(Engine.Config.FixBugs ? 4 : 2);
+                    TransitionsFX.FadeInInit(Engine.Config.Tweaks.FixBugs ? 4 : 2);
                     
                     UserInfoMultiMode7 userInfo = ((FrameMissileMultiMode7)Frame.Current).UserInfo;
                     userInfo.MainActor = Scene.GetGameObject<MissileMode7>(MultiplayerDeathSpectatePlayer);

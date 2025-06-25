@@ -128,7 +128,7 @@ public class TagInfo
         }
 
         // NOTE: The original game assigns the wrong variable here, causing the randomization not to fully work!
-        if (Engine.Config.FixBugs)
+        if (Engine.Config.Tweaks.FixBugs)
             LastActionId = newActionId;
         else
             LastSpawnedItemId = newActionId;

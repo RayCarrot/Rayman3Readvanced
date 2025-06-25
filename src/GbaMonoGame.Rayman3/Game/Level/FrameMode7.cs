@@ -55,7 +55,7 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
         Scene = new Scene2D((int)GameInfo.MapId, x => new CameraMode7(x), 3, 1);
 
         // Create pause dialog, but don't add yet
-        PauseDialog = Engine.Config.UseModernPauseDialog ? new ModernPauseDialog(Scene, true) : new PauseDialog(Scene);
+        PauseDialog = Engine.Config.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, true) : new PauseDialog(Scene);
 
         Scene.Init();
         Scene.Playfield.Step();

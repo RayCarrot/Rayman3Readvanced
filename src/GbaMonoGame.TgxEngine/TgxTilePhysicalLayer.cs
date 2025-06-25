@@ -8,7 +8,7 @@ public class TgxTilePhysicalLayer : TgxGameLayer
     {
         CollisionMap = gameLayerResource.PhysicalLayer.CollisionMap;
 
-        if (Engine.Config.DebugModeEnabled)
+        if (Engine.Config.Debug.DebugModeEnabled)
         {
             // Collision map screen for debugging
             DebugScreen = new GfxScreen(-1)

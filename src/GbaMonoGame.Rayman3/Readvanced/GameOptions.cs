@@ -32,7 +32,7 @@ public static class GameOptions
                     setData: data =>
                     {
                         Localization.SetLanguage(data);
-                        Engine.Config.Language = data.Locale;
+                        Engine.Config.Display.Language = data.Locale;
                     },
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<DisplayMode>(
@@ -73,8 +73,8 @@ public static class GameOptions
                         new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
                         new MultiSelectionOptionsMenuOption<bool>.Item("ON", true)
                     ],
-                    getData: _ => Engine.Config.LockWindowAspectRatio,
-                    setData: data => Engine.Config.LockWindowAspectRatio = data,
+                    getData: _ => Engine.Config.Display.LockWindowAspectRatio,
+                    setData: data => Engine.Config.Display.LockWindowAspectRatio = data,
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "DISABLE CAMERA SHAKE",
@@ -84,8 +84,8 @@ public static class GameOptions
                         new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
                         new MultiSelectionOptionsMenuOption<bool>.Item("ON", true)
                     ],
-                    getData: _ => Engine.Config.DisableCameraShake,
-                    setData: data => Engine.Config.DisableCameraShake = data,
+                    getData: _ => Engine.Config.Display.DisableCameraShake,
+                    setData: data => Engine.Config.Display.DisableCameraShake = data,
                     getCustomName: _ => null),
             ]),
             new GameOptionsGroup("CONTROLS",
@@ -127,13 +127,13 @@ public static class GameOptions
                 new VolumeSelectionOptionsMenuOption(
                     text: "MUSIC VOLUME",
                     infoText: "The volume for music.",
-                    getVolume: () => Engine.Config.MusicVolume,
-                    setVolume: data => Engine.Config.MusicVolume = data),
+                    getVolume: () => Engine.Config.Sound.MusicVolume,
+                    setVolume: data => Engine.Config.Sound.MusicVolume = data),
                 new VolumeSelectionOptionsMenuOption(
                     text: "SOUND FX VOLUME",
                     infoText: "The volume for sound effects.",
-                    getVolume: () => Engine.Config.SfxVolume,
-                    setVolume: data => Engine.Config.SfxVolume = data),
+                    getVolume: () => Engine.Config.Sound.SfxVolume,
+                    setVolume: data => Engine.Config.Sound.SfxVolume = data),
             ]),
             // TODO: Look into how these work when changed while in a level
             // TODO: Add option to keep all objects enabled, and force it on when in a custom resolution
@@ -160,7 +160,7 @@ public static class GameOptions
                     setData: data =>
                     {
                         Engine.InternalGameResolution = data;
-                        Engine.Config.InternalGameResolution = data == originalRes ? null : data;
+                        Engine.Config.Tweaks.InternalGameResolution = data == originalRes ? null : data;
                         Engine.GameViewPort.UpdateRenderBox();
                     },
                     getCustomName: data => $"{data.X}x{data.Y}"),
@@ -172,8 +172,8 @@ public static class GameOptions
                         new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
                         new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, TweaksPreset.Readvanced),
                     ],
-                    getData: _ => Engine.Config.UseExtendedBackgrounds,
-                    setData: data => Engine.Config.UseExtendedBackgrounds = data,
+                    getData: _ => Engine.Config.Tweaks.UseExtendedBackgrounds,
+                    setData: data => Engine.Config.Tweaks.UseExtendedBackgrounds = data,
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "USE GBA EFFECTS ON N-GAGE",
@@ -183,8 +183,8 @@ public static class GameOptions
                         new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
                         new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, TweaksPreset.Readvanced),
                     ],
-                    getData: _ => Engine.Config.UseGbaEffectsOnNGage,
-                    setData: data => Engine.Config.UseGbaEffectsOnNGage = data,
+                    getData: _ => Engine.Config.Tweaks.UseGbaEffectsOnNGage,
+                    setData: data => Engine.Config.Tweaks.UseGbaEffectsOnNGage = data,
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "PAUSE MENU",
@@ -194,8 +194,8 @@ public static class GameOptions
                         new MultiSelectionOptionsMenuOption<bool>.Item("ORIGINAL", false, TweaksPreset.Original),
                         new MultiSelectionOptionsMenuOption<bool>.Item("UPDATED", true, TweaksPreset.Readvanced),
                     ],
-                    getData: _ => Engine.Config.UseModernPauseDialog,
-                    setData: data => Engine.Config.UseModernPauseDialog = data,
+                    getData: _ => Engine.Config.Tweaks.UseModernPauseDialog,
+                    setData: data => Engine.Config.Tweaks.UseModernPauseDialog = data,
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "GAME LOGO",
@@ -205,8 +205,8 @@ public static class GameOptions
                         new MultiSelectionOptionsMenuOption<bool>.Item("ORIGINAL", false, TweaksPreset.Original),
                         new MultiSelectionOptionsMenuOption<bool>.Item("READVANCED", true, TweaksPreset.Readvanced),
                     ],
-                    getData: _ => Engine.Config.UseReadvancedLogo,
-                    setData: data => Engine.Config.UseReadvancedLogo = data,
+                    getData: _ => Engine.Config.Tweaks.UseReadvancedLogo,
+                    setData: data => Engine.Config.Tweaks.UseReadvancedLogo = data,
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "ALLOW SKIPPING TEXTBOXES",
@@ -216,8 +216,8 @@ public static class GameOptions
                         new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
                         new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, TweaksPreset.Readvanced),
                     ],
-                    getData: _ => Engine.Config.CanSkipTextBoxes,
-                    setData: data => Engine.Config.CanSkipTextBoxes = data,
+                    getData: _ => Engine.Config.Tweaks.CanSkipTextBoxes,
+                    setData: data => Engine.Config.Tweaks.CanSkipTextBoxes = data,
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "FIX BUGS",
@@ -227,8 +227,8 @@ public static class GameOptions
                         new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
                         new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, TweaksPreset.Readvanced),
                     ],
-                    getData: _ => Engine.Config.FixBugs,
-                    setData: data => Engine.Config.FixBugs = data,
+                    getData: _ => Engine.Config.Tweaks.FixBugs,
+                    setData: data => Engine.Config.Tweaks.FixBugs = data,
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "ADD PROJECTILES WHEN NEEDED",
@@ -238,8 +238,8 @@ public static class GameOptions
                         new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
                         new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, TweaksPreset.Readvanced),
                     ],
-                    getData: _ => Engine.Config.AddProjectilesWhenNeeded,
-                    setData: data => Engine.Config.AddProjectilesWhenNeeded = data,
+                    getData: _ => Engine.Config.Tweaks.AddProjectilesWhenNeeded,
+                    setData: data => Engine.Config.Tweaks.AddProjectilesWhenNeeded = data,
                     getCustomName: _ => null),
             ]),
             // TODO: Add presets (Original, Rebalanced/Readvanced, Custom)
