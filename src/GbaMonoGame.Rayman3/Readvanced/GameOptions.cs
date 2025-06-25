@@ -51,11 +51,11 @@ public static class GameOptions
                     text: "FULLSCREEN RESOLUTION",
                     infoText: "The resolution to use when in fullscreen mode.",
                     items: adapter.SupportedDisplayModes.
-                        Select(x => new MultiSelectionOptionsMenuOption<Point>.Item($"{x.Width} x {x.Height}", new Point(x.Width, x.Height))).
+                        Select(x => new MultiSelectionOptionsMenuOption<Point>.Item($"{x.Width}x{x.Height}", new Point(x.Width, x.Height))).
                         ToArray(),
                     getData: _ => Engine.GameWindow.FullscreenResolution,
                     setData: data => Engine.GameWindow.FullscreenResolution = data,
-                    getCustomName: data => $"{data.X} x {data.Y}"),
+                    getCustomName: data => $"{data.X}x{data.Y}"),
                 new MultiSelectionOptionsMenuOption<float>(
                     text: "WINDOW RESOLUTION",
                     infoText: "The resolution factor, based on the internal resolution, to use when in windowed mode. You can also freely change the window resolution by resizing the window.",
@@ -153,8 +153,8 @@ public static class GameOptions
                     infoText: "Determines the game's aspect ratio and scale. A higher resolution will result in a higher FOV for the sidescroller levels. For Mode7 levels only the aspect ratio is changed. Note that this does not effect the resolution the game renders at.",
                     items:
                     [
-                        new MultiSelectionOptionsMenuOption<Vector2>.Item($"ORIGINAL ({originalRes.X} x {originalRes.Y})", originalRes, TweaksPreset.Original),
-                        new MultiSelectionOptionsMenuOption<Vector2>.Item($"READVANCED ({modernRes.X} x {modernRes.Y})", modernRes, TweaksPreset.Readvanced), // 16:9
+                        new MultiSelectionOptionsMenuOption<Vector2>.Item($"ORIGINAL ({originalRes.X}x{originalRes.Y})", originalRes, TweaksPreset.Original),
+                        new MultiSelectionOptionsMenuOption<Vector2>.Item($"READVANCED ({modernRes.X}x{modernRes.Y})", modernRes, TweaksPreset.Readvanced), // 16:9
                     ],
                     getData: _ => Engine.InternalGameResolution,
                     setData: data =>
@@ -163,17 +163,28 @@ public static class GameOptions
                         Engine.Config.InternalGameResolution = data == originalRes ? null : data;
                         Engine.GameViewPort.UpdateRenderBox();
                     },
-                    getCustomName: data => $"{data.X} x {data.Y}"),
+                    getCustomName: data => $"{data.X}x{data.Y}"),
                 new MultiSelectionOptionsMenuOption<bool>(
-                    text: "GAME LOGO",
-                    infoText: "Determines the game logo used during the intro sequence and menu.",
+                    text: "USE EXTENDED BACKGROUNDS",
+                    infoText: "Replaces the backgrounds of some levels with extended ones to better fit higher resolution. Doesn't go into effect until the level is restarted.",
                     items:
                     [
-                        new MultiSelectionOptionsMenuOption<bool>.Item("ORIGINAL", false, TweaksPreset.Original),
-                        new MultiSelectionOptionsMenuOption<bool>.Item("READVANCED", true, TweaksPreset.Readvanced),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ORIGINAL (OFF)", false, TweaksPreset.Original),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("READVANCED (ON)", true, TweaksPreset.Readvanced),
                     ],
-                    getData: _ => Engine.Config.UseReadvancedLogo,
-                    setData: data => Engine.Config.UseReadvancedLogo = data,
+                    getData: _ => Engine.Config.UseExtendedBackgrounds,
+                    setData: data => Engine.Config.UseExtendedBackgrounds = data,
+                    getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "USE GBA EFFECTS ON N-GAGE",
+                    infoText: "By default the N-Gage version has fewer visual effects than the GBA version. Using this option you can restore them. Some visual effects won't be changed until a new level is loaded.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ORIGINAL (OFF)", false, TweaksPreset.Original),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("READVANCED (ON)", true, TweaksPreset.Readvanced),
+                    ],
+                    getData: _ => Engine.Config.UseGbaEffectsOnNGage,
+                    setData: data => Engine.Config.UseGbaEffectsOnNGage = data,
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "PAUSE MENU",
@@ -187,6 +198,17 @@ public static class GameOptions
                     setData: data => Engine.Config.UseModernPauseDialog = data,
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
+                    text: "GAME LOGO",
+                    infoText: "Determines the game logo used during the intro sequence and menu.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ORIGINAL", false, TweaksPreset.Original),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("READVANCED", true, TweaksPreset.Readvanced),
+                    ],
+                    getData: _ => Engine.Config.UseReadvancedLogo,
+                    setData: data => Engine.Config.UseReadvancedLogo = data,
+                    getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
                     text: "ALLOW SKIPPING TEXTBOXES",
                     infoText: "If enabled then you can skip textboxes instead of pausing.",
                     items:
@@ -196,17 +218,6 @@ public static class GameOptions
                     ],
                     getData: _ => Engine.Config.CanSkipTextBoxes,
                     setData: data => Engine.Config.CanSkipTextBoxes = data,
-                    getCustomName: _ => null),
-                new MultiSelectionOptionsMenuOption<bool>(
-                    text: "ADD PROJECTILES WHEN NEEDED",
-                    infoText: "If enabled then new projectile objects will be created in the level if there aren't enough available to show on screen. This helps avoid enemy shots not firing if playing in a higher internal resolution.",
-                    items:
-                    [
-                        new MultiSelectionOptionsMenuOption<bool>.Item("ORIGINAL (OFF)", false, TweaksPreset.Original),
-                        new MultiSelectionOptionsMenuOption<bool>.Item("READVANCED (ON)", true, TweaksPreset.Readvanced),
-                    ],
-                    getData: _ => Engine.Config.AddProjectilesWhenNeeded,
-                    setData: data => Engine.Config.AddProjectilesWhenNeeded = data,
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "FIX BUGS",
@@ -219,28 +230,16 @@ public static class GameOptions
                     getData: _ => Engine.Config.FixBugs,
                     setData: data => Engine.Config.FixBugs = data,
                     getCustomName: _ => null),
-                // TODO: This should only appear for the N-Gage version - unless we use same option for using best features from both versions?
                 new MultiSelectionOptionsMenuOption<bool>(
-                    text: "USE GBA EFFECTS",
-                    infoText: "By default the N-Gage version has fewer visual effects than the GBA version. Using this option you can restore them. Some visual effects won't be changed until a new level is loaded.",
+                    text: "ADD PROJECTILES WHEN NEEDED",
+                    infoText: "If enabled then new projectile objects will be created in the level if there aren't enough available to show on screen. This helps avoid enemy shots not firing if playing in a higher internal resolution.",
                     items:
                     [
                         new MultiSelectionOptionsMenuOption<bool>.Item("ORIGINAL (OFF)", false, TweaksPreset.Original),
                         new MultiSelectionOptionsMenuOption<bool>.Item("READVANCED (ON)", true, TweaksPreset.Readvanced),
                     ],
-                    getData: _ => Engine.Config.UseGbaEffectsOnNGage,
-                    setData: data => Engine.Config.UseGbaEffectsOnNGage = data,
-                    getCustomName: _ => null),
-                new MultiSelectionOptionsMenuOption<bool>(
-                    text: "USE EXTENDED BACKGROUNDS",
-                    infoText: "Replaces the backgrounds of some levels with extended ones to better fit higher resolution. Doesn't go into effect until the level is restarted.",
-                    items:
-                    [
-                        new MultiSelectionOptionsMenuOption<bool>.Item("ORIGINAL (OFF)", false, TweaksPreset.Original),
-                        new MultiSelectionOptionsMenuOption<bool>.Item("READVANCED (ON)", true, TweaksPreset.Readvanced),
-                    ],
-                    getData: _ => Engine.Config.UseExtendedBackgrounds,
-                    setData: data => Engine.Config.UseExtendedBackgrounds = data,
+                    getData: _ => Engine.Config.AddProjectilesWhenNeeded,
+                    setData: data => Engine.Config.AddProjectilesWhenNeeded = data,
                     getCustomName: _ => null),
             ]),
             // TODO: Add presets (Original, Rebalanced/Readvanced, Custom)

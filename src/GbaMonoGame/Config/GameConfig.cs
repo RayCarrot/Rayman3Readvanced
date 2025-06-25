@@ -39,13 +39,13 @@ public class GameConfig
 
         // Tweaks
         InternalGameResolution = defaultResolution;
-        UseReadvancedLogo = true;
-        UseModernPauseDialog = true;
-        CanSkipTextBoxes = true;
-        AddProjectilesWhenNeeded = true;
-        FixBugs = true;
-        UseGbaEffectsOnNGage = true;
         UseExtendedBackgrounds = true;
+        UseGbaEffectsOnNGage = true;
+        UseModernPauseDialog = true;
+        UseReadvancedLogo = true;
+        CanSkipTextBoxes = true;
+        FixBugs = true;
+        AddProjectilesWhenNeeded = true;
 
         // Debug
         DebugModeEnabled = false;
@@ -90,13 +90,13 @@ public class GameConfig
 
     // Tweaks
     public Vector2? InternalGameResolution { get; set; } // Null to use original resolution
-    public bool UseReadvancedLogo { get; set; }
-    public bool UseModernPauseDialog { get; set; }
-    public bool CanSkipTextBoxes { get; set; }
-    public bool AddProjectilesWhenNeeded { get; set; }
-    public bool FixBugs { get; set; }
-    public bool UseGbaEffectsOnNGage { get; set; }
     public bool UseExtendedBackgrounds { get; set; }
+    public bool UseGbaEffectsOnNGage { get; set; }
+    public bool UseModernPauseDialog { get; set; }
+    public bool UseReadvancedLogo { get; set; }
+    public bool CanSkipTextBoxes { get; set; }
+    public bool FixBugs { get; set; }
+    public bool AddProjectilesWhenNeeded { get; set; }
 
     // Debug (can only be manually modified)
     public bool DebugModeEnabled { get; set; }
@@ -131,13 +131,13 @@ public class GameConfig
 
         // Tweaks
         InternalGameResolution = serializer.Serialize<Vector2?>(InternalGameResolution, TweaksSection, "InternalGameResolution");
-        UseReadvancedLogo = serializer.Serialize<bool>(UseReadvancedLogo, TweaksSection, "UseReadvancedLogo");
-        UseModernPauseDialog = serializer.Serialize<bool>(UseModernPauseDialog, TweaksSection, "UseModernPauseDialog");
-        CanSkipTextBoxes = serializer.Serialize<bool>(CanSkipTextBoxes, TweaksSection, "CanSkipTextBoxes");
-        AddProjectilesWhenNeeded = serializer.Serialize<bool>(AddProjectilesWhenNeeded, TweaksSection, "AddProjectilesWhenNeeded");
-        FixBugs = serializer.Serialize<bool>(FixBugs, TweaksSection, "FixBugs");
-        UseGbaEffectsOnNGage = serializer.Serialize<bool>(UseGbaEffectsOnNGage, TweaksSection, "UseGbaEffectsOnNGage");
         UseExtendedBackgrounds = serializer.Serialize<bool>(UseExtendedBackgrounds, TweaksSection, "UseExtendedBackgrounds");
+        UseGbaEffectsOnNGage = serializer.Serialize<bool>(UseGbaEffectsOnNGage, TweaksSection, "UseGbaEffectsOnNGage");
+        UseModernPauseDialog = serializer.Serialize<bool>(UseModernPauseDialog, TweaksSection, "UseModernPauseDialog");
+        UseReadvancedLogo = serializer.Serialize<bool>(UseReadvancedLogo, TweaksSection, "UseReadvancedLogo");
+        CanSkipTextBoxes = serializer.Serialize<bool>(CanSkipTextBoxes, TweaksSection, "CanSkipTextBoxes");
+        FixBugs = serializer.Serialize<bool>(FixBugs, TweaksSection, "FixBugs");
+        AddProjectilesWhenNeeded = serializer.Serialize<bool>(AddProjectilesWhenNeeded, TweaksSection, "AddProjectilesWhenNeeded");
 
         // Debug
         DebugModeEnabled = serializer.Serialize<bool>(DebugModeEnabled, DebugSection, "DebugModeEnabled");
