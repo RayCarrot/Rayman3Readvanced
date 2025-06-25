@@ -138,10 +138,12 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
         Gfx.ClearColor = color;
     }
 
-    // TODO: Make optional
     // TODO: Fix bumper positions so they don't overlap with walls
     protected void AddWalls(Point wallPoint, Point wallSize)
     {
+        if (!Engine.Config.Tweaks.ShowMode7Walls)
+            return;
+
         // Create the renderer
         Mode7WallsScreenRenderer wallsScreenRenderer = new((TgxPlayfieldMode7)Scene.Playfield, wallPoint, wallSize, 1.5f, ((CameraMode7)Scene.Camera).FadeDistance);
 

@@ -241,6 +241,17 @@ public static class GameOptions
                     getData: _ => Engine.Config.Tweaks.AddProjectilesWhenNeeded,
                     setData: data => Engine.Config.Tweaks.AddProjectilesWhenNeeded = data,
                     getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "SHOW MODE7 WALLS",
+                    infoText: "Adds 3D walls to the Mode7 bumper-car levels.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, TweaksPreset.Readvanced),
+                    ],
+                    getData: _ => Engine.Config.Tweaks.ShowMode7Walls,
+                    setData: data => Engine.Config.Tweaks.ShowMode7Walls = data,
+                    getCustomName: _ => null),
             ]),
             // TODO: Add presets (Original, Rebalanced/Readvanced, Custom)
             new GameOptionsGroup("DIFFICULTY",
