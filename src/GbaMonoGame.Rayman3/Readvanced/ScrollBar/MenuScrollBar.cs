@@ -17,7 +17,6 @@ public class MenuScrollBar
         {
             BgPriority = bgPriority,
             ObjPriority = 0,
-            ScreenPos = position,
             RenderContext = renderContext,
         };
 
@@ -25,7 +24,6 @@ public class MenuScrollBar
         {
             BgPriority = bgPriority,
             ObjPriority = 0,
-            ScreenPos = position + new Vector2(ThumbOffsetX, ThumbOffsetY),
             Texture = scrollBarThumbTexture,
             RenderContext = renderContext,
         };
@@ -77,14 +75,14 @@ public class MenuScrollBar
 
     public void Draw(AnimationPlayer animationPlayer)
     {
+        ScrollBar.ScreenPos = Position;
         animationPlayer.Play(ScrollBar);
 
         if (MaxScrollOffset != 0)
         {
             float length = GetLength();
             float scrollY = MathHelper.Lerp(0, length, ScrollOffset / MaxScrollOffset);
-            ScrollBarThumb.ScreenPos = ScrollBarThumb.ScreenPos with { Y = Position.Y + ThumbOffsetY + scrollY };
-
+            ScrollBarThumb.ScreenPos = Position + new Vector2(ThumbOffsetX, ThumbOffsetY + scrollY);
             animationPlayer.Play(ScrollBarThumb);
         }
     }

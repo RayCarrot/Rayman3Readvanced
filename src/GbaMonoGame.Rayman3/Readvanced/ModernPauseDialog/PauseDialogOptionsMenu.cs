@@ -4,6 +4,7 @@ using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
@@ -29,6 +30,7 @@ public class PauseDialogOptionsMenu
     private const float TabsCursorBaseY = 12;
     private const float InfoTextBoxBaseY = 112;
     private const float InfoTextLinesBaseY = 109;
+    private const float ScrollBarBaseY = 40;
 
     private const float LineHeight = 12;
 
@@ -465,7 +467,7 @@ public class PauseDialogOptionsMenu
             RenderContext = arrowRenderContext,
         };
 
-        ScrollBar = new MenuScrollBar(RenderContext, new Vector2(352, 40), 0);
+        ScrollBar = new MenuScrollBar(RenderContext, new Vector2(352, ScrollBarBaseY), 0);
 
         // Reset values
         IsEditingOption = false;
@@ -622,6 +624,8 @@ public class PauseDialogOptionsMenu
             TabsCursor.ScreenPos = TabsCursor.ScreenPos with { Y = TabsCursorBaseY - TabHeadersOffsetY };
             InfoTextBox.ScreenPos = InfoTextBox.ScreenPos with { Y = InfoTextBoxBaseY - OffsetY };
             InfoText.ScreenPos = InfoText.ScreenPos with { Y = InfoTextLinesBaseY - OffsetY };
+
+            ScrollBar.Position = ScrollBar.Position with { Y = ScrollBarBaseY - OffsetY };
 
             // Draw
             animationPlayer.Play(Canvas);
