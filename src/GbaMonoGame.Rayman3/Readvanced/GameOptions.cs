@@ -252,6 +252,17 @@ public static class GameOptions
                     getData: _ => Engine.Config.Tweaks.ShowMode7Walls,
                     setData: data => Engine.Config.Tweaks.ShowMode7Walls = data,
                     getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "ALLOW PROTOTYPE CHEATS",
+                    infoText: "The game has various cheat codes that were only available in the prototype builds. If enabled then those cheat codes will be accessible.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
+                    ],
+                    getData: _ => Engine.Config.Tweaks.AllowPrototypeCheats,
+                    setData: data => Engine.Config.Tweaks.AllowPrototypeCheats = data,
+                    getCustomName: _ => null),
             ]),
             // TODO: Add presets (Original, Rebalanced/Readvanced, Custom)
             new GameOptionsGroup("DIFFICULTY",

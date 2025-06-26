@@ -90,8 +90,8 @@ public partial class SamMode7
                     return false;
                 }
 
-                // TODO: Only enable in debug mode - this is a leftover prototype cheat
-                if (JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.L))
+                // NOTE: This cheat is normally only in the game prototypes
+                if (Engine.Config.Tweaks.AllowPrototypeCheats && JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.L))
                 {
                     State.MoveTo(Fsm_End);
                     return false;

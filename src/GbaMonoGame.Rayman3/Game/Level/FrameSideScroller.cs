@@ -230,12 +230,12 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
             CurrentStepAction = Fog != null ? Step_Pause_DisableFog : Step_Pause_Init;
         }
 
-        // TODO: Only allow this if in debug mode
-        // NOTE: These cheats are not included in the retail versions of the games
-        if (JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.L))
+        // NOTE: This cheat is normally only in the game prototypes
+        if (Engine.Config.Tweaks.AllowPrototypeCheats && JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.L))
             Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
 
-        if (JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.R))
+        // NOTE: This cheat is normally only in the game prototypes
+        if (Engine.Config.Tweaks.AllowPrototypeCheats && JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.R))
             GameInfo.EnableCheat(Scene, Cheat.Invulnerable);
     }
 

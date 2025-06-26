@@ -15,6 +15,7 @@ public class TweaksGameConfig : IniSectionObject
         FixBugs = true;
         AddProjectilesWhenNeeded = true;
         ShowMode7Walls = true;
+        AllowPrototypeCheats = false;
     }
 
     public override string SectionKey => "Tweaks";
@@ -28,6 +29,7 @@ public class TweaksGameConfig : IniSectionObject
     public bool FixBugs { get; set; }
     public bool AddProjectilesWhenNeeded { get; set; }
     public bool ShowMode7Walls { get; set; }
+    public bool AllowPrototypeCheats { get; set; }
 
     public override void Serialize(BaseIniSerializer serializer)
     {
@@ -40,5 +42,6 @@ public class TweaksGameConfig : IniSectionObject
         FixBugs = serializer.Serialize<bool>(FixBugs, "FixBugs");
         AddProjectilesWhenNeeded = serializer.Serialize<bool>(AddProjectilesWhenNeeded, "AddProjectilesWhenNeeded");
         ShowMode7Walls = serializer.Serialize<bool>(ShowMode7Walls, "ShowMode7Walls");
+        AllowPrototypeCheats = serializer.Serialize<bool>(AllowPrototypeCheats, "AllowPrototypeCheats");
     }
 }
