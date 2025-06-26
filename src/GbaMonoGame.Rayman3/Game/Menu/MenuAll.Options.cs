@@ -446,7 +446,12 @@ public partial class MenuAll
 
                 Anims.OptionsSelection.CurrentAnimation = Localization.LanguageUiIndex * OptionsOptionsCount + SelectedOption;
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.B) && Anims.Cursor.CurrentAnimation == 0)
+            else if (Rom.Platform switch
+                     {
+                         Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B),
+                         Platform.NGage => NGageJoyPadHelpers.IsBackButtonJustPressed(),
+                         _ => throw new UnsupportedPlatformException()
+                     } && Anims.Cursor.CurrentAnimation == 0)
             {
                 // NOTE: N-Gage auto-saves the option here
 
@@ -455,7 +460,12 @@ public partial class MenuAll
                 TransitionOutCursorAndStem();
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.A) && Anims.Cursor.CurrentAnimation == 0)
+            else if (Rom.Platform switch
+                     {
+                         Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
+                         Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
+                         _ => throw new UnsupportedPlatformException()
+                     } && Anims.Cursor.CurrentAnimation == 0)
             {
                 Anims.Cursor.CurrentAnimation = 16;
 

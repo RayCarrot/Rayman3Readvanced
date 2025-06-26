@@ -224,7 +224,12 @@ public partial class MenuAll
 
             Anims.GameModeList.CurrentAnimation = Localization.LanguageUiIndex * GameModeOptionsCount + SelectedOption;
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.A))
+        else if (Rom.Platform switch
+                 {
+                     Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
+                     Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
+                     _ => throw new UnsupportedPlatformException()
+                 })
         {
             Anims.Cursor.CurrentAnimation = 16;
 

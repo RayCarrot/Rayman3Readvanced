@@ -224,7 +224,12 @@ public partial class MenuAll
                         SelectOption(SelectedOption + 1, true);
                 }
                 // Select slot
-                else if (JoyPad.IsButtonJustPressed(GbaInput.A) && Anims.Cursor.CurrentAnimation != 16)
+                else if (Rom.Platform switch
+                         {
+                             Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
+                             Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
+                             _ => throw new UnsupportedPlatformException()
+                         } && Anims.Cursor.CurrentAnimation != 16)
                 {
                     Anims.Cursor.CurrentAnimation = 16;
 
@@ -303,7 +308,12 @@ public partial class MenuAll
                     }
                 }
                 // Erase slot
-                else if (JoyPad.IsButtonJustPressed(GbaInput.A))
+                else if (Rom.Platform switch
+                         {
+                             Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
+                             Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
+                             _ => throw new UnsupportedPlatformException()
+                         })
                 {
                     StartEraseMode = StartEraseMode.TransitionOutConfirmErase;
                     TransitionValue = 0;
@@ -351,7 +361,12 @@ public partial class MenuAll
                 break;
         }
 
-        if (JoyPad.IsButtonJustPressed(GbaInput.B) && !TransitionsFX.IsFadingOut && !IsStartingGame)
+        if (Rom.Platform switch
+            {
+                Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B),
+                Platform.NGage => NGageJoyPadHelpers.IsBackButtonJustPressed(),
+                _ => throw new UnsupportedPlatformException()
+            } && !TransitionsFX.IsFadingOut && !IsStartingGame)
         {
             switch (StartEraseMode)
             {

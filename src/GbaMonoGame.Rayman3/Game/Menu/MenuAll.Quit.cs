@@ -59,7 +59,7 @@ public partial class MenuAll
             SelectOption(SelectedOption == 1 ? 0 : 1, true);
             Anims.QuitSelection.CurrentAnimation = 15 + Localization.LanguageUiIndex + SelectedOption * 5;
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start))
+        else if (NGageJoyPadHelpers.IsConfirmButtonJustPressed())
         {
             Anims.Cursor.CurrentAnimation = 16;
 
@@ -75,7 +75,7 @@ public partial class MenuAll
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
             TransitionOutCursorAndStem();
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.B) || JoyPad.IsButtonJustPressed(GbaInput.Select))
+        else if (NGageJoyPadHelpers.IsBackButtonJustPressed())
         {
             Anims.Cursor.CurrentAnimation = 16;
             NextStepAction = Step_InitializeTransitionToGameMode;

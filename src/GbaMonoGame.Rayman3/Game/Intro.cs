@@ -524,8 +524,7 @@ public class Intro : Frame, IHasPlayfield
         // N-Gage allows the intro to be skipped from here
         if (Rom.Platform == Platform.NGage)
         {
-            // TODO: Check every button input
-            if (JoyPad.IsButtonPressed(GbaInput.Start))
+            if (NGageJoyPadHelpers.IsNumpadJustPressed() || NGageJoyPadHelpers.IsSoftButtonJustPressed())
                 IsSkipping = true;
 
             if (IsSkipping)
@@ -595,8 +594,7 @@ public class Intro : Frame, IHasPlayfield
         }
         else if (Rom.Platform == Platform.NGage)
         {
-            // TODO: Check every button input
-            if (JoyPad.IsButtonPressed(GbaInput.Start))
+            if (NGageJoyPadHelpers.IsNumpadJustPressed() || NGageJoyPadHelpers.IsSoftButtonJustPressed())
                 IsSkipping = true;
         }
         else
@@ -641,8 +639,12 @@ public class Intro : Frame, IHasPlayfield
         BlackLumAndLogoObj.FrameChannelSprite();
         AnimationPlayer.PlayFront(BlackLumAndLogoObj);
 
-        // TODO: Check every button input on N-Gage
-        if (JoyPad.IsButtonPressed(GbaInput.Start))
+        if (Rom.Platform switch
+            {
+                Platform.GBA => JoyPad.IsButtonPressed(GbaInput.Start),
+                Platform.NGage => NGageJoyPadHelpers.IsNumpadJustPressed() || NGageJoyPadHelpers.IsSoftButtonJustPressed(),
+                _ => throw new UnsupportedPlatformException()
+            })
         {
             Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
             Gfx.Fade = 1;

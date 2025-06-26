@@ -529,10 +529,15 @@ public class Credits : Frame
     {
         if (!IsExiting)
         {
-            // TODO: N-Gage checks other buttons too
-            if (JoyPad.IsButtonJustPressed(GbaInput.B) ||
-                JoyPad.IsButtonJustPressed(GbaInput.A) ||
-                JoyPad.IsButtonJustPressed(GbaInput.Start))
+            if (Rom.Platform switch
+                {
+                    Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B) ||
+                                    JoyPad.IsButtonJustPressed(GbaInput.A) ||
+                                    JoyPad.IsButtonJustPressed(GbaInput.Start),
+                    Platform.NGage => NGageJoyPadHelpers.IsNumpadJustPressed() || 
+                                      NGageJoyPadHelpers.IsSoftButtonJustPressed(),
+                    _ => throw new UnsupportedPlatformException()
+                })
             {
                 TransitionsFX.FadeOutInit(2);
                 IsExiting = true;

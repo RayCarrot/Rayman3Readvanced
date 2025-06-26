@@ -309,7 +309,12 @@ public abstract class Act : Frame
         else
         {
             // Skip cutscene
-            if (!IsAutomatic && JoyPad.IsButtonJustPressed(GbaInput.Start))
+            if (!IsAutomatic && Rom.Platform switch 
+                {
+                    Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.Start),
+                    Platform.NGage => NGageJoyPadHelpers.IsSoftButtonJustPressed(),
+                    _ => throw new UnsupportedPlatformException()
+                })
             {
                 CurrentFrameIndex = ActResource.LastFrameIndex;
                 TransitionsFX.FadeOutInit(1);
@@ -325,7 +330,12 @@ public abstract class Act : Frame
             {
                 TransitionTextIn();
             }
-            else if (!IsAutomatic && JoyPad.IsButtonJustPressed(GbaInput.A))
+            else if (!IsAutomatic && Rom.Platform switch
+                     {
+                         Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
+                         Platform.NGage => NGageJoyPadHelpers.IsNumpadJustPressed(),
+                         _ => throw new UnsupportedPlatformException()
+                     })
             {
                 if (ActResource.Frames.Value[CurrentFrameIndex].TextId == -1 ||
                     CurrentTextLine >= CurrentText.Length)

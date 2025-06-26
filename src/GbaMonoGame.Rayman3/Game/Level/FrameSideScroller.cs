@@ -214,12 +214,17 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         }
 
         // Pause
-        if ((JoyPad.IsButtonJustPressed(GbaInput.Start) || (Rom.Platform == Platform.NGage && PauseFrame)) && 
+        if (Rom.Platform switch
+            {
+                Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.Start),
+                Platform.NGage => NGageJoyPadHelpers.IsSoftButtonJustPressed() || ForcePauseFrame,
+                _ => throw new UnsupportedPlatformException()
+            } && 
             CircleTransitionMode == TransitionMode.None && 
             CanPause)
         {
             if (Rom.Platform == Platform.NGage)
-                PauseFrame = false;
+                ForcePauseFrame = false;
 
             GameTime.Pause();
             CurrentStepAction = Fog != null ? Step_Pause_DisableFog : Step_Pause_Init;

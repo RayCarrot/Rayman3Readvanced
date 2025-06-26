@@ -185,7 +185,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
                         if (MultiplayerManager.NGage_PendingSystemSyncPause && CurrentStepAction == Step_Normal && !UserInfo.IsGameOver)
                         {
-                            Current.PauseFrame = false;
+                            Current.ForcePauseFrame = false;
                             PausedMachineId = 0;
                             CurrentStepAction = Step_Pause_Init;
                         }
@@ -239,8 +239,12 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         {
             for (int id = 0; id < RSMultiplayer.MaxPlayersCount; id++)
             {
-                if (MultiJoyPad.IsButtonJustPressed(id, GbaInput.Start) || 
-                    (Rom.Platform == Platform.NGage && MultiJoyPad.IsButtonJustPressed(id, GbaInput.Select)))
+                if (Rom.Platform switch
+                    {
+                        Platform.GBA => MultiJoyPad.IsButtonJustPressed(id, GbaInput.Start),
+                        Platform.NGage => NGageJoyPadHelpers.MultiIsSoftButtonJustPressed(id),
+                        _ => throw new UnsupportedPlatformException()
+                    })
                 {
                     PausedMachineId = id;
                     CurrentStepAction = Step_Pause_Init;

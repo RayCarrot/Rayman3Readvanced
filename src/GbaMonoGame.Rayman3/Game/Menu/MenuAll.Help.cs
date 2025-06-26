@@ -55,7 +55,7 @@ public partial class MenuAll
     {
         int prevSelectedOption = SelectedOption;
 
-        if (JoyPad.IsButtonJustPressed(GbaInput.Start) || JoyPad.IsButtonJustPressed(GbaInput.A))
+        if (NGageJoyPadHelpers.IsConfirmButtonJustPressed())
         {
             SelectedOption++;
 
@@ -80,7 +80,7 @@ public partial class MenuAll
             if (SelectedOption == -1)
                 SelectedOption = 0;
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.Select) || JoyPad.IsButtonJustPressed(GbaInput.B))
+        else if (NGageJoyPadHelpers.IsBackButtonJustPressed())
         {
             SelectedOption = 0;
             prevSelectedOption = 0;

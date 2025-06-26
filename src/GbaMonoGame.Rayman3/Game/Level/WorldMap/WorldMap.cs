@@ -436,6 +436,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
     private void ManageCheats()
     {
+        // NOTE: On N-Gage it checks if numpad 1 is held down instead!
         // Make sure select is held down
         if (JoyPad.IsButtonReleased(GbaInput.Select))
         {
@@ -1016,6 +1017,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
     {
         if (SelectedWorldType == WorldType.None && CircleWipeTransitionMode == TransitionMode.None)
         {
+            // NOTE: On N-Gage it checks if numpad 1 is release instead of select!
             // Move forward
             if ((JoyPad.IsButtonJustPressed(GbaInput.Right) || 
                  (JoyPad.IsButtonJustPressed(GbaInput.Up) && WorldId is WorldId.World1 or WorldId.World3)) && 
@@ -1052,6 +1054,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                         break;
                 }
             }
+            // NOTE: On N-Gage it checks if numpad 1 is release instead of select!
             // Move back
             else if ((JoyPad.IsButtonJustPressed(GbaInput.Left) || 
                       (JoyPad.IsButtonJustPressed(GbaInput.Down) && WorldId == WorldId.World2) || 
@@ -1090,6 +1093,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                         break;
                 }
             }
+            // NOTE: On N-Gage it checks if numpad 1 is release instead of select!
             // Select world
             else if (JoyPad.IsButtonJustPressed(GbaInput.A) &&
                      CurrentMovement == WorldMapMovement.None &&
@@ -1496,7 +1500,12 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         Scene.AnimationPlayer.Execute();
         LevelMusicManager.Step();
 
-        if (JoyPad.IsButtonJustPressed(GbaInput.Start) && 
+        if (Rom.Platform switch
+            {
+                Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.Start),
+                Platform.NGage => NGageJoyPadHelpers.IsSoftButtonJustPressed(),
+                _ => throw new UnsupportedPlatformException()
+            } && 
             CurrentExStepAction == StepEx_Play &&
             CircleWipeTransitionMode == TransitionMode.None)
         {
