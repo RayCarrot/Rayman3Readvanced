@@ -70,12 +70,17 @@ public partial class MenuAll
                 {
                     if (id != RSMultiplayer.MachineId)
                     {
-                        ushort packet = RSMultiplayer.ReadPacket(id)[0];
+                        RSMultiplayer.ReadPacket(id, out ushort[] _);
+                        
+                        // NOTE: We hard-code the packet data to indicate an active connection
+                        ushort packet = MultiPakConnectedMessage;
 
+                        // We're connected!
                         if (packet == MultiPakConnectedMessage)
                         {
                             LastConnectionTime = GameTime.ElapsedFrames;
                         }
+                        // Slave - start game
                         else if ((packet & 0xf000) == 0xd000)
                         {
                             MultiplayerInfo.InitialGameTime = (uint)(packet & 0x1ff);
@@ -101,15 +106,22 @@ public partial class MenuAll
         }
         else if (Rom.Platform == Platform.NGage)
         {
-            ushort packet = 0; // NOTE: Hardcoded for now
-
-            if ((packet & 0xf000) == 0xd000)
+            if (RSMultiplayer.ReadPacket(out ushort[] packetBuffer, out _)
+                || true) // NOTE: Hard-code to always pass this
             {
-                MultiplayerInfo.InitialGameTime = (uint)(packet & 0x1ff);
-                NextStepAction = Step_InitializeTransitionToMultiplayerTypeSelection;
-                CurrentStepAction = Step_TransitionOutOfMultiplayerJoinedGamePlayerSelection;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
-                SelectOption(0, false);
+                // NOTE: We hard-code the packet data to be valid
+                ushort packet = 0xd000;
+
+                if ((packet & 0xf000) == 0xd000)
+                {
+                    MultiplayerInfo.InitialGameTime = (uint)(packet & 0x1ff);
+                    NextStepAction = Step_InitializeTransitionToMultiplayerTypeSelection;
+                    CurrentStepAction = Step_TransitionOutOfMultiplayerJoinedGamePlayerSelection;
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+                    SelectOption(0, false);
+                }
+
+                RSMultiplayer.ReleasePacket(packetBuffer);
             }
         }
         else
@@ -373,12 +385,7 @@ public partial class MenuAll
             SelectOption(SelectedOption == 0 ? 2 : 0, true);
             Anims.MultiplayerConnectionSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + SelectedOption / 2;
         }
-        else if (Rom.Platform switch
-                 {
-                     Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B),
-                     Platform.NGage => NGageJoyPadHelpers.IsBackButtonJustPressed(),
-                     _ => throw new UnsupportedPlatformException()
-                 })
+        else if (NGageJoyPadHelpers.IsBackButtonJustPressed())
         {
             NextStepAction = Step_InitializeTransitionToGameMode;
             CurrentStepAction = Step_TransitionOutOfMultiplayerConnectionSelection;
@@ -386,13 +393,10 @@ public partial class MenuAll
             TransitionOutCursorAndStem();
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
         }
-        else if (Rom.Platform switch
-                 {
-                     Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
-                     Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
-                     _ => throw new UnsupportedPlatformException()
-                 })
+        else if (NGageJoyPadHelpers.IsConfirmButtonJustPressed())
         {
+            // NOTE: The game initializes and verifies the RNotifier connection here
+
             Anims.Cursor.CurrentAnimation = 16;
 
             NextStepAction = SelectedOption switch
@@ -439,14 +443,13 @@ public partial class MenuAll
 
         CurrentStepAction = Step_TransitionToMultiplayerJoinGame;
 
-        // NOTE: The game sets some global value here
+        // NOTE: The game sets some global value here related to handling audio
 
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
         SetBackgroundPalette(2);
         GameTime.Resume();
 
-        // NOTE: The game inits searching for hosts here
-
+        RSMultiplayer.InitSearchForHosts();
         SelectedHost = -1;
         HostsCount = 0;
         FinishedSearchingForHosts = false;
@@ -475,9 +478,9 @@ public partial class MenuAll
 
     private void Step_MultiplayerJoinGame()
     {
-        int hostsCount = 2; // NOTE: Hardcoded for now - the game gets this from a function call
+        int hostsCount = RSMultiplayer.GetHostsCount();
         int selectedHost = SelectedHost;
-        bool finishedSearchingForHosts = false; // NOTE: Hardcoded for now - the game gets this from a function call
+        bool finishedSearchingForHosts = RSMultiplayer.FinishedSearchingForHosts;
 
         if (selectedHost == -1 && hostsCount > 0)
             SelectedHost = 0;
@@ -501,16 +504,12 @@ public partial class MenuAll
                     SelectedHost = hostsCount - 1;
             }
         }
-        else if (Rom.Platform switch
-                 {
-                     Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
-                     Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
-                     _ => throw new UnsupportedPlatformException()
-                 })
+        else if (NGageJoyPadHelpers.IsConfirmButtonJustPressed())
         {
             if (SelectedHost != -1)
             {
-                // NOTE: The game sets the host to the selected one here
+                RSMultiplayer.SetHost(SelectedHost);
+
                 NextStepAction = Step_InitializeTransitionToMultiplayerJoinedGamePlayerSelection;
                 CurrentStepAction = Step_TransitionOutOfMultiplayerJoinGame;
 
@@ -521,14 +520,9 @@ public partial class MenuAll
                 SelectOption(0, false);
             }
         }
-        else if (Rom.Platform switch
-                 {
-                     Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B),
-                     Platform.NGage => NGageJoyPadHelpers.IsBackButtonJustPressed(),
-                     _ => throw new UnsupportedPlatformException()
-                 })
+        else if (NGageJoyPadHelpers.IsBackButtonJustPressed())
         {
-            // NOTE: The game deinits the connection here
+            RSMultiplayer.DeInit();
 
             SelectOption(0, false);
 
@@ -550,7 +544,7 @@ public partial class MenuAll
             }
             else
             {
-                string selectedHostName = $"Host {SelectedHost + 1}"; // NOTE: Hardcoded for now - the game gets this from a function call
+                string selectedHostName = RSMultiplayer.GetHostName(SelectedHost);
                 int textId = finishedSearchingForHosts 
                     ? 29  // %i host(s) found Select a host %s
                     : 28; // Looking for potential hosts %i host(s) found Select a host %s
@@ -560,7 +554,7 @@ public partial class MenuAll
             }
         }
 
-        // This shouldn't be here - leftover?
+        // TODO: This shouldn't be here - leftover?
         Anims.MultiplayerPlayerSelection.ScreenPos = Anims.MultiplayerPlayerSelection.ScreenPos with { Y = 60 - MultiplayerPlayersOffsetY };
         Anims.MultiplayerPlayerNumberIcons.ScreenPos = Anims.MultiplayerPlayerNumberIcons.ScreenPos with { Y = 42 - MultiplayerPlayersOffsetY };
         Anims.MultiplayerPlayerSelectionHighlight.ScreenPos = Anims.MultiplayerPlayerSelectionHighlight.ScreenPos with { Y = 46 - MultiplayerPlayersOffsetY };
@@ -680,7 +674,7 @@ public partial class MenuAll
         }
 
         SetBackgroundPalette(2);
-        MultiplayerManager.Init();
+        MultiplayerManager.ReInit();
         GameTime.Resume();
 
         MultiplayerType = 0;
@@ -756,6 +750,11 @@ public partial class MenuAll
 
     private void Step_MultiplayerPlayerSelection()
     {
+        // NOTE: Hard-code a valid connection
+        RSMultiplayer.MubState = MubState.Connected;
+        RSMultiplayer.PlayersCount = 4;
+        RSMultiplayer.MachineId = 0;
+
         RSMultiplayer.CheckForLostConnection();
 
         // Disconnected
@@ -1023,8 +1022,6 @@ public partial class MenuAll
 
     private void Step_InitializeTransitionToMultiplayerHostedGamePlayerSelection()
     {
-        string hostName = "HostName"; // NOTE: Hardcoded for now
-
         AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerPlayersAnimations);
 
         Anims.MultiplayerPlayerSelection = new AnimatedObject(resource, false)
@@ -1071,17 +1068,19 @@ public partial class MenuAll
             RenderContext = Playfield.RenderContext,
         };
 
+        string hostName = RSMultiplayer.GetCurrentHostName();
         NGageSetMenuText(25, false, 36, 256, hostName); // Please wait for connections on %s
+
         CurrentStepAction = Step_TransitionToMultiplayerHostedGamePlayerSelection;
 
-        // NOTE: The game sets some global value here
+        // NOTE: The game sets some global value here related to handling audio
 
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
         SetBackgroundPalette(2);
 
-        MultiplayerManager.Init();
+        MultiplayerManager.ReInit();
 
-        // NOTE: The game does some connection stuff here
+        // NOTE: The game calls some connection functions here
 
         GameTime.Resume();
 
@@ -1092,8 +1091,6 @@ public partial class MenuAll
 
     private void Step_TransitionToMultiplayerHostedGamePlayerSelection()
     {
-        int[] playerConnectionStates = [4, 4, 4, 4]; // NOTE: Hardcoded for now
-
         TransitionValue += 4;
 
         if (TransitionValue <= 80)
@@ -1105,7 +1102,7 @@ public partial class MenuAll
             CurrentStepAction = Step_MultiplayerHostedGamePlayerSelection;
         }
 
-        if (playerConnectionStates[0] == 4)
+        if (RSMultiplayer.PlayerConnectionStates[0] == RSMultiplayer.PlayerConnectionState.Ready)
         {
             Anims.MultiplayerPlayerNumberIcons.CurrentAnimation = 3 + RSMultiplayer.PlayersCount;
 
@@ -1133,20 +1130,20 @@ public partial class MenuAll
 
         for (int id = 0; id < RSMultiplayer.PlayersCount; id++)
         {
-            switch (playerConnectionStates[id])
+            switch (RSMultiplayer.PlayerConnectionStates[id])
             {
-                case 1:
+                case RSMultiplayer.PlayerConnectionState.Wait:
                     if ((GameTime.ElapsedFrames & 8) != 0)
                         AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionIcons[id]);
                     break;
 
-                case 2:
+                case RSMultiplayer.PlayerConnectionState.Connecting:
                     if ((GameTime.ElapsedFrames & 4) != 0)
                         AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionIcons[id]);
                     break;
 
-                case 3:
-                case 4:
+                case RSMultiplayer.PlayerConnectionState.Connected:
+                case RSMultiplayer.PlayerConnectionState.Ready:
                     AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionIcons[id]);
                     break;
             }
@@ -1157,10 +1154,14 @@ public partial class MenuAll
 
     private void Step_MultiplayerHostedGamePlayerSelection()
     {
-        int[] playerConnectionStates = [4, 4, 4, 4]; // NOTE: Hardcoded for now
-        string hostName = "HostName"; // NOTE: Hardcoded for now
+        // NOTE: Hard-code all players to be connected
+        Array.Fill(RSMultiplayer.PlayerConnectionStates, RSMultiplayer.PlayerConnectionState.Ready);
+        RSMultiplayer.PlayersCount = 4;
+        RSMultiplayer.MachineId = 0;
 
-        if (playerConnectionStates[0] == 4)
+        // NOTE: The game calls a connection function here
+
+        if (RSMultiplayer.PlayerConnectionStates[0] == RSMultiplayer.PlayerConnectionState.Ready)
         {
             Anims.MultiplayerPlayerNumberIcons.CurrentAnimation = 3 + RSMultiplayer.PlayersCount;
 
@@ -1176,31 +1177,29 @@ public partial class MenuAll
 
         if (RSMultiplayer.PlayersCount > 1)
         {
-            // NOTE: Hard-code conditions for now
-            if (false)
+            if (RSMultiplayer.CheckAllPlayersWaiting())
             {
-                NGageSetMenuText(26, false, 36, 100, hostName); // Press 5 when ready. Host name : %s
+                NGageSetMenuText(26, false, 36, 100, RSMultiplayer.CurrentHostName); // Press 5 when ready. Host name : %s
 
                 if (NGageJoyPadHelpers.IsConfirmButtonJustPressed())
                 {
                     // NOTE: The game notifies other players that it's ready
                 }
             }
-            else if (false)
+            else if (RSMultiplayer.CheckAnyPlayerConnecting())
             {
                 NGageSetMenuText(4, false, 36, 0); // Please Wait...
             }
-            else if (true)
+            else if (RSMultiplayer.CheckAllPlayersReady())
             {
                 uint trimmedGameTime = GameTime.ElapsedFrames & 0x1FF;
 
                 ushort packet = (ushort)trimmedGameTime;
                 packet |= 0xd000;
 
-                // NOTE: The game sends the packet
+                RSMultiplayer.SendPacket([packet], 2, 4);
 
                 MultiplayerInfo.InitialGameTime = trimmedGameTime;
-                MultiplayerManager.CacheData();
 
                 NextStepAction = Step_InitializeTransitionToMultiplayerTypeSelection;
                 CurrentStepAction = Step_TransitionOutOfMultiplayerHostedGamePlayerSelection;
@@ -1212,14 +1211,14 @@ public partial class MenuAll
 
         if (NGageJoyPadHelpers.IsBackButtonJustPressed())
         {
-            // NOTE: The game deinits the connection here
+            RSMultiplayer.DeInit();
 
             SelectOption(0, false);
             NextStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;
             CurrentStepAction = Step_TransitionOutOfMultiplayerHostedGamePlayerSelection;
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
         }
-        else if (playerConnectionStates[0] != 4)
+        else if (RSMultiplayer.PlayerConnectionStates[0] != RSMultiplayer.PlayerConnectionState.Ready)
         {
             SelectOption(0, false);
             NextStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;
@@ -1241,20 +1240,20 @@ public partial class MenuAll
 
         for (int id = 0; id < RSMultiplayer.PlayersCount; id++)
         {
-            switch (playerConnectionStates[id])
+            switch (RSMultiplayer.PlayerConnectionStates[id])
             {
-                case 1:
+                case RSMultiplayer.PlayerConnectionState.Wait:
                     if ((GameTime.ElapsedFrames & 8) != 0)
                         AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionIcons[id]);
                     break;
 
-                case 2:
+                case RSMultiplayer.PlayerConnectionState.Connecting:
                     if ((GameTime.ElapsedFrames & 4) != 0)
                         AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionIcons[id]);
                     break;
 
-                case 3:
-                case 4:
+                case RSMultiplayer.PlayerConnectionState.Connected:
+                case RSMultiplayer.PlayerConnectionState.Ready:
                     AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionIcons[id]);
                     break;
             }
@@ -1265,7 +1264,8 @@ public partial class MenuAll
 
     private void Step_TransitionOutOfMultiplayerHostedGamePlayerSelection()
     {
-        int[] playerConnectionStates = [4, 4, 4, 4]; // NOTE: Hardcoded for now
+        // NOTE: Hard-code all players to be connected
+        Array.Fill(RSMultiplayer.PlayerConnectionStates, RSMultiplayer.PlayerConnectionState.Ready);
 
         TransitionValue += 4;
 
@@ -1295,20 +1295,20 @@ public partial class MenuAll
 
         for (int id = 0; id < RSMultiplayer.PlayersCount; id++)
         {
-            switch (playerConnectionStates[id])
+            switch (RSMultiplayer.PlayerConnectionStates[id])
             {
-                case 1:
+                case RSMultiplayer.PlayerConnectionState.Wait:
                     if ((GameTime.ElapsedFrames & 8) != 0)
                         AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionIcons[id]);
                     break;
 
-                case 2:
+                case RSMultiplayer.PlayerConnectionState.Connecting:
                     if ((GameTime.ElapsedFrames & 4) != 0)
                         AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionIcons[id]);
                     break;
 
-                case 3:
-                case 4:
+                case RSMultiplayer.PlayerConnectionState.Connected:
+                case RSMultiplayer.PlayerConnectionState.Ready:
                     AnimationPlayer.Play(Anims.MultiplayerPlayerSelectionIcons[id]);
                     break;
             }
@@ -1372,7 +1372,7 @@ public partial class MenuAll
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
         SetBackgroundPalette(2);
 
-        MultiplayerManager.Init();
+        MultiplayerManager.ReInit();
         GameTime.Resume();
 
         MultiplayerType = 0;
@@ -1382,7 +1382,8 @@ public partial class MenuAll
 
     private void Step_TransitionToMultiplayerJoinedGamePlayerSelection()
     {
-        int[] playerConnectionStates = [4, 4, 4, 4]; // NOTE: Hardcoded for now
+        // NOTE: Hard-code all players to be connected
+        Array.Fill(RSMultiplayer.PlayerConnectionStates, RSMultiplayer.PlayerConnectionState.Ready);
 
         TransitionValue += 4;
 
@@ -1395,7 +1396,7 @@ public partial class MenuAll
             CurrentStepAction = Step_MultiplayerJoinedGamePlayerSelection;
         }
 
-        if (playerConnectionStates[0] == 4)
+        if (RSMultiplayer.PlayerConnectionStates[0] == RSMultiplayer.PlayerConnectionState.Ready)
         {
             NGageSetMenuText(33, false, null, 0); // Please wait
 
@@ -1443,25 +1444,28 @@ public partial class MenuAll
 
     private void Step_MultiplayerJoinedGamePlayerSelection()
     {
-        int[] playerConnectionStates = [4, 4, 4, 4]; // NOTE: Hardcoded for now
+        // NOTE: Hard-code all players to be connected
+        Array.Fill(RSMultiplayer.PlayerConnectionStates, RSMultiplayer.PlayerConnectionState.Ready);
+        RSMultiplayer.PlayersCount = 4;
+        RSMultiplayer.MachineId = 0;
 
-        switch (playerConnectionStates[0])
+        switch (RSMultiplayer.PlayerConnectionStates[0])
         {
-            case 1:
+            case RSMultiplayer.PlayerConnectionState.Wait:
                 NGageSetMenuText(32, false, null, 0); // Connected. Wait for host to start a game.
                 break;
 
-            case 2:
+            case RSMultiplayer.PlayerConnectionState.Connecting:
                 NGageSetMenuText(31, false, null, 0); // Connecting
                 break;
 
-            case 3:
-            case 4:
+            case RSMultiplayer.PlayerConnectionState.Connected:
+            case RSMultiplayer.PlayerConnectionState.Ready:
                 NGageSetMenuText(33, false, null, 0); // Please wait
                 break;
         }
 
-        if (playerConnectionStates[0] == 4)
+        if (RSMultiplayer.PlayerConnectionStates[0] == RSMultiplayer.PlayerConnectionState.Ready)
         {
             Anims.MultiplayerPlayerNumberIcons.CurrentAnimation = 3 + RSMultiplayer.PlayersCount;
 
@@ -1502,7 +1506,7 @@ public partial class MenuAll
         // Go back
         if (NGageJoyPadHelpers.IsBackButtonJustPressed())
         {
-            // NOTE: The game deinits the connection here
+            RSMultiplayer.DeInit();
 
             SelectOption(0, false);
 
@@ -1512,7 +1516,7 @@ public partial class MenuAll
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
         }
         // Lost connection
-        else if (playerConnectionStates[0] == 0)
+        else if (RSMultiplayer.PlayerConnectionStates[0] == RSMultiplayer.PlayerConnectionState.Disconnected)
         {
             SelectOption(0, false);
 
@@ -1660,8 +1664,7 @@ public partial class MenuAll
         AnimationPlayer.Play(Anims.ArrowRight);
         AnimationPlayer.Play(Anims.MultiplayerTypeIcon);
 
-        // NOTE: Hard-code for now
-        if (Rom.Platform == Platform.NGage && false)
+        if (Rom.Platform == Platform.NGage && MultiplayerManager.SyncTime != 0)
         {
             if (!ShouldTextBlink || (GameTime.ElapsedFrames & 0x10) != 0)
                 AnimationPlayer.Play(Anims.Texts[4]);
@@ -1670,9 +1673,9 @@ public partial class MenuAll
 
     private void Step_MultiplayerTypeSelection()
     {
-        MubState state = MultiplayerManager.Step();
+        bool connected = MultiplayerManager.Step();
 
-        if (state == MubState.Connected)
+        if (connected)
         {
             if (MultiplayerManager.HasReadJoyPads())
             {
@@ -1718,6 +1721,8 @@ public partial class MenuAll
                          })
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
+
+                    // NOTE: The N-Gage version de-inits the connection here based on a condition
 
                     if (Rom.Platform == Platform.GBA)
                         NextStepAction = Step_InitializeTransitionToMultiplayerPlayerSelection;
@@ -1769,18 +1774,19 @@ public partial class MenuAll
             AnimationPlayer.Play(Anims.ArrowRight);
             AnimationPlayer.Play(Anims.MultiplayerTypeIcon);
 
-            // NOTE: Hard-code for now
-            if (Rom.Platform == Platform.NGage && false)
+            if (Rom.Platform == Platform.NGage && MultiplayerManager.SyncTime != 0)
             {
                 if (!ShouldTextBlink || (GameTime.ElapsedTotalFrames & 0x10) != 0)
                     AnimationPlayer.Play(Anims.Texts[4]);
             }
 
-            // NOTE: Hard-code for now
+            // NOTE: Hard-code to false. The game checks if there is a delay in the connection and the local player has pressed a back button.
             if (Rom.Platform == Platform.NGage && false)
             {
                 NextStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;
                 CurrentStepAction = Step_TransitionOutOfMultiplayerTypeSelection;
+                
+                RSMultiplayer.DeInit();
             }
         }
         else
@@ -1874,8 +1880,7 @@ public partial class MenuAll
         AnimationPlayer.Play(Anims.ArrowRight);
         AnimationPlayer.Play(Anims.MultiplayerTypeIcon);
 
-        // NOTE: Hard-code for now
-        if (Rom.Platform == Platform.NGage && false)
+        if (Rom.Platform == Platform.NGage && MultiplayerManager.SyncTime != 0)
         {
             if (!ShouldTextBlink || (GameTime.ElapsedFrames & 0x10) != 0)
                 AnimationPlayer.Play(Anims.Texts[4]);
@@ -2023,8 +2028,7 @@ public partial class MenuAll
         AnimationPlayer.Play(Anims.MultiplayerMapName1);
         AnimationPlayer.Play(Anims.MultiplayerMapName2);
 
-        // NOTE: Hard-code for now
-        if (Rom.Platform == Platform.NGage && false)
+        if (Rom.Platform == Platform.NGage && MultiplayerManager.SyncTime != 0)
         {
             if (!ShouldTextBlink || (GameTime.ElapsedFrames & 0x10) != 0)
                 AnimationPlayer.Play(Anims.Texts[4]);
@@ -2033,9 +2037,9 @@ public partial class MenuAll
 
     private void Step_MultiplayerMapSelection()
     {
-        MubState state = MultiplayerManager.Step();
+        bool connected = MultiplayerManager.Step();
 
-        if (state == MubState.Connected)
+        if (connected)
         {
             if (MultiplayerManager.HasReadJoyPads())
             {
@@ -2119,7 +2123,7 @@ public partial class MenuAll
                         IsStartingGame = true;
 
                         if (Rom.Platform == Platform.GBA)
-                            MultiplayerManager.FUN_080ae49c();
+                            MultiplayerManager.BeginLoad();
 
                         Gfx.FadeControl = new FadeControl(FadeMode.None);
                         TransitionsFX.FadeOutInit(4);
@@ -2165,14 +2169,13 @@ public partial class MenuAll
             AnimationPlayer.Play(Anims.MultiplayerMapName1);
             AnimationPlayer.Play(Anims.MultiplayerMapName2);
 
-            // NOTE: Hard-code for now
-            if (Rom.Platform == Platform.NGage && false)
+            if (Rom.Platform == Platform.NGage && MultiplayerManager.SyncTime != 0)
             {
                 if (!ShouldTextBlink || (GameTime.ElapsedTotalFrames & 0x10) != 0)
                     AnimationPlayer.Play(Anims.Texts[4]);
             }
 
-            // NOTE: Hard-code for now
+            // NOTE: Hard-code to false. The game checks if there is a delay in the connection and the local player has pressed a back button.
             if (Rom.Platform == Platform.NGage && false)
             {
                 NextStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;
@@ -2237,8 +2240,7 @@ public partial class MenuAll
         AnimationPlayer.Play(Anims.MultiplayerMapName1);
         AnimationPlayer.Play(Anims.MultiplayerMapName2);
 
-        // NOTE: Hard-code for now
-        if (Rom.Platform == Platform.NGage && false)
+        if (Rom.Platform == Platform.NGage && MultiplayerManager.SyncTime != 0)
         {
             if (!ShouldTextBlink || (GameTime.ElapsedFrames & 0x10) != 0)
                 AnimationPlayer.Play(Anims.Texts[4]);
@@ -2310,9 +2312,9 @@ public partial class MenuAll
 
     private void Step_MultiplayerFlagOptions()
     {
-        MubState state = MultiplayerManager.Step();
+        bool connected = MultiplayerManager.Step();
 
-        if (state == MubState.Connected)
+        if (connected)
         {
             if (MultiplayerManager.HasReadJoyPads())
             {
@@ -2453,13 +2455,15 @@ public partial class MenuAll
             
             AnimationPlayer.Play(Anims.MultiplayerCaptureTheFlagOptions);
 
-            // NOTE: Hard-code for now
+            // NOTE: Hard-code to false. The game checks if there is a delay in the connection and the local player has pressed a back button.
             if (Rom.Platform == Platform.NGage && false)
             {
                 NextStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;
                 CurrentStepAction = Engine.Config.Tweaks.FixBugs
                     ? Step_TransitionOutOfMultiplayerFlagOptions
                     : Step_TransitionOutOfMultiplayerTypeSelection;
+                
+                RSMultiplayer.DeInit();
             }
         }
         else
@@ -2529,11 +2533,10 @@ public partial class MenuAll
             InitialPage = InitialMenuPage.Language;
             CurrentStepAction = Step_TransitionToMultiplayerLostConnection;
 
-            int playerIdWhoLeftTheGame = -1; // NOTE: Hard-code for now
-            if (playerIdWhoLeftTheGame == -1)
+            if (RSMultiplayer.PlayerIdWhoLeftGame == -1)
                 NGageSetMenuText(1, true, null, 0); // Link Error! Press Left Soft Key
             else
-                NGageSetMenuText(2, true, null, 100, playerIdWhoLeftTheGame + 1); // Player %i has left the game
+                NGageSetMenuText(2, true, null, 100, RSMultiplayer.PlayerIdWhoLeftGame + 1); // Player %i has left the game
         }
         else
         {

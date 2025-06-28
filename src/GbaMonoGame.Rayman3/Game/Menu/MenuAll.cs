@@ -592,7 +592,9 @@ public partial class MenuAll : Frame, IHasPlayfield
             SoundEngineInterface.SetNbVoices(10);
         }
 
-        RSMultiplayer.UnInit();
+        if (Rom.Platform == Platform.GBA)
+            RSMultiplayer.UnInit();
+        
         RSMultiplayer.Init();
 
         if (Rom.Platform == Platform.GBA)

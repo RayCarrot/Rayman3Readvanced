@@ -9,5 +9,5 @@ public enum MubState
     Error = 4,
     State5 = 5,
     BadConnection = 6,
-    // TODO: More?
+    UnInit = 0xFF,
 }

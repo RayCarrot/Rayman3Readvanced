@@ -26,9 +26,9 @@ public class FrameMultiMissileRace : FrameMissileMultiMode7
 
     public override void Step()
     {
-        MubState state = MultiplayerManager.Step();
+        bool connected = MultiplayerManager.Step();
 
-        if (state == MubState.Connected && !EndOfFrame)
+        if (connected && !EndOfFrame)
         {
             if (MultiplayerManager.HasReadJoyPads())
             {

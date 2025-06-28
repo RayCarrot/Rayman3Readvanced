@@ -62,6 +62,45 @@ public static class MultiJoyPad
         ValidFlags[machineId][frame] = true;
     }
 
+    public static void SetInput(int machineId, uint machineTimer, GbaInput input)
+    {
+        if (machineId is < 0 or >= MaxPlayersCount)
+            throw new Exception("Invalid machine id");
+
+        uint frame = machineTimer % BufferedFramesCount;
+
+        JoyPads[machineId][frame].KeyTriggers = input ^ JoyPads[machineId][frame].KeyStatus;
+        JoyPads[machineId][frame].KeyStatus = input;
+        ValidFlags[machineId][frame] = true;
+    }
+
+    public static void NewFrame(int machineId, uint machineTimer)
+    {
+        if (machineId is < 0 or >= MaxPlayersCount)
+            throw new Exception("Invalid machine id");
+
+        uint frame = machineTimer % BufferedFramesCount;
+        JoyPads[machineId][frame].KeyTriggers = GbaInput.None;
+    }
+
+    public static void Clear(int machineId, uint machineTimer)
+    {
+        if (machineId is < 0 or >= MaxPlayersCount)
+            throw new Exception("Invalid machine id");
+
+        uint frame = machineTimer % BufferedFramesCount;
+        uint prevFrame = (machineTimer - 1) % BufferedFramesCount;
+
+        if (!FirstReadFlags[machineId])
+            JoyPads[machineId][frame].KeyStatus = GbaInput.None;
+        else
+            JoyPads[machineId][frame].KeyStatus = JoyPads[machineId][prevFrame].KeyStatus;
+
+        FirstReadFlags[machineId] = true;
+        JoyPads[machineId][frame].KeyTriggers = GbaInput.None;
+        ValidFlags[machineId][frame] = true;
+    }
+
     public static GbaInput GetInput(int machineId, uint machineTimer)
     {
         return JoyPads[machineId][machineTimer % BufferedFramesCount].KeyStatus;

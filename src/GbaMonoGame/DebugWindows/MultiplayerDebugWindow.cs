@@ -35,10 +35,13 @@ public class MultiplayerDebugWindow : DebugWindow
             if (ImGui.RadioButton($"{i}##PlayersCount", RSMultiplayer.PlayersCount == i))
             {
                 RSMultiplayer.PlayersCount = i;
-                MultiplayerManager.PlayersCount = i;
+                MultiplayerManager.CachedPlayersCount = i;
 
                 if (RSMultiplayer.MachineId >= i)
+                {
                     RSMultiplayer.MachineId = 0;
+                    MultiplayerManager.CachedMachineId = 0;
+                }
             }
         }
 
@@ -49,7 +52,7 @@ public class MultiplayerDebugWindow : DebugWindow
             if (ImGui.RadioButton($"{i}##MachineId", RSMultiplayer.MachineId == i))
             {
                 RSMultiplayer.MachineId = i;
-                MultiplayerManager.MachineId = i;
+                MultiplayerManager.CachedMachineId = i;
             }
         }
 

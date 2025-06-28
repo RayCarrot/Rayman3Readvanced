@@ -51,7 +51,6 @@ public class ModernMenuAll : Frame, IHasPlayfield
     public int WheelRotation { get; set; }
     public int SteamTimer { get; set; }
 
-    public bool IsLoadingMultiplayerMap { get; set; }
     public bool HasLoadedGameInfo { get; set; }
     public Slot[] Slots { get; } = new Slot[GameInfo.ModernSaveSlotsCount];
     public bool FinishedLyChallenge1 { get; set; }
@@ -471,16 +470,6 @@ public class ModernMenuAll : Frame, IHasPlayfield
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__raytheme);
         }
 
-        RSMultiplayer.UnInit();
-        RSMultiplayer.Init();
-
-        // TODO: Implement
-        //if (Rom.Platform == Platform.GBA)
-        //    MultiplayerInititialGameTime = GameTime.ElapsedFrames;
-
-        MultiplayerInfo.Init();
-        MultiplayerManager.Init();
-
         GameTime.Resume();
 
         TransitionsFX.Init(false);
@@ -491,11 +480,7 @@ public class ModernMenuAll : Frame, IHasPlayfield
 
     public override void UnInit()
     {
-        if (!IsLoadingMultiplayerMap)
-        {
-            RSMultiplayer.UnInit();
-            GameTime.Resume();
-        }
+        GameTime.Resume();
 
         if (SoundEventsManager.IsLoaded)
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__raytheme);

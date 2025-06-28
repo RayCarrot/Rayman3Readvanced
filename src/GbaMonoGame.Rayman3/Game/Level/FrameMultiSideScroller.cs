@@ -120,9 +120,9 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
     public override void Step()
     {
-        MubState state = MultiplayerManager.Step();
+        bool connected = MultiplayerManager.Step();
 
-        if (state == MubState.Connected && (Rom.Platform == Platform.NGage || !EndOfFrame))
+        if (connected && (Rom.Platform == Platform.NGage || !EndOfFrame))
         {
             if (Rom.Platform == Platform.GBA)
             {
@@ -141,12 +141,12 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
             }
             else if (Rom.Platform == Platform.NGage)
             {
-                if (!IsShowingPauseSign && MultiplayerManager.NGage_SyncTime != 0)
+                if (!IsShowingPauseSign && MultiplayerManager.SyncTime != 0)
                 {
                     // NOTE: The game loads the PauseSign animated object here
                 }
 
-                if (MultiplayerManager.NGage_SyncTime != 0)
+                if (MultiplayerManager.SyncTime != 0)
                 {
                     Scene.AnimationPlayer.PlayFront(PauseSign);
 
@@ -183,7 +183,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
                     {
                         GameTime.Resume();
 
-                        if (MultiplayerManager.NGage_PendingSystemSyncPause && CurrentStepAction == Step_Normal && !UserInfo.IsGameOver)
+                        if (MultiplayerManager.PendingSystemSyncPause && CurrentStepAction == Step_Normal && !UserInfo.IsGameOver)
                         {
                             Current.ForcePauseFrame = false;
                             PausedMachineId = 0;
@@ -197,7 +197,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
                 }
                 else
                 {
-                    if (MultiplayerManager.NGage_SyncTime != 0)
+                    if (MultiplayerManager.SyncTime != 0)
                         Scene.AnimationPlayer.Execute();
 
                     GameTime.Pause();
