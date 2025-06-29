@@ -48,7 +48,7 @@ public class AnimatedObject : AObject
 
     // Flags
     public bool IsSoundEnabled { get; set; }
-    public bool IsDynamic { get; set; } // TODO: If not dynamic we might want to pre-load the sprites?
+    public bool IsDynamic { get; set; } // Not used here
     public bool EndOfAnimation { get; set; }
     public bool IsDelayMode { get; set; }
     public bool IsPaused { get; set; }

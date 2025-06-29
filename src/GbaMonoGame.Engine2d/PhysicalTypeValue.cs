@@ -55,9 +55,9 @@ public enum PhysicalTypeValue : byte
 
     MovingPlatform_CounterClockwise45 = 81,
     MovingPlatform_CounterClockwise90 = 82,
-    MovingPlatform_CounterClockwise135 = 83, // Unused TODO: Add to collision tile set
-    MovingPlatform_CounterClockwise180 = 84, // Unused TODO: Add to collision tile set
-    MovingPlatform_CounterClockwise225 = 85, // Unused TODO: Add to collision tile set
+    MovingPlatform_CounterClockwise135 = 83, // Unused NOTE: Does not currently have graphics in the collision tile set
+    MovingPlatform_CounterClockwise180 = 84, // Unused NOTE: Does not currently have graphics in the collision tile set
+    MovingPlatform_CounterClockwise225 = 85, // Unused NOTE: Does not currently have graphics in the collision tile set
     MovingPlatform_CounterClockwise270 = 86,
     MovingPlatform_CounterClockwise315 = 87,
 

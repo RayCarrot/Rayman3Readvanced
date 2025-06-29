@@ -12,10 +12,11 @@ public abstract class CameraActorMode7 : CameraActor
 
     public float FadeDistance { get; set; } = 40;
 
-    // TODO: Currently we ignore if the object should use affine rendering or not and always render it in 3D. In the
+    // NOTE: Currently we ignore if the object should use affine rendering or not and always render it in 3D. In the
     //       original game this would determine if the object should be scaled based on the camera distance. Usually
-    //       this was disabled due to rendering limitations on the GBA, but it does make the sprites render at a
-    //       different size for us than in the original game.
+    //       the reason for this being disabled was due to rendering limitations on the GBA, but it does now make the
+    //       sprites render at a different size for us than in the original game.
+
     // Custom method so we can use IsActorFramed without an actor
     public bool IsAnimatedObjectFramed(AnimatedObject animatedObject, Vector2 position, float zPos, bool isAffine)
     {

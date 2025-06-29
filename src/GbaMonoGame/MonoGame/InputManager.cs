@@ -57,7 +57,7 @@ public static class InputManager
     public static GbaInput GetGbaInput(Input input) => _gbaInputMapping[input];
     public static bool TryGetGbaInput(Input input, out GbaInput gbaInput) => _gbaInputMapping.TryGetValue(input, out gbaInput);
 
-    // TODO: Improve
+    // TODO: Improve with localized names
     public static string GetKeyName(Keys key) => key.ToString();
 
     public static Keys[] GetPressedKeys() => _keyboardState.GetPressedKeys();

@@ -53,7 +53,6 @@ public static class FrameManager
             Gfx.Color = Color.White;
             Gfx.ClearColor = Color.Black;
 
-            // TODO: Add option not to clear cache? Makes loading faster, but uses more memory.
             // If loading a new frame...
             if (CurrentFrame != NextFrame)
             {

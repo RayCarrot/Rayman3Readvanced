@@ -69,7 +69,6 @@ public class SpriteTextObject : AObject
                 continue;
             }
 
-            // TODO: Option to always draw with the highest resolution font (but scale to fit original size)
             Gfx.AddSprite(FontManager.GetCharacterSprite(
                 c: c, 
                 fontSize: FontSize, 
