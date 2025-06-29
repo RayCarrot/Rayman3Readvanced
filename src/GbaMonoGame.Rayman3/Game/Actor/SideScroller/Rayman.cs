@@ -64,7 +64,7 @@ public sealed partial class Rayman : MovableActor
                     {
                         if (Engine.Config.Tweaks.FixBugs)
                         {
-                            return new PaletteResource()
+                            PaletteResource fixedPal = new()
                             {
                                 Colors =
                                 [
@@ -86,6 +86,11 @@ public sealed partial class Rayman : MovableActor
                                     pal.Colors[8], // 15 -> 8
                                 ]
                             };
+
+                            // Set the pointer as the original plus 1 so it gets cached differently
+                            fixedPal.Init(pal.Offset + 1);
+
+                            return fixedPal;
                         }
                         else
                         {
