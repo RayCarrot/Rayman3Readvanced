@@ -1633,7 +1633,8 @@ public partial class MenuAll
         }
 
         AnimationPlayer.Play(Anims.MultiplayerTypeName);
-        
+
+        // NOTE The game gives the render box a height of 255 instead of 240 here
         Anims.MultiplayerTypeFrame.FrameChannelSprite();
         if (Rom.Platform == Platform.GBA)
             AnimationPlayer.Play(Anims.MultiplayerTypeFrame);
@@ -1744,6 +1745,7 @@ public partial class MenuAll
 
             AnimationPlayer.Play(Anims.MultiplayerTypeName);
 
+            // NOTE The game gives the render box a height of 255 instead of 240 here
             Anims.MultiplayerTypeFrame.FrameChannelSprite();
             if (Rom.Platform == Platform.GBA)
                 AnimationPlayer.Play(Anims.MultiplayerTypeFrame);
@@ -1850,6 +1852,7 @@ public partial class MenuAll
 
         AnimationPlayer.Play(Anims.MultiplayerTypeName);
 
+        // NOTE The game gives the render box a height of 255 instead of 240 here
         Anims.MultiplayerTypeFrame.FrameChannelSprite();
         if (Rom.Platform == Platform.GBA)
             AnimationPlayer.Play(Anims.MultiplayerTypeFrame);
@@ -2022,6 +2025,7 @@ public partial class MenuAll
 
         AnimateSelectedMultiplayerMapPalette();
 
+        // NOTE The game gives the render box a height of 255 instead of 240 here
         Anims.MultiplayerMapSelection.FrameChannelSprite();
 
         AnimationPlayer.Play(Anims.MultiplayerMapSelection);
@@ -2163,6 +2167,7 @@ public partial class MenuAll
 
             AnimateSelectedMultiplayerMapPalette();
 
+            // NOTE The game gives the render box a height of 255 instead of 240 here
             Anims.MultiplayerMapSelection.FrameChannelSprite();
 
             AnimationPlayer.Play(Anims.MultiplayerMapSelection);
@@ -2234,6 +2239,7 @@ public partial class MenuAll
 
         AnimateSelectedMultiplayerMapPalette();
 
+        // NOTE The game gives the render box a height of 255 instead of 240 here
         Anims.MultiplayerMapSelection.FrameChannelSprite();
 
         AnimationPlayer.Play(Anims.MultiplayerMapSelection);

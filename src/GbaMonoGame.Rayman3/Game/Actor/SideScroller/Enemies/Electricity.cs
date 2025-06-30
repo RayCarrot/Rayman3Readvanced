@@ -59,7 +59,7 @@ public sealed partial class Electricity : InteractableActor
         if (Scene.Camera.IsActorFramed(this) || forceDraw)
         {
             AnimatedObject.IsFramed = true;
-            AnimatedObject.FrameChannelSprite();
+            AnimatedObject.FrameChannelSprite(Position, new Box(Scene.Playfield.Camera.Position, AnimatedObject.RenderContext.Resolution));
             animationPlayer.Play(AnimatedObject);
         }
         else

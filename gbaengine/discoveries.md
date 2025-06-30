@@ -15,6 +15,7 @@
 - The `Scene2D` constructor for some reason disables the background scrolling for the first map of `Void of Bones`. This was added late during development judging by the prototypes.
 - The sidescroller camera has some leftover code from either earlier games or the early production of this game. There's an unused camera state and some code that can never run due to the conditions not being met.
 - The Mode7 camera has 3 unused states for a free-cam like mode. These were used in the early prototypes.
+- In `AnimatedObject` there's a function called `FrameChannelSprite` which optimizes rendering an animation by deactivating sprite channels which are off-screen. There's however an issue - it's set to not update when the object is in delay mode (between two animation frames, which will happen if the animation runs at a lower framerate). This doesn't make sense since the object might move on screen even if the animation frame is the same, so it should always update. Because of this some sprites don't update to be on screen until a frame or two later, which is noticeable in the bosses when they move onto the screen.
 - When initializing `AObjectChain`, used to create chained animations for actors such as the caterpillars, it has a bug when allocating an array. It sets the size to the number of children when it's supposed to be one more than that since the main parent object is also included. This however doesn't cause any issue in the game since the number of children is always 6, and due to memory alignment it ends up allocating 8 bytes then.
 - For some reason the animations for the Caterpillar enemy is referenced from the root resource table, yet it's never used from there.
 - The order of the levels ids from the curtains in the hub worlds reflect the original order rather than the order they appear in the final game.
@@ -574,6 +575,7 @@ Most actors have the first animation be unused and just single frame, most likel
 
 ### Menu
 - Some sound events are mistakenly called with the object parameter set to 0 instead of -1. This however doesn't cause any changes in the event processing since the object is only used when pan or roll-off are enabled for the event.
+- Most animations which use `FrameChannelSprite` to deactivate off-screen sprite channels define the screen height as 255 instead of 160 for some reason. This doesn't cause any changes in the behavior as these animation do not appear at the bottom of the screen.
 - When selecting the multiplayer mode on GBA there's a typo where "Burglar Mode" is spelt as "Buglar Mode". This was fixed in the N-Gage version.
 - When selecting the multiplayer map the game animates the palette for the outline of the selected map to produce a glow effect. The code is however written in an odd way where it loops through the palette code 13 times, doing the exact same thing each time.
 - The N-Gage uses the wrong state to transition out of certain multiplayer menu pages when a connection error occurs. This appears to be a copy-paste bug, where they copied code from another page without updating it.

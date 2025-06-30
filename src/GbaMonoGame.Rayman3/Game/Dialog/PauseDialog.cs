@@ -352,9 +352,14 @@ public partial class PauseDialog : Dialog
 
         if (DrawStep != PauseDialogDrawStep.Hide)
         {
-            Canvas.FrameChannelSprite();
-
             Canvas.ScreenPos = Canvas.ScreenPos with { Y = 80 - OffsetY };
+
+            // NOTE: The game adds 30 pixel padding to fix FrameChannelSprite not updating when in delay mode
+            Box canvasRenderBox = Canvas.RenderBox;
+            if (!Engine.Config.Tweaks.FixBugs)
+                canvasRenderBox.Top -= 30;
+            Canvas.FrameChannelSprite(Canvas.ScreenPos, canvasRenderBox);
+
             ManageCursor();
             PauseSelection.ScreenPos = PauseSelection.ScreenPos with { Y = 90 - OffsetY };
 

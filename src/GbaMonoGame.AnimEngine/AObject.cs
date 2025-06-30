@@ -15,6 +15,7 @@ public abstract class AObject
 
     // This isn't in the base class in the original game, but easier to manage things this way
     public Vector2 ScreenPos { get; set; }
+    public Box RenderBox => new(Vector2.Zero, RenderContext.Resolution);
 
     // Custom properties to have position scale with camera resolution
     public HorizontalAnchorMode HorizontalAnchor { get; set; }

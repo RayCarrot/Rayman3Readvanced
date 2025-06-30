@@ -328,10 +328,69 @@ public class AnimatedObject : AObject
         }
     }
 
-    public void FrameChannelSprite()
+    public void FrameChannelSprite() => FrameChannelSprite(ScreenPos, RenderBox);
+    public void FrameChannelSprite(Vector2 position, Box renderBox)
     {
-        // TODO: Implement
-        Logger.NotImplemented("Not implemented framing channel sprites");
+        // NOTE: The game doesn't update this if in delay mode, however that causes issues and should probably be considered
+        //       a bug. Cause the object's position might still change even though the animation frame is the same! It's most
+        //       noticeable in boss fights where there's a frame or two where a sprite is missing when they move onto the screen.
+        if (!IsDelayMode || Engine.Config.Tweaks.FixBugs)
+        {
+            ActivateAllChannels();
+
+            int channelIndex = 0;
+            foreach (AnimationChannel channel in EnumerateCurrentChannels())
+            {
+                if (channel.ChannelType == AnimationChannelType.Sprite)
+                {
+                    // NOTE: The game doesn't do this, but we have to since affine sprites are rendered differently and thus
+                    //       not constrained to the same dimensions, and it's not worth calculating the resulting size.
+                    if (IsDoubleAffine || channel.ObjectMode is OBJ_ATTR_ObjectMode.AFF or OBJ_ATTR_ObjectMode.AFF_DBL)
+                    {
+                        channelIndex++;
+                        continue;
+                    }
+
+                    Constants.Size shape = Constants.GetSpriteShape(channel.SpriteShape, channel.SpriteSize);
+
+                    float width = shape.Width;
+                    float height = shape.Height;
+
+                    float xPos;
+                    if (!FlipX)
+                        xPos = position.X + channel.XPosition;
+                    else
+                        xPos = position.X - channel.XPosition - width;
+
+                    if (IsDoubleAffine || channel.ObjectMode is OBJ_ATTR_ObjectMode.AFF or OBJ_ATTR_ObjectMode.AFF_DBL)
+                    {
+                        xPos -= width / 2;
+                        width *= 2;
+                    }
+
+                    float yPos;
+                    if (!FlipY)
+                        yPos = position.Y + channel.YPosition;
+                    else
+                        yPos = position.Y - channel.YPosition - height;
+
+                    if (IsDoubleAffine || channel.ObjectMode is OBJ_ATTR_ObjectMode.AFF or OBJ_ATTR_ObjectMode.AFF_DBL)
+                    {
+                        yPos -= height / 2;
+                        height *= 2;
+                    }
+
+                    Box spriteBox = new(
+                        position: new Vector2(xPos, yPos), 
+                        size: new Vector2(width, height));
+
+                    if (!spriteBox.Intersects(renderBox))
+                        DeactivateChannel(channelIndex);
+                }
+
+                channelIndex++;
+            }
+        }
     }
 
     public override void Execute(Action<short> soundEventCallback)

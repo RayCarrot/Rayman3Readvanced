@@ -129,7 +129,7 @@ public sealed partial class Spider : MovableActor
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
-        AnimatedObject.FrameChannelSprite();
+        AnimatedObject.FrameChannelSprite(Position, new Box(Scene.Playfield.Camera.Position, AnimatedObject.RenderContext.Resolution));
 
         // NOTE: The original game doesn't do this, but it produces the same result, and we don't want the spider to be shown before
         //       spawned in. The way this works in the original game is that FrameChannelSprite only runs once (cause of the delay

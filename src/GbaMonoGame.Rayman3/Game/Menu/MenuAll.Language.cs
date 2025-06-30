@@ -201,7 +201,8 @@ public partial class MenuAll
 
             MoveGameLogo();
 
-            Anims.GameLogo.FrameChannelSprite(); // NOTE The game gives the bounding box a width of 255 instead of 240 here
+            // NOTE The game gives the render box a height of 255 instead of 240 here
+            Anims.GameLogo.FrameChannelSprite();
             AnimationPlayer.Play(Anims.GameLogo);
 
             AnimationPlayer.Play(Anims.GameModeList);
