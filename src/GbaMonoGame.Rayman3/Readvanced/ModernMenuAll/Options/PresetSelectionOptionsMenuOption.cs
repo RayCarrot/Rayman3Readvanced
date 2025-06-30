@@ -49,22 +49,26 @@ public class PresetSelectionOptionsMenuOption : OptionsMenuOption
         Enum currentPreset = null;
         foreach (OptionsMenuOption option in options)
         {
-            if (option is PresetSelectionOptionsMenuOption)
-                continue;
-
             Enum usedPreset = option.GetUsedPreset();
 
             if (usedPreset == null)
             {
-                currentPreset = null;
-                break;
+                if (currentPreset != null && option.HasPreset(currentPreset))
+                {
+                    currentPreset = null;
+                    break;
+                }
+                else
+                {
+                    continue;
+                }
             }
 
             if (currentPreset == null)
             {
                 currentPreset = usedPreset;
             }
-            else if (!Equals(currentPreset, usedPreset))
+            else if (!Equals(currentPreset, usedPreset) && option.HasPreset(currentPreset))
             {
                 currentPreset = null;
                 break;

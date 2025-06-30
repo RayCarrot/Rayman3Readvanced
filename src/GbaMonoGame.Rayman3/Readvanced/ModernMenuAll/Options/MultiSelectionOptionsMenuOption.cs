@@ -75,6 +75,11 @@ public class MultiSelectionOptionsMenuOption<T> : OptionsMenuOption
         UpdateSelection();
     }
 
+    public override bool HasPreset(Enum preset)
+    {
+        return _items.Any(x => Equals(x.Preset, preset));
+    }
+
     public override Enum GetUsedPreset()
     {
         if (_hasCustom)

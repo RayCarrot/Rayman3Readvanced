@@ -35,6 +35,7 @@ public abstract class OptionsMenuOption : MenuOption
     }
 
     public abstract void Reset(IReadOnlyList<OptionsMenuOption> options);
+    public virtual bool HasPreset(Enum preset) => false;
     public virtual Enum GetUsedPreset() => null;
     public virtual void ApplyFromPreset(IReadOnlyList<OptionsMenuOption> options, Enum preset) { }
     public abstract EditStepResult EditStep(IReadOnlyList<OptionsMenuOption> options);

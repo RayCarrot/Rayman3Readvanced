@@ -257,7 +257,7 @@ public static class GameOptions
                     infoText: "The game has various cheat codes that were only available in the prototype builds. If enabled then those cheat codes will be accessible.",
                     items:
                     [
-                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
                         new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
                     ],
                     getData: _ => Engine.Config.Tweaks.AllowPrototypeCheats,
