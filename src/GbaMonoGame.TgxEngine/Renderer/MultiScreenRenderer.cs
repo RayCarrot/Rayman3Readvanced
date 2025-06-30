@@ -17,9 +17,26 @@ public class MultiScreenRenderer : IScreenRenderer
 
     public void Draw(GfxRenderer renderer, GfxScreen screen, Vector2 position, Color color)
     {
-        // TODO: Only render if on screen
-        foreach (Section section in Sections)
-            section.ScreenRenderer.Draw(renderer, screen, position + section.Position, color);
+        // Only draw on-screen sections if in 2D
+        if (screen.RenderOptions.WorldViewProj == null)
+        {
+            Box renderBox = new(Vector2.Zero, screen.RenderOptions.RenderContext.Resolution);
+
+            foreach (Section section in Sections)
+            {
+                Box sectionRenderBox = section.ScreenRenderer.GetRenderBox(screen);
+                sectionRenderBox = Box.Offset(sectionRenderBox, position + section.Position);
+
+                // Check if on screen
+                if (renderBox.Intersects(sectionRenderBox))
+                    section.ScreenRenderer.Draw(renderer, screen, position + section.Position, color);
+            }
+        }
+        else
+        {
+            foreach (Section section in Sections)
+                section.ScreenRenderer.Draw(renderer, screen, position + section.Position, color);
+        }
     }
 
     public class Section
