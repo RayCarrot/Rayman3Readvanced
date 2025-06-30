@@ -182,8 +182,8 @@ public partial class PauseDialog
                             // won't work due to custom resolutions being possible, so we instead hide all sprite channels.
                             if (Rom.Platform == Platform.NGage)
                             {
-                                MusicVolume.ActiveChannels = 0;
-                                SfxVolume.ActiveChannels = 0;
+                                MusicVolume.DeactivateAllChannels();
+                                SfxVolume.DeactivateAllChannels();
                             }
                             
                             quitGame = true;
@@ -356,8 +356,8 @@ public partial class PauseDialog
                     else if (Rom.Platform == Platform.NGage)
                     {
                         // Unhide
-                        MusicVolume.ActiveChannels = UInt32.MaxValue;
-                        SfxVolume.ActiveChannels = UInt32.MaxValue;
+                        MusicVolume.ActivateAllChannels();
+                        SfxVolume.ActivateAllChannels();
 
                         PauseSelection.CurrentAnimation = 10 + Localization.LanguageUiIndex;
                         PrevSelectedOption = SelectedOption;
@@ -565,8 +565,8 @@ public partial class PauseDialog
                             // won't work due to custom resolutions being possible, so we instead hide all sprite channels.
                             if (Rom.Platform == Platform.NGage)
                             {
-                                MusicVolume.ActiveChannels = 0;
-                                SfxVolume.ActiveChannels = 0;
+                                MusicVolume.DeactivateAllChannels();
+                                SfxVolume.DeactivateAllChannels();
                             }
 
                             quitGame = true;
@@ -718,8 +718,8 @@ public partial class PauseDialog
                     else if (Rom.Platform == Platform.NGage)
                     {
                         // Unhide
-                        MusicVolume.ActiveChannels = UInt32.MaxValue;
-                        SfxVolume.ActiveChannels = UInt32.MaxValue;
+                        MusicVolume.ActivateAllChannels();
+                        SfxVolume.ActivateAllChannels();
 
                         PauseSelection.CurrentAnimation = 10 + Localization.LanguageUiIndex;
                         PrevSelectedOption = SelectedOption;

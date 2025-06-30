@@ -1962,7 +1962,7 @@ public partial class MenuAll
 
         if (Rom.Platform == Platform.GBA)
         {
-            Anims.MultiplayerMapSelection.ActiveChannels = UInt32.MaxValue;
+            Anims.MultiplayerMapSelection.ActivateAllChannels();
 
             // Hide the second option
             if ((MultiplayerType == 0 && !FinishedLyChallenge1) ||

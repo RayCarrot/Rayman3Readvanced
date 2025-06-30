@@ -26,7 +26,7 @@ public class AnimatedObject : AObject
         IsSoundEnabled = true;
         IsDynamic = isDynamic;
         Resource = resource;
-        ActiveChannels = UInt32.MaxValue;
+        ActivateAllChannels();
 
         // Load palettes
         Palettes = new SpritePalettes(resource.Palettes);
@@ -220,7 +220,9 @@ public class AnimatedObject : AObject
     }
 
     public bool IsChannelVisible(int channel) => (ActiveChannels & (1 << channel)) != 0;
+    public void ActivateAllChannels() => ActiveChannels = UInt32.MaxValue;
     public void ActivateChannel(int channel) => ActiveChannels = (uint)((int)ActiveChannels | (1 << channel));
+    public void DeactivateAllChannels() => ActiveChannels = 0;
     public void DeactivateChannel(int channel) => ActiveChannels = (uint)((int)ActiveChannels & ~(1 << channel));
 
     public void Rewind()
