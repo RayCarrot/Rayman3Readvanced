@@ -130,6 +130,15 @@ public sealed partial class Spider : MovableActor
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
         AnimatedObject.FrameChannelSprite();
+
+        // NOTE: The original game doesn't do this, but it produces the same result, and we don't want the spider to be shown before
+        //       spawned in. The way this works in the original game is that FrameChannelSprite only runs once (cause of the delay
+        //       mode), and since it's off-screen first this makes all channels stay deactivated until the animation updates. The
+        //       reason we have to do this extra step to ensure they stay deactivated is because the game might be running in a high
+        //       enough resolution where the spider is initially on screen, and because framing affine channel sprites isn't implemented.
+        if (State == Fsm_ChaseSpawn && SpawnTimer == 0xFF)
+            AnimatedObject.DeactivateAllChannels();
+
         base.Draw(animationPlayer, forceDraw);
     }
 }

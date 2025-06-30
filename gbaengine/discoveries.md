@@ -247,6 +247,7 @@ Most actors have the first animation be unused and just single frame, most likel
 - The actor can optionally be configured to drop a red lum after being defeated, but this is never used.
 
 #### Spider
+- The two places where the chasing variant of the spider appear have the two captor trigger boxes spaced a bit apart, making it possible to trigger the first one (to activate the spider) without triggering the second one (to spawn the spider). This causes the spider to stay frozen in its spawn spot. However, the spider won't actually be visible due to the sprite framing optimization (deactivating off-screen sprites) hiding the spider and then not updating again until the spider is spawned. The chase music will still trigger when nearby though, and punching where the spider is will block the fist.
 - The boolean value indicating if the spider should jump is not initialized, meaning it defaults to the default allocation values, which is 0xCD and seen as being true (non-zero). Because of this the spider jumps immediately after spawning.
 - Actions 2, 3, 4, 5, 6, 7, 15, 23, 25, 26, 29 and 30 are unused. They all use existing animations, except for two of them which use an animation of the spider being completely still and not moving.
 - There's an impossible state transition condition in the chasing state. Similarly there's a state transition condition in another state that'll always be true. These are either leftovers from earlier versions of the game or unintentional mistakes.

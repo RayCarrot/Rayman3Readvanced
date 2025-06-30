@@ -144,7 +144,7 @@ public partial class Spider
                 InitialActionId = ActionId;
                 ActionId = Action.Attack_Right;
                 
-                AnimatedObject.Pause(); // TODO: Somehow in the game this makes it not render the first frame (i.e. before spawned) - how/why?
+                AnimatedObject.Pause();
                 break;
 
             case FsmAction.Step:
