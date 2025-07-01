@@ -420,8 +420,14 @@ public partial class GameCubeMenu
                 SelectedMap = 0;
                 MapScroll = 0;
 
-                // TODO: Have some way of unlocking the Ly challenge without connection - by completing all 10 levels?
-                if ((GbaUnlockFlags & 1) != 0 && !GameInfo.PersistentInfo.UnlockedLyChallengeGCN)
+                // Unlock Ly's Punch Challenge 3 by completing all GCN bonus levels
+                bool unlockedLyChallenge;
+                if (UseJoyBus)
+                    unlockedLyChallenge = (GbaUnlockFlags & 1) != 0;
+                else
+                    unlockedLyChallenge = GameInfo.PersistentInfo.CompletedGCNBonusLevels == 10;
+
+                if (unlockedLyChallenge && !GameInfo.PersistentInfo.UnlockedLyChallengeGCN)
                 {
                     GameInfo.PersistentInfo.UnlockedLyChallengeGCN = true;
 
