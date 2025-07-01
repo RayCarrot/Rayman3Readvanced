@@ -74,7 +74,7 @@ public class Font
 
             if (xPos >= width)
             {
-                for (int i = charIndex; i >= 0; i--)
+                for (int i = charIndex; i >= startIndex; i--)
                 {
                     if (text[i] == ' ')
                     {
