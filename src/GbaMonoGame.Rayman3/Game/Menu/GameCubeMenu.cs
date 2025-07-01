@@ -1,4 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using BinarySerializer;
+using BinarySerializer.Nintendo.GCN;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.TgxEngine;
@@ -21,7 +27,9 @@ public partial class GameCubeMenu : Frame
 
     #endregion
 
-    #region Private Properties
+    #region Properties
+
+    private const string MapInfosFileName = "gba.nfo";
 
     public AnimationPlayer AnimationPlayer { get; set; }
     public GameCubeMenuAnimations Anims { get; set; }
@@ -42,7 +50,7 @@ public partial class GameCubeMenu : Frame
     public bool IsShowingLyChallengeUnlocked { get; set; }
     public bool IsActive { get; set; }
     public int WheelRotation { get; set; }
-    public int Timer { get; set; }
+    public uint Timer { get; set; }
     public int MapInfoFileSize { get; set; }
 
     // Downloaded
@@ -52,6 +60,80 @@ public partial class GameCubeMenu : Frame
     #endregion
 
     #region Private Methods
+
+    private bool ExtractGameCubeFiles(string isoFilePath)
+    {
+        Engine.BeginLoad();
+
+        // Start by verifying the file
+        string gameId;
+        using (FileStream stream = File.OpenRead(isoFilePath))
+        using (Reader reader = new(stream))
+            gameId = reader.ReadString(6, Encoding.ASCII);
+
+        // Rayman 3 EU and US IDs
+        if (gameId is not ("GRHE41" or "GRHP41"))
+            return false;
+
+        string isoDirPath = Path.GetDirectoryName(isoFilePath) ?? String.Empty;
+        string isoFileName = Path.GetFileName(isoFilePath);
+
+        // Create serializer settings for the GameCube disc
+        SerializerSettings serializerSettings = new()
+        {
+            DefaultStringEncoding = Encoding.GetEncoding("shift_jis"),
+            DefaultEndianness = Endian.Big,
+            IgnoreCacheOnRead = true,
+        };
+
+        // Create a new context for reading the disc.
+        using Context context = new(isoDirPath,
+            settings: serializerSettings,
+            systemLogger: new BinarySerializerSystemLogger());
+
+        context.AddFile(new LinearFile(context, isoFileName));
+        GCM gcm = FileFactory.Read<GCM>(context, isoFileName);
+
+        // List the files to extract. Since the names are unique we don't have to care about the full directory path.
+        string[] fileNames =
+        [
+            "gba.nfo",
+            "map.000",
+            "map.001",
+            "map.002",
+            "map.003",
+            "map.004",
+            "map.005",
+            "map.006",
+            "map.007",
+            "map.008",
+            "map.009",
+        ];
+
+        // Find the matching file entries.
+        List<GCMFileEntry> fileEntries = new();
+        foreach (string fileName in fileNames)
+        {
+            GCMFileEntry fileEntry = gcm.FileEntries.FirstOrDefault(x => x.Name == fileName);
+
+            if (fileEntry == null)
+                return false;
+            
+            fileEntries.Add(fileEntry);
+        }
+
+        // Extract the files.
+        foreach (GCMFileEntry fileEntry in fileEntries)
+        {
+            // Read file data
+            byte[] fileData = fileEntry.ReadFile();
+
+            // Extract
+            File.WriteAllBytes(Path.Combine(Rom.GameDirectory, fileEntry.Name), fileData);
+        }
+
+        return true;
+    }
 
     private bool IsMapUnlocked(int mapId)
     {
@@ -67,6 +149,9 @@ public partial class GameCubeMenu : Frame
 
     private void ShowPleaseConnectText()
     {
+        if (!UseJoyBus)
+            return;
+
         string[] text = Localization.GetText(TextBankId.Connectivity, 6);
 
         for (int i = 0; i < text.Length; i++)
@@ -77,6 +162,15 @@ public partial class GameCubeMenu : Frame
             textObj.Text = text[i];
             textObj.ScreenPos = new Vector2(140 - textObj.GetStringWidth() / 2f, 34 + i * 14);
         }
+    }
+
+    private void ShowCustomText(string text)
+    {
+        Anims.StatusText.Text = FontManager.WrapText(Anims.StatusText.FontSize, text, 120);
+        Anims.StatusText.ScreenPos = new Vector2(80, 34);
+
+        foreach (SpriteTextObject textObj in Anims.ReusableTexts)
+            textObj.Text = "";
     }
 
     private void MapSelectionUpdateText()
@@ -252,7 +346,11 @@ public partial class GameCubeMenu : Frame
 
         AnimationPlayer.Play(Anims.TotalLumsText);
 
-        if (WaitingForConnection || State == Fsm_DownloadMap || State == Fsm_SelectMap || State == Fsm_DownloadMapAck)
+        if (WaitingForConnection || 
+            State == Fsm_DownloadMap || 
+            State == Fsm_SelectMap || 
+            State == Fsm_DownloadMapAck ||
+            (State == Fsm_WaitForConnection && !UseJoyBus))
             AnimationPlayer.Play(Anims.StatusText);
 
         TransitionsFX.StepAll();

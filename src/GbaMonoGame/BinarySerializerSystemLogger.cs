@@ -2,7 +2,7 @@
 
 namespace GbaMonoGame;
 
-internal class BinarySerializerSystemLogger : ISystemLogger
+public class BinarySerializerSystemLogger : ISystemLogger
 {
     public void Log(LogLevel logLevel, object log, params object[] args)
     {

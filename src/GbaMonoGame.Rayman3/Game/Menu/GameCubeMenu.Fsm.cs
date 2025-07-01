@@ -1,4 +1,5 @@
-﻿using BinarySerializer;
+﻿using System;
+using BinarySerializer;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.TgxEngine;
@@ -53,56 +54,104 @@ public partial class GameCubeMenu
         {
             case FsmAction.Init:
                 Timer = 0;
-                break;
 
-            case FsmAction.Step:
                 // If not set to use the JoyBus then we read from the file system
                 if (!UseJoyBus)
                 {
-                    Engine.BeginLoad();
+                    // Add the map infos file to the context
+                    if (!Rom.Context.FileExists(MapInfosFileName))
+                        Rom.Context.AddFile(new LinearFile(Rom.Context, MapInfosFileName));
 
-                    using (Rom.Context)
+                    // Check if the map infos file exists and read it if so
+                    if (((LinearFile)Rom.Context.GetRequiredFile(MapInfosFileName)).SourceFileExists)
                     {
-                        const string filePath = "gba.nfo";
-
-                        if (!Rom.Context.FileExists(filePath))
-                            Rom.Context.AddFile(new LinearFile(Rom.Context, filePath));
-
-                        // TODO: Handle exception
-                        // TODO: Handle file not existing
-                        MapInfos = FileFactory.Read<GameCubeMapInfos>(Rom.Context, filePath);
+                        using (Rom.Context)
+                        {
+                            Engine.BeginLoad();
+                            MapInfos = FileFactory.Read<GameCubeMapInfos>(Rom.Context, MapInfosFileName);
+                        }
                     }
-                    
-                    State.MoveTo(Fsm_SelectMap);
-                    return false;
-                }
-
-                JoyBus.CheckForLostConnection();
-                if (Timer < 10)
-                {
-                    Timer++;
-
-                    if (Timer == 9)
+                    else
                     {
-                        ShowPleaseConnectText();
-                        WaitingForConnection = true;
+                        ShowCustomText("Please select a Rayman 3 GameCube ISO file to extract the bonus maps.");
                     }
                 }
+                break;
 
-                // Exit
-                if (JoyPad.IsButtonJustPressed(GbaInput.B))
+            case FsmAction.Step:
+                if (!UseJoyBus)
                 {
-                    IsActive = false;
-                    State.MoveTo(Fsm_Exit);
-                    return false;
+                    // Exit
+                    if (JoyPad.IsButtonJustPressed(GbaInput.B))
+                    {
+                        IsActive = false;
+                        State.MoveTo(Fsm_Exit);
+                        return false;
+                    }
+
+                    // Had read map infos
+                    if (MapInfos != null)
+                    {
+                        State.MoveTo(Fsm_SelectMap);
+                        return false;
+                    }
+
+                    // Select file
+                    if (JoyPad.IsButtonJustPressed(GbaInput.A))
+                    {
+                        string isoFilePath = FileDialog.OpenFile("Select the Rayman 3 GameCube ISO", new FileDialog.FileFilter("iso", "GameCube Disc"));
+                        if (isoFilePath != null)
+                        {
+                            try
+                            {
+                                bool success = ExtractGameCubeFiles(isoFilePath);
+
+                                if (success)
+                                {
+                                    State.MoveTo(Fsm_WaitForConnection);
+                                    return false;
+                                }
+                                else
+                                {
+                                    ShowCustomText("Invalid ISO file.");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                ShowCustomText($"Error: {ex.Message}");
+                            }
+                        }
+                    }
                 }
-
-                // Connected
-                if (JoyBus.IsConnected)
+                else
                 {
-                    WaitingForConnection = false;
-                    State.MoveTo(Fsm_Connected);
-                    return false;
+                    JoyBus.CheckForLostConnection();
+                    if (Timer < 10)
+                    {
+                        Timer++;
+
+                        if (Timer == 9)
+                        {
+                            ShowPleaseConnectText();
+                            WaitingForConnection = true;
+                        }
+                    }
+
+                    // Exit
+                    if (JoyPad.IsButtonJustPressed(GbaInput.B))
+                    {
+                        IsActive = false;
+                        State.MoveTo(Fsm_Exit);
+                        return false;
+                    }
+
+                    // Connected
+                    if (JoyBus.IsConnected)
+                    {
+                        WaitingForConnection = false;
+                        State.MoveTo(Fsm_Connected);
+                        return false;
+                    }
                 }
                 break;
 
@@ -435,8 +484,6 @@ public partial class GameCubeMenu
                                     if (!Rom.Context.FileExists(filePath))
                                         Rom.Context.AddFile(new LinearFile(Rom.Context, filePath));
 
-                                    // TODO: Handle exception
-                                    // TODO: Handle file not existing
                                     Map = FileFactory.Read<GameCubeMap>(Rom.Context, filePath);
                                 }
 
