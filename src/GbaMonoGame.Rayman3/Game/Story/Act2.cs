@@ -13,7 +13,7 @@ public class Act2 : Act
     {
         base.Step();
 
-        // TODO: The cutscene still exists on N-Gage! Allow it to be played?
+        // NOTE: The N-Gage version immediately skips this cutscene
         if (IsFinished || Rom.Platform == Platform.NGage)
             FrameManager.SetNextFrame(LevelFactory.Create(MapId.MarshAwakening1));
     }
