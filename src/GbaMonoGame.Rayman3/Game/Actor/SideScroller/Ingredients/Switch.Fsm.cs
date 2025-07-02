@@ -1,4 +1,5 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+﻿using BinarySerializer.Ubisoft.GbaEngine;
+using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
@@ -59,27 +60,56 @@ public partial class Switch
                 else if (GameInfo.MapId == MapId.BeneathTheSanctuary_M1)
                 {
                     // Trigger captor when switch is hit
-                    switch (InstanceId)
+                    if (Rom.Platform == Platform.NGage && Engine.Config.Tweaks.FixBugs)
                     {
-                        case 14:
-                            Scene.GetGameObject(129).ProcessMessage(this, Message.Resurrect);
-                            Scene.GetGameObject(129).ProcessMessage(this, Message.Captor_Trigger);
-                            break;
+                        // Fix object IDs to match on N-Gage
+                        switch (InstanceId)
+                        {
+                            case 14:
+                                Scene.GetGameObject(129).ProcessMessage(this, Message.Resurrect);
+                                Scene.GetGameObject(129).ProcessMessage(this, Message.Captor_Trigger);
+                                break;
 
-                        case 21:
-                            Scene.GetGameObject(130).ProcessMessage(this, Message.Resurrect);
-                            Scene.GetGameObject(130).ProcessMessage(this, Message.Captor_Trigger);
-                            break;
-                        
-                        case 27:
-                            Scene.GetGameObject(131).ProcessMessage(this, Message.Resurrect);
-                            Scene.GetGameObject(131).ProcessMessage(this, Message.Captor_Trigger);
-                            break;
-                        
-                        case 28:
-                            Scene.GetGameObject(133).ProcessMessage(this, Message.Resurrect);
-                            Scene.GetGameObject(133).ProcessMessage(this, Message.Captor_Trigger);
-                            break;
+                            case 18:
+                                Scene.GetGameObject(130).ProcessMessage(this, Message.Resurrect);
+                                Scene.GetGameObject(130).ProcessMessage(this, Message.Captor_Trigger);
+                                break;
+
+                            case 22:
+                                Scene.GetGameObject(131).ProcessMessage(this, Message.Resurrect);
+                                Scene.GetGameObject(131).ProcessMessage(this, Message.Captor_Trigger);
+                                break;
+
+                            case 23:
+                                Scene.GetGameObject(133).ProcessMessage(this, Message.Resurrect);
+                                Scene.GetGameObject(133).ProcessMessage(this, Message.Captor_Trigger);
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        switch (InstanceId)
+                        {
+                            case 14:
+                                Scene.GetGameObject(129).ProcessMessage(this, Message.Resurrect);
+                                Scene.GetGameObject(129).ProcessMessage(this, Message.Captor_Trigger);
+                                break;
+
+                            case 21:
+                                Scene.GetGameObject(130).ProcessMessage(this, Message.Resurrect);
+                                Scene.GetGameObject(130).ProcessMessage(this, Message.Captor_Trigger);
+                                break;
+
+                            case 27:
+                                Scene.GetGameObject(131).ProcessMessage(this, Message.Resurrect);
+                                Scene.GetGameObject(131).ProcessMessage(this, Message.Captor_Trigger);
+                                break;
+
+                            case 28:
+                                Scene.GetGameObject(133).ProcessMessage(this, Message.Resurrect);
+                                Scene.GetGameObject(133).ProcessMessage(this, Message.Captor_Trigger);
+                                break;
+                        }
                     }
                 }
                 break;
