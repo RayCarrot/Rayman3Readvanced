@@ -198,7 +198,10 @@ public static class LevelMusicManager
 
                     if (HasOverridenLevelMusic)
                     {
-                        SoundEventsManager.ProcessEvent(OverridenSoundEvent);
+                        // NOTE: The game doesn't have this -1 check, and it seems the game will crash if
+                        //       this were to happen. So we add one to avoid that, even though it's rare.
+                        if (OverridenSoundEvent != -1)
+                            SoundEventsManager.ProcessEvent(OverridenSoundEvent);
                         HasOverridenLevelMusic = false;
                     }
                 }
