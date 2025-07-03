@@ -1665,7 +1665,16 @@ public sealed partial class Rayman : MovableActor
 
             case Message.Rayman_CollectWhiteLum:
                 if (!RSMultiplayer.IsActive)
+                {
                     GameInfo.ModifyLives(1);
+
+                    // Restore hp instead if playing with infinite lives
+                    if (Engine.Config.Difficulty.InfiniteLives)
+                    {
+                        HitPoints = 5;
+                        ((FrameSideScroller)Frame.Current).UserInfo.UpdateLife();
+                    }
+                }
                 return false;
 
             // Unused

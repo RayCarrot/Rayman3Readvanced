@@ -1,6 +1,8 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
+using GbaMonoGame.Rayman3.Readvanced;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -17,6 +19,23 @@ public class LifeBar : Bar
     public AnimatedObject HitPoints { get; set; }
     public AnimatedObject LifeDigit1 { get; set; }
     public AnimatedObject LifeDigit2 { get; set; }
+
+    public SpriteTextureObject InfiniteSymbol { get; set; }
+
+    private void LoadInfiniteSymbolIfNeeded()
+    {
+        if (Engine.Config.Difficulty.InfiniteLives && InfiniteSymbol == null)
+        {
+            InfiniteSymbol = new SpriteTextureObject
+            {
+                Texture = Engine.FixContentManager.Load<Texture2D>(Assets.Hud_Infinity),
+                ScreenPos = new Vector2(40, 6),
+                BgPriority = 0,
+                ObjPriority = 0,
+                RenderContext = Scene.HudRenderContext,
+            };
+        }
+    }
 
     public void UpdateLife()
     {
@@ -57,6 +76,8 @@ public class LifeBar : Bar
             ObjPriority = 0,
             RenderContext = Scene.HudRenderContext,
         };
+
+        LoadInfiniteSymbolIfNeeded();
     }
 
     public override void Set()
@@ -171,12 +192,25 @@ public class LifeBar : Bar
         if (DrawStep != BarDrawStep.Hide)
         {
             HitPoints.ScreenPos = HitPoints.ScreenPos with { Y = 0 - OffsetY };
-            LifeDigit1.ScreenPos = LifeDigit1.ScreenPos with { Y = 20 - OffsetY };
-            LifeDigit2.ScreenPos = LifeDigit2.ScreenPos with { Y = 20 - OffsetY };
 
-            animationPlayer.PlayFront(HitPoints);
-            animationPlayer.PlayFront(LifeDigit1);
-            animationPlayer.PlayFront(LifeDigit2);
+            if (!Engine.Config.Difficulty.InfiniteLives)
+            {
+                LifeDigit1.ScreenPos = LifeDigit1.ScreenPos with { Y = 20 - OffsetY };
+                LifeDigit2.ScreenPos = LifeDigit2.ScreenPos with { Y = 20 - OffsetY };
+
+                animationPlayer.PlayFront(HitPoints);
+                animationPlayer.PlayFront(LifeDigit1);
+                animationPlayer.PlayFront(LifeDigit2);
+            }
+            else
+            {
+                LoadInfiniteSymbolIfNeeded();
+
+                InfiniteSymbol.ScreenPos = InfiniteSymbol.ScreenPos with { Y = 6 - OffsetY };
+
+                animationPlayer.PlayFront(HitPoints);
+                animationPlayer.PlayFront(InfiniteSymbol);
+            }
         }
     }
 }

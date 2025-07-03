@@ -734,6 +734,10 @@ public static class GameInfo
             return;
         }
 
+        // Don't allow losing lives if the infinite lives option is enabled
+        if (Engine.Config.Difficulty.InfiniteLives && change < 0)
+            return;
+
         int newCount = PersistentInfo.Lives + change;
 
         if (newCount < 0)

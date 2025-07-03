@@ -2,6 +2,8 @@
 
 public static class Assets
 {
+    public const string Hud_Infinity = "Rayman3/Dialog/Hud_Infinity";
+
     public const string MenuFont_WhiteTexture = "Rayman3/Font/MenuFont_White";
     public const string MenuFont_YellowTexture = "Rayman3/Font/MenuFont_Yellow";
 

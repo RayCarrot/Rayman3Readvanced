@@ -267,16 +267,16 @@ public static class GameOptions
             // TODO: Add presets (Original, Rebalanced/Readvanced, Custom)
             new GameOptionsGroup("DIFFICULTY",
             [
-                // TODO: Implement
-                new MultiSelectionOptionsMenuOption<object>(
-                    text: "TEMP",
-                    infoText: "TEMP",
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "Infinite lives",
+                    infoText: "Gives you infinite lives and makes white lums fully restore health instead.",
                     items:
                     [
-                        new MultiSelectionOptionsMenuOption<object>.Item("TEMP", null),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
                     ],
-                    getData: _ => null,
-                    setData: _ => { },
+                    getData: _ => Engine.Config.Difficulty.InfiniteLives,
+                    setData: data => Engine.Config.Difficulty.InfiniteLives = data,
                     getCustomName: _ => null),
             ]),
         ];
