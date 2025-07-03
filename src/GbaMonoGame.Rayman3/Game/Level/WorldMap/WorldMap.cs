@@ -641,7 +641,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         WorldNameAlpha = 0;
         EnterWorldStep = 0;
 
-        if (Rom.Platform == Platform.GBA)
+        if (Rom.Platform == Platform.GBA || Engine.Config.Tweaks.UseGbaEffectsOnNGage)
             LightningCountdown = 0;
 
         FullWorldName.GbaAlpha = WorldNameAlpha;

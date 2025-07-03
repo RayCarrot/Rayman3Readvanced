@@ -104,7 +104,7 @@ public partial class ChainedSparkles
                 {
                     TargetActor = Scene.GetGameObject<BaseActor>(((FrameMultiSideScroller)Frame.Current).UserInfo.GetTagId());
 
-                    // Why is this here?
+                    // Why is this here? The actor can never be null.
                     if (Rom.Platform == Platform.NGage && TargetActor == null)
                         ProcessMessage(this, Message.Destroy);
                 }
