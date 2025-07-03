@@ -2203,7 +2203,8 @@ public partial class Rayman
                     return false;
                 }
 
-                if (Rom.Platform == Platform.NGage &&
+                // The N-Gage version fixes a soft-lock that can happen if attacking while shocked
+                if ((Rom.Platform == Platform.NGage || Engine.Config.Tweaks.FixBugs) &&
                     ActionId is Action.Damage_Shock_Right or Action.Damage_Shock_Left)
                 {
                     ActionId = IsFacingRight ? Action.Damage_Hit_Right : Action.Damage_Hit_Left;

@@ -44,6 +44,7 @@ Most actors have the first animation be unused and just single frame, most likel
     - Message 1045 does the same as message 1025, used when Rayman takes damage.
     - Message 1072 sets the state for an otherwise unused one where Rayman is hidden on the screen. This gets called from the flying shell actor, but since the Rayman actor isn't in that level it never gets received.
 - When taking damage and on a plum the game incorrectly sets the linked movement actor to null rather than the attached object (the plum in this case). However it doesn't cause any issues since the attached object gets overridden later on anyway and the linked movement actor already being null.
+- If attacking while shocked then Rayman gets stuck in the state which might soft-lock the game. This was fixed in the N-Gage version.
 - The first state of the actor sets it to an action which plays an animation for spawning into the level. This however gets overridden before it has a chance to play, making it go unused.
 
 ![Animation 65](discoveries_assets/Rayman_Anim_65.gif)
