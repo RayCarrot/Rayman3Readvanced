@@ -4,7 +4,6 @@ using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
 
-// TODO: We should maybe use some of the N-Gage specific code here if the option to fix bugs is enabled
 public partial class WalkingShell
 {
     private bool FsmStep_CheckDeath()
@@ -44,7 +43,7 @@ public partial class WalkingShell
             }
         }
 
-        if (Rom.Platform == Platform.NGage && isDead)
+        if ((Rom.Platform == Platform.NGage || Engine.Config.Tweaks.FixBugs) && isDead)
         {
             State.MoveTo(null);
             return false;
@@ -295,7 +294,7 @@ public partial class WalkingShell
                 if (!FsmStep_CheckDeath())
                     return false;
 
-                if (Rom.Platform == Platform.NGage)
+                if (Rom.Platform == Platform.NGage || Engine.Config.Tweaks.FixBugs)
                 {
                     Box detectionBox = GetDetectionBox();
 
@@ -332,7 +331,7 @@ public partial class WalkingShell
                     }
                 }
 
-                if (Rom.Platform == Platform.NGage && type.IsSolid)
+                if ((Rom.Platform == Platform.NGage || Engine.Config.Tweaks.FixBugs) && type.IsSolid)
                 {
                     Explode();
                     IsRaymanMounted = false;
@@ -476,7 +475,7 @@ public partial class WalkingShell
 
                 Timer++;
 
-                if (Rom.Platform == Platform.NGage && IsActionFinished)
+                if ((Rom.Platform == Platform.NGage || Engine.Config.Tweaks.FixBugs) && IsActionFinished)
                 {
                     if (ActionId == Action.EndBoost)
                     {
@@ -510,18 +509,18 @@ public partial class WalkingShell
 
                 if (Speed.Y == 0)
                 {
-                    if (Rom.Platform == Platform.GBA)
-                    {
-                        State.MoveTo(Fsm_Move);
-                        return false;
-                    }
-                    else if (Rom.Platform == Platform.NGage)
+                    if (Rom.Platform == Platform.NGage || Engine.Config.Tweaks.FixBugs)
                     {
                         Explode();
                         IsRaymanMounted = false;
                         ((CameraSideScroller)Scene.Camera).HorizontalOffset = CameraOffset.Default;
                         Scene.MainActor.ProcessMessage(this, Message.Rayman_UnmountWalkingShell, this);
                         State.MoveTo(null);
+                        return false;
+                    }
+                    else if (Rom.Platform == Platform.GBA)
+                    {
+                        State.MoveTo(Fsm_Move);
                         return false;
                     }
                     else
