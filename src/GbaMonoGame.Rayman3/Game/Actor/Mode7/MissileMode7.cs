@@ -457,6 +457,11 @@ public sealed partial class MissileMode7 : Mode7Actor
                 ((FrameSingleMode7)Frame.Current).UserInfo.LumsBar.AddLums(1);
                 return true;
 
+            case Message.Actor_Explode:
+                if (State != Fsm_Dying)
+                    State.MoveTo(Fsm_Dying);
+                return true;
+
             case Message.MissileMode7_StartRace:
                 State.MoveTo(Fsm_Default);
 
