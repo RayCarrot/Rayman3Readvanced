@@ -83,7 +83,7 @@ public sealed partial class Lums : BaseActor
             {
                 LumId = GameInfo.GetGreenLumsId();
 
-                if (GameInfo.IsGreenLumDead(LumId))
+                if (GameInfo.IsGreenLumDead(LumId) || Engine.Config.Difficulty.NoCheckpoints)
                     ProcessMessage(this, Message.Destroy);
             }
         }

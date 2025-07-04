@@ -311,6 +311,17 @@ public static class GameOptions
                     getData: _ => Engine.Config.Difficulty.KeepLumsInRaces,
                     setData: data => Engine.Config.Difficulty.KeepLumsInRaces = data,
                     getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "NO CHECKPOINTS",
+                    infoText: "Removed green lums from levels.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
+                    ],
+                    getData: _ => Engine.Config.Difficulty.NoCheckpoints,
+                    setData: data => Engine.Config.Difficulty.NoCheckpoints = data,
+                    getCustomName: _ => null),
             ]),
         ];
     }
