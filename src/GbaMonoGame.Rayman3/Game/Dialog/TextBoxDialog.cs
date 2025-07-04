@@ -298,10 +298,20 @@ public partial class TextBoxDialog : Dialog
         for (int i = 0; i < TextObjects.Length; i++)
             TextObjects[i].ScreenPos = TextObjects[i].ScreenPos with { Y = 7 + 14 * i - OffsetY };
 
-        RaymanIcon.ScreenPos = RaymanIcon.ScreenPos with { Y = 8 - OffsetY };
-        MurfyIcon.ScreenPos = MurfyIcon.ScreenPos with { Y = 8 - OffsetY };
-        LyIcon.ScreenPos = LyIcon.ScreenPos with { Y = 8 - OffsetY };
-        TeensiesIcon.ScreenPos = TeensiesIcon.ScreenPos with { Y = 8 - OffsetY };
+        AnimatedObject icon;
+        if (IsShowingCutsceneCharacter)
+            icon = CutsceneCharacter switch
+            {
+                TextBoxCutsceneCharacter.Murfy => MurfyIcon,
+                TextBoxCutsceneCharacter.Ly => LyIcon,
+                TextBoxCutsceneCharacter.Teensies => TeensiesIcon,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        else
+            icon = RaymanIcon;
+
+        // NOTE: The game updates the screen position for all objects, even if they're not created
+        icon.ScreenPos = icon.ScreenPos with { Y = 8 - OffsetY };
 
         // Blink next text symbol
         if (CurrentTextLine + 2 < CurrentText.Length && TextTransitionValue == 1 && (GameTime.ElapsedFrames & 0x10) != 0)
@@ -316,18 +326,6 @@ public partial class TextBoxDialog : Dialog
             foreach (SpriteTextObject textObj in TextObjects)
                 animationPlayer.PlayFront(textObj);
         }
-
-        AnimatedObject icon;
-        if (IsShowingCutsceneCharacter)
-            icon = CutsceneCharacter switch
-            {
-                TextBoxCutsceneCharacter.Murfy => MurfyIcon,
-                TextBoxCutsceneCharacter.Ly => LyIcon,
-                TextBoxCutsceneCharacter.Teensies => TeensiesIcon,
-                _ => throw new ArgumentOutOfRangeException()
-            };
-        else
-            icon = RaymanIcon;
 
         if (icon.CurrentAnimation == 0)
         {
