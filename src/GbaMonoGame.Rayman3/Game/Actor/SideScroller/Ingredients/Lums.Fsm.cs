@@ -45,7 +45,7 @@ public partial class Lums
                     {
                         AnimatedObject.CurrentAnimation = 0 + Random.GetNumber(3);
                     }
-                    else if (ActionId == Action.WhiteLum)
+                    else if (ActionId == Action.WhiteLum || IsGhost)
                     {
                         AnimatedObject.CurrentAnimation = 3 + Random.GetNumber(3);
                     }
@@ -89,9 +89,15 @@ public partial class Lums
                     switch (ActionId)
                     {
                         case Action.YellowLum:
-                            GameInfo.KillLum(LumId);
+                            if (!IsGhost)
+                                GameInfo.KillLum(LumId);
+                            
                             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumOrag_Mix06);
                             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumOrag_Mix06);
+                            
+                            // Set a different sound pitch if already collected
+                            if (IsGhost)
+                                SoundEventsManager.SetSoundPitch(Rayman3SoundEvent.Play__LumOrag_Mix06, 192);
                             break;
 
                         case Action.RedLum:
@@ -130,17 +136,18 @@ public partial class Lums
                     }
                 }
 
-                Scene.MainActor.ProcessMessage(this, ActionId switch
-                {
-                    Action.YellowLum => Message.Rayman_CollectYellowLum,
-                    Action.RedLum => Message.Rayman_CollectRedLum,
-                    Action.GreenLum => Message.Rayman_CollectGreenLum,
-                    Action.BlueLum => Message.Rayman_CollectBlueLum,
-                    Action.WhiteLum => Message.Rayman_CollectWhiteLum,
-                    Action.BigYellowLum => Message.Rayman_CollectBigYellowLum,
-                    Action.BigBlueLum => Message.Rayman_CollectBigBlueLum,
-                    _ => throw new ArgumentOutOfRangeException(nameof(ActionId), ActionId, null)
-                });
+                if (!IsGhost)
+                    Scene.MainActor.ProcessMessage(this, ActionId switch
+                    {
+                        Action.YellowLum => Message.Rayman_CollectYellowLum,
+                        Action.RedLum => Message.Rayman_CollectRedLum,
+                        Action.GreenLum => Message.Rayman_CollectGreenLum,
+                        Action.BlueLum => Message.Rayman_CollectBlueLum,
+                        Action.WhiteLum => Message.Rayman_CollectWhiteLum,
+                        Action.BigYellowLum => Message.Rayman_CollectBigYellowLum,
+                        Action.BigBlueLum => Message.Rayman_CollectBigBlueLum,
+                        _ => throw new ArgumentOutOfRangeException(nameof(ActionId), ActionId, null)
+                    });
                 AnimatedObject.CurrentAnimation = 9;
                 break;
 

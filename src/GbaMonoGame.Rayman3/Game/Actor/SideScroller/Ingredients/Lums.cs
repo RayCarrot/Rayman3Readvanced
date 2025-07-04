@@ -30,7 +30,21 @@ public sealed partial class Lums : BaseActor
                     LumId = GameInfo.GetLumsId();
 
                     if (GameInfo.IsLumDead(LumId, GameInfo.MapId))
-                        ProcessMessage(this, Message.Destroy);
+                    {
+                        if (!Engine.Config.Tweaks.ShowCollectedLums)
+                        {
+                            ProcessMessage(this, Message.Destroy);
+                        }
+                        else
+                        {
+                            // If collected then show as white and transparent
+                            AnimatedObject.BasePaletteIndex = 1;
+                            AnimatedObject.CurrentAnimation = 3;
+                            AnimatedObject.Alpha = 0.6f;
+                            AnimatedObject.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                            IsGhost = true;
+                        }
+                    }
                 }
                 break;
 
@@ -84,6 +98,7 @@ public sealed partial class Lums : BaseActor
 
     public int LumId { get; }
     public byte Timer { get; set; }
+    public bool IsGhost { get; set; } // Custom - for already collected lums
 
     private Box GetCollisionBox()
     {

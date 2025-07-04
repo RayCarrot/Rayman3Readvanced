@@ -253,6 +253,17 @@ public static class GameOptions
                     setData: data => Engine.Config.Tweaks.ShowMode7Walls = data,
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
+                    text: "SHOW COLLECTED LUMS",
+                    infoText: "Yellow lums which have been collected will appear as transparent lums. This does not include lums in the Mode7 levels.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, TweaksPreset.Readvanced),
+                    ],
+                    getData: _ => Engine.Config.Tweaks.ShowCollectedLums,
+                    setData: data => Engine.Config.Tweaks.ShowCollectedLums = data,
+                    getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
                     text: "ALLOW PROTOTYPE CHEATS",
                     infoText: "The game has various cheat codes that were only available in the prototype builds. If enabled then those cheat codes will be accessible.",
                     items:
