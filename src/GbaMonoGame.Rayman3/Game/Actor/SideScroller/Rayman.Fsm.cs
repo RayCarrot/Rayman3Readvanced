@@ -10,6 +10,9 @@ public partial class Rayman
 {
     private bool FsmStep_DoOnTheGround()
     {
+        if (IsTouchingMap)
+            UpdateSafePosition();
+
         if (!FsmStep_DoDefault())
             return false;
 
@@ -155,10 +158,12 @@ public partial class Rayman
         // Check if dead
         if (CheckDeath())
         {
-            if (!RSMultiplayer.IsActive)
+            if (RSMultiplayer.IsActive)
+                State.MoveTo(Fsm_MultiplayerDying);
+            else if (!Engine.Config.Difficulty.NoInstaKills || HitPoints <= 2)
                 State.MoveTo(Fsm_Dying);
             else
-                State.MoveTo(Fsm_MultiplayerDying);
+                State.MoveTo(Fsm_RespawnDeath);
 
             return false;
         }
@@ -2478,6 +2483,8 @@ public partial class Rayman
                 if (!FsmStep_DoInTheAir())
                     return false;
 
+                UpdateSafePosition();
+
                 Timer++;
 
                 // Keep the same frame across all climbing animations
@@ -4359,6 +4366,66 @@ public partial class Rayman
                         // Reload current map
                         FrameManager.ReloadCurrentFrame();
                     }
+                }
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
+
+        return true;
+    }
+
+    // Custom state for respawning on last solid ground after insta-kill
+    public bool Fsm_RespawnDeath(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                PlaySound(Rayman3SoundEvent.Play__RaDeath_Mix03);
+                Timer = 0;
+
+                if (ActionId is not (Action.Drown_Right or Action.Drown_Left))
+                    ActionId = IsFacingRight ? Action.Dying_Right : Action.Dying_Left;
+
+                NextActionId = null;
+
+                if (AttachedObject != null)
+                {
+                    AttachedObject.ProcessMessage(this, Message.Actor_Drop);
+                    AttachedObject = null;
+                }
+                break;
+
+            case FsmAction.Step:
+                if (Timer != 0)
+                    Timer++;
+
+                if (IsActionFinished && Timer == 0)
+                    Timer = 1;
+
+                // 20 frames after action is finished 
+                if (Timer >= 20)
+                {
+                    // Move to last safe position
+                    Position = GetSafePosition();
+
+                    // Reset the camera
+                    Scene.Camera.SetFirstPosition();
+
+                    // Deal 2 points of damage
+                    HitPoints -= 2;
+                    PrevHitPoints = HitPoints;
+
+                    // Start invulnerability, but don't last for as long as usual
+                    IsInvulnerable = true;
+                    InvulnerabilityStartTime = GameTime.ElapsedFrames;
+                    InvulnerabilityDuration = 60;
+
+                    // Reset the state
+                    State.MoveTo(Fsm_Default);
+                    return false;
                 }
                 break;
 

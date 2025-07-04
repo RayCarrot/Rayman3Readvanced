@@ -192,6 +192,9 @@ public sealed partial class Rayman : MovableActor
             }
         }
 
+        LastSafePositionBuffer = new Vector2[10];
+        LastSafePositionBufferIndex = 0;
+
         State.SetTo(Fsm_LevelStart);
     }
 
@@ -221,6 +224,8 @@ public sealed partial class Rayman : MovableActor
     public bool IsSuperHelicoActive { get; set; }
     public ushort PlumCameraTimer { get; set; } // N-Gage only
 
+    public Vector2[] LastSafePositionBuffer { get; set; } // Custom to respawn from insta-kill
+    public int LastSafePositionBufferIndex { get; set; } // Custom to respawn from insta-kill
     public bool Debug_NoClip { get; set; } // Custom no-clip mode
 
     // Flags 1
@@ -1539,6 +1544,32 @@ public sealed partial class Rayman : MovableActor
             Position += new Vector2(speed, 0);
     }
 
+    private void UpdateSafePosition()
+    {
+        LastSafePositionBuffer[LastSafePositionBufferIndex] = Position;
+      
+        LastSafePositionBufferIndex++;
+        if (LastSafePositionBufferIndex >= LastSafePositionBuffer.Length)
+            LastSafePositionBufferIndex = 0;
+    }
+
+    private Vector2 GetSafePosition()
+    {
+        // Get the safe position from the buffer. This will be one index after the last added one, which is a full loop from now.
+        Vector2 safePosition = LastSafePositionBuffer[LastSafePositionBufferIndex];
+
+        // If there is no safe position then fall back to the checkpoint position
+        if (safePosition == Vector2.Zero)
+        {
+            if (GameInfo.LastGreenLumAlive != 0)
+                safePosition = GameInfo.CheckpointPosition;
+            else
+                safePosition = Resource.Pos.ToVector2();
+        }
+
+        return safePosition;
+    }
+
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {
         if (base.ProcessMessageImpl(sender, message, param))
@@ -1577,7 +1608,7 @@ public sealed partial class Rayman : MovableActor
                 return false;
 
             case Message.Rayman_LinkMovement:
-                if (State != Fsm_Dying)
+                if (State != Fsm_Dying && State != Fsm_RespawnDeath)
                 {
                     if (State == Fsm_Jump && Speed.Y < 1)
                         return false;
@@ -1606,6 +1637,7 @@ public sealed partial class Rayman : MovableActor
                 {
                     if (State == Fsm_Swing || 
                         State == Fsm_Dying || 
+                        State == Fsm_RespawnDeath || 
                         State == Fsm_MultiplayerHit || 
                         State == Fsm_MultiplayerStunned || 
                         State == Fsm_MultiplayerGetUp)
@@ -1614,7 +1646,8 @@ public sealed partial class Rayman : MovableActor
                 else
                 {
                     if (State == Fsm_Swing || 
-                        State == Fsm_Dying)
+                        State == Fsm_Dying || 
+                        State == Fsm_RespawnDeath)
                         return false;
                 }
 
@@ -1729,7 +1762,7 @@ public sealed partial class Rayman : MovableActor
             case Message.Actor_End: // Unused
             case Message.Rayman_HurtPassthrough:
             case Message.Rayman_HurtSmallKnockback:
-                if (State == Fsm_HitKnockback || State == Fsm_Dying || State == Fsm_EndMap || InvulnerabilityDuration != 0)
+                if (State == Fsm_HitKnockback || State == Fsm_Dying || State == Fsm_RespawnDeath || State == Fsm_EndMap || InvulnerabilityDuration != 0)
                     return false;
 
                 if (LinkedMovementActor != null)
@@ -1791,7 +1824,7 @@ public sealed partial class Rayman : MovableActor
 
             case Message.Actor_LightOnFireRight:
             case Message.Actor_LightOnFireLeft:
-                if (State != Fsm_HitKnockback && State != Fsm_Dying)
+                if (State != Fsm_HitKnockback && State != Fsm_Dying && State != Fsm_RespawnDeath)
                     State.MoveTo(Fsm_FlyWithKeg);
                 return false;
 
@@ -1892,7 +1925,7 @@ public sealed partial class Rayman : MovableActor
                 return false;
 
             case Message.Rayman_AttachPlum:
-                if (State != Fsm_Dying && AttachedObject is not { Type: (int)ActorType.Plum })
+                if (State != Fsm_Dying && State != Fsm_RespawnDeath && AttachedObject is not { Type: (int)ActorType.Plum })
                 {
                     NextActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
                     State.MoveTo(Fsm_OnPlum);
@@ -1935,13 +1968,13 @@ public sealed partial class Rayman : MovableActor
                 }
                 else
                 {
-                    if (State != Fsm_Dying && State != Fsm_EndMap)
+                    if (State != Fsm_Dying && State != Fsm_RespawnDeath && State != Fsm_EndMap)
                         State.MoveTo(Fsm_Dying);
                 }
                 return false;
 
             case Message.Rayman_MountWalkingShell:
-                if (State != Fsm_RidingWalkingShell && State != Fsm_Dying)
+                if (State != Fsm_RidingWalkingShell && State != Fsm_Dying && State != Fsm_RespawnDeath)
                     State.MoveTo(Fsm_RidingWalkingShell);
                 return false;
 
@@ -2213,6 +2246,8 @@ public sealed partial class Rayman : MovableActor
             ActionId = Action.Idle_Left;
             ChangeAction();
         }
+
+        UpdateSafePosition();
 
         GameInfo.IsInWorldMap = false;
 

@@ -314,7 +314,7 @@ public partial class Machine
                 if (Scene.MainActor.Speed.Y == 0)
                 {
                     Rayman rayman = (Rayman)Scene.MainActor;
-                    if (rayman.State != rayman.Fsm_Dying && rayman.State != rayman.Fsm_EndMap)
+                    if (rayman.State != rayman.Fsm_Dying && rayman.State != rayman.Fsm_RespawnDeath && rayman.State != rayman.Fsm_EndMap)
                         rayman.ProcessMessage(this, Message.Rayman_FinishLevel);
                 }
 

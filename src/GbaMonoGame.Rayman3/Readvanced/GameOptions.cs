@@ -280,7 +280,7 @@ public static class GameOptions
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "NO INSTA-KILLS",
-                    infoText: "Enemies that would previously instantly kill you now instead deal 2 points of damage.",
+                    infoText: "Enemies and obstacles that would previously instantly kill you now instead deal 2 points of damage.",
                     items:
                     [
                         new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
