@@ -132,8 +132,16 @@ public partial class FlyingBombMode7
             case FsmAction.Init:
                 if (!GameInfo.IsCheatEnabled(Cheat.Invulnerable))
                 {
-                    Scene.MainActor.IsInvulnerable = false;
-                    Scene.MainActor.ReceiveDamage(AttackPoints);
+                    // Deals 255 damage by default
+                    if (!Engine.Config.Difficulty.NoInstaKills)
+                    {
+                        Scene.MainActor.IsInvulnerable = false;
+                        Scene.MainActor.ReceiveDamage(AttackPoints);
+                    }
+                    else
+                    {
+                        Scene.MainActor.ReceiveDamage(2);
+                    }
                 }
 
                 ExplosionMode7 explosion = Scene.CreateProjectile<ExplosionMode7>(ActorType.ExplosionMode7);

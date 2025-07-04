@@ -19,7 +19,17 @@ public partial class LavaFall
                 Timer++;
 
                 if (Scene.IsHitMainActor(this))
-                    Scene.MainActor.ProcessMessage(this, Message.Actor_Explode);
+                {
+                    if (!Engine.Config.Difficulty.NoInstaKills)
+                    {
+                        Scene.MainActor.ProcessMessage(this, Message.Actor_Explode);
+                    }
+                    else
+                    {
+                        Scene.MainActor.ProcessMessage(this, Message.Actor_Hurt);
+                        Scene.MainActor.ReceiveDamage(2);
+                    }
+                }
 
                 if (Timer == 60)
                 {

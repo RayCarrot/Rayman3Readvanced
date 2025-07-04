@@ -268,7 +268,7 @@ public static class GameOptions
             new GameOptionsGroup("DIFFICULTY",
             [
                 new MultiSelectionOptionsMenuOption<bool>(
-                    text: "Infinite lives",
+                    text: "INFINITE LIVES",
                     infoText: "Gives you infinite lives and makes white lums fully restore health instead.",
                     items:
                     [
@@ -277,6 +277,17 @@ public static class GameOptions
                     ],
                     getData: _ => Engine.Config.Difficulty.InfiniteLives,
                     setData: data => Engine.Config.Difficulty.InfiniteLives = data,
+                    getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "NO INSTA-KILLS",
+                    infoText: "Enemies that would previously instantly kill you now instead deal 2 points of damage.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
+                    ],
+                    getData: _ => Engine.Config.Difficulty.NoInstaKills,
+                    setData: data => Engine.Config.Difficulty.NoInstaKills = data,
                     getCustomName: _ => null),
             ]),
         ];

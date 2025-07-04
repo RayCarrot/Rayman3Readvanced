@@ -266,7 +266,17 @@ public partial class Rocky
                 Scene.Camera.ProcessMessage(this, Message.Cam_FollowPositionY, 155);
 
                 if (Scene.IsHitMainActor(this))
-                    Scene.MainActor.ProcessMessage(this, Message.Actor_Explode);
+                {
+                    if (!Engine.Config.Difficulty.NoInstaKills)
+                    {
+                        Scene.MainActor.ProcessMessage(this, Message.Actor_Explode);
+                    }
+                    else
+                    {
+                        Scene.MainActor.ProcessMessage(this, Message.Actor_Hurt);
+                        Scene.MainActor.ReceiveDamage(2);
+                    }
+                }
 
                 Timer++;
 
