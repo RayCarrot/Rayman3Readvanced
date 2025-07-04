@@ -300,6 +300,17 @@ public static class GameOptions
                     getData: _ => Engine.Config.Difficulty.NoInstaKills,
                     setData: data => Engine.Config.Difficulty.NoInstaKills = data,
                     getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "KEEP LUMS IN RACES",
+                    infoText: "Keeps the collected lums in the races even if the timer runs out.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
+                    ],
+                    getData: _ => Engine.Config.Difficulty.KeepLumsInRaces,
+                    setData: data => Engine.Config.Difficulty.KeepLumsInRaces = data,
+                    getCustomName: _ => null),
             ]),
         ];
     }

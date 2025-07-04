@@ -6,16 +6,19 @@ public class DifficultyGameConfig : IniSectionObject
     {
         InfiniteLives = false;
         NoInstaKills = false;
+        KeepLumsInRaces = false;
     }
 
     public override string SectionKey => "Difficulty";
 
     public bool InfiniteLives { get; set; }
     public bool NoInstaKills { get; set; }
+    public bool KeepLumsInRaces { get; set; }
 
     public override void Serialize(BaseIniSerializer serializer)
     {
         InfiniteLives = serializer.Serialize<bool>(InfiniteLives, "InfiniteLives");
         NoInstaKills = serializer.Serialize<bool>(NoInstaKills, "NoInstaKills");
+        KeepLumsInRaces = serializer.Serialize<bool>(KeepLumsInRaces, "KeepLumsInRaces");
     }
 }

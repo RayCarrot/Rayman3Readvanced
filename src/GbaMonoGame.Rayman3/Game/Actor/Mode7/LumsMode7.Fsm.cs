@@ -38,7 +38,7 @@ public partial class LumsMode7
                 {
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_CollectMode7YellowLum);
 
-                    if (GameInfo.LevelType == LevelType.Race)
+                    if (GameInfo.LevelType == LevelType.Race && !Engine.Config.Difficulty.KeepLumsInRaces)
                         ((FrameSingleMode7)Frame.Current).KillLum(LumId);
                     else
                         GameInfo.KillLum(LumId);
