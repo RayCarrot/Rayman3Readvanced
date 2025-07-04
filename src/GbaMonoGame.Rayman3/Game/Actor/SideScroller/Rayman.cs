@@ -1679,7 +1679,7 @@ public sealed partial class Rayman : MovableActor
                 return false;
 
             case Message.Rayman_CollectRedLum:
-                if (HitPoints < 5)
+                if (HitPoints < 5 && !Engine.Config.Difficulty.OneHitPoint)
                     HitPoints++;
 
                 ((FrameSideScroller)Frame.Current).UserInfo.UpdateLife();
@@ -1702,7 +1702,7 @@ public sealed partial class Rayman : MovableActor
                     GameInfo.ModifyLives(1);
 
                     // Restore hp instead if playing with infinite lives
-                    if (Engine.Config.Difficulty.InfiniteLives)
+                    if (Engine.Config.Difficulty.InfiniteLives && !Engine.Config.Difficulty.OneHitPoint)
                     {
                         HitPoints = 5;
                         ((FrameSideScroller)Frame.Current).UserInfo.UpdateLife();
@@ -2162,6 +2162,9 @@ public sealed partial class Rayman : MovableActor
 
     public override void Init(ActorResource actorResource)
     {
+        if (Engine.Config.Difficulty.OneHitPoint)
+            HitPoints = 1;
+
         AnimatedObject.ObjPriority = IsLocalPlayer ? 16 : 17;
 
         Timer = 0;
@@ -2265,6 +2268,13 @@ public sealed partial class Rayman : MovableActor
     public override void Step()
     {
         base.Step();
+
+        if (Engine.Config.Difficulty.OneHitPoint && HitPoints > 1)
+        {
+            HitPoints = 1;
+            PrevHitPoints = HitPoints;
+            InitialHitPoints = HitPoints;
+        }
 
         if (IsLinkedCameraObject())
             ToggleNoClip();

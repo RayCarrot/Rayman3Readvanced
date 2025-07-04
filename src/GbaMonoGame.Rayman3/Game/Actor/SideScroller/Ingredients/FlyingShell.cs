@@ -220,6 +220,9 @@ public sealed partial class FlyingShell : MovableActor
     {
         base.Step();
 
+        if (Engine.Config.Difficulty.OneHitPoint && HitPoints > 1)
+            HitPoints = 1;
+
         if (IsLinkedCameraObject())
             ToggleNoClip();
     }

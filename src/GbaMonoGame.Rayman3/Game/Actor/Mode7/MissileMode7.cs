@@ -447,7 +447,7 @@ public sealed partial class MissileMode7 : Mode7Actor
                 return true;
 
             case Message.Rayman_CollectRedLum:
-                if (HitPoints < 5)
+                if (HitPoints < 5 && !Engine.Config.Difficulty.OneHitPoint)
                     HitPoints++;
 
                 PrevHitPoints = HitPoints;
@@ -494,6 +494,12 @@ public sealed partial class MissileMode7 : Mode7Actor
 
     public override void Step()
     {
+        if (Engine.Config.Difficulty.OneHitPoint && HitPoints > 1)
+        {
+            HitPoints = 1;
+            PrevHitPoints = HitPoints;
+        }
+
         // Check for collision with other karts
         if (RSMultiplayer.IsActive && InstanceId == 0)
         {

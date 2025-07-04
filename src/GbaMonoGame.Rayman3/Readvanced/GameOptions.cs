@@ -322,6 +322,17 @@ public static class GameOptions
                     getData: _ => Engine.Config.Difficulty.NoCheckpoints,
                     setData: data => Engine.Config.Difficulty.NoCheckpoints = data,
                     getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "ONE HIT POINT",
+                    infoText: "You die in one hit.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
+                    ],
+                    getData: _ => Engine.Config.Difficulty.OneHitPoint,
+                    setData: data => Engine.Config.Difficulty.OneHitPoint = data,
+                    getCustomName: _ => null),
             ]),
         ];
     }

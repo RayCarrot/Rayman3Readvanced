@@ -116,7 +116,7 @@ public class LifeBar : Bar
         }
         // TODO: Have option not to play this sound because it's annoying
         // Check if close to dead
-        else if (hp == 1 && (GameTime.ElapsedFrames & 0x3f) == 0x3f)
+        else if (hp == 1 && (GameTime.ElapsedFrames & 0x3f) == 0x3f && !Engine.Config.Difficulty.OneHitPoint)
         {
             // NOTE: There's a bug where if you pause on the same frame as this sound should be playing then it
             //       will keep playing every single frame! Optionally fix by checking so the time isn't paused.
@@ -191,6 +191,21 @@ public class LifeBar : Bar
 
         if (DrawStep != BarDrawStep.Hide)
         {
+            if (Engine.Config.Difficulty.OneHitPoint)
+            {
+                HitPoints.DeactivateChannel(2);
+                HitPoints.DeactivateChannel(3);
+                HitPoints.DeactivateChannel(4);
+                HitPoints.DeactivateChannel(5);
+
+                if (HitPoints.CurrentAnimation != 10)
+                    HitPoints.CurrentAnimation = 20;
+            }
+            else
+            {
+                HitPoints.ActivateAllChannels();
+            }
+
             HitPoints.ScreenPos = HitPoints.ScreenPos with { Y = 0 - OffsetY };
 
             if (!Engine.Config.Difficulty.InfiniteLives)

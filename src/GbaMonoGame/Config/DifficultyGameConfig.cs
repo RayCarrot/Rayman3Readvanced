@@ -8,6 +8,7 @@ public class DifficultyGameConfig : IniSectionObject
         NoInstaKills = false;
         KeepLumsInRaces = false;
         NoCheckpoints = false;
+        OneHitPoint = false;
     }
 
     public override string SectionKey => "Difficulty";
@@ -16,6 +17,7 @@ public class DifficultyGameConfig : IniSectionObject
     public bool NoInstaKills { get; set; }
     public bool KeepLumsInRaces { get; set; }
     public bool NoCheckpoints { get; set; }
+    public bool OneHitPoint { get; set; }
 
     public override void Serialize(BaseIniSerializer serializer)
     {
@@ -23,5 +25,6 @@ public class DifficultyGameConfig : IniSectionObject
         NoInstaKills = serializer.Serialize<bool>(NoInstaKills, "NoInstaKills");
         KeepLumsInRaces = serializer.Serialize<bool>(KeepLumsInRaces, "KeepLumsInRaces");
         NoCheckpoints = serializer.Serialize<bool>(NoCheckpoints, "NoCheckpoints");
+        OneHitPoint = serializer.Serialize<bool>(OneHitPoint, "OneHitPoint");
     }
 }
