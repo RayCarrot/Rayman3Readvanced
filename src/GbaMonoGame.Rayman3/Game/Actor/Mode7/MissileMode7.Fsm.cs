@@ -44,6 +44,7 @@ public partial class MissileMode7
             if (IsInvulnerable && InvulnerabilityTimer > 180)
                 IsInvulnerable = false;
 
+            // Why is it checking for hitting itself?
             if (Scene.IsHitMainActor(this))
             {
                 ReceiveDamage(AttackPoints);

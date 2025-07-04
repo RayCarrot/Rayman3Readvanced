@@ -128,10 +128,12 @@ Most actors have the first animation be unused and just single frame, most likel
 - The blue lums, which give you a boost, are only found in the multiplayer mode. However there is unused code to handle them in single player too. This was used in the early prototypes.
 
 #### MissileMode7
+- The actor checks if it hits the main actor, and insta-kills itself if so. However this is the main actor and it also doesn't have the hitboxes defined to perform this check.
 - When checking for if you've let go of the accelerate button it calls `IsButtonJustReleased`, which should never be used during gameplay. That's because if you pause while the button is held down and then let go while paused it will never register by the actor. This causes it to keep thinking you're holding the button down.
 - During multiplayer you can spectate other players after dying. You switch between players by pressing A, which causes the screen to fade out before moving the camera. The timing is however wrong, as the fade out lasts 32 frames while the camera moves after 16 frames. This makes the transition between players very jarring.
 
 #### RaymanMode7
+- The actor checks if it hits the main actor, and insta-kills itself if so. However this is the main actor and it also doesn't have the hitboxes defined to perform this check.
 - There's an unused function which kills you if you're touching insta-kill collision.
 - There is some leftover code from how the Murfy tutorial box used to be triggered.
 - There's an animation bug that occurs during the same frame that you hit the water after jumping (first frame of it switching from the jumping animation) where Rayman's sprites will be all messed up. This is due to how the game updates the animations here which causes it to not correctly account for if the animation is in "delay mode", thus making it not load the correct graphics for the new animation.

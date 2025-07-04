@@ -19,6 +19,7 @@ public partial class RaymanMode7
             if (IsInvulnerable && InvulnerabilityTimer > 100)
                 IsInvulnerable = false;
 
+            // Why is it checking for hitting itself?
             if (Scene.IsHitMainActor(this))
             {
                 ReceiveDamage(AttackPoints);
