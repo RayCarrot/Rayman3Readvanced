@@ -114,9 +114,8 @@ public class LifeBar : Bar
             DrawStep = BarDrawStep.Wait;
             WaitTimer = 0;
         }
-        // TODO: Have option not to play this sound because it's annoying
         // Check if close to dead
-        else if (hp == 1 && (GameTime.ElapsedFrames & 0x3f) == 0x3f && !Engine.Config.Difficulty.OneHitPoint)
+        else if (hp == 1 && (GameTime.ElapsedFrames & 0x3f) == 0x3f && !Engine.Config.Difficulty.OneHitPoint && !Engine.Config.Sound.DisableLowHealthSound)
         {
             // NOTE: There's a bug where if you pause on the same frame as this sound should be playing then it
             //       will keep playing every single frame! Optionally fix by checking so the time isn't paused.

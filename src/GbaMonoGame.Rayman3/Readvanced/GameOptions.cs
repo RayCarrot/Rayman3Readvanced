@@ -146,6 +146,17 @@ public static class GameOptions
                     getData: _ => Engine.Config.Sound.PlayMusicWhenPaused,
                     setData: data => Engine.Config.Sound.PlayMusicWhenPaused = data,
                     getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "DISABLE LOW HEALTH SOUND",
+                    infoText: "Disables the sound effect that plays when you're low on health.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
+                    ],
+                    getData: _ => Engine.Config.Sound.DisableLowHealthSound,
+                    setData: data => Engine.Config.Sound.DisableLowHealthSound = data,
+                    getCustomName: _ => null),
             ]),
             // TODO: Look into how these work when changed while in a level
             // TODO: Add option to keep all objects enabled, and force it on when in a custom resolution

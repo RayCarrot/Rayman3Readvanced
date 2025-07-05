@@ -51,8 +51,7 @@ public class UserInfoMultiMode7 : Dialog
 
     private void DrawHitPoints(AnimationPlayer animationPlayer)
     {
-        // TODO: Have option not to play this sound because it's annoying
-        if (MainActor.HitPoints == 1 && (GameTime.ElapsedFrames & 0x3f) == 0x3f)
+        if (MainActor.HitPoints == 1 && (GameTime.ElapsedFrames & 0x3f) == 0x3f && !Engine.Config.Sound.DisableLowHealthSound)
         {
             // NOTE: There's a bug where if you pause on the same frame as this sound should be playing then it
             //       will keep playing every single frame! Optionally fix by checking so the time isn't paused.
