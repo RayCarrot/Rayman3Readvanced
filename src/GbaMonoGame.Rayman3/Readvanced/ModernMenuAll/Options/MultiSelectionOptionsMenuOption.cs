@@ -75,29 +75,29 @@ public class MultiSelectionOptionsMenuOption<T> : OptionsMenuOption
         UpdateSelection();
     }
 
-    public override bool HasPreset(Enum preset)
+    public override bool HasPresetDefined(Enum preset)
     {
-        return _items.Any(x => Equals(x.Preset, preset));
+        return _items.Any(x => x.Presets.Contains(preset));
     }
 
-    public override Enum GetUsedPreset()
+    public override Enum[] GetUsedPresets()
     {
         if (_hasCustom)
         {
             if (_selectedIndex == 0)
-                return null;
+                return [];
             else
-                return _items[_selectedIndex - 1].Preset;
+                return _items[_selectedIndex - 1].Presets;
         }
         else
         {
-            return _items[_selectedIndex].Preset;
+            return _items[_selectedIndex].Presets;
         }
     }
 
     public override void ApplyFromPreset(IReadOnlyList<OptionsMenuOption> options, Enum preset)
     {
-        int index = Array.FindIndex(_items, x => Equals(x.Preset, preset));
+        int index = Array.FindIndex(_items, x => x.Presets.Contains(preset));
         if (index != -1)
         {
             _setData(_items[index].Data);
@@ -143,10 +143,10 @@ public class MultiSelectionOptionsMenuOption<T> : OptionsMenuOption
         return EditStepResult.None;
     }
 
-    public class Item(string displayName, T data, Enum preset = null)
+    public class Item(string displayName, T data, params Enum[] presets)
     {
         public string DisplayName { get; } = displayName;
         public T Data { get; } = data;
-        public Enum Preset { get; } = preset;
+        public Enum[] Presets { get; } = presets;
     }
 }

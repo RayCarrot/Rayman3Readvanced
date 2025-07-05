@@ -46,35 +46,48 @@ public class PresetSelectionOptionsMenuOption : OptionsMenuOption
 
     public override void Reset(IReadOnlyList<OptionsMenuOption> options)
     {
-        Enum currentPreset = null;
+        List<Enum> validPresets = [];
         foreach (OptionsMenuOption option in options)
         {
-            Enum usedPreset = option.GetUsedPreset();
+            Enum[] usedPresets = option.GetUsedPresets();
 
-            if (usedPreset == null)
+            // If the option has no presets...
+            if (usedPresets.Length == 0)
             {
-                if (currentPreset != null && option.HasPreset(currentPreset))
+                // If we have valid presets and the option has at least one of them defined
+                if (validPresets.Count != 0 && validPresets.Any(option.HasPresetDefined))
                 {
-                    currentPreset = null;
+                    // No valid presets, break
+                    validPresets.Clear();
                     break;
+                }
+            }
+            else
+            {
+                // If we have no valid presets yet
+                if (validPresets.Count == 0)
+                {
+                    // Add all the presets
+                    validPresets.AddRange(usedPresets);
                 }
                 else
                 {
-                    continue;
-                }
-            }
+                    // Enumerate every valid preset
+                    foreach (Enum validPreset in validPresets.ToArray())
+                    {
+                        // Remove if not used by this option
+                        if (!usedPresets.Contains(validPreset) && option.HasPresetDefined(validPreset))
+                            validPresets.Remove(validPreset);
+                    }
 
-            if (currentPreset == null)
-            {
-                currentPreset = usedPreset;
-            }
-            else if (!Equals(currentPreset, usedPreset) && option.HasPreset(currentPreset))
-            {
-                currentPreset = null;
-                break;
+                    // Break if we've removed all valid presets
+                    if (validPresets.Count == 0)
+                        break;
+                }
             }
         }
 
+        Enum currentPreset = validPresets.FirstOrDefault();
         int itemIndex = Array.FindIndex(_presetItems, x => (x.Preset == null && currentPreset == null) || x.Preset?.Equals(currentPreset) == true);
 
         if (itemIndex == -1)
