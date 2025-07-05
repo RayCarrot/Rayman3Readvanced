@@ -192,7 +192,7 @@ public sealed partial class Rayman : MovableActor
             }
         }
 
-        LastSafePositionBuffer = new Vector2[10];
+        LastSafePositionBuffer = new SafePosition[10];
         LastSafePositionBufferIndex = 0;
 
         State.SetTo(Fsm_LevelStart);
@@ -224,7 +224,7 @@ public sealed partial class Rayman : MovableActor
     public bool IsSuperHelicoActive { get; set; }
     public ushort PlumCameraTimer { get; set; } // N-Gage only
 
-    public Vector2[] LastSafePositionBuffer { get; set; } // Custom to respawn from insta-kill
+    public SafePosition[] LastSafePositionBuffer { get; set; } // Custom to respawn from insta-kill
     public int LastSafePositionBufferIndex { get; set; } // Custom to respawn from insta-kill
     public bool Debug_NoClip { get; set; } // Custom no-clip mode
 
@@ -1546,25 +1546,25 @@ public sealed partial class Rayman : MovableActor
 
     private void UpdateSafePosition()
     {
-        LastSafePositionBuffer[LastSafePositionBufferIndex] = Position;
+        LastSafePositionBuffer[LastSafePositionBufferIndex] = new SafePosition(Position, IsFacingRight);
       
         LastSafePositionBufferIndex++;
         if (LastSafePositionBufferIndex >= LastSafePositionBuffer.Length)
             LastSafePositionBufferIndex = 0;
     }
 
-    private Vector2 GetSafePosition()
+    private SafePosition GetSafePosition()
     {
         // Get the safe position from the buffer. This will be one index after the last added one, which is a full loop from now.
-        Vector2 safePosition = LastSafePositionBuffer[LastSafePositionBufferIndex];
+        SafePosition safePosition = LastSafePositionBuffer[LastSafePositionBufferIndex];
 
         // If there is no safe position then fall back to the checkpoint position
-        if (safePosition == Vector2.Zero)
+        if (safePosition.Position == Vector2.Zero)
         {
             if (GameInfo.LastGreenLumAlive != 0)
-                safePosition = GameInfo.CheckpointPosition;
+                safePosition = new SafePosition(GameInfo.CheckpointPosition, true);
             else
-                safePosition = Resource.Pos.ToVector2();
+                safePosition = new SafePosition(Resource.Pos.ToVector2(), true);
         }
 
         return safePosition;
@@ -2451,6 +2451,12 @@ public sealed partial class Rayman : MovableActor
         public int PlayerPaletteId { get; set; }
         public Power Powers { get; set; }
         public int SpectatePlayerId { get; set; }
+    }
+
+    public readonly struct SafePosition(Vector2 position, bool isFacingRight)
+    {
+        public Vector2 Position { get; } = position;
+        public bool IsFacingRight { get; } = isFacingRight;
     }
 
     [Flags]

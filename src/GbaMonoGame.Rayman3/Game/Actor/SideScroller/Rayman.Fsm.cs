@@ -4406,10 +4406,11 @@ public partial class Rayman
                     Timer = 1;
 
                 // 20 frames after action is finished 
-                if (Timer >= 20)
+                if (Timer == 20)
                 {
                     // Move to last safe position
-                    Position = GetSafePosition();
+                    SafePosition safePosition = GetSafePosition();
+                    Position = safePosition.Position;
 
                     // Reset the camera
                     Scene.Camera.SetFirstPosition();
@@ -4418,6 +4419,12 @@ public partial class Rayman
                     HitPoints -= 2;
                     PrevHitPoints = HitPoints;
 
+                    // Respawn animation
+                    ActionId = safePosition.IsFacingRight ? Action.Spawn_Right : Action.Spawn_Left;
+                }
+                // Respawn animation finished (stop after 20 frames to avoid showing the part where you land on the ground)
+                else if (ActionId is Action.Spawn_Right or Action.Spawn_Left && AnimatedObject.CurrentFrame == 20)
+                {
                     // Start invulnerability, but don't last for as long as usual
                     IsInvulnerable = true;
                     InvulnerabilityStartTime = GameTime.ElapsedFrames;
