@@ -275,16 +275,26 @@ public static class GameOptions
                     setData: data => Engine.Config.Tweaks.AllowPrototypeCheats = data,
                     getCustomName: _ => null),
             ]),
-            // TODO: Add presets (Original, Rebalanced/Readvanced, Custom)
             new GameOptionsGroup("DIFFICULTY",
             [
+                new PresetSelectionOptionsMenuOption(
+                    text: "PRESET",
+                    infoText: "EASY: Infinite lives, no insta-kills and keep lums in races.\n" +
+                              "ORIGINAL: All difficulty options disabled.\n" +
+                              "HARD: No checkpoints and one hit-point.",
+                    presetItems:
+                    [
+                        new PresetSelectionOptionsMenuOption.PresetItem("EASY", DifficultyPreset.Easy),
+                        new PresetSelectionOptionsMenuOption.PresetItem("ORIGINAL", DifficultyPreset.Original),
+                        new PresetSelectionOptionsMenuOption.PresetItem("HARD", DifficultyPreset.Hard),
+                    ]),
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "INFINITE LIVES",
                     infoText: "Gives you infinite lives and makes white lums fully restore health instead.",
                     items:
                     [
-                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
-                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, DifficultyPreset.Original, DifficultyPreset.Hard),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, DifficultyPreset.Easy),
                     ],
                     getData: _ => Engine.Config.Difficulty.InfiniteLives,
                     setData: data => Engine.Config.Difficulty.InfiniteLives = data,
@@ -294,8 +304,8 @@ public static class GameOptions
                     infoText: "Enemies and obstacles that would previously instantly kill you now instead deal 2 points of damage.",
                     items:
                     [
-                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
-                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, DifficultyPreset.Original, DifficultyPreset.Hard),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, DifficultyPreset.Easy),
                     ],
                     getData: _ => Engine.Config.Difficulty.NoInstaKills,
                     setData: data => Engine.Config.Difficulty.NoInstaKills = data,
@@ -305,8 +315,8 @@ public static class GameOptions
                     infoText: "Keeps the collected lums in the races even if the timer runs out.",
                     items:
                     [
-                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
-                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, DifficultyPreset.Original, DifficultyPreset.Hard),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, DifficultyPreset.Easy),
                     ],
                     getData: _ => Engine.Config.Difficulty.KeepLumsInRaces,
                     setData: data => Engine.Config.Difficulty.KeepLumsInRaces = data,
@@ -316,19 +326,19 @@ public static class GameOptions
                     infoText: "Removed green lums from levels.",
                     items:
                     [
-                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
-                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, DifficultyPreset.Easy, DifficultyPreset.Original),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, DifficultyPreset.Hard),
                     ],
                     getData: _ => Engine.Config.Difficulty.NoCheckpoints,
                     setData: data => Engine.Config.Difficulty.NoCheckpoints = data,
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
-                    text: "ONE HIT POINT",
+                    text: "ONE HIT-POINT",
                     infoText: "You die in one hit.",
                     items:
                     [
-                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
-                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, DifficultyPreset.Easy, DifficultyPreset.Original),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, DifficultyPreset.Hard),
                     ],
                     getData: _ => Engine.Config.Difficulty.OneHitPoint,
                     setData: data => Engine.Config.Difficulty.OneHitPoint = data,
@@ -347,5 +357,12 @@ public static class GameOptions
     {
         Original,
         Readvanced,
+    }
+
+    public enum DifficultyPreset
+    {
+        Easy,
+        Original,
+        Hard,
     }
 }
