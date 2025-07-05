@@ -21,37 +21,25 @@ It might also be possible to implement split-screen multiplayer where each playe
 However online multiplayer would be much more complicated. The game expects the communication between clients every frame, which would require very low latency (probably around 16 ms?). If we can get it working then this library would be a potential option: https://github.com/RevenantX/LiteNetLib
 
 ## ⚙️ Options
-### 📃 General
-- Have option presets, such as "Modern" and "Original". Also clarify for each option which value is the original one. In the code we give each option a tag to indicate which preset it's included in.
-
 ### ⌚ Performance
-- Option not to clear cache between Frame instances.
-- Option to pre-load all textures in animations and tiles when initializing a new Frame instance.
+- Option to pre-load all textures in animations and tiles when initializing a new Frame instance to avoid lazy loading.
 - Option not to cache serialized data from the ROM. Currently it always does that.
-- Option to pre-load all levels asynchronously during intro sequence.
-- Use single texture sheets for AnimatedObject and maybe tiles too as to avoid creating too many textures.
 
 ### ✨ Optional improvements
-The following are ideas for optional improvements which the player can toggle on to enhance/modernize the game experience. To avoid too many options we should probably bundle some of these together into common options such as "Rebalance game".
-
-- Play unused level start animation.
-- Infinite lives. Have silver lums fully restore health instead and add achievement for collecting them all so they still have a purpose.
+- Coyote time.
+- Buffered inputs.
+- N-Gage specific features that could be enabled in the GBA version:
+    - Allow skipping intro early.
+    - After pausing in multiplayer it shows the countdown again.
+    - Final boss missile and Hoodstormer move slower.
+    - TimerBar sounds during last 10 seconds.
+- Visual improvements, like maintaining GBA effects during pausing and transitions.
 - Fix the helico animation hitbox for Rayman.
-- Slightly increase hitbox width for moving platforms.
 - Move faster in worldmap (when holding down button?).
+- Do not show N-Gage button prompts in the corners.
+- Remove stray pixels and fix bad tiling in levels.
+- More tutorial boxes from Murfy, explain strafing for race levels etc.
 - Press the select button while in a hub world to bring up level info bars for every level for that hub in a vertical, scrollable, list, with you selecting one to teleport to that level curtain.
-- Kyote time, allow jumping after a few frames (game already has a system for it, but only used for specific cases such as moving platforms that burn up).
-- Have enemies, such as the helico bombs in the waterski levels, not instakill you.
-- Have tiles, such as the spikes in the cave of bad dreams, not insta-kill you. Allow you to stand on them when on i-frames?
-- Restore original Rayman 2 level names.
-- Option to check for buffered inputs? Pass in buffer length in the JoyPad check methods? For jumps, attack etc. as to avoid it feeling like inputs get lost.
-- Option to not clear collected lums if you die in a race level.
-- Option to use GBA sounds for the N-Gage version.
-- Option to not show N-Gage button prompts in the corners.
-- Option to use Rayman 2's health system where you don't instantly die when falling into pit, and max HP increases from cages.
-- Option for less insta-kill, such as with the flying shell.
-- Option for visual enhancements, such as not disabling the Mode7 fog effect when you die.
-- Option to remove stray pixels and fix bad tiling in some levels.
 - Extend backgrounds so that they can render in the modern widescreen resolution without scaling:
     - BossMachine ✔️
     - BossRockAndLava
@@ -62,7 +50,6 @@ The following are ideas for optional improvements which the player can toggle on
     - Power6
     - Worldmap
     - Check multiplayer, menus etc. and check N-Gage
-- GBA effects can be used in the N-Gage version, but sometimes the N-Gage version improves things too. Allow these to be used in the GBA version.
 
 ## ⭐ Bonus
 ### Achievements
