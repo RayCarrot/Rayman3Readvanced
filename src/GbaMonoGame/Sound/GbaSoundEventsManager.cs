@@ -520,8 +520,11 @@ public class GbaSoundEventsManager : SoundEventsManager
     {
         foreach (SongInstance playingSong in _songInstances)
         {
-            playingSong.StopIfNotLooping = true; // Not actually set here, but always set alongside PauseAll, so might as well do it here
-            playingSong.InGamePaused = true;
+            if (Engine.Config.Sound.PlayMusicWhenPaused != true || playingSong.SoundType == SoundType.Sfx)
+            {
+                playingSong.StopIfNotLooping = true; // Not actually set here, but always set alongside PauseAll, so might as well do it here
+                playingSong.InGamePaused = true;
+            }
         }
     }
 

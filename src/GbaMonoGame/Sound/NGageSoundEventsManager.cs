@@ -67,6 +67,36 @@ public class NGageSoundEventsManager : SoundEventsManager
 
     #endregion
 
+    #region Private Properties
+
+    private bool _isMusicInGamePaused;
+    private bool _isMusicInEnginePaused;
+
+    private bool IsMusicInGamePaused
+    {
+        get => _isMusicInGamePaused;
+        set
+        {
+            _isMusicInGamePaused = value;
+
+            if (_soloud.isValidVoiceHandle(_musicVoiceHandle))
+                _soloud.setPause(_musicVoiceHandle, value || IsMusicInEnginePaused);
+        }
+    }
+    private bool IsMusicInEnginePaused
+    {
+        get => _isMusicInEnginePaused;
+        set
+        {
+            _isMusicInEnginePaused = value;
+
+            if (_soloud.isValidVoiceHandle(_musicVoiceHandle))
+                _soloud.setPause(_musicVoiceHandle, value || IsMusicInGamePaused);
+        }
+    }
+
+    #endregion
+
     #region Public Properties
 
     public float MusicVolume { get; set; }
@@ -364,9 +394,16 @@ public class NGageSoundEventsManager : SoundEventsManager
 
     protected override void StopAllSongsImpl() { }
 
-    protected override void PauseAllSongsImpl() { }
-    
-    protected override void ResumeAllSongsImpl() { }
+    protected override void PauseAllSongsImpl()
+    {
+        if (Engine.Config.Sound.PlayMusicWhenPaused == false)
+            IsMusicInGamePaused = true;
+    }
+
+    protected override void ResumeAllSongsImpl()
+    {
+        IsMusicInGamePaused = false;
+    }
 
     protected override float GetVolumeForTypeImpl(SoundType type) => SoundEngineInterface.MaxVolume;
 
@@ -374,8 +411,7 @@ public class NGageSoundEventsManager : SoundEventsManager
 
     protected override void ForcePauseAllSongsImpl()
     {
-        if (_soloud.isValidVoiceHandle(_musicVoiceHandle))
-            _soloud.setPause(_musicVoiceHandle, true);
+        IsMusicInEnginePaused = true;
 
         foreach (SoundEffectInstance soundEffectInstance in _soundEffectInstances.Values)
             soundEffectInstance.InEnginePaused = true;
@@ -383,8 +419,7 @@ public class NGageSoundEventsManager : SoundEventsManager
 
     protected override void ForceResumeAllSongsImpl()
     {
-        if (_soloud.isValidVoiceHandle(_musicVoiceHandle))
-            _soloud.setPause(_musicVoiceHandle, false);
+        IsMusicInEnginePaused = false;
 
         foreach (SoundEffectInstance soundEffectInstance in _soundEffectInstances.Values)
             soundEffectInstance.InEnginePaused = false;

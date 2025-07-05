@@ -134,6 +134,18 @@ public static class GameOptions
                     infoText: "The volume for sound effects.",
                     getVolume: () => Engine.Config.Sound.SfxVolume,
                     setVolume: data => Engine.Config.Sound.SfxVolume = data),
+                new MultiSelectionOptionsMenuOption<bool?>(
+                    text: "PLAY MUSIC WHEN PAUSED",
+                    infoText: "Indicates if the music should keep playing when paused. The original behavior is for it to do so only for the N-Gage version.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool?>.Item("ORIGINAL", null),
+                        new MultiSelectionOptionsMenuOption<bool?>.Item("YES", true),
+                        new MultiSelectionOptionsMenuOption<bool?>.Item("NO", false),
+                    ],
+                    getData: _ => Engine.Config.Sound.PlayMusicWhenPaused,
+                    setData: data => Engine.Config.Sound.PlayMusicWhenPaused = data,
+                    getCustomName: _ => null),
             ]),
             // TODO: Look into how these work when changed while in a level
             // TODO: Add option to keep all objects enabled, and force it on when in a custom resolution

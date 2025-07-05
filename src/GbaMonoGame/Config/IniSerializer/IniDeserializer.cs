@@ -46,6 +46,13 @@ public class IniDeserializer : BaseIniSerializer
         {
             return (T)(object)Boolean.Parse(stringValue);
         }
+        else if (typeof(T) == typeof(bool?))
+        {
+            if (stringValue == String.Empty)
+                return (T)(object)null;
+            else
+                return (T)(object)Boolean.Parse(stringValue);
+        }
         else if (typeof(T).IsEnum)
         {
             return (T)Enum.Parse(typeof(T), stringValue);
