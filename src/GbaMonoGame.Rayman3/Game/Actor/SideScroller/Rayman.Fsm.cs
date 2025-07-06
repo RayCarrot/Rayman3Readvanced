@@ -160,7 +160,7 @@ public partial class Rayman
         {
             if (RSMultiplayer.IsActive)
                 State.MoveTo(Fsm_MultiplayerDying);
-            else if (!Engine.Config.Difficulty.NoInstaKills || HitPoints <= 2)
+            else if (!Engine.Config.Difficulty.NoInstaKills || HitPoints <= 2 || State == Fsm_RidingWalkingShell)
                 State.MoveTo(Fsm_Dying);
             else
                 State.MoveTo(Fsm_RespawnDeath);
