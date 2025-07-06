@@ -10,7 +10,7 @@ public partial class Rayman
 {
     private bool FsmStep_DoOnTheGround()
     {
-        if (IsTouchingMap)
+        if (IsTouchingMap && !IsInvulnerable)
             UpdateSafePosition();
 
         if (!FsmStep_DoDefault())
@@ -2483,7 +2483,8 @@ public partial class Rayman
                 if (!FsmStep_DoInTheAir())
                     return false;
 
-                UpdateSafePosition();
+                if (!IsInvulnerable)
+                    UpdateSafePosition();
 
                 Timer++;
 
@@ -4423,7 +4424,7 @@ public partial class Rayman
                     ActionId = safePosition.IsFacingRight ? Action.Spawn_Right : Action.Spawn_Left;
                 }
                 // Respawn animation finished (stop after 20 frames to avoid showing the part where you land on the ground)
-                else if (ActionId is Action.Spawn_Right or Action.Spawn_Left && AnimatedObject.CurrentFrame == 20)
+                else if ((ActionId is Action.Spawn_Right or Action.Spawn_Left && AnimatedObject.CurrentFrame == 20) || Timer > 20 && ActionId is not (Action.Spawn_Right or Action.Spawn_Left))
                 {
                     // Start invulnerability, but don't last for as long as usual
                     IsInvulnerable = true;
