@@ -4431,7 +4431,11 @@ public partial class Rayman
                     InvulnerabilityDuration = 60;
 
                     // Reset the state
-                    State.MoveTo(Fsm_Default);
+                    SafePosition safePosition = GetSafePosition();
+                    if (safePosition.IsClimbing)
+                        State.MoveTo(Fsm_Climb);
+                    else
+                        State.MoveTo(Fsm_Default);
                     return false;
                 }
                 break;

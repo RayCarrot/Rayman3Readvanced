@@ -1546,7 +1546,7 @@ public sealed partial class Rayman : MovableActor
 
     private void UpdateSafePosition()
     {
-        LastSafePositionBuffer[LastSafePositionBufferIndex] = new SafePosition(Position, IsFacingRight);
+        LastSafePositionBuffer[LastSafePositionBufferIndex] = new SafePosition(Position, State == Fsm_Climb, IsFacingRight);
       
         LastSafePositionBufferIndex++;
         if (LastSafePositionBufferIndex >= LastSafePositionBuffer.Length)
@@ -1562,9 +1562,9 @@ public sealed partial class Rayman : MovableActor
         if (safePosition.Position == Vector2.Zero)
         {
             if (GameInfo.LastGreenLumAlive != 0)
-                safePosition = new SafePosition(GameInfo.CheckpointPosition, true);
+                safePosition = new SafePosition(GameInfo.CheckpointPosition, false, true);
             else
-                safePosition = new SafePosition(Resource.Pos.ToVector2(), true);
+                safePosition = new SafePosition(Resource.Pos.ToVector2(), false, true);
         }
 
         return safePosition;
@@ -2453,9 +2453,10 @@ public sealed partial class Rayman : MovableActor
         public int SpectatePlayerId { get; set; }
     }
 
-    public readonly struct SafePosition(Vector2 position, bool isFacingRight)
+    public readonly struct SafePosition(Vector2 position, bool isClimbing, bool isFacingRight)
     {
         public Vector2 Position { get; } = position;
+        public bool IsClimbing { get; } = isClimbing;
         public bool IsFacingRight { get; } = isFacingRight;
     }
 
