@@ -111,19 +111,19 @@ public sealed partial class MovingPlatform : MovableActor
         };
     }
 
-    private Action ReverseDirection(Action action)
+    private PhysicalTypeValue ReverseDirection(PhysicalTypeValue value)
     {
-        return action switch
+        return value switch
         {
-            Action.Move_Left => Action.Move_Right,
-            Action.Move_Right => Action.Move_Left,
-            Action.Move_Up => Action.Move_Down,
-            Action.Move_Down => Action.Move_Up,
-            Action.Move_DownLeft => Action.Move_UpRight,
-            Action.Move_DownRight => Action.Move_UpLeft,
-            Action.Move_UpRight => Action.Move_DownLeft,
-            Action.Move_UpLeft => Action.Move_DownRight,
-            _ => throw new ArgumentOutOfRangeException(nameof(action), action, null)
+            PhysicalTypeValue.MovingPlatform_Left => PhysicalTypeValue.MovingPlatform_Right,
+            PhysicalTypeValue.MovingPlatform_Right => PhysicalTypeValue.MovingPlatform_Left,
+            PhysicalTypeValue.MovingPlatform_Up => PhysicalTypeValue.MovingPlatform_Down,
+            PhysicalTypeValue.MovingPlatform_Down => PhysicalTypeValue.MovingPlatform_Up,
+            PhysicalTypeValue.MovingPlatform_DownLeft => PhysicalTypeValue.MovingPlatform_UpRight,
+            PhysicalTypeValue.MovingPlatform_DownRight => PhysicalTypeValue.MovingPlatform_UpLeft,
+            PhysicalTypeValue.MovingPlatform_UpRight => PhysicalTypeValue.MovingPlatform_DownLeft,
+            PhysicalTypeValue.MovingPlatform_UpLeft => PhysicalTypeValue.MovingPlatform_DownRight,
+            _ => throw new ArgumentOutOfRangeException(nameof(value), value, null)
         };
     }
 
@@ -153,6 +153,50 @@ public sealed partial class MovingPlatform : MovableActor
             Action.Move_DownRight => 3,
             Action.Move_UpRight => 5,
             Action.Move_UpLeft => 7,
+            _ => throw new ArgumentOutOfRangeException(nameof(currentActionId), currentActionId, null),
+        };
+
+        int tableStep = type switch
+        {
+            PhysicalTypeValue.MovingPlatform_CounterClockwise45 => 0,
+            PhysicalTypeValue.MovingPlatform_CounterClockwise90 => 1,
+            PhysicalTypeValue.MovingPlatform_CounterClockwise135 => 2,
+            PhysicalTypeValue.MovingPlatform_CounterClockwise180 => 3,
+            PhysicalTypeValue.MovingPlatform_CounterClockwise225 => 4,
+            PhysicalTypeValue.MovingPlatform_CounterClockwise270 => 5,
+            PhysicalTypeValue.MovingPlatform_CounterClockwise315 => 6,
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+        };
+
+        return rotationTable[(tableStartIndex + tableStep) % 8];
+    }
+
+    private PhysicalType RotateReverse(PhysicalTypeValue type)
+    {
+        Action currentActionId = ActionId == Action.Impact ? ActionAfterImpact : ActionId;
+
+        PhysicalTypeValue[] rotationTable =
+        [
+            PhysicalTypeValue.MovingPlatform_DownRight,
+            PhysicalTypeValue.MovingPlatform_Down,
+            PhysicalTypeValue.MovingPlatform_DownLeft,
+            PhysicalTypeValue.MovingPlatform_Left,
+            PhysicalTypeValue.MovingPlatform_UpLeft,
+            PhysicalTypeValue.MovingPlatform_Up,
+            PhysicalTypeValue.MovingPlatform_UpRight,
+            PhysicalTypeValue.MovingPlatform_Right
+        ];
+
+        int tableStartIndex = currentActionId switch
+        {
+            Action.Move_Left => 0,
+            Action.Move_Right => 4,
+            Action.Move_Up => 2,
+            Action.Move_Down => 6,
+            Action.Move_DownLeft => 7,
+            Action.Move_DownRight => 5,
+            Action.Move_UpRight => 3,
+            Action.Move_UpLeft => 1,
             _ => throw new ArgumentOutOfRangeException(nameof(currentActionId), currentActionId, null),
         };
 

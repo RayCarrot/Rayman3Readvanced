@@ -173,8 +173,7 @@ public partial class MovingPlatform
         switch (action)
         {
             case FsmAction.Init:
-                Action value = DirectionalTypeToMoveAction(CurrentDirectionalType);
-                value = ReverseDirection(value);
+                Action value = DirectionalTypeToMoveAction(ReverseDirection(PreviousValidDirectionalType));
                 if (ActionId == Action.Impact)
                 {
                     if (ActionAfterImpact != value)
@@ -242,7 +241,7 @@ public partial class MovingPlatform
                 // Check for rotational type
                 if (PreviousPhysicalType != type && IsRotationalType(type))
                 {
-                    PhysicalType newType = Rotate(type);
+                    PhysicalType newType = RotateReverse(type);
                     CurrentDirectionalType = newType;
                     PreviousValidDirectionalType = newType;
                 }
