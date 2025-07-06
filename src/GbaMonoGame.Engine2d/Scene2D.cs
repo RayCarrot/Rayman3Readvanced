@@ -92,8 +92,6 @@ public class Scene2D
 
     public MovableActor MainActor => (MovableActor)(RSMultiplayer.IsActive ? GetGameObject(RSMultiplayer.MachineId) : GetGameObject(0));
 
-    // TODO: This causes ResurrectActors to stop working, which is an issue for actors which respawn, such as FallingPlatform.
-    //       Perhaps we should still use knots to handle game logic, but still draw and step all actors in the scene?
     // If we're playing in a different resolution than the original we can't use
     // the knots (object sectors). Instead we keep all objects active at all times.
     public bool KeepAllObjectsActive => Resolution != Rom.OriginalResolution || Playfield is TgxPlayfieldMode7;
@@ -360,14 +358,28 @@ public class Scene2D
         }
 
         // Resurrect actors and captors if later
-        if (newKnot && KnotManager.PreviousKnot != null)
+        if (!KeepAllObjectsActive)
         {
-            foreach (GameObject obj in new DisabledActorCaptorIterator(this, knot: KnotManager.PreviousKnot))
+            if (newKnot && KnotManager.PreviousKnot != null)
             {
-                if (obj.ResurrectsLater && !KnotManager.IsInCurrentKnot(this, obj.InstanceId))
+                foreach (GameObject obj in new DisabledActorCaptorIterator(this, knot: KnotManager.PreviousKnot))
                 {
-                    obj.ProcessMessage(null, Message.Resurrect);
+                    if (obj.ResurrectsLater && !KnotManager.IsInCurrentKnot(this, obj.InstanceId))
+                        obj.ProcessMessage(null, Message.Resurrect);
                 }
+            }
+        }
+        // If we keep all objects active then we can't use the knots to determine if the
+        // object should be resurrected. Instead we check if the object is off-screen.
+        else
+        {
+            const float margin = 64;
+            Box viewBox = new(Playfield.Camera.Position - new Vector2(margin), Resolution + new Vector2(margin * 2));
+
+            foreach (GameObject obj in new DisabledActorCaptorIterator(this))
+            {
+                if (obj.ResurrectsLater && !viewBox.Contains(obj.Position))
+                    obj.ProcessMessage(null, Message.Resurrect);
             }
         }
     }

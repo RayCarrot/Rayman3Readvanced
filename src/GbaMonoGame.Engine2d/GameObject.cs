@@ -85,6 +85,8 @@ public abstract class GameObject : Object
     public override void DrawDebugLayout(DebugLayout debugLayout, DebugLayoutTextureManager textureManager)
     {
         ImGui.Text($"Projectile: {IsProjectile}");
+        ImGui.Text($"ResurrectsImmediately: {ResurrectsImmediately}");
+        ImGui.Text($"ResurrectsLater: {ResurrectsLater}");
         base.DrawDebugLayout(debugLayout, textureManager);
     }
 }
