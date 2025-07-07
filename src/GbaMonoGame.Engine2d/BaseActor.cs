@@ -87,10 +87,15 @@ public abstract class BaseActor : GameObject
         }
     }
 
-    public void InitWithLink(ActorResource actorResource)
+    public bool DestroyIfPastLinkedCheckpoint(ActorResource actorResource)
     {
         if (actorResource.Links[0] != null && !Scene.GetGameObject(actorResource.Links[0].Value).IsEnabled)
+        {
             ProcessMessage(this, Message.Destroy);
+            return true;
+        }
+
+        return false;
     }
 
     public bool IsLinkedCameraObject()

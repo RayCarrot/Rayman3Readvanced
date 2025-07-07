@@ -19,7 +19,10 @@ public enum Message
     Captor_Trigger_None = 202,
     Captor_Trigger_SendMessageWithParam = 203,
     Captor_Trigger_SendMessageWithCaptorParam = 204,
-    
+
+    // Readvanced
+    Readvanced_RespawnDeath = 300,
+
     // Rayman 3
     // 1000-1001 are unused
     RaymanBody_FinishAttack = 1002,

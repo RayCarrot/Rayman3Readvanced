@@ -28,6 +28,6 @@ public sealed partial class RedShell : MovableActor
 
     public override void Init(ActorResource actorResource)
     {
-        InitWithLink(actorResource);
+        DestroyIfPastLinkedCheckpoint(actorResource);
     }
 }

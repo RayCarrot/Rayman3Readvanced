@@ -4422,6 +4422,13 @@ public partial class Rayman
 
                     // Respawn animation
                     ActionId = safePosition.IsFacingRight ? Action.Spawn_Right : Action.Spawn_Left;
+
+                    // Respawn some actors
+                    foreach (BaseActor obj in new DisabledActorIterator(Scene))
+                    {
+                        if (!obj.ResurrectsLater)
+                            obj.ProcessMessage(this, Message.Readvanced_RespawnDeath);
+                    }
                 }
                 // Respawn animation finished (stop after 20 frames to avoid showing the part where you land on the ground)
                 else if ((ActionId is Action.Spawn_Right or Action.Spawn_Left && AnimatedObject.CurrentFrame == 20) || Timer > 20 && ActionId is not (Action.Spawn_Right or Action.Spawn_Left))

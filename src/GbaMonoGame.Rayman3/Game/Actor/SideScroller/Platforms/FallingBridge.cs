@@ -21,6 +21,9 @@ public sealed partial class FallingBridge : MovableActor
     public bool IsLeftBridgePart { get; }
     public byte Timer { get; set; }
 
+    // Custom
+    public bool DisabledFromLink { get; set; }
+
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {
         if (base.ProcessMessageImpl(sender, message, param))
@@ -28,6 +31,11 @@ public sealed partial class FallingBridge : MovableActor
 
         switch (message)
         {
+            case Message.Readvanced_RespawnDeath:
+                if (!DisabledFromLink)
+                    ProcessMessage(this, Message.Resurrect);
+                return false;
+
             case Message.Actor_Fall:
                 if (State == Fsm_Idle)
                     State.MoveTo(Fsm_Timed);
@@ -40,6 +48,6 @@ public sealed partial class FallingBridge : MovableActor
 
     public override void Init(ActorResource actorResource)
     {
-        InitWithLink(actorResource);
+        DisabledFromLink = DestroyIfPastLinkedCheckpoint(actorResource);
     }
 }
