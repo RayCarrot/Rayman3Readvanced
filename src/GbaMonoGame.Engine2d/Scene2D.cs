@@ -371,7 +371,7 @@ public class Scene2D
         }
         // If we keep all objects active then we can't use the knots to determine if the
         // object should be resurrected. Instead we check if the object is off-screen.
-        else
+        else if (Playfield is TgxPlayfield2D)
         {
             const float margin = 64;
             Box viewBox = new(Playfield.Camera.Position - new Vector2(margin), Resolution + new Vector2(margin * 2));
