@@ -323,8 +323,8 @@ public static class GameOptions
                     setData: data => Engine.Config.Difficulty.InfiniteLives = data,
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
-                    text: "NO INSTA-KILLS",
-                    infoText: "Enemies and obstacles that would previously instantly kill you now instead deal 2 points of damage.",
+                    text: "LESS INSTA-KILLS",
+                    infoText: "Most enemies and obstacles that would previously instantly kill you now instead deal 2 points of damage.",
                     items:
                     [
                         new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, DifficultyPreset.Original, DifficultyPreset.Hard),
