@@ -11,7 +11,6 @@ using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
-// TODO: Default to select last played version
 public class TitleScreen : Frame
 {
     public TitleScreen(bool fadeIn)
@@ -75,6 +74,9 @@ public class TitleScreen : Frame
 
     private void StartGame()
     {
+        // Save last played platform
+        Engine.Config.General.LastPlayedPlatform = Games[SelectedGameIndex].Platform;
+
         // Load the language
         Localization.SetLanguage(Engine.Config.Display.Language);
 
@@ -284,8 +286,8 @@ public class TitleScreen : Frame
         foreach (TitleScreenGame game in Games)
             UpdateGameOptions(game);
 
-        SelectedGameIndex = 0;
-        Games[0].SelectedIndex = 0;
+        SelectedGameIndex = Array.FindIndex(Games, x => x.Platform == Engine.Config.General.LastPlayedPlatform);
+        Games[SelectedGameIndex].SelectedIndex = 0;
     }
 
     public override void Step()
