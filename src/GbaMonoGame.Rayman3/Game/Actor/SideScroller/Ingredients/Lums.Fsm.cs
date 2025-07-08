@@ -110,6 +110,7 @@ public partial class Lums
                             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumGreen_Mix04);
 
                             Vector2 pos = Position;
+                            pos.Y -= MathHelpers.Mod(pos.Y, Tile.Size);
                             while (Scene.GetPhysicalType(pos) == PhysicalTypeValue.None)
                                 pos += new Vector2(0, Tile.Size);
 
