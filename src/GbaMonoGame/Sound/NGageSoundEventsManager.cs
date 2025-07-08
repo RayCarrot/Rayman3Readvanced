@@ -212,6 +212,10 @@ public class NGageSoundEventsManager : SoundEventsManager
 
     private void PlayMusic(int soundResId, int soundInstrumentsResId)
     {
+        // Stop previously playing music since we only want one playing at a time
+        if (_soloud.isValidVoiceHandle(_musicVoiceHandle))
+            _soloud.stop(_musicVoiceHandle);
+
         Music music = _musicTable[soundResId];
 
         // Play, but start paused so we can first set the parameters
