@@ -544,6 +544,7 @@ Most actors have the first animation be unused and just single frame, most likel
 ![Animation 3](discoveries_assets/BossFinalBar_Anim_3.gif)
 
 - When you only have 1 hp left then the life bar is set to play a heartbeat sound effect every 64 frames. It uses the global timer to check for this. There's however a bug here, cause when pausing the game the global timer also pauses, meaning that if you pause at the exact frame as the sound is playing then it'll keep playing every frame.
+- When you die it shows having 0 hp on the HUD. However for a few frames it will switch to showing having 5 hp instead. This is because each hp variation has two animations for the HUD, one with a sparkle (the first one it shows) and one without a sparkle (the one it shows after the sparkle one). However the 0 hp animation only has one variant, making it display the wrong animation after the first one.
 - There are various animations for the HUD that are unused. They oddly include health indicators where the max health is 2 rather than 5, and a cage counter with space for two digits before the slash:
 
 ![Animation 23](discoveries_assets/UserInfo_Anim_23.gif)

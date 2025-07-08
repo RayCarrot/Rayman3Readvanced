@@ -136,8 +136,18 @@ public class LifeBar : Bar
         }
         else if (HitPointsChanged && HitPoints.EndOfAnimation)
         {
-            if (HitPoints.CurrentAnimation < 16)
-                HitPoints.CurrentAnimation += 5;
+            // NOTE: The game only checks if less than 16, but this includes animation 10 which is the 0 hp one and
+            //       has no second variant! This originally makes it display the wrong animation.
+            if (!Engine.Config.Tweaks.FixBugs)
+            {
+                if (HitPoints.CurrentAnimation < 16)
+                    HitPoints.CurrentAnimation += 5;
+            }
+            else
+            {
+                if (HitPoints.CurrentAnimation is > 10 and < 16)
+                    HitPoints.CurrentAnimation += 5;
+            }
 
             HitPointsChanged = false;
         }
