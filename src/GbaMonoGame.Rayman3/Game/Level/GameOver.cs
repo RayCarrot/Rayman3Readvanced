@@ -212,6 +212,15 @@ public class GameOver : Frame
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__tizetre_Swing);
         IsCountdownFacingRight = true;
         Timer = 0x3c;
+
+        // NOTE: Since there's no fade-in it means it will take 1 frame for the sprites to show. Optionally fix by rendering now.
+        if (Engine.Config.Tweaks.FixBugs)
+        {
+            AnimationPlayer.Play(Butterfly1);
+            AnimationPlayer.Play(Butterfly2);
+            AnimationPlayer.Play(Rayman);
+            AnimationPlayer.Execute();
+        }
     }
 
     public override void UnInit()
