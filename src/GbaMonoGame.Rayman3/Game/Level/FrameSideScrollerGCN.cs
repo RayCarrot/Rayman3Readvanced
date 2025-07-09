@@ -349,8 +349,9 @@ public class FrameSideScrollerGCN : FrameSideScroller
                 {
                     bgScreen.IsEnabled = false;
 
-                    // TODO: We don't need to disable the rain blending - option not to?
-                    rainScreen.RenderOptions.BlendMode = BlendMode.None;
+                    // NOTE: The original game turns off the rain blending during the lightning, but we don't have to
+                    if (!Engine.Config.Tweaks.VisualImprovements)
+                        rainScreen.RenderOptions.BlendMode = BlendMode.None;
 
                     Gfx.FadeControl = new FadeControl(FadeMode.BrightnessIncrease);
                     Gfx.Fade = 1;

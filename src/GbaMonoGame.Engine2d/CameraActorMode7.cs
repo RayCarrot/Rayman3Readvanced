@@ -40,10 +40,17 @@ public abstract class CameraActorMode7 : CameraActor
         if (camDist >= cam.CameraFar)
             return false;
 
-        // TODO: Add this as an option, enabled by default for modern mode
-        // The game doesn't do this, but it looks nicer if we fade in the objects as they enter the view
-        animatedObject.RenderOptions.BlendMode = BlendMode.AlphaBlend;
-        animatedObject.Alpha = MathF.Min((cam.CameraFar - camDist) / FadeDistance, 1);
+        if (Engine.Config.Tweaks.VisualImprovements)
+        {
+            // The game doesn't do this, but it looks nicer if we fade in the objects as they enter the view
+            animatedObject.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+            animatedObject.Alpha = MathF.Min((cam.CameraFar - camDist) / FadeDistance, 1);
+        }
+        else
+        {
+            animatedObject.RenderOptions.BlendMode = BlendMode.None;
+            animatedObject.Alpha = 1;
+        }
 
         // Get the projection and view from the camera
         Matrix projection = cam.ProjectionMatrix;

@@ -14,6 +14,7 @@ public class TweaksGameConfig : IniSectionObject
         CanSkipTextBoxes = true;
         FixBugs = true;
         AddProjectilesWhenNeeded = true;
+        VisualImprovements = true;
         ShowMode7Walls = true;
         ShowCollectedLums = true;
         AllowPrototypeCheats = false;
@@ -29,6 +30,7 @@ public class TweaksGameConfig : IniSectionObject
     public bool CanSkipTextBoxes { get; set; }
     public bool FixBugs { get; set; }
     public bool AddProjectilesWhenNeeded { get; set; }
+    public bool VisualImprovements { get; set; }
     public bool ShowMode7Walls { get; set; }
     public bool ShowCollectedLums { get; set; }
     public bool AllowPrototypeCheats { get; set; }
@@ -43,6 +45,7 @@ public class TweaksGameConfig : IniSectionObject
         CanSkipTextBoxes = serializer.Serialize<bool>(CanSkipTextBoxes, "CanSkipTextBoxes");
         FixBugs = serializer.Serialize<bool>(FixBugs, "FixBugs");
         AddProjectilesWhenNeeded = serializer.Serialize<bool>(AddProjectilesWhenNeeded, "AddProjectilesWhenNeeded");
+        VisualImprovements = serializer.Serialize<bool>(VisualImprovements, "VisualImprovements");
         ShowMode7Walls = serializer.Serialize<bool>(ShowMode7Walls, "ShowMode7Walls");
         ShowCollectedLums = serializer.Serialize<bool>(ShowCollectedLums, "ShowCollectedLums");
         AllowPrototypeCheats = serializer.Serialize<bool>(AllowPrototypeCheats, "AllowPrototypeCheats");

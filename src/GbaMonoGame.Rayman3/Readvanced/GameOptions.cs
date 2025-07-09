@@ -265,6 +265,17 @@ public static class GameOptions
                     setData: data => Engine.Config.Tweaks.AddProjectilesWhenNeeded = data,
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
+                    text: "VISUAL IMPROVEMENTS",
+                    infoText: "TODO.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, TweaksPreset.Readvanced),
+                    ],
+                    getData: _ => Engine.Config.Tweaks.VisualImprovements,
+                    setData: data => Engine.Config.Tweaks.VisualImprovements = data,
+                    getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
                     text: "SHOW MODE7 WALLS",
                     infoText: "Adds 3D walls to the Mode7 bumper-car levels.",
                     items:

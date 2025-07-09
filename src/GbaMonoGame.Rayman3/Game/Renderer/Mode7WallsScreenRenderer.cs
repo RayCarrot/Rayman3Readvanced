@@ -14,9 +14,7 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
         Camera = playfield.Camera;
 
         Shader = Engine.FrameContentManager.Load<Effect>(Assets.FogVertexShader);
-
-        // TODO: Add this as an option, enabled by default for modern mode
-        Shader.Parameters["FadeDistance"].SetValue(fadeDistance);
+        FadeDistance = fadeDistance;
 
         TgxRotscaleLayerMode7 layer = playfield.RotScaleLayers[0];
 
@@ -39,6 +37,7 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
     public TgxCameraMode7 Camera { get; }
     public Effect Shader { get; }
     public MeshFragment[] MeshFragments { get; }
+    public float FadeDistance { get; }
 
     private static Texture2D CreateTexture(GfxTileKitManager tileKitManager, MapTile[] tileMap, int tileMapWidth, Point wallPoint, Point wallSize)
     {
@@ -209,6 +208,7 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
         // Update the shader
         Shader.Parameters["WorldViewProj"].SetValue(Camera.ViewProjectionMatrix);
         Shader.Parameters["FarPlane"].SetValue(Camera.CameraFar);
+        Shader.Parameters["FadeDistance"].SetValue(Engine.Config.Tweaks.VisualImprovements ? FadeDistance : 0);
 
         // Draw each mesh fragment
         foreach (MeshFragment meshFragment in MeshFragments)
