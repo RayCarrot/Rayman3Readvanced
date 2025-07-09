@@ -127,7 +127,7 @@ public class FrameWaterSkiMode7 : FrameMode7
 
         base.Step();
 
-        FogScreen.IsEnabled = !TransitionsFX.IsFadingIn && !TransitionsFX.IsFadingOut && !IsPaused();
+        FogScreen.IsEnabled = Gfx.FadeControl.Mode != FadeMode.BrightnessDecrease && !IsPaused();
         FogScreenRenderer.FadeDecrease = FadeDecrease;
 
         if (EndOfFrame)

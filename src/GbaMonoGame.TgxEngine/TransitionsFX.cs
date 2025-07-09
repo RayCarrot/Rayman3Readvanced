@@ -163,7 +163,7 @@ public static class TransitionsFX
             }
             else
             {
-                ApplyAlphaSettings(AlphaStep.Value + AlphaCoefficient + 1);
+                ApplyAlphaSettings((AlphaStep.Value + AlphaCoefficient + 1) % 256);
                 AlphaStep -= speed;
             }
         }
