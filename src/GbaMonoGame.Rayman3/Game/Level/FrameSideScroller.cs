@@ -293,7 +293,10 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         if (PauseDialog is not PauseDialog { IsInSleepMode: true })
             UserInfo.Draw(Scene.AnimationPlayer);
         
-        Scene.Playfield.Step();
+        // NOTE: It's probably an oversight in the original game to still animate tiles even when paused
+        if (!Engine.Config.Tweaks.FixBugs)
+            Scene.Playfield.Step();
+        
         Scene.AnimationPlayer.Execute();
     }
 
