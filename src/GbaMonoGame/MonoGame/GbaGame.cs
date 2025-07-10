@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.IO.Compression;
-using BinarySerializer.Ubisoft.GbaEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace GbaMonoGame;
 
-public abstract class GbaGame : Microsoft.Xna.Framework.Game
+public abstract class GbaGame : Game
 {
     #region Constructor
 
@@ -92,15 +88,6 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
             _debugLayout.AddMenu(new WindowsDebugMenu());
             AddDebugWindowsAndMenus(_debugLayout);
         }
-
-        // Check launch arguments
-        string[] args = Environment.GetCommandLineArgs();
-        foreach (string arg in args)
-        {
-            // Check if it's a BizHawk TAS file
-            if (arg.EndsWith(".bk2") && File.Exists(arg))
-                LoadBizHawkTas(arg);
-        }
     }
 
     private void Rom_Unloaded(object sender, EventArgs e)
@@ -130,58 +117,6 @@ public abstract class GbaGame : Microsoft.Xna.Framework.Game
     {
         IsFixedTimeStep = true;
         TargetElapsedTime = TimeSpan.FromSeconds(1 / fps);
-    }
-
-    public void LoadBizHawkTas(string filePath)
-    {
-        using FileStream fileStream = File.OpenRead(filePath);
-        using ZipArchive bk2 = new(fileStream, ZipArchiveMode.Read);
-
-        ZipArchiveEntry entry = bk2.GetEntry("Input Log.txt");
-
-        if (entry == null)
-            return;
-
-        using Stream logFileStream = entry.Open();
-        using StreamReader reader = new(logFileStream);
-
-        List<GbaInput> inputs = new();
-        const string prefix = "|    0,    0,    0,    0,";
-        GbaInput[] inputSeq =
-        [
-            GbaInput.Up,
-            GbaInput.Down,
-            GbaInput.Left,
-            GbaInput.Right,
-            GbaInput.Start,
-            GbaInput.Select,
-            GbaInput.B,
-            GbaInput.A,
-            GbaInput.L,
-            GbaInput.R
-        ];
-
-        while (reader.ReadLine() is { } line)
-        {
-            GbaInput input = GbaInput.Valid;
-
-            if (line.StartsWith(prefix))
-            {
-                line = line[prefix.Length..];
-
-                for (int i = 0; i < inputSeq.Length; i++)
-                {
-                    if (line[i] != '.')
-                        input |= inputSeq[i];
-                }
-            }
-
-            inputs.Add(input);
-        }
-
-        inputs.Add(GbaInput.None);
-
-        JoyPad.SetReplayData(inputs.ToArray());
     }
 
     private void StepEngine()
