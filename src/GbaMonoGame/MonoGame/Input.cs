@@ -16,7 +16,7 @@ public enum Input
     Gba_L, // N-Gage: 6
 
     // Debug
-    Debug_ToggleBoxes,
-    Debug_ToggleCollision,
+    Debug_ToggleDisplayBoxes,
+    Debug_ToggleDisplayCollision,
     Debug_ToggleNoClip,
 }

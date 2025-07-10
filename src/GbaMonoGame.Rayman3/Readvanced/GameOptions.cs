@@ -120,7 +120,18 @@ public static class GameOptions
                 new ControlOptionsMenuOption(
                     text: "SPECIAL/BACK (SELECT)",
                     input: Input.Gba_Select),
-                // TODO: Add other inputs
+                new ControlOptionsMenuOption(
+                    text: "DEBUG: DISPLAY HIT-BOXES",
+                    input: Input.Debug_ToggleDisplayBoxes,
+                    isDebugOption: true),
+                new ControlOptionsMenuOption(
+                    text: "DEBUG: DISPLAY COLLISION",
+                    input: Input.Debug_ToggleDisplayCollision,
+                    isDebugOption: true),
+                new ControlOptionsMenuOption(
+                    text: "DEBUG: NO-CLIP",
+                    input: Input.Debug_ToggleNoClip,
+                    isDebugOption: true),
             ]),
             new GameOptionsGroup("SOUND",
             [

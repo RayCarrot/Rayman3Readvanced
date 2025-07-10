@@ -45,8 +45,8 @@ public static class InputManager
             Input.Gba_L => Keys.Q,
 
             // Debug
-            Input.Debug_ToggleBoxes => Keys.B,
-            Input.Debug_ToggleCollision => Keys.T,
+            Input.Debug_ToggleDisplayBoxes => Keys.B,
+            Input.Debug_ToggleDisplayCollision => Keys.C,
             Input.Debug_ToggleNoClip => Keys.Z,
             
             _ => throw new ArgumentOutOfRangeException(nameof(input), input, null)
