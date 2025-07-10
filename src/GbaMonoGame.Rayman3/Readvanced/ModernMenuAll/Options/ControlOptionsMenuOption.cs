@@ -8,7 +8,7 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 
 public class ControlOptionsMenuOption : OptionsMenuOption
 {
-    public ControlOptionsMenuOption(string text, Input input) : base(text, null)
+    public ControlOptionsMenuOption(string text, Input input, bool isDebugOption = false) : base(text, null, isDebugOption)
     {
         Input = input;
     }

@@ -381,10 +381,21 @@ public static class GameOptions
         ];
     }
 
-    public class GameOptionsGroup(string name, OptionsMenuOption[] options)
+    public class GameOptionsGroup
     {
-        public string Name { get; } = name;
-        public OptionsMenuOption[] Options { get; } = options;
+        public GameOptionsGroup(string name, OptionsMenuOption[] options)
+        {
+            Name = name;
+
+            // Set options and filter if debug only
+            if (!Engine.Config.Debug.DebugModeEnabled && options.Any(x => x.IsDebugOption))
+                Options = options.Where(x => !x.IsDebugOption).ToArray();
+            else
+                Options = options;
+        }
+
+        public string Name { get; }
+        public OptionsMenuOption[] Options { get; }
     }
 
     public enum TweaksPreset

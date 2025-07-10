@@ -6,10 +6,11 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 
 public abstract class OptionsMenuOption : MenuOption
 {
-    protected OptionsMenuOption(string text, string infoText)
+    protected OptionsMenuOption(string text, string infoText, bool isDebugOption = false)
     {
         Text = text;
         InfoText = infoText;
+        IsDebugOption = isDebugOption;
     }
 
     private const float TextScale = 2 / 3f;
@@ -19,6 +20,7 @@ public abstract class OptionsMenuOption : MenuOption
 
     public string Text { get; }
     public string InfoText { get; }
+    public bool IsDebugOption { get; }
 
     public SpriteFontTextObject TextObject { get; set; }
     public SpriteFontTextObject ValueTextObject { get; set; }
