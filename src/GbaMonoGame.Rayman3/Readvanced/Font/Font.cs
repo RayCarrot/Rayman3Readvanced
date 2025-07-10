@@ -29,10 +29,10 @@ public class Font
 
         Rectangle bounds = glyph.Bounds;
 
-        if (charIndex > 0 && glyph.GlyphSpecificLayoutOffsets?.TryGetValue(text[charIndex - 1], out float off) == true)
+        if (charIndex > 0 && glyph.GlyphSpecificLayoutStartOffsets?.TryGetValue(text[charIndex - 1], out float off) == true)
             width += off;
 
-        width += bounds.Width + glyph.LayoutOffset;
+        width += glyph.LayoutStartOffset + bounds.Width + glyph.LayoutEndOffset;
 
         return width;
     }
@@ -119,8 +119,10 @@ public class Font
 
         Rectangle bounds = glyph.Bounds;
 
-        if (charIndex > 0 && glyph.GlyphSpecificLayoutOffsets?.TryGetValue(text[charIndex - 1], out float off) == true)
-            position += new Vector2(off, 0);
+        if (charIndex > 0 && glyph.GlyphSpecificLayoutStartOffsets?.TryGetValue(text[charIndex - 1], out float off) == true)
+            position.X += off;
+
+        position.X += glyph.LayoutStartOffset;
 
         Sprite sprite;
         if (bounds != Rectangle.Empty)
@@ -152,7 +154,7 @@ public class Font
             sprite = null;
         }
 
-        position += new Vector2(bounds.Width, 0) + new Vector2(glyph.LayoutOffset, 0);
+        position.X += bounds.Width + glyph.LayoutEndOffset;
 
         return sprite;
     }
@@ -163,33 +165,29 @@ public class Font
         {
             Bounds = bounds;
             RenderOffset = Vector2.Zero;
-            LayoutOffset = 0;
+            LayoutEndOffset = 0;
         }
 
-        public Glyph(Rectangle bounds, Vector2 renderOffset)
-        {
-            Bounds = bounds;
-            RenderOffset = renderOffset;
-            LayoutOffset = 0;
-        }
-
-        public Glyph(Rectangle bounds, float layoutOffset)
+        public Glyph(Rectangle bounds, float layoutStartOffset = 0, float layoutEndOffset = 0)
         {
             Bounds = bounds;
             RenderOffset = Vector2.Zero;
-            LayoutOffset = layoutOffset;
+            LayoutStartOffset = layoutStartOffset;
+            LayoutEndOffset = layoutEndOffset;
         }
 
-        public Glyph(Rectangle bounds, Vector2 renderOffset, float layoutOffset)
+        public Glyph(Rectangle bounds, Vector2 renderOffset, float layoutStartOffset = 0, float layoutEndOffset = 0)
         {
             Bounds = bounds;
             RenderOffset = renderOffset;
-            LayoutOffset = layoutOffset;
+            LayoutStartOffset = layoutStartOffset;
+            LayoutEndOffset = layoutEndOffset;
         }
 
         public Rectangle Bounds { get; }
         public Vector2 RenderOffset { get; }
-        public float LayoutOffset { get; }
-        public Dictionary<char, float> GlyphSpecificLayoutOffsets { get; init; }
+        public float LayoutStartOffset { get; }
+        public float LayoutEndOffset { get; }
+        public Dictionary<char, float> GlyphSpecificLayoutStartOffsets { get; init; }
     }
 }
