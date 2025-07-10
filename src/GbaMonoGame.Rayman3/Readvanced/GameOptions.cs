@@ -121,6 +121,22 @@ public static class GameOptions
                     text: "SPECIAL/BACK (SELECT)",
                     input: Input.Gba_Select),
                 new ControlOptionsMenuOption(
+                    text: "DEBUG: DEBUG MODE",
+                    input: Input.Debug_ToggleDebugMode,
+                    isDebugOption: true),
+                new ControlOptionsMenuOption(
+                    text: "DEBUG: PAUSE",
+                    input: Input.Debug_TogglePause,
+                    isDebugOption: true),
+                new ControlOptionsMenuOption(
+                    text: "DEBUG: STEP ONE FRAME",
+                    input: Input.Debug_StepOneFrame,
+                    isDebugOption: true),
+                new ControlOptionsMenuOption(
+                    text: "DEBUG: SPEED UP",
+                    input: Input.Debug_SpeedUp,
+                    isDebugOption: true),
+                new ControlOptionsMenuOption(
                     text: "DEBUG: DISPLAY HIT-BOXES",
                     input: Input.Debug_ToggleDisplayBoxes,
                     isDebugOption: true),

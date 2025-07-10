@@ -256,7 +256,7 @@ public abstract class GbaGame : Game
         if (Engine.Config.Debug.DebugModeEnabled)
         {
             // Toggle debug mode
-            if (InputManager.IsButtonJustPressed(Keys.Tab) && _debugLayout != null)
+            if (InputManager.IsButtonJustPressed(Input.Debug_ToggleDebugMode) && _debugLayout != null)
             {
                 DebugMode = !DebugMode;
 
@@ -276,7 +276,7 @@ public abstract class GbaGame : Game
             }
 
             // Toggle pause
-            if (InputManager.IsButtonPressed(Keys.LeftControl) && InputManager.IsButtonJustPressed(Keys.P))
+            if (InputManager.IsButtonJustPressed(Input.Debug_TogglePause))
             {
                 if (!IsPaused)
                     Pause();
@@ -285,13 +285,13 @@ public abstract class GbaGame : Game
             }
 
             // Speed up game
-            if (InputManager.IsButtonPressed(Keys.LeftShift))
+            if (InputManager.IsButtonPressed(Input.Debug_SpeedUp))
                 _speedUp = true;
-            else if (InputManager.IsButtonJustReleased(Keys.LeftShift))
+            else if (InputManager.IsButtonJustReleased(Input.Debug_SpeedUp))
                 _speedUp = false;
 
             // Run one frame
-            if (InputManager.IsButtonPressed(Keys.LeftControl) && InputManager.IsButtonJustPressed(Keys.F))
+            if (InputManager.IsButtonJustPressed(Input.Debug_StepOneFrame))
             {
                 IsPaused = false;
                 RunSingleFrame = true;

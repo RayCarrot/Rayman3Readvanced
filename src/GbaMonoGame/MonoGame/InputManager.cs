@@ -45,6 +45,10 @@ public static class InputManager
             Input.Gba_L => Keys.Q,
 
             // Debug
+            Input.Debug_ToggleDebugMode => Keys.Tab,
+            Input.Debug_TogglePause => Keys.P,
+            Input.Debug_StepOneFrame => Keys.F,
+            Input.Debug_SpeedUp => Keys.LeftShift,
             Input.Debug_ToggleDisplayBoxes => Keys.B,
             Input.Debug_ToggleDisplayCollision => Keys.C,
             Input.Debug_ToggleNoClip => Keys.Z,

@@ -1,6 +1,5 @@
 ﻿namespace GbaMonoGame;
 
-// TODO: Add more inputs here to avoid hard-coding them, such as for pausing, speeding up the game etc.
 public enum Input
 {
     // GBA
@@ -16,6 +15,10 @@ public enum Input
     Gba_L, // N-Gage: 6
 
     // Debug
+    Debug_ToggleDebugMode,
+    Debug_TogglePause,
+    Debug_StepOneFrame,
+    Debug_SpeedUp,
     Debug_ToggleDisplayBoxes,
     Debug_ToggleDisplayCollision,
     Debug_ToggleNoClip,
