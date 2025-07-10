@@ -30,14 +30,13 @@ public static class InputManager
 
     public static Keys GetDefaultKey(Input input)
     {
-        // TODO: Update default button mapping. Start should probably be esc and select should be backspace.
         return input switch
         {
             // GBA
             Input.Gba_A => Keys.Space,
             Input.Gba_B => Keys.S,
-            Input.Gba_Select => Keys.C,
-            Input.Gba_Start => Keys.V,
+            Input.Gba_Select => Keys.Back,
+            Input.Gba_Start => Keys.Escape,
             Input.Gba_Right => Keys.Right,
             Input.Gba_Left => Keys.Left,
             Input.Gba_Up => Keys.Up,
