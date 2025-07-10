@@ -166,11 +166,23 @@ public partial class GameCubeMenu : Frame
 
     private void ShowCustomText(string text)
     {
-        Anims.StatusText.Text = FontManager.WrapText(Anims.StatusText.FontSize, text, 120);
-        Anims.StatusText.ScreenPos = new Vector2(80, 34);
+        string[] textLines = FontManager.WrapText(Anims.StatusText.FontSize, text, 120).Split('\n');
 
-        foreach (SpriteTextObject textObj in Anims.ReusableTexts)
-            textObj.Text = "";
+        for (int i = 0; i < Anims.ReusableTexts.Length + 1; i++)
+        {
+            SpriteTextObject textObj = i == 0 ? Anims.StatusText : Anims.ReusableTexts[i - 1];
+
+            if (i < textLines.Length)
+            {
+                textObj.Color = TextColor.GameCubeMenu;
+                textObj.Text = textLines[i];
+                textObj.ScreenPos = new Vector2(140 - textObj.GetStringWidth() / 2f, 34 + i * 14);
+            }
+            else
+            {
+                textObj.Text = "";
+            }
+        }
     }
 
     private void MapSelectionUpdateText()
@@ -316,7 +328,7 @@ public partial class GameCubeMenu : Frame
         AnimationPlayer.Play(Anims.Wheel3);
         AnimationPlayer.Play(Anims.Wheel4);
 
-        if (WaitingForConnection)
+        if (WaitingForConnection || (State == Fsm_WaitForConnection && !UseJoyBus))
         {
             foreach (SpriteTextObject text in Anims.ReusableTexts)
                 AnimationPlayer.Play(text);
