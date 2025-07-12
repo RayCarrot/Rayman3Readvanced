@@ -126,8 +126,11 @@ In the original GBA version the game calls `vsync` whenever it waits for the fra
 
 In the N-Gage port this behavior was changed so that v-sync is managed by the main game loop. Similarly in this port it relies on MonoGame's `Update` method in the game class. This all assumes that each frame has the game either initializing a new Frame class or stepping an existing one. This will match the original GBA in the vast majority of cases, but there are unique cases, like when the game loads heavy data, where v-sync is originally called and thus might cause there to be a 1-frame difference in this port. This will not effect the gameplay in any way.
 
+### Multiplayer
+*TODO: Document once multiplayer has been implemented*
+
 ### GameCube Link
-In the original GBA version you can connect the game to a GameCube running Rayman 3 to download bonus maps and unlock Ly's Punch Challenge 3. This has been changed to having you select a Rayman 3 GameCube ISO file from which the map files get extracted. Then once all those are completed you will unlock Ly's Punch Challenge 3.
+In the original GBA version you can connect the game to a GameCube running Rayman 3 to download bonus maps and unlock Ly's Punch Challenge 3. The code for this has been re-implemented, with the actual connectivity part lacking an implementation. Instead you can now select a Rayman 3 GameCube ISO file from which the map files get extracted. Then once all those are completed you will unlock Ly's Punch Challenge 3, instead of being determined by the data transferred from the GameCube. 
 
 ### Naming conventions
 Most types and members have the same name as in the original GBA version, but there are also several cases where it's been changed. For example all French names have been translated to English, something which is usually the case for the actor classes. Short names have also been expanded (for example `FrameMngr` is now named `FrameManager`). State functions have also been renamed from the pattern of `FsmXXXStateFunction` (where "XXX" is the state name) to `Fsm_XXX` to improve readability. For example, `FsmPreInitStateFunction` is now named `Fsm_PreInit`. Constructors for static classes have been renamed from `Ctor` to `Init`, with the destructors being renamed from `Dtor` to `UnInit` and removed when empty.

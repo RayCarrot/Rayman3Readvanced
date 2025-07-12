@@ -115,7 +115,7 @@ public static class GameOptions
                     text: "WALL CLIMB/LEFT (L)",
                     input: Input.Gba_L),
                 new ControlOptionsMenuOption(
-                    text: "PAUSE/SELECT (START)",
+                    text: "PAUSE/CONFIRM (START)",
                     input: Input.Gba_Start),
                 new ControlOptionsMenuOption(
                     text: "SPECIAL/BACK (SELECT)",

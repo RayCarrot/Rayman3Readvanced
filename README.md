@@ -1,60 +1,45 @@
 # Rayman 3 Readvanced
+
 ![Title screen](assets/logo/rayman_3_readvanced.png)
 
-This project is a recreation of the Game Boy Advance and N-Gage versions of Rayman 3 to [MonoGame](https://monogame.net), with the goal of porting the game to PC and other platforms. The original ROM is required to play the game since this project does not contain the game assets.
+Rayman 3 Readvanced is a recreation of the GBA and N-Gage versions of Rayman 3 to [MonoGame](https://monogame.net), making the game natively playable on PC and other platforms. The original ROM is required to play the game since this project does not contain the game assets.
 
-This is not meant to be a traditional decompilation, but rather a recreation of the game in C#. However, the game code is written to be functionally identical to the original code and much of the same structure of the original engine is kept, as seen by decompiling the game using Ghidra.
+This is not meant to be a traditional decompilation, but rather a recreation of the game in C#. The game code is however written to be functionally identical to the original code, with the original decompiled C-code being re-written into C#.
 
-![Title screen](assets/screenshots/title_screen.png)
-*The goal is to have the game be functionally identical to the original GBA game, while modernizing the code and including optional game enhancements.*
+![Title screen](screenshots/title_screen.png)
+*The game is functionally identical to the original game, while modernizing the code and including optional game enhancements.*
 
-You can view the current progress of this port in [the progress document](PROGRESS.md) as well as the currently planned features in [the todo document](TODO.md).
-
-## GbaEngine
-The original game uses [Ubisoft's GbaEngine](https://raymanpc.com/wiki/en/GbaEngine), an engine which was written in C and built from Ubisoft's Game Boy Color engine. The engine is object-oriented, which makes it work well for a C# re-creation, and consists of several, mostly independent, modules.
-
-See the [documentation](gbaengine/documentation.md) for more information on the engine, what code changes this port has made and other technical details. You can also check the [discoveries](gbaengine/discoveries.md) to see things such as unused contents, bugs and other oddities found in the game's code.
+> [!NOTE]
+> This project is currently still in development and as such there are no builds available to download yet. You can view the current progress of this port in [the progress document](PROGRESS.md) as well as the currently planned features in [the todo document](TODO.md).
 
 ## Enhancements
-This version contains several optional enhancements over the original game. The most notable is that the game can be played in high resolution and widescreen. This provides a much better experience on modern devices as you're no longer limited to the small screen of the GBA.
+
+![Zoomed out example](screenshots/zoom_out.png)
+*The game can render in higher resolution and different aspect ratios.*
+
+This version contains several optional enhancements over the original game. The most notable is that the game can be played in high resolution and widescreen. This provides a better experience on modern devices as you're no longer limited to the small screen of the GBA.
 
 Besides graphical enhancements there are various quality of life improvements and optional gameplay tweaks which can be toggled. There is also an assortment of bonus features, such as built-in achievements and more.
 
-![Zoomed out example](assets/screenshots/zoom_out.png)
-*The game can render in higher resolution and different aspect ratios.*
+> [!TIP]
+> Check out the [options documentation](docs/options.md) to see what all the available game options do.
 
-### Button mapping
-The button mapping will be made customizable in the future, along with controller support. As of now this is the current mapping:
-
-| **Description**          | **Input**          |
-|--------------------------|--------------------|
-| GBA A-button             | Space              |
-| GBA B-button             | S                  |
-| GBA Select-button        | C                  |
-| GBA Start-button         | V                  |
-| GBA D-pad                | Arrow keys         |
-| GBA R-button             | W                  |
-| GBA L-button             | Q                  |
-| Toggle pause             | Ctrl+P             |
-| Speed up game            | Left shift         |
-| Run one frame            | Ctrl+F             |
-| Toggle debug mode        | Tab                |
-| Toggle menu              | Escape             |
-| Toggle showing collision | T                  |
-| Toggle no-clip           | Z                  |
-| Increase no-clip speed   | Space              |
-| Scroll camera            | Right mouse button |
-| Toggle fullscreen        | Alt+Enter          |
-
-You can also launch the game with a BizHawk .bk2 TAS file which will have it play the button inputs from that.
+![Zoomed out example](screenshots/game_options.png)
+*The game has a new menu with expanded options and tweaks.*
 
 ## Supported platforms
-The following platforms are currently supported. More platforms are planned in the future.
+
+The following platforms are currently supported. More platforms are planned in the future, such as Mac, Linux and potentially Android.
 
 - Windows 7 and above (x64)
 
-## Supported game ROMs
-The following ROMs are supported. Prototype ROMs will not work due to them using different addresses and earlier game data.
+## Game Data
+
+### Supported game ROMs
+
+In order to play the game you will need to provide a ROM. That's because the game's data is read from there. If a ROM is not found then the game will ask you to locate it using a file selection dialog.
+
+What follows is a list of the supported ROMs. Note that prototype ROMs will not work due to them using different addresses and earlier game data.
 
 - Rayman 3 (GBA - Europe)
 - Rayman 3 (GBA - USA)
@@ -63,20 +48,39 @@ The following ROMs are supported. Prototype ROMs will not work due to them using
 - Winnie the Pooh's Rumbly Tumbly Adventure & Rayman 3 (GBA - Europe)
 - Rayman 3 (N-Gage)
 
-## Debug mode
-Pressing the `tab` key while playing will toggle the debug mode. This is set up using ImGUI and is meant to help debugging the game.
+### Manually managing the ROMs
 
-![Debug mode](assets/screenshots/debug_mode.png)
+The ROMs can be manually managed by placing them in the correct locations:
+
+- GBA: `Data/Gba/rayman3.gba`
+- N-Gage: `Data/NGage/rayman3.app` and `Data/NGage/rayman3.dat`
+
+Additionally the GBA version allows for 10 bonus levels to be extracted from the GameCube version. This is done by selecting an ISO of the game to extract from. The files can also be manually placed in `Data/Gba` and include the `gba.nfo` and 10 `map.00X` files where X is the map ID.
+
+### Save files
+
+The save files are stored as `slotX.sav` files where the X is the save slot number. You can use the save transfer feature in the main menu to transfer to and from GBA and N-Gage for use in emulators.
+
+## Documentation
+
+The original game uses [Ubisoft's GbaEngine](https://raymanpc.com/wiki/en/GbaEngine), an engine which was written in C and built from Ubisoft's Game Boy Color engine. The engine is object-oriented, which makes it work well for a C# recreation, and consists of several, mostly independent, modules.
+
+Continue reading:
+
+- [Engine documentation](docs/engine_documentation.md) (details the engine structure and the differences in this port)
+- [Game discoveries](docs/game_discoveries.md) (showcases unused content, bugs and other oddities)
+
+## Debug mode
+By enabling the debug mode in the `Config.ini` file you can access the debug windows, providing insight into the current state of the game and allowing for things to be edited in real-time. This is set up using ImGUI and is meant to help debugging the game.
+
+![Debug mode](screenshots/debug_mode.png)
 *The debug mode allows for visualization and editing of the current engine data and state.*
 
 ## Credits
-- **RayCarrot**: Main developer, game formats reverse engineering
-- **Droolie**: Game formats reverse engineering
-- **XanderNT**: Rayman 3 Readvanced logos
-- **MilesTheCreator**: Extracting the GBA sounds
-- **Robin**: General MonoGame and shader help, Mode7 improvements
-- **zelenbug**: Widescreen menu assets
-- **Fancy2209**: General MonoGame and audio help
-
-## Want to help?
-Do you want to help out? Feel free to contact me if so! This is currently a side project and might take a long time to finish, especially when being worked on by only myself.
+- [RayCarrot](https://github.com/RayCarrot): Main developer, game formats reverse engineering
+- [Robin](https://github.com/rtsonneveld): Mode7 improvements, general MonoGame and shader help
+- [Droolie](https://github.com/byvar): Game formats reverse engineering
+- [Fancy2209](https://github.com/Fancy2209): General MonoGame, cross-platform and audio help
+- [MilesTheCreator](https://bsky.app/profile/milesthecreator.bsky.social): Audio help, extracting the GBA sounds
+- [XanderNT](https://linktr.ee/XanderNT): Art for the Rayman 3 Readvanced logos and extended backgrounds
+- [zelenbug](https://gamebanana.com/members/3067029): Art for new widescreen menu and other textures

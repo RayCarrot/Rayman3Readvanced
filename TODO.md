@@ -33,7 +33,6 @@ However online multiplayer would be much more complicated. The game expects the 
     - After pausing in multiplayer it shows the countdown again.
     - Final boss missile and Hoodstormer move slower.
     - TimerBar sounds during last 10 seconds.
-- Visual improvements, like maintaining GBA effects during pausing and transitions.
 - Fix the helico animation hitbox for Rayman.
 - Move faster in worldmap (when holding down button?).
 - Do not show N-Gage button prompts in the corners.
