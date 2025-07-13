@@ -2,14 +2,12 @@
 This document contains a list of planned features for Rayman 3 Readvanced, in no particular order. Besides this there are also various TODO comments in the code which should be resolved and the main progress is documented over at [Progress](PROGRESS.MD). I'll gladly accept any help anyone would be willing to provide for this project!
 
 ## 📃 General
-- Show icon with animation in the screen corner when saving.
 - If you change the button mapping then the in-game tutorial texts are wrong, such as when Murfy or Ly explain how to perform a move. Find a way to replace this.
 - The camera doesn't work as well on N-Gage when playing in widescreen due to it being optimized for a portrait aspect ratio. Fix by having a setting for the camera where it's either in GBA, N-Gage or Adaptive mode.
 - Add option in the menu to convert save files between GBA and N-Gage as well as importing/exporting between Readvanced and emulators. The save data is the same, so should be easy.
 - Move hard-coded values to constants. There are a lot of these in the game!
 - Add a cheat menu?
 - When rendering in a resolution that's not a factor of the internal resolution then the sprites in animations don't always align correctly and there may be a 1 pixel gap. Fix by always rendering to the highest possible factor of the internal resolution and then scaling to the actual resolution?
-- Add more Murfy help messages throughout the game since they mostly appear in the beginning and don't explain later mechanics. For example, explain that in the race levels you can press L and R to strafe to the sides.
 - Translate new text to the available languages.
 - Make sure the gameplay is the same for things like multiplayer, time trials etc. so that actor cycles and such stay the consistent. Also disable debug features then to prevent cheating.
 
@@ -87,5 +85,4 @@ The actors could be selected from a list, where each actor has a list of valid i
 ## 🐞 Bugs
 - Is keg collision wrong when flying? See Mega Havoc 2. It seems more strict than the original game.
 - An exception gets thrown if closing the game while it's loading the rom.
-- The music and sfx volumes aren't balanced for N-Gage.
 - In levels where the cycles of objects matters, like the flying keg ones, it doesn't line up well if all objects are always loaded, making some parts impossible to beat
