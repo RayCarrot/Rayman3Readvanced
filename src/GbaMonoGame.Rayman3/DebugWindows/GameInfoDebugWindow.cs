@@ -78,7 +78,9 @@ public class GameInfoDebugWindow : DebugWindow
             {
                 GameInfo.Init();
                 GameInfo.CurrentSlot = i;
-                GameInfo.Load(i);
+
+                if (SaveGameManager.SlotExists(i))
+                    GameInfo.Load(i);
             }
         }
 
