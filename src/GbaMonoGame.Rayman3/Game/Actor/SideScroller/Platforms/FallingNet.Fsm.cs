@@ -65,8 +65,8 @@ public partial class FallingNet
                 break;
             
             case FsmAction.UnInit:
-                Scene.MainActor.ProcessMessage(this, Message.Rayman_AllowSafetyJump);
-                Scene.MainActor.ProcessMessage(this, Message.Rayman_EndHang);
+                Scene.MainActor.ProcessMessage(this, Message.Rayman_AllowSafetyJump, this);
+                Scene.MainActor.ProcessMessage(this, Message.Rayman_EndHang, this);
                 break;
         }
 
