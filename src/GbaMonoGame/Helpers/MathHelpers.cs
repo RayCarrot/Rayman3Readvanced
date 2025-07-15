@@ -28,13 +28,31 @@ public static class MathHelpers
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float Sin256(float x)
     {
-        return MathF.Sin(2 * MathF.PI * x / 256f);
+        // Hard-code common 90 degree angles to give precise values. This is closes to
+        // what the game does since it uses pre-calculated data tables for this.
+        return x switch
+        {
+            0 => 0,
+            64 => 1,
+            128 => 0,
+            192 => -1,
+            _ => MathF.Sin(2 * MathF.PI * x / 256f)
+        };
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float Cos256(float x)
     {
-        return MathF.Cos(2 * MathF.PI * x / 256f);
+        // Hard-code common 90 degree angles to give precise values. This is closes to
+        // what the game does since it uses pre-calculated data tables for this.
+        return x switch
+        {
+            0 => 1,
+            64 => 0,
+            128 => -1,
+            192 => 0,
+            _ => MathF.Cos(2 * MathF.PI * x / 256f)
+        };
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

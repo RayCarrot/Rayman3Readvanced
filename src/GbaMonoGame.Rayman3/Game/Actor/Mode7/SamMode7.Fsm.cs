@@ -48,9 +48,8 @@ public partial class SamMode7
             case FsmAction.Step:
                 SetMode7DirectionalAction((int)Action.Default, ActionRotationSize);
 
-                // NOTE: The game uses 18.98828125 (fixed-point 0x12FD00) instead of 18. However this causes marshes 2 to break due
-                //       to it being off by 1 pixel and Sam going off course. Using 18 fixes this.
-                Vector2 pos = Position + (Direction.ToDirectionalVector() * new Vector2(18)).FlipY();
+                // This code looks weird, but it's what the game does and is needed for correct collision detection!
+                Vector2 pos = Position.Truncate() + Vector2.Floor((Direction.ToDirectionalVector() * new Vector2(18.98828125f)).FlipY());
                 PhysicalType type = Scene.GetPhysicalType(pos);
 
                 TargetDirection = type.Value switch

@@ -20,6 +20,13 @@ public static class Vector2Extensions
         return vector;
     }
 
+    public static Vector2 Truncate(this Vector2 vector)
+    {
+        vector.X = MathF.Truncate(vector.X);
+        vector.Y = MathF.Truncate(vector.Y);
+        return vector;
+    }
+
     public static Vector2 ShrinkToAspectRatio(this Vector2 vector, Vector2 aspectRatio)
     {
         float oldRatio = vector.X / vector.Y;
