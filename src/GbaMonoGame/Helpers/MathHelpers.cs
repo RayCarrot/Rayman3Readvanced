@@ -28,13 +28,27 @@ public static class MathHelpers
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float Sin256(float x)
     {
-        return MathF.Sin(2 * MathF.PI * x / 256f);
+        return x switch
+        {
+            0 => 0,
+            64 => 1,
+            128 => 0,
+            192 => -1,
+            _ => MathF.Sin(2 * MathF.PI * x / 256f)
+        };
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float Cos256(float x)
     {
-        return MathF.Cos(2 * MathF.PI * x / 256f);
+        return x switch
+        {
+            0 => 1,
+            64 => 0,
+            128 => -1,
+            192 => 0,
+            _ => MathF.Cos(2 * MathF.PI * x / 256f)
+        };
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

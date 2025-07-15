@@ -487,7 +487,7 @@ public abstract class MovableActor : InteractableActor
             PushOutOfTile(detectionX, Speed.X > 0 ? Direction.Left : Direction.Right);
     }
 
-    public void Move()
+    public virtual void Move()
     {
         if (HasMoved)
             return;

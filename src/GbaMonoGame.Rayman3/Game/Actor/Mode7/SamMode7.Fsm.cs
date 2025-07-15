@@ -1,4 +1,5 @@
 ﻿using System;
+using BinarySerializer;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.TgxEngine;
@@ -35,6 +36,27 @@ public partial class SamMode7
         return true;
     }
 
+    private int Sin(byte angle)
+    {
+        long addr = 0x080e1bac + angle * 4;
+        BinaryDeserializer s = Rom.Context.Deserializer;
+        s.Goto(new Pointer(addr, Rom.Loader.Font16.Offset.File));
+        return s.Serialize<int>(default);
+    }
+
+    private int Cos(byte angle)
+    {
+        angle += 0x40;
+        return Sin(angle);
+    }
+
+    private Vector2 Trunc(Vector2 v)
+    {
+        v.X = MathF.Truncate(v.X);
+        v.Y = MathF.Truncate(v.Y);
+        return v;
+    }
+
     public bool Fsm_Move(FsmAction action)
     {
         switch (action)
@@ -43,15 +65,46 @@ public partial class SamMode7
                 Timer = 0;
                 TargetDirection = Direction;
                 MechModel.Speed = MechModel.Speed with { X = 2.25f };
+                FixedPointX = (int)Position.X * 0x10000;
+                FixedPointY = (int)Position.Y * 0x10000;
+                FixedPointSpeedX = 0x24000;
+                FixedPointSpeedY = 0;
+                FixedPointDir = (byte)Direction;
+                FixedPointTargetDir = FixedPointDir;
                 break;
 
             case FsmAction.Step:
                 SetMode7DirectionalAction((int)Action.Default, ActionRotationSize);
 
-                // NOTE: The game uses 18.98828125 (fixed-point 0x12FD00) instead of 18. However this causes marshes 2 to break due
-                //       to it being off by 1 pixel and Sam going off course. Using 18 fixes this.
-                Vector2 pos = Position + (Direction.ToDirectionalVector() * new Vector2(18)).FlipY();
+                int uVar4 = (Cos(FixedPointDir) * 0x12fd >> 0x18) + (FixedPointX >> 0x10);
+                int uVar5 = (Sin(FixedPointDir) * -0x12fd >> 0x18) + (FixedPointY >> 0x10);
+
+                PhysicalType type1 = Scene.GetPhysicalType(new Vector2(uVar4, uVar5));
+                OgTypePos = new Vector2(uVar4, uVar5);
+                FixedPointTargetDir = type1.Value switch
+                {
+                    PhysicalTypeValue.MovingPlatform_Left => 32 * 4,
+                    PhysicalTypeValue.MovingPlatform_Right => 32 * 0,
+                    PhysicalTypeValue.MovingPlatform_Up => 32 * 2,
+                    PhysicalTypeValue.MovingPlatform_Down => 32 * 6,
+                    PhysicalTypeValue.MovingPlatform_DownLeft => 32 * 5,
+                    PhysicalTypeValue.MovingPlatform_DownRight => 32 * 7,
+                    PhysicalTypeValue.MovingPlatform_UpRight => 32 * 1,
+                    PhysicalTypeValue.MovingPlatform_UpLeft => 32 * 3,
+                    _ => FixedPointTargetDir
+                };
+
+                if (FixedPointDir != FixedPointTargetDir)
+                {
+                    if ((byte)(FixedPointDir - FixedPointTargetDir) < 128)
+                        FixedPointDir -= 2;
+                    else
+                        FixedPointDir += 2;
+                }
+
+                Vector2 pos = Trunc(Position) + Vector2.Floor((Direction.ToDirectionalVector() * new Vector2(18.98828125f)).FlipY());
                 PhysicalType type = Scene.GetPhysicalType(pos);
+                ReTypePos = pos;
 
                 TargetDirection = type.Value switch
                 {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
@@ -24,6 +25,47 @@ public sealed partial class SamMode7 : Mode7Actor
             Color = DebugBoxColor.DetectionBox,
             RenderContext = Scene.RenderContext,
         };
+    }
+
+    public int FixedPointX { get; set; }
+    public int FixedPointY { get; set; }
+    public int FixedPointSpeedX { get; set; }
+    public int FixedPointSpeedY { get; set; }
+    public byte FixedPointTargetDir { get; set; }
+    public byte FixedPointDir { get; set; }
+    public Vector2 OgTypePos { get; set; }
+    public Vector2 ReTypePos { get; set; }
+    public override void Move()
+    {
+        Debug.WriteLine($"OG POS: {MathHelpers.FromFixedPoint(FixedPointX)}x{MathHelpers.FromFixedPoint(FixedPointY)}");
+        Debug.WriteLine($"RE POS: {Position.X}x{Position.Y}");
+        Debug.WriteLine($"OG TYPE POS: {OgTypePos.X}x{OgTypePos.Y}");
+        Debug.WriteLine($"RE TYPE POS: {ReTypePos.X}x{ReTypePos.Y}");
+        Debug.WriteLine($"OG SPEED: {MathHelpers.FromFixedPoint(FixedPointSpeedX)}x{MathHelpers.FromFixedPoint(FixedPointSpeedY)}");
+        Debug.WriteLine($"RE SPEED: {MechModel.Speed.X}x{MechModel.Speed.Y}");
+        Debug.WriteLine($"OG DIR: {FixedPointDir}");
+        Debug.WriteLine($"RE DIR: {Direction.Value}");
+        Debug.WriteLine($"OG TARGET DIR: {FixedPointTargetDir}");
+        Debug.WriteLine($"RE TARGET DIR: {TargetDirection.Value}");
+        Debug.WriteLine("");
+
+        if (FixedPointTargetDir != TargetDirection.Value)
+        {
+            Debugger.Break();
+        }
+
+        int speedX = FixedPointSpeedX >> 8;
+        int speedY = FixedPointSpeedY >> 8;
+        int dx = speedX * Cos(FixedPointDir) - Sin(FixedPointDir) * speedY >> 8;
+        int dy = speedX * -Sin(FixedPointDir) - Cos(FixedPointDir) * speedY >> 8;
+
+        FixedPointX += dx;
+        FixedPointY += dy;
+
+        base.Move();
+
+        // Position = new Vector2(MathHelpers.FromFixedPoint(FixedPointX), MathHelpers.FromFixedPoint(FixedPointY));
+        // Direction = FixedPointDir;
     }
 
     private readonly DebugPointAObject _debugCollisionPositionPointAObject;
