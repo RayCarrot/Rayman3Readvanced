@@ -24,7 +24,6 @@ However online multiplayer would be much more complicated. The game expects the 
 - Option not to cache serialized data from the ROM. Currently it always does that.
 
 ### ✨ Optional improvements
-- Coyote time.
 - Buffered inputs.
 - N-Gage specific features that could be enabled in the GBA version:
     - Allow skipping intro early.

@@ -621,6 +621,7 @@ public partial class Rayman
                 if (!FsmStep_DoOnTheGround())
                     return false;
 
+                // Don't fall yet (coyote time)
                 if (Speed.Y > 1 && PreviousXSpeed == 0)
                 {
                     Timer++;
