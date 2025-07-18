@@ -29,6 +29,13 @@ public sealed partial class Lums : BaseActor
                 {
                     LumId = GameInfo.GetLumsId();
 
+                    // TRAILER
+                    if (GameInfo.MapId == MapId.WoodLight_M1)
+                    {
+                        if (InstanceId is 13 or 16 or 24)
+                            ProcessMessage(this, Message.Destroy);
+                    }
+
                     if (GameInfo.IsLumDead(LumId, GameInfo.MapId))
                     {
                         if (!Engine.ActiveConfig.Tweaks.ShowCollectedLums)

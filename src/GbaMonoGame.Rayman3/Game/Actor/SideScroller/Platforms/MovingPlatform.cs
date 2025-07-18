@@ -16,6 +16,10 @@ public sealed partial class MovingPlatform : MovableActor
         ReturnXPosition = Position.X - 48;
         
         Setup();
+
+        // TRAILER
+        if (GameInfo.MapId == MapId.WoodLight_M1 && InstanceId == 68)
+            ProcessMessage(this, Message.Destroy);
     }
 
     // Not used in any level

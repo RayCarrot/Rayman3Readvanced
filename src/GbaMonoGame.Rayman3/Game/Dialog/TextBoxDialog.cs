@@ -49,7 +49,18 @@ public partial class TextBoxDialog : Dialog
 
     private void UpdateText(int textObjectIndex)
     {
-        CurrentText = Localization.GetText(TextBankId, TextId);
+        // TRAILER
+        string[] trailerCutscene =
+        [
+            "2:Hey big-nose!",
+            "",
+            "2:GBA games are quite small",
+            "aren't they?",
+            "2:Let me try and fix that for you!",
+            "",
+        ];
+
+        CurrentText = trailerCutscene;
 
         if (textObjectIndex != 0)
             IsFinished = false;

@@ -8,5 +8,9 @@ public sealed class Scenery : BaseActor
     {
         AnimatedObject.CurrentAnimation = actorResource.FirstActionId;
         AnimatedObject.ObjPriority = 60;
+
+        // TRAILER
+        if (GameInfo.MapId == MapId.WoodLight_M1 && InstanceId is 50 or 51)
+            Position += new Vector2(75, 0);
     }
 }
