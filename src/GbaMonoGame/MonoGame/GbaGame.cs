@@ -52,6 +52,9 @@ public abstract class GbaGame : Game
     public bool IsPaused { get; set; }
     public bool DebugMode { get; set; }
 
+    // TRAILER
+    public Vector2 NewResolution { get; set; }
+
     #endregion
 
     #region Event Handlers
@@ -207,6 +210,14 @@ public abstract class GbaGame : Game
 
     protected override void Update(Microsoft.Xna.Framework.GameTime gameTime)
     {
+        if (NewResolution != Vector2.Zero)
+        {
+            Engine.InternalGameResolution = NewResolution;
+            Engine.Config.Tweaks.InternalGameResolution = NewResolution;
+            Engine.GameViewPort.UpdateRenderBox();
+            NewResolution = Vector2.Zero;
+        }
+
         base.Update(gameTime);
 
         InputManager.Update();

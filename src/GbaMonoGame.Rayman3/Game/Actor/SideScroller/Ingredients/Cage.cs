@@ -6,6 +6,10 @@ public sealed partial class Cage : InteractableActor
 {
     public Cage(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        // TRAILER
+        if (GameInfo.MapId == MapId.WoodLight_M1 && InstanceId == 65)
+            Position = Position with { X = 1620 };
+
         IsGrounded = actorResource.FirstActionId == 0;
         PrevHitPoints = HitPoints;
         

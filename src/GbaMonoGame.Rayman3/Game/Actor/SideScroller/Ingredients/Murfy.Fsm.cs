@@ -383,6 +383,10 @@ public partial class Murfy
         return true;
     }
 
+    // TRAILER
+    private int LeaveState { get; set; }
+    private float ResolutionChange { get; set; }
+
     public bool Fsm_Leave(FsmAction action)
     {
         switch (action)
@@ -392,6 +396,14 @@ public partial class Murfy
                 SavedSpeed = SavedSpeed with { Y = -1 };
                 TextBox.MoveInOurOut(false);
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MurfyVO3A_Mix01);
+
+                // TRAILER
+                AnimatedObject.BgPriority = 0;
+                MechModel.Speed = new Vector2(2, 0.35f);
+                ActionId = Action.BeginLeave_Right;
+                ((Rayman)Scene.MainActor).ActionId = Rayman.Action.Idle_Right;
+                LeaveState = 0;
+                ResolutionChange = 0;
                 break;
 
             case FsmAction.Step:
@@ -401,7 +413,64 @@ public partial class Murfy
                 if (SavedSpeed.Y > -2)
                     SavedSpeed -= new Vector2(0, 0.05859375f);
                 SavedSpeed = SavedSpeed with { X = IsFacingRight ? 1 : -1 };
-                MechModel.Speed = SavedSpeed;
+                
+                // TRAILER
+                // MechModel.Speed = SavedSpeed;
+                switch (LeaveState)
+                {
+                    case 0:
+                        if (Position.X >= 1467)
+                            LeaveState++;
+                        break;
+
+                    case 1:
+                        MechModel.Speed = Vector2.Zero;
+                        Scene.Camera.ProcessMessage(this, Message.Cam_Lock);
+                        LeaveState++;
+                        break;
+
+                    case 2:
+                        Vector2 originalResolution = Resolution.Gba;
+                        Vector2 targetResolution = Resolution.Modern;
+
+                        Vector2 newRes = Vector2.Lerp(originalResolution, targetResolution, ResolutionChange);
+
+                        Engine.GbaGame.NewResolution = newRes;
+
+                        ResolutionChange += 1 / 150f;
+
+                        Position = Position with { X = 1467 + (newRes.X - originalResolution.X) };
+
+                        if (ResolutionChange >= 1)
+                        {
+                            Engine.GbaGame.NewResolution = Resolution.Modern;
+                            ResolutionChange = 10;
+                            ((Rayman)Scene.MainActor).ActionId = Rayman.Action.Idle_LookAround_Right;
+                            ActionId = Action.BeginLeave_Left;
+                            MechModel.Speed = new Vector2(-1, -1f);
+                            LeaveState++;
+                        }
+                        break;
+
+                    case 3:
+                        if (Position.X <= 1550)
+                        {
+                            ActionId = Action.Idle_Left;
+                            MechModel.Speed = Vector2.Zero;
+                            LeaveState++;
+                        }
+                        break;
+                }
+                Rayman rayman = (Rayman)Scene.MainActor;
+                if (rayman.IsActionFinished && rayman.ActionId == Rayman.Action.Idle_LookAround_Right)
+                {
+                    rayman.ActionId = Rayman.Action.Victory_Right;
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02);
+                }
+                else if (rayman.IsActionFinished && rayman.ActionId == Rayman.Action.Victory_Right)
+                {
+                    rayman.ActionId = Rayman.Action.Idle_Right;
+                }
 
                 if (ScreenPosition.Y < -10)
                 {

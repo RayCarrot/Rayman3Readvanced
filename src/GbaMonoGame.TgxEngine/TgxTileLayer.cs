@@ -50,6 +50,10 @@ public class TgxTileLayer : TgxGameLayer
 
     public void LoadRenderer(GfxTileKitManager tileKitManager, AnimatedTilekitManager animatedTilekitManager)
     {
+        // TRAILER
+        if (LayerId == 2)
+            TileMap[13 * Width + 153] = default;
+
         Screen.Renderer = tileKitManager.CreateTileMapRenderer(
             renderOptions: Screen.RenderOptions,
             animatedTilekitManager: animatedTilekitManager,

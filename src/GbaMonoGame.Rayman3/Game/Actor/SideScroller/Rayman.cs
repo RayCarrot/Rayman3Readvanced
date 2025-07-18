@@ -2222,6 +2222,10 @@ public sealed partial class Rayman : MovableActor
         ActionId = (Action)Resource.FirstActionId;
         ChangeAction();
 
+        // TRAILER
+        if (GameInfo.MapId == MapId.WoodLight_M1)
+            Position = new Vector2(1186, 152);
+
         // Respawn at last green lum
         if (GameInfo.LastGreenLumAlive != 0)
         {
