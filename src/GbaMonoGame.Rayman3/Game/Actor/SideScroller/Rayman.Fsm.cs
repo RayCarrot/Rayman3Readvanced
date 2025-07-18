@@ -587,17 +587,18 @@ public partial class Rayman
 
                     if (!RSMultiplayer.IsActive)
                     {
+                        // TRAILER
                         // Randomly look around for Globox in the first level
-                        if (!TimeAttackInfo.IsActive && GameInfo.MapId == MapId.WoodLight_M1 && GameInfo.LastGreenLumAlive == 0)
-                        {
-                            if (Random.GetNumber(501) > 400)
-                                ActionId = IsFacingRight ? Action.Walk_LookAround_Right : Action.Walk_LookAround_Left;
-                            else
-                                ActionId = IsFacingRight ? Action.Walk_Right : Action.Walk_Left;
-
-                            FirstLevelIdleTimer = 0;
-                        }
-                        else
+                        //if (!TimeAttackInfo.IsActive && GameInfo.MapId == MapId.WoodLight_M1 && GameInfo.LastGreenLumAlive == 0)
+                        //{
+                        //    if (Random.GetNumber(501) > 400)
+                        //        ActionId = IsFacingRight ? Action.Walk_LookAround_Right : Action.Walk_LookAround_Left;
+                        //    else
+                        //        ActionId = IsFacingRight ? Action.Walk_Right : Action.Walk_Left;
+                        //    
+                        //    FirstLevelIdleTimer = 0;
+                        //}
+                        //else
                         {
                             ActionId = IsFacingRight ? Action.Walk_Right : Action.Walk_Left;
                         }

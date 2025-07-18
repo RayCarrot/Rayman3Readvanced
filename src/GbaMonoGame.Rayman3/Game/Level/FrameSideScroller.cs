@@ -108,6 +108,13 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
 
     public override void Init()
     {
+        // TRAILER
+        if (GameInfo.MapId == MapId.WoodLight_M1)
+        {
+            Engine.LocalConfig.Tweaks.InternalGameResolution = Resolution.Gba;
+            Engine.SetInternalGameResolution(Resolution.Gba);
+        }
+
         GameInfo.InitLevel(LevelType.Normal);
 
         CanPause = true;
@@ -211,6 +218,71 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.AnimationPlayer.Execute();
         LevelMusicManager.Step();
         
+        // TRAILER
+        if (GameInfo.MapId == MapId.WoodLight_M1 && CircleTransitionMode == TransitionMode.FinishedIn && !JoyPad.IsInReplayMode)
+        {
+            JoyPad.SetReplayData(
+            [
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.Right | GbaInput.Valid,
+                GbaInput.None,
+            ]);
+        }
+
         if (IsTimed)
         {
             if (GameInfo.RemainingTime != 0)
