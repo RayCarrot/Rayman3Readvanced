@@ -11,6 +11,7 @@ using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
+// TODO: Play music?
 public class TitleScreen : Frame
 {
     public TitleScreen(bool fadeIn)

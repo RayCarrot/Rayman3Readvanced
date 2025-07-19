@@ -14,6 +14,8 @@ Sets the language used for the localized text in the game. The available languag
 - **Fullscreen:** Renders the game in fullscreen, based on the selected resolution.
 - **Borderless**: Renders the game in borderless fullscreen. The resolution is locked to the screen resolution.
 
+You can also toggle between windowed and fullscreen by pressing `ALT` + `ENTER`.
+
 ### Fullscreen resolution
 Sets the resolution to use when the display mode is set to fullscreen. The listed resolutions are the ones supporting by the current graphics adapter. A manual resolution can be set by manually editing the config file.
 

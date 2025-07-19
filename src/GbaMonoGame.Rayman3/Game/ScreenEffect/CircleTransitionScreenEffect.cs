@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3;
 
+// TODO: Update for high res
 // TODO: We don't want to create these in the Draw call
 public class CircleTransitionScreenEffect : ScreenEffect
 {

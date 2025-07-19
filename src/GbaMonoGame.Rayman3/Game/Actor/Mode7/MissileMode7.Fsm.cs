@@ -129,6 +129,7 @@ public partial class MissileMode7
                 // Get the current physical type
                 MissileMode7PhysicalTypeDefine physicalType = MissileMode7PhysicalTypeDefine.FromPhysicalType(Scene.GetPhysicalType(Position));
 
+                // TODO: Look into improving the bumpers so they're more accurate.
                 if (physicalType.BumperLeft && !PrevPhysicalType.BumperLeft)
                 {
                     MechModel.Speed = -new Vector2(MechModel.Speed.Y, MechModel.Speed.X);
