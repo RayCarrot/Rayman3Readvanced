@@ -15,20 +15,38 @@ public class BonusMenuPage : MenuPage
     {
         // TODO: Add proper values and icons (icons are currently temporary)
         // Add menu options
-        AddOption(new BonusTextMenuOption("ACHIEVEMENTS", 
-        [
-            new BonusTextMenuOption.Collection(Assets.SaveSlotTimeTexture, "10/55"),
-        ]));
-        AddOption(new BonusTextMenuOption("CHALLENGES",
-        [
-            new BonusTextMenuOption.Collection(Assets.SaveSlotTimeTexture, "3/10"),
-        ]));
-        AddOption(new BonusTextMenuOption("TIME ATTACK",
-        [
-            new BonusTextMenuOption.Collection(Assets.SaveSlotTimeTexture, "40/45"),
-            new BonusTextMenuOption.Collection(Assets.SaveSlotTimeTexture, "25/45"),
-            new BonusTextMenuOption.Collection(Assets.SaveSlotTimeTexture, "2/45"),
-        ]));
+        AddOption(new BonusActionMenuOption(
+            text: "ACHIEVEMENTS", 
+            collections:
+            [
+                new BonusActionMenuOption.Collection(Assets.SaveSlotTimeTexture, "10/55"),
+            ], 
+            action: () =>
+            {
+                // TODO: Implement
+            }));
+        AddOption(new BonusActionMenuOption(
+            text: "CHALLENGES",
+            collections:
+            [
+                new BonusActionMenuOption.Collection(Assets.SaveSlotTimeTexture, "3/10"),
+            ], 
+            action: () =>
+            {
+                // TODO: Implement
+            }));
+        AddOption(new BonusActionMenuOption(
+            text: "TIME ATTACK",
+            collections:
+            [
+                new BonusActionMenuOption.Collection(Assets.SaveSlotTimeTexture, "40/45"),
+                new BonusActionMenuOption.Collection(Assets.SaveSlotTimeTexture, "25/45"),
+                new BonusActionMenuOption.Collection(Assets.SaveSlotTimeTexture, "2/45"),
+            ], 
+            action: () =>
+            {
+                // TODO: Implement
+            }));
         AddOption(new TextMenuOption("LEVEL EDITOR"));
         AddOption(new TextMenuOption("SAVE TRANSFER"));
         AddOption(new TextMenuOption("ORIGINAL MENU"));
@@ -43,6 +61,11 @@ public class BonusMenuPage : MenuPage
         else if (JoyPad.IsButtonJustPressed(GbaInput.Down))
         {
             SetSelectedOption(SelectedOption + 1);
+        }
+        else if (JoyPad.IsButtonJustPressed(GbaInput.A))
+        {
+            if (Options[SelectedOption] is ActionMenuOption action)
+                action.Invoke();
         }
         else if (JoyPad.IsButtonJustPressed(GbaInput.B))
         {

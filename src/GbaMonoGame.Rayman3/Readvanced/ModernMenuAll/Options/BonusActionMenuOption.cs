@@ -1,11 +1,12 @@
-﻿using GbaMonoGame.AnimEngine;
+﻿using System;
+using GbaMonoGame.AnimEngine;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
-public class BonusTextMenuOption : TextMenuOption
+public class BonusActionMenuOption : ActionMenuOption
 {
-    public BonusTextMenuOption(string text, Collection[] collections) : base(text)
+    public BonusActionMenuOption(string text, Collection[] collections, Action action) : base(text, action)
     {
         Collections = collections;
     }

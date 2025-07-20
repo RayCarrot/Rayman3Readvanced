@@ -1,5 +1,4 @@
-﻿using System;
-using BinarySerializer.Nintendo.GBA;
+﻿using BinarySerializer.Nintendo.GBA;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
@@ -154,12 +153,56 @@ public class GameModeMenuPage : MenuPage
     protected override void Init()
     {
         // Add menu options
-        AddOption(new TextMenuOption("SINGLE PLAYER"));
-        AddOption(new TextMenuOption("MULTIPLAYER"));
-        AddOption(new TextMenuOption("BONUS"));
-        AddOption(new TextMenuOption("OPTIONS"));
-        AddOption(new TextMenuOption("CREDITS"));
-        AddOption(new TextMenuOption("QUIT GAME"));
+        AddOption(new ActionMenuOption(
+            text: "SINGLE PLAYER", 
+            action: () =>
+            {
+                Menu.ChangePage(new SinglePlayerMenuPage(Menu), NewPageMode.Next);
+            }));
+        AddOption(new ActionMenuOption(
+            text: "MULTIPLAYER", 
+            action: () =>
+            {
+                // TODO: Implement multiplayer menus
+                Menu.ChangePage(new GameModeMenuPage(Menu), NewPageMode.Next);
+            }));
+        AddOption(new ActionMenuOption(
+            text: "BONUS", 
+            action: () =>
+            {
+                Menu.ChangePage(new BonusMenuPage(Menu), NewPageMode.Next);
+            }));
+        AddOption(new ActionMenuOption(
+            text: "OPTIONS", 
+            action: () =>
+            {
+                Menu.ChangePage(new OptionsMenuPage(Menu), NewPageMode.Next);
+            }));
+        AddOption(new ActionMenuOption(
+            text: "CREDITS", 
+            action: () =>
+            {
+                CursorClick(() =>
+                {
+                    FadeOut(4, () =>
+                    {
+                        FrameManager.SetNextFrame(new Credits(false));
+                    });
+                });
+            }));
+        AddOption(new ActionMenuOption(
+            text: "QUIT GAME", 
+            action: () =>
+            {
+                CursorClick(() =>
+                {
+                    FadeOut(4, () =>
+                    {
+                        Rom.UnInit();
+                        FrameManager.SetNextFrame(new TitleScreen(true));
+                    });
+                });
+            }));
 
         // Create animations
         AnimatedObjectResource gameLogoAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuGameLogoAnimations);
@@ -201,49 +244,8 @@ public class GameModeMenuPage : MenuPage
         }
         else if (JoyPad.IsButtonJustPressed(GbaInput.A))
         {
-            switch (SelectedOption)
-            {
-                case 0:
-                    Menu.ChangePage(new SinglePlayerMenuPage(Menu), NewPageMode.Next);
-                    break;
-
-                case 1:
-                    // TODO: Implement multiplayer menus
-                    Menu.ChangePage(new GameModeMenuPage(Menu), NewPageMode.Next);
-                    break;
-
-                case 2:
-                    Menu.ChangePage(new BonusMenuPage(Menu), NewPageMode.Next);
-                    break;
-
-                case 3:
-                    Menu.ChangePage(new OptionsMenuPage(Menu), NewPageMode.Next);
-                    break;
-
-                case 4:
-                    CursorClick(() =>
-                    {
-                        FadeOut(4, () =>
-                        {
-                            FrameManager.SetNextFrame(new Credits(false));
-                        });
-                    });
-                    break;
-
-                case 5:
-                    CursorClick(() =>
-                    {
-                        FadeOut(4, () =>
-                        {
-                            Rom.UnInit();
-                            FrameManager.SetNextFrame(new TitleScreen(true));
-                        });
-                    });
-                    break;
-
-                default:
-                    throw new Exception("Invalid selection");
-            }
+            if (Options[SelectedOption] is ActionMenuOption action)
+                action.Invoke();
         }
     }
 
