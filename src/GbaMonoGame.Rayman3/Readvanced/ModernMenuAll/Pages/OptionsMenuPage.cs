@@ -33,8 +33,7 @@ public class OptionsMenuPage : MenuPage
 
     public SpriteTextureObject InfoTextBox { get; set; }
     public SpriteTextObject InfoText { get; set; }
-    public AnimatedObject ArrowLeft { get; set; }
-    public AnimatedObject ArrowRight { get; set; }
+    public MenuHorizontalArrows HorizontalArrows { get; set; }
 
     private void SetSelectedTab(int selectedTab, bool playSound = true)
     {
@@ -92,7 +91,6 @@ public class OptionsMenuPage : MenuPage
 
         // Create animations
         Texture2D infoTextBoxTexture = Engine.FixContentManager.Load<Texture2D>(Assets.MenuTextBoxTexture);
-        AnimatedObjectResource multiplayerTypeFrameAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerTypeFrameAnimations);
 
         TabBar = new MenuTabBar(RenderContext, new Vector2(63, -37), 1, Tabs.Select(x => x.Name).ToArray());
 
@@ -117,25 +115,7 @@ public class OptionsMenuPage : MenuPage
             FontSize = FontSize.Font32,
         };
 
-        // A bit hacky, but create a new render context for the arrows in order to scale them. We could do it through the
-        // affine matrix, but that will misalign the animation sprites.
-        RenderContext arrowRenderContext = new FixedResolutionRenderContext(RenderContext.Resolution * (1 / ArrowScale));
-        ArrowLeft = new AnimatedObject(multiplayerTypeFrameAnimations, multiplayerTypeFrameAnimations.IsDynamic)
-        {
-            IsFramed = true,
-            BgPriority = 1,
-            ObjPriority = 0,
-            CurrentAnimation = 1,
-            RenderContext = arrowRenderContext,
-        };
-        ArrowRight = new AnimatedObject(multiplayerTypeFrameAnimations, multiplayerTypeFrameAnimations.IsDynamic)
-        {
-            IsFramed = true,
-            BgPriority = 1,
-            ObjPriority = 0,
-            CurrentAnimation = 0,
-            RenderContext = arrowRenderContext,
-        };
+        HorizontalArrows = new MenuHorizontalArrows(RenderContext, 1, ArrowScale);
 
         // Reset values
         IsEditingOption = false;
@@ -180,10 +160,7 @@ public class OptionsMenuPage : MenuPage
                 option.Reset(OptionsMenuOptions);
 
                 CursorClick(null);
-
-                // Start arrow animations on frame 4 since it looks nicer
-                ArrowLeft.CurrentFrame = 4;
-                ArrowRight.CurrentFrame = 4;
+                HorizontalArrows.Start();
             }
             else if (JoyPad.IsButtonJustPressed(GbaInput.B))
             {
@@ -249,12 +226,9 @@ public class OptionsMenuPage : MenuPage
 
             if (option.ShowArrows)
             {
-                // Set the arrow positions
-                ArrowLeft.ScreenPos = option.ArrowLeftPosition * (1 / ArrowScale);
-                ArrowRight.ScreenPos = option.ArrowRightPosition * (1 / ArrowScale);
-
-                animationPlayer.Play(ArrowLeft);
-                animationPlayer.Play(ArrowRight);
+                HorizontalArrows.Position = option.ArrowsPosition;
+                HorizontalArrows.Width = option.ArrowsWidth;
+                HorizontalArrows.Draw(animationPlayer);
             }
         }
     }

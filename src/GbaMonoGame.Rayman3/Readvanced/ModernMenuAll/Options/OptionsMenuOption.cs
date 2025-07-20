@@ -16,7 +16,6 @@ public abstract class OptionsMenuOption : MenuOption
     private const float TextScale = 2 / 3f;
     private const float ValueTextScale = 2 / 3f;
     private const float ValueTextXPosition = 165;
-    private const float ValueTextPadding = 5;
 
     public string Text { get; }
     public string InfoText { get; }
@@ -26,14 +25,13 @@ public abstract class OptionsMenuOption : MenuOption
     public SpriteFontTextObject ValueTextObject { get; set; }
     
     public abstract bool ShowArrows { get; }
-    public Vector2 ArrowLeftPosition { get; set; }
-    public Vector2 ArrowRightPosition { get; set; }
+    public Vector2 ArrowsPosition { get; set; }
+    public float ArrowsWidth { get; set; }
 
     protected void UpdateArrowPositions()
     {
-        float valueTextWidth = ValueTextObject.Font.GetWidth(ValueTextObject.Text) * ValueTextScale;
-        ArrowLeftPosition = ValueTextObject.ScreenPos + new Vector2(-ValueTextPadding, -2);
-        ArrowRightPosition = ValueTextObject.ScreenPos + new Vector2(valueTextWidth + ValueTextPadding, -1);
+        ArrowsPosition = ValueTextObject.ScreenPos + new Vector2(0, -2);
+        ArrowsWidth = ValueTextObject.Font.GetWidth(ValueTextObject.Text) * ValueTextScale;
     }
 
     public abstract void Reset(IReadOnlyList<OptionsMenuOption> options);
