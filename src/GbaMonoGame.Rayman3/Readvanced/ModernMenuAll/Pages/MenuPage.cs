@@ -190,6 +190,10 @@ public abstract class MenuPage
                 break;
 
             case MenuPageState.Active:
+                bool finishedCursorClick = Menu.HasFinishedCursorClick();
+                if (finishedCursorClick)
+                    Menu.SetCursorToIdle();
+
                 if (FadeOutCallback == null && ClickCallback == null)
                 {
                     Step_Active();
@@ -199,15 +203,10 @@ public abstract class MenuPage
                     FadeOutCallback();
                     FadeOutCallback = null;
                 }
-                else if (Menu.HasFinishedCursorClick())
+                else if (ClickCallback != null && finishedCursorClick)
                 {
-                    Menu.SetCursorToIdle();
-
-                    if (ClickCallback != null)
-                    {
-                        ClickCallback();
-                        ClickCallback = null;
-                    }
+                    ClickCallback();
+                    ClickCallback = null;
                 }
 
                 Draw(Menu.AnimationPlayer);
