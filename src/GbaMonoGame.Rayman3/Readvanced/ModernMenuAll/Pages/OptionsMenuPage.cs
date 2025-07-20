@@ -11,9 +11,6 @@ public class OptionsMenuPage : MenuPage
 {
     public OptionsMenuPage(ModernMenuAll menu) : base(menu) { }
 
-    private const float TabHeaderWidth = 60;
-    private const float TabHeaderTextScale = 1 / 2f;
-    private const float TabsCursorMoveTime = 12;
     private const float InfoTextScale = 3 / 10f;
     private const int InfoTextMaxLines = 4;
     private const float InfoTextMaxWidth = 260;
@@ -32,12 +29,7 @@ public class OptionsMenuPage : MenuPage
     public bool IsEditingOption { get; set; }
     public bool ShowInfoText { get; set; }
 
-    public float? TabsCursorStartX { get; set; }
-    public float? TabsCursorDestX { get; set; }
-
-    public AnimatedObject TabsCursor { get; set; }
-    public SpriteTextureObject TabHeaders { get; set; }
-    public SpriteFontTextObject[] TabHeaderTexts { get; set; }
+    public MenuTabBar TabBar { get; set; }
 
     public SpriteTextureObject InfoTextBox { get; set; }
     public SpriteTextObject InfoText { get; set; }
@@ -52,8 +44,7 @@ public class OptionsMenuPage : MenuPage
             selectedTab = Tabs.Length - 1;
 
         SelectedTab = selectedTab;
-
-        SetTabsCursorMovement(TabsCursor.ScreenPos.X, selectedTab * TabHeaderWidth + 90);
+        TabBar.SetSelectedTab(selectedTab);
 
         ClearOptions();
         foreach (OptionsMenuOption menuOption in Tabs[selectedTab].Options)
@@ -67,39 +58,6 @@ public class OptionsMenuPage : MenuPage
 
         if (playSound)
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
-    }
-
-    private void SetTabsCursorMovement(float startX, float endX)
-    {
-        TabsCursorStartX = startX;
-        TabsCursorDestX = endX;
-    }
-
-    private void ManageTabsCursor()
-    {
-        if (TabsCursorStartX == null || TabsCursorDestX == null)
-            return;
-
-        float startX = TabsCursorStartX.Value;
-        float destX = TabsCursorDestX.Value;
-
-        // Move with a speed based on the distance
-        float dist = destX - startX;
-        float speed = dist / TabsCursorMoveTime;
-
-        // Move
-        if ((destX < startX && TabsCursor.ScreenPos.X > destX) ||
-            (destX > startX && TabsCursor.ScreenPos.X < destX))
-        {
-            TabsCursor.ScreenPos += new Vector2(speed, 0);
-        }
-        // Finished moving
-        else
-        {
-            TabsCursor.ScreenPos = TabsCursor.ScreenPos with { X = destX };
-            TabsCursorStartX = null;
-            TabsCursorDestX = null;
-        }
     }
 
     protected override bool SetSelectedOption(int selectedOption, bool playSound = true, bool forceUpdate = false)
@@ -133,45 +91,10 @@ public class OptionsMenuPage : MenuPage
         Tabs = GameOptions.Create();
 
         // Create animations
-        AnimatedObjectResource startEraseAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuStartEraseAnimations);
-        Texture2D tabHeadersTexture = Engine.FixContentManager.Load<Texture2D>(Assets.OptionsMenuTabsTexture);
         Texture2D infoTextBoxTexture = Engine.FixContentManager.Load<Texture2D>(Assets.MenuTextBoxTexture);
         AnimatedObjectResource multiplayerTypeFrameAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerTypeFrameAnimations);
 
-        TabsCursor = new AnimatedObject(startEraseAnimations, startEraseAnimations.IsDynamic)
-        {
-            IsFramed = true,
-            BgPriority = 1,
-            ObjPriority = 0,
-            ScreenPos = new Vector2(90, 12),
-            CurrentAnimation = 40,
-            RenderContext = RenderContext,
-        };
-
-        TabHeaders = new SpriteTextureObject
-        {
-            BgPriority = 1,
-            ObjPriority = 0,
-            ScreenPos = new Vector2(63, -37),
-            Texture = tabHeadersTexture,
-            RenderContext = RenderContext,
-        };
-
-        TabHeaderTexts = new SpriteFontTextObject[Tabs.Length];
-        for (int i = 0; i < Tabs.Length; i++)
-        {
-            float width = ReadvancedFonts.MenuYellow.GetWidth(Tabs[i].Name) * TabHeaderTextScale;
-            TabHeaderTexts[i] = new SpriteFontTextObject()
-            {
-                BgPriority = 1,
-                ObjPriority = 0,
-                ScreenPos = new Vector2(89 + i * TabHeaderWidth - width / 2, 30),
-                RenderContext = RenderContext,
-                AffineMatrix = new AffineMatrix(0, new Vector2(TabHeaderTextScale), false, false),
-                Text = Tabs[i].Name,
-                Font = ReadvancedFonts.MenuYellow,
-            };
-        }
+        TabBar = new MenuTabBar(RenderContext, new Vector2(63, -37), 1, Tabs.Select(x => x.Name).ToArray());
 
         InfoTextBox = new SpriteTextureObject
         {
@@ -216,8 +139,6 @@ public class OptionsMenuPage : MenuPage
 
         // Reset values
         IsEditingOption = false;
-        TabsCursorStartX = null;
-        TabsCursorDestX = null;
 
         // Set the initial tab
         SetSelectedTab(0, false);
@@ -225,11 +146,8 @@ public class OptionsMenuPage : MenuPage
 
     protected override void Step_TransitionIn()
     {
-        TabsCursor.ScreenPos = TabsCursor.ScreenPos with { Y = (12 - 80) + TransitionValue / 2f };
-        TabHeaders.ScreenPos = TabHeaders.ScreenPos with { Y = (-37 - 80) + TransitionValue / 2f };
-        
-        foreach (SpriteFontTextObject tabHeader in TabHeaderTexts)
-            tabHeader.ScreenPos = tabHeader.ScreenPos with { Y = (30 - 80) + TransitionValue / 2f };
+        TabBar.Position = TabBar.Position with { Y = (-37 - 80) + TransitionValue / 2f };
+        TabBar.Step();
     }
 
     protected override void Step_Active()
@@ -299,16 +217,13 @@ public class OptionsMenuPage : MenuPage
             }
         }
 
-        ManageTabsCursor();
+        TabBar.Step();
     }
 
     protected override void Step_TransitionOut()
     {
-        TabsCursor.ScreenPos = TabsCursor.ScreenPos with { Y = 12 - TransitionValue / 2f };
-        TabHeaders.ScreenPos = TabHeaders.ScreenPos with { Y = -37 - TransitionValue / 2f };
-        
-        foreach (SpriteFontTextObject tabHeader in TabHeaderTexts)
-            tabHeader.ScreenPos = tabHeader.ScreenPos with { Y = 30 - TransitionValue / 2f };
+        TabBar.Position = TabBar.Position with { Y = -37 - TransitionValue / 2f };
+        TabBar.Step();
     }
 
     protected override void UnInit()
@@ -320,13 +235,7 @@ public class OptionsMenuPage : MenuPage
     protected override void Draw(AnimationPlayer animationPlayer)
     {
         DrawOptions(animationPlayer);
-
-        animationPlayer.Play(TabHeaders);
-
-        foreach (SpriteFontTextObject tabHeaderText in TabHeaderTexts)
-            animationPlayer.Play(tabHeaderText);
-
-        animationPlayer.Play(TabsCursor);
+        TabBar.Draw(animationPlayer);
 
         if (ShowInfoText)
         {

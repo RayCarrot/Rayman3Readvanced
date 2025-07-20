@@ -57,8 +57,8 @@ public class MenuScrollBar
 
     public Vector2 Position { get; set; }
 
-    public SpriteTextureObject ScrollBar { get; set; }
-    public SpriteTextureObject ScrollBarThumb { get; set; }
+    public SpriteTextureObject ScrollBar { get; }
+    public SpriteTextureObject ScrollBarThumb { get; }
 
     public float ScrollOffset { get; set; }
     public float MaxScrollOffset { get; set; }

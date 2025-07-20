@@ -4,7 +4,6 @@ using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
@@ -25,18 +24,13 @@ public class PauseDialogOptionsMenu
 
     private const float CanvasBaseY = 0;
     private const float CursorBaseY = 67;
-    private const float TabHeadersBaseY = -37;
-    private const float TabHeaderTextsBaseY = 30;
-    private const float TabsCursorBaseY = 12;
+    private const float TabBarBaseY = -37;
     private const float InfoTextBoxBaseY = 112;
     private const float InfoTextLinesBaseY = 109;
     private const float ScrollBarBaseY = 40;
 
     private const float LineHeight = 12;
 
-    private const float TabHeaderWidth = 60;
-    private const float TabHeaderTextScale = 1 / 2f;
-    private const float TabsCursorMoveTime = 12;
     private const float InfoTextScale = 3 / 10f;
     private const int InfoTextMaxLines = 4;
     private const float InfoTextMaxWidth = 260;
@@ -65,9 +59,7 @@ public class PauseDialogOptionsMenu
     public SpriteTextureObject Canvas { get; set; }
     public AnimatedObject Cursor { get; set; }
 
-    public AnimatedObject TabsCursor { get; set; }
-    public SpriteTextureObject TabHeaders { get; set; }
-    public SpriteFontTextObject[] TabHeaderTexts { get; set; }
+    public MenuTabBar TabBar { get; set; }
 
     public SpriteTextureObject InfoTextBox { get; set; }
     public SpriteTextObject InfoText { get; set; }
@@ -91,8 +83,7 @@ public class PauseDialogOptionsMenu
             selectedTab = Tabs.Length - 1;
 
         SelectedTab = selectedTab;
-
-        SetTabsCursorMovement(TabsCursor.ScreenPos.X, selectedTab * TabHeaderWidth + 90);
+        TabBar.SetSelectedTab(selectedTab);
 
         SelectedOption = 0;
         ScrollOffset = 0;
@@ -159,39 +150,6 @@ public class PauseDialogOptionsMenu
     {
         Cursor.CurrentAnimation = 16;
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
-    }
-
-    private void SetTabsCursorMovement(float startX, float endX)
-    {
-        TabsCursorStartX = startX;
-        TabsCursorDestX = endX;
-    }
-
-    private void ManageTabsCursor()
-    {
-        if (TabsCursorStartX == null || TabsCursorDestX == null)
-            return;
-
-        float startX = TabsCursorStartX.Value;
-        float destX = TabsCursorDestX.Value;
-
-        // Move with a speed based on the distance
-        float dist = destX - startX;
-        float speed = dist / TabsCursorMoveTime;
-
-        // Move
-        if ((destX < startX && TabsCursor.ScreenPos.X > destX) ||
-            (destX > startX && TabsCursor.ScreenPos.X < destX))
-        {
-            TabsCursor.ScreenPos += new Vector2(speed, 0);
-        }
-        // Finished moving
-        else
-        {
-            TabsCursor.ScreenPos = TabsCursor.ScreenPos with { X = destX };
-            TabsCursorStartX = null;
-            TabsCursorDestX = null;
-        }
     }
 
     private void SetSelectedOption(int selectedOption, bool playSound = true)
@@ -367,8 +325,6 @@ public class PauseDialogOptionsMenu
         // Create animations
         AnimatedObjectResource propsAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuPropAnimations);
         Texture2D canvasTexture = Engine.FixContentManager.Load<Texture2D>(Assets.OptionsDialogBoardTexture);
-        AnimatedObjectResource startEraseAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuStartEraseAnimations);
-        Texture2D tabHeadersTexture = Engine.FixContentManager.Load<Texture2D>(Assets.OptionsMenuTabsTexture);
         Texture2D infoTextBoxTexture = Engine.FixContentManager.Load<Texture2D>(Assets.MenuTextBoxTexture);
         AnimatedObjectResource multiplayerTypeFrameAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerTypeFrameAnimations);
 
@@ -391,40 +347,7 @@ public class PauseDialogOptionsMenu
             RenderContext = RenderContext,
         };
 
-        TabsCursor = new AnimatedObject(startEraseAnimations, startEraseAnimations.IsDynamic)
-        {
-            IsFramed = true,
-            BgPriority = 0,
-            ObjPriority = 0,
-            ScreenPos = new Vector2(90, TabsCursorBaseY),
-            CurrentAnimation = 40,
-            RenderContext = RenderContext,
-        };
-
-        TabHeaders = new SpriteTextureObject
-        {
-            BgPriority = 0,
-            ObjPriority = 0,
-            ScreenPos = new Vector2(63, TabHeadersBaseY),
-            Texture = tabHeadersTexture,
-            RenderContext = RenderContext,
-        };
-
-        TabHeaderTexts = new SpriteFontTextObject[Tabs.Length];
-        for (int i = 0; i < Tabs.Length; i++)
-        {
-            float width = ReadvancedFonts.MenuYellow.GetWidth(Tabs[i].Name) * TabHeaderTextScale;
-            TabHeaderTexts[i] = new SpriteFontTextObject()
-            {
-                BgPriority = 0,
-                ObjPriority = 0,
-                ScreenPos = new Vector2(89 + i * TabHeaderWidth - width / 2, TabHeaderTextsBaseY),
-                RenderContext = RenderContext,
-                AffineMatrix = new AffineMatrix(0, new Vector2(TabHeaderTextScale), false, false),
-                Text = Tabs[i].Name,
-                Font = ReadvancedFonts.MenuYellow,
-            };
-        }
+        TabBar = new MenuTabBar(RenderContext, new Vector2(63, TabBarBaseY - TabHeadersOffsetY), 0, Tabs.Select(x => x.Name).ToArray());
 
         InfoTextBox = new SpriteTextureObject
         {
@@ -481,7 +404,10 @@ public class PauseDialogOptionsMenu
     public void Step()
     {
         if (DrawStep != PauseDialogDrawStep.Wait)
+        {
+            TabBar.Step();
             return;
+        }
 
         // Not editing
         if (!IsEditingOption)
@@ -554,7 +480,7 @@ public class PauseDialogOptionsMenu
             Cursor.CurrentAnimation = 0;
 
         ManageCursor();
-        ManageTabsCursor();
+        TabBar.Step();
     }
 
     public void Draw(AnimationPlayer animationPlayer)
@@ -616,12 +542,8 @@ public class PauseDialogOptionsMenu
                 index++;
             }
 
-            TabHeaders.ScreenPos = TabHeaders.ScreenPos with { Y = TabHeadersBaseY - TabHeadersOffsetY };
-            
-            foreach (SpriteFontTextObject tabHeaderText in TabHeaderTexts)
-                tabHeaderText.ScreenPos = tabHeaderText.ScreenPos with { Y = TabHeaderTextsBaseY - TabHeadersOffsetY };
-            
-            TabsCursor.ScreenPos = TabsCursor.ScreenPos with { Y = TabsCursorBaseY - TabHeadersOffsetY };
+            TabBar.Position = TabBar.Position with { Y = TabBarBaseY - TabHeadersOffsetY };
+
             InfoTextBox.ScreenPos = InfoTextBox.ScreenPos with { Y = InfoTextBoxBaseY - OffsetY };
             InfoText.ScreenPos = InfoText.ScreenPos with { Y = InfoTextLinesBaseY - OffsetY };
 
@@ -633,12 +555,7 @@ public class PauseDialogOptionsMenu
             foreach (OptionsMenuOption option in Options.Skip(ScrollOffset).Take(MaxOptions))
                 option.Draw(animationPlayer);
 
-            animationPlayer.Play(TabHeaders);
-
-            foreach (SpriteFontTextObject tabHeaderText in TabHeaderTexts)
-                animationPlayer.Play(tabHeaderText);
-
-            animationPlayer.Play(TabsCursor);
+            TabBar.Draw(animationPlayer);
 
             if (ShowInfoText)
             {
