@@ -34,6 +34,17 @@ public static class Assets
     public const string ScrollBarBigTexture = "Rayman3/Menu/ScrollBarBig";
     public const string ScrollBarSmallTexture = "Rayman3/Menu/ScrollBarSmall";
     public const string ScrollBarThumbTexture = "Rayman3/Menu/ScrollBarThumb";
+    public const string TimeAttackClothTexture = "Rayman3/Menu/TimeAttackCloth";
+    public const string TimeAttackUserTimeIconTexture = "Rayman3/Menu/TimeAttackUserTimeIcon";
+
+    public const string BlankStarBigTexture = "Rayman3/TimeAttack/BlankStarBig";
+    public const string BlankStarSmallTexture = "Rayman3/TimeAttack/BlankStarSmall";
+    public const string BronzeStarBigTexture = "Rayman3/TimeAttack/BronzeStarBig";
+    public const string BronzeStarSmallTexture = "Rayman3/TimeAttack/BronzeStarSmall";
+    public const string GoldStarBigTexture = "Rayman3/TimeAttack/GoldStarBig";
+    public const string GoldStarSmallTexture = "Rayman3/TimeAttack/GoldStarSmall";
+    public const string SilverStarBigTexture = "Rayman3/TimeAttack/SilverStarBig";
+    public const string SilverStarSmallTexture = "Rayman3/TimeAttack/SilverStarSmall";
 
     public const string TitleScreenTexture = "Rayman3/TitleScreen/TitleScreen";
     public const string TitleScreenGBACloudsTexture = "Rayman3/TitleScreen/GBAClouds";

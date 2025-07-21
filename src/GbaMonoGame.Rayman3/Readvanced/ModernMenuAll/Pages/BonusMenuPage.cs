@@ -26,22 +26,12 @@ public class BonusMenuPage : MenuPage
                 // TODO: Implement
             }));
         AddOption(new BonusActionMenuOption(
-            text: "CHALLENGES",
-            collections:
-            [
-                new BonusActionMenuOption.Collection(Assets.SaveSlotTimeTexture, "3/10"),
-            ], 
-            action: () =>
-            {
-                // TODO: Implement
-            }));
-        AddOption(new BonusActionMenuOption(
             text: "TIME ATTACK",
             collections:
             [
-                new BonusActionMenuOption.Collection(Assets.SaveSlotTimeTexture, "40/45"),
-                new BonusActionMenuOption.Collection(Assets.SaveSlotTimeTexture, "25/45"),
-                new BonusActionMenuOption.Collection(Assets.SaveSlotTimeTexture, "2/45"),
+                new BonusActionMenuOption.Collection(Assets.BronzeStarSmallTexture, "25/28"),
+                new BonusActionMenuOption.Collection(Assets.SilverStarSmallTexture, "15/28"),
+                new BonusActionMenuOption.Collection(Assets.GoldStarSmallTexture, "2/28"),
             ], 
             action: () =>
             {

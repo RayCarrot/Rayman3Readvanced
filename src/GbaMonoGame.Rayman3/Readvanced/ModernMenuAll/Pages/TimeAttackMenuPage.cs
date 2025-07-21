@@ -1,9 +1,16 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
+// TODO:
+// - Set actual time requirements for each level.
+// - Show blank star icon if time is not reached.
+// - Don't allow selecting level if not finished in single player.
+// - Should the waterski levels be included? Should Ly's Punch Challenge be included?
+// - Show screenshot for each level.
 public class TimeAttackMenuPage : MenuPage
 {
     public TimeAttackMenuPage(ModernMenuAll menu) : base(menu) { }
@@ -16,7 +23,7 @@ public class TimeAttackMenuPage : MenuPage
         [
             MapId.WoodLight_M1,
             MapId.FairyGlade_M1,
-            //MapId.MarshAwakening1,
+            MapId.MarshAwakening1,
             MapId.BossMachine,
             MapId.SanctuaryOfBigTree_M1,
         ],
@@ -26,7 +33,7 @@ public class TimeAttackMenuPage : MenuPage
             MapId.CavesOfBadDreams_M1,
             MapId.BossBadDreams,
             MapId.MenhirHills_M1,
-            //MapId.MarshAwakening2,
+            MapId.MarshAwakening2,
         ],
         [
             MapId.SanctuaryOfStoneAndFire_M1,
@@ -50,9 +57,6 @@ public class TimeAttackMenuPage : MenuPage
             MapId.Bonus3,
             MapId.Bonus4,
             MapId._1000Lums,
-            //MapId.ChallengeLy1,
-            //MapId.ChallengeLy2,
-            //MapId.ChallengeLyGCN,
         ]
     ];
 
@@ -68,6 +72,19 @@ public class TimeAttackMenuPage : MenuPage
     public AnimatedObject WorldNameCanvas { get; set; }
     public SpriteTextObject WorldName { get; set; }
     public MenuHorizontalArrows WorldNameArrows { get; set; }
+
+    public SpriteTextureObject Cloth { get; set; }
+
+    public SpriteTextureObject BronzeTimeIcon { get; set; }
+    public SpriteTextureObject SilverTimeIcon { get; set; }
+    public SpriteTextureObject GoldTimeIcon { get; set; }
+    public SpriteTextureObject UserTimeIcon { get; set; }
+
+    public SpriteTextObject BronzeTime { get; set; }
+    public SpriteTextObject SilverTime { get; set; }
+    public SpriteTextObject GoldTime { get; set; }
+    public SpriteTextObject UserTime { get; set; }
+
     public SpriteFontTextObject GhostSelectionText { get; set; }
     public SpriteFontTextObject PlayText { get; set; }
 
@@ -132,13 +149,98 @@ public class TimeAttackMenuPage : MenuPage
             Width = 168
         };
 
+        Cloth = new SpriteTextureObject
+        {
+            BgPriority = 3,
+            ObjPriority = 0,
+            ScreenPos = new Vector2(195, 52),
+            RenderContext = RenderContext,
+            Texture = Engine.FrameContentManager.Load<Texture2D>(Assets.TimeAttackClothTexture)
+        };
+
+        BronzeTimeIcon = new SpriteTextureObject
+        {
+            BgPriority = 3,
+            ObjPriority = 0,
+            ScreenPos = Cloth.ScreenPos + new Vector2(9, 8),
+            RenderContext = RenderContext,
+            Texture = Engine.FrameContentManager.Load<Texture2D>(Assets.BronzeStarSmallTexture)
+        };
+
+        SilverTimeIcon = new SpriteTextureObject
+        {
+            BgPriority = 3,
+            ObjPriority = 0,
+            ScreenPos = BronzeTimeIcon.ScreenPos + new Vector2(0, 18),
+            RenderContext = RenderContext,
+            Texture = Engine.FrameContentManager.Load<Texture2D>(Assets.SilverStarSmallTexture)
+        };
+
+        GoldTimeIcon = new SpriteTextureObject
+        {
+            BgPriority = 3,
+            ObjPriority = 0,
+            ScreenPos = SilverTimeIcon.ScreenPos + new Vector2(0, 18),
+            RenderContext = RenderContext,
+            Texture = Engine.FrameContentManager.Load<Texture2D>(Assets.GoldStarSmallTexture)
+        };
+
+        UserTimeIcon = new SpriteTextureObject
+        {
+            BgPriority = 3,
+            ObjPriority = 0,
+            ScreenPos = SilverTimeIcon.ScreenPos + new Vector2(75, 0),
+            RenderContext = RenderContext,
+            Texture = Engine.FrameContentManager.Load<Texture2D>(Assets.TimeAttackUserTimeIconTexture)
+        };
+
+        BronzeTime = new SpriteTextObject
+        {
+            BgPriority = 3,
+            ObjPriority = 0,
+            ScreenPos = BronzeTimeIcon.ScreenPos + new Vector2(20, 0),
+            RenderContext = RenderContext,
+            Text = $"{Random.GetNumber(4):00}:{Random.GetNumber(60):00}.{Random.GetNumber(100):00}",
+            Color = TextColor.TextBox,
+        };
+
+        SilverTime = new SpriteTextObject
+        {
+            BgPriority = 3,
+            ObjPriority = 0,
+            ScreenPos = SilverTimeIcon.ScreenPos + new Vector2(20, 0),
+            RenderContext = RenderContext,
+            Text = $"{Random.GetNumber(4):00}:{Random.GetNumber(60):00}.{Random.GetNumber(100):00}",
+            Color = TextColor.TextBox,
+        };
+
+        GoldTime = new SpriteTextObject
+        {
+            BgPriority = 3,
+            ObjPriority = 0,
+            ScreenPos = GoldTimeIcon.ScreenPos + new Vector2(20, 0),
+            RenderContext = RenderContext,
+            Text = $"{Random.GetNumber(4):00}:{Random.GetNumber(60):00}.{Random.GetNumber(100):00}",
+            Color = TextColor.TextBox,
+        };
+
+        UserTime = new SpriteTextObject
+        {
+            BgPriority = 3,
+            ObjPriority = 0,
+            ScreenPos = UserTimeIcon.ScreenPos + new Vector2(17, 0),
+            RenderContext = RenderContext,
+            Text = $"{Random.GetNumber(4):00}:{Random.GetNumber(60):00}.{Random.GetNumber(100):00}",
+            Color = TextColor.TextBox,
+        };
+
         GhostSelectionText = new SpriteFontTextObject
         {
             BgPriority = 3,
             ObjPriority = 0,
             ScreenPos = GetOptionPosition(LevelOptionsBaseIndex) + new Vector2(0, 13 * GhostSelectionTextScale),
             RenderContext = RenderContext,
-            Text = "NO GHOST",
+            Text = "GHOST: NONE",
             AffineMatrix = new AffineMatrix(0, new Vector2(GhostSelectionTextScale), false, false),
             Font = ReadvancedFonts.MenuYellow,
         };
@@ -185,6 +287,7 @@ public class TimeAttackMenuPage : MenuPage
                 {
                     HasSelectedLevel = true;
                     Menu.SetCursorTarget(LevelOptionsBaseIndex + 1);
+                    WorldNameArrows.Pause();
                 });
             }
             else if (JoyPad.IsButtonJustPressed(GbaInput.B))
@@ -194,15 +297,18 @@ public class TimeAttackMenuPage : MenuPage
         }
         else
         {
+            // TODO: Implement setting ghost
+
             if (JoyPad.IsButtonJustPressed(GbaInput.A))
             {
-
+                // TODO: Implement
             }
             else if (JoyPad.IsButtonJustPressed(GbaInput.B))
             {
                 HasSelectedLevel = false;
                 SetSelectedOption(SelectedOption, playSound: false, forceUpdate: true);
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
+                WorldNameArrows.Resume();
             }
         }
     }
@@ -212,8 +318,19 @@ public class TimeAttackMenuPage : MenuPage
         DrawOptions(animationPlayer);
         animationPlayer.Play(WorldNameCanvas);
         animationPlayer.Play(WorldName);
-
         WorldNameArrows.Draw(animationPlayer);
+
+        animationPlayer.Play(Cloth);
+
+        animationPlayer.Play(BronzeTimeIcon);
+        animationPlayer.Play(SilverTimeIcon);
+        animationPlayer.Play(GoldTimeIcon);
+        animationPlayer.Play(UserTimeIcon);
+
+        animationPlayer.Play(BronzeTime);
+        animationPlayer.Play(SilverTime);
+        animationPlayer.Play(GoldTime);
+        animationPlayer.Play(UserTime);
 
         if (HasSelectedLevel)
         {

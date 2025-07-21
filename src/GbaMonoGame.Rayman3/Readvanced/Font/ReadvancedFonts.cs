@@ -44,7 +44,7 @@ public static class ReadvancedFonts
         ['7'] = new(new Rectangle(80, 28, 8, 13), renderOffset: new Vector2(0, 1)),
         ['8'] = new(new Rectangle(93, 28, 8, 12)),
         ['9'] = new(new Rectangle(106, 28, 8, 12)),
-        [':'] = new(new Rectangle(118, 30, 5, 10), layoutStartOffset: 1),
+        [':'] = new(new Rectangle(118, 30, 5, 10)),
         [';'] = new(new Rectangle(127, 30, 5, 12), renderOffset: new Vector2(0, 2)),
         ['<'] = new(new Rectangle(136, 31, 7, 8), renderOffset: new Vector2(0, -1)),
         ['='] = new(new Rectangle(147, 31, 8, 7), renderOffset: new Vector2(0, -2)),

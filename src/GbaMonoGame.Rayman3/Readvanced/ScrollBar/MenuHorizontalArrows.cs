@@ -41,6 +41,18 @@ public class MenuHorizontalArrows
     public Vector2 Position { get; set; }
     public float Width { get; set; }
 
+    public void Pause()
+    {
+        ArrowLeft.Pause();
+        ArrowRight.Pause();
+    }
+
+    public void Resume()
+    {
+        ArrowLeft.Resume();
+        ArrowRight.Resume();
+    }
+
     public void Start()
     {
         // Start arrow animations on frame 4 since it looks nicer
