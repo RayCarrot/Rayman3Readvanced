@@ -34,9 +34,9 @@ public abstract class MenuPage
     public virtual bool HasScrollBar => false;
     public virtual MenuScrollBarSize ScrollBarSize => MenuScrollBarSize.Big;
     
-    private Vector2 GetOptionPosition(int index) => new(75, 54 + LineHeight * index);
+    protected Vector2 GetOptionPosition(int index) => new(75, 54 + LineHeight * index);
 
-    private void UpdateOptionPositions()
+    protected void UpdateOptionPositions()
     {
         int index = 0;
         foreach (MenuOption option in Options.Skip(ScrollOffset).Take(MaxOptions))

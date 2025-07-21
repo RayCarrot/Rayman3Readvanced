@@ -45,7 +45,7 @@ public class BonusMenuPage : MenuPage
             ], 
             action: () =>
             {
-                // TODO: Implement
+                Menu.ChangePage(new TimeAttackMenuPage(Menu), NewPageMode.Next);
             }));
         AddOption(new TextMenuOption("LEVEL EDITOR"));
         AddOption(new TextMenuOption("SAVE TRANSFER"));
