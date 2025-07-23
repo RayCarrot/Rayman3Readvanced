@@ -2,6 +2,7 @@ using System;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
@@ -5052,6 +5053,39 @@ public partial class Rayman
 
             case FsmAction.Step:
                 if (IsActionFinished)
+                {
+                    State.MoveTo(Fsm_Default);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
+
+        return true;
+    }
+
+    // Custom
+    public bool Fsm_TimeAttackStart(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                CameraSideScroller cam = (CameraSideScroller)Scene.Camera;
+                cam.HorizontalOffset = GameInfo.MapId == MapId.TheCanopy_M2 ? CameraOffset.Center : CameraOffset.Default;
+                cam.ProcessMessage(this, Message.Cam_ResetUnknownMode);
+                break;
+
+            case FsmAction.Step:
+                if (ActionId is not (Action.Idle_ReadyToFight_Right or Action.Idle_ReadyToFight_Left))
+                {
+                    ActionId = IsFacingRight ? Action.Idle_ReadyToFight_Right : Action.Idle_ReadyToFight_Left;
+                    ChangeAction();
+                }
+
+                if (TimeAttackInfo.Mode == TimeAttackMode.Play)
                 {
                     State.MoveTo(Fsm_Default);
                     return false;

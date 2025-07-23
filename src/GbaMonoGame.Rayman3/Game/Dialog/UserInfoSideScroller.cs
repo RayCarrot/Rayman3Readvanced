@@ -1,6 +1,7 @@
 ﻿using System;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -42,6 +43,13 @@ public class UserInfoSideScroller : Dialog
             MapId.BossScaleMan or
             MapId.BossFinal_M1 or
             MapId.BossFinal_M2)
+        {
+            GetLumsBar().Disable();
+            CagesBar.Disable();
+        }
+
+        // Disable lums and cages bars in time attack
+        if (TimeAttackInfo.IsActive)
         {
             GetLumsBar().Disable();
             CagesBar.Disable();

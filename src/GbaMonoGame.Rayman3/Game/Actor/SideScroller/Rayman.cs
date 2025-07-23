@@ -5,6 +5,7 @@ using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 using ImGuiNET;
 
 namespace GbaMonoGame.Rayman3;
@@ -195,7 +196,10 @@ public sealed partial class Rayman : MovableActor
         LastSafePositionBuffer = new SafePosition[10];
         LastSafePositionBufferIndex = 0;
 
-        State.SetTo(Fsm_LevelStart);
+        if (TimeAttackInfo.IsActive)
+            State.SetTo(Fsm_TimeAttackStart);
+        else
+            State.SetTo(Fsm_LevelStart);
     }
 
     public ActorResource Resource { get; }
