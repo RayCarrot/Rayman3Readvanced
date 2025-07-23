@@ -20,7 +20,7 @@ public partial class LavaFall
 
                 if (Scene.IsHitMainActor(this))
                 {
-                    if (!Engine.Config.Difficulty.NoInstaKills)
+                    if (!Engine.ActiveConfig.Difficulty.NoInstaKills)
                     {
                         Scene.MainActor.ProcessMessage(this, Message.Actor_Explode);
                     }

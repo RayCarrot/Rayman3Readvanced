@@ -70,7 +70,7 @@ public abstract class GbaGame : Game
         // Load the game
         LoadGame();
 
-        if (Engine.Config.Debug.DebugModeEnabled)
+        if (Engine.ActiveConfig.Debug.DebugModeEnabled)
         {
             // Load the debug layout
             if (_debugLayout == null)
@@ -189,7 +189,7 @@ public abstract class GbaGame : Game
         Engine.LoadConfig();
 
         // Create the logger window now so we can start receiving logs during initialization
-        if (Engine.Config.Debug.DebugModeEnabled)
+        if (Engine.ActiveConfig.Debug.DebugModeEnabled)
             _loggerWindow = new LoggerDebugWindow();
 
         // Load the engine
@@ -201,7 +201,7 @@ public abstract class GbaGame : Game
         // Load the renderer
         _gfxRenderer = new GfxRenderer(GraphicsDevice);
 
-        if (Engine.Config.Debug.DebugModeEnabled)
+        if (Engine.ActiveConfig.Debug.DebugModeEnabled)
             _debugGameRenderTarget = new GameRenderTarget(GraphicsDevice, Engine.GameViewPort);
     }
 
@@ -254,7 +254,7 @@ public abstract class GbaGame : Game
             Pause();
         }
 
-        if (Engine.Config.Debug.DebugModeEnabled)
+        if (Engine.ActiveConfig.Debug.DebugModeEnabled)
         {
             // Toggle debug mode
             if (InputManager.IsButtonJustPressed(Input.Debug_ToggleDebugMode) && _debugLayout != null)
@@ -316,12 +316,12 @@ public abstract class GbaGame : Game
 
         if (!DebugMode && 
             (Engine.GameWindow.GetResolution() != _prevWindowResolution || 
-             Engine.Config.Tweaks.InternalGameResolution != _prevInternalResolution || 
-             Engine.Config.Display.LockWindowAspectRatio != _prevLockWindowAspectRatio))
+             Engine.ActiveConfig.Tweaks.InternalGameResolution != _prevInternalResolution || 
+             Engine.LocalConfig.Display.LockWindowAspectRatio != _prevLockWindowAspectRatio))
         {
             Point newRes = Engine.GameWindow.GetResolution();
             
-            if (Engine.Config.Display.LockWindowAspectRatio && Engine.GameWindow.IsResizable())
+            if (Engine.LocalConfig.Display.LockWindowAspectRatio && Engine.GameWindow.IsResizable())
             {
                 Vector2 resolution = Engine.InternalGameResolution;
 
@@ -334,7 +334,7 @@ public abstract class GbaGame : Game
 
             _prevWindowResolution = newRes;
             _prevInternalResolution = Engine.InternalGameResolution;
-            _prevLockWindowAspectRatio = Engine.Config.Display.LockWindowAspectRatio;
+            _prevLockWindowAspectRatio = Engine.LocalConfig.Display.LockWindowAspectRatio;
 
             Engine.GameViewPort.Resize(Engine.GameWindow.GetResolution().ToVector2());
         }

@@ -42,7 +42,7 @@ public class EchoingCaves_M1 : FrameSideScroller
 
     private Vector2 GetCameraRelativePos(bool isGate)
     {
-        if (Engine.Config.Tweaks.FixBugs)
+        if (Engine.ActiveConfig.Tweaks.FixBugs)
         {
             if (isGate)
                 return -new Vector2(Scene.Resolution.X / 2, Scene.Resolution.Y * (3 / 4f));

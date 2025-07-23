@@ -56,7 +56,7 @@ public static class InputManager
             _ => throw new ArgumentOutOfRangeException(nameof(input), input, null)
         };
     }
-    public static Keys GetKey(Input input) => Engine.Config.Controls.Controls[input];
+    public static Keys GetKey(Input input) => Engine.LocalConfig.Controls.Controls[input];
     public static GbaInput GetGbaInput(Input input) => _gbaInputMapping[input];
     public static bool TryGetGbaInput(Input input, out GbaInput gbaInput) => _gbaInputMapping.TryGetValue(input, out gbaInput);
 

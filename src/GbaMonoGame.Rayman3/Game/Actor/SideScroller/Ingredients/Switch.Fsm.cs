@@ -60,7 +60,7 @@ public partial class Switch
                 else if (GameInfo.MapId == MapId.BeneathTheSanctuary_M1)
                 {
                     // Trigger captor when switch is hit
-                    if (Rom.Platform == Platform.NGage && Engine.Config.Tweaks.FixBugs)
+                    if (Rom.Platform == Platform.NGage && Engine.ActiveConfig.Tweaks.FixBugs)
                     {
                         // Fix object IDs to match on N-Gage
                         switch (InstanceId)

@@ -19,7 +19,22 @@ public static class Engine
 
     #region Properties
 
-    public static GameConfig Config { get; private set; }
+    /// <summary>
+    /// The full, local, game config. Avoid using this to read the config as the <see cref="ActiveConfig"/>
+    /// may be overriden and temporarily contain a different config.
+    /// </summary>
+    public static LocalGameConfig LocalConfig { get; private set; }
+
+    /// <summary>
+    /// The currently active game config. This is either the same as <see cref="LocalConfig"/> or a
+    /// temporarily overriden config.
+    /// </summary>
+    public static ActiveGameConfig ActiveConfig { get; private set; }
+
+    /// <summary>
+    /// Indicates if the game config has been overriden.
+    /// </summary>
+    public static bool IsConfigOverrided { get; private set; }
 
     public static bool IsLoading { get; set; }
 
@@ -78,9 +93,11 @@ public static class Engine
     public static void LoadConfig()
     {
         string filePath = FileManager.GetDataFile(ConfigFileName);
-        GameConfig config = new();
+        LocalGameConfig config = new();
         config.Serialize(new IniDeserializer(filePath));
-        Config = config;
+        LocalConfig = config;
+        
+        RestoreActiveConfig();
 
         // If the internal resolution is null then we default to the original resolution
         if (config.Tweaks.InternalGameResolution == null)
@@ -93,8 +110,26 @@ public static class Engine
     {
         string filePath = FileManager.GetDataFile(ConfigFileName);
         IniSerializer serializer = new();
-        Config.Serialize(serializer);
+        LocalConfig.Serialize(serializer);
         serializer.Save(filePath);
+    }
+
+    public static void OverrideActiveConfig(ActiveGameConfig activeGameConfig)
+    {
+        ActiveConfig = activeGameConfig;
+        IsConfigOverrided = true;
+    }
+
+    public static void RestoreActiveConfig()
+    {
+        ActiveConfig = new ActiveGameConfig(LocalConfig.Tweaks, LocalConfig.Difficulty, LocalConfig.Debug);
+        IsConfigOverrided = false;
+    }
+
+    public static void SetInternalGameResolution(Vector2 resolution)
+    {
+        InternalGameResolution = resolution;
+        GameViewPort.UpdateRenderBox();
     }
 
     public static void Init(GbaGame gbaGame, GbaGameWindow gameWindow, Frame initialFrame)

@@ -1,6 +1,6 @@
 namespace GbaMonoGame;
 
-public class SoundGameConfig : IniSectionObject
+public record SoundGameConfig : IniSectionObject
 {
     public SoundGameConfig()
     {

@@ -1,6 +1,6 @@
 namespace GbaMonoGame;
 
-public class TweaksGameConfig : IniSectionObject
+public record TweaksGameConfig : IniSectionObject
 {
     public TweaksGameConfig()
     {

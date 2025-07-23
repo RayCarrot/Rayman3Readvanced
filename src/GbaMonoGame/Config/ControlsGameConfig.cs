@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GbaMonoGame;
 
-public class ControlsGameConfig : IniSectionObject
+public record ControlsGameConfig : IniSectionObject
 {
     public ControlsGameConfig()
     {

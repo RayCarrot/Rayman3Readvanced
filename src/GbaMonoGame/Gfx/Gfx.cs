@@ -77,7 +77,7 @@ public static class Gfx
 
     private static void DrawFade(GfxRenderer renderer)
     {
-        if ((!Rom.IsLoaded || Rom.Platform == Platform.GBA || Engine.Config.Tweaks.UseGbaEffectsOnNGage) && 
+        if ((!Rom.IsLoaded || Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage) && 
             FadeControl.Mode != FadeMode.None && 
             Fade is > 0 and <= 1)
         {
@@ -143,7 +143,7 @@ public static class Gfx
     public static void Draw(GfxRenderer renderer)
     {
         // Draw clear color on GBA
-        if (Rom.IsLoaded && (Rom.Platform == Platform.GBA || Engine.Config.Tweaks.UseGbaEffectsOnNGage))
+        if (Rom.IsLoaded && (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage))
         {
             renderer.BeginSpriteRender(new RenderOptions()
             {
@@ -177,7 +177,7 @@ public static class Gfx
             DrawFade(renderer);
 
         // Draw the screen effect on GBA if there is one
-        if (Rom.IsLoaded && (Rom.Platform == Platform.GBA || Engine.Config.Tweaks.UseGbaEffectsOnNGage))
+        if (Rom.IsLoaded && (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage))
             ScreenEffect?.Draw(renderer);
     }
 }

@@ -90,7 +90,7 @@ public partial class SamMode7
                 }
 
                 // NOTE: This cheat is normally only in the game prototypes
-                if (Engine.Config.Tweaks.AllowPrototypeCheats && JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.L))
+                if (Engine.ActiveConfig.Tweaks.AllowPrototypeCheats && JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.L))
                 {
                     State.MoveTo(Fsm_End);
                     return false;

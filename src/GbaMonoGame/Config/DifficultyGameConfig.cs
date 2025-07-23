@@ -1,6 +1,6 @@
 namespace GbaMonoGame;
 
-public class DifficultyGameConfig : IniSectionObject
+public record DifficultyGameConfig : IniSectionObject
 {
     public DifficultyGameConfig()
     {

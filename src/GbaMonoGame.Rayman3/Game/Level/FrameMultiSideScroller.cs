@@ -86,7 +86,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         UserInfo = new UserInfoMulti2D(Scene);
         Scene.AddDialog(UserInfo, false, false);
 
-        PauseDialog = Engine.Config.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, false) : new PauseDialog(Scene);
+        PauseDialog = Engine.ActiveConfig.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, false) : new PauseDialog(Scene);
 
         Scene.Init();
 
@@ -302,7 +302,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         UserInfo.Draw(Scene.AnimationPlayer);
 
         // NOTE: It's probably an oversight in the original game to still animate tiles even when paused
-        if (!Engine.Config.Tweaks.FixBugs)
+        if (!Engine.ActiveConfig.Tweaks.FixBugs)
             Scene.Playfield.Step();
 
         Scene.AnimationPlayer.Execute();

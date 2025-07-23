@@ -21,7 +21,7 @@ public class WoodLight_M2 : FrameSideScroller
 
         Scene.AddDialog(new TextBoxDialog(Scene), false, false);
 
-        if (Rom.Platform == Platform.GBA || Engine.Config.Tweaks.UseGbaEffectsOnNGage)
+        if (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage)
         {
             TgxTileLayer cloudsLayer = ((TgxPlayfield2D)Scene.Playfield).TileLayers[0];
             TextureScreenRenderer renderer = (TextureScreenRenderer)cloudsLayer.Screen.Renderer;

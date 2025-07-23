@@ -15,7 +15,7 @@ public class BeneathTheSanctuary_M1 : FrameSideScroller
         // do this since the trigger code in the Switch actor uses the wrong object IDs, but that
         // causes an oversight where the captor with ID 132 remains active, even though it should be
         // unused as it's not connected to a switch.
-        if (Rom.Platform == Platform.GBA || Engine.Config.Tweaks.FixBugs)
+        if (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.FixBugs)
         {
             Scene.GetGameObject(129).ProcessMessage(this, Message.Destroy);
             Scene.GetGameObject(130).ProcessMessage(this, Message.Destroy);

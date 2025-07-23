@@ -18,8 +18,6 @@ public class LyTimerDialog : Dialog
         TimerBar.Set();
     }
 
-    public override void Init() { }
-
     public override void Draw(AnimationPlayer animationPlayer)
     {
         TimerBar.DrawTime(animationPlayer, GameInfo.RemainingTime);

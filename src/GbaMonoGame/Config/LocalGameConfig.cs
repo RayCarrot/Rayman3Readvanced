@@ -1,6 +1,6 @@
 namespace GbaMonoGame;
 
-public class GameConfig
+public class LocalGameConfig
 {
     public GeneralGameConfig General { get; set; } = new();
     public DisplayGameConfig Display { get; set; } = new();

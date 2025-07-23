@@ -36,7 +36,7 @@ public class Scene2D
 
         // The game does this ugly hack here to disable background scrolling in Cave of Bad Dreams 1. This was added late during
         // development and the reason is unknown. We'll ignore this if set to fix bugs since this seems unnecessary.
-        if (id == 11 && !Engine.Config.Tweaks.FixBugs)
+        if (id == 11 && !Engine.ActiveConfig.Tweaks.FixBugs)
             ((TgxPlayfield2D)Playfield).Camera.GetCluster(1).ScrollFactor = Vector2.Zero;
 
         Camera.SetFirstPosition();
@@ -158,7 +158,7 @@ public class Scene2D
         KnotManager.AddPendingProjectiles();
 
         // Toggle showing debug boxes
-        if (Engine.Config.Debug.DebugModeEnabled && InputManager.IsButtonJustPressed(Input.Debug_ToggleDisplayBoxes))
+        if (Engine.ActiveConfig.Debug.DebugModeEnabled && InputManager.IsButtonJustPressed(Input.Debug_ToggleDisplayBoxes))
             ShowDebugBoxes = !ShowDebugBoxes;
 
         // Draw debug boxes

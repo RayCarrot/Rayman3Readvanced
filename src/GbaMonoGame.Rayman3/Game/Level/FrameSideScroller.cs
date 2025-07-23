@@ -156,7 +156,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.AddDialog(UserInfo, false, false);
 
         // Create pause dialog, but don't add yet
-        PauseDialog = Engine.Config.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, true) : new PauseDialog(Scene);
+        PauseDialog = Engine.ActiveConfig.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, true) : new PauseDialog(Scene);
 
         Scene.Init();
         Scene.Playfield.Step();
@@ -231,11 +231,11 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         }
 
         // NOTE: This cheat is normally only in the game prototypes
-        if (Engine.Config.Tweaks.AllowPrototypeCheats && JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.L))
+        if (Engine.ActiveConfig.Tweaks.AllowPrototypeCheats && JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.L))
             Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
 
         // NOTE: This cheat is normally only in the game prototypes
-        if (Engine.Config.Tweaks.AllowPrototypeCheats && JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.R))
+        if (Engine.ActiveConfig.Tweaks.AllowPrototypeCheats && JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.R))
             GameInfo.EnableCheat(Scene, Cheat.Invulnerable);
     }
 
@@ -294,7 +294,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
             UserInfo.Draw(Scene.AnimationPlayer);
         
         // NOTE: It's probably an oversight in the original game to still animate tiles even when paused
-        if (!Engine.Config.Tweaks.FixBugs)
+        if (!Engine.ActiveConfig.Tweaks.FixBugs)
             Scene.Playfield.Step();
         
         Scene.AnimationPlayer.Execute();

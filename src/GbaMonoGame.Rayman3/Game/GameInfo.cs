@@ -107,9 +107,9 @@ public static class GameInfo
         SaveGameManager.SaveSlot(saveSlot, PersistentInfo);
 
         if (Rom.Platform == Platform.GBA)
-            Engine.Config.General.LastPlayedGbaSaveSlot = CurrentSlot;
+            Engine.LocalConfig.General.LastPlayedGbaSaveSlot = CurrentSlot;
         else if (Rom.Platform == Platform.NGage)
-            Engine.Config.General.LastPlayedNGageSaveSlot = CurrentSlot;
+            Engine.LocalConfig.General.LastPlayedNGageSaveSlot = CurrentSlot;
         else
             throw new UnsupportedPlatformException();
     }
@@ -735,7 +735,7 @@ public static class GameInfo
         }
 
         // Don't allow losing lives if the infinite lives option is enabled
-        if (Engine.Config.Difficulty.InfiniteLives && change < 0)
+        if (Engine.ActiveConfig.Difficulty.InfiniteLives && change < 0)
             return;
 
         int newCount = PersistentInfo.Lives + change;

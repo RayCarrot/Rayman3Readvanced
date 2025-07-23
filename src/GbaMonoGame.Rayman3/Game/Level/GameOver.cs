@@ -214,7 +214,7 @@ public class GameOver : Frame
         Timer = 0x3c;
 
         // NOTE: Since there's no fade-in it means it will take 1 frame for the sprites to show. Optionally fix by rendering now.
-        if (Engine.Config.Tweaks.FixBugs)
+        if (Engine.ActiveConfig.Tweaks.FixBugs)
         {
             AnimationPlayer.Play(Butterfly1);
             AnimationPlayer.Play(Butterfly2);

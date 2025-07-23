@@ -55,7 +55,7 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
         Scene = new Scene2D((int)GameInfo.MapId, x => new CameraMode7(x), 3, 1);
 
         // Create pause dialog, but don't add yet
-        PauseDialog = Engine.Config.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, true) : new PauseDialog(Scene);
+        PauseDialog = Engine.ActiveConfig.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, true) : new PauseDialog(Scene);
 
         Scene.Init();
         Scene.Playfield.Step();
@@ -141,7 +141,7 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
     // TODO: Fix bumper positions so they don't overlap with walls
     protected void AddWalls(Point wallPoint, Point wallSize)
     {
-        if (!Engine.Config.Tweaks.ShowMode7Walls)
+        if (!Engine.ActiveConfig.Tweaks.ShowMode7Walls)
             return;
 
         // Create the renderer
@@ -283,7 +283,7 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
             UserInfo.Draw(Scene.AnimationPlayer);
 
         // NOTE: It's probably an oversight in the original game to still animate tiles even when paused
-        if (!Engine.Config.Tweaks.FixBugs)
+        if (!Engine.ActiveConfig.Tweaks.FixBugs)
             Scene.Playfield.Step();
 
         Scene.AnimationPlayer.Execute();

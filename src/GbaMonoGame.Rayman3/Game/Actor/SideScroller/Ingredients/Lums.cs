@@ -31,7 +31,7 @@ public sealed partial class Lums : BaseActor
 
                     if (GameInfo.IsLumDead(LumId, GameInfo.MapId))
                     {
-                        if (!Engine.Config.Tweaks.ShowCollectedLums)
+                        if (!Engine.ActiveConfig.Tweaks.ShowCollectedLums)
                         {
                             ProcessMessage(this, Message.Destroy);
                         }
@@ -83,7 +83,7 @@ public sealed partial class Lums : BaseActor
             {
                 LumId = GameInfo.GetGreenLumsId();
 
-                if (GameInfo.IsGreenLumDead(LumId) || Engine.Config.Difficulty.NoCheckpoints)
+                if (GameInfo.IsGreenLumDead(LumId) || Engine.ActiveConfig.Difficulty.NoCheckpoints)
                     ProcessMessage(this, Message.Destroy);
             }
         }

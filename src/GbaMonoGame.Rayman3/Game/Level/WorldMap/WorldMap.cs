@@ -242,7 +242,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
         Point size = lightningRenderer.Texture.Bounds.Size;
 
-        if (Rom.Platform == Platform.GBA || Engine.Config.Tweaks.UseGbaEffectsOnNGage)
+        if (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage)
         {
             // NOTE: The game only does this if ScrollX > 152, but we can ignore that
 
@@ -641,7 +641,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         WorldNameAlpha = 0;
         EnterWorldStep = 0;
 
-        if (Rom.Platform == Platform.GBA || Engine.Config.Tweaks.UseGbaEffectsOnNGage)
+        if (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage)
             LightningCountdown = 0;
 
         FullWorldName.GbaAlpha = WorldNameAlpha;
@@ -733,7 +733,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         ((TgxPlayfield2D)Scene.Playfield).RenderContext.MaxResolution = maxRes;
 
         // Create pause dialog, but don't add yet
-        PauseDialog = Engine.Config.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, false) : new PauseDialog(Scene);
+        PauseDialog = Engine.ActiveConfig.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, false) : new PauseDialog(Scene);
 
         Scene.Init();
         Scene.Playfield.Step();
@@ -1557,7 +1557,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             UserInfo.Draw(Scene.AnimationPlayer);
 
         // NOTE: It's probably an oversight in the original game to still animate tiles even when paused
-        if (!Engine.Config.Tweaks.FixBugs)
+        if (!Engine.ActiveConfig.Tweaks.FixBugs)
             Scene.Playfield.Step();
 
         Scene.AnimationPlayer.Execute();

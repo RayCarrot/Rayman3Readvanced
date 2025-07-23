@@ -356,7 +356,7 @@ public partial class PauseDialog : Dialog
 
             // NOTE: The game adds 30 pixel padding to fix FrameChannelSprite not updating when in delay mode
             Box canvasRenderBox = Canvas.RenderBox;
-            if (!Engine.Config.Tweaks.FixBugs)
+            if (!Engine.ActiveConfig.Tweaks.FixBugs)
                 canvasRenderBox.Top -= 30;
             Canvas.FrameChannelSprite(Canvas.ScreenPos, canvasRenderBox);
 

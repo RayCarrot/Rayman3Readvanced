@@ -1,6 +1,6 @@
 namespace GbaMonoGame;
 
-public abstract class IniSectionObject
+public abstract record IniSectionObject
 {
     public abstract string SectionKey { get; }
 

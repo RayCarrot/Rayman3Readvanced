@@ -360,9 +360,9 @@ public class GbaSoundEventsManager : SoundEventsManager
         vol *= GetVolumeForType(songInstance.SoundType) / SoundEngineInterface.MaxVolume;
 
         if (songInstance.SoundType == SoundType.Sfx)
-            vol *= Engine.Config.Sound.SfxVolume;
+            vol *= Engine.LocalConfig.Sound.SfxVolume;
         else if (songInstance.SoundType == SoundType.Music)
-            vol *= Engine.Config.Sound.MusicVolume;
+            vol *= Engine.LocalConfig.Sound.MusicVolume;
 
         if (songInstance.Volume != vol || songInstance.Pan != pan)
         {
@@ -520,7 +520,7 @@ public class GbaSoundEventsManager : SoundEventsManager
     {
         foreach (SongInstance playingSong in _songInstances)
         {
-            if (Engine.Config.Sound.PlayMusicWhenPaused != true || playingSong.SoundType == SoundType.Sfx)
+            if (Engine.LocalConfig.Sound.PlayMusicWhenPaused != true || playingSong.SoundType == SoundType.Sfx)
             {
                 playingSong.StopIfNotLooping = true; // Not actually set here, but always set alongside PauseAll, so might as well do it here
                 playingSong.InGamePaused = true;

@@ -35,7 +35,7 @@ public class EchoingCaves_M2 : FrameSideScroller
         Scene.AddDialog(UserInfo, false, false);
 
         // Create pause dialog, but don't add yet
-        PauseDialog = Engine.Config.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, true) : new PauseDialog(Scene);
+        PauseDialog = Engine.ActiveConfig.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, true) : new PauseDialog(Scene);
 
         Scene.Init();
         Scene.Playfield.Step();
@@ -101,7 +101,7 @@ public class EchoingCaves_M2 : FrameSideScroller
         if (time == LightningTime)
         {
             // N-Gage doesn't hide the background due to the brightness effect not being implemented
-            if (Rom.Platform == Platform.GBA || Engine.Config.Tweaks.UseGbaEffectsOnNGage)
+            if (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage)
                 bgScreen.IsEnabled = false;
 
             Gfx.FadeControl = new FadeControl(FadeMode.BrightnessIncrease);

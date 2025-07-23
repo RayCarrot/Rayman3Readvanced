@@ -142,7 +142,7 @@ public partial class Machine
                     scale = MathHelpers.FromFixedPoint(0x10000);
 
                 // The original game has a bug where it doesn't set the scale for the small cog
-                if (Engine.Config.Tweaks.FixBugs && BossHealth is not (2 or 3))
+                if (Engine.ActiveConfig.Tweaks.FixBugs && BossHealth is not (2 or 3))
                     scale = MathHelpers.FromFixedPoint(0x15000);
 
                 AnimatedObject.AffineMatrix = new AffineMatrix(Rotation, scale, scale);

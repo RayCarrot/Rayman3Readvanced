@@ -212,7 +212,7 @@ public class KnotManager
             }
         }
 
-        if (allowAddWhenNeeded && Engine.Config.Tweaks.AddProjectilesWhenNeeded)
+        if (allowAddWhenNeeded && Engine.ActiveConfig.Tweaks.AddProjectilesWhenNeeded)
         {
             // Custom code to remove the limit of only spawning already allocated projectiles. This is needed if the game runs
             // at a higher resolution as it might need more projectiles to be active at the same time due to more actors being

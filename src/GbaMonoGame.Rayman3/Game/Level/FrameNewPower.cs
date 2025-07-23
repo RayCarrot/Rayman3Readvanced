@@ -83,7 +83,7 @@ public class FrameNewPower : Frame, IHasScene, IHasPlayfield
 
         if (GameInfo.MapId == MapId.Power1)
         {
-            if (Rom.Platform == Platform.GBA || Engine.Config.Tweaks.UseGbaEffectsOnNGage)
+            if (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage)
             {
                 TgxTileLayer cloudsLayer = ((TgxPlayfield2D)Scene.Playfield).TileLayers[0];
                 TextureScreenRenderer renderer = (TextureScreenRenderer)cloudsLayer.Screen.Renderer;

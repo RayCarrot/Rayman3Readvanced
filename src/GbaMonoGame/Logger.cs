@@ -15,28 +15,28 @@ public static class Logger
     [StringFormatMethod("message")]
     public static void NotImplemented(string message, params object[] args)
     {
-        if (Engine.Config?.Debug.DebugModeEnabled == true)
+        if (Engine.ActiveConfig?.Debug.DebugModeEnabled == true)
             OnLog(new LogEventArgs(message, args, LogType.NotImplemented));
     }
 
     [StringFormatMethod("message")]
     public static void Debug(string message, params object[] args)
     {
-        if (Engine.Config?.Debug.DebugModeEnabled == true)
+        if (Engine.ActiveConfig?.Debug.DebugModeEnabled == true)
             OnLog(new LogEventArgs(message, args, LogType.Debug));
     }
 
     [StringFormatMethod("message")]
     public static void Info(string message, params object[] args)
     {
-        if (Engine.Config?.Debug.DebugModeEnabled == true)
+        if (Engine.ActiveConfig?.Debug.DebugModeEnabled == true)
             OnLog(new LogEventArgs(message, args, LogType.Info));
     }
 
     [StringFormatMethod("message")]
     public static void Error(string message, params object[] args)
     {
-        if (Engine.Config?.Debug.DebugModeEnabled == true)
+        if (Engine.ActiveConfig?.Debug.DebugModeEnabled == true)
             OnLog(new LogEventArgs(message, args, LogType.Error));
     }
 

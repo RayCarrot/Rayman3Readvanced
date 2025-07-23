@@ -2184,7 +2184,7 @@ public partial class MenuAll
             if (Rom.Platform == Platform.NGage && false)
             {
                 NextStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;
-                CurrentStepAction = Engine.Config.Tweaks.FixBugs
+                CurrentStepAction = Engine.ActiveConfig.Tweaks.FixBugs
                     ? Step_TransitionOutOfMultiplayerMapSelection
                     : Step_TransitionOutOfMultiplayerTypeSelection;
             }
@@ -2465,7 +2465,7 @@ public partial class MenuAll
             if (Rom.Platform == Platform.NGage && false)
             {
                 NextStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;
-                CurrentStepAction = Engine.Config.Tweaks.FixBugs
+                CurrentStepAction = Engine.ActiveConfig.Tweaks.FixBugs
                     ? Step_TransitionOutOfMultiplayerFlagOptions
                     : Step_TransitionOutOfMultiplayerTypeSelection;
                 

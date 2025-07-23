@@ -227,7 +227,7 @@ public class NGageSoundEventsManager : SoundEventsManager
 
         // Set sound parameters
         //_soloud.setLooping(_musicVoiceHandle, _doesCurrentMusicLoop); // Doesn't work, so ignore
-        _soloud.setVolume(_musicVoiceHandle, _currentMusicVolume * (_musicFadeVolume / SoundEngineInterface.MaxVolume) * Engine.Config.Sound.MusicVolume * MusicVolumeFactor);
+        _soloud.setVolume(_musicVoiceHandle, _currentMusicVolume * (_musicFadeVolume / SoundEngineInterface.MaxVolume) * Engine.LocalConfig.Sound.MusicVolume * MusicVolumeFactor);
 
         // Un-pause
         _soloud.setPause(_musicVoiceHandle, false);
@@ -265,7 +265,7 @@ public class NGageSoundEventsManager : SoundEventsManager
 
             // Set sound parameters
             _soloud.setLooping(handle, loop);
-            _soloud.setVolume(handle, volume * (SoundEffectsVolume / SoundEngineInterface.MaxVolume) * Engine.Config.Sound.SfxVolume * SfxVolumeFactor);
+            _soloud.setVolume(handle, volume * (SoundEffectsVolume / SoundEngineInterface.MaxVolume) * Engine.LocalConfig.Sound.SfxVolume * SfxVolumeFactor);
 
             // Un-pause
             _soloud.setPause(handle, false);
@@ -329,7 +329,7 @@ public class NGageSoundEventsManager : SoundEventsManager
         }
 
         // Update music volume
-        _soloud.setVolume(_musicVoiceHandle, _currentMusicVolume * (_musicFadeVolume / SoundEngineInterface.MaxVolume) * Engine.Config.Sound.MusicVolume * MusicVolumeFactor);
+        _soloud.setVolume(_musicVoiceHandle, _currentMusicVolume * (_musicFadeVolume / SoundEngineInterface.MaxVolume) * Engine.LocalConfig.Sound.MusicVolume * MusicVolumeFactor);
 
         // Update sound effect volumes
         foreach (SoundEffectInstance soundEffectInstance in _soundEffectInstances.Values.ToArray())
@@ -338,7 +338,7 @@ public class NGageSoundEventsManager : SoundEventsManager
             {
                 float volume = soundEffectInstance.Volume *
                                (SoundEffectsVolume / SoundEngineInterface.MaxVolume) *
-                               Engine.Config.Sound.SfxVolume;
+                               Engine.LocalConfig.Sound.SfxVolume;
                 _soloud.setVolume(soundEffectInstance.VoiceHandle, volume * SfxVolumeFactor);
             }
             else
@@ -404,7 +404,7 @@ public class NGageSoundEventsManager : SoundEventsManager
 
     protected override void PauseAllSongsImpl()
     {
-        if (Engine.Config.Sound.PlayMusicWhenPaused == false)
+        if (Engine.LocalConfig.Sound.PlayMusicWhenPaused == false)
             IsMusicInGamePaused = true;
     }
 

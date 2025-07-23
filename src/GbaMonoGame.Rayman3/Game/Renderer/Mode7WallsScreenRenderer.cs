@@ -208,7 +208,7 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
         // Update the shader
         Shader.Parameters["WorldViewProj"].SetValue(Camera.ViewProjectionMatrix);
         Shader.Parameters["FarPlane"].SetValue(Camera.CameraFar);
-        Shader.Parameters["FadeDistance"].SetValue(Engine.Config.Tweaks.VisualImprovements ? FadeDistance : 0);
+        Shader.Parameters["FadeDistance"].SetValue(Engine.ActiveConfig.Tweaks.VisualImprovements ? FadeDistance : 0);
 
         // Draw each mesh fragment
         foreach (MeshFragment meshFragment in MeshFragments)

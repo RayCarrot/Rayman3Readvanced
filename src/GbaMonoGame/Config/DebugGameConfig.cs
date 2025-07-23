@@ -1,6 +1,6 @@
 namespace GbaMonoGame;
 
-public class DebugGameConfig : IniSectionObject
+public record DebugGameConfig : IniSectionObject
 {
     public DebugGameConfig()
     {

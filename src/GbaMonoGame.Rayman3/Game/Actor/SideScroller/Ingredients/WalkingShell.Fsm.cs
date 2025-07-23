@@ -44,7 +44,7 @@ public partial class WalkingShell
             }
         }
 
-        if ((Rom.Platform == Platform.NGage || Engine.Config.Tweaks.FixBugs) && isDead)
+        if ((Rom.Platform == Platform.NGage || Engine.ActiveConfig.Tweaks.FixBugs) && isDead)
         {
             State.MoveTo(null);
             return false;
@@ -295,7 +295,7 @@ public partial class WalkingShell
                 if (!FsmStep_CheckDeath())
                     return false;
 
-                if (Rom.Platform == Platform.NGage || Engine.Config.Tweaks.FixBugs)
+                if (Rom.Platform == Platform.NGage || Engine.ActiveConfig.Tweaks.FixBugs)
                 {
                     Box detectionBox = GetDetectionBox();
 
@@ -332,7 +332,7 @@ public partial class WalkingShell
                     }
                 }
 
-                if ((Rom.Platform == Platform.NGage || Engine.Config.Tweaks.FixBugs) && type.IsSolid)
+                if ((Rom.Platform == Platform.NGage || Engine.ActiveConfig.Tweaks.FixBugs) && type.IsSolid)
                 {
                     Explode();
                     IsRaymanMounted = false;
@@ -476,7 +476,7 @@ public partial class WalkingShell
 
                 Timer++;
 
-                if ((Rom.Platform == Platform.NGage || Engine.Config.Tweaks.FixBugs) && IsActionFinished)
+                if ((Rom.Platform == Platform.NGage || Engine.ActiveConfig.Tweaks.FixBugs) && IsActionFinished)
                 {
                     if (ActionId == Action.EndBoost)
                     {
@@ -510,7 +510,7 @@ public partial class WalkingShell
 
                 if (Speed.Y == 0)
                 {
-                    if (Rom.Platform == Platform.NGage || Engine.Config.Tweaks.FixBugs)
+                    if (Rom.Platform == Platform.NGage || Engine.ActiveConfig.Tweaks.FixBugs)
                     {
                         Explode();
                         IsRaymanMounted = false;

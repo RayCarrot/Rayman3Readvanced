@@ -33,7 +33,7 @@ public class GfxDebugWindow : DebugWindow
         RenderContext oldRenderContext = screen.RenderOptions.RenderContext;
         BlendMode oldBlendMode = screen.RenderOptions.BlendMode;
 
-        Engine.InternalGameResolution = size;
+        Engine.SetInternalGameResolution(size);
         screen.Offset = Vector2.Zero;
         screen.RenderOptions.RenderContext = new FixedResolutionRenderContext(size);
         screen.RenderOptions.BlendMode = BlendMode.None;
@@ -47,7 +47,7 @@ public class GfxDebugWindow : DebugWindow
         screen.Draw(renderer, Color.White);
         renderer.EndRender();
 
-        Engine.InternalGameResolution = oldResolution;
+        Engine.SetInternalGameResolution(oldResolution);
         screen.Offset = oldOffset;
         screen.RenderOptions.RenderContext = oldRenderContext;
         screen.RenderOptions.BlendMode = oldBlendMode;
@@ -83,15 +83,13 @@ public class GfxDebugWindow : DebugWindow
                 float resY = Engine.InternalGameResolution.Y;
                 if (ImGui.SliderFloat("Internal resolution X", ref resX, Single.Epsilon, 1000))
                 {
-                    Engine.InternalGameResolution = new Vector2(resX, resY);
-                    Engine.Config.Tweaks.InternalGameResolution = new Vector2(resX, resY);
-                    Engine.GameViewPort.UpdateRenderBox();
+                    Engine.SetInternalGameResolution(new Vector2(resX, resY));
+                    Engine.LocalConfig.Tweaks.InternalGameResolution = new Vector2(resX, resY);
                 }
                 if (ImGui.SliderFloat("Internal resolution Y", ref resY, Single.Epsilon, 1000))
                 {
-                    Engine.InternalGameResolution = new Vector2(resX, resY);
-                    Engine.Config.Tweaks.InternalGameResolution = new Vector2(resX, resY);
-                    Engine.GameViewPort.UpdateRenderBox();
+                    Engine.SetInternalGameResolution(new Vector2(resX, resY));
+                    Engine.LocalConfig.Tweaks.InternalGameResolution = new Vector2(resX, resY);
                 }
 
                 ImGui.Spacing();

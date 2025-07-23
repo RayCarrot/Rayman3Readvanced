@@ -357,7 +357,7 @@ public class Intro : Frame, IHasPlayfield
         Playfield.Camera.Position = Vector2.Zero;
         Playfield.Step();
 
-        if (Rom.Platform == Platform.GBA || Engine.Config.Tweaks.UseGbaEffectsOnNGage)
+        if (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage)
         {
             Playfield.TileLayers[SkyTileLayerId].Screen.IsEnabled = false;
             Playfield.TileLayers[MainTileLayerId].Screen.IsEnabled = false;
@@ -377,7 +377,7 @@ public class Intro : Frame, IHasPlayfield
 
         Playfield.TileLayers[CloudsTileLayerId].Screen.IsEnabled = false;
 
-        if (Rom.Platform == Platform.GBA || Engine.Config.Tweaks.UseGbaEffectsOnNGage)
+        if (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage)
         {
             TextureScreenRenderer renderer = ((TextureScreenRenderer)Playfield.TileLayers[CloudsTileLayerId].Screen.Renderer);
             Playfield.TileLayers[CloudsTileLayerId].Screen.Renderer = new IntroCloudsRenderer(renderer.Texture);
@@ -396,7 +396,7 @@ public class Intro : Frame, IHasPlayfield
         SoundEventsManager.SetVolumeForType(SoundType.Music, 0);
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__sadslide);
 
-        if (Engine.Config.Tweaks.UseReadvancedLogo)
+        if (Engine.ActiveConfig.Tweaks.UseReadvancedLogo)
             ReplaceLogo();
     }
 
@@ -423,7 +423,7 @@ public class Intro : Frame, IHasPlayfield
 
         CurrentStepAction();
 
-        if (Engine.Config.Tweaks.AllowPrototypeCheats && JoyPad.IsButtonJustPressed(GbaInput.L))
+        if (Engine.ActiveConfig.Tweaks.AllowPrototypeCheats && JoyPad.IsButtonJustPressed(GbaInput.L))
         {
             FrameManager.SetNextFrame(new LevelSelect());
             Localization.SetLanguage(0);
@@ -437,7 +437,7 @@ public class Intro : Frame, IHasPlayfield
 
     private void Step_1()
     {
-        if (Rom.Platform == Platform.GBA || Engine.Config.Tweaks.UseGbaEffectsOnNGage)
+        if (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage)
         {
             Timer++;
 
@@ -466,7 +466,7 @@ public class Intro : Frame, IHasPlayfield
 
     private void Step_2()
     {
-        if (Rom.Platform == Platform.GBA || Engine.Config.Tweaks.UseGbaEffectsOnNGage)
+        if (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage)
         {
             Timer++;
 
@@ -511,7 +511,7 @@ public class Intro : Frame, IHasPlayfield
             Playfield.TileLayers[UbisoftLogoTileLayerId].Screen.IsEnabled = false;
 
             // Only show clouds on GBA
-            if (Rom.Platform == Platform.GBA || Engine.Config.Tweaks.UseGbaEffectsOnNGage)
+            if (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage)
                 Playfield.TileLayers[CloudsTileLayerId].Screen.IsEnabled = true;
         }
         else

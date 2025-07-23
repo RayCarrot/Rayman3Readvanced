@@ -25,8 +25,8 @@ public class ControlOptionsMenuOption : OptionsMenuOption
 
     private void UpdateInput(Keys key, IReadOnlyList<OptionsMenuOption> options)
     {
-        Keys prevKey = Engine.Config.Controls.Controls[Input];
-        Engine.Config.Controls.Controls[Input] = key;
+        Keys prevKey = Engine.LocalConfig.Controls.Controls[Input];
+        Engine.LocalConfig.Controls.Controls[Input] = key;
 
         // Set as pressed key to avoid it being seen as just having pressed this input
         if (InputManager.TryGetGbaInput(Input, out GbaInput gbaInput))
@@ -36,9 +36,9 @@ public class ControlOptionsMenuOption : OptionsMenuOption
         foreach (Input input in Enum.GetValues<Input>())
         {
             // Swap
-            if (input != Input && Engine.Config.Controls.Controls[input] == key)
+            if (input != Input && Engine.LocalConfig.Controls.Controls[input] == key)
             {
-                Engine.Config.Controls.Controls[input] = prevKey;
+                Engine.LocalConfig.Controls.Controls[input] = prevKey;
 
                 if (InputManager.TryGetGbaInput(input, out GbaInput gbaInput2))
                     JoyPad.Current.KeyStatus |= gbaInput2;

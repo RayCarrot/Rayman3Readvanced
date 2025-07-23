@@ -3,7 +3,7 @@ using BinarySerializer.Ubisoft.GbaEngine;
 
 namespace GbaMonoGame;
 
-public class GeneralGameConfig : IniSectionObject
+public record GeneralGameConfig : IniSectionObject
 {
     public GeneralGameConfig()
     {

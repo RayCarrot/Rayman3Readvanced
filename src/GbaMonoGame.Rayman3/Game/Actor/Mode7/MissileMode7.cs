@@ -383,7 +383,7 @@ public sealed partial class MissileMode7 : Mode7Actor
 
     private void ToggleNoClip()
     {
-        if (Engine.Config.Debug.DebugModeEnabled && InputManager.IsButtonJustPressed(Input.Debug_ToggleNoClip))
+        if (Engine.ActiveConfig.Debug.DebugModeEnabled && InputManager.IsButtonJustPressed(Input.Debug_ToggleNoClip))
         {
             Debug_NoClip = !Debug_NoClip;
 
@@ -447,7 +447,7 @@ public sealed partial class MissileMode7 : Mode7Actor
                 return true;
 
             case Message.Rayman_CollectRedLum:
-                if (HitPoints < 5 && !Engine.Config.Difficulty.OneHitPoint)
+                if (HitPoints < 5 && !Engine.ActiveConfig.Difficulty.OneHitPoint)
                     HitPoints++;
 
                 PrevHitPoints = HitPoints;
@@ -494,7 +494,7 @@ public sealed partial class MissileMode7 : Mode7Actor
 
     public override void Step()
     {
-        if (Engine.Config.Difficulty.OneHitPoint && HitPoints > 1)
+        if (Engine.ActiveConfig.Difficulty.OneHitPoint && HitPoints > 1)
         {
             HitPoints = 1;
             PrevHitPoints = HitPoints;

@@ -50,7 +50,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
     public void FadeOut()
     {
         // NOTE: The original code here incorrectly checks for map 3!
-        if (Engine.Config.Tweaks.FixBugs)
+        if (Engine.ActiveConfig.Tweaks.FixBugs)
         {
             if (GcnMapId == 2)
                 LavaFadeOutTimer = 0;
@@ -93,7 +93,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
         UserInfo.ProcessMessage(this, Message.UserInfo_GameCubeLevel);
 
         // Create pause dialog, but don't add yet
-        PauseDialog = Engine.Config.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, true) : new PauseDialog(Scene);
+        PauseDialog = Engine.ActiveConfig.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, true) : new PauseDialog(Scene);
 
         Scene.AddDialog(UserInfo, false, false);
         Scene.Init();
@@ -158,7 +158,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
                 };
 
                 // NOTE: There's a bug where the level data has alpha blending enabled, which conflicts with the code here!
-                if (Engine.Config.Tweaks.FixBugs)
+                if (Engine.ActiveConfig.Tweaks.FixBugs)
                     TransitionsFX.Screns.Remove(skullScreen.Id);
                 break;
 
@@ -209,7 +209,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
 
                     if (LavaFadeOutTimer == 6)
                     {
-                        if (Engine.Config.Tweaks.FixBugs)
+                        if (Engine.ActiveConfig.Tweaks.FixBugs)
                             ((Rayman)Scene.MainActor).Timer = 0;
 
                         InitNewCircleTransition(false);
@@ -319,7 +319,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
 
                 // NOTE: The lightning and rain code shouldn't run when paused, but they forgot to add a check for it! This causes
                 //       different bugs depending on when you pause, such as continues thunder sounds and a white screen.
-                if (Engine.Config.Tweaks.FixBugs && CurrentStepAction != Step_Normal)
+                if (Engine.ActiveConfig.Tweaks.FixBugs && CurrentStepAction != Step_Normal)
                 {
                     rainScreen.IsEnabled = false;
                     return;
@@ -350,7 +350,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
                     bgScreen.IsEnabled = false;
 
                     // NOTE: The original game turns off the rain blending during the lightning, but we don't have to
-                    if (!Engine.Config.Tweaks.VisualImprovements)
+                    if (!Engine.ActiveConfig.Tweaks.VisualImprovements)
                         rainScreen.RenderOptions.BlendMode = BlendMode.None;
 
                     Gfx.FadeControl = new FadeControl(FadeMode.BrightnessIncrease);

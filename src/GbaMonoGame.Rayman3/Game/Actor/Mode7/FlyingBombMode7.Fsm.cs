@@ -133,7 +133,7 @@ public partial class FlyingBombMode7
                 if (!GameInfo.IsCheatEnabled(Cheat.Invulnerable))
                 {
                     // Deals 255 damage by default
-                    if (!Engine.Config.Difficulty.NoInstaKills)
+                    if (!Engine.ActiveConfig.Difficulty.NoInstaKills)
                     {
                         Scene.MainActor.IsInvulnerable = false;
                         Scene.MainActor.ReceiveDamage(AttackPoints);

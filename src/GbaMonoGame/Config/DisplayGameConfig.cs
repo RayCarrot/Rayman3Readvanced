@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame;
 
-public class DisplayGameConfig : IniSectionObject
+public record DisplayGameConfig : IniSectionObject
 {
     public DisplayGameConfig()
     {
