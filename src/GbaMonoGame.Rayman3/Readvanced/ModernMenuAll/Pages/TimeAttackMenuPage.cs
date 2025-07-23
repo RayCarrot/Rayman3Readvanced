@@ -18,7 +18,7 @@ public class TimeAttackMenuPage : MenuPage
     private const int LevelOptionsBaseIndex = 7;
     private const float GhostSelectionTextScale = 2 / 3f;
 
-    private static MapId[][] Maps =>
+    private static MapId[][] Maps { get; } =
     [
         [
             MapId.WoodLight_M1,
@@ -66,6 +66,7 @@ public class TimeAttackMenuPage : MenuPage
 
     public TimeAttackLevelMenuOption[][] WorldOptions { get; set; }
     public int SelectedWorld { get; set; }
+    public MapId SelectedMap => Maps[SelectedWorld][SelectedOption];
 
     public bool HasSelectedLevel { get; set; }
 
@@ -301,7 +302,19 @@ public class TimeAttackMenuPage : MenuPage
 
             if (JoyPad.IsButtonJustPressed(GbaInput.A))
             {
-                // TODO: Implement
+                CursorClick(() =>
+                {
+                    SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.None, 1);
+                    FadeOut(2, () =>
+                    {
+                        SoundEventsManager.StopAllSongs();
+                        Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
+                        Gfx.Fade = 1;
+
+                        TimeAttackInfo.Init();
+                        TimeAttackInfo.LoadLevel(SelectedMap);
+                    });
+                });
             }
             else if (JoyPad.IsButtonJustPressed(GbaInput.B))
             {
