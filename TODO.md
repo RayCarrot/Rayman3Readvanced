@@ -8,6 +8,7 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
 - Make sure the gameplay is the same for things like multiplayer, time trials etc. so that actor cycles and randomization stay consistent. Also disable debug features to prevent cheating.
 - First time launching the game, before the title screen, should show options like language, controls and option preset.
 - Add controller support. Maybe also haptic feedback on things like camera shake and bomb damage?
+- Press A to skip menu transition like in Rayman M.
 
 ## 💬 Localization
 - If you change the button mapping then the in-game tutorial texts are wrong, such as when Murfy or Ly explain how to perform a move. Find a way to replace this.
@@ -41,7 +42,7 @@ However online multiplayer would be much more complicated. The game expects the 
 - Move faster in worldmap (when holding down button?).
 - Do not show N-Gage button prompts in the corners.
 - Remove stray pixels and fix bad tiling in levels.
-- More tutorial boxes from Murfy, explain strafing for race levels etc.
+- More tutorial boxes from Murfy, explain strafing for race levels, how to damage Scaleman boss, blue lums not being usable yet etc.
 - Standardized button mapping. This makes the menus use standardized buttons, and for the intro you can press any button to continue and not just the start button.
 - Restore 2 hp from red lums instead of 1, name it "restore double hit-points".
 - Disable flashing lights option. Use for race levels and lightning effect.
