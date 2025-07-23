@@ -157,7 +157,8 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
 
         // Create pause dialog, but don't add yet
         PauseDialog = Engine.ActiveConfig.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, true) : new PauseDialog(Scene);
-
+        
+        // Add custom dialog if in time attack mode
         if (TimeAttackInfo.IsActive)
             Scene.AddDialog(new TimeAttackDialog(Scene), false, false);
 

@@ -1,4 +1,6 @@
-﻿namespace GbaMonoGame.Rayman3;
+﻿using GbaMonoGame.Rayman3.Readvanced;
+
+namespace GbaMonoGame.Rayman3;
 
 public class BossFinal : FrameSideScroller
 {
@@ -10,7 +12,7 @@ public class BossFinal : FrameSideScroller
 
         if (EndOfFrame)
         {
-            if (GameInfo.MapId == MapId.BossFinal_M2)
+            if (!TimeAttackInfo.IsActive && GameInfo.MapId == MapId.BossFinal_M2)
                 FrameManager.SetNextFrame(new Act6());
             else
                 GameInfo.LoadLevel(GameInfo.GetNextLevelId());

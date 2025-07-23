@@ -588,7 +588,7 @@ public partial class Rayman
                     if (!RSMultiplayer.IsActive)
                     {
                         // Randomly look around for Globox in the first level
-                        if (GameInfo.MapId == MapId.WoodLight_M1 && GameInfo.LastGreenLumAlive == 0)
+                        if (!TimeAttackInfo.IsActive && GameInfo.MapId == MapId.WoodLight_M1 && GameInfo.LastGreenLumAlive == 0)
                         {
                             if (Random.GetNumber(501) > 400)
                                 ActionId = IsFacingRight ? Action.Walk_LookAround_Right : Action.Walk_LookAround_Left;
@@ -630,7 +630,7 @@ public partial class Rayman
                 }
 
                 // Randomly look around for Globox in the first level
-                if (GameInfo.MapId == MapId.WoodLight_M1 && GameInfo.LastGreenLumAlive == 0)
+                if (!TimeAttackInfo.IsActive && GameInfo.MapId == MapId.WoodLight_M1 && GameInfo.LastGreenLumAlive == 0)
                 {
                     FirstLevelIdleTimer++;
 
@@ -738,7 +738,7 @@ public partial class Rayman
                             Action.Walk_Right or Action.Walk_Left or
                             Action.Walk_LookAround_Right or Action.Walk_LookAround_Left))
                         {
-                            if (GameInfo.MapId == MapId.WoodLight_M1 && GameInfo.LastGreenLumAlive == 0)
+                            if (!TimeAttackInfo.IsActive && GameInfo.MapId == MapId.WoodLight_M1 && GameInfo.LastGreenLumAlive == 0)
                                 ActionId = IsFacingRight ? Action.Walk_LookAround_Right : Action.Walk_LookAround_Left;
                             else
                                 ActionId = IsFacingRight ? Action.Walk_Right : Action.Walk_Left;

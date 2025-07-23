@@ -2,6 +2,8 @@
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
+// TODO: Add support for Mode7 levels
+// TODO: Go through all actors
 public static class TimeAttackInfo
 {
     private const int RandomSeed = 0x12345678;
@@ -68,7 +70,18 @@ public static class TimeAttackInfo
     public static void LoadLevel(MapId mapId)
     {
         GameInfo.PersistentInfo.LastPlayedLevel = (byte)mapId;
-        GameInfo.PersistentInfo.LastCompletedLevel = (byte)mapId;
+        GameInfo.PersistentInfo.LastCompletedLevel = (byte)(mapId switch
+        {
+            MapId.Bonus1 => MapId.SanctuaryOfBigTree_M2,
+            MapId.Bonus2 => MapId.MarshAwakening2,
+            MapId.Bonus3 => MapId.SanctuaryOfRockAndLava_M3,
+            MapId.Bonus4 => MapId.BossFinal_M2,
+            MapId._1000Lums => MapId.BossFinal_M2,
+            MapId.ChallengeLy1 => MapId.MarshAwakening2,
+            MapId.ChallengeLy2 => MapId.BossFinal_M2,
+            MapId.ChallengeLyGCN => MapId.BossFinal_M2,
+            _ => mapId
+        });
 
         FrameManager.SetNextFrame(LevelFactory.Create(mapId));
     }

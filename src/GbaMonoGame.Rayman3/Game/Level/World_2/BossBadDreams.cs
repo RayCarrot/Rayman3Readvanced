@@ -1,4 +1,6 @@
-﻿namespace GbaMonoGame.Rayman3;
+﻿using GbaMonoGame.Rayman3.Readvanced;
+
+namespace GbaMonoGame.Rayman3;
 
 public class BossBadDreams : FrameSideScroller
 {
@@ -11,7 +13,7 @@ public class BossBadDreams : FrameSideScroller
         if (EndOfFrame)
         {
             // Show boss ending cutscene first time
-            if (GameInfo.PersistentInfo.LastCompletedLevel == (int)MapId.BossBadDreams)
+            if (!TimeAttackInfo.IsActive && GameInfo.PersistentInfo.LastCompletedLevel == (int)MapId.BossBadDreams)
                 FrameManager.SetNextFrame(new Act3());
             else
                 GameInfo.LoadLevel(GameInfo.GetNextLevelId());

@@ -1,5 +1,6 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -41,7 +42,7 @@ public partial class Machine
                 }
 
                 // Show text box if player has died
-                if (GameInfo.LastGreenLumAlive != 0 && GameInfo.CanShowMurfyHelp)
+                if (!TimeAttackInfo.IsActive && GameInfo.LastGreenLumAlive != 0 && GameInfo.CanShowMurfyHelp)
                     InitTextBox();
 
                 // Cog wheel part
@@ -50,8 +51,8 @@ public partial class Machine
                     State.MoveTo(Fsm_CogWheelSpinning);
                     return false;
                 }
-                // Parent if died at least once
-                else if (BossHealth == 4 && GameInfo.LastGreenLumAlive != 0)
+                // Parent if died at least once or if in time attack
+                else if (BossHealth == 4 && (GameInfo.LastGreenLumAlive != 0 || TimeAttackInfo.IsActive))
                 {
                     State.MoveTo(Fsm_CannonFire);
                     return false;
