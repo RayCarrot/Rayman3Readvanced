@@ -22,6 +22,16 @@ public sealed partial class FallingPlatform : MovableActor
 
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {
+        switch (message)
+        {
+            case Message.Resurrect:
+                // There's a platform that spawns in the second precipice map. In the original game it spawns off-screen, but
+                // in high resolution you can see when it spawns. To hide this we force the lightning to show on the same frame.
+                if (Engine.ActiveConfig.Tweaks.VisualImprovements && Frame.Current is ThePrecipice_M2 precipiceM2)
+                    precipiceM2.LightningTime = (ushort)(GbaMonoGame.GameTime.ElapsedFrames % 512);
+                break;
+        }
+
         if (base.ProcessMessageImpl(sender, message, param))
             return true;
 
