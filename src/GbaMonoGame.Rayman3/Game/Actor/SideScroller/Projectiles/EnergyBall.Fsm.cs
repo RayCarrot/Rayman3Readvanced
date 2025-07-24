@@ -42,6 +42,8 @@ public partial class EnergyBall
                         
                         if (explosion != null)
                             explosion.Position = Position;
+
+                        finished = true;
                     }
                 }
                 else
@@ -54,6 +56,8 @@ public partial class EnergyBall
                         
                         if (explosion != null)
                             explosion.Position = Position;
+
+                        finished = true;
                     }
                 }
 
