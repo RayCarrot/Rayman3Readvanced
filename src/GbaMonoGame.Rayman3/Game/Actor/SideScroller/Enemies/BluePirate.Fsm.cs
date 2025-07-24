@@ -51,6 +51,7 @@ public partial class BluePirate
                 if (Scene.KeepAllObjectsActive && !AnimatedObject.IsFramed)
                 {
                     Position = Resource.Pos.ToVector2();
+                    ActionId = IsFacingRight ? Action.Fall_Right : Action.Fall_Left;
                 }
                 else
                 {
