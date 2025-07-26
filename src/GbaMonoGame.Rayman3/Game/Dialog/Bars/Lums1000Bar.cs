@@ -27,7 +27,7 @@ public class Lums1000Bar : Bar
 
         DeadLums = 1000;
         LumsIcon.CurrentAnimation = 35;
-        LumsIcon.ScreenPos = LumsIcon.ScreenPos with { X = -70 };
+        LumsIcon.ScreenPos = LumsIcon.ScreenPos with { X = -100 };
     }
 
     public override void Load()
