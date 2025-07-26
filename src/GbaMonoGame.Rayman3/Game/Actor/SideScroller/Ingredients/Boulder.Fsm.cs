@@ -254,6 +254,7 @@ public partial class Boulder
                     }
                 }
 
+                // Change direction
                 if (Speed.X == 0)
                 {
                     if (IsMovingRight)

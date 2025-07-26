@@ -1409,7 +1409,7 @@ public sealed partial class Rayman : MovableActor
         Vector2 dir = Vector2.Normalize(dist).FlipY();
 
         Vector2 currentPos = origin;
-        for (int i = 0; i < 300; i++)
+        for (int i = 0; i < 300; i++) // TODO: Maybe change the 300 value if in higher res?
         {
             BoxOutCode boxOutcode = GetBoxOutcode(currentPos, screenBox);
 
