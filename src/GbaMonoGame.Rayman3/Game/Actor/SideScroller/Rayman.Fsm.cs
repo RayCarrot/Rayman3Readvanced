@@ -837,7 +837,10 @@ public partial class Rayman
                 if (ActionId is not (Action.BouncyJump_Right or Action.BouncyJump_Left))
                 {
                     ActionId = IsFacingRight ? Action.Jump_Right : Action.Jump_Left;
-                    PlaySound(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01);
+
+                    // Optionally don't play when entering level curtain
+                    if (!Engine.ActiveConfig.Tweaks.FixBugs || !IsInFrontOfLevelCurtain)
+                        PlaySound(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01);
                 }
 
                 NextActionId = null;
