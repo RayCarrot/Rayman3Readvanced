@@ -35,6 +35,7 @@ public class MenuAllAnimations
                 AffineMatrix = AffineMatrix.Identity,
                 RenderContext = renderContext,
             };
+            Wheel1.SetFlagUseRotationScaling(true);
 
             Wheel2 = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
             {
@@ -46,6 +47,7 @@ public class MenuAllAnimations
                 AffineMatrix = AffineMatrix.Identity,
                 RenderContext = renderContext,
             };
+            Wheel2.SetFlagUseRotationScaling(true);
 
             Wheel3 = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
             {
@@ -57,6 +59,7 @@ public class MenuAllAnimations
                 AffineMatrix = AffineMatrix.Identity,
                 RenderContext = renderContext,
             };
+            Wheel3.SetFlagUseRotationScaling(true);
 
             Wheel4 = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
             {
@@ -68,6 +71,7 @@ public class MenuAllAnimations
                 AffineMatrix = AffineMatrix.Identity,
                 RenderContext = renderContext,
             };
+            Wheel4.SetFlagUseRotationScaling(true);
 
             Cursor = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
             {
@@ -442,6 +446,7 @@ public class MenuAllAnimations
                 AffineMatrix = AffineMatrix.Identity,
                 RenderContext = renderContext,
             };
+            Wheel2.SetFlagUseRotationScaling(true);
 
             Wheel4 = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
             {
@@ -453,6 +458,7 @@ public class MenuAllAnimations
                 AffineMatrix = AffineMatrix.Identity,
                 RenderContext = renderContext,
             };
+            Wheel4.SetFlagUseRotationScaling(true);
 
             Cursor = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
             {

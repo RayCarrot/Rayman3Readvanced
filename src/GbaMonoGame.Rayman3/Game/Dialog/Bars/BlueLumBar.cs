@@ -92,6 +92,7 @@ public class BlueLumBar : Bar
             AffineMatrix = new AffineMatrix(0, 2, 1),
             RenderContext = Scene.HudRenderContext,
         };
+        ScaledFill.SetFlagUseRotationScaling(true);
     }
 
     public override void Set() { }

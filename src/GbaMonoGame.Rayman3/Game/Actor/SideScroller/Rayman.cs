@@ -185,6 +185,7 @@ public sealed partial class Rayman : MovableActor
                             Palettes = AnimatedObject.Palettes,
                             RenderContext = AnimatedObject.RenderContext,
                         };
+                        FlagData!.PlayerArrows[i].SetFlagUseRotationScaling(true);
                     }
                 }
 

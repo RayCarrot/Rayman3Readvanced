@@ -21,6 +21,7 @@ public sealed partial class MechanicalPlatform : MovableActor
             AffineMatrix = new AffineMatrix(190, 1, 1),
             RenderContext = AnimatedObject.RenderContext,
         };
+        SpeedPointer.SetFlagUseRotationScaling(true);
 
         MechModel.Speed = Vector2.Zero;
 

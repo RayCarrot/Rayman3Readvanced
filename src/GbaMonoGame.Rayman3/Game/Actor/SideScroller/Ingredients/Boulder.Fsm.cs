@@ -67,6 +67,7 @@ public partial class Boulder
             case FsmAction.Init:
                 Rotation = 0;
                 AnimatedObject.AffineMatrix = new AffineMatrix(Rotation, 1, 1);
+                AnimatedObject.SetFlagUseRotationScaling(true);
                 break;
 
             case FsmAction.Step:

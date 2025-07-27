@@ -59,6 +59,7 @@ public class GameCubeMenuAnimations
             AffineMatrix = AffineMatrix.Identity,
             RenderContext = renderContext,
         };
+        Wheel1.SetFlagUseRotationScaling(true);
 
         Wheel2 = new AnimatedObject(animations, animations.IsDynamic)
         {
@@ -70,6 +71,7 @@ public class GameCubeMenuAnimations
             AffineMatrix = AffineMatrix.Identity,
             RenderContext = renderContext,
         };
+        Wheel2.SetFlagUseRotationScaling(true);
 
         Wheel3 = new AnimatedObject(animations, animations.IsDynamic)
         {
@@ -81,6 +83,7 @@ public class GameCubeMenuAnimations
             AffineMatrix = AffineMatrix.Identity,
             RenderContext = renderContext,
         };
+        Wheel3.SetFlagUseRotationScaling(true);
 
         Wheel4 = new AnimatedObject(animations, animations.IsDynamic)
         {
@@ -92,6 +95,7 @@ public class GameCubeMenuAnimations
             AffineMatrix = AffineMatrix.Identity,
             RenderContext = renderContext,
         };
+        Wheel4.SetFlagUseRotationScaling(true);
 
         LumIcons = new AnimatedObject[3];
         LevelChecks = new AnimatedObject[3];

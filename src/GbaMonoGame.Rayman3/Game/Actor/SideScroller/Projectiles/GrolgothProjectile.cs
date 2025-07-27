@@ -143,7 +143,8 @@ public sealed partial class GrolgothProjectile : MovableActor
         // Initialize
         if (MissileTimer == -1)
         {
-            AnimatedObject.AffineMatrix = new AffineMatrix(0, 1, 1);
+            AnimatedObject.AffineMatrix = AffineMatrix.Identity;
+            AnimatedObject.SetFlagUseRotationScaling(true);
             AnimatedObject.IsDoubleAffine = true;
             MissileTimer = 0;
             Timer = 0;

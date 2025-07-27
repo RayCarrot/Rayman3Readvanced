@@ -99,7 +99,7 @@ public partial class GrolgothProjectile
 
                         case Action.SmallGroundBombReverse_Right:
                         case Action.SmallGroundBombReverse_Left:
-                            if (Scale != 1 && AnimatedObject.AffineMatrix != null)
+                            if (Scale != 1)
                                 AnimatedObject.AffineMatrix = new AffineMatrix(0, Scale, Scale);
 
                             if (Scene.IsHitActor(this) is { Type: (int)ActorType.Grolgoth } hitActor)
@@ -117,12 +117,11 @@ public partial class GrolgothProjectile
 
                             Timer++;
 
-                            if (AnimatedObject.AffineMatrix != null)
-                                AnimatedObject.AffineMatrix = new AffineMatrix(0, Scale, Scale);
+                            AnimatedObject.AffineMatrix = new AffineMatrix(0, Scale, Scale);
 
                             if (Scale == 1)
                             {
-                                AnimatedObject.AffineMatrix = new AffineMatrix(0, Scale, Scale);
+                                AnimatedObject.SetFlagUseRotationScaling(true);
                                 AnimatedObject.IsDoubleAffine = true;
                             }
 
@@ -191,7 +190,8 @@ public partial class GrolgothProjectile
                 AnimatedObject.ScreenPos = AnimatedObject.ScreenPos with { X = 0 };
                 Scale = 1;
                 MissileTimer = -1;
-                AnimatedObject.AffineMatrix = null;
+                AnimatedObject.AffineMatrix = new AffineMatrix(0, Scale, Scale);
+                AnimatedObject.SetFlagUseRotationScaling(false);
                 ProcessMessage(this, Message.Destroy);
                 Timer = 0;
                 Rotation = Angle256.Zero;

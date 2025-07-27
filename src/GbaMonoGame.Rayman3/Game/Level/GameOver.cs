@@ -178,6 +178,7 @@ public class GameOver : Frame
             RenderContext = Rom.OriginalGameRenderContext,
         };
         Countdown2.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+        Countdown2.SetFlagUseRotationScaling(true);
 
         Butterfly1 = new AnimatedObject(butterflyAnimations, butterflyAnimations.IsDynamic)
         {

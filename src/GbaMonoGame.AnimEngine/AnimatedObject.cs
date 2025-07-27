@@ -52,6 +52,7 @@ public class AnimatedObject : AObject
     public bool EndOfAnimation { get; set; }
     public bool IsDelayMode { get; set; }
     public bool IsPaused { get; set; }
+    public bool IsAffine { get; set; }
 
     // Render mode
     public bool IsDoubleAffine { get; set; } // Not used here
@@ -224,6 +225,19 @@ public class AnimatedObject : AObject
     public void ActivateChannel(int channel) => ActiveChannels = (uint)((int)ActiveChannels | (1 << channel));
     public void DeactivateAllChannels() => ActiveChannels = 0;
     public void DeactivateChannel(int channel) => ActiveChannels = (uint)((int)ActiveChannels & ~(1 << channel));
+
+    public void SetFlagUseRotationScaling(bool useRotationScaling)
+    {
+        if (useRotationScaling)
+        {
+            IsAffine = true;
+        }
+        else
+        {
+            IsAffine = false;
+            IsDoubleAffine = false;
+        }
+    }
 
     public void Rewind()
     {
@@ -475,7 +489,7 @@ public class AnimatedObject : AObject
                     AffineMatrix? affineMatrix = null;
 
                     // Get the matrix if it's affine
-                    if (channel.ObjectMode == OBJ_ATTR_ObjectMode.REG && AffineMatrix != null)
+                    if (channel.ObjectMode == OBJ_ATTR_ObjectMode.REG && AffineMatrix != null && IsAffine)
                         affineMatrix = AffineMatrix.Value;
                     else if (channel.ObjectMode is OBJ_ATTR_ObjectMode.AFF or OBJ_ATTR_ObjectMode.AFF_DBL)
                         affineMatrix = GetAffineMatrix(channel.AffineMatrixIndex);
@@ -550,8 +564,8 @@ public class AnimatedObject : AObject
                     {
                         Texture = texture,
                         Position = new Vector2(xPos, yPos),
-                        FlipX = channel.FlipX ^ FlipX,
-                        FlipY = channel.FlipY ^ FlipY,
+                        FlipX = !IsAffine ? channel.FlipX ^ FlipX : FlipX, // Sprite flip flags are ignored if affine (see Mode7 tree trunks)
+                        FlipY = !IsAffine ? channel.FlipY ^ FlipY : FlipY,
                         Priority = BgPriority,
                         Center = true,
                         AffineMatrix = affineMatrix,

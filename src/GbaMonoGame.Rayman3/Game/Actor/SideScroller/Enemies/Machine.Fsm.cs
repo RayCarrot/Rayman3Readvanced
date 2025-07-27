@@ -20,18 +20,21 @@ public partial class Machine
                 {
                     Rotation = 0;
                     AnimatedObject.AffineMatrix = new AffineMatrix(Rotation, 1, 1);
+                    AnimatedObject.SetFlagUseRotationScaling(true);
 
                     Machine part1 = Scene.GetGameObject<Machine>(Resource.Links[0]!.Value);
                     part1.BossHealth = 2;
                     part1.Parent = this;
                     part1.Rotation = 0;
                     part1.AnimatedObject.AffineMatrix = new AffineMatrix(part1.Rotation, 1, 1);
+                    part1.AnimatedObject.SetFlagUseRotationScaling(true);
 
                     Machine part2 = Scene.GetGameObject<Machine>(Resource.Links[1]!.Value);
                     part2.BossHealth = 3;
                     part2.Parent = this;
                     part2.Rotation = 0;
                     part2.AnimatedObject.AffineMatrix = new AffineMatrix(part2.Rotation, 1, 1);
+                    part2.AnimatedObject.SetFlagUseRotationScaling(true);
                     part2.AnimatedObject.IsDoubleAffine = true;
 
                     Machine part3 = Scene.GetGameObject<Machine>(Resource.Links[2]!.Value);
@@ -39,6 +42,7 @@ public partial class Machine
                     part3.Parent = this;
                     part3.Rotation = 0;
                     part3.AnimatedObject.AffineMatrix = new AffineMatrix(part3.Rotation, 1, 1);
+                    part3.AnimatedObject.SetFlagUseRotationScaling(true);
                 }
 
                 // Show text box if player has died

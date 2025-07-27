@@ -81,6 +81,10 @@ public abstract class CameraActorMode7 : CameraActor
         // Set the Y priority, used for sorting the objects based on distance
         animatedObject.YPriority = camDist;
 
+        // Set affine flag to match the original game. This is needed to disable the
+        // sprite flipping for the Mode7 tree trunks.
+        animatedObject.SetFlagUseRotationScaling(isAffine);
+
         return true;
     }
 

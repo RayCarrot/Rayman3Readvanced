@@ -146,8 +146,7 @@ public sealed partial class SamMode7 : Mode7Actor
     {
         base.Step();
 
-        if (IsLinkedCameraObject())
-            ToggleNoClip();
+        ToggleNoClip();
     }
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
