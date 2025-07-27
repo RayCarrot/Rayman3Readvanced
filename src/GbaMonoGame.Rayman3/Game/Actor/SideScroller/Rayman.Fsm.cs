@@ -3536,6 +3536,11 @@ public partial class Rayman
                     top: AttachedObject.ActorModel.DetectionBox.Top - 22,
                     right: AttachedObject.ActorModel.DetectionBox.Right,
                     bottom: AttachedObject.ActorModel.DetectionBox.Bottom - 22));
+
+                // If you survive from the keg before it finishes the sequence (such as by crashing into a bomb) then
+                // the DropObject value won't get reset and stay true, making you unable to grab onto a keg after this.
+                if (Engine.ActiveConfig.Tweaks.FixBugs || Engine.ActiveConfig.Difficulty.NoInstaKills)
+                    DropObject = false;
                 break;
 
             case FsmAction.Step:
