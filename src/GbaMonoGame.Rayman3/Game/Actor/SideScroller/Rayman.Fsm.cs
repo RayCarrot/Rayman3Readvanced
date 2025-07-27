@@ -3532,10 +3532,10 @@ public partial class Rayman
                     AttachedObject.Position = Position + new Vector2(-8, -22);
 
                 SetDetectionBox(new Box(
-                    left: ActorModel.DetectionBox.Left - 10,
-                    top: ActorModel.DetectionBox.Top - 22,
-                    right: ActorModel.DetectionBox.Right,
-                    bottom: ActorModel.DetectionBox.Bottom - 22));
+                    left: AttachedObject.ActorModel.DetectionBox.Left - 10,
+                    top: AttachedObject.ActorModel.DetectionBox.Top - 22,
+                    right: AttachedObject.ActorModel.DetectionBox.Right,
+                    bottom: AttachedObject.ActorModel.DetectionBox.Bottom - 22));
                 break;
 
             case FsmAction.Step:

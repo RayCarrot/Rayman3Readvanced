@@ -103,6 +103,5 @@ It might be fun to include some cheat codes. These can be triggered by holding t
 - Type something to make the 3D Mode7 walls comically tall.
 
 ## 🐞 Bugs
-- Is keg collision wrong when flying? See Mega Havoc 2. It seems more strict than the original game.
 - An exception gets thrown if closing the game while it's loading the rom.
 - In levels where the cycles of objects matters, like the flying keg ones, it doesn't line up well if all objects are always loaded, making some parts impossible to beat
