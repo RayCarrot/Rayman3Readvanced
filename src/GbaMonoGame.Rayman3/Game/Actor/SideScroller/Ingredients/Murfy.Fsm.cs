@@ -445,7 +445,6 @@ public partial class Murfy
                         {
                             Engine.GbaGame.NewResolution = Resolution.Modern;
                             ResolutionChange = 10;
-                            ((Rayman)Scene.MainActor).ActionId = Rayman.Action.Idle_LookAround_Right;
                             ActionId = Action.BeginLeave_Left;
                             MechModel.Speed = new Vector2(-1, -1f);
                             LeaveState++;
@@ -455,6 +454,7 @@ public partial class Murfy
                     case 3:
                         if (Position.X <= 1550)
                         {
+                            ((Rayman)Scene.MainActor).ActionId = Rayman.Action.Idle_LookAround_Right;
                             ActionId = Action.Idle_Left;
                             MechModel.Speed = Vector2.Zero;
                             LeaveState++;

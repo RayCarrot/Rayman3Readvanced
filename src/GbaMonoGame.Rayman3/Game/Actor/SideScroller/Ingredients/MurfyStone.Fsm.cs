@@ -28,10 +28,7 @@ public partial class MurfyStone
                         else
                             RaymanIdleTimer = 0;
 
-                        if (RaymanIdleTimer > 30 ||
-                            (GameInfo.MapId == MapId.WoodLight_M1 &&
-                             GameInfo.LastGreenLumAlive == 0 &&
-                             GameInfo.PersistentInfo.LastCompletedLevel == (int)MapId.WoodLight_M1))
+                        if (RaymanIdleTimer > 30)
                         {
                             HasTriggered = true;
                             GameObject murfy = Scene.GetGameObject(MurfyId.Value);
