@@ -221,7 +221,7 @@ public class GbaGameWindow
             Engine.LocalConfig.Display.WindowIsMaximized = _form.WindowState == FormWindowState.Maximized;
 #elif DESKTOPGL
             SDL_WindowFlags flags = GetWindowFlags();
-            Engine.Config.WindowIsMaximized = (flags & SDL_WindowFlags.SDL_WINDOW_MAXIMIZED) != 0;
+            Engine.LocalConfig.Display.WindowIsMaximized = (flags & SDL_WindowFlags.SDL_WINDOW_MAXIMIZED) != 0;
 #endif
         }
     }
@@ -239,7 +239,7 @@ public class GbaGameWindow
 #if WINDOWSDX
                 _form.WindowState = Engine.LocalConfig.Display.WindowIsMaximized ? FormWindowState.Maximized : FormWindowState.Normal;
 #elif DESKTOPGL
-                if (Engine.Config.WindowIsMaximized)
+                if (Engine.LocalConfig.Display.WindowIsMaximized)
                     SDL_MaximizeWindow(_sdlWindowHandle);
                 else
                     SDL_RestoreWindow(_sdlWindowHandle);
