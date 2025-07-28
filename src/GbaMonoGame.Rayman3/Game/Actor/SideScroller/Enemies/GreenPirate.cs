@@ -11,6 +11,7 @@ public sealed partial class GreenPirate : PirateBaseActor
     }
 
     public float KnockBackYPosition { get; set; }
+    public bool QueueFallSound { get; set; } // Custom to prevent fall sounds from playing on level load when playing with all objects loaded
 
     private void Shoot(bool highShot)
     {
@@ -40,5 +41,17 @@ public sealed partial class GreenPirate : PirateBaseActor
     protected override void ReInit()
     {
         State.SetTo(Fsm_Fall);
+    }
+
+    public override void Step()
+    {
+        base.Step();
+
+        // Custom to prevent fall sounds from playing on level load when playing with all objects loaded
+        if (QueueFallSound && AnimatedObject.IsFramed)
+        {
+            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraJump_BigFoot1_Mix02);
+            QueueFallSound = false;
+        }
     }
 }

@@ -55,21 +55,17 @@ public partial class RedPirate
             case FsmAction.Step:
                 LevelMusicManager.PlaySpecialMusicIfDetected(this);
 
-                // If all objects are kept active we want to wait with having the pirate fall until it's framed
-                if (Scene.KeepAllObjectsActive && !AnimatedObject.IsFramed)
+                // Check if landed
+                PhysicalType type = GetPhysicalGroundType();
+                if (type.IsSolid && ActionId is Action.Fall_Right or Action.Fall_Left)
                 {
-                    Position = Resource.Pos.ToVector2();
-                    ActionId = IsFacingRight ? Action.Fall_Right : Action.Fall_Left;
-                }
-                else
-                {
-                    // Check if landed
-                    PhysicalType type = GetPhysicalGroundType();
-                    if (type.IsSolid && ActionId is Action.Fall_Right or Action.Fall_Left)
-                    {
+                    // Custom to prevent fall sounds from playing on level load when playing with all objects loaded
+                    if (Scene.KeepAllObjectsActive && !AnimatedObject.IsFramed)
+                        QueueFallSound = true;
+                    else
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraJump_BigFoot1_Mix02);
-                        ActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
-                    }
+
+                    ActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
                 }
 
                 // Wait for landing to finish

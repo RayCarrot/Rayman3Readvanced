@@ -16,6 +16,7 @@ public sealed partial class RedPirate : PirateBaseActor
     public Vector2 KnockBackPosition { get; set; }
     public int Ammo { get; set; } // Ammo functionality appears unused
     public bool HasFiredShot { get; set; }
+    public bool QueueFallSound { get; set; } // Custom to prevent fall sounds from playing on level load when playing with all objects loaded
 
     private void Walk()
     {
@@ -62,5 +63,17 @@ public sealed partial class RedPirate : PirateBaseActor
         AttackTimer = 0;
         DoubleHitTimer = 0;
         State.SetTo(Fsm_Fall);
+    }
+
+    public override void Step()
+    {
+        base.Step();
+
+        // Custom to prevent fall sounds from playing on level load when playing with all objects loaded
+        if (QueueFallSound && AnimatedObject.IsFramed)
+        {
+            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraJump_BigFoot1_Mix02);
+            QueueFallSound = false;
+        }
     }
 }

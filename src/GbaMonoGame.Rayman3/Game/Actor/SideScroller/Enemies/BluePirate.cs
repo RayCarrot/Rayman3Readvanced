@@ -1,4 +1,5 @@
-﻿using GbaMonoGame.AnimEngine;
+﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
@@ -21,6 +22,8 @@ public sealed partial class BluePirate : PirateBaseActor
 
     private Box _lastChainAttackBox;
 
+    public bool QueueFallSound { get; set; } // Custom to prevent fall sounds from playing on level load when playing with all objects loaded
+
     private Box GetChainAttackBox(float offsetX)
     {
         Box box = new(offsetX, -16, offsetX + 16, 0);
@@ -42,6 +45,18 @@ public sealed partial class BluePirate : PirateBaseActor
     {
         State.SetTo(Fsm_Fall);
         ChangeAction();
+    }
+
+    public override void Step()
+    {
+        base.Step();
+
+        // Custom to prevent fall sounds from playing on level load when playing with all objects loaded
+        if (QueueFallSound && AnimatedObject.IsFramed)
+        {
+            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraJump_BigFoot1_Mix02);
+            QueueFallSound = false;
+        }
     }
 
     public override void DrawDebugBoxes(AnimationPlayer animationPlayer)
