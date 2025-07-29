@@ -2019,6 +2019,22 @@ public partial class Rayman
                         return false;
                 }
 
+                // Optionally fix sliding sound keep playing when attack
+                if (Engine.ActiveConfig.Tweaks.FixBugs)
+                {
+                    if (IsSliding)
+                    {
+                        if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__SldGreen_SkiLoop1))
+                            PlaySound(Rayman3SoundEvent.Play__SldGreen_SkiLoop1);
+
+                        SoundEventsManager.SetSoundPitch(Rayman3SoundEvent.Play__SldGreen_SkiLoop1, Math.Abs(Speed.X) * 256);
+                    }
+                    else
+                    {
+                        PlaySound(Rayman3SoundEvent.Stop__SldGreen_SkiLoop1);
+                    }
+                }
+
                 // Change direction (if not hanging on an edge)
                 if (ActionId is not (
                     Action.HangOnEdge_ChargeAttack_Right or Action.HangOnEdge_ChargeAttack_Left or
