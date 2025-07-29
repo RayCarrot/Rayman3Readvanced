@@ -16,6 +16,7 @@
 - The sidescroller camera has some leftover code from either earlier games or the early production of this game. There's an unused camera state and some code that can never run due to the conditions not being met.
 - The Mode7 camera has 3 unused states for a free-cam like mode. These were used in the early prototypes.
 - In `AnimatedObject` there's a function called `FrameChannelSprite` which optimizes rendering an animation by deactivating sprite channels which are off-screen. There's however an issue - it's set to not update when the object is in delay mode (between two animation frames, which will happen if the animation runs at a lower framerate). This doesn't make sense since the object might move on screen even if the animation frame is the same, so it should always update. Because of this some sprites don't update to be on screen until a frame or two later, which is noticeable in the bosses when they move onto the screen.
+- When rendering animations with rotation and scaling enabled then the individual flip flags for the sprite channels are ignored. This is usually not an issue, however some sprites, like the tree trunks in the waterski levels, are set to be horizontally flipped, which then gets ignored.
 - When initializing `AObjectChain`, used to create chained animations for actors such as the caterpillars, it has a bug when allocating an array. It sets the size to the number of children when it's supposed to be one more than that since the main parent object is also included. This however doesn't cause any issue in the game since the number of children is always 6, and due to memory alignment it ends up allocating 8 bytes then.
 - For some reason the animations for the Caterpillar enemy is referenced from the root resource table, yet it's never used from there.
 - The order of the levels ids from the curtains in the hub worlds reflect the original order rather than the order they appear in the final game.
@@ -45,6 +46,8 @@ Most actors have the first animation be unused and just single frame, most likel
     - Message 1072 sets the state for an otherwise unused one where Rayman is hidden on the screen. This gets called from the flying shell actor, but since the Rayman actor isn't in that level it never gets received.
 - When taking damage and on a plum the game incorrectly sets the linked movement actor to null rather than the attached object (the plum in this case). However it doesn't cause any issues since the attached object gets overridden later on anyway and the linked movement actor already being null.
 - If attacking while shocked then Rayman gets stuck in the state which might soft-lock the game. This was fixed in the N-Gage version.
+- When entering a level curtain by pressing the A button Rayman will begin entering the jump state, causing the jump sound to play even if you don't jump.
+- If charging your fist while sliding then the sliding sound keeps playing even if you're not moving.
 - The first state of the actor sets it to an action which plays an animation for spawning into the level. This however gets overridden before it has a chance to play, making it go unused.
 
 ![Animation 65](discoveries_assets/Rayman_Anim_65.gif)
@@ -348,6 +351,7 @@ Most actors have the first animation be unused and just single frame, most likel
 
 - When the keg respawns from the dispenser in the Garish Gears boss there is a bug in the code. It waits with respawning until the difference between its X position and the same X position is less than 180, which is always true. This was most likely meant to check the difference between its X position and that of the player.
 - There is a bug with the falling keg where if there are multiple on screen at once then one keg can interrupt the falling sound for another keg.
+- If you detach from the flying keg and survive before the sequence is finished then the flag for Rayman to let go of the keg will be stuck at being set, making you not able to pick up a new keg.
 
 #### KegFire
 - The actor is set up with actions for facing both right and left, yet it's hard-coded to only ever face right.
@@ -564,6 +568,7 @@ Most actors have the first animation be unused and just single frame, most likel
 ### Levels
 - The N-Gage `Capture the Flag` levels have a boolean indicating if it's the first round of the match. This is however never checked against and is thus unused.
 - The second map of `Wanderwood Forest` and both maps of `Shining Glade` have unused code for updating the water palette to give it a glowing effect. One color is however bugged, making parts appear red.
+- The N-Gage exclusive level `Ascension` has 3 red pirate enemies which are spawned from captors. However they're incorrectly set to be enabled by default, even before being spawned, making you able to defeat some of them twice.
 - In `Garish Gears` the hatch layer is misaligned in the N-Gage version, making it not cover the actual hatch.
 - In the `Hoodlum Hideout` level there is code for spawning leaves which fall to the ground. The random range for the x-position is incorrectly hard-coded to 0-240 in the N-Gage version since the resolution is different there. The y-position also has a random range of 0-0, making the randomization pointless.
 - In the first map of `Vertigo Wastes` the camera offset for the introduction sequence are all based on the GBA screen resolution, even in the N-Gage version. There's also a bug where it'll index out of bounds of an array, but it luckily doesn't cause any issues. This was fixed in the N-Gage version.
