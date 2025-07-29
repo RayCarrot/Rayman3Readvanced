@@ -461,6 +461,20 @@ public partial class Murfy
                         }
                         break;
                 }
+
+                if (LeaveState >= 100)
+                {
+                    LeaveState++;
+
+                    // 5 seconds later
+                    if (LeaveState == 100 + 60 * 5)
+                    {
+                        Scene.MainActor.ProcessMessage(this, Message.Rayman_Resume);
+                        ActionId = IsFacingRight ? Action.BeginLeave_Right : Action.BeginLeave_Left;
+                        MechModel.Speed = new Vector2(-1f, -0.8f);
+                    }
+                }
+
                 Rayman rayman = (Rayman)Scene.MainActor;
                 if (rayman.IsActionFinished && rayman.ActionId == Rayman.Action.Idle_LookAround_Right)
                 {
@@ -470,6 +484,7 @@ public partial class Murfy
                 else if (rayman.IsActionFinished && rayman.ActionId == Rayman.Action.Victory_Right)
                 {
                     rayman.ActionId = Rayman.Action.Idle_Right;
+                    LeaveState = 100;
                 }
 
                 if (ScreenPosition.Y < -10)
