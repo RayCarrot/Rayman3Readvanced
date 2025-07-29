@@ -14,12 +14,18 @@ public sealed partial class MovingPlatform : MovableActor
         
         AnimatedObject.ObjPriority = 50;
         ReturnXPosition = Position.X - 48;
-        
-        Setup();
 
         // TRAILER
         if (GameInfo.MapId == MapId.WoodLight_M1 && InstanceId == 68)
-            ProcessMessage(this, Message.Destroy);
+        {
+            ActionId = Action.Stationary;
+            State.SetTo(Fsm_Stop);
+            ShouldDraw = true;
+            Position += new Vector2(0, 16);
+            return;
+        }
+
+        Setup();
     }
 
     // Not used in any level
