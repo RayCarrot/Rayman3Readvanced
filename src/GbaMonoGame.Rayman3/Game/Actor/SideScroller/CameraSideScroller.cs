@@ -178,6 +178,9 @@ public sealed partial class CameraSideScroller : CameraActor2D
             case Message.Cam_MoveToTarget:
                 MoveTargetPos = (Vector2)param;
 
+                // Scale the target based on the new resolution
+                MoveTargetPos -= (Scene.Resolution - Rom.OriginalResolution) / 2;
+
                 if (MoveTargetPos.X < 0)
                     MoveTargetPos = MoveTargetPos with { X = 0 };
                 if (MoveTargetPos.Y < 0)
