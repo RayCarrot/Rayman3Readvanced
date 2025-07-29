@@ -3,9 +3,9 @@
 namespace GbaMonoGame.Rayman3;
 
 // TODO: Would look nicer with a smoother gradient. Same for the red fog, but less noticeable there. Can create shader which interpolates vertically between two colors.
-public class Mode7FogScreenRenderer : IScreenRenderer
+public class Mode7FogScreenEffect : ScreenEffect
 {
-    public Mode7FogScreenRenderer(FogLine[] fogLines)
+    public Mode7FogScreenEffect(FogLine[] fogLines)
     {
         FogLines = fogLines;
     }
@@ -13,23 +13,22 @@ public class Mode7FogScreenRenderer : IScreenRenderer
     public FogLine[] FogLines { get; }
     public float FadeDecrease { get; set; }
     public float Horizon { get; set; }
+    public bool ShouldDraw { get; set; }
 
-    public Vector2 GetSize(GfxScreen screen)
+    public override void Draw(GfxRenderer renderer)
     {
-        return screen.RenderOptions.RenderContext.Resolution;
-    }
+        if (!ShouldDraw)
+            return;
 
-    public void Draw(GfxRenderer renderer, GfxScreen screen, Vector2 position, Color color)
-    {
-        renderer.BeginSpriteRender(screen.RenderOptions);
+        renderer.BeginSpriteRender(RenderOptions);
 
-        Vector2 res = screen.RenderOptions.RenderContext.Resolution;
+        Vector2 res = RenderOptions.RenderContext.Resolution;
 
         float currentScanline = 0;
         for (int i = 0; i < FogLines.Length; i++)
         {
             FogLine fogLine = FogLines[i];
-            
+
             float nextScanline = i + 1 == FogLines.Length ? res.Y : Horizon + FogLines[i + 1].RelativeScanline;
 
             float fade = fogLine.Fade - FadeDecrease;
@@ -40,8 +39,7 @@ public class Mode7FogScreenRenderer : IScreenRenderer
             // Convert to 0-1 range from GBA's 0-16 range
             fade /= 16;
 
-            color = Color.White * fade;
-            renderer.DrawFilledRectangle(new Vector2(0, currentScanline), new Vector2(res.X, nextScanline - currentScanline), color);
+            renderer.DrawFilledRectangle(new Vector2(0, currentScanline), new Vector2(res.X, nextScanline - currentScanline), Color.White * fade);
 
             currentScanline = nextScanline;
         }

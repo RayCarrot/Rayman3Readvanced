@@ -17,46 +17,37 @@ public class FrameWaterSkiMode7 : FrameMode7
 
     public uint WaterskiTimer { get; set; }
 
-    public GfxScreen FogScreen { get; set; }
-    public Mode7FogScreenRenderer FogScreenRenderer { get; set; }
+    public Mode7FogScreenEffect Mode7FogScreenEffect { get; set; }
     public float FadeDecrease { get; set; }
 
     private void InitFog()
     {
         // NOTE: The game handles the fog by updating the backdrop color based on the following scanlines and then blends it with the screen
 
-        FogScreenRenderer = new Mode7FogScreenRenderer(
+        Mode7FogScreenEffect = new Mode7FogScreenEffect(
         [
-            new Mode7FogScreenRenderer.FogLine(0x1, -0x20),
-            new Mode7FogScreenRenderer.FogLine(0x2, -0x1C),
-            new Mode7FogScreenRenderer.FogLine(0x3, -0x18),
-            new Mode7FogScreenRenderer.FogLine(0x4, -0x15),
-            new Mode7FogScreenRenderer.FogLine(0x5, -0x12),
-            new Mode7FogScreenRenderer.FogLine(0x6, -0x0E),
-            new Mode7FogScreenRenderer.FogLine(0x7, -0x0A),
-            new Mode7FogScreenRenderer.FogLine(0x8, -0x06),
-            new Mode7FogScreenRenderer.FogLine(0x9, -0x04),
-            new Mode7FogScreenRenderer.FogLine(0xA, -0x02),
-            new Mode7FogScreenRenderer.FogLine(0x9, 0x01),
-            new Mode7FogScreenRenderer.FogLine(0x8, 0x04),
-            new Mode7FogScreenRenderer.FogLine(0x6, 0x08),
-            new Mode7FogScreenRenderer.FogLine(0x4, 0x0C),
-            new Mode7FogScreenRenderer.FogLine(0x2, 0x10),
-            new Mode7FogScreenRenderer.FogLine(0x0, 0x16),
-        ]);
-
-        FogScreen = new GfxScreen(5)
+            new Mode7FogScreenEffect.FogLine(0x1, -0x20),
+            new Mode7FogScreenEffect.FogLine(0x2, -0x1C),
+            new Mode7FogScreenEffect.FogLine(0x3, -0x18),
+            new Mode7FogScreenEffect.FogLine(0x4, -0x15),
+            new Mode7FogScreenEffect.FogLine(0x5, -0x12),
+            new Mode7FogScreenEffect.FogLine(0x6, -0x0E),
+            new Mode7FogScreenEffect.FogLine(0x7, -0x0A),
+            new Mode7FogScreenEffect.FogLine(0x8, -0x06),
+            new Mode7FogScreenEffect.FogLine(0x9, -0x04),
+            new Mode7FogScreenEffect.FogLine(0xA, -0x02),
+            new Mode7FogScreenEffect.FogLine(0x9, 0x01),
+            new Mode7FogScreenEffect.FogLine(0x8, 0x04),
+            new Mode7FogScreenEffect.FogLine(0x6, 0x08),
+            new Mode7FogScreenEffect.FogLine(0x4, 0x0C),
+            new Mode7FogScreenEffect.FogLine(0x2, 0x10),
+            new Mode7FogScreenEffect.FogLine(0x0, 0x16),
+        ])
         {
-            Priority = 0,
-            Wrap = false,
-            Is8Bit = null,
-            Offset = Vector2.Zero,
-            IsEnabled = true,
-            Renderer = FogScreenRenderer,
             RenderOptions = { RenderContext = Scene.RenderContext }
         };
 
-        Gfx.AddScreen(FogScreen);
+        Gfx.SetScreenEffect(Mode7FogScreenEffect);
     }
 
     public override void Init()
@@ -122,13 +113,13 @@ public class FrameWaterSkiMode7 : FrameMode7
                     FadeDecrease = (90 - WaterskiTimer) / 4f;
             }
 
-            FogScreenRenderer.Horizon = ((TgxCameraMode7)Scene.Playfield.Camera).Horizon;
+            Mode7FogScreenEffect.Horizon = ((TgxCameraMode7)Scene.Playfield.Camera).Horizon;
         }
 
         base.Step();
 
-        FogScreen.IsEnabled = Gfx.FadeControl.Mode != FadeMode.BrightnessDecrease && !IsPaused();
-        FogScreenRenderer.FadeDecrease = FadeDecrease;
+        Mode7FogScreenEffect.ShouldDraw = Gfx.FadeControl.Mode != FadeMode.BrightnessDecrease && !IsPaused();
+        Mode7FogScreenEffect.FadeDecrease = FadeDecrease;
 
         if (EndOfFrame)
             GameInfo.LoadLevel(GameInfo.GetNextLevelId());
