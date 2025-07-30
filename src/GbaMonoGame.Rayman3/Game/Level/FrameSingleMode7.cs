@@ -55,7 +55,7 @@ public class FrameSingleMode7 : FrameMode7
             Priority = 0,
             Wrap = false,
             Offset = Vector2.Zero,
-            GbaAlpha = 12,
+            Alpha = AlphaCoefficient.FromGbaValue(12),
             IsEnabled = true,
             Renderer = FogScreenRenderer,
             RenderOptions = { BlendMode = BlendMode.Additive, RenderContext = Scene.RenderContext }

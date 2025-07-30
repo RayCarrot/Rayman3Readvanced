@@ -271,7 +271,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         if (ShouldSetLightningAlpha)
         {
             lightningLayer.Screen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
-            lightningLayer.Screen.GbaAlpha = 8;
+            lightningLayer.Screen.Alpha = AlphaCoefficient.FromGbaValue(8);
 
             ShouldSetLightningAlpha = false;
         }
@@ -644,7 +644,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         if (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage)
             LightningCountdown = 0;
 
-        FullWorldName.GbaAlpha = WorldNameAlpha;
+        FullWorldName.Alpha = AlphaCoefficient.FromGbaValue(WorldNameAlpha);
 
         // NOTE: The original game hides the background and sprites by setting all palette colors to fully black. Since
         //       we can't do that here the easiest seems to be to just remove all screens, dialogs and pending sprites.
@@ -1366,7 +1366,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             }
         }
 
-        FullWorldName.GbaAlpha = WorldNameAlpha / (float)factor;
+        FullWorldName.Alpha = AlphaCoefficient.FromGbaValue(WorldNameAlpha / (float)factor);
 
         Scene.AnimationPlayer.PlayFront(FullWorldName);
     }

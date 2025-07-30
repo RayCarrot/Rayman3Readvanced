@@ -265,8 +265,8 @@ public static class FontManager
         Matrix transformation,
         ref Vector2 position, 
         int priority, 
-        AffineMatrix? affineMatrix, 
-        float alpha, 
+        AffineMatrix? affineMatrix,
+        AlphaCoefficient alpha,
         Color color,
         RenderOptions renderOptions)
     {

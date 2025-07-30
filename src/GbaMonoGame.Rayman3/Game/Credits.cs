@@ -157,7 +157,7 @@ public class Credits : Frame
                 TextOffsetsY[nameIndex] = nameOffsetY;
 
                 TextObjects[nameIndex].RenderOptions.BlendMode = BlendMode.AlphaBlend;
-                TextObjects[nameIndex].GbaAlpha = ObjAlpha;
+                TextObjects[nameIndex].Alpha = AlphaCoefficient.FromGbaValue(ObjAlpha);
                 TextObjects[nameIndex].ScreenPos = new Vector2(TextOffsetsX[nameIndex], TextOffsetsY[nameIndex]);
                 TextObjects[nameIndex].Text = LocString[CurrentStringIndex];
 
@@ -234,7 +234,7 @@ public class Credits : Frame
                     foreach (SpriteTextObject textObject in TextObjects)
                     {
                         if (textObject.RenderOptions.BlendMode != BlendMode.None)
-                            textObject.GbaAlpha = ObjAlpha;
+                            textObject.Alpha = AlphaCoefficient.FromGbaValue(ObjAlpha);
                     }
 
                     if (ObjAlpha >= 16)
@@ -289,7 +289,7 @@ public class Credits : Frame
                     foreach (SpriteTextObject textObject in TextObjects)
                     {
                         if (textObject.RenderOptions.BlendMode != BlendMode.None)
-                            textObject.GbaAlpha = ObjAlpha;
+                            textObject.Alpha = AlphaCoefficient.FromGbaValue(ObjAlpha);
                     }
                 }
 
@@ -328,7 +328,7 @@ public class Credits : Frame
                         foreach (SpriteTextObject textObject in TextObjects)
                         {
                             if (textObject.RenderOptions.BlendMode != BlendMode.None)
-                                textObject.GbaAlpha = ObjAlpha;
+                                textObject.Alpha = AlphaCoefficient.FromGbaValue(ObjAlpha);
                         }
                     }
                 }

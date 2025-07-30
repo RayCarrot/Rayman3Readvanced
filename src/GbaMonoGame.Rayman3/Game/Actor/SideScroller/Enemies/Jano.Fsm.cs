@@ -27,7 +27,7 @@ public partial class Jano
                 AlphaBlend += 0.5f;
         }
 
-        AnimatedObject.GbaAlpha = AlphaBlend;
+        AnimatedObject.Alpha = AlphaCoefficient.FromGbaValue(AlphaBlend);
 
         return true;
     }

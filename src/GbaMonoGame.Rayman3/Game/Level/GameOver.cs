@@ -62,7 +62,7 @@ public class GameOver : Frame
             float scale = Timer * 0.06246948242f + 1;
             Countdown2.AffineMatrix = new AffineMatrix(0, scale, scale);
 
-            Countdown2.GbaAlpha = 15 - Timer / 2f;
+            Countdown2.Alpha = AlphaCoefficient.FromGbaValue(15 - Timer / 2f);
 
             Countdown1.ObjPriority = 33;
             Countdown2.ObjPriority = 32;
@@ -80,7 +80,7 @@ public class GameOver : Frame
             float scale = (60 - Timer) * 0.06246948242f + 1;
             Countdown2.AffineMatrix = new AffineMatrix(0, scale, scale);
 
-            Countdown2.GbaAlpha = (Timer - 30) / 2f;
+            Countdown2.Alpha = AlphaCoefficient.FromGbaValue((Timer - 30) / 2f);
 
             Countdown1.ObjPriority = 32;
             Countdown2.ObjPriority = 33;

@@ -43,29 +43,27 @@ public class AnimatedObject : AObject
 
     #region Public Properties
 
+    // Resources
     public AnimatedObjectResource Resource { get; }
     public SpritePalettes Palettes { get; set; }
 
     // Flags
-    public bool IsSoundEnabled { get; set; }
-    public bool IsDynamic { get; set; } // Not used here
-    public bool EndOfAnimation { get; set; }
+    public bool IsFramed { get; set; }
     public bool IsDelayMode { get; set; }
+    public bool EndOfAnimation { get; set; }
     public bool IsPaused { get; set; }
     public bool IsAffine { get; set; }
-
-    // Render mode
-    public bool IsDoubleAffine { get; set; } // Not used here
-
-    public uint ActiveChannels { get; set; }
-
-    public bool IsBackSprite { get; set; }
-
     public bool FlipX { get; set; }
     public bool FlipY { get; set; }
+    public bool IsDynamic { get; set; } // Not used here
 
-    public bool IsFramed { get; set; }
+    // Render flags
+    public bool IsDoubleAffine { get; set; } // Not used here
 
+    // Class type
+    public bool IsSoundEnabled { get; set; }
+    
+    // Animation state
     public int CurrentAnimation
     {
         get => _currentAnimation;
@@ -75,7 +73,6 @@ public class AnimatedObject : AObject
             Rewind();
         }
     }
-
     public int CurrentFrame
     {
         get => _currentFrame;
@@ -112,28 +109,21 @@ public class AnimatedObject : AObject
             EndOfAnimation = false;
         }
     }
-
     public int ChannelIndex { get; set; }
     public int Timer { get; set; }
-
-    public AffineMatrix? AffineMatrix { get; set; }
     public int BasePaletteIndex { get; set; }
-    public int PaletteCycleIndex { get; set; }
 
-    public float Alpha { get; set; } = 1;
-    public float GbaAlpha
-    {
-        get => Alpha * 16;
-        set => Alpha = value / 16;
-    }
-
+    // Extended options
     public BoxTable BoxTable { get; set; }
+    public uint ActiveChannels { get; set; }
+    public AffineMatrix? AffineMatrix { get; set; }
 
+    // Custom
+    public bool IsBackSprite { get; set; }
+    public int PaletteCycleIndex { get; set; }
     public bool OverrideGfxColor { get; set; } // Needed for the curtains in the worldmap which are not effected by the palette fading
-
-    // Custom - allows animations to be replaced with new ones
+    public AlphaCoefficient Alpha { get; set; } = AlphaCoefficient.Max;
     public Dictionary<int, Animation> ReplacedAnimations { get; set; }
-
     public Dictionary<int, AffineMatrix> AffineMatrixCache { get; set; }
 
     // TODO: Check if this needs to be applied to more animations

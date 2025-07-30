@@ -44,12 +44,12 @@ public abstract class CameraActorMode7 : CameraActor
         {
             // The game doesn't do this, but it looks nicer if we fade in the objects as they enter the view
             animatedObject.RenderOptions.BlendMode = BlendMode.AlphaBlend;
-            animatedObject.Alpha = MathF.Min((cam.CameraFar - camDist) / FadeDistance, 1);
+            animatedObject.Alpha = MathF.Min((cam.CameraFar - camDist) / FadeDistance, AlphaCoefficient.MaxValue);
         }
         else
         {
             animatedObject.RenderOptions.BlendMode = BlendMode.None;
-            animatedObject.Alpha = 1;
+            animatedObject.Alpha = AlphaCoefficient.MaxValue;
         }
 
         // Get the projection and view from the camera

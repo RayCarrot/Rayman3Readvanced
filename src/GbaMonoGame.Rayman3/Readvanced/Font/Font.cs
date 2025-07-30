@@ -108,7 +108,7 @@ public class Font
         ref Vector2 position,
         int priority,
         AffineMatrix? affineMatrix,
-        float alpha,
+        AlphaCoefficient alpha,
         Color color,
         RenderOptions renderOptions)
     {

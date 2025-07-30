@@ -448,7 +448,7 @@ public class Intro : Frame, IHasPlayfield
                 CurrentStepAction = Step_2;
 
                 Playfield.TileLayers[SkyTileLayerId].Screen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
-                Playfield.TileLayers[SkyTileLayerId].Screen.GbaAlpha = 0;
+                Playfield.TileLayers[SkyTileLayerId].Screen.Alpha = AlphaCoefficient.None;
 
                 Playfield.TileLayers[SkyTileLayerId].Screen.IsEnabled = true;
                 Playfield.TileLayers[MainTileLayerId].Screen.IsEnabled = true;
@@ -477,11 +477,11 @@ public class Intro : Frame, IHasPlayfield
 
                 Playfield.TileLayers[SkyTileLayerId].Screen.RenderOptions.BlendMode = BlendMode.None;
                 Playfield.TileLayers[UbisoftLogoTileLayerId].Screen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
-                Playfield.TileLayers[UbisoftLogoTileLayerId].Screen.GbaAlpha = 16;
+                Playfield.TileLayers[UbisoftLogoTileLayerId].Screen.Alpha = AlphaCoefficient.Max;
             }
             else
             {
-                Playfield.TileLayers[SkyTileLayerId].Screen.GbaAlpha = Timer / 4f;
+                Playfield.TileLayers[SkyTileLayerId].Screen.Alpha = AlphaCoefficient.FromGbaValue(Timer / 4f);
             }
         }
         else if (Rom.Platform == Platform.NGage)
@@ -506,7 +506,7 @@ public class Intro : Frame, IHasPlayfield
 
             Playfield.TileLayers[UbisoftLogoTileLayerId].Screen.RenderOptions.BlendMode = BlendMode.None;
             Playfield.TileLayers[CloudsTileLayerId].Screen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
-            Playfield.TileLayers[CloudsTileLayerId].Screen.GbaAlpha = 0;
+            Playfield.TileLayers[CloudsTileLayerId].Screen.Alpha = AlphaCoefficient.None;
 
             Playfield.TileLayers[UbisoftLogoTileLayerId].Screen.IsEnabled = false;
 
@@ -516,7 +516,7 @@ public class Intro : Frame, IHasPlayfield
         }
         else
         {
-            Playfield.TileLayers[UbisoftLogoTileLayerId].Screen.GbaAlpha = 16 - (Timer / 4f);
+            Playfield.TileLayers[UbisoftLogoTileLayerId].Screen.Alpha = AlphaCoefficient.FromGbaValue(AlphaCoefficient.MaxGbaValue - (Timer / 4f));
         }
 
         // N-Gage allows the intro to be skipped from here
@@ -545,7 +545,7 @@ public class Intro : Frame, IHasPlayfield
 
         if (ScrollY > 600 && AlphaTimer <= 0x80)
         {
-            Playfield.TileLayers[CloudsTileLayerId].Screen.GbaAlpha = AlphaTimer / 32f;
+            Playfield.TileLayers[CloudsTileLayerId].Screen.Alpha = AlphaCoefficient.FromGbaValue(AlphaTimer / 32f);
             AlphaTimer++;
         }
 
@@ -659,7 +659,7 @@ public class Intro : Frame, IHasPlayfield
         if (SkippedTimer == 10)
         {
             AlphaTimer = 0x80;
-            Playfield.TileLayers[CloudsTileLayerId].Screen.GbaAlpha = AlphaTimer / 32f;
+            Playfield.TileLayers[CloudsTileLayerId].Screen.Alpha = AlphaCoefficient.FromGbaValue(AlphaTimer / 32f);
             BlackLumAndLogoObj.CurrentAnimation = 8;
             BlackLumAndLogoObj.CurrentFrame = 5;
             BlackLumAndLogoObj.ScreenPos = Rom.Platform switch

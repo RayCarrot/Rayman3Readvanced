@@ -43,12 +43,7 @@ public class GfxScreen
 
     public RenderOptions RenderOptions { get; } = new();
 
-    public float Alpha { get; set; }
-    public float GbaAlpha
-    {
-        get => Alpha * 16;
-        set => Alpha = value / 16;
-    }
+    public AlphaCoefficient Alpha { get; set; } = AlphaCoefficient.Max;
 
     /// <summary>
     /// Indicates if the screen is enabled and should be drawn.

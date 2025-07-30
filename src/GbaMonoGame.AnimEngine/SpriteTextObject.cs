@@ -28,12 +28,7 @@ public class SpriteTextObject : AObject
     public FontSize FontSize { get; set; }
     public AffineMatrix? AffineMatrix { get; set; }
 
-    public float Alpha { get; set; } = 1;
-    public float GbaAlpha
-    {
-        get => Alpha * 16;
-        set => Alpha = value / 16;
-    }
+    public AlphaCoefficient Alpha { get; set; } = AlphaCoefficient.Max;
 
     public int GetStringWidth() => FontManager.GetStringWidth(FontSize, TextBytes);
 

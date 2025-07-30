@@ -10,7 +10,7 @@ public class SpriteFontTextObject : AObject
 
     public Font Font { get; set; }
     public AffineMatrix? AffineMatrix { get; set; }
-    public float Alpha { get; set; } = 1;
+    public AlphaCoefficient Alpha { get; set; } = AlphaCoefficient.Max;
 
     public void WrapText(float width)
     {

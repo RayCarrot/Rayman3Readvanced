@@ -108,10 +108,10 @@ public static class TransitionsFX
         Screns.Add(screen.Id);
     }
 
-    public static void ApplyAlphaSettings(float coefficient)
+    public static void ApplyAlphaSettings(AlphaCoefficient coefficient)
     {
         foreach (int screen in Screns)
-            Gfx.GetScreen(screen).GbaAlpha = coefficient;
+            Gfx.GetScreen(screen).Alpha = coefficient;
     }
 
     public static void AlphaBlendingStep()
@@ -132,7 +132,7 @@ public static class TransitionsFX
             }
             else
             {
-                ApplyAlphaSettings(AlphaStep.Value);
+                ApplyAlphaSettings(GbaMonoGame.AlphaCoefficient.FromGbaValue(AlphaStep.Value));
 
                 if (AlphaStep == 0)
                     foreach (int screen in Screns)
@@ -163,7 +163,7 @@ public static class TransitionsFX
             }
             else
             {
-                ApplyAlphaSettings((AlphaStep.Value + AlphaCoefficient + 1) % 256);
+                ApplyAlphaSettings(GbaMonoGame.AlphaCoefficient.FromGbaValue((AlphaStep.Value + AlphaCoefficient + 1) % 256));
                 AlphaStep -= speed;
             }
         }

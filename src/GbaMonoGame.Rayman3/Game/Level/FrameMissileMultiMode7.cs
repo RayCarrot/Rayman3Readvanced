@@ -54,7 +54,7 @@ public class FrameMissileMultiMode7 : FrameMode7
             Wrap = false,
             Is8Bit = null,
             Offset = Vector2.Zero,
-            GbaAlpha = 12,
+            Alpha = AlphaCoefficient.FromGbaValue(12),
             IsEnabled = true,
             Renderer = FogScreenRenderer,
             RenderOptions = { BlendMode = BlendMode.Additive, RenderContext = Scene.RenderContext }

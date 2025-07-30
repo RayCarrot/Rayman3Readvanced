@@ -2307,13 +2307,13 @@ public sealed partial class Rayman : MovableActor
             InvisibilityTimer--;
 
             if (InstanceId == MultiplayerManager.MachineId)
-                AnimatedObject.GbaAlpha = 16 - Math.Abs(InvisibilityTimer % 20 - 10);
+                AnimatedObject.Alpha = AlphaCoefficient.FromGbaValue(AlphaCoefficient.MaxGbaValue - Math.Abs(InvisibilityTimer % 20 - 10));
             else if (InvisibilityTimer >= 424)
-                AnimatedObject.GbaAlpha = 16 - (480 - InvisibilityTimer / 4f);
+                AnimatedObject.Alpha = AlphaCoefficient.FromGbaValue(AlphaCoefficient.MaxGbaValue - (480 - InvisibilityTimer / 4f));
             else if (InvisibilityTimer >= 57)
-                AnimatedObject.GbaAlpha = 2;
+                AnimatedObject.Alpha = AlphaCoefficient.FromGbaValue(2);
             else
-                AnimatedObject.GbaAlpha = 16 - InvisibilityTimer / 4f;
+                AnimatedObject.Alpha = AlphaCoefficient.FromGbaValue(AlphaCoefficient.MaxGbaValue - InvisibilityTimer / 4f);
 
             if (InvisibilityTimer == 0)
             {

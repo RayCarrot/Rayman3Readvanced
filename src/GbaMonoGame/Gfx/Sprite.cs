@@ -21,7 +21,7 @@ public class Sprite
     //       each other. Very noticeable when setting it on Rayman and looking up - Rayman gets 4 eyes then! Although this might be how
     //       it is on N-Gage?
     //       One fix is to render sprites as groups, where a group defines the render settings instead of the sprites themselves.
-    public float Alpha { get; set; }
+    public AlphaCoefficient Alpha { get; set; }
 
     public RenderOptions RenderOptions { get; set; }
 

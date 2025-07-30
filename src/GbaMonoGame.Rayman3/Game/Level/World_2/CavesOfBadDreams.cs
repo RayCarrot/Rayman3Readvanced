@@ -28,7 +28,7 @@ public class CavesOfBadDreams : FrameSideScroller
 
         GfxScreen skullScreen = Gfx.GetScreen(1);
         skullScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
-        skullScreen.GbaAlpha = 0;
+        skullScreen.Alpha = AlphaCoefficient.None;
 
         UseSinWaveEffect = Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage;
 
@@ -89,14 +89,14 @@ public class CavesOfBadDreams : FrameSideScroller
         {
             case FadeMode.FadeIn:
                 skullScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
-                skullScreen.GbaAlpha = (28 - Timer) / 4f;
+                skullScreen.Alpha = AlphaCoefficient.FromGbaValue((28 - Timer) / 4f);
                 
                 Timer--;
                 
                 if (Timer == 0)
                 {
                     // The game doesn't do this, but since we use floats it will cause the value to be stuck at a fractional value, so force to the max
-                    skullScreen.GbaAlpha = 7;
+                    skullScreen.Alpha = AlphaCoefficient.FromGbaValue(7);
 
                     Timer = 120;
                     Mode = FadeMode.Visible;
@@ -115,14 +115,14 @@ public class CavesOfBadDreams : FrameSideScroller
             
             case FadeMode.FadeOut:
                 skullScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
-                skullScreen.GbaAlpha = Timer / 4f;
+                skullScreen.Alpha = AlphaCoefficient.FromGbaValue(Timer / 4f);
                 
                 Timer--;
                 
                 if (Timer == 0)
                 {
                     // The game doesn't do this, but since we use floats it will cause the value to be stuck at a fractional value, so force to the min
-                    skullScreen.GbaAlpha = 0;
+                    skullScreen.Alpha = AlphaCoefficient.None;
 
                     Timer = Random.GetNumber(120) + 30;
                     Mode = FadeMode.Invisible;
@@ -158,7 +158,7 @@ public class CavesOfBadDreams : FrameSideScroller
                 }
 
                 skullScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
-                skullScreen.GbaAlpha = Timer / 4f;
+                skullScreen.Alpha = AlphaCoefficient.FromGbaValue(Timer / 4f);
                 break;
 
             case FadeMode.Ended:

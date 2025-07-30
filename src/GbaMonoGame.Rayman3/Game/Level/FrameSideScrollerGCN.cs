@@ -146,7 +146,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
 
                 GfxScreen skullScreen = Gfx.GetScreen(1);
                 skullScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
-                skullScreen.GbaAlpha = 0;
+                skullScreen.Alpha = AlphaCoefficient.None;
 
                 if (!ScaleSkulls)
                     skullScreen.RenderOptions.RenderContext = Scene.RenderContext;
@@ -171,7 +171,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
                 // Make the rain semi-transparent
                 GfxScreen rainScreen = Gfx.GetScreen(3);
                 rainScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
-                rainScreen.GbaAlpha = 6;
+                rainScreen.Alpha = AlphaCoefficient.FromGbaValue(6);
                 break;
         }
     }
@@ -203,7 +203,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
                         foreach (GfxScreen screen in Gfx.Screens)
                         {
                             if (screen.RenderOptions.BlendMode != BlendMode.None)
-                                screen.GbaAlpha = 16 - LavaFadeOutTimer;
+                                screen.Alpha = AlphaCoefficient.FromGbaValue(AlphaCoefficient.MaxGbaValue - LavaFadeOutTimer);
                         }
                     }
 
@@ -255,14 +255,14 @@ public class FrameSideScrollerGCN : FrameSideScroller
                 {
                     case CavesOfBadDreams.FadeMode.FadeIn:
                         skullScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
-                        skullScreen.GbaAlpha = (28 - SkullTimer) / 4f;
+                        skullScreen.Alpha = AlphaCoefficient.FromGbaValue((28 - SkullTimer) / 4f);
 
                         SkullTimer--;
 
                         if (SkullTimer == 0)
                         {
                             // The game doesn't do this, but since we use floats it will cause the value to be stuck at a fractional value, so force to the max
-                            skullScreen.GbaAlpha = 7;
+                            skullScreen.Alpha = AlphaCoefficient.FromGbaValue(7);
 
                             SkullTimer = 120;
                             SkullMode = CavesOfBadDreams.FadeMode.Visible;
@@ -281,14 +281,14 @@ public class FrameSideScrollerGCN : FrameSideScroller
 
                     case CavesOfBadDreams.FadeMode.FadeOut:
                         skullScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
-                        skullScreen.GbaAlpha = SkullTimer / 4f;
+                        skullScreen.Alpha = AlphaCoefficient.FromGbaValue(SkullTimer / 4f);
 
                         SkullTimer--;
 
                         if (SkullTimer == 0)
                         {
                             // The game doesn't do this, but since we use floats it will cause the value to be stuck at a fractional value, so force to the min
-                            skullScreen.GbaAlpha = 0;
+                            skullScreen.Alpha = AlphaCoefficient.None;
 
                             SkullTimer = Random.GetNumber(120) + 30;
                             SkullMode = CavesOfBadDreams.FadeMode.Invisible;
@@ -395,7 +395,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
                 {
                     // Make the rain semi-transparent again
                     rainScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
-                    rainScreen.GbaAlpha = 6;
+                    rainScreen.Alpha = AlphaCoefficient.FromGbaValue(6);
 
                     Gfx.FadeControl = FadeControl.None;
 

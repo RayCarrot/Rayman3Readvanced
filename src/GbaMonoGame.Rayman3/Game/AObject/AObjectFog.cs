@@ -36,12 +36,7 @@ public class AObjectFog : AObject
     public AnimatedObjectResource Resource { get; }
     public AnimationChannel[] SpriteChannels { get; }
 
-    public float Alpha { get; set; }
-    public float GbaAlpha
-    {
-        get => Alpha * 16;
-        set => Alpha = value / 16;
-    }
+    public AlphaCoefficient Alpha { get; set; } = AlphaCoefficient.Max;
 
     #endregion
 

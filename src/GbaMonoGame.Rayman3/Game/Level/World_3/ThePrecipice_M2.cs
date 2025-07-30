@@ -23,7 +23,7 @@ public class ThePrecipice_M2 : FrameSideScroller
         // Make the rain semi-transparent
         GfxScreen rainScreen = Gfx.GetScreen(3);
         rainScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
-        rainScreen.GbaAlpha = 6;
+        rainScreen.Alpha = AlphaCoefficient.FromGbaValue(6);
     }
 
     public override void Step()
@@ -115,7 +115,7 @@ public class ThePrecipice_M2 : FrameSideScroller
         {
             // Make the rain semi-transparent again
             rainScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
-            rainScreen.GbaAlpha = 6;
+            rainScreen.Alpha = AlphaCoefficient.FromGbaValue(6);
 
             Gfx.FadeControl = FadeControl.None;
 
