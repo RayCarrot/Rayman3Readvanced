@@ -123,6 +123,7 @@ public class AnimatedObject : AObject
     public int PaletteCycleIndex { get; set; }
     public bool OverrideGfxColor { get; set; } // Needed for the curtains in the worldmap which are not effected by the palette fading
     public AlphaCoefficient Alpha { get; set; } = AlphaCoefficient.Max;
+    public Dictionary<int, Texture2D> ReplacedSpriteTextures { get; set; }
     public Dictionary<int, Animation> ReplacedAnimations { get; set; }
     public Dictionary<int, AffineMatrix> AffineMatrixCache { get; set; }
 
@@ -153,6 +154,28 @@ public class AnimatedObject : AObject
 
         for (int i = 0; i < anim.ChannelsPerFrame[CurrentFrame]; i++)
             yield return anim.Channels[i + ChannelIndex];
+    }
+
+    public void ReplaceSpriteTexture(int tileIndex, Texture2D texture)
+    {
+        ReplacedSpriteTextures ??= new Dictionary<int, Texture2D>();
+        ReplacedSpriteTextures[tileIndex] = texture;
+    }
+
+    public Texture2D GetSpriteTexture(AnimationChannel spriteChannel)
+    {
+        if (ReplacedSpriteTextures != null && ReplacedSpriteTextures.TryGetValue(spriteChannel.TileIndex, out Texture2D texture))
+            return texture;
+        else
+            return Engine.TextureCache.GetOrCreateObject(
+                pointer: Resource.Offset,
+                id: spriteChannel.TileIndex,
+                data: new SpriteDefine(
+                    resource: Resource,
+                    spriteShape: spriteChannel.SpriteShape,
+                    spriteSize: spriteChannel.SpriteSize,
+                    tileIndex: spriteChannel.TileIndex),
+                createObjFunc: static data => new IndexedSpriteTexture2D(data.Resource, data.SpriteShape, data.SpriteSize, data.TileIndex));
     }
 
     public Animation GetAnimation()
@@ -484,16 +507,8 @@ public class AnimatedObject : AObject
                     else if (channel.ObjectMode is OBJ_ATTR_ObjectMode.AFF or OBJ_ATTR_ObjectMode.AFF_DBL)
                         affineMatrix = GetAffineMatrix(channel.AffineMatrixIndex);
 
-                    // Get or create the sprite texture
-                    Texture2D texture = Engine.TextureCache.GetOrCreateObject(
-                        pointer: Resource.Offset,
-                        id: channel.TileIndex,
-                        data: new SpriteDefine(
-                            resource: Resource,
-                            spriteShape: channel.SpriteShape,
-                            spriteSize: channel.SpriteSize,
-                            tileIndex: channel.TileIndex),
-                        createObjFunc: static data => new IndexedSpriteTexture2D(data.Resource, data.SpriteShape, data.SpriteSize, data.TileIndex));
+                    // Get the sprite texture
+                    Texture2D texture = GetSpriteTexture(channel);
 
                     int paletteIndex = BasePaletteIndex + channel.PalIndex;
 

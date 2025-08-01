@@ -131,17 +131,14 @@ public class Intro : Frame, IHasPlayfield
             },
         };
 
-        const int baseCacheId = 1000;
+        const int baseTileIndex = 1000;
 
-        // Load the textures
+        // Replace the sprite textures
         for (int letterIndex = 0; letterIndex < letters.Length; letterIndex++)
         {
             var letter = letters[letterIndex];
             if (letter.FileName != null)
-                Engine.TextureCache.SetObject(
-                    BlackLumAndLogoObj.Resource.Offset,
-                    baseCacheId + letterIndex,
-                    Engine.FrameContentManager.Load<Texture2D>(letter.FileName));
+                BlackLumAndLogoObj.ReplaceSpriteTexture(baseTileIndex + letterIndex, Engine.FrameContentManager.Load<Texture2D>(letter.FileName));
         }
 
         Point originalBaseOffset = letters[0].OriginalOffset;
@@ -179,7 +176,7 @@ public class Intro : Frame, IHasPlayfield
                             {
                                 Point offset = originalBaseOffset + (letter.NewOffset - newBaseOffset) - letter.OriginalOffset;
 
-                                channel.TileIndex = (ushort)(baseCacheId + letterIndex);
+                                channel.TileIndex = (ushort)(baseTileIndex + letterIndex);
                                 channel.XPosition += (short)offset.X;
                                 channel.YPosition += (short)offset.Y;
                             }
@@ -198,11 +195,8 @@ public class Intro : Frame, IHasPlayfield
             BlackLumAndLogoObj.ReplaceAnimation(animId, anim);
         }
 
-        // Load the "READVANCED" subtitle texture
-        Engine.TextureCache.SetObject(
-            BlackLumAndLogoObj.Resource.Offset,
-            baseCacheId + letters.Length,
-            Engine.FrameContentManager.Load<Texture2D>(Assets.IntroLogo_Part8Texture));
+        // Replace the "READVANCED" subtitle sprite texture
+        BlackLumAndLogoObj.ReplaceSpriteTexture(baseTileIndex + letters.Length, Engine.FrameContentManager.Load<Texture2D>(Assets.IntroLogo_Part8Texture));
 
         Point newOffset = new(44, 67);
         Point offset = originalBaseOffset + (newOffset - newBaseOffset);
@@ -222,28 +216,28 @@ public class Intro : Frame, IHasPlayfield
                     if (frameIndex == 59)
                     {
                         channel.ObjectMode = OBJ_ATTR_ObjectMode.REG;
-                        channel.TileIndex = (ushort)(baseCacheId + letters.Length);
+                        channel.TileIndex = (ushort)(baseTileIndex + letters.Length);
                         channel.XPosition = (short)offset.X;
                         channel.YPosition = (short)(offset.Y + 50);
                     }
                     else if (frameIndex == 60)
                     {
                         channel.ObjectMode = OBJ_ATTR_ObjectMode.REG;
-                        channel.TileIndex = (ushort)(baseCacheId + letters.Length);
+                        channel.TileIndex = (ushort)(baseTileIndex + letters.Length);
                         channel.XPosition = (short)offset.X;
                         channel.YPosition = (short)offset.Y;
                     }
                     else if (frameIndex == 61)
                     {
                         channel.ObjectMode = OBJ_ATTR_ObjectMode.REG;
-                        channel.TileIndex = (ushort)(baseCacheId + letters.Length);
+                        channel.TileIndex = (ushort)(baseTileIndex + letters.Length);
                         channel.XPosition = (short)offset.X;
                         channel.YPosition = (short)(offset.Y + 5);
                     }
                     else if (frameIndex == 62)
                     {
                         channel.ObjectMode = OBJ_ATTR_ObjectMode.REG;
-                        channel.TileIndex = (ushort)(baseCacheId + letters.Length);
+                        channel.TileIndex = (ushort)(baseTileIndex + letters.Length);
                         channel.XPosition = (short)offset.X;
                         channel.YPosition = (short)offset.Y;
                     }
@@ -258,7 +252,7 @@ public class Intro : Frame, IHasPlayfield
             if (channel.TileIndex == tileIndex)
             {
                 channel.ObjectMode = OBJ_ATTR_ObjectMode.REG;
-                channel.TileIndex = (ushort)(baseCacheId + letters.Length);
+                channel.TileIndex = (ushort)(baseTileIndex + letters.Length);
                 channel.XPosition = (short)offset.X;
                 channel.YPosition = (short)offset.Y;
             }

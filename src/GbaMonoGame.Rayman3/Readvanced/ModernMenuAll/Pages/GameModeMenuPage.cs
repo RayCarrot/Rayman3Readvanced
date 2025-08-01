@@ -122,7 +122,7 @@ public class GameModeMenuPage : MenuPage
     private void ReplaceLogo()
     {
         const int animId = 0;
-        const int baseCacheId = 1000;
+        const int tileIndex = 1000;
 
         Animation anim = GameLogo.CopyAnimation(animId);
 
@@ -135,19 +135,14 @@ public class GameModeMenuPage : MenuPage
                 XPosition = -63,
                 YPosition = -75,
                 ObjectMode = OBJ_ATTR_ObjectMode.REG,
-                TileIndex = baseCacheId,
+                TileIndex = tileIndex,
                 FlipX = false,
                 FlipY = false,
             }
         ];
 
         GameLogo.ReplaceAnimation(animId, anim);
-
-        // Load the logo texture
-        Engine.TextureCache.SetObject(
-            GameLogo.Resource.Offset,
-            baseCacheId,
-            Engine.FrameContentManager.Load<Texture2D>(Assets.MenuLogoTexture));
+        GameLogo.ReplaceSpriteTexture(tileIndex, Engine.FrameContentManager.Load<Texture2D>(Assets.MenuLogoTexture));
     }
 
     protected override void Init()
