@@ -138,9 +138,9 @@ public class AnimatedObject : AObject
 
     #region Private Methods
 
-    private int GetAffineMatrixCacheId(int animId, int affineMatrixIndex)
+    private static int GetAffineMatrixCacheId(int animId, int affineMatrixIndex)
     {
-        return CurrentAnimation * 10_000 + affineMatrixIndex;
+        return animId * 10_000 + affineMatrixIndex;
     }
 
     #endregion
