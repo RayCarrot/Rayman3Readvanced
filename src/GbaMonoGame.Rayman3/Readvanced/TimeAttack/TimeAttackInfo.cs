@@ -36,7 +36,9 @@ public static class TimeAttackInfo
             },
             debug: Engine.LocalConfig.Debug with
             {
+#if RELEASE
                 DebugModeEnabled = false,
+#endif
             }));
 
         // Update resolution
