@@ -45,6 +45,16 @@ public static class Assets
     public const string GoldStarSmallTexture = "Rayman3/TimeAttack/GoldStarSmall";
     public const string SilverStarBigTexture = "Rayman3/TimeAttack/SilverStarBig";
     public const string SilverStarSmallTexture = "Rayman3/TimeAttack/SilverStarSmall";
+    public const string TimeFreezeItem_Blue0 = "Rayman3/TimeAttack/TimeFreezeItem_Blue0";
+    public const string TimeFreezeItem_Blue1 = "Rayman3/TimeAttack/TimeFreezeItem_Blue1";
+    public const string TimeFreezeItem_Blue2 = "Rayman3/TimeAttack/TimeFreezeItem_Blue2";
+    public const string TimeFreezeItem_Blue3 = "Rayman3/TimeAttack/TimeFreezeItem_Blue3";
+    public const string TimeFreezeItem_Blue4 = "Rayman3/TimeAttack/TimeFreezeItem_Blue4";
+    public const string TimeFreezeItem_Orange0 = "Rayman3/TimeAttack/TimeFreezeItem_Orange0";
+    public const string TimeFreezeItem_Orange1 = "Rayman3/TimeAttack/TimeFreezeItem_Orange1";
+    public const string TimeFreezeItem_Orange2 = "Rayman3/TimeAttack/TimeFreezeItem_Orange2";
+    public const string TimeFreezeItem_Orange3 = "Rayman3/TimeAttack/TimeFreezeItem_Orange3";
+    public const string TimeFreezeItem_Orange4 = "Rayman3/TimeAttack/TimeFreezeItem_Orange4";
 
     public const string TitleScreenTexture = "Rayman3/TitleScreen/TitleScreen";
     public const string TitleScreenGBACloudsTexture = "Rayman3/TitleScreen/GBAClouds";
