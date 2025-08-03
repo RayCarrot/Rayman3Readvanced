@@ -67,8 +67,8 @@ public partial class TimeAttackDialog
                 break;
 
             case FsmAction.Step:
-                // TODO: We can't allow it to go too high or the game might crash - kill Rayman if it reaches some large value
-                TimeAttackInfo.Timer++;
+                // Increment timer
+                TimeAttackInfo.AddTime(1);
 
                 // Update target time
                 if (TargetTimeIndex != -1 && TimeAttackInfo.Timer > TargetTime.Time)

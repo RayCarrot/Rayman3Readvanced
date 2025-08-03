@@ -10,10 +10,12 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 public static class TimeAttackInfo
 {
     private const int RandomSeed = 0x12345678; // The value doesn't matter - just needs to be constant
+    private const int MinTime = 0;
+    private const int MaxTime = 356400; // 99:00:00
 
     public static bool IsActive { get; set; }
     public static TimeAttackMode Mode { get; set; }
-    public static uint Timer { get; set; }
+    public static int Timer { get; set; }
     public static TimeAttackTime[] TargetTimes { get; set; }
 
     public static void Init()
@@ -120,6 +122,20 @@ public static class TimeAttackInfo
     public static TimeAttackTime? GetRecordTime(MapId mapId)
     {
         // TODO: Dynamically load from persistent data
-        return new TimeAttackTime(TimeAttackTimeType.Record, (uint)Random.GetNumber(2000));
+        return new TimeAttackTime(TimeAttackTimeType.Record, Random.GetNumber(2000));
+    }
+
+    public static void RemoveTime(int timeDelta)
+    {
+        Timer -= timeDelta;
+        if (Timer < MinTime)
+            Timer = MinTime;
+    }
+
+    public static void AddTime(int timeDelta)
+    {
+        Timer += timeDelta;
+        if (Timer > MaxTime)
+            Timer = MaxTime;
     }
 }

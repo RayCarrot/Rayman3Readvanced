@@ -93,14 +93,14 @@ public partial class TimeAttackDialog : Dialog
 
     public override void Draw(AnimationPlayer animationPlayer)
     {
-        TimerBar.DrawTime(animationPlayer, (int)TimeAttackInfo.Timer);
+        TimerBar.DrawTime(animationPlayer, TimeAttackInfo.Timer);
 
         if (TimeAttackInfo.Mode == TimeAttackMode.Countdown && CountdownValue != -1)
             animationPlayer.PlayFront(Countdown);
 
         if (TargetTimeIndex != -1)
         {
-            uint timeDiff = TargetTime.Time - TimeAttackInfo.Timer;
+            int timeDiff = TargetTime.Time - TimeAttackInfo.Timer;
             bool blink = timeDiff <= TargetBlinkRange;
 
             if (blink && timeDiff % 60 == 30)

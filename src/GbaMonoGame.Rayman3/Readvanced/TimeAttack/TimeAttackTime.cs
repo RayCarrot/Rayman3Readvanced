@@ -2,10 +2,10 @@
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
-public readonly struct TimeAttackTime(TimeAttackTimeType type, uint time)
+public readonly struct TimeAttackTime(TimeAttackTimeType type, int time)
 {
     public TimeAttackTimeType Type { get; } = type;
-    public uint Time { get; } = time;
+    public int Time { get; } = time;
 
     public Texture2D LoadIcon(bool filledIn)
     {
@@ -25,10 +25,10 @@ public readonly struct TimeAttackTime(TimeAttackTimeType type, uint time)
     public string ToTimeString()
     {
         // Get the minutes value
-        int minutes = (int)Time / (60 * 60);
+        int minutes = Time / (60 * 60);
 
         // Get the seconds value
-        int minutesRemainingTime = (int)Time % (60 * 60);
+        int minutesRemainingTime = Time % (60 * 60);
         int seconds = minutesRemainingTime / 60;
 
         // Get the centiseconds value
