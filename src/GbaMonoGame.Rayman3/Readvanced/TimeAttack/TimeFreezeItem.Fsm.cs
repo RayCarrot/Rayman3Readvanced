@@ -52,6 +52,9 @@ public partial class TimeFreezeItem
         switch (action)
         {
             case FsmAction.Init:
+                // Freeze the timer
+                TimeAttackInfo.RemoveTime(TimeDecreaseValue);
+
                 // Change action to the dying one, playing a faster animation
                 ActionId = Action.Dying;
 

@@ -11,7 +11,7 @@ public sealed partial class TimeFreezeItem : MovableActor
 {
     public TimeFreezeItem(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
-        // Load the sprites
+        // Load the sprites and set the time decrease value
         if ((Action)actorResource.FirstActionId == Action.Init_Blue)
         {
             AnimatedObject.ReplaceSpriteTexture(0, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Blue0));
@@ -19,6 +19,8 @@ public sealed partial class TimeFreezeItem : MovableActor
             AnimatedObject.ReplaceSpriteTexture(2, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Blue2));
             AnimatedObject.ReplaceSpriteTexture(3, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Blue3));
             AnimatedObject.ReplaceSpriteTexture(4, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Blue4));
+
+            TimeDecreaseValue = 3 * 60; // 3 seconds
         }
         else if ((Action)actorResource.FirstActionId == Action.Init_Orange)
         {
@@ -27,6 +29,8 @@ public sealed partial class TimeFreezeItem : MovableActor
             AnimatedObject.ReplaceSpriteTexture(2, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Orange2));
             AnimatedObject.ReplaceSpriteTexture(3, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Orange3));
             AnimatedObject.ReplaceSpriteTexture(4, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Orange4));
+
+            TimeDecreaseValue = 5 * 60; // 5 seconds
         }
         else
         {
@@ -59,6 +63,7 @@ public sealed partial class TimeFreezeItem : MovableActor
     private const int SparklesFadeOutDuration = 12;
 
     public AObjectChain Sparkles { get; }
+    public int TimeDecreaseValue { get; }
     public Vector2 InitialPosition { get; set; }
     public byte SinValue { get; set; }
     public uint Timer { get; set; }
