@@ -6,8 +6,6 @@ using Microsoft.Xna.Framework.Graphics;
 namespace GbaMonoGame.Rayman3.Readvanced;
 
 // TODO:
-// - Set actual time requirements for each level.
-// - Show blank star icon if time is not reached.
 // - Don't allow selecting level if not finished in single player.
 // - Should the waterski levels be included? Should Ly's Punch Challenge be included?
 // - Show screenshot for each level.
@@ -76,15 +74,8 @@ public class TimeAttackMenuPage : MenuPage
 
     public SpriteTextureObject Cloth { get; set; }
 
-    public SpriteTextureObject BronzeTimeIcon { get; set; }
-    public SpriteTextureObject SilverTimeIcon { get; set; }
-    public SpriteTextureObject GoldTimeIcon { get; set; }
-    public SpriteTextureObject UserTimeIcon { get; set; }
-
-    public SpriteTextObject BronzeTime { get; set; }
-    public SpriteTextObject SilverTime { get; set; }
-    public SpriteTextObject GoldTime { get; set; }
-    public SpriteTextObject UserTime { get; set; }
+    public TimeObject[] TargetTimes { get; set; }
+    public TimeObject RecordTime { get; set; }
 
     public SpriteFontTextObject GhostSelectionText { get; set; }
     public SpriteFontTextObject PlayText { get; set; }
@@ -112,6 +103,31 @@ public class TimeAttackMenuPage : MenuPage
             : Localization.GetText(TextBankId.LevelNames, 31 + SelectedWorld)[0];
         WorldName.Text = worldName;
         WorldName.ScreenPos = WorldNameCanvas.ScreenPos + new Vector2(-WorldName.GetStringWidth() / 2f, -15);
+    }
+
+    protected override bool SetSelectedOption(int selectedOption, bool playSound = true, bool forceUpdate = false)
+    {
+        if (base.SetSelectedOption(selectedOption, playSound, forceUpdate))
+        {
+            MapId mapId = SelectedMap;
+
+            TimeAttackTime? recordTime = TimeAttackInfo.GetRecordTime(mapId);
+
+            TimeAttackTime[] targetTimes = TimeAttackInfo.GetTargetTimes(mapId);
+            for (int i = 0; i < TargetTimes.Length; i++)
+            {
+                TimeAttackTime? targetTime = i < targetTimes.Length ? targetTimes[i] : null;
+                TargetTimes[i].SetTime(targetTime, recordTime?.Time <= targetTime?.Time);
+            }
+
+            RecordTime.SetTime(recordTime, true);
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     protected override void Init()
@@ -159,81 +175,14 @@ public class TimeAttackMenuPage : MenuPage
             Texture = Engine.FrameContentManager.Load<Texture2D>(Assets.TimeAttackClothTexture)
         };
 
-        BronzeTimeIcon = new SpriteTextureObject
-        {
-            BgPriority = 3,
-            ObjPriority = 0,
-            ScreenPos = Cloth.ScreenPos + new Vector2(9, 8),
-            RenderContext = RenderContext,
-            Texture = Engine.FrameContentManager.Load<Texture2D>(Assets.BronzeStarSmallTexture)
-        };
+        TargetTimes =
+        [
+            new TimeObject(RenderContext, Cloth.ScreenPos + new Vector2(9, 8 + 18 * 0), new Vector2(20, 0)),
+            new TimeObject(RenderContext, Cloth.ScreenPos + new Vector2(9, 8 + 18 * 1), new Vector2(20, 0)),
+            new TimeObject(RenderContext, Cloth.ScreenPos + new Vector2(9, 8 + 18 * 2), new Vector2(20, 0)),
+        ];
 
-        SilverTimeIcon = new SpriteTextureObject
-        {
-            BgPriority = 3,
-            ObjPriority = 0,
-            ScreenPos = BronzeTimeIcon.ScreenPos + new Vector2(0, 18),
-            RenderContext = RenderContext,
-            Texture = Engine.FrameContentManager.Load<Texture2D>(Assets.SilverStarSmallTexture)
-        };
-
-        GoldTimeIcon = new SpriteTextureObject
-        {
-            BgPriority = 3,
-            ObjPriority = 0,
-            ScreenPos = SilverTimeIcon.ScreenPos + new Vector2(0, 18),
-            RenderContext = RenderContext,
-            Texture = Engine.FrameContentManager.Load<Texture2D>(Assets.GoldStarSmallTexture)
-        };
-
-        UserTimeIcon = new SpriteTextureObject
-        {
-            BgPriority = 3,
-            ObjPriority = 0,
-            ScreenPos = SilverTimeIcon.ScreenPos + new Vector2(75, 0),
-            RenderContext = RenderContext,
-            Texture = Engine.FrameContentManager.Load<Texture2D>(Assets.TimeAttackUserTimeIconTexture)
-        };
-
-        BronzeTime = new SpriteTextObject
-        {
-            BgPriority = 3,
-            ObjPriority = 0,
-            ScreenPos = BronzeTimeIcon.ScreenPos + new Vector2(20, 0),
-            RenderContext = RenderContext,
-            Text = $"{Random.GetNumber(4):00}:{Random.GetNumber(60):00}.{Random.GetNumber(100):00}",
-            Color = TextColor.TextBox,
-        };
-
-        SilverTime = new SpriteTextObject
-        {
-            BgPriority = 3,
-            ObjPriority = 0,
-            ScreenPos = SilverTimeIcon.ScreenPos + new Vector2(20, 0),
-            RenderContext = RenderContext,
-            Text = $"{Random.GetNumber(4):00}:{Random.GetNumber(60):00}.{Random.GetNumber(100):00}",
-            Color = TextColor.TextBox,
-        };
-
-        GoldTime = new SpriteTextObject
-        {
-            BgPriority = 3,
-            ObjPriority = 0,
-            ScreenPos = GoldTimeIcon.ScreenPos + new Vector2(20, 0),
-            RenderContext = RenderContext,
-            Text = $"{Random.GetNumber(4):00}:{Random.GetNumber(60):00}.{Random.GetNumber(100):00}",
-            Color = TextColor.TextBox,
-        };
-
-        UserTime = new SpriteTextObject
-        {
-            BgPriority = 3,
-            ObjPriority = 0,
-            ScreenPos = UserTimeIcon.ScreenPos + new Vector2(17, 0),
-            RenderContext = RenderContext,
-            Text = $"{Random.GetNumber(4):00}:{Random.GetNumber(60):00}.{Random.GetNumber(100):00}",
-            Color = TextColor.TextBox,
-        };
+        RecordTime = new TimeObject(RenderContext, Cloth.ScreenPos + new Vector2(9 + 75, 8 + 18 * 1), new Vector2(17, 0));
 
         GhostSelectionText = new SpriteFontTextObject
         {
@@ -335,20 +284,62 @@ public class TimeAttackMenuPage : MenuPage
 
         animationPlayer.Play(Cloth);
 
-        animationPlayer.Play(BronzeTimeIcon);
-        animationPlayer.Play(SilverTimeIcon);
-        animationPlayer.Play(GoldTimeIcon);
-        animationPlayer.Play(UserTimeIcon);
+        foreach (TimeObject targetTime in TargetTimes)
+            targetTime.Draw(animationPlayer);
 
-        animationPlayer.Play(BronzeTime);
-        animationPlayer.Play(SilverTime);
-        animationPlayer.Play(GoldTime);
-        animationPlayer.Play(UserTime);
+        RecordTime.Draw(animationPlayer);
 
         if (HasSelectedLevel)
         {
             animationPlayer.Play(GhostSelectionText);
             animationPlayer.Play(PlayText);
+        }
+    }
+
+    public class TimeObject
+    {
+        public TimeObject(RenderContext renderContext, Vector2 iconPosition, Vector2 textOffset)
+        {
+            Icon = new SpriteTextureObject
+            {
+                BgPriority = 3,
+                ObjPriority = 0,
+                ScreenPos = iconPosition,
+                RenderContext = renderContext,
+            };
+
+            TimeText = new SpriteTextObject
+            {
+                BgPriority = 3,
+                ObjPriority = 0,
+                ScreenPos = iconPosition + textOffset,
+                RenderContext = renderContext,
+                Color = TextColor.TextBox,
+            };
+        }
+
+        public SpriteTextureObject Icon { get; }
+        public SpriteTextObject TimeText { get; }
+        public bool ShouldDraw { get; set; }
+
+        public void SetTime(TimeAttackTime? time, bool filledIn)
+        {
+            ShouldDraw = time.HasValue;
+
+            if (time != null)
+            {
+                Icon.Texture = time.Value.LoadIcon(filledIn);
+                TimeText.Text = time.Value.ToTimeString();
+            }
+        }
+
+        public void Draw(AnimationPlayer animationPlayer)
+        {
+            if (ShouldDraw)
+            {
+                animationPlayer.Play(Icon);
+                animationPlayer.Play(TimeText);
+            }
         }
     }
 }

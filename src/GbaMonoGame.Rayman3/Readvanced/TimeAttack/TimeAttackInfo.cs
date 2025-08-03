@@ -1,15 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using BinarySerializer.Ubisoft.GbaEngine;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
 // TODO: Add support for Mode7 levels
-// TODO: Go through all actors
+// TODO: Go through all actors. Also update pause dialog.
 public static class TimeAttackInfo
 {
-    private const int RandomSeed = 0x12345678;
+    private const int RandomSeed = 0x12345678; // The value doesn't matter - just needs to be constant
 
     public static bool IsActive { get; set; }
     public static TimeAttackMode Mode { get; set; }
+    public static uint Timer { get; set; }
+    public static TimeAttackTime[] TargetTimes { get; set; }
 
     public static void Init()
     {
@@ -58,6 +63,8 @@ public static class TimeAttackInfo
 
         IsActive = true;
         Mode = TimeAttackMode.Init;
+        Timer = 0;
+        TargetTimes = [];
     }
 
     // TODO: Make sure this gets called
@@ -85,6 +92,34 @@ public static class TimeAttackInfo
             _ => mapId
         });
 
+        // Get the target times
+        IEnumerable<TimeAttackTime> targetTimes = GetTargetTimes(mapId);
+        if (GetRecordTime(mapId) is { } recordTime)
+            targetTimes = targetTimes.Append(recordTime);
+        targetTimes = targetTimes.OrderByDescending(x => x.Time);
+        TargetTimes = targetTimes.ToArray();
+
         FrameManager.SetNextFrame(LevelFactory.Create(mapId));
+    }
+
+    public static TimeAttackTime[] GetTargetTimes(MapId mapId)
+    {
+        Dictionary<MapId, TimeAttackTime[]> dictionary = Rom.Platform switch
+        {
+            Platform.GBA => TimeAttackTimes.Gba,
+            Platform.NGage => TimeAttackTimes.NGage,
+            _ => throw new UnsupportedPlatformException()
+        };
+
+        if (dictionary.TryGetValue(mapId, out TimeAttackTime[] targetTimes))
+            return targetTimes;
+        else
+            return [];
+    }
+
+    public static TimeAttackTime? GetRecordTime(MapId mapId)
+    {
+        // TODO: Dynamically load from persistent data
+        return new TimeAttackTime(TimeAttackTimeType.Record, (uint)Random.GetNumber(2000));
     }
 }

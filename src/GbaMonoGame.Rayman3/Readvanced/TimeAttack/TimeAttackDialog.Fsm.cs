@@ -63,12 +63,16 @@ public partial class TimeAttackDialog
         switch (action)
         {
             case FsmAction.Init:
-                LevelTimer = 0;
+                // Do nothing
                 break;
 
             case FsmAction.Step:
                 // TODO: We can't allow it to go too high or the game might crash - kill Rayman if it reaches some large value
-                LevelTimer++;
+                TimeAttackInfo.Timer++;
+
+                // Update target time
+                if (TargetTimeIndex != -1 && TimeAttackInfo.Timer > TargetTime.Time)
+                    SetTargetTime(TargetTimeIndex - 1);
                 break;
 
             case FsmAction.UnInit:
