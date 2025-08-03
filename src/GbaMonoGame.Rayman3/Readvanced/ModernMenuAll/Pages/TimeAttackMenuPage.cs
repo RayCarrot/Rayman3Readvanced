@@ -172,7 +172,7 @@ public class TimeAttackMenuPage : MenuPage
             ObjPriority = 0,
             ScreenPos = new Vector2(195, 52),
             RenderContext = RenderContext,
-            Texture = Engine.FrameContentManager.Load<Texture2D>(Assets.TimeAttackClothTexture)
+            Texture = Engine.FrameContentManager.Load<Texture2D>(Assets.ClothTexture)
         };
 
         TargetTimes =

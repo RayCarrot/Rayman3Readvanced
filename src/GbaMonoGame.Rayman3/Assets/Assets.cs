@@ -21,6 +21,7 @@ public static class Assets
     public const string FogVertexShader = "Rayman3/Level/FogVertexShader";
     public const string Mode7WallSideTexture = "Rayman3/Level/Mode7WallSide";
 
+    public const string ClothTexture = "Rayman3/Menu/Cloth";
     public const string CursorTexture = "Rayman3/Menu/Cursor";
     public const string MenuCurtainTexture = "Rayman3/Menu/MenuCurtain";
     public const string MenuLogoTexture = "Rayman3/Menu/MenuLogo";
@@ -34,8 +35,6 @@ public static class Assets
     public const string ScrollBarBigTexture = "Rayman3/Menu/ScrollBarBig";
     public const string ScrollBarSmallTexture = "Rayman3/Menu/ScrollBarSmall";
     public const string ScrollBarThumbTexture = "Rayman3/Menu/ScrollBarThumb";
-    public const string TimeAttackClothTexture = "Rayman3/Menu/TimeAttackCloth";
-    public const string TimeAttackUserTimeIconTexture = "Rayman3/Menu/TimeAttackUserTimeIcon";
 
     public const string BlankStarBigTexture = "Rayman3/TimeAttack/BlankStarBig";
     public const string BlankStarSmallTexture = "Rayman3/TimeAttack/BlankStarSmall";
@@ -43,6 +42,7 @@ public static class Assets
     public const string BronzeStarSmallTexture = "Rayman3/TimeAttack/BronzeStarSmall";
     public const string GoldStarBigTexture = "Rayman3/TimeAttack/GoldStarBig";
     public const string GoldStarSmallTexture = "Rayman3/TimeAttack/GoldStarSmall";
+    public const string PersonalRecordIconTexture = "Rayman3/TimeAttack/PersonalRecordIcon";
     public const string SilverStarBigTexture = "Rayman3/TimeAttack/SilverStarBig";
     public const string SilverStarSmallTexture = "Rayman3/TimeAttack/SilverStarSmall";
     public const string TimeFreezeItem_Blue0 = "Rayman3/TimeAttack/TimeFreezeItem_Blue0";

@@ -17,7 +17,7 @@ public readonly struct TimeAttackTime(TimeAttackTimeType type, int time)
             TimeAttackTimeType.Bronze => Assets.BronzeStarSmallTexture,
             TimeAttackTimeType.Silver => Assets.SilverStarSmallTexture,
             TimeAttackTimeType.Gold => Assets.GoldStarSmallTexture,
-            TimeAttackTimeType.Record => Assets.TimeAttackUserTimeIconTexture,
+            TimeAttackTimeType.Record => Assets.PersonalRecordIconTexture,
             _ => null
         });
     }

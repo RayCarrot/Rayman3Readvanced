@@ -481,7 +481,7 @@
 /processorParam:TextureFormat=Color
 /build:Rayman3/TimeAttack/SilverStarSmall.png
 
-#begin TimeAttackCloth.png
+#begin Cloth.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -491,9 +491,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/TimeAttackCloth.png
+/build:Rayman3/Menu/Cloth.png
 
-#begin TimeAttackUserTimeIcon.png
+#begin PersonalRecordIcon.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -503,7 +503,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/TimeAttackUserTimeIcon.png
+/build:Rayman3/TimeAttack/PersonalRecordIcon.png
 
 #begin TimeFreezeItem_Blue0.png
 /importer:TextureImporter
