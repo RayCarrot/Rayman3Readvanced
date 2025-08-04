@@ -8,4 +8,7 @@ public enum InitialMenuPage
     Multiplayer,
     MultiplayerLostConnection,
     NGage_FirstPage,
+
+    // Readvanced
+    TimeAttack,
 }

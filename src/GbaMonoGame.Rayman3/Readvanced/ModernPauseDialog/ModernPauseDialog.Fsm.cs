@@ -219,7 +219,9 @@ public partial class ModernPauseDialog
                         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                         Gfx.Fade = 1;
 
-                        if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
+                        if (TimeAttackInfo.IsActive)
+                            FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.TimeAttack));
+                        else if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
                             FrameManager.SetNextFrame(new GameCubeMenu());
                         else
                             FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));

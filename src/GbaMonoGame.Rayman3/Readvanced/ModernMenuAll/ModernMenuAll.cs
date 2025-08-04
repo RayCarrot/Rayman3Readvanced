@@ -464,6 +464,12 @@ public class ModernMenuAll : Frame, IHasPlayfield
                 ChangePage(new GameModeMenuPage(this), NewPageMode.Initial);
                 break;
 
+            // TODO: Implement multiplayer page
+            case InitialMenuPage.TimeAttack:
+                languageCurtainScreen.IsEnabled = false;
+                ChangePage(new TimeAttackMenuPage(this), NewPageMode.Initial);
+                break;
+
             default:
                 throw new Exception("Invalid start page for ModernMenuAll");
         }

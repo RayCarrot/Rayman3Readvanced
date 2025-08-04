@@ -6,7 +6,7 @@ using BinarySerializer.Ubisoft.GbaEngine;
 namespace GbaMonoGame.Rayman3.Readvanced;
 
 // TODO: Add support for Mode7 levels
-// TODO: Go through all actors. Also update pause dialog.
+// TODO: Go through all actors
 public static class TimeAttackInfo
 {
     private const int RandomSeed = 0x12345678; // The value doesn't matter - just needs to be constant

@@ -132,6 +132,9 @@ public class TimeAttackMenuPage : MenuPage
 
     protected override void Init()
     {
+        if (TimeAttackInfo.IsActive)
+            TimeAttackInfo.UnInit();
+
         WorldOptions = new TimeAttackLevelMenuOption[Maps.Length][];
         for (int tabIndex = 0; tabIndex < Maps.Length; tabIndex++)
         {
