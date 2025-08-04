@@ -63,13 +63,16 @@ public partial class TimeFreezeItem
 
                 // Enable transparency
                 AnimatedObject.RenderOptions.BlendMode = BlendMode.AlphaBlend;
-                Sparkles.RenderOptions.BlendMode = BlendMode.AlphaBlend;
 
                 // Enable rotation and scaling
                 AnimatedObject.SetFlagUseRotationScaling(true);
 
                 // Reset values
                 Timer = 0;
+
+                // Create the sparkles projectile
+                SparklesProjectile = Scene.CreateProjectile<TimeFreezeItemSparkles>(ReadvancedActorType.TimeFreezeItemSparkles);
+                SparklesProjectile?.AnimatedObject.SetPosition(Position);
                 break;
 
             case FsmAction.Step:
@@ -82,6 +85,10 @@ public partial class TimeFreezeItem
                 // Scale down horizontally
                 AnimatedObject.AffineMatrix = new AffineMatrix(0, new Vector2(1 - Timer / (float)DeathDuration, 1));
 
+                // Update the sparkles position
+                if (SparklesProjectile != null)
+                    SparklesProjectile.Position = Position;
+
                 if (Timer == DeathDuration)
                 {
                     State.MoveTo(Fsm_Dead);
@@ -90,6 +97,9 @@ public partial class TimeFreezeItem
                 break;
 
             case FsmAction.UnInit:
+                // Reset values
+                AnimatedObject.RenderOptions.BlendMode = BlendMode.None;
+                AnimatedObject.Alpha = AlphaCoefficient.Max;
                 AnimatedObject.SetFlagUseRotationScaling(false);
                 AnimatedObject.AffineMatrix = null;
                 break;
@@ -110,7 +120,12 @@ public partial class TimeFreezeItem
             case FsmAction.Step:
                 Timer++;
 
-                Sparkles.Alpha -= 1 / (float)SparklesFadeOutDuration;
+                // Fade out the sparkles
+                if (SparklesProjectile != null)
+                {
+                    SparklesProjectile.AnimatedObject.Alpha -= 1 / (float)SparklesFadeOutDuration;
+                    SparklesProjectile.Position = Position;
+                }
 
                 if (Timer == SparklesFadeOutDuration)
                 {
@@ -121,6 +136,13 @@ public partial class TimeFreezeItem
 
             case FsmAction.UnInit:
                 ProcessMessage(this, Message.Destroy);
+
+                if (SparklesProjectile != null)
+                {
+                    SparklesProjectile.AnimatedObject.Alpha = AlphaCoefficient.Max;
+                    SparklesProjectile.ProcessMessage(this, Message.Destroy);
+                    SparklesProjectile = null;
+                }
                 break;
         }
 

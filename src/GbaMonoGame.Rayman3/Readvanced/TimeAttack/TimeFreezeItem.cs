@@ -37,15 +37,6 @@ public sealed partial class TimeFreezeItem : MovableActor
             throw new Exception("Invalid initial action");
         }
 
-        // Load the sparkles from another level (a bit hacky, but there's sadly no better solution)
-        Scene2DResource sceneResource = Rom.LoadResource<Scene2DResource>((int)MapId.Power1);
-        Sparkles = new AObjectChain(sceneResource.AlwaysActors.First(x => (ActorType)x.Type == ActorType.ChainedSparkles).Model.AnimatedObject, false);
-        Sparkles.Init(6, Position, 0, false);
-        Sparkles.CurrentAnimation = 0;
-        Sparkles.BgPriority = scene.ActorDrawPriority;
-        Sparkles.ObjPriority = 32;
-        Sparkles.RenderContext = scene.RenderContext;
-
         // Save the initial position
         InitialPosition = Position;
 
@@ -62,12 +53,12 @@ public sealed partial class TimeFreezeItem : MovableActor
     private const int DeathFadeOutStart = 22;
     private const int SparklesFadeOutDuration = 12;
 
-    public AObjectChain Sparkles { get; }
     public int TimeDecreaseValue { get; }
     public Vector2 InitialPosition { get; set; }
     public byte SinValue { get; set; }
     public uint Timer { get; set; }
     public float HitSpeedX { get; set; }
+    public TimeFreezeItemSparkles SparklesProjectile { get; set; }
 
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {
@@ -93,9 +84,5 @@ public sealed partial class TimeFreezeItem : MovableActor
         // Draw the item, unless dead
         if (State != Fsm_Dead)
             base.Draw(animationPlayer, forceDraw);
-
-        // Draw sparkles when dying (force to always draw since the actor's viewbox doesn't correspond to the sparkles!)
-        if (State == Fsm_Dying || State == Fsm_Dead)
-            Sparkles.Draw(this, animationPlayer, forceDraw: true);
     }
 }

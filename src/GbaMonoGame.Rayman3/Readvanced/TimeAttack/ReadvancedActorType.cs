@@ -3,4 +3,5 @@
 public enum ReadvancedActorType
 {
     TimeFreezeItem = 200,
+    TimeFreezeItemSparkles = 201,
 }
