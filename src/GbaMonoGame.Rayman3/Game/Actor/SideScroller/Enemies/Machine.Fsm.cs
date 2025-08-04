@@ -55,8 +55,8 @@ public partial class Machine
                     State.MoveTo(Fsm_CogWheelSpinning);
                     return false;
                 }
-                // Parent if died at least once or if in time attack
-                else if (BossHealth == 4 && (GameInfo.LastGreenLumAlive != 0 || TimeAttackInfo.IsActive))
+                // Parent if died at least once
+                else if (BossHealth == 4 && GameInfo.LastGreenLumAlive != 0)
                 {
                     State.MoveTo(Fsm_CannonFire);
                     return false;
