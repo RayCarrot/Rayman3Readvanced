@@ -33,7 +33,15 @@ public partial class TimeFreezeItem
                     
                     // Random pitch (only very slight variation)
                     SoundEventsManager.SetSoundPitch(Rayman3SoundEvent.Play__LumRed_Mix03, Random.GetNumber(192));
-                    
+
+                    // Create a time decrease projectile to show the time being decreased
+                    TimeDecrease timeDecrease = Scene.CreateProjectile<TimeDecrease>(ReadvancedActorType.TimeDecrease);
+                    if (timeDecrease != null)
+                    {
+                        timeDecrease.Position = Position;
+                        timeDecrease.SetValue(TimeDecreaseSecondsValue);
+                    }
+
                     State.MoveTo(Fsm_Dying);
                     return false;
                 }
@@ -53,7 +61,7 @@ public partial class TimeFreezeItem
         {
             case FsmAction.Init:
                 // Freeze the timer
-                TimeAttackInfo.RemoveTime(TimeDecreaseValue);
+                TimeAttackInfo.RemoveTime(TimeDecreaseSecondsValue * 60);
 
                 // Change action to the dying one, playing a faster animation
                 ActionId = Action.Dying;

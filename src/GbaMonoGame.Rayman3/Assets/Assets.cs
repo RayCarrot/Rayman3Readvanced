@@ -45,6 +45,8 @@ public static class Assets
     public const string PersonalRecordIconTexture = "Rayman3/TimeAttack/PersonalRecordIcon";
     public const string SilverStarBigTexture = "Rayman3/TimeAttack/SilverStarBig";
     public const string SilverStarSmallTexture = "Rayman3/TimeAttack/SilverStarSmall";
+    public const string TimeDecrease3 = "Rayman3/TimeAttack/TimeDecrease3";
+    public const string TimeDecrease5 = "Rayman3/TimeAttack/TimeDecrease5";
     public const string TimeFreezeItem_Blue0 = "Rayman3/TimeAttack/TimeFreezeItem_Blue0";
     public const string TimeFreezeItem_Blue1 = "Rayman3/TimeAttack/TimeFreezeItem_Blue1";
     public const string TimeFreezeItem_Blue2 = "Rayman3/TimeAttack/TimeFreezeItem_Blue2";

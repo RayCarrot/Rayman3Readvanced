@@ -20,7 +20,7 @@ public sealed partial class TimeFreezeItem : MovableActor
             AnimatedObject.ReplaceSpriteTexture(3, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Blue3));
             AnimatedObject.ReplaceSpriteTexture(4, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Blue4));
 
-            TimeDecreaseValue = 3 * 60; // 3 seconds
+            TimeDecreaseSecondsValue = 3; // 3 seconds
         }
         else if ((Action)actorResource.FirstActionId == Action.Init_Orange)
         {
@@ -30,7 +30,7 @@ public sealed partial class TimeFreezeItem : MovableActor
             AnimatedObject.ReplaceSpriteTexture(3, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Orange3));
             AnimatedObject.ReplaceSpriteTexture(4, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Orange4));
 
-            TimeDecreaseValue = 5 * 60; // 5 seconds
+            TimeDecreaseSecondsValue = 5; // 5 seconds
         }
         else
         {
@@ -53,7 +53,7 @@ public sealed partial class TimeFreezeItem : MovableActor
     private const int DeathFadeOutStart = 22;
     private const int SparklesFadeOutDuration = 12;
 
-    public int TimeDecreaseValue { get; }
+    public int TimeDecreaseSecondsValue { get; }
     public Vector2 InitialPosition { get; set; }
     public byte SinValue { get; set; }
     public uint Timer { get; set; }

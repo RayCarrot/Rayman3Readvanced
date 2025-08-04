@@ -5,6 +5,7 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 public static class ReadvancedResources
 {
     public static ActorModel TimeFreezeItemActorModel { get; } = CreateTimeFreezeItemActorModel();
+    public static ActorModel TimeDecreaseActorModel { get; } = CreateTimeDecreaseActorModel();
 
     private static ActorModel CreateTimeFreezeItemActorModel()
     {
@@ -53,7 +54,7 @@ public static class ReadvancedResources
 
         ActorModel model = new()
         {
-            ViewBox = new EngineBox(AnimOffsetX, AnimOffsetY, AnimOffsetX + AnimWidth, AnimOffsetY + AnimHeight),
+            ViewBox = new EngineBox(AnimOffsetY, AnimOffsetX, AnimOffsetY + AnimHeight, AnimOffsetX + AnimWidth),
             DetectionBox = new EngineBox(0, 0, 0, 0),
             CheckAgainstMapCollision = false,
             CheckAgainstObjectCollision = false,
@@ -115,6 +116,89 @@ public static class ReadvancedResources
                 [
                     idleAnim,
                     deathAnim,
+                ]
+            }
+        };
+
+        return model;
+    }
+
+    private static ActorModel CreateTimeDecreaseActorModel()
+    {
+        const int AnimWidth = 24;
+        const int AnimHeight = 16;
+        const int AnimOffsetX = -(AnimWidth / 2);
+        const int AnimOffsetY = -(AnimHeight / 2);
+
+        // Create the idle animation
+        AnimationBuilder idleAnimBuilder = new() { Speed = 1 };
+        idleAnimBuilder.NewFrame();
+        idleAnimBuilder.AddSprite(AnimOffsetX, AnimOffsetY - 0, 0);
+        idleAnimBuilder.NewFrame();
+        idleAnimBuilder.AddSprite(AnimOffsetX, AnimOffsetY - 1, 0);
+        idleAnimBuilder.NewFrame();
+        idleAnimBuilder.AddSprite(AnimOffsetX, AnimOffsetY - 2, 0);
+        idleAnimBuilder.NewFrame();
+        idleAnimBuilder.AddSprite(AnimOffsetX, AnimOffsetY - 3, 0);
+        idleAnimBuilder.NewFrame();
+        idleAnimBuilder.AddSprite(AnimOffsetX, AnimOffsetY - 4, 0);
+        idleAnimBuilder.NewFrame();
+        idleAnimBuilder.AddSprite(AnimOffsetX, AnimOffsetY - 5, 0);
+        idleAnimBuilder.NewFrame();
+        idleAnimBuilder.AddSprite(AnimOffsetX, AnimOffsetY - 6, 0);
+        idleAnimBuilder.NewFrame();
+        idleAnimBuilder.AddSprite(AnimOffsetX, AnimOffsetY - 8, 0);
+        idleAnimBuilder.NewFrame();
+        idleAnimBuilder.AddSprite(AnimOffsetX, AnimOffsetY - 10, 0);
+        idleAnimBuilder.NewFrame();
+        idleAnimBuilder.AddSprite(AnimOffsetX, AnimOffsetY - 12, 0);
+        idleAnimBuilder.NewFrame();
+        idleAnimBuilder.AddSprite(AnimOffsetX, AnimOffsetY - 14, 0);
+        idleAnimBuilder.NewFrame();
+        idleAnimBuilder.AddSprite(AnimOffsetX, AnimOffsetY - 16, 0);
+        idleAnimBuilder.NewFrame();
+        idleAnimBuilder.AddSprite(AnimOffsetX, AnimOffsetY - 19, 0);
+        idleAnimBuilder.NewFrame();
+        idleAnimBuilder.AddSprite(AnimOffsetX, AnimOffsetY - 22, 0);
+        idleAnimBuilder.NewFrame();
+        idleAnimBuilder.AddSprite(AnimOffsetX, AnimOffsetY - 25, 0);
+        idleAnimBuilder.NewFrame();
+        idleAnimBuilder.AddSprite(AnimOffsetX, AnimOffsetY - 28, 0);
+        idleAnimBuilder.NewFrame();
+        idleAnimBuilder.AddSprite(AnimOffsetX, AnimOffsetY - 31, 0);
+        idleAnimBuilder.NewFrame();
+        idleAnimBuilder.AddSprite(AnimOffsetX, AnimOffsetY - 35, 0);
+        idleAnimBuilder.NewFrame();
+        idleAnimBuilder.AddSprite(AnimOffsetX, AnimOffsetY - 40, 0);
+        idleAnimBuilder.NewFrame();
+        idleAnimBuilder.AddSprite(AnimOffsetX, AnimOffsetY - 45, 0);
+        Animation idleAnim = idleAnimBuilder.Build();
+
+        ActorModel model = new()
+        {
+            ViewBox = new EngineBox(AnimOffsetY - 45, AnimOffsetX, AnimOffsetY + AnimHeight, AnimOffsetX + AnimWidth),
+            DetectionBox = new EngineBox(0, 0, 0, 0),
+            CheckAgainstMapCollision = false,
+            CheckAgainstObjectCollision = false,
+            IsSolid = false,
+            IsAgainstCaptor = false,
+            ReceivesDamage = true,
+            HitPoints = 1,
+            AttackPoints = 0,
+            Actions = [],
+            AnimatedObject = new AnimatedObjectResource
+            {
+                PalettesCount = 0,
+                IsDynamic = false,
+                AnimationsCount = 1,
+                Palettes = new SpritePalettesResource
+                {
+                    Palettes = []
+                },
+                SpriteTable = null,
+                Animations =
+                [
+                    idleAnim,
                 ]
             }
         };
