@@ -116,6 +116,9 @@ public class FramesDebugMenu : DebugMenu
                 RSMultiplayer.Init();
                 RSMultiplayer.MachineId = 0;
 
+                // TRAILER
+                Random.SetSeed(0x10);
+
                 if (Rom.Platform == Platform.NGage && mapId is MapId.NGageMulti_CaptureTheFlagMiddleGround or MapId.NGageMulti_CaptureTheFlagFloors)
                     RSMultiplayer.PlayersCount = 2;
                 else
