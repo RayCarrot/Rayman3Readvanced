@@ -1,6 +1,7 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -160,7 +161,12 @@ public sealed partial class FlyingShell : MovableActor
             case Message.Rayman_FinishLevel:
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Motor01_Mix12);
 
-                if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
+                if (TimeAttackInfo.IsActive)
+                {
+                    TimeAttackInfo.Pause();
+                    TimeAttackInfo.SetMode(TimeAttackMode.Score);
+                }
+                else if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
                 {
                     State.MoveTo(Fsm_GameCubeEndMap);
                 }

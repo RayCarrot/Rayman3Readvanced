@@ -1,6 +1,7 @@
 ﻿using System;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -57,6 +58,10 @@ public sealed partial class Lums : BaseActor
                 AnimatedObject.BasePaletteIndex = 1;
 
                 if (GameInfo.HasCollectedWhiteLum && !RSMultiplayer.IsActive)
+                    ProcessMessage(this, Message.Destroy);
+
+                // Don't include white lums in time attack
+                if (TimeAttackInfo.IsActive)
                     ProcessMessage(this, Message.Destroy);
 
                 AnimatedObject.CurrentAnimation = 3;
