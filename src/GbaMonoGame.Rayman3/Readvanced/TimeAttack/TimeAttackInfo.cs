@@ -14,6 +14,7 @@ public static class TimeAttackInfo
     private const int MaxTime = 356400; // 99:00:00
 
     public static bool IsActive { get; set; }
+    public static bool IsPaused { get; set; }
     public static TimeAttackMode Mode { get; set; }
     public static int Timer { get; set; }
     public static TimeAttackTime[] TargetTimes { get; set; }
@@ -64,6 +65,7 @@ public static class TimeAttackInfo
         Random.SetSeed(RandomSeed);
 
         IsActive = true;
+        IsPaused = false;
         Mode = TimeAttackMode.Init;
         Timer = 0;
         TargetTimes = [];
@@ -125,8 +127,26 @@ public static class TimeAttackInfo
         return new TimeAttackTime(TimeAttackTimeType.Record, Random.GetNumber(2000));
     }
 
+    public static void SetMode(TimeAttackMode mode)
+    {
+        Mode = mode;
+    }
+
+    public static void Pause()
+    {
+        IsPaused = true;
+    }
+
+    public static void Resume()
+    {
+        IsPaused = false;
+    }
+
     public static void RemoveTime(int timeDelta)
     {
+        if (IsPaused)
+            return;
+
         Timer -= timeDelta;
         if (Timer < MinTime)
             Timer = MinTime;
@@ -134,6 +154,9 @@ public static class TimeAttackInfo
 
     public static void AddTime(int timeDelta)
     {
+        if (IsPaused)
+            return;
+
         Timer += timeDelta;
         if (Timer > MaxTime)
             Timer = MaxTime;

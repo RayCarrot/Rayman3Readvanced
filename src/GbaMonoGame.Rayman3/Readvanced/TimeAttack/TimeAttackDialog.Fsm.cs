@@ -10,7 +10,7 @@ public partial class TimeAttackDialog
         {
             case FsmAction.Init:
                 CountdownValue = -1;
-                TimeAttackInfo.Mode = TimeAttackMode.Countdown;
+                TimeAttackInfo.SetMode(TimeAttackMode.Countdown);
                 break;
 
             case FsmAction.Step:
@@ -39,7 +39,8 @@ public partial class TimeAttackDialog
                         break;
 
                     case CountdownStartTime + CountdownSpeed * 4:
-                        TimeAttackInfo.Mode = TimeAttackMode.Play;
+                        TimeAttackInfo.SetMode(TimeAttackMode.Play);
+                        TimeAttackInfo.Resume();
                         break;
                 }
 

@@ -22,6 +22,20 @@ public readonly struct TimeAttackTime(TimeAttackTimeType type, int time)
         });
     }
 
+    public Texture2D LoadBigIcon(bool filledIn)
+    {
+        if (!filledIn && Type != TimeAttackTimeType.Record)
+            return Engine.FrameContentManager.Load<Texture2D>(Assets.BlankStarBigTexture);
+
+        return Engine.FrameContentManager.Load<Texture2D>(Type switch
+        {
+            TimeAttackTimeType.Bronze => Assets.BronzeStarBigTexture,
+            TimeAttackTimeType.Silver => Assets.SilverStarBigTexture,
+            TimeAttackTimeType.Gold => Assets.GoldStarBigTexture,
+            _ => null
+        });
+    }
+
     public string ToTimeString()
     {
         // Get the minutes value

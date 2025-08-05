@@ -88,7 +88,17 @@ public partial class TimeAttackDialog : Dialog
             Font = ReadvancedFonts.MenuYellow,
         };
 
-        SetTargetTime(TimeAttackInfo.TargetTimes.Length - 1);
+        // Set the initial target time
+        int targetTime = -1;
+        for (int i = TimeAttackInfo.TargetTimes.Length - 1; i >= 0; i--)
+        {
+            if (TimeAttackInfo.Timer <= TimeAttackInfo.TargetTimes[i].Time)
+            {
+                targetTime = i;
+                break;
+            }
+        }
+        SetTargetTime(targetTime);
     }
 
     public override void Draw(AnimationPlayer animationPlayer)
@@ -101,7 +111,7 @@ public partial class TimeAttackDialog : Dialog
         if (TargetTimeIndex != -1)
         {
             int timeDiff = TargetTime.Time - TimeAttackInfo.Timer;
-            bool blink = timeDiff <= TargetBlinkRange;
+            bool blink = !TimeAttackInfo.IsPaused && timeDiff <= TargetBlinkRange;
 
             if (blink && timeDiff % 60 == 30)
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__GameOver_BeepFX01_Mix02);

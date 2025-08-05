@@ -231,8 +231,16 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
                 ForcePauseFrame = false;
 
             GameTime.Pause();
+
+            if (TimeAttackInfo.IsActive)
+                TimeAttackInfo.Pause();
+
             CurrentStepAction = Fog != null ? Step_Pause_DisableFog : Step_Pause_Init;
         }
+
+        // Custom to transition to time attack score screen
+        if (TimeAttackInfo.Mode == TimeAttackMode.Score)
+            CurrentStepAction = Step_TimeAttackScore_Init;
 
         // NOTE: This cheat is normally only in the game prototypes
         if (Engine.ActiveConfig.Tweaks.AllowPrototypeCheats && JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.L))
@@ -339,7 +347,33 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
         GameTime.Resume();
+
+        if (TimeAttackInfo.IsActive)
+            TimeAttackInfo.Resume();
+
         CurrentStepAction = Step_Normal;
+    }
+
+    // Custom
+    public void Step_TimeAttackScore_Init()
+    {
+        // Apply same fade as when pausing
+        Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease, FadeFlags.Screen0);
+        Gfx.GbaFade = 6;
+
+        // Create and add the score dialog as a modal
+        Scene.AddDialog(new TimeAttackScoreDialog(Scene), true, false);
+
+        Scene.Step();
+        Scene.AnimationPlayer.Execute();
+
+        CurrentStepAction = Step_TimeAttackScore_Score;
+    }
+
+    public void Step_TimeAttackScore_Score()
+    {
+        Scene.Step();
+        Scene.AnimationPlayer.Execute();
     }
 
     #endregion

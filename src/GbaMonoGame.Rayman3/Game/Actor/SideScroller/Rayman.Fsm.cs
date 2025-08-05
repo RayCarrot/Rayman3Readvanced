@@ -3902,6 +3902,9 @@ public partial class Rayman
                     // NOTE: The game doesn't check the class, and will end up writing to other memory if of type FrameWorldSideScroller
                     if (Frame.Current is FrameSideScroller sideScroller2)
                         sideScroller2.IsTimed = false;
+
+                    if (TimeAttackInfo.IsActive)
+                        TimeAttackInfo.Pause();
                 }
                 else
                 {
@@ -3958,6 +3961,21 @@ public partial class Rayman
                     // NOTE: The game doesn't check the class, and will end up writing to other memory if of type FrameWorldSideScroller
                     if (Frame.Current is FrameSideScroller sideScroller2)
                         sideScroller2.IsTimed = false;
+
+                    if (TimeAttackInfo.IsActive)
+                        TimeAttackInfo.Pause();
+
+                    return true;
+                }
+
+                // Custom to transition to time attack score screen if the last map
+                if (GameInfo.GetNextLevelId() is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4 && TimeAttackInfo.IsActive)
+                {
+                    if (IsActionFinished && ActionId is Action.Victory_Right or Action.Victory_Left)
+                        ActionId = IsFacingRight ? Action.Idle_Right : Action.Idle_Left;
+
+                    if (Timer == 100)
+                        TimeAttackInfo.SetMode(TimeAttackMode.Score);
 
                     return true;
                 }
@@ -4132,7 +4150,8 @@ public partial class Rayman
                     }
                 }
 
-                AutoSave();
+                if (!TimeAttackInfo.IsActive)
+                    AutoSave();
                 break;
 
             case FsmAction.UnInit:
