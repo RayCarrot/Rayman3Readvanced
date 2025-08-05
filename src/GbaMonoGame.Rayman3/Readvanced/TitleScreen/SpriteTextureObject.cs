@@ -7,6 +7,7 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 public class SpriteTextureObject : AObject
 {
     public Texture2D Texture { get; set; }
+    public AffineMatrix? AffineMatrix { get; set; }
 
     public override void Execute(Action<short> soundEventCallback)
     {
@@ -14,6 +15,8 @@ public class SpriteTextureObject : AObject
         {
             Texture = Texture,
             Position = GetAnchoredPosition(),
+            AffineMatrix = AffineMatrix,
+            Center = true,
             Priority = BgPriority,
             RenderOptions = RenderOptions,
         });
