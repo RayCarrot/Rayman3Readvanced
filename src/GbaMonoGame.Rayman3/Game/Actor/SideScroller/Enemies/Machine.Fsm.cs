@@ -46,7 +46,7 @@ public partial class Machine
                 }
 
                 // Show text box if player has died
-                if (!TimeAttackInfo.IsActive && GameInfo.LastGreenLumAlive != 0 && GameInfo.CanShowMurfyHelp)
+                if (GameInfo.LastGreenLumAlive != 0 && GameInfo.CanShowMurfyHelp)
                     InitTextBox();
 
                 // Cog wheel part
