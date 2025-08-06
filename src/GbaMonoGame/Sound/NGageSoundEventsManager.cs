@@ -13,10 +13,12 @@ public class NGageSoundEventsManager : SoundEventsManager
 {
     #region Constructor
 
-    public NGageSoundEventsManager(Dictionary<int, string> songFileNames, NGageSoundEvent[] soundEvents)
+    public NGageSoundEventsManager(Dictionary<int, string> songResourceFileNames, Dictionary<int, string> songPhysicalFileNames, NGageSoundEvent[] soundEvents)
     {
         _soloud = new Soloud();
         _soloud.init();
+
+        _soundEvents = soundEvents;
 
         _musicTable = new Dictionary<int, Music>();
         _soundEffectsTable = new Dictionary<int, SoundEffect>();
@@ -32,7 +34,7 @@ public class NGageSoundEventsManager : SoundEventsManager
 
         Stopwatch sw = Stopwatch.StartNew();
 
-        LoadSongs(songFileNames, soundEvents);
+        LoadSongs(songResourceFileNames, songPhysicalFileNames, soundEvents);
 
         sw.Stop();
 
@@ -49,6 +51,7 @@ public class NGageSoundEventsManager : SoundEventsManager
     private const float SfxVolumeFactor = 0.297f;
 
     private readonly Soloud _soloud;
+    private readonly NGageSoundEvent[] _soundEvents;
 
     private readonly Dictionary<int, Music> _musicTable;
     private readonly Dictionary<int, SoundEffect> _soundEffectsTable;
@@ -110,7 +113,7 @@ public class NGageSoundEventsManager : SoundEventsManager
 
     #region Private Methods
 
-    private void LoadSongs(Dictionary<int, string> songFileNames, NGageSoundEvent[] soundEvents)
+    private void LoadSongs(Dictionary<int, string> songResourceFileNames, Dictionary<int, string> songPhysicalFileNames, NGageSoundEvent[] soundEvents)
     {
         HashSet<int> loadedSounds = new();
         Dictionary<int, byte[]> loadedInstruments = new();
@@ -121,13 +124,13 @@ public class NGageSoundEventsManager : SoundEventsManager
 
             if (loadedSounds.Add(evt.SoundResourceId))
             {
-                // Load music from extracted files
+                // Load music from XM and instruments
                 if (evt.IsMusic)
                 {
                     Music music = new()
                     {
                         XmSound = new Openmpt(),
-                        FileName = songFileNames[evt.SoundResourceId]
+                        FileName = songResourceFileNames[evt.SoundResourceId]
                     };
 
                     // Load the instruments data
@@ -160,33 +163,50 @@ public class NGageSoundEventsManager : SoundEventsManager
 
                     _musicTable[evt.SoundResourceId] = music;
                 }
-                // Load sound effects from game data since it's already .wav data there and the N-Gage version has a few exclusive sounds
+                // Load sound effects WAV
                 else
                 {
-                    SoundEffect soundEffect = new()
+                    // Check if we have a physical file for the sound, and if so load from the file
+                    if (songPhysicalFileNames.TryGetValue(evt.SoundResourceId, out string physicalFileName))
                     {
-                        WavSound = new Wav(),
-                        FileName = songFileNames[evt.SoundResourceId]
-                    };
+                        SoundEffect soundEffect = new()
+                        {
+                            WavSound = new Wav(),
+                            FileName = physicalFileName
+                        };
 
-                    RawResource resource = Rom.LoadResource<RawResource>(evt.SoundResourceId);
-                    byte[] rawData = resource.RawData;
+                        soundEffect.WavSound.load($"Assets/Rayman3/{physicalFileName}.wav");
 
-                    IntPtr resourcePtr = IntPtr.Zero;
-                    try
-                    {
-                        resourcePtr = Marshal.AllocHGlobal(rawData.Length);
-                        Marshal.Copy(rawData, 0, resourcePtr, rawData.Length);
-
-                        soundEffect.WavSound.loadMem(resourcePtr, (uint)rawData.Length, true, false);
+                        _soundEffectsTable[evt.SoundResourceId] = soundEffect;
                     }
-                    finally
+                    // Otherwise load from resources
+                    else
                     {
-                        if (resourcePtr != IntPtr.Zero)
-                            Marshal.FreeHGlobal(resourcePtr);
-                    }
+                        SoundEffect soundEffect = new()
+                        {
+                            WavSound = new Wav(),
+                            FileName = songResourceFileNames[evt.SoundResourceId]
+                        };
 
-                    _soundEffectsTable[evt.SoundResourceId] = soundEffect;
+                        RawResource resource = Rom.LoadResource<RawResource>(evt.SoundResourceId);
+                        byte[] rawData = resource.RawData;
+
+                        IntPtr resourcePtr = IntPtr.Zero;
+                        try
+                        {
+                            resourcePtr = Marshal.AllocHGlobal(rawData.Length);
+                            Marshal.Copy(rawData, 0, resourcePtr, rawData.Length);
+
+                            soundEffect.WavSound.loadMem(resourcePtr, (uint)rawData.Length, true, false);
+                        }
+                        finally
+                        {
+                            if (resourcePtr != IntPtr.Zero)
+                                Marshal.FreeHGlobal(resourcePtr);
+                        }
+
+                        _soundEffectsTable[evt.SoundResourceId] = soundEffect;
+                    }
                 }
             }
         }
@@ -352,10 +372,10 @@ public class NGageSoundEventsManager : SoundEventsManager
 
     protected override void ProcessEventImpl(short soundEventId, object obj)
     {
-        if (soundEventId < 0 || soundEventId >= Rom.Loader.NGage_SoundEvents.Length)
+        if (soundEventId < 0 || soundEventId >= _soundEvents.Length)
             return;
 
-        NGageSoundEvent evt = Rom.Loader.NGage_SoundEvents[soundEventId];
+        NGageSoundEvent evt = _soundEvents[soundEventId];
 
         if (!evt.IsValid)
             return;
@@ -376,10 +396,10 @@ public class NGageSoundEventsManager : SoundEventsManager
 
     protected override bool IsSongPlayingImpl(short soundEventId)
     {
-        if (soundEventId < 0 || soundEventId >= Rom.Loader.NGage_SoundEvents.Length)
+        if (soundEventId < 0 || soundEventId >= _soundEvents.Length)
             return false;
 
-        NGageSoundEvent evt = Rom.Loader.NGage_SoundEvents[soundEventId];
+        NGageSoundEvent evt = _soundEvents[soundEventId];
 
         if (!evt.IsValid)
             return false;

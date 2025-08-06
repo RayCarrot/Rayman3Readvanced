@@ -15,13 +15,14 @@ public class GbaSoundEventsManager : SoundEventsManager
 {
     #region Constructor
 
-    public GbaSoundEventsManager(Dictionary<int, string> songFileNames, SoundBank soundBank)
+    public GbaSoundEventsManager(Dictionary<int, string> songPhysicalFileNames, SoundEvent[] soundEvents, SoundResource[] soundResources)
     {
         _soloud = new Soloud();
         _soloud.init();
 
         _songTable = new Dictionary<int, Song>();
-        _soundBank = soundBank;
+        _soundEvents = soundEvents;
+        _soundResources = soundResources;
 
         _volumePerType = new float[8];
         Array.Fill(_volumePerType, SoundEngineInterface.MaxVolume);
@@ -30,7 +31,7 @@ public class GbaSoundEventsManager : SoundEventsManager
 
         Stopwatch sw = Stopwatch.StartNew();
         
-        LoadSongs(songFileNames);
+        LoadSongs(songPhysicalFileNames);
         
         sw.Stop();
 
@@ -43,7 +44,8 @@ public class GbaSoundEventsManager : SoundEventsManager
 
     private readonly Soloud _soloud;
     private readonly Dictionary<int, Song> _songTable;
-    private readonly SoundBank _soundBank;
+    private readonly SoundEvent[] _soundEvents;
+    private readonly SoundResource[] _soundResources;
     private readonly float[] _volumePerType;
     private readonly List<SongInstance> _songInstances; // On GBA this is max 4 songs, but we don't need that limit
     private CallBackSet _callBacks;
@@ -90,12 +92,12 @@ public class GbaSoundEventsManager : SoundEventsManager
 
     #region Private Methods
 
-    private void LoadSongs(Dictionary<int, string> songFileNames)
+    private void LoadSongs(Dictionary<int, string> songPhysicalFileNames)
     {
         //StringBuilder sb = new();
 
         Dictionary<string, Song> loadedSounds = new();
-        foreach (var songTableEntry in songFileNames)
+        foreach (var songTableEntry in songPhysicalFileNames)
         {
             if (songTableEntry.Value == null)
                 continue;
@@ -177,12 +179,12 @@ public class GbaSoundEventsManager : SoundEventsManager
 
     private SoundEvent GetEventFromId(short soundEventId)
     {
-        return _soundBank.Events[soundEventId];
+        return _soundEvents[soundEventId];
     }
 
     private SoundResource GetSoundResource(ushort resourceId)
     {
-        SoundResource res = _soundBank.Resources[resourceId];
+        SoundResource res = _soundResources[resourceId];
 
         switch (res.Type)
         {
