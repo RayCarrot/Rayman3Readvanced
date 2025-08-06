@@ -218,6 +218,11 @@ public class Rayman3 : GbaGame
             { ActorType.CaptureTheFlagFlagBase, (instanceId, scene, resource) => new CaptureTheFlagFlagBase(instanceId, scene, resource) },
             { ActorType.CaptureTheFlagItems, (instanceId, scene, resource) => new CaptureTheFlagItems(instanceId, scene, resource) },
             { ActorType.CaptureTheFlagRaymanTeams, (instanceId, scene, resource) => new Rayman(instanceId, scene, resource) },
+
+            // Readvanced
+            { (ActorType)ReadvancedActorType.TimeFreezeItem, (instanceId, scene, resource) => new TimeFreezeItem(instanceId, scene, resource) },
+            { (ActorType)ReadvancedActorType.TimeFreezeItemSparkles, (instanceId, scene, resource) => new TimeFreezeItemSparkles(instanceId, scene, resource) },
+            { (ActorType)ReadvancedActorType.TimeDecrease, (instanceId, scene, resource) => new TimeDecrease(instanceId, scene, resource) },
         }, x => ((ActorType)x).ToString());
         
         Dictionary<MapId, LevelFactory.CreateLevel> levelCreations = new()
