@@ -127,13 +127,13 @@ public class SceneDebugWindow : DebugWindow
 
         ImGui.Spacing();
         ImGui.Spacing();
-        ImGui.SeparatorText("Added projectiles");
+        ImGui.SeparatorText("Added always actors");
 
-        ImGui.Text($"Count: {scene2D.KnotManager.AddedProjectiles.Count}");
+        ImGui.Text($"Count: {scene2D.KnotManager.AddedAlwaysActors.Count}");
 
-        if (scene2D.KnotManager.AddedProjectiles.Count > 0 && ImGui.BeginListBox("##_addedProjectiles", new System.Numerics.Vector2(300, 80)))
+        if (scene2D.KnotManager.AddedAlwaysActors.Count > 0 && ImGui.BeginListBox("##_addedAlwaysActors", new System.Numerics.Vector2(300, 80)))
         {
-            foreach (BaseActor actor in scene2D.KnotManager.AddedProjectiles)
+            foreach (BaseActor actor in scene2D.KnotManager.AddedAlwaysActors)
             {
                 bool isSelected = SelectedGameObject == actor;
                 if (ImGui.Selectable($"{actor.InstanceId}. {ActorFactory.GetActorTypeName(actor.Type)}", isSelected))

@@ -16,7 +16,7 @@ public class AlwaysActorIterator : ObjectIterator<BaseActor>
         if (Index == KnotManager.AlwaysActorsIndex + KnotManager.AlwaysActorsCount)
         {
             // ...then we start enumerating the added projectiles instead (they're at the very end)
-            Index = KnotManager.AddedProjectilesIndex;
+            Index = KnotManager.AddedAlwaysActorsIndex;
         }
 
         return true;

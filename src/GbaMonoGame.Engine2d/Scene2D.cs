@@ -154,8 +154,8 @@ public class Scene2D
             throw new UnsupportedPlatformException();
         }
 
-        // Custom - add new created projectiles at the end of this frame to avoid issues with enumerations
-        KnotManager.AddPendingProjectiles();
+        // Custom - add new created always actors at the end of this frame to avoid issues with enumerations
+        KnotManager.AddPendingActors();
 
         // Toggle showing debug boxes
         if (Engine.ActiveConfig.Debug.DebugModeEnabled && InputManager.IsButtonJustPressed(Input.Debug_ToggleDisplayBoxes))

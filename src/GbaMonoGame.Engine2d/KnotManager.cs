@@ -16,8 +16,8 @@ public class KnotManager
         AlwaysActors = new BaseActor[sceneResource.AlwaysActorsCount];
         Actors = new BaseActor[sceneResource.ActorsCount];
         Captors = new Captor[sceneResource.CaptorsCount];
-        PendingAddedProjectiles = new List<BaseActor>();
-        AddedProjectiles = new List<BaseActor>();
+        PendingAddedAlwaysActors = new List<BaseActor>();
+        AddedAlwaysActors = new List<BaseActor>();
         KnotsWidth = sceneResource.KnotsWidth;
         Knots = sceneResource.Knots;
 
@@ -60,10 +60,10 @@ public class KnotManager
     public int CaptorsIndex => ActorsIndex + ActorsCount;
 
     // Custom list of always actors - removes the projectile limit
-    public List<BaseActor> PendingAddedProjectiles { get; }
-    public List<BaseActor> AddedProjectiles { get; }
-    public int AddedProjectilesCount => AddedProjectiles.Count;
-    public int AddedProjectilesIndex => CaptorsIndex + CaptorsCount;
+    public List<BaseActor> PendingAddedAlwaysActors { get; }
+    public List<BaseActor> AddedAlwaysActors { get; }
+    public int AddedAlwaysActorsCount => AddedAlwaysActors.Count;
+    public int AddedAlwaysActorsIndex => CaptorsIndex + CaptorsCount;
 
     public Knot[] Knots { get; }
     public byte KnotsWidth { get; }
@@ -185,11 +185,11 @@ public class KnotManager
         // Don't need to do anything here. The original game re-allocates data in VRAM here, usually after game has been paused.
     }
 
-    public void AddPendingProjectiles()
+    public void AddPendingActors()
     {
-        GameObjects.AddRange(PendingAddedProjectiles);
-        AddedProjectiles.AddRange(PendingAddedProjectiles);
-        PendingAddedProjectiles.Clear();
+        GameObjects.AddRange(PendingAddedAlwaysActors);
+        AddedAlwaysActors.AddRange(PendingAddedAlwaysActors);
+        PendingAddedAlwaysActors.Clear();
     }
 
     public BaseActor CreateProjectile(Scene2D scene, int actorType, bool allowAddWhenNeeded)
@@ -224,10 +224,10 @@ public class KnotManager
             if (actorResource == null)
                 return null;
 
-            int instanceId = GameObjectsCount + PendingAddedProjectiles.Count;
+            int instanceId = GameObjectsCount + PendingAddedAlwaysActors.Count;
             BaseActor projectile = ActorFactory.Create(instanceId, scene, actorResource);
 
-            PendingAddedProjectiles.Add(projectile);
+            PendingAddedAlwaysActors.Add(projectile);
             projectile.Init(actorResource);
 
             projectile.ProcessMessage(null, Message.ResurrectWakeUp);
