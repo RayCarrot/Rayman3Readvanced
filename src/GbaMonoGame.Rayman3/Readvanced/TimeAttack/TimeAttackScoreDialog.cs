@@ -24,7 +24,7 @@ public class TimeAttackScoreDialog : Dialog
     {
         TimeTargets = TimeAttackInfo.TargetTimes.
             Where(x => x.Type != TimeAttackTimeType.Record).
-            Select((x, i) => new TimeTarget(x, Scene.HudRenderContext, new Vector2(96 + i * 80, 140))).
+            Select((x, i) => new TimeTarget(x, Scene.HudRenderContext, new Vector2(80 + i * 96, 140))).
             ToArray();
     }
 
@@ -58,7 +58,16 @@ public class TimeAttackScoreDialog : Dialog
         public TimeTarget(TimeAttackTime time, RenderContext renderContext, Vector2 position)
         {
             Time = time;
-            Blank = new SpriteTextureObject
+            TimeText = new SpriteFontTextObject
+            {
+                BgPriority = 0,
+                ObjPriority = 0,
+                ScreenPos = position + new Vector2(0, 20),
+                RenderContext = renderContext,
+                Text = time.ToTimeString(),
+                Font = ReadvancedFonts.MenuYellow,
+            };
+            BlankIcon = new SpriteTextureObject
             {
                 BgPriority = 0,
                 ObjPriority = 0,
@@ -66,7 +75,7 @@ public class TimeAttackScoreDialog : Dialog
                 RenderContext = renderContext,
                 Texture = time.LoadBigIcon(false)
             };
-            FilledIn = new SpriteTextureObject
+            FilledInIcon = new SpriteTextureObject
             {
                 BgPriority = 0,
                 ObjPriority = 0,
@@ -75,14 +84,15 @@ public class TimeAttackScoreDialog : Dialog
                 Texture = time.LoadBigIcon(true)
             };
 
-            FilledInStarScale = 0;
+            FilledInIconScale = 0;
         }
 
         public TimeAttackTime Time { get; }
-        public SpriteTextureObject Blank { get; }
-        public SpriteTextureObject FilledIn { get; }
+        public SpriteFontTextObject TimeText { get; set; }
+        public SpriteTextureObject BlankIcon { get; }
+        public SpriteTextureObject FilledInIcon { get; }
 
-        public float FilledInStarScale { get; set; }
+        public float FilledInIconScale { get; set; }
         
         public bool IsTransitioningIn { get; set; }
         public float ScaleTimer { get; set; }
@@ -102,10 +112,10 @@ public class TimeAttackScoreDialog : Dialog
                 ScaleTimer += 1 / 4f;
                 float scaleValue = MathF.Cos(0.4f * ScaleTimer) * 32;
 
-                FilledInStarScale = scaleValue / 6f;
-                if (FilledInStarScale <= 1)
+                FilledInIconScale = scaleValue / 6f;
+                if (FilledInIconScale <= 1)
                 {
-                    FilledInStarScale = 1;
+                    FilledInIconScale = 1;
                     IsTransitioningIn = false;
 
                     // 60/40 chance for either sound to play. This could be done through
@@ -117,17 +127,21 @@ public class TimeAttackScoreDialog : Dialog
                 }
             }
 
-            // Draw blank star if the filled in scale is not 1
-            if (FilledInStarScale != 1)
+            TimeText.ScreenPos = BlankIcon.ScreenPos + new Vector2(BlankIcon.Texture.Width / 2f, 50);
+            TimeText.ScreenPos -= new Vector2(TimeText.Font.GetWidth(TimeText.Text) / 2f, 0);
+            animationPlayer.Play(TimeText);
+
+            // Draw blank icon if the filled in scale is not 1
+            if (FilledInIconScale != 1)
             {
-                animationPlayer.Play(Blank);
+                animationPlayer.Play(BlankIcon);
             }
 
-            // Draw filled in star if the scale is not 0
-            if (FilledInStarScale != 0)
+            // Draw filled in icon if the scale is not 0
+            if (FilledInIconScale != 0)
             {
-                FilledIn.AffineMatrix = new AffineMatrix(0, new Vector2(FilledInStarScale));
-                animationPlayer.Play(FilledIn);
+                FilledInIcon.AffineMatrix = new AffineMatrix(0, new Vector2(FilledInIconScale));
+                animationPlayer.Play(FilledInIcon);
             }
         }
     }
