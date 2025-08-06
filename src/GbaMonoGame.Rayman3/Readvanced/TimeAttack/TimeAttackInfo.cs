@@ -32,7 +32,9 @@ public static class TimeAttackInfo
                 CanSkipTextBoxes = true,
                 FixBugs = true,
                 AddProjectilesWhenNeeded = true,
+#if RELEASE
                 AllowPrototypeCheats = false,
+#endif
             },
             difficulty: new DifficultyGameConfig
             {
