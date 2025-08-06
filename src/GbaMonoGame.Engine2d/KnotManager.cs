@@ -192,6 +192,23 @@ public class KnotManager
         PendingAddedAlwaysActors.Clear();
     }
 
+    public BaseActor AddAlwaysActor(Scene2D scene, ActorResource actorResource)
+    {
+        // Get the next instance id
+        int instanceId = GameObjectsCount + PendingAddedAlwaysActors.Count;
+        
+        // Create the actor
+        BaseActor actor = ActorFactory.Create(instanceId, scene, actorResource);
+
+        // Add to pending list of actors
+        PendingAddedAlwaysActors.Add(actor);
+
+        // Initialize
+        actor.Init(actorResource);
+
+        return actor;
+    }
+
     public BaseActor CreateProjectile(Scene2D scene, int actorType, bool allowAddWhenNeeded)
     {
         foreach (BaseActor actor in new DisabledActorIterator(scene))
@@ -224,11 +241,7 @@ public class KnotManager
             if (actorResource == null)
                 return null;
 
-            int instanceId = GameObjectsCount + PendingAddedAlwaysActors.Count;
-            BaseActor projectile = ActorFactory.Create(instanceId, scene, actorResource);
-
-            PendingAddedAlwaysActors.Add(projectile);
-            projectile.Init(actorResource);
+            BaseActor projectile = AddAlwaysActor(scene, actorResource);
 
             projectile.ProcessMessage(null, Message.ResurrectWakeUp);
 
