@@ -359,7 +359,7 @@ public class Rayman3 : GbaGame
         debugLayout.AddWindow(new SceneDebugWindow());
         debugLayout.AddWindow(new GameObjectDebugWindow());
         debugLayout.AddWindow(new PlayfieldDebugWindow());
-        debugLayout.AddWindow(new GameInfoDebugWindow());
+        debugLayout.AddWindow(new Rayman3DebugWindow());
         debugLayout.AddMenu(new FramesDebugMenu());
         debugLayout.AddMenu(new ExportDebugMenu());
     }
