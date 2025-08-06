@@ -6,16 +6,18 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 // For custom sounds. Start all IDs at 1000 to avoid conflicts with the original game.
 public static class ReadvancedSongTables
 {
+    // Samples are played through agbplay
     public static Dictionary<int, string> GbaSongTable => new()
     {
-        [1000] = "NewSfx/PadStamp01_Mix01GEN",
-        [1001] = "NewSfx/PadStamp02_Mix01GEN",
+        [1000] = "NewSfx/PadStamp01_Mix01_Gba",
+        [1001] = "NewSfx/PadStamp02_Mix01_Gba",
     };
 
+    // Samples are higher volume
     public static Dictionary<int, string> NGageSongTable => new()
     {
-        [1000] = "NewSfx/PadStamp01_Mix01",
-        [1001] = "NewSfx/PadStamp02_Mix01",
+        [1000] = "NewSfx/PadStamp01_Mix01_NGage",
+        [1001] = "NewSfx/PadStamp02_Mix01_NGage",
     };
 
     public static Dictionary<int, SoundEvent> GbaSoundEvents => new()
