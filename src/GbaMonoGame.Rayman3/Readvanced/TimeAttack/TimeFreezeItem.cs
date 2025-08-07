@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
 using Microsoft.Xna.Framework.Graphics;
@@ -20,7 +19,7 @@ public sealed partial class TimeFreezeItem : MovableActor
             AnimatedObject.ReplaceSpriteTexture(3, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Blue3));
             AnimatedObject.ReplaceSpriteTexture(4, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Blue4));
 
-            TimeDecreaseSecondsValue = 3; // 3 seconds
+            TimeDecreaseSecondsValue = 3;
         }
         else if ((Action)actorResource.FirstActionId == Action.Init_Decrease5)
         {
@@ -30,14 +29,15 @@ public sealed partial class TimeFreezeItem : MovableActor
             AnimatedObject.ReplaceSpriteTexture(3, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Orange3));
             AnimatedObject.ReplaceSpriteTexture(4, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Orange4));
 
-            TimeDecreaseSecondsValue = 5; // 5 seconds
+            TimeDecreaseSecondsValue = 5;
         }
         else
         {
             throw new Exception("Invalid initial action");
         }
 
-        // Save the initial position
+        // Save the initial action and position
+        InitialAction = (Action)actorResource.FirstActionId;
         InitialPosition = Position;
 
         // Set the idle state
@@ -54,7 +54,8 @@ public sealed partial class TimeFreezeItem : MovableActor
     private const int SparklesFadeOutDuration = 12;
 
     public int TimeDecreaseSecondsValue { get; }
-    public Vector2 InitialPosition { get; set; }
+    public Action InitialAction { get; }
+    public Vector2 InitialPosition { get; }
     public byte SinValue { get; set; }
     public uint Timer { get; set; }
     public float HitSpeedX { get; set; }

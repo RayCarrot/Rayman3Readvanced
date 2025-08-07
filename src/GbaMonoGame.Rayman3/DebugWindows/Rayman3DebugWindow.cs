@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.Rayman3.Readvanced;
 using ImGuiNET;
@@ -192,9 +193,54 @@ public class Rayman3DebugWindow : DebugWindow
                                 ResurrectsLater = false,
                                 Type = (byte)ReadvancedActorType.TimeFreezeItem,
                                 FirstActionId = (byte)TimeFreezeItemAction,
+                                Links = [0xFF, 0xFF, 0xFF, 0xFF],
                                 Model = ReadvancedResources.TimeFreezeItemActorModel,
                             });
                         }
+                    }
+
+                    if (ImGui.Button("Resurrect all"))
+                    {
+                        foreach (BaseActor actor in new DisabledAlwaysActorIterator(frame.Scene))
+                        {
+                            if ((ReadvancedActorType)actor.Type == ReadvancedActorType.TimeFreezeItem)
+                            {
+                                ((ActionActor)actor).HitPoints = 1;
+                                actor.ProcessMessage(this, Message.Resurrect);
+                            }
+                        }
+                    }
+
+                    if (ImGui.Button("Copy to clipboard"))
+                    {
+                        StringBuilder sb = new();
+
+                        foreach (BaseActor actor in new AlwaysActorIterator(frame.Scene))
+                        {
+                            if ((ReadvancedActorType)actor.Type == ReadvancedActorType.TimeFreezeItem)
+                            {
+                                TimeFreezeItem timeFreezeItem = (TimeFreezeItem)actor;
+                                sb.AppendLine($$"""
+                                              new()
+                                              {
+                                                  Pos = new BinarySerializer.Ubisoft.GbaEngine.Vector2({{(short)timeFreezeItem.InitialPosition.X}}, {{(short)timeFreezeItem.InitialPosition.Y}}),
+                                                  IsEnabled = true,
+                                                  IsAwake = true,
+                                                  IsAnimatedObjectDynamic = false,
+                                                  IsProjectile = false,
+                                                  ResurrectsImmediately = false,
+                                                  ResurrectsLater = false,
+                                                  Type = (byte){{nameof(ReadvancedActorType)}}.{{nameof(ReadvancedActorType.TimeFreezeItem)}},
+                                                  Idx_ActorModel = 0xFF,
+                                                  FirstActionId = (byte){{nameof(TimeFreezeItem)}}.{{nameof(TimeFreezeItem.Action)}}.{{timeFreezeItem.InitialAction}},
+                                                  Links = [0xFF, 0xFF, 0xFF, 0xFF],
+                                                  Model = {{nameof(ReadvancedResources)}}.{{nameof(ReadvancedResources.TimeFreezeItemActorModel)}},
+                                              },
+                                              """);
+                            }
+                        }
+
+                        ImGui.SetClipboardText(sb.ToString());
                     }
                 }
 

@@ -158,9 +158,18 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         // Create pause dialog, but don't add yet
         PauseDialog = Engine.ActiveConfig.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, !TimeAttackInfo.IsActive) : new PauseDialog(Scene);
         
-        // Add custom dialog if in time attack mode
+        // Custom for the time attack mode
         if (TimeAttackInfo.IsActive)
+        {
+            // Add dialog for the HUD
             Scene.AddDialog(new TimeAttackDialog(Scene), false, false);
+
+            // Add actors (time freeze items)
+            foreach (ActorResource actorResource in TimeAttackActors.GetTimeAttackActors(GameInfo.MapId))
+                Scene.KnotManager.AddAlwaysActor(Scene, actorResource);
+
+            Scene.KnotManager.AddPendingActors();
+        }
 
         Scene.Init();
         Scene.Playfield.Step();
