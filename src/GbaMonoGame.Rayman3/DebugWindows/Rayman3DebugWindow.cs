@@ -1,4 +1,5 @@
 ﻿using System;
+using GbaMonoGame.Engine2d;
 using GbaMonoGame.Rayman3.Readvanced;
 using ImGuiNET;
 
@@ -7,6 +8,9 @@ namespace GbaMonoGame.Rayman3;
 public class Rayman3DebugWindow : DebugWindow
 {
     public override string Name => "Rayman 3";
+
+    public bool PlaceTimeFreezeItems { get; set; }
+    public TimeFreezeItem.Action TimeFreezeItemAction { get; set; }
 
     public override void Draw(DebugLayout debugLayout, DebugLayoutTextureManager textureManager)
     {
@@ -159,6 +163,40 @@ public class Rayman3DebugWindow : DebugWindow
                 TimeAttackInfo.IsPaused = ImGuiExt.Checkbox("Paused", TimeAttackInfo.IsPaused);
                 ImGui.Text($"Mode: {TimeAttackInfo.Mode}");
                 ImGui.Text($"Timer: {TimeAttackInfo.Timer}");
+
+                if (Frame.Current is IHasScene frame)
+                {
+                    ImGui.SeparatorText("Time Freeze Items");
+
+                    PlaceTimeFreezeItems = ImGuiExt.Checkbox("Place Items", PlaceTimeFreezeItems);
+
+                    if (PlaceTimeFreezeItems)
+                    {
+                        if (ImGui.RadioButton("Decrease 3", TimeFreezeItemAction == TimeFreezeItem.Action.Init_Decrease3))
+                            TimeFreezeItemAction = TimeFreezeItem.Action.Init_Decrease3;
+
+                        if (ImGui.RadioButton("Decrease 5", TimeFreezeItemAction == TimeFreezeItem.Action.Init_Decrease5))
+                            TimeFreezeItemAction = TimeFreezeItem.Action.Init_Decrease5;
+
+                        if (InputManager.IsMouseOnScreen(frame.Scene.RenderContext) && InputManager.IsMouseLeftButtonJustPressed())
+                        {
+                            Vector2 mousePos = InputManager.GetMousePosition(frame.Scene.RenderContext) + frame.Scene.Playfield.Camera.Position;
+                            frame.Scene.KnotManager.AddAlwaysActor(frame.Scene, new ActorResource
+                            {
+                                Pos = new BinarySerializer.Ubisoft.GbaEngine.Vector2((short)mousePos.X, (short)mousePos.Y),
+                                IsEnabled = true,
+                                IsAwake = true,
+                                IsAnimatedObjectDynamic = false,
+                                IsProjectile = false,
+                                ResurrectsImmediately = false,
+                                ResurrectsLater = false,
+                                Type = (byte)ReadvancedActorType.TimeFreezeItem,
+                                FirstActionId = (byte)TimeFreezeItemAction,
+                                Model = ReadvancedResources.TimeFreezeItemActorModel,
+                            });
+                        }
+                    }
+                }
 
                 ImGui.EndTabItem();
             }

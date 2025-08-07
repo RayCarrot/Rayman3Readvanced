@@ -10,8 +10,8 @@ public partial class TimeFreezeItem
 
     public enum Action
     {
-        Init_Blue = 0,
-        Init_Orange = 1,
+        Init_Decrease3 = 0,
+        Init_Decrease5 = 1,
         Idle = 2,
         Dying = 3,
     }

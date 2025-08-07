@@ -116,6 +116,7 @@ public static class InputManager
         renderContext.ToWorldPosition(_previousMouseState.Position.ToVector2());
     public static int GetMouseWheelDelta() => _mouseState.ScrollWheelValue - _previousMouseState.ScrollWheelValue;
     public static MouseState GetMouseState() => _mouseState;
+    public static bool IsMouseLeftButtonJustPressed() => _mouseState.LeftButton == ButtonState.Pressed && _previousMouseState.LeftButton == ButtonState.Released;
 
     public static void Update()
     {

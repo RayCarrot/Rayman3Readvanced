@@ -65,7 +65,7 @@ public static class ReadvancedResources
             AttackPoints = 0,
             Actions =
             [
-                // Init_Blue
+                // Init_Decrease3
                 new Action
                 {
                     Box = new EngineBox(0, 0, 0, 0),
@@ -74,7 +74,7 @@ public static class ReadvancedResources
                     MechModelType = 1,
                     MechModel = new MechModel() { Params = [] }
                 },
-                // Init_Orange
+                // Init_Decrease5
                 new Action
                 {
                     Box = new EngineBox(0, 0, 0, 0),

@@ -12,7 +12,7 @@ public sealed partial class TimeFreezeItem : MovableActor
     public TimeFreezeItem(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
         // Load the sprites and set the time decrease value
-        if ((Action)actorResource.FirstActionId == Action.Init_Blue)
+        if ((Action)actorResource.FirstActionId == Action.Init_Decrease3)
         {
             AnimatedObject.ReplaceSpriteTexture(0, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Blue0));
             AnimatedObject.ReplaceSpriteTexture(1, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Blue1));
@@ -22,7 +22,7 @@ public sealed partial class TimeFreezeItem : MovableActor
 
             TimeDecreaseSecondsValue = 3; // 3 seconds
         }
-        else if ((Action)actorResource.FirstActionId == Action.Init_Orange)
+        else if ((Action)actorResource.FirstActionId == Action.Init_Decrease5)
         {
             AnimatedObject.ReplaceSpriteTexture(0, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Orange0));
             AnimatedObject.ReplaceSpriteTexture(1, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Orange1));
