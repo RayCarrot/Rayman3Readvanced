@@ -166,7 +166,7 @@ public sealed partial class Murfy : MovableActor
         {
             base.Draw(animationPlayer, forceDraw);
 
-            if (AnimatedObject.IsFramed)
+            if (AnimatedObject.IsFramed && AnimatedObject.IsSoundEnabled)
             {
                 if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__MurfHeli_Mix01))
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MurfHeli_Mix01);

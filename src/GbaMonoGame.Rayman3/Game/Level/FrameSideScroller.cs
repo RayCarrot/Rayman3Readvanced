@@ -108,13 +108,6 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
 
     public override void Init()
     {
-        // TRAILER
-        if (GameInfo.MapId == MapId.WoodLight_M1)
-        {
-            Engine.LocalConfig.Tweaks.InternalGameResolution = Resolution.Gba;
-            Engine.SetInternalGameResolution(Resolution.Gba);
-        }
-
         GameInfo.InitLevel(LevelType.Normal);
 
         CanPause = true;

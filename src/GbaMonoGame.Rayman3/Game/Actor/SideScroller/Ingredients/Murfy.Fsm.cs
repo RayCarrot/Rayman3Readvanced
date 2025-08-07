@@ -392,9 +392,12 @@ public partial class Murfy
         switch (action)
         {
             case FsmAction.Init:
+                ((FrameSideScroller)Frame.Current).InitNewCircleTransition(false);
+                TextBox.MoveInOurOut(false);
+                AnimatedObject.IsSoundEnabled = false;
+                return true;
                 ActionId = IsFacingRight ? Action.BeginLeave_Right : Action.BeginLeave_Left;
                 SavedSpeed = SavedSpeed with { Y = -1 };
-                TextBox.MoveInOurOut(false);
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MurfyVO3A_Mix01);
 
                 // TRAILER
@@ -407,6 +410,7 @@ public partial class Murfy
                 break;
 
             case FsmAction.Step:
+                return true;
                 if (IsActionFinished && ActionId is Action.BeginLeave_Right or Action.BeginLeave_Left)
                     ActionId = IsFacingRight ? Action.Fly_Right : Action.Fly_Left;
 

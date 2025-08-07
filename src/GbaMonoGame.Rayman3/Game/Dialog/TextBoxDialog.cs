@@ -52,12 +52,8 @@ public partial class TextBoxDialog : Dialog
         // TRAILER
         string[] trailerCutscene =
         [
-            "2:Hey big-nose!",
-            "",
-            "2:GBA games are quite small",
-            "aren't they?",
-            "2:Let me try and fix that for you!",
-            "",
+            "2:Hang on, this game reminds me",
+            "of Rayman 2...",
         ];
 
         CurrentText = trailerCutscene;
