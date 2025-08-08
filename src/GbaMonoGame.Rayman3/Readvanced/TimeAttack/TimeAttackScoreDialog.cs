@@ -58,14 +58,13 @@ public class TimeAttackScoreDialog : Dialog
         public TimeTarget(TimeAttackTime time, RenderContext renderContext, Vector2 position)
         {
             Time = time;
-            TimeText = new SpriteFontTextObject
+            TimeText = new SpriteTimeAttackTimeObject
             {
                 BgPriority = 0,
                 ObjPriority = 0,
                 ScreenPos = position + new Vector2(0, 20),
                 RenderContext = renderContext,
-                Text = time.ToTimeString(),
-                Font = ReadvancedFonts.MenuYellow,
+                Time = time,
             };
             BlankIcon = new SpriteTextureObject
             {
@@ -88,7 +87,7 @@ public class TimeAttackScoreDialog : Dialog
         }
 
         public TimeAttackTime Time { get; }
-        public SpriteFontTextObject TimeText { get; set; }
+        public SpriteTimeAttackTimeObject TimeText { get; set; }
         public SpriteTextureObject BlankIcon { get; }
         public SpriteTextureObject FilledInIcon { get; }
 
@@ -127,8 +126,8 @@ public class TimeAttackScoreDialog : Dialog
                 }
             }
 
-            TimeText.ScreenPos = BlankIcon.ScreenPos + new Vector2(BlankIcon.Texture.Width / 2f, 50);
-            TimeText.ScreenPos -= new Vector2(TimeText.Font.GetWidth(TimeText.Text) / 2f, 0);
+            TimeText.ScreenPos = BlankIcon.ScreenPos + new Vector2(BlankIcon.Texture.Width / 2f, 38);
+            TimeText.ScreenPos -= new Vector2(TimeText.GetWidth() / 2f, 0);
             animationPlayer.Play(TimeText);
 
             // Draw blank icon if the filled in scale is not 1

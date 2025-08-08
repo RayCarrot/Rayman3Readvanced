@@ -14,13 +14,13 @@ public partial class TimeAttackDialog : Dialog
 
     private const int CountdownStartTime = 50;
     private const int CountdownSpeed = 25;
-    private const int TargetTimeMargin = 10;
+    private const int TargetTimeMargin = 8;
     private const int TargetBlinkRange = 60 * 3; // 3 seconds
 
     public TimerBar TimerBar { get; set; }
     public AnimatedObject Countdown { get; set; }
     public SpriteTextureObject TargetTimeIcon { get; set; }
-    public SpriteFontTextObject TargetTimeText { get; set; }
+    public SpriteTimeAttackTimeObject TargetTimeText { get; set; }
 
     public uint CountdownTimer { get; set; }
     public int CountdownValue { get; set; }
@@ -42,11 +42,11 @@ public partial class TimeAttackDialog : Dialog
 
         if (TargetTimeIndex != -1)
         {
-            TargetTimeText.Text = TargetTime.ToTimeString();
-            TargetTimeText.ScreenPos = new Vector2(-(TargetTimeText.Font.GetWidth(TargetTimeText.Text) + TargetTimeMargin), TargetTimeMargin + (TargetTimeText.Font.LineHeight / 2));
+            TargetTimeText.Time = TargetTime;
+            TargetTimeText.ScreenPos = new Vector2(-(TargetTimeText.GetWidth() + TargetTimeMargin), TargetTimeMargin);
 
             TargetTimeIcon.Texture = TargetTime.LoadIcon(true);
-            TargetTimeIcon.ScreenPos = TargetTimeText.ScreenPos + new Vector2(-18, -14);
+            TargetTimeIcon.ScreenPos = TargetTimeText.ScreenPos + new Vector2(-18, -2);
         }
     }
 
@@ -79,13 +79,12 @@ public partial class TimeAttackDialog : Dialog
             RenderContext = Scene.HudRenderContext,
         };
 
-        TargetTimeText = new SpriteFontTextObject
+        TargetTimeText = new SpriteTimeAttackTimeObject
         {
             BgPriority = 0,
             ObjPriority = 0,
             HorizontalAnchor = HorizontalAnchorMode.Right,
             RenderContext = Scene.HudRenderContext,
-            Font = ReadvancedFonts.MenuYellow,
         };
 
         // Set the initial target time
