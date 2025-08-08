@@ -13,12 +13,32 @@ public static class TimeAttackActors
 
         // TODO: Fill out for each map
         // Get the time freeze items
-        ActorResource[] timeFreezeItems = mapId switch
+        TimeFreezeItemResource[] timeFreezeItems = mapId switch
         {
             MapId.WoodLight_M1 => WoodLight_M1,
+            MapId.WoodLight_M2 => WoodLight_M2,
             _ => []
         };
-        actors.AddRange(timeFreezeItems);
+
+        // Add the time freeze items
+        foreach (TimeFreezeItemResource timeFreezeItem in timeFreezeItems)
+        {
+            actors.Add(new ActorResource()
+            {
+                Pos = timeFreezeItem.Pos,
+                IsEnabled = true,
+                IsAwake = true,
+                IsAnimatedObjectDynamic = false,
+                IsProjectile = false,
+                ResurrectsImmediately = false,
+                ResurrectsLater = false,
+                Type = (byte)ReadvancedActorType.TimeFreezeItem,
+                Idx_ActorModel = 0xFF,
+                FirstActionId = (byte)timeFreezeItem.FirstActionId,
+                Links = [0xFF, 0xFF, 0xFF, 0xFF],
+                Model = ReadvancedResources.TimeFreezeItemActorModel,
+            });
+        }
 
         // Add max 5 projectile actors
         int projectilesCount = Math.Min(timeFreezeItems.Length, 5);
@@ -62,67 +82,26 @@ public static class TimeAttackActors
         return actors;
     }
 
-    private static ActorResource[] WoodLight_M1 =>
+    private static TimeFreezeItemResource[] WoodLight_M1 =>
     [
-        new()
-        {
-            Pos = new BinarySerializer.Ubisoft.GbaEngine.Vector2(300, 197),
-            IsEnabled = true,
-            IsAwake = true,
-            IsAnimatedObjectDynamic = false,
-            IsProjectile = false,
-            ResurrectsImmediately = false,
-            ResurrectsLater = false,
-            Type = (byte)ReadvancedActorType.TimeFreezeItem,
-            Idx_ActorModel = 0xFF,
-            FirstActionId = (byte)TimeFreezeItem.Action.Init_Decrease3,
-            Links = [0xFF, 0xFF, 0xFF, 0xFF],
-            Model = ReadvancedResources.TimeFreezeItemActorModel,
-        },
-        new()
-        {
-            Pos = new BinarySerializer.Ubisoft.GbaEngine.Vector2(998, 158),
-            IsEnabled = true,
-            IsAwake = true,
-            IsAnimatedObjectDynamic = false,
-            IsProjectile = false,
-            ResurrectsImmediately = false,
-            ResurrectsLater = false,
-            Type = (byte)ReadvancedActorType.TimeFreezeItem,
-            Idx_ActorModel = 0xFF,
-            FirstActionId = (byte)TimeFreezeItem.Action.Init_Decrease3,
-            Links = [0xFF, 0xFF, 0xFF, 0xFF],
-            Model = ReadvancedResources.TimeFreezeItemActorModel,
-        },
-        new()
-        {
-            Pos = new BinarySerializer.Ubisoft.GbaEngine.Vector2(1637, 252),
-            IsEnabled = true,
-            IsAwake = true,
-            IsAnimatedObjectDynamic = false,
-            IsProjectile = false,
-            ResurrectsImmediately = false,
-            ResurrectsLater = false,
-            Type = (byte)ReadvancedActorType.TimeFreezeItem,
-            Idx_ActorModel = 0xFF,
-            FirstActionId = (byte)TimeFreezeItem.Action.Init_Decrease3,
-            Links = [0xFF, 0xFF, 0xFF, 0xFF],
-            Model = ReadvancedResources.TimeFreezeItemActorModel,
-        },
-        new()
-        {
-            Pos = new BinarySerializer.Ubisoft.GbaEngine.Vector2(3046, 44),
-            IsEnabled = true,
-            IsAwake = true,
-            IsAnimatedObjectDynamic = false,
-            IsProjectile = false,
-            ResurrectsImmediately = false,
-            ResurrectsLater = false,
-            Type = (byte)ReadvancedActorType.TimeFreezeItem,
-            Idx_ActorModel = 0xFF,
-            FirstActionId = (byte)TimeFreezeItem.Action.Init_Decrease3,
-            Links = [0xFF, 0xFF, 0xFF, 0xFF],
-            Model = ReadvancedResources.TimeFreezeItemActorModel,
-        },
+        new(TimeFreezeItem.Action.Init_Decrease3, new BinarySerializer.Ubisoft.GbaEngine.Vector2(300, 197)),
+        new(TimeFreezeItem.Action.Init_Decrease3, new BinarySerializer.Ubisoft.GbaEngine.Vector2(998, 158)),
+        new(TimeFreezeItem.Action.Init_Decrease3, new BinarySerializer.Ubisoft.GbaEngine.Vector2(1637, 252)),
+        new(TimeFreezeItem.Action.Init_Decrease3, new BinarySerializer.Ubisoft.GbaEngine.Vector2(3046, 44)),
     ];
+
+    private static TimeFreezeItemResource[] WoodLight_M2 =>
+    [
+        new(TimeFreezeItem.Action.Init_Decrease3, new BinarySerializer.Ubisoft.GbaEngine.Vector2(428, 232)),
+        new(TimeFreezeItem.Action.Init_Decrease3, new BinarySerializer.Ubisoft.GbaEngine.Vector2(1983, 342)),
+        new(TimeFreezeItem.Action.Init_Decrease5, new BinarySerializer.Ubisoft.GbaEngine.Vector2(2610, 125)),
+        new(TimeFreezeItem.Action.Init_Decrease3, new BinarySerializer.Ubisoft.GbaEngine.Vector2(2795, 130)),
+        new(TimeFreezeItem.Action.Init_Decrease3, new BinarySerializer.Ubisoft.GbaEngine.Vector2(3631, 54)),
+    ];
+
+    public readonly struct TimeFreezeItemResource(TimeFreezeItem.Action firstActionId, BinarySerializer.Ubisoft.GbaEngine.Vector2 pos)
+    {
+        public TimeFreezeItem.Action FirstActionId { get; } = firstActionId;
+        public BinarySerializer.Ubisoft.GbaEngine.Vector2 Pos { get; } = pos;
+    }
 }
