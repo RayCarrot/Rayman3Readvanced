@@ -7,61 +7,113 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 
 // TODO:
 // - Don't allow selecting level if not finished in single player.
-// - Should the waterski levels be included? Should Ly's Punch Challenge be included?
+// - Should Ly's Punch Challenge be included?
 // - Show screenshot for each level.
 public class TimeAttackMenuPage : MenuPage
 {
-    public TimeAttackMenuPage(ModernMenuAll menu) : base(menu) { }
+    public TimeAttackMenuPage(ModernMenuAll menu) : base(menu)
+    {
+        // Maps are same except for waterski levels being removed on GBA
+        if (Rom.Platform == Platform.GBA)
+        {
+            Maps =
+            [
+                [
+                    MapId.WoodLight_M1,
+                    MapId.FairyGlade_M1,
+                    MapId.BossMachine,
+                    MapId.SanctuaryOfBigTree_M1,
+                ],
+                [
+                    MapId.MissileRace1,
+                    MapId.EchoingCaves_M1,
+                    MapId.CavesOfBadDreams_M1,
+                    MapId.BossBadDreams,
+                    MapId.MenhirHills_M1,
+                ],
+                [
+                    MapId.SanctuaryOfStoneAndFire_M1,
+                    MapId.BeneathTheSanctuary_M1,
+                    MapId.ThePrecipice_M1,
+                    MapId.BossRockAndLava,
+                    MapId.TheCanopy_M1,
+                    MapId.SanctuaryOfRockAndLava_M1,
+                ],
+                [
+                    MapId.TombOfTheAncients_M1,
+                    MapId.BossScaleMan,
+                    MapId.IronMountains_M1,
+                    MapId.MissileRace2,
+                    MapId.PirateShip_M1,
+                    MapId.BossFinal_M1,
+                ],
+                [
+                    MapId.Bonus1,
+                    MapId.Bonus2,
+                    MapId.Bonus3,
+                    MapId.Bonus4,
+                    MapId._1000Lums,
+                ]
+            ];
+        }
+        else if (Rom.Platform == Platform.NGage)
+        {
+            Maps = 
+            [
+                [
+                    MapId.WoodLight_M1,
+                    MapId.FairyGlade_M1,
+                    MapId.MarshAwakening1,
+                    MapId.BossMachine,
+                    MapId.SanctuaryOfBigTree_M1,
+                ],
+                [
+                    MapId.MissileRace1,
+                    MapId.EchoingCaves_M1,
+                    MapId.CavesOfBadDreams_M1,
+                    MapId.BossBadDreams,
+                    MapId.MenhirHills_M1,
+                    MapId.MarshAwakening2,
+                ],
+                [
+                    MapId.SanctuaryOfStoneAndFire_M1,
+                    MapId.BeneathTheSanctuary_M1,
+                    MapId.ThePrecipice_M1,
+                    MapId.BossRockAndLava,
+                    MapId.TheCanopy_M1,
+                    MapId.SanctuaryOfRockAndLava_M1,
+                ],
+                [
+                    MapId.TombOfTheAncients_M1,
+                    MapId.BossScaleMan,
+                    MapId.IronMountains_M1,
+                    MapId.MissileRace2,
+                    MapId.PirateShip_M1,
+                    MapId.BossFinal_M1,
+                ],
+                [
+                    MapId.Bonus1,
+                    MapId.Bonus2,
+                    MapId.Bonus3,
+                    MapId.Bonus4,
+                    MapId._1000Lums,
+                ]
+            ];
+        }
+        else
+        {
+            throw new UnsupportedPlatformException();
+        }
+    }
 
     private const int LevelOptionsBaseIndex = 7;
     private const float GhostSelectionTextScale = 2 / 3f;
-
-    private static MapId[][] Maps { get; } =
-    [
-        [
-            MapId.WoodLight_M1,
-            MapId.FairyGlade_M1,
-            MapId.MarshAwakening1,
-            MapId.BossMachine,
-            MapId.SanctuaryOfBigTree_M1,
-        ],
-        [
-            MapId.MissileRace1,
-            MapId.EchoingCaves_M1,
-            MapId.CavesOfBadDreams_M1,
-            MapId.BossBadDreams,
-            MapId.MenhirHills_M1,
-            MapId.MarshAwakening2,
-        ],
-        [
-            MapId.SanctuaryOfStoneAndFire_M1,
-            MapId.BeneathTheSanctuary_M1,
-            MapId.ThePrecipice_M1,
-            MapId.BossRockAndLava,
-            MapId.TheCanopy_M1,
-            MapId.SanctuaryOfRockAndLava_M1,
-        ],
-        [
-            MapId.TombOfTheAncients_M1,
-            MapId.BossScaleMan,
-            MapId.IronMountains_M1,
-            MapId.MissileRace2,
-            MapId.PirateShip_M1,
-            MapId.BossFinal_M1,
-        ],
-        [
-            MapId.Bonus1,
-            MapId.Bonus2,
-            MapId.Bonus3,
-            MapId.Bonus4,
-            MapId._1000Lums,
-        ]
-    ];
 
     public override bool UsesCursor => true;
     public override int BackgroundPalette => 2;
     public override int LineHeight => 12;
 
+    public MapId[][] Maps { get; }
     public TimeAttackLevelMenuOption[][] WorldOptions { get; set; }
     public int SelectedWorld { get; set; }
     public MapId SelectedMap => Maps[SelectedWorld][SelectedOption];
