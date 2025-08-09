@@ -2,6 +2,7 @@
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
+using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -78,8 +79,8 @@ public class TimerBar : Bar
         int secondsRemainingTime = minutesRemainingTime % 60;
         int centiSeconds = secondsRemainingTime * 100 / 60;
 
-        // On N-Gage it plays a beep every second for the last 10 seconds
-        if (Rom.Platform == Platform.NGage)
+        // On N-Gage it plays a beep every second for the last 10 seconds (don't do this if in time attack though!)
+        if (Rom.Platform == Platform.NGage && !TimeAttackInfo.IsActive)
         {
             if (minutes == 0 && seconds <= 10 && seconds != 0 && centiSeconds == 0 && PreviousSecondsValue != seconds)
             {
