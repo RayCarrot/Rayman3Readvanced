@@ -36,7 +36,7 @@ public static class TimeAttackActors
                 Idx_ActorModel = 0xFF,
                 FirstActionId = (byte)timeFreezeItem.FirstActionId,
                 Links = [0xFF, 0xFF, 0xFF, 0xFF],
-                Model = ReadvancedResources.TimeFreezeItemActorModel,
+                Model = TimeAttackActorModels.TimeFreezeItemActorModel,
             });
         }
 
@@ -75,7 +75,7 @@ public static class TimeAttackActors
                 ResurrectsImmediately = false,
                 ResurrectsLater = false,
                 Type = (byte)ReadvancedActorType.TimeDecrease,
-                Model = ReadvancedResources.TimeDecreaseActorModel,
+                Model = TimeAttackActorModels.TimeDecreaseActorModel,
             });
         }
 

@@ -194,7 +194,7 @@ public class Rayman3DebugWindow : DebugWindow
                                 Type = (byte)ReadvancedActorType.TimeFreezeItem,
                                 FirstActionId = (byte)TimeFreezeItemAction,
                                 Links = [0xFF, 0xFF, 0xFF, 0xFF],
-                                Model = ReadvancedResources.TimeFreezeItemActorModel,
+                                Model = TimeAttackActorModels.TimeFreezeItemActorModel,
                             });
                         }
                     }

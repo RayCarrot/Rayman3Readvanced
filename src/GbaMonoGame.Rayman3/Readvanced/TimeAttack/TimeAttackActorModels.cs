@@ -2,7 +2,7 @@
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
-public static class ReadvancedResources
+public static class TimeAttackActorModels
 {
     public static ActorModel TimeFreezeItemActorModel { get; } = CreateTimeFreezeItemActorModel();
     public static ActorModel TimeDecreaseActorModel { get; } = CreateTimeDecreaseActorModel();
