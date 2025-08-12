@@ -1,0 +1,23 @@
+<Project>
+  <!-- Define the platform -->
+  <PropertyGroup>
+    <DefineConstants>WINDOWSDX</DefineConstants>
+    <!--<DefineConstants>DESKTOPGL</DefineConstants>-->
+  </PropertyGroup>
+
+  <!-- Global -->
+  <PropertyGroup>
+    <LangVersion>13.0</LangVersion>
+    <RollForward>Major</RollForward>
+  </PropertyGroup>
+
+  <!-- WINDOWSDX -->
+  <PropertyGroup Condition="$(DefineConstants.Contains(WINDOWSDX))">
+    <TargetFramework>net8.0-windows</TargetFramework>
+  </PropertyGroup>
+
+  <!-- DESKTOPGL -->
+  <PropertyGroup Condition="$(DefineConstants.Contains(DESKTOPGL))">
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+</Project>

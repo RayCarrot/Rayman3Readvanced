@@ -1,16 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UseWPF>true</UseWPF>
-    <LangVersion>Preview</LangVersion>
-  </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="14.7.0" />
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.4" Condition="$(DefineConstants.Contains(WINDOWSDX))">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.4" Condition="$(DefineConstants.Contains(DESKTOPGL))">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -18,10 +13,8 @@
     <ProjectReference Include="..\..\sub-modules\BinarySerializer.Ubisoft.GbaEngine\src\BinarySerializer.Ubisoft.GbaEngine.csproj" />
     <ProjectReference Include="..\..\sub-modules\BinarySerializer\src\BinarySerializer.csproj" />
     <ProjectReference Include="..\GbaMonoGame.AnimEngine\GbaMonoGame.AnimEngine.csproj" />
-    <ProjectReference Include="..\GbaMonoGame.Engine2d\GbaMonoGame.Engine2d.csproj" />
-    <ProjectReference Include="..\GbaMonoGame.Rayman3\GbaMonoGame.Rayman3.csproj" />
     <ProjectReference Include="..\GbaMonoGame.TgxEngine\GbaMonoGame.TgxEngine.csproj" />
+    <ProjectReference Include="..\GbaMonoGame.Engine2d\GbaMonoGame.Engine2d.csproj" />
     <ProjectReference Include="..\GbaMonoGame\GbaMonoGame.csproj" />
   </ItemGroup>
-
 </Project>

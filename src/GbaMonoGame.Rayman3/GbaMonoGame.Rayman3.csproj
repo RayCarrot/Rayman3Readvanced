@@ -1,15 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <LangVersion>13.0</LangVersion>
-    <RollForward>Major</RollForward>
     <PublishReadyToRun>false</PublishReadyToRun>
     <TieredCompilation>false</TieredCompilation>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <DefineConstants>WINDOWSDX</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -33,11 +26,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <MonoGameContentReference Include="Assets\Assets.WindowsDX.mgcb" />
+    <MonoGameContentReference Include="Assets\Assets.mgcb" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.4" />
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.4" Condition="$(DefineConstants.Contains(WINDOWSDX))" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.4" Condition="$(DefineConstants.Contains(DESKTOPGL))" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.4" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.8" />
   </ItemGroup>
@@ -46,11 +40,11 @@
     <ProjectReference Include="..\..\sub-modules\BinarySerializer.Nintendo\src\BinarySerializer.Nintendo.csproj" />
     <ProjectReference Include="..\..\sub-modules\BinarySerializer.Ubisoft.GbaEngine\src\BinarySerializer.Ubisoft.GbaEngine.csproj" />
     <ProjectReference Include="..\..\sub-modules\BinarySerializer\src\BinarySerializer.csproj" />
-    <ProjectReference Include="..\GbaMonoGame.AnimEngine\GbaMonoGame.AnimEngine.WindowsDX.csproj" />
-    <ProjectReference Include="..\GbaMonoGame.Engine2d\GbaMonoGame.Engine2d.WindowsDX.csproj" />
-    <ProjectReference Include="..\GbaMonoGame.TgxEngine\GbaMonoGame.TgxEngine.WindowsDX.csproj" />
-    <ProjectReference Include="..\GbaMonoGame.Editor\GbaMonoGame.Editor.WindowsDX.csproj" />
-    <ProjectReference Include="..\GbaMonoGame\GbaMonoGame.WindowsDX.csproj" />
+    <ProjectReference Include="..\GbaMonoGame.AnimEngine\GbaMonoGame.AnimEngine.csproj" />
+    <ProjectReference Include="..\GbaMonoGame.Engine2d\GbaMonoGame.Engine2d.csproj" />
+    <ProjectReference Include="..\GbaMonoGame.TgxEngine\GbaMonoGame.TgxEngine.csproj" />
+    <ProjectReference Include="..\GbaMonoGame.Editor\GbaMonoGame.Editor.csproj" />
+    <ProjectReference Include="..\GbaMonoGame\GbaMonoGame.csproj" />
   </ItemGroup>
 
   <ItemGroup>

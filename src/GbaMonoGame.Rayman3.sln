@@ -13,19 +13,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Engine", "Engine", "{6288C1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinarySerializer.Ubisoft.GbaEngine", "..\sub-modules\BinarySerializer.Ubisoft.GbaEngine\src\BinarySerializer.Ubisoft.GbaEngine.csproj", "{57BD0528-551C-4811-9888-2F38F3B8CDCA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GbaMonoGame.WindowsDX", "GbaMonoGame\GbaMonoGame.WindowsDX.csproj", "{C5405881-FE1D-E24F-3D02-23E3BCC36B86}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GbaMonoGame", "GbaMonoGame\GbaMonoGame.csproj", "{C5405881-FE1D-E24F-3D02-23E3BCC36B86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GbaMonoGame.AnimEngine.WindowsDX", "GbaMonoGame.AnimEngine\GbaMonoGame.AnimEngine.WindowsDX.csproj", "{F8FB06A3-F358-CB50-E583-65DA72620680}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GbaMonoGame.AnimEngine", "GbaMonoGame.AnimEngine\GbaMonoGame.AnimEngine.csproj", "{F8FB06A3-F358-CB50-E583-65DA72620680}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GbaMonoGame.Editor.WindowsDX", "GbaMonoGame.Editor\GbaMonoGame.Editor.WindowsDX.csproj", "{C980B026-18A2-8F5A-8C36-E9FA81217452}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GbaMonoGame.Editor", "GbaMonoGame.Editor\GbaMonoGame.Editor.csproj", "{C980B026-18A2-8F5A-8C36-E9FA81217452}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GbaMonoGame.Engine2d.WindowsDX", "GbaMonoGame.Engine2d\GbaMonoGame.Engine2d.WindowsDX.csproj", "{0D9BD9CA-5CF0-4011-7828-79EAAEF84865}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GbaMonoGame.Engine2d", "GbaMonoGame.Engine2d\GbaMonoGame.Engine2d.csproj", "{0D9BD9CA-5CF0-4011-7828-79EAAEF84865}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GbaMonoGame.TgxEngine.WindowsDX", "GbaMonoGame.TgxEngine\GbaMonoGame.TgxEngine.WindowsDX.csproj", "{1C2AA4B5-37E0-ACC8-3956-EAC70B939F3B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GbaMonoGame.TgxEngine", "GbaMonoGame.TgxEngine\GbaMonoGame.TgxEngine.csproj", "{1C2AA4B5-37E0-ACC8-3956-EAC70B939F3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GbaMonoGame.Rayman3.WindowsDX", "GbaMonoGame.Rayman3\GbaMonoGame.Rayman3.WindowsDX.csproj", "{3AEBDB99-5BB4-FB14-CCE6-595590436034}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GbaMonoGame.Rayman3", "GbaMonoGame.Rayman3\GbaMonoGame.Rayman3.csproj", "{3AEBDB99-5BB4-FB14-CCE6-595590436034}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GbaMonoGame.Tools", "GbaMonoGame.Tools\GbaMonoGame.Tools.csproj", "{346674AF-DD9D-43BC-870B-F7A9158370CF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
