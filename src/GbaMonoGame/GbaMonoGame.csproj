@@ -28,9 +28,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ContentWithTargetPath Include="Libraries\**">
+    <ContentWithTargetPath Include="runtimes\**" Exclude="runtimes\api\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
+      <TargetPath>%(RelativeDir)\%(Filename)%(Extension)</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup>
+
 </Project>
