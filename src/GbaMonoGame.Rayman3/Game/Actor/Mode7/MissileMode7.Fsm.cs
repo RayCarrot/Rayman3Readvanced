@@ -319,12 +319,7 @@ public partial class MissileMode7
                 }
 
                 if (InvulnerabilityTimer == 120)
-                {
-                    if (GameInfo.PersistentInfo.Lives == 0)
-                        FrameManager.SetNextFrame(new GameOver());
-                    else
-                        FrameManager.ReloadCurrentFrame();
-                }
+                    GameInfo.LevelDeath();
 
                 // TODO: The game doesn't have this >30 check and sets ZPos=InvulnerabilityTimer*8
                 //       The problem is we calculate the ZPos in 3D while the game does it in screen

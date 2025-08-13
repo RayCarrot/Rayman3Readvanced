@@ -310,10 +310,7 @@ public partial class RaymanMode7
                 }
                 else if (InvulnerabilityTimer == 167)
                 {
-                    if (GameInfo.PersistentInfo.Lives == 0)
-                        FrameManager.SetNextFrame(new GameOver());
-                    else
-                        FrameManager.ReloadCurrentFrame();
+                    GameInfo.LevelDeath();
                 }
 
                 if (InvulnerabilityTimer > 80)

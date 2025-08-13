@@ -509,6 +509,20 @@ public static class GameInfo
         }
     }
 
+    public static void LevelDeath()
+    {
+        if (PersistentInfo.Lives == 0)
+        {
+            // Game over
+            FrameManager.SetNextFrame(new GameOver());
+        }
+        else
+        {
+            // Reload current map
+            FrameManager.ReloadCurrentFrame();
+        }
+    }
+
     public static void GotoLastSaveGame()
     {
         switch ((MapId)PersistentInfo.LastPlayedLevel)

@@ -4401,18 +4401,7 @@ public partial class Rayman
 
             case FsmAction.Step:
                 if (IsActionFinished && GameTime.ElapsedFrames - Timer > 120)
-                {
-                    if (GameInfo.PersistentInfo.Lives == 0)
-                    {
-                        // Game over
-                        FrameManager.SetNextFrame(new GameOver());
-                    }
-                    else
-                    {
-                        // Reload current map
-                        FrameManager.ReloadCurrentFrame();
-                    }
-                }
+                    GameInfo.LevelDeath();
                 break;
 
             case FsmAction.UnInit:

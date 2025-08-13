@@ -176,10 +176,7 @@ public partial class FlyingShell
                 }
                 else if (CrashTimer == 120)
                 {
-                    if (GameInfo.PersistentInfo.Lives == 0)
-                        FrameManager.SetNextFrame(new GameOver());
-                    else
-                        FrameManager.ReloadCurrentFrame();
+                    GameInfo.LevelDeath();
                 }
 
                 CrashTimer++;
