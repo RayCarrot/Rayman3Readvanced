@@ -4,6 +4,11 @@ public static class Random
 {
     private static uint _seed;
 
+    public static uint GetSeed()
+    {
+        return _seed;
+    }
+
     public static void SetSeed(uint seed)
     {
         _seed = seed;

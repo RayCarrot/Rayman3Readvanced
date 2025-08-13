@@ -6,16 +6,19 @@ using BinarySerializer.Ubisoft.GbaEngine;
 namespace GbaMonoGame.Rayman3.Readvanced;
 
 // TODO: Add support for Mode7 levels
-// TODO: Go through all actors
 public static class TimeAttackInfo
 {
     private const int RandomSeed = 0x12345678; // The value doesn't matter - just needs to be constant
     private const int MinTime = 0;
     private const int MaxTime = 356400; // 99:00:00
 
+    private static MapId? LastMapId { get; set; }
+    private static int SavedTimer { get; set; }
+    private static uint SavedRandomSeed { get; set; }
+
     public static bool IsActive { get; set; }
     public static bool IsPaused { get; set; }
-    public static MapId MapId { get; set; }
+    public static MapId? LevelId { get; set; }
     public static TimeAttackMode Mode { get; set; }
     public static int Timer { get; set; }
     public static TimeAttackTime[] TargetTimes { get; set; }
@@ -74,19 +77,22 @@ public static class TimeAttackInfo
         TargetTimes = [];
     }
 
-    // TODO: Make sure this gets called
     public static void UnInit()
     {
         Engine.RestoreActiveConfig();
 
         IsActive = false;
-        MapId = default;
+        LevelId = null;
         Mode = TimeAttackMode.None;
+        
+        LastMapId = null;
+        SavedTimer = 0;
+        SavedRandomSeed = RandomSeed;
     }
 
     public static void LoadLevel(MapId mapId)
     {
-        MapId = mapId;
+        LevelId = mapId;
 
         GameInfo.PersistentInfo.LastPlayedLevel = (byte)mapId;
         GameInfo.PersistentInfo.LastCompletedLevel = (byte)(mapId switch
@@ -110,6 +116,39 @@ public static class TimeAttackInfo
         TargetTimes = targetTimes.ToArray();
 
         FrameManager.SetNextFrame(LevelFactory.Create(mapId));
+    }
+
+    public static void InitLevel(MapId mapId, Scene2D scene)
+    {
+        // If this is a new map...
+        if (LastMapId != mapId)
+        {
+            // Set the map id
+            LastMapId = mapId;
+
+            // Save state
+            SavedTimer = Timer;
+            SavedRandomSeed = Random.GetSeed();
+        }
+        // Reloading same map as before...
+        else
+        {
+            // Restore state
+            Timer = SavedTimer;
+            Random.SetSeed(SavedRandomSeed);
+
+            // Reset game info
+            GameInfo.SetNextMapId(mapId);
+        }
+
+        // Add dialog for the HUD
+        scene.AddDialog(new TimeAttackDialog(scene), false, false);
+
+        // Add actors (time freeze items)
+        foreach (ActorResource actorResource in TimeAttackActors.GetTimeAttackActors(GameInfo.MapId))
+            scene.KnotManager.AddAlwaysActor(scene, actorResource);
+
+        scene.KnotManager.AddPendingActors();
     }
 
     public static TimeAttackTime[] GetTargetTimes(MapId mapId)

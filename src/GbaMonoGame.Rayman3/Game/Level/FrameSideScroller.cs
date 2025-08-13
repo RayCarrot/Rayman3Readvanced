@@ -160,16 +160,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         
         // Custom for the time attack mode
         if (TimeAttackInfo.IsActive)
-        {
-            // Add dialog for the HUD
-            Scene.AddDialog(new TimeAttackDialog(Scene), false, false);
-
-            // Add actors (time freeze items)
-            foreach (ActorResource actorResource in TimeAttackActors.GetTimeAttackActors(GameInfo.MapId))
-                Scene.KnotManager.AddAlwaysActor(Scene, actorResource);
-
-            Scene.KnotManager.AddPendingActors();
-        }
+            TimeAttackInfo.InitLevel(GameInfo.MapId, Scene);
 
         Scene.Init();
         Scene.Playfield.Step();

@@ -188,7 +188,8 @@ public class TimeAttackMenuPage : MenuPage
         MapId selectedMap = Maps[0][0];
         if (TimeAttackInfo.IsActive)
         {
-            selectedMap = TimeAttackInfo.MapId;
+            if (TimeAttackInfo.LevelId != null)
+                selectedMap = TimeAttackInfo.LevelId.Value;
             TimeAttackInfo.UnInit();
         }
 
