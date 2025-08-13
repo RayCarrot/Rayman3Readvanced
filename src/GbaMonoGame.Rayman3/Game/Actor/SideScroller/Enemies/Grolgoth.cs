@@ -3,6 +3,7 @@ using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -30,7 +31,7 @@ public sealed partial class Grolgoth : MovableActor
         }
         else if (GameInfo.MapId == MapId.BossFinal_M2)
         {
-            if (GameInfo.LastGreenLumAlive == 0)
+            if (GameInfo.LastGreenLumAlive == 0 && !TimeAttackInfo.IsActive)
             {
                 State.SetTo(Fsm_AirInit);
                 Timer = 0;

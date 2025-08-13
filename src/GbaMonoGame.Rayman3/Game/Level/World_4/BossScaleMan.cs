@@ -1,4 +1,5 @@
 ﻿using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -9,7 +10,11 @@ public class BossScaleMan : FrameSideScroller
     public override void Init()
     {
         base.Init();
-        Scene.Camera.LinkedObject = Scene.GetGameObject<MovableActor>(1);
-        Scene.MainActor.ProcessMessage(this, Message.Rayman_Stop);
+
+        if (!TimeAttackInfo.IsActive)
+        {
+            Scene.Camera.LinkedObject = Scene.GetGameObject<MovableActor>(1);
+            Scene.MainActor.ProcessMessage(this, Message.Rayman_Stop);
+        }
     }
 }

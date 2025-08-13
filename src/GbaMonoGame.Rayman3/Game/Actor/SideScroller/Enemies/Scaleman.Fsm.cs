@@ -2,6 +2,7 @@
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -16,7 +17,12 @@ public partial class Scaleman
                 break;
 
             case FsmAction.Step:
-                State.MoveTo(Fsm_Init);
+                // Wait for countdown to finish in time attack
+                if (!TimeAttackInfo.IsActive || TimeAttackInfo.Mode == TimeAttackMode.Play)
+                {
+                    State.MoveTo(Fsm_Init);
+                    return false;
+                }
                 break;
 
             case FsmAction.UnInit:
@@ -44,7 +50,8 @@ public partial class Scaleman
                         return false;
                     }
 
-                    if (Timer >= 90)
+                    // Skip delay in time attack
+                    if (Timer >= 90 || TimeAttackInfo.IsActive)
                         ActionId = IsFacingRight ? Action.Submerge_Right : Action.Submerge_Left;
                 }
 
@@ -52,9 +59,12 @@ public partial class Scaleman
                 break;
 
             case FsmAction.UnInit:
-                Scene.Camera.LinkedObject = Scene.MainActor;
-                Scene.Camera.ProcessMessage(this, Message.Cam_MoveToLinkedObject, false);
-                ((CameraSideScroller)Scene.Camera).Speed = ((CameraSideScroller)Scene.Camera).Speed with { X = -7 };
+                if (!TimeAttackInfo.IsActive)
+                {
+                    Scene.Camera.LinkedObject = Scene.MainActor;
+                    Scene.Camera.ProcessMessage(this, Message.Cam_MoveToLinkedObject, false);
+                    ((CameraSideScroller)Scene.Camera).Speed = ((CameraSideScroller)Scene.Camera).Speed with { X = -7 };
+                }
                 break;
         }
 

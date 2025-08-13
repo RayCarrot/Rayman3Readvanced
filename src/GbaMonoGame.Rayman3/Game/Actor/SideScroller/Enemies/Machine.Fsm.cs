@@ -55,6 +55,12 @@ public partial class Machine
                     State.MoveTo(Fsm_CogWheelSpinning);
                     return false;
                 }
+                // Parent if in time attack
+                else if (BossHealth == 4 && TimeAttackInfo.IsActive)
+                {
+                    State.MoveTo(Fsm_TimeAttackIntro);
+                    return false;
+                }
                 // Parent if died at least once
                 else if (BossHealth == 4 && GameInfo.LastGreenLumAlive != 0)
                 {
@@ -222,6 +228,31 @@ public partial class Machine
                 // Create a checkpoint to avoid showing the intro cutscene each time
                 if (GameInfo.LastGreenLumAlive == 0)
                     GameInfo.GreenLumTouchedByRayman(0, new Vector2(191, 136));
+                break;
+        }
+
+        return true;
+    }
+
+    public bool Fsm_TimeAttackIntro(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                // Do nothing
+                break;
+
+            case FsmAction.Step:
+                // Wait for countdown to finish
+                if (TimeAttackInfo.Mode == TimeAttackMode.Play)
+                {
+                    State.MoveTo(Fsm_CannonFire);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
                 break;
         }
 

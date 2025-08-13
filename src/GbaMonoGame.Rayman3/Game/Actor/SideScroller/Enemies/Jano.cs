@@ -1,6 +1,7 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -21,7 +22,10 @@ public sealed partial class Jano : MovableActor
 
         Position = Position with { Y = OffsetY + 150 };
 
-        if (GameInfo.LastGreenLumAlive == 0)
+        // Special intro state for time attack to skip the grimace sequence
+        if (TimeAttackInfo.IsActive)
+            State.SetTo(Fsm_TimeAttackIntro);
+        else if (GameInfo.LastGreenLumAlive == 0)
             State.SetTo(Fsm_Intro);
         else
             State.SetTo(Fsm_Default);

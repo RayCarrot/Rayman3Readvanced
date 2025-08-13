@@ -32,6 +32,35 @@ public partial class Jano
         return true;
     }
 
+    public bool Fsm_TimeAttackIntro(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                Timer = 0;
+                ActionId = Action.Idle_Left;
+                break;
+
+            case FsmAction.Step:
+                if (!FsmStep_CheckHit())
+                    return false;
+
+                // Wait for Rayman to reach the position
+                if (Scene.MainActor.Position.X > 375)
+                {
+                    State.MoveTo(Fsm_Default);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
+                break;
+        }
+
+        return true;
+    }
+
     public bool Fsm_Intro(FsmAction action)
     {
         switch (action)

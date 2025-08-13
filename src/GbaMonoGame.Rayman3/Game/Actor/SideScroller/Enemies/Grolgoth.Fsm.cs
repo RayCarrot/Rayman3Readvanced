@@ -1,6 +1,7 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -69,6 +70,10 @@ public partial class Grolgoth
             case FsmAction.Step:
                 if (!FsmStep_CheckHitMainActor())
                     return false;
+
+                // Wait for time attack countdown
+                if (TimeAttackInfo.IsActive && TimeAttackInfo.Mode != TimeAttackMode.Play)
+                    return true;
 
                 Timer++;
 
@@ -552,6 +557,10 @@ public partial class Grolgoth
             case FsmAction.Step:
                 if (!FsmStep_CheckHitMainActor())
                     return false;
+
+                // Wait for time attack countdown
+                if (TimeAttackInfo.IsActive && TimeAttackInfo.Mode != TimeAttackMode.Play)
+                    return true;
 
                 Timer++;
                 if ((Timer > 300 && BossHealth > 1) ||

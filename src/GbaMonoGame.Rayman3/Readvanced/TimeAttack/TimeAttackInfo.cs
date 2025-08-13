@@ -130,7 +130,7 @@ public static class TimeAttackInfo
     public static TimeAttackTime? GetRecordTime(MapId mapId)
     {
         // TODO: Dynamically load from persistent data
-        return new TimeAttackTime(TimeAttackTimeType.Record, Random.GetNumber(2000));
+        return new TimeAttackTime(TimeAttackTimeType.Record, 2000 + Random.GetNumber(2000));
     }
 
     public static void SetMode(TimeAttackMode mode)

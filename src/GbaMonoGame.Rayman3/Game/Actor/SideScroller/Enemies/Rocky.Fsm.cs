@@ -1,6 +1,7 @@
 ﻿using System;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -18,7 +19,9 @@ public partial class Rocky
             case FsmAction.Step:
                 Scene.Camera.ProcessMessage(this, Message.Cam_FollowPositionY, 155);
 
-                if (Math.Abs(Position.X - Scene.MainActor.Position.X) < 200)
+                // If in time attack then wait for the countdown to finish
+                if ((!TimeAttackInfo.IsActive || TimeAttackInfo.Mode == TimeAttackMode.Play) && 
+                    Math.Abs(Position.X - Scene.MainActor.Position.X) < 200)
                 {
                     State.MoveTo(Fsm_Default);
                     return false;

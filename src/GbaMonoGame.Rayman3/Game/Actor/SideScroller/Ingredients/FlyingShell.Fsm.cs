@@ -1,6 +1,7 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -17,8 +18,14 @@ public partial class FlyingShell
 
             case FsmAction.Step:
                 UpdateSoundPitch();
-                State.MoveTo(Fsm_Fly);
-                return false;
+
+                // Wait for countdown to finish
+                if (!TimeAttackInfo.IsActive || TimeAttackInfo.Mode == TimeAttackMode.Play)
+                {
+                    State.MoveTo(Fsm_Fly);
+                    return false;
+                }
+                break;
 
             case FsmAction.UnInit:
                 Scene.MainActor.ProcessMessage(this, Message.Rayman_Hide); // Unused, since this is the main actor
