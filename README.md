@@ -77,10 +77,39 @@ By enabling the debug mode in the `Config.ini` file you can access the debug win
 *The debug mode allows for visualization and editing of the current engine data and state.*
 
 ## Credits
-- [RayCarrot](https://github.com/RayCarrot): Main developer, game formats reverse engineering
-- [Robin](https://github.com/rtsonneveld): Mode7 improvements, general MonoGame and shader help
-- [Droolie](https://github.com/byvar): Game formats reverse engineering
-- [Fancy2209](https://github.com/Fancy2209): General MonoGame, cross-platform and audio help
-- [MilesTheCreator](https://bsky.app/profile/milesthecreator.bsky.social): Audio help, extracting the GBA sounds
-- [XanderNT](https://linktr.ee/XanderNT): Art for the Rayman 3 Readvanced logos and extended backgrounds
-- [zelenbug](https://gamebanana.com/members/3067029): Art for new widescreen menu and other textures
+These are the current credits for this project, sorted alphabetically within each category. The original game was developed by Ubisoft Montreal, with the N-Gage port made by Gameloft.
+
+See [assets](docs/assets.md) for a comprehensive list of where each asset comes from and who made it.
+
+**Project manager**
+- [RayCarrot](https://github.com/RayCarrot)
+
+**Programming**
+- [RayCarrot](https://github.com/RayCarrot) (main developer)
+- [Robin](https://github.com/rtsonneveld) (Mode7 rendering, general MonoGame and shader assistance)
+
+**Platform assistance**
+- [Fancy2209](https://github.com/Fancy2209)
+
+**Audio**
+- [MilesTheCreator](https://bsky.app/profile/milesthecreator.bsky.social) (extracting GBA songs, general audio assistance)
+
+**Game reverse engineering**
+- [Droolie](https://github.com/byvar) (from [Ray1Map](https://github.com/BinarySerializer/Ray1Map))
+- [RayCarrot](https://github.com/RayCarrot)
+
+**New graphics**
+- [alexlimitedgames](https://alexlimitedgames.github.io) (promotional artwork)
+- [XanderNT](https://linktr.ee/XanderNT) (logos and extended backgrounds)
+- [zelenbug](https://gamebanana.com/members/3067029) (textures for new menu, time attack and various other new UI elements)
+
+**Testing**
+- [Marteaufou](https://bsky.app/profile/marteaufou.jardindesreves.fr)
+- Raymanroy
+
+**Special thanks**
+- [Cornholio309](https://bsky.app/profile/cornholio309.bsky.social)
+- [Luseu](https://x.com/Luseu4)
+- [muffet](https://youtube.com/@muffet1536)
+- [Pixel](https://www.youtube.com/@PixelTheRetro)
+- [Warper](https://youtube.com/@warper74)
