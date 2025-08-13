@@ -1,6 +1,6 @@
 # Rayman 3 Readvanced
 
-![Title screen](assets/logo/rayman_3_readvanced.png)
+![Title screen](assets/logo/Rayman%203%20Readvanced.png)
 
 Rayman 3 Readvanced is a recreation of the GBA and N-Gage versions of Rayman 3 to [MonoGame](https://monogame.net), making the game natively playable on PC and other platforms. The original ROM is required to play the game since this project does not contain the game assets.
 
