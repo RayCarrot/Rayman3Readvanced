@@ -51,7 +51,16 @@ public class UserInfoSideScroller : Dialog
         // Disable lums and cages bars in time attack
         if (TimeAttackInfo.IsActive)
         {
-            GetLumsBar().Disable();
+            if (LumsBar != null)
+            {
+                LumsBar.Disable();
+            }
+            else
+            {
+                Lums1000Bar.Disable();
+                Lums1000Bar.EnableTransitions = true;
+            }
+
             CagesBar.Disable();
         }
     }
