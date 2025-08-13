@@ -89,6 +89,10 @@ public abstract class BaseActor : GameObject
 
     public bool DestroyIfPastLinkedCheckpoint(ActorResource actorResource)
     {
+        // Don't destroy if there are no checkpoints!
+        if (Engine.ActiveConfig.Difficulty.NoCheckpoints)
+            return false;
+
         if (actorResource.Links[0] != null && !Scene.GetGameObject(actorResource.Links[0].Value).IsEnabled)
         {
             ProcessMessage(this, Message.Destroy);
