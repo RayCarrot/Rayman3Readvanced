@@ -27,10 +27,10 @@
     <ProjectReference Include="..\..\sub-modules\BinarySerializer\src\BinarySerializer.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ContentWithTargetPath Include="runtimes\**" Exclude="runtimes\api\**">
+  <ItemGroup Condition="'$(PlatformTarget)' == 'x64'">
+    <ContentWithTargetPath Include="runtimes\win-x64\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>%(RelativeDir)\%(Filename)%(Extension)</TargetPath>
+      <TargetPath>%(Filename)%(Extension)</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup>
 
