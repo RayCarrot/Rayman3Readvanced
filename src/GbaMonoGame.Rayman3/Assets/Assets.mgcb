@@ -311,7 +311,7 @@
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:Rayman3/Level/FogVertexShader.fx
+/build:Rayman3/Mode7/FogVertexShader.fx
 
 #begin GBAClouds.png
 /importer:TextureImporter
@@ -347,7 +347,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Level/Mode7WallSide.png
+/build:Rayman3/Mode7/Mode7WallSide.png
 
 #begin BossMachine_ExtendedLayer0_GBA.png
 /importer:TextureImporter

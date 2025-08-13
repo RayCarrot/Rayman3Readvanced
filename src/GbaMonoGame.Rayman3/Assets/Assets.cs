@@ -18,8 +18,6 @@ public static class Assets
 
     public const string BossMachine_ExtendedLayer0_GBATexture = "Rayman3/Level/BossMachine_ExtendedLayer0_GBA";
     public const string BossMachine_ExtendedLayer0_NGageTexture = "Rayman3/Level/BossMachine_ExtendedLayer0_NGage";
-    public const string FogVertexShader = "Rayman3/Level/FogVertexShader";
-    public const string Mode7WallSideTexture = "Rayman3/Level/Mode7WallSide";
 
     public const string ClothTexture = "Rayman3/Menu/Cloth";
     public const string CursorTexture = "Rayman3/Menu/Cursor";
@@ -35,6 +33,9 @@ public static class Assets
     public const string ScrollBarBigTexture = "Rayman3/Menu/ScrollBarBig";
     public const string ScrollBarSmallTexture = "Rayman3/Menu/ScrollBarSmall";
     public const string ScrollBarThumbTexture = "Rayman3/Menu/ScrollBarThumb";
+
+    public const string FogVertexShader = "Rayman3/Mode7/FogVertexShader";
+    public const string Mode7WallSideTexture = "Rayman3/Mode7/Mode7WallSide";
 
     public const string BlankStarBigTexture = "Rayman3/TimeAttack/BlankStarBig";
     public const string BlankStarSmallTexture = "Rayman3/TimeAttack/BlankStarSmall";
