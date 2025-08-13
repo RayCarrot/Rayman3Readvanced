@@ -110,9 +110,9 @@ public abstract class MenuPage
             newScrollOffset = MaxScrollOffset;
         }
 
-        bool changed = Menu.SetCursorTarget(newSelectedOption - newScrollOffset);
+        bool changed = Menu.SetCursorTarget(newSelectedOption - newScrollOffset, forceUpdate);
 
-        if (changed || forceUpdate)
+        if (changed)
         {
             SelectedOption = newSelectedOption;
             Options[prevSelectedOption].ChangeIsSelected(false);
@@ -128,7 +128,7 @@ public abstract class MenuPage
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
         }
 
-        return changed || forceUpdate;
+        return changed;
     }
 
     protected void CursorClick(Action callback)

@@ -259,9 +259,9 @@ public class ModernMenuAll : Frame, IHasPlayfield
             Stem.CurrentAnimation = 15;
     }
 
-    public bool SetCursorTarget(int selectedIndex)
+    public bool SetCursorTarget(int selectedIndex, bool forceUpdate = false)
     {
-        if (StemMode is StemMode.Active or StemMode.Inactive)
+        if (StemMode is StemMode.Active or StemMode.Inactive || forceUpdate)
         {
             CursorStartY = Cursor.ScreenPos.Y;
             CursorDestY = CursorBaseY + selectedIndex * CurrentPage.LineHeight;

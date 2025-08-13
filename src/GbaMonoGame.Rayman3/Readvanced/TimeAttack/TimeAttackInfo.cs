@@ -15,6 +15,7 @@ public static class TimeAttackInfo
 
     public static bool IsActive { get; set; }
     public static bool IsPaused { get; set; }
+    public static MapId MapId { get; set; }
     public static TimeAttackMode Mode { get; set; }
     public static int Timer { get; set; }
     public static TimeAttackTime[] TargetTimes { get; set; }
@@ -79,11 +80,14 @@ public static class TimeAttackInfo
         Engine.RestoreActiveConfig();
 
         IsActive = false;
+        MapId = default;
         Mode = TimeAttackMode.None;
     }
 
     public static void LoadLevel(MapId mapId)
     {
+        MapId = mapId;
+
         GameInfo.PersistentInfo.LastPlayedLevel = (byte)mapId;
         GameInfo.PersistentInfo.LastCompletedLevel = (byte)(mapId switch
         {

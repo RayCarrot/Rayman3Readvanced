@@ -1,4 +1,5 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using System;
+using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using Microsoft.Xna.Framework.Graphics;
@@ -184,8 +185,12 @@ public class TimeAttackMenuPage : MenuPage
 
     protected override void Init()
     {
+        MapId selectedMap = Maps[0][0];
         if (TimeAttackInfo.IsActive)
+        {
+            selectedMap = TimeAttackInfo.MapId;
             TimeAttackInfo.UnInit();
+        }
 
         WorldOptions = new TimeAttackLevelMenuOption[Maps.Length][];
         for (int tabIndex = 0; tabIndex < Maps.Length; tabIndex++)
@@ -260,8 +265,10 @@ public class TimeAttackMenuPage : MenuPage
             Font = ReadvancedFonts.MenuWhite,
         };
 
-        // Set the initial world
-        SetSelectedWorld(0, false);
+        // Set the selected world and option
+        int selectedWorld = Array.FindIndex(Maps, x => Array.IndexOf(x, selectedMap) >= 0);
+        SetSelectedWorld(selectedWorld, false);
+        SetSelectedOption(Array.IndexOf(Maps[selectedWorld], selectedMap), playSound: false, forceUpdate: true);
 
         HasSelectedLevel = false;
     }
