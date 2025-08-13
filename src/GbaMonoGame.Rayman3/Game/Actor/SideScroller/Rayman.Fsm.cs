@@ -11,7 +11,7 @@ public partial class Rayman
 {
     private bool FsmStep_DoOnTheGround()
     {
-        if (IsTouchingMap && !IsInvulnerable)
+        if (Scene.GetPhysicalType(Position).IsSolid && !IsInvulnerable)
             UpdateSafePosition();
 
         if (!FsmStep_DoDefault())
