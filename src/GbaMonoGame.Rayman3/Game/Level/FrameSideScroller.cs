@@ -110,6 +110,10 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
     {
         GameInfo.InitLevel(LevelType.Normal);
 
+        // Custom for the time attack mode
+        if (TimeAttackInfo.IsActive)
+            TimeAttackInfo.InitLevel(GameInfo.MapId);
+
         CanPause = true;
         LevelMusicManager.Init();
         CircleTransitionScreenEffect = new CircleTransitionScreenEffect()
@@ -160,7 +164,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         
         // Custom for the time attack mode
         if (TimeAttackInfo.IsActive)
-            TimeAttackInfo.InitLevel(GameInfo.MapId, Scene);
+            TimeAttackInfo.InitScene(Scene);
 
         Scene.Init();
         Scene.Playfield.Step();

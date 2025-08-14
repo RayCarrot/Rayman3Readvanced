@@ -118,7 +118,7 @@ public static class TimeAttackInfo
         FrameManager.SetNextFrame(LevelFactory.Create(mapId));
     }
 
-    public static void InitLevel(MapId mapId, Scene2D scene)
+    public static void InitLevel(MapId mapId)
     {
         // If this is a new map...
         if (LastMapId != mapId)
@@ -140,7 +140,10 @@ public static class TimeAttackInfo
             // Reset game info
             GameInfo.SetNextMapId(mapId);
         }
+    }
 
+    public static void InitScene(Scene2D scene)
+    {
         // Add dialog for the HUD
         scene.AddDialog(new TimeAttackDialog(scene), false, false);
 
