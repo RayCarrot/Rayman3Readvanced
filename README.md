@@ -105,7 +105,7 @@ See [assets](docs/assets.md) for a comprehensive list of where each asset comes 
 
 **Testing**
 - [Marteaufou](https://bsky.app/profile/marteaufou.jardindesreves.fr)
-- Raymanroy
+- [Raymanroy](https://www.twitch.tv/Raymanroy)
 
 **Special thanks**
 - [Cornholio309](https://bsky.app/profile/cornholio309.bsky.social)
