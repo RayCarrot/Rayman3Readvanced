@@ -118,12 +118,20 @@ public static class Engine
     {
         ActiveConfig = activeGameConfig;
         IsConfigOverrided = true;
+        UpdateInternalGameResolution();
     }
 
     public static void RestoreActiveConfig()
     {
         ActiveConfig = new ActiveGameConfig(LocalConfig.Tweaks, LocalConfig.Difficulty, LocalConfig.Debug);
         IsConfigOverrided = false;
+        UpdateInternalGameResolution();
+    }
+
+    public static void UpdateInternalGameResolution()
+    {
+        if (InternalGameResolution != ActiveConfig.Tweaks.InternalGameResolution)
+            SetInternalGameResolution(ActiveConfig.Tweaks.InternalGameResolution!.Value);
     }
 
     public static void SetInternalGameResolution(Vector2 resolution)

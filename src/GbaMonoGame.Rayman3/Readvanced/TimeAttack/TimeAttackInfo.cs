@@ -55,10 +55,6 @@ public static class TimeAttackInfo
 #endif
             }));
 
-        // Update resolution
-        if (Engine.InternalGameResolution != Engine.ActiveConfig.Tweaks.InternalGameResolution)
-            Engine.SetInternalGameResolution(Engine.ActiveConfig.Tweaks.InternalGameResolution!.Value);
-
         // Mark all lums as collected
         GameInfo.PersistentInfo.Lums ??= new byte[125];
         Array.Fill(GameInfo.PersistentInfo.Lums, (byte)0);
