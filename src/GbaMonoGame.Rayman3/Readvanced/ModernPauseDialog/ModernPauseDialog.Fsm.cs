@@ -10,21 +10,25 @@ public partial class ModernPauseDialog
         switch (action)
         {
             case FsmAction.Init:
-                // TODO: Add option to restart level
-                // TODO: Add option to view achievements
-                SetOptions(
-                [
-                    "CONTINUE",
-                    "OPTIONS",
-                    CanExitLevel ? "EXIT LEVEL" : "QUIT GAME",
-                ]);
-                SetSelectedOption(0);
+                ClearOptions();
+
+                AddOption("CONTINUE", null, () =>
+                {
+                    DrawStep = PauseDialogDrawStep.MoveOut;
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+
+                    if (Rom.Platform == Platform.NGage)
+                        ((NGageSoundEventsManager)SoundEventsManager.Current).ResumeLoopingSoundEffects();
+                });
+                AddOption("OPTIONS", Fsm_Options);
+                // TODO: TimeAttack ? RESTART LEVEL : VIEW ACHIEVEMENTS
+                AddOption(CanExitLevel ? "EXIT LEVEL" : "QUIT GAME", Fsm_QuitGame);
+
+                SetSelectedOption(SavedSelectedOption);
                 break;
 
             case FsmAction.Step:
-                bool resume = false;
-                bool options = false;
-                bool quitGame = false;
+                bool hasSelectedOption = false;
 
                 if (JoyPad.IsButtonJustPressed(GbaInput.Up))
                 {
@@ -39,64 +43,26 @@ public partial class ModernPauseDialog
                 else if (JoyPad.IsButtonJustPressed(GbaInput.B) || JoyPad.IsButtonJustPressed(GbaInput.Start))
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
-                    DrawStep = PauseDialogDrawStep.MoveOut;
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
-
-                    if (Rom.Platform == Platform.NGage)
-                        ((NGageSoundEventsManager)SoundEventsManager.Current).ResumeLoopingSoundEffects();
-
-                    resume = true;
+                    SetSelectedOption(0);
+                    InvokeOption();
+                    hasSelectedOption = true;
                 }
                 else if (JoyPad.IsButtonJustPressed(GbaInput.A))
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
-
-                    switch (SelectedOption)
-                    {
-                        // Continue
-                        case 0:
-                            DrawStep = PauseDialogDrawStep.MoveOut;
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
-
-                            if (Rom.Platform == Platform.NGage)
-                                ((NGageSoundEventsManager)SoundEventsManager.Current).ResumeLoopingSoundEffects();
-
-                            resume = true;
-                            break;
-
-                        // Options
-                        case 1:
-                            options = true;
-                            break;
-
-                        // Exit level / quit game
-                        case 2:
-                            quitGame = true;
-                            break;
-                    }
+                    InvokeOption();
+                    hasSelectedOption = true;
                 }
 
-                if (resume)
+                if (hasSelectedOption)
                 {
-                    State.MoveTo(null);
-                    return false;
-                }
-
-                if (options)
-                {
-                    State.MoveTo(Fsm_Options);
-                    return false;
-                }
-
-                if (quitGame)
-                {
-                    State.MoveTo(Fsm_QuitGame);
+                    SetOptionState();
                     return false;
                 }
                 break;
 
             case FsmAction.UnInit:
-                // Do nothing
+                SavedSelectedOption = SelectedOption;
                 break;
         }
 
@@ -117,7 +83,6 @@ public partial class ModernPauseDialog
                 if (OptionsMenu.DrawStep == PauseDialogDrawStep.Hide)
                 {
                     State.MoveTo(Fsm_CheckSelection);
-                    SetSelectedOption(1);
                     return false;
                 }
                 break;
@@ -135,80 +100,14 @@ public partial class ModernPauseDialog
         switch (action)
         {
             case FsmAction.Init:
-                SetOptions(
-                [
-                    "YES",
-                    "NO",
-                ]);
-                SetSelectedOption(1);
-                break;
+                ClearOptions();
 
-            case FsmAction.Step:
-                bool goBack = false;
-
-                if (CircleTransitionScreenEffect != null)
-                {
-                    CircleTransitionValue -= 6;
-
-                    if (CircleTransitionValue < 0)
-                    {
-                        CircleTransitionValue = 0;
-                        CircleTransitionScreenEffect = null;
-
-                        GameTime.Resume();
-                        SoundEventsManager.StopAllSongs();
-
-                        if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
-                        {
-                            ((FrameSideScrollerGCN)Frame.Current).RestoreMapAndPowers();
-                            FrameManager.SetNextFrame(new GameCubeMenu());
-                        }
-                        else
-                        {
-                            GameInfo.LoadLevel(MapId.World1 + (int)GameInfo.WorldId);
-                        }
-
-                        GameInfo.PersistentInfo.LastPlayedLevel = (byte)GameInfo.MapId;
-                        GameInfo.Save(GameInfo.CurrentSlot);
-                    }
-                    else
-                    {
-                        CircleTransitionScreenEffect.Radius = CircleTransitionValue;
-                    }
-                }
-                else if (JoyPad.IsButtonJustPressed(GbaInput.Up))
-                {
-                    SetSelectedOption(SelectedOption - 1);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
-                }
-                else if (JoyPad.IsButtonJustPressed(GbaInput.Down))
-                {
-                    SetSelectedOption(SelectedOption + 1);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
-                }
-                else if (JoyPad.IsButtonJustPressed(GbaInput.B) || (JoyPad.IsButtonJustPressed(GbaInput.A) && SelectedOption == 1))
-                {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
-                    goBack = true;
-                }
-                else if (JoyPad.IsButtonJustPressed(GbaInput.A) && SelectedOption == 0)
+                AddOption("YES", null, () =>
                 {
                     // Exit level
                     if (CanExitLevel)
                     {
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SlideOut_Mix01);
-
-                        CircleTransitionValue = 252;
-
-                        // Create the circle transition
-                        CircleTransitionScreenEffect = new CircleTransitionScreenEffect()
-                        {
-                            RenderOptions = { RenderContext = Scene.RenderContext },
-                        };
-
-                        // Initialize and add as a screen effect
-                        CircleTransitionScreenEffect.Init(CircleTransitionValue, Scene.RenderContext.Resolution / 2);
-                        Gfx.SetScreenEffect(CircleTransitionScreenEffect);
+                        BeginCircleTransition();
                     }
                     // Quit game
                     else
@@ -229,12 +128,64 @@ public partial class ModernPauseDialog
 
                     if (Rom.Platform == Platform.GBA)
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                });
+                AddOption("NO", Fsm_CheckSelection, () =>
+                {
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
+                });
+
+                SetSelectedOption(1);
+                break;
+
+            case FsmAction.Step:
+                bool hasSelectedOption = false;
+
+                if (IsTransitioningOut)
+                {
+                    if (StepCircleTransition())
+                    {
+                        GameTime.Resume();
+                        SoundEventsManager.StopAllSongs();
+
+                        if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
+                        {
+                            ((FrameSideScrollerGCN)Frame.Current).RestoreMapAndPowers();
+                            FrameManager.SetNextFrame(new GameCubeMenu());
+                        }
+                        else
+                        {
+                            GameInfo.LoadLevel(MapId.World1 + (int)GameInfo.WorldId);
+                        }
+
+                        GameInfo.PersistentInfo.LastPlayedLevel = (byte)GameInfo.MapId;
+                        GameInfo.Save(GameInfo.CurrentSlot);
+                    }
+                }
+                else if (JoyPad.IsButtonJustPressed(GbaInput.Up))
+                {
+                    SetSelectedOption(SelectedOption - 1);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                }
+                else if (JoyPad.IsButtonJustPressed(GbaInput.Down))
+                {
+                    SetSelectedOption(SelectedOption + 1);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                }
+                else if (JoyPad.IsButtonJustPressed(GbaInput.B))
+                {
+                    SetSelectedOption(1);
+                    InvokeOption();
+                    hasSelectedOption = true;
+                }
+                else if (JoyPad.IsButtonJustPressed(GbaInput.A))
+                {
+                    InvokeOption();
+                    hasSelectedOption = true;
                 }
 
-                if (goBack)
+                if (hasSelectedOption && !IsTransitioningOut)
                 {
-                    State.MoveTo(Fsm_CheckSelection);
-                    SetSelectedOption(2);
+                    SetOptionState();
                     return false;
                 }
                 break;
