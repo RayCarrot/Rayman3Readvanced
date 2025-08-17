@@ -138,18 +138,6 @@ public static class TimeAttackInfo
         }
     }
 
-    public static void InitScene(Scene2D scene)
-    {
-        // Add dialog for the HUD
-        scene.AddDialog(new TimeAttackDialog(scene), false, false);
-
-        // Add actors (time freeze items)
-        foreach (ActorResource actorResource in TimeAttackActors.GetTimeAttackActors(GameInfo.MapId))
-            scene.KnotManager.AddAlwaysActor(scene, actorResource);
-
-        scene.KnotManager.AddPendingActors();
-    }
-
     public static TimeAttackTime[] GetTargetTimes(MapId mapId)
     {
         Dictionary<MapId, TimeAttackTime[]> dictionary = Rom.Platform switch

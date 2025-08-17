@@ -33,6 +33,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
     public FogDialog Fog { get; set; }
     public LyTimerDialog LyTimer { get; set; }
     public Dialog PauseDialog { get; set; }
+    public TimeAttackDialog TimeAttackDialog { get; set; }
 
     public bool CanPause { get; set; }
     public bool IsTimed { get; set; }
@@ -164,7 +165,17 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         
         // Custom for the time attack mode
         if (TimeAttackInfo.IsActive)
-            TimeAttackInfo.InitScene(Scene);
+        {
+            // Add dialog for the HUD
+            TimeAttackDialog = new TimeAttackDialog(Scene);
+            Scene.AddDialog(TimeAttackDialog, false, false);
+
+            // Add actors (time freeze items)
+            foreach (ActorResource actorResource in TimeAttackActors.GetTimeAttackActors(GameInfo.MapId))
+                Scene.KnotManager.AddAlwaysActor(Scene, actorResource);
+
+            Scene.KnotManager.AddPendingActors();
+        }
 
         Scene.Init();
         Scene.Playfield.Step();
@@ -292,6 +303,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
 
         Scene.Step();
         UserInfo.Draw(Scene.AnimationPlayer);
+        TimeAttackDialog?.Draw(Scene.AnimationPlayer);
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
         CurrentStepAction = Step_Pause_Paused;
@@ -307,8 +319,11 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         // The original game doesn't have this check, but since we're still running the game loop
         // while in the simulated sleep mode we have to make sure to not draw the HUD then
         if (PauseDialog is not PauseDialog { IsInSleepMode: true })
+        {
             UserInfo.Draw(Scene.AnimationPlayer);
-        
+            TimeAttackDialog?.Draw(Scene.AnimationPlayer);
+        }
+
         // NOTE: It's probably an oversight in the original game to still animate tiles even when paused
         if (!Engine.ActiveConfig.Tweaks.FixBugs)
             Scene.Playfield.Step();
