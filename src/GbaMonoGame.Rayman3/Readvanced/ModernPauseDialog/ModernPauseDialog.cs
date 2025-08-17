@@ -15,7 +15,7 @@ public partial class ModernPauseDialog : Dialog
         PausedMachineId = -1;
     }
 
-    private const int MaxOptions = 3;
+    private const int MaxOptions = 4;
     private const int LineHeight = 16;
     private const float CursorBaseY = 88;
     private const float CanvasBaseY = 80;
