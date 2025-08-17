@@ -46,19 +46,19 @@ public partial class ModernPauseDialog
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
                     SetSelectedOption(0);
-                    InvokeOption();
+                    InvokeSelectedOption();
                     hasSelectedOption = true;
                 }
                 else if (JoyPad.IsButtonJustPressed(GbaInput.A))
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
-                    InvokeOption();
+                    InvokeSelectedOption();
                     hasSelectedOption = true;
                 }
 
                 if (hasSelectedOption)
                 {
-                    SetOptionState();
+                    MoveToSelectedOptionState();
                     return false;
                 }
                 break;
@@ -150,18 +150,18 @@ public partial class ModernPauseDialog
                 else if (JoyPad.IsButtonJustPressed(GbaInput.B))
                 {
                     SetSelectedOption(1);
-                    InvokeOption();
+                    InvokeSelectedOption();
                     hasSelectedOption = true;
                 }
                 else if (JoyPad.IsButtonJustPressed(GbaInput.A))
                 {
-                    InvokeOption();
+                    InvokeSelectedOption();
                     hasSelectedOption = true;
                 }
 
                 if (hasSelectedOption && !IsTransitioningOut)
                 {
-                    SetOptionState();
+                    MoveToSelectedOptionState();
                     return false;
                 }
                 break;
@@ -253,18 +253,18 @@ public partial class ModernPauseDialog
                 else if (JoyPad.IsButtonJustPressed(GbaInput.B))
                 {
                     SetSelectedOption(1);
-                    InvokeOption();
+                    InvokeSelectedOption();
                     hasSelectedOption = true;
                 }
                 else if (JoyPad.IsButtonJustPressed(GbaInput.A))
                 {
-                    InvokeOption();
+                    InvokeSelectedOption();
                     hasSelectedOption = true;
                 }
 
                 if (hasSelectedOption && !IsTransitioningOut)
                 {
-                    SetOptionState();
+                    MoveToSelectedOptionState();
                     return false;
                 }
                 break;

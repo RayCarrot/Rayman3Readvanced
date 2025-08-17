@@ -104,12 +104,12 @@ public partial class ModernPauseDialog : Dialog
         }
     }
 
-    private void SetOptionState()
+    private void MoveToSelectedOptionState()
     {
         State.MoveTo(OptionStates[SelectedOption]);
     }
 
-    private void InvokeOption()
+    private void InvokeSelectedOption()
     {
         OptionActions[SelectedOption]?.Invoke();
     }

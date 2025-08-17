@@ -214,6 +214,7 @@ public class PauseDialogOptionsMenu
         switch (Frame.Current)
         {
             case FrameSideScroller frameSideScroller:
+                // TODO: Move in/out time attack HUD
                 // Move out the life, lums and cages bars
                 frameSideScroller.UserInfo.MoveOutBars();
 
