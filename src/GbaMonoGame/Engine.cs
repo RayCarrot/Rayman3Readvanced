@@ -96,8 +96,9 @@ public static class Engine
         LocalGameConfig config = new();
         config.Serialize(new IniDeserializer(filePath));
         LocalConfig = config;
-        
-        RestoreActiveConfig();
+
+        ActiveConfig = new ActiveGameConfig(LocalConfig.Tweaks, LocalConfig.Difficulty, LocalConfig.Debug);
+        IsConfigOverrided = false;
 
         // If the internal resolution is null then we default to the original resolution
         if (config.Tweaks.InternalGameResolution == null)
