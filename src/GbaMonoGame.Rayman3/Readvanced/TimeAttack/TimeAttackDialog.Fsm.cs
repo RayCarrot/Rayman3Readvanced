@@ -71,8 +71,7 @@ public partial class TimeAttackDialog
                 TimeAttackInfo.AddTime(1);
 
                 // Update target time
-                if (TargetTimeIndex != -1 && TimeAttackInfo.Timer > TargetTime.Time)
-                    SetTargetTime(TargetTimeIndex - 1);
+                UpdateTargetTime();
                 break;
 
             case FsmAction.UnInit:

@@ -36,9 +36,23 @@ public partial class TimeAttackDialog : Dialog
         Countdown.CurrentAnimation = value;
     }
 
-    public void SetTargetTime(int targetTimeIndex)
+    public void UpdateTargetTime()
     {
-        TargetTimeIndex = targetTimeIndex;
+        // Determine the current target time
+        int targetTime = -1;
+        for (int i = TimeAttackInfo.TargetTimes.Length - 1; i >= 0; i--)
+        {
+            if (TimeAttackInfo.Timer <= TimeAttackInfo.TargetTimes[i].Time)
+            {
+                targetTime = i;
+                break;
+            }
+        }
+
+        if (targetTime == TargetTimeIndex)
+            return;
+
+        TargetTimeIndex = targetTime;
         TargetTime = TargetTimeIndex == -1 ? default : TimeAttackInfo.TargetTimes[TargetTimeIndex];
 
         if (TargetTimeIndex != -1)
@@ -100,17 +114,8 @@ public partial class TimeAttackDialog : Dialog
             RenderContext = Scene.HudRenderContext,
         };
 
-        // Set the initial target time
-        int targetTime = -1;
-        for (int i = TimeAttackInfo.TargetTimes.Length - 1; i >= 0; i--)
-        {
-            if (TimeAttackInfo.Timer <= TimeAttackInfo.TargetTimes[i].Time)
-            {
-                targetTime = i;
-                break;
-            }
-        }
-        SetTargetTime(targetTime);
+        TargetTimeIndex = -1;
+        UpdateTargetTime();
     }
 
     public override void Draw(AnimationPlayer animationPlayer)

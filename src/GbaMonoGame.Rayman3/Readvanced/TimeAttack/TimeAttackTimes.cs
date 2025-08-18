@@ -9,9 +9,9 @@ public static class TimeAttackTimes
     {
         [MapId.WoodLight_M1] =
         [
-            new TimeAttackTime(TimeAttackTimeType.Bronze, 60 * 60 * 60),
-            new TimeAttackTime(TimeAttackTimeType.Silver, 50 * 60 * 60),
-            new TimeAttackTime(TimeAttackTimeType.Gold, 45 * 60 * 60),
+            new TimeAttackTime(TimeAttackTimeType.Bronze, 60 * 60),
+            new TimeAttackTime(TimeAttackTimeType.Silver, 50 * 60),
+            new TimeAttackTime(TimeAttackTimeType.Gold, 45 * 60),
         ],
     };
 
@@ -19,9 +19,9 @@ public static class TimeAttackTimes
     {
         [MapId.WoodLight_M1] =
         [
-            new TimeAttackTime(TimeAttackTimeType.Bronze, 60 * 60 * 60),
-            new TimeAttackTime(TimeAttackTimeType.Silver, 50 * 60 * 60),
-            new TimeAttackTime(TimeAttackTimeType.Gold, 45 * 60 * 60),
+            new TimeAttackTime(TimeAttackTimeType.Bronze, 60 * 60),
+            new TimeAttackTime(TimeAttackTimeType.Silver, 50 * 60),
+            new TimeAttackTime(TimeAttackTimeType.Gold, 45 * 60),
         ],
     };
 }
