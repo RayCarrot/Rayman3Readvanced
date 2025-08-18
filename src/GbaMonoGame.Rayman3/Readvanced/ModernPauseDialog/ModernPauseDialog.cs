@@ -30,12 +30,14 @@ public partial class ModernPauseDialog : Dialog
     public PauseDialogOptionsMenu OptionsMenu { get; set; }
 
     public int SelectedOption { get; set; }
-    public int PrevSelectedOption { get; set; }
     public int SavedSelectedOption { get; set; }
     public int OptionsCount { get; set; }
 
+    public float? CursorStartY { get; set; }
+    public float? CursorDestY { get; set; }
+
     public int OffsetY { get; set; }
-    public int CursorOffsetY { get; set; }
+    public float CursorOffsetY { get; set; }
     public PauseDialogDrawStep DrawStep { get; set; }
 
     public bool CanExitLevel { get; }
@@ -47,33 +49,30 @@ public partial class ModernPauseDialog : Dialog
 
     private void ManageCursor()
     {
-        if (SelectedOption != PrevSelectedOption)
-        {
-            int targetY = SelectedOption * LineHeight;
+        // Move with a constant speed of 2
+        const float speed = 2;
 
-            if (SelectedOption < PrevSelectedOption)
+        if (CursorStartY != null && CursorDestY != null)
+        {
+            float startY = CursorStartY.Value;
+            float destY = CursorDestY.Value;
+
+            // Move up
+            if (destY < startY && CursorOffsetY > destY)
             {
-                if (targetY < CursorOffsetY)
-                {
-                    CursorOffsetY -= 2;
-                }
-                else
-                {
-                    CursorOffsetY = targetY;
-                    PrevSelectedOption = SelectedOption;
-                }
+                CursorOffsetY -= speed;
             }
+            // Move down
+            else if (destY > startY && CursorOffsetY < destY)
+            {
+                CursorOffsetY += speed;
+            }
+            // Finished moving
             else
             {
-                if (targetY > CursorOffsetY)
-                {
-                    CursorOffsetY += 2;
-                }
-                else
-                {
-                    CursorOffsetY = targetY;
-                    PrevSelectedOption = SelectedOption;
-                }
+                CursorOffsetY = destY;
+                CursorStartY = null;
+                CursorDestY = null;
             }
         }
 
@@ -121,8 +120,10 @@ public partial class ModernPauseDialog : Dialog
         else if (selectedOption > OptionsCount - 1)
             selectedOption = 0;
 
-        PrevSelectedOption = SelectedOption;
         SelectedOption = selectedOption;
+
+        CursorStartY = CursorOffsetY;
+        CursorDestY = selectedOption * LineHeight;
 
         for (int i = 0; i < Options.Length; i++)
             Options[i].Font = i == SelectedOption ? ReadvancedFonts.MenuWhite : ReadvancedFonts.MenuYellow;
