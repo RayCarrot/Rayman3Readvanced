@@ -40,7 +40,6 @@ public partial class TimeAttackDialog
 
                     case CountdownStartTime + CountdownSpeed * 4:
                         TimeAttackInfo.SetMode(TimeAttackMode.Play);
-                        TimeAttackInfo.Resume();
                         break;
                 }
 

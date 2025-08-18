@@ -136,6 +136,9 @@ public static class TimeAttackInfo
             // Reset game info
             GameInfo.SetNextMapId(mapId);
         }
+
+        IsPaused = false;
+        Mode = TimeAttackMode.Init;
     }
 
     public static TimeAttackTime[] GetTargetTimes(MapId mapId)
@@ -176,7 +179,7 @@ public static class TimeAttackInfo
 
     public static void RemoveTime(int timeDelta)
     {
-        if (IsPaused)
+        if (IsPaused || Mode != TimeAttackMode.Play)
             return;
 
         Timer -= timeDelta;
@@ -186,7 +189,7 @@ public static class TimeAttackInfo
 
     public static void AddTime(int timeDelta)
     {
-        if (IsPaused)
+        if (IsPaused || Mode != TimeAttackMode.Play)
             return;
 
         Timer += timeDelta;

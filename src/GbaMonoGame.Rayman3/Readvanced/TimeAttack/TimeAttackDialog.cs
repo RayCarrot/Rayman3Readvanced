@@ -26,6 +26,7 @@ public partial class TimeAttackDialog : Dialog
     public int CountdownValue { get; set; }
     public int TargetTimeIndex { get; set; }
     public TimeAttackTime TargetTime { get; set; }
+    public bool HideTargetTime { get; set; }
 
     protected override bool ProcessMessageImpl(object sender, Message message, object param) => false;
 
@@ -48,6 +49,18 @@ public partial class TimeAttackDialog : Dialog
             TargetTimeIcon.Texture = TargetTime.LoadIcon(true);
             TargetTimeIcon.ScreenPos = TargetTimeText.ScreenPos + new Vector2(-18, -2);
         }
+    }
+
+    public void MoveInBars()
+    {
+        TimerBar.SetToStayVisible();
+        HideTargetTime = false;
+    }
+
+    public void MoveOutBars()
+    {
+        TimerBar.SetToStayHidden();
+        HideTargetTime = true;
     }
 
     public override void Load()
@@ -104,10 +117,10 @@ public partial class TimeAttackDialog : Dialog
     {
         TimerBar.DrawTime(animationPlayer, TimeAttackInfo.Timer);
 
-        if (TimeAttackInfo.Mode == TimeAttackMode.Countdown && CountdownValue != -1)
+        if (TimeAttackInfo.Mode == TimeAttackMode.Countdown && CountdownValue != -1 && !TimeAttackInfo.IsPaused)
             animationPlayer.PlayFront(Countdown);
 
-        if (TargetTimeIndex != -1)
+        if (TargetTimeIndex != -1 && !HideTargetTime)
         {
             int timeDiff = TargetTime.Time - TimeAttackInfo.Timer;
             bool blink = !TimeAttackInfo.IsPaused && timeDiff <= TargetBlinkRange;

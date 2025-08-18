@@ -214,13 +214,14 @@ public class PauseDialogOptionsMenu
         switch (Frame.Current)
         {
             case FrameSideScroller frameSideScroller:
-                // TODO: Move in/out time attack HUD
                 // Move out the life, lums and cages bars
                 frameSideScroller.UserInfo.MoveOutBars();
 
                 // The Lums1000Bar can't normally transition out, so we force it to here
                 if (frameSideScroller.UserInfo.Lums1000Bar != null)
                     frameSideScroller.UserInfo.Lums1000Bar.EnableTransitions = true;
+
+                frameSideScroller.TimeAttackDialog?.MoveOutBars();
                 break;
             
             case FrameSingleMode7 frameSingleMode7:
@@ -272,6 +273,8 @@ public class PauseDialogOptionsMenu
                 // Only move in the life, lums and cages bars if we're not in a Ly challenge level
                 if (GameInfo.MapId is not (MapId.ChallengeLy1 or MapId.ChallengeLy2 or MapId.ChallengeLyGCN)) 
                     frameSideScroller.UserInfo.MoveInBars();
+
+                frameSideScroller.TimeAttackDialog?.MoveInBars();
                 break;
 
             case FrameSingleMode7 frameSingleMode7:
