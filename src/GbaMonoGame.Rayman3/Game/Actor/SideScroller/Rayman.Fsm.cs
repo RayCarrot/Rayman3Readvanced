@@ -2345,8 +2345,14 @@ public partial class Rayman
         switch (action)
         {
             case FsmAction.Init:
+                bool TmpIsFacingRight = IsFacingRight;
                 NextActionId = null;
                 ActionId = Action.WallJump_Jump;
+                if (Engine.ActiveConfig.Tweaks.VersatileWalljumps && !TmpIsFacingRight)
+                {
+                    ChangeAction();
+                    AnimatedObject.FlipX = true;
+                }
                 PlaySound(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01);
                 break;
 
@@ -2354,8 +2360,41 @@ public partial class Rayman
                 if (!FsmStep_DoInTheAir())
                     return false;
 
+                if (Engine.ActiveConfig.Tweaks.VersatileWalljumps)
+                {
+                    if (MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.Left) && IsFacingRight)
+                            AnimatedObject.FlipX = true;
+
+                    if (MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.Right) && IsFacingLeft)
+                            AnimatedObject.FlipX = false;
+                }
+
                 if (Speed.Y > 0)
+                {
+                    bool TmpIsFacingRightStep = Engine.ActiveConfig.Tweaks.VersatileWalljumps && IsFacingRight;
                     ActionId = Action.WallJump_Fall;
+                    if (Engine.ActiveConfig.Tweaks.VersatileWalljumps)
+                    {
+                        ChangeAction();
+                        AnimatedObject.FlipX = !TmpIsFacingRightStep;
+                    }
+                }
+
+                if (Engine.ActiveConfig.Tweaks.VersatileWalljumps)
+                {
+                    if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A))
+                    {
+                        State.MoveTo(Fsm_Helico);
+                        return false;
+                    }
+
+                    if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.B) && CanAttackWithFist(2))
+                    {
+                        State.MoveTo(Fsm_Fall);
+                        AttackInTheAir();
+                        return false;
+                    }
+                }
 
                 if (!IsOnWallJumpable())
                 {
@@ -2383,12 +2422,21 @@ public partial class Rayman
         switch (action)
         {
             case FsmAction.Init:
+                bool TmpIsFacingRight = IsFacingRight;
                 NextActionId = null;
                 ActionId = Action.WallJump_Move;
+                if (Engine.ActiveConfig.Tweaks.VersatileWalljumps && !TmpIsFacingRight)
+                {
+                    ChangeAction();
+                    AnimatedObject.FlipX = true;
+                }
                 Timer = 0;
                 break;
 
             case FsmAction.Step:
+                bool TmpIsFacingRightStep = IsFacingRight;
+                bool KeepLeftFlip = Engine.ActiveConfig.Tweaks.VersatileWalljumps && !TmpIsFacingRightStep;
+
                 if (!FsmStep_DoInTheAir())
                     return false;
 
@@ -2405,7 +2453,14 @@ public partial class Rayman
                 }
 
                 if (ActionId == Action.WallJump_Move && IsActionFinished)
+                {
                     ActionId = Action.WallJump_IdleStill;
+                    if (KeepLeftFlip)
+                    {
+                        ChangeAction();
+                        AnimatedObject.FlipX = true;
+                    }
+                }
 
                 if (ActionId is Action.WallJump_IdleStill or Action.WallJump_Move && MultiJoyPad.IsButtonReleased(InstanceId, GbaInput.L))
                 {
@@ -2413,6 +2468,11 @@ public partial class Rayman
                         PlaySound(Rayman3SoundEvent.Play__HandTap2_Mix03);
 
                     ActionId = Action.WallJump_Idle;
+                    if (KeepLeftFlip)
+                    {
+                        ChangeAction();
+                        AnimatedObject.FlipX = true;
+                    }
                     Timer = 0;
                 }
 
@@ -2452,8 +2512,14 @@ public partial class Rayman
         switch (action)
         {
             case FsmAction.Init:
+                bool TmpIsFacingRight = IsFacingRight;
                 NextActionId = null;
                 ActionId = Action.WallJump_Fall;
+                if (Engine.ActiveConfig.Tweaks.VersatileWalljumps && !TmpIsFacingRight)
+                {
+                    ChangeAction();
+                    AnimatedObject.FlipX = true;
+                }
                 Timer = GameTime.ElapsedFrames;
                 PlaySound(Rayman3SoundEvent.Play__OnoPeur1_Mix03);
                 break;
@@ -2461,6 +2527,17 @@ public partial class Rayman
             case FsmAction.Step:
                 if (!FsmStep_DoInTheAir())
                     return false;
+                if (Engine.ActiveConfig.Tweaks.VersatileWalljumps)
+                {
+                    if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.Left) && IsFacingRight)
+                        AnimatedObject.FlipX = true;
+
+                    if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.Right) && IsFacingLeft)
+                        AnimatedObject.FlipX = false;
+
+                    if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.B) && CanAttackWithFist(2))
+                        AttackInTheAir();
+                }
 
                 if (!IsOnWallJumpable())
                 {
@@ -2471,6 +2548,12 @@ public partial class Rayman
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.L) && GameTime.ElapsedFrames - Timer > 20)
                 {
                     State.MoveTo(Fsm_WallJumpIdle);
+                    return false;
+                }
+
+                if (Engine.ActiveConfig.Tweaks.VersatileWalljumps && MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A))
+                {
+                    State.MoveTo(Fsm_Helico);
                     return false;
                 }
                 break;
