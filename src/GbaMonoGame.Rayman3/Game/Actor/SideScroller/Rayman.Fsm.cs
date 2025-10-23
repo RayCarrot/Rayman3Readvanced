@@ -2363,23 +2363,29 @@ public partial class Rayman
                         AnimatedObject.FlipX = false;
                 }
 
-                if (Speed.Y > 0)
-                    SetWallJumpAction(Action.WallJump_Fall);
-
                 if (Engine.ActiveConfig.Tweaks.VersatileWalljumps)
                 {
-                    if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A))
-                    {
-                        State.MoveTo(Fsm_Helico);
-                        return false;
-                    }
+                    // Allow attacking while falling
+                    AttackInTheAir();
 
-                    if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.B) && CanAttackWithFist(2))
-                    {
-                        State.MoveTo(Fsm_Fall);
-                        AttackInTheAir();
-                        return false;
-                    }
+                    // Allow attack to override falling action
+                    if (Speed.Y > 0 && ActionId is not (
+                            Action.BeginThrowFistInAir_Right or Action.BeginThrowFistInAir_Left or
+                            Action.BeginThrowSecondFistInAir_Right or Action.BeginThrowSecondFistInAir_Left))
+                        SetWallJumpAction(Action.WallJump_Fall);
+                    else if (Speed.Y > 0 && IsActionFinished && ActionId is Action.ThrowFistInAir_Right or Action.ThrowFistInAir_Left)
+                        SetWallJumpAction(Action.WallJump_Fall);
+                }
+                else
+                {
+                    if (Speed.Y > 0)
+                        SetWallJumpAction(Action.WallJump_Fall);
+                }
+
+                if (Engine.ActiveConfig.Tweaks.VersatileWalljumps && MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A))
+                {
+                    State.MoveTo(Fsm_Helico);
+                    return false;
                 }
 
                 if (!IsOnWallJumpable())
@@ -2490,13 +2496,18 @@ public partial class Rayman
                 // Change direction
                 if (Engine.ActiveConfig.Tweaks.VersatileWalljumps)
                 {
+                    // Allow attacking in the air
+                    AttackInTheAir();
+
+                    // Switch back to falling action when finished attacking
+                    if (IsActionFinished && ActionId is Action.ThrowFistInAir_Right or Action.ThrowFistInAir_Left)
+                        SetWallJumpAction(Action.WallJump_Fall);
+                    
+                    // Change direction
                     if (IsDirectionalButtonJustPressed(GbaInput.Left) && IsFacingRight)
                         AnimatedObject.FlipX = true;
                     else if (IsDirectionalButtonJustPressed(GbaInput.Right) && IsFacingLeft)
                         AnimatedObject.FlipX = false;
-
-                    if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.B) && CanAttackWithFist(2))
-                        AttackInTheAir();
                 }
 
                 if (!IsOnWallJumpable())
