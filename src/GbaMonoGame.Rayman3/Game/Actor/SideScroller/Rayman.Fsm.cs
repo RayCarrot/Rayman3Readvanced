@@ -2354,13 +2354,13 @@ public partial class Rayman
                 if (!FsmStep_DoInTheAir())
                     return false;
 
+                // Change direction
                 if (Engine.ActiveConfig.Tweaks.VersatileWalljumps)
                 {
-                    if (MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.Left) && IsFacingRight)
-                           AnimatedObject.FlipX = true;
-
-                    if (MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.Right) && IsFacingLeft)
-                            AnimatedObject.FlipX = false;
+                    if (IsDirectionalButtonJustPressed(GbaInput.Left) && IsFacingRight)
+                        AnimatedObject.FlipX = true;
+                    else if (IsDirectionalButtonJustPressed(GbaInput.Right) && IsFacingLeft)
+                        AnimatedObject.FlipX = false;
                 }
 
                 if (Speed.Y > 0)
@@ -2486,12 +2486,13 @@ public partial class Rayman
             case FsmAction.Step:
                 if (!FsmStep_DoInTheAir())
                     return false;
+
+                // Change direction
                 if (Engine.ActiveConfig.Tweaks.VersatileWalljumps)
                 {
-                    if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.Left) && IsFacingRight)
+                    if (IsDirectionalButtonJustPressed(GbaInput.Left) && IsFacingRight)
                         AnimatedObject.FlipX = true;
-
-                    if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.Right) && IsFacingLeft)
+                    else if (IsDirectionalButtonJustPressed(GbaInput.Right) && IsFacingLeft)
                         AnimatedObject.FlipX = false;
 
                     if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.B) && CanAttackWithFist(2))
