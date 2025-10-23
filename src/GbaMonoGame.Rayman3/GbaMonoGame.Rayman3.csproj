@@ -30,10 +30,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.4" Condition="$(DefineConstants.Contains(WINDOWSDX))" />
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.4.1" Condition="$(DefineConstants.Contains(WINDOWSDX))" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.4" Condition="$(DefineConstants.Contains(DESKTOPGL))" />
-    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.4" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.8" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.4.1" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.10" />
   </ItemGroup>
 
   <ItemGroup>

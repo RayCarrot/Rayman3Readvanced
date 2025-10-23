@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.4" Condition="$(DefineConstants.Contains(WINDOWSDX))">
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.4.1" Condition="$(DefineConstants.Contains(WINDOWSDX))">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.4" Condition="$(DefineConstants.Contains(DESKTOPGL))">
