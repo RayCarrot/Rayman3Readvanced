@@ -86,6 +86,7 @@ See [assets](docs/assets.md) for a comprehensive list of where each asset comes 
 
 **Programming**
 - [RayCarrot](https://github.com/RayCarrot) (main developer)
+- [Marteaufou](https://bsky.app/profile/marteaufou.jardindesreves.fr) (new game options)
 - [Robin](https://github.com/rtsonneveld) (Mode7 rendering, general MonoGame and shader assistance)
 
 **Platform assistance**
