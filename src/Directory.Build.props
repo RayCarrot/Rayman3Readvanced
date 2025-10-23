@@ -14,11 +14,11 @@
 
   <!-- WINDOWSDX -->
   <PropertyGroup Condition="$(DefineConstants.Contains(WINDOWSDX))">
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
   </PropertyGroup>
 
   <!-- DESKTOPGL -->
   <PropertyGroup Condition="$(DefineConstants.Contains(DESKTOPGL))">
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
   </PropertyGroup>
 </Project>
