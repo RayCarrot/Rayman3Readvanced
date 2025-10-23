@@ -183,8 +183,11 @@ public partial class Plum
 
                     Timer++;
                 }
+                // NOTE: There's a bug here where the plum doesn't think it's in the air if it touches
+                //       climb collision, which makes it play the wrong animation
                 // In the air
-                else if (groundType == PhysicalTypeValue.None)
+                else if (groundType == PhysicalTypeValue.None || 
+                         (Engine.ActiveConfig.Tweaks.FixBugs && groundType == PhysicalTypeValue.Climb))
                 {
                     if (!DisableMessages)
                     {

@@ -495,6 +495,7 @@ Most actors have the first animation be unused and just single frame, most likel
 
 #### Plum
 - There is unused behavior for the plum landing on solid ground, making it bounce like Rayman 1 and allowing you to hit it so it can fall into the lava. It also supports bouncing on slopes.
+- There is a bug where if you fall off a platform with the plum and it touches climbable collision then the plum plays the floating animation while in the air.
 
 #### Skull
 - There's an unused function which implements overriding `ProcessMessage` and handles the message for if an actor collides with another actor of the same type. This would have caused the skull to fall down, like it does in the Jano boss. This also makes action 11 and the falling down state unused.
