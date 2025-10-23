@@ -1266,6 +1266,23 @@ public sealed partial class Rayman : MovableActor
         }
     }
 
+    // Custom to allow for maintaining direction
+    private void SetWallJumpAction(Action action)
+    {
+        // Save the direction
+        bool tmpIsFacingRight = IsFacingRight;
+        
+        // Set new action
+        ActionId = action;
+
+        // Change the direction if needed (wall jump actions only have one direction defined!)
+        if (Engine.ActiveConfig.Tweaks.VersatileWalljumps && !tmpIsFacingRight)
+        {
+            ChangeAction();
+            AnimatedObject.FlipX = true;
+        }
+    }
+
     private void SetRandomIdleAction()
     {
         PlaySound(Rayman3SoundEvent.Stop__Grimace1_Mix04);

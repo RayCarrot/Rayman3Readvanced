@@ -2345,14 +2345,8 @@ public partial class Rayman
         switch (action)
         {
             case FsmAction.Init:
-                bool TmpIsFacingRight = IsFacingRight;
                 NextActionId = null;
-                ActionId = Action.WallJump_Jump;
-                if (Engine.ActiveConfig.Tweaks.VersatileWalljumps && !TmpIsFacingRight)
-                {
-                    ChangeAction();
-                    AnimatedObject.FlipX = true;
-                }
+                SetWallJumpAction(Action.WallJump_Jump);
                 PlaySound(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01);
                 break;
 
@@ -2363,22 +2357,14 @@ public partial class Rayman
                 if (Engine.ActiveConfig.Tweaks.VersatileWalljumps)
                 {
                     if (MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.Left) && IsFacingRight)
-                            AnimatedObject.FlipX = true;
+                           AnimatedObject.FlipX = true;
 
                     if (MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.Right) && IsFacingLeft)
                             AnimatedObject.FlipX = false;
                 }
 
                 if (Speed.Y > 0)
-                {
-                    bool TmpIsFacingRightStep = Engine.ActiveConfig.Tweaks.VersatileWalljumps && IsFacingRight;
-                    ActionId = Action.WallJump_Fall;
-                    if (Engine.ActiveConfig.Tweaks.VersatileWalljumps)
-                    {
-                        ChangeAction();
-                        AnimatedObject.FlipX = !TmpIsFacingRightStep;
-                    }
-                }
+                    SetWallJumpAction(Action.WallJump_Fall);
 
                 if (Engine.ActiveConfig.Tweaks.VersatileWalljumps)
                 {
@@ -2422,21 +2408,12 @@ public partial class Rayman
         switch (action)
         {
             case FsmAction.Init:
-                bool TmpIsFacingRight = IsFacingRight;
                 NextActionId = null;
-                ActionId = Action.WallJump_Move;
-                if (Engine.ActiveConfig.Tweaks.VersatileWalljumps && !TmpIsFacingRight)
-                {
-                    ChangeAction();
-                    AnimatedObject.FlipX = true;
-                }
+                SetWallJumpAction(Action.WallJump_Move);
                 Timer = 0;
                 break;
 
             case FsmAction.Step:
-                bool TmpIsFacingRightStep = IsFacingRight;
-                bool KeepLeftFlip = Engine.ActiveConfig.Tweaks.VersatileWalljumps && !TmpIsFacingRightStep;
-
                 if (!FsmStep_DoInTheAir())
                     return false;
 
@@ -2453,26 +2430,14 @@ public partial class Rayman
                 }
 
                 if (ActionId == Action.WallJump_Move && IsActionFinished)
-                {
-                    ActionId = Action.WallJump_IdleStill;
-                    if (KeepLeftFlip)
-                    {
-                        ChangeAction();
-                        AnimatedObject.FlipX = true;
-                    }
-                }
+                    SetWallJumpAction(Action.WallJump_IdleStill);
 
                 if (ActionId is Action.WallJump_IdleStill or Action.WallJump_Move && MultiJoyPad.IsButtonReleased(InstanceId, GbaInput.L))
                 {
                     if (ActionId == Action.WallJump_Move && AnimatedObject.CurrentFrame < 4)
                         PlaySound(Rayman3SoundEvent.Play__HandTap2_Mix03);
 
-                    ActionId = Action.WallJump_Idle;
-                    if (KeepLeftFlip)
-                    {
-                        ChangeAction();
-                        AnimatedObject.FlipX = true;
-                    }
+                    SetWallJumpAction(Action.WallJump_Idle);
                     Timer = 0;
                 }
 
@@ -2512,14 +2477,8 @@ public partial class Rayman
         switch (action)
         {
             case FsmAction.Init:
-                bool TmpIsFacingRight = IsFacingRight;
                 NextActionId = null;
-                ActionId = Action.WallJump_Fall;
-                if (Engine.ActiveConfig.Tweaks.VersatileWalljumps && !TmpIsFacingRight)
-                {
-                    ChangeAction();
-                    AnimatedObject.FlipX = true;
-                }
+                SetWallJumpAction(Action.WallJump_Fall);
                 Timer = GameTime.ElapsedFrames;
                 PlaySound(Rayman3SoundEvent.Play__OnoPeur1_Mix03);
                 break;
