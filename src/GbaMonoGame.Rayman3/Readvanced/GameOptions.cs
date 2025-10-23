@@ -336,6 +336,17 @@ public static class GameOptions
                     getData: _ => Engine.LocalConfig.Tweaks.AllowPrototypeCheats,
                     setData: data => Engine.LocalConfig.Tweaks.AllowPrototypeCheats = data,
                     getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "VERSATILE WALL JUMPS",
+                    infoText: "Expands Rayman's moveset while doing wall jumps. He can now change his orientation, helicopter and throw his fist!",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
+                    ],
+                    getData: _ => Engine.LocalConfig.Tweaks.VersatileWalljumps,
+                    setData: data => Engine.LocalConfig.Tweaks.VersatileWalljumps = data,
+                    getCustomName: _ => null),
             ]),
             new GameOptionsGroup("DIFFICULTY",
             [

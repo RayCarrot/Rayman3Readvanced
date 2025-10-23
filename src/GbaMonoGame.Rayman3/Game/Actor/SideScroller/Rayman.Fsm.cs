@@ -2346,7 +2346,7 @@ public partial class Rayman
         {
             case FsmAction.Init:
                 NextActionId = null;
-                ActionId = Action.WallJump_Jump;
+                SetWallJumpAction(Action.WallJump_Jump);
                 PlaySound(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01);
                 break;
 
@@ -2354,8 +2354,39 @@ public partial class Rayman
                 if (!FsmStep_DoInTheAir())
                     return false;
 
-                if (Speed.Y > 0)
-                    ActionId = Action.WallJump_Fall;
+                // Change direction
+                if (Engine.ActiveConfig.Tweaks.VersatileWalljumps)
+                {
+                    if (IsDirectionalButtonPressed(GbaInput.Left) && IsFacingRight)
+                        AnimatedObject.FlipX = true;
+                    else if (IsDirectionalButtonPressed(GbaInput.Right) && IsFacingLeft)
+                        AnimatedObject.FlipX = false;
+                }
+
+                if (Engine.ActiveConfig.Tweaks.VersatileWalljumps)
+                {
+                    // Allow attacking while falling
+                    AttackInTheAir();
+
+                    // Allow attack to override falling action
+                    if (Speed.Y > 0 && ActionId is not (
+                            Action.BeginThrowFistInAir_Right or Action.BeginThrowFistInAir_Left or
+                            Action.BeginThrowSecondFistInAir_Right or Action.BeginThrowSecondFistInAir_Left))
+                        SetWallJumpAction(Action.WallJump_Fall);
+                    else if (Speed.Y > 0 && IsActionFinished && ActionId is Action.ThrowFistInAir_Right or Action.ThrowFistInAir_Left)
+                        SetWallJumpAction(Action.WallJump_Fall);
+                }
+                else
+                {
+                    if (Speed.Y > 0)
+                        SetWallJumpAction(Action.WallJump_Fall);
+                }
+
+                if (Engine.ActiveConfig.Tweaks.VersatileWalljumps && MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A))
+                {
+                    State.MoveTo(Fsm_Helico);
+                    return false;
+                }
 
                 if (!IsOnWallJumpable())
                 {
@@ -2384,7 +2415,7 @@ public partial class Rayman
         {
             case FsmAction.Init:
                 NextActionId = null;
-                ActionId = Action.WallJump_Move;
+                SetWallJumpAction(Action.WallJump_Move);
                 Timer = 0;
                 break;
 
@@ -2405,14 +2436,14 @@ public partial class Rayman
                 }
 
                 if (ActionId == Action.WallJump_Move && IsActionFinished)
-                    ActionId = Action.WallJump_IdleStill;
+                    SetWallJumpAction(Action.WallJump_IdleStill);
 
                 if (ActionId is Action.WallJump_IdleStill or Action.WallJump_Move && MultiJoyPad.IsButtonReleased(InstanceId, GbaInput.L))
                 {
                     if (ActionId == Action.WallJump_Move && AnimatedObject.CurrentFrame < 4)
                         PlaySound(Rayman3SoundEvent.Play__HandTap2_Mix03);
 
-                    ActionId = Action.WallJump_Idle;
+                    SetWallJumpAction(Action.WallJump_Idle);
                     Timer = 0;
                 }
 
@@ -2453,7 +2484,7 @@ public partial class Rayman
         {
             case FsmAction.Init:
                 NextActionId = null;
-                ActionId = Action.WallJump_Fall;
+                SetWallJumpAction(Action.WallJump_Fall);
                 Timer = GameTime.ElapsedFrames;
                 PlaySound(Rayman3SoundEvent.Play__OnoPeur1_Mix03);
                 break;
@@ -2461,6 +2492,23 @@ public partial class Rayman
             case FsmAction.Step:
                 if (!FsmStep_DoInTheAir())
                     return false;
+
+                // Change direction
+                if (Engine.ActiveConfig.Tweaks.VersatileWalljumps)
+                {
+                    // Allow attacking in the air
+                    AttackInTheAir();
+
+                    // Switch back to falling action when finished attacking
+                    if (IsActionFinished && ActionId is Action.ThrowFistInAir_Right or Action.ThrowFistInAir_Left)
+                        SetWallJumpAction(Action.WallJump_Fall);
+                    
+                    // Change direction
+                    if (IsDirectionalButtonJustPressed(GbaInput.Left) && IsFacingRight)
+                        AnimatedObject.FlipX = true;
+                    else if (IsDirectionalButtonJustPressed(GbaInput.Right) && IsFacingLeft)
+                        AnimatedObject.FlipX = false;
+                }
 
                 if (!IsOnWallJumpable())
                 {
@@ -2471,6 +2519,12 @@ public partial class Rayman
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.L) && GameTime.ElapsedFrames - Timer > 20)
                 {
                     State.MoveTo(Fsm_WallJumpIdle);
+                    return false;
+                }
+
+                if (Engine.ActiveConfig.Tweaks.VersatileWalljumps && MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A))
+                {
+                    State.MoveTo(Fsm_Helico);
                     return false;
                 }
                 break;
