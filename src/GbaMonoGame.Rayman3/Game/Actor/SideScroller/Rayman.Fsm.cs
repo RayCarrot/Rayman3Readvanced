@@ -2357,9 +2357,9 @@ public partial class Rayman
                 // Change direction
                 if (Engine.ActiveConfig.Tweaks.VersatileWalljumps)
                 {
-                    if (IsDirectionalButtonJustPressed(GbaInput.Left) && IsFacingRight)
+                    if (IsDirectionalButtonPressed(GbaInput.Left) && IsFacingRight)
                         AnimatedObject.FlipX = true;
-                    else if (IsDirectionalButtonJustPressed(GbaInput.Right) && IsFacingLeft)
+                    else if (IsDirectionalButtonPressed(GbaInput.Right) && IsFacingLeft)
                         AnimatedObject.FlipX = false;
                 }
 
