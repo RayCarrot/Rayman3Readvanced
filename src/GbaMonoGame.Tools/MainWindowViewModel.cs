@@ -1384,6 +1384,152 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private async Task ExportSpriteAnimationSpritesAsync()
+    {
+        Dictionary<int, HashSet<string>> hashes = new();
+
+        await ExportFromRomsAsync(rom =>
+        {
+            Pointer?[] exportedActorTypes = new Pointer?[256];
+
+            for (int i = 0; i < rom.OffsetTable.Count; i++)
+            {
+                ResourceType resourceType = GetResourceType(rom.Context, rom.OffsetTable, i);
+
+                if (resourceType == ResourceType.Scene2D)
+                {
+                    Scene2D scene = rom.OffsetTable.ReadResource<Scene2D>(rom.Context, i);
+
+                    foreach (Actor actor in scene.Actors.Concat(scene.AlwaysActors).Concat(scene.ProjectileActors))
+                    {
+                        Pointer? exportedPointer = exportedActorTypes[actor.Type];
+                        Pointer pointer = actor.Model.AnimatedObject.Offset;
+
+                        if (exportedPointer == null)
+                        {
+                            exportedActorTypes[actor.Type] = pointer;
+                            exportAnimatedObject(actor.Model.AnimatedObject, actor.Type, $"{actor.Type} - {(ActorType)actor.Type}");
+                        }
+                        else if (exportedPointer != pointer)
+                        {
+                            Log($"WARNING: Actor {actor.Type} has multiple animated objects in {rom.FileName}");
+                        }
+                    }
+                }
+                else if (resourceType == ResourceType.AnimatedObject)
+                {
+                    AnimatedObject animatedObject = rom.OffsetTable.ReadResource<AnimatedObject>(rom.Context, i);
+                    exportAnimatedObject(animatedObject, 1000, $"AnimatedObject {i}");
+                }
+                else if (resourceType == ResourceType.ActorModel)
+                {
+                    ActorModel actorModel = rom.OffsetTable.ReadResource<ActorModel>(rom.Context, i);
+                    exportAnimatedObject(actorModel.AnimatedObject, 1000, $"ActorModel {i}");
+                }
+            }
+
+            void exportAnimatedObject(AnimatedObject animatedObject, int cacheId, string dirName)
+            {
+                byte[] tileSet = animatedObject.SpriteTable.Data;
+                HashSet<int> exportedSprites = new();
+
+                // Enumerate each animation
+                foreach (Animation anim in animatedObject.Animations)
+                {
+                    // Enumerate each frame
+                    int channelOffset = 0;
+                    for (int frameId = 0; frameId < anim.FramesCount; frameId++)
+                    {
+                        // Enumerate each channel
+                        for (int channelId = 0; channelId < anim.ChannelsPerFrame[frameId]; channelId++)
+                        {
+                            AnimationChannel channel = anim.Channels[channelOffset + channelId];
+
+                            if (channel.ChannelType == AnimationChannelType.Sprite)
+                            {
+                                if (!exportedSprites.Add(channel.TileIndex))
+                                    continue;
+
+                                // Get the size
+                                Constants.Size size = Constants.GetSpriteShape(channel.SpriteShape, channel.SpriteSize);
+
+                                Color[] imgData = new Color[size.Width * size.Height];
+
+                                int tileSetIndex = channel.TileIndex * 0x20;
+                                Palette palette = new(animatedObject.Palettes.Palettes[channel.PalIndex]);
+
+                                int absY = 0;
+                                for (int tileY = 0; tileY < size.TilesHeight; tileY++)
+                                {
+                                    int absX = 0;
+                                    for (int tileX = 0; tileX < size.TilesWidth; tileX++)
+                                    {
+                                        if (animatedObject.Is8Bit)
+                                            DrawHelpers.DrawTile_8bpp(imgData, absX, absY, size.Width, tileSet, ref tileSetIndex, palette);
+                                        else
+                                            DrawHelpers.DrawTile_4bpp(imgData, absX, absY, size.Width, tileSet, ref tileSetIndex, palette, 0);
+
+                                        absX += Tile.Size;
+                                    }
+
+                                    absY += Tile.Size;
+                                }
+
+                                // Convert to RGBA
+                                byte[] rawImgData = new byte[imgData.Length * 4];
+                                for (int i = 0; i < imgData.Length; i++)
+                                {
+                                    rawImgData[i * 4 + 0] = imgData[i].R;
+                                    rawImgData[i * 4 + 1] = imgData[i].G;
+                                    rawImgData[i * 4 + 2] = imgData[i].B;
+                                    rawImgData[i * 4 + 3] = imgData[i].A;
+                                }
+
+                                using MagickImage img = new(rawImgData, new MagickReadSettings()
+                                {
+                                    Format = MagickFormat.Rgba,
+                                    Width = (uint?)size.Width,
+                                    Height = (uint?)size.Height
+                                });
+
+                                string dirPath = Path.Combine("SpriteAnimationsSprites", $"{dirName}");
+                                string filePath = GetExportFilePath(dirPath, $"{channel.TileIndex} - {rom.FileName}.png");
+
+                                using MemoryStream stream = new();
+                                img.Flop();
+                                img.Write(stream, MagickFormat.Png);
+
+                                // Check for duplicates
+                                if (RemoveDuplicates)
+                                {
+                                    using SHA512 sha512 = SHA512.Create();
+                                    stream.Position = 0;
+                                    string hash = Convert.ToBase64String(sha512.ComputeHash(stream));
+
+                                    if (!hashes.TryGetValue(cacheId, out HashSet<string>? hashSet))
+                                    {
+                                        hashSet = new HashSet<string>();
+                                        hashes.Add(cacheId, hashSet);
+                                    }
+
+                                    if (!hashSet.Add(hash))
+                                        continue;
+                                }
+
+                                stream.Position = 0;
+                                using FileStream fileStream = File.Create(filePath);
+                                stream.CopyTo(fileStream);
+                            }
+                        }
+
+                        channelOffset += anim.ChannelsPerFrame[frameId];
+                    }
+                }
+            }
+        });
+    }
+
+    [RelayCommand]
     private async Task ExportSpriteAnimationInfoAsync()
     {
         await ExportFromRomsAsync(rom =>
