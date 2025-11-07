@@ -161,7 +161,7 @@ public partial class Rayman
         {
             if (RSMultiplayer.IsActive)
                 State.MoveTo(Fsm_MultiplayerDying);
-            else if (!Engine.ActiveConfig.Difficulty.NoInstaKills || HitPoints <= 2 || State == Fsm_RidingWalkingShell)
+            else if (!Engine.ActiveConfig.Difficulty.NoInstaKills || HitPoints <= 2)
                 State.MoveTo(Fsm_Dying);
             else
                 State.MoveTo(Fsm_RespawnDeath);
@@ -4512,6 +4512,11 @@ public partial class Rayman
                     ActionId = safePosition.IsFacingRight ? Action.Spawn_Right : Action.Spawn_Left;
 
                     // Respawn some actors
+                    foreach (BaseActor obj in new DisabledAlwaysActorIterator(Scene))
+                    {
+                        if (!obj.ResurrectsLater)
+                            obj.ProcessMessage(this, Message.Readvanced_RespawnDeath);
+                    }
                     foreach (BaseActor obj in new DisabledActorIterator(Scene))
                     {
                         if (!obj.ResurrectsLater)

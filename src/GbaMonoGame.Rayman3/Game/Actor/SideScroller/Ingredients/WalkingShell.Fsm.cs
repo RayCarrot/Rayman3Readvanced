@@ -30,7 +30,7 @@ public partial class WalkingShell
                 rayman.State == rayman.Fsm_Dying ||
                 rayman.State == rayman.Fsm_RespawnDeath)
             {
-                if (IsRaymanMounted)
+                if (IsRaymanMounted && rayman.State != rayman.Fsm_RespawnDeath)
                     Scene.MainActor.ReceiveDamage(3);
 
                 IsRaymanMounted = false;

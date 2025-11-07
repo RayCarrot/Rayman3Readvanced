@@ -9,6 +9,9 @@ public sealed partial class WalkingShell : MovableActor
     {
         AnimatedObject.ObjPriority = 25;
 
+        // Custom to allow respawning
+        InitialPosition = Position;
+
         LoopPosition = Vector2.Zero;
         Timer = 0;
         HasBoostedInLoop = false;
@@ -24,6 +27,7 @@ public sealed partial class WalkingShell : MovableActor
     private const int LoopRadius = 56;
 
     public Rayman Rayman { get; }
+    public Vector2 InitialPosition { get; }
     public Vector2 LoopPosition { get; set; }
     public byte Timer { get; set; }
     public bool HasBoostedInLoop { get; set; } // Unused behavior
@@ -117,5 +121,30 @@ public sealed partial class WalkingShell : MovableActor
             explosion.Position = Position - new Vector2(0, 12);
 
         ProcessMessage(this, Message.Destroy);
+    }
+
+    protected override bool ProcessMessageImpl(object sender, Message message, object param)
+    {
+        if (base.ProcessMessageImpl(sender, message, param))
+            return false;
+
+        switch (message)
+        {
+            case Message.Readvanced_RespawnDeath:
+                ProcessMessage(this, Message.Resurrect);
+                Position = InitialPosition;
+                LoopPosition = Vector2.Zero;
+                Timer = 0;
+                HasBoostedInLoop = false;
+                IsRaymanMounted = false;
+                LoopAngle = 0;
+                CurrentType = PhysicalTypeValue.None;
+                CurrentBottomType = PhysicalTypeValue.None;
+                State.SetTo(Fsm_Idle);
+                return false;
+
+            default:
+                return false;
+        }
     }
 }
