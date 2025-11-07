@@ -373,7 +373,7 @@ public static class GameOptions
                     setData: data => Engine.LocalConfig.Difficulty.InfiniteLives = data,
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
-                    text: "LESS INSTA-KILLS",
+                    text: "INSTA-KILL RESPAWN",
                     infoText: "Most enemies and obstacles that would previously instantly kill you now instead deal 2 points of damage.",
                     items:
                     [
