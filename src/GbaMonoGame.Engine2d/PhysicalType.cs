@@ -27,7 +27,7 @@ public readonly struct PhysicalType
         float subTileX = MathHelpers.Mod(xPos, Tile.Size);
 
         // In the game this is done using pre-calculated arrays and rounded down to nearest integer
-        return Value switch
+        float topSolid = Value switch
         {
             PhysicalTypeValue.SolidAngle90Left => subTileX,
             PhysicalTypeValue.SolidAngle90Right => Tile.Size - subTileX - 1,
@@ -43,6 +43,14 @@ public readonly struct PhysicalType
             PhysicalTypeValue.SlideAngle30Right2 => Tile.Size - (subTileX / 2 + Tile.Size / 2f) - 0.5f,
             _ => throw new Exception($"The physical value {this} is not an angled block")
         };
+
+        // NOTE: Generally we don't want to floor floats so that we can keep sub-pixel positions, however
+        //       in this case it causes issues when actors move down on sloped ground as they don't move
+        //       down with it fast enough to keep up with the slope, and thus can get de-synced. This is
+        //       an issue with the Slapdash enemy in Hoodlum Hideout 2 when charging down the slopes.
+        topSolid = MathF.Floor(topSolid);
+
+        return topSolid;
     }
 
     public bool IsBlockPointSolid(Vector2 position)
