@@ -4023,7 +4023,7 @@ public partial class Rayman
                 }
 
                 // Custom to transition to time attack score screen if the last map
-                if (GameInfo.GetNextLevelId() is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4 && TimeAttackInfo.IsActive)
+                if (TimeAttackInfo.IsActive && GameInfo.GetNextLevelId() is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
                 {
                     if (IsActionFinished && ActionId is Action.Victory_Right or Action.Victory_Left)
                         ActionId = IsFacingRight ? Action.Idle_Right : Action.Idle_Left;
