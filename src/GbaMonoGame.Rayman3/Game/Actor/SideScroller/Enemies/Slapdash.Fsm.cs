@@ -109,7 +109,10 @@ public partial class Slapdash
         {
             case FsmAction.Init:
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__CagoAttk_Mix03);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CagoTurn_Mix03);
+
+                // Custom to prevent turn around sound from continuously playing if you've jumped past the enemy
+                if (!Scene.KeepAllObjectsActive || AnimatedObject.IsFramed)
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CagoTurn_Mix03);
 
                 // The game does +2 or +4 to the action here, but it's cleaner to just handle each valid case
                 if (ActionId is 
