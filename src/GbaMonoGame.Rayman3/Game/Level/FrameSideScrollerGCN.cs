@@ -72,8 +72,17 @@ public class FrameSideScrollerGCN : FrameSideScroller
         PreviousPowers = GameInfo.Powers;
         GameInfo.EnablePower(Power.All);
 
-        GameInfo.YellowLumsCount = MapInfo.LumsCount;
-        GameInfo.CagesCount = MapInfo.CagesCount;
+        // Optionally force GCN levels to show 0 lums and cages since they never have any
+        if (Engine.ActiveConfig.Tweaks.FixBugs)
+        {
+            GameInfo.YellowLumsCount = 0;
+            GameInfo.CagesCount = 0;
+        }
+        else
+        {
+            GameInfo.YellowLumsCount = MapInfo.LumsCount;
+            GameInfo.CagesCount = MapInfo.CagesCount;
+        }
 
         LevelMusicManager.Init();
 
