@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using BinarySerializer;
 using BinarySerializer.Ubisoft.GbaEngine;
@@ -77,7 +78,11 @@ public static class Rom
 
             settings.SetDefinedResources(DefinedResources.Rayman3_GBA);
 
+            Stopwatch sw = Stopwatch.StartNew();
             loader.LoadData(romFileName);
+            sw.Stop();
+
+            Logger.Info("Loaded ROM data in {0} ms", sw.ElapsedMilliseconds);
 
             _region = gameCode[3] switch
             {
