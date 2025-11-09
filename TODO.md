@@ -9,6 +9,10 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
 - First time launching the game, before the title screen, should show options like language, controls and option preset.
 - Add controller support. Maybe also haptic feedback on things like camera shake and bomb damage?
 - Press A to skip menu transition like in Rayman M.
+- Add Discord rich presence support.
+- Use Game Jolt API for achievements and leaderboards.
+- If the screen resolution is not 16:9 then there should be an additional resolution option in that aspect ration.
+- Instead of downscaling the menu font we should create separate, smaller, version. Same in other places. This is to keep sprites rendering in the same resolution for an as authentic feel as possible.
 
 ## 💬 Localization
 - If you change the button mapping then the in-game tutorial texts are wrong, such as when Murfy or Ly explain how to perform a move. Find a way to replace this.
@@ -17,6 +21,7 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
 ## 🧑‍💻 Code
 - Move hard-coded primitive values to constant fields.
 - Properly set up cross-platform support.
+- Optimize BinarySerializer more. Pointers should ideally be structs instead of classes in order to reduce allocations. We could also serialize animation channels as a `ushort[]` which saves on a lot of allocations.
 
 ## 🎮 Multiplayer
 Implementing local multiplayer, using multiple game instances (through named pipes) or through LAN, shouldn't be too hard. The game's multiplayer code is very simple, with it usually just sending a single 16-bit value between clients each frame.
@@ -39,6 +44,8 @@ However online multiplayer would be much more complicated. The game expects the 
     - TimerBar sounds during last 10 seconds.
 - Auto-pause if the game window is inactive.
 - Fix the helico animation hitbox for Rayman.
+- Allow pressing jump to let go off monkey bars.
+- Lower initial plum speed when jumping onto it on the lava. Right now it's either 1 or 0.5, so an option is to always use 0.5.
 - Move faster in worldmap (when holding down button?).
 - Do not show N-Gage button prompts in the corners.
 - Remove stray pixels and fix bad tiling in levels.
@@ -46,6 +53,7 @@ However online multiplayer would be much more complicated. The game expects the 
 - Standardized button mapping. This makes the menus use standardized buttons, and for the intro you can press any button to continue and not just the start button.
 - Restore 2 hp from red lums instead of 1, name it "restore double hit-points".
 - Disable flashing lights option. Use for race levels and lightning effect.
+- Enable roll-off and pan for more sounds. Might sound distracting though.
 - Press the select button while in a hub world to bring up level info bars for every level for that hub in a vertical, scrollable, list, with you selecting one to teleport to that level curtain.
 - Extend backgrounds so that they can render in the modern widescreen resolution without scaling:
     - BossMachine ✔️
@@ -105,3 +113,6 @@ It might be fun to include some cheat codes. These can be triggered by holding t
 ## 🐞 Bugs
 - An exception gets thrown if closing the game while it's loading the rom.
 - In levels where the cycles of objects matters, like the flying keg ones, it doesn't line up well if all objects are always loaded, making some parts impossible to beat
+- DesktopGL build randomly flickers (seems consistent when Murfy appears?).
+- When all object are active it causes issues with cycles being different. This is noticeable for the walking shell sections, the precipice and the flying keg sections.
+- Saved window position and size might become invalid, such as becoming negative. Auto fix if wrong.
