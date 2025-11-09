@@ -1599,6 +1599,21 @@ public sealed partial class Rayman : MovableActor
 
         switch (message)
         {
+            // Custom for insta-kill respawn
+            case Message.Readvanced_RespawnDeath:
+                if (RSMultiplayer.IsActive)
+                    throw new Exception("Respawn message not allowed in multiplayer");
+
+                if (State != Fsm_Dying && State != Fsm_RespawnDeath && State != Fsm_EndMap)
+                {
+                    if (HitPoints <= 2)
+                        State.MoveTo(Fsm_Dying);
+                    else
+                        State.MoveTo(Fsm_RespawnDeath);
+                }
+
+                return false;
+
             case Message.RaymanBody_FinishAttack:
                 RaymanBody.RaymanBodyPartType bodyPartType = (RaymanBody.RaymanBodyPartType)param;
                 ActiveBodyParts[(int)bodyPartType] = null;

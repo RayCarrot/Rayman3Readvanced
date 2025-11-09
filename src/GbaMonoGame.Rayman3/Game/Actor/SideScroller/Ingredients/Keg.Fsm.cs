@@ -476,7 +476,10 @@ public partial class Keg
                     else if ((Scene.MainActor.IsTouchingMap && Timer > 75) || Scene.MainActor.HitPoints == 0)
                     {
                         SpawnExplosion(true);
-                        Scene.MainActor.ProcessMessage(this, Message.Actor_Explode);
+                        if (!Engine.ActiveConfig.Difficulty.NoInstaKills)
+                            Scene.MainActor.ProcessMessage(this, Message.Actor_Explode);
+                        else
+                            Scene.MainActor.ProcessMessage(this, Message.Readvanced_RespawnDeath);
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Combust1_Mix02);
                         respawn = true;
                     }
