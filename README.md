@@ -1,5 +1,8 @@
 # Rayman 3 Readvanced
 
+> [!NOTE]
+> This project is currently still in development and as such there are no builds available to download yet. You can view the current progress of this port in [the progress document](PROGRESS.md) as well as the currently planned features in [the todo document](TODO.md).
+
 ![Title screen](assets/logo/Rayman%203%20Readvanced.png)
 
 Rayman 3 Readvanced is a recreation of the GBA and N-Gage versions of Rayman 3 to [MonoGame](https://monogame.net), making the game natively playable on PC and other platforms. The original ROM is required to play the game since this project does not contain the game assets.
@@ -8,9 +11,6 @@ This is not meant to be a traditional decompilation, but rather a recreation of 
 
 ![Title screen](screenshots/title_screen.png)
 *The game is functionally identical to the original game, while modernizing the code and including optional game enhancements.*
-
-> [!NOTE]
-> This project is currently still in development and as such there are no builds available to download yet. You can view the current progress of this port in [the progress document](PROGRESS.md) as well as the currently planned features in [the todo document](TODO.md).
 
 ## Enhancements
 
