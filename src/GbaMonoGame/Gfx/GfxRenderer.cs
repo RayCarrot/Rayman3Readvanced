@@ -139,6 +139,14 @@ public class GfxRenderer
             // Note that this gets ignored if we're using a vertex shader!
             Matrix view = Matrix.CreateScale(options.RenderContext.Scale);
 
+#if DESKTOPGL
+            // NOTE: We need this here for OpenGL since otherwise there's a very odd bug that happens with the palette
+            //       shaders where the palette texture (index 1) doesn't get correctly invalidated, and thus it ends up
+            //       re-using the same palette for more things than it should (but only the first frame the new texture
+            //       is rendered). This fixes it.
+            _graphicsDevice.Textures[1] = null;
+#endif
+
             // Begin a new batch
             _spriteBatch.Begin(
                 samplerState: SamplerState.PointClamp,

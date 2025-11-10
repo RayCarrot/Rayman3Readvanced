@@ -113,6 +113,5 @@ It might be fun to include some cheat codes. These can be triggered by holding t
 ## 🐞 Bugs
 - An exception gets thrown if closing the game while it's loading the rom.
 - In levels where the cycles of objects matters, like the flying keg ones, it doesn't line up well if all objects are always loaded, making some parts impossible to beat
-- DesktopGL build randomly flickers (seems consistent when Murfy appears?).
 - When all object are active it causes issues with cycles being different. This is noticeable for the walking shell sections, the precipice and the flying keg sections.
 - Saved window position and size might become invalid, such as becoming negative. Auto fix if wrong.
