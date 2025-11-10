@@ -5,6 +5,7 @@ using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
+// TODO: Load and Init might be called multiple times
 public partial class TimeAttackDialog : Dialog
 {
     public TimeAttackDialog(Scene2D scene) : base(scene)

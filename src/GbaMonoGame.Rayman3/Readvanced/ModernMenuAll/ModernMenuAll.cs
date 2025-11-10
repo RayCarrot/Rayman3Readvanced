@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
+// TODO: Remember cursor position from last page. Maybe dictionary with page types? Use this when returning from time attack too. And any other way of accessing the main menu.
 public class ModernMenuAll : Frame, IHasPlayfield
 {
     #region Constructor

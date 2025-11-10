@@ -25,7 +25,7 @@ public static class TimeAttackInfo
 
     public static void Init()
     {
-        // TODO: Look more into which values to change, this is temporary
+        // TODO: Look more into which values to change, this is temporary. The visual options might affect Random seed. However Random only matters for gameplay for Grolgoth, Jano, Rocky. None of them use the visual effects.
         // Save configs
         Engine.OverrideActiveConfig(new ActiveGameConfig(
             tweaks: Engine.LocalConfig.Tweaks with
