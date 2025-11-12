@@ -56,7 +56,7 @@ public class FrameFatalError : Frame
             JoyPad.IsButtonJustPressed(GbaInput.B) ||
             JoyPad.IsButtonJustPressed(GbaInput.Start) ||
             JoyPad.IsButtonJustPressed(GbaInput.Select) ||
-            InputManager.IsButtonJustPressed(Keys.Escape))
+            InputManager.IsKeyJustPressed(Keys.Escape))
         {
             Engine.GbaGame.Exit();
         }

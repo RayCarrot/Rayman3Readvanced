@@ -312,7 +312,7 @@ public class TitleScreen : Frame
                 Games[SelectedGameIndex].SelectedIndex = 0;
                 Games[prevSelectedGameIndex].SelectedIndex = -1;
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.B) || InputManager.IsButtonJustPressed(Keys.Escape))
+            else if (JoyPad.IsButtonJustPressed(GbaInput.B) || InputManager.IsKeyJustPressed(Keys.Escape))
             {
                 SelectedGameIndex = -1;
                 QuitGameOptionsList.SelectedIndex = 0;

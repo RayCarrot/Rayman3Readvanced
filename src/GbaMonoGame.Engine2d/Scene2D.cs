@@ -158,7 +158,7 @@ public class Scene2D
         KnotManager.AddPendingActors();
 
         // Toggle showing debug boxes
-        if (Engine.ActiveConfig.Debug.DebugModeEnabled && InputManager.IsButtonJustPressed(Input.Debug_ToggleDisplayBoxes))
+        if (Engine.ActiveConfig.Debug.DebugModeEnabled && InputManager.IsInputJustPressed(Input.Debug_ToggleDisplayBoxes))
             ShowDebugBoxes = !ShowDebugBoxes;
 
         // Draw debug boxes

@@ -212,7 +212,7 @@ public abstract class GbaGame : Game
         InputManager.Update();
 
         // Toggle full-screen
-        if (InputManager.IsButtonPressed(Keys.LeftAlt) && InputManager.IsButtonJustPressed(Keys.Enter))
+        if (InputManager.IsKeyPressed(Keys.LeftAlt) && InputManager.IsKeyJustPressed(Keys.Enter))
             Engine.GameWindow.DisplayMode = Engine.GameWindow.DisplayMode switch
             {
                 DisplayMode.Windowed => DisplayMode.Fullscreen,
@@ -257,7 +257,7 @@ public abstract class GbaGame : Game
         if (Engine.ActiveConfig.Debug.DebugModeEnabled)
         {
             // Toggle debug mode
-            if (InputManager.IsButtonJustPressed(Input.Debug_ToggleDebugMode) && _debugLayout != null)
+            if (InputManager.IsInputJustPressed(Input.Debug_ToggleDebugMode) && _debugLayout != null)
             {
                 DebugMode = !DebugMode;
 
@@ -277,7 +277,7 @@ public abstract class GbaGame : Game
             }
 
             // Toggle pause
-            if (InputManager.IsButtonJustPressed(Input.Debug_TogglePause))
+            if (InputManager.IsInputJustPressed(Input.Debug_TogglePause))
             {
                 if (!IsPaused)
                     Pause();
@@ -286,13 +286,13 @@ public abstract class GbaGame : Game
             }
 
             // Speed up game
-            if (InputManager.IsButtonPressed(Input.Debug_SpeedUp))
+            if (InputManager.IsInputPressed(Input.Debug_SpeedUp))
                 _speedUp = true;
-            else if (InputManager.IsButtonJustReleased(Input.Debug_SpeedUp))
+            else if (InputManager.IsInputJustReleased(Input.Debug_SpeedUp))
                 _speedUp = false;
 
             // Run one frame
-            if (InputManager.IsButtonJustPressed(Input.Debug_StepOneFrame))
+            if (InputManager.IsInputJustPressed(Input.Debug_StepOneFrame))
             {
                 IsPaused = false;
                 RunSingleFrame = true;

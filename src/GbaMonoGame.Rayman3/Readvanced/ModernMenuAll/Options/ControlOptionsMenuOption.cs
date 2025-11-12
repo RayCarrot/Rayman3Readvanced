@@ -65,7 +65,7 @@ public class ControlOptionsMenuOption : OptionsMenuOption
 
         Keys key = pressedKeys[0];
 
-        if (!InputManager.IsButtonJustPressed(key))
+        if (!InputManager.IsKeyJustPressed(key))
             return EditStepResult.None;
 
         UpdateInput(key, options);
