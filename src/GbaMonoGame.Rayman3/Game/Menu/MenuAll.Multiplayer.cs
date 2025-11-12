@@ -554,7 +554,7 @@ public partial class MenuAll
             }
         }
 
-        // TODO: This shouldn't be here - leftover?
+        // NOTE: This is a leftover and shouldn't actually be here
         Anims.MultiplayerPlayerSelection.ScreenPos = Anims.MultiplayerPlayerSelection.ScreenPos with { Y = 60 - MultiplayerPlayersOffsetY };
         Anims.MultiplayerPlayerNumberIcons.ScreenPos = Anims.MultiplayerPlayerNumberIcons.ScreenPos with { Y = 42 - MultiplayerPlayersOffsetY };
         Anims.MultiplayerPlayerSelectionHighlight.ScreenPos = Anims.MultiplayerPlayerSelectionHighlight.ScreenPos with { Y = 46 - MultiplayerPlayersOffsetY };
