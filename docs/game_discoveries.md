@@ -588,6 +588,11 @@ Most actors have the first animation be unused and just single frame, most likel
 
 ![Animation 19](discoveries_assets/RaymanWorldMap_Anim_19.gif)
 
+### Intro
+- There is 1 unused animation for the logo without the black lum:
+
+![Animation 16](discoveries_assets/Intro_Anim_16.gif)
+
 ### Menu
 - Some sound events are mistakenly called with the object parameter set to 0 instead of -1. This however doesn't cause any changes in the event processing since the object is only used when pan or roll-off are enabled for the event.
 - Most animations which use `FrameChannelSprite` to deactivate off-screen sprite channels define the screen height as 255 instead of 160 for some reason. This doesn't cause any changes in the behavior as these animation do not appear at the bottom of the screen.
