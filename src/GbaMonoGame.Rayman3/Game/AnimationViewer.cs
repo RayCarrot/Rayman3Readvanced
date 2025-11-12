@@ -292,25 +292,30 @@ public class AnimationViewer : Frame
                 InitSelectResource();
         }
 
-        SetInfoText($"Frame: {Animation.CurrentFrame}\n" +
+        SetInfoText($"Frame: {Animation.CurrentFrame}/{Animation.GetAnimation().FramesCount - 1}\n" +
                     $"DelayMode: {Animation.IsDelayMode}\n" +
                     $"Timer: {Animation.Timer}\n" +
                     $"ChannelIndex: {Animation.ChannelIndex}\n\n" +
                     $"{String.Join("\n", Animation.EnumerateCurrentChannels().
                         Select((x, i) => 
                         {
-                            string str = $"{i}: {x.ChannelType} {x.XPosition} x {x.YPosition}";
+                            string str = $"{i}: {x.ChannelType}";
 
-                            if (x.ObjectMode is OBJ_ATTR_ObjectMode.AFF or OBJ_ATTR_ObjectMode.AFF_DBL)
+                            if (x.ChannelType == AnimationChannelType.Sprite)
                             {
-                                AffineMatrixResource matrix = Animation.GetAnimation().AffineMatrices.Matrices[x.AffineMatrixIndex];
-                                AffineMatrix affineMatrix = new(
-                                    pa: matrix.Pa,
-                                    pb: matrix.Pb,
-                                    pc: matrix.Pc,
-                                    pd: matrix.Pd);
+                                str += $" {x.XPosition} x {x.YPosition}";
 
-                                str += $" | Scale: {affineMatrix.Scale.X} x {affineMatrix.Scale.Y} | Rot: {affineMatrix.Rotation}";
+                                if (x.ObjectMode is OBJ_ATTR_ObjectMode.AFF or OBJ_ATTR_ObjectMode.AFF_DBL)
+                                {
+                                    AffineMatrixResource matrix = Animation.GetAnimation().AffineMatrices.Matrices[x.AffineMatrixIndex];
+                                    AffineMatrix affineMatrix = new(
+                                        pa: matrix.Pa,
+                                        pb: matrix.Pb,
+                                        pc: matrix.Pc,
+                                        pd: matrix.Pd);
+
+                                    str += $" | Scale: {affineMatrix.Scale.X} x {affineMatrix.Scale.Y} | Rot: {affineMatrix.Rotation}";
+                                }
                             }
 
                             return str;
