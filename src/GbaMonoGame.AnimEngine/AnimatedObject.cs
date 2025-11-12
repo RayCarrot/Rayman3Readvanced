@@ -126,14 +126,7 @@ public class AnimatedObject : AObject
     public Dictionary<int, Texture2D> ReplacedSpriteTextures { get; set; }
     public Dictionary<int, Animation> ReplacedAnimations { get; set; }
     public Dictionary<int, AffineMatrix> AffineMatrixCache { get; set; }
-
-    // TODO: Check if this needs to be applied to more animations
-    // Custom. This is used to fix sprite wrapping. For bigger animations, like bosses, the sprites sometimes
-    // wrap around to the other side due to the position values being stored as signed bytes.
-    public float WrapMinX { get; set; } = Single.NaN;
-    public float WrapMinY { get; set; } = Single.NaN;
-    public float WrapMaxX { get; set; } = Single.NaN;
-    public float WrapMaxY { get; set; } = Single.NaN;
+    public Dictionary<int, Box> AnimationWrapBoxes { get; set; }
 
     #endregion
 
@@ -231,6 +224,27 @@ public class AnimatedObject : AObject
         matrix = new AffineMatrix(matrixRessource.Pa, matrixRessource.Pb, matrixRessource.Pc, matrixRessource.Pd);
         AffineMatrixCache[cacheId] = matrix;
         return matrix;
+    }
+
+    // Custom. This is used to fix sprite wrapping. For bigger animations, like bosses, the sprites sometimes
+    // wrap around to the other side due to the position values being stored as signed bytes.
+    public void SetAnimationWrap(int animId, Box wrapBox)
+    {
+        AnimationWrapBoxes ??= new Dictionary<int, Box>();
+
+        if (wrapBox == Box.Empty)
+            AnimationWrapBoxes.Remove(animId);
+        else
+            AnimationWrapBoxes[animId] = wrapBox;
+
+    }
+
+    public Box GetAnimationWrapBox(int animId)
+    {
+        if (AnimationWrapBoxes == null)
+            return Box.Empty;
+
+        return AnimationWrapBoxes.TryGetValue(animId, out Box wrapBox) ? wrapBox : Box.Empty;
     }
 
     public bool IsChannelVisible(int channel) => (ActiveChannels & (1 << channel)) != 0;
@@ -363,6 +377,9 @@ public class AnimatedObject : AObject
         //       noticeable in boss fights where there's a frame or two where a sprite is missing when they move onto the screen.
         if (!IsDelayMode || Engine.ActiveConfig.Tweaks.FixBugs)
         {
+            // Get the wrap box
+            Box wrapBox = GetAnimationWrapBox(CurrentAnimation);
+
             ActivateAllChannels();
 
             int channelIndex = 0;
@@ -383,11 +400,17 @@ public class AnimatedObject : AObject
                     float width = shape.Width;
                     float height = shape.Height;
 
-                    float xPos;
+                    // Get x position
+                    float xPos = channel.XPosition;
+                    if (wrapBox.Left != 0 && xPos <= wrapBox.Left)
+                        xPos += 256;
+                    else if (wrapBox.Right != 0 && xPos >= wrapBox.Right)
+                        xPos -= 256;
+
                     if (!FlipX)
-                        xPos = position.X + channel.XPosition;
+                        xPos = position.X + xPos;
                     else
-                        xPos = position.X - channel.XPosition - width;
+                        xPos = position.X - xPos - width;
 
                     if (IsDoubleAffine || channel.ObjectMode is OBJ_ATTR_ObjectMode.AFF or OBJ_ATTR_ObjectMode.AFF_DBL)
                     {
@@ -395,11 +418,17 @@ public class AnimatedObject : AObject
                         width *= 2;
                     }
 
-                    float yPos;
+                    // Get y position
+                    float yPos = channel.YPosition;
+                    if (wrapBox.Top != 0 && yPos <= wrapBox.Top)
+                        yPos += 256;
+                    else if (wrapBox.Bottom != 0 && yPos >= wrapBox.Bottom)
+                        yPos -= 256;
+
                     if (!FlipY)
-                        yPos = position.Y + channel.YPosition;
+                        yPos = position.Y + yPos;
                     else
-                        yPos = position.Y - channel.YPosition - height;
+                        yPos = position.Y - yPos - height;
 
                     if (IsDoubleAffine || channel.ObjectMode is OBJ_ATTR_ObjectMode.AFF or OBJ_ATTR_ObjectMode.AFF_DBL)
                     {
@@ -456,6 +485,9 @@ public class AnimatedObject : AObject
                 PaletteCycleIndex = 0;
         }
 
+        // Get the wrap box
+        Box wrapBox = GetAnimationWrapBox(CurrentAnimation);
+
         // Enumerate every channel
         int channelIndex = 0;
         foreach (AnimationChannel channel in EnumerateCurrentChannels())
@@ -475,9 +507,9 @@ public class AnimatedObject : AObject
 
                     // Get x position
                     float xPos = channel.XPosition;
-                    if (WrapMinX != Single.NaN && xPos < WrapMinX)
+                    if (wrapBox.Left != 0 && xPos <= wrapBox.Left)
                         xPos += 256;
-                    else if (WrapMaxX != Single.NaN && xPos > WrapMaxX)
+                    else if (wrapBox.Right != 0 && xPos >= wrapBox.Right)
                         xPos -= 256;
 
                     Vector2 pos = GetAnchoredPosition();
@@ -489,9 +521,9 @@ public class AnimatedObject : AObject
 
                     // Get y position
                     float yPos = channel.YPosition;
-                    if (WrapMinY != Single.NaN && yPos < WrapMinY)
+                    if (wrapBox.Top != 0 && yPos <= wrapBox.Top)
                         yPos += 256;
-                    else if (WrapMaxY != Single.NaN && yPos > WrapMaxY)
+                    else if (wrapBox.Bottom != 0 && yPos >= wrapBox.Bottom)
                         yPos -= 256;
 
                     if (!FlipY)

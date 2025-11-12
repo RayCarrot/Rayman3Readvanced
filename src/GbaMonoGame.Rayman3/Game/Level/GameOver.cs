@@ -149,6 +149,9 @@ public class GameOver : Frame
             RenderContext = Rom.OriginalGameRenderContext,
         };
 
+        // The body wraps to the bottom
+        Rayman.SetAnimationWrap(8, new Box(0, 0, 0, 127));
+
         Countdown1 = new AnimatedObject(countdownAnimations, countdownAnimations.IsDynamic)
         {
             IsFramed = true,

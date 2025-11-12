@@ -341,6 +341,12 @@ public class Intro : Frame, IHasPlayfield
             CurrentAnimation = 0,
             RenderContext = Rom.OriginalGameRenderContext,
         };
+        
+        // The wings wrap to the bottom for the first few frames
+        BlackLumAndLogoObj.SetAnimationWrap(0, new Box(0, 0, 0, 126));
+        
+        // The 3 of the logo wraps to the bottom when first appearing
+        BlackLumAndLogoObj.SetAnimationWrap(7, new Box(0, 0, 0, 126));
 
         PlayfieldResource introPlayfield = Rom.LoadResource<PlayfieldResource>(Rayman3DefinedResource.IntroPlayfield);
         Playfield = TgxPlayfield.Load<TgxPlayfield2D>(introPlayfield);
