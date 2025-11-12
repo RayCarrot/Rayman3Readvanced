@@ -47,7 +47,8 @@ public readonly struct PhysicalType
         // NOTE: Generally we don't want to floor floats so that we can keep sub-pixel positions, however
         //       in this case it causes issues when actors move down on sloped ground as they don't move
         //       down with it fast enough to keep up with the slope, and thus can get de-synced. This is
-        //       an issue with the Slapdash enemy in Hoodlum Hideout 2 when charging down the slopes.
+        //       an issue with the Slapdash enemy in Hoodlum Hideout 2 when charging down the slopes. It
+        //       also causes an issue in Mega Havoc 4 where the boulders get stuck on the slopes.
         topSolid = MathF.Floor(topSolid);
 
         return topSolid;

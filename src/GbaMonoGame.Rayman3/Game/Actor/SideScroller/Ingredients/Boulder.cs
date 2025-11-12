@@ -4,7 +4,6 @@ using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
 
-// TODO: Issue in Mega Havoc 4 where they don't turn around. They should be seen as falling, yet they don't.
 public sealed partial class Boulder : MovableActor
 {
     public Boulder(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
