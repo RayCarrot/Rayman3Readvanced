@@ -37,15 +37,15 @@ public partial class WoodenShieldedHoodboom
                 }
                 else
                 {
-                    if ((Flags & 0x80) == 0)
+                    if (!IsShieldDestroyed)
                     {
                         ActionId = IsFacingRight ? Action.Idle_Right : Action.Idle_Left;
                     }
                     else
                     {
-                        Flags = (byte)((Flags + 1) & 0xf3);
+                        TauntFlag = TauntFlag == false;
 
-                        if ((Flags & 1) != 0)
+                        if (TauntFlag)
                         {
                             ActionId = IsFacingRight ? Action.Taunt_Right : Action.Taunt_Left;
                             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CagOno01_Mix01);
@@ -57,10 +57,15 @@ public partial class WoodenShieldedHoodboom
                     }
                 }
 
-                if ((Flags & 0x40) != 0)
-                    Flags = (byte)(Flags & 0x9f | 0x20);
+                if (JustHitShield)
+                {
+                    DoQuickAttack = true;
+                    JustHitShield = false;
+                }
                 else
-                    Flags = (byte)(Flags & 0xdf);
+                {
+                    DoQuickAttack = false;
+                }
 
                 Timer = GameTime.ElapsedFrames;
                 break;
@@ -71,8 +76,8 @@ public partial class WoodenShieldedHoodboom
 
                 LevelMusicManager.PlaySpecialMusicIfDetected(this);
 
-                bool readyToAttack = (Flags & 0x81) == 0x80 || 
-                                     ((Flags & 0x20) != 0 && 25 < GameTime.ElapsedFrames - Timer) || 
+                bool readyToAttack = (!TauntFlag && IsShieldDestroyed) || 
+                                     (DoQuickAttack && 25 < GameTime.ElapsedFrames - Timer) || 
                                      100 < GameTime.ElapsedFrames - Timer;
 
                 float addLeft;
@@ -91,7 +96,7 @@ public partial class WoodenShieldedHoodboom
                 bool detectedMainActor = Scene.IsDetectedMainActor(this, 0, 0, addLeft, addRight);
 
                 if ((detectedMainActor && readyToAttack) || 
-                    (IsActionFinished && (Flags & 0x80) != 0))
+                    (IsActionFinished && IsShieldDestroyed))
                 {
                     State.MoveTo(Fsm_PrepareGrenade);
                     return false;
@@ -204,39 +209,43 @@ public partial class WoodenShieldedHoodboom
         switch (action)
         {
             case FsmAction.Init:
-                if ((Flags & 0x80) != 0)
+                if (IsShieldDestroyed)
                 {
+                    // This is unused since the enemy always has 1 hit-point meaning it'll die here
                     ActionId = IsFacingRight ? Action.Dizzy_Right : Action.Dizzy_Left;
                     ChangeAction();
                     StartInvulnerability();
                 }
-                else if ((Flags & 0x40) != 0)
-                {
-                    ActionId = IsFacingRight ? Action.ShieldedBreakShield_Right : Action.ShieldedBreakShield_Left;
-                    ChangeAction();
-
-                    if (HasShield)
-                        Flags |= 0x90;
-                    else
-                        Flags |= 0x80;
-
-                    HasShield = false;
-
-                    if (HitPoints != 0)
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodImp_Mix03);
-
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CagoTurn_Mix03);
-                }
                 else
                 {
-                    ActionId = IsFacingRight ? Action.ShieldedHitShield_Right : Action.ShieldedHitShield_Left;
-                    ChangeAction();
-                    Flags |= 0x40;
+                    // First hit
+                    if (!JustHitShield)
+                    {
+                        ActionId = IsFacingRight ? Action.ShieldedHitShield_Right : Action.ShieldedHitShield_Left;
+                        ChangeAction();
+                        JustHitShield = true;
 
-                    if (HitPoints != 0)
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodImp_Mix03);
+                        if (HitPoints != 0)
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodImp_Mix03);
+                    }
+                    // Second hit
+                    else
+                    {
+                        ActionId = IsFacingRight ? Action.ShieldedBreakShield_Right : Action.ShieldedBreakShield_Left;
+                        ChangeAction();
+
+                        if (HasShield)
+                            PerformHitKnockback = true;
+
+                        IsShieldDestroyed = true;
+                        HasShield = false;
+
+                        if (HitPoints != 0)
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodImp_Mix03);
+
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CagoTurn_Mix03);
+                    }
                 }
-
                 break;
 
             case FsmAction.Step:
@@ -245,15 +254,17 @@ public partial class WoodenShieldedHoodboom
 
                 LevelMusicManager.PlaySpecialMusicIfDetected(this);
 
-                if (AnimatedObject.CurrentFrame > 2 && (Flags & 0x10) != 0) 
+                // Perform knock-back
+                if (AnimatedObject.CurrentFrame > 2 && PerformHitKnockback) 
                 {
                     if (IsFacingRight)
                         Position -= new Vector2(1, 0);
                     else
                         Position += new Vector2(1, 0);
 
+                    // Finish knock-back
                     if (AnimatedObject.CurrentFrame == 8)
-                        Flags &= 0xef;
+                        PerformHitKnockback = false;
                 }
 
                 if (IsActionFinished)
@@ -264,8 +275,7 @@ public partial class WoodenShieldedHoodboom
                 break;
 
             case FsmAction.UnInit:
-                if ((Flags & 0x10) != 0)
-                    Flags = (byte)(Flags & 0xef);
+                PerformHitKnockback = false;
                 break;
         }
 

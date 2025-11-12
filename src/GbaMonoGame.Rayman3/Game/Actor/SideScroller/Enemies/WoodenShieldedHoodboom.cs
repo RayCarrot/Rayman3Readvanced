@@ -10,7 +10,11 @@ public sealed partial class WoodenShieldedHoodboom : InteractableActor
         actorResource)
     {
         PrevHitPoints = HitPoints;
-        Flags = 0;
+        TauntFlag = false;
+        PerformHitKnockback = false;
+        DoQuickAttack = false;
+        JustHitShield = false;
+        IsShieldDestroyed = false;
         HasShield = true;
 
         IsObjectCollisionXOnly = true;
@@ -21,7 +25,11 @@ public sealed partial class WoodenShieldedHoodboom : InteractableActor
     public int PrevHitPoints { get; set; }
     public uint Timer { get; set; }
     public uint InvulnerabilityTimer { get; set; }
-    public byte Flags { get; set; } // TODO: Rename and split up into multiple values if possible
+    public bool TauntFlag { get; set; }
+    public bool PerformHitKnockback { get; set; }
+    public bool DoQuickAttack { get; set; }
+    public bool JustHitShield { get; set; }
+    public bool IsShieldDestroyed { get; set; }
     public bool HasShield { get; set; }
 
     private void StartInvulnerability()
@@ -47,7 +55,7 @@ public sealed partial class WoodenShieldedHoodboom : InteractableActor
 
                     if (ActionId is Action.ShieldedBreakShield_Right or Action.ShieldedBreakShield_Left)
                         HitPoints = PrevHitPoints;
-                    else if (State != Fsm_Hit || (Flags & 0x40) != 0)
+                    else if (State != Fsm_Hit || JustHitShield)
                         State.MoveTo(Fsm_Hit);
                 }
                 return false;
