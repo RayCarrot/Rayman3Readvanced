@@ -279,6 +279,11 @@ Most actors have the first animation be unused and just single frame, most likel
 
 - There are 2 unused states which use the unused actions. No special code besides that exist in the states though.
 
+#### WoodenShieldedHoodboom
+- Due to the enemy always having 1 hit-point it makes the stunned animation unused:
+
+![Animation 12](discoveries_assets/WoodenShieldedHoodboom_Anim_12.gif)
+
 #### Ammo
 - The actor is unused. It's meant to appear in the final boss and give you ammo to shoot from the flying shell as it does in the ETSC prototype.
 - There is a value that saves the initial Y position. This goes unused as when the ammo respawns it sets a random Y position from a list, ignoring the initial one.
