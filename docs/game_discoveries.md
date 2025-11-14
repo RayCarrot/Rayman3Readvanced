@@ -26,6 +26,20 @@
 - The music `lyfreeVOX4` is unused and has no corresponding sound event.
 - The sound effects `OnoEfor1_Mix02`, `Propulse_Combust1_Mix02` and `Curtain2_YoyoMove_Mix02` are unused, along with their corresponding sound events.
 
+### Animations
+Various animations have an issue where the Y position is too low, making the sprite wrap back to the bottom. In some cases this is fixed by the GBA screen wrapping it back, but in other cases it's not and it appears as if sprites are missing when rendered in-game (due to them actually being rendered below the screen).
+
+| GBA Animation | N-Gage Animation | GBA behavior | N-Gage behavior
+|---|---|---|---|
+| ![GBA Grolgoth animation 34](discoveries_assets/Grolgoth_Anim_34.gif) | ![N-Gage Grolgoth animation 34](discoveries_assets/NGage_Grolgoth_Anim_34.gif) | The first 2 frames show the head appearing from the bottom of the screen. | Same as GBA.
+| ![GBA Rocky animation 1](discoveries_assets/Rocky_Anim_1.gif) | ![N-Gage Rocky animation 1](discoveries_assets/NGage_Rocky_Anim_1.gif) | The fists disappear (render below the screen) for 2 frames. | Same as GBA.
+| ![GBA Rocky animation 5](discoveries_assets/Rocky_Anim_5.gif) | ![N-Gage Rocky animation 1](discoveries_assets/NGage_Rocky_Anim_5.gif) | The fists disappear (render below the screen) for 1 frame. | Same as GBA.
+| ![GBA Rocky animation 7](discoveries_assets/Rocky_Anim_7.gif) | ![N-Gage Rocky animation 1](discoveries_assets/NGage_Rocky_Anim_7.gif) | The fists disappear (render below the screen) for 3 frames. | Same as GBA.
+| ![GBA RockyFlame animation 0](discoveries_assets/RockyFlame_Anim_0.gif) | ![N-Gage RockyFlame animation 0](discoveries_assets/NGage_RockyFlame_Anim_0.gif) | This renders correctly due to wrapping back up. | The animation was remade to avoid the wrapping issue.
+| ![GBA Intro animation 0](discoveries_assets/Intro_Anim_0.gif) | ![N-Gage Intro animation 0](discoveries_assets/NGage_Intro_Anim_0.gif) | The wings disappear (render below the screen) for 2 frames. | Same as GBA.
+| ![GBA Intro animation 7](discoveries_assets/Intro_Anim_7.gif) | ![N-Gage Intro animation 7](discoveries_assets/NGage_Intro_Anim_7.gif) | The 3 disappears (renders below the screen) for 1 frame. | The first frame shows the R at the bottom of the screen.
+| ![GBA GameOverRayman animation 8](discoveries_assets/GameOverRayman_Anim_8.gif) | ![N-Gage GameOverRayman animation 8](discoveries_assets/NGage_GameOverRayman_Anim_8.gif) | This renders correctly due to wrapping back up. | The animation was remade to avoid the wrapping issue.
+
 ### Actors
 Most actors have the first animation be unused and just single frame, most likely for their level editor. This is not included when mentioning unused animations for each actor.
 
@@ -39,8 +53,8 @@ Most actors have the first animation be unused and just single frame, most likel
 - There's a function which checks if the current level has lava in it, used to determine the drowning animation. This however includes two levels which don't have lava, those being `Den of Rocky` and the first part of `Heart of the Ancients`, as well a Mode7 map which doesn't even use the Rayman actor, that being `Magma Mayhem 2`. It also forgets to include the third GameCube bonus level, making it not show the lava splash when drowning.
 - The N-Gage version has an unused item which would make arrows appear on the screen, pointing towards the other players. The code for these arrows is fully implemented and there are animations for them too, with the color changing based on the player:
 
-![Animation 0](discoveries_assets/PlayerArrow_Anim_0.gif)
-![Animation 1](discoveries_assets/PlayerArrow_Anim_1.gif)
+![Animation 0](discoveries_assets/NGage_PlayerArrow_Anim_0.gif)
+![Animation 1](discoveries_assets/NGage_PlayerArrow_Anim_1.gif)
 
 - There are various unused message handlers:
     - Message 1015 would have been used for collecting a big yellow lum and increases the lums count by 10.
@@ -313,16 +327,16 @@ Most actors have the first animation be unused and just single frame, most likel
 #### CaptureTheFlagFlagBase
 - There are 3 unused animations of the base without the flag. In the game it removes the flag from the normal animations by hiding its animation channel instead of playing a different animation.
 
-![Animation 0](discoveries_assets/CaptureTheFlagFlagBase_Anim_0.gif)
-![Animation 3](discoveries_assets/CaptureTheFlagFlagBase_Anim_3.gif)
-![Animation 4](discoveries_assets/CaptureTheFlagFlagBase_Anim_4.gif)
+![Animation 0](discoveries_assets/NGage_CaptureTheFlagFlagBase_Anim_0.gif)
+![Animation 3](discoveries_assets/NGage_CaptureTheFlagFlagBase_Anim_3.gif)
+![Animation 4](discoveries_assets/NGage_CaptureTheFlagFlagBase_Anim_4.gif)
 
 - There is an unused value for the current team id in teams mode. This is only ever set.
 
 #### CaptureTheFlagItems
 - Action 2 is unused and would have been used for an item that makes arrows appear on the sides of the screen, pointing to the other players. An animation exists for this item, but it appears to be using the wrong sprites:
 
-![Animation 2](discoveries_assets/CaptureTheFlagItems_Anim_2.gif)
+![Animation 2](discoveries_assets/NGage_CaptureTheFlagItems_Anim_2.gif)
 
 - When the item is collected by a player it sends a message to the player actor with the item type and duration it should last for. The duration is determined from a table with a value for each type. However each value in this table is set to 300, making it completely unnecessary.
 
