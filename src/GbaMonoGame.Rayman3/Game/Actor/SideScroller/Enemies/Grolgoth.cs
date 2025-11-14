@@ -423,10 +423,10 @@ public sealed partial class Grolgoth : MovableActor
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
-        // The animation wraps to the bottom for the first 2 frames, but not after!
+        // The animation wraps to the bottom for the first 2 frames, but not after! This is noticeable in both the GBA and N-Gage versions.
         if (AnimatedObject.CurrentAnimation == 34)
         {
-            if (AnimatedObject.CurrentFrame < 2)
+            if (Engine.ActiveConfig.Tweaks.FixBugs && AnimatedObject.CurrentFrame < 2)
                 AnimatedObject.SetAnimationWrap(34, new Box(0, 0, 0, 67));
             else
                 AnimatedObject.SetAnimationWrap(34, Box.Empty);

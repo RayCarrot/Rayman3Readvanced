@@ -342,11 +342,21 @@ public class Intro : Frame, IHasPlayfield
             RenderContext = Rom.OriginalGameRenderContext,
         };
         
-        // The wings wrap to the bottom for the first few frames
-        BlackLumAndLogoObj.SetAnimationWrap(0, new Box(0, 0, 0, 126));
-        
-        // The 3 of the logo wraps to the bottom when first appearing
-        BlackLumAndLogoObj.SetAnimationWrap(7, new Box(0, 0, 0, 126));
+        // The wings wrap to the bottom for the first few frames. This is only noticeable on GBA, but happens on N-Gage too.
+        if (Engine.ActiveConfig.Tweaks.FixBugs)
+            BlackLumAndLogoObj.SetAnimationWrap(0, new Box(0, 0, 0, 126));
+
+        if (Engine.ActiveConfig.Tweaks.FixBugs)
+        {
+            // The 3 of the logo wraps to the bottom when first appearing
+            if (Rom.Platform == Platform.GBA)
+                BlackLumAndLogoObj.SetAnimationWrap(7, new Box(0, 0, 0, 126));
+            // The R of the logo wraps to the bottom when first appearing
+            else if (Rom.Platform == Platform.NGage)
+                BlackLumAndLogoObj.SetAnimationWrap(7, new Box(0, 0, 0, 127));
+            else
+                throw new UnsupportedPlatformException();
+        }
 
         PlayfieldResource introPlayfield = Rom.LoadResource<PlayfieldResource>(Rayman3DefinedResource.IntroPlayfield);
         Playfield = TgxPlayfield.Load<TgxPlayfield2D>(introPlayfield);

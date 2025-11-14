@@ -11,7 +11,7 @@ public sealed partial class RockyFlame : InteractableActor
         Timer = 0;
         AnimatedObject.ObjPriority = 10;
 
-        // The top of the flame wraps to the bottom on GBA
+        // The top of the flame wraps to the bottom on GBA. It however wraps back up in the original game.
         if (Rom.Platform == Platform.GBA)
             AnimatedObject.SetAnimationWrap(0, new Box(0, 0, 0, 90));
     }

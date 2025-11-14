@@ -149,8 +149,9 @@ public class GameOver : Frame
             RenderContext = Rom.OriginalGameRenderContext,
         };
 
-        // The body wraps to the bottom
-        Rayman.SetAnimationWrap(8, new Box(0, 0, 0, 127));
+        // The body wraps to the bottom on GBA. Due to the fixed camera it however wraps back up in the original game.
+        if (Rom.Platform == Platform.GBA)
+            Rayman.SetAnimationWrap(8, new Box(0, 0, 0, 127));
 
         Countdown1 = new AnimatedObject(countdownAnimations, countdownAnimations.IsDynamic)
         {
