@@ -1,12 +1,7 @@
 <Project>
-  <!-- Define the platform -->
-  <PropertyGroup>
-    <DefineConstants>WINDOWSDX</DefineConstants>
-    <!--<DefineConstants>DESKTOPGL</DefineConstants>-->
-  </PropertyGroup>
-
   <!-- Global -->
   <PropertyGroup>
+    <TargetFrameworks>net9.0-windows;net9.0</TargetFrameworks>
     <LangVersion>13.0</LangVersion>
     <RollForward>Major</RollForward>
     <PlatformTarget>x64</PlatformTarget>
@@ -14,12 +9,12 @@
   </PropertyGroup>
 
   <!-- WINDOWSDX -->
-  <PropertyGroup Condition="$(DefineConstants.Contains(WINDOWSDX))">
-    <TargetFramework>net9.0-windows</TargetFramework>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net9.0-windows'">
+    <DefineConstants>WINDOWSDX</DefineConstants>
   </PropertyGroup>
 
   <!-- DESKTOPGL -->
-  <PropertyGroup Condition="$(DefineConstants.Contains(DESKTOPGL))">
-    <TargetFramework>net9.0</TargetFramework>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net9.0'">
+    <DefineConstants>DESKTOPGL</DefineConstants>
   </PropertyGroup>
 </Project>
