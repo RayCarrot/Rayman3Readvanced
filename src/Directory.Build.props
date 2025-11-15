@@ -10,6 +10,7 @@
     <LangVersion>13.0</LangVersion>
     <RollForward>Major</RollForward>
     <PlatformTarget>x64</PlatformTarget>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)nuget-artifacts</PackageOutputPath>
   </PropertyGroup>
 
   <!-- WINDOWSDX -->

@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <PackageId>GbaMonoGame.Native</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>RayCarrot</Authors>
+    <Description>Native libraries for GbaMonoGame</Description>
+    <RepositoryUrl>https://github.com/RayCarrot/Rayman3Readvanced</RepositoryUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="runtimes\**\*.*" Pack="True" PackagePath="runtimes\" />
+  </ItemGroup>
+</Project>
