@@ -39,7 +39,6 @@ public class BonusMenuPage : MenuPage
             }));
         AddOption(new TextMenuOption("LEVEL EDITOR"));
         AddOption(new TextMenuOption("SAVE TRANSFER"));
-        AddOption(new TextMenuOption("ORIGINAL MENU"));
     }
 
     protected override void Step_Active()

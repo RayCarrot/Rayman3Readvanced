@@ -9,6 +9,7 @@ public record TweaksGameConfig : IniSectionObject
         InternalGameResolution = defaultResolution;
         UseExtendedBackgrounds = true;
         UseGbaEffectsOnNGage = true;
+        UseModernMainMenu = true;
         UseModernPauseDialog = true;
         UseReadvancedLogo = true;
         CanSkipTextBoxes = true;
@@ -26,6 +27,7 @@ public record TweaksGameConfig : IniSectionObject
     public Vector2? InternalGameResolution { get; set; } // Null to use original resolution
     public bool UseExtendedBackgrounds { get; set; }
     public bool UseGbaEffectsOnNGage { get; set; }
+    public bool UseModernMainMenu { get; set; }
     public bool UseModernPauseDialog { get; set; }
     public bool UseReadvancedLogo { get; set; }
     public bool CanSkipTextBoxes { get; set; }
@@ -42,6 +44,7 @@ public record TweaksGameConfig : IniSectionObject
         InternalGameResolution = serializer.Serialize<Vector2?>(InternalGameResolution, "InternalGameResolution");
         UseExtendedBackgrounds = serializer.Serialize<bool>(UseExtendedBackgrounds, "UseExtendedBackgrounds");
         UseGbaEffectsOnNGage = serializer.Serialize<bool>(UseGbaEffectsOnNGage, "UseGbaEffectsOnNGage");
+        UseModernMainMenu = serializer.Serialize<bool>(UseModernMainMenu, "UseModernMainMenu");
         UseModernPauseDialog = serializer.Serialize<bool>(UseModernPauseDialog, "UseModernPauseDialog");
         UseReadvancedLogo = serializer.Serialize<bool>(UseReadvancedLogo, "UseReadvancedLogo");
         CanSkipTextBoxes = serializer.Serialize<bool>(CanSkipTextBoxes, "CanSkipTextBoxes");

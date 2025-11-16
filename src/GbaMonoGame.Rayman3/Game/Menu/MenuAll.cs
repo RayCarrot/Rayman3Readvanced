@@ -621,7 +621,9 @@ public partial class MenuAll : Frame, IHasPlayfield
             GameTime.Resume();
         }
 
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__raytheme);
+        // Custom to prevent music from stopping when loading the modern menu
+        if (!IsLoadingModernMenu)
+            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__raytheme);
 
         Playfield.UnInit();
     }

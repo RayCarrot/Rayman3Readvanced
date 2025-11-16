@@ -173,7 +173,10 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
                         }
                         else
                         {
-                            FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.Multiplayer));
+                            if (Engine.ActiveConfig.Tweaks.UseModernMainMenu)
+                                FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.Multiplayer));
+                            else
+                                FrameManager.SetNextFrame(new MenuAll(InitialMenuPage.Multiplayer));
 
                             Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                             Gfx.Fade = 1;
@@ -216,7 +219,10 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
             InitialMenuPage menuPage = Rom.Platform == Platform.GBA && EndOfFrame
                 ? InitialMenuPage.Multiplayer
                 : InitialMenuPage.MultiplayerLostConnection;
-            FrameManager.SetNextFrame(new ModernMenuAll(menuPage));
+            if (Engine.ActiveConfig.Tweaks.UseModernMainMenu)
+                FrameManager.SetNextFrame(new ModernMenuAll(menuPage));
+            else
+                FrameManager.SetNextFrame(new MenuAll(menuPage));
 
             Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
             Gfx.Fade = 1;

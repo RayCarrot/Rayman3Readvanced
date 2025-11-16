@@ -1,6 +1,7 @@
 ﻿using System;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+using GbaMonoGame.Rayman3.Readvanced;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
 
@@ -35,6 +36,9 @@ public partial class MenuAll
         Platform.NGage => 5,
         _ => throw new UnsupportedPlatformException()
     };
+
+    // Custom for going back to the modern menu
+    public bool IsLoadingModernMenu { get; set; }
 
     #endregion
 
@@ -213,46 +217,66 @@ public partial class MenuAll
 
     private void Step_GameMode()
     {
-        if (JoyPad.IsButtonJustPressed(GbaInput.Up))
+        if (IsLoadingModernMenu)
         {
-            SelectOption(SelectedOption == 0 ? GameModeOptionsCount - 1 : SelectedOption - 1, true);
-
-            Anims.GameModeList.CurrentAnimation = Localization.LanguageUiIndex * GameModeOptionsCount + SelectedOption;
+            if (!TransitionsFX.IsFadingOut)
+                FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.Down))
+        else
         {
-            SelectOption(SelectedOption == GameModeOptionsCount - 1 ? 0 : SelectedOption + 1, true);
-
-            Anims.GameModeList.CurrentAnimation = Localization.LanguageUiIndex * GameModeOptionsCount + SelectedOption;
-        }
-        else if (Rom.Platform switch
-                 {
-                     Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
-                     Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
-                     _ => throw new UnsupportedPlatformException()
-                 })
-        {
-            Anims.Cursor.CurrentAnimation = 16;
-
-            NextStepAction = SelectedOption switch
+            if (JoyPad.IsButtonJustPressed(GbaInput.Up))
             {
-                0 => Step_InitializeTransitionToSinglePlayer,
-                1 when Rom.Platform == Platform.GBA => Step_InitializeTransitionToMultiplayerModeSelection,
-                1 when Rom.Platform == Platform.NGage => Step_InitializeTransitionToMultiplayerConnectionSelection,
-                2 => Step_InitializeTransitionToOptions,
+                SelectOption(SelectedOption == 0 ? GameModeOptionsCount - 1 : SelectedOption - 1, true);
 
-                3 when Rom.Platform == Platform.NGage => Step_InitializeTransitionToHelp,
-                4 when Rom.Platform == Platform.NGage => Step_InitializeTransitionToQuit,
-                
-                _ => throw new Exception("Wrong game mode selection")
-            };
+                Anims.GameModeList.CurrentAnimation = Localization.LanguageUiIndex * GameModeOptionsCount + SelectedOption;
+            }
+            else if (JoyPad.IsButtonJustPressed(GbaInput.Down))
+            {
+                SelectOption(SelectedOption == GameModeOptionsCount - 1 ? 0 : SelectedOption + 1, true);
 
-            CurrentStepAction = Step_TransitionOutOfGameMode;
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
-            SelectOption(0, false);
-            TransitionValue = 0;
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
-            TransitionOutCursorAndStem();
+                Anims.GameModeList.CurrentAnimation = Localization.LanguageUiIndex * GameModeOptionsCount + SelectedOption;
+            }
+            else if (Rom.Platform switch
+            {
+                Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
+                Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
+                _ => throw new UnsupportedPlatformException()
+            })
+            {
+                Anims.Cursor.CurrentAnimation = 16;
+
+                NextStepAction = SelectedOption switch
+                {
+                    0 => Step_InitializeTransitionToSinglePlayer,
+                    1 when Rom.Platform == Platform.GBA => Step_InitializeTransitionToMultiplayerModeSelection,
+                    1 when Rom.Platform == Platform.NGage => Step_InitializeTransitionToMultiplayerConnectionSelection,
+                    2 => Step_InitializeTransitionToOptions,
+
+                    3 when Rom.Platform == Platform.NGage => Step_InitializeTransitionToHelp,
+                    4 when Rom.Platform == Platform.NGage => Step_InitializeTransitionToQuit,
+
+                    _ => throw new Exception("Wrong game mode selection")
+                };
+
+                CurrentStepAction = Step_TransitionOutOfGameMode;
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+                SelectOption(0, false);
+                TransitionValue = 0;
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                TransitionOutCursorAndStem();
+            }
+            // Custom to return to the modern menu
+            else if (Rom.Platform switch
+            {
+                Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B),
+                Platform.NGage => NGageJoyPadHelpers.IsBackButtonJustPressed(),
+                _ => throw new UnsupportedPlatformException()
+            })
+            {
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+                IsLoadingModernMenu = true;
+                TransitionsFX.FadeOutInit(4);
+            }
         }
 
         AnimationPlayer.Play(Anims.GameModeList);

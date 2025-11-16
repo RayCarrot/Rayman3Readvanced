@@ -31,7 +31,7 @@ public class Intro : Frame, IHasPlayfield
     public TgxPlayfield2D Playfield { get; set; }
 
     public Action CurrentStepAction { get; set; }
-    public ModernMenuAll Menu { get; set; }
+    public Frame Menu { get; set; }
     public AnimatedObject PressStartObj { get; set; }
     public AnimatedObject GameloftLogoObj { get; set; }
     public AnimatedObject BlackLumAndLogoObj { get; set; }
@@ -282,13 +282,26 @@ public class Intro : Frame, IHasPlayfield
         SoundEngineInterface.SetNbVoices(10);
 
         // Pre-load the menu
-        Menu = new ModernMenuAll(Rom.Platform switch
+        if (Engine.ActiveConfig.Tweaks.UseModernMainMenu)
         {
-            Platform.GBA => InitialMenuPage.Language,
-            Platform.NGage => InitialMenuPage.NGage_FirstPage,
-            _ => throw new UnsupportedPlatformException(),
-        });
-        Menu.LoadGameInfo();
+            Menu = new ModernMenuAll(Rom.Platform switch
+            {
+                Platform.GBA => InitialMenuPage.Language,
+                Platform.NGage => InitialMenuPage.NGage_FirstPage,
+                _ => throw new UnsupportedPlatformException(),
+            });
+            ((ModernMenuAll)Menu).LoadGameInfo();
+        }
+        else
+        {
+            Menu = new MenuAll(Rom.Platform switch
+            {
+                Platform.GBA => InitialMenuPage.Language,
+                Platform.NGage => InitialMenuPage.NGage_FirstPage,
+                _ => throw new UnsupportedPlatformException(),
+            });
+            ((MenuAll)Menu).LoadGameInfo();
+        }
 
         AnimationPlayer = new AnimationPlayer(true, SoundEventsManager.ProcessEvent);
 

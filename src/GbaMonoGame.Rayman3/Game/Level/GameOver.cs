@@ -349,7 +349,13 @@ public class GameOver : Frame
 
             case GameOverMode.ReturnToMenu:
                 if (!TransitionsFX.IsFadingOut)
-                    FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
+                {
+                    if (Engine.ActiveConfig.Tweaks.UseModernMainMenu)
+                        FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
+                    else
+                        FrameManager.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));
+                }
+
                 break;
 
             default:

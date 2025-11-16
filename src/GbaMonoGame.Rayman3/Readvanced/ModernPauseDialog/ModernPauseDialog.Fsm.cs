@@ -198,11 +198,23 @@ public partial class ModernPauseDialog
                         Gfx.Fade = 1;
 
                         if (TimeAttackInfo.IsActive)
-                            FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.TimeAttack));
+                        {
+                            if (Engine.ActiveConfig.Tweaks.UseModernMainMenu)
+                                FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.TimeAttack));
+                            else
+                                FrameManager.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));
+                        }
                         else if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
+                        {
                             FrameManager.SetNextFrame(new GameCubeMenu());
+                        }
                         else
-                            FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
+                        {
+                            if (Engine.ActiveConfig.Tweaks.UseModernMainMenu)
+                                FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
+                            else
+                                FrameManager.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));
+                        }
                     }
 
                     if (Rom.Platform == Platform.GBA)

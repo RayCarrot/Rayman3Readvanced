@@ -238,6 +238,17 @@ public static class GameOptions
                     setData: data => Engine.LocalConfig.Tweaks.UseGbaEffectsOnNGage = data,
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
+                    text: "MAIN MENU",
+                    infoText: "Determines if the game should use the original or updated main menu. The updated one renders in widescreen and has a host of new options. To exit the original one, use the back button",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ORIGINAL", false, TweaksPreset.Original),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("UPDATED", true, TweaksPreset.Readvanced),
+                    ],
+                    getData: _ => Engine.LocalConfig.Tweaks.UseModernMainMenu,
+                    setData: data => Engine.LocalConfig.Tweaks.UseModernMainMenu = data,
+                    getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
                     text: "PAUSE MENU",
                     infoText: "Determines if the game should use the original or updated pause menu. The updated one provides access to the game options and the ability to exit a level.",
                     items:

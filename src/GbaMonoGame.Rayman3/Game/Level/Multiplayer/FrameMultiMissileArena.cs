@@ -49,7 +49,10 @@ public class FrameMultiMissileArena : FrameMissileMultiMode7
             InitialMenuPage menuPage = EndOfFrame
                 ? InitialMenuPage.Multiplayer
                 : InitialMenuPage.MultiplayerLostConnection;
-            FrameManager.SetNextFrame(new ModernMenuAll(menuPage));
+            if (Engine.ActiveConfig.Tweaks.UseModernMainMenu)
+                FrameManager.SetNextFrame(new ModernMenuAll(menuPage));
+            else
+                FrameManager.SetNextFrame(new MenuAll(menuPage));
         }
     }
 }

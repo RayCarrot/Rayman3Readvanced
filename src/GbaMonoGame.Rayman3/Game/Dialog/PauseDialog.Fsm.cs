@@ -391,7 +391,11 @@ public partial class PauseDialog
                         SoundEventsManager.StopAllSongs();
                         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                         Gfx.Fade = 1;
-                        FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
+
+                        if (Engine.ActiveConfig.Tweaks.UseModernMainMenu)
+                            FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
+                        else
+                            FrameManager.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));
                     }
 
                     if (Rom.Platform == Platform.GBA)
@@ -742,7 +746,10 @@ public partial class PauseDialog
                     Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                     Gfx.Fade = 1;
 
-                    FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.Multiplayer));
+                    if (Engine.ActiveConfig.Tweaks.UseModernMainMenu)
+                        FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.Multiplayer));
+                    else
+                        FrameManager.SetNextFrame(new MenuAll(InitialMenuPage.Multiplayer));
 
                     if (Rom.Platform == Platform.GBA)
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
