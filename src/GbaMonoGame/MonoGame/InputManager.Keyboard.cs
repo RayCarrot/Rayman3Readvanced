@@ -14,7 +14,20 @@ public static partial class InputManager
         _keyboardState = Engine.GbaGame.IsActive ? Keyboard.GetState() : new KeyboardState();
     }
 
-    public static Keys GetKey(Input input) => Engine.LocalConfig.Controls.Controls[input];
+    private static Input GetInputsFromKeyboard()
+    {
+        Input inputs = default;
+
+        foreach (Input input in _allInputs)
+        {
+            if (IsKeyPressed(GetKey(input)))
+                inputs |= input;
+        }
+
+        return inputs;
+    }
+
+    public static Keys GetKey(Input input) => Engine.LocalConfig.Controls.KeyboardControls[input];
 
     public static Keys GetDefaultKey(Input input)
     {
@@ -48,7 +61,15 @@ public static partial class InputManager
     // TODO: Improve with localized names
     public static string GetKeyName(Keys key) => key.ToString();
 
-    public static Keys[] GetPressedKeys() => _keyboardState.GetPressedKeys();
+    public static Keys GetPressedKey()
+    {
+        Keys[] keys = _keyboardState.GetPressedKeys();
+        
+        if (keys.Length != 0)
+            return keys[0];
+        else
+            return Keys.None;
+    }
 
     public static bool IsKeyPressed(Keys key) => _keyboardState.IsKeyDown(key);
     public static bool IsKeyReleased(Keys key) => _keyboardState.IsKeyUp(key);
