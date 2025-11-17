@@ -18,9 +18,11 @@ public static partial class InputManager
     {
         Input inputs = default;
 
+        bool modifierPressed = IsKeyPressed(GetKey(Input.Debug_Modifier));
+
         foreach (Input input in _allInputs)
         {
-            if (IsKeyPressed(GetKey(input)))
+            if (RequiresModifier(input) == modifierPressed && IsKeyPressed(GetKey(input)))
                 inputs |= input;
         }
 
@@ -46,6 +48,7 @@ public static partial class InputManager
             Input.Gba_L => Keys.Q,
 
             // Debug
+            Input.Debug_Modifier => Keys.LeftControl,
             Input.Debug_ToggleDebugMode => Keys.Tab,
             Input.Debug_TogglePause => Keys.P,
             Input.Debug_StepOneFrame => Keys.F,

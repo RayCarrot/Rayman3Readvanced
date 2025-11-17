@@ -35,6 +35,8 @@ public static partial class InputManager
         };
     }
 
+    public static bool RequiresModifier(Input input) => input > Input.Debug_Modifier;
+
     public static bool IsInputPressed(Input input) => (_inputs & input) != 0;
     public static bool IsInputReleased(Input input) => (_inputs & input) == 0;
     public static bool IsInputJustPressed(Input input) => (_inputs & input) != 0 && (_previousInputs & input) == 0;

@@ -35,9 +35,11 @@ public static partial class InputManager
     {
         Input inputs = default;
 
+        bool modifierPressed = IsButtonPressed(GetButton(Input.Debug_Modifier));
+
         foreach (Input input in _allInputs)
         {
-            if (IsButtonPressed(GetButton(input)))
+            if (RequiresModifier(input) == modifierPressed && IsButtonPressed(GetButton(input)))
                 inputs |= input;
         }
 
@@ -56,7 +58,6 @@ public static partial class InputManager
 
     public static Buttons GetButton(Input input) => Engine.LocalConfig.Controls.GamePadControls[input];
 
-    // TODO: Map debug buttons using debug modifier key
     public static Buttons GetDefaultButton(Input input)
     {
         return input switch
@@ -74,13 +75,14 @@ public static partial class InputManager
             Input.Gba_L => Buttons.LeftShoulder,
 
             // Debug
-            Input.Debug_ToggleDebugMode => Buttons.None,
-            Input.Debug_TogglePause => Buttons.None,
-            Input.Debug_StepOneFrame => Buttons.None,
-            Input.Debug_SpeedUp => Buttons.None,
-            Input.Debug_ToggleDisplayBoxes => Buttons.None,
-            Input.Debug_ToggleDisplayCollision => Buttons.None,
-            Input.Debug_ToggleNoClip => Buttons.None,
+            Input.Debug_Modifier => Buttons.LeftTrigger,
+            Input.Debug_ToggleDebugMode => Buttons.LeftShoulder,
+            Input.Debug_TogglePause => Buttons.Start,
+            Input.Debug_StepOneFrame => Buttons.RightTrigger,
+            Input.Debug_SpeedUp => Buttons.RightShoulder,
+            Input.Debug_ToggleDisplayBoxes => Buttons.X,
+            Input.Debug_ToggleDisplayCollision => Buttons.B,
+            Input.Debug_ToggleNoClip => Buttons.A,
 
             _ => throw new ArgumentOutOfRangeException(nameof(input), input, null)
         };

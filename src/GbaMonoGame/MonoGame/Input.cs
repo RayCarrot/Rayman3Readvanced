@@ -18,11 +18,12 @@ public enum Input
     Gba_L = 1 << 9, // N-Gage: 6
 
     // Debug
-    Debug_ToggleDebugMode = 1 << 10,
-    Debug_TogglePause = 1 << 11,
-    Debug_StepOneFrame = 1 << 12,
-    Debug_SpeedUp = 1 << 13,
-    Debug_ToggleDisplayBoxes = 1 << 14,
-    Debug_ToggleDisplayCollision = 1 << 15,
-    Debug_ToggleNoClip = 1 << 16,
+    Debug_Modifier = 1 << 10, // Any input after this requires the modifier
+    Debug_ToggleDebugMode = 1 << 11,
+    Debug_TogglePause = 1 << 12,
+    Debug_StepOneFrame = 1 << 13,
+    Debug_SpeedUp = 1 << 14,
+    Debug_ToggleDisplayBoxes = 1 << 15,
+    Debug_ToggleDisplayCollision = 1 << 16,
+    Debug_ToggleNoClip = 1 << 17,
 }

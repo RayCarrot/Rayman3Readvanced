@@ -12,11 +12,13 @@ public class ControlOptionsMenuOption : OptionsMenuOption
     public ControlOptionsMenuOption(string text, Input input, bool isDebugOption = false) : base(text, null, isDebugOption)
     {
         Input = input;
+        RequiresModifier = InputManager.RequiresModifier(input);
     }
 
     public override bool ShowArrows => false;
 
     public Input Input { get; }
+    public bool RequiresModifier { get; }
     public InputMode? PreviousInputMode { get; set; }
 
     private void UpdateSelection()
@@ -52,7 +54,9 @@ public class ControlOptionsMenuOption : OptionsMenuOption
         foreach (Input input in Enum.GetValues<Input>())
         {
             // Swap
-            if (input != Input && Engine.LocalConfig.Controls.KeyboardControls[input] == key)
+            if (input != Input &&
+                (input == Input.Debug_Modifier || Input == Input.Debug_Modifier || InputManager.RequiresModifier(input) == RequiresModifier) &&
+                Engine.LocalConfig.Controls.KeyboardControls[input] == key)
             {
                 Engine.LocalConfig.Controls.KeyboardControls[input] = prevKey;
 
@@ -78,7 +82,9 @@ public class ControlOptionsMenuOption : OptionsMenuOption
         foreach (Input input in Enum.GetValues<Input>())
         {
             // Swap
-            if (input != Input && Engine.LocalConfig.Controls.GamePadControls[input] == button)
+            if (input != Input && 
+                (input == Input.Debug_Modifier || Input == Input.Debug_Modifier || InputManager.RequiresModifier(input) == RequiresModifier) && 
+                Engine.LocalConfig.Controls.GamePadControls[input] == button)
             {
                 Engine.LocalConfig.Controls.GamePadControls[input] = prevButton;
 
