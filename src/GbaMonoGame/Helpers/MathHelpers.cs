@@ -43,7 +43,7 @@ public static class MathHelpers
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float Cos256(float x)
     {
-        // Hard-code common 90 degree angles to give precise values. This is closes to
+        // Hard-code common 90 degree angles to give precise values. This is closer to
         // what the game does since it uses pre-calculated data tables for this.
         return x switch
         {
