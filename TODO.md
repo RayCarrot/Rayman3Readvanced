@@ -7,7 +7,6 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
 - Some animations, like the cage icon and Scaleman shadow, have a gap between sprites that end up being less than 1 pixel and thus not normally visible in the original game. However due to how the scaling works here it becomes visible in higher resolutions. Find a way to fix this.
 - Make sure the gameplay is the same for things like multiplayer, time trials etc. so that actor cycles and randomization stay consistent. Also disable debug features to prevent cheating.
 - First time launching the game, before the title screen, should show options like language, controls and option preset.
-- Add controller support. Maybe also haptic feedback on things like camera shake and bomb damage?
 - Press A to skip menu transition like in Rayman M.
 - Add Discord rich presence support.
 - Use Game Jolt API for achievements and leaderboards.
@@ -65,6 +64,7 @@ However online multiplayer would be much more complicated. The game expects the 
     - Power6
     - Worldmap
     - Check multiplayer, menus etc. and check N-Gage
+- Use normalized button inputs between GBA and N-Gage. Have Select always act as going back in menus so we can map it to Circle on a PS controller and have square be the B button (attack).
 
 ## ⭐ Bonus
 ### Achievements
