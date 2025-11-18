@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace GbaMonoGame.Rayman3.Readvanced;
 
 // TODO: Rewrite most text and re-order options
+// TODO: Option to reset to default values?
 public static class GameOptions
 {
     public static GameOptionsGroup[] Create()
@@ -90,6 +91,17 @@ public static class GameOptions
             ]),
             new GameOptionsGroup("CONTROLS",
             [
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "CONTROLLER VIBRATION",
+                    infoText: null,
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true)
+                    ],
+                    getData: _ => Engine.LocalConfig.Controls.EnabledGamePadVibration,
+                    setData: data => Engine.LocalConfig.Controls.EnabledGamePadVibration = data,
+                    getCustomName: _ => null),
                 new ControlOptionsMenuOption(
                     text: "UP",
                     input: Input.Gba_Up),

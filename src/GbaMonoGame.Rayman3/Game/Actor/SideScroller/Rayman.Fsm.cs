@@ -1997,6 +1997,9 @@ public partial class Rayman
                 break;
 
             case FsmAction.Step:
+                if (Timer != 0)
+                    InputManager.SetVibration(VibrationStrength.VeryWeak, VibrationTime.Step);
+
                 // Check for damage
                 if (AttachedObject?.Type == (int)ActorType.Plum)
                 {

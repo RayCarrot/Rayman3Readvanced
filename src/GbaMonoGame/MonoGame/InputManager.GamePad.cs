@@ -20,15 +20,29 @@ public static partial class InputManager
     private static GamePadState _previousGamePadState;
     private static GamePadState _gamePadState;
 
+    private static float _vibrationStrength;
+    private static int _vibrationTimer;
+
     public static bool IsGamePadConnected => _gamePadState.IsConnected;
 
     private static void UpdateGamePad()
     {
-        // TODO: Check capabilities?
-        // GamePadCapabilities capabilities = GamePad.GetCapabilities(PlayerIndex.One);
-
         _previousGamePadState = _gamePadState;
         _gamePadState = GamePad.GetState(PlayerIndex.One);
+
+        if (_vibrationTimer > 0 && 
+            Engine.LocalConfig.Controls.EnabledGamePadVibration && 
+            InputMode == InputMode.GamePad && 
+            IsGamePadConnected)
+        {
+            _vibrationTimer--;
+            GamePad.SetVibration(PlayerIndex.One, _vibrationStrength, _vibrationStrength);
+        }
+        else
+        {
+            _vibrationTimer = 0;
+            GamePad.SetVibration(PlayerIndex.One, 0, 0);
+        }
     }
 
     private static Input GetInputsFromGamePad()
@@ -90,7 +104,7 @@ public static partial class InputManager
 
     public static string GetButtonName(Buttons button)
     {
-        // TODO: Better names to use?
+        // TODO: Better names to use? Names based on controller name so we can support PlayStation names?
         return button switch
         {
             Buttons.None => "None",
@@ -152,5 +166,32 @@ public static partial class InputManager
             return true;
 
         return false;
+    }
+
+    public static void SetVibration(float strength, int time)
+    {
+        _vibrationStrength = strength;
+        _vibrationTimer = time;
+    }
+
+    // TODO: Implement vibration support throughout the game. Maybe tweak values too.
+    public static void SetVibration(VibrationStrength strength, VibrationTime time)
+    {
+        _vibrationStrength = strength switch
+        {
+            VibrationStrength.VeryWeak => 1 / 100f,
+            VibrationStrength.Weak => 1 / 10f,
+            VibrationStrength.Medium => 1 / 5f,
+            VibrationStrength.Strong => 1 / 2f,
+            _ => throw new ArgumentOutOfRangeException(nameof(strength), strength, null)
+        };
+        _vibrationTimer = time switch
+        {
+            VibrationTime.Step => 1,
+            VibrationTime.Short => 5,
+            VibrationTime.Medium => 12,
+            VibrationTime.Long => 20,
+            _ => throw new ArgumentOutOfRangeException(nameof(time), time, null)
+        };
     }
 }

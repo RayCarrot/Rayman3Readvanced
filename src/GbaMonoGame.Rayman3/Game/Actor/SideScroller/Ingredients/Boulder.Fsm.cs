@@ -116,6 +116,11 @@ public partial class Boulder
                     {
                         Scene.Camera.ProcessMessage(this, Message.Cam_Shake, 96);
                         PendingShake = false;
+                        InputManager.SetVibration(VibrationStrength.Strong, VibrationTime.Long);
+                    }
+                    else
+                    {
+                        InputManager.SetVibration(VibrationStrength.Medium, VibrationTime.Medium);
                     }
 
                     Box detectionBox = GetDetectionBox();
