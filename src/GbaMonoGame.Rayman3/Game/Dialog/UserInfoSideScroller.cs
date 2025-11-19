@@ -200,8 +200,6 @@ public class UserInfoSideScroller : Dialog
         SwitchBar?.Set();
     }
 
-    public override void Init() { }
-
     public override void Draw(AnimationPlayer animationPlayer)
     {
         LifeBar.Draw(animationPlayer);

@@ -248,8 +248,6 @@ public class UserInfoMultiMode7 : Dialog
         };
     }
 
-    public override void Init() { }
-
     public override void Draw(AnimationPlayer animationPlayer)
     {
         RaceManagerMulti raceManager = ((FrameMissileMultiMode7)Frame.Current).RaceManager;

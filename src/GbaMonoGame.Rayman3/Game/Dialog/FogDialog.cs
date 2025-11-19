@@ -37,8 +37,6 @@ public class FogDialog : Dialog
         ScrollSpeed = 1;
     }
 
-    public override void Init() { }
-
     public override void Draw(AnimationPlayer animationPlayer)
     {
         if (!ShouldDraw) 

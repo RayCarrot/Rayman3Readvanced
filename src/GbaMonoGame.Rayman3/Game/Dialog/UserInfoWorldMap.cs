@@ -176,8 +176,6 @@ public class UserInfoWorldMap : Dialog
         }
     }
 
-    public override void Init() { }
-
     public override void Draw(AnimationPlayer animationPlayer)
     {
         if (Rom.Platform == Platform.GBA && GameInfo.MapId != MapId.WorldMap)

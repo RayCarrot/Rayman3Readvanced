@@ -1092,8 +1092,6 @@ public partial class UserInfoMulti2D : Dialog
         PrintTime();
     }
 
-    public override void Init() { }
-
     public override void Draw(AnimationPlayer animationPlayer)
     {
         MoveBouncingSprites();

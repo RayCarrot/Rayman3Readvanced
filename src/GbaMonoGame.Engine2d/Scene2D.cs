@@ -9,7 +9,6 @@ using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Engine2d;
 
-// TODO: Do not call Load on dialogs multiple times
 public class Scene2D
 {
     public Scene2D(int id, Func<Scene2D, CameraActor> createCameraFunc, int layersCount, int actorDrawPriority)
@@ -284,6 +283,9 @@ public class Scene2D
     {
         if (!PendingDialogRefresh) 
             return;
+
+        // NOTE: A lot of the animation reloading here isn't needed in our case, but we do it to
+        //       stay consistent with the original game.
 
         // Game resets the AnimationPaletteManager and AnimationSpriteManager here
 
