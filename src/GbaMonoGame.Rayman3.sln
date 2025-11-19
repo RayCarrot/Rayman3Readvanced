@@ -35,6 +35,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GbaMonoGame.Native", "GbaMonoGame.Native\GbaMonoGame.Native.csproj", "{40607D21-B1AA-91EC-560F-00845C35DEE2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GbaMonoGame.Benchmarks", "GbaMonoGame.Benchmarks\GbaMonoGame.Benchmarks.csproj", "{4C967E87-9B95-AC49-E7CC-9B89396EC879}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,10 @@ Global
 		{40607D21-B1AA-91EC-560F-00845C35DEE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40607D21-B1AA-91EC-560F-00845C35DEE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40607D21-B1AA-91EC-560F-00845C35DEE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C967E87-9B95-AC49-E7CC-9B89396EC879}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C967E87-9B95-AC49-E7CC-9B89396EC879}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C967E87-9B95-AC49-E7CC-9B89396EC879}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C967E87-9B95-AC49-E7CC-9B89396EC879}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

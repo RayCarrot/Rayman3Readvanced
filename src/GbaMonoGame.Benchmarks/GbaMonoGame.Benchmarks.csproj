@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.15.6" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\sub-modules\BinarySerializer.Nintendo\src\BinarySerializer.Nintendo.csproj" />
+    <ProjectReference Include="..\..\sub-modules\BinarySerializer.Ubisoft.GbaEngine\src\BinarySerializer.Ubisoft.GbaEngine.csproj" />
+    <ProjectReference Include="..\..\sub-modules\BinarySerializer\src\BinarySerializer.csproj" />
+  </ItemGroup>
+
+</Project>
