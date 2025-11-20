@@ -49,7 +49,7 @@ public class PauseDialogOptionsMenu
     public float? TabsCursorStartX { get; set; }
     public float? TabsCursorDestX { get; set; }
 
-    public OptionsMenuOption[] Options { get; set; }
+    public MenuOption[] Options { get; set; }
     public int SelectedOption { get; set; }
     public int MaxOptions => ShowInfoText ? 4 : 8;
     public int ScrollOffset { get; set; }
@@ -89,7 +89,7 @@ public class PauseDialogOptionsMenu
         Options = Tabs[selectedTab].Options;
         for (int i = 0; i < Options.Length; i++)
         {
-            OptionsMenuOption option = Options[i];
+            MenuOption option = Options[i];
             if (!option.IsInitialized)
             {
                 option.Init(0, RenderContext, i);
@@ -100,7 +100,7 @@ public class PauseDialogOptionsMenu
         }
 
         // Reset all options when switching to the tab (handling presets last!)
-        foreach (OptionsMenuOption option in Options.OrderBy(x => x is PresetSelectionOptionsMenuOption ? 1 : 0))
+        foreach (OptionsMenuOption option in Options.OfType<OptionsMenuOption>().OrderBy(x => x is PresetSelectionOptionsMenuOption ? 1 : 0))
             option.Reset(Options);
 
         SetSelectedOption(0, false);
@@ -191,15 +191,12 @@ public class PauseDialogOptionsMenu
         if (playSound)
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
 
-        // Get the selected option
-        OptionsMenuOption option = Options[SelectedOption];
-
         // Set the info text
-        if (option.InfoText != null)
+        if (Options[SelectedOption] is OptionsMenuOption { InfoText: { } infoText })
         {
             ShowInfoText = true;
 
-            string wrappedInfoText = FontManager.WrapText(InfoText.FontSize, option.InfoText, InfoTextMaxWidth * (1 / InfoTextScale));
+            string wrappedInfoText = FontManager.WrapText(InfoText.FontSize, infoText, InfoTextMaxWidth * (1 / InfoTextScale));
             Debug.Assert(wrappedInfoText.Count(x => x == '\n') + 1 <= InfoTextMaxLines, "Info text has too many lines");
             InfoText.Text = wrappedInfoText;
         }
@@ -414,14 +411,16 @@ public class PauseDialogOptionsMenu
             }
             else if (JoyPad.IsButtonJustPressed(GbaInput.A))
             {
-                IsEditingOption = true;
+                if (Options[SelectedOption] is OptionsMenuOption optionsMenuOption)
+                {
+                    IsEditingOption = true;
 
-                // Reset option before editing in case it has changed (like the window might have been resized)
-                OptionsMenuOption option = Options[SelectedOption];
-                option.Reset(Options);
+                    // Reset option before editing in case it has changed (like the window might have been resized)
+                    optionsMenuOption.Reset(Options);
 
-                CursorClick();
-                HorizontalArrows.Start();
+                    CursorClick();
+                    HorizontalArrows.Start();
+                }
             }
             else if (JoyPad.IsButtonJustPressed(GbaInput.B))
             {
@@ -433,16 +432,16 @@ public class PauseDialogOptionsMenu
         // Editing
         else
         {
-            OptionsMenuOption option = Options[SelectedOption];
+            OptionsMenuOption option = (OptionsMenuOption)Options[SelectedOption];
             OptionsMenuOption.EditStepResult result = option.EditStep(Options);
 
             if (result == OptionsMenuOption.EditStepResult.Apply)
             {
                 // Reset preset options
-                foreach (OptionsMenuOption o in Options)
+                foreach (MenuOption o in Options)
                 {
-                    if (o != option && o is PresetSelectionOptionsMenuOption)
-                        o.Reset(Options);
+                    if (o != option && o is PresetSelectionOptionsMenuOption presetOption)
+                        presetOption.Reset(Options);
                 }
 
                 IsEditingOption = false;
@@ -517,7 +516,7 @@ public class PauseDialogOptionsMenu
             Cursor.ScreenPos = Cursor.ScreenPos with { Y = CursorBaseY + CursorOffsetY - OffsetY };
 
             int index = 0;
-            foreach (OptionsMenuOption option in Options.Skip(ScrollOffset).Take(MaxOptions))
+            foreach (MenuOption option in Options.Skip(ScrollOffset).Take(MaxOptions))
             {
                 option.SetPosition(GetOptionPosition(index));
                 index++;
@@ -533,7 +532,7 @@ public class PauseDialogOptionsMenu
             // Draw
             animationPlayer.Play(Canvas);
             animationPlayer.Play(Cursor);
-            foreach (OptionsMenuOption option in Options.Skip(ScrollOffset).Take(MaxOptions))
+            foreach (MenuOption option in Options.Skip(ScrollOffset).Take(MaxOptions))
                 option.Draw(animationPlayer);
 
             TabBar.Draw(animationPlayer);
@@ -546,7 +545,7 @@ public class PauseDialogOptionsMenu
 
             if (IsEditingOption)
             {
-                OptionsMenuOption option = Options[SelectedOption];
+                OptionsMenuOption option = (OptionsMenuOption)Options[SelectedOption];
 
                 if (option.ShowArrows)
                 {

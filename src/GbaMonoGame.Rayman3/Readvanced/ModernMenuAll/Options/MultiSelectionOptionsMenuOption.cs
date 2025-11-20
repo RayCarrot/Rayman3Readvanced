@@ -51,7 +51,7 @@ public class MultiSelectionOptionsMenuOption<T> : OptionsMenuOption
         }
     }
 
-    public override void Reset(IReadOnlyList<OptionsMenuOption> options)
+    public override void Reset(IReadOnlyList<MenuOption> options)
     {
         T selectedData = _getData(_items);
         int itemIndex = Array.FindIndex(_items, x => (x.Data == null && selectedData == null) || x.Data?.Equals(selectedData) == true);
@@ -95,7 +95,7 @@ public class MultiSelectionOptionsMenuOption<T> : OptionsMenuOption
         }
     }
 
-    public override void ApplyFromPreset(IReadOnlyList<OptionsMenuOption> options, Enum preset)
+    public override void ApplyFromPreset(IReadOnlyList<MenuOption> options, Enum preset)
     {
         int index = Array.FindIndex(_items, x => x.Presets.Contains(preset));
         if (index != -1)
@@ -105,7 +105,7 @@ public class MultiSelectionOptionsMenuOption<T> : OptionsMenuOption
         }
     }
 
-    public override EditStepResult EditStep(IReadOnlyList<OptionsMenuOption> options)
+    public override EditStepResult EditStep(IReadOnlyList<MenuOption> options)
     {
         if (JoyPad.IsButtonJustPressed(GbaInput.A))
         {

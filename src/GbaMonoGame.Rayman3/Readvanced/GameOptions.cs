@@ -449,19 +449,19 @@ public static class GameOptions
 
     public class GameOptionsGroup
     {
-        public GameOptionsGroup(string name, OptionsMenuOption[] options)
+        public GameOptionsGroup(string name, MenuOption[] options)
         {
             Name = name;
 
             // Set options and filter if debug only
-            if (!Engine.ActiveConfig.Debug.DebugModeEnabled && options.Any(x => x.IsDebugOption))
-                Options = options.Where(x => !x.IsDebugOption).ToArray();
+            if (!Engine.ActiveConfig.Debug.DebugModeEnabled && options.Any(x => x is OptionsMenuOption { IsDebugOption: true }))
+                Options = options.Where(x => x is not OptionsMenuOption { IsDebugOption: true }).ToArray();
             else
                 Options = options;
         }
 
         public string Name { get; }
-        public OptionsMenuOption[] Options { get; }
+        public MenuOption[] Options { get; }
     }
 
     public enum TweaksPreset

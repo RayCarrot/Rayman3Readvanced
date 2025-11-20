@@ -34,11 +34,11 @@ public abstract class OptionsMenuOption : MenuOption
         ArrowsWidth = ValueTextObject.Font.GetWidth(ValueTextObject.Text) * ValueTextScale;
     }
 
-    public abstract void Reset(IReadOnlyList<OptionsMenuOption> options);
+    public abstract void Reset(IReadOnlyList<MenuOption> options);
     public virtual bool HasPresetDefined(Enum preset) => false;
     public virtual Enum[] GetUsedPresets() => [];
-    public virtual void ApplyFromPreset(IReadOnlyList<OptionsMenuOption> options, Enum preset) { }
-    public abstract EditStepResult EditStep(IReadOnlyList<OptionsMenuOption> options);
+    public virtual void ApplyFromPreset(IReadOnlyList<MenuOption> options, Enum preset) { }
+    public abstract EditStepResult EditStep(IReadOnlyList<MenuOption> options);
 
     public override void Init(int bgPriority, RenderContext renderContext, int index)
     {

@@ -24,7 +24,6 @@ public class OptionsMenuPage : MenuPage
     public override MenuScrollBarSize ScrollBarSize => ShowInfoText ? MenuScrollBarSize.Small : MenuScrollBarSize.Big;
 
     public GameOptions.GameOptionsGroup[] Tabs { get; set; }
-    public OptionsMenuOption[] OptionsMenuOptions => Tabs[SelectedTab].Options;
     public int SelectedTab { get; set; }
     public bool IsEditingOption { get; set; }
     public bool ShowInfoText { get; set; }
@@ -46,12 +45,12 @@ public class OptionsMenuPage : MenuPage
         TabBar.SetSelectedTab(selectedTab);
 
         ClearOptions();
-        foreach (OptionsMenuOption menuOption in Tabs[selectedTab].Options)
+        foreach (MenuOption menuOption in Tabs[selectedTab].Options)
             AddOption(menuOption);
 
         // Reset all options when switching to the tab (handling presets last!)
-        foreach (OptionsMenuOption option in OptionsMenuOptions.OrderBy(x => x is PresetSelectionOptionsMenuOption ? 1 : 0))
-            option.Reset(OptionsMenuOptions);
+        foreach (OptionsMenuOption option in Options.OfType<OptionsMenuOption>().OrderBy(x => x is PresetSelectionOptionsMenuOption ? 1 : 0))
+            option.Reset(Options);
 
         SetSelectedOption(0, playSound: false, forceUpdate: true);
 
@@ -64,15 +63,12 @@ public class OptionsMenuPage : MenuPage
         if (!base.SetSelectedOption(selectedOption, playSound, forceUpdate))
             return false;
         
-        // Get the selected option
-        OptionsMenuOption option = (OptionsMenuOption)Options[SelectedOption];
-
         // Set the info text
-        if (option.InfoText != null)
+        if (Options[SelectedOption] is OptionsMenuOption { InfoText: { } infoText })
         {
             ShowInfoText = true;
 
-            string wrappedInfoText = FontManager.WrapText(InfoText.FontSize, option.InfoText, InfoTextMaxWidth * (1 / InfoTextScale));
+            string wrappedInfoText = FontManager.WrapText(InfoText.FontSize, infoText, InfoTextMaxWidth * (1 / InfoTextScale));
             Debug.Assert(wrappedInfoText.Count(x => x == '\n') + 1 <= InfoTextMaxLines, "Info text has too many lines");
             InfoText.Text = wrappedInfoText;
         }
@@ -153,14 +149,16 @@ public class OptionsMenuPage : MenuPage
             }
             else if (JoyPad.IsButtonJustPressed(GbaInput.A))
             {
-                IsEditingOption = true;
+                if (Options[SelectedOption] is OptionsMenuOption optionsMenuOption)
+                {
+                    IsEditingOption = true;
 
-                // Reset option before editing in case it has changed (like the window might have been resized)
-                OptionsMenuOption option = (OptionsMenuOption)Options[SelectedOption];
-                option.Reset(OptionsMenuOptions);
+                    // Reset option before editing in case it has changed (like the window might have been resized)
+                    optionsMenuOption.Reset(Options);
 
-                CursorClick(null);
-                HorizontalArrows.Start();
+                    CursorClick(null);
+                    HorizontalArrows.Start();
+                }
             }
             else if (JoyPad.IsButtonJustPressed(GbaInput.B))
             {
@@ -172,15 +170,15 @@ public class OptionsMenuPage : MenuPage
         else
         {
             OptionsMenuOption option = (OptionsMenuOption)Options[SelectedOption];
-            OptionsMenuOption.EditStepResult result = option.EditStep(OptionsMenuOptions);
+            OptionsMenuOption.EditStepResult result = option.EditStep(Options);
 
             if (result == OptionsMenuOption.EditStepResult.Apply)
             {
                 // Reset preset options
-                foreach (OptionsMenuOption o in OptionsMenuOptions)
+                foreach (MenuOption o in Options)
                 {
-                    if (o != option && o is PresetSelectionOptionsMenuOption)
-                        o.Reset(OptionsMenuOptions);
+                    if (o != option && o is PresetSelectionOptionsMenuOption presetOption)
+                        presetOption.Reset(Options);
                 }
 
                 IsEditingOption = false;
@@ -189,7 +187,7 @@ public class OptionsMenuPage : MenuPage
             else if (result == OptionsMenuOption.EditStepResult.Cancel)
             {
                 IsEditingOption = false;
-                option.Reset(OptionsMenuOptions);
+                option.Reset(Options);
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
             }
         }

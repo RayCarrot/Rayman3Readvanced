@@ -44,10 +44,10 @@ public class PresetSelectionOptionsMenuOption : OptionsMenuOption
         }
     }
 
-    public override void Reset(IReadOnlyList<OptionsMenuOption> options)
+    public override void Reset(IReadOnlyList<MenuOption> options)
     {
         List<Enum> validPresets = [];
-        foreach (OptionsMenuOption option in options)
+        foreach (OptionsMenuOption option in options.OfType<OptionsMenuOption>())
         {
             Enum[] usedPresets = option.GetUsedPresets();
 
@@ -107,7 +107,7 @@ public class PresetSelectionOptionsMenuOption : OptionsMenuOption
         UpdateSelection();
     }
 
-    public override EditStepResult EditStep(IReadOnlyList<OptionsMenuOption> options)
+    public override EditStepResult EditStep(IReadOnlyList<MenuOption> options)
     {
         if (JoyPad.IsButtonJustPressed(GbaInput.A))
         {
@@ -116,7 +116,7 @@ public class PresetSelectionOptionsMenuOption : OptionsMenuOption
                 // Apply preset
                 Enum selectedPreset = GetSelectedPreset();
                 if (selectedPreset != null)
-                    foreach (OptionsMenuOption option in options)
+                    foreach (OptionsMenuOption option in options.OfType<OptionsMenuOption>())
                         option.ApplyFromPreset(options, selectedPreset);
 
                 _prevSelectedIndex = _selectedIndex;

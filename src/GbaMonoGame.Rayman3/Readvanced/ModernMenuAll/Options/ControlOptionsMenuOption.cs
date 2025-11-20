@@ -41,7 +41,7 @@ public class ControlOptionsMenuOption : OptionsMenuOption
         PreviousInputMode = InputManager.InputMode;
     }
 
-    private void UpdateKeyboardInput(Keys key, IReadOnlyList<OptionsMenuOption> options)
+    private void UpdateKeyboardInput(Keys key, IReadOnlyList<MenuOption> options)
     {
         Keys prevKey = Engine.LocalConfig.Controls.KeyboardControls[Input];
         Engine.LocalConfig.Controls.KeyboardControls[Input] = key;
@@ -69,7 +69,7 @@ public class ControlOptionsMenuOption : OptionsMenuOption
         }
     }
 
-    private void UpdateGamePadInput(Buttons button, IReadOnlyList<OptionsMenuOption> options)
+    private void UpdateGamePadInput(Buttons button, IReadOnlyList<MenuOption> options)
     {
         Buttons prevButton = Engine.LocalConfig.Controls.GamePadControls[Input];
         Engine.LocalConfig.Controls.GamePadControls[Input] = button;
@@ -97,12 +97,12 @@ public class ControlOptionsMenuOption : OptionsMenuOption
         }
     }
 
-    public override void Reset(IReadOnlyList<OptionsMenuOption> options)
+    public override void Reset(IReadOnlyList<MenuOption> options)
     {
         UpdateSelection();
     }
 
-    public override EditStepResult EditStep(IReadOnlyList<OptionsMenuOption> options)
+    public override EditStepResult EditStep(IReadOnlyList<MenuOption> options)
     {
         if (InputManager.InputMode == InputMode.Keyboard)
         {
