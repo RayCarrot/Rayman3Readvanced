@@ -148,7 +148,9 @@ public class PauseDialogOptionsMenu
     private void CursorClick()
     {
         Cursor.CurrentAnimation = 16;
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+
+        if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__Valid01_Mix01))
+            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
     }
 
     private void SetSelectedOption(int selectedOption, bool playSound = true)

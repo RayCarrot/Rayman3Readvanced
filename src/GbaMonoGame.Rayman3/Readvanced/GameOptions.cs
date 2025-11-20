@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework.Graphics;
 namespace GbaMonoGame.Rayman3.Readvanced;
 
 // TODO: Rewrite most text and re-order options
-// TODO: Option to reset to default values?
 public static class GameOptions
 {
     public static GameOptionsGroup[] Create()
@@ -91,6 +90,17 @@ public static class GameOptions
             ]),
             new GameOptionsGroup("CONTROLS",
             [
+                new ResetOptionsMenuOption(
+                    text: "RESET CONTROLS",
+                    infoText: null,
+                    resetAction: () =>
+                    {
+                        foreach (Input input in Enum.GetValues<Input>())
+                        {
+                            Engine.LocalConfig.Controls.KeyboardControls[input] = InputManager.GetDefaultKey(input);
+                            Engine.LocalConfig.Controls.GamePadControls[input] = InputManager.GetDefaultButton(input);
+                        }
+                    }),
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "CONTROLLER VIBRATION",
                     infoText: null,

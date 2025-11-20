@@ -30,9 +30,7 @@ public record ControlsGameConfig : IniSectionObject
         {
             if (!KeyboardControls.ContainsKey(input))
                 KeyboardControls[input] = InputManager.GetDefaultKey(input);
-        }
-        foreach (Input input in Enum.GetValues<Input>())
-        {
+
             if (!GamePadControls.ContainsKey(input))
                 GamePadControls[input] = InputManager.GetDefaultButton(input);
         }
