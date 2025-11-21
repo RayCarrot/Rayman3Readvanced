@@ -1,0 +1,19 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="MonoGame.Framework.WindowsDX" Version="3.8.4.1" />
+    <PackageVersion Include="MonoGame.Framework.DesktopGL" Version="3.8.4.1" />
+    <PackageVersion Include="MonoGame.Content.Builder.Task" Version="3.8.4.1" />
+    <PackageVersion Include="NativeFileDialogSharp" Version="0.5.0" />
+    <PackageVersion Include="ini-parser" Version="2.5.2" />
+    <PackageVersion Include="ImGui.NET" Version="1.91.6.1" />
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageVersion Include="GbaMonoGame.Native" Version="1.0.0" />
+    <PackageVersion Include="System.Text.Encoding.CodePages" Version="9.0.10" />
+    <PackageVersion Include="BenchmarkDotNet" Version="0.15.6" />
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageVersion Include="Magick.NET-Q8-AnyCPU" Version="14.9.0" />
+  </ItemGroup>
+</Project>
