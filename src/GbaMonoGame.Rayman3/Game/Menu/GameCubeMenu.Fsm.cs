@@ -82,7 +82,11 @@ public partial class GameCubeMenu
                 if (!UseJoyBus)
                 {
                     // Exit
-                    if (JoyPad.IsButtonJustPressed(GbaInput.B))
+                    if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                        {
+                            true => JoyPad.IsButtonJustPressed(GbaInput.B) || JoyPad.IsButtonJustPressed(GbaInput.Select),
+                            false => JoyPad.IsButtonJustPressed(GbaInput.B)
+                        })
                     {
                         IsActive = false;
                         State.MoveTo(Fsm_Exit);
@@ -97,7 +101,7 @@ public partial class GameCubeMenu
                     }
 
                     // Select file
-                    if (JoyPad.IsButtonJustPressed(GbaInput.A))
+                    if (JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start))
                     {
                         string isoFilePath = FileDialog.OpenFile("Select the Rayman 3 GameCube ISO", new FileDialog.FileFilter("iso", "GameCube Disc"));
                         if (isoFilePath != null)
@@ -138,7 +142,11 @@ public partial class GameCubeMenu
                     }
 
                     // Exit
-                    if (JoyPad.IsButtonJustPressed(GbaInput.B))
+                    if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                        {
+                            true => JoyPad.IsButtonJustPressed(GbaInput.B) || JoyPad.IsButtonJustPressed(GbaInput.Select),
+                            false => JoyPad.IsButtonJustPressed(GbaInput.B)
+                        })
                     {
                         IsActive = false;
                         State.MoveTo(Fsm_Exit);
@@ -174,19 +182,20 @@ public partial class GameCubeMenu
                 break;
 
             case FsmAction.Step:
-                if (JoyPad.IsButtonJustPressed(GbaInput.B))
+                if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                    {
+                        true => JoyPad.IsButtonJustPressed(GbaInput.B) || JoyPad.IsButtonJustPressed(GbaInput.Select),
+                        false => JoyPad.IsButtonJustPressed(GbaInput.B)
+                    })
                 {
                     IsActive = false;
                     State.MoveTo(Fsm_Exit);
                     return false;
                 }
-                else
-                {
-                    ShowPleaseConnectText();
-                    State.MoveTo(Fsm_WaitForConnection);
-                    return false;
-                }
-                break;
+
+                ShowPleaseConnectText();
+                State.MoveTo(Fsm_WaitForConnection);
+                return false;
 
             case FsmAction.UnInit:
                 // Do nothing
@@ -257,7 +266,11 @@ public partial class GameCubeMenu
                 }
 
                 // Exit
-                if (JoyPad.IsButtonJustPressed(GbaInput.B))
+                if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                    {
+                        true => JoyPad.IsButtonJustPressed(GbaInput.B) || JoyPad.IsButtonJustPressed(GbaInput.Select),
+                        false => JoyPad.IsButtonJustPressed(GbaInput.B)
+                    })
                 {
                     IsActive = false;
                     State.MoveTo(Fsm_Exit);
@@ -318,7 +331,11 @@ public partial class GameCubeMenu
                     return false;
 
                 // Exit
-                if (JoyPad.IsButtonJustPressed(GbaInput.B))
+                if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                    {
+                        true => JoyPad.IsButtonJustPressed(GbaInput.B) || JoyPad.IsButtonJustPressed(GbaInput.Select),
+                        false => JoyPad.IsButtonJustPressed(GbaInput.B)
+                    })
                 {
                     IsActive = false;
                     State.MoveTo(Fsm_Exit);
@@ -374,7 +391,11 @@ public partial class GameCubeMenu
                     return false;
 
                 // Exit
-                if (JoyPad.IsButtonJustPressed(GbaInput.B))
+                if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                    {
+                        true => JoyPad.IsButtonJustPressed(GbaInput.B) || JoyPad.IsButtonJustPressed(GbaInput.Select),
+                        false => JoyPad.IsButtonJustPressed(GbaInput.B)
+                    })
                 {
                     IsActive = false;
                     State.MoveTo(Fsm_Exit);
@@ -530,7 +551,11 @@ public partial class GameCubeMenu
                 }
 
                 // Exit
-                if (JoyPad.IsButtonJustPressed(GbaInput.B))
+                if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                    {
+                        true => JoyPad.IsButtonJustPressed(GbaInput.B) || JoyPad.IsButtonJustPressed(GbaInput.Select),
+                        false => JoyPad.IsButtonJustPressed(GbaInput.B)
+                    })
                 {
                     IsActive = false;
                     State.MoveTo(Fsm_Exit);
@@ -593,7 +618,11 @@ public partial class GameCubeMenu
                 Anims.StatusText.Text = percentageString;
 
                 // Stop download
-                if (JoyPad.IsButtonJustPressed(GbaInput.B))
+                if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                    {
+                        true => JoyPad.IsButtonJustPressed(GbaInput.B) || JoyPad.IsButtonJustPressed(GbaInput.Select),
+                        false => JoyPad.IsButtonJustPressed(GbaInput.B)
+                    })
                 {
                     JoyBus.Disconnect();
                     JoyBus.Connect();

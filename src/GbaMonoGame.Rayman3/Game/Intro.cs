@@ -545,7 +545,15 @@ public class Intro : Frame, IHasPlayfield
         // N-Gage allows the intro to be skipped from here
         if (Rom.Platform == Platform.NGage)
         {
-            if (NGageJoyPadHelpers.IsNumpadJustPressed() || NGageJoyPadHelpers.IsSoftButtonJustPressed())
+            if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                {
+                    true => JoyPad.IsButtonJustPressed(GbaInput.A) ||
+                            JoyPad.IsButtonJustPressed(GbaInput.B) ||
+                            JoyPad.IsButtonJustPressed(GbaInput.Start) ||
+                            JoyPad.IsButtonJustPressed(GbaInput.Select),
+                    false => NGageJoyPadHelpers.IsNumpadJustPressed() ||
+                             NGageJoyPadHelpers.IsSoftButtonJustPressed(),
+                })
                 IsSkipping = true;
 
             if (IsSkipping)
@@ -608,19 +616,20 @@ public class Intro : Frame, IHasPlayfield
             }
         }
 
-        if (Rom.Platform == Platform.GBA)
+        if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+            {
+                true => JoyPad.IsButtonJustPressed(GbaInput.A) ||
+                        JoyPad.IsButtonJustPressed(GbaInput.B) ||
+                        JoyPad.IsButtonJustPressed(GbaInput.Start) ||
+                        JoyPad.IsButtonJustPressed(GbaInput.Select),
+                false when Rom.Platform is Platform.GBA => JoyPad.IsButtonPressed(GbaInput.Start),
+                false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsNumpadJustPressed() || 
+                                                             NGageJoyPadHelpers.IsSoftButtonJustPressed(),
+                _ => throw new UnsupportedPlatformException()
+            })
         {
-            if (JoyPad.IsButtonPressed(GbaInput.Start) && ScrollY <= 863)
+            if (Rom.Platform == Platform.NGage || ScrollY <= 863)
                 IsSkipping = true;
-        }
-        else if (Rom.Platform == Platform.NGage)
-        {
-            if (NGageJoyPadHelpers.IsNumpadJustPressed() || NGageJoyPadHelpers.IsSoftButtonJustPressed())
-                IsSkipping = true;
-        }
-        else
-        {
-            throw new UnsupportedPlatformException();
         }
 
         if (IsSkipping)
@@ -660,10 +669,15 @@ public class Intro : Frame, IHasPlayfield
         BlackLumAndLogoObj.FrameChannelSprite();
         AnimationPlayer.PlayFront(BlackLumAndLogoObj);
 
-        if (Rom.Platform switch
+        if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
             {
-                Platform.GBA => JoyPad.IsButtonPressed(GbaInput.Start),
-                Platform.NGage => NGageJoyPadHelpers.IsNumpadJustPressed() || NGageJoyPadHelpers.IsSoftButtonJustPressed(),
+                true => JoyPad.IsButtonJustPressed(GbaInput.A) ||
+                        JoyPad.IsButtonJustPressed(GbaInput.B) ||
+                        JoyPad.IsButtonJustPressed(GbaInput.Start) ||
+                        JoyPad.IsButtonJustPressed(GbaInput.Select),
+                false when Rom.Platform is Platform.GBA => JoyPad.IsButtonPressed(GbaInput.Start),
+                false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsNumpadJustPressed() ||
+                                                             NGageJoyPadHelpers.IsSoftButtonJustPressed(),
                 _ => throw new UnsupportedPlatformException()
             })
         {

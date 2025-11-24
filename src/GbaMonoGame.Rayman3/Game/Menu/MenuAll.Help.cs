@@ -55,7 +55,12 @@ public partial class MenuAll
     {
         int prevSelectedOption = SelectedOption;
 
-        if (NGageJoyPadHelpers.IsConfirmButtonJustPressed())
+        if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+            {
+                true => JoyPad.IsButtonJustPressed(GbaInput.A) ||
+                        JoyPad.IsButtonJustPressed(GbaInput.Start),
+                false => NGageJoyPadHelpers.IsConfirmButtonJustPressed()
+            })
         {
             SelectedOption++;
 
@@ -80,7 +85,12 @@ public partial class MenuAll
             if (SelectedOption == -1)
                 SelectedOption = 0;
         }
-        else if (NGageJoyPadHelpers.IsBackButtonJustPressed())
+        else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                 {
+                     true => JoyPad.IsButtonJustPressed(GbaInput.B) ||
+                             JoyPad.IsButtonJustPressed(GbaInput.Select),
+                     false => NGageJoyPadHelpers.IsBackButtonJustPressed()
+                 })
         {
             SelectedOption = 0;
             prevSelectedOption = 0;

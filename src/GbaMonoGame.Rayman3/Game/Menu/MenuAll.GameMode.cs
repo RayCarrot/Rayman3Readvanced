@@ -236,12 +236,13 @@ public partial class MenuAll
 
                 Anims.GameModeList.CurrentAnimation = Localization.LanguageUiIndex * GameModeOptionsCount + SelectedOption;
             }
-            else if (Rom.Platform switch
-            {
-                Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
-                Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
-                _ => throw new UnsupportedPlatformException()
-            })
+            else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                     {
+                         true => JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start),
+                         false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
+                         false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
+                         _ => throw new UnsupportedPlatformException()
+                     })
             {
                 Anims.Cursor.CurrentAnimation = 16;
 
@@ -266,12 +267,13 @@ public partial class MenuAll
                 TransitionOutCursorAndStem();
             }
             // Custom to return to the modern menu
-            else if (Rom.Platform switch
-            {
-                Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B),
-                Platform.NGage => NGageJoyPadHelpers.IsBackButtonJustPressed(),
-                _ => throw new UnsupportedPlatformException()
-            })
+            else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch 
+                     { 
+                         true => JoyPad.IsButtonJustPressed(GbaInput.B) || JoyPad.IsButtonJustPressed(GbaInput.Select),
+                         false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B),
+                         false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsBackButtonJustPressed(),
+                         _ => throw new UnsupportedPlatformException()
+                     })
             {
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                 IsLoadingModernMenu = true;

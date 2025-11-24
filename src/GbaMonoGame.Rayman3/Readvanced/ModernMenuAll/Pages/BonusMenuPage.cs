@@ -51,12 +51,26 @@ public class BonusMenuPage : MenuPage
         {
             SetSelectedOption(SelectedOption + 1);
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.A))
+        else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                 {
+                     true => JoyPad.IsButtonJustPressed(GbaInput.A) ||
+                             JoyPad.IsButtonJustPressed(GbaInput.Start),
+                     false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
+                     false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
+                     _ => throw new UnsupportedPlatformException()
+                 })
         {
             if (Options[SelectedOption] is ActionMenuOption action)
                 action.Invoke();
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.B))
+        else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                 {
+                     true => JoyPad.IsButtonJustPressed(GbaInput.B) ||
+                             JoyPad.IsButtonJustPressed(GbaInput.Select),
+                     false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B),
+                     false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsBackButtonJustPressed(),
+                     _ => throw new UnsupportedPlatformException()
+                 })
         {
             Menu.ChangePage(new GameModeMenuPage(Menu), NewPageMode.Back);
         }

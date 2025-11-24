@@ -112,10 +112,11 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.AnimationPlayer.Execute();
         LevelMusicManager.Step();
 
-        if (Rom.Platform switch
+        if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
             {
-                Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.Start),
-                Platform.NGage => NGageJoyPadHelpers.IsSoftButtonJustPressed() || ForcePauseFrame,
+                true => JoyPad.IsButtonJustPressed(GbaInput.Start),
+                false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.Start),
+                false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsSoftButtonJustPressed() || ForcePauseFrame,
                 _ => throw new UnsupportedPlatformException()
             } && 
             !BlockPause)

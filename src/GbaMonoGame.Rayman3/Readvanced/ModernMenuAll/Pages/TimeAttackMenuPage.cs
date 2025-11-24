@@ -294,7 +294,13 @@ public class TimeAttackMenuPage : MenuPage
             {
                 SetSelectedWorld(SelectedWorld + 1);
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.A))
+            else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                     {
+                         true => JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start),
+                         false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
+                         false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
+                         _ => throw new UnsupportedPlatformException()
+                     })
             {
                 CursorClick(() =>
                 {
@@ -303,7 +309,14 @@ public class TimeAttackMenuPage : MenuPage
                     WorldNameArrows.Pause();
                 });
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.B))
+            else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                     {
+                         true => JoyPad.IsButtonJustPressed(GbaInput.B) ||
+                                 JoyPad.IsButtonJustPressed(GbaInput.Select),
+                         false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B),
+                         false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsBackButtonJustPressed(),
+                         _ => throw new UnsupportedPlatformException()
+                     })
             {
                 Menu.ChangePage(new BonusMenuPage(Menu), NewPageMode.Back);
             }
@@ -312,7 +325,13 @@ public class TimeAttackMenuPage : MenuPage
         {
             // TODO: Implement setting ghost
 
-            if (JoyPad.IsButtonJustPressed(GbaInput.A))
+            if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                {
+                    true => JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start),
+                    false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
+                    false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
+                    _ => throw new UnsupportedPlatformException()
+                })
             {
                 CursorClick(() =>
                 {
@@ -328,7 +347,14 @@ public class TimeAttackMenuPage : MenuPage
                     });
                 });
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.B))
+            else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                     {
+                         true => JoyPad.IsButtonJustPressed(GbaInput.B) ||
+                                 JoyPad.IsButtonJustPressed(GbaInput.Select),
+                         false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B),
+                         false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsBackButtonJustPressed(),
+                         _ => throw new UnsupportedPlatformException()
+                     })
             {
                 HasSelectedLevel = false;
                 SetSelectedOption(SelectedOption, playSound: false, forceUpdate: true);

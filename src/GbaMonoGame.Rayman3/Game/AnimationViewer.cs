@@ -215,7 +215,7 @@ public class AnimationViewer : Frame
 
             SetSelectionText($"Resource {SelectedResourceIndex}/{resourcesCount - 1} ({resourceType.Name})");
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.A))
+        else if (JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start))
         {
             if (GetCurrentResourceType() == typeof(AnimatedObjectResource))
                 InitSelectAnimation();
@@ -246,11 +246,11 @@ public class AnimationViewer : Frame
 
             SetSelectionText($"Actor #{Actors[SelectedActorIndex].Type} ({(ActorType)Actors[SelectedActorIndex].Type})");
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.A))
+        else if (JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start))
         {
             InitSelectAnimation();
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.B))
+        else if (JoyPad.IsButtonJustPressed(GbaInput.B) || JoyPad.IsButtonJustPressed(GbaInput.Select))
         {
             InitSelectResource();
         }
@@ -280,11 +280,11 @@ public class AnimationViewer : Frame
             SetSelectionText($"Animation {SelectedAnimationIndex}/{animationsCount - 1}");
             Animation.CurrentAnimation = SelectedAnimationIndex;
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.A))
+        else if (JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start))
         {
             Animation.CurrentFrame = 0;
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.B))
+        else if (JoyPad.IsButtonJustPressed(GbaInput.B) || JoyPad.IsButtonJustPressed(GbaInput.Select))
         {
             if (GetCurrentResourceType() == typeof(Scene2DResource))
                 InitSelectActor();

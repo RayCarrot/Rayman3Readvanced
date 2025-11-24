@@ -3,7 +3,6 @@ using BinarySerializer.Ubisoft.GbaEngine;
 
 namespace GbaMonoGame;
 
-// TODO: Option to use "normal" buttons?
 public static class NGageJoyPadHelpers
 {
     public static bool IsNumpadJustPressed()

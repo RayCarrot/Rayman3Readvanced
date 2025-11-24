@@ -245,10 +245,11 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         {
             for (int id = 0; id < RSMultiplayer.MaxPlayersCount; id++)
             {
-                if (Rom.Platform switch
+                if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
                     {
-                        Platform.GBA => MultiJoyPad.IsButtonJustPressed(id, GbaInput.Start),
-                        Platform.NGage => NGageJoyPadHelpers.MultiIsSoftButtonJustPressed(id),
+                        true => MultiJoyPad.IsButtonJustPressed(id, GbaInput.Start),
+                        false when Rom.Platform is Platform.GBA => MultiJoyPad.IsButtonJustPressed(id, GbaInput.Start),
+                        false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.MultiIsSoftButtonJustPressed(id),
                         _ => throw new UnsupportedPlatformException()
                     })
                 {

@@ -100,10 +100,11 @@ public partial class MenuAll
                 // NOTE: The game mistakenly passes in 0 as obj here, but nothing happens since pan and roll-off aren't enabled for this event
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
             }
-            else if (Rom.Platform switch
+            else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
                      {
-                         Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
-                         Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
+                         true => JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start),
+                         false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
+                         false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
                          _ => throw new UnsupportedPlatformException()
                      })
             {

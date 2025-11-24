@@ -64,7 +64,6 @@ However online multiplayer would be much more complicated. The game expects the 
     - Power6
     - Worldmap
     - Check multiplayer, menus etc. and check N-Gage
-- Use normalized button inputs between GBA and N-Gage. Have Select always act as going back in menus so we can map it to Circle on a PS controller and have square be the B button (attack).
 
 ## ⭐ Bonus
 ### Achievements

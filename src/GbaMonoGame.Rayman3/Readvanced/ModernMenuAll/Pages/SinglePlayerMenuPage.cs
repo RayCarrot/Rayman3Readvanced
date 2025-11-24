@@ -136,7 +136,13 @@ public class SinglePlayerMenuPage : MenuPage
                     SetSelectedOption(SelectedOption + 1);
                 }
                 // Select slot
-                else if (JoyPad.IsButtonJustPressed(GbaInput.A))
+                else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                         {
+                             true => JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start),
+                             false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
+                             false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
+                             _ => throw new UnsupportedPlatformException()
+                         })
                 {
                     // Load game
                     if (SelectedStartEraseOption != 1 || Menu.Slots[SelectedOption] != null)
@@ -234,7 +240,13 @@ public class SinglePlayerMenuPage : MenuPage
                     }
                 }
                 // Erase slot
-                else if (JoyPad.IsButtonJustPressed(GbaInput.A))
+                else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                         {
+                             true => JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start),
+                             false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
+                             false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
+                             _ => throw new UnsupportedPlatformException()
+                         })
                 {
                     EraseSaveStage = StartEraseMode.TransitionOutConfirmErase;
                     TransitionValue = 0;
@@ -276,7 +288,14 @@ public class SinglePlayerMenuPage : MenuPage
                 break;
         }
 
-        if (JoyPad.IsButtonJustPressed(GbaInput.B) && !TransitionsFX.IsFadingOut)
+        if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+            {
+                true => JoyPad.IsButtonJustPressed(GbaInput.B) ||
+                        JoyPad.IsButtonJustPressed(GbaInput.Select),
+                false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B),
+                false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsBackButtonJustPressed(),
+                _ => throw new UnsupportedPlatformException()
+            } && !TransitionsFX.IsFadingOut)
         {
             switch (EraseSaveStage)
             {

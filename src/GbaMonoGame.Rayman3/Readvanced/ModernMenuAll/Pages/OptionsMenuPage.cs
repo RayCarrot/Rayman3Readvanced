@@ -151,7 +151,14 @@ public class OptionsMenuPage : MenuPage
             {
                 SetSelectedTab(SelectedTab + 1);
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.A))
+            else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                     {
+                         true => JoyPad.IsButtonJustPressed(GbaInput.A) || 
+                                 JoyPad.IsButtonJustPressed(GbaInput.Start),
+                         false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
+                         false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
+                         _ => throw new UnsupportedPlatformException()
+                     })
             {
                 IsEditingOption = true;
 
@@ -162,7 +169,14 @@ public class OptionsMenuPage : MenuPage
                 CursorClick(null);
                 HorizontalArrows.Start();
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.B))
+            else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                     {
+                         true => JoyPad.IsButtonJustPressed(GbaInput.B) ||
+                                 JoyPad.IsButtonJustPressed(GbaInput.Select),
+                         false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B),
+                         false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsBackButtonJustPressed(),
+                         _ => throw new UnsupportedPlatformException()
+                     })
             {
                 // Go back to the game mode menu
                 Menu.ChangePage(new GameModeMenuPage(Menu), NewPageMode.Back);

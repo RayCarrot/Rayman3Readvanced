@@ -237,7 +237,13 @@ public class GameModeMenuPage : MenuPage
         {
             SetSelectedOption(SelectedOption + 1);
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.A))
+        else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                 {
+                     true => JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start),
+                     false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
+                     false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
+                     _ => throw new UnsupportedPlatformException()
+                 })
         {
             if (Options[SelectedOption] is ActionMenuOption action)
                 action.Invoke();

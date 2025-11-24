@@ -112,6 +112,17 @@ public static class GameOptions
                     getData: _ => Engine.LocalConfig.Controls.EnabledGamePadVibration,
                     setData: data => Engine.LocalConfig.Controls.EnabledGamePadVibration = data,
                     getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "BUTTON MAPPING",
+                    infoText: "The updated button mapping normalizes the controls so that A/Start are to confirm and B/Select are to go back. Gameplay controls stay the same.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ORIGINAL", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("UPDATED", true)
+                    ],
+                    getData: _ => Engine.LocalConfig.Controls.UseModernButtonMapping,
+                    setData: data => Engine.LocalConfig.Controls.UseModernButtonMapping = data,
+                    getCustomName: _ => null),
                 new ControlOptionsMenuOption(
                     text: "UP",
                     input: Input.Gba_Up),

@@ -116,10 +116,13 @@ public partial class PauseDialog
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
                 }
-                else if (Rom.Platform switch
+                else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
                          {
-                             Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B) || JoyPad.IsButtonJustPressed(GbaInput.Start),
-                             Platform.NGage => NGageJoyPadHelpers.IsBackButtonJustPressed(),
+                             true => JoyPad.IsButtonJustPressed(GbaInput.B) ||
+                                     JoyPad.IsButtonJustPressed(GbaInput.Select),
+                             false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B) || 
+                                                                        JoyPad.IsButtonJustPressed(GbaInput.Start),
+                             false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsBackButtonJustPressed(),
                              _ => throw new UnsupportedPlatformException()
                          })
                 {
@@ -132,10 +135,12 @@ public partial class PauseDialog
 
                     resume = true;
                 }
-                else if (Rom.Platform switch
+                else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
                          {
-                             Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
-                             Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
+                             true => JoyPad.IsButtonJustPressed(GbaInput.A) ||
+                                     JoyPad.IsButtonJustPressed(GbaInput.Start),
+                             false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
+                             false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
                              _ => throw new UnsupportedPlatformException()
                          })
                 {
@@ -333,15 +338,19 @@ public partial class PauseDialog
                     SelectedOption = SelectedOption == 0 ? 1 : 0;
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
-                else if (Rom.Platform switch
+                else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
                          {
-                             Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B),
-                             Platform.NGage => NGageJoyPadHelpers.IsBackButtonJustPressed(),
+                             true => JoyPad.IsButtonJustPressed(GbaInput.B) ||
+                                     JoyPad.IsButtonJustPressed(GbaInput.Select),
+                             false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B),
+                             false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsBackButtonJustPressed(),
                              _ => throw new UnsupportedPlatformException()
-                         } || (Rom.Platform switch
+                         } || (Engine.LocalConfig.Controls.UseModernButtonMapping switch
                          {
-                             Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
-                             Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
+                             true => JoyPad.IsButtonJustPressed(GbaInput.A) ||
+                                     JoyPad.IsButtonJustPressed(GbaInput.Start),
+                             false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
+                             false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
                              _ => throw new UnsupportedPlatformException()
                          } && SelectedOption == resumeOptionIndex))
                 {
@@ -370,10 +379,12 @@ public partial class PauseDialog
 
                     goBack = true;
                 }
-                else if (Rom.Platform switch
+                else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
                          {
-                             Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
-                             Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
+                             true => JoyPad.IsButtonJustPressed(GbaInput.A) ||
+                                     JoyPad.IsButtonJustPressed(GbaInput.Start),
+                             false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
+                             false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
                              _ => throw new UnsupportedPlatformException()
                          } && SelectedOption == quitOptionIndex)
                 {
@@ -523,11 +534,13 @@ public partial class PauseDialog
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
                 }
-                else if (Rom.Platform switch
+                else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
                          {
-                             Platform.GBA => MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.B) ||
-                                             MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.Start),
-                             Platform.NGage => NGageJoyPadHelpers.MultiIsBackButtonJustPressed(PausedMachineId),
+                             true => MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.B) ||
+                                     MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.Select),
+                             false when Rom.Platform is Platform.GBA => MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.B) ||
+                                                                        MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.Start),
+                             false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.MultiIsBackButtonJustPressed(PausedMachineId),
                              _ => throw new UnsupportedPlatformException()
                          })
                 {
@@ -540,10 +553,12 @@ public partial class PauseDialog
 
                     resume = true;
                 }
-                else if (Rom.Platform switch
+                else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
                          {
-                             Platform.GBA => MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.A),
-                             Platform.NGage => NGageJoyPadHelpers.MultiIsConfirmButtonJustPressed(PausedMachineId),
+                             true => MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.A) ||
+                                     MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.Start),
+                             false when Rom.Platform is Platform.GBA => MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.A),
+                             false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.MultiIsConfirmButtonJustPressed(PausedMachineId),
                              _ => throw new UnsupportedPlatformException()
                          })
                 {
@@ -578,7 +593,12 @@ public partial class PauseDialog
                     }
                 }
 
-                if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(GbaInput.A))
+                if (Rom.Platform == Platform.NGage && Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                    {
+                        true => JoyPad.IsButtonJustPressed(GbaInput.A) ||
+                                JoyPad.IsButtonJustPressed(GbaInput.Start),
+                        false => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
+                    })
                 {
                     switch (SelectedOption)
                     {
@@ -698,16 +718,20 @@ public partial class PauseDialog
                     SelectedOption = SelectedOption == 0 ? 1 : 0;
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
-                else if (Rom.Platform switch
+                else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
                          {
-                             Platform.GBA => MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.B),
-                             Platform.NGage => NGageJoyPadHelpers.MultiIsBackButtonJustPressed(PausedMachineId),
+                             true => MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.B) ||
+                                     MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.Select),
+                             false when Rom.Platform is Platform.GBA => MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.B),
+                             false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.MultiIsBackButtonJustPressed(PausedMachineId),
                              _ => throw new UnsupportedPlatformException()
                          } || 
-                         (Rom.Platform switch
+                         (Engine.LocalConfig.Controls.UseModernButtonMapping switch
                          {
-                             Platform.GBA => MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.A),
-                             Platform.NGage => NGageJoyPadHelpers.MultiIsConfirmButtonJustPressed(PausedMachineId),
+                             true => MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.A) ||
+                                     MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.Start),
+                             false when Rom.Platform is Platform.GBA => MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.A),
+                             false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.MultiIsConfirmButtonJustPressed(PausedMachineId),
                              _ => throw new UnsupportedPlatformException()
                          } && SelectedOption == resumeOptionIndex))
                 {
@@ -736,10 +760,12 @@ public partial class PauseDialog
 
                     goBack = true;
                 }
-                else if (Rom.Platform switch
+                else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
                          {
-                             Platform.GBA => MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.A),
-                             Platform.NGage => NGageJoyPadHelpers.MultiIsConfirmButtonJustPressed(PausedMachineId),
+                             true => MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.A) ||
+                                     MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.Start),
+                             false when Rom.Platform is Platform.GBA => MultiJoyPad.IsButtonJustPressed(PausedMachineId, GbaInput.A),
+                             false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.MultiIsConfirmButtonJustPressed(PausedMachineId),
                              _ => throw new UnsupportedPlatformException()
                          } && SelectedOption == quitOptionIndex)
                 {

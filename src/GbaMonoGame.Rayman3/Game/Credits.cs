@@ -529,13 +529,17 @@ public class Credits : Frame
     {
         if (!IsExiting)
         {
-            if (Rom.Platform switch
+            if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
                 {
-                    Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B) ||
-                                    JoyPad.IsButtonJustPressed(GbaInput.A) ||
-                                    JoyPad.IsButtonJustPressed(GbaInput.Start),
-                    Platform.NGage => NGageJoyPadHelpers.IsNumpadJustPressed() || 
-                                      NGageJoyPadHelpers.IsSoftButtonJustPressed(),
+                    true => JoyPad.IsButtonJustPressed(GbaInput.B) ||
+                            JoyPad.IsButtonJustPressed(GbaInput.Select) ||
+                            JoyPad.IsButtonJustPressed(GbaInput.A) ||
+                            JoyPad.IsButtonJustPressed(GbaInput.Start),
+                    false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B) || 
+                                                               JoyPad.IsButtonJustPressed(GbaInput.A) || 
+                                                               JoyPad.IsButtonJustPressed(GbaInput.Start),
+                    false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsNumpadJustPressed() || 
+                                                                 NGageJoyPadHelpers.IsSoftButtonJustPressed(),
                     _ => throw new UnsupportedPlatformException()
                 })
             {

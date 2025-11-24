@@ -309,10 +309,11 @@ public abstract class Act : Frame
         else
         {
             // Skip cutscene
-            if (!IsAutomatic && Rom.Platform switch 
+            if (!IsAutomatic && Engine.LocalConfig.Controls.UseModernButtonMapping switch 
                 {
-                    Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.Start),
-                    Platform.NGage => NGageJoyPadHelpers.IsSoftButtonJustPressed(),
+                    true => JoyPad.IsButtonJustPressed(GbaInput.Start),
+                    false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.Start),
+                    false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsSoftButtonJustPressed(),
                     _ => throw new UnsupportedPlatformException()
                 })
             {
@@ -330,10 +331,11 @@ public abstract class Act : Frame
             {
                 TransitionTextIn();
             }
-            else if (!IsAutomatic && Rom.Platform switch
+            else if (!IsAutomatic && Engine.LocalConfig.Controls.UseModernButtonMapping switch
                      {
-                         Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
-                         Platform.NGage => NGageJoyPadHelpers.IsNumpadJustPressed(),
+                         true => JoyPad.IsButtonJustPressed(GbaInput.A),
+                         false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
+                         false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsNumpadJustPressed(),
                          _ => throw new UnsupportedPlatformException()
                      })
             {

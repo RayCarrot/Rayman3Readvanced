@@ -95,7 +95,7 @@ public class TitleScreenOptionsList
                 else
                     SelectedIndex--;
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.A))
+            else if (JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start))
             {
                 Options[SelectedIndex].Action();
             }

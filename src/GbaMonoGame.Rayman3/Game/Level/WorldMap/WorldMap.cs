@@ -1093,7 +1093,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                         break;
                 }
             }
-            // NOTE: On N-Gage it checks if numpad 1 is release instead of select!
+            // NOTE: On N-Gage it checks if numpad 1 is released instead of select!
             // Select world
             else if (JoyPad.IsButtonJustPressed(GbaInput.A) &&
                      CurrentMovement == WorldMapMovement.None &&
@@ -1500,10 +1500,11 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         Scene.AnimationPlayer.Execute();
         LevelMusicManager.Step();
 
-        if (Rom.Platform switch
+        if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
             {
-                Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.Start),
-                Platform.NGage => NGageJoyPadHelpers.IsSoftButtonJustPressed(),
+                true => JoyPad.IsButtonJustPressed(GbaInput.Start),
+                false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.Start),
+                false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsSoftButtonJustPressed(),
                 _ => throw new UnsupportedPlatformException()
             } && 
             CurrentExStepAction == StepEx_Play &&

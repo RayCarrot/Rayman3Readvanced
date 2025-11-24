@@ -432,7 +432,11 @@ public class LevelSelect : Frame
 
             Rows[0].Text = $"Slot #{SelectedSaveSlotIndex + 1}";
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.A))
+        else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                 {
+                     true => JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start),
+                     false => JoyPad.IsButtonJustPressed(GbaInput.A),
+                 })
         {
             InitSelectLanguage();
         }
@@ -463,7 +467,11 @@ public class LevelSelect : Frame
 
             Rows[0].Text = languages[SelectedLanguageIndex].LevelSelectName;
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.A))
+        else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                 {
+                     true => JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start),
+                     false => JoyPad.IsButtonJustPressed(GbaInput.A),
+                 })
         {
             InitSelectStartingLevel();
             Localization.SetLanguage(SelectedLanguageIndex);
@@ -546,11 +554,19 @@ public class LevelSelect : Frame
 
             SetMapText();
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.A))
+        else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                 {
+                     true => JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start),
+                     false => JoyPad.IsButtonJustPressed(GbaInput.A),
+                 })
         {
             LoadLevel();
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.B))
+        else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
+                 {
+                     true => JoyPad.IsButtonJustPressed(GbaInput.B) || JoyPad.IsButtonJustPressed(GbaInput.Select),
+                     false => JoyPad.IsButtonJustPressed(GbaInput.B),
+                 })
         {
             InitSelectSaveSlot();
         }
