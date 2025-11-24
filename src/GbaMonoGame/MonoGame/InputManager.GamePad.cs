@@ -78,8 +78,8 @@ public static partial class InputManager
         {
             // GBA
             Input.Gba_A => Buttons.A,
-            Input.Gba_B => Buttons.B,
-            Input.Gba_Select => Buttons.Back,
+            Input.Gba_B => Buttons.X,
+            Input.Gba_Select => Buttons.B,
             Input.Gba_Start => Buttons.Start,
             Input.Gba_Right => Buttons.DPadRight,
             Input.Gba_Left => Buttons.DPadLeft,

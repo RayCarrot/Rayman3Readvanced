@@ -110,7 +110,8 @@ public class ControlOptionsMenuOption : OptionsMenuOption
 
             Keys pressedKey = InputManager.GetPressedKey();
 
-            if (pressedKey == Keys.None)
+            // Don't allow mapping escape since we hard-code that
+            if (pressedKey is Keys.None or Keys.Escape)
                 return EditStepResult.None;
 
             if (!InputManager.IsKeyJustPressed(pressedKey))

@@ -26,6 +26,10 @@ public static partial class InputManager
                 inputs |= input;
         }
 
+        // Hard-code escape to always act as start so we can pause using it
+        if (IsKeyReleased(Keys.Escape))
+            inputs |= Input.Gba_Start;
+
         return inputs;
     }
 
@@ -39,7 +43,7 @@ public static partial class InputManager
             Input.Gba_A => Keys.Space,
             Input.Gba_B => Keys.S,
             Input.Gba_Select => Keys.Back,
-            Input.Gba_Start => Keys.Escape,
+            Input.Gba_Start => Keys.Enter,
             Input.Gba_Right => Keys.Right,
             Input.Gba_Left => Keys.Left,
             Input.Gba_Up => Keys.Up,
