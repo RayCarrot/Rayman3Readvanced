@@ -1,5 +1,4 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
-using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
@@ -17,9 +16,9 @@ public partial class LevelCurtain
             case FsmAction.Step:
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    if ((JoyPad.IsButtonJustPressed(GbaInput.Up) || JoyPad.IsButtonJustPressed(GbaInput.A)) && 
-                        JoyPad.IsButtonReleased(GbaInput.Left) &&
-                        JoyPad.IsButtonReleased(GbaInput.Right) &&
+                    if ((JoyPad.IsButtonJustPressed(Rayman3Input.ActorUp) || JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump)) && 
+                        JoyPad.IsButtonReleased(Rayman3Input.ActorLeft) &&
+                        JoyPad.IsButtonReleased(Rayman3Input.ActorRight) &&
                         !((World)Frame.Current).UserInfo.Hide)
                     {
                         MovableActor mainActor = Scene.MainActor;
@@ -66,9 +65,9 @@ public partial class LevelCurtain
                         IsRaymanInFront = true;
                     }
 
-                    if ((JoyPad.IsButtonPressed(GbaInput.Up) || JoyPad.IsButtonPressed(GbaInput.A)) &&
-                        JoyPad.IsButtonReleased(GbaInput.Left) &&
-                        JoyPad.IsButtonReleased(GbaInput.Right) &&
+                    if ((JoyPad.IsButtonPressed(Rayman3Input.ActorUp) || JoyPad.IsButtonPressed(Rayman3Input.ActorJump)) &&
+                        JoyPad.IsButtonReleased(Rayman3Input.ActorLeft) &&
+                        JoyPad.IsButtonReleased(Rayman3Input.ActorRight) &&
                         !((World)Frame.Current).UserInfo.Hide)
                     {
                         enterCurtain = true;

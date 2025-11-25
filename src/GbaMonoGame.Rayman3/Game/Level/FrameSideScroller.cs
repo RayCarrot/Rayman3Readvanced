@@ -233,13 +233,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         }
 
         // Pause
-        if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-            {
-                true => JoyPad.IsButtonJustPressed(GbaInput.Start),
-                false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.Start),
-                false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsSoftButtonJustPressed() || ForcePauseFrame,
-                _ => throw new UnsupportedPlatformException()
-            } && 
+        if ((JoyPad.IsButtonJustPressed(Rayman3Input.Pause) || (Rom.Platform == Platform.NGage && ForcePauseFrame)) && 
             CircleTransitionMode == TransitionMode.None && 
             CanPause)
         {

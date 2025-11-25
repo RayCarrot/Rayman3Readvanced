@@ -90,10 +90,10 @@ public partial class Teensies
                     };
                 }
 
-                if (JoyPad.IsButtonJustPressed(GbaInput.A))
+                if (JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxNext))
                     TextBox.MoveToNextText();
 
-                if (Engine.ActiveConfig.Tweaks.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(GbaInput.Start))
+                if (Engine.ActiveConfig.Tweaks.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxSkip))
                 {
                     World frame = (World)Frame.Current;
                     frame.BlockPause = true;
@@ -152,12 +152,12 @@ public partial class Teensies
                             frame.BlockPause = SavedBlockPause;
                         }
                     }
-                    else if (JoyPad.IsButtonJustPressed(GbaInput.A))
+                    else if (JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxNext))
                     {
                         TextBox.MoveToNextText();
                     }
 
-                    if (Engine.ActiveConfig.Tweaks.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(GbaInput.Start))
+                    if (Engine.ActiveConfig.Tweaks.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxSkip))
                     {
                         World frame = (World)Frame.Current;
                         frame.BlockPause = true;
@@ -231,12 +231,12 @@ public partial class Teensies
                         frame.BlockPause = SavedBlockPause;
                     }
                 }
-                else if (JoyPad.IsButtonJustPressed(GbaInput.A))
+                else if (JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxNext))
                 {
                     TextBox.MoveToNextText();
                 }
 
-                if (Engine.ActiveConfig.Tweaks.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(GbaInput.Start))
+                if (Engine.ActiveConfig.Tweaks.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxSkip))
                 {
                     World frame = (World)Frame.Current;
                     frame.BlockPause = true;

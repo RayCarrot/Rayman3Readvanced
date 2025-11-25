@@ -1,5 +1,4 @@
 ﻿using System;
-using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 
@@ -211,7 +210,7 @@ public partial class Plum
                         Timer++;
 
                         // Detach main actor from plum
-                        if ((JoyPad.IsButtonJustPressed(GbaInput.A) || Timer == 8) && mainActor.AttachedObject == this)
+                        if ((JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump) || Timer == 8) && mainActor.AttachedObject == this)
                         {
                             mainActor.ProcessMessage(this, Message.Rayman_DetachPlum);
                             mainActor.ProcessMessage(this, Message.Rayman_AllowSafetyJump, this);

@@ -126,7 +126,7 @@ public partial class UserInfoMulti2D
                 }
 
                 // Blink energy shots digits if trying to attack without shots
-                if (MultiJoyPad.IsButtonJustPressed(MultiplayerManager.MachineId, GbaInput.B))
+                if (MultiJoyPad.IsButtonJustPressed(MultiplayerManager.MachineId, Rayman3Input.ActorAttack))
                 {
                     if ((TagId == MultiplayerManager.MachineId && MultiplayerInfo.GameType == MultiplayerGameType.RayTag) ||
                         (TagId != MultiplayerManager.MachineId && MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse))

@@ -106,7 +106,7 @@ public class SinglePlayerMenuPage : MenuPage
         {
             case StartEraseMode.Selection:
                 // Move start/erase to start
-                if ((JoyPad.IsButtonJustPressed(GbaInput.Left) || JoyPad.IsButtonJustPressed(GbaInput.L)))
+                if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeftExt))
                 {
                     if (SelectedStartEraseOption != 0)
                     {
@@ -116,7 +116,7 @@ public class SinglePlayerMenuPage : MenuPage
                     }
                 }
                 // Move start/erase to erase
-                else if ((JoyPad.IsButtonJustPressed(GbaInput.Right) || JoyPad.IsButtonJustPressed(GbaInput.R)))
+                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRightExt))
                 {
                     if (SelectedStartEraseOption != 1)
                     {
@@ -126,23 +126,17 @@ public class SinglePlayerMenuPage : MenuPage
                     }
                 }
                 // Move up
-                else if (JoyPad.IsButtonJustPressed(GbaInput.Up))
+                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
                 {
                     SetSelectedOption(SelectedOption - 1);
                 }
                 // Move down
-                else if (JoyPad.IsButtonJustPressed(GbaInput.Down))
+                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
                 {
                     SetSelectedOption(SelectedOption + 1);
                 }
                 // Select slot
-                else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                         {
-                             true => JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start),
-                             false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
-                             false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
-                             _ => throw new UnsupportedPlatformException()
-                         })
+                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
                 {
                     // Load game
                     if (SelectedStartEraseOption != 1 || Menu.Slots[SelectedOption] != null)
@@ -220,7 +214,7 @@ public class SinglePlayerMenuPage : MenuPage
 
             case StartEraseMode.ConfirmErase:
                 // Move left
-                if (JoyPad.IsButtonJustPressed(GbaInput.Left) || JoyPad.IsButtonJustPressed(GbaInput.L))
+                if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeftExt))
                 {
                     if (SelectedStartEraseOption != 0)
                     {
@@ -230,7 +224,7 @@ public class SinglePlayerMenuPage : MenuPage
                     }
                 }
                 // Move right
-                else if (JoyPad.IsButtonJustPressed(GbaInput.Right) || JoyPad.IsButtonJustPressed(GbaInput.R))
+                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRightExt))
                 {
                     if (SelectedStartEraseOption != 1)
                     {
@@ -240,13 +234,7 @@ public class SinglePlayerMenuPage : MenuPage
                     }
                 }
                 // Erase slot
-                else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                         {
-                             true => JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start),
-                             false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
-                             false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
-                             _ => throw new UnsupportedPlatformException()
-                         })
+                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
                 {
                     EraseSaveStage = StartEraseMode.TransitionOutConfirmErase;
                     TransitionValue = 0;
@@ -288,14 +276,7 @@ public class SinglePlayerMenuPage : MenuPage
                 break;
         }
 
-        if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-            {
-                true => JoyPad.IsButtonJustPressed(GbaInput.B) ||
-                        JoyPad.IsButtonJustPressed(GbaInput.Select),
-                false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B),
-                false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsBackButtonJustPressed(),
-                _ => throw new UnsupportedPlatformException()
-            } && !TransitionsFX.IsFadingOut)
+        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack) && !TransitionsFX.IsFadingOut)
         {
             switch (EraseSaveStage)
             {

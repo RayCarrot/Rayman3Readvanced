@@ -1,5 +1,4 @@
 ﻿using System;
-using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.TgxEngine;
@@ -414,7 +413,7 @@ public class LevelSelect : Frame
 
     public void Step_SelectSaveSlot()
     {
-        if (JoyPad.IsButtonJustPressed(GbaInput.Left))
+        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
         {
             SelectedSaveSlotIndex--;
             
@@ -423,7 +422,7 @@ public class LevelSelect : Frame
             
             Rows[0].Text = $"Slot #{SelectedSaveSlotIndex + 1}";
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.Right))
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
         {
             SelectedSaveSlotIndex++;
             
@@ -432,11 +431,7 @@ public class LevelSelect : Frame
 
             Rows[0].Text = $"Slot #{SelectedSaveSlotIndex + 1}";
         }
-        else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                 {
-                     true => JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start),
-                     false => JoyPad.IsButtonJustPressed(GbaInput.A),
-                 })
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.LevelSelectMenuConfirm))
         {
             InitSelectLanguage();
         }
@@ -449,7 +444,7 @@ public class LevelSelect : Frame
     {
         Language[] languages = Localization.GetLanguages();
 
-        if (JoyPad.IsButtonJustPressed(GbaInput.Left))
+        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
         {
             SelectedLanguageIndex--;
 
@@ -458,7 +453,7 @@ public class LevelSelect : Frame
 
             Rows[0].Text = languages[SelectedLanguageIndex].LevelSelectName;
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.Right))
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
         {
             SelectedLanguageIndex++;
 
@@ -467,11 +462,7 @@ public class LevelSelect : Frame
 
             Rows[0].Text = languages[SelectedLanguageIndex].LevelSelectName;
         }
-        else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                 {
-                     true => JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start),
-                     false => JoyPad.IsButtonJustPressed(GbaInput.A),
-                 })
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.LevelSelectMenuConfirm))
         {
             InitSelectStartingLevel();
             Localization.SetLanguage(SelectedLanguageIndex);
@@ -483,14 +474,14 @@ public class LevelSelect : Frame
 
     public void Step_SelectStartingLevel()
     {
-        if (JoyPad.IsButtonJustPressed(GbaInput.Up))
+        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
         {
             SelectedRow--;
 
             if (SelectedRow == -1)
                 SelectedRow = SelectedWorldIndex == 4 ? 1 : 3;
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.Down))
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
         {
             SelectedRow++;
 
@@ -498,7 +489,7 @@ public class LevelSelect : Frame
                 (SelectedWorldIndex != 4 && SelectedRow == 4))
                 SelectedRow = 0;
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.Left))
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
         {
             switch (SelectedRow)
             {
@@ -526,7 +517,7 @@ public class LevelSelect : Frame
 
             SetMapText();
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.Right))
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
         {
             switch (SelectedRow)
             {
@@ -554,19 +545,11 @@ public class LevelSelect : Frame
 
             SetMapText();
         }
-        else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                 {
-                     true => JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start),
-                     false => JoyPad.IsButtonJustPressed(GbaInput.A),
-                 })
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.LevelSelectMenuConfirm))
         {
             LoadLevel();
         }
-        else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                 {
-                     true => JoyPad.IsButtonJustPressed(GbaInput.B) || JoyPad.IsButtonJustPressed(GbaInput.Select),
-                     false => JoyPad.IsButtonJustPressed(GbaInput.B),
-                 })
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.LevelSelectMenuBack))
         {
             InitSelectSaveSlot();
         }

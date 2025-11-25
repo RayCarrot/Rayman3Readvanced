@@ -3,7 +3,7 @@ using BinarySerializer.Ubisoft.GbaEngine;
 
 namespace GbaMonoGame;
 
-public class SimpleJoyPad
+public partial class SimpleJoyPad
 {
     public GbaInput KeyStatus { get; set; }
     public GbaInput KeyTriggers { get; set; } // Just pressed

@@ -1019,8 +1019,8 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         {
             // NOTE: On N-Gage it checks if numpad 1 is release instead of select!
             // Move forward
-            if ((JoyPad.IsButtonJustPressed(GbaInput.Right) || 
-                 (JoyPad.IsButtonJustPressed(GbaInput.Up) && WorldId is WorldId.World1 or WorldId.World3)) && 
+            if ((JoyPad.IsButtonJustPressed(Rayman3Input.ActorRight) || 
+                 (JoyPad.IsButtonJustPressed(Rayman3Input.ActorUp) && WorldId is WorldId.World1 or WorldId.World3)) && 
                 CurrentMovement == WorldMapMovement.None &&
                 JoyPad.IsButtonReleased(GbaInput.Select))
             {
@@ -1056,9 +1056,9 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             }
             // NOTE: On N-Gage it checks if numpad 1 is release instead of select!
             // Move back
-            else if ((JoyPad.IsButtonJustPressed(GbaInput.Left) || 
-                      (JoyPad.IsButtonJustPressed(GbaInput.Down) && WorldId == WorldId.World2) || 
-                      (JoyPad.IsButtonJustPressed(GbaInput.Up) && WorldId == WorldId.World4)) && 
+            else if ((JoyPad.IsButtonJustPressed(Rayman3Input.ActorLeft) || 
+                      (JoyPad.IsButtonJustPressed(Rayman3Input.ActorDown) && WorldId == WorldId.World2) || 
+                      (JoyPad.IsButtonJustPressed(Rayman3Input.ActorUp) && WorldId == WorldId.World4)) && 
                      CurrentMovement == WorldMapMovement.None && 
                      JoyPad.IsButtonReleased(GbaInput.Select))
             {
@@ -1095,7 +1095,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             }
             // NOTE: On N-Gage it checks if numpad 1 is released instead of select!
             // Select world
-            else if (JoyPad.IsButtonJustPressed(GbaInput.A) &&
+            else if (JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump) &&
                      CurrentMovement == WorldMapMovement.None &&
                      JoyPad.IsButtonReleased(GbaInput.Select))
             {
@@ -1500,13 +1500,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         Scene.AnimationPlayer.Execute();
         LevelMusicManager.Step();
 
-        if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-            {
-                true => JoyPad.IsButtonJustPressed(GbaInput.Start),
-                false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.Start),
-                false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsSoftButtonJustPressed(),
-                _ => throw new UnsupportedPlatformException()
-            } && 
+        if (JoyPad.IsButtonJustPressed(Rayman3Input.Pause) && 
             CurrentExStepAction == StepEx_Play &&
             CircleWipeTransitionMode == TransitionMode.None)
         {

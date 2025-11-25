@@ -138,16 +138,16 @@ public sealed partial class FlyingShell : MovableActor
 
     private void DoNoClipBehavior()
     {
-        int speed = JoyPad.IsButtonPressed(GbaInput.A) ? 7 : 4;
+        int speed = JoyPad.IsButtonPressed(Rayman3Input.ActorJump) ? 7 : 4;
 
-        if (JoyPad.IsButtonPressed(GbaInput.Up))
+        if (JoyPad.IsButtonPressed(Rayman3Input.ActorUp))
             Position -= new Vector2(0, speed);
-        else if (JoyPad.IsButtonPressed(GbaInput.Down))
+        else if (JoyPad.IsButtonPressed(Rayman3Input.ActorDown))
             Position += new Vector2(0, speed);
 
-        if (JoyPad.IsButtonPressed(GbaInput.Left))
+        if (JoyPad.IsButtonPressed(Rayman3Input.ActorLeft))
             Position -= new Vector2(speed, 0);
-        else if (JoyPad.IsButtonPressed(GbaInput.Right))
+        else if (JoyPad.IsButtonPressed(Rayman3Input.ActorRight))
             Position += new Vector2(speed, 0);
     }
 

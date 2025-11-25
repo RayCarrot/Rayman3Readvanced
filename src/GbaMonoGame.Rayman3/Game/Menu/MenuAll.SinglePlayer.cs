@@ -188,7 +188,7 @@ public partial class MenuAll
                     }
                 }
                 // Move start/erase to start
-                else if ((JoyPad.IsButtonJustPressed(GbaInput.Left) || JoyPad.IsButtonJustPressed(GbaInput.L)) && Anims.Cursor.CurrentAnimation != 16)
+                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeftExt) && Anims.Cursor.CurrentAnimation != 16)
                 {
                     if (SelectedStartEraseOption != 0)
                     {
@@ -198,7 +198,7 @@ public partial class MenuAll
                     }
                 }
                 // Move start/erase to erase
-                else if ((JoyPad.IsButtonJustPressed(GbaInput.Right) || JoyPad.IsButtonJustPressed(GbaInput.R)) && Anims.Cursor.CurrentAnimation != 16)
+                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRightExt) && Anims.Cursor.CurrentAnimation != 16)
                 {
                     if (SelectedStartEraseOption != 1)
                     {
@@ -208,7 +208,7 @@ public partial class MenuAll
                     }
                 }
                 // Move up
-                else if (JoyPad.IsButtonJustPressed(GbaInput.Up) && Anims.Cursor.CurrentAnimation != 16)
+                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp) && Anims.Cursor.CurrentAnimation != 16)
                 {
                     if (SelectedOption == 0)
                         SelectOption(2, true);
@@ -216,7 +216,7 @@ public partial class MenuAll
                         SelectOption(SelectedOption - 1, true);
                 }
                 // Move down
-                else if (JoyPad.IsButtonJustPressed(GbaInput.Down) && Anims.Cursor.CurrentAnimation != 16)
+                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown) && Anims.Cursor.CurrentAnimation != 16)
                 {
                     if (SelectedOption == 2)
                         SelectOption(0, true);
@@ -224,13 +224,7 @@ public partial class MenuAll
                         SelectOption(SelectedOption + 1, true);
                 }
                 // Select slot
-                else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                         {
-                             true => JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start),
-                             false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
-                             false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
-                             _ => throw new UnsupportedPlatformException()
-                         } && Anims.Cursor.CurrentAnimation != 16)
+                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm) && Anims.Cursor.CurrentAnimation != 16)
                 {
                     Anims.Cursor.CurrentAnimation = 16;
 
@@ -287,7 +281,7 @@ public partial class MenuAll
 
             case StartEraseMode.ConfirmErase:
                 // Move left
-                if (JoyPad.IsButtonJustPressed(GbaInput.Left) || JoyPad.IsButtonJustPressed(GbaInput.L))
+                if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeftExt))
                 {
                     if (SelectedStartEraseOption != 0)
                     {
@@ -298,7 +292,7 @@ public partial class MenuAll
                     }
                 }
                 // Move right
-                else if (JoyPad.IsButtonJustPressed(GbaInput.Right) || JoyPad.IsButtonJustPressed(GbaInput.R))
+                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRightExt))
                 {
                     if (SelectedStartEraseOption != 1)
                     {
@@ -309,13 +303,7 @@ public partial class MenuAll
                     }
                 }
                 // Erase slot
-                else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                         {
-                             true => JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start),
-                             false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
-                             false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
-                             _ => throw new UnsupportedPlatformException()
-                         })
+                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
                 {
                     StartEraseMode = StartEraseMode.TransitionOutConfirmErase;
                     TransitionValue = 0;
@@ -363,14 +351,7 @@ public partial class MenuAll
                 break;
         }
 
-        if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-            {
-                true => JoyPad.IsButtonJustPressed(GbaInput.B) ||
-                        JoyPad.IsButtonJustPressed(GbaInput.Select),
-                false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B),
-                false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsBackButtonJustPressed(),
-                _ => throw new UnsupportedPlatformException()
-            } && !TransitionsFX.IsFadingOut && !IsStartingGame)
+        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack) && !TransitionsFX.IsFadingOut && !IsStartingGame)
         {
             switch (StartEraseMode)
             {

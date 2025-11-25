@@ -545,15 +545,7 @@ public class Intro : Frame, IHasPlayfield
         // N-Gage allows the intro to be skipped from here
         if (Rom.Platform == Platform.NGage)
         {
-            if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                {
-                    true => JoyPad.IsButtonJustPressed(GbaInput.A) ||
-                            JoyPad.IsButtonJustPressed(GbaInput.B) ||
-                            JoyPad.IsButtonJustPressed(GbaInput.Start) ||
-                            JoyPad.IsButtonJustPressed(GbaInput.Select),
-                    false => NGageJoyPadHelpers.IsNumpadJustPressed() ||
-                             NGageJoyPadHelpers.IsSoftButtonJustPressed(),
-                })
+            if (JoyPad.IsButtonJustPressed(Rayman3Input.IntroSkip))
                 IsSkipping = true;
 
             if (IsSkipping)
@@ -616,17 +608,7 @@ public class Intro : Frame, IHasPlayfield
             }
         }
 
-        if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-            {
-                true => JoyPad.IsButtonJustPressed(GbaInput.A) ||
-                        JoyPad.IsButtonJustPressed(GbaInput.B) ||
-                        JoyPad.IsButtonJustPressed(GbaInput.Start) ||
-                        JoyPad.IsButtonJustPressed(GbaInput.Select),
-                false when Rom.Platform is Platform.GBA => JoyPad.IsButtonPressed(GbaInput.Start),
-                false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsNumpadJustPressed() || 
-                                                             NGageJoyPadHelpers.IsSoftButtonJustPressed(),
-                _ => throw new UnsupportedPlatformException()
-            })
+        if (JoyPad.IsButtonJustPressed(Rayman3Input.IntroSkip))
         {
             if (Rom.Platform == Platform.NGage || ScrollY <= 863)
                 IsSkipping = true;
@@ -669,17 +651,7 @@ public class Intro : Frame, IHasPlayfield
         BlackLumAndLogoObj.FrameChannelSprite();
         AnimationPlayer.PlayFront(BlackLumAndLogoObj);
 
-        if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-            {
-                true => JoyPad.IsButtonJustPressed(GbaInput.A) ||
-                        JoyPad.IsButtonJustPressed(GbaInput.B) ||
-                        JoyPad.IsButtonJustPressed(GbaInput.Start) ||
-                        JoyPad.IsButtonJustPressed(GbaInput.Select),
-                false when Rom.Platform is Platform.GBA => JoyPad.IsButtonPressed(GbaInput.Start),
-                false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsNumpadJustPressed() ||
-                                                             NGageJoyPadHelpers.IsSoftButtonJustPressed(),
-                _ => throw new UnsupportedPlatformException()
-            })
+        if (JoyPad.IsButtonJustPressed(Rayman3Input.IntroSkip))
         {
             Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
             Gfx.Fade = 1;

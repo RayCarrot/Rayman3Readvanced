@@ -1,5 +1,4 @@
 ﻿using System;
-using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.TgxEngine;
 
@@ -302,9 +301,9 @@ public partial class CameraSideScroller
                 float targetX;
                 if (Unknown is UnknownMode.Default or UnknownMode.UnusedWithInputs)
                 {
-                    if (JoyPad.IsButtonPressed(GbaInput.Left))
+                    if (JoyPad.IsButtonPressed(Rayman3Input.ActorLeft))
                         targetX = Scene.Resolution.X - (RSMultiplayer.IsActive ? CameraOffset.Multiplayer : CameraOffset.Default);
-                    else if (JoyPad.IsButtonPressed(GbaInput.Right))
+                    else if (JoyPad.IsButtonPressed(Rayman3Input.ActorRight))
                         targetX = RSMultiplayer.IsActive ? CameraOffset.Multiplayer : CameraOffset.Default;
                     else
                         targetX = CameraOffset.Center;

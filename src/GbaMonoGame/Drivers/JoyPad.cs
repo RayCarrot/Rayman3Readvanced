@@ -17,4 +17,9 @@ public static class JoyPad
     public static bool IsButtonReleased(GbaInput gbaInput) => Current.IsButtonReleased(gbaInput);
     public static bool IsButtonJustPressed(GbaInput gbaInput) => Current.IsButtonJustPressed(gbaInput);
     public static bool IsButtonJustReleased(GbaInput gbaInput) => Current.IsButtonJustReleased(gbaInput);
+
+    public static bool IsButtonPressed(Rayman3Input rayman3Input) => Current.IsButtonPressed(rayman3Input);
+    public static bool IsButtonReleased(Rayman3Input rayman3Input) => Current.IsButtonReleased(rayman3Input);
+    public static bool IsButtonJustPressed(Rayman3Input rayman3Input) => Current.IsButtonJustPressed(rayman3Input);
+    public static bool IsButtonJustReleased(Rayman3Input rayman3Input) => Current.IsButtonJustReleased(rayman3Input);
 }

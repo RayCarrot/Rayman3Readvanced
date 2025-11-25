@@ -64,7 +64,7 @@ public partial class MenuAll
     {
         if (Rom.Platform != Platform.NGage || !TransitionsFX.IsFadingIn)
         {
-            if (JoyPad.IsButtonJustPressed(GbaInput.Up))
+            if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
             {
                 int selectedOption;
                 if (SelectedOption == 0)
@@ -82,7 +82,7 @@ public partial class MenuAll
                 // NOTE: The game mistakenly passes in 0 as obj here, but nothing happens since pan and roll-off aren't enabled for this event
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.Down))
+            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
             {
                 int selectedOption;
                 if (SelectedOption == LanguagesCount - 1)
@@ -100,13 +100,7 @@ public partial class MenuAll
                 // NOTE: The game mistakenly passes in 0 as obj here, but nothing happens since pan and roll-off aren't enabled for this event
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
             }
-            else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                     {
-                         true => JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start),
-                         false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
-                         false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
-                         _ => throw new UnsupportedPlatformException()
-                     })
+            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
             {
                 CurrentStepAction = Step_TransitionOutOfLanguage;
 
@@ -167,7 +161,7 @@ public partial class MenuAll
                     throw new UnsupportedPlatformException();
                 }
             }
-            else if (Rom.Platform == Platform.NGage && NGageJoyPadHelpers.IsBackButtonJustPressed())
+            else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
             {
                 CurrentStepAction = Step_TransitionOutOfLanguage;
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);

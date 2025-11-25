@@ -278,29 +278,23 @@ public class TimeAttackMenuPage : MenuPage
     {
         if (!HasSelectedLevel)
         {
-            if (JoyPad.IsButtonJustPressed(GbaInput.Up))
+            if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
             {
                 SetSelectedOption(SelectedOption - 1);
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.Down))
+            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
             {
                 SetSelectedOption(SelectedOption + 1);
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.Left) || JoyPad.IsButtonJustPressed(GbaInput.L))
+            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeftExt))
             {
                 SetSelectedWorld(SelectedWorld - 1);
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.Right) || JoyPad.IsButtonJustPressed(GbaInput.R))
+            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRightExt))
             {
                 SetSelectedWorld(SelectedWorld + 1);
             }
-            else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                     {
-                         true => JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start),
-                         false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
-                         false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
-                         _ => throw new UnsupportedPlatformException()
-                     })
+            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
             {
                 CursorClick(() =>
                 {
@@ -309,14 +303,7 @@ public class TimeAttackMenuPage : MenuPage
                     WorldNameArrows.Pause();
                 });
             }
-            else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                     {
-                         true => JoyPad.IsButtonJustPressed(GbaInput.B) ||
-                                 JoyPad.IsButtonJustPressed(GbaInput.Select),
-                         false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B),
-                         false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsBackButtonJustPressed(),
-                         _ => throw new UnsupportedPlatformException()
-                     })
+            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
             {
                 Menu.ChangePage(new BonusMenuPage(Menu), NewPageMode.Back);
             }
@@ -325,13 +312,7 @@ public class TimeAttackMenuPage : MenuPage
         {
             // TODO: Implement setting ghost
 
-            if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                {
-                    true => JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start),
-                    false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
-                    false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
-                    _ => throw new UnsupportedPlatformException()
-                })
+            if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
             {
                 CursorClick(() =>
                 {
@@ -347,14 +328,7 @@ public class TimeAttackMenuPage : MenuPage
                     });
                 });
             }
-            else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                     {
-                         true => JoyPad.IsButtonJustPressed(GbaInput.B) ||
-                                 JoyPad.IsButtonJustPressed(GbaInput.Select),
-                         false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B),
-                         false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsBackButtonJustPressed(),
-                         _ => throw new UnsupportedPlatformException()
-                     })
+            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
             {
                 HasSelectedLevel = false;
                 SetSelectedOption(SelectedOption, playSound: false, forceUpdate: true);

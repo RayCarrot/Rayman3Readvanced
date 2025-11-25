@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Linq;
-using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using Microsoft.Xna.Framework.Graphics;
@@ -135,30 +134,23 @@ public class OptionsMenuPage : MenuPage
         // Not editing
         if (!IsEditingOption)
         {
-            if (JoyPad.IsButtonJustPressed(GbaInput.Up))
+            if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
             {
                 SetSelectedOption(SelectedOption - 1);
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.Down))
+            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
             {
                 SetSelectedOption(SelectedOption + 1);
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.Left) || JoyPad.IsButtonJustPressed(GbaInput.L))
+            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeftExt))
             {
                 SetSelectedTab(SelectedTab - 1);
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.Right) || JoyPad.IsButtonJustPressed(GbaInput.R))
+            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRightExt))
             {
                 SetSelectedTab(SelectedTab + 1);
             }
-            else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                     {
-                         true => JoyPad.IsButtonJustPressed(GbaInput.A) || 
-                                 JoyPad.IsButtonJustPressed(GbaInput.Start),
-                         false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
-                         false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
-                         _ => throw new UnsupportedPlatformException()
-                     })
+            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
             {
                 IsEditingOption = true;
 
@@ -169,14 +161,7 @@ public class OptionsMenuPage : MenuPage
                 CursorClick(null);
                 HorizontalArrows.Start();
             }
-            else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                     {
-                         true => JoyPad.IsButtonJustPressed(GbaInput.B) ||
-                                 JoyPad.IsButtonJustPressed(GbaInput.Select),
-                         false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B),
-                         false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsBackButtonJustPressed(),
-                         _ => throw new UnsupportedPlatformException()
-                     })
+            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
             {
                 // Go back to the game mode menu
                 Menu.ChangePage(new GameModeMenuPage(Menu), NewPageMode.Back);

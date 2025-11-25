@@ -1,5 +1,4 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
-using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.Rayman3.Readvanced;
 
@@ -71,7 +70,7 @@ public partial class FlyingShell
                 }
                 
                 // Move down
-                if (JoyPad.IsButtonPressed(GbaInput.Down) && Position.Y <= 150)
+                if (JoyPad.IsButtonPressed(Rayman3Input.ActorDown) && Position.Y <= 150)
                 {
                     Position += new Vector2(0, 1.5f);
 
@@ -79,7 +78,7 @@ public partial class FlyingShell
                         ActionId = IsFacingRight ? Action.FlyDown_Right : Action.FlyDown_Left;
                 }
                 // Move up
-                else if (JoyPad.IsButtonPressed(GbaInput.Up) && Position.Y >= 30)
+                else if (JoyPad.IsButtonPressed(Rayman3Input.ActorUp) && Position.Y >= 30)
                 {
                     Position -= new Vector2(0, 1.5f);
 
@@ -93,9 +92,9 @@ public partial class FlyingShell
                 }
 
                 // Change direction
-                if (JoyPad.IsButtonJustPressed(GbaInput.Right) && ActionId is Action.Fly_Left or Action.FlyUp_Left or Action.FlyDown_Left)
+                if (JoyPad.IsButtonJustPressed(Rayman3Input.ActorRight) && ActionId is Action.Fly_Left or Action.FlyUp_Left or Action.FlyDown_Left)
                     ActionId = Action.ChangeDirection_Left;
-                else if (JoyPad.IsButtonJustPressed(GbaInput.Left) && ActionId is Action.Fly_Right or Action.FlyUp_Right or Action.FlyDown_Right)
+                else if (JoyPad.IsButtonJustPressed(Rayman3Input.ActorLeft) && ActionId is Action.Fly_Right or Action.FlyUp_Right or Action.FlyDown_Right)
                     ActionId = Action.ChangeDirection_Right;
 
                 UpdateSoundPitch();

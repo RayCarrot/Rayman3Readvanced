@@ -428,7 +428,7 @@ public partial class MenuAll
         }
         else
         {
-            if (JoyPad.IsButtonJustPressed(GbaInput.Up) && Anims.Cursor.CurrentAnimation == 0)
+            if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp) && Anims.Cursor.CurrentAnimation == 0)
             {
                 if (SelectedOption == 0)
                     SelectOption(OptionsOptionsCount - 1, true);
@@ -437,7 +437,7 @@ public partial class MenuAll
 
                 Anims.OptionsSelection.CurrentAnimation = Localization.LanguageUiIndex * OptionsOptionsCount + SelectedOption;
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.Down) && Anims.Cursor.CurrentAnimation == 0)
+            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown) && Anims.Cursor.CurrentAnimation == 0)
             {
                 if (SelectedOption == OptionsOptionsCount - 1)
                     SelectOption(0, true);
@@ -446,14 +446,7 @@ public partial class MenuAll
 
                 Anims.OptionsSelection.CurrentAnimation = Localization.LanguageUiIndex * OptionsOptionsCount + SelectedOption;
             }
-            else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                     {
-                         true => JoyPad.IsButtonJustPressed(GbaInput.B) ||
-                                 JoyPad.IsButtonJustPressed(GbaInput.Select),
-                         false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B),
-                         false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsBackButtonJustPressed(),
-                         _ => throw new UnsupportedPlatformException()
-                     } && Anims.Cursor.CurrentAnimation == 0)
+            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack) && Anims.Cursor.CurrentAnimation == 0)
             {
                 // NOTE: N-Gage auto-saves the option here
 
@@ -462,14 +455,7 @@ public partial class MenuAll
                 TransitionOutCursorAndStem();
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
             }
-            else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                     {
-                         true => JoyPad.IsButtonJustPressed(GbaInput.A) || 
-                                 JoyPad.IsButtonJustPressed(GbaInput.Start),
-                         false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
-                         false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
-                         _ => throw new UnsupportedPlatformException()
-                     } && Anims.Cursor.CurrentAnimation == 0)
+            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm) && Anims.Cursor.CurrentAnimation == 0)
             {
                 Anims.Cursor.CurrentAnimation = 16;
 
@@ -518,7 +504,7 @@ public partial class MenuAll
 
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
             }
-            else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(GbaInput.Left) && Anims.Cursor.CurrentAnimation == 0)
+            else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft) && Anims.Cursor.CurrentAnimation == 0)
             {
                 if (SelectedOption == 0)
                 {
@@ -535,7 +521,7 @@ public partial class MenuAll
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                 }
             }
-            else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(GbaInput.Right) && Anims.Cursor.CurrentAnimation == 0)
+            else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight) && Anims.Cursor.CurrentAnimation == 0)
             {
                 if (SelectedOption == 0)
                 {

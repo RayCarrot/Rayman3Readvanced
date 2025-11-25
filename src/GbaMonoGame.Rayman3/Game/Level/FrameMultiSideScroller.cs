@@ -245,13 +245,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         {
             for (int id = 0; id < RSMultiplayer.MaxPlayersCount; id++)
             {
-                if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                    {
-                        true => MultiJoyPad.IsButtonJustPressed(id, GbaInput.Start),
-                        false when Rom.Platform is Platform.GBA => MultiJoyPad.IsButtonJustPressed(id, GbaInput.Start),
-                        false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.MultiIsSoftButtonJustPressed(id),
-                        _ => throw new UnsupportedPlatformException()
-                    })
+                if (MultiJoyPad.IsButtonJustPressed(id, Rayman3Input.Pause))
                 {
                     PausedMachineId = id;
                     CurrentStepAction = Step_Pause_Init;

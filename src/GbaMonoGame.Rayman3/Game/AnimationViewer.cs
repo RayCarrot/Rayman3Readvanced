@@ -96,20 +96,20 @@ public class AnimationViewer : Frame
         InfoText.Text = text;
     }
 
-    private bool IsDirectionalButtonPressed(GbaInput input)
+    private bool IsDirectionalButtonPressed(Rayman3Input input)
     {
-        bool left = JoyPad.IsButtonJustPressed(GbaInput.Left);
-        bool right = JoyPad.IsButtonJustPressed(GbaInput.Right);
+        bool left = JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft);
+        bool right = JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight);
         if (!left && !right)
         {
-            if (JoyPad.IsButtonPressed(GbaInput.Left))
+            if (JoyPad.IsButtonPressed(Rayman3Input.MenuLeft))
             {
                 if (HoldButtonTimer > 20)
                     left = GameTime.ElapsedFrames % 5 == 0;
                 else
                     HoldButtonTimer++;
             }
-            else if (JoyPad.IsButtonPressed(GbaInput.Right))
+            else if (JoyPad.IsButtonPressed(Rayman3Input.MenuRight))
             {
                 if (HoldButtonTimer > 15)
                     right = GameTime.ElapsedFrames % 5 == 0;
@@ -122,8 +122,8 @@ public class AnimationViewer : Frame
             }
         }
 
-        return left && input == GbaInput.Left ||
-               right && input == GbaInput.Right;
+        return left && input == Rayman3Input.MenuLeft ||
+               right && input == Rayman3Input.MenuRight;
     }
 
     private Type GetCurrentResourceType()
@@ -185,7 +185,7 @@ public class AnimationViewer : Frame
     {
         int resourcesCount = Rom.Loader.GameOffsetTable.Count;
 
-        if (IsDirectionalButtonPressed(GbaInput.Left))
+        if (IsDirectionalButtonPressed(Rayman3Input.MenuLeft))
         {
             Type resourceType;
             do
@@ -200,7 +200,7 @@ public class AnimationViewer : Frame
 
             SetSelectionText($"Resource {SelectedResourceIndex}/{resourcesCount - 1} ({resourceType.Name})");
         }
-        else if (IsDirectionalButtonPressed(GbaInput.Right))
+        else if (IsDirectionalButtonPressed(Rayman3Input.MenuRight))
         {
             Type resourceType;
             do
@@ -215,7 +215,7 @@ public class AnimationViewer : Frame
 
             SetSelectionText($"Resource {SelectedResourceIndex}/{resourcesCount - 1} ({resourceType.Name})");
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start))
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
         {
             if (GetCurrentResourceType() == typeof(AnimatedObjectResource))
                 InitSelectAnimation();
@@ -228,7 +228,7 @@ public class AnimationViewer : Frame
     {
         int actorsCount = Actors.Length;
 
-        if (IsDirectionalButtonPressed(GbaInput.Left))
+        if (IsDirectionalButtonPressed(Rayman3Input.MenuLeft))
         {
             SelectedActorIndex--;
 
@@ -237,7 +237,7 @@ public class AnimationViewer : Frame
 
             SetSelectionText($"Actor #{Actors[SelectedActorIndex].Type} ({(ActorType)Actors[SelectedActorIndex].Type})");
         }
-        else if (IsDirectionalButtonPressed(GbaInput.Right))
+        else if (IsDirectionalButtonPressed(Rayman3Input.MenuRight))
         {
             SelectedActorIndex++;
 
@@ -246,11 +246,11 @@ public class AnimationViewer : Frame
 
             SetSelectionText($"Actor #{Actors[SelectedActorIndex].Type} ({(ActorType)Actors[SelectedActorIndex].Type})");
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start))
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
         {
             InitSelectAnimation();
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.B) || JoyPad.IsButtonJustPressed(GbaInput.Select))
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             InitSelectResource();
         }
@@ -260,7 +260,7 @@ public class AnimationViewer : Frame
     {
         int animationsCount = Animation.Resource.AnimationsCount;
 
-        if (IsDirectionalButtonPressed(GbaInput.Left))
+        if (IsDirectionalButtonPressed(Rayman3Input.MenuLeft))
         {
             SelectedAnimationIndex--;
 
@@ -270,7 +270,7 @@ public class AnimationViewer : Frame
             SetSelectionText($"Animation {SelectedAnimationIndex}/{animationsCount - 1}");
             Animation.CurrentAnimation = SelectedAnimationIndex;
         }
-        else if (IsDirectionalButtonPressed(GbaInput.Right))
+        else if (IsDirectionalButtonPressed(Rayman3Input.MenuRight))
         {
             SelectedAnimationIndex++;
 
@@ -280,11 +280,11 @@ public class AnimationViewer : Frame
             SetSelectionText($"Animation {SelectedAnimationIndex}/{animationsCount - 1}");
             Animation.CurrentAnimation = SelectedAnimationIndex;
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start))
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
         {
             Animation.CurrentFrame = 0;
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.B) || JoyPad.IsButtonJustPressed(GbaInput.Select))
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             if (GetCurrentResourceType() == typeof(Scene2DResource))
                 InitSelectActor();

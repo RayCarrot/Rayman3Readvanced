@@ -291,16 +291,12 @@ public partial class MenuAll
 
     private void Step_MultiplayerModeSelection()
     {
-        if (JoyPad.IsButtonJustPressed(GbaInput.Up) || JoyPad.IsButtonJustPressed(GbaInput.Down))
+        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp) || JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
         {
             SelectOption(SelectedOption == 0 ? 1 : 0, true);
             Anims.MultiplayerModeSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + SelectedOption;
         }
-        else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                 {
-                     true => JoyPad.IsButtonJustPressed(GbaInput.B) || JoyPad.IsButtonJustPressed(GbaInput.Select),
-                     false => JoyPad.IsButtonJustPressed(GbaInput.B)
-                 })
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             NextStepAction = Step_InitializeTransitionToGameMode;
             CurrentStepAction = Step_TransitionOutOfMultiplayerModeSelection;
@@ -308,11 +304,7 @@ public partial class MenuAll
             TransitionOutCursorAndStem();
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
         }
-        else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                 {
-                     true => JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start),
-                     false => JoyPad.IsButtonJustPressed(GbaInput.A)
-                 })
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
         {
             Anims.Cursor.CurrentAnimation = 16;
 
@@ -388,17 +380,12 @@ public partial class MenuAll
 
     private void Step_MultiplayerConnectionSelection()
     {
-        if (JoyPad.IsButtonJustPressed(GbaInput.Up) || JoyPad.IsButtonJustPressed(GbaInput.Down))
+        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp) || JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
         {
             SelectOption(SelectedOption == 0 ? 2 : 0, true);
             Anims.MultiplayerConnectionSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + SelectedOption / 2;
         }
-        else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                 {
-                     true => JoyPad.IsButtonJustPressed(GbaInput.B) ||
-                             JoyPad.IsButtonJustPressed(GbaInput.Select),
-                     false => NGageJoyPadHelpers.IsBackButtonJustPressed()
-                 })
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             NextStepAction = Step_InitializeTransitionToGameMode;
             CurrentStepAction = Step_TransitionOutOfMultiplayerConnectionSelection;
@@ -406,12 +393,7 @@ public partial class MenuAll
             TransitionOutCursorAndStem();
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
         }
-        else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                 {
-                     true => JoyPad.IsButtonJustPressed(GbaInput.A) ||
-                             JoyPad.IsButtonJustPressed(GbaInput.Start),
-                     false => NGageJoyPadHelpers.IsConfirmButtonJustPressed()
-                 })
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
         {
             // NOTE: The game initializes and verifies the RNotifier connection here
 
@@ -503,7 +485,7 @@ public partial class MenuAll
         if (selectedHost == -1 && hostsCount > 0)
             SelectedHost = 0;
 
-        if (JoyPad.IsButtonJustPressed(GbaInput.Left))
+        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
         {
             if (SelectedHost != -1)
             {
@@ -513,7 +495,7 @@ public partial class MenuAll
                     SelectedHost = 0;
             }
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.Right))
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
         {
             if (SelectedHost != -1)
             {
@@ -522,12 +504,7 @@ public partial class MenuAll
                     SelectedHost = hostsCount - 1;
             }
         }
-        else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                 {
-                     true => JoyPad.IsButtonJustPressed(GbaInput.A) ||
-                             JoyPad.IsButtonJustPressed(GbaInput.Start),
-                     false => NGageJoyPadHelpers.IsConfirmButtonJustPressed()
-                 })
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
         {
             if (SelectedHost != -1)
             {
@@ -543,12 +520,7 @@ public partial class MenuAll
                 SelectOption(0, false);
             }
         }
-        else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                 {
-                     true => JoyPad.IsButtonJustPressed(GbaInput.B) ||
-                             JoyPad.IsButtonJustPressed(GbaInput.Select),
-                     false => NGageJoyPadHelpers.IsBackButtonJustPressed()
-                 })
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             RSMultiplayer.DeInit();
 
@@ -916,11 +888,7 @@ public partial class MenuAll
             {
                 CheckForStartGame();
 
-                if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                    {
-                        true => JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start),
-                        false => JoyPad.IsButtonJustPressed(GbaInput.Start)
-                    })
+                if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuMultiplayerStart))
                 {
                     uint trimmedGameTime = GameTime.ElapsedFrames & 0x1ff;
                     
@@ -991,11 +959,7 @@ public partial class MenuAll
             MultiplayerInititialGameTime = GameTime.ElapsedFrames;
         }
 
-        if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-            {
-                true => JoyPad.IsButtonJustPressed(GbaInput.B) || JoyPad.IsButtonJustPressed(GbaInput.Select),
-                false => JoyPad.IsButtonJustPressed(GbaInput.B)
-            })
+        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             SelectOption(0, false);
             NextStepAction = Step_InitializeTransitionToMultiplayerModeSelection;
@@ -1217,12 +1181,7 @@ public partial class MenuAll
             {
                 NGageSetMenuText(26, false, 36, 100, RSMultiplayer.CurrentHostName); // Press 5 when ready. Host name : %s
 
-                if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                    {
-                        true => JoyPad.IsButtonJustPressed(GbaInput.A) ||
-                                JoyPad.IsButtonJustPressed(GbaInput.Start),
-                        false => NGageJoyPadHelpers.IsConfirmButtonJustPressed()
-                    })
+                if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
                 {
                     // NOTE: The game notifies other players that it's ready
                 }
@@ -1250,12 +1209,7 @@ public partial class MenuAll
             }
         }
 
-        if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-            {
-                true => JoyPad.IsButtonJustPressed(GbaInput.B) ||
-                        JoyPad.IsButtonJustPressed(GbaInput.Select),
-                false => NGageJoyPadHelpers.IsBackButtonJustPressed()
-            })
+        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             RSMultiplayer.DeInit();
 
@@ -1550,12 +1504,7 @@ public partial class MenuAll
         }
 
         // Go back
-        if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-            {
-                true => JoyPad.IsButtonJustPressed(GbaInput.B) ||
-                        JoyPad.IsButtonJustPressed(GbaInput.Select),
-                false => NGageJoyPadHelpers.IsBackButtonJustPressed()
-            })
+        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             RSMultiplayer.DeInit();
 
@@ -1733,7 +1682,7 @@ public partial class MenuAll
             {
                 GameTime.Resume();
 
-                if (MultiJoyPad.IsButtonJustPressed(0, GbaInput.Left) && MultiplayerType != 0)
+                if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuLeft) && MultiplayerType != 0)
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     MultiplayerType--;
@@ -1741,21 +1690,14 @@ public partial class MenuAll
                     Anims.MultiplayerTypeIcon.CurrentAnimation = MultiplayerType;
                 }
 
-                if (MultiJoyPad.IsButtonJustPressed(0, GbaInput.Right) && MultiplayerType != 2)
+                if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuRight) && MultiplayerType != 2)
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     MultiplayerType++;
                     Anims.MultiplayerTypeName.CurrentAnimation = MultiplayerType + Localization.LanguageUiIndex * MultiplayerTypeAnimationsCount;
                     Anims.MultiplayerTypeIcon.CurrentAnimation = MultiplayerType;
                 }
-                else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                         {
-                             true => MultiJoyPad.IsButtonJustPressed(0, GbaInput.A) ||
-                                     MultiJoyPad.IsButtonJustPressed(0, GbaInput.Start),
-                             false when Rom.Platform is Platform.GBA => MultiJoyPad.IsButtonJustPressed(0, GbaInput.A),
-                             false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.MultiIsConfirmButtonJustPressed(0),
-                             _ => throw new UnsupportedPlatformException()
-                         })
+                else if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuConfirm))
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
 
@@ -1767,14 +1709,7 @@ public partial class MenuAll
                     CurrentStepAction = Step_TransitionOutOfMultiplayerTypeSelection;
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                 }
-                else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                         {
-                             true => MultiJoyPad.IsButtonJustPressed(0, GbaInput.B) ||
-                                     MultiJoyPad.IsButtonJustPressed(0, GbaInput.Select),
-                             false when Rom.Platform is Platform.GBA => MultiJoyPad.IsButtonJustPressed(0, GbaInput.B),
-                             false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.MultiIsBackButtonJustPressed(0),
-                             _ => throw new UnsupportedPlatformException()
-                         })
+                else if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuBack))
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
 
@@ -2114,7 +2049,7 @@ public partial class MenuAll
                 }
                 else
                 {
-                    if (MultiJoyPad.IsButtonJustPressed(0, GbaInput.Up) && (Rom.Platform == Platform.NGage || StemMode == StemMode.Active))
+                    if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuUp) && (Rom.Platform == Platform.NGage || StemMode == StemMode.Active))
                     {
                         if (MultiplayerMapId == 1)
                         {
@@ -2139,7 +2074,7 @@ public partial class MenuAll
                             SelectOption(0, true);
                         }
                     }
-                    else if (MultiJoyPad.IsButtonJustPressed(0, GbaInput.Down) && (Rom.Platform == Platform.NGage || StemMode == StemMode.Active))
+                    else if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuDown) && (Rom.Platform == Platform.NGage || StemMode == StemMode.Active))
                     {
                         if (Rom.Platform == Platform.NGage || 
                             (MultiplayerType == 0 && FinishedLyChallenge1) ||
@@ -2170,14 +2105,7 @@ public partial class MenuAll
                             }
                         }
                     }
-                    else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                             {
-                                 true => MultiJoyPad.IsButtonJustPressed(0, GbaInput.A) ||
-                                         MultiJoyPad.IsButtonJustPressed(0, GbaInput.Start),
-                                 false when Rom.Platform is Platform.GBA => MultiJoyPad.IsButtonJustPressed(0, GbaInput.A),
-                                 false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.MultiIsConfirmButtonJustPressed(0),
-                                 _ => throw new UnsupportedPlatformException()
-                             })
+                    else if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuConfirm))
                     {
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                         SoundEventsManager.ReplaceAllSongs(-1, 1);
@@ -2189,14 +2117,7 @@ public partial class MenuAll
                         Gfx.FadeControl = new FadeControl(FadeMode.None);
                         TransitionsFX.FadeOutInit(4);
                     }
-                    else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                             {
-                                 true => MultiJoyPad.IsButtonJustPressed(0, GbaInput.B) ||
-                                         MultiJoyPad.IsButtonJustPressed(0, GbaInput.Select),
-                                 false when Rom.Platform is Platform.GBA => MultiJoyPad.IsButtonJustPressed(0, GbaInput.B),
-                                 false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.MultiIsBackButtonJustPressed(0),
-                                 _ => throw new UnsupportedPlatformException()
-                             })
+                    else if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuBack))
                     {
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
 
@@ -2385,7 +2306,7 @@ public partial class MenuAll
             {
                 GameTime.Resume();
 
-                if (MultiJoyPad.IsButtonJustPressed(0, GbaInput.Up))
+                if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuUp))
                 {
                     SelectOption(SelectedOption == 0 ? 4 : SelectedOption - 2, true);
 
@@ -2396,7 +2317,7 @@ public partial class MenuAll
                     // Huh?
                     Anims.OptionsSelection.CurrentAnimation = SelectedOption + Localization.LanguageUiIndex * 3;
                 }
-                else if (MultiJoyPad.IsButtonJustPressed(0, GbaInput.Down))
+                else if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuDown))
                 {
                     SelectOption(SelectedOption == 4 ? 0 : SelectedOption + 2, true);
 
@@ -2407,7 +2328,7 @@ public partial class MenuAll
                     // Huh?
                     Anims.OptionsSelection.CurrentAnimation = SelectedOption + Localization.LanguageUiIndex * 3;
                 }
-                else if (MultiJoyPad.IsButtonJustPressed(0, GbaInput.Left))
+                else if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuLeft))
                 {
                     int option = SelectedOption / 2;
 
@@ -2449,7 +2370,7 @@ public partial class MenuAll
                         Anims.MultiplayerCaptureTheFlagOptionsTimeDigits[2].CurrentAnimation = 18 + CaptureTheFlagTargetTime - (CaptureTheFlagTargetTime / 10) * 10;
                     }
                 }
-                else if (MultiJoyPad.IsButtonJustPressed(0, GbaInput.Right))
+                else if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuRight))
                 {
                     int option = SelectedOption / 2;
 
@@ -2485,12 +2406,7 @@ public partial class MenuAll
                         Anims.MultiplayerCaptureTheFlagOptionsTimeDigits[2].CurrentAnimation = 18 + CaptureTheFlagTargetTime - (CaptureTheFlagTargetTime / 10) * 10;
                     }
                 }
-                else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                         {
-                             true => MultiJoyPad.IsButtonJustPressed(0, GbaInput.A) ||
-                                     MultiJoyPad.IsButtonJustPressed(0, GbaInput.Start),
-                             false => NGageJoyPadHelpers.MultiIsConfirmButtonJustPressed(0)
-                         })
+                else if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuConfirm))
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     TransitionOutCursorAndStem();
@@ -2498,12 +2414,7 @@ public partial class MenuAll
                     CurrentStepAction = Step_TransitionOutOfMultiplayerFlagOptions;
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                 }
-                else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                         {
-                             true => MultiJoyPad.IsButtonJustPressed(0, GbaInput.B) ||
-                                     MultiJoyPad.IsButtonJustPressed(0, GbaInput.Select),
-                             false => NGageJoyPadHelpers.MultiIsBackButtonJustPressed(0)
-                         })
+                else if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuBack))
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
                     TransitionOutCursorAndStem();
@@ -2640,17 +2551,7 @@ public partial class MenuAll
 
     private void Step_MultiplayerLostConnection()
     {
-        if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-            {
-                true => JoyPad.IsButtonJustPressed(GbaInput.A) || 
-                        JoyPad.IsButtonJustPressed(GbaInput.B) || 
-                        JoyPad.IsButtonJustPressed(GbaInput.Start) || 
-                        JoyPad.IsButtonJustPressed(GbaInput.Select),
-                false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.Start),
-                false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed() || 
-                                                             NGageJoyPadHelpers.IsBackButtonJustPressed(),
-                _ => throw new UnsupportedPlatformException()
-            })
+        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLostMultiplayerConnectionBack))
         {
             CurrentStepAction = Step_TransitionOutOfMultiplayerLostConnection;
         }
@@ -2827,11 +2728,7 @@ public partial class MenuAll
         }
 
         // Start
-        if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-            {
-                true => JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start),
-                false => JoyPad.IsButtonJustPressed(GbaInput.Start)
-            } && hasConnected)
+        if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuMultiplayerStart) && hasConnected)
         {
             SinglePakLoader.BeginDownloadLoader();
             SetMenuText(3, false); // Please Wait...
@@ -2844,11 +2741,7 @@ public partial class MenuAll
             SinglePakLoader.DecompressAndPlay(Localization.LanguageId);
 
         // Go back
-        if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-            {
-                true => JoyPad.IsButtonJustPressed(GbaInput.B) || JoyPad.IsButtonJustPressed(GbaInput.Select),
-                false => JoyPad.IsButtonJustPressed(GbaInput.B)
-            })
+        if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuBack))
         {
             RSMultiplayer.Init();
             MultiplayerInititialGameTime = GameTime.ElapsedFrames;

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
@@ -109,14 +108,7 @@ public class PresetSelectionOptionsMenuOption : OptionsMenuOption
 
     public override EditStepResult EditStep(IReadOnlyList<OptionsMenuOption> options)
     {
-        if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-            {
-                true => JoyPad.IsButtonJustPressed(GbaInput.A) || 
-                        JoyPad.IsButtonJustPressed(GbaInput.Start),
-                false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
-                false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
-                _ => throw new UnsupportedPlatformException()
-            })
+        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
         {
             if (_selectedIndex != _prevSelectedIndex)
             {
@@ -131,18 +123,11 @@ public class PresetSelectionOptionsMenuOption : OptionsMenuOption
 
             return EditStepResult.Apply;
         }
-        else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                 {
-                     true => JoyPad.IsButtonJustPressed(GbaInput.B) ||
-                             JoyPad.IsButtonJustPressed(GbaInput.Select),
-                     false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B),
-                     false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsBackButtonJustPressed(),
-                     _ => throw new UnsupportedPlatformException()
-                 })
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             return EditStepResult.Cancel;
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.Left))
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
         {
             _selectedIndex--;
             if (_selectedIndex < 0)
@@ -151,7 +136,7 @@ public class PresetSelectionOptionsMenuOption : OptionsMenuOption
             UpdateSelection();
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.Right))
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
         {
             _selectedIndex++;
             if (_selectedIndex >= _displayNames.Length)

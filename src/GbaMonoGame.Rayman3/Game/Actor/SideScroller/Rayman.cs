@@ -268,68 +268,77 @@ public sealed partial class Rayman : MovableActor
         }
     }
 
-    private GbaInput ReverseControls(GbaInput input) => 
-        (GbaInput)((input & (GbaInput.Left | GbaInput.Down)) != 0 ? (ushort)input >> 1 : (ushort)input << 1);
+    private Rayman3Input ReverseControls(Rayman3Input rayman3Input)
+    {
+        return rayman3Input switch
+        {
+            Rayman3Input.ActorUp => Rayman3Input.ActorDown,
+            Rayman3Input.ActorDown => Rayman3Input.ActorUp,
+            Rayman3Input.ActorLeft => Rayman3Input.ActorRight,
+            Rayman3Input.ActorRight => Rayman3Input.ActorLeft,
+            _ => throw new ArgumentOutOfRangeException(nameof(rayman3Input), rayman3Input, null)
+        };
+    }
 
-    private bool IsDirectionalButtonPressed(GbaInput input)
+    private bool IsDirectionalButtonPressed(Rayman3Input rayman3Input)
     {
         if (RSMultiplayer.IsActive)
         {
             if (ReverseControlsTimer != 0)
-                input = ReverseControls(input);
+                rayman3Input = ReverseControls(rayman3Input);
 
             SimpleJoyPad joyPad = MultiJoyPad.GetSimpleJoyPadForCurrentFrame(InstanceId);
-            return joyPad.IsButtonPressed(input);
+            return joyPad.IsButtonPressed(rayman3Input);
         }
         else
         {
-            return JoyPad.IsButtonPressed(input);
+            return JoyPad.IsButtonPressed(rayman3Input);
         }
     }
 
-    private bool IsDirectionalButtonReleased(GbaInput input)
+    private bool IsDirectionalButtonReleased(Rayman3Input rayman3Input)
     {
         if (RSMultiplayer.IsActive)
         {
             if (ReverseControlsTimer != 0)
-                input = ReverseControls(input);
+                rayman3Input = ReverseControls(rayman3Input);
 
-            return MultiJoyPad.GetSimpleJoyPadForCurrentFrame(InstanceId).IsButtonReleased(input);
+            return MultiJoyPad.GetSimpleJoyPadForCurrentFrame(InstanceId).IsButtonReleased(rayman3Input);
         }
         else
         {
-            return JoyPad.IsButtonReleased(input);
+            return JoyPad.IsButtonReleased(rayman3Input);
         }
     }
 
-    private bool IsDirectionalButtonJustPressed(GbaInput input)
+    private bool IsDirectionalButtonJustPressed(Rayman3Input rayman3Input)
     {
         if (RSMultiplayer.IsActive)
         {
             if (ReverseControlsTimer != 0)
-                input = ReverseControls(input);
+                rayman3Input = ReverseControls(rayman3Input);
 
-            return MultiJoyPad.GetSimpleJoyPadForCurrentFrame(InstanceId).IsButtonJustPressed(input);
+            return MultiJoyPad.GetSimpleJoyPadForCurrentFrame(InstanceId).IsButtonJustPressed(rayman3Input);
         }
         else
         {
-            return JoyPad.IsButtonJustPressed(input);
+            return JoyPad.IsButtonJustPressed(rayman3Input);
         }
     }
 
     // Unused
-    private bool IsDirectionalButtonJustReleased(GbaInput input)
+    private bool IsDirectionalButtonJustReleased(Rayman3Input rayman3Input)
     {
         if (RSMultiplayer.IsActive)
         {
             if (ReverseControlsTimer != 0)
-                input = ReverseControls(input);
+                rayman3Input = ReverseControls(rayman3Input);
 
-            return MultiJoyPad.GetSimpleJoyPadForCurrentFrame(InstanceId).IsButtonJustReleased(input);
+            return MultiJoyPad.GetSimpleJoyPadForCurrentFrame(InstanceId).IsButtonJustReleased(rayman3Input);
         }
         else
         {
-            return JoyPad.IsButtonJustReleased(input);
+            return JoyPad.IsButtonJustReleased(rayman3Input);
         }
     }
 
@@ -571,12 +580,12 @@ public sealed partial class Rayman : MovableActor
 
         MechModel.Speed = new Vector2(PreviousXSpeed, MathHelpers.FromFixedPoint(0x5a001));
 
-        if (IsDirectionalButtonPressed(GbaInput.Left))
+        if (IsDirectionalButtonPressed(Rayman3Input.ActorLeft))
         {
             if (PreviousXSpeed > -3)
                 PreviousXSpeed -= 0.12109375f;
         }
-        else if (IsDirectionalButtonPressed(GbaInput.Right))
+        else if (IsDirectionalButtonPressed(Rayman3Input.ActorRight))
         {
             if (PreviousXSpeed < 3)
                 PreviousXSpeed += 0.12109375f;
@@ -603,21 +612,21 @@ public sealed partial class Rayman : MovableActor
         {
             PreviousXSpeed -= 0.12109375f;
 
-            if (IsDirectionalButtonPressed(GbaInput.Right))
+            if (IsDirectionalButtonPressed(Rayman3Input.ActorRight))
                 PreviousXSpeed -= 0.015625f;
         }
         else if (SlideType?.Value is PhysicalTypeValue.SlideAngle30Right1 or PhysicalTypeValue.SlideAngle30Right2)
         {
             PreviousXSpeed += 0.12109375f;
 
-            if (IsDirectionalButtonPressed(GbaInput.Left))
+            if (IsDirectionalButtonPressed(Rayman3Input.ActorLeft))
                 PreviousXSpeed += 0.015625f;
         }
     }
 
     private void MoveInTheAir(float speedX)
     {
-        if (IsDirectionalButtonPressed(GbaInput.Left))
+        if (IsDirectionalButtonPressed(Rayman3Input.ActorLeft))
         {
             if (IsFacingRight)
                 AnimatedObject.FlipX = true;
@@ -627,7 +636,7 @@ public sealed partial class Rayman : MovableActor
             if (speedX <= -3)
                 speedX = -3;
         }
-        else if (IsDirectionalButtonPressed(GbaInput.Right))
+        else if (IsDirectionalButtonPressed(Rayman3Input.ActorRight))
         {
             if (IsFacingLeft)
                 AnimatedObject.FlipX = false;
@@ -732,7 +741,7 @@ public sealed partial class Rayman : MovableActor
             ActionId = IsFacingRight ? Action.ThrowFistInAir_Right : Action.ThrowFistInAir_Left;
         }
 
-        if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.B))
+        if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorAttack))
         {
             if (CanAttackWithFist(1))
             {
@@ -934,7 +943,7 @@ public sealed partial class Rayman : MovableActor
         {
             if (IsFacingRight)
             {
-                if (IsDirectionalButtonPressed(GbaInput.Down))
+                if (IsDirectionalButtonPressed(Rayman3Input.ActorDown))
                 {
                     if (ActionId != Action.Sliding_Crouch_Right)
                         ActionId = Action.Sliding_Crouch_Right;
@@ -947,7 +956,7 @@ public sealed partial class Rayman : MovableActor
             }
             else
             {
-                if (IsDirectionalButtonPressed(GbaInput.Down))
+                if (IsDirectionalButtonPressed(Rayman3Input.ActorDown))
                 {
                     if (ActionId != Action.Sliding_Crouch_Left)
                         ActionId = Action.Sliding_Crouch_Left;
@@ -963,7 +972,7 @@ public sealed partial class Rayman : MovableActor
         {
             if (IsFacingRight)
             {
-                if (IsDirectionalButtonPressed(GbaInput.Down))
+                if (IsDirectionalButtonPressed(Rayman3Input.ActorDown))
                 {
                     if (ActionId != Action.Sliding_Crouch_Right)
                         ActionId = Action.Sliding_Crouch_Right;
@@ -976,7 +985,7 @@ public sealed partial class Rayman : MovableActor
             }
             else
             {
-                if (IsDirectionalButtonPressed(GbaInput.Down))
+                if (IsDirectionalButtonPressed(Rayman3Input.ActorDown))
                 {
                     if (ActionId != Action.Sliding_Crouch_Left)
                         ActionId = Action.Sliding_Crouch_Left;
@@ -1553,16 +1562,16 @@ public sealed partial class Rayman : MovableActor
 
     private void DoNoClipBehavior()
     {
-        int speed = JoyPad.IsButtonPressed(GbaInput.A) ? 7 : 4;
+        int speed = JoyPad.IsButtonPressed(Rayman3Input.ActorJump) ? 7 : 4;
 
-        if (JoyPad.IsButtonPressed(GbaInput.Up))
+        if (JoyPad.IsButtonPressed(Rayman3Input.ActorUp))
             Position -= new Vector2(0, speed);
-        else if (JoyPad.IsButtonPressed(GbaInput.Down))
+        else if (JoyPad.IsButtonPressed(Rayman3Input.ActorDown))
             Position += new Vector2(0, speed);
 
-        if (JoyPad.IsButtonPressed(GbaInput.Left))
+        if (JoyPad.IsButtonPressed(Rayman3Input.ActorLeft))
             Position -= new Vector2(speed, 0);
-        else if (JoyPad.IsButtonPressed(GbaInput.Right))
+        else if (JoyPad.IsButtonPressed(Rayman3Input.ActorRight))
             Position += new Vector2(speed, 0);
     }
 

@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 
@@ -9,10 +8,10 @@ public partial class Murfy
 {
     private bool FsmStep_AdvanceText()
     {
-        if (JoyPad.IsButtonJustPressed(GbaInput.A))
+        if (JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxNext))
             TextBox.MoveToNextText();
 
-        if (Engine.ActiveConfig.Tweaks.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(GbaInput.Start))
+        if (Engine.ActiveConfig.Tweaks.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxSkip))
         {
             if (Frame.Current is FrameSideScroller frameSideScroller)
                 frameSideScroller.CanPause = false;

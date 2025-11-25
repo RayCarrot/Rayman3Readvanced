@@ -467,12 +467,12 @@ public class Credits : Frame
 
     private void StepWheel()
     {
-        if (JoyPad.IsButtonPressed(GbaInput.Up))
+        if (JoyPad.IsButtonPressed(Rayman3Input.MenuUp))
         {
             if (Wheel.AnimSpeed < 5)
                 Wheel.AnimSpeed += MathHelpers.FromFixedPoint(0x800);
         }
-        else if (JoyPad.IsButtonPressed(GbaInput.Down))
+        else if (JoyPad.IsButtonPressed(Rayman3Input.MenuDown))
         {
             if (Wheel.AnimSpeed > -5)
                 Wheel.AnimSpeed -= MathHelpers.FromFixedPoint(0x800);
@@ -529,19 +529,7 @@ public class Credits : Frame
     {
         if (!IsExiting)
         {
-            if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                {
-                    true => JoyPad.IsButtonJustPressed(GbaInput.B) ||
-                            JoyPad.IsButtonJustPressed(GbaInput.Select) ||
-                            JoyPad.IsButtonJustPressed(GbaInput.A) ||
-                            JoyPad.IsButtonJustPressed(GbaInput.Start),
-                    false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B) || 
-                                                               JoyPad.IsButtonJustPressed(GbaInput.A) || 
-                                                               JoyPad.IsButtonJustPressed(GbaInput.Start),
-                    false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsNumpadJustPressed() || 
-                                                                 NGageJoyPadHelpers.IsSoftButtonJustPressed(),
-                    _ => throw new UnsupportedPlatformException()
-                })
+            if (JoyPad.IsButtonJustPressed(Rayman3Input.CreditsSkip))
             {
                 TransitionsFX.FadeOutInit(2);
                 IsExiting = true;

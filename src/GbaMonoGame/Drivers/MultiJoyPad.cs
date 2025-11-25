@@ -170,4 +170,36 @@ public static class MultiJoyPad
         else
             return JoyPad.IsButtonJustReleased(gbaInput);
     }
+
+    public static bool IsButtonPressed(int machineId, Rayman3Input rayman3Input)
+    {
+        if (RSMultiplayer.IsActive)
+            return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonPressed(rayman3Input);
+        else
+            return JoyPad.IsButtonPressed(rayman3Input);
+    }
+
+    public static bool IsButtonReleased(int machineId, Rayman3Input rayman3Input)
+    {
+        if (RSMultiplayer.IsActive)
+            return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonReleased(rayman3Input);
+        else
+            return JoyPad.IsButtonReleased(rayman3Input);
+    }
+
+    public static bool IsButtonJustPressed(int machineId, Rayman3Input rayman3Input)
+    {
+        if (RSMultiplayer.IsActive)
+            return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonJustPressed(rayman3Input);
+        else
+            return JoyPad.IsButtonJustPressed(rayman3Input);
+    }
+
+    public static bool IsButtonJustReleased(int machineId, Rayman3Input rayman3Input)
+    {
+        if (RSMultiplayer.IsActive)
+            return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonJustReleased(rayman3Input);
+        else
+            return JoyPad.IsButtonJustReleased(rayman3Input);
+    }
 }

@@ -224,25 +224,19 @@ public partial class MenuAll
         }
         else
         {
-            if (JoyPad.IsButtonJustPressed(GbaInput.Up))
+            if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
             {
                 SelectOption(SelectedOption == 0 ? GameModeOptionsCount - 1 : SelectedOption - 1, true);
 
                 Anims.GameModeList.CurrentAnimation = Localization.LanguageUiIndex * GameModeOptionsCount + SelectedOption;
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.Down))
+            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
             {
                 SelectOption(SelectedOption == GameModeOptionsCount - 1 ? 0 : SelectedOption + 1, true);
 
                 Anims.GameModeList.CurrentAnimation = Localization.LanguageUiIndex * GameModeOptionsCount + SelectedOption;
             }
-            else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                     {
-                         true => JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start),
-                         false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
-                         false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
-                         _ => throw new UnsupportedPlatformException()
-                     })
+            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
             {
                 Anims.Cursor.CurrentAnimation = 16;
 
@@ -267,13 +261,7 @@ public partial class MenuAll
                 TransitionOutCursorAndStem();
             }
             // Custom to return to the modern menu
-            else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch 
-                     { 
-                         true => JoyPad.IsButtonJustPressed(GbaInput.B) || JoyPad.IsButtonJustPressed(GbaInput.Select),
-                         false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B),
-                         false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsBackButtonJustPressed(),
-                         _ => throw new UnsupportedPlatformException()
-                     })
+            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
             {
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                 IsLoadingModernMenu = true;

@@ -1,5 +1,4 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
-using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
@@ -70,7 +69,7 @@ public sealed partial class Machine : MovableActor
     {
         if (!TextBox.IsFinished)
         {
-            if (JoyPad.IsButtonJustPressed(GbaInput.A))
+            if (JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxNext))
                 TextBox.MoveToNextText();
         }
         else

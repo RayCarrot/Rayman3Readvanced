@@ -1,5 +1,4 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
-using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
@@ -50,22 +49,17 @@ public partial class MenuAll
 
     private void Step_Quit()
     {
-        if (JoyPad.IsButtonJustPressed(GbaInput.Up))
+        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
         {
             SelectOption(SelectedOption == 0 ? 1 : 0, true);
             Anims.QuitSelection.CurrentAnimation = 15 + Localization.LanguageUiIndex + SelectedOption * 5;
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.Down))
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
         {
             SelectOption(SelectedOption == 1 ? 0 : 1, true);
             Anims.QuitSelection.CurrentAnimation = 15 + Localization.LanguageUiIndex + SelectedOption * 5;
         }
-        else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                 {
-                     true => JoyPad.IsButtonJustPressed(GbaInput.A) ||
-                             JoyPad.IsButtonJustPressed(GbaInput.Start),
-                     false => NGageJoyPadHelpers.IsConfirmButtonJustPressed()
-                 })
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
         {
             Anims.Cursor.CurrentAnimation = 16;
 
@@ -81,12 +75,7 @@ public partial class MenuAll
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
             TransitionOutCursorAndStem();
         }
-        else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                 {
-                     true => JoyPad.IsButtonJustPressed(GbaInput.B) ||
-                             JoyPad.IsButtonJustPressed(GbaInput.Select),
-                     false => NGageJoyPadHelpers.IsBackButtonJustPressed()
-                 })
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             Anims.Cursor.CurrentAnimation = 16;
             NextStepAction = Step_InitializeTransitionToGameMode;

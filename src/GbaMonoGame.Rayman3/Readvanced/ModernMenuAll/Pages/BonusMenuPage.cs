@@ -43,34 +43,20 @@ public class BonusMenuPage : MenuPage
 
     protected override void Step_Active()
     {
-        if (JoyPad.IsButtonJustPressed(GbaInput.Up))
+        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
         {
             SetSelectedOption(SelectedOption - 1);
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.Down))
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
         {
             SetSelectedOption(SelectedOption + 1);
         }
-        else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                 {
-                     true => JoyPad.IsButtonJustPressed(GbaInput.A) ||
-                             JoyPad.IsButtonJustPressed(GbaInput.Start),
-                     false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
-                     false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsConfirmButtonJustPressed(),
-                     _ => throw new UnsupportedPlatformException()
-                 })
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
         {
             if (Options[SelectedOption] is ActionMenuOption action)
                 action.Invoke();
         }
-        else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                 {
-                     true => JoyPad.IsButtonJustPressed(GbaInput.B) ||
-                             JoyPad.IsButtonJustPressed(GbaInput.Select),
-                     false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.B),
-                     false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsBackButtonJustPressed(),
-                     _ => throw new UnsupportedPlatformException()
-                 })
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             Menu.ChangePage(new GameModeMenuPage(Menu), NewPageMode.Back);
         }

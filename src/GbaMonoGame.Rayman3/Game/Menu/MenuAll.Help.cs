@@ -1,5 +1,4 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
-using GbaMonoGame.TgxEngine;
+﻿using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -55,12 +54,7 @@ public partial class MenuAll
     {
         int prevSelectedOption = SelectedOption;
 
-        if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-            {
-                true => JoyPad.IsButtonJustPressed(GbaInput.A) ||
-                        JoyPad.IsButtonJustPressed(GbaInput.Start),
-                false => NGageJoyPadHelpers.IsConfirmButtonJustPressed()
-            })
+        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
         {
             SelectedOption++;
 
@@ -71,26 +65,21 @@ public partial class MenuAll
                 CurrentStepAction = Step_TransitionOutOfHelp;
             }
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.Right))
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
         {
             SelectedOption++;
 
             if (SelectedOption == 4)
                 SelectedOption = 3;
         }
-        else if (JoyPad.IsButtonJustPressed(GbaInput.Left))
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
         {
             SelectedOption--;
 
             if (SelectedOption == -1)
                 SelectedOption = 0;
         }
-        else if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                 {
-                     true => JoyPad.IsButtonJustPressed(GbaInput.B) ||
-                             JoyPad.IsButtonJustPressed(GbaInput.Select),
-                     false => NGageJoyPadHelpers.IsBackButtonJustPressed()
-                 })
+        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             SelectedOption = 0;
             prevSelectedOption = 0;

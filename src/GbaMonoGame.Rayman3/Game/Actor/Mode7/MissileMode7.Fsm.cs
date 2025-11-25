@@ -1,5 +1,4 @@
 ﻿using System;
-using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.TgxEngine;
@@ -165,7 +164,7 @@ public partial class MissileMode7
                     SetMode7DirectionalAction((int)Action.Default, ActionRotationSize);
 
                     // Accelerate when holding A
-                    if (MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.A))
+                    if (MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorJump))
                     {
                         MechModel.Acceleration = (Direction.ToDirectionalVector() * Acceleration).FlipY();
 
@@ -173,7 +172,7 @@ public partial class MissileMode7
                             MechModel.Acceleration *= 2;
                     }
                     // End acceleration
-                    else if (MultiJoyPad.IsButtonJustReleased(InstanceId, GbaInput.A))
+                    else if (MultiJoyPad.IsButtonJustReleased(InstanceId, Rayman3Input.ActorJump))
                     {
                         MechModel.Acceleration = Vector2.Zero;
                     }
@@ -187,7 +186,7 @@ public partial class MissileMode7
                     }
 
                     // Brake when holding B or on damage tiles
-                    if (MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.B) || physicalType.Damage)
+                    if (MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorAttack) || physicalType.Damage)
                     {
                         MechModel.Speed -= MechModel.Speed * (12 / 256f);
                     }
@@ -201,21 +200,21 @@ public partial class MissileMode7
                     MechModel.Speed += MechModel.Acceleration;
 
                     // Move to the side with L and R
-                    if (MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.L) && !MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.R))
+                    if (MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorSpecialLeft) && !MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorSpecialRight))
                     {
                         MechModel.Speed = MechModel.Speed with { X = MechModel.Speed.X + MechModel.Speed.Y / 64 };
                         MechModel.Speed = MechModel.Speed with { Y = MechModel.Speed.Y - MechModel.Speed.X / 64 };
                     }
-                    else if (MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.R) && !MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.L))
+                    else if (MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorSpecialRight) && !MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorSpecialLeft))
                     {
                         MechModel.Speed = MechModel.Speed with { X = MechModel.Speed.X - MechModel.Speed.Y / 64 };
                         MechModel.Speed = MechModel.Speed with { Y = MechModel.Speed.Y + MechModel.Speed.X / 64 };
                     }
 
-                    if (MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.Left))
+                    if (MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorLeft))
                         Direction += 2;
 
-                    if (MultiJoyPad.IsButtonPressed(InstanceId, GbaInput.Right))
+                    if (MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorRight))
                         Direction -= 2;
 
                     if (CustomScaleTimer == 0)
@@ -274,7 +273,7 @@ public partial class MissileMode7
                     // Update the jump
                     UpdateJump();
 
-                    if (MultiJoyPad.IsButtonJustReleased(InstanceId, GbaInput.A))
+                    if (MultiJoyPad.IsButtonJustReleased(InstanceId, Rayman3Input.ActorJump))
                         MechModel.Acceleration = Vector2.Zero;
 
                     if (ZPos <= 0)
@@ -441,7 +440,7 @@ public partial class MissileMode7
                     }
                 }
                 else if (InvulnerabilityTimer == 974 || 
-                         (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A) && InvulnerabilityTimer > 300))
+                         (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && InvulnerabilityTimer > 300))
                 {
                     FrameMode7 frame = (FrameMode7)Frame.Current;
 
@@ -502,7 +501,7 @@ public partial class MissileMode7
                     MultiplayerDeathTimer++;
 
                 // Change player to spectate
-                if (MultiJoyPad.IsButtonJustPressed(InstanceId, GbaInput.A) && InstanceId == MultiplayerManager.MachineId && !MultiplayerDeathFadeFlag) 
+                if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && InstanceId == MultiplayerManager.MachineId && !MultiplayerDeathFadeFlag) 
                 {
                     // The code is written as if the fade lasts 16 frames, yet it's set to 2 which lasts 32 frames. This makes the
                     // transition looks broken, so we optionally fix it. Same below for the fade in.

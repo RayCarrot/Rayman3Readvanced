@@ -1,5 +1,4 @@
 ﻿using BinarySerializer.Nintendo.GBA;
-using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.Rayman3.Readvanced;
@@ -215,7 +214,7 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
 
         if (!RSMultiplayer.IsActive)
         {
-            if (JoyPad.IsButtonJustPressed(GbaInput.Start) && CanPause)
+            if (JoyPad.IsButtonJustPressed(Rayman3Input.Pause) && CanPause)
             {
                 CurrentStepAction = Step_Pause_Init;
                 GameTime.Pause();
@@ -225,7 +224,7 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
         {
             for (int id = 0; id < RSMultiplayer.MaxPlayersCount; id++)
             {
-                if (MultiJoyPad.IsButtonJustPressed(id, GbaInput.Start) && CanPause && !((UserInfoMultiMode7)UserInfo).IsGameOver)
+                if (MultiJoyPad.IsButtonJustPressed(id, Rayman3Input.Pause) && CanPause && !((UserInfoMultiMode7)UserInfo).IsGameOver)
                 {
                     PausedMachineId = id;
                     CurrentStepAction = Step_Pause_Init;

@@ -265,17 +265,7 @@ public class GameOver : Frame
                 if (Rayman.EndOfAnimation)
                     NextRaymanIdleAnimation();
 
-                if (Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                    {
-                        true => JoyPad.IsButtonJustPressed(GbaInput.A) || 
-                                JoyPad.IsButtonJustPressed(GbaInput.B) || 
-                                JoyPad.IsButtonJustPressed(GbaInput.Start) || 
-                                JoyPad.IsButtonJustPressed(GbaInput.Select),
-                        false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
-                        false when Rom.Platform is Platform.NGage => JoyPad.IsButtonJustPressed(GbaInput.A) || 
-                                                                     JoyPad.IsButtonJustPressed(GbaInput.B),
-                        _ => throw new UnsupportedPlatformException()
-                    })
+                if (JoyPad.IsButtonJustPressed(Rayman3Input.GameOverContinue))
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
                     Mode = GameOverMode.Continue;

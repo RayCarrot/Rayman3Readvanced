@@ -135,7 +135,7 @@ public partial class WalkingShell
                 }
 
                 // Boost
-                if (IsRaymanMounted && JoyPad.IsButtonJustPressed(GbaInput.B))
+                if (IsRaymanMounted && JoyPad.IsButtonJustPressed(Rayman3Input.ActorAttack))
                 {
                     Rayman.ActionId = Rayman.Action.WalkingShell_BeginBoost;
                     ActionId = Action.BeginBoost;
@@ -162,7 +162,7 @@ public partial class WalkingShell
                 }
 
                 // Jump
-                if (IsRaymanMounted && JoyPad.IsButtonJustPressed(GbaInput.A))
+                if (IsRaymanMounted && JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump))
                 {
                     State.MoveTo(Fsm_Jump);
                     return false;
@@ -248,7 +248,7 @@ public partial class WalkingShell
                     return false;
                 }
 
-                if (IsRaymanMounted && JoyPad.IsButtonJustPressed(GbaInput.A))
+                if (IsRaymanMounted && JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump))
                 {
                     State.MoveTo(Fsm_Jump);
                     return false;
@@ -402,7 +402,7 @@ public partial class WalkingShell
                     if ((LoopAngle & 2) != 0)
                         LoopAngle -= 2;
 
-                    if (JoyPad.IsButtonJustPressed(GbaInput.B) && LoopAngle is > 20 and < 64)
+                    if (JoyPad.IsButtonJustPressed(Rayman3Input.ActorAttack) && LoopAngle is > 20 and < 64)
                         HasBoostedInLoop = true;
                 }
                 else
@@ -530,7 +530,7 @@ public partial class WalkingShell
                     }
                 }
 
-                if (SafetyJumpTimer != 0 && IsRaymanMounted && JoyPad.IsButtonJustPressed(GbaInput.A))
+                if (SafetyJumpTimer != 0 && IsRaymanMounted && JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump))
                 {
                     State.MoveTo(Fsm_Jump);
                     return false;

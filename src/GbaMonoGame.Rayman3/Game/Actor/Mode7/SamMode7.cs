@@ -64,21 +64,21 @@ public sealed partial class SamMode7 : Mode7Actor
         Vector2 direction = Direction.ToDirectionalVector().FlipY();
         Vector2 sideDirection = (Direction + Angle256.Quarter).ToDirectionalVector().FlipY();
 
-        int speed = JoyPad.IsButtonPressed(GbaInput.A) ? 4 : 2;
+        int speed = JoyPad.IsButtonPressed(Rayman3Input.ActorJump) ? 4 : 2;
 
-        if (JoyPad.IsButtonPressed(GbaInput.Up))
+        if (JoyPad.IsButtonPressed(Rayman3Input.ActorUp))
             Position += direction * speed;
-        if (JoyPad.IsButtonPressed(GbaInput.Down))
+        if (JoyPad.IsButtonPressed(Rayman3Input.ActorDown))
             Position -= direction * speed;
 
-        if (JoyPad.IsButtonPressed(GbaInput.Right))
+        if (JoyPad.IsButtonPressed(Rayman3Input.ActorRight))
             Position -= sideDirection * speed;
-        if (JoyPad.IsButtonPressed(GbaInput.Left))
+        if (JoyPad.IsButtonPressed(Rayman3Input.ActorLeft))
             Position += sideDirection * speed;
 
-        if (JoyPad.IsButtonPressed(GbaInput.R))
+        if (JoyPad.IsButtonPressed(Rayman3Input.ActorSpecialRight))
             Direction--;
-        if (JoyPad.IsButtonPressed(GbaInput.L))
+        if (JoyPad.IsButtonPressed(Rayman3Input.ActorSpecialLeft))
             Direction++;
 
         TargetDirection = Direction;

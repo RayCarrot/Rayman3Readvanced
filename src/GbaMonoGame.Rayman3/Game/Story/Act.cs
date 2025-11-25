@@ -309,13 +309,7 @@ public abstract class Act : Frame
         else
         {
             // Skip cutscene
-            if (!IsAutomatic && Engine.LocalConfig.Controls.UseModernButtonMapping switch 
-                {
-                    true => JoyPad.IsButtonJustPressed(GbaInput.Start),
-                    false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.Start),
-                    false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsSoftButtonJustPressed(),
-                    _ => throw new UnsupportedPlatformException()
-                })
+            if (!IsAutomatic && JoyPad.IsButtonJustPressed(Rayman3Input.StorySkip))
             {
                 CurrentFrameIndex = ActResource.LastFrameIndex;
                 TransitionsFX.FadeOutInit(1);
@@ -331,13 +325,7 @@ public abstract class Act : Frame
             {
                 TransitionTextIn();
             }
-            else if (!IsAutomatic && Engine.LocalConfig.Controls.UseModernButtonMapping switch
-                     {
-                         true => JoyPad.IsButtonJustPressed(GbaInput.A),
-                         false when Rom.Platform is Platform.GBA => JoyPad.IsButtonJustPressed(GbaInput.A),
-                         false when Rom.Platform is Platform.NGage => NGageJoyPadHelpers.IsNumpadJustPressed(),
-                         _ => throw new UnsupportedPlatformException()
-                     })
+            else if (!IsAutomatic && JoyPad.IsButtonJustPressed(Rayman3Input.StoryNext))
             {
                 if (ActResource.Frames.Value[CurrentFrameIndex].TextId == -1 ||
                     CurrentTextLine >= CurrentText.Length)

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.TgxEngine;
@@ -69,9 +68,9 @@ public partial class RaymanMode7
     {
         if (ProcessJoypad)
         {
-            if (JoyPad.IsButtonPressed(GbaInput.Left))
+            if (JoyPad.IsButtonPressed(Rayman3Input.ActorLeft))
                 MoveSpeed = 1.375f;
-            else if (JoyPad.IsButtonPressed(GbaInput.Right))
+            else if (JoyPad.IsButtonPressed(Rayman3Input.ActorRight))
                 MoveSpeed = -1.375f;
             else
                 MoveSpeed = 0;
@@ -181,7 +180,7 @@ public partial class RaymanMode7
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SkiLoop1);
                 }
 
-                if (JoyPad.IsButtonJustPressed(GbaInput.A) && ProcessJoypad)
+                if (JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump) && ProcessJoypad)
                 {
                     State.MoveTo(Fsm_Jump);
                     return false;
