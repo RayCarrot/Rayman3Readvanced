@@ -223,6 +223,16 @@ public class GfxDebugWindow : DebugWindow
                 ImGui.EndTabItem();
             }
 
+            if (ImGui.BeginTabItem("Cache"))
+            {
+                ImGui.SeparatorText("Cache");
+
+                ImGui.Text($"Cached textures: {Engine.TextureCache.GetCount()}");
+                ImGui.Text($"Cached palettes: {Engine.PaletteCache.GetCount()}");
+
+                ImGui.EndTabItem();
+            }
+
             ImGui.EndTabBar();
         }
     }

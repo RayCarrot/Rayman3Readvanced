@@ -45,6 +45,8 @@ public class LocationCache<T>
         return cachableObject;
     }
 
+    public int GetCount() => Objects.Count;
+
     public void Clear()
     {
         foreach (T cachableObject in Objects.Values)

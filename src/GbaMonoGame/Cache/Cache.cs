@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BinarySerializer;
 
 namespace GbaMonoGame;
@@ -65,6 +66,8 @@ public class Cache<T>
         Locations.Add(pointer, locationCache);
         return locationCache;
     }
+
+    public int GetCount() => Locations.Values.Sum(x => x.GetCount());
 
     public void Clear()
     {

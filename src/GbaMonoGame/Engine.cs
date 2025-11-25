@@ -72,7 +72,6 @@ public static class Engine
 
     public static GbaGameWindow GameWindow { get; private set; }
 
-    // TODO: Show cache in debug layout
     public static Cache<Texture2D> TextureCache { get; } = new();
     public static Cache<Palette> PaletteCache { get; } = new();
 
