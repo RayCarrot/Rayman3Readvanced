@@ -24,6 +24,10 @@ public readonly struct PhysicalType
 
     public float GetBlockTopSolid(float xPos)
     {
+        // NOTE: Set comment below about flooring floats. This is added to fix Rayman's sloped collision
+        //       when using the below fix.
+        xPos = MathF.Floor(xPos);
+
         float subTileX = MathHelpers.Mod(xPos, Tile.Size);
 
         // In the game this is done using pre-calculated arrays and rounded down to nearest integer
