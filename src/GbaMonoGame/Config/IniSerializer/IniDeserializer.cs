@@ -12,7 +12,7 @@ public class IniDeserializer : BaseIniSerializer
 {
     public IniDeserializer(string filePath)
     {
-        if (File.Exists(filePath))
+        if (filePath != null && File.Exists(filePath))
         {
             FileIniDataParser parser = new();
             Data = parser.ReadFile(filePath);

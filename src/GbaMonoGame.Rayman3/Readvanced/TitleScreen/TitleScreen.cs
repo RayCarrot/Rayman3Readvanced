@@ -161,9 +161,19 @@ public class TitleScreen : Frame
                         {
                             // TODO: Verify the file
 
-                            // Copy the file
-                            Directory.CreateDirectory(gameDirectory);
-                            File.Copy(selectedFilePath, Path.Combine(gameDirectory, gameFileNames[0]));
+                            try
+                            {
+                                // Copy the file
+                                Directory.CreateDirectory(gameDirectory);
+                                File.Copy(selectedFilePath, Path.Combine(gameDirectory, gameFileNames[0]));
+                            }
+                            catch (Exception ex)
+                            {
+                                Engine.MessageManager.EnqueueExceptionMessage(
+                                    ex: ex,
+                                    text: "An error occurred when copying the selected game ROM.",
+                                    header: "Error copying game ROM");
+                            }
 
                             // Update
                             UpdateGameOptions(game);
@@ -175,17 +185,27 @@ public class TitleScreen : Frame
 
                         if (selectedDirectoryPath != null)
                         {
-                            // The user might have selected the game root directory, in which case we need to navigate down
-                            if (Directory.Exists(Path.Combine(selectedDirectoryPath, "system")))
-                                selectedDirectoryPath = Path.Combine(selectedDirectoryPath, "system", "apps", "rayman3");
+                            try
+                            {
+                                // The user might have selected the game root directory, in which case we need to navigate down
+                                if (Directory.Exists(Path.Combine(selectedDirectoryPath, "system")))
+                                    selectedDirectoryPath = Path.Combine(selectedDirectoryPath, "system", "apps", "rayman3");
 
-                            // TODO: Verify the directory
+                                // TODO: Verify the directory
 
-                            // Copy the files
-                            Directory.CreateDirectory(gameDirectory);
-                            foreach (string gameFileName in gameFileNames)
-                                File.Copy(Path.Combine(selectedDirectoryPath, gameFileName), Path.Combine(gameDirectory, gameFileName));
-
+                                // Copy the files
+                                Directory.CreateDirectory(gameDirectory);
+                                foreach (string gameFileName in gameFileNames)
+                                    File.Copy(Path.Combine(selectedDirectoryPath, gameFileName), Path.Combine(gameDirectory, gameFileName));
+                            }
+                            catch (Exception ex)
+                            {
+                                Engine.MessageManager.EnqueueExceptionMessage(
+                                    ex: ex,
+                                    text: "An error occurred when copying the selected game ROM.",
+                                    header: "Error copying game ROM");
+                            }
+                            
                             // Update
                             UpdateGameOptions(game);
                         }

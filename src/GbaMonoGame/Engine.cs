@@ -1,9 +1,9 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using System;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame;
 
-// TODO: Handle exceptions for loading/saving config
 public static class Engine
 {
     #region Paths
@@ -95,7 +95,23 @@ public static class Engine
     {
         string filePath = FileManager.GetDataFile(ConfigFileName);
         LocalGameConfig config = new();
-        config.Serialize(new IniDeserializer(filePath));
+
+        try
+        {
+            config.Serialize(new IniDeserializer(filePath));
+        }
+        catch (Exception ex)
+        {
+            // Recreate and serialize without a file source to reset to default values
+            config = new LocalGameConfig();
+            config.Serialize(new IniDeserializer(null));
+
+            MessageManager.EnqueueExceptionMessage(
+                ex: ex,
+                text: $"An error occurred when reading the saved game options.{Environment.NewLine}All options will be reset to their default values.", 
+                header: "Error reading game options");
+        }
+
         LocalConfig = config;
 
         ActiveConfig = new ActiveGameConfig(LocalConfig.Tweaks, LocalConfig.Difficulty, LocalConfig.Debug);
@@ -113,7 +129,18 @@ public static class Engine
         string filePath = FileManager.GetDataFile(ConfigFileName);
         IniSerializer serializer = new();
         LocalConfig.Serialize(serializer);
-        serializer.Save(filePath);
+
+        try
+        {
+            serializer.Save(filePath);
+        }
+        catch (Exception ex)
+        {
+            MessageManager.EnqueueExceptionMessage(
+                ex: ex, 
+                text: "An error occurred when saving the game options.", 
+                header: "Error reading game options");
+        }
     }
 
     public static void OverrideActiveConfig(ActiveGameConfig activeGameConfig)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GbaMonoGame;
@@ -11,6 +12,11 @@ public class MessageManager
     public void EnqueueMessage(string text, string header)
     {
         _messageQueue.Enqueue(new Message(header, text));
+    }
+
+    public void EnqueueExceptionMessage(Exception ex, string text, string header)
+    {
+        _messageQueue.Enqueue(new Message(header, $"{text}{Environment.NewLine}{Environment.NewLine}Error: {ex.Message}"));
     }
 
     public void ShowQueuedMessage()

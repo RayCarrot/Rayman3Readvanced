@@ -99,7 +99,11 @@ public static class GameInfo
 
     public static void Load(int saveSlot)
     {
-        PersistentInfo = SaveGameManager.LoadSlot(saveSlot);
+        SaveGameSlot save = SaveGameManager.LoadSlot(saveSlot);
+        if (save != null)
+            PersistentInfo = save;
+        else
+            ResetPersistentInfo();
     }
 
     public static void Save(int saveSlot)
