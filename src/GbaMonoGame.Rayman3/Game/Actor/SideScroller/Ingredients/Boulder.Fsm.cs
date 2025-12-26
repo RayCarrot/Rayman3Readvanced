@@ -103,7 +103,9 @@ public partial class Boulder
 
                 if (Speed.Y == 0)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BallImp1_BigFoot1_Mix02);
+                    // If all objects are kept active we only want to make this sound when framed
+                    if (!Scene.KeepAllObjectsActive || AnimatedObject.IsFramed)
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BallImp1_BigFoot1_Mix02);
 
                     if (Scene.Camera.IsActorFramed(this))
                     {
