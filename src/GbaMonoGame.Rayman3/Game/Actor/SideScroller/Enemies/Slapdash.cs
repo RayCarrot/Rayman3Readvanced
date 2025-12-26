@@ -46,7 +46,6 @@ public sealed partial class Slapdash : MovableActor
         switch (message)
         {
             case Message.Captor_Trigger_SendMessageWithCaptorParam:
-                // TODO: Allow the camera to be set on N-Gage too?
                 if (Rom.Platform == Platform.GBA)
                 {
                     if (IsEnabled)
