@@ -214,7 +214,15 @@ public partial class Boulder
 
                 AnimatedObject.AffineMatrix = new AffineMatrix(Rotation, 1, 1);
 
-                // TODO: The boulder moves slower when on screen, which causes issues in high resolution. Have it use distance check then instead?
+                // The original game slows down the boulder when it's on-screen. However this doesn't
+                // work well in high resolution since it will always be on-screen then. So we use a
+                // distance check instead and also check if it's currently in the spawn cutscene.
+                bool slowSpeed;
+                if (Scene.Resolution == Rom.OriginalResolution)
+                    slowSpeed = Scene.Camera.IsActorFramed(this);
+                else
+                    slowSpeed = Timer < 90 || Vector2.Distance(Position, Scene.MainActor.Position) < 160;
+
                 if (IsMovingRight)
                 {
                     if (Speed.X > 1)
@@ -222,7 +230,7 @@ public partial class Boulder
                     else if (Speed.X > MathHelpers.FromFixedPoint(0x800))
                         Rotation += 2;
 
-                    if (Scene.Camera.IsActorFramed(this))
+                    if (slowSpeed)
                     {
                         if (MoveSpeed < MathHelpers.FromFixedPoint(0x19000))
                             MoveSpeed += MathHelpers.FromFixedPoint(0x6ae);
@@ -244,7 +252,7 @@ public partial class Boulder
                     else if (Speed.X < -MathHelpers.FromFixedPoint(0x800))
                         Rotation -= 2;
 
-                    if (Scene.Camera.IsActorFramed(this))
+                    if (slowSpeed)
                     {
                         if (MoveSpeed > -MathHelpers.FromFixedPoint(0x19000))
                             MoveSpeed -= MathHelpers.FromFixedPoint(0x6ae);
