@@ -122,6 +122,9 @@ public abstract class GbaGame : Game
 
     private void StepEngine()
     {
+        if (Engine.MessageManager.IsShowingMessage())
+            return;
+
         if (IsPaused)
             return;
 
@@ -153,6 +156,8 @@ public abstract class GbaGame : Game
 
         if (DebugMode)
             _updateTimeStopWatch.Stop();
+
+        Engine.MessageManager.ShowQueuedMessage();
     }
 
     #endregion

@@ -80,6 +80,8 @@ public static class Engine
     /// </summary>
     public static DisposableResources DisposableResources { get; } = new();
 
+    public static MessageManager MessageManager { get; } = new();
+
     #endregion
 
     #region Methods
