@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.Rayman3;
 
-// TODO: You can't see the lava in map 2 in modern resolution!
 public class FrameSideScrollerGCN : FrameSideScroller
 {
     public FrameSideScrollerGCN(GameCubeMapInfo mapInfo, GameCubeMap map, int gcnMapId) : base(default)
@@ -198,6 +197,14 @@ public class FrameSideScrollerGCN : FrameSideScroller
                 TgxTileLayer lavaLayer = ((TgxPlayfield2D)Scene.Playfield).TileLayers[0];
 
                 lavaLayer.Screen.Offset = lavaLayer.Screen.Offset with { Y = camPos.Y * MathHelpers.FromFixedPoint(0x7332) };
+
+                // Hack to adjust the screen to show the lava in higher resolution
+                if (lavaLayer.Screen.RenderOptions.RenderContext.Resolution != Rom.OriginalResolution)
+                {
+                    const int height = 256;
+                    const float factor = 0.5f; // Don't move all the way down. Half-way looks the best.
+                    lavaLayer.Screen.Offset += new Vector2(0, (height - lavaLayer.Screen.RenderOptions.RenderContext.Resolution.Y) * factor);
+                }
 
                 if (CircleTransitionMode == TransitionMode.None && CurrentStepAction == Step_Normal)
                     ((SanctuaryLavaRenderer)lavaLayer.Screen.Renderer).SinValue++;
