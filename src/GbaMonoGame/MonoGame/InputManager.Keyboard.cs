@@ -27,7 +27,7 @@ public static partial class InputManager
         }
 
         // Hard-code escape to always act as start so we can pause using it
-        if (IsKeyReleased(Keys.Escape))
+        if (IsKeyJustPressed(Keys.Escape))
             inputs |= Input.Gba_Start;
 
         return inputs;
