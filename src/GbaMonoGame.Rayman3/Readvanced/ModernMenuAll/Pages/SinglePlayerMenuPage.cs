@@ -139,7 +139,7 @@ public class SinglePlayerMenuPage : MenuPage
                 else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
                 {
                     // Load game
-                    if (SelectedStartEraseOption != 1 || Menu.Slots[SelectedOption] != null)
+                    if (SelectedStartEraseOption != 1)
                     {
                         CursorClick(() =>
                         {
