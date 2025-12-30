@@ -11,7 +11,6 @@ using Vector3 = Microsoft.Xna.Framework.Vector3;
 
 namespace GbaMonoGame.Rayman3;
 
-// TODO: Add custom Readvanced credits in here
 public class Credits : Frame
 {
     public Credits(bool calledFromOptionsMenu)
@@ -35,6 +34,44 @@ public class Credits : Frame
     // The original game lags in the credits and runs at around 15-30fps, so we need to simulate that
     private const float LagFrames = 3;
     private const int TextLinesCount = 4;
+
+    private static string[] AddedCredits =>
+    [
+        "*Readvanced Project Manager:",
+        "RayCarrot",
+        "-",
+        "*Readvanced Programmers:",
+        "RayCarrot",
+        "Marteaufou",
+        "Robin",
+        "-",
+        "*Readvanced Platform Assistance:",
+        "Fancy2209",
+        "-",
+        "*Readvanced Audio:",
+        "MilesTheCreator",
+        "-",
+        "*Game Reverse Engineering:",
+        "Droolie",
+        "RayCarrot",
+        "-",
+        "*Readvanced New Graphics:",
+        "alexlimitedgames",
+        "XanderNT",
+        "zelenbug",
+        "-",
+        "*Readvanced Testing:",
+        "Marteaufou",
+        "Raymanroy",
+        "-",
+        "*Readvanced Special Thanks:",
+        "Cornholio309",
+        "Luseu",
+        "muffet",
+        "Pixel",
+        "Warper",
+        "-"
+    ];
 
     public AnimationPlayer AnimationPlayer { get; set; }
 
@@ -63,7 +100,11 @@ public class Credits : Frame
 
     private void InitText()
     {
-        LocString = Localization.GetText(TextBankId.Credits, 0);
+        string[] addedCredits = AddedCredits;
+        string[] originalCredits = Localization.GetText(TextBankId.Credits, 0);
+        LocString = new string[addedCredits.Length + originalCredits.Length];
+        Array.Copy(addedCredits, 0, LocString, 0, addedCredits.Length);
+        Array.Copy(originalCredits, 0, LocString, addedCredits.Length, originalCredits.Length);
 
         TextObjects = new SpriteTextObject[TextLinesCount];
         TextOffsetsX = new float[TextLinesCount];
