@@ -106,6 +106,14 @@ public static class GameInfo
             ResetPersistentInfo();
     }
 
+    public static void Load(SaveGameSlot save)
+    {
+        if (save != null)
+            PersistentInfo = save;
+        else
+            ResetPersistentInfo();
+    }
+
     public static void Save(int saveSlot)
     {
         SaveGameManager.SaveSlot(saveSlot, PersistentInfo);

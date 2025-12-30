@@ -1,5 +1,4 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
-using GbaMonoGame.AnimEngine;
+﻿using GbaMonoGame.AnimEngine;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
@@ -38,7 +37,6 @@ public class BonusMenuPage : MenuPage
                 Menu.ChangePage(new TimeAttackMenuPage(Menu), NewPageMode.Next);
             }));
         AddOption(new TextMenuOption("LEVEL EDITOR"));
-        AddOption(new TextMenuOption("SAVE TRANSFER"));
     }
 
     protected override void Step_Active()

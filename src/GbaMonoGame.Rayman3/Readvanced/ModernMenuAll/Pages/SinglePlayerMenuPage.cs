@@ -141,32 +141,32 @@ public class SinglePlayerMenuPage : MenuPage
                     // Load game
                     if (SelectedStartEraseOption != 1)
                     {
-                        CursorClick(() =>
+                        // New game
+                        if (Menu.Slots[SelectedOption] == null)
                         {
-                            SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.None, 1);
-                            FadeOut(2, () =>
+                            Menu.ChangePage(new NewGameMenuPage(Menu, SelectedOption), NewPageMode.Next);
+                        }
+                        // Existing game
+                        else
+                        {
+                            CursorClick(() =>
                             {
-                                SoundEventsManager.StopAllSongs();
+                                SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.None, 1);
+                                FadeOut(2, () =>
+                                {
+                                    SoundEventsManager.StopAllSongs();
 
-                                if (Menu.Slots[SelectedOption] == null)
-                                {
-                                    // Create a new game
-                                    FrameManager.SetNextFrame(new Act1());
-                                    GameInfo.ResetPersistentInfo();
-                                }
-                                else
-                                {
                                     // Load an existing game
                                     GameInfo.Load(SelectedOption);
                                     GameInfo.GotoLastSaveGame();
-                                }
 
-                                Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-                                Gfx.Fade = 1;
+                                    Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
+                                    Gfx.Fade = 1;
 
-                                GameInfo.CurrentSlot = SelectedOption;
+                                    GameInfo.CurrentSlot = SelectedOption;
+                                });
                             });
-                        });
+                        }
                     }
                     // Erase slot
                     else

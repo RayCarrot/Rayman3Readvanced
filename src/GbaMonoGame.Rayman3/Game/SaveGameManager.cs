@@ -5,7 +5,6 @@ using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 
 namespace GbaMonoGame.Rayman3;
 
-// TODO: Add options to import/export to/from emulator saves
 public static class SaveGameManager
 {
     private static PhysicalFile GetSlotFile(int index)
