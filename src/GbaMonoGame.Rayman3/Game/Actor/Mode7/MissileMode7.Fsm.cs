@@ -319,21 +319,17 @@ public partial class MissileMode7
                 if (InvulnerabilityTimer == 120)
                     GameInfo.LevelDeath();
 
-                // TODO: The game doesn't have this >30 check and sets ZPos=InvulnerabilityTimer*8
+                // NOTE: The game doesn't have this >30 check and sets ZPos=InvulnerabilityTimer*8
                 //       The problem is we calculate the ZPos in 3D while the game does it in screen
                 //       coordinates (more or less), which makes us travel upwards at a much slower pace.
                 //       This sort of replicates the original look, but not fully (you still move up too fast).
                 // Scale = Vector2.One + new Vector2(InvulnerabilityTimer * 64, InvulnerabilityTimer * -8) / 256;
                 // ZPos = InvulnerabilityTimer * 8;
                 if (InvulnerabilityTimer > 30)
-                {
                     Scale = Vector2.Zero;
-                }
                 else
-                {
                     Scale = Vector2.One + new Vector2(InvulnerabilityTimer * 64, InvulnerabilityTimer * -8) / 256;
-                    ZPos = MathF.Pow(InvulnerabilityTimer, 2);
-                }
+                ZPos = MathF.Pow(1.2f, InvulnerabilityTimer) * 4;
                 break;
 
             case FsmAction.UnInit:
