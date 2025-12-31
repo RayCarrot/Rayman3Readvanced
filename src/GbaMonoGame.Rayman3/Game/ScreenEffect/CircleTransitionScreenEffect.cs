@@ -39,7 +39,12 @@ public class CircleTransitionScreenEffect : ScreenEffect
 
                 // Calculate the width. In the game the width is retrieved from a pre-calculated table
                 // (located at 0x0820e9a4 in the EU version), but we can calculate it during runtime.
-                float width = (int)Math.Sqrt(Math.Pow(radius, 2) - Math.Pow(y, 2));
+                float width = (float)Math.Sqrt(Math.Pow(radius, 2) - Math.Pow(y, 2));
+
+                // The original game stores the width as an integer, losing precision
+                if (!Engine.ActiveConfig.Tweaks.VisualImprovements)
+                    width = (int)width;
+                
                 float lineWidth = radius - width;
              
                 // Draw lines
