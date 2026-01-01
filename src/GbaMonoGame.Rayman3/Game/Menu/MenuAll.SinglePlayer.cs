@@ -325,7 +325,12 @@ public partial class MenuAll
                 {
                     TransitionValue = 0;
                     StartEraseMode = StartEraseMode.TransitionInSelection;
-                    Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2;
+
+                    // Optionally fix a bug of the wrong animation being shown after erasing a slot
+                    if (SelectedStartEraseOption == 1 || !Engine.LocalConfig.Tweaks.FixBugs)
+                        Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2;
+                    else
+                        Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 1;
 
                     if (Rom.Platform == Platform.GBA)
                         Anims.StartEraseSelection.ScreenPos = new Vector2(80, -50);

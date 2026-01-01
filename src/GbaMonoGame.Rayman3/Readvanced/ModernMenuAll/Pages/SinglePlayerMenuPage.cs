@@ -312,6 +312,7 @@ public class SinglePlayerMenuPage : MenuPage
                 {
                     TransitionValue = 0;
                     EraseSaveStage = StartEraseMode.TransitionInSelection;
+                    SetReadvancedStartEraseSelectionTexture(SelectedStartEraseOption);
                     StartEraseCursor.ScreenPos = StartEraseCursor.ScreenPos with { Y = -68 };
                 }
                 break;
