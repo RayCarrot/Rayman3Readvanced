@@ -19,6 +19,10 @@ public static class Assets
     public const string BossMachine_ExtendedLayer0_GBATexture = "Rayman3/Level/BossMachine_ExtendedLayer0_GBA";
     public const string BossMachine_ExtendedLayer0_NGageTexture = "Rayman3/Level/BossMachine_ExtendedLayer0_NGage";
 
+    public const string SaveSelectionOptions_0_English_0_Texture = "Rayman3/Menu/SaveSelectionOptions/0_English_0";
+    public const string SaveSelectionOptions_0_English_1_Texture = "Rayman3/Menu/SaveSelectionOptions/0_English_1";
+    public const string SaveSelectionOptions_0_English_2_Texture = "Rayman3/Menu/SaveSelectionOptions/0_English_2";
+
     public const string ClothTexture = "Rayman3/Menu/Cloth";
     public const string CursorTexture = "Rayman3/Menu/Cursor";
     public const string MenuCurtainTexture = "Rayman3/Menu/MenuCurtain";

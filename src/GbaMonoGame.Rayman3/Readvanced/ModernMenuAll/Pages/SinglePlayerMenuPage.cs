@@ -2,6 +2,7 @@
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.TgxEngine;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
@@ -9,58 +10,92 @@ public class SinglePlayerMenuPage : MenuPage
 {
     public SinglePlayerMenuPage(ModernMenuAll menu) : base(menu) { }
 
+    private const float TabHeaderWidth = 72;
+    private const float TabsCursorMoveTime = 18;
+
+    private static readonly string[] _readvancedStartEraseSelectionTexturePaths =
+    [
+        Assets.SaveSelectionOptions_0_English_0_Texture,
+        Assets.SaveSelectionOptions_0_English_1_Texture,
+        Assets.SaveSelectionOptions_0_English_2_Texture,
+    ];
+
     public override bool UsesCursor => true;
     public override int BackgroundPalette => 1;
     public override int LineHeight => 20;
 
+    public int CursorBaseX => EraseSaveStage is 
+        StartEraseMode.TransitionInConfirmErase or 
+        StartEraseMode.ConfirmErase or 
+        StartEraseMode.TransitionOutConfirmErase 
+        ? 136
+        : 101;
+
     public AnimatedObject StartEraseSelection { get; set; }
+    public SpriteTextureObject ReadvancedStartEraseSelection { get; set; }
     public AnimatedObject StartEraseCursor { get; set; }
 
-    public byte PrevSelectedStartEraseOption { get; set; }
-    public byte SelectedStartEraseOption { get; set; }
+    public float StartEraseCursorX { get; set; }
+    public float? StartEraseCursorStartX { get; set; }
+    public float? StartEraseCursorDestX { get; set; }
+
+    public int SelectedStartEraseOption { get; set; }
     public StartEraseMode EraseSaveStage { get; set; }
 
-    private void SelectStartEraseOption(byte targetIndex)
+    private void SetStartEraseCursorMovement(float startX, float endX)
     {
-        PrevSelectedStartEraseOption = SelectedStartEraseOption;
-        SelectedStartEraseOption = targetIndex;
+        StartEraseCursorStartX = startX;
+        StartEraseCursorDestX = endX;
+    }
+
+    private void SelectStartEraseOption(int index)
+    {
+        SetStartEraseCursorMovement(StartEraseCursorX, index * TabHeaderWidth);
+        SelectedStartEraseOption = index;
+    }
+
+    private void SetReadvancedStartEraseSelectionTexture(int index)
+    {
+        string path = _readvancedStartEraseSelectionTexturePaths[Localization.LanguageUiIndex * 3 + index];
+        ReadvancedStartEraseSelection.Texture = Engine.FrameContentManager.Load<Texture2D>(path);
     }
 
     private void ManageStartEraseCursor()
     {
-        if (SelectedStartEraseOption != PrevSelectedStartEraseOption)
-        {
-            int targetXPos = SelectedStartEraseOption * 72 + 136;
+        if (StartEraseCursorStartX == null || StartEraseCursorDestX == null)
+            return;
 
-            if (SelectedStartEraseOption < PrevSelectedStartEraseOption)
-            {
-                if (StartEraseCursor.ScreenPos.X > targetXPos)
-                {
-                    StartEraseCursor.ScreenPos -= new Vector2(4, 0);
-                }
-                else
-                {
-                    StartEraseCursor.ScreenPos = StartEraseCursor.ScreenPos with { X = targetXPos };
-                    PrevSelectedStartEraseOption = SelectedStartEraseOption;
-                }
-            }
-            else
-            {
-                if (StartEraseCursor.ScreenPos.X < targetXPos)
-                {
-                    StartEraseCursor.ScreenPos += new Vector2(4, 0);
-                }
-                else
-                {
-                    StartEraseCursor.ScreenPos = StartEraseCursor.ScreenPos with { X = targetXPos };
-                    PrevSelectedStartEraseOption = SelectedStartEraseOption;
-                }
-            }
+        float startX = StartEraseCursorStartX.Value;
+        float destX = StartEraseCursorDestX.Value;
+
+        // Move with a speed based on the distance
+        float dist = destX - startX;
+        float speed = dist / TabsCursorMoveTime;
+
+        // Move
+        if ((destX < startX && StartEraseCursorX > destX) ||
+            (destX > startX && StartEraseCursorX < destX))
+        {
+            StartEraseCursorX += speed;
+        }
+        // Finished moving
+        else
+        {
+            StartEraseCursorX = destX;
+            StartEraseCursorStartX = null;
+            StartEraseCursorDestX = null;
         }
     }
 
     protected override void Init()
     {
+        // Reset values
+        SelectedStartEraseOption = 0;
+        EraseSaveStage = StartEraseMode.Selection;
+        StartEraseCursorX = 0;
+        StartEraseCursorStartX = null;
+        StartEraseCursorDestX = null;
+
         // Add slots
         foreach (ModernMenuAll.Slot slot in Menu.Slots)
             AddOption(new SlotMenuOption(slot));
@@ -78,25 +113,29 @@ public class SinglePlayerMenuPage : MenuPage
             RenderContext = RenderContext,
         };
 
+        ReadvancedStartEraseSelection = new SpriteTextureObject()
+        {
+            BgPriority = 1,
+            ObjPriority = 0,
+            ScreenPos = new Vector2(74, -13),
+            RenderContext = RenderContext,
+        };
+        SetReadvancedStartEraseSelectionTexture(0);
+
         StartEraseCursor = new AnimatedObject(startEraseAnimations, startEraseAnimations.IsDynamic)
         {
             IsFramed = true,
             BgPriority = 1,
             ObjPriority = 0,
-            ScreenPos = new Vector2(136, 12),
+            ScreenPos = new Vector2(CursorBaseX + StartEraseCursorX, 12),
             CurrentAnimation = 40,
             RenderContext = RenderContext,
         };
-
-        // Reset values
-        PrevSelectedStartEraseOption = 0;
-        SelectedStartEraseOption = 0;
-        EraseSaveStage = StartEraseMode.Selection;
     }
 
     protected override void Step_TransitionIn()
     {
-        StartEraseSelection.ScreenPos = StartEraseSelection.ScreenPos with { Y = TransitionValue / 2f - 50 };
+        ReadvancedStartEraseSelection.ScreenPos = ReadvancedStartEraseSelection.ScreenPos with { Y = TransitionValue / 2f - 93 };
         StartEraseCursor.ScreenPos = StartEraseCursor.ScreenPos with { Y = TransitionValue / 2f - 68 };
     }
 
@@ -105,25 +144,27 @@ public class SinglePlayerMenuPage : MenuPage
         switch (EraseSaveStage)
         {
             case StartEraseMode.Selection:
-                // Move start/erase to start
+                // Move left
                 if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeftExt))
                 {
-                    if (SelectedStartEraseOption != 0)
-                    {
-                        SelectStartEraseOption(0);
-                        StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 1;
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
-                    }
+                    int newIndex = SelectedStartEraseOption - 1;
+                    if (newIndex < 0)
+                        newIndex = 2;
+
+                    SelectStartEraseOption(newIndex);
+                    SetReadvancedStartEraseSelectionTexture(newIndex);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
-                // Move start/erase to erase
+                // Move right
                 else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRightExt))
                 {
-                    if (SelectedStartEraseOption != 1)
-                    {
-                        SelectStartEraseOption(1);
-                        StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2;
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
-                    }
+                    int newIndex = SelectedStartEraseOption + 1;
+                    if (newIndex > 2)
+                        newIndex = 0;
+
+                    SelectStartEraseOption(newIndex);
+                    SetReadvancedStartEraseSelectionTexture(newIndex);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
                 // Move up
                 else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
@@ -138,56 +179,70 @@ public class SinglePlayerMenuPage : MenuPage
                 // Select slot
                 else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
                 {
-                    // Load game
-                    if (SelectedStartEraseOption != 1)
+                    switch (SelectedStartEraseOption)
                     {
-                        // New game
-                        if (Menu.Slots[SelectedOption] == null)
-                        {
-                            Menu.ChangePage(new NewGameMenuPage(Menu, SelectedOption), NewPageMode.Next);
-                        }
-                        // Existing game
-                        else
-                        {
-                            CursorClick(() =>
+                        // Start game
+                        case 0:
+                            // New game
+                            if (Menu.Slots[SelectedOption] == null)
                             {
-                                SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.None, 1);
-                                FadeOut(2, () =>
+                                Menu.ChangePage(new NewGameMenuPage(Menu, SelectedOption), NewPageMode.Next);
+                            }
+                            // Existing game
+                            else
+                            {
+                                CursorClick(() =>
                                 {
-                                    SoundEventsManager.StopAllSongs();
+                                    SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.None, 1);
+                                    FadeOut(2, () =>
+                                    {
+                                        SoundEventsManager.StopAllSongs();
 
-                                    // Load an existing game
-                                    GameInfo.Load(SelectedOption);
-                                    GameInfo.GotoLastSaveGame();
+                                        // Load an existing game
+                                        GameInfo.Load(SelectedOption);
+                                        GameInfo.GotoLastSaveGame();
 
-                                    Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-                                    Gfx.Fade = 1;
+                                        Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
+                                        Gfx.Fade = 1;
 
-                                    GameInfo.CurrentSlot = SelectedOption;
+                                        GameInfo.CurrentSlot = SelectedOption;
+                                    });
                                 });
-                            });
-                        }
-                    }
-                    // Erase slot
-                    else
-                    {
-                        if (Menu.Slots[SelectedOption] != null)
-                        {
-                            EraseSaveStage = StartEraseMode.TransitionOutSelection;
-                            TransitionValue = 0;
-                            CursorClick(null);
-                        }
-                        else
-                        {
-                            InvalidCursorClick();
-                        }
+                            }
+                            break;
+
+                        // Erase game
+                        case 1:
+                            if (Menu.Slots[SelectedOption] != null)
+                            {
+                                EraseSaveStage = StartEraseMode.TransitionOutSelection;
+                                TransitionValue = 0;
+                                CursorClick(null);
+                            }
+                            else
+                            {
+                                InvalidCursorClick();
+                            }
+                            break;
+
+                        // Export game
+                        case 2:
+                            if (Menu.Slots[SelectedOption] != null)
+                            {
+                                // TODO: Implement
+                            }
+                            else
+                            {
+                                InvalidCursorClick();
+                            }
+                            break;
                     }
                 }
                 break;
 
             case StartEraseMode.TransitionOutSelection:
                 TransitionValue += 4;
-                StartEraseSelection.ScreenPos = StartEraseSelection.ScreenPos with { Y = 30 - TransitionValue };
+                ReadvancedStartEraseSelection.ScreenPos = ReadvancedStartEraseSelection.ScreenPos with { Y = -13 - TransitionValue };
                 StartEraseCursor.ScreenPos = StartEraseCursor.ScreenPos with { Y = 12 - TransitionValue };
 
                 if (TransitionValue >= 64)
@@ -257,15 +312,13 @@ public class SinglePlayerMenuPage : MenuPage
                 {
                     TransitionValue = 0;
                     EraseSaveStage = StartEraseMode.TransitionInSelection;
-                    StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2;
-                    StartEraseSelection.ScreenPos = new Vector2(110, -50);
                     StartEraseCursor.ScreenPos = StartEraseCursor.ScreenPos with { Y = -68 };
                 }
                 break;
 
             case StartEraseMode.TransitionInSelection:
                 TransitionValue += 4;
-                StartEraseSelection.ScreenPos = StartEraseSelection.ScreenPos with { Y = TransitionValue - 34 };
+                ReadvancedStartEraseSelection.ScreenPos = ReadvancedStartEraseSelection.ScreenPos with { Y = TransitionValue - 77 };
                 StartEraseCursor.ScreenPos = StartEraseCursor.ScreenPos with { Y = TransitionValue - 52 };
 
                 if (TransitionValue >= 64)
@@ -305,14 +358,23 @@ public class SinglePlayerMenuPage : MenuPage
 
     protected override void Step_TransitionOut()
     {
-        StartEraseSelection.ScreenPos = StartEraseSelection.ScreenPos with { Y = 30 - TransitionValue / 2f };
+        ReadvancedStartEraseSelection.ScreenPos = ReadvancedStartEraseSelection.ScreenPos with { Y = -13 - TransitionValue / 2f };
         StartEraseCursor.ScreenPos = StartEraseCursor.ScreenPos with { Y = 12 - TransitionValue / 2f };
     }
 
     protected override void Draw(AnimationPlayer animationPlayer)
     {
         DrawOptions(animationPlayer);
-        animationPlayer.Play(StartEraseSelection);
+        
+        if (EraseSaveStage is 
+            StartEraseMode.TransitionInConfirmErase or 
+            StartEraseMode.ConfirmErase or 
+            StartEraseMode.TransitionOutConfirmErase)
+            animationPlayer.Play(StartEraseSelection);
+        
+        animationPlayer.Play(ReadvancedStartEraseSelection);
+
+        StartEraseCursor.ScreenPos = StartEraseCursor.ScreenPos with { X = CursorBaseX + StartEraseCursorX };
         animationPlayer.Play(StartEraseCursor);
     }
 }
