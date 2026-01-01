@@ -24,7 +24,7 @@ public class NewGameMenuPage : MenuPage
 
     protected override void Init()
     {
-        AddOption(new ActionMenuOption("Start New Game", () =>
+        AddOption(new ActionMenuOption("START NEW GAME", () =>
         {
             CursorClick(() =>
             {
@@ -44,7 +44,7 @@ public class NewGameMenuPage : MenuPage
                 });
             });
         }));
-        AddOption(new ActionMenuOption("Import GBA Save", () =>
+        AddOption(new ActionMenuOption("IMPORT GBA SAVE", () =>
         {
             string saveFilePath = FileDialog.OpenFile("Select GBA save file", new FileDialog.FileFilter("sav", "GBA Save"));
 
@@ -87,7 +87,7 @@ public class NewGameMenuPage : MenuPage
                     header: "Invalid save");
             }
         }));
-        AddOption(new ActionMenuOption("Import N-Gage Save", () =>
+        AddOption(new ActionMenuOption("IMPORT N-GAGE SAVE", () =>
         {
             string saveFilePath = FileDialog.OpenFile("Select N-Gage save file", new FileDialog.FileFilter("dat", "N-Gage Save"));
 
