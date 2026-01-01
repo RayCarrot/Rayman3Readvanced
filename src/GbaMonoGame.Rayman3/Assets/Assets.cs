@@ -26,13 +26,13 @@ public static class Assets
     public const string MenuTextBoxTexture = "Rayman3/Menu/MenuTextBox";
     public const string MenuWoodenFrameTexture = "Rayman3/Menu/MenuWoodenFrame";
     public const string OptionsDialogBoardTexture = "Rayman3/Menu/OptionsDialogBoard";
-    public const string OptionsMenuTabsTexture = "Rayman3/Menu/OptionsMenuTabs";
     public const string SaveSlotIcon_4Texture = "Rayman3/Menu/SaveSlotIcon_4";
     public const string SaveSlotIcon_5Texture = "Rayman3/Menu/SaveSlotIcon_5";
     public const string SaveSlotTimeTexture = "Rayman3/Menu/SaveSlotTime";
     public const string ScrollBarBigTexture = "Rayman3/Menu/ScrollBarBig";
     public const string ScrollBarSmallTexture = "Rayman3/Menu/ScrollBarSmall";
     public const string ScrollBarThumbTexture = "Rayman3/Menu/ScrollBarThumb";
+    public const string TabBar_5Texture = "Rayman3/Menu/TabBar_5";
 
     public const string FogVertexShader = "Rayman3/Mode7/FogVertexShader";
     public const string Mode7WallSideTexture = "Rayman3/Mode7/Mode7WallSide";

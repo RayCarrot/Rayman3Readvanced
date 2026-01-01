@@ -205,7 +205,7 @@
 /processorParam:TextureFormat=Color
 /build:Rayman3/Menu/OptionsDialogBoard.png
 
-#begin OptionsMenuTabs.png
+#begin TabBar_5.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -215,7 +215,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/OptionsMenuTabs.png
+/build:Rayman3/Menu/TabBar_5.png
 
 #begin SaveSlotIcon_4.png
 /importer:TextureImporter
