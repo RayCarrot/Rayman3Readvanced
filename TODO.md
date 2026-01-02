@@ -20,7 +20,15 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
 ## 🧑‍💻 Code
 - Move hard-coded primitive values to constant fields.
 - Properly set up cross-platform support.
-- Optimize BinarySerializer more. Pointers should ideally be structs instead of classes in order to reduce allocations. We could also serialize animation channels as a `ushort[]` which saves on a lot of allocations.
+- Optimize BinarySerializer more. Pointers should ideally be structs instead of classes in order to reduce allocations. We could also serialize animation channels as a `ushort[]` which saves on a lot of allocations. Analyze with VS profiler to see where allocations happen and check with BenchmarkDotNet. 
+- Try and reduce the number of allocations per frame as much as possible. Currently these things cause allocations:
+    - `FiniteStateMachine`: Each time we change state it allocates a new delegate. This can be fixed by having each object cache the instance delegates on construction. We can create a source generator to automate this.
+    - `RenderOptions`: This object gets cloned a bunch during rendering. Can we change it to a struct?
+    - `Sprite`: We should store sprites in a pool so the same instances can be reused.
+    - `PaletteTexture`: This gets allocated for each paletted sprite that gets rendered. Can we change it to a struct?
+    - Various `ObjectIterator` instances. Since we're single-threaded we could reuse the same instance for each enumeration. Have the scene create and store them?
+    - `byte[]` in the object iterators. It's because we're combining the actor and captors arrays. We should probably just keep these as two separate arrays.
+    - And more... (mostly related to rendering and audio).
 
 ## 🎮 Multiplayer
 Implementing local multiplayer, using multiple game instances (through named pipes) or through LAN, shouldn't be too hard. The game's multiplayer code is very simple, with it usually just sending a single 16-bit value between clients each frame.
