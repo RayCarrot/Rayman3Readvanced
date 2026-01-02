@@ -390,7 +390,7 @@ public static class GameOptions
                     items:
                     [
                         new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
-                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, TweaksPreset.Readvanced),
                     ],
                     getData: _ => Engine.LocalConfig.Tweaks.VersatileWalljumps,
                     setData: data => Engine.LocalConfig.Tweaks.VersatileWalljumps = data,
