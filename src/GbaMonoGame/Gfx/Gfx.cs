@@ -156,17 +156,29 @@ public static class Gfx
         for (int i = 3; i >= 0; i--)
         {
             // Draw screens
-            foreach (GfxScreen screen in Screens.Where(x => x.IsEnabled && x.Priority == i))
-                screen.Draw(renderer, Color);
+            for (int j = 0; j < Screens.Count; j++)
+            {
+                GfxScreen screen = Screens[j];
+                if (screen.IsEnabled && screen.Priority == i)
+                    screen.Draw(renderer, Color);
+            }
 
             if ((FadeControl.Flags & (FadeFlags)(1 << i)) != 0)
                 DrawFade(renderer);
 
             // Draw sprites
-            foreach (Sprite sprite in BackSprites.Where(x => x.Priority == i))
-                sprite.Draw(renderer, Color);
-            foreach (Sprite sprite in Sprites.Where(x => x.Priority == i).Reverse())
-                sprite.Draw(renderer, Color);
+            for (int j = 0; j < BackSprites.Count; j++)
+            {
+                Sprite sprite = BackSprites[j];
+                if (sprite.Priority == i)
+                    sprite.Draw(renderer, Color);
+            }
+            for (int j = Sprites.Count - 1; j >= 0; j--)
+            {
+                Sprite sprite = Sprites[j];
+                if (sprite.Priority == i) 
+                    sprite.Draw(renderer, Color);
+            }
 
             if ((FadeControl.Flags & (FadeFlags)(1 << (i + 4))) != 0)
                 DrawFade(renderer);

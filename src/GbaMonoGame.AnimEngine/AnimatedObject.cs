@@ -342,8 +342,10 @@ public class AnimatedObject : AObject
         BoxTable.AttackBox = new Box();
         BoxTable.VulnerabilityBox = new Box();
 
-        foreach (AnimationChannel channel in EnumerateCurrentChannels())
+        Animation anim = GetAnimation();
+        for (int i = 0; i < anim.ChannelsPerFrame[CurrentFrame]; i++)
         {
+            AnimationChannel channel = anim.Channels[ChannelIndex + i];
             switch (channel.ChannelType)
             {
                 case AnimationChannelType.AttackBox:
@@ -362,8 +364,10 @@ public class AnimatedObject : AObject
         if (IsDelayMode)
             return;
 
-        foreach (AnimationChannel channel in EnumerateCurrentChannels())
+        Animation anim = GetAnimation();
+        for (int i = 0; i < anim.ChannelsPerFrame[CurrentFrame]; i++)
         {
+            AnimationChannel channel = anim.Channels[ChannelIndex + i];
             if (channel.ChannelType == AnimationChannelType.Sound)
                 animationPlayer.SoundEventRequest(channel.SoundId);
         }
@@ -383,8 +387,10 @@ public class AnimatedObject : AObject
             ActivateAllChannels();
 
             int channelIndex = 0;
-            foreach (AnimationChannel channel in EnumerateCurrentChannels())
+            Animation anim = GetAnimation();
+            for (int i = 0; i < anim.ChannelsPerFrame[CurrentFrame]; i++)
             {
+                AnimationChannel channel = anim.Channels[ChannelIndex + i];
                 if (channel.ChannelType == AnimationChannelType.Sprite)
                 {
                     // NOTE: The game doesn't do this, but we have to since affine sprites are rendered differently and thus
@@ -489,15 +495,15 @@ public class AnimatedObject : AObject
         Box wrapBox = GetAnimationWrapBox(CurrentAnimation);
 
         // Enumerate every channel
-        int channelIndex = 0;
-        foreach (AnimationChannel channel in EnumerateCurrentChannels())
+        for (int i = 0; i < anim.ChannelsPerFrame[CurrentFrame]; i++)
         {
+            AnimationChannel channel = anim.Channels[ChannelIndex + i];
             // Play the channel based on the type
             switch (channel.ChannelType)
             {
                 case AnimationChannelType.Sprite:
 
-                    if (channel.ObjectMode == OBJ_ATTR_ObjectMode.HIDE || !IsChannelVisible(channelIndex))
+                    if (channel.ObjectMode == OBJ_ATTR_ObjectMode.HIDE || !IsChannelVisible(i))
                         break;
 
                     // On GBA the size of a sprite is determined based on
@@ -647,8 +653,6 @@ public class AnimatedObject : AObject
                         BoxTable.VulnerabilityBox = new Box(channel.Box);
                     break;
             }
-
-            channelIndex++;
         }
 
         ComputeNextFrame();

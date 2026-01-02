@@ -50,10 +50,10 @@ public class AnimationPlayer
     public void Execute()
     {
         foreach (AObject obj in _unsortedObjects)
-            obj.Execute(SoundEventRequest);
+            obj.Execute(_soundEventCallback);
 
         foreach (AObject obj in _sortedObjects)
-            obj.Execute(SoundEventRequest);
+            obj.Execute(_soundEventCallback);
 
         _unsortedObjects.Clear();
         _sortedObjects.Clear();
