@@ -26,6 +26,7 @@ public class GbaGameWindow
 #endif
     }
 
+    // TODO: Linux uses SDL2-2.0. How to handle different SDL2 names?
 #if DESKTOPGL
     [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl)]
     private static extern uint SDL_GetWindowFlags(IntPtr window);
