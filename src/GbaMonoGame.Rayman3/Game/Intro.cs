@@ -451,6 +451,9 @@ public class Intro : Frame, IHasPlayfield
             FrameManager.SetNextFrame(new LevelSelect());
             Localization.SetLanguage(0);
             Random.SetSeed(GameTime.ElapsedFrames);
+
+            if (Engine.LocalConfig.Tweaks.PlayCheatTriggerSound)
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
         }
     }
 

@@ -385,6 +385,17 @@ public static class GameOptions
                     setData: data => Engine.LocalConfig.Tweaks.AllowPrototypeCheats = data,
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
+                    text: "PLAY CHEAT SOUND",
+                    infoText: "Plays a sound when a cheat code is successfully entered.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, TweaksPreset.Readvanced),
+                    ],
+                    getData: _ => Engine.LocalConfig.Tweaks.PlayCheatTriggerSound,
+                    setData: data => Engine.LocalConfig.Tweaks.PlayCheatTriggerSound = data,
+                    getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
                     text: "VERSATILE WALL JUMPS",
                     infoText: "Expands Rayman's moveset while doing wall jumps. He can now change his orientation, helicopter and throw his fist!",
                     items:

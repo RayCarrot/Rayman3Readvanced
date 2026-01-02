@@ -81,7 +81,12 @@ public class RaceManager
                 // NOTE: This cheat is normally only in the game prototypes
                 if (Engine.ActiveConfig.Tweaks.AllowPrototypeCheats && 
                     JoyPad.IsButtonPressed(GbaInput.R) && JoyPad.IsButtonPressed(GbaInput.L) && JoyPad.IsButtonJustPressed(GbaInput.Select))
+                {
                     RemainingTime = 356400; // 99:00:00
+
+                    if (Engine.LocalConfig.Tweaks.PlayCheatTriggerSound)
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
+                }
             }
         }
     }

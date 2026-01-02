@@ -19,6 +19,7 @@ public record TweaksGameConfig : IniSectionObject
         ShowMode7Walls = true;
         ShowCollectedLums = true;
         AllowPrototypeCheats = false;
+        PlayCheatTriggerSound = false;
         VersatileWalljumps = false;
     }
 
@@ -37,6 +38,7 @@ public record TweaksGameConfig : IniSectionObject
     public bool ShowMode7Walls { get; set; }
     public bool ShowCollectedLums { get; set; }
     public bool AllowPrototypeCheats { get; set; }
+    public bool PlayCheatTriggerSound { get; set; }
     public bool VersatileWalljumps { get; set; }
 
     public override void Serialize(BaseIniSerializer serializer)
@@ -54,6 +56,7 @@ public record TweaksGameConfig : IniSectionObject
         ShowMode7Walls = serializer.Serialize<bool>(ShowMode7Walls, "ShowMode7Walls");
         ShowCollectedLums = serializer.Serialize<bool>(ShowCollectedLums, "ShowCollectedLums");
         AllowPrototypeCheats = serializer.Serialize<bool>(AllowPrototypeCheats, "AllowPrototypeCheats");
+        PlayCheatTriggerSound = serializer.Serialize<bool>(PlayCheatTriggerSound, "PlayCheatTriggerSound");
         VersatileWalljumps = serializer.Serialize<bool>(VersatileWalljumps, "VersatileWalljumps");
     }
 }

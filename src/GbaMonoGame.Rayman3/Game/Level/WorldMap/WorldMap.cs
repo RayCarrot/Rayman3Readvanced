@@ -444,9 +444,6 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             return;
         }
 
-        // TODO: There is currently no feedback to the player if a cheat has been entered. In the original game
-        //       you notice it since the game freezes for a second when saving. Perhaps we should play some sound
-        //       effect here?
         switch (CheatValue)
         {
             // Start
@@ -481,6 +478,9 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                     CheatValue = 0;
                     
                     GameInfo.Save(GameInfo.CurrentSlot);
+
+                    if (Engine.LocalConfig.Tweaks.PlayCheatTriggerSound)
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
                 }
                 break;
 
@@ -507,6 +507,9 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                     GameInfo.EnableCheat(Scene, Cheat.InfiniteLives);
                     
                     CheatValue = 0;
+
+                    if (Engine.LocalConfig.Tweaks.PlayCheatTriggerSound)
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
                 }
                 break;
 
@@ -544,6 +547,9 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                     CheatValue = 0;
                  
                     GameInfo.Save(GameInfo.CurrentSlot);
+
+                    if (Engine.LocalConfig.Tweaks.PlayCheatTriggerSound)
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
                 }
                 break;
 
@@ -601,6 +607,9 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                     UserInfo.Cages50Bar.Set();
 
                     GameInfo.Save(GameInfo.CurrentSlot);
+
+                    if (Engine.LocalConfig.Tweaks.PlayCheatTriggerSound)
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
                 }
                 break;
         }

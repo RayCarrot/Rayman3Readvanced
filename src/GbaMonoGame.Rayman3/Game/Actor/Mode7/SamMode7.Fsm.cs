@@ -1,5 +1,6 @@
 ﻿using System;
 using BinarySerializer.Ubisoft.GbaEngine;
+using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.TgxEngine;
 
@@ -92,6 +93,9 @@ public partial class SamMode7
                 // NOTE: This cheat is normally only in the game prototypes
                 if (Engine.ActiveConfig.Tweaks.AllowPrototypeCheats && JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.L))
                 {
+                    if (Engine.LocalConfig.Tweaks.PlayCheatTriggerSound)
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
+
                     State.MoveTo(Fsm_End);
                     return false;
                 }

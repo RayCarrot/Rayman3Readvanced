@@ -254,11 +254,21 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
 
         // NOTE: This cheat is normally only in the game prototypes
         if (Engine.ActiveConfig.Tweaks.AllowPrototypeCheats && JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.L))
+        {
             Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
+
+            if (Engine.LocalConfig.Tweaks.PlayCheatTriggerSound)
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
+        }
 
         // NOTE: This cheat is normally only in the game prototypes
         if (Engine.ActiveConfig.Tweaks.AllowPrototypeCheats && JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.R))
+        {
             GameInfo.EnableCheat(Scene, Cheat.Invulnerable);
+
+            if (Engine.LocalConfig.Tweaks.PlayCheatTriggerSound)
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
+        }
     }
 
     public void Step_Pause_DisableFog()
