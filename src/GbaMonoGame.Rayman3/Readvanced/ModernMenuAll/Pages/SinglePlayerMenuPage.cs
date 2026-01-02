@@ -256,7 +256,7 @@ public class SinglePlayerMenuPage : MenuPage
                         case 2:
                             if (Menu.Slots[SelectedOption] != null)
                             {
-                                // TODO: Implement
+                                Menu.ChangePage(new ExportSaveMenuPage(Menu, SelectedOption), NewPageMode.Next);
                             }
                             else
                             {

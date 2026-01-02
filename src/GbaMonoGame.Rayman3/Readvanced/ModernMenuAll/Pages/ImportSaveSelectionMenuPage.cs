@@ -3,9 +3,9 @@ using GbaMonoGame.AnimEngine;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
-public class ImportSaveMenuPage : MenuPage
+public class ImportSaveSelectionMenuPage : MenuPage
 {
-    public ImportSaveMenuPage(ModernMenuAll menu, int slot, SaveGameSlot[] saveSlots) : base(menu)
+    public ImportSaveSelectionMenuPage(ModernMenuAll menu, int slot, SaveGameSlot[] saveSlots) : base(menu)
     {
         Slot = slot;
         SaveSlots = saveSlots;

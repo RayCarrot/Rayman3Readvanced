@@ -9,9 +9,9 @@ using GbaMonoGame.AnimEngine;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
-public class NewGameMenuPage : MenuPage
+public class ExportSaveMenuPage : MenuPage
 {
-    public NewGameMenuPage(ModernMenuAll menu, int slot) : base(menu)
+    public ExportSaveMenuPage(ModernMenuAll menu, int slot) : base(menu)
     {
         Slot = slot;
     }
@@ -24,27 +24,7 @@ public class NewGameMenuPage : MenuPage
 
     protected override void Init()
     {
-        AddOption(new ActionMenuOption("START NEW GAME", () =>
-        {
-            CursorClick(() =>
-            {
-                SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.None, 1);
-                FadeOut(2, () =>
-                {
-                    SoundEventsManager.StopAllSongs();
-
-                    // Create a new game
-                    FrameManager.SetNextFrame(new Act1());
-                    GameInfo.ResetPersistentInfo();
-
-                    Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-                    Gfx.Fade = 1;
-
-                    GameInfo.CurrentSlot = Slot;
-                });
-            });
-        }));
-        AddOption(new ActionMenuOption("IMPORT FROM GBA SAVE", () =>
+        AddOption(new ActionMenuOption("EXPORT TO GBA SAVE", () =>
         {
             string saveFilePath = FileDialog.OpenFile("Select GBA save file", new FileDialog.FileFilter("sav", "GBA Save"));
 
@@ -77,7 +57,7 @@ public class NewGameMenuPage : MenuPage
                     (_, x) => x.Pre_Size = EEPROM<SaveGame>.EEPROMSize.Kbit_4);
 
                 SaveGameSlot[] slots = saveGame.Obj.Slots.Select(x => x.SaveSlot).ToArray();
-                Menu.ChangePage(new ImportSaveSelectionMenuPage(Menu, Slot, slots), NewPageMode.Next);
+                Menu.ChangePage(new ExportSaveSelectionMenuPage(Menu, Slot, slots, context, saveFileName, saveGame), NewPageMode.Next);
             }
             catch (Exception ex)
             {
@@ -87,7 +67,7 @@ public class NewGameMenuPage : MenuPage
                     header: "Invalid save");
             }
         }));
-        AddOption(new ActionMenuOption("IMPORT FROM N-GAGE SAVE", () =>
+        AddOption(new ActionMenuOption("EXPORT TO N-GAGE SAVE", () =>
         {
             string saveFilePath = FileDialog.OpenFile("Select N-Gage save file", new FileDialog.FileFilter("dat", "N-Gage Save"));
 
@@ -119,7 +99,7 @@ public class NewGameMenuPage : MenuPage
                 NGageSaveGame saveGame = FileFactory.Read<NGageSaveGame>(context, saveFileName);
 
                 SaveGameSlot[] slots = saveGame.Slots.Select((x, i) => saveGame.ValidSlots[i] ? x : null).ToArray();
-                Menu.ChangePage(new ImportSaveSelectionMenuPage(Menu, Slot, slots), NewPageMode.Next);
+                Menu.ChangePage(new ExportSaveSelectionMenuPage(Menu, Slot, slots, context, saveFileName, saveGame), NewPageMode.Next);
             }
             catch (Exception ex)
             {
