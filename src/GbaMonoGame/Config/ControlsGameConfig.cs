@@ -8,6 +8,7 @@ public record ControlsGameConfig : IniSectionObject
 {
     public ControlsGameConfig()
     {
+        UseStandardKeyboardKeys = true;
         EnabledGamePadVibration = true;
         UseModernButtonMapping = true;
         KeyboardControls = new Dictionary<Input, Keys>();
@@ -16,6 +17,7 @@ public record ControlsGameConfig : IniSectionObject
 
     public override string SectionKey => "Controls";
 
+    public bool UseStandardKeyboardKeys { get; set; }
     public bool EnabledGamePadVibration { get; set; }
     public bool UseModernButtonMapping { get; set; }
     public Dictionary<Input, Keys> KeyboardControls { get; set; }
@@ -23,6 +25,7 @@ public record ControlsGameConfig : IniSectionObject
 
     public override void Serialize(BaseIniSerializer serializer)
     {
+        UseStandardKeyboardKeys = serializer.Serialize<bool>(UseStandardKeyboardKeys, "UseStandardKeyboardKeys");
         EnabledGamePadVibration = serializer.Serialize<bool>(EnabledGamePadVibration, "EnabledGamePadVibration");
         UseModernButtonMapping = serializer.Serialize<bool>(UseModernButtonMapping, "UseModernButtonMapping");
         KeyboardControls = serializer.SerializeDictionary<Input, Keys>(KeyboardControls, "KeyboardControls");

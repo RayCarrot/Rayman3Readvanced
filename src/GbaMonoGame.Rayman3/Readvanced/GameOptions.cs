@@ -102,6 +102,17 @@ public static class GameOptions
                         }
                     }),
                 new MultiSelectionOptionsMenuOption<bool>(
+                    text: "USE STANDARD KEYBOARD KEYS",
+                    infoText: null,
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true)
+                    ],
+                    getData: _ => Engine.LocalConfig.Controls.UseStandardKeyboardKeys,
+                    setData: data => Engine.LocalConfig.Controls.UseStandardKeyboardKeys = data,
+                    getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
                     text: "CONTROLLER VIBRATION",
                     infoText: null,
                     items:

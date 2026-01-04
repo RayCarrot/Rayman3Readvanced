@@ -110,7 +110,6 @@ public partial class SimpleJoyPad
         [Rayman3Input.ActorSpecialRight] = [GbaInput.R],
     };
 
-    // TODO: Add option for if these should be used or not? "Use Standard Keyboard Keys"?
     // Additional keyboard inputs to allow if they're not mapped (so you can pause with ESC etc.)
     private static Dictionary<Rayman3Input, Keys[]> Rayman3StandardKeyboardInputs { get; } = new()
     {
@@ -174,7 +173,7 @@ public partial class SimpleJoyPad
                 return true;
         }
 
-        if (ReceivedInputsFromUser)
+        if (Engine.LocalConfig.Controls.UseStandardKeyboardKeys && ReceivedInputsFromUser)
         {
             Keys[] keys = GetKeyboardInputs(rayman3Input);
 
@@ -199,7 +198,7 @@ public partial class SimpleJoyPad
                 return false;
         }
 
-        if (ReceivedInputsFromUser)
+        if (Engine.LocalConfig.Controls.UseStandardKeyboardKeys && ReceivedInputsFromUser)
         {
             Keys[] keys = GetKeyboardInputs(rayman3Input);
 
@@ -224,7 +223,7 @@ public partial class SimpleJoyPad
                 return true;
         }
 
-        if (ReceivedInputsFromUser)
+        if (Engine.LocalConfig.Controls.UseStandardKeyboardKeys && ReceivedInputsFromUser)
         {
             Keys[] keys = GetKeyboardInputs(rayman3Input);
 
@@ -249,7 +248,7 @@ public partial class SimpleJoyPad
                 return true;
         }
 
-        if (ReceivedInputsFromUser)
+        if (Engine.LocalConfig.Controls.UseStandardKeyboardKeys && ReceivedInputsFromUser)
         {
             Keys[] keys = GetKeyboardInputs(rayman3Input);
 
