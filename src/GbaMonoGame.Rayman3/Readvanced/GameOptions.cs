@@ -171,7 +171,8 @@ public static class GameOptions
                 new ControlOptionsMenuOption(
                     text: "DEBUG: DEBUG MODE",
                     input: Input.Debug_ToggleDebugMode,
-                    isDebugOption: true),
+                    isDebugOption: true,
+                    isAvailableOnGamePad: false),
                 new ControlOptionsMenuOption(
                     text: "DEBUG: PAUSE",
                     input: Input.Debug_TogglePause,
