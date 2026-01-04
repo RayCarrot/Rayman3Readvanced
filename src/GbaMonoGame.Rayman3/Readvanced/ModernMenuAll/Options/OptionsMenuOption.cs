@@ -20,6 +20,7 @@ public abstract class OptionsMenuOption : MenuOption
     public string Text { get; }
     public string InfoText { get; }
     public bool IsDebugOption { get; }
+    public virtual bool CanEdit => true;
 
     public SpriteFontTextObject TextObject { get; set; }
     public SpriteFontTextObject ValueTextObject { get; set; }

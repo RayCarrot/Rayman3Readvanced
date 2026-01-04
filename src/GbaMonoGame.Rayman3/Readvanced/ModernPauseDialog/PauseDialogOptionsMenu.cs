@@ -153,6 +153,12 @@ public class PauseDialogOptionsMenu
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
     }
 
+    private void InvalidCursorClick()
+    {
+        Cursor.CurrentAnimation = 16;
+        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
+    }
+
     private void SetSelectedOption(int selectedOption, bool playSound = true)
     {
         int prevSelectedOption = SelectedOption;
@@ -416,14 +422,22 @@ public class PauseDialogOptionsMenu
             }
             else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
             {
-                IsEditingOption = true;
-
-                // Reset option before editing in case it has changed (like the window might have been resized)
                 OptionsMenuOption option = Options[SelectedOption];
-                option.Reset(Options);
 
-                CursorClick();
-                HorizontalArrows.Start();
+                if (option.CanEdit)
+                {
+                    IsEditingOption = true;
+
+                    // Reset option before editing in case it has changed (like the window might have been resized)
+                    option.Reset(Options);
+
+                    CursorClick();
+                    HorizontalArrows.Start();
+                }
+                else
+                {
+                    InvalidCursorClick();
+                }
             }
             else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
             {

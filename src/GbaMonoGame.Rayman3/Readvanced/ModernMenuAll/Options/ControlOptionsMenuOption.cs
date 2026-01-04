@@ -9,16 +9,20 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 
 public class ControlOptionsMenuOption : OptionsMenuOption
 {
-    public ControlOptionsMenuOption(string text, Input input, bool isDebugOption = false) : base(text, null, isDebugOption)
+    public ControlOptionsMenuOption(string text, Input input, bool isDebugOption = false, bool isAvailableOnGamePad = true) 
+        : base(text, null, isDebugOption)
     {
         Input = input;
         RequiresModifier = InputManager.RequiresModifier(input);
+        IsAvailableOnGamePad = isAvailableOnGamePad;
     }
+
+    public override bool CanEdit => !(InputManager.InputMode == InputMode.GamePad && !IsAvailableOnGamePad);
 
     public override bool ShowArrows => false;
 
     public Input Input { get; }
-    public bool RequiresModifier { get; }
+    public bool IsAvailableOnGamePad { get; }
     public InputMode? PreviousInputMode { get; set; }
 
     private void UpdateSelection()
@@ -30,8 +34,15 @@ public class ControlOptionsMenuOption : OptionsMenuOption
         }
         else if (InputManager.InputMode == InputMode.GamePad)
         {
-            Buttons button = InputManager.GetButton(Input);
-            ValueTextObject.Text = InputManager.GetButtonName(button).ToUpper();
+            if (IsAvailableOnGamePad)
+            {
+                Buttons button = InputManager.GetButton(Input);
+                ValueTextObject.Text = InputManager.GetButtonName(button).ToUpper();
+            }
+            else
+            {
+                ValueTextObject.Text = "N/A";
+            }
         }
         else
         {

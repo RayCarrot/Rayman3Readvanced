@@ -152,14 +152,22 @@ public class OptionsMenuPage : MenuPage
             }
             else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
             {
-                IsEditingOption = true;
-
-                // Reset option before editing in case it has changed (like the window might have been resized)
                 OptionsMenuOption option = (OptionsMenuOption)Options[SelectedOption];
-                option.Reset(OptionsMenuOptions);
 
-                CursorClick(null);
-                HorizontalArrows.Start();
+                if (option.CanEdit)
+                {
+                    IsEditingOption = true;
+
+                    // Reset option before editing in case it has changed (like the window might have been resized)
+                    option.Reset(OptionsMenuOptions);
+
+                    CursorClick(null);
+                    HorizontalArrows.Start();
+                }
+                else
+                {
+                    InvalidCursorClick();
+                }
             }
             else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
             {
