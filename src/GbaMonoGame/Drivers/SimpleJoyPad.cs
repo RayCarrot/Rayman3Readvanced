@@ -7,6 +7,7 @@ public partial class SimpleJoyPad
 {
     public GbaInput KeyStatus { get; set; }
     public GbaInput KeyTriggers { get; set; } // Just pressed
+    public bool ReceivedInputsFromUser { get; set; }
 
     public GbaInput[] ReplayData { get; set; }
     public int ReplayDataIndex { get; set; }
@@ -41,10 +42,12 @@ public partial class SimpleJoyPad
         if (!IsInReplayMode)
         {
             inputs = InputManager.GetPressedGbaInputs();
+            ReceivedInputsFromUser = true;
         }
         else
         {
             inputs = ReplayData[ReplayDataIndex];
+            ReceivedInputsFromUser = false;
 
             if (inputs == GbaInput.None)
                 ReplayData = null;

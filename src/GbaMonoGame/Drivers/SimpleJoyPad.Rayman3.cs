@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using BinarySerializer.Ubisoft.GbaEngine;
+using Microsoft.Xna.Framework.Input;
 
 namespace GbaMonoGame;
 
@@ -109,6 +110,43 @@ public partial class SimpleJoyPad
         [Rayman3Input.ActorSpecialRight] = [GbaInput.R],
     };
 
+    // TODO: Add option for if these should be used or not? "Use Standard Keyboard Keys"?
+    // Additional keyboard inputs to allow if they're not mapped (so you can pause with ESC etc.)
+    private static Dictionary<Rayman3Input, Keys[]> Rayman3StandardKeyboardInputs { get; } = new()
+    {
+        [Rayman3Input.MenuUp] = [],
+        [Rayman3Input.MenuDown] = [],
+        [Rayman3Input.MenuLeft] = [],
+        [Rayman3Input.MenuRight] = [],
+        [Rayman3Input.MenuLeftExt] = [],
+        [Rayman3Input.MenuRightExt] = [],
+        [Rayman3Input.MenuConfirm] = [Keys.Enter, Keys.Space],
+        [Rayman3Input.MenuBack] = [Keys.Escape, Keys.Back],
+        [Rayman3Input.MenuLostMultiplayerConnectionBack] = [Keys.Enter, Keys.Space, Keys.Escape, Keys.Back],
+        [Rayman3Input.MenuMultiplayerStart] = [Keys.Enter, Keys.Space],
+        [Rayman3Input.PauseMenuBack] = [Keys.Escape, Keys.Back],
+        [Rayman3Input.GameCubeMenuConfirm] = [Keys.Enter, Keys.Space],
+        [Rayman3Input.GameCubeMenuBack] = [Keys.Escape, Keys.Back],
+        [Rayman3Input.LevelSelectMenuConfirm] = [Keys.Enter, Keys.Space],
+        [Rayman3Input.LevelSelectMenuBack] = [Keys.Escape, Keys.Back],
+        [Rayman3Input.StorySkip] = [Keys.Escape],
+        [Rayman3Input.StoryNext] = [Keys.Enter, Keys.Space],
+        [Rayman3Input.TextBoxSkip] = [Keys.Escape],
+        [Rayman3Input.TextBoxNext] = [Keys.Enter, Keys.Space],
+        [Rayman3Input.CreditsSkip] = [Keys.Enter, Keys.Space, Keys.Escape, Keys.Back],
+        [Rayman3Input.Pause] = [Keys.Escape],
+        [Rayman3Input.GameOverContinue] = [Keys.Enter, Keys.Space, Keys.Escape, Keys.Back],
+        [Rayman3Input.IntroSkip] = [Keys.Enter, Keys.Space, Keys.Escape, Keys.Back],
+        [Rayman3Input.ActorUp] = [],
+        [Rayman3Input.ActorDown] = [],
+        [Rayman3Input.ActorLeft] = [],
+        [Rayman3Input.ActorRight] = [],
+        [Rayman3Input.ActorJump] = [],
+        [Rayman3Input.ActorAttack] = [],
+        [Rayman3Input.ActorSpecialLeft] = [],
+        [Rayman3Input.ActorSpecialRight] = [],
+    };
+
     private static GbaInput[] GetGbaInputs(Rayman3Input rayman3Input)
     {
         return Engine.LocalConfig.Controls.UseModernButtonMapping switch
@@ -120,6 +158,11 @@ public partial class SimpleJoyPad
         };
     }
 
+    private static Keys[] GetKeyboardInputs(Rayman3Input rayman3Input)
+    {
+        return Rayman3StandardKeyboardInputs[rayman3Input];
+    }
+
     // Checks if any button is pressed
     public bool IsButtonPressed(Rayman3Input rayman3Input)
     {
@@ -129,6 +172,17 @@ public partial class SimpleJoyPad
         {
             if (IsButtonPressed(inputs[i]))
                 return true;
+        }
+
+        if (ReceivedInputsFromUser)
+        {
+            Keys[] keys = GetKeyboardInputs(rayman3Input);
+
+            for (int i = 0; i < keys.Length; i++)
+            {
+                if (!InputManager.IsKeyMapped(keys[i]) && InputManager.IsKeyPressed(keys[i]))
+                    return true;
+            }
         }
 
         return false;
@@ -145,6 +199,17 @@ public partial class SimpleJoyPad
                 return false;
         }
 
+        if (ReceivedInputsFromUser)
+        {
+            Keys[] keys = GetKeyboardInputs(rayman3Input);
+
+            for (int i = 0; i < keys.Length; i++)
+            {
+                if (!InputManager.IsKeyMapped(keys[i]) && !InputManager.IsKeyReleased(keys[i]))
+                    return false;
+            }
+        }
+
         return true;
     }
 
@@ -159,6 +224,17 @@ public partial class SimpleJoyPad
                 return true;
         }
 
+        if (ReceivedInputsFromUser)
+        {
+            Keys[] keys = GetKeyboardInputs(rayman3Input);
+
+            for (int i = 0; i < keys.Length; i++)
+            {
+                if (!InputManager.IsKeyMapped(keys[i]) && InputManager.IsKeyJustPressed(keys[i]))
+                    return true;
+            }
+        }
+
         return false;
     }
 
@@ -171,6 +247,17 @@ public partial class SimpleJoyPad
         {
             if (IsButtonJustReleased(inputs[i]))
                 return true;
+        }
+
+        if (ReceivedInputsFromUser)
+        {
+            Keys[] keys = GetKeyboardInputs(rayman3Input);
+
+            for (int i = 0; i < keys.Length; i++)
+            {
+                if (!InputManager.IsKeyMapped(keys[i]) && InputManager.IsKeyJustReleased(keys[i]))
+                    return true;
+            }
         }
 
         return false;

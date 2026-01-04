@@ -26,10 +26,6 @@ public static partial class InputManager
                 inputs |= input;
         }
 
-        // Hard-code escape to always act as start so we can pause using it
-        if (IsKeyJustPressed(Keys.Escape))
-            inputs |= Input.Gba_Start;
-
         return inputs;
     }
 
@@ -64,6 +60,8 @@ public static partial class InputManager
             _ => throw new ArgumentOutOfRangeException(nameof(input), input, null)
         };
     }
+
+    public static bool IsKeyMapped(Keys key) => Engine.LocalConfig.Controls.KeyboardControls.ContainsValue(key);
 
     // TODO: Improve with localized names
     public static string GetKeyName(Keys key) => key.ToString();
