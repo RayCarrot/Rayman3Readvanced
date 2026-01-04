@@ -218,6 +218,7 @@ public abstract class GbaGame : Game
 
         // Toggle full-screen
         if (InputManager.IsKeyPressed(Keys.LeftAlt) && InputManager.IsKeyJustPressed(Keys.Enter))
+        {
             Engine.GameWindow.DisplayMode = Engine.GameWindow.DisplayMode switch
             {
                 DisplayMode.Windowed => DisplayMode.Fullscreen,
@@ -225,6 +226,10 @@ public abstract class GbaGame : Game
                 DisplayMode.Borderless => DisplayMode.Windowed,
                 _ => throw new ArgumentOutOfRangeException()
             };
+
+            // Exit early since we don't want the enter key to be read by the game as just pressed
+            return;
+        }
 
         // Update mouse visibility
         IsMouseVisible = !_graphics.IsFullScreen || DebugMode;
