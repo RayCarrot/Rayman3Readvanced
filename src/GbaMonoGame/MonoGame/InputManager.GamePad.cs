@@ -49,11 +49,9 @@ public static partial class InputManager
     {
         Input inputs = default;
 
-        bool modifierPressed = IsButtonPressed(GetButton(Input.Debug_Modifier));
-
         foreach (Input input in _allInputs)
         {
-            if (RequiresModifier(input) == modifierPressed && IsButtonPressed(GetButton(input)))
+            if (IsButtonPressed(GetButton(input)))
                 inputs |= input;
         }
 
@@ -89,14 +87,13 @@ public static partial class InputManager
             Input.Gba_L => Buttons.LeftShoulder,
 
             // Debug
-            Input.Debug_Modifier => Buttons.LeftTrigger,
-            Input.Debug_ToggleDebugMode => Buttons.LeftShoulder,
-            Input.Debug_TogglePause => Buttons.Start,
-            Input.Debug_StepOneFrame => Buttons.RightTrigger,
-            Input.Debug_SpeedUp => Buttons.RightShoulder,
-            Input.Debug_ToggleDisplayBoxes => Buttons.X,
-            Input.Debug_ToggleDisplayCollision => Buttons.B,
-            Input.Debug_ToggleNoClip => Buttons.A,
+            Input.Debug_ToggleDebugMode => Buttons.None, // Not available on controller
+            Input.Debug_TogglePause => Buttons.LeftStick,
+            Input.Debug_StepOneFrame => Buttons.RightStick,
+            Input.Debug_SpeedUp => Buttons.RightTrigger,
+            Input.Debug_ToggleDisplayBoxes => Buttons.Back, // TODO: Change
+            Input.Debug_ToggleDisplayCollision => Buttons.Y, // TODO: Change
+            Input.Debug_ToggleNoClip => Buttons.LeftTrigger,
 
             _ => throw new ArgumentOutOfRangeException(nameof(input), input, null)
         };

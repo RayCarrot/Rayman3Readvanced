@@ -13,7 +13,6 @@ public class ControlOptionsMenuOption : OptionsMenuOption
         : base(text, null, isDebugOption)
     {
         Input = input;
-        RequiresModifier = InputManager.RequiresModifier(input);
         IsAvailableOnGamePad = isAvailableOnGamePad;
     }
 
@@ -66,7 +65,6 @@ public class ControlOptionsMenuOption : OptionsMenuOption
         {
             // Swap
             if (input != Input &&
-                (input == Input.Debug_Modifier || Input == Input.Debug_Modifier || InputManager.RequiresModifier(input) == RequiresModifier) &&
                 Engine.LocalConfig.Controls.KeyboardControls[input] == key)
             {
                 Engine.LocalConfig.Controls.KeyboardControls[input] = prevKey;
@@ -94,7 +92,6 @@ public class ControlOptionsMenuOption : OptionsMenuOption
         {
             // Swap
             if (input != Input && 
-                (input == Input.Debug_Modifier || Input == Input.Debug_Modifier || InputManager.RequiresModifier(input) == RequiresModifier) && 
                 Engine.LocalConfig.Controls.GamePadControls[input] == button)
             {
                 Engine.LocalConfig.Controls.GamePadControls[input] = prevButton;

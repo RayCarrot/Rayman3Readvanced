@@ -165,10 +165,6 @@ public static class GameOptions
                     text: "SPECIAL/BACK (SELECT)",
                     input: Input.Gba_Select),
                 new ControlOptionsMenuOption(
-                    text: "DEBUG: DEBUG INPUT MODIFIER",
-                    input: Input.Debug_Modifier,
-                    isDebugOption: true),
-                new ControlOptionsMenuOption(
                     text: "DEBUG: DEBUG MODE",
                     input: Input.Debug_ToggleDebugMode,
                     isDebugOption: true,
