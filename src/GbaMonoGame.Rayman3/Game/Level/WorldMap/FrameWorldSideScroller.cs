@@ -28,6 +28,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
     public bool BlockPause { get; set; }
     public UserInfoWorldMap UserInfo { get; set; }
     public Dialog PauseDialog { get; set; }
+    public CheatDialog CheatDialog { get; set; }
 
     #endregion
 
@@ -69,6 +70,9 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
 
         // Create pause dialog, but don't add yet
         PauseDialog = Engine.ActiveConfig.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, false) : new PauseDialog(Scene);
+
+        // Custom cheat dialog
+        CheatDialog = new CheatDialog(Scene);
 
         Scene.Init();
         // NOTE: The game calls vsync, steps the playfield and executes the animations here, but we do
@@ -120,6 +124,14 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
 
             CurrentStepAction = Step_Pause_Init;
             GameTime.Pause();
+        }
+
+        // Custom cheat dialog
+        if (Engine.ActiveConfig.Tweaks.AllowCheatMenu && JoyPad.IsButtonJustPressed(GbaInput.Select))
+        {
+            GameTime.Pause();
+            Scene.AddDialog(CheatDialog, true, false);
+            CurrentStepAction = Step_CheatDialog;
         }
     }
 
@@ -215,6 +227,19 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
 
         CurrentStepAction = Step_Normal;
         GameTime.Resume();
+    }
+
+    public void Step_CheatDialog()
+    {
+        Scene.Step();
+        Scene.AnimationPlayer.Execute();
+
+        if (CheatDialog.PendingClose || JoyPad.IsButtonJustPressed(GbaInput.Select))
+        {
+            GameTime.Resume();
+            Scene.RemoveLastDialog();
+            CurrentStepAction = Step_Normal;
+        }
     }
 
     #endregion

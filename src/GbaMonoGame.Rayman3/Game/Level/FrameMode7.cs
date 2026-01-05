@@ -1,4 +1,5 @@
 ﻿using BinarySerializer.Nintendo.GBA;
+using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.Rayman3.Readvanced;
@@ -29,6 +30,7 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
 
     public Dialog UserInfo { get; set; }
     public Dialog PauseDialog { get; set; }
+    public CheatDialog CheatDialog { get; set; }
 
     public bool CanPause { get; set; }
     public int PausedMachineId { get; set; }
@@ -55,6 +57,10 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
 
         // Create pause dialog, but don't add yet
         PauseDialog = Engine.ActiveConfig.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, !TimeAttackInfo.IsActive) : new PauseDialog(Scene);
+
+        // Custom cheat dialog
+        if (!RSMultiplayer.IsActive)
+            CheatDialog = new CheatDialog(Scene);
 
         Scene.Init();
         Scene.Playfield.Step();
@@ -219,6 +225,15 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
                 CurrentStepAction = Step_Pause_Init;
                 GameTime.Pause();
             }
+
+            // Custom cheat dialog
+            if (Engine.ActiveConfig.Tweaks.AllowCheatMenu && JoyPad.IsButtonJustPressed(GbaInput.Select) &&
+                JoyPad.IsButtonReleased(GbaInput.L) && JoyPad.IsButtonReleased(GbaInput.R))
+            {
+                GameTime.Pause();
+                Scene.AddDialog(CheatDialog, true, false);
+                CurrentStepAction = Step_CheatDialog;
+            }
         }
         else
         {
@@ -318,6 +333,19 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
         Scene.AnimationPlayer.Execute();
         CurrentStepAction = Step_Normal;
         GameTime.Resume();
+    }
+
+    public void Step_CheatDialog()
+    {
+        Scene.Step();
+        Scene.AnimationPlayer.Execute();
+
+        if (CheatDialog.PendingClose || JoyPad.IsButtonJustPressed(GbaInput.Select))
+        {
+            GameTime.Resume();
+            Scene.RemoveLastDialog();
+            CurrentStepAction = Step_Normal;
+        }
     }
 
     #endregion

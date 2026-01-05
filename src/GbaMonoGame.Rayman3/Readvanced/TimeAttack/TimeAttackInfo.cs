@@ -37,6 +37,7 @@ public static class TimeAttackInfo
                 FixBugs = true,
                 AddProjectilesWhenNeeded = true,
 #if RELEASE
+                AllowCheatMenu = false,
                 AllowPrototypeCheats = false,
 #endif
             },

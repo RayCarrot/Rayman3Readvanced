@@ -156,10 +156,6 @@ public class Scene2D
         // Custom - add new created always actors at the end of this frame to avoid issues with enumerations
         KnotManager.AddPendingActors();
 
-        // Toggle showing debug boxes
-        if (Engine.ActiveConfig.Debug.DebugModeEnabled && InputManager.IsInputJustPressed(Input.Debug_ToggleDisplayBoxes))
-            ShowDebugBoxes = !ShowDebugBoxes;
-
         // Draw debug boxes
         if (!InDialogModalMode && ShowDebugBoxes)
             DrawDebugBoxes();

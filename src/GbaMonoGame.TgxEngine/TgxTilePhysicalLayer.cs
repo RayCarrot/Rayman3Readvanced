@@ -6,11 +6,18 @@ public class TgxTilePhysicalLayer : TgxGameLayer
 {
     public TgxTilePhysicalLayer(RenderContext renderContext, GameLayerResource gameLayerResource) : base(gameLayerResource)
     {
+        RenderContext = renderContext;
         CollisionMap = gameLayerResource.PhysicalLayer.CollisionMap;
+    }
+    
+    public RenderContext RenderContext { get; }
+    public GfxScreen DebugScreen { get; set; } // Collision map screen for debugging
+    public byte[] CollisionMap { get; }
 
-        if (Engine.ActiveConfig.Debug.DebugModeEnabled)
+    public void EnsureDebugScreenIsCreated()
+    {
+        if (DebugScreen == null)
         {
-            // Collision map screen for debugging
             DebugScreen = new GfxScreen(-1)
             {
                 IsEnabled = false,
@@ -19,19 +26,10 @@ public class TgxTilePhysicalLayer : TgxGameLayer
                 Wrap = false,
                 Is8Bit = null,
                 Renderer = new CollisionMapScreenRenderer(Width, Height, CollisionMap),
-                RenderOptions = { RenderContext = renderContext },
+                RenderOptions = { RenderContext = RenderContext },
             };
             Gfx.AddScreen(DebugScreen);
         }
-    }
-
-    public GfxScreen DebugScreen { get; }
-    public byte[] CollisionMap { get; }
-
-    public void ToggleScreenVisibility()
-    {
-        if (DebugScreen != null)
-            DebugScreen.IsEnabled = !DebugScreen.IsEnabled;
     }
 
     public override void SetOffset(Vector2 offset)

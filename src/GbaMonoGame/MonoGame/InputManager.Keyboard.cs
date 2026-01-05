@@ -50,8 +50,6 @@ public static partial class InputManager
             Input.Debug_TogglePause => Keys.P,
             Input.Debug_StepOneFrame => Keys.F,
             Input.Debug_SpeedUp => Keys.LeftShift,
-            Input.Debug_ToggleDisplayBoxes => Keys.B,
-            Input.Debug_ToggleDisplayCollision => Keys.C,
             Input.Debug_ToggleNoClip => Keys.Z,
 
             _ => throw new ArgumentOutOfRangeException(nameof(input), input, null)

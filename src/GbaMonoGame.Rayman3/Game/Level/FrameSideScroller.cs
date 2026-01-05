@@ -34,6 +34,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
     public LyTimerDialog LyTimer { get; set; }
     public Dialog PauseDialog { get; set; }
     public TimeAttackDialog TimeAttackDialog { get; set; }
+    public CheatDialog CheatDialog { get; set; }
 
     public bool CanPause { get; set; }
     public bool IsTimed { get; set; }
@@ -177,6 +178,9 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
             Scene.KnotManager.AddPendingActors();
         }
 
+        // Custom cheat dialog
+        CheatDialog = new CheatDialog(Scene);
+
         Scene.Init();
         Scene.Playfield.Step();
 
@@ -252,22 +256,32 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         if (TimeAttackInfo.Mode == TimeAttackMode.Score)
             CurrentStepAction = Step_TimeAttackScore_Init;
 
-        // NOTE: This cheat is normally only in the game prototypes
-        if (Engine.ActiveConfig.Tweaks.AllowPrototypeCheats && JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.L))
+        // Custom cheat dialog
+        if (Engine.ActiveConfig.Tweaks.AllowCheatMenu && JoyPad.IsButtonJustPressed(GbaInput.Select) && 
+            JoyPad.IsButtonReleased(GbaInput.L) && JoyPad.IsButtonReleased(GbaInput.R))
         {
-            Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
-
-            if (Engine.LocalConfig.Tweaks.PlayCheatTriggerSound)
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
+            GameTime.Pause();
+            Scene.AddDialog(CheatDialog, true, false);
+            CurrentStepAction = Step_CheatDialog;
         }
-
-        // NOTE: This cheat is normally only in the game prototypes
-        if (Engine.ActiveConfig.Tweaks.AllowPrototypeCheats && JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.R))
+        // NOTE: These cheats are normally only in the game prototypes
+        else if (Engine.ActiveConfig.Tweaks.AllowPrototypeCheats)
         {
-            GameInfo.EnableCheat(Scene, Cheat.Invulnerable);
+            if (JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.L))
+            {
+                Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
 
-            if (Engine.LocalConfig.Tweaks.PlayCheatTriggerSound)
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
+                if (Engine.LocalConfig.Tweaks.PlayCheatTriggerSound)
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
+            }
+
+            if (JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.R))
+            {
+                GameInfo.EnableCheat(Scene, Cheat.Invulnerable);
+
+                if (Engine.LocalConfig.Tweaks.PlayCheatTriggerSound)
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
+            }
         }
     }
 
@@ -398,6 +412,19 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
     {
         Scene.Step();
         Scene.AnimationPlayer.Execute();
+    }
+
+    public void Step_CheatDialog()
+    {
+        Scene.Step();
+        Scene.AnimationPlayer.Execute();
+
+        if (CheatDialog.PendingClose || JoyPad.IsButtonJustPressed(GbaInput.Select))
+        {
+            GameTime.Resume();
+            Scene.RemoveLastDialog();
+            CurrentStepAction = Step_Normal;
+        }
     }
 
     #endregion

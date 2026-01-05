@@ -91,8 +91,6 @@ public static partial class InputManager
             Input.Debug_TogglePause => Buttons.LeftStick,
             Input.Debug_StepOneFrame => Buttons.RightStick,
             Input.Debug_SpeedUp => Buttons.RightTrigger,
-            Input.Debug_ToggleDisplayBoxes => Buttons.Back, // TODO: Change
-            Input.Debug_ToggleDisplayCollision => Buttons.Y, // TODO: Change
             Input.Debug_ToggleNoClip => Buttons.LeftTrigger,
 
             _ => throw new ArgumentOutOfRangeException(nameof(input), input, null)

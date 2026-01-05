@@ -182,14 +182,6 @@ public static class GameOptions
                     input: Input.Debug_SpeedUp,
                     isDebugOption: true),
                 new ControlOptionsMenuOption(
-                    text: "DEBUG: DISPLAY HIT-BOXES",
-                    input: Input.Debug_ToggleDisplayBoxes,
-                    isDebugOption: true),
-                new ControlOptionsMenuOption(
-                    text: "DEBUG: DISPLAY COLLISION",
-                    input: Input.Debug_ToggleDisplayCollision,
-                    isDebugOption: true),
-                new ControlOptionsMenuOption(
                     text: "DEBUG: NO-CLIP",
                     input: Input.Debug_ToggleNoClip,
                     isDebugOption: true),
@@ -240,6 +232,7 @@ public static class GameOptions
                               "READVANCED: Tweaks are enabled, making the game use modern enhancements to improve the experience.",
                     presetItems:
                     [
+                        // TODO: Add a third preset to have all cheat options enabled?
                         new PresetSelectionOptionsMenuOption.PresetItem("ORIGINAL", TweaksPreset.Original),
                         new PresetSelectionOptionsMenuOption.PresetItem("READVANCED", TweaksPreset.Readvanced),
                     ]),
@@ -380,6 +373,17 @@ public static class GameOptions
                     ],
                     getData: _ => Engine.LocalConfig.Tweaks.ShowCollectedLums,
                     setData: data => Engine.LocalConfig.Tweaks.ShowCollectedLums = data,
+                    getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "ALLOW CHEAT MENU",
+                    infoText: "Indicates if the Readvanced cheat menu should be available in levels by pressing Select..",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
+                    ],
+                    getData: _ => Engine.LocalConfig.Tweaks.AllowCheatMenu,
+                    setData: data => Engine.LocalConfig.Tweaks.AllowCheatMenu = data,
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "ALLOW PROTOTYPE CHEATS",

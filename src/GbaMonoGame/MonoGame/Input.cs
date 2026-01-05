@@ -22,7 +22,5 @@ public enum Input
     Debug_TogglePause = 1 << 11,
     Debug_StepOneFrame = 1 << 12,
     Debug_SpeedUp = 1 << 13,
-    Debug_ToggleDisplayBoxes = 1 << 14,
-    Debug_ToggleDisplayCollision = 1 << 15,
-    Debug_ToggleNoClip = 1 << 16,
+    Debug_ToggleNoClip = 1 << 14,
 }
