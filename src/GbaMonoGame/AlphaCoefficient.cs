@@ -24,5 +24,5 @@ public readonly struct AlphaCoefficient
     }
 
     public static implicit operator AlphaCoefficient(float value) => new(value);
-    public static implicit operator float(AlphaCoefficient angle) => angle.Value;
+    public static implicit operator float(AlphaCoefficient alphaCoefficient) => alphaCoefficient.Value;
 }
