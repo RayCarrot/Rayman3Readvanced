@@ -6,6 +6,7 @@ namespace GbaMonoGame;
 public abstract class RenderContext
 {
     private Box _lastViewPortRenderBox;
+    private Vector2 _lastViewPortFullSize;
     private Vector2 _lastGameResolution;
 
     private Vector2 _resolution;
@@ -14,6 +15,7 @@ public abstract class RenderContext
 
     protected virtual HorizontalAlignment HorizontalAlignment => HorizontalAlignment.Center;
     protected virtual VerticalAlignment VerticalAlignment => VerticalAlignment.Center;
+    protected virtual bool FitToGameViewPort => true;
 
     public Vector2 Resolution
     {
@@ -66,16 +68,27 @@ public abstract class RenderContext
     private void UpdateScale()
     {
         _lastViewPortRenderBox = Engine.GameViewPort.RenderBox;
+        _lastViewPortFullSize = Engine.GameViewPort.FullSize;
+
+        // Get the view port render box. This is the area on the screen we want to draw to.
+        Vector2 viewPortRenderBoxSize;
+        Vector2 viewPortRenderBoxPos;
+        if (FitToGameViewPort)
+        {
+            viewPortRenderBoxSize = Engine.GameViewPort.RenderBox.Size;
+            viewPortRenderBoxPos = Engine.GameViewPort.RenderBox.Position;
+        }
+        else
+        {
+            viewPortRenderBoxSize = Engine.GameViewPort.FullSize;
+            viewPortRenderBoxPos = Vector2.Zero;
+        }
 
         // Get the resolution
         Vector2 res = Resolution;
 
-        // Get the view port render box. This is the area on the screen we want to draw to.
-        Box viewPortRenderBox = Engine.GameViewPort.RenderBox;
-        Vector2 viewPortSize = viewPortRenderBox.Size;
-
         // Get the aspect ratios
-        float screenRatio = viewPortSize.X / viewPortSize.Y;
+        float screenRatio = viewPortRenderBoxSize.X / viewPortRenderBoxSize.Y;
         float gameRatio = res.X / res.Y;
 
         // Calculate the scale, size and position
@@ -84,7 +97,7 @@ public abstract class RenderContext
         Vector2 pos = Vector2.Zero;
         if (screenRatio > gameRatio)
         {
-            scale = viewPortSize.Y / res.Y;
+            scale = viewPortRenderBoxSize.Y / res.Y;
             size = res * scale;
 
             switch (HorizontalAlignment)
@@ -95,17 +108,17 @@ public abstract class RenderContext
                     break;
                 
                 case HorizontalAlignment.Center:
-                    pos = new Vector2((viewPortSize.X - size.X) / 2, 0);
+                    pos = new Vector2((viewPortRenderBoxSize.X - size.X) / 2, 0);
                     break;
                 
                 case HorizontalAlignment.Right:
-                    pos = new Vector2(viewPortSize.X - size.X, 0);
+                    pos = new Vector2(viewPortRenderBoxSize.X - size.X, 0);
                     break;
             }
         }
         else
         {
-            scale = viewPortSize.X / res.X;
+            scale = viewPortRenderBoxSize.X / res.X;
             size = res * scale;
 
             switch (VerticalAlignment)
@@ -116,17 +129,17 @@ public abstract class RenderContext
                     break;
 
                 case VerticalAlignment.Center:
-                    pos = new Vector2(0, (viewPortSize.Y - size.Y) / 2);
+                    pos = new Vector2(0, (viewPortRenderBoxSize.Y - size.Y) / 2);
                     break;
                 
                 case VerticalAlignment.Bottom:
-                    pos = new Vector2(0, viewPortSize.Y - size.Y);
+                    pos = new Vector2(0, viewPortRenderBoxSize.Y - size.Y);
                     break;
             }
         }
 
         // Offset by the view port render box position
-        pos += viewPortRenderBox.Position;
+        pos += viewPortRenderBoxPos;
 
         // Set the scale
         Scale = scale;
@@ -156,7 +169,9 @@ public abstract class RenderContext
         if (Engine.InternalGameResolution != _lastGameResolution)
             UpdateResolution();
         
-        if (Engine.GameViewPort.RenderBox != _lastViewPortRenderBox)
+        if (FitToGameViewPort && Engine.GameViewPort.RenderBox != _lastViewPortRenderBox)
+            UpdateScale();
+        else if (!FitToGameViewPort && Engine.GameViewPort.FullSize != _lastViewPortFullSize)
             UpdateScale();
     }
 }
