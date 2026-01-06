@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace GbaMonoGame;
@@ -28,7 +29,7 @@ public abstract class GbaGame : Game
     private GbaGameWindow _gameWindow;
     private GfxRenderer _gfxRenderer;
     private DebugLayout _debugLayout;
-    private GameRenderTarget _debugGameRenderTarget;
+    private GbaRenderTarget _debugGameRenderTarget;
     private LoggerDebugWindow _loggerWindow;
     private PerformanceDebugWindow _performanceWindow;
     private int _skippedDraws = -1;
@@ -79,7 +80,7 @@ public abstract class GbaGame : Game
                 _debugLayout.LoadContent(this);
             }
 
-            _debugLayout.AddWindow(new GameDebugWindow(_debugGameRenderTarget));
+            _debugLayout.AddWindow(new GameDebugWindow(_debugGameRenderTarget, Engine.GameViewPort));
             _debugLayout.AddWindow(_performanceWindow = new PerformanceDebugWindow());
             _debugLayout.AddWindow(_loggerWindow);
             _debugLayout.AddWindow(new GfxDebugWindow());
@@ -207,7 +208,7 @@ public abstract class GbaGame : Game
         _gfxRenderer = new GfxRenderer(GraphicsDevice);
 
         if (Engine.ActiveConfig.Debug.DebugModeEnabled)
-            _debugGameRenderTarget = new GameRenderTarget(GraphicsDevice, Engine.GameViewPort);
+            _debugGameRenderTarget = new GbaRenderTarget(GraphicsDevice, GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
     }
 
     protected override void Update(Microsoft.Xna.Framework.GameTime gameTime)
