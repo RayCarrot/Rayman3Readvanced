@@ -178,29 +178,48 @@ public static class Gfx
         if ((FadeControl.Flags & (FadeFlags)(1 << layer)) != 0)
             DrawFade(renderer);
 
-        // Draw sprites using depth stencil since they couldn't be drawn to the layer render target
-        for (int j = 0; j < BackSprites.Count; j++)
+        if (Rom.IsLoaded && (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage))
         {
-            Sprite sprite = BackSprites[j];
-            if (sprite.Priority == layer && sprite.RenderOptions.UseDepthStencil)
-                sprite.Draw(renderer, Color);
-        }
-        for (int j = Sprites.Count - 1; j >= 0; j--)
-        {
-            Sprite sprite = Sprites[j];
-            if (sprite.Priority == layer && sprite.RenderOptions.UseDepthStencil)
-                sprite.Draw(renderer, Color);
-        }
-
-        // Draw the sprite layer render target if it was drawn to
-        if (_drawnSpriteLayers[layer])
-        {
-            renderer.BeginSpriteRender(new RenderOptions
+            // Draw sprites using depth stencil since they couldn't be drawn to the layer render target
+            for (int j = 0; j < BackSprites.Count; j++)
             {
-                RenderContext = SpriteRenderTargetRenderContext,
-                BlendMode = BlendMode.AlphaBlend,
-            });
-            renderer.Draw(SpriteRenderTargets[layer].RenderTarget, Vector2.Zero, Color.White);
+                Sprite sprite = BackSprites[j];
+                if (sprite.Priority == layer && sprite.RenderOptions.UseDepthStencil)
+                    sprite.Draw(renderer, Color);
+            }
+            for (int j = Sprites.Count - 1; j >= 0; j--)
+            {
+                Sprite sprite = Sprites[j];
+                if (sprite.Priority == layer && sprite.RenderOptions.UseDepthStencil)
+                    sprite.Draw(renderer, Color);
+            }
+
+            // Draw the sprite layer render target if it was drawn to
+            if (_drawnSpriteLayers[layer])
+            {
+                renderer.BeginSpriteRender(new RenderOptions
+                {
+                    RenderContext = SpriteRenderTargetRenderContext,
+                    BlendMode = BlendMode.AlphaBlend,
+                });
+                renderer.Draw(SpriteRenderTargets[layer].RenderTarget, Vector2.Zero, Color.White);
+            }
+        }
+        else
+        {
+            // Draw sprites normally
+            for (int j = 0; j < BackSprites.Count; j++)
+            {
+                Sprite sprite = BackSprites[j];
+                if (sprite.Priority == layer)
+                    sprite.Draw(renderer, Color);
+            }
+            for (int j = Sprites.Count - 1; j >= 0; j--)
+            {
+                Sprite sprite = Sprites[j];
+                if (sprite.Priority == layer)
+                    sprite.Draw(renderer, Color);
+            }
         }
 
         if ((FadeControl.Flags & (FadeFlags)(1 << (layer + 4))) != 0)
@@ -289,11 +308,13 @@ public static class Gfx
 
     public static void Draw(GfxRenderer renderer)
     {
-        // TODO: Don't do on N-Gage
-        // First draw the sprites to a render target for each layer. This is because alpha has to be managed
-        // separately for sprites in order to match GBA behavior (i.e. sprites on the same layer should
-        // not blend with each other - instead they overwrite each others pixels).
-        DrawSpritesToRenderTargets(renderer);
+        if (Rom.IsLoaded && (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage))
+        {
+            // First draw the sprites to a render target for each layer. This is because alpha has to be managed
+            // separately for sprites in order to match GBA behavior (i.e. sprites on the same layer should
+            // not blend with each other - instead they overwrite each others pixels).
+            DrawSpritesToRenderTargets(renderer);
+        }
 
         // Draw clear color on GBA
         if (Rom.IsLoaded && (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage))
