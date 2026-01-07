@@ -321,7 +321,7 @@ public class TimeAttackMenuPage : MenuPage
                     {
                         SoundEventsManager.StopAllSongs();
                         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-                        Gfx.Fade = 1;
+                        Gfx.Fade = AlphaCoefficient.Max;
 
                         TimeAttackInfo.Init();
                         TimeAttackInfo.LoadLevel(SelectedMap);

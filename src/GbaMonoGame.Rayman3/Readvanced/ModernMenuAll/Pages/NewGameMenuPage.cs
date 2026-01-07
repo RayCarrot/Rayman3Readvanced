@@ -38,7 +38,7 @@ public class NewGameMenuPage : MenuPage
                     GameInfo.ResetPersistentInfo();
 
                     Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-                    Gfx.Fade = 1;
+                    Gfx.Fade = AlphaCoefficient.Max;
 
                     GameInfo.CurrentSlot = Slot;
                 });

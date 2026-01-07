@@ -306,7 +306,7 @@ public partial class GameCubeMenu : Frame
             JoyBus.Disconnect();
 
         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-        Gfx.Fade = 1;
+        Gfx.Fade = AlphaCoefficient.Max;
     }
 
     public override void Step()

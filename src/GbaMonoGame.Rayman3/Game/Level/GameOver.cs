@@ -231,7 +231,7 @@ public class GameOver : Frame
     public override void UnInit()
     {
         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-        Gfx.Fade = 1;
+        Gfx.Fade = AlphaCoefficient.Max;
 
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__tizetre_Swing);
 

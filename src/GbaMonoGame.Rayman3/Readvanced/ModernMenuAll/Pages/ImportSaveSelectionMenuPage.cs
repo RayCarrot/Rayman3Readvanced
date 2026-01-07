@@ -61,7 +61,7 @@ public class ImportSaveSelectionMenuPage : MenuPage
                         GameInfo.GotoLastSaveGame();
 
                         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-                        Gfx.Fade = 1;
+                        Gfx.Fade = AlphaCoefficient.Max;
 
                         GameInfo.CurrentSlot = Slot;
 

@@ -195,7 +195,7 @@ public partial class ModernPauseDialog
 
                         SoundEventsManager.StopAllSongs();
                         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-                        Gfx.Fade = 1;
+                        Gfx.Fade = AlphaCoefficient.Max;
 
                         if (TimeAttackInfo.IsActive)
                         {

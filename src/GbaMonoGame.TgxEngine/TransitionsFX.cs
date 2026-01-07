@@ -46,7 +46,7 @@ public static class TransitionsFX
             if (BrightnessCoefficient > MaxAlpha)
                 BrightnessCoefficient = MaxAlpha;
 
-            Gfx.GbaFade = BrightnessCoefficient;
+            Gfx.Fade = GbaMonoGame.AlphaCoefficient.FromGbaValue(BrightnessCoefficient);
         }
         // Fade in
         else if (FadeCoefficient != MinAlpha)
@@ -56,7 +56,7 @@ public static class TransitionsFX
             if (FadeCoefficient < MinAlpha)
                 FadeCoefficient = MinAlpha;
 
-            Gfx.GbaFade = FadeCoefficient;
+            Gfx.Fade = GbaMonoGame.AlphaCoefficient.FromGbaValue(FadeCoefficient);
 
             if (FadeCoefficient == MinAlpha)
                 Gfx.FadeControl = FadeControl.None;
@@ -80,7 +80,7 @@ public static class TransitionsFX
             if (FadeCoefficient < MinAlpha)
                 FadeCoefficient = MinAlpha;
 
-            Gfx.GbaFade = FadeCoefficient;
+            Gfx.Fade = GbaMonoGame.AlphaCoefficient.FromGbaValue(FadeCoefficient);
         }
     }
 
@@ -96,7 +96,7 @@ public static class TransitionsFX
             if (BrightnessCoefficient > MaxAlpha)
                 BrightnessCoefficient = MaxAlpha;
 
-            Gfx.GbaFade = BrightnessCoefficient;
+            Gfx.Fade = GbaMonoGame.AlphaCoefficient.FromGbaValue(BrightnessCoefficient);
         }
     }
 
@@ -158,7 +158,7 @@ public static class TransitionsFX
                     AlphaStep = 0;
 
                     Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-                    Gfx.GbaFade = MinAlpha;
+                    Gfx.Fade = GbaMonoGame.AlphaCoefficient.None;
                 }
             }
             else
@@ -172,7 +172,7 @@ public static class TransitionsFX
     public static void FadeInInit(float stepSize)
     {
         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-        Gfx.GbaFade = MaxAlpha;
+        Gfx.Fade = GbaMonoGame.AlphaCoefficient.Max;
 
         FadeCoefficient = MaxAlpha;
         FadeStepSize = stepSize;
@@ -183,7 +183,7 @@ public static class TransitionsFX
         if (Screns.Count == 0)
         {
             Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-            Gfx.GbaFade = MinAlpha;
+            Gfx.Fade = GbaMonoGame.AlphaCoefficient.None;
 
             BrightnessCoefficient = MinAlpha;
             FadeStepSize = stepSize;

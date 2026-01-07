@@ -229,7 +229,7 @@ public partial class PauseDialog
                 SavedFade = Gfx.Fade;
 
                 Gfx.FadeControl = new FadeControl(FadeMode.BrightnessIncrease, FadeFlags.Screen0);
-                Gfx.Fade = 1;
+                Gfx.Fade = AlphaCoefficient.Max;
                 break;
 
             case FsmAction.Step:
@@ -359,14 +359,14 @@ public partial class PauseDialog
                     {
                         SoundEventsManager.StopAllSongs();
                         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-                        Gfx.Fade = 1;
+                        Gfx.Fade = AlphaCoefficient.Max;
                         FrameManager.SetNextFrame(new GameCubeMenu());
                     }
                     else
                     {
                         SoundEventsManager.StopAllSongs();
                         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-                        Gfx.Fade = 1;
+                        Gfx.Fade = AlphaCoefficient.Max;
 
                         if (Engine.ActiveConfig.Tweaks.UseModernMainMenu)
                             FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
@@ -694,7 +694,7 @@ public partial class PauseDialog
                 else if (MultiJoyPad.IsButtonJustPressed(PausedMachineId, Rayman3Input.MenuConfirm) && SelectedOption == quitOptionIndex)
                 {
                     Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-                    Gfx.Fade = 1;
+                    Gfx.Fade = AlphaCoefficient.Max;
 
                     if (Engine.ActiveConfig.Tweaks.UseModernMainMenu)
                         FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.Multiplayer));

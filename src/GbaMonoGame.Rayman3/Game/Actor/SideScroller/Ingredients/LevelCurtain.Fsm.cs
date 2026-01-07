@@ -177,7 +177,7 @@ public partial class LevelCurtain
 
             case FsmAction.UnInit:
                 Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-                Gfx.Fade = 1;
+                Gfx.Fade = AlphaCoefficient.Max;
 
                 SoundEventsManager.StopAllSongs();
                 GameInfo.LoadLevel(MapId);

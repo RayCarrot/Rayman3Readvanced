@@ -561,7 +561,7 @@ public class Credits : Frame
     {
         Gfx.ClearColor = Color.Black;
         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-        Gfx.Fade = 1;
+        Gfx.Fade = AlphaCoefficient.Max;
         
         SoundEventsManager.StopAllSongs();
     }

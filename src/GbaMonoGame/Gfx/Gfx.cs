@@ -60,16 +60,7 @@ public static class Gfx
     /// The fade coefficient, a value between 0 and 1. This is the equivalent to BLDY
     /// on GBA and is not implemented on N-Gage.
     /// </summary>
-    public static float Fade { get; set; }
-    
-    /// <summary>
-    /// Same as <see cref="Fade"/>, but using a range of 0 to 16.
-    /// </summary>
-    public static float GbaFade
-    {
-        get => Fade * 16;
-        set => Fade = value / 16;
-    }
+    public static AlphaCoefficient Fade { get; set; }
 
     /// <summary>
     /// This defines how the <see cref="Fade"/> is applied and is the equivalent of
@@ -229,8 +220,8 @@ public static class Gfx
     private static void DrawFade(GfxRenderer renderer)
     {
         if ((!Rom.IsLoaded || Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage) && 
-            FadeControl.Mode != FadeMode.None && 
-            Fade is > 0 and <= 1)
+            FadeControl.Mode != FadeMode.None &&
+            Fade.Value is > 0 and <= 1)
         {
             renderer.BeginSpriteRender(new RenderOptions()
             {
@@ -302,7 +293,7 @@ public static class Gfx
         ClearScreenEffect();
         Color = Color.White;
         ClearColor = Color.Black;
-        Fade = 0;
+        Fade = AlphaCoefficient.None;
         FadeControl = FadeControl.None;
     }
 

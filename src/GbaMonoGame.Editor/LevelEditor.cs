@@ -64,7 +64,7 @@ public class LevelEditor : Frame
         Scene = null;
 
         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-        Gfx.Fade = 1;
+        Gfx.Fade = AlphaCoefficient.Max;
         Gfx.ClearColor = Color.Black;
     }
 

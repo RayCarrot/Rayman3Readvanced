@@ -103,7 +103,7 @@ public class FrameNewPower : Frame, IHasScene, IHasPlayfield
     public override void UnInit()
     {
         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-        Gfx.Fade = 1;
+        Gfx.Fade = AlphaCoefficient.Max;
 
         Scene.UnInit();
         Scene = null;

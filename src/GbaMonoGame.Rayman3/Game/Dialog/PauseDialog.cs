@@ -28,7 +28,7 @@ public partial class PauseDialog : Dialog
     public bool IsInSleepMode { get; set; }
     public int SleepModeTimer { get; set; }
     public FadeControl SavedFadeControl { get; set; }
-    public float SavedFade { get; set; }
+    public AlphaCoefficient SavedFade { get; set; }
 
     public int PausedMachineId { get; set; }
 

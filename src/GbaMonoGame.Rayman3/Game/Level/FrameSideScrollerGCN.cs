@@ -370,7 +370,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
                         rainScreen.RenderOptions.BlendMode = BlendMode.None;
 
                     Gfx.FadeControl = new FadeControl(FadeMode.BrightnessIncrease);
-                    Gfx.Fade = 1;
+                    Gfx.Fade = AlphaCoefficient.Max;
 
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Thunder1_Mix04);
                     return;
@@ -379,7 +379,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
                 // Frame 1
                 if (time == LightningTime + 1)
                 {
-                    Gfx.GbaFade = 15;
+                    Gfx.Fade = AlphaCoefficient.FromGbaValue(15);
                     Gfx.ClearColor = Color.White;
                     return;
                 }
@@ -387,7 +387,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
                 // Frame 2-7
                 if (time >= LightningTime + 2 && time < LightningTime + 8)
                 {
-                    Gfx.GbaFade = (31 - (time - LightningTime)) / 2f;
+                    Gfx.Fade = AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
                     return;
                 }
 
@@ -395,14 +395,14 @@ public class FrameSideScrollerGCN : FrameSideScroller
                 if (time >= LightningTime + 8 && time < LightningTime + 16)
                 {
                     bgScreen.IsEnabled = true;
-                    Gfx.GbaFade = (31 - (time - LightningTime)) / 2f;
+                    Gfx.Fade = AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
                     return;
                 }
 
                 // Frame 16-30
                 if (time >= LightningTime + 16 && time < LightningTime + 31)
                 {
-                    Gfx.GbaFade = (31 - (time - LightningTime)) / 2f;
+                    Gfx.Fade = AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
                     return;
                 }
 

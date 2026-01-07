@@ -862,7 +862,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
     public override void UnInit()
     {
         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-        Gfx.Fade = 1;
+        Gfx.Fade = AlphaCoefficient.Max;
 
         Scene.UnInit();
         Scene = null;
@@ -1524,7 +1524,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
         // Fade after drawing screen 0, thus only leaving the sprites 0 as not faded
         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease, FadeFlags.Screen0);
-        Gfx.GbaFade = 6;
+        Gfx.Fade = AlphaCoefficient.FromGbaValue(6);
 
         Scene.ProcessDialogs();
 
@@ -1588,7 +1588,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
     public void Step_Pause_Resume()
     {
         Gfx.FadeControl = SavedFadeControl;
-        Gfx.Fade = 0;
+        Gfx.Fade = AlphaCoefficient.None;
 
         UserInfo.ProcessMessage(this, Message.UserInfo_Unpause);
 

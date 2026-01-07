@@ -430,7 +430,7 @@ public class Intro : Frame, IHasPlayfield
         Playfield.UnInit();
 
         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-        Gfx.Fade = 1;
+        Gfx.Fade = AlphaCoefficient.Max;
 
         SoundEventsManager.SetVolumeForType(SoundType.Music, SoundEngineInterface.MaxVolume);
     }
@@ -657,7 +657,7 @@ public class Intro : Frame, IHasPlayfield
         if (JoyPad.IsButtonJustPressed(Rayman3Input.IntroSkip))
         {
             Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
-            Gfx.Fade = 1;
+            Gfx.Fade = AlphaCoefficient.Max;
 
             FrameManager.SetNextFrame(Menu);
             Random.SetSeed(GameTime.ElapsedFrames);
