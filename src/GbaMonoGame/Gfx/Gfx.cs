@@ -13,6 +13,8 @@ namespace GbaMonoGame;
 /// </summary>
 public static class Gfx
 {
+    private static bool[] _drawnSpriteLayers = new bool[4];
+
     /// <summary>
     /// A texture which is a single uncolored 1x1 pixel. Useful for drawing shapes.
     /// </summary>
@@ -75,6 +77,136 @@ public static class Gfx
     /// </summary>
     public static FadeControl FadeControl { get; set; }
 
+    public static GbaRenderTarget[] SpriteRenderTargets { get; set; }
+    public static FixedResolutionRenderContext SpriteRenderTargetRenderContext { get; set; }
+
+    private static void DrawSpritesToRenderTargets(GfxRenderer renderer)
+    {
+        // Update the sprite render target render context resolution to match the full view port size
+        // since each layer should be drawn to a texture which represents the entire screen
+        SpriteRenderTargetRenderContext.SetResolution(Engine.GameViewPort.FullSize);
+
+        // Draw each game layer (3-0, although the order technically doesn't matter here)
+        for (int i = 3; i >= 0; i--)
+        {
+            // Check if this layer has any sprites to draw
+            _drawnSpriteLayers[i] = false;
+            for (int j = 0; j < BackSprites.Count; j++)
+            {
+                Sprite sprite = BackSprites[j];
+                if (sprite.Priority == i && !sprite.RenderOptions.UseDepthStencil)
+                {
+                    _drawnSpriteLayers[i] = true;
+                    break;
+                }
+            }
+            if (!_drawnSpriteLayers[i])
+            {
+                for (int j = Sprites.Count - 1; j >= 0; j--)
+                {
+                    Sprite sprite = Sprites[j];
+                    if (sprite.Priority == i && !sprite.RenderOptions.UseDepthStencil)
+                    {
+                        _drawnSpriteLayers[i] = true;
+                        break;
+                    }
+                }
+            }
+
+            // Ignore if no sprites to draw for optimization
+            if (!_drawnSpriteLayers[i])
+                continue;
+
+            // Get the render target
+            GbaRenderTarget renderTarget = SpriteRenderTargets[i];
+
+            // Update the size to match the full view port size
+            renderTarget.SetSize(Engine.GameViewPort.FullSize.ToFloorPoint());
+
+            // Begin rendering to the render target
+            renderTarget.BeginRender();
+
+            // Clear the buffer with transparency
+            Engine.GraphicsDevice.Clear(Color.Transparent);
+
+            // Draw the sprites. Make sure to change from AlphaBlend to AlphaBlendOverwrite since we don't want
+            // to blend the sprites on the same layer. Also ignore any sprites using the depth stencil since we
+            // can't draw them like this. This is only the case for Mode7 sprites and alpha blending isn't really
+            // an issue there in the same way as in the other levels.
+            for (int j = 0; j < BackSprites.Count; j++)
+            {
+                Sprite sprite = BackSprites[j];
+                if (sprite.Priority == i && !sprite.RenderOptions.UseDepthStencil)
+                {
+                    if (sprite.RenderOptions.BlendMode == BlendMode.AlphaBlend)
+                        sprite.RenderOptions.BlendMode = BlendMode.AlphaBlendOverwrite;
+
+                    sprite.Draw(renderer, Color);
+                }
+            }
+            for (int j = Sprites.Count - 1; j >= 0; j--)
+            {
+                Sprite sprite = Sprites[j];
+                if (sprite.Priority == i && !sprite.RenderOptions.UseDepthStencil)
+                {
+                    if (sprite.RenderOptions.BlendMode == BlendMode.AlphaBlend)
+                        sprite.RenderOptions.BlendMode = BlendMode.AlphaBlendOverwrite;
+
+                    sprite.Draw(renderer, Color);
+                }
+            }
+
+            // Force the current rendering to end (ending current sprite batches etc.) so everything gets drawn
+            // to the render target before we remove it
+            renderer.EndRender();
+
+            // End rendering to the render target
+            renderTarget.EndRender();
+        }
+    }
+
+    private static void DrawGameLayer(GfxRenderer renderer, int layer)
+    {
+        // Draw screens
+        for (int i = 0; i < Screens.Count; i++)
+        {
+            GfxScreen screen = Screens[i];
+            if (screen.IsEnabled && screen.Priority == layer)
+                screen.Draw(renderer, Color);
+        }
+
+        if ((FadeControl.Flags & (FadeFlags)(1 << layer)) != 0)
+            DrawFade(renderer);
+
+        // Draw sprites using depth stencil since they couldn't be drawn to the layer render target
+        for (int j = 0; j < BackSprites.Count; j++)
+        {
+            Sprite sprite = BackSprites[j];
+            if (sprite.Priority == layer && sprite.RenderOptions.UseDepthStencil)
+                sprite.Draw(renderer, Color);
+        }
+        for (int j = Sprites.Count - 1; j >= 0; j--)
+        {
+            Sprite sprite = Sprites[j];
+            if (sprite.Priority == layer && sprite.RenderOptions.UseDepthStencil)
+                sprite.Draw(renderer, Color);
+        }
+
+        // Draw the sprite layer render target if it was drawn to
+        if (_drawnSpriteLayers[layer])
+        {
+            renderer.BeginSpriteRender(new RenderOptions
+            {
+                RenderContext = SpriteRenderTargetRenderContext,
+                BlendMode = BlendMode.AlphaBlend,
+            });
+            renderer.Draw(SpriteRenderTargets[layer].RenderTarget, Vector2.Zero, Color.White);
+        }
+
+        if ((FadeControl.Flags & (FadeFlags)(1 << (layer + 4))) != 0)
+            DrawFade(renderer);
+    }
+
     private static void DrawFade(GfxRenderer renderer)
     {
         if ((!Rom.IsLoaded || Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage) && 
@@ -106,6 +238,21 @@ public static class Gfx
     {
         Pixel = new Texture2D(Engine.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
         Pixel.SetData([Color.White]);
+
+        // Create the render targets for each sprite later. Make sure the surface format is set to Color
+        // so that we preserve transparency!
+        SpriteRenderTargets = 
+        [
+            new GbaRenderTarget(Engine.GraphicsDevice, SurfaceFormat.Color, DepthFormat.None),
+            new GbaRenderTarget(Engine.GraphicsDevice, SurfaceFormat.Color, DepthFormat.None),
+            new GbaRenderTarget(Engine.GraphicsDevice, SurfaceFormat.Color, DepthFormat.None),
+            new GbaRenderTarget(Engine.GraphicsDevice, SurfaceFormat.Color, DepthFormat.None),
+        ];
+
+        // Create the render context for drawing the sprite render targets. This should match the full screen
+        // size and we don't want to force it to fit within the game's viewport since any black space around it
+        // would be included in the render target texture anyway.
+        SpriteRenderTargetRenderContext = new FixedResolutionRenderContext(Engine.GameViewPort.FullSize, fitToGameViewPort: false);
     }
 
     public static void AddScreen(GfxScreen screen)
@@ -142,6 +289,12 @@ public static class Gfx
 
     public static void Draw(GfxRenderer renderer)
     {
+        // TODO: Don't do on N-Gage
+        // First draw the sprites to a render target for each layer. This is because alpha has to be managed
+        // separately for sprites in order to match GBA behavior (i.e. sprites on the same layer should
+        // not blend with each other - instead they overwrite each others pixels).
+        DrawSpritesToRenderTargets(renderer);
+
         // Draw clear color on GBA
         if (Rom.IsLoaded && (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage))
         {
@@ -154,35 +307,7 @@ public static class Gfx
 
         // Draw each game layer (3-0)
         for (int i = 3; i >= 0; i--)
-        {
-            // Draw screens
-            for (int j = 0; j < Screens.Count; j++)
-            {
-                GfxScreen screen = Screens[j];
-                if (screen.IsEnabled && screen.Priority == i)
-                    screen.Draw(renderer, Color);
-            }
-
-            if ((FadeControl.Flags & (FadeFlags)(1 << i)) != 0)
-                DrawFade(renderer);
-
-            // Draw sprites
-            for (int j = 0; j < BackSprites.Count; j++)
-            {
-                Sprite sprite = BackSprites[j];
-                if (sprite.Priority == i)
-                    sprite.Draw(renderer, Color);
-            }
-            for (int j = Sprites.Count - 1; j >= 0; j--)
-            {
-                Sprite sprite = Sprites[j];
-                if (sprite.Priority == i) 
-                    sprite.Draw(renderer, Color);
-            }
-
-            if ((FadeControl.Flags & (FadeFlags)(1 << (i + 4))) != 0)
-                DrawFade(renderer);
-        }
+            DrawGameLayer(renderer, i);
 
         // Draw screen fade if no special flag is set
         if (FadeControl.Flags == FadeFlags.Default)

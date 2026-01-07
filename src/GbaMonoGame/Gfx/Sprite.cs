@@ -17,10 +17,6 @@ public class Sprite
     public Color Color { get; set; } = Color.White;
     public bool OverrideGfxColor { get; set; } // Needed for the curtains in the worldmap which are not effected by the palette fading
 
-    // TODO: There are multiple issues with how alpha is implemented here compared to on GBA. Most noticeably sprites should not affect
-    //       each other. Very noticeable when setting it on Rayman and looking up - Rayman gets 4 eyes then! Although this might be how
-    //       it is on N-Gage?
-    //       One fix is to render sprites as groups, where a group defines the render settings instead of the sprites themselves.
     public AlphaCoefficient Alpha { get; set; }
 
     public RenderOptions RenderOptions { get; set; }

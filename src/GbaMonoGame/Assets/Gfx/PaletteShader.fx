@@ -69,6 +69,13 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     
     // Get the color from the palette texture.
     float4 paletteColor = tex2D(PaletteTextureSampler, float2(paletteX, paletteY));
+
+    // If the alpha is 0 then we discard the pixel. This is mainly because when rendering sprites
+    // to the render targets, for layer-specific alpha blending, we have a custom blend state which
+    // overwrites pixels instead of blending them, including fully transparent ones, which we don't
+    // want. So this solves that by discarding fully transparent pixels.
+    if (paletteColor.a <= 0)
+        discard;
     
     // Return and multiply by the input color.
     return paletteColor * input.Color;

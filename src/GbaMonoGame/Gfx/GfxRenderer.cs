@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Frozen;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -14,6 +16,8 @@ public class GfxRenderer
         _spriteBatch = new SpriteBatch(graphicsDevice);
         _spriteRasterizerState = RasterizerState.CullNone;
 
+        _defaultShader = Engine.FixContentManager.Load<Effect>(Assets.DefaultShader);
+
         _paletteShader = Engine.FixContentManager.Load<Effect>(Assets.PaletteShader);
         _paletteShaderPaletteTextureParam = _paletteShader.Parameters["PaletteTexture"];
         _paletteShaderPaletteIndexParam = _paletteShader.Parameters["PaletteIndex"];
@@ -27,6 +31,33 @@ public class GfxRenderer
 
         _vertexShader = Engine.FixContentManager.Load<Effect>(Assets.VertexShader);
         _vertexShaderWorldViewProjParam = _vertexShader.Parameters["WorldViewProj"];
+
+        _blendStates = new Dictionary<BlendMode, BlendState>()
+        {
+            // TODO: Should probably be opaque?
+            [BlendMode.None] = BlendState.AlphaBlend,
+
+            // Custom alpha blend since we don't use pre-multiplied colors
+            [BlendMode.AlphaBlend] = new()
+            {
+                ColorSourceBlend = Blend.SourceAlpha,
+                AlphaSourceBlend = Blend.One,
+                ColorDestinationBlend = Blend.InverseSourceAlpha,
+                AlphaDestinationBlend = Blend.InverseSourceAlpha,
+            },
+
+            // Overwrites pixels even if transparent
+            [BlendMode.AlphaBlendOverwrite] = new()
+            {
+                ColorSourceBlend = Blend.One,
+                ColorDestinationBlend = Blend.Zero,
+                AlphaSourceBlend = Blend.One,
+                AlphaDestinationBlend = Blend.Zero
+            },
+
+            // Default additive blending
+            [BlendMode.Additive] = BlendState.Additive
+        }.ToFrozenDictionary();
     }
 
     #endregion
@@ -37,6 +68,8 @@ public class GfxRenderer
     private readonly SpriteBatch _spriteBatch;
     private readonly RasterizerState _spriteRasterizerState;
     private RenderOptions _spriteBatchRenderOptions;
+
+    private readonly Effect _defaultShader;
 
     private readonly Effect _paletteShader;
     private readonly EffectParameter _paletteShaderPaletteTextureParam;
@@ -52,26 +85,13 @@ public class GfxRenderer
     private readonly Effect _vertexShader;
     private readonly EffectParameter _vertexShaderWorldViewProjParam;
 
+    private readonly FrozenDictionary<BlendMode, BlendState> _blendStates;
+
     #endregion
 
     #region Private Helpers
 
-    private BlendState GetBlendState(BlendMode blendMode)
-    {
-        return blendMode switch
-        {
-            BlendMode.None => BlendState.AlphaBlend, // Default SpriteBatch value
-            BlendMode.AlphaBlend => new BlendState
-            {
-                ColorSourceBlend = Blend.SourceAlpha,
-                ColorDestinationBlend = Blend.InverseSourceAlpha,
-                AlphaSourceBlend = Blend.One,
-                AlphaDestinationBlend = Blend.InverseSourceAlpha,
-            },
-            BlendMode.Additive => BlendState.Additive,
-            _ => throw new ArgumentOutOfRangeException()
-        };
-    }
+    private BlendState GetBlendState(BlendMode blendMode) => _blendStates[blendMode];
 
     #endregion
 
@@ -131,7 +151,7 @@ public class GfxRenderer
             // Render without a palette texture or custom shader
             else
             {
-                shader = null;
+                shader = _defaultShader;
             }
 
             // Create a view matrix using the render scale. In the SpriteBatch this is multiplied by a projection matrix

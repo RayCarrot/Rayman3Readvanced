@@ -10,8 +10,6 @@
 // The original sprite texture (the first Texture2D always gets set to this)
 extern Texture2D SpriteTexture;
 
-extern float4x4 WorldViewProj;
-
 sampler2D SpriteTextureSampler : register(s0) = sampler_state
 {
     Texture = <SpriteTexture>;
@@ -24,31 +22,14 @@ sampler2D SpriteTextureSampler : register(s0) = sampler_state
     mipfilter = POINT;
 };
 
-struct VertexShaderInput
-{
-    float4 Position : POSITION0;
-    float4 Color : COLOR0;
-    float4 TextureCoordinates : TEXCOORD0;
-};
-    
-struct PixelShaderInput
+struct VertexShaderOutput
 {
     float4 Position : SV_POSITION;
     float4 Color : COLOR0;
     float2 TextureCoordinates : TEXCOORD0;
 };
 
-PixelShaderInput MainVS(VertexShaderInput v)
-{
-    PixelShaderInput output;
-
-    output.Position = mul(v.Position, WorldViewProj);
-    output.Color = v.Color;
-    output.TextureCoordinates = v.TextureCoordinates;
-    return output;
-}
-
-float4 MainPS(PixelShaderInput input) : COLOR
+float4 MainPS(VertexShaderOutput input) : COLOR
 {
     // Get the alpha value from the sprite texture. This is our palette index, in a range from 0-1.
     float4 color = tex2D(SpriteTextureSampler, input.TextureCoordinates);
@@ -68,7 +49,6 @@ technique SpriteBlending
 {
     pass P0
     {
-        VertexShader = compile VS_SHADERMODEL MainVS();
         PixelShader = compile PS_SHADERMODEL MainPS();
     }
 };

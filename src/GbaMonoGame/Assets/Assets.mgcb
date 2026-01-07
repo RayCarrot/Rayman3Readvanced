@@ -13,6 +13,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin DefaultShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Gfx/DefaultShader.fx
+
 #begin PaletteShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor
