@@ -41,7 +41,7 @@ public partial class CheatDialog : Dialog
         [
             new CheatItem(
                 renderContext: Scene.RenderContext,
-                text: "NEXT LEVEL",
+                text: "COMPLETE LEVEL",
                 action: _ =>
                 {
                     if (Scene.MainActor.Type == (int)ActorType.MissileMode7)
