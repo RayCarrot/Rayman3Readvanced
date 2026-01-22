@@ -724,9 +724,18 @@ public partial class MenuAll : Frame, IHasPlayfield
     {
         InitialPage = InitialMenuPage.Language;
 
-        // TODO: If the game has failed to load the save file then it transitions to a page where it says the drive is full - re-implement?
-
-        CurrentStepAction = Step_InitializeTransitionToGameMode;
+        // NOTE: In the original game it checks if the save has been loaded. We don't re-implement this
+        //       though since we handle error checking in a different way.
+        if (false)
+        {
+            NGageSetMenuText(35, true, null, 0);
+            SetBackgroundPalette(2);
+            CurrentStepAction = Step_TransitionToStorageError;
+        }
+        else
+        {
+            CurrentStepAction = Step_InitializeTransitionToGameMode;
+        }
     }
 
     #endregion
