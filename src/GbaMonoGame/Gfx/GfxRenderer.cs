@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -34,8 +35,7 @@ public class GfxRenderer
 
         _blendStates = new Dictionary<BlendMode, BlendState>()
         {
-            // TODO: Should probably be opaque?
-            [BlendMode.None] = BlendState.AlphaBlend,
+            [BlendMode.None] = BlendState.Opaque,
 
             // Custom alpha blend since we don't use pre-multiplied colors
             [BlendMode.AlphaBlend] = new()
@@ -92,6 +92,13 @@ public class GfxRenderer
     #region Private Helpers
 
     private BlendState GetBlendState(BlendMode blendMode) => _blendStates[blendMode];
+
+    [Conditional("DEBUG")]
+    private void ValidateSpriteBatchDraw(Color? color)
+    {
+        // Verify we're not drawing to draw alpha without a blend mode set
+        Debug.Assert(color == null || color.Value.A == Byte.MaxValue || _spriteBatchRenderOptions.BlendMode != BlendMode.None);
+    }
 
     #endregion
 
@@ -215,28 +222,34 @@ public class GfxRenderer
 
     public void Draw(Texture2D texture, Vector2 position, Color? color = null)
     {
+        ValidateSpriteBatchDraw(color);
         _spriteBatch.Draw(texture, position, texture.Bounds, color ?? Color.White);
     }
     public void Draw(Texture2D texture, Vector2 position, Rectangle sourceRectangle, Color? color = null)
     {
+        ValidateSpriteBatchDraw(color);
         _spriteBatch.Draw(texture, position, sourceRectangle, color ?? Color.White);
     }
 
     public void Draw(Texture2D texture, Vector2 position, SpriteEffects effects, Color? color = null)
     {
+        ValidateSpriteBatchDraw(color);
         _spriteBatch.Draw(texture, position, texture.Bounds, color ?? Color.White, 0, Vector2.Zero, Vector2.One, effects, 0);
     }
     public void Draw(Texture2D texture, Vector2 position, Rectangle sourceRectangle, SpriteEffects effects, Color? color = null)
     {
+        ValidateSpriteBatchDraw(color);
         _spriteBatch.Draw(texture, position, sourceRectangle, color ?? Color.White, 0, Vector2.Zero, Vector2.One, effects, 0);
     }
 
     public void Draw(Texture2D texture, Vector2 position, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Color? color = null)
     {
+        ValidateSpriteBatchDraw(color);
         _spriteBatch.Draw(texture, position, texture.Bounds, color ?? Color.White, rotation, origin, scale, effects, 0);
     }
     public void Draw(Texture2D texture, Vector2 position, Rectangle sourceRectangle, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Color? color = null)
     {
+        ValidateSpriteBatchDraw(color);
         _spriteBatch.Draw(texture, position, sourceRectangle, color ?? Color.White, rotation, origin, scale, effects, 0);
     }
 
@@ -251,6 +264,7 @@ public class GfxRenderer
     /// <param name="color">The color to draw the rectangle in</param>
     public void DrawFilledRectangle(Rectangle rect, Color color)
     {
+        ValidateSpriteBatchDraw(color);
         // Simply use the function already there
         _spriteBatch.Draw(Gfx.Pixel, rect, color);
     }
@@ -263,6 +277,7 @@ public class GfxRenderer
     /// <param name="angle">The angle in radians to draw the rectangle at</param>
     public void DrawFilledRectangle(Rectangle rect, Color color, float angle)
     {
+        ValidateSpriteBatchDraw(color);
         _spriteBatch.Draw(Gfx.Pixel, rect, null, color, angle, Vector2.Zero, SpriteEffects.None, 0);
     }
 
@@ -274,6 +289,7 @@ public class GfxRenderer
     /// <param name="color">The color to draw the rectangle in</param>
     public void DrawFilledRectangle(Vector2 location, Vector2 size, Color color)
     {
+        ValidateSpriteBatchDraw(color);
         DrawFilledRectangle(location, size, color, 0.0f);
     }
 
@@ -286,6 +302,7 @@ public class GfxRenderer
     /// <param name="color">The color to draw the rectangle in</param>
     public void DrawFilledRectangle(Vector2 location, Vector2 size, Color color, float angle)
     {
+        ValidateSpriteBatchDraw(color);
         // stretch the pixel between the two vectors
         _spriteBatch.Draw(Gfx.Pixel,
             location,
@@ -308,6 +325,7 @@ public class GfxRenderer
     /// <param name="color">The color to draw the rectangle in</param>
     public void DrawFilledRectangle(float x, float y, float w, float h, Color color)
     {
+        ValidateSpriteBatchDraw(color);
         DrawFilledRectangle(new Vector2(x, y), new Vector2(w, h), color, 0.0f);
     }
 
@@ -322,6 +340,7 @@ public class GfxRenderer
     /// <param name="angle">The angle of the rectangle in radians</param>
     public void DrawFilledRectangle(float x, float y, float w, float h, Color color, float angle)
     {
+        ValidateSpriteBatchDraw(color);
         DrawFilledRectangle(new Vector2(x, y), new Vector2(w, h), color, angle);
     }
 
@@ -336,6 +355,7 @@ public class GfxRenderer
     /// <param name="color">The color to draw the rectangle in</param>
     public void DrawRectangle(Rectangle rect, Color color)
     {
+        ValidateSpriteBatchDraw(color);
         DrawRectangle(rect, color, 1.0f);
     }
 
@@ -347,6 +367,7 @@ public class GfxRenderer
     /// <param name="thickness">The thickness of the lines</param>
     public void DrawRectangle(Rectangle rect, Color color, float thickness)
     {
+        ValidateSpriteBatchDraw(color);
         DrawLine(new Vector2(rect.X, rect.Y), new Vector2(rect.Right, rect.Y), color, thickness); // top
         DrawLine(new Vector2(rect.X, rect.Y), new Vector2(rect.X, rect.Bottom), color, thickness); // left
         DrawLine(new Vector2(rect.X, rect.Bottom), new Vector2(rect.Right, rect.Bottom), color, thickness); // bottom
@@ -361,6 +382,7 @@ public class GfxRenderer
     /// <param name="color">The color to draw the rectangle in</param>
     public void DrawRectangle(Vector2 location, Vector2 size, Color color)
     {
+        ValidateSpriteBatchDraw(color);
         DrawRectangle(new Rectangle((int)location.X, (int)location.Y, (int)size.X, (int)size.Y), color, 1.0f);
     }
 
@@ -373,6 +395,7 @@ public class GfxRenderer
     /// <param name="thickness">The thickness of the line</param>
     public void DrawRectangle(Vector2 location, Vector2 size, Color color, float thickness)
     {
+        ValidateSpriteBatchDraw(color);
         DrawRectangle(new Rectangle((int)location.X, (int)location.Y, (int)size.X, (int)size.Y), color, thickness);
     }
 
@@ -390,6 +413,7 @@ public class GfxRenderer
     /// <param name="color">The color to use</param>
     public void DrawLine(float x1, float y1, float x2, float y2, Color color)
     {
+        ValidateSpriteBatchDraw(color);
         DrawLine(new Vector2(x1, y1), new Vector2(x2, y2), color, 1.0f);
     }
 
@@ -404,6 +428,7 @@ public class GfxRenderer
     /// <param name="thickness">The thickness of the line</param>
     public void DrawLine(float x1, float y1, float x2, float y2, Color color, float thickness)
     {
+        ValidateSpriteBatchDraw(color);
         DrawLine(new Vector2(x1, y1), new Vector2(x2, y2), color, thickness);
     }
 
@@ -415,6 +440,7 @@ public class GfxRenderer
     /// <param name="color">The color to use</param>
     public void DrawLine(Vector2 point1, Vector2 point2, Color color)
     {
+        ValidateSpriteBatchDraw(color);
         DrawLine(point1, point2, color, 1.0f);
     }
 
@@ -427,6 +453,8 @@ public class GfxRenderer
     /// <param name="thickness">The thickness of the line</param>
     public void DrawLine(Vector2 point1, Vector2 point2, Color color, float thickness)
     {
+        ValidateSpriteBatchDraw(color);
+
         // calculate the distance between the two vectors
         float distance = Vector2.Distance(point1, point2);
 
@@ -445,6 +473,7 @@ public class GfxRenderer
     /// <param name="color">The color to use</param>
     public void DrawLine(Vector2 point, float length, float angle, Color color)
     {
+        ValidateSpriteBatchDraw(color);
         DrawLine(point, length, angle, color, 1.0f);
     }
 
@@ -458,6 +487,7 @@ public class GfxRenderer
     /// <param name="thickness">The thickness of the line</param>
     public void DrawLine(Vector2 point, float length, float angle, Color color, float thickness)
     {
+        ValidateSpriteBatchDraw(color);
         // stretch the pixel between the two vectors
         _spriteBatch.Draw(Gfx.Pixel,
             point,
@@ -476,11 +506,13 @@ public class GfxRenderer
 
     public void DrawPixel(float x, float y, Color color)
     {
+        ValidateSpriteBatchDraw(color);
         DrawPixel(new Vector2(x, y), color);
     }
 
     public void DrawPixel(Vector2 position, Color color)
     {
+        ValidateSpriteBatchDraw(color);
         _spriteBatch.Draw(Gfx.Pixel, position, color);
     }
 
