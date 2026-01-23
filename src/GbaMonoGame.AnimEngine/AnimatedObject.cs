@@ -553,7 +553,7 @@ public class AnimatedObject : AObject
                     if (paletteIndex > 0)
                         Debug.Assert(!Resource.Is8Bit, "Can't use a palette index when 8-bit");
 
-                    PaletteTexture paletteTexture;
+                    PaletteTexture? paletteTexture;
                     if (texture is not IndexedSpriteTexture2D)
                     {
                         paletteTexture = null;

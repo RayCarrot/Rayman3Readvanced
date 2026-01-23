@@ -137,18 +137,18 @@ public class GfxRenderer
                 if (options.WorldViewProj != null)
                 {
                     shader = _paletteVertexShader;
-                    _paletteVertexShaderPaletteTextureParam.SetValue(options.PaletteTexture.Texture);
-                    _paletteVertexShaderPaletteIndexParam.SetValue(options.PaletteTexture.PaletteIndex);
-                    _paletteVertexShaderPaletteHeightParam.SetValue(options.PaletteTexture.Texture.Height);
+                    _paletteVertexShaderPaletteTextureParam.SetValue(options.PaletteTexture.Value.Texture);
+                    _paletteVertexShaderPaletteIndexParam.SetValue(options.PaletteTexture.Value.PaletteIndex);
+                    _paletteVertexShaderPaletteHeightParam.SetValue(options.PaletteTexture.Value.Texture.Height);
                     _paletteVertexShaderWorldViewProjParam.SetValue(options.WorldViewProj.Value);
                 }
                 // If there is no WorldViewProj matrix then we render it in 2D using the vertex shader from the SpriteBatch
                 else
                 {
                     shader = _paletteShader;
-                    _paletteShaderPaletteTextureParam.SetValue(options.PaletteTexture.Texture);
-                    _paletteShaderPaletteIndexParam.SetValue(options.PaletteTexture.PaletteIndex);
-                    _paletteShaderPaletteHeightParam.SetValue(options.PaletteTexture.Texture.Height);
+                    _paletteShaderPaletteTextureParam.SetValue(options.PaletteTexture.Value.Texture);
+                    _paletteShaderPaletteIndexParam.SetValue(options.PaletteTexture.Value.PaletteIndex);
+                    _paletteShaderPaletteHeightParam.SetValue(options.PaletteTexture.Value.Texture.Height);
                 }
             }
             // If we have a WorldViewProj matrix then we render it in 3D using a vertex shader
