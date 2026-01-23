@@ -35,8 +35,8 @@ public class GfxDebugWindow : DebugWindow
 
         Engine.SetInternalGameResolution(size);
         screen.Offset = Vector2.Zero;
-        screen.RenderOptions.RenderContext = new FixedResolutionRenderContext(size);
-        screen.RenderOptions.BlendMode = BlendMode.None;
+        screen.RenderContext = new FixedResolutionRenderContext(size);
+        screen.BlendMode = BlendMode.None;
 
         Engine.GameViewPort.Resize(size);
 
@@ -49,8 +49,8 @@ public class GfxDebugWindow : DebugWindow
 
         Engine.SetInternalGameResolution(oldResolution);
         screen.Offset = oldOffset;
-        screen.RenderOptions.RenderContext = oldRenderContext;
-        screen.RenderOptions.BlendMode = oldBlendMode;
+        screen.RenderContext = oldRenderContext;
+        screen.BlendMode = oldBlendMode;
 
         const string outputDir = "Screens";
         Directory.CreateDirectory(outputDir);

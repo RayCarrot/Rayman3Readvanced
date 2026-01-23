@@ -15,7 +15,7 @@ public partial class ChainedSparkles
             if (invisibleActorId != -1)
             {
                 BaseActor actor = Scene.GetGameObject<BaseActor>(invisibleActorId);
-                AnimatedObject.RenderOptions.BlendMode = actor != null && actor == TargetActor ? BlendMode.AlphaBlend : BlendMode.None;
+                AnimatedObject.BlendMode = actor != null && actor == TargetActor ? BlendMode.AlphaBlend : BlendMode.None;
             }
         }
 
@@ -193,7 +193,7 @@ public partial class ChainedSparkles
 
             case FsmAction.UnInit:
                 if (RSMultiplayer.IsActive)
-                    AnimatedObject.RenderOptions.BlendMode = BlendMode.None;
+                    AnimatedObject.BlendMode = BlendMode.None;
                 break;
         }
 

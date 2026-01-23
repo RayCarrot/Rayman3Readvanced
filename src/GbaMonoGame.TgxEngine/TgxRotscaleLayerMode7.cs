@@ -24,7 +24,8 @@ public class TgxRotscaleLayerMode7 : TgxGameLayer
             Priority = 3 - LayerId,
             Wrap = true,
             Is8Bit = Is8Bit,
-            RenderOptions = { RenderContext = renderContext, BlendMode = Resource.HasAlphaBlending ? BlendMode.AlphaBlend : BlendMode.None },
+            RenderContext = renderContext,
+            BlendMode = Resource.HasAlphaBlending ? BlendMode.AlphaBlend : BlendMode.None,
         };
 
         if (Resource.HasAlphaBlending)
@@ -46,13 +47,13 @@ public class TgxRotscaleLayerMode7 : TgxGameLayer
 
     public override void SetWorldViewProjMatrix(Matrix worldViewProj)
     {
-        Screen.RenderOptions.WorldViewProj = worldViewProj;
+        Screen.RenderOptions = Screen.RenderOptions with { WorldViewProj = worldViewProj };
     }
 
     public void LoadRenderer(GfxTileKitManager tileKitManager, AnimatedTilekitManager animatedTilekitManager)
     {
+        Screen.RenderOptions = Screen.RenderOptions with { PaletteTexture = tileKitManager.CreateTileMapPalette() };
         Screen.Renderer = tileKitManager.CreateTileMapRenderer(
-            renderOptions: Screen.RenderOptions,
             animatedTilekitManager: animatedTilekitManager,
             layerCachePointer: Resource.Offset,
             width: Width,

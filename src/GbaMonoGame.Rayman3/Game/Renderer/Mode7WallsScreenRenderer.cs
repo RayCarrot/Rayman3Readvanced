@@ -194,7 +194,7 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
 
     public Vector2 GetSize(GfxScreen screen)
     {
-        return screen.RenderOptions.RenderContext.Resolution;
+        return screen.RenderContext.Resolution;
     }
 
     public void Draw(GfxRenderer renderer, GfxScreen screen, Vector2 position, Color color)

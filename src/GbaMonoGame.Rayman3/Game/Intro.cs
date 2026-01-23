@@ -473,7 +473,7 @@ public class Intro : Frame, IHasPlayfield
                 Timer = 0;
                 CurrentStepAction = Step_2;
 
-                Playfield.TileLayers[SkyTileLayerId].Screen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                Playfield.TileLayers[SkyTileLayerId].Screen.BlendMode = BlendMode.AlphaBlend;
                 Playfield.TileLayers[SkyTileLayerId].Screen.Alpha = AlphaCoefficient.None;
 
                 Playfield.TileLayers[SkyTileLayerId].Screen.IsEnabled = true;
@@ -501,8 +501,8 @@ public class Intro : Frame, IHasPlayfield
                 Timer = 0;
                 CurrentStepAction = Step_3;
 
-                Playfield.TileLayers[SkyTileLayerId].Screen.RenderOptions.BlendMode = BlendMode.None;
-                Playfield.TileLayers[UbisoftLogoTileLayerId].Screen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                Playfield.TileLayers[SkyTileLayerId].Screen.BlendMode = BlendMode.None;
+                Playfield.TileLayers[UbisoftLogoTileLayerId].Screen.BlendMode = BlendMode.AlphaBlend;
                 Playfield.TileLayers[UbisoftLogoTileLayerId].Screen.Alpha = AlphaCoefficient.Max;
             }
             else
@@ -530,8 +530,8 @@ public class Intro : Frame, IHasPlayfield
             AlphaTimer = 0;
             CurrentStepAction = Step_4;
 
-            Playfield.TileLayers[UbisoftLogoTileLayerId].Screen.RenderOptions.BlendMode = BlendMode.None;
-            Playfield.TileLayers[CloudsTileLayerId].Screen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+            Playfield.TileLayers[UbisoftLogoTileLayerId].Screen.BlendMode = BlendMode.None;
+            Playfield.TileLayers[CloudsTileLayerId].Screen.BlendMode = BlendMode.AlphaBlend;
             Playfield.TileLayers[CloudsTileLayerId].Screen.Alpha = AlphaCoefficient.None;
 
             Playfield.TileLayers[UbisoftLogoTileLayerId].Screen.IsEnabled = false;

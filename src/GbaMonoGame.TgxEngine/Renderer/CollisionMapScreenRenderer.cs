@@ -32,8 +32,8 @@ public class CollisionMapScreenRenderer : IScreenRenderer
 
         int xStart = (Math.Max(0, rect.Left) - rect.X) / Tile.Size;
         int yStart = (Math.Max(0, rect.Top) - rect.Y) / Tile.Size;
-        int xEnd = (int)Math.Ceiling((Math.Min(screen.RenderOptions.RenderContext.Resolution.X, rect.Right) - rect.X) / Tile.Size);
-        int yEnd = (int)Math.Ceiling((Math.Min(screen.RenderOptions.RenderContext.Resolution.Y, rect.Bottom) - rect.Y) / Tile.Size);
+        int xEnd = (int)Math.Ceiling((Math.Min(screen.RenderContext.Resolution.X, rect.Right) - rect.X) / Tile.Size);
+        int yEnd = (int)Math.Ceiling((Math.Min(screen.RenderContext.Resolution.Y, rect.Bottom) - rect.Y) / Tile.Size);
 
         return new Rectangle(xStart, yStart, xEnd - xStart, yEnd - yStart);
     }

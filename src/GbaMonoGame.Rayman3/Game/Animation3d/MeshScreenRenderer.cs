@@ -23,7 +23,7 @@ public class MeshScreenRenderer : IScreenRenderer
 
     public Vector2 GetSize(GfxScreen screen)
     {
-        return screen.RenderOptions.RenderContext.Resolution;
+        return screen.RenderContext.Resolution;
     }
 
     public void Draw(GfxRenderer renderer, GfxScreen screen, Vector2 position, Color color)
@@ -31,7 +31,7 @@ public class MeshScreenRenderer : IScreenRenderer
         // Begin rendering the mesh, culling clockwise
         renderer.BeginMeshRender(screen.RenderOptions, RasterizerState.CullClockwise);
 
-        RenderContext renderContext = screen.RenderOptions.RenderContext;
+        RenderContext renderContext = screen.RenderContext;
 
         // Update the shader
         Shader.Projection = Matrix.CreateOrthographicOffCenter(0, renderContext.Viewport.Width, renderContext.Viewport.Height, 0, -1000, 1000);

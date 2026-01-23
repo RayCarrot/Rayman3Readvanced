@@ -50,7 +50,7 @@ public class LevelEditor : Frame
             Priority = 3,
             IsEnabled = true,
             Renderer = new SolidColorScreenRenderer(Scene.MapSize, new Color(29, 27, 50)),
-            RenderOptions = { RenderContext = Scene.Camera.RenderContext },
+            RenderContext = Scene.Camera.RenderContext,
         };
         Gfx.AddScreen(MapBackgroundScreen);
 

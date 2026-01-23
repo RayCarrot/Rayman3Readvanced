@@ -99,8 +99,11 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
         }
 
         // Create a renderer
+        rotScaleLayer.Screen.RenderOptions = rotScaleLayer.Screen.RenderOptions with
+        {
+            PaletteTexture = Scene.Playfield.GfxTileKitManager.CreateTileMapPalette()
+        };
         IScreenRenderer overflowRenderer = Scene.Playfield.GfxTileKitManager.CreateTileMapRenderer(
-            renderOptions: rotScaleLayer.Screen.RenderOptions,
             animatedTilekitManager: Scene.Playfield.AnimatedTilekitManager,
             layerCachePointer: rotScaleLayer.Resource.Offset + 1, // A bit hacky, but we need a unique cache id for this
             width: mapWidth,
@@ -160,7 +163,7 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
             Offset = Vector2.Zero,
             IsEnabled = true,
             Renderer = wallsScreenRenderer,
-            RenderOptions = { RenderContext = Scene.RenderContext }
+            RenderContext = Scene.RenderContext
         };
 
         // Add the screen

@@ -114,7 +114,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         GfxScreen spikyBagScreen = Gfx.GetScreen(3);
 
         // Since it scrolls with the camera we want to use the normal render context instead of a scaled parallax background one
-        spikyBagScreen.RenderOptions.RenderContext = Scene.RenderContext;
+        spikyBagScreen.RenderContext = Scene.RenderContext;
 
         float offsetX = Rom.Platform switch
         {
@@ -270,7 +270,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
         if (ShouldSetLightningAlpha)
         {
-            lightningLayer.Screen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+            lightningLayer.Screen.BlendMode = BlendMode.AlphaBlend;
             lightningLayer.Screen.Alpha = AlphaCoefficient.FromGbaValue(8);
 
             ShouldSetLightningAlpha = false;
@@ -307,7 +307,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                 }
             }
 
-            lightningSkyScreen.RenderOptions.PaletteTexture = LightningSkyPaletteTextures[value];
+            lightningSkyScreen.RenderOptions = lightningSkyScreen.RenderOptions with { PaletteTexture = LightningSkyPaletteTextures[value] };
 
             LightningValue++;
 
@@ -392,7 +392,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             ? VolcanoGlowValue
             : VolcanoGlowMaxValue * 2 - VolcanoGlowValue;
 
-        volcanoLayer.Screen.RenderOptions.PaletteTexture = VolcanoPaletteTextures[index];
+        volcanoLayer.Screen.RenderOptions = volcanoLayer.Screen.RenderOptions with { PaletteTexture = VolcanoPaletteTextures[index] };
 
         VolcanoGlowValue++;
 
@@ -674,7 +674,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         GameCubeTransitionScreenEffect = new SquareTransitionScreenEffect()
         {
             Square = new Box(Vector2.Zero, Scene.RenderContext.Resolution),
-            RenderOptions = { RenderContext = Scene.RenderContext },
+            RenderContext = Scene.RenderContext,
         };
         Gfx.SetScreenEffect(GameCubeTransitionScreenEffect);
 
@@ -727,7 +727,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         CircleWipeTransitionScreenEffect = new CircleWipeTransitionScreenEffect
         {
             Value = 256,
-            RenderOptions = { RenderContext = Engine.GameRenderContext },
+            RenderContext = Engine.GameRenderContext,
         };
         Gfx.SetScreenEffect(CircleWipeTransitionScreenEffect);
 
@@ -808,7 +808,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             HorizontalAnchor = HorizontalAnchorMode.Center,
             Text = "",
             RenderContext = Scene.HudRenderContext,
-            RenderOptions = { BlendMode = BlendMode.AlphaBlend },
+            BlendMode = BlendMode.AlphaBlend,
         };
 
         Rayman.CurrentAnimation = WorldId switch

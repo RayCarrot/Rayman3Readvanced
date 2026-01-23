@@ -70,7 +70,7 @@ public partial class TimeFreezeItem
                 MechModel.Speed = new Vector2(HitSpeedX / 8 * DeathSpeedXMaxDistance, DeathSpeedY);
 
                 // Enable transparency
-                AnimatedObject.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                AnimatedObject.BlendMode = BlendMode.AlphaBlend;
 
                 // Enable rotation and scaling
                 AnimatedObject.SetFlagUseRotationScaling(true);
@@ -106,7 +106,7 @@ public partial class TimeFreezeItem
 
             case FsmAction.UnInit:
                 // Reset values
-                AnimatedObject.RenderOptions.BlendMode = BlendMode.None;
+                AnimatedObject.BlendMode = BlendMode.None;
                 AnimatedObject.Alpha = AlphaCoefficient.Max;
                 AnimatedObject.SetFlagUseRotationScaling(false);
                 AnimatedObject.AffineMatrix = null;

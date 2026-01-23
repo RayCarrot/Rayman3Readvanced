@@ -77,7 +77,7 @@ public class ThePrecipice_M1 : FrameSideScroller
 
         TgxPlayfield2D playfield = (TgxPlayfield2D)Scene.Playfield;
         foreach (TgxTileLayer tileLayer in playfield.TileLayers)
-            tileLayer.Screen.RenderOptions.PaletteTexture = PaletteTextures[GreenColor - MinColor * Speed];
+            tileLayer.Screen.RenderOptions = tileLayer.Screen.RenderOptions with { PaletteTexture = PaletteTextures[GreenColor - MinColor * Speed] };
 
         base.Step();
     }

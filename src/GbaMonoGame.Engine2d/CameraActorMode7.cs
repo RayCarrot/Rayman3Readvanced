@@ -43,12 +43,12 @@ public abstract class CameraActorMode7 : CameraActor
         if (Engine.ActiveConfig.Tweaks.VisualImprovements)
         {
             // The game doesn't do this, but it looks nicer if we fade in the objects as they enter the view
-            animatedObject.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+            animatedObject.BlendMode = BlendMode.AlphaBlend;
             animatedObject.Alpha = MathF.Min((cam.CameraFar - camDist) / FadeDistance, AlphaCoefficient.MaxValue);
         }
         else
         {
-            animatedObject.RenderOptions.BlendMode = BlendMode.None;
+            animatedObject.BlendMode = BlendMode.None;
             animatedObject.Alpha = AlphaCoefficient.MaxValue;
         }
 
@@ -75,8 +75,11 @@ public abstract class CameraActorMode7 : CameraActor
         animatedObject.ScreenPos = new Vector2(0, -zPos / 2);
 
         // Set the WorldViewProj matrix
-        animatedObject.RenderOptions.WorldViewProj = world * view * projection;
-        animatedObject.RenderOptions.UseDepthStencil = true;
+        animatedObject.RenderOptions = animatedObject.RenderOptions with
+        {
+            WorldViewProj = world * view * projection,
+            UseDepthStencil = true,
+        };
 
         // Set the Y priority, used for sorting the objects based on distance
         animatedObject.YPriority = camDist;
@@ -120,7 +123,7 @@ public abstract class CameraActorMode7 : CameraActor
         Matrix world = Matrix.CreateTranslation(new Vector3(position, 0));
 
         obj.ScreenPos = Vector2.Zero;
-        obj.RenderOptions.WorldViewProj = world * view * projection;
+        obj.RenderOptions = obj.RenderOptions with { WorldViewProj = world * view * projection };
 
         // Could optimize by only returning true if in view, but not necessary since it's just for debugging
         return true;

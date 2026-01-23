@@ -10,7 +10,7 @@ public sealed class TimeFreezeItemSparkles : BaseActor
     {
         AnimatedObject.Init(6, Position, 0, true);
         AnimatedObject.ObjPriority = 32;
-        AnimatedObject.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+        AnimatedObject.BlendMode = BlendMode.AlphaBlend;
 
         State.SetTo(null);
     }

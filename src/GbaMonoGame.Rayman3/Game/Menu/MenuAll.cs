@@ -334,13 +334,13 @@ public partial class MenuAll : Frame, IHasPlayfield
         GfxTileKitManager tileKitManager = Playfield.GfxTileKitManager;
         GfxScreen screen = Playfield.TileLayers[0].Screen;
 
-        screen.RenderOptions.PaletteTexture = new PaletteTexture(
+        screen.RenderOptions = screen.RenderOptions with { PaletteTexture = new PaletteTexture(
             Texture: Engine.TextureCache.GetOrCreateObject(
                 pointer: tileKitManager.SelectedPalette.CachePointer,
                 id: index + 1, // +1 since 0 is the default
                 data: index,
                 createObjFunc: static i => new PaletteTexture2D(GetBackgroundPalette(i))),
-            PaletteIndex: 0);
+            PaletteIndex: 0) };
     }
 
     public void ResetStem()

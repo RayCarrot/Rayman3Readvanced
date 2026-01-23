@@ -147,7 +147,7 @@ public class UserInfoMultiMode7 : Dialog
             ScreenPos = new Vector2(-64 + MapOffset, -64 + MapOffset),
             HorizontalAnchor = HorizontalAnchorMode.Right,
             VerticalAnchor = VerticalAnchorMode.Bottom,
-            RenderOptions = { BlendMode = BlendMode.AlphaBlend },
+            BlendMode = BlendMode.AlphaBlend,
             RenderContext = Scene.HudRenderContext,
         };
 

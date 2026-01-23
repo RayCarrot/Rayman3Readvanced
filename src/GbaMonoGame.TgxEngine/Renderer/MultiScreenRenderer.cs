@@ -20,7 +20,7 @@ public class MultiScreenRenderer : IScreenRenderer
         // Only draw on-screen sections if in 2D
         if (screen.RenderOptions.WorldViewProj == null)
         {
-            Box renderBox = new(Vector2.Zero, screen.RenderOptions.RenderContext.Resolution);
+            Box renderBox = new(Vector2.Zero, screen.RenderContext.Resolution);
 
             foreach (Section section in Sections)
             {

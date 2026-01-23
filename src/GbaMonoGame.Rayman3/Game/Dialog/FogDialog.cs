@@ -28,7 +28,7 @@ public class FogDialog : Dialog
             ObjPriority = 63,
             Alpha = AlphaCoefficient.FromGbaValue(6),
             RenderContext = Scene.RenderContext,
-            RenderOptions = { BlendMode = BlendMode.AlphaBlend },
+            BlendMode = BlendMode.AlphaBlend,
         };
 
         ScrollX = 0;

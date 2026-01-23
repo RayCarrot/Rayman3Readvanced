@@ -58,7 +58,8 @@ public class FrameSingleMode7 : FrameMode7
             Alpha = AlphaCoefficient.FromGbaValue(12),
             IsEnabled = true,
             Renderer = FogScreenRenderer,
-            RenderOptions = { BlendMode = BlendMode.Additive, RenderContext = Scene.RenderContext }
+            BlendMode = BlendMode.Additive,
+            RenderContext = Scene.RenderContext
         };
 
         Gfx.AddScreen(FogScreen);

@@ -21,11 +21,16 @@ public abstract class AObject
     public HorizontalAnchorMode HorizontalAnchor { get; set; }
     public VerticalAnchorMode VerticalAnchor { get; set; }
 
-    public RenderOptions RenderOptions { get; } = new();
+    public RenderOptions RenderOptions { get; set; }
     public RenderContext RenderContext
     {
         get => RenderOptions.RenderContext;
-        set => RenderOptions.RenderContext = value;
+        set => RenderOptions = RenderOptions with { RenderContext = value };
+    }
+    public BlendMode BlendMode
+    {
+        get => RenderOptions.BlendMode;
+        set => RenderOptions = RenderOptions with { BlendMode = value };
     }
 
     public Vector2 GetAnchoredPosition()

@@ -11,7 +11,7 @@ public partial class TimeDecrease
             case FsmAction.Init:
                 // Reset
                 RewindAction();
-                AnimatedObject.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                AnimatedObject.BlendMode = BlendMode.AlphaBlend;
                 AnimatedObject.Alpha = AlphaCoefficient.Max;
                 Timer = 0;
                 break;
@@ -31,7 +31,7 @@ public partial class TimeDecrease
                 break;
 
             case FsmAction.UnInit:
-                AnimatedObject.RenderOptions.BlendMode = BlendMode.None;
+                AnimatedObject.BlendMode = BlendMode.None;
                 ProcessMessage(this, Message.Destroy);
                 break;
         }

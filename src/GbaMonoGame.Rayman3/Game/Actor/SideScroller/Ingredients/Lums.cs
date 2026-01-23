@@ -42,7 +42,7 @@ public sealed partial class Lums : BaseActor
                             AnimatedObject.BasePaletteIndex = 1;
                             AnimatedObject.CurrentAnimation = 3;
                             AnimatedObject.Alpha = 0.6f;
-                            AnimatedObject.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                            AnimatedObject.BlendMode = BlendMode.AlphaBlend;
                             IsGhost = true;
                         }
                     }

@@ -16,7 +16,7 @@ public class TgxTextureLayer : TgxGameLayer
             Priority = priority,
             Wrap = true,
             Renderer = new TextureScreenRenderer(texture),
-            RenderOptions = { RenderContext = renderContext },
+            RenderContext = renderContext,
         };
 
         Gfx.AddScreen(Screen);
@@ -31,6 +31,6 @@ public class TgxTextureLayer : TgxGameLayer
 
     public override void SetWorldViewProjMatrix(Matrix worldViewProj)
     {
-        Screen.RenderOptions.WorldViewProj = worldViewProj;
+        Screen.RenderOptions = Screen.RenderOptions with { WorldViewProj = worldViewProj };
     }
 }

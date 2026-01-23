@@ -27,7 +27,7 @@ public class CavesOfBadDreams : FrameSideScroller
         Timer = 120;
 
         GfxScreen skullScreen = Gfx.GetScreen(1);
-        skullScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+        skullScreen.BlendMode = BlendMode.AlphaBlend;
         skullScreen.Alpha = AlphaCoefficient.None;
 
         UseSinWaveEffect = Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage;
@@ -38,7 +38,7 @@ public class CavesOfBadDreams : FrameSideScroller
             skullScreen.IsEnabled = true;
 
         if (!ScaleSkulls)
-            skullScreen.RenderOptions.RenderContext = Scene.RenderContext;
+            skullScreen.RenderContext = Scene.RenderContext;
 
         if (UseSinWaveEffect)
         {
@@ -88,7 +88,7 @@ public class CavesOfBadDreams : FrameSideScroller
         switch (Mode)
         {
             case FadeMode.FadeIn:
-                skullScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                skullScreen.BlendMode = BlendMode.AlphaBlend;
                 skullScreen.Alpha = AlphaCoefficient.FromGbaValue((28 - Timer) / 4f);
                 
                 Timer--;
@@ -114,7 +114,7 @@ public class CavesOfBadDreams : FrameSideScroller
                 break;
             
             case FadeMode.FadeOut:
-                skullScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                skullScreen.BlendMode = BlendMode.AlphaBlend;
                 skullScreen.Alpha = AlphaCoefficient.FromGbaValue(Timer / 4f);
                 
                 Timer--;
@@ -157,7 +157,7 @@ public class CavesOfBadDreams : FrameSideScroller
                     Timer = 0;
                 }
 
-                skullScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                skullScreen.BlendMode = BlendMode.AlphaBlend;
                 skullScreen.Alpha = AlphaCoefficient.FromGbaValue(Timer / 4f);
                 break;
 

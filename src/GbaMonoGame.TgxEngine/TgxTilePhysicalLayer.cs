@@ -26,7 +26,7 @@ public class TgxTilePhysicalLayer : TgxGameLayer
                 Wrap = false,
                 Is8Bit = null,
                 Renderer = new CollisionMapScreenRenderer(Width, Height, CollisionMap),
-                RenderOptions = { RenderContext = RenderContext },
+                RenderContext = RenderContext,
             };
             Gfx.AddScreen(DebugScreen);
         }
@@ -41,6 +41,6 @@ public class TgxTilePhysicalLayer : TgxGameLayer
     public override void SetWorldViewProjMatrix(Matrix worldViewProj)
     {
         if (DebugScreen != null)
-            DebugScreen.RenderOptions.WorldViewProj = worldViewProj;
+            DebugScreen.RenderOptions = DebugScreen.RenderOptions with { WorldViewProj = worldViewProj };
     }
 }

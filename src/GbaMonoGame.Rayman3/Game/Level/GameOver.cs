@@ -125,7 +125,7 @@ public class GameOver : Frame
                     height: (int)Rom.OriginalResolution.Y,
                     bitmap: Rom.Loader.Rayman3_GameOverBitmap.ImgData,
                     palette: new Palette(Rom.Loader.Rayman3_GameOverPalette)))),
-            RenderOptions = { RenderContext = Rom.OriginalGameRenderContext },
+            RenderContext = Rom.OriginalGameRenderContext,
         });
 
         AnimationPlayer = new AnimationPlayer(false, SoundEventsManager.ProcessEvent);
@@ -181,7 +181,7 @@ public class GameOver : Frame
             },
             RenderContext = Rom.OriginalGameRenderContext,
         };
-        Countdown2.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+        Countdown2.BlendMode = BlendMode.AlphaBlend;
         Countdown2.SetFlagUseRotationScaling(true);
 
         Butterfly1 = new AnimatedObject(butterflyAnimations, butterflyAnimations.IsDynamic)

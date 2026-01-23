@@ -14,14 +14,14 @@ public class Mode7RedFogScreenRenderer : IScreenRenderer
 
     public Vector2 GetSize(GfxScreen screen)
     {
-        return screen.RenderOptions.RenderContext.Resolution;
+        return screen.RenderContext.Resolution;
     }
 
     public void Draw(GfxRenderer renderer, GfxScreen screen, Vector2 position, Color color)
     {
         renderer.BeginSpriteRender(screen.RenderOptions);
 
-        Vector2 res = screen.RenderOptions.RenderContext.Resolution;
+        Vector2 res = screen.RenderContext.Resolution;
 
         float currentScanline = 0;
         for (int i = 0; i < FogLines.Length; i++)

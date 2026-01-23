@@ -4,12 +4,12 @@ using Microsoft.Xna.Framework.Graphics;
 namespace GbaMonoGame;
 
 // Have this be a record so we get automatic equality comparisons implemented
-public record RenderOptions
+public record struct RenderOptions
 {
-    public RenderContext RenderContext { get; set; }
-    public Effect Shader { get; set; }
-    public BlendMode BlendMode { get; set; }
-    public PaletteTexture PaletteTexture { get; set; }
-    public Matrix? WorldViewProj { get; set; }
-    public bool UseDepthStencil { get; set; }
+    public RenderContext RenderContext { get; init; }
+    public Effect Shader { get; init; }
+    public BlendMode BlendMode { get; init; }
+    public PaletteTexture PaletteTexture { get; init; }
+    public Matrix? WorldViewProj { get; init; }
+    public bool UseDepthStencil { get; init; }
 }

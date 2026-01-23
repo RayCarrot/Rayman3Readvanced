@@ -180,7 +180,7 @@ public class Credits : Frame
                 TextOffsetsX[i] = 20;
                 TextOffsetsY[i] = (HeadersCount - i) * -16;
                 
-                TextObjects[i].RenderOptions.BlendMode = BlendMode.None;
+                TextObjects[i].BlendMode = BlendMode.None;
                 TextObjects[i].ScreenPos = new Vector2(TextOffsetsX[i], TextOffsetsY[i]);
                 TextObjects[i].Text = LocString[CurrentStringIndex][1..];
 
@@ -197,7 +197,7 @@ public class Credits : Frame
                 TextOffsetsX[nameIndex] = 36;
                 TextOffsetsY[nameIndex] = nameOffsetY;
 
-                TextObjects[nameIndex].RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                TextObjects[nameIndex].BlendMode = BlendMode.AlphaBlend;
                 TextObjects[nameIndex].Alpha = AlphaCoefficient.FromGbaValue(ObjAlpha);
                 TextObjects[nameIndex].ScreenPos = new Vector2(TextOffsetsX[nameIndex], TextOffsetsY[nameIndex]);
                 TextObjects[nameIndex].Text = LocString[CurrentStringIndex];
@@ -210,7 +210,7 @@ public class Credits : Frame
                 TextOffsetsX[nameIndex] = 36;
                 TextOffsetsY[nameIndex] = nameOffsetY;
 
-                TextObjects[nameIndex].RenderOptions.BlendMode = BlendMode.None;
+                TextObjects[nameIndex].BlendMode = BlendMode.None;
                 TextObjects[nameIndex].Text = String.Empty;
             }
 
@@ -274,7 +274,7 @@ public class Credits : Frame
 
                     foreach (SpriteTextObject textObject in TextObjects)
                     {
-                        if (textObject.RenderOptions.BlendMode != BlendMode.None)
+                        if (textObject.BlendMode != BlendMode.None)
                             textObject.Alpha = AlphaCoefficient.FromGbaValue(ObjAlpha);
                     }
 
@@ -329,7 +329,7 @@ public class Credits : Frame
                     ObjAlpha -= 1 / LagFrames;
                     foreach (SpriteTextObject textObject in TextObjects)
                     {
-                        if (textObject.RenderOptions.BlendMode != BlendMode.None)
+                        if (textObject.BlendMode != BlendMode.None)
                             textObject.Alpha = AlphaCoefficient.FromGbaValue(ObjAlpha);
                     }
                 }
@@ -349,7 +349,7 @@ public class Credits : Frame
                         {
                             TextOffsetsX[nameIndex] = 36;
 
-                            TextObjects[nameIndex].RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                            TextObjects[nameIndex].BlendMode = BlendMode.AlphaBlend;
                             TextObjects[nameIndex].ScreenPos = new Vector2(TextOffsetsX[nameIndex], TextOffsetsY[nameIndex]);
                             TextObjects[nameIndex].Text = LocString[CurrentStringIndex];
 
@@ -359,7 +359,7 @@ public class Credits : Frame
                         {
                             TextOffsetsX[nameIndex] = 36;
 
-                            TextObjects[nameIndex].RenderOptions.BlendMode = BlendMode.None;
+                            TextObjects[nameIndex].BlendMode = BlendMode.None;
                             TextObjects[nameIndex].Text = String.Empty;
                         }
 
@@ -368,7 +368,7 @@ public class Credits : Frame
                         ObjAlpha = 0;
                         foreach (SpriteTextObject textObject in TextObjects)
                         {
-                            if (textObject.RenderOptions.BlendMode != BlendMode.None)
+                            if (textObject.BlendMode != BlendMode.None)
                                 textObject.Alpha = AlphaCoefficient.FromGbaValue(ObjAlpha);
                         }
                     }
@@ -493,7 +493,7 @@ public class Credits : Frame
             Wrap = false,
             IsEnabled = true,
             Renderer = meshScreenRenderer,
-            RenderOptions = { RenderContext = Rom.OriginalGameRenderContext }
+            RenderContext = Rom.OriginalGameRenderContext
         });
 
         // Create the actor for the wheel

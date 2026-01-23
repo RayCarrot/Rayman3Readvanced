@@ -243,7 +243,7 @@ public class TitleScreen : Frame
         // Center so that the blending happens in the middle
         Vector2 cloudsPos = new((gbaClouds.Width * wrap.X - renderContext.Resolution.X) / 2f, 0);
         
-        Gfx.AddScreen(new GfxScreen(0)
+        GfxScreen cloudsScreen = new(0)
         {
             IsEnabled = true,
             Priority = 2,
@@ -252,15 +252,18 @@ public class TitleScreen : Frame
             {
                 Scale = wrap, // Scale by the wrapping and correct in shader
             },
-            RenderOptions = { RenderContext = renderContext, Shader = CloudsShader },
-        });
+            RenderContext = renderContext
+        };
+        cloudsScreen.RenderOptions = cloudsScreen.RenderOptions with { Shader = CloudsShader };
+        Gfx.AddScreen(cloudsScreen);
+
         Gfx.AddScreen(new GfxScreen(1)
         {
             IsEnabled = true,
             Priority = 1,
             Offset = Vector2.Zero,
             Renderer = new TextureScreenRenderer(background),
-            RenderOptions = { RenderContext = renderContext },
+            RenderContext = renderContext,
         });
 
         Cursor = new Cursor(renderContext);

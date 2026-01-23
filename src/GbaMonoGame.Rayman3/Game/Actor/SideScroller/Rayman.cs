@@ -2045,7 +2045,7 @@ public sealed partial class Rayman : MovableActor
 
             case Message.Rayman_CollectMultiItemInvisibility:
                 InvisibilityTimer = 480;
-                AnimatedObject.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                AnimatedObject.BlendMode = BlendMode.AlphaBlend;
                 ((FrameMultiSideScroller)Frame.Current).InvisibleActorId = InstanceId;
                 PlaySound(Rayman3SoundEvent.Play__LumGreen_Mix04);
                 return false;
@@ -2358,7 +2358,7 @@ public sealed partial class Rayman : MovableActor
 
             if (InvisibilityTimer == 0)
             {
-                AnimatedObject.RenderOptions.BlendMode = BlendMode.None;
+                AnimatedObject.BlendMode = BlendMode.None;
                 ((FrameMultiSideScroller)Frame.Current).InvisibleActorId = -1;
             }
         }

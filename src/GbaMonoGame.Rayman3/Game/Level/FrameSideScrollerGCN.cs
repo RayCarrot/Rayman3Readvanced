@@ -90,7 +90,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
 
         CircleTransitionScreenEffect = new CircleTransitionScreenEffect()
         {
-            RenderOptions = { RenderContext = Engine.GameRenderContext },
+            RenderContext = Engine.GameRenderContext,
         };
 
         TransitionsFX.Init(true);
@@ -153,11 +153,11 @@ public class FrameSideScrollerGCN : FrameSideScroller
                 SkullTimer = 120;
 
                 GfxScreen skullScreen = Gfx.GetScreen(1);
-                skullScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                skullScreen.BlendMode = BlendMode.AlphaBlend;
                 skullScreen.Alpha = AlphaCoefficient.None;
 
                 if (!ScaleSkulls)
-                    skullScreen.RenderOptions.RenderContext = Scene.RenderContext;
+                    skullScreen.RenderContext = Scene.RenderContext;
 
                 TextureScreenRenderer renderer = ((TextureScreenRenderer)skullScreen.Renderer);
                 skullScreen.Renderer = new SineWaveRenderer(renderer.Texture)
@@ -178,7 +178,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
 
                 // Make the rain semi-transparent
                 GfxScreen rainScreen = Gfx.GetScreen(3);
-                rainScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                rainScreen.BlendMode = BlendMode.AlphaBlend;
                 rainScreen.Alpha = AlphaCoefficient.FromGbaValue(6);
                 break;
         }
@@ -199,11 +199,11 @@ public class FrameSideScrollerGCN : FrameSideScroller
                 lavaLayer.Screen.Offset = lavaLayer.Screen.Offset with { Y = camPos.Y * MathHelpers.FromFixedPoint(0x7332) };
 
                 // Hack to adjust the screen to show the lava in higher resolution
-                if (lavaLayer.Screen.RenderOptions.RenderContext.Resolution != Rom.OriginalResolution)
+                if (lavaLayer.Screen.RenderContext.Resolution != Rom.OriginalResolution)
                 {
                     const int height = 256;
                     const float factor = 0.5f; // Don't move all the way down. Half-way looks the best.
-                    lavaLayer.Screen.Offset += new Vector2(0, (height - lavaLayer.Screen.RenderOptions.RenderContext.Resolution.Y) * factor);
+                    lavaLayer.Screen.Offset += new Vector2(0, (height - lavaLayer.Screen.RenderContext.Resolution.Y) * factor);
                 }
 
                 if (CircleTransitionMode == TransitionMode.None && CurrentStepAction == Step_Normal)
@@ -218,7 +218,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
 
                         foreach (GfxScreen screen in Gfx.Screens)
                         {
-                            if (screen.RenderOptions.BlendMode != BlendMode.None)
+                            if (screen.BlendMode != BlendMode.None)
                                 screen.Alpha = AlphaCoefficient.FromGbaValue(AlphaCoefficient.MaxGbaValue - LavaFadeOutTimer);
                         }
                     }
@@ -270,7 +270,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
                 switch (SkullMode)
                 {
                     case CavesOfBadDreams.FadeMode.FadeIn:
-                        skullScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                        skullScreen.BlendMode = BlendMode.AlphaBlend;
                         skullScreen.Alpha = AlphaCoefficient.FromGbaValue((28 - SkullTimer) / 4f);
 
                         SkullTimer--;
@@ -296,7 +296,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
                         break;
 
                     case CavesOfBadDreams.FadeMode.FadeOut:
-                        skullScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                        skullScreen.BlendMode = BlendMode.AlphaBlend;
                         skullScreen.Alpha = AlphaCoefficient.FromGbaValue(SkullTimer / 4f);
 
                         SkullTimer--;
@@ -367,7 +367,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
 
                     // NOTE: The original game turns off the rain blending during the lightning, but we don't have to
                     if (!Engine.ActiveConfig.Tweaks.VisualImprovements)
-                        rainScreen.RenderOptions.BlendMode = BlendMode.None;
+                        rainScreen.BlendMode = BlendMode.None;
 
                     Gfx.FadeControl = new FadeControl(FadeMode.BrightnessIncrease);
                     Gfx.Fade = AlphaCoefficient.Max;
@@ -410,7 +410,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
                 if (time == LightningTime + 31)
                 {
                     // Make the rain semi-transparent again
-                    rainScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+                    rainScreen.BlendMode = BlendMode.AlphaBlend;
                     rainScreen.Alpha = AlphaCoefficient.FromGbaValue(6);
 
                     Gfx.FadeControl = FadeControl.None;

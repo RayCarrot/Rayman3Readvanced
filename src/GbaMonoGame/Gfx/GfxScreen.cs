@@ -41,7 +41,18 @@ public class GfxScreen
     /// </summary>
     public Vector2 Offset { get; set; }
 
-    public RenderOptions RenderOptions { get; } = new();
+    public RenderOptions RenderOptions { get; set; }
+
+    public RenderContext RenderContext
+    {
+        get => RenderOptions.RenderContext;
+        set => RenderOptions = RenderOptions with { RenderContext = value };
+    }
+    public BlendMode BlendMode
+    {
+        get => RenderOptions.BlendMode;
+        set => RenderOptions = RenderOptions with { BlendMode = value };
+    }
 
     public AlphaCoefficient Alpha { get; set; } = AlphaCoefficient.Max;
 

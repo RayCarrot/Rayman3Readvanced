@@ -138,7 +138,7 @@ public partial class ModernPauseDialog : Dialog
         // Create the circle transition
         CircleTransitionScreenEffect = new CircleTransitionScreenEffect()
         {
-            RenderOptions = { RenderContext = Scene.RenderContext },
+            RenderContext = Scene.RenderContext,
         };
 
         // Initialize and add as a screen effect

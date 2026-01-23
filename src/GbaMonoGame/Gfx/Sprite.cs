@@ -34,7 +34,7 @@ public class Sprite
         Color = Color.White;
         OverrideGfxColor = false;
         Alpha = default;
-        RenderOptions = null;
+        RenderOptions = default;
     }
 
     public void Draw(GfxRenderer renderer, Color color)

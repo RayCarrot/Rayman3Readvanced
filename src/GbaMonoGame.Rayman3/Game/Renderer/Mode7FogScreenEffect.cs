@@ -22,7 +22,7 @@ public class Mode7FogScreenEffect : ScreenEffect
 
         renderer.BeginSpriteRender(RenderOptions);
 
-        Vector2 res = RenderOptions.RenderContext.Resolution;
+        Vector2 res = RenderContext.Resolution;
 
         float currentScanline = 0;
         for (int i = 0; i < FogLines.Length; i++)

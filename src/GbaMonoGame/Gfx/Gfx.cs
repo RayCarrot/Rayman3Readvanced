@@ -132,7 +132,7 @@ public static class Gfx
                 if (sprite.Priority == i && !sprite.RenderOptions.UseDepthStencil)
                 {
                     if (sprite.RenderOptions.BlendMode == BlendMode.AlphaBlend)
-                        sprite.RenderOptions.BlendMode = BlendMode.AlphaBlendOverwrite;
+                        sprite.RenderOptions = sprite.RenderOptions with { BlendMode = BlendMode.AlphaBlendOverwrite };
 
                     sprite.Draw(renderer, Color);
                 }
@@ -143,7 +143,7 @@ public static class Gfx
                 if (sprite.Priority == i && !sprite.RenderOptions.UseDepthStencil)
                 {
                     if (sprite.RenderOptions.BlendMode == BlendMode.AlphaBlend)
-                        sprite.RenderOptions.BlendMode = BlendMode.AlphaBlendOverwrite;
+                        sprite.RenderOptions = sprite.RenderOptions with { BlendMode = BlendMode.AlphaBlendOverwrite };
 
                     sprite.Draw(renderer, Color);
                 }

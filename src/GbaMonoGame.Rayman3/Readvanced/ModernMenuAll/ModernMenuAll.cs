@@ -128,13 +128,13 @@ public class ModernMenuAll : Frame, IHasPlayfield
         GfxTileKitManager tileKitManager = Playfield.GfxTileKitManager;
         GfxScreen screen = Playfield.TileLayers[0].Screen;
 
-        screen.RenderOptions.PaletteTexture = new PaletteTexture(
+        screen.RenderOptions = screen.RenderOptions with { PaletteTexture = new PaletteTexture(
             Texture: Engine.TextureCache.GetOrCreateObject(
                 pointer: tileKitManager.SelectedPalette.CachePointer,
                 id: index + 1, // +1 since 0 is the default
                 data: index,
                 createObjFunc: static i => new PaletteTexture2D(MenuAll.GetBackgroundPalette(i))),
-            PaletteIndex: 0);
+            PaletteIndex: 0) };
     }
 
     public void CursorClick()
@@ -408,8 +408,8 @@ public class ModernMenuAll : Frame, IHasPlayfield
         GfxScreen curtainScreen = Playfield.TileLayers[1].Screen;
         Texture2D curtainTexture = Engine.FrameContentManager.Load<Texture2D>(Assets.MenuCurtainTexture);
         curtainScreen.Renderer = new TextureScreenRenderer(curtainTexture);
-        curtainScreen.RenderOptions.PaletteTexture = null;
-        curtainScreen.RenderOptions.RenderContext = renderContext;
+        curtainScreen.RenderOptions = curtainScreen.RenderOptions with { PaletteTexture = null };
+        curtainScreen.RenderContext = renderContext;
         curtainScreen.Wrap = false;
 
         // We also need to update the curtain cluster. Normally the size should match the screen size, but we want to
@@ -420,8 +420,8 @@ public class ModernMenuAll : Frame, IHasPlayfield
         GfxScreen woodenFrameScreen = Playfield.TileLayers[2].Screen;
         Texture2D woodenFrameTexture = Engine.FrameContentManager.Load<Texture2D>(Assets.MenuWoodenFrameTexture);
         woodenFrameScreen.Renderer = new TextureScreenRenderer(woodenFrameTexture);
-        woodenFrameScreen.RenderOptions.PaletteTexture = null;
-        woodenFrameScreen.RenderOptions.RenderContext = renderContext;
+        curtainScreen.RenderOptions = curtainScreen.RenderOptions with { PaletteTexture = null };
+        woodenFrameScreen.RenderContext = renderContext;
 
         Gfx.ClearColor = Color.Black;
 

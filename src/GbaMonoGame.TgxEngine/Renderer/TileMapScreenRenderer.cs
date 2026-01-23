@@ -38,8 +38,8 @@ public class TileMapScreenRenderer : IScreenRenderer
 
         int xStart = (int)((Math.Max(0, renderBox.Left) - renderBox.Left) / Tile.Size);
         int yStart = (int)((Math.Max(0, renderBox.Top) - renderBox.Top) / Tile.Size);
-        int xEnd = (int)Math.Ceiling((Math.Min(screen.RenderOptions.RenderContext.Resolution.X, renderBox.Right) - renderBox.Left) / Tile.Size);
-        int yEnd = (int)Math.Ceiling((Math.Min(screen.RenderOptions.RenderContext.Resolution.Y, renderBox.Bottom) - renderBox.Top) / Tile.Size);
+        int xEnd = (int)Math.Ceiling((Math.Min(screen.RenderContext.Resolution.X, renderBox.Right) - renderBox.Left) / Tile.Size);
+        int yEnd = (int)Math.Ceiling((Math.Min(screen.RenderContext.Resolution.Y, renderBox.Bottom) - renderBox.Top) / Tile.Size);
 
         // Make sure we don't go out of bounds. Only needed if the camera shows more than the actual map, which isn't usually the case.
         xEnd = Math.Min(xEnd, Width);

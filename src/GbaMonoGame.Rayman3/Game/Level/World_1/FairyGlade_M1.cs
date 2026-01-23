@@ -93,7 +93,7 @@ public class FairyGlade_M1 : FrameSideScroller
             ? WaterGlowValue
             : WaterGlowMaxValue * 2 - WaterGlowValue;
 
-        mainLayer.Screen.RenderOptions.PaletteTexture = WaterPaletteTextures[index];
+        mainLayer.Screen.RenderOptions = mainLayer.Screen.RenderOptions with { PaletteTexture = WaterPaletteTextures[index] };
 
         WaterGlowValue++;
 

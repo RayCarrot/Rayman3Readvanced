@@ -67,7 +67,7 @@ public class GfxRenderer
     private readonly GraphicsDevice _graphicsDevice;
     private readonly SpriteBatch _spriteBatch;
     private readonly RasterizerState _spriteRasterizerState;
-    private RenderOptions _spriteBatchRenderOptions;
+    private RenderOptions? _spriteBatchRenderOptions;
 
     private readonly Effect _defaultShader;
 
@@ -96,8 +96,10 @@ public class GfxRenderer
     [Conditional("DEBUG")]
     private void ValidateSpriteBatchDraw(Color? color)
     {
+        Debug.Assert(_spriteBatchRenderOptions != null);
+
         // Verify we're not drawing to draw alpha without a blend mode set
-        Debug.Assert(color == null || color.Value.A == Byte.MaxValue || _spriteBatchRenderOptions.BlendMode != BlendMode.None);
+        Debug.Assert(color == null || color.Value.A == Byte.MaxValue || _spriteBatchRenderOptions.Value.BlendMode != BlendMode.None);
     }
 
     #endregion

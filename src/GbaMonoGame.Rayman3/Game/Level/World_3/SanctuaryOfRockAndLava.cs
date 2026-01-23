@@ -56,7 +56,7 @@ public class SanctuaryOfRockAndLava : FrameSideScroller
 
                 foreach (GfxScreen screen in Gfx.Screens)
                 {
-                    if (screen.RenderOptions.BlendMode != BlendMode.None)
+                    if (screen.BlendMode != BlendMode.None)
                         screen.Alpha = AlphaCoefficient.FromGbaValue(AlphaCoefficient.MaxGbaValue - FadeOutTimer);
                 }
             }

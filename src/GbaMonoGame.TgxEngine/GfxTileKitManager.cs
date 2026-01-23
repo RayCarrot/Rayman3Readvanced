@@ -110,8 +110,18 @@ public class GfxTileKitManager
         }
     }
 
+    public PaletteTexture CreateTileMapPalette()
+    {
+        return new PaletteTexture(
+            Texture: Engine.TextureCache.GetOrCreateObject(
+                pointer: SelectedPalette.CachePointer,
+                id: 0,
+                data: SelectedPalette,
+                createObjFunc: static p => new PaletteTexture2D(p)),
+            PaletteIndex: 0);
+    }
+
     public IScreenRenderer CreateTileMapRenderer(
-        RenderOptions renderOptions, 
         AnimatedTilekitManager animatedTilekitManager, 
         Pointer layerCachePointer,
         int width,
@@ -121,15 +131,6 @@ public class GfxTileKitManager
         bool is8Bit,
         bool isDynamic)
     {
-        // Create and set the palette texture
-        renderOptions.PaletteTexture = new PaletteTexture(
-            Texture: Engine.TextureCache.GetOrCreateObject(
-                pointer: SelectedPalette.CachePointer,
-                id: 0,
-                data: SelectedPalette,
-                createObjFunc: static p => new PaletteTexture2D(p)),
-            PaletteIndex: 0);
-
         // Get the animations used by this layer
         IReadOnlyList<TileKitAnimation> animations = animatedTilekitManager?.GetUsedAnimations(this, TileKit, tileMap, baseTileIndex, is8Bit, isDynamic);
 

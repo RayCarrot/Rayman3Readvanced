@@ -57,13 +57,13 @@ public class AObjectFog : AObject
 
         int paletteIndex = channel.PalIndex;
             
-        RenderOptions.PaletteTexture = new PaletteTexture(
+        RenderOptions = RenderOptions with { PaletteTexture = new PaletteTexture(
             Texture: Engine.TextureCache.GetOrCreateObject(
                 pointer: Resource.Palettes.Offset,
                 id: 0,
                 data: Resource.Palettes,
                 createObjFunc: static p => new PaletteTexture2D(p.Palettes)),
-            PaletteIndex: paletteIndex);
+            PaletteIndex: paletteIndex) };
 
         Sprite sprite = Gfx.GetNewSprite();
         sprite.Texture = texture;

@@ -22,7 +22,7 @@ public class ThePrecipice_M2 : FrameSideScroller
 
         // Make the rain semi-transparent
         GfxScreen rainScreen = Gfx.GetScreen(3);
-        rainScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+        rainScreen.BlendMode = BlendMode.AlphaBlend;
         rainScreen.Alpha = AlphaCoefficient.FromGbaValue(6);
     }
 
@@ -69,7 +69,7 @@ public class ThePrecipice_M2 : FrameSideScroller
 
             // NOTE: The original game turns off the rain blending during the lightning, but we don't have to
             if (!Engine.ActiveConfig.Tweaks.VisualImprovements)
-                rainScreen.RenderOptions.BlendMode = BlendMode.None;
+                rainScreen.BlendMode = BlendMode.None;
 
             Gfx.FadeControl = new FadeControl(FadeMode.BrightnessIncrease);
             Gfx.Fade = AlphaCoefficient.Max;
@@ -114,7 +114,7 @@ public class ThePrecipice_M2 : FrameSideScroller
         if (time == LightningTime + 31)
         {
             // Make the rain semi-transparent again
-            rainScreen.RenderOptions.BlendMode = BlendMode.AlphaBlend;
+            rainScreen.BlendMode = BlendMode.AlphaBlend;
             rainScreen.Alpha = AlphaCoefficient.FromGbaValue(6);
 
             Gfx.FadeControl = FadeControl.None;
