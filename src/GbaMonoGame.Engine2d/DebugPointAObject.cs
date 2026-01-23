@@ -14,16 +14,15 @@ public class DebugPointAObject : AObject
 
     private void DrawBox(Vector2 position, Vector2 size, float alpha = 1)
     {
-        Gfx.AddSprite(new Sprite
-        {
-            Texture = Gfx.Pixel,
-            Position = position,
-            Priority = BgPriority,
-            Center = false,
-            AffineMatrix = new AffineMatrix(0, size),
-            Color = new Color(Color, alpha),
-            RenderOptions = RenderOptions,
-        });
+        Sprite sprite = Gfx.GetNewSprite();
+        sprite.Texture = Gfx.Pixel;
+        sprite.Position = position;
+        sprite.Priority = BgPriority;
+        sprite.Center = false;
+        sprite.AffineMatrix = new AffineMatrix(0, size);
+        sprite.Color = new Color(Color, alpha);
+        sprite.RenderOptions = RenderOptions;
+        Gfx.AddSprite(sprite);
     }
 
     public override void Execute(Action<short> soundEventCallback)

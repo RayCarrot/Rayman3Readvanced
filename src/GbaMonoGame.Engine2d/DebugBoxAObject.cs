@@ -20,17 +20,16 @@ public class DebugBoxAObject : AObject
         if (alpha < 1)
             renderOptions = renderOptions with { BlendMode = BlendMode.AlphaBlend };
 
-        Gfx.AddSprite(new Sprite
-        {
-            Texture = Gfx.Pixel,
-            Position = position,
-            Priority = BgPriority,
-            Center = false,
-            AffineMatrix = new AffineMatrix(0, size),
-            Color = Color,
-            Alpha = alpha,
-            RenderOptions = renderOptions,
-        });
+        Sprite sprite = Gfx.GetNewSprite();
+        sprite.Texture = Gfx.Pixel;
+        sprite.Position = position;
+        sprite.Priority = BgPriority;
+        sprite.Center = false;
+        sprite.AffineMatrix = new AffineMatrix(0, size);
+        sprite.Color = Color;
+        sprite.Alpha = alpha;
+        sprite.RenderOptions = renderOptions;
+        Gfx.AddSprite(sprite);
     }
 
     public override void Execute(Action<short> soundEventCallback)

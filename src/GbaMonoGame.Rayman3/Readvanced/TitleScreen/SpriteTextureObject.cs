@@ -11,14 +11,13 @@ public class SpriteTextureObject : AObject
 
     public override void Execute(Action<short> soundEventCallback)
     {
-        Gfx.AddSprite(new Sprite
-        {
-            Texture = Texture,
-            Position = GetAnchoredPosition(),
-            AffineMatrix = AffineMatrix,
-            Center = true,
-            Priority = BgPriority,
-            RenderOptions = RenderOptions,
-        });
+        Sprite sprite = Gfx.GetNewSprite();
+        sprite.Texture = Texture;
+        sprite.Position = GetAnchoredPosition();
+        sprite.AffineMatrix = AffineMatrix;
+        sprite.Center = true;
+        sprite.Priority = BgPriority;
+        sprite.RenderOptions = RenderOptions;
+        Gfx.AddSprite(sprite);
     }
 }

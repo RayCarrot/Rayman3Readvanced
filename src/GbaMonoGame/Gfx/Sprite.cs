@@ -21,6 +21,22 @@ public class Sprite
 
     public RenderOptions RenderOptions { get; set; }
 
+    public void Reset()
+    {
+        Texture = null;
+        TextureRectangle = default;
+        Position = default;
+        FlipX = false;
+        FlipY = false;
+        Priority = 0;
+        Center = false;
+        AffineMatrix = null;
+        Color = Color.White;
+        OverrideGfxColor = false;
+        Alpha = default;
+        RenderOptions = null;
+    }
+
     public void Draw(GfxRenderer renderer, Color color)
     {
         renderer.BeginSpriteRender(RenderOptions);

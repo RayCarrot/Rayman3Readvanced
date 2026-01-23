@@ -68,14 +68,13 @@ public class SpriteTimeAttackTimeObject : AObject
         {
             Texture2D texture = GetTexture(timeChar);
 
-            Gfx.AddSprite(new Sprite
-            {
-                Texture = texture,
-                Position = pos,
-                Center = true,
-                Priority = BgPriority,
-                RenderOptions = RenderOptions,
-            });
+            Sprite sprite = Gfx.GetNewSprite();
+            sprite.Texture = texture;
+            sprite.Position = pos;
+            sprite.Center = true;
+            sprite.Priority = BgPriority;
+            sprite.RenderOptions = RenderOptions;
+            Gfx.AddSprite(sprite);
 
             pos += new Vector2(texture.Width + 1, 0);
         }

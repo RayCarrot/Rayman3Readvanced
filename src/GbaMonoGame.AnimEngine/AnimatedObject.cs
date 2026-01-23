@@ -603,19 +603,17 @@ public class AnimatedObject : AObject
                     // is more complicated. If the object is dynamic then it loads
                     // in the data to vram first, then for all sprites it adds an
                     // entry to the list of object attributes in OAM memory.
-                    Sprite sprite = new()
-                    {
-                        Texture = texture,
-                        Position = new Vector2(xPos, yPos),
-                        FlipX = !IsAffine ? channel.FlipX ^ FlipX : FlipX, // Sprite flip flags are ignored if affine (see Mode7 tree trunks)
-                        FlipY = !IsAffine ? channel.FlipY ^ FlipY : FlipY,
-                        Priority = BgPriority,
-                        Center = true,
-                        AffineMatrix = affineMatrix,
-                        OverrideGfxColor = OverrideGfxColor,
-                        Alpha = Alpha,
-                        RenderOptions = RenderOptions with { PaletteTexture = paletteTexture },
-                    };
+                    Sprite sprite = Gfx.GetNewSprite();
+                    sprite.Texture = texture;
+                    sprite.Position = new Vector2(xPos, yPos);
+                    sprite.FlipX = !IsAffine ? channel.FlipX ^ FlipX : FlipX; // Sprite flip flags are ignored if affine (see Mode7 tree trunks)
+                    sprite.FlipY = !IsAffine ? channel.FlipY ^ FlipY : FlipY;
+                    sprite.Priority = BgPriority;
+                    sprite.Center = true;
+                    sprite.AffineMatrix = affineMatrix;
+                    sprite.OverrideGfxColor = OverrideGfxColor;
+                    sprite.Alpha = Alpha;
+                    sprite.RenderOptions = RenderOptions with { PaletteTexture = paletteTexture };
 
                     if (IsBackSprite)
                         Gfx.AddBackSprite(sprite);

@@ -136,18 +136,16 @@ public class Font
 
             Vector2.Transform(ref spritePos, ref transformation, out spritePos);
 
-            sprite = new Sprite()
-            {
-                Texture = Texture,
-                TextureRectangle = bounds,
-                Position = spritePos,
-                Priority = priority,
-                Center = false,
-                AffineMatrix = affineMatrix,
-                Alpha = alpha,
-                Color = color,
-                RenderOptions = renderOptions,
-            };
+            sprite = Gfx.GetNewSprite();
+            sprite.Texture = Texture;
+            sprite.TextureRectangle = bounds;
+            sprite.Position = spritePos;
+            sprite.Priority = priority;
+            sprite.Center = false;
+            sprite.AffineMatrix = affineMatrix;
+            sprite.Alpha = alpha;
+            sprite.Color = color;
+            sprite.RenderOptions = renderOptions;
         }
         else
         {

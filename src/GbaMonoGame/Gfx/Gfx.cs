@@ -14,6 +14,8 @@ namespace GbaMonoGame;
 public static class Gfx
 {
     private static readonly bool[] _drawnSpriteLayers = new bool[4];
+    private static readonly List<Sprite> _spritesPool = new(128);
+    private static int _spritesPoolIndex;
 
     /// <summary>
     /// A texture which is a single uncolored 1x1 pixel. Useful for drawing shapes.
@@ -273,12 +275,24 @@ public static class Gfx
     public static GfxScreen GetScreen(int id) => Screens.FirstOrDefault(x => x.Id == id);
     public static void ClearScreens() => Screens.Clear();
 
+    public static Sprite GetNewSprite()
+    {
+        if (_spritesPoolIndex >= _spritesPool.Count)
+            _spritesPool.Add(new Sprite());
+
+        Sprite sprite = _spritesPool[_spritesPoolIndex];
+        sprite.Reset();
+        _spritesPoolIndex++;
+        return sprite;
+    }
+
     public static void AddSprite(Sprite sprite) => Sprites.Add(sprite);
     public static void AddBackSprite(Sprite sprite) => BackSprites.Add(sprite);
     public static void ClearSprites()
     {
         Sprites.Clear();
         BackSprites.Clear();
+        _spritesPoolIndex = 0;
     }
 
     public static void SetScreenEffect(ScreenEffect screenEffect) => ScreenEffect = screenEffect;

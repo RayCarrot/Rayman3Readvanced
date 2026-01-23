@@ -24,7 +24,6 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
 - Try and reduce the number of allocations per frame as much as possible. Currently these things cause allocations:
     - `FiniteStateMachine`: Each time we change state it allocates a new delegate. This can be fixed by having each object cache the instance delegates on construction. We can create a source generator to automate this.
     - `RenderOptions`: This object gets cloned a bunch during rendering. Can we change it to a struct?
-    - `Sprite`: We should store sprites in a pool so the same instances can be reused.
     - `PaletteTexture`: This gets allocated for each paletted sprite that gets rendered. Can we change it to a struct?
     - Various `ObjectIterator` instances. Since we're single-threaded we could reuse the same instance for each enumeration. Have the scene create and store them?
     - `byte[]` in the object iterators. It's because we're combining the actor and captors arrays. We should probably just keep these as two separate arrays.

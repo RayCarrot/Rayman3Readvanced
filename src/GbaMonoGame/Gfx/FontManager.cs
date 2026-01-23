@@ -281,18 +281,16 @@ public static class FontManager
         Vector2 spritePos = position;
         Vector2.Transform(ref spritePos, ref transformation, out spritePos);
 
-        Sprite sprite = new()
-        {
-            Texture = loadedFont.Texture,
-            TextureRectangle = loadedFont.CharacterRectangles[c],
-            Position = spritePos,
-            Priority = priority,
-            Center = false, // Don't center here since the transformation matrix already does that!
-            AffineMatrix = affineMatrix,
-            Alpha = alpha,
-            Color = color,
-            RenderOptions = renderOptions,
-        };
+        Sprite sprite = Gfx.GetNewSprite();
+        sprite.Texture = loadedFont.Texture;
+        sprite.TextureRectangle = loadedFont.CharacterRectangles[c];
+        sprite.Position = spritePos;
+        sprite.Priority = priority;
+        sprite.Center = false; // Don't center here since the transformation matrix already does that!
+        sprite.AffineMatrix = affineMatrix;
+        sprite.Alpha = alpha;
+        sprite.Color = color;
+        sprite.RenderOptions = renderOptions;
 
         position += new Vector2(loadedFont.Font.CharacterWidths[c], 0);
 

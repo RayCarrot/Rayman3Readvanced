@@ -65,18 +65,16 @@ public class AObjectFog : AObject
                 createObjFunc: static p => new PaletteTexture2D(p.Palettes)),
             PaletteIndex: paletteIndex);
 
-        Sprite sprite = new()
-        {
-            Texture = texture,
-            Position = new Vector2(screenPos.X, screenPos.Y),
-            FlipX = false,
-            FlipY = false,
-            Priority = BgPriority,
-            Center = true,
-            AffineMatrix = null,
-            Alpha = Alpha,
-            RenderOptions = RenderOptions,
-        };
+        Sprite sprite = Gfx.GetNewSprite();
+        sprite.Texture = texture;
+        sprite.Position = new Vector2(screenPos.X, screenPos.Y);
+        sprite.FlipX = false;
+        sprite.FlipY = false;
+        sprite.Priority = BgPriority;
+        sprite.Center = true;
+        sprite.AffineMatrix = null;
+        sprite.Alpha = Alpha;
+        sprite.RenderOptions = RenderOptions;
 
         Gfx.AddSprite(sprite);
     }
