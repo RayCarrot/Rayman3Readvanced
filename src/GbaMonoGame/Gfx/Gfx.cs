@@ -13,7 +13,7 @@ namespace GbaMonoGame;
 /// </summary>
 public static class Gfx
 {
-    private static bool[] _drawnSpriteLayers = new bool[4];
+    private static readonly bool[] _drawnSpriteLayers = new bool[4];
 
     /// <summary>
     /// A texture which is a single uncolored 1x1 pixel. Useful for drawing shapes.
@@ -80,12 +80,12 @@ public static class Gfx
         // Draw each game layer (3-0, although the order technically doesn't matter here)
         for (int i = 3; i >= 0; i--)
         {
-            // Check if this layer has any sprites to draw
+            // Check if this layer has any transparent sprites to draw
             _drawnSpriteLayers[i] = false;
             for (int j = 0; j < BackSprites.Count; j++)
             {
                 Sprite sprite = BackSprites[j];
-                if (sprite.Priority == i && !sprite.RenderOptions.UseDepthStencil)
+                if (sprite.Priority == i && !sprite.RenderOptions.UseDepthStencil && sprite.RenderOptions.BlendMode != BlendMode.None)
                 {
                     _drawnSpriteLayers[i] = true;
                     break;
@@ -96,7 +96,7 @@ public static class Gfx
                 for (int j = Sprites.Count - 1; j >= 0; j--)
                 {
                     Sprite sprite = Sprites[j];
-                    if (sprite.Priority == i && !sprite.RenderOptions.UseDepthStencil)
+                    if (sprite.Priority == i && !sprite.RenderOptions.UseDepthStencil && sprite.RenderOptions.BlendMode != BlendMode.None)
                     {
                         _drawnSpriteLayers[i] = true;
                         break;
@@ -169,7 +169,7 @@ public static class Gfx
         if ((FadeControl.Flags & (FadeFlags)(1 << layer)) != 0)
             DrawFade(renderer);
 
-        if (Rom.IsLoaded && (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage))
+        if (Rom.IsLoaded && (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage) && _drawnSpriteLayers[layer])
         {
             // Draw sprites using depth stencil since they couldn't be drawn to the layer render target
             for (int j = 0; j < BackSprites.Count; j++)
@@ -186,15 +186,12 @@ public static class Gfx
             }
 
             // Draw the sprite layer render target if it was drawn to
-            if (_drawnSpriteLayers[layer])
+            renderer.BeginSpriteRender(new RenderOptions
             {
-                renderer.BeginSpriteRender(new RenderOptions
-                {
-                    RenderContext = SpriteRenderTargetRenderContext,
-                    BlendMode = BlendMode.AlphaBlend,
-                });
-                renderer.Draw(SpriteRenderTargets[layer].RenderTarget, Vector2.Zero, Color.White);
-            }
+                RenderContext = SpriteRenderTargetRenderContext,
+                BlendMode = BlendMode.AlphaBlend,
+            });
+            renderer.Draw(SpriteRenderTargets[layer].RenderTarget, Vector2.Zero, Color.White);
         }
         else
         {
@@ -226,6 +223,7 @@ public static class Gfx
             renderer.BeginSpriteRender(new RenderOptions()
             {
                 RenderContext = Engine.GameRenderContext,
+                BlendMode = BlendMode.AlphaBlend,
             });
 
             switch (FadeControl.Mode)
