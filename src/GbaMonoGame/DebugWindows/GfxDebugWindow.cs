@@ -189,7 +189,7 @@ public class GfxDebugWindow : DebugWindow
             {
                 ImGui.SeparatorText("Sprites");
 
-                if (ImGui.BeginTable("_sprites", 9))
+                if (ImGui.BeginTable("_sprites", 5))
                 {
                     ImGui.TableSetupColumn("Prio", ImGuiTableColumnFlags.WidthFixed);
                     ImGui.TableSetupColumn("Position", ImGuiTableColumnFlags.WidthFixed, 120);
