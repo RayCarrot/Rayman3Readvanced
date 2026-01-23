@@ -29,8 +29,6 @@ public partial class TimeAttackDialog : Dialog
     public TimeAttackTime TargetTime { get; set; }
     public bool HideTargetTime { get; set; }
 
-    protected override bool ProcessMessageImpl(object sender, Message message, object param) => false;
-
     public void SetCountdownValue(int value)
     {
         CountdownValue = value;

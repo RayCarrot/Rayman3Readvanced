@@ -18,8 +18,6 @@ public class TimeAttackScoreDialog : Dialog
     public uint TimeTargetTransitionIndex { get; set; }
     public uint Timer { get; set; }
 
-    protected override bool ProcessMessageImpl(object sender, Message message, object param) => false;
-
     public override void Load()
     {
         TimeTargets = TimeAttackInfo.TargetTimes.

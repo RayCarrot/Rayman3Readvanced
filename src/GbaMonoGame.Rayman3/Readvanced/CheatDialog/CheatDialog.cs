@@ -26,8 +26,6 @@ public partial class CheatDialog : Dialog
         CheatItems[SelectedIndex].SetIsSelected(true);
     }
 
-    protected override bool ProcessMessageImpl(object sender, Message message, object param) => false;
-
     public override void Load()
     {
         BoxObject = new DebugBoxAObject

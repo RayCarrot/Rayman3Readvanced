@@ -14,11 +14,6 @@ public abstract class CameraActor : Object
     public Scene2D Scene { get; }
     public MovableActor LinkedObject { get; set; }
 
-    protected override bool ProcessMessageImpl(object sender, Message message, object param)
-    {
-        return false;
-    }
-
     public virtual void Step()
     {
         State.Step();

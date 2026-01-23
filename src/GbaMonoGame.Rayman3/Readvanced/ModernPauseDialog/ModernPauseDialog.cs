@@ -164,8 +164,6 @@ public partial class ModernPauseDialog : Dialog
         }
     }
 
-    protected override bool ProcessMessageImpl(object sender, Message message, object param) => false;
-
     public override void Load()
     {
         if (Rom.Platform == Platform.NGage)

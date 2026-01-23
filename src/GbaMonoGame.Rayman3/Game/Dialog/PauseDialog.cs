@@ -171,8 +171,6 @@ public partial class PauseDialog : Dialog
         ((NGageSoundEventsManager)SoundEventsManager.Current).SoundEffectsVolume = newVolume;
     }
 
-    protected override bool ProcessMessageImpl(object sender, Message message, object param) => false;
-
     public override void Load()
     {
         // NOTE: Game has it set up so Load can be called multiple times. Dynamic objects don't get recreated after the first time, but instead

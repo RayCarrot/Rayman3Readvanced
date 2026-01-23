@@ -18,8 +18,6 @@ public class FogDialog : Dialog
 
     public bool ShouldDraw { get; set; }
 
-    protected override bool ProcessMessageImpl(object sender, Message message, object param) => false;
-
     public override void Load()
     {
         AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.FogAnimations);
