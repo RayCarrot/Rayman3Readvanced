@@ -15,6 +15,11 @@ public class DebugBoxAObject : AObject
 
     private void DrawBox(Vector2 position, Vector2 size, float alpha = 1)
     {
+        RenderOptions renderOptions = RenderOptions;
+
+        if (alpha < 1)
+            renderOptions = renderOptions with { BlendMode = BlendMode.AlphaBlend };
+
         Gfx.AddSprite(new Sprite
         {
             Texture = Gfx.Pixel,
@@ -22,8 +27,9 @@ public class DebugBoxAObject : AObject
             Priority = BgPriority,
             Center = false,
             AffineMatrix = new AffineMatrix(0, size),
-            Color = new Color(Color, alpha),
-            RenderOptions = RenderOptions,
+            Color = Color,
+            Alpha = alpha,
+            RenderOptions = renderOptions,
         });
     }
 
