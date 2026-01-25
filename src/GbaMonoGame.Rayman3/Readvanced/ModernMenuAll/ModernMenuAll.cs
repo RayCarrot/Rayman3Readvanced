@@ -420,7 +420,7 @@ public class ModernMenuAll : Frame, IHasPlayfield
         GfxScreen woodenFrameScreen = Playfield.TileLayers[2].Screen;
         Texture2D woodenFrameTexture = Engine.FrameContentManager.Load<Texture2D>(Assets.MenuWoodenFrameTexture);
         woodenFrameScreen.Renderer = new TextureScreenRenderer(woodenFrameTexture);
-        curtainScreen.RenderOptions = curtainScreen.RenderOptions with { PaletteTexture = null };
+        woodenFrameScreen.RenderOptions = woodenFrameScreen.RenderOptions with { PaletteTexture = null };
         woodenFrameScreen.RenderContext = renderContext;
 
         Gfx.ClearColor = Color.Black;
