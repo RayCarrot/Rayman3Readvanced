@@ -3,9 +3,7 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
 
 ## 📃 General
 - The camera doesn't work as well on N-Gage when playing in widescreen due to it being optimized for a portrait aspect ratio. Fix by having a setting for the camera where it's either in GBA, N-Gage or Adaptive mode.
-- Add option in the menu to convert save files between GBA and N-Gage as well as importing/exporting between Readvanced and emulators. The save data is the same, so should be easy.
 - Some animations, like the cage icon and Scaleman shadow, have a gap between sprites that end up being less than 1 pixel and thus not normally visible in the original game. However due to how the scaling works here it becomes visible in higher resolutions. Find a way to fix this.
-- Make sure the gameplay is the same for things like multiplayer, time trials etc. so that actor cycles and randomization stay consistent. Also disable debug features to prevent cheating.
 - First time launching the game, before the title screen, should show options like language, controls and option preset.
 - Press A to skip menu transition like in Rayman M.
 - Add Discord rich presence support.
@@ -19,7 +17,6 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
 
 ## 🧑‍💻 Code
 - Move hard-coded primitive values to constant fields.
-- Properly set up cross-platform support.
 - Optimize BinarySerializer more. Pointers should ideally be structs instead of classes in order to reduce allocations. We could also serialize animation channels as a `ushort[]` which saves on a lot of allocations. Analyze with VS profiler to see where allocations happen and check with BenchmarkDotNet. 
 - Try and reduce the number of allocations per frame as much as possible. Currently these things cause allocations:
     - `FiniteStateMachine`: Each time we change state it allocates a new delegate. This can be fixed by having each object cache the instance delegates on construction. We can create a source generator to automate this.
