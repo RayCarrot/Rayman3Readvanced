@@ -157,7 +157,7 @@ public abstract class MenuPage
                 Init();
                 
                 if (UsesCursor)
-                    Menu.ResetStem();
+                    Menu.ResetCursorAndStem();
 
                 Menu.SetBackgroundPalette(BackgroundPalette);
                 
@@ -165,6 +165,10 @@ public abstract class MenuPage
                 State = MenuPageState.TransitionIn;
                 ClickCallback = null;
                 FadeOutCallback = null;
+
+                // Set the initial transition value based on where the curtain cluster is (it might be down if the out transition was skipped)
+                TgxCluster menuCurtainsCluster = Menu.Playfield.Camera.GetCluster(1);
+                TransitionValue = (int)(80 / menuCurtainsCluster.RenderContext.Resolution.Y * menuCurtainsCluster.Position.Y);
                 break;
             
             case MenuPageState.TransitionIn:
@@ -217,6 +221,21 @@ public abstract class MenuPage
                 TransitionValue += 4;
 
                 TgxCluster curtainsCluster = Menu.Playfield.Camera.GetCluster(1);
+                
+                // Optionally skip transition
+                if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+                {
+                    // End custom page transition
+                    if (TransitionValue <= curtainsCluster.RenderContext.Resolution.Y)
+                    {
+                        TransitionValue = (int)curtainsCluster.RenderContext.Resolution.Y;
+                        Step_TransitionOut();
+                    }
+
+                    // End full transition
+                    TransitionValue = (int)(curtainsCluster.RenderContext.Resolution.Y + 60);
+                }
+
                 if (TransitionValue <= curtainsCluster.RenderContext.Resolution.Y)
                 {
                     curtainsCluster.Position -= new Vector2(0, 4);

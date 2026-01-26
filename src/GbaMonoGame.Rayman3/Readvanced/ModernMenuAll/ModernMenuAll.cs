@@ -159,10 +159,13 @@ public class ModernMenuAll : Frame, IHasPlayfield
         Cursor.CurrentAnimation = 0;
     }
 
-    public void ResetStem()
+    public void ResetCursorAndStem()
     {
         StemMode = StemMode.MoveIn;
         Stem.CurrentAnimation = 12;
+
+        Cursor.ScreenPos = Cursor.ScreenPos with { Y = CursorBaseY };
+        SetCursorToIdle();
     }
 
     public void ManageCursorAndStem()

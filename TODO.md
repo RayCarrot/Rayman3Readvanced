@@ -5,7 +5,6 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
 - The camera doesn't work as well on N-Gage when playing in widescreen due to it being optimized for a portrait aspect ratio. Fix by having a setting for the camera where it's either in GBA, N-Gage or Adaptive mode.
 - Some animations, like the cage icon and Scaleman shadow, have a gap between sprites that end up being less than 1 pixel and thus not normally visible in the original game. However due to how the scaling works here it becomes visible in higher resolutions. Find a way to fix this.
 - First time launching the game, before the title screen, should show options like language, controls and option preset.
-- Press A to skip menu transition like in Rayman M.
 - Add Discord rich presence support.
 - Use Game Jolt API for achievements and leaderboards.
 - If the screen resolution is not 16:9 then there should be an additional resolution option in that aspect ration.
