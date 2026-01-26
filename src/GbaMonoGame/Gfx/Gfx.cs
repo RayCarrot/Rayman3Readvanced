@@ -318,6 +318,10 @@ public static class Gfx
             // not blend with each other - instead they overwrite each others pixels).
             DrawSpritesToRenderTargets(renderer);
         }
+        else
+        {
+            Array.Clear(_drawnSpriteLayers);
+        }
 
         // Draw clear color on GBA
         if (Rom.IsLoaded && (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage))
