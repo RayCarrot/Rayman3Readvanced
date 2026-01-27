@@ -7,10 +7,20 @@ namespace GbaMonoGame.Rayman3;
 
 public static class SaveGameManager
 {
+    private const string SaveFileExtension = ".sav";
+    private const string SaveSlotFileName = "slot";
+
     private static PhysicalFile GetSlotFile(int index)
     {
+        string fileName = $"{SaveSlotFileName}{index + 1}";
+        return GetSaveFile(fileName);
+    }
+
+    private static PhysicalFile GetSaveFile(string fileName)
+    {
         Context context = Rom.Context;
-        string fileName = $"slot{index + 1}.sav";
+
+        fileName += SaveFileExtension;
 
         if (context.FileExists(fileName))
         {

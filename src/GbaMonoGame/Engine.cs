@@ -10,10 +10,10 @@ public static class Engine
 
     public static string DataDirectoryName => "Data";
     public static string AssetsDirectoryName => "Assets";
-    public static string CrashlogFileName => "Crashlog.txt";
-    public static string ConfigFileName => "Config.ini";
+    public static string CrashlogFileName => "crashlog.txt";
+    public static string ConfigFileName => "config.ini";
     public static string ImgGuiConfigFileName => "imgui.ini";
-    public static string SerializerLogFileName => "SerializerLog.txt";
+    public static string SerializerLogFileName => "serializerLog.txt";
 
     #endregion
 
