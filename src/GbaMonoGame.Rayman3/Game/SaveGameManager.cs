@@ -2,12 +2,14 @@
 using System.IO;
 using BinarySerializer;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
 public static class SaveGameManager
 {
     private const string SaveFileExtension = ".sav";
+    private const string TimeAttackSaveFileName = "timeattack";
     private const string SaveSlotFileName = "slot";
 
     private static PhysicalFile GetSlotFile(int index)
@@ -112,6 +114,51 @@ public static class SaveGameManager
                 ex: ex,
                 text: "An error occurred when deleting the save.",
                 header: "Error deleting game save");
+        }
+    }
+
+    public static TimeAttackSave LoadTimeAttackSave()
+    {
+        try
+        {
+            PhysicalFile file = GetSaveFile(TimeAttackSaveFileName);
+
+            if (!file.SourceFileExists)
+                return new TimeAttackSave();
+
+            Context context = Rom.Context;
+
+            using (context)
+                return FileFactory.Read<TimeAttackSave>(context, file.FilePath);
+        }
+        catch (Exception ex)
+        {
+            Engine.MessageManager.EnqueueExceptionMessage(
+                ex: ex,
+                text: "An error occurred when reading the time attack save.",
+                header: "Error reading time attack save");
+
+            return new TimeAttackSave();
+        }
+    }
+
+    public static void SaveTimeAttackSave(TimeAttackSave save)
+    {
+        try
+        {
+            PhysicalFile file = GetSaveFile(TimeAttackSaveFileName);
+
+            Context context = Rom.Context;
+
+            using (context)
+                FileFactory.Write<TimeAttackSave>(context, file.FilePath, save);
+        }
+        catch (Exception ex)
+        {
+            Engine.MessageManager.EnqueueExceptionMessage(
+                ex: ex,
+                text: "An error occurred when saving the time attack save.",
+                header: "Error saving time attack save");
         }
     }
 }

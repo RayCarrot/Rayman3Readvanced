@@ -8,6 +8,7 @@ public class SpriteTextureObject : AObject
 {
     public Texture2D Texture { get; set; }
     public AffineMatrix? AffineMatrix { get; set; }
+    public AlphaCoefficient Alpha { get; set; }
 
     public override void Execute(Action<short> soundEventCallback)
     {
@@ -18,6 +19,7 @@ public class SpriteTextureObject : AObject
         sprite.Center = true;
         sprite.Priority = BgPriority;
         sprite.RenderOptions = RenderOptions;
+        sprite.Alpha = Alpha;
         Gfx.AddSprite(sprite);
     }
 }

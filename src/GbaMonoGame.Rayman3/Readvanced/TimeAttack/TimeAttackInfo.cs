@@ -12,6 +12,8 @@ public static class TimeAttackInfo
     private const int MinTime = 0;
     private const int MaxTime = 356400; // 99:00:00
 
+    private static TimeAttackSave Save { get; set; }
+
     private static MapId? LastMapId { get; set; }
     private static int SavedTimer { get; set; }
     private static uint SavedRandomSeed { get; set; }
@@ -22,6 +24,11 @@ public static class TimeAttackInfo
     public static TimeAttackMode Mode { get; set; }
     public static int Timer { get; set; }
     public static TimeAttackTime[] TargetTimes { get; set; }
+
+    private static void EnsureSaveIsLoaded()
+    {
+        Save ??= SaveGameManager.LoadTimeAttackSave();
+    }
 
     public static void Init()
     {
@@ -159,8 +166,23 @@ public static class TimeAttackInfo
 
     public static TimeAttackTime? GetRecordTime(MapId mapId)
     {
-        // TODO: Dynamically load from persistent data
-        return new TimeAttackTime(TimeAttackTimeType.Record, 2000 + Random.GetNumber(2000));
+        EnsureSaveIsLoaded();
+
+        int time = Save.Times[(int)mapId];
+
+        if (time <= 0)
+            return null;
+        else
+            return new TimeAttackTime(TimeAttackTimeType.Record, time);
+    }
+
+    public static void SaveRecordTime(MapId mapId, int time)
+    {
+        EnsureSaveIsLoaded();
+
+        Save.Times[(int)mapId] = time;
+
+        SaveGameManager.SaveTimeAttackSave(Save);
     }
 
     public static void SetMode(TimeAttackMode mode)

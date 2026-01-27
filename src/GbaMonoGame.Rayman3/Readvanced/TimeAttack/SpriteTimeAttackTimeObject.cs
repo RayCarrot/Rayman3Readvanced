@@ -20,6 +20,8 @@ public class SpriteTimeAttackTimeObject : AObject
         }
     }
 
+    public AlphaCoefficient Alpha { get; set; }
+
     private Texture2D GetTexture(char timeChar)
     {
         return Engine.FrameContentManager.Load<Texture2D>(timeChar switch
@@ -74,6 +76,7 @@ public class SpriteTimeAttackTimeObject : AObject
             sprite.Center = true;
             sprite.Priority = BgPriority;
             sprite.RenderOptions = RenderOptions;
+            sprite.Alpha = Alpha;
             Gfx.AddSprite(sprite);
 
             pos += new Vector2(texture.Width + 1, 0);
