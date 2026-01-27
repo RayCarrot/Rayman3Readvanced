@@ -14,9 +14,10 @@ public static class TimeAttackInfo
 
     private static TimeAttackSave Save { get; set; }
 
-    private static MapId? LastMapId { get; set; }
+    private static MapId? CurrentMapId { get; set; }
     private static int SavedTimer { get; set; }
     private static uint SavedRandomSeed { get; set; }
+    private static List<GhostMapData> SavedGhostData { get; } = [];
 
     public static bool IsActive { get; set; }
     public static bool IsPaused { get; set; }
@@ -25,9 +26,12 @@ public static class TimeAttackInfo
     public static int Timer { get; set; }
     public static TimeAttackTime[] TargetTimes { get; set; }
 
+    public static GhostRecorder GhostRecorder { get; set; }
+    public static GhostPlayer GhostPlayer { get; set; }
+
     private static void EnsureSaveIsLoaded()
     {
-        Save ??= SaveGameManager.LoadTimeAttackSave();
+        Save ??= SaveGameManager.LoadTimeAttackSave() ?? new TimeAttackSave();
     }
 
     public static void Init()
@@ -74,11 +78,14 @@ public static class TimeAttackInfo
         // Set a constant seed so the randomization is the same
         Random.SetSeed(RandomSeed);
 
+        SavedGhostData.Clear();
         IsActive = true;
         IsPaused = false;
         Mode = TimeAttackMode.Init;
         Timer = 0;
         TargetTimes = [];
+        GhostRecorder = null;
+        GhostPlayer = null;
     }
 
     public static void UnInit()
@@ -89,9 +96,12 @@ public static class TimeAttackInfo
         LevelId = null;
         Mode = TimeAttackMode.None;
         
-        LastMapId = null;
+        CurrentMapId = null;
         SavedTimer = 0;
         SavedRandomSeed = RandomSeed;
+
+        GhostRecorder = null;
+        GhostPlayer = null;
     }
 
     public static void LoadLevel(MapId mapId)
@@ -125,10 +135,14 @@ public static class TimeAttackInfo
     public static void InitLevel(MapId mapId)
     {
         // If this is a new map...
-        if (LastMapId != mapId)
+        if (CurrentMapId != mapId)
         {
+            // Save the recorded ghost data for the last map
+            if (CurrentMapId != null && GhostRecorder != null)
+                SavedGhostData.Add(GhostRecorder.GetData(CurrentMapId.Value));
+
             // Set the map id
-            LastMapId = mapId;
+            CurrentMapId = mapId;
 
             // Save state
             SavedTimer = Timer;
@@ -176,13 +190,70 @@ public static class TimeAttackInfo
             return new TimeAttackTime(TimeAttackTimeType.Record, time);
     }
 
-    public static void SaveRecordTime(MapId mapId, int time)
+    public static void SaveTime()
     {
+        if (LevelId == null || CurrentMapId == null)
+            return;
+
         EnsureSaveIsLoaded();
 
-        Save.Times[(int)mapId] = time;
+        MapId mapId = LevelId.Value;
 
+        // Save the time
+        Save.Times[(int)mapId] = Timer;
         SaveGameManager.SaveTimeAttackSave(Save);
+
+        // Save the ghost data
+        if (GhostRecorder != null)
+        {
+            SavedGhostData.Add(GhostRecorder.GetData(CurrentMapId.Value));
+            SaveGameManager.SaveTimeAttackGhost(new TimeAttackGhostSave
+            {
+                MapGhosts = SavedGhostData.ToArray(),
+            }, mapId);
+        }
+    }
+
+    public static void InitGhostRecorder(Scene2D scene)
+    {
+        GhostRecorder = new GhostRecorder(scene, 
+        [
+            ActorType.Rayman, 
+            ActorType.RaymanBody,
+            ActorType.RaymanMode7,
+            ActorType.MissileMode7,
+            ActorType.FlyingShell,
+        ]);
+    }
+
+    public static void StepGhostRecorder()
+    {
+        GhostRecorder?.Step();
+    }
+
+    public static void InitGhostPlayer(Scene2D scene)
+    {
+        if (LevelId == null)
+        {
+            GhostPlayer = null;
+            return;
+        }
+
+        TimeAttackGhostSave ghostSave = SaveGameManager.LoadTimeAttackGhost(LevelId.Value);
+        GhostMapData mapGhost = ghostSave?.MapGhosts.FirstOrDefault(x => x.MapId == CurrentMapId);
+
+        if (mapGhost == null)
+        {
+            GhostPlayer = null;
+            return;
+        }
+
+        GhostPlayer = new GhostPlayer(scene, mapGhost.Frames);
+    }
+
+    public static void StepGhostPlayer()
+    {
+        GhostPlayer?.Step();
     }
 
     public static void SetMode(TimeAttackMode mode)

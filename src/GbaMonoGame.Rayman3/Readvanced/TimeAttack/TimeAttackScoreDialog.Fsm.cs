@@ -99,7 +99,7 @@ public partial class TimeAttackScoreDialog
                     if (NewRecord)
                     {
                         // Save the record time
-                        TimeAttackInfo.SaveRecordTime(MapId, TimeAttackInfo.Timer);
+                        TimeAttackInfo.SaveTime();
 
                         // Play sound
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumTotal_Mix02);

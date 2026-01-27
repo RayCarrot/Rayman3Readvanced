@@ -63,7 +63,8 @@ public partial class TimeAttackDialog
         switch (action)
         {
             case FsmAction.Init:
-                // Do nothing
+                TimeAttackInfo.InitGhostRecorder(Scene);
+                TimeAttackInfo.InitGhostPlayer(Scene); // TODO: Optional
                 break;
 
             case FsmAction.Step:
@@ -72,6 +73,10 @@ public partial class TimeAttackDialog
 
                 // Update target time
                 UpdateTargetTime();
+
+                // Step the ghosts
+                TimeAttackInfo.StepGhostRecorder();
+                TimeAttackInfo.StepGhostPlayer();
                 break;
 
             case FsmAction.UnInit:

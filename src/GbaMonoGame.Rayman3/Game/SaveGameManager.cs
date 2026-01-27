@@ -9,12 +9,19 @@ namespace GbaMonoGame.Rayman3;
 public static class SaveGameManager
 {
     private const string SaveFileExtension = ".sav";
-    private const string TimeAttackSaveFileName = "timeattack";
     private const string SaveSlotFileName = "slot";
+    private const string TimeAttackSaveFileName = "timeattack";
+    private const string TimeAttackGhostFileName = "ghost";
 
     private static PhysicalFile GetSlotFile(int index)
     {
         string fileName = $"{SaveSlotFileName}{index + 1}";
+        return GetSaveFile(fileName);
+    }
+
+    private static PhysicalFile GetTimeAttackGhostFile(MapId mapId)
+    {
+        string fileName = $"Ghosts/{TimeAttackGhostFileName}_{(int)mapId}";
         return GetSaveFile(fileName);
     }
 
@@ -124,7 +131,7 @@ public static class SaveGameManager
             PhysicalFile file = GetSaveFile(TimeAttackSaveFileName);
 
             if (!file.SourceFileExists)
-                return new TimeAttackSave();
+                return null;
 
             Context context = Rom.Context;
 
@@ -138,7 +145,7 @@ public static class SaveGameManager
                 text: "An error occurred when reading the time attack save.",
                 header: "Error reading time attack save");
 
-            return new TimeAttackSave();
+            return null;
         }
     }
 
@@ -159,6 +166,51 @@ public static class SaveGameManager
                 ex: ex,
                 text: "An error occurred when saving the time attack save.",
                 header: "Error saving time attack save");
+        }
+    }
+
+    public static TimeAttackGhostSave LoadTimeAttackGhost(MapId mapId)
+    {
+        try
+        {
+            PhysicalFile file = GetTimeAttackGhostFile(mapId);
+
+            if (!file.SourceFileExists)
+                return null;
+
+            Context context = Rom.Context;
+
+            using (context)
+                return FileFactory.Read<TimeAttackGhostSave>(context, file.FilePath);
+        }
+        catch (Exception ex)
+        {
+            Engine.MessageManager.EnqueueExceptionMessage(
+                ex: ex,
+                text: "An error occurred when reading the time attack ghost.",
+                header: "Error reading time attack ghost");
+
+            return null;
+        }
+    }
+
+    public static void SaveTimeAttackGhost(TimeAttackGhostSave save, MapId mapId)
+    {
+        try
+        {
+            PhysicalFile file = GetTimeAttackGhostFile(mapId);
+
+            Context context = Rom.Context;
+
+            using (context)
+                FileFactory.Write<TimeAttackGhostSave>(context, file.FilePath, save);
+        }
+        catch (Exception ex)
+        {
+            Engine.MessageManager.EnqueueExceptionMessage(
+                ex: ex,
+                text: "An error occurred when saving the time attack ghost.",
+                header: "Error saving time attack ghost");
         }
     }
 }
