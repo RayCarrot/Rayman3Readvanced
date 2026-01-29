@@ -149,7 +149,7 @@ public partial class TimeAttackScoreDialog
 
                             TimeAttackInfo.UnInit();
                             TimeAttackInfo.Init();
-                            TimeAttackInfo.LoadLevel(MapId);
+                            TimeAttackInfo.LoadLevel(MapId, TimeAttackInfo.GhostType);
                         }
                     }
                     else

@@ -64,7 +64,7 @@ public partial class TimeAttackDialog
         {
             case FsmAction.Init:
                 TimeAttackInfo.InitGhostRecorder(Scene);
-                TimeAttackInfo.InitGhostPlayer(Scene); // TODO: Optional
+                TimeAttackInfo.InitGhostPlayer(Scene);
                 break;
 
             case FsmAction.Step:

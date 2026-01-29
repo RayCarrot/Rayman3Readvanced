@@ -12,12 +12,12 @@ public static class TimeAttackInfo
     private const int MinTime = 0;
     private const int MaxTime = 356400; // 99:00:00
 
-    private static TimeAttackSave Save { get; set; }
+    private static TimeAttackSave Save { get; set; } // TODO: Need to clear this when quit game
 
     private static MapId? CurrentMapId { get; set; }
     private static int SavedTimer { get; set; }
     private static uint SavedRandomSeed { get; set; }
-    private static List<GhostMapData> SavedGhostData { get; } = [];
+    private static List<GhostMapData> SavedRecordedGhostData { get; } = [];
 
     public static bool IsActive { get; set; }
     public static bool IsPaused { get; set; }
@@ -26,6 +26,8 @@ public static class TimeAttackInfo
     public static int Timer { get; set; }
     public static TimeAttackTime[] TargetTimes { get; set; }
 
+    public static TimeAttackGhostType GhostType { get; set; }
+    public static GhostMapData[] MapGhosts { get; set; }
     public static GhostRecorder GhostRecorder { get; set; }
     public static GhostPlayer GhostPlayer { get; set; }
 
@@ -78,12 +80,13 @@ public static class TimeAttackInfo
         // Set a constant seed so the randomization is the same
         Random.SetSeed(RandomSeed);
 
-        SavedGhostData.Clear();
+        SavedRecordedGhostData.Clear();
         IsActive = true;
         IsPaused = false;
         Mode = TimeAttackMode.Init;
         Timer = 0;
         TargetTimes = [];
+        MapGhosts = null;
         GhostRecorder = null;
         GhostPlayer = null;
     }
@@ -99,12 +102,14 @@ public static class TimeAttackInfo
         CurrentMapId = null;
         SavedTimer = 0;
         SavedRandomSeed = RandomSeed;
+        SavedRecordedGhostData.Clear();
 
+        MapGhosts = null;
         GhostRecorder = null;
         GhostPlayer = null;
     }
 
-    public static void LoadLevel(MapId mapId)
+    public static void LoadLevel(MapId mapId, TimeAttackGhostType ghostType)
     {
         LevelId = mapId;
 
@@ -112,7 +117,7 @@ public static class TimeAttackInfo
         GameInfo.PersistentInfo.LastCompletedLevel = (byte)(mapId switch
         {
             MapId.Bonus1 => MapId.SanctuaryOfBigTree_M2,
-            MapId.Bonus2 => MapId.MarshAwakening2,
+            MapId.Bonus2 => MapId.MarshAwakening2, // TODO: Needs blue lum power - or always give all powers?
             MapId.Bonus3 => MapId.SanctuaryOfRockAndLava_M3,
             MapId.Bonus4 => MapId.BossFinal_M2,
             MapId._1000Lums => MapId.BossFinal_M2,
@@ -129,6 +134,28 @@ public static class TimeAttackInfo
         targetTimes = targetTimes.OrderByDescending(x => x.Time);
         TargetTimes = targetTimes.ToArray();
 
+        // Load the ghost data
+        GhostType = ghostType;
+        switch (ghostType)
+        {
+            default:
+            case TimeAttackGhostType.None:
+                MapGhosts = null;
+                break;
+
+            case TimeAttackGhostType.Record:
+                MapGhosts = SaveGameManager.LoadTimeAttackGhost(mapId)?.MapGhosts;
+                break;
+            
+            case TimeAttackGhostType.Guide:
+                // TODO: Implement
+                break;
+            
+            case TimeAttackGhostType.Developer:
+                // TODO: Implement
+                break;
+        }
+
         FrameManager.SetNextFrame(LevelFactory.Create(mapId));
     }
 
@@ -139,7 +166,7 @@ public static class TimeAttackInfo
         {
             // Save the recorded ghost data for the last map
             if (CurrentMapId != null && GhostRecorder != null)
-                SavedGhostData.Add(GhostRecorder.GetData(CurrentMapId.Value));
+                SavedRecordedGhostData.Add(GhostRecorder.GetData(CurrentMapId.Value));
 
             // Set the map id
             CurrentMapId = mapId;
@@ -206,10 +233,10 @@ public static class TimeAttackInfo
         // Save the ghost data
         if (GhostRecorder != null)
         {
-            SavedGhostData.Add(GhostRecorder.GetData(CurrentMapId.Value));
+            SavedRecordedGhostData.Add(GhostRecorder.GetData(CurrentMapId.Value));
             SaveGameManager.SaveTimeAttackGhost(new TimeAttackGhostSave
             {
-                MapGhosts = SavedGhostData.ToArray(),
+                MapGhosts = SavedRecordedGhostData.ToArray(),
             }, mapId);
         }
     }
@@ -239,8 +266,7 @@ public static class TimeAttackInfo
             return;
         }
 
-        TimeAttackGhostSave ghostSave = SaveGameManager.LoadTimeAttackGhost(LevelId.Value);
-        GhostMapData mapGhost = ghostSave?.MapGhosts.FirstOrDefault(x => x.MapId == CurrentMapId);
+        GhostMapData mapGhost = MapGhosts?.FirstOrDefault(x => x.MapId == CurrentMapId);
 
         if (mapGhost == null)
         {
