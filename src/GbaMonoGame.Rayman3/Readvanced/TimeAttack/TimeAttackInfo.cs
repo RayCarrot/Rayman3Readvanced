@@ -12,7 +12,7 @@ public static class TimeAttackInfo
     private const int MinTime = 0;
     private const int MaxTime = 356400; // 99:00:00
 
-    private static TimeAttackSave Save { get; set; } // TODO: Need to clear this when quit game
+    private static TimeAttackSave Save { get; set; }
 
     private static MapId? CurrentMapId { get; set; }
     private static int SavedTimer { get; set; }
@@ -91,7 +91,7 @@ public static class TimeAttackInfo
         GhostPlayer = null;
     }
 
-    public static void UnInit()
+    public static void UnInit(bool unloadSave)
     {
         Engine.RestoreActiveConfig();
 
@@ -107,6 +107,9 @@ public static class TimeAttackInfo
         MapGhosts = null;
         GhostRecorder = null;
         GhostPlayer = null;
+
+        if (unloadSave)
+            Save = null;
     }
 
     public static void LoadLevel(MapId mapId, TimeAttackGhostType ghostType)

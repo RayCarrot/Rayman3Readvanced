@@ -311,7 +311,7 @@ public class TimeAttackMenuPage : MenuPage
         {
             if (TimeAttackInfo.LevelId != null)
                 selectedMap = TimeAttackInfo.LevelId.Value;
-            TimeAttackInfo.UnInit();
+            TimeAttackInfo.UnInit(false);
         }
 
         WorldOptions = new TimeAttackLevelMenuOption[Maps.Length][];

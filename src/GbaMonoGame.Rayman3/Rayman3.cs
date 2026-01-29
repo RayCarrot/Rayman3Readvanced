@@ -350,6 +350,7 @@ public class Rayman3 : GbaGame
         Localization.UnInit();
         SoundEventsManager.Unload();
         FontManager.Unload();
+        TimeAttackInfo.UnInit(true);
     }
 
     protected override void Initialize()

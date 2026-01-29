@@ -147,7 +147,7 @@ public partial class TimeAttackScoreDialog
                             Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                             Gfx.Fade = AlphaCoefficient.Max;
 
-                            TimeAttackInfo.UnInit();
+                            TimeAttackInfo.UnInit(false);
                             TimeAttackInfo.Init();
                             TimeAttackInfo.LoadLevel(MapId, TimeAttackInfo.GhostType);
                         }
