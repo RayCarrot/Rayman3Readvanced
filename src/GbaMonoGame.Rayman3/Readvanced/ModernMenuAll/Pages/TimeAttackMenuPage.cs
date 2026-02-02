@@ -210,7 +210,7 @@ public class TimeAttackMenuPage : MenuPage
     // TODO: Maybe remember last option instead?
     private void SetDefaultSelectedGhostOption()
     {
-        TimeAttackTime? recordTime = TimeAttackInfo.GetRecordTime(SelectedMap);
+        TimeAttackTime? recordTime = TimeAttackDataManager.GetRecordTime(SelectedMap);
 
         GhostOption defaultGhostOption;
         if (recordTime == null)
@@ -285,7 +285,7 @@ public class TimeAttackMenuPage : MenuPage
         {
             MapId mapId = SelectedMap;
 
-            TimeAttackTime? recordTime = TimeAttackInfo.GetRecordTime(mapId);
+            TimeAttackTime? recordTime = TimeAttackDataManager.GetRecordTime(mapId);
 
             TimeAttackTime[] targetTimes = TimeAttackInfo.GetTargetTimes(mapId);
             for (int i = 0; i < TargetTimes.Length; i++)
@@ -311,7 +311,7 @@ public class TimeAttackMenuPage : MenuPage
         {
             if (TimeAttackInfo.LevelId != null)
                 selectedMap = TimeAttackInfo.LevelId.Value;
-            TimeAttackInfo.UnInit(false);
+            TimeAttackInfo.UnInit();
         }
 
         WorldOptions = new TimeAttackLevelMenuOption[Maps.Length][];
@@ -613,7 +613,7 @@ public class TimeAttackMenuPage : MenuPage
             switch (Type)
             {
                 case TimeAttackGhostType.Record:
-                    TimeAttackTime? recordTime = TimeAttackInfo.GetRecordTime(mapId);
+                    TimeAttackTime? recordTime = TimeAttackDataManager.GetRecordTime(mapId);
                     if (recordTime != null)
                     {
                         Time = recordTime.Value;

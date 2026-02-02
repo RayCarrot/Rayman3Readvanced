@@ -12,8 +12,6 @@ public static class TimeAttackInfo
     private const int MinTime = 0;
     private const int MaxTime = 356400; // 99:00:00
 
-    private static TimeAttackSave Save { get; set; }
-
     private static MapId? CurrentMapId { get; set; }
     private static int SavedTimer { get; set; }
     private static uint SavedRandomSeed { get; set; }
@@ -30,11 +28,6 @@ public static class TimeAttackInfo
     public static GhostMapData[] MapGhosts { get; set; }
     public static GhostRecorder GhostRecorder { get; set; }
     public static GhostPlayer GhostPlayer { get; set; }
-
-    private static void EnsureSaveIsLoaded()
-    {
-        Save ??= SaveGameManager.LoadTimeAttackSave() ?? new TimeAttackSave();
-    }
 
     public static void Init()
     {
@@ -91,7 +84,7 @@ public static class TimeAttackInfo
         GhostPlayer = null;
     }
 
-    public static void UnInit(bool unloadSave)
+    public static void UnInit()
     {
         Engine.RestoreActiveConfig();
 
@@ -107,9 +100,6 @@ public static class TimeAttackInfo
         MapGhosts = null;
         GhostRecorder = null;
         GhostPlayer = null;
-
-        if (unloadSave)
-            Save = null;
     }
 
     public static void LoadLevel(MapId mapId, TimeAttackGhostType ghostType)
@@ -132,7 +122,7 @@ public static class TimeAttackInfo
 
         // Get the target times
         IEnumerable<TimeAttackTime> targetTimes = GetTargetTimes(mapId);
-        if (GetRecordTime(mapId) is { } recordTime)
+        if (TimeAttackDataManager.GetRecordTime(mapId) is { } recordTime)
             targetTimes = targetTimes.Append(recordTime);
         targetTimes = targetTimes.OrderByDescending(x => x.Time);
         TargetTimes = targetTimes.ToArray();
@@ -208,40 +198,22 @@ public static class TimeAttackInfo
             return [];
     }
 
-    public static TimeAttackTime? GetRecordTime(MapId mapId)
-    {
-        EnsureSaveIsLoaded();
-
-        int time = Save.Times[(int)mapId];
-
-        if (time <= 0)
-            return null;
-        else
-            return new TimeAttackTime(TimeAttackTimeType.Record, time);
-    }
-
     public static void SaveTime()
     {
         if (LevelId == null || CurrentMapId == null)
             return;
 
-        EnsureSaveIsLoaded();
-
-        MapId mapId = LevelId.Value;
-
-        // Save the time
-        Save.Times[(int)mapId] = Timer;
-        SaveGameManager.SaveTimeAttackSave(Save);
-
-        // Save the ghost data
+        TimeAttackGhostSave ghostSave = null;
         if (GhostRecorder != null)
         {
             SavedRecordedGhostData.Add(GhostRecorder.GetData(CurrentMapId.Value));
-            SaveGameManager.SaveTimeAttackGhost(new TimeAttackGhostSave
+            ghostSave = new TimeAttackGhostSave
             {
                 MapGhosts = SavedRecordedGhostData.ToArray(),
-            }, mapId);
+            };
         }
+
+        TimeAttackDataManager.SaveRecordTime(LevelId.Value, Timer, ghostSave);
     }
 
     public static void InitGhostRecorder(Scene2D scene)

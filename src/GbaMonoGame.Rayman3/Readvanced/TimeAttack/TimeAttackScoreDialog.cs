@@ -18,7 +18,7 @@ public partial class TimeAttackScoreDialog : Dialog
         MapId = TimeAttackInfo.LevelId ?? throw new Exception("Finished time attack with no level set");
         
         // Check if the time is a new record
-        TimeAttackTime? recordTime = TimeAttackInfo.GetRecordTime(MapId);
+        TimeAttackTime? recordTime = TimeAttackDataManager.GetRecordTime(MapId);
         NewRecord = recordTime == null || TimeAttackInfo.Timer < recordTime.Value.Time;
 
         State.SetTo(Fsm_ShowTargets);
@@ -177,7 +177,7 @@ public partial class TimeAttackScoreDialog : Dialog
                 BlendMode = BlendMode.AlphaBlend,
                 Alpha = 0.7f,
                 RenderContext = Scene.HudRenderContext,
-                Time = TimeAttackInfo.GetRecordTime(MapId) ?? default,
+                Time = TimeAttackDataManager.GetRecordTime(MapId) ?? default,
             };
 
             RecordTimeIcon.Texture = RecordTimeText.Time.LoadIcon(true);
