@@ -38,6 +38,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GbaMonoGame.Native", "GbaMo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GbaMonoGame.Benchmarks", "GbaMonoGame.Benchmarks\GbaMonoGame.Benchmarks.csproj", "{4C967E87-9B95-AC49-E7CC-9B89396EC879}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source Generators", "Source Generators", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GbaMonoGame.FsmSourceGenerator", "GbaMonoGame.FsmSourceGenerator\GbaMonoGame.FsmSourceGenerator.csproj", "{6B1A3D52-9B14-400D-9AC6-F7C1729CAF95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -92,6 +96,10 @@ Global
 		{4C967E87-9B95-AC49-E7CC-9B89396EC879}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C967E87-9B95-AC49-E7CC-9B89396EC879}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C967E87-9B95-AC49-E7CC-9B89396EC879}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B1A3D52-9B14-400D-9AC6-F7C1729CAF95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B1A3D52-9B14-400D-9AC6-F7C1729CAF95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B1A3D52-9B14-400D-9AC6-F7C1729CAF95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B1A3D52-9B14-400D-9AC6-F7C1729CAF95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -106,6 +114,7 @@ Global
 		{0D9BD9CA-5CF0-4011-7828-79EAAEF84865} = {6288C123-A744-4A0B-9C84-E2916B1C3820}
 		{1C2AA4B5-37E0-ACC8-3956-EAC70B939F3B} = {6288C123-A744-4A0B-9C84-E2916B1C3820}
 		{40607D21-B1AA-91EC-560F-00845C35DEE2} = {6288C123-A744-4A0B-9C84-E2916B1C3820}
+		{6B1A3D52-9B14-400D-9AC6-F7C1729CAF95} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D959129D-FCC4-446F-92A4-2104209B8C64}
