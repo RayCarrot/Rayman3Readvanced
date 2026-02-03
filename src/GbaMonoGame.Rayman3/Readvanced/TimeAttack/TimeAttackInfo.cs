@@ -107,16 +107,23 @@ public static class TimeAttackInfo
         LevelId = mapId;
 
         GameInfo.PersistentInfo.LastPlayedLevel = (byte)mapId;
+
+        // Set last level completed in order to give the correct powers
         GameInfo.PersistentInfo.LastCompletedLevel = (byte)(mapId switch
         {
-            MapId.Bonus1 => MapId.SanctuaryOfBigTree_M2,
-            MapId.Bonus2 => MapId.MarshAwakening2, // TODO: Needs blue lum power - or always give all powers?
-            MapId.Bonus3 => MapId.SanctuaryOfRockAndLava_M3,
+            // All powers for the bonus levels
+            MapId.Bonus1 => MapId.BossFinal_M2,
+            MapId.Bonus2 => MapId.BossFinal_M2,
+            MapId.Bonus3 => MapId.BossFinal_M2,
             MapId.Bonus4 => MapId.BossFinal_M2,
             MapId._1000Lums => MapId.BossFinal_M2,
+            
+            // Powers based on last level in the world for the Ly levels
             MapId.ChallengeLy1 => MapId.MarshAwakening2,
             MapId.ChallengeLy2 => MapId.BossFinal_M2,
             MapId.ChallengeLyGCN => MapId.BossFinal_M2,
+
+            // Otherwise based on the map itself
             _ => mapId
         });
 
