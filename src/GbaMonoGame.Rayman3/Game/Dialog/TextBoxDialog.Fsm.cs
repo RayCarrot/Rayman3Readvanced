@@ -20,7 +20,7 @@ public partial class TextBoxDialog
                 if (OffsetY <= 0)
                 {
                     OffsetY = 0;
-                    State.MoveTo(Fsm_WaitForNextText);
+                    State.MoveTo(_Fsm_WaitForNextText);
                     return false;
                 }
                 break;
@@ -46,7 +46,7 @@ public partial class TextBoxDialog
                 {
                     NextText = false;
                     CurrentTextLine += TextObjects.Length;
-                    State.MoveTo(Fsm_TransitionTextOut);
+                    State.MoveTo(_Fsm_TransitionTextOut);
                     return false;
                 }
                 break;
@@ -95,7 +95,7 @@ public partial class TextBoxDialog
 
                 if (transitionIn)
                 {
-                    State.MoveTo(Fsm_TransitionTextIn);
+                    State.MoveTo(_Fsm_TransitionTextIn);
                     return false;
                 }
                 break;
@@ -156,7 +156,7 @@ public partial class TextBoxDialog
 
                 if (finished)
                 {
-                    State.MoveTo(Fsm_WaitForNextText);
+                    State.MoveTo(_Fsm_WaitForNextText);
                     return false;
                 }
                 break;

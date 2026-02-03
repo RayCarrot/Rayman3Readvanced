@@ -1,14 +1,18 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
 // Original name: CagoulardDeux
+[GenerateFsmFields]
 public sealed partial class MetalShieldedHoodboom : InteractableActor
 {
     public MetalShieldedHoodboom(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         PrevHitPoints = HitPoints;
         IsHoodboomInvulnerable = false;
         EarlyAttack = false;
@@ -19,7 +23,7 @@ public sealed partial class MetalShieldedHoodboom : InteractableActor
 
         IsInvulnerable = true;
 
-        State.SetTo(Fsm_Idle);
+        State.SetTo(_Fsm_Idle);
     }
 
     public int PrevHitPoints { get; set; }

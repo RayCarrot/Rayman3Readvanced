@@ -1,15 +1,19 @@
 ﻿using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class SwingSparkle : BaseActor
 {
     public SwingSparkle(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         AnimatedObject.CurrentAnimation = actorResource.FirstActionId;
         AnimatedObject.ObjPriority = 48;
-        State.SetTo(Fsm_Default);
+        State.SetTo(_Fsm_Default);
     }
 
     public float Distance { get; set; }

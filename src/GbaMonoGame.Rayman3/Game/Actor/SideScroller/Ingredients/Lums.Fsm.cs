@@ -57,7 +57,7 @@ public partial class Lums
 
                 if (collected)
                 {
-                    State.MoveTo(Fsm_Collected);
+                    State.MoveTo(_Fsm_Collected);
                     return false;
                 }
                 break;
@@ -155,13 +155,13 @@ public partial class Lums
             case FsmAction.Step:
                 if (IsActionFinished && ActionId == Action.BlueLum && GameInfo.MapId != MapId.BossRockAndLava)
                 {
-                    State.MoveTo(Fsm_Delay);
+                    State.MoveTo(_Fsm_Delay);
                     return false;
                 }
                 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;
@@ -188,7 +188,7 @@ public partial class Lums
 
                 if (Timer >= 250)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;
@@ -258,7 +258,7 @@ public partial class Lums
 
                 if (collected)
                 {
-                    State.MoveTo(Fsm_MultiplayerCollected);
+                    State.MoveTo(_Fsm_MultiplayerCollected);
                     return false;
                 }
                 break;
@@ -306,7 +306,7 @@ public partial class Lums
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_MultiplayerDelay);
+                    State.MoveTo(_Fsm_MultiplayerDelay);
                     return false;
                 }
                 break;
@@ -332,7 +332,7 @@ public partial class Lums
 
                 if (ActionId is Action.BlueLum or Action.BigBlueLum && Timer >= 250)
                 {
-                    State.MoveTo(Fsm_MultiplayerIdle);
+                    State.MoveTo(_Fsm_MultiplayerIdle);
                     return false;
                 }
                 break;

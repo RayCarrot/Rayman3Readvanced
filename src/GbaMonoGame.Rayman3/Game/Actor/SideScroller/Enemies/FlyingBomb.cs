@@ -1,13 +1,17 @@
 ﻿using System;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
 // Original name: BombeVolante
+[GenerateFsmFields]
 public sealed partial class FlyingBomb : MovableActor
 {
     public FlyingBomb(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         SoundDelay = 0;
         Destroyed = false;
 
@@ -30,11 +34,11 @@ public sealed partial class FlyingBomb : MovableActor
 
         if (firstActionId == Action.Wait)
         {
-            State.SetTo(Fsm_Wait);
+            State.SetTo(_Fsm_Wait);
         }
         else if (firstActionId == Action.Stationary)
         {
-            State.SetTo(Fsm_Stationary);
+            State.SetTo(_Fsm_Stationary);
         }
         else
         {
@@ -46,7 +50,7 @@ public sealed partial class FlyingBomb : MovableActor
                 Action.Move_Down => PhysicalTypeValue.Enemy_Down,
                 _ => throw new Exception("Invalid initial action for the flying bomb")
             };
-            State.SetTo(Fsm_Move);
+            State.SetTo(_Fsm_Move);
         }
     }
 

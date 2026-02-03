@@ -21,7 +21,7 @@ public partial class BluePirate
         // Killed
         if (HitPoints == 0)
         {
-            State.MoveTo(Fsm_Dying);
+            State.MoveTo(_Fsm_Dying);
             return false;
         }
 
@@ -29,7 +29,7 @@ public partial class BluePirate
         if (HitPoints < PrevHitPoints)
         {
             PrevHitPoints = HitPoints;
-            State.MoveTo(Fsm_Hit);
+            State.MoveTo(_Fsm_Hit);
             return false;
         }
 
@@ -61,7 +61,7 @@ public partial class BluePirate
                 // Wait for landing to finish
                 if (IsActionFinished && ActionId is Action.Land_Right or Action.Land_Left)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;
@@ -103,7 +103,7 @@ public partial class BluePirate
 
                 if (IdleDetectionTimer > 30)
                 {
-                    State.MoveTo(Fsm_AttackExtend);
+                    State.MoveTo(_Fsm_AttackExtend);
                     return false;
                 }
                 break;
@@ -149,7 +149,7 @@ public partial class BluePirate
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_AttackWait);
+                    State.MoveTo(_Fsm_AttackWait);
                     return false;
                 }
                 break;
@@ -187,7 +187,7 @@ public partial class BluePirate
 
                 if (IdleDetectionTimer > 10)
                 {
-                    State.MoveTo(Fsm_AttackRetract);
+                    State.MoveTo(_Fsm_AttackRetract);
                     return false;
                 }
                 break;
@@ -233,7 +233,7 @@ public partial class BluePirate
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;
@@ -271,7 +271,7 @@ public partial class BluePirate
 
                 if (IdleDetectionTimer > 30)
                 {
-                    State.MoveTo(Fsm_AttackExtend);
+                    State.MoveTo(_Fsm_AttackExtend);
                     return false;
                 }
                 break;

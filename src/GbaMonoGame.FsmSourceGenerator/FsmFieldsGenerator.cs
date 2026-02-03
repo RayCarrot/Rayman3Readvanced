@@ -83,7 +83,7 @@ public class FsmFieldsGenerator : IIncrementalGenerator
         if (fsmClass is { } fsmClassValue)
         {
             string classString = GenerateClassString(fsmClassValue);
-            context.AddSource($"{fsmClassValue.ClassName}.g.cs", SourceText.From(classString, Encoding.UTF8));
+            context.AddSource($"{fsmClassValue.ClassNamespace}.{fsmClassValue.ClassName}.g.cs", SourceText.From(classString, Encoding.UTF8));
         }
     }
 

@@ -1,13 +1,17 @@
 ﻿using System;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class Ly : MovableActor
 {
     public Ly(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
-        State.SetTo(Fsm_Init);
+        CreateGeneratedStates();
+
+        State.SetTo(_Fsm_Init);
     }
 
     public TextBoxDialog TextBox { get; set; }

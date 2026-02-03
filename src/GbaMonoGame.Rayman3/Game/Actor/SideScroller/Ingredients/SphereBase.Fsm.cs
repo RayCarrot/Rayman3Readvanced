@@ -39,7 +39,7 @@ public partial class SphereBase
                         continue;
                     
                     sphere.ProcessMessage(this, Message.Destroy);
-                    State.MoveTo(Fsm_Activating);
+                    State.MoveTo(_Fsm_Activating);
                     return false;
                 }
                 break;
@@ -74,7 +74,7 @@ public partial class SphereBase
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Activated);
+                    State.MoveTo(_Fsm_Activated);
                     return false;
                 }
                 break;

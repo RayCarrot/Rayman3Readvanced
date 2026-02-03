@@ -20,7 +20,7 @@ public partial class Scaleman
                 // Wait for countdown to finish in time attack
                 if (!TimeAttackInfo.IsActive || TimeAttackInfo.Mode == TimeAttackMode.Play)
                 {
-                    State.MoveTo(Fsm_Init);
+                    State.MoveTo(_Fsm_Init);
                     return false;
                 }
                 break;
@@ -46,7 +46,7 @@ public partial class Scaleman
                 {
                     if (ActionId is not (Action.Idle_Right or Action.Idle_Left))
                     {
-                        State.MoveTo(Fsm_BallRoll);
+                        State.MoveTo(_Fsm_BallRoll);
                         return false;
                     }
 
@@ -100,17 +100,17 @@ public partial class Scaleman
                     {
                         if (HitPoints is 6 or 3)
                         {
-                            State.MoveTo(Fsm_BallRoll);
+                            State.MoveTo(_Fsm_BallRoll);
                             return false;
                         }
                         else if (HitPoints is 5 or 2)
                         {
-                            State.MoveTo(Fsm_BallBounce);
+                            State.MoveTo(_Fsm_BallBounce);
                             return false;
                         }
                         else if (HitPoints is 4 or 1)
                         {
-                            State.MoveTo(Fsm_BallAirAttackInit);
+                            State.MoveTo(_Fsm_BallAirAttackInit);
                             return false;
                         }
                     }
@@ -186,7 +186,7 @@ public partial class Scaleman
                     else if (ActionId is Action.Emerge_Right or Action.Emerge_Left)
                     {
                         Timer = 30;
-                        State.MoveTo(Fsm_Default);
+                        State.MoveTo(_Fsm_Default);
                         return false;
                     }
                 }
@@ -242,7 +242,7 @@ public partial class Scaleman
                     else if (ActionId is Action.Emerge_Right or Action.Emerge_Left)
                     {
                         Timer = 0;
-                        State.MoveTo(Fsm_Default);
+                        State.MoveTo(_Fsm_Default);
                         return false;
                     }
                 }
@@ -279,7 +279,7 @@ public partial class Scaleman
                 ScalemanShadow.Position = Position;
                 MechModel.Speed = MechModel.Speed with { X = 0 };
 
-                State.MoveTo(Fsm_BallAirAttackFlyUp);
+                State.MoveTo(_Fsm_BallAirAttackFlyUp);
                 return false;
 
             case FsmAction.UnInit:
@@ -309,7 +309,7 @@ public partial class Scaleman
                 if ((Rom.Platform == Platform.GBA && Position.Y < 0) ||
                     (Rom.Platform == Platform.NGage && Position.Y < -10))
                 {
-                    State.MoveTo(Fsm_BallAirAttackTarget);
+                    State.MoveTo(_Fsm_BallAirAttackTarget);
                     return false;
                 }
                 break;
@@ -353,7 +353,7 @@ public partial class Scaleman
                 }
                 else
                 {
-                    State.MoveTo(Fsm_BallAirAttackFlyDown);
+                    State.MoveTo(_Fsm_BallAirAttackFlyDown);
                     return false;
                 }
                 break;
@@ -424,7 +424,7 @@ public partial class Scaleman
                     {
                         if (Timer < 3)
                         {
-                            State.MoveTo(Fsm_BallAirAttackFlyUp);
+                            State.MoveTo(_Fsm_BallAirAttackFlyUp);
                             return false;
                         }
                         else
@@ -437,7 +437,7 @@ public partial class Scaleman
                         ScalemanShadow.ProcessMessage(this, Message.Destroy);
                         ScalemanShadow = null;
                         Timer = 60;
-                        State.MoveTo(Fsm_Default);
+                        State.MoveTo(_Fsm_Default);
                         return false;
                     }
                 }
@@ -470,7 +470,7 @@ public partial class Scaleman
                 {
                     if (ActionId is not (Action.Hit_Right or Action.HitBehind_Left or Action.HitBehind_Right or Action.Hit_Left))
                     {
-                        State.MoveTo(Fsm_Shrunk);
+                        State.MoveTo(_Fsm_Shrunk);
                         return false;
                     }
 
@@ -500,7 +500,7 @@ public partial class Scaleman
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_SmallRun);
+                    State.MoveTo(_Fsm_SmallRun);
                     return false;
                 }
                 break;
@@ -580,7 +580,7 @@ public partial class Scaleman
                         else if (ActionId is Action.Hop_Right or Action.Hop_Left)
                         {
                             Timer = 91;
-                            State.MoveTo(Fsm_Default);
+                            State.MoveTo(_Fsm_Default);
                             return false;
                         }
                     }
@@ -625,7 +625,7 @@ public partial class Scaleman
                         }
                         else if (HitPoints == 0)
                         {
-                            State.MoveTo(Fsm_Dying);
+                            State.MoveTo(_Fsm_Dying);
                             return false;
                         }
                         else
@@ -641,7 +641,7 @@ public partial class Scaleman
                     else
                     {
                         Timer = 91;
-                        State.MoveTo(Fsm_Default);
+                        State.MoveTo(_Fsm_Default);
                         return false;
                     }
                 }

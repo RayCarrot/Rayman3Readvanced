@@ -1,13 +1,17 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class BreakableGround : MovableActor
 {
     public BreakableGround(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         QuickFinishBodyAttack = (Action)actorResource.FirstActionId == Action.Idle_QuickFinishBodyShotAttack;
 
         AnimatedObject.ObjPriority = 60;
@@ -20,7 +24,7 @@ public sealed partial class BreakableGround : MovableActor
             ProcessMessage(this, Message.Destroy);
         }
 
-        State.SetTo(Fsm_Idle);
+        State.SetTo(_Fsm_Idle);
     }
 
     public bool QuickFinishBodyAttack { get; }
@@ -35,7 +39,7 @@ public sealed partial class BreakableGround : MovableActor
         switch (message)
         {
             case Message.Actor_Hit:
-                if (State == Fsm_Idle && ((RaymanBody)param).BodyPartType == RaymanBody.RaymanBodyPartType.Torso)
+                if (State == _Fsm_Idle && ((RaymanBody)param).BodyPartType == RaymanBody.RaymanBodyPartType.Torso)
                     ActionId = Action.Destroyed;
                 return false;
 

@@ -24,7 +24,7 @@ public partial class Balloon
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;
@@ -74,13 +74,13 @@ public partial class Balloon
 
                 if (IsTimed && Timer >= 180)
                 {
-                    State.MoveTo(Fsm_Pop);
+                    State.MoveTo(_Fsm_Pop);
                     return false;
                 }
 
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    State.MoveTo(Fsm_Bounce);
+                    State.MoveTo(_Fsm_Bounce);
                     return false;
                 }
                 break;
@@ -120,13 +120,13 @@ public partial class Balloon
                 if (!IsRespawnable && IsActionFinished)
                 {
                     ProcessMessage(this, Message.Destroy);
-                    State.MoveTo(Fsm_Inflate);
+                    State.MoveTo(_Fsm_Inflate);
                     return false;
                 }
 
                 if (Timer > 180)
                 {
-                    State.MoveTo(Fsm_Inflate);
+                    State.MoveTo(_Fsm_Inflate);
                     return false;
                 }
                 break;
@@ -150,7 +150,7 @@ public partial class Balloon
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Inflate);
+                    State.MoveTo(_Fsm_Inflate);
                     return false;
                 }
                 break;

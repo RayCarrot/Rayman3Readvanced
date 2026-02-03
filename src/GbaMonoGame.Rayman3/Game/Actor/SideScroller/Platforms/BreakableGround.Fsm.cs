@@ -31,7 +31,7 @@ public partial class BreakableGround
 
                 if (ActionId == Action.Destroyed)
                 {
-                    State.MoveTo(Fsm_Destroyed);
+                    State.MoveTo(_Fsm_Destroyed);
                     return false;
                 }
                 break;
@@ -68,7 +68,7 @@ public partial class BreakableGround
                 if (multiplayerFinished)
                 {
                     IsDestroyed = true;
-                    State.MoveTo(Fsm_MultiplayerRespawn);
+                    State.MoveTo(_Fsm_MultiplayerRespawn);
                     return false;
                 }
                 break;
@@ -110,7 +110,7 @@ public partial class BreakableGround
                 {
                     IsDestroyed = false;
                     ActionId = Action.Idle_Default;
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;

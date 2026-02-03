@@ -39,7 +39,7 @@ public partial class Keg
                 if (Timer > 90 && Scene.MainActor.GetDetectionBox().Intersects(actionBox) && SpawnedDebrisCount > 0)
                 {
                     ShouldDraw = true;
-                    State.MoveTo(Fsm_Falling);
+                    State.MoveTo(_Fsm_Falling);
                     return false;
                 }
                 break;
@@ -79,7 +79,7 @@ public partial class Keg
 
                     Position = InitialPos;
                     
-                    State.MoveTo(Fsm_WaitingToFall);
+                    State.MoveTo(_Fsm_WaitingToFall);
                     return false;
                 }
                 break;
@@ -141,7 +141,7 @@ public partial class Keg
 
                 if (Timer != 0 && ActionId == Action.Bounce && Speed.Y == 0)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;
@@ -170,7 +170,7 @@ public partial class Keg
 
                 if (Scene.IsDetectedMainActor(this) && ((Rayman)Scene.MainActor).AttachedObject == this)
                 {
-                    State.MoveTo(Fsm_PickedUp);
+                    State.MoveTo(_Fsm_PickedUp);
                     return false;
                 }
                 break;
@@ -222,13 +222,13 @@ public partial class Keg
 
                 if (landed && GameInfo.MapId == MapId.BossMachine)
                 {
-                    State.MoveTo(Fsm_InitBossMachine);
+                    State.MoveTo(_Fsm_InitBossMachine);
                     return false;
                 }
 
                 if (landed)
                 {
-                    State.MoveTo(Fsm_Respawn);
+                    State.MoveTo(_Fsm_Respawn);
                     return false;
                 }
                 break;
@@ -290,19 +290,19 @@ public partial class Keg
 
                 if (Scene.IsDetectedMainActor(this) && ((Rayman)Scene.MainActor).AttachedObject == this && Speed.Y > 0)
                 {
-                    State.MoveTo(Fsm_PickedUp);
+                    State.MoveTo(_Fsm_PickedUp);
                     return false;
                 }
 
                 if (landed && GameInfo.MapId == MapId.BossMachine)
                 {
-                    State.MoveTo(Fsm_InitBossMachine);
+                    State.MoveTo(_Fsm_InitBossMachine);
                     return false;
                 }
 
                 if (landed)
                 {
-                    State.MoveTo(Fsm_Respawn);
+                    State.MoveTo(_Fsm_Respawn);
                     return false;
                 }
                 break;
@@ -357,13 +357,13 @@ public partial class Keg
 
                 if (landed && GameInfo.MapId == MapId.BossMachine)
                 {
-                    State.MoveTo(Fsm_InitBossMachine);
+                    State.MoveTo(_Fsm_InitBossMachine);
                     return false;
                 }
 
                 if (landed)
                 {
-                    State.MoveTo(Fsm_Respawn);
+                    State.MoveTo(_Fsm_Respawn);
                     return false;
                 }
                 break;
@@ -420,7 +420,7 @@ public partial class Keg
 
                 if (Timer > 240)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;
@@ -487,13 +487,13 @@ public partial class Keg
 
                 if (respawn)
                 {
-                    State.MoveTo(Fsm_Respawn);
+                    State.MoveTo(_Fsm_Respawn);
                     return false;
                 }
 
                 if (endFlight)
                 {
-                    State.MoveTo(Fsm_FallFromFlight);
+                    State.MoveTo(_Fsm_FallFromFlight);
                     return false;
                 }
                 break;
@@ -539,7 +539,7 @@ public partial class Keg
 
                 if (respawn)
                 {
-                    State.MoveTo(Fsm_Respawn);
+                    State.MoveTo(_Fsm_Respawn);
                     return false;
                 }
                 break;

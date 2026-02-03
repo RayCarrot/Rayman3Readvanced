@@ -20,7 +20,7 @@ public partial class Piranha
                 
                 if (Scene.IsDetectedMainActor(this) && Timer > 120)
                 {
-                    State.MoveTo(Fsm_Move);
+                    State.MoveTo(_Fsm_Move);
                     return false;
                 }
                 break;
@@ -56,12 +56,12 @@ public partial class Piranha
 
                 if (HitPoints == 0)
                 {
-                    State.MoveTo(Fsm_Dying);
+                    State.MoveTo(_Fsm_Dying);
                     return false;
                 }
                 else if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Wait);
+                    State.MoveTo(_Fsm_Wait);
                     return false;
                 }
                 break;
@@ -90,7 +90,7 @@ public partial class Piranha
 
                 if (type == PhysicalTypeValue.Water)
                 {
-                    State.MoveTo(Fsm_Wait);
+                    State.MoveTo(_Fsm_Wait);
                     return false;
                 }
                 break;

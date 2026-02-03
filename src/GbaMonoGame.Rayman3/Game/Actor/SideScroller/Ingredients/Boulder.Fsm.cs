@@ -76,7 +76,7 @@ public partial class Boulder
 
                 if (ActionId == Action.Fall)
                 {
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
                 break;
@@ -155,7 +155,7 @@ public partial class Boulder
                         bool activeBoulder = false;
                         foreach (BaseActor actor in new EnabledActorIterator(Scene))
                         {
-                            if (actor != this && (ActorType)actor.Type == ActorType.Boulder && actor.State != Fsm_Wait)
+                            if (actor != this && (ActorType)actor.Type == ActorType.Boulder && actor.State != _Fsm_Wait)
                             {
                                 activeBoulder = true;
                                 break;
@@ -178,7 +178,7 @@ public partial class Boulder
 
                 if (Speed.Y == 0)
                 {
-                    State.MoveTo(Fsm_Roll);
+                    State.MoveTo(_Fsm_Roll);
                     return false;
                 }
                 break;
@@ -289,7 +289,7 @@ public partial class Boulder
 
                 if (Speed.Y >= 1)
                 {
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
                 break;

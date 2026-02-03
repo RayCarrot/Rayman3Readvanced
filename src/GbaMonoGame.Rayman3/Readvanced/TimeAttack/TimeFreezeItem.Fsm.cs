@@ -42,7 +42,7 @@ public partial class TimeFreezeItem
                         timeDecrease.SetValue(TimeDecreaseSecondsValue);
                     }
 
-                    State.MoveTo(Fsm_Dying);
+                    State.MoveTo(_Fsm_Dying);
                     return false;
                 }
                 break;
@@ -99,7 +99,7 @@ public partial class TimeFreezeItem
 
                 if (Timer == DeathDuration)
                 {
-                    State.MoveTo(Fsm_Dead);
+                    State.MoveTo(_Fsm_Dead);
                     return false;
                 }
                 break;
@@ -137,7 +137,7 @@ public partial class TimeFreezeItem
 
                 if (Timer == SparklesFadeOutDuration)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;

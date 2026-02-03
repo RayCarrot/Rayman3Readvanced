@@ -20,7 +20,7 @@ public partial class Vines
     {
         if (HitPoints == 0)
         {
-            State.MoveTo(Fsm_Retract);
+            State.MoveTo(_Fsm_Retract);
             return false;
         }
 
@@ -36,7 +36,7 @@ public partial class Vines
                 break;
 
             case FsmAction.Step:
-                State.MoveTo(Fsm_Wait);
+                State.MoveTo(_Fsm_Wait);
                 return false;
 
             case FsmAction.UnInit:
@@ -61,7 +61,7 @@ public partial class Vines
 
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    State.MoveTo(Fsm_Extend);
+                    State.MoveTo(_Fsm_Extend);
                     return false;
                 }
                 break;
@@ -95,7 +95,7 @@ public partial class Vines
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Attack);
+                    State.MoveTo(_Fsm_Attack);
                     return false;
                 }
                 break;
@@ -153,7 +153,7 @@ public partial class Vines
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Respawn);
+                    State.MoveTo(_Fsm_Respawn);
                     return false;
                 }
                 break;
@@ -180,7 +180,7 @@ public partial class Vines
 
                 if (Timer == 80)
                 {
-                    State.MoveTo(Fsm_Wait);
+                    State.MoveTo(_Fsm_Wait);
                     return false;
                 }
                 break;

@@ -1,13 +1,17 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class BluePirate : PirateBaseActor
 {
     public BluePirate(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         SpawnsRedLum = ActionId is Action.Init_HasRedLum_Right or Action.Init_HasRedLum_Left;
         ReInit();
 
@@ -43,7 +47,7 @@ public sealed partial class BluePirate : PirateBaseActor
 
     protected override void ReInit()
     {
-        State.SetTo(Fsm_Fall);
+        State.SetTo(_Fsm_Fall);
         ChangeAction();
     }
 

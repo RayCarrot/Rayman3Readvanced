@@ -4,14 +4,18 @@ using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
+[GenerateFsmFields]
 public partial class TimeAttackScoreDialog : Dialog
 {
     public TimeAttackScoreDialog(Scene2D scene) : base(scene)
     {
+        CreateGeneratedStates();
+
         Timer = 0;
 
         // Get the map
@@ -21,7 +25,7 @@ public partial class TimeAttackScoreDialog : Dialog
         TimeAttackTime? recordTime = TimeAttackDataManager.GetRecordTime(MapId);
         NewRecord = recordTime == null || TimeAttackInfo.Timer < recordTime.Value.Time;
 
-        State.SetTo(Fsm_ShowTargets);
+        State.SetTo(_Fsm_ShowTargets);
     }
 
     private const int LineHeight = 16;

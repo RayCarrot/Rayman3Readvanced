@@ -53,7 +53,7 @@ public partial class ChainedSparkles
 
                 if (finished)
                 {
-                    State.MoveTo(Fsm_MoveToTarget);
+                    State.MoveTo(_Fsm_MoveToTarget);
                     return false;
                 }
                 break;
@@ -80,7 +80,7 @@ public partial class ChainedSparkles
 
                 if (Timer == 60)
                 {
-                    State.MoveTo(Fsm_MoveToTarget);
+                    State.MoveTo(_Fsm_MoveToTarget);
                     return false;
                 }
                 break;
@@ -126,7 +126,7 @@ public partial class ChainedSparkles
 
                 if (Math.Abs(posDiff.X) + Math.Abs(posDiff.Y) < 2)
                 {
-                    State.MoveTo(Fsm_SwirlAround);
+                    State.MoveTo(_Fsm_SwirlAround);
                     return false;
                 }
                 break;
@@ -180,13 +180,13 @@ public partial class ChainedSparkles
                 if (Timer >= TimerTarget)
                 {
                     ProcessMessage(this, Message.Destroy);
-                    State.MoveTo(Fsm_InitSwirl);
+                    State.MoveTo(_Fsm_InitSwirl);
                     return false;
                 }
 
                 if (ShouldUpdateTarget)
                 {
-                    State.MoveTo(Fsm_MoveToTarget);
+                    State.MoveTo(_Fsm_MoveToTarget);
                     return false;
                 }
                 break;
@@ -235,7 +235,7 @@ public partial class ChainedSparkles
                 if (Timer > 125)
                 {
                     ProcessMessage(this, Message.Destroy);
-                    State.MoveTo(Fsm_NewPower);
+                    State.MoveTo(_Fsm_NewPower);
                     return false;
                 }
                 break;

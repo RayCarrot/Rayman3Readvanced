@@ -111,7 +111,7 @@ public partial class CaptureTheFlagFlag
 
                 if (reset)
                 {
-                    State.MoveTo(Fsm_Reset);
+                    State.MoveTo(_Fsm_Reset);
                     return false;
                 }
                 break;
@@ -133,7 +133,7 @@ public partial class CaptureTheFlagFlag
                 break;
             
             case FsmAction.Step:
-                State.MoveTo(Fsm_Wait);
+                State.MoveTo(_Fsm_Wait);
                 break;
 
             case FsmAction.UnInit:

@@ -25,7 +25,7 @@ public partial class SamMode7
                     WaterSplashObj.ChangeAction();
                 }
 
-                State.MoveTo(Fsm_Move);
+                State.MoveTo(_Fsm_Move);
                 return false;
 
             case FsmAction.UnInit:
@@ -86,7 +86,7 @@ public partial class SamMode7
 
                 if (type == PhysicalTypeValue.MovingPlatform_Stop)
                 {
-                    State.MoveTo(Fsm_End);
+                    State.MoveTo(_Fsm_End);
                     return false;
                 }
 
@@ -96,7 +96,7 @@ public partial class SamMode7
                     if (Engine.LocalConfig.Tweaks.PlayCheatTriggerSound)
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
 
-                    State.MoveTo(Fsm_End);
+                    State.MoveTo(_Fsm_End);
                     return false;
                 }
                 break;

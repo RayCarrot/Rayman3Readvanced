@@ -1,19 +1,23 @@
 ﻿using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class CaptureTheFlagFlag : MovableActor
 {
     public CaptureTheFlagFlag(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         AnimatedObject.Palettes = Scene.MainActor.AnimatedObject.Palettes;
 
         Unused = null;
         AttachedPlayer = null;
         BaseActorId = actorResource.Links[0]!.Value;
 
-        State.SetTo(Fsm_Wait);
+        State.SetTo(_Fsm_Wait);
     }
 
     public Rayman AttachedPlayer { get; set; }
@@ -35,7 +39,7 @@ public sealed partial class CaptureTheFlagFlag : MovableActor
                 return false;
 
             case Message.CaptureTheFlagFlag_Drop:
-                State.MoveTo(Fsm_Dropped);
+                State.MoveTo(_Fsm_Dropped);
                 return false;
 
             default:
@@ -45,7 +49,7 @@ public sealed partial class CaptureTheFlagFlag : MovableActor
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
-        if (State == Fsm_Dropped)
+        if (State == _Fsm_Dropped)
             base.Draw(animationPlayer, forceDraw);
     }
 }

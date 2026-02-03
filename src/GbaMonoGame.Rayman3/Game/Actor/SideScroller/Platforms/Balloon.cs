@@ -1,12 +1,16 @@
 ﻿using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class Balloon : MovableActor
 {
     public Balloon(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         ShouldDraw = true;
 
         IsRespawnable = (Action)actorResource.FirstActionId is not (Action.Init_NotRespawnable or Action.Init_TimedNotRespawnable);
@@ -14,7 +18,7 @@ public sealed partial class Balloon : MovableActor
 
         LinkedBalloonId = actorResource.Links[0];
 
-        State.SetTo(Fsm_Inflate);
+        State.SetTo(_Fsm_Inflate);
 
         ChangeAction();
     }

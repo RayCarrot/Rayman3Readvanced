@@ -24,7 +24,7 @@ public partial class Spinneroo
         }
 
         // Check for distance to attack
-        if (State != Fsm_Attack)
+        if (State != _Fsm_Attack)
         {
             if (IsFacingRight && Scene.MainActor.Position.X > Position.X && Scene.MainActor.Position.X - Position.X <= 44)
                 attack = true;
@@ -34,19 +34,19 @@ public partial class Spinneroo
 
         if (HitPoints == 0)
         {
-            State.MoveTo(Fsm_Dying);
+            State.MoveTo(_Fsm_Dying);
             return false;
         }
 
         if (fall)
         {
-            State.MoveTo(Fsm_BeginFall);
+            State.MoveTo(_Fsm_BeginFall);
             return false;
         }
 
         if (attack)
         {
-            State.MoveTo(Fsm_Attack);
+            State.MoveTo(_Fsm_Attack);
             return false;
         }
 
@@ -69,7 +69,7 @@ public partial class Spinneroo
                 
                 if (Scene.IsDetectedMainActor(this, 0, 0, -120, 120)) 
                 {
-                    State.MoveTo(Fsm_Walk);
+                    State.MoveTo(_Fsm_Walk);
                     return false;
                 }
                 break;
@@ -98,7 +98,7 @@ public partial class Spinneroo
 
                 if (ShouldTurnAround())
                 {
-                    State.MoveTo(Fsm_TurnAround);
+                    State.MoveTo(_Fsm_TurnAround);
                     return false;
                 }
                 break;
@@ -122,7 +122,7 @@ public partial class Spinneroo
 
             case FsmAction.Step:
                 LevelMusicManager.PlaySpecialMusicIfDetected(this);
-                State.MoveTo(Fsm_Walk);
+                State.MoveTo(_Fsm_Walk);
                 return false;
 
             case FsmAction.UnInit:
@@ -149,7 +149,7 @@ public partial class Spinneroo
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Walk);
+                    State.MoveTo(_Fsm_Walk);
                     return false;
                 }
                 break;
@@ -191,13 +191,13 @@ public partial class Spinneroo
 
                 if (ShouldTurnAround())
                 {
-                    State.MoveTo(Fsm_TurnAround);
+                    State.MoveTo(_Fsm_TurnAround);
                     return false;
                 }
 
                 if (IsActionFinished && ActionId is Action.Attack2_Right or Action.Attack2_Left)
                 {
-                    State.MoveTo(Fsm_Walk);
+                    State.MoveTo(_Fsm_Walk);
                     return false;
                 }
                 break;
@@ -271,7 +271,7 @@ public partial class Spinneroo
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
                 break;
@@ -299,7 +299,7 @@ public partial class Spinneroo
 
                 if (type == PhysicalTypeValue.InstaKill || type == PhysicalTypeValue.MoltenLava)
                 {
-                    State.MoveTo(Fsm_Dying);
+                    State.MoveTo(_Fsm_Dying);
                     return false;
                 }
                 break;

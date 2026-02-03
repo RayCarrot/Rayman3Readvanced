@@ -3,13 +3,17 @@ using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class GrolgothProjectile : MovableActor
 {
     public GrolgothProjectile(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         Scale = 1;
         MissileTimer = -1;
         Rotation = Angle256.Zero;
@@ -23,7 +27,7 @@ public sealed partial class GrolgothProjectile : MovableActor
 
         AnimatedObject.ObjPriority = 10;
 
-        State.SetTo(Fsm_Default);
+        State.SetTo(_Fsm_Default);
     }
 
     public float Scale { get; set; }
@@ -326,7 +330,7 @@ public sealed partial class GrolgothProjectile : MovableActor
                         explosion.Position = Position;
                     }
 
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                 }
                 else if (ActionId != Action.FallingBomb)
                 {

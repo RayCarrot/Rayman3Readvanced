@@ -1,18 +1,22 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class RaymanMode7 : Mode7Actor
 {
     public RaymanMode7(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         SamActorId = actorResource.Links[0]!.Value;
         PrevCamAngle = Angle256.Zero;
         
-        State.SetTo(Fsm_Default);
+        State.SetTo(_Fsm_Default);
 
         AnimatedObject.BgPriority = 0;
         Direction = Angle256.Zero;

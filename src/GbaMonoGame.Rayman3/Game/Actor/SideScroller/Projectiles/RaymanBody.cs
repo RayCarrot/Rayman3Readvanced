@@ -1,16 +1,20 @@
 ﻿using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class RaymanBody : MovableActor
 {
     public RaymanBody(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         Rayman = (Rayman)Scene.MainActor;
         AnimatedObject.ObjPriority = 18;
 
-        State.SetTo(Fsm_Wait);
+        State.SetTo(_Fsm_Wait);
     }
 
     public Rayman Rayman { get; set; }
@@ -43,7 +47,7 @@ public sealed partial class RaymanBody : MovableActor
         switch (message)
         {
             case Message.RaymanBody_FinishAttack:
-                if (State != Fsm_MoveBackwards)
+                if (State != _Fsm_MoveBackwards)
                 {
                     if (BodyPartType == RaymanBodyPartType.Torso)
                         ActionId = IsFacingRight ? Action.Torso_MoveBackwards_Right : Action.Torso_MoveBackwards_Left;
@@ -51,7 +55,7 @@ public sealed partial class RaymanBody : MovableActor
                         ActionId = (Action)(BaseActionId + (IsFacingRight ? 4 : 3));
 
                     ChangeAction();
-                    State.MoveTo(Fsm_MoveBackwards);
+                    State.MoveTo(_Fsm_MoveBackwards);
                 }
                 SpawnHitEffect();
                 return false;

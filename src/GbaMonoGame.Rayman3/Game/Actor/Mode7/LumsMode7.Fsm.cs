@@ -16,7 +16,7 @@ public partial class LumsMode7
             case FsmAction.Step:
                 if (Scene.IsDetectedMainActor(this) && ((Mode7Actor)Scene.MainActor).ZPos < 24)
                 {
-                    State.MoveTo(Fsm_Collected);
+                    State.MoveTo(_Fsm_Collected);
                     return false;
                 }
                 break;
@@ -67,13 +67,13 @@ public partial class LumsMode7
 
                 if (RSMultiplayer.IsActive && Timer == MaxTimer)
                 {
-                    State.MoveTo(Fsm_MultiplayerIdle);
+                    State.MoveTo(_Fsm_MultiplayerIdle);
                     return false;
                 }
 
                 if (!RSMultiplayer.IsActive && Timer == MaxTimer)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;
@@ -124,7 +124,7 @@ public partial class LumsMode7
 
                 if (collected)
                 {
-                    State.MoveTo(Fsm_Collected);
+                    State.MoveTo(_Fsm_Collected);
                     return false;
                 }
                 break;

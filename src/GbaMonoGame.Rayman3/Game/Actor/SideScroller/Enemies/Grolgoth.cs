@@ -3,14 +3,18 @@ using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class Grolgoth : MovableActor
 {
     public Grolgoth(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         InitialYPosition = Position.Y;
         SavedAttackCount = 0;
 
@@ -26,19 +30,19 @@ public sealed partial class Grolgoth : MovableActor
             AttackCount = 8;
             BossHealth = 5;
             Timer = 0;
-            State.SetTo(Fsm_GroundFallDown);
+            State.SetTo(_Fsm_GroundFallDown);
             Position = Position with { Y = -30 };
         }
         else if (GameInfo.MapId == MapId.BossFinal_M2)
         {
             if (GameInfo.LastGreenLumAlive == 0 && !TimeAttackInfo.IsActive)
             {
-                State.SetTo(Fsm_AirInit);
+                State.SetTo(_Fsm_AirInit);
                 Timer = 0;
             }
             else
             {
-                State.SetTo(Fsm_AirDefault);
+                State.SetTo(_Fsm_AirDefault);
                 Timer = 300;
                 ActionId = Action.Air_Idle_Left;
             }
@@ -50,7 +54,7 @@ public sealed partial class Grolgoth : MovableActor
         else
         {
             // Not sure why this is here? The Grolgoth is randomly added to a lot of non-boss levels.
-            State.SetTo(Fsm_Invalid);
+            State.SetTo(_Fsm_Invalid);
         }
     }
 
@@ -402,17 +406,17 @@ public sealed partial class Grolgoth : MovableActor
         {
             // Hit by projectile
             case Message.Actor_Hurt:
-                if (State == Fsm_GroundDeployBomb) 
-                    State.MoveTo(Fsm_GroundHit);
-                else if (State == Fsm_AirDefault || State == Fsm_AirShootMissile)
-                    State.MoveTo(Fsm_AirHit1);
+                if (State == _Fsm_GroundDeployBomb) 
+                    State.MoveTo(_Fsm_GroundHit);
+                else if (State == _Fsm_AirDefault || State == _Fsm_AirShootMissile)
+                    State.MoveTo(_Fsm_AirHit1);
                 return false;
 
             // Projectile attack finished
             case Message.Actor_End:
-                if (State == Fsm_GroundDeployBomb) 
-                    State.MoveTo(Fsm_GroundDefault);
-                else if ((State == Fsm_GroundFallDown || State == Fsm_AirAttack) && AttackCount != 0)
+                if (State == _Fsm_GroundDeployBomb) 
+                    State.MoveTo(_Fsm_GroundDefault);
+                else if ((State == _Fsm_GroundFallDown || State == _Fsm_AirAttack) && AttackCount != 0)
                     AttackCount--;
                 return false;
 

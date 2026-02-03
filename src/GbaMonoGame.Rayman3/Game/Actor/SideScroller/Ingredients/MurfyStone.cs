@@ -1,12 +1,16 @@
 ﻿using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class MurfyStone : BaseActor
 {
     public MurfyStone(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         // Disable Murfy stones for the time attack mode
         if (TimeAttackInfo.IsActive)
             ProcessMessage(this, Message.Destroy);
@@ -14,7 +18,7 @@ public sealed partial class MurfyStone : BaseActor
         MurfyId = actorResource.Links[0];
         AnimatedObject.ObjPriority = 63;
         Timer = 181;
-        State.SetTo(Fsm_Default);
+        State.SetTo(_Fsm_Default);
     }
 
     public int? MurfyId { get; }

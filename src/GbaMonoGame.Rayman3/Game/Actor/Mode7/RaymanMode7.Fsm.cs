@@ -31,7 +31,7 @@ public partial class RaymanMode7
                 PhysicalType type2 = Scene.GetPhysicalType(Position + new Vector2(dir.Y, dir.X) * Tile.Size);
                 PhysicalType type3 = Scene.GetPhysicalType(Position - new Vector2(dir.Y, dir.X) * Tile.Size);
 
-                if ((type3 == PhysicalTypeValue.Damage || type2 == PhysicalTypeValue.Damage || type1 == PhysicalTypeValue.Damage) && State != Fsm_Jump) 
+                if ((type3 == PhysicalTypeValue.Damage || type2 == PhysicalTypeValue.Damage || type1 == PhysicalTypeValue.Damage) && State != _Fsm_Jump) 
                 {
                     if (GameInfo.MapId == MapId.MarshAwakening1)
                         ((MarshAwakening1)Frame.Current).CanShowTextBox = true;
@@ -45,14 +45,14 @@ public partial class RaymanMode7
 
             if (HitPoints == 0)
             {
-                State.MoveTo(Fsm_Death);
+                State.MoveTo(_Fsm_Death);
                 return false;
             }
 
             if (HitPoints < PrevHitPoints)
             {
                 PrevHitPoints = HitPoints;
-                State.MoveTo(Fsm_Hit);
+                State.MoveTo(_Fsm_Hit);
                 return false;
             }
         }
@@ -182,7 +182,7 @@ public partial class RaymanMode7
 
                 if (JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump) && ProcessJoypad)
                 {
-                    State.MoveTo(Fsm_Jump);
+                    State.MoveTo(_Fsm_Jump);
                     return false;
                 }
                 break;
@@ -230,7 +230,7 @@ public partial class RaymanMode7
 
                 if (ZPos <= 0)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;
@@ -268,7 +268,7 @@ public partial class RaymanMode7
                 AnimatedObject.Timer = animTimer;
                 AnimatedObject.IsDelayMode = isDelayMode;
 
-                State.MoveTo(Fsm_Default);
+                State.MoveTo(_Fsm_Default);
                 return false;
 
             case FsmAction.UnInit:

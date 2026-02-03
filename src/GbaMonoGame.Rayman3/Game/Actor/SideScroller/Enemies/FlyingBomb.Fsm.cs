@@ -10,7 +10,7 @@ public partial class FlyingBomb
     {
         if (HitPoints == 0)
         {
-            State.MoveTo(Fsm_Destroyed);
+            State.MoveTo(_Fsm_Destroyed);
             return false;
         }
 
@@ -103,7 +103,7 @@ public partial class FlyingBomb
 
                 if (Destroyed || HitWall())
                 {
-                    State.MoveTo(Fsm_Destroyed);
+                    State.MoveTo(_Fsm_Destroyed);
                     return false;
                 }
 
@@ -113,7 +113,7 @@ public partial class FlyingBomb
                     PhysicalTypeValue.Enemy_Up or 
                     PhysicalTypeValue.Enemy_Down)
                 {
-                    State.MoveTo(Fsm_Move);
+                    State.MoveTo(_Fsm_Move);
                     return false;
                 }
                 break;
@@ -140,7 +140,7 @@ public partial class FlyingBomb
 
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    State.MoveTo(Fsm_Shake);
+                    State.MoveTo(_Fsm_Shake);
                     return false;
                 }
                 break;
@@ -186,7 +186,7 @@ public partial class FlyingBomb
 
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    State.MoveTo(Fsm_Attack);
+                    State.MoveTo(_Fsm_Attack);
                     return false;
                 }
                 break;
@@ -258,7 +258,7 @@ public partial class FlyingBomb
 
                 if (Destroyed || HitWall())
                 {
-                    State.MoveTo(Fsm_Destroyed);
+                    State.MoveTo(_Fsm_Destroyed);
                     return false;
                 }
                 break;
@@ -293,7 +293,7 @@ public partial class FlyingBomb
 
                 if (Destroyed)
                 {
-                    State.MoveTo(Fsm_Destroyed);
+                    State.MoveTo(_Fsm_Destroyed);
                     return false;
                 }
                 break;
@@ -327,7 +327,7 @@ public partial class FlyingBomb
                 if (explosion != null)
                     explosion.Position = Position;
 
-                State.MoveTo(Fsm_Move);
+                State.MoveTo(_Fsm_Move);
                 return false;
 
             case FsmAction.UnInit:

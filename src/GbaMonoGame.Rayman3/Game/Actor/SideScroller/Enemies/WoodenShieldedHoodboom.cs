@@ -1,14 +1,18 @@
 ﻿using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
 // Original name: CagoulardBouclier
+[GenerateFsmFields]
 public sealed partial class WoodenShieldedHoodboom : InteractableActor
 {
     public WoodenShieldedHoodboom(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene,
         actorResource)
     {
+        CreateGeneratedStates();
+
         PrevHitPoints = HitPoints;
         TauntFlag = false;
         PerformHitKnockback = false;
@@ -19,7 +23,7 @@ public sealed partial class WoodenShieldedHoodboom : InteractableActor
 
         IsObjectCollisionXOnly = true;
 
-        State.SetTo(Fsm_Idle);
+        State.SetTo(_Fsm_Idle);
     }
 
     public int PrevHitPoints { get; set; }
@@ -55,8 +59,8 @@ public sealed partial class WoodenShieldedHoodboom : InteractableActor
 
                     if (ActionId is Action.ShieldedBreakShield_Right or Action.ShieldedBreakShield_Left)
                         HitPoints = PrevHitPoints;
-                    else if (State != Fsm_Hit || JustHitShield)
-                        State.MoveTo(Fsm_Hit);
+                    else if (State != _Fsm_Hit || JustHitShield)
+                        State.MoveTo(_Fsm_Hit);
                 }
                 return false;
 

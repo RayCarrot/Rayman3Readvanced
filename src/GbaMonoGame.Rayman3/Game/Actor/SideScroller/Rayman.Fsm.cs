@@ -24,14 +24,14 @@ public partial class Rayman
         // Check for hit
         if (ManageHit())
         {
-            State.MoveTo(Fsm_Hit);
+            State.MoveTo(_Fsm_Hit);
             return false;
         }
 
         // Jump while sliding
         if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && SlideType != null)
         {
-            State.MoveTo(Fsm_JumpSlide);
+            State.MoveTo(_Fsm_JumpSlide);
             return false;
         }
 
@@ -40,7 +40,7 @@ public partial class Rayman
         {
             PlaySound(Rayman3SoundEvent.Stop__SldGreen_SkiLoop1);
 
-            State.MoveTo(Fsm_JumpSlide);
+            State.MoveTo(_Fsm_JumpSlide);
             return false;
         }
 
@@ -51,10 +51,10 @@ public partial class Rayman
     {
         // Check for hit
         if (ManageHit() &&
-            (State == Fsm_StopHelico ||
-             State == Fsm_Helico ||
-             State == Fsm_Jump ||
-             State == Fsm_JumpSlide) &&
+            (State == _Fsm_StopHelico ||
+             State == _Fsm_Helico ||
+             State == _Fsm_Jump ||
+             State == _Fsm_JumpSlide) &&
             ActionId is not (
                 Action.Damage_Knockback_Right or
                 Action.Damage_Knockback_Left or
@@ -87,7 +87,7 @@ public partial class Rayman
         // Check if dead
         if (HitPoints == 0)
         {
-            State.MoveTo(Fsm_Dying);
+            State.MoveTo(_Fsm_Dying);
             return false;
         }
 
@@ -112,36 +112,36 @@ public partial class Rayman
 
         // Update the camera
         if (IsLocalPlayer &&
-            State != Fsm_Jump &&
-            State != Fsm_BodyShotAttack &&
-            State != Fsm_RidingWalkingShell &&
-            State != Fsm_EnterLevelCurtain &&
-            State != Fsm_LockedLevelCurtain &&
+            State != _Fsm_Jump &&
+            State != _Fsm_BodyShotAttack &&
+            State != _Fsm_RidingWalkingShell &&
+            State != _Fsm_EnterLevelCurtain &&
+            State != _Fsm_LockedLevelCurtain &&
             !IsInFrontOfLevelCurtain)
         {
-            if (State != Fsm_SuperHelico &&
+            if (State != _Fsm_SuperHelico &&
                 IsDirectionalButtonPressed(Rayman3Input.ActorDown) &&
-                (Speed.Y > 0 || State == Fsm_Crouch) &&
-                State != Fsm_Climb)
+                (Speed.Y > 0 || State == _Fsm_Crouch) &&
+                State != _Fsm_Climb)
             {
                 CameraTargetY = 70;
                 cam.ProcessMessage(this, Message.Cam_FollowPositionY, CameraTargetY);
             }
-            else if (IsDirectionalButtonPressed(Rayman3Input.ActorUp) && (State == Fsm_Default || State == Fsm_HangOnEdge))
+            else if (IsDirectionalButtonPressed(Rayman3Input.ActorUp) && (State == _Fsm_Default || State == _Fsm_HangOnEdge))
             {
                 CameraTargetY = 160;
                 cam.ProcessMessage(this, Message.Cam_FollowPositionY, CameraTargetY);
             }
-            else if (State == Fsm_Helico && !IsSuperHelicoActive)
+            else if (State == _Fsm_Helico && !IsSuperHelicoActive)
             {
                 cam.ProcessMessage(this, Message.Cam_DoNotFollowPositionY, CameraTargetY);
             }
-            else if (State == Fsm_Swing)
+            else if (State == _Fsm_Swing)
             {
                 CameraTargetY = 65;
                 cam.ProcessMessage(this, Message.Cam_FollowPositionY, CameraTargetY);
             }
-            else if (State == Fsm_Climb || State == Fsm_SuperHelico)
+            else if (State == _Fsm_Climb || State == _Fsm_SuperHelico)
             {
                 CameraTargetY = 112;
                 cam.ProcessMessage(this, Message.Cam_FollowPositionY, CameraTargetY);
@@ -160,11 +160,11 @@ public partial class Rayman
         if (CheckDeath())
         {
             if (RSMultiplayer.IsActive)
-                State.MoveTo(Fsm_MultiplayerDying);
+                State.MoveTo(_Fsm_MultiplayerDying);
             else if (!Engine.ActiveConfig.Difficulty.NoInstaKills || HitPoints <= 2)
-                State.MoveTo(Fsm_Dying);
+                State.MoveTo(_Fsm_Dying);
             else
-                State.MoveTo(Fsm_RespawnDeath);
+                State.MoveTo(_Fsm_RespawnDeath);
 
             return false;
         }
@@ -221,7 +221,7 @@ public partial class Rayman
 
                 if (IsActionFinished && (!RSMultiplayer.IsActive || Timer >= 210))
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;
@@ -371,7 +371,7 @@ public partial class Rayman
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && CanJump)
                 {
                     PlaySound(Rayman3SoundEvent.Stop__Grimace1_Mix04);
-                    State.MoveTo(Fsm_Jump);
+                    State.MoveTo(_Fsm_Jump);
                     return false;
                 }
 
@@ -380,7 +380,7 @@ public partial class Rayman
                 {
                     NextActionId = IsFacingRight ? Action.CrouchDown_Right : Action.CrouchDown_Left;
                     PlaySound(Rayman3SoundEvent.Stop__Grimace1_Mix04);
-                    State.MoveTo(Fsm_Crouch);
+                    State.MoveTo(_Fsm_Crouch);
                     return false;
                 }
 
@@ -388,7 +388,7 @@ public partial class Rayman
                 if (Speed.Y > 1)
                 {
                     PlaySound(Rayman3SoundEvent.Stop__Grimace1_Mix04);
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
 
@@ -396,7 +396,7 @@ public partial class Rayman
                 if (IsDirectionalButtonPressed(Rayman3Input.ActorLeft) || IsDirectionalButtonPressed(Rayman3Input.ActorRight))
                 {
                     PlaySound(Rayman3SoundEvent.Stop__Grimace1_Mix04);
-                    State.MoveTo(Fsm_Walk);
+                    State.MoveTo(_Fsm_Walk);
                     return false;
                 }
 
@@ -404,7 +404,7 @@ public partial class Rayman
                 if (DisableAttackTimer == 0 && MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorAttack) && CanAttackWithFist(2))
                 {
                     PlaySound(Rayman3SoundEvent.Stop__Grimace1_Mix04);
-                    State.MoveTo(Fsm_Attack);
+                    State.MoveTo(_Fsm_Attack);
                     return false;
                 }
 
@@ -413,7 +413,7 @@ public partial class Rayman
                 {
                     PlaySound(Rayman3SoundEvent.Stop__Grimace1_Mix04);
                     Position += new Vector2(PreviousXSpeed < 0 ? -16 : 16, 0);
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
 
@@ -421,7 +421,7 @@ public partial class Rayman
                 if (PreviousXSpeed == 0 && IsNearEdge() != 0 && !DisableNearEdge)
                 {
                     PlaySound(Rayman3SoundEvent.Stop__Grimace1_Mix04);
-                    State.MoveTo(Fsm_StandingNearEdge);
+                    State.MoveTo(_Fsm_StandingNearEdge);
                     return false;
                 }
 
@@ -437,7 +437,7 @@ public partial class Rayman
                      Timer > 720))
                 {
                     SetRandomIdleAction();
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
 
@@ -521,42 +521,42 @@ public partial class Rayman
                 // Walk
                 if (IsDirectionalButtonPressed(Rayman3Input.ActorLeft) || IsDirectionalButtonPressed(Rayman3Input.ActorRight))
                 {
-                    State.MoveTo(Fsm_Walk);
+                    State.MoveTo(_Fsm_Walk);
                     return false;
                 }
 
                 // Crouch
                 if (IsDirectionalButtonPressed(Rayman3Input.ActorDown))
                 {
-                    State.MoveTo(Fsm_Crouch);
+                    State.MoveTo(_Fsm_Crouch);
                     return false;
                 }
 
                 // Jump
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump))
                 {
-                    State.MoveTo(Fsm_Jump);
+                    State.MoveTo(_Fsm_Jump);
                     return false;
                 }
 
                 // Fall
                 if (Speed.Y > 1)
                 {
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
 
                 // Punch
                 if (MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorAttack) && CanAttackWithFist(2))
                 {
-                    State.MoveTo(Fsm_Attack);
+                    State.MoveTo(_Fsm_Attack);
                     return false;
                 }
 
                 // Default if no longer near edge
                 if (IsNearEdge() == 0)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;
@@ -767,7 +767,7 @@ public partial class Rayman
                         Action.Walk_Right or Action.Walk_Left or
                         Action.WalkFast_Right or Action.WalkFast_Left)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
 
@@ -776,21 +776,21 @@ public partial class Rayman
                     ActionId is Action.Walk_LookAround_Right or Action.Walk_LookAround_Left)
                 {
                     NextActionId = IsFacingRight ? Action.Idle_Shout_Right : Action.Idle_Shout_Left;
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
 
                 // Crawl
                 if (IsDirectionalButtonPressed(Rayman3Input.ActorDown))
                 {
-                    State.MoveTo(Fsm_Crawl);
+                    State.MoveTo(_Fsm_Crawl);
                     return false;
                 }
 
                 // Jump
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump))
                 {
-                    State.MoveTo(Fsm_Jump);
+                    State.MoveTo(_Fsm_Jump);
                     return false;
                 }
 
@@ -798,21 +798,21 @@ public partial class Rayman
                 if (PreviousXSpeed != 0 && Speed.Y > 1)
                 {
                     Position += new Vector2(IsFacingLeft ? -16 : 16, 0);
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
 
                 // Fall
                 if (Speed.Y > 1 && Timer >= 8)
                 {
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
 
                 // Charge punch
                 if (DisableAttackTimer == 0 && Charge > 10 && MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorAttack) && CanAttackWithFist(2))
                 {
-                    State.MoveTo(Fsm_Attack);
+                    State.MoveTo(_Fsm_Attack);
                     return false;
                 }
                 break;
@@ -883,35 +883,35 @@ public partial class Rayman
                 if (HasLanded())
                 {
                     NextActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
 
                 // Fall
                 if (GameTime.ElapsedFrames - Timer > 50)
                 {
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
 
                 // Hang on edge
                 if (IsNearHangableEdge())
                 {
-                    State.MoveTo(Fsm_HangOnEdge);
+                    State.MoveTo(_Fsm_HangOnEdge);
                     return false;
                 }
 
                 // Helico
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && !IsSuperHelicoActive)
                 {
-                    State.MoveTo(Fsm_Helico);
+                    State.MoveTo(_Fsm_Helico);
                     return false;
                 }
 
                 // Super helico
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && IsSuperHelicoActive)
                 {
-                    State.MoveTo(Fsm_SuperHelico);
+                    State.MoveTo(_Fsm_SuperHelico);
                     return false;
                 }
 
@@ -919,14 +919,14 @@ public partial class Rayman
                 if (IsOnHangable())
                 {
                     BeginHang();
-                    State.MoveTo(Fsm_Hang);
+                    State.MoveTo(_Fsm_Hang);
                     return false;
                 }
 
                 // Climb
                 if (GameTime.ElapsedFrames - Timer > 10 && IsOnClimbableVertical() == ClimbDirection.TopAndBottom)
                 {
-                    State.MoveTo(Fsm_Climb);
+                    State.MoveTo(_Fsm_Climb);
                     return false;
                 }
 
@@ -934,14 +934,14 @@ public partial class Rayman
                 if (MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorSpecialLeft) && IsOnWallJumpable())
                 {
                     BeginWallJump();
-                    State.MoveTo(Fsm_WallJumpIdle);
+                    State.MoveTo(_Fsm_WallJumpIdle);
                     return false;
                 }
 
                 // Attack with body
                 if (speedY < 4 && MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorSpecialRight) && HasPower(Power.BodyShot) && CanAttackWithBody())
                 {
-                    State.MoveTo(Fsm_BodyShotAttack);
+                    State.MoveTo(_Fsm_BodyShotAttack);
                     return false;
                 }
                 break;
@@ -982,14 +982,14 @@ public partial class Rayman
                 {
                     PreviousXSpeed = 0;
                     NextActionId = IsFacingRight ? Action.Sliding_Land_Right : Action.Sliding_Land_Left;
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
 
                 // Fall
                 if (speedY > 3.4375)
                 {
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
 
@@ -997,21 +997,21 @@ public partial class Rayman
                 if (IsNearHangableEdge())
                 {
                     PreviousXSpeed = 0;
-                    State.MoveTo(Fsm_HangOnEdge);
+                    State.MoveTo(_Fsm_HangOnEdge);
                     return false;
                 }
 
                 // Helico
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && !IsSuperHelicoActive && GameTime.ElapsedFrames - Timer > 5)
                 {
-                    State.MoveTo(Fsm_Helico);
+                    State.MoveTo(_Fsm_Helico);
                     return false;
                 }
 
                 // Super helico
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && IsSuperHelicoActive && GameTime.ElapsedFrames - Timer > 5)
                 {
-                    State.MoveTo(Fsm_SuperHelico);
+                    State.MoveTo(_Fsm_SuperHelico);
                     return false;
                 }
 
@@ -1020,13 +1020,13 @@ public partial class Rayman
                 {
                     PreviousXSpeed = 0;
                     BeginHang();
-                    State.MoveTo(Fsm_Hang);
+                    State.MoveTo(_Fsm_Hang);
                 }
 
                 if (IsOnClimbableVertical() == ClimbDirection.TopAndBottom)
                 {
                     PreviousXSpeed = 0;
-                    State.MoveTo(Fsm_Climb);
+                    State.MoveTo(_Fsm_Climb);
                     return false;
                 }
                 break;
@@ -1074,7 +1074,7 @@ public partial class Rayman
                 {
                     HangOnEdgeDelay = 30;
                     PlaySound(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01);
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
 
@@ -1082,14 +1082,14 @@ public partial class Rayman
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump))
                 {
                     HangOnEdgeDelay = 30;
-                    State.MoveTo(Fsm_Jump);
+                    State.MoveTo(_Fsm_Jump);
                     return false;
                 }
 
                 // Attack
                 if (MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorAttack) && CanAttackWithFoot())
                 {
-                    State.MoveTo(Fsm_Attack);
+                    State.MoveTo(_Fsm_Attack);
                     return false;
                 }
                 break;
@@ -1130,28 +1130,28 @@ public partial class Rayman
                 // Jump
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && CanSafetyJump)
                 {
-                    State.MoveTo(Fsm_Jump);
+                    State.MoveTo(_Fsm_Jump);
                     return false;
                 }
 
                 // Helico
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && !IsSuperHelicoActive)
                 {
-                    State.MoveTo(Fsm_Helico);
+                    State.MoveTo(_Fsm_Helico);
                     return false;
                 }
 
                 // Super helico
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && IsSuperHelicoActive)
                 {
-                    State.MoveTo(Fsm_SuperHelico);
+                    State.MoveTo(_Fsm_SuperHelico);
                     return false;
                 }
 
                 // Hang on edge
                 if (IsNearHangableEdge())
                 {
-                    State.MoveTo(Fsm_HangOnEdge);
+                    State.MoveTo(_Fsm_HangOnEdge);
                     return false;
                 }
 
@@ -1159,7 +1159,7 @@ public partial class Rayman
                 if (HasLanded())
                 {
                     NextActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
 
@@ -1167,14 +1167,14 @@ public partial class Rayman
                 if (IsOnHangable())
                 {
                     BeginHang();
-                    State.MoveTo(Fsm_Hang);
+                    State.MoveTo(_Fsm_Hang);
                     return false;
                 }
 
                 // Climb
                 if (IsOnClimbableVertical() == ClimbDirection.TopAndBottom)
                 {
-                    State.MoveTo(Fsm_Climb);
+                    State.MoveTo(_Fsm_Climb);
                     return false;
                 }
 
@@ -1182,7 +1182,7 @@ public partial class Rayman
                 if (MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorSpecialLeft) && IsOnWallJumpable())
                 {
                     BeginWallJump();
-                    State.MoveTo(Fsm_WallJumpIdle);
+                    State.MoveTo(_Fsm_WallJumpIdle);
                     return false;
                 }
                 break;
@@ -1224,7 +1224,7 @@ public partial class Rayman
                 // Hang on edge
                 if (IsNearHangableEdge())
                 {
-                    State.MoveTo(Fsm_HangOnEdge);
+                    State.MoveTo(_Fsm_HangOnEdge);
                     return false;
                 }
 
@@ -1232,21 +1232,21 @@ public partial class Rayman
                 if (HasLanded())
                 {
                     NextActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
 
                 // Stop helico
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) || MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorAttack))
                 {
-                    State.MoveTo(Fsm_StopHelico);
+                    State.MoveTo(_Fsm_StopHelico);
                     return false;
                 }
 
                 // Helico time out
                 if (GameTime.ElapsedFrames - Timer > 40)
                 {
-                    State.MoveTo(Fsm_TimeoutHelico);
+                    State.MoveTo(_Fsm_TimeoutHelico);
                     return false;
                 }
 
@@ -1254,14 +1254,14 @@ public partial class Rayman
                 if (IsOnHangable())
                 {
                     BeginHang();
-                    State.MoveTo(Fsm_Hang);
+                    State.MoveTo(_Fsm_Hang);
                     return false;
                 }
 
                 // Climb
                 if (IsOnClimbableVertical() == ClimbDirection.TopAndBottom)
                 {
-                    State.MoveTo(Fsm_Climb);
+                    State.MoveTo(_Fsm_Climb);
                     return false;
                 }
 
@@ -1269,21 +1269,21 @@ public partial class Rayman
                 if (MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorSpecialLeft) && IsOnWallJumpable())
                 {
                     BeginWallJump();
-                    State.MoveTo(Fsm_WallJumpIdle);
+                    State.MoveTo(_Fsm_WallJumpIdle);
                     return false;
                 }
 
                 // Attack with body
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorSpecialRight) && HasPower(Power.BodyShot) && CanAttackWithBody())
                 {
-                    State.MoveTo(Fsm_BodyShotAttack);
+                    State.MoveTo(_Fsm_BodyShotAttack);
                     return false;
                 }
 
                 // Super helico
                 if (IsSuperHelicoActive)
                 {
-                    State.MoveTo(Fsm_SuperHelico);
+                    State.MoveTo(_Fsm_SuperHelico);
                     return false;
                 }
                 break;
@@ -1489,7 +1489,7 @@ public partial class Rayman
                 // Hang on edge
                 if (IsNearHangableEdge())
                 {
-                    State.MoveTo(Fsm_HangOnEdge);
+                    State.MoveTo(_Fsm_HangOnEdge);
                     return false;
                 }
 
@@ -1497,7 +1497,7 @@ public partial class Rayman
                 if (HasLanded())
                 {
                     NextActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
 
@@ -1505,7 +1505,7 @@ public partial class Rayman
                 if (!IsSuperHelicoActive)
                 {
                     PlaySound(Rayman3SoundEvent.Play__Tag_Mix02);
-                    State.MoveTo(Fsm_StopHelico);
+                    State.MoveTo(_Fsm_StopHelico);
                     return false;
                 }
 
@@ -1513,14 +1513,14 @@ public partial class Rayman
                 if (IsOnHangable())
                 {
                     BeginHang();
-                    State.MoveTo(Fsm_Hang);
+                    State.MoveTo(_Fsm_Hang);
                     return false;
                 }
 
                 // Climb
                 if (IsOnClimbableVertical() == ClimbDirection.TopAndBottom)
                 {
-                    State.MoveTo(Fsm_Climb);
+                    State.MoveTo(_Fsm_Climb);
                     return false;
                 }
 
@@ -1528,7 +1528,7 @@ public partial class Rayman
                 if (MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorSpecialLeft) && IsOnWallJumpable())
                 {
                     BeginWallJump();
-                    State.MoveTo(Fsm_WallJumpIdle);
+                    State.MoveTo(_Fsm_WallJumpIdle);
                     return false;
                 }
                 break;
@@ -1564,33 +1564,33 @@ public partial class Rayman
 
                 if (IsNearHangableEdge())
                 {
-                    State.MoveTo(Fsm_HangOnEdge);
+                    State.MoveTo(_Fsm_HangOnEdge);
                     return false;
                 }
 
                 if (HasLanded())
                 {
                     NextActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
 
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && IsSuperHelicoActive)
                 {
-                    State.MoveTo(Fsm_SuperHelico);
+                    State.MoveTo(_Fsm_SuperHelico);
                     return false;
                 }
 
                 if (IsOnClimbableVertical() == ClimbDirection.TopAndBottom)
                 {
-                    State.MoveTo(Fsm_Climb);
+                    State.MoveTo(_Fsm_Climb);
                     return false;
                 }
 
                 if (MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorSpecialLeft) && IsOnWallJumpable())
                 {
                     BeginWallJump();
-                    State.MoveTo(Fsm_WallJumpIdle);
+                    State.MoveTo(_Fsm_WallJumpIdle);
                     return false;
                 }
                 break;
@@ -1628,7 +1628,7 @@ public partial class Rayman
 
                 if (IsNearHangableEdge())
                 {
-                    State.MoveTo(Fsm_HangOnEdge);
+                    State.MoveTo(_Fsm_HangOnEdge);
                     return false;
                 }
 
@@ -1636,39 +1636,39 @@ public partial class Rayman
                 {
                     NextActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
                     PlaySound(Rayman3SoundEvent.Play__HeliCut_Mix01);
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
 
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) || MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorAttack) || Timer > 50)
                 {
-                    State.MoveTo(Fsm_StopHelico);
+                    State.MoveTo(_Fsm_StopHelico);
                     return false;
                 }
 
                 if (IsOnHangable())
                 {
                     BeginHang();
-                    State.MoveTo(Fsm_Hang);
+                    State.MoveTo(_Fsm_Hang);
                     return false;
                 }
 
                 if (IsOnClimbableVertical() == ClimbDirection.TopAndBottom)
                 {
-                    State.MoveTo(Fsm_Climb);
+                    State.MoveTo(_Fsm_Climb);
                     return false;
                 }
 
                 if (MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorSpecialLeft) && IsOnWallJumpable())
                 {
                     BeginWallJump();
-                    State.MoveTo(Fsm_WallJumpIdle);
+                    State.MoveTo(_Fsm_WallJumpIdle);
                     return false;
                 }
 
                 if (IsSuperHelicoActive)
                 {
-                    State.MoveTo(Fsm_SuperHelico);
+                    State.MoveTo(_Fsm_SuperHelico);
                     return false;
                 }
                 break;
@@ -1788,28 +1788,28 @@ public partial class Rayman
                 // Let go of down and stop crouching
                 if (IsDirectionalButtonReleased(Rayman3Input.ActorDown) && !topType.IsSolid)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
 
                 // Crawl
                 if (IsDirectionalButtonPressed(Rayman3Input.ActorLeft) || IsDirectionalButtonPressed(Rayman3Input.ActorRight))
                 {
-                    State.MoveTo(Fsm_Crawl);
+                    State.MoveTo(_Fsm_Crawl);
                     return false;
                 }
 
                 // Fall
                 if (Speed.Y > 1)
                 {
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
 
                 // Jump
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && !topType.IsSolid && CanJump)
                 {
-                    State.MoveTo(Fsm_Jump);
+                    State.MoveTo(_Fsm_Jump);
                     return false;
                 }
                 break;
@@ -1902,35 +1902,35 @@ public partial class Rayman
                 // Walk
                 if (IsDirectionalButtonReleased(Rayman3Input.ActorDown) && (IsDirectionalButtonPressed(Rayman3Input.ActorLeft) || IsDirectionalButtonPressed(Rayman3Input.ActorRight)) && !topType.IsSolid)
                 {
-                    State.MoveTo(Fsm_Walk);
+                    State.MoveTo(_Fsm_Walk);
                     return false;
                 }
 
                 // Stopped crouching/crawling
                 if (IsDirectionalButtonReleased(Rayman3Input.ActorDown) && IsDirectionalButtonReleased(Rayman3Input.ActorLeft) && IsDirectionalButtonReleased(Rayman3Input.ActorRight) && !topType.IsSolid)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
 
                 // Crouch
                 if (IsDirectionalButtonReleased(Rayman3Input.ActorRight) && IsDirectionalButtonReleased(Rayman3Input.ActorLeft))
                 {
-                    State.MoveTo(Fsm_Crouch);
+                    State.MoveTo(_Fsm_Crouch);
                     return false;
                 }
 
                 // Jump
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && !topType.IsSolid)
                 {
-                    State.MoveTo(Fsm_Jump);
+                    State.MoveTo(_Fsm_Jump);
                     return false;
                 }
 
                 // Fall
                 if (Speed.Y > 1)
                 {
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
                 break;
@@ -2198,37 +2198,37 @@ public partial class Rayman
                 {
                     IsHanging = false;
                     PlaySound(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01);
-                    State.MoveTo(Fsm_StopHelico);
+                    State.MoveTo(_Fsm_StopHelico);
                     return false;
                 }
 
                 if (type == 2)
                 {
-                    State.MoveTo(Fsm_Hang);
+                    State.MoveTo(_Fsm_Hang);
                     return false;
                 }
 
                 if (type == 4)
                 {
-                    State.MoveTo(Fsm_Climb);
+                    State.MoveTo(_Fsm_Climb);
                     return false;
                 }
 
                 if (type == 3)
                 {
-                    State.MoveTo(Fsm_HangOnEdge);
+                    State.MoveTo(_Fsm_HangOnEdge);
                     return false;
                 }
 
                 if (type == 1 && AttachedObject?.Type == (int)ActorType.Plum)
                 {
-                    State.MoveTo(Fsm_OnPlum);
+                    State.MoveTo(_Fsm_OnPlum);
                     return false;
                 }
 
                 if (type == 1)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
 
@@ -2237,13 +2237,13 @@ public partial class Rayman
                     ActionId is Action.Damage_Shock_Right or Action.Damage_Shock_Left)
                 {
                     ActionId = IsFacingRight ? Action.Damage_Hit_Right : Action.Damage_Hit_Left;
-                    State.MoveTo(Fsm_Hit);
+                    State.MoveTo(_Fsm_Hit);
                     return false;
                 }
 
                 if (Speed.Y > 1 && AttachedObject?.Type != (int)ActorType.Plum)
                 {
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
                 break;
@@ -2295,13 +2295,13 @@ public partial class Rayman
 
                 if (IsActionFinished && !IsSuperHelicoActive)
                 {
-                    State.MoveTo(Fsm_TimeoutHelico);
+                    State.MoveTo(_Fsm_TimeoutHelico);
                     return false;
                 }
 
                 if (IsActionFinished && IsSuperHelicoActive)
                 {
-                    State.MoveTo(Fsm_SuperHelico);
+                    State.MoveTo(_Fsm_SuperHelico);
                     return false;
                 }
                 break;
@@ -2330,7 +2330,7 @@ public partial class Rayman
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_StopHelico);
+                    State.MoveTo(_Fsm_StopHelico);
                     return false;
                 }
                 break;
@@ -2387,19 +2387,19 @@ public partial class Rayman
 
                 if (Engine.ActiveConfig.Tweaks.VersatileWalljumps && MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump))
                 {
-                    State.MoveTo(Fsm_Helico);
+                    State.MoveTo(_Fsm_Helico);
                     return false;
                 }
 
                 if (!IsOnWallJumpable())
                 {
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
 
                 if (MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorSpecialLeft))
                 {
-                    State.MoveTo(Fsm_WallJumpIdle);
+                    State.MoveTo(_Fsm_WallJumpIdle);
                     return false;
                 }
                 break;
@@ -2454,21 +2454,21 @@ public partial class Rayman
 
                 if (ActionId == Action.WallJump_Idle && MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump))
                 {
-                    State.MoveTo(Fsm_WallJump);
+                    State.MoveTo(_Fsm_WallJump);
                     return false;
                 }
 
                 if ((ActionId == Action.WallJump_Idle && Timer > 60) ||
                     (ActionId == Action.WallJump_IdleStill && Timer > 120))
                 {
-                    State.MoveTo(Fsm_WallJumpFall);
+                    State.MoveTo(_Fsm_WallJumpFall);
                     return false;
                 }
 
                 if (DisableWallJumps)
                 {
                     DisableWallJumps = false;
-                    State.MoveTo(Fsm_WallJumpFall);
+                    State.MoveTo(_Fsm_WallJumpFall);
                     return false;
                 }
                 break;
@@ -2515,19 +2515,19 @@ public partial class Rayman
 
                 if (!IsOnWallJumpable())
                 {
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
 
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorSpecialLeft) && GameTime.ElapsedFrames - Timer > 20)
                 {
-                    State.MoveTo(Fsm_WallJumpIdle);
+                    State.MoveTo(_Fsm_WallJumpIdle);
                     return false;
                 }
 
                 if (Engine.ActiveConfig.Tweaks.VersatileWalljumps && MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump))
                 {
-                    State.MoveTo(Fsm_Helico);
+                    State.MoveTo(_Fsm_Helico);
                     return false;
                 }
                 break;
@@ -2735,35 +2735,35 @@ public partial class Rayman
                 if (MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorAttack) && CanAttackWithFist(1))
                 {
                     ActionId = IsFacingRight ? Action.Climb_BeginChargeFist_Right : Action.Climb_BeginChargeFist_Left;
-                    State.MoveTo(Fsm_Attack);
+                    State.MoveTo(_Fsm_Attack);
                     return false;
                 }
 
                 // Jump left
                 if (jump && IsDirectionalButtonPressed(Rayman3Input.ActorLeft) && climbHoriontal is not (ClimbDirection.RightAndLeft or ClimbDirection.Left))
                 {
-                    State.MoveTo(Fsm_Jump);
+                    State.MoveTo(_Fsm_Jump);
                     return false;
                 }
 
                 // Jump right
                 if (jump && IsDirectionalButtonPressed(Rayman3Input.ActorRight) && climbHoriontal is not (ClimbDirection.RightAndLeft or ClimbDirection.Right))
                 {
-                    State.MoveTo(Fsm_Jump);
+                    State.MoveTo(_Fsm_Jump);
                     return false;
                 }
 
                 // Jump up
                 if (jump && IsDirectionalButtonPressed(Rayman3Input.ActorUp) && climbVertical is not (ClimbDirection.TopAndBottom or ClimbDirection.Top))
                 {
-                    State.MoveTo(Fsm_Jump);
+                    State.MoveTo(_Fsm_Jump);
                     return false;
                 }
 
                 // Move down
                 if (type.IsSolid && IsDirectionalButtonPressed(Rayman3Input.ActorDown) && climbVertical is not (ClimbDirection.TopAndBottom or ClimbDirection.Bottom))
                 {
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
 
@@ -2771,7 +2771,7 @@ public partial class Rayman
                 if (jump && IsDirectionalButtonPressed(Rayman3Input.ActorDown) && climbVertical is not (ClimbDirection.TopAndBottom or ClimbDirection.Bottom))
                 {
                     PlaySound(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01);
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
                 break;
@@ -2833,7 +2833,7 @@ public partial class Rayman
                 // Move
                 if (IsDirectionalButtonPressed(Rayman3Input.ActorLeft) || IsDirectionalButtonPressed(Rayman3Input.ActorRight))
                 {
-                    State.MoveTo(Fsm_HangMove);
+                    State.MoveTo(_Fsm_HangMove);
                     return false;
                 }
 
@@ -2843,7 +2843,7 @@ public partial class Rayman
                     Position += new Vector2(0, Tile.Size);
                     IsHanging = false;
                     PlaySound(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01);
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
 
@@ -2852,14 +2852,14 @@ public partial class Rayman
                 {
                     IsHanging = false;
                     PlaySound(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01);
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
 
                 // Attack
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorAttack) && CanAttackWithFoot())
                 {
-                    State.MoveTo(Fsm_Attack);
+                    State.MoveTo(_Fsm_Attack);
                     return false;
                 }
                 break;
@@ -2914,7 +2914,7 @@ public partial class Rayman
                 if (!IsDirectionalButtonPressed(Rayman3Input.ActorLeft) && !IsDirectionalButtonPressed(Rayman3Input.ActorRight))
                 {
                     NextActionId = IsFacingRight ? Action.Hang_EndMove_Right : Action.Hang_EndMove_Left;
-                    State.MoveTo(Fsm_Hang);
+                    State.MoveTo(_Fsm_Hang);
                     return false;
                 }
 
@@ -2924,7 +2924,7 @@ public partial class Rayman
                     Position += new Vector2(0, Tile.Size);
                     IsHanging = false;
                     PlaySound(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01);
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
 
@@ -2933,14 +2933,14 @@ public partial class Rayman
                 {
                     IsHanging = false;
                     PlaySound(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01);
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
 
                 // Attack
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorAttack) && CanAttackWithFoot())
                 {
-                    State.MoveTo(Fsm_Attack);
+                    State.MoveTo(_Fsm_Attack);
                     return false;
                 }
                 break;
@@ -3111,7 +3111,7 @@ public partial class Rayman
 
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && !Scene.GetPhysicalType(Position).IsSolid)
                 {
-                    State.MoveTo(Fsm_Jump);
+                    State.MoveTo(_Fsm_Jump);
                     return false;
                 }
                 break;
@@ -3156,7 +3156,7 @@ public partial class Rayman
                 if (IsBouncing)
                 {
                     BounceJump();
-                    State.MoveTo(Fsm_Jump);
+                    State.MoveTo(_Fsm_Jump);
                     return false;
                 }
                 break;
@@ -3215,7 +3215,7 @@ public partial class Rayman
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_CarryObject);
+                    State.MoveTo(_Fsm_CarryObject);
                     return false;
                 }
                 break;
@@ -3277,7 +3277,7 @@ public partial class Rayman
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_CarryObject);
+                    State.MoveTo(_Fsm_CarryObject);
                     return false;
                 }
                 break;
@@ -3350,14 +3350,14 @@ public partial class Rayman
                 // Walk
                 if (IsDirectionalButtonPressed(Rayman3Input.ActorLeft) || IsDirectionalButtonPressed(Rayman3Input.ActorRight))
                 {
-                    State.MoveTo(Fsm_WalkWithObject);
+                    State.MoveTo(_Fsm_WalkWithObject);
                     return false;
                 }
 
                 // Throw
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) || MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorAttack))
                 {
-                    State.MoveTo(Fsm_ThrowObject);
+                    State.MoveTo(_Fsm_ThrowObject);
                     return false;
                 }
                 break;
@@ -3446,21 +3446,21 @@ public partial class Rayman
                     //       which will cause the next state to crash due to a null pointer!
                     !(Engine.ActiveConfig.Tweaks.FixBugs && AttachedObject == null))
                 {
-                    State.MoveTo(Fsm_CarryObject);
+                    State.MoveTo(_Fsm_CarryObject);
                     return false;
                 }
 
                 // Throw
                 if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) || MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorAttack))
                 {
-                    State.MoveTo(Fsm_ThrowObject);
+                    State.MoveTo(_Fsm_ThrowObject);
                     return false;
                 }
 
                 // Falling
                 if (Speed.Y > 1)
                 {
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
                 break;
@@ -3567,7 +3567,7 @@ public partial class Rayman
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
 
@@ -3577,7 +3577,7 @@ public partial class Rayman
                     ActionId is Action.ThrowObjectUp_Right or Action.ThrowObjectUp_Left &&
                     AnimatedObject.CurrentFrame > 6)
                 {
-                    State.MoveTo(Fsm_Attack);
+                    State.MoveTo(_Fsm_Attack);
                     return false;
                 }
                 break;
@@ -3714,7 +3714,7 @@ public partial class Rayman
                 {
                     DropObject = false;
                     PreviousXSpeed = 2;
-                    State.MoveTo(Fsm_Helico);
+                    State.MoveTo(_Fsm_Helico);
                     return false;
                 }
                 break;
@@ -3793,14 +3793,14 @@ public partial class Rayman
                     PreviousXSpeed = ((MovableActor)AttachedObject).Speed.X;
                     AttachedObject = null;
 
-                    State.MoveTo(Fsm_Jump);
+                    State.MoveTo(_Fsm_Jump);
                     return false;
                 }
 
                 // Attack
                 if (DisableAttackTimer == 0 && MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorAttack) && CanAttackWithFist(2))
                 {
-                    State.MoveTo(Fsm_Attack);
+                    State.MoveTo(_Fsm_Attack);
                     return false;
                 }
 
@@ -3808,7 +3808,7 @@ public partial class Rayman
                 if (IsDirectionalButtonPressed(Rayman3Input.ActorDown))
                 {
                     NextActionId = IsFacingRight ? Action.CrouchDown_Right : Action.CrouchDown_Left;
-                    State.MoveTo(Fsm_CrouchOnPlum);
+                    State.MoveTo(_Fsm_CrouchOnPlum);
                     return false;
                 }
                 break;
@@ -3882,7 +3882,7 @@ public partial class Rayman
                 // End crouch
                 if (IsDirectionalButtonReleased(Rayman3Input.ActorDown) && !topType.IsSolid)
                 {
-                    State.MoveTo(Fsm_OnPlum);
+                    State.MoveTo(_Fsm_OnPlum);
                     return false;
                 }
 
@@ -3894,7 +3894,7 @@ public partial class Rayman
                         PlumCameraTimer = 0x3c;
                     PreviousXSpeed = ((MovableActor)AttachedObject).Speed.X;
                     AttachedObject = null;
-                    State.MoveTo(Fsm_Jump);
+                    State.MoveTo(_Fsm_Jump);
                     return false;
                 }
                 break;
@@ -4232,7 +4232,7 @@ public partial class Rayman
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;
@@ -4344,58 +4344,58 @@ public partial class Rayman
 
                 if (HitPoints == 0 && Timer > 20)
                 {
-                    State.MoveTo(Fsm_Dying);
+                    State.MoveTo(_Fsm_Dying);
                     return false;
                 }
 
                 if (HitPoints != 0 && Timer > 90)
                 {
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
 
                 if (HitPoints != 0 && MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && !IsSuperHelicoActive)
                 {
-                    State.MoveTo(Fsm_Helico);
+                    State.MoveTo(_Fsm_Helico);
                     return false;
                 }
 
                 if (HitPoints != 0 && MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && IsSuperHelicoActive)
                 {
-                    State.MoveTo(Fsm_SuperHelico);
+                    State.MoveTo(_Fsm_SuperHelico);
                     return false;
                 }
 
                 if (HitPoints != 0 && IsNearHangableEdge())
                 {
-                    State.MoveTo(Fsm_HangOnEdge);
+                    State.MoveTo(_Fsm_HangOnEdge);
                     return false;
                 }
 
                 if (HitPoints != 0 && HasLanded())
                 {
                     NextActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
 
                 if (HitPoints != 0 && Timer > 10 && IsOnHangable())
                 {
                     BeginHang();
-                    State.MoveTo(Fsm_Hang);
+                    State.MoveTo(_Fsm_Hang);
                     return false;
                 }
 
                 if (HitPoints != 0 && !TempFlag && IsOnClimbableVertical() == ClimbDirection.TopAndBottom)
                 {
-                    State.MoveTo(Fsm_Climb);
+                    State.MoveTo(_Fsm_Climb);
                     return false;
                 }
 
                 if (HitPoints != 0 && MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorSpecialLeft) && IsOnWallJumpable())
                 {
                     BeginWallJump();
-                    State.MoveTo(Fsm_WallJumpIdle);
+                    State.MoveTo(_Fsm_WallJumpIdle);
                 }
                 break;
 
@@ -4537,9 +4537,9 @@ public partial class Rayman
                     // Reset the state
                     SafePosition safePosition = GetSafePosition();
                     if (safePosition.IsClimbing)
-                        State.MoveTo(Fsm_Climb);
+                        State.MoveTo(_Fsm_Climb);
                     else
-                        State.MoveTo(Fsm_Default);
+                        State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;
@@ -4699,7 +4699,7 @@ public partial class Rayman
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;
@@ -4796,7 +4796,7 @@ public partial class Rayman
 
                 if (respawn)
                 {
-                    State.MoveTo(Fsm_MultiplayerRespawn);
+                    State.MoveTo(_Fsm_MultiplayerRespawn);
                     return false;
                 }
                 break;
@@ -4832,7 +4832,7 @@ public partial class Rayman
 
                 if (Timer == 2)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;
@@ -4988,7 +4988,7 @@ public partial class Rayman
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_MultiplayerStunned);
+                    State.MoveTo(_Fsm_MultiplayerStunned);
                     return false;
                 }
                 break;
@@ -5017,7 +5017,7 @@ public partial class Rayman
 
                 if (Timer > 50)
                 {
-                    State.MoveTo(Fsm_MultiplayerGetUp);
+                    State.MoveTo(_Fsm_MultiplayerGetUp);
                     return false;
                 }
                 break;
@@ -5043,7 +5043,7 @@ public partial class Rayman
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;
@@ -5073,7 +5073,7 @@ public partial class Rayman
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;
@@ -5099,7 +5099,7 @@ public partial class Rayman
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;
@@ -5148,7 +5148,7 @@ public partial class Rayman
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;
@@ -5181,7 +5181,7 @@ public partial class Rayman
 
                 if (TimeAttackInfo.Mode == TimeAttackMode.Play)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;

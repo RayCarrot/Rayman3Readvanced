@@ -49,7 +49,7 @@ public partial class Leaf
                     ScreenPosition.X > Scene.Resolution.X || 
                     ScreenPosition.Y > Scene.Resolution.Y)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;

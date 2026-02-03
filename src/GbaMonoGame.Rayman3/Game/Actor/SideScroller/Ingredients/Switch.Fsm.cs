@@ -17,7 +17,7 @@ public partial class Switch
             case FsmAction.Step:
                 if (HitPoints == 0)
                 {
-                    State.MoveTo(Fsm_Activating);
+                    State.MoveTo(_Fsm_Activating);
                     return false;
                 }
                 break;
@@ -117,7 +117,7 @@ public partial class Switch
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Activated);
+                    State.MoveTo(_Fsm_Activated);
                     return false;
                 }
                 break;

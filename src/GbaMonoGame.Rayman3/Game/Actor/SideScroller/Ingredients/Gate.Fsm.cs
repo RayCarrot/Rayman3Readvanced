@@ -16,7 +16,7 @@ public partial class Gate
             case FsmAction.Step:
                 if (IsOpen)
                 {
-                    State.MoveTo(Fsm_Opening);
+                    State.MoveTo(_Fsm_Opening);
                     return false;
                 }
                 break;
@@ -44,7 +44,7 @@ public partial class Gate
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Open);
+                    State.MoveTo(_Fsm_Open);
                     return false;
                 }
                 break;
@@ -68,7 +68,7 @@ public partial class Gate
             case FsmAction.Step:
                 if (!IsOpen)
                 {
-                    State.MoveTo(Fsm_Closing);
+                    State.MoveTo(_Fsm_Closing);
                     return false;
                 }
                 break;
@@ -93,7 +93,7 @@ public partial class Gate
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Closed);
+                    State.MoveTo(_Fsm_Closed);
                     return false;
                 }
                 break;

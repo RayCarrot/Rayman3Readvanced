@@ -1,14 +1,18 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class BreakableDoor : InteractableActor
 {
     public BreakableDoor(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         AnimatedObject.ObjPriority = 63;
-        State.SetTo(Fsm_Idle);
+        State.SetTo(_Fsm_Idle);
     }
 
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
@@ -19,7 +23,7 @@ public sealed partial class BreakableDoor : InteractableActor
         switch (message)
         {
             case Message.Actor_Hurt:
-                if (State == Fsm_Idle)
+                if (State == _Fsm_Idle)
                     ActionId = IsFacingRight ? Action.Break_Right : Action.Break_Left;
                 return false;
 

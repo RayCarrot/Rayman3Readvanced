@@ -65,7 +65,7 @@ public partial class LavaFall
 
                 if (Timer > 240)
                 {
-                    State.MoveTo(Fsm_Wait);
+                    State.MoveTo(_Fsm_Wait);
                     return false;
                 }
                 break;
@@ -100,7 +100,7 @@ public partial class LavaFall
 
                 if (Timer > 240)
                 {
-                    State.MoveTo(Fsm_Flow);
+                    State.MoveTo(_Fsm_Flow);
                     return false;
                 }
                 break;

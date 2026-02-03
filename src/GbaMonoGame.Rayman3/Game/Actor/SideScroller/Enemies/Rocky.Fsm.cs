@@ -23,7 +23,7 @@ public partial class Rocky
                 if ((!TimeAttackInfo.IsActive || TimeAttackInfo.Mode == TimeAttackMode.Play) && 
                     Math.Abs(Position.X - Scene.MainActor.Position.X) < 200)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;
@@ -79,7 +79,7 @@ public partial class Rocky
                 if (rayman.State == rayman.Fsm_SuperHelico && 
                     Math.Abs(Position.X - Scene.MainActor.Position.X) < 90)
                 {
-                    State.MoveTo(Fsm_PunchAttack);
+                    State.MoveTo(_Fsm_PunchAttack);
                     return false;
                 }
 
@@ -88,7 +88,7 @@ public partial class Rocky
                     BlueLum is not { IsEnabled: true } && 
                     Timer > 60)
                 {
-                    State.MoveTo(Fsm_SlamAttack);
+                    State.MoveTo(_Fsm_SlamAttack);
                     return false;
                 }
                 break;
@@ -130,7 +130,7 @@ public partial class Rocky
                 Rayman rayman = (Rayman)Scene.MainActor;
                 if (IsActionFinished || rayman.State == rayman.Fsm_SuperHelico)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;
@@ -168,7 +168,7 @@ public partial class Rocky
 
                 if (IsActionFinished && Timer != 0)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;
@@ -204,13 +204,13 @@ public partial class Rocky
 
                 if (AttackCount == 0 && (AnimatedObject.ScreenPos.X < -50 || AnimatedObject.ScreenPos.X > Scene.Resolution.X + 30))
                 {
-                    State.MoveTo(Fsm_Land);
+                    State.MoveTo(_Fsm_Land);
                     return false;
                 }
 
                 if (AttackCount != 0 && (AnimatedObject.ScreenPos.X < -50 || AnimatedObject.ScreenPos.X > Scene.Resolution.X + 30))
                 {
-                    State.MoveTo(Fsm_ChargeAttack);
+                    State.MoveTo(_Fsm_ChargeAttack);
                     return false;
                 }
                 break;
@@ -295,7 +295,7 @@ public partial class Rocky
 
                 if (IsActionFinished && ActionId is Action.Land_Right or Action.Land_Left)
                 {
-                    State.MoveTo(Fsm_SlamAttack);
+                    State.MoveTo(_Fsm_SlamAttack);
                     return false;
                 }
                 break;
@@ -334,14 +334,14 @@ public partial class Rocky
 
                 if (IsActionFinished && rayman.State != rayman.Fsm_SuperHelico && BossHealth == 0)
                 {
-                    State.MoveTo(Fsm_Dying);
+                    State.MoveTo(_Fsm_Dying);
                     return false;
                 }
 
                 if (IsActionFinished && rayman.State != rayman.Fsm_SuperHelico && BossHealth != 0)
                 {
                     ActionId = IsFacingRight ? Action.PrepareCharge_Right : Action.PrepareCharge_Left;
-                    State.MoveTo(Fsm_ChargeAttack);
+                    State.MoveTo(_Fsm_ChargeAttack);
                     return false;
                 }
                 break;
@@ -368,7 +368,7 @@ public partial class Rocky
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;

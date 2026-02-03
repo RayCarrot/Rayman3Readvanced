@@ -58,7 +58,7 @@ public partial class Spider
         
         if (turnAround)
         {
-            State.MoveTo(Fsm_ChaseTurnAround);
+            State.MoveTo(_Fsm_ChaseTurnAround);
             return false;
         }
 
@@ -121,7 +121,7 @@ public partial class Spider
 
         if (Math.Abs(diffX) > 200 || Math.Abs(diffY) > 200)
         {
-            State.MoveTo(Fsm_GuardReset);
+            State.MoveTo(_Fsm_GuardReset);
             return false;
         }
 
@@ -189,7 +189,7 @@ public partial class Spider
 
                 if (spawned)
                 {
-                    State.MoveTo(Fsm_ChaseDefault);
+                    State.MoveTo(_Fsm_ChaseDefault);
                     return false;
                 }
                 break;
@@ -245,14 +245,14 @@ public partial class Spider
                 // Attack if detected or within range
                 if (Scene.IsDetectedMainActor(this) || !outOfRange)
                 {
-                    State.MoveTo(Fsm_ChaseAttack);
+                    State.MoveTo(_Fsm_ChaseAttack);
                     return false;
                 }
                 
                 // Move to main actor if out of range
                 if (outOfRange)
                 {
-                    State.MoveTo(Fsm_ChaseMove);
+                    State.MoveTo(_Fsm_ChaseMove);
                     return false;
                 }
                 break;
@@ -377,13 +377,13 @@ public partial class Spider
 
                 if (!Scene.IsDetectedMainActor(this) && outOfRange)
                 {
-                    State.MoveTo(Fsm_ChaseMove);
+                    State.MoveTo(_Fsm_ChaseMove);
                     return false;
                 }
 
                 if (wrongDirection)
                 {
-                    State.MoveTo(Fsm_ChaseDefault);
+                    State.MoveTo(_Fsm_ChaseDefault);
                     return false;
                 }
                 break;
@@ -487,20 +487,20 @@ public partial class Spider
 
                 if (Scene.IsDetectedMainActor(this) || withinRange)
                 {
-                    State.MoveTo(Fsm_ChaseAttack);
+                    State.MoveTo(_Fsm_ChaseAttack);
                     return false;
                 }
                 
                 // Impossible condition
                 if (withinRange)
                 {
-                    State.MoveTo(Fsm_ChaseDefault);
+                    State.MoveTo(_Fsm_ChaseDefault);
                     return false;
                 }
                 
                 if (ShouldJump)
                 {
-                    State.MoveTo(Fsm_ChaseJump);
+                    State.MoveTo(_Fsm_ChaseJump);
                     return false;
                 }
                 break;
@@ -554,19 +554,19 @@ public partial class Spider
 
                 if (AnimationTimer == 1 && ClimbSpeedX == 0 && ClimbSpeedY == 0)
                 {
-                    State.MoveTo(Fsm_ChaseDefault);
+                    State.MoveTo(_Fsm_ChaseDefault);
                     return false;
                 }
 
                 if (Scene.IsDetectedMainActor(this) && IsActionFinished)
                 {
-                    State.MoveTo(Fsm_ChaseAttack);
+                    State.MoveTo(_Fsm_ChaseAttack);
                     return false;
                 }
 
                 if (isFinished)
                 {
-                    State.MoveTo(Fsm_ChaseMove);
+                    State.MoveTo(_Fsm_ChaseMove);
                     return false;
                 }
                 break;
@@ -619,7 +619,7 @@ public partial class Spider
 
                 if (isFinished)
                 {
-                    State.MoveTo(Fsm_ChaseMove);
+                    State.MoveTo(_Fsm_ChaseMove);
                     return false;
                 }
                 break;
@@ -650,7 +650,7 @@ public partial class Spider
 
                 if (Scene.IsDetectedMainActor(this) && ActionId == Action.Stop_Down)
                 {
-                    State.MoveTo(Fsm_GuardDefault);
+                    State.MoveTo(_Fsm_GuardDefault);
                     return false;
                 }
                 break;
@@ -696,7 +696,7 @@ public partial class Spider
 
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    State.MoveTo(Fsm_GuardAttack);
+                    State.MoveTo(_Fsm_GuardAttack);
                     return false;
                 }
                 break;
@@ -778,7 +778,7 @@ public partial class Spider
 
                 if (outOfRange)
                 {
-                    State.MoveTo(Fsm_GuardDefault);
+                    State.MoveTo(_Fsm_GuardDefault);
                     return false;
                 }
                 break;
@@ -805,7 +805,7 @@ public partial class Spider
 
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    State.MoveTo(Fsm_GuardDefault);
+                    State.MoveTo(_Fsm_GuardDefault);
                     return false;
                 }
                 break;

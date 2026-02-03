@@ -1,13 +1,17 @@
 ﻿using System;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public partial class CameraMode7 : CameraActorMode7
 {
     public CameraMode7(Scene2D scene) : base(scene)
     {
+        CreateGeneratedStates();
+
         IsWaterSki = false;
         Timer = 0;
         MainActorDistance = 55;
@@ -28,7 +32,7 @@ public partial class CameraMode7 : CameraActorMode7
         switch (message)
         {
             case Message.CamMode7_Spin:
-                State.MoveTo(Fsm_Spin);
+                State.MoveTo(_Fsm_Spin);
 
                 if (param is true)
                     ResetPosition = false;
@@ -37,10 +41,10 @@ public partial class CameraMode7 : CameraActorMode7
             case Message.CamMode7_Reset:
                 // Waterski
                 if (IsWaterSki)
-                    State.MoveTo(Fsm_WaterSkiFollow);
+                    State.MoveTo(_Fsm_WaterSkiFollow);
                 // Default
                 else
-                    State.MoveTo(Fsm_Follow);
+                    State.MoveTo(_Fsm_Follow);
                 return true;
 
             default:
@@ -72,6 +76,6 @@ public partial class CameraMode7 : CameraActorMode7
         cam.Position = LinkedObject.Position - (directionalVector * (MainActorDistance + 90)).FlipY();
 
         // Set the initial state
-        State.SetTo(Fsm_Init);
+        State.SetTo(_Fsm_Init);
     }
 }

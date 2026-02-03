@@ -53,7 +53,7 @@ public partial class MissileMode7
                 // Get the current physical type
                 MissileMode7PhysicalTypeDefine physicalType = MissileMode7PhysicalTypeDefine.FromPhysicalType(Scene.GetPhysicalType(Position));
 
-                if (physicalType.Damage && State != Fsm_Jump && !IsInvulnerable)
+                if (physicalType.Damage && State != _Fsm_Jump && !IsInvulnerable)
                 {
                     if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__SplshGen_Mix04) && IsLinkedCameraObject())
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SplshGen_Mix04);
@@ -75,13 +75,13 @@ public partial class MissileMode7
 
             if (HitPoints == 0 && RSMultiplayer.IsActive)
             {
-                State.MoveTo(Fsm_MultiplayerDying);
+                State.MoveTo(_Fsm_MultiplayerDying);
                 return false;
             }
 
             if (HitPoints == 0)
             {
-                State.MoveTo(Fsm_Dying);
+                State.MoveTo(_Fsm_Dying);
                 return false;
             }
         }
@@ -224,7 +224,7 @@ public partial class MissileMode7
 
                     if (physicalType.Bounce)
                     {
-                        State.MoveTo(Fsm_Jump);
+                        State.MoveTo(_Fsm_Jump);
                         return false;
                     }
                 }
@@ -278,7 +278,7 @@ public partial class MissileMode7
 
                     if (ZPos <= 0)
                     {
-                        State.MoveTo(Fsm_Default);
+                        State.MoveTo(_Fsm_Default);
                         return false;
                     }
                 }

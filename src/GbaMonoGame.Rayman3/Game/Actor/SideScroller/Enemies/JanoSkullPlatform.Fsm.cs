@@ -74,25 +74,25 @@ public partial class JanoSkullPlatform
                     Timer = 0;
                     ScreenPosition = Vector2.Zero;
                     ProcessMessage(this, Message.Destroy);
-                    State.MoveTo(Fsm_TimeOut);
+                    State.MoveTo(_Fsm_TimeOut);
                     return false;
                 }
                 
                 if (isHit)
                 {
-                    State.MoveTo(Fsm_Stationary);
+                    State.MoveTo(_Fsm_Stationary);
                     return false;
                 }
                 
                 if (isOffScreen)
                 {
-                    State.MoveTo(Fsm_DespawnDown);
+                    State.MoveTo(_Fsm_DespawnDown);
                     return false;
                 }
                 
                 if (isStoppedMoving)
                 {
-                    State.MoveTo(Fsm_FallDown);
+                    State.MoveTo(_Fsm_FallDown);
                     return false;
                 }
                 break;
@@ -230,20 +230,20 @@ public partial class JanoSkullPlatform
                 if (Timer > 780)
                 {
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
-                    State.MoveTo(Fsm_DespawnDown);
+                    State.MoveTo(_Fsm_DespawnDown);
                     return false;
                 }
 
                 if (isOnSolidMove)
                 {
-                    State.MoveTo(Fsm_SolidMove);
+                    State.MoveTo(_Fsm_SolidMove);
                     return false;
                 }
 
                 if (isCollided)
                 {
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
-                    State.MoveTo(Fsm_FallDown);
+                    State.MoveTo(_Fsm_FallDown);
                     return false;
                 }
                 break;
@@ -299,7 +299,7 @@ public partial class JanoSkullPlatform
 
                 if (isStopped)
                 {
-                    State.MoveTo(Fsm_FallDown);
+                    State.MoveTo(_Fsm_FallDown);
                     return false;
                 }
                 break;
@@ -323,7 +323,7 @@ public partial class JanoSkullPlatform
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Move);
+                    State.MoveTo(_Fsm_Move);
                     return false;
                 }
                 break;
@@ -367,7 +367,7 @@ public partial class JanoSkullPlatform
 
                 if (isFinished)
                 {
-                    State.MoveTo(Fsm_Move);
+                    State.MoveTo(_Fsm_Move);
                     return false;
                 }
                 break;
@@ -424,7 +424,7 @@ public partial class JanoSkullPlatform
 
                 if (isFinished)
                 {
-                    State.MoveTo(Fsm_Move);
+                    State.MoveTo(_Fsm_Move);
                     return false;
                 }
                 break;

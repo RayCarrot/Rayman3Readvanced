@@ -7,17 +7,21 @@ using BinarySerializer;
 using BinarySerializer.Nintendo.GCN;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
+using GbaMonoGame.FsmSourceGenerator;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public partial class GameCubeMenu : Frame
 {
     #region Constructor
 
     public GameCubeMenu()
     {
+        CreateGeneratedStates();
+
         SoundEventsManager.StopAllSongs();
 
         // Use filesystem for now. In the future we can allow JoyBus mode and perhaps connect to
@@ -297,7 +301,7 @@ public partial class GameCubeMenu : Frame
 
         WaitingForConnection = false;
         IsActive = true;
-        State.MoveTo(Fsm_PreInit);
+        State.MoveTo(_Fsm_PreInit);
     }
 
     public override void UnInit()
@@ -328,17 +332,17 @@ public partial class GameCubeMenu : Frame
         AnimationPlayer.Play(Anims.Wheel3);
         AnimationPlayer.Play(Anims.Wheel4);
 
-        if (WaitingForConnection || (State == Fsm_WaitForConnection && !UseJoyBus))
+        if (WaitingForConnection || (State == _Fsm_WaitForConnection && !UseJoyBus))
         {
             foreach (SpriteTextObject text in Anims.ReusableTexts)
                 AnimationPlayer.Play(text);
         }
-        else if (State == Fsm_DownloadMap)
+        else if (State == _Fsm_DownloadMap)
         {
             AnimationPlayer.Play(Anims.ReusableTexts[0]);
             AnimationPlayer.Play(Anims.ReusableTexts[1]);
         }
-        else if (State == Fsm_SelectMap)
+        else if (State == _Fsm_SelectMap)
         {
             if (IsShowingLyChallengeUnlocked)
             {
@@ -359,10 +363,10 @@ public partial class GameCubeMenu : Frame
         AnimationPlayer.Play(Anims.TotalLumsText);
 
         if (WaitingForConnection || 
-            State == Fsm_DownloadMap || 
-            State == Fsm_SelectMap || 
-            State == Fsm_DownloadMapAck ||
-            (State == Fsm_WaitForConnection && !UseJoyBus))
+            State == _Fsm_DownloadMap || 
+            State == _Fsm_SelectMap || 
+            State == _Fsm_DownloadMapAck ||
+            (State == _Fsm_WaitForConnection && !UseJoyBus))
             AnimationPlayer.Play(Anims.StatusText);
 
         TransitionsFX.StepAll();

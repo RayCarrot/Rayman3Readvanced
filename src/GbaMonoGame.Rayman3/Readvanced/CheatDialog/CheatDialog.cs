@@ -2,15 +2,19 @@
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public partial class CheatDialog : Dialog
 {
     public CheatDialog(Scene2D scene) : base(scene)
     {
-        State.SetTo(Fsm_NavigateItem);
+        CreateGeneratedStates();
+
+        State.SetTo(_Fsm_NavigateItem);
     }
 
     public DebugBoxAObject BoxObject { get; set; }

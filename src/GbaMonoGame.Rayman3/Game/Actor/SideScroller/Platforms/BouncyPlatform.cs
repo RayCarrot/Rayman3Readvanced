@@ -1,13 +1,17 @@
 ﻿using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class BouncyPlatform : InteractableActor
 {
     public BouncyPlatform(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         HasTrap = (Action)actorResource.FirstActionId != Action.Idle;
-        State.SetTo(Fsm_Idle);
+        State.SetTo(_Fsm_Idle);
     }
 
     public bool HasTrap { get; } // Unused trap behavior

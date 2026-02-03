@@ -1,17 +1,21 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class Slapdash : MovableActor
 {
     public Slapdash(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         PrevHitPoints = HitPoints;
         IsObjectCollisionXOnly = true;
 
-        State.SetTo(Fsm_Wait);
+        State.SetTo(_Fsm_Wait);
     }
 
     public int PrevHitPoints { get; set; }
@@ -60,7 +64,7 @@ public sealed partial class Slapdash : MovableActor
                 return false;
 
             case Message.Actor_Hit:
-                if (State != Fsm_Hit && !IsInvulnerable)
+                if (State != _Fsm_Hit && !IsInvulnerable)
                 {
                     Vector2 hitPos = ((GameObject)param).Position;
 
@@ -89,7 +93,7 @@ public sealed partial class Slapdash : MovableActor
                     }
 
                     if (hitFromBehind && !mainActorInFront)
-                        State.MoveTo(Fsm_Hit);
+                        State.MoveTo(_Fsm_Hit);
                     else
                         HitPoints = PrevHitPoints;
                 }

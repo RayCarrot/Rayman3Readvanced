@@ -1,16 +1,20 @@
 ﻿using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
 // Original name: CagoulardCanopy
+[GenerateFsmFields]
 public sealed partial class Spinneroo : MovableActor
 {
     public Spinneroo(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         TauntTimer = 0;
         IsObjectCollisionXOnly = true;
 
-        State.SetTo(Fsm_Wait);
+        State.SetTo(_Fsm_Wait);
     }
 
     public byte TauntTimer { get; set; }
@@ -37,9 +41,9 @@ public sealed partial class Spinneroo : MovableActor
                 // Reset hitpoints since you can't deal damage by hitting the enemy
                 HitPoints = 5;
 
-                if (State == Fsm_Walk && TauntTimer == 0)
+                if (State == _Fsm_Walk && TauntTimer == 0)
                 {
-                    State.MoveTo(Fsm_Taunt);
+                    State.MoveTo(_Fsm_Taunt);
                     TauntTimer = 180;
                 }
                 return false;

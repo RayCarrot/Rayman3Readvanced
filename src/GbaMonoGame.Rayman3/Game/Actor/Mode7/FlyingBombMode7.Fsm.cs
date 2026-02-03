@@ -15,7 +15,7 @@ public partial class FlyingBombMode7
             case FsmAction.Step:
                 if (Scene.IsDetectedMainActor(this) && ((Mode7Actor)Scene.MainActor).ZPos < 24)
                 {
-                    State.MoveTo(Fsm_Destroyed);
+                    State.MoveTo(_Fsm_Destroyed);
                     return false;
                 }
                 break;
@@ -50,7 +50,7 @@ public partial class FlyingBombMode7
                     ((Mode7Actor)Scene.MainActor).ZPos > zPos - 24 && 
                     ((Mode7Actor)Scene.MainActor).ZPos < zPos + 24)
                 {
-                    State.MoveTo(Fsm_Destroyed);
+                    State.MoveTo(_Fsm_Destroyed);
                     return false;
                 }
                 break;
@@ -85,7 +85,7 @@ public partial class FlyingBombMode7
 
                 if (Scene.IsDetectedMainActor(this) && ((Mode7Actor)Scene.MainActor).ZPos < 24)
                 {
-                    State.MoveTo(Fsm_Destroyed);
+                    State.MoveTo(_Fsm_Destroyed);
                     return false;
                 }
                 break;
@@ -112,7 +112,7 @@ public partial class FlyingBombMode7
                 if (ZPos <= 0)
                 {
                     ZPos = 0;
-                    State.MoveTo(Fsm_Stationary);
+                    State.MoveTo(_Fsm_Stationary);
                     return false;
                 }
                 break;

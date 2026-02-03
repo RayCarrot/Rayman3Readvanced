@@ -16,7 +16,7 @@ public partial class SpikyBag
                 if (Scene.IsHitMainActor(this))
                 {
                     Scene.MainActor.ReceiveDamage(AttackPoints);
-                    State.MoveTo(Fsm_BeginSwing);
+                    State.MoveTo(_Fsm_BeginSwing);
                     return false;
                 }
                 break;
@@ -46,7 +46,7 @@ public partial class SpikyBag
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Swing);
+                    State.MoveTo(_Fsm_Swing);
                     return false;
                 }
                 break;

@@ -185,7 +185,7 @@ public partial class CameraSideScroller
                     !mainCluster.IsOnLimit(Edge.Right) &&
                     LinkedObject.IsFacingRight != IsFacingRight)
                 {
-                    State.MoveTo(Fsm_Follow);
+                    State.MoveTo(_Fsm_Follow);
                     return false;
                 }
 
@@ -270,7 +270,7 @@ public partial class CameraSideScroller
                         (RSMultiplayer.IsActive && Speed == Vector2.Zero))
                     {
                         Scene.MainActor.ProcessMessage(this, Message.Rayman_Resume);
-                        State.MoveTo(Fsm_Follow);
+                        State.MoveTo(_Fsm_Follow);
                         return false;
                     }
 
@@ -373,7 +373,7 @@ public partial class CameraSideScroller
 
                 if (Unknown == UnknownMode.Default && GameTime.ElapsedFrames - Timer > 60)
                 {
-                    State.MoveTo(Fsm_Follow);
+                    State.MoveTo(_Fsm_Follow);
                     return false;
                 }
                 break;

@@ -1,15 +1,19 @@
 ﻿using System;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
 // Popolopoï
+[GenerateFsmFields]
 public sealed partial class TimeFreezeItem : MovableActor
 {
     public TimeFreezeItem(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         // Load the sprites and set the time decrease value
         if ((Action)actorResource.FirstActionId == Action.Init_Decrease3)
         {
@@ -41,7 +45,7 @@ public sealed partial class TimeFreezeItem : MovableActor
         InitialPosition = Position;
 
         // Set the idle state
-        State.SetTo(Fsm_Idle);
+        State.SetTo(_Fsm_Idle);
     }
 
     private const int SineWaveLength = 2;
@@ -83,7 +87,7 @@ public sealed partial class TimeFreezeItem : MovableActor
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
         // Draw the item, unless dead
-        if (State != Fsm_Dead)
+        if (State != _Fsm_Dead)
             base.Draw(animationPlayer, forceDraw);
     }
 }

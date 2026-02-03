@@ -1,16 +1,20 @@
 ﻿using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class ZombieChicken : MovableActor
 {
     public ZombieChicken(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         TurnAround = false;
         InitialYPosition = Position.Y;
         LastMoveFrame = 0;
 
-        State.SetTo(Fsm_Idle);
+        State.SetTo(_Fsm_Idle);
     }
 
     public float InitialYPosition { get; }

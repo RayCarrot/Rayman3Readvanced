@@ -29,14 +29,14 @@ public partial class CameraMode7
 
                     MainActorDistance -= 30;
 
-                    State.MoveTo(Fsm_Spin);
+                    State.MoveTo(_Fsm_Spin);
                     return false;
                 }
 
                 // Default
                 if (Timer == 2)
                 {
-                    State.MoveTo(Fsm_Follow);
+                    State.MoveTo(_Fsm_Follow);
                     return false;
                 }
                 break;

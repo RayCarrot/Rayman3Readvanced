@@ -1,13 +1,17 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class BoulderMode7 : Mode7Actor
 {
     public BoulderMode7(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         Direction = Angle256.Zero;
         ZPos = 0;
         RenderHeight = 64;
@@ -15,9 +19,9 @@ public sealed partial class BoulderMode7 : Mode7Actor
         Scale = Vector2.One;
 
         if ((Action)actorResource.FirstActionId == Action.Bounce)
-            State.SetTo(Fsm_Bounce);
+            State.SetTo(_Fsm_Bounce);
         else
-            State.SetTo(Fsm_Move);
+            State.SetTo(_Fsm_Move);
     }
 
     public float Rotation { get; set; }

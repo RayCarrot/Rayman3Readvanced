@@ -25,7 +25,7 @@ public partial class TimeDecrease
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;

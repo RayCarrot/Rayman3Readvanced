@@ -63,7 +63,7 @@ public partial class EnergyBall
 
                 if (finished)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;

@@ -19,7 +19,7 @@ public partial class WoodenShieldedHoodboom
 
         if (HitPoints == 0)
         {
-            State.MoveTo(Fsm_Dying);
+            State.MoveTo(_Fsm_Dying);
             return false;
         }
 
@@ -98,7 +98,7 @@ public partial class WoodenShieldedHoodboom
                 if ((detectedMainActor && readyToAttack) || 
                     (IsActionFinished && IsShieldDestroyed))
                 {
-                    State.MoveTo(Fsm_PrepareGrenade);
+                    State.MoveTo(_Fsm_PrepareGrenade);
                     return false;
                 }
                 break;
@@ -130,7 +130,7 @@ public partial class WoodenShieldedHoodboom
 
                 if (AnimatedObject.CurrentFrame == 10)
                 {
-                    State.MoveTo(Fsm_ThrowGrenade);
+                    State.MoveTo(_Fsm_ThrowGrenade);
                     return false;
                 }
                 break;
@@ -191,7 +191,7 @@ public partial class WoodenShieldedHoodboom
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;
@@ -269,7 +269,7 @@ public partial class WoodenShieldedHoodboom
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;

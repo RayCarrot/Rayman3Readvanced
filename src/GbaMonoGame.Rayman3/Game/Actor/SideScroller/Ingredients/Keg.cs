@@ -1,32 +1,36 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class Keg : MovableActor
 {
     public Keg(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         Links = actorResource.Links;
         AnimatedObject.ObjPriority = 60;
         ShouldDraw = true;
 
         if ((Action)actorResource.FirstActionId == Action.Fall)
         {
-            State.SetTo(Fsm_WaitingToFall);
+            State.SetTo(_Fsm_WaitingToFall);
             InitialPos = Position;
             Timer = 0;
         }
         else if (GameInfo.MapId == MapId.BossMachine)
         {
-            State.SetTo(Fsm_InitBossMachine);
+            State.SetTo(_Fsm_InitBossMachine);
             InitialPos = Position;
             Timer = 30;
         }
         else
         {
-            State.SetTo(Fsm_Idle);
+            State.SetTo(_Fsm_Idle);
             InitialPos = Position;
         }
     }
@@ -75,16 +79,16 @@ public sealed partial class Keg : MovableActor
         switch (message)
         {
             case Message.Actor_ThrowUp:
-                State.MoveTo(Fsm_ThrownUp);
+                State.MoveTo(_Fsm_ThrownUp);
                 return false;
 
             case Message.Actor_ThrowForward:
-                State.MoveTo(Fsm_ThrownForward);
+                State.MoveTo(_Fsm_ThrownForward);
                 return false;
 
             case Message.Actor_Drop:
-                if (State != Fsm_Fly)
-                    State.MoveTo(Fsm_Drop);
+                if (State != _Fsm_Fly)
+                    State.MoveTo(_Fsm_Drop);
                 return false;
 
             case Message.Actor_Hurt:
@@ -95,16 +99,16 @@ public sealed partial class Keg : MovableActor
                 if (explosion != null)
                     explosion.Position = Position - new Vector2(0, 8);
                 
-                State.MoveTo(Fsm_Respawn);
+                State.MoveTo(_Fsm_Respawn);
                 return false;
 
             case Message.Actor_LightOnFireRight:
             case Message.Actor_LightOnFireLeft:
-                if (State == Fsm_PickedUp)
+                if (State == _Fsm_PickedUp)
                 {
                     ActionId = message == Message.Actor_LightOnFireRight ? Action.Ignite_Right : Action.Ignite_Left;
                     Scene.MainActor.ProcessMessage(this, message);
-                    State.MoveTo(Fsm_Fly);
+                    State.MoveTo(_Fsm_Fly);
                 }
                 return false;
 
@@ -115,7 +119,7 @@ public sealed partial class Keg : MovableActor
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
-        if (State == Fsm_Respawn)
+        if (State == _Fsm_Respawn)
         {
             AnimatedObject.IsFramed = Timer > 180 && 
                                       Scene.Camera.IsActorFramed(this) &&

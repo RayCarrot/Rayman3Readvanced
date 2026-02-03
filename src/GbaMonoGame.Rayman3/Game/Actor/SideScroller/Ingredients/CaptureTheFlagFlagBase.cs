@@ -1,12 +1,16 @@
 ﻿using System.Linq;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class CaptureTheFlagFlagBase : ActionActor
 {
     public CaptureTheFlagFlagBase(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         Links = actorResource.Links;
         IsFlagTaken = false;
         Timer = 0;
@@ -26,7 +30,7 @@ public sealed partial class CaptureTheFlagFlagBase : ActionActor
             // The common base where you get the flags from
             if (IsCommonBase)
             {
-                State.SetTo(Fsm_SoloCommon);
+                State.SetTo(_Fsm_SoloCommon);
             }
             // A player's base
             else
@@ -52,7 +56,7 @@ public sealed partial class CaptureTheFlagFlagBase : ActionActor
                     ProcessMessage(this, Message.Destroy);
                 }
                 
-                State.SetTo(Fsm_Solo);
+                State.SetTo(_Fsm_Solo);
             }
         }
         else
@@ -68,7 +72,7 @@ public sealed partial class CaptureTheFlagFlagBase : ActionActor
             AnimatedObject.Palettes = TeamPlayer1.AnimatedObject.Palettes;
             TeamId = param.Value / 2;
 
-            State.SetTo(Fsm_Teams);
+            State.SetTo(_Fsm_Teams);
         }
     }
 

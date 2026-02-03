@@ -1,13 +1,17 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class Boulder : MovableActor
 {
     public Boulder(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         if ((Action)actorResource.FirstActionId == Action.Roll_Right)
         {
             IsMovingRight = true;
@@ -24,7 +28,7 @@ public sealed partial class Boulder : MovableActor
         Timer = 0xFF;
         PendingShake = true;
 
-        State.SetTo(Fsm_Wait);
+        State.SetTo(_Fsm_Wait);
     }
 
     private float MoveSpeed { get; set; }
@@ -41,7 +45,7 @@ public sealed partial class Boulder : MovableActor
         switch (message)
         {
             case Message.Actor_Start:
-                if (State == Fsm_Wait)
+                if (State == _Fsm_Wait)
                 {
                     Timer = 0;
 
@@ -57,7 +61,7 @@ public sealed partial class Boulder : MovableActor
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
-        if (State != Fsm_Wait)
+        if (State != _Fsm_Wait)
             base.Draw(animationPlayer, forceDraw);
     }
 }

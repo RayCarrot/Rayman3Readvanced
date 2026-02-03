@@ -28,7 +28,7 @@ public partial class Slapdash
         if (HitPoints == 0)
         {
             IsInvulnerable = false;
-            State.MoveTo(Fsm_Dying);
+            State.MoveTo(_Fsm_Dying);
             return false;
         }
 
@@ -52,7 +52,7 @@ public partial class Slapdash
                 if ((IsFacingRight && Scene.MainActor.Position.X - Position.X < Scene.Resolution.X) || 
                     (IsFacingLeft && Position.X - Scene.MainActor.Position.X < Scene.Resolution.X)) 
                 {
-                    State.MoveTo(Fsm_Walk);
+                    State.MoveTo(_Fsm_Walk);
                     return false;
                 }
                 break;
@@ -84,13 +84,13 @@ public partial class Slapdash
 
                 if (ShouldTurnAround())
                 {
-                    State.MoveTo(Fsm_TurnAround);
+                    State.MoveTo(_Fsm_TurnAround);
                     return false;
                 }
 
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    State.MoveTo(Fsm_BeginChargeAttack);
+                    State.MoveTo(_Fsm_BeginChargeAttack);
                     return false;
                 }
                 break;
@@ -140,7 +140,7 @@ public partial class Slapdash
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Walk);
+                    State.MoveTo(_Fsm_Walk);
                     return false;
                 }
                 break;
@@ -171,7 +171,7 @@ public partial class Slapdash
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_ChargeAttack);
+                    State.MoveTo(_Fsm_ChargeAttack);
                     return false;
                 }
                 break;
@@ -220,19 +220,19 @@ public partial class Slapdash
 
                 if (ShouldTurnAround())
                 {
-                    State.MoveTo(Fsm_TurnAround);
+                    State.MoveTo(_Fsm_TurnAround);
                     return false;
                 }
 
                 if (changedDirection)
                 {
-                    State.MoveTo(Fsm_TurnAroundFromChargeAttack);
+                    State.MoveTo(_Fsm_TurnAroundFromChargeAttack);
                     return false;
                 }
 
                 if (timeOut)
                 {
-                    State.MoveTo(Fsm_Walk);
+                    State.MoveTo(_Fsm_Walk);
                     return false;
                 }
                 break;
@@ -261,7 +261,7 @@ public partial class Slapdash
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_TurnAround);
+                    State.MoveTo(_Fsm_TurnAround);
                     return false;
                 }
                 break;
@@ -293,7 +293,7 @@ public partial class Slapdash
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Walk);
+                    State.MoveTo(_Fsm_Walk);
                     return false;
                 }
                 break;
@@ -319,7 +319,7 @@ public partial class Slapdash
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Wait);
+                    State.MoveTo(_Fsm_Wait);
                     return false;
                 }
                 break;

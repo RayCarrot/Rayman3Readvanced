@@ -33,21 +33,21 @@ public partial class Teensies
                 if (Scene.IsDetectedMainActor(this) && InitialActionId is Action.Init_World1_Right or Action.Init_World1_Left)
                 {
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginCutscene);
-                    State.MoveTo(Fsm_World1IntroText);
+                    State.MoveTo(_Fsm_World1IntroText);
                     return false;
                 }
 
                 if (Scene.IsDetectedMainActor(this) && requirementMet)
                 {
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginCutscene);
-                    State.MoveTo(Fsm_ShowRequirementMetText);
+                    State.MoveTo(_Fsm_ShowRequirementMetText);
                     return false;
                 }
 
                 if (Scene.IsDetectedMainActor(this) && !requirementMet)
                 {
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginCutscene);
-                    State.MoveTo(Fsm_ShowRequirementNotMetText);
+                    State.MoveTo(_Fsm_ShowRequirementNotMetText);
                     return false;
                 }
                 break;
@@ -103,13 +103,13 @@ public partial class Teensies
 
                 if (TextBox.IsFinished && IsMapRequirementFulfilled() && IsEnoughCagesTaken())
                 {
-                    State.MoveTo(Fsm_ShowRequirementMetText);
+                    State.MoveTo(_Fsm_ShowRequirementMetText);
                     return false;
                 }
                 
                 if (TextBox.IsFinished)
                 {
-                    State.MoveTo(Fsm_ShowRequirementNotMetText);
+                    State.MoveTo(_Fsm_ShowRequirementNotMetText);
                     return false;
                 }
                 break;
@@ -168,7 +168,7 @@ public partial class Teensies
 
                 if (!TextBox.IsOnScreen())
                 {
-                    State.MoveTo(Fsm_ExitedRequirementMetText);
+                    State.MoveTo(_Fsm_ExitedRequirementMetText);
                     return false;
                 }
                 break;
@@ -246,7 +246,7 @@ public partial class Teensies
 
                 if (finished)
                 {
-                    State.MoveTo(Fsm_WaitExitRequirementNotMetText);
+                    State.MoveTo(_Fsm_WaitExitRequirementNotMetText);
                     return false;
                 }
                 break;
@@ -272,7 +272,7 @@ public partial class Teensies
 
                 if (!TextBox.IsOnScreen())
                 {
-                    State.MoveTo(Fsm_ExitedRequirementNotMetText);
+                    State.MoveTo(_Fsm_ExitedRequirementNotMetText);
                     return false;
                 }
                 break;
@@ -300,7 +300,7 @@ public partial class Teensies
 
                 if (HasLeftMainActorView())
                 {
-                    State.MoveTo(Fsm_WaitMaster);
+                    State.MoveTo(_Fsm_WaitMaster);
                     return false;
                 }
                 break;

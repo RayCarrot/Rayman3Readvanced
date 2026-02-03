@@ -49,7 +49,7 @@ public partial class MetalShieldedHoodboom
         if (dying)
         {
             HitPoints = 0;
-            State.MoveTo(Fsm_Dying);
+            State.MoveTo(_Fsm_Dying);
             return false;
         }
 
@@ -112,19 +112,19 @@ public partial class MetalShieldedHoodboom
 
                 if (readyToAttack && detectedMainActor)
                 {
-                    State.MoveTo(Fsm_PrepareGrenade);
+                    State.MoveTo(_Fsm_PrepareGrenade);
                     return false;
                 }
 
                 if (isAttackedFromAbove)
                 {
-                    State.MoveTo(Fsm_GuardAbove);
+                    State.MoveTo(_Fsm_GuardAbove);
                     return false;
                 }
 
                 if (isAttackedFromBelow)
                 {
-                    State.MoveTo(Fsm_GuardBelow);
+                    State.MoveTo(_Fsm_GuardBelow);
                     return false;
                 }
                 break;
@@ -153,7 +153,7 @@ public partial class MetalShieldedHoodboom
 
                 if (AnimatedObject.CurrentFrame == 10)
                 {
-                    State.MoveTo(Fsm_ThrowGrenade);
+                    State.MoveTo(_Fsm_ThrowGrenade);
                     return false;
                 }
                 break;
@@ -214,7 +214,7 @@ public partial class MetalShieldedHoodboom
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;
@@ -244,7 +244,7 @@ public partial class MetalShieldedHoodboom
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;
@@ -274,7 +274,7 @@ public partial class MetalShieldedHoodboom
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;

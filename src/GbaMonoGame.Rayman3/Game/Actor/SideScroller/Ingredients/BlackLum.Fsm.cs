@@ -10,7 +10,7 @@ public partial class BlackLum
     {
         if (HitPoints == 0)
         {
-            State.MoveTo(Fsm_Dying);
+            State.MoveTo(_Fsm_Dying);
             return false;
         }
 
@@ -31,7 +31,7 @@ public partial class BlackLum
 
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    State.SetTo(Fsm_PrepareAttack);
+                    State.SetTo(_Fsm_PrepareAttack);
                     return false;
                 }
                 break;
@@ -58,7 +58,7 @@ public partial class BlackLum
 
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    State.SetTo(Fsm_Attack);
+                    State.SetTo(_Fsm_Attack);
                     return false;
                 }
                 break;
@@ -118,7 +118,7 @@ public partial class BlackLum
 
                 if (isDead)
                 {
-                    State.MoveTo(Fsm_Dying);
+                    State.MoveTo(_Fsm_Dying);
                     return false;
                 }
                 break;

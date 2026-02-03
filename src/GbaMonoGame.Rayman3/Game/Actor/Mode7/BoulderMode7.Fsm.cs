@@ -137,7 +137,7 @@ public partial class BoulderMode7
                 if (ZPos < 0)
                 {
                     ZPos = 0;
-                    State.MoveTo(Fsm_BounceHitGround);
+                    State.MoveTo(_Fsm_BounceHitGround);
                     return false;
                 }
                 break;
@@ -186,7 +186,7 @@ public partial class BoulderMode7
                 if (Scale.Y <= 1 && !IsSquashing)
                 {
                     Scale = Scale with { Y = 1 };
-                    State.MoveTo(Fsm_Bounce);
+                    State.MoveTo(_Fsm_Bounce);
                     return false;
                 }
                 break;

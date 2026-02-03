@@ -1,13 +1,17 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class Electricity : InteractableActor
 {
     public Electricity(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         InitialActionId = (Action)actorResource.FirstActionId;
 
         float left = Position.X;
@@ -30,7 +34,7 @@ public sealed partial class Electricity : InteractableActor
             right: left + 12, 
             bottom: Position.Y + 20);
 
-        State.SetTo(Fsm_Activated);
+        State.SetTo(_Fsm_Activated);
 
         _debugAdditionalAttackBoxAObject = new DebugBoxAObject()
         {
@@ -74,7 +78,7 @@ public sealed partial class Electricity : InteractableActor
         base.DrawDebugBoxes(animationPlayer);
 
         if (InitialActionId is Action.DoubleActivated_Left or Action.DoubleActivated_Right &&
-            State == Fsm_Activated &&
+            State == _Fsm_Activated &&
             Scene.Camera.IsDebugBoxFramed(_debugAdditionalAttackBoxAObject, AdditionalAttackBox.Position))
         {
             _debugAdditionalAttackBoxAObject.Size = AdditionalAttackBox.Size;

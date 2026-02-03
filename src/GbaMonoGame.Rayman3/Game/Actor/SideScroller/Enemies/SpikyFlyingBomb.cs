@@ -1,14 +1,18 @@
 ﻿using System;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
 // Original name: BombePiquante
+[GenerateFsmFields]
 public sealed partial class SpikyFlyingBomb : MovableActor
 {
     public SpikyFlyingBomb(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         SoundDelay = 0;
         Destroyed = false;
 
@@ -17,11 +21,11 @@ public sealed partial class SpikyFlyingBomb : MovableActor
         // Unused
         if (firstActionId == Action.WaitToAttack)
         {
-            State.SetTo(Fsm_Wait);
+            State.SetTo(_Fsm_Wait);
         }
         else if (firstActionId == Action.Stationary)
         {
-            State.SetTo(Fsm_Stationary);
+            State.SetTo(_Fsm_Stationary);
         }
         else
         {
@@ -33,7 +37,7 @@ public sealed partial class SpikyFlyingBomb : MovableActor
                 Action.Move_Down => PhysicalTypeValue.Enemy_Down,
                 _ => throw new Exception("Invalid initial action for the spiky flying bomb")
             };
-            State.SetTo(Fsm_Move);
+            State.SetTo(_Fsm_Move);
         }
     }
 

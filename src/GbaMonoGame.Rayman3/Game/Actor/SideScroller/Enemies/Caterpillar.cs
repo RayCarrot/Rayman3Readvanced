@@ -1,15 +1,19 @@
 ﻿using System;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
 // Original name: Mumu
+[GenerateFsmFields]
 public sealed partial class Caterpillar : MovableActor
 {
     public Caterpillar(int instanceId, Scene2D scene, ActorResource actorResource) 
         : base(instanceId, scene, actorResource, new AObjectChain(actorResource.Model.AnimatedObject, actorResource.IsAnimatedObjectDynamic))
     {
+        CreateGeneratedStates();
+
         Direction = MoveDirection.Left;
         CheckAgainstMapCollision = false;
 
@@ -44,7 +48,7 @@ public sealed partial class Caterpillar : MovableActor
                 throw new Exception("Invalid initial action set for the caterpillar actor");
         }
 
-        State.SetTo(Fsm_Move);
+        State.SetTo(_Fsm_Move);
     }
 
     public new AObjectChain AnimatedObject => (AObjectChain)base.AnimatedObject;
@@ -141,20 +145,20 @@ public sealed partial class Caterpillar : MovableActor
         switch (message)
         {
             case Message.Actor_ThrowUp:
-                State.MoveTo(Fsm_ThrownUp);
+                State.MoveTo(_Fsm_ThrownUp);
                 return false;
 
             case Message.Actor_ThrowForward:
-                State.MoveTo(Fsm_ThrownForward);
+                State.MoveTo(_Fsm_ThrownForward);
                 return false;
 
             case Message.Actor_Drop:
-                State.MoveTo(Fsm_Projectile);
+                State.MoveTo(_Fsm_Projectile);
                 return false;
 
             // Unused
             case Message.Actor_CollideWithSameType:
-                State.MoveTo(Fsm_Dying);
+                State.MoveTo(_Fsm_Dying);
                 return false;
 
             default:

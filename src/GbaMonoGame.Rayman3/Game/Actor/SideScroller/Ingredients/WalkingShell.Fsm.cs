@@ -12,7 +12,7 @@ public partial class WalkingShell
 
         UpdateTypes();
 
-        if (State == Fsm_Jump)
+        if (State == _Fsm_Jump)
             Scene.Camera.ProcessMessage(this, Message.Cam_DoNotFollowPositionY, 120);
         else
             Scene.Camera.ProcessMessage(this, Message.Cam_FollowPositionY, 120);
@@ -20,7 +20,7 @@ public partial class WalkingShell
         if (IsRaymanMounted)
             Rayman.Position = Position;
 
-        if (State != Fsm_Idle && State != Fsm_Loop)
+        if (State != _Fsm_Idle && State != _Fsm_Loop)
         {
             Rayman rayman = (Rayman)Scene.MainActor;
 
@@ -84,7 +84,7 @@ public partial class WalkingShell
                     Rayman.IsActionFinished &&
                     Rayman.ActionId == Rayman.Action.WalkingShell_Mount)
                 {
-                    State.MoveTo(Fsm_Move);
+                    State.MoveTo(_Fsm_Move);
                     return false;
                 }
                 break;
@@ -140,7 +140,7 @@ public partial class WalkingShell
                     Rayman.ActionId = Rayman.Action.WalkingShell_BeginBoost;
                     ActionId = Action.BeginBoost;
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoEfor2_Mix03);
-                    State.MoveTo(Fsm_Boost);
+                    State.MoveTo(_Fsm_Boost);
                     return false;
                 }
 
@@ -149,7 +149,7 @@ public partial class WalkingShell
                     CurrentType == PhysicalTypeValue.None &&
                     CurrentBottomType == PhysicalTypeValue.Water)
                 {
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
 
@@ -157,14 +157,14 @@ public partial class WalkingShell
                 if (DetectLoop())
                 {
                     Timer = 0;
-                    State.MoveTo(Fsm_Loop);
+                    State.MoveTo(_Fsm_Loop);
                     return false;
                 }
 
                 // Jump
                 if (IsRaymanMounted && JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump))
                 {
-                    State.MoveTo(Fsm_Jump);
+                    State.MoveTo(_Fsm_Jump);
                     return false;
                 }
                 break;
@@ -223,7 +223,7 @@ public partial class WalkingShell
                 {
                     Rayman.ActionId = Rayman.Action.WalkingShell_EndBoost;
                     ActionId = Action.EndBoost;
-                    State.MoveTo(Fsm_Move);
+                    State.MoveTo(_Fsm_Move);
                     return false;
                 }
 
@@ -231,26 +231,26 @@ public partial class WalkingShell
                 {
                     Rayman.ActionId = Rayman.Action.WalkingShell_EndBoost;
                     ActionId = Action.EndBoost;
-                    State.MoveTo(Fsm_Move);
+                    State.MoveTo(_Fsm_Move);
                     return false;
                 }
 
                 if (Speed.Y > 1 && CurrentType == PhysicalTypeValue.None && CurrentBottomType == PhysicalTypeValue.Water)
                 {
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
 
                 if (DetectLoop())
                 {
                     Timer = 0;
-                    State.MoveTo(Fsm_Loop);
+                    State.MoveTo(_Fsm_Loop);
                     return false;
                 }
 
                 if (IsRaymanMounted && JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump))
                 {
-                    State.MoveTo(Fsm_Jump);
+                    State.MoveTo(_Fsm_Jump);
                     return false;
                 }
                 break;
@@ -345,7 +345,7 @@ public partial class WalkingShell
                 // Land
                 if (Speed.Y == 0 && !isLoop)
                 {
-                    State.MoveTo(Fsm_Move);
+                    State.MoveTo(_Fsm_Move);
                     return false;
                 }
 
@@ -353,7 +353,7 @@ public partial class WalkingShell
                 if (isLoop)
                 {
                     Timer = 0xFF;
-                    State.MoveTo(Fsm_Loop);
+                    State.MoveTo(_Fsm_Loop);
                     return false;
                 }
                 break;
@@ -437,7 +437,7 @@ public partial class WalkingShell
                 // Finished loop
                 if (HasBoostedInLoop && LoopAngle is >= 64 and <= 70)
                 {
-                    State.MoveTo(Fsm_Boost);
+                    State.MoveTo(_Fsm_Boost);
                     return false;
                 }
 
@@ -447,7 +447,7 @@ public partial class WalkingShell
                     MechModel.Speed = MechModel.Speed with { X = -1 };
                     IsRaymanMounted = false;
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_UnmountWalkingShell, this);
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
                 break;
@@ -521,7 +521,7 @@ public partial class WalkingShell
                     }
                     else if (Rom.Platform == Platform.GBA)
                     {
-                        State.MoveTo(Fsm_Move);
+                        State.MoveTo(_Fsm_Move);
                         return false;
                     }
                     else
@@ -532,7 +532,7 @@ public partial class WalkingShell
 
                 if (SafetyJumpTimer != 0 && IsRaymanMounted && JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump))
                 {
-                    State.MoveTo(Fsm_Jump);
+                    State.MoveTo(_Fsm_Jump);
                     return false;
                 }
                 break;

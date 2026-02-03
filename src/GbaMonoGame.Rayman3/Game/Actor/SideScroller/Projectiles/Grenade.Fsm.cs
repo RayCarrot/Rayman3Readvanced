@@ -40,7 +40,7 @@ public partial class Grenade
                     Scene.IsHitMainActor(this) ||
                     TouchingMapTimer >= 30)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;

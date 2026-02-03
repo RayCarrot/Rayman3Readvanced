@@ -11,7 +11,7 @@ public partial class GameCubeMenu
     {
         if (UseJoyBus && JoyBus.CheckForLostConnection())
         {
-            State.MoveTo(Fsm_ConnectionLost);
+            State.MoveTo(_Fsm_ConnectionLost);
             return false;
         }
 
@@ -34,7 +34,7 @@ public partial class GameCubeMenu
 
                 if (Timer >= 240)
                 {
-                    State.MoveTo(Fsm_WaitForConnection);
+                    State.MoveTo(_Fsm_WaitForConnection);
                     return false;
                 }
                 break;
@@ -84,14 +84,14 @@ public partial class GameCubeMenu
                     if (JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuBack))
                     {
                         IsActive = false;
-                        State.MoveTo(Fsm_Exit);
+                        State.MoveTo(_Fsm_Exit);
                         return false;
                     }
 
                     // Had read map infos
                     if (MapInfos != null)
                     {
-                        State.MoveTo(Fsm_SelectMap);
+                        State.MoveTo(_Fsm_SelectMap);
                         return false;
                     }
 
@@ -107,7 +107,7 @@ public partial class GameCubeMenu
 
                                 if (success)
                                 {
-                                    State.MoveTo(Fsm_WaitForConnection);
+                                    State.MoveTo(_Fsm_WaitForConnection);
                                     return false;
                                 }
                                 else
@@ -140,7 +140,7 @@ public partial class GameCubeMenu
                     if (JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuBack))
                     {
                         IsActive = false;
-                        State.MoveTo(Fsm_Exit);
+                        State.MoveTo(_Fsm_Exit);
                         return false;
                     }
 
@@ -148,7 +148,7 @@ public partial class GameCubeMenu
                     if (JoyBus.IsConnected)
                     {
                         WaitingForConnection = false;
-                        State.MoveTo(Fsm_Connected);
+                        State.MoveTo(_Fsm_Connected);
                         return false;
                     }
                 }
@@ -176,12 +176,12 @@ public partial class GameCubeMenu
                 if (JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuBack))
                 {
                     IsActive = false;
-                    State.MoveTo(Fsm_Exit);
+                    State.MoveTo(_Fsm_Exit);
                     return false;
                 }
 
                 ShowPleaseConnectText();
-                State.MoveTo(Fsm_WaitForConnection);
+                State.MoveTo(_Fsm_WaitForConnection);
                 return false;
 
             case FsmAction.UnInit:
@@ -256,14 +256,14 @@ public partial class GameCubeMenu
                 if (JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuBack))
                 {
                     IsActive = false;
-                    State.MoveTo(Fsm_Exit);
+                    State.MoveTo(_Fsm_Exit);
                     return false;
                 }
 
                 // Error
                 if (JoyBus.HasReceivedData && JoyBus.IsConnected && !isValid)
                 {
-                    State.MoveTo(Fsm_ConnectionLost);
+                    State.MoveTo(_Fsm_ConnectionLost);
                     return false;
                 }
 
@@ -271,7 +271,7 @@ public partial class GameCubeMenu
                 if (JoyBus.HasReceivedData && JoyBus.IsConnected)
                 {
                     GbaUnlockFlags = gbaUnlockFlags;
-                    State.MoveTo(Fsm_DownloadMapInfo);
+                    State.MoveTo(_Fsm_DownloadMapInfo);
                     return false;
                 }
 
@@ -279,7 +279,7 @@ public partial class GameCubeMenu
                 if (!JoyBus.IsConnected)
                 {
                     ShowPleaseConnectText();
-                    State.MoveTo(Fsm_WaitForConnection);
+                    State.MoveTo(_Fsm_WaitForConnection);
                     return false;
                 }
                 break;
@@ -317,7 +317,7 @@ public partial class GameCubeMenu
                 if (JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuBack))
                 {
                     IsActive = false;
-                    State.MoveTo(Fsm_Exit);
+                    State.MoveTo(_Fsm_Exit);
                     return false;
                 }
 
@@ -325,21 +325,21 @@ public partial class GameCubeMenu
                 if (!JoyBus.IsConnected)
                 {
                     ShowPleaseConnectText();
-                    State.MoveTo(Fsm_WaitForConnection);
+                    State.MoveTo(_Fsm_WaitForConnection);
                     return false;
                 }
 
                 // Error
                 if (JoyBus.ErrorState == 0xFF)
                 {
-                    State.MoveTo(Fsm_ConnectionLost);
+                    State.MoveTo(_Fsm_ConnectionLost);
                     return false;
                 }
 
                 // Finished downloading map info
                 if (JoyBus.RemainingSize == 0)
                 {
-                    State.MoveTo(Fsm_DownloadMapInfoAck);
+                    State.MoveTo(_Fsm_DownloadMapInfoAck);
                     return false;
                 }
                 break;
@@ -373,21 +373,21 @@ public partial class GameCubeMenu
                 if (JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuBack))
                 {
                     IsActive = false;
-                    State.MoveTo(Fsm_Exit);
+                    State.MoveTo(_Fsm_Exit);
                     return false;
                 }
 
                 // Select map - Received download acknowledgement
                 if (JoyBus.HasReceivedData && JoyBus.ReceivedData == 0x22222222)
                 {
-                    State.MoveTo(Fsm_SelectMap);
+                    State.MoveTo(_Fsm_SelectMap);
                     return false;
                 }
 
                 // Error - received invalid data
                 if (JoyBus.HasReceivedData)
                 {
-                    State.MoveTo(Fsm_ConnectionLost);
+                    State.MoveTo(_Fsm_ConnectionLost);
                     return false;
                 }
 
@@ -395,7 +395,7 @@ public partial class GameCubeMenu
                 if (!JoyBus.IsConnected)
                 {
                     ShowPleaseConnectText();
-                    State.MoveTo(Fsm_WaitForConnection);
+                    State.MoveTo(_Fsm_WaitForConnection);
                     return false;
                 }
                 break;
@@ -529,13 +529,13 @@ public partial class GameCubeMenu
                 if (JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuBack))
                 {
                     IsActive = false;
-                    State.MoveTo(Fsm_Exit);
+                    State.MoveTo(_Fsm_Exit);
                     return false;
                 }
 
                 if (hasSelectedMap)
                 {
-                    State.MoveTo(Fsm_DownloadMap);
+                    State.MoveTo(_Fsm_DownloadMap);
                     return false;
                 }
 
@@ -543,7 +543,7 @@ public partial class GameCubeMenu
                 if (UseJoyBus && !JoyBus.IsConnected)
                 {
                     ShowPleaseConnectText();
-                    State.MoveTo(Fsm_WaitForConnection);
+                    State.MoveTo(_Fsm_WaitForConnection);
                     return false;
                 }
                 break;
@@ -593,21 +593,21 @@ public partial class GameCubeMenu
                 {
                     JoyBus.Disconnect();
                     JoyBus.Connect();
-                    State.MoveTo(Fsm_WaitForConnection);
+                    State.MoveTo(_Fsm_WaitForConnection);
                     return false;
                 }
 
                 // Error
                 if (JoyBus.ErrorState == 0xFF)
                 {
-                    State.MoveTo(Fsm_ConnectionLost);
+                    State.MoveTo(_Fsm_ConnectionLost);
                     return false;
                 }
 
                 // Finished downloading map
                 if (JoyBus.RemainingSize == 0)
                 {
-                    State.MoveTo(Fsm_DownloadMapAck);
+                    State.MoveTo(_Fsm_DownloadMapAck);
                     return false;
                 }
 
@@ -615,7 +615,7 @@ public partial class GameCubeMenu
                 if (!JoyBus.IsConnected)
                 {
                     ShowPleaseConnectText();
-                    State.MoveTo(Fsm_WaitForConnection);
+                    State.MoveTo(_Fsm_WaitForConnection);
                     return false;
                 }
                 break;
@@ -648,12 +648,12 @@ public partial class GameCubeMenu
 
                     if (JoyBus.ReceivedData == 0x22222222)
                     {
-                        State.MoveTo(Fsm_WaitForConnection);
+                        State.MoveTo(_Fsm_WaitForConnection);
                         return false;
                     }
                     else
                     {
-                        State.MoveTo(Fsm_ConnectionLost);
+                        State.MoveTo(_Fsm_ConnectionLost);
                         return false;
                     }
                 }
@@ -662,7 +662,7 @@ public partial class GameCubeMenu
                 if (!JoyBus.IsConnected)
                 {
                     ShowPleaseConnectText();
-                    State.MoveTo(Fsm_WaitForConnection);
+                    State.MoveTo(_Fsm_WaitForConnection);
                     return false;
                 }
                 break;

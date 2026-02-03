@@ -40,7 +40,7 @@ public partial class TimeAttackScoreDialog
 
                 if (TimeTargetTransitionIndex == TimeTargets.Length)
                 {
-                    State.MoveTo(Fsm_ShowCurrentTime);
+                    State.MoveTo(_Fsm_ShowCurrentTime);
                     return false;
                 }
                 break;
@@ -67,7 +67,7 @@ public partial class TimeAttackScoreDialog
 
                 if (CurrentTimeText.ScreenPos.Y >= 30)
                 {
-                    State.MoveTo(Fsm_ShowRecordTime);
+                    State.MoveTo(_Fsm_ShowRecordTime);
                     return false;
                 }
                 break;
@@ -105,7 +105,7 @@ public partial class TimeAttackScoreDialog
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumTotal_Mix02);
                     }
 
-                    State.MoveTo(Fsm_ShowOptions);
+                    State.MoveTo(_Fsm_ShowOptions);
                     return false;
                 }
                 break;

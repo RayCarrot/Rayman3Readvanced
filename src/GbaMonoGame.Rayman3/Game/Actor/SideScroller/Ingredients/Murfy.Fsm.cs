@@ -27,7 +27,7 @@ public partial class Murfy
         {
             MoveTextBoxIn = false;
             HasPlayedCutscene = true;
-            State.MoveTo(Fsm_Leave);
+            State.MoveTo(_Fsm_Leave);
             return false;
         }
 
@@ -45,7 +45,7 @@ public partial class Murfy
             case FsmAction.Step:
                 InitialPosition = Position;
                 TextBox = Scene.GetRequiredDialog<TextBoxDialog>();
-                State.MoveTo(Fsm_Init);
+                State.MoveTo(_Fsm_Init);
                 return false;
 
             case FsmAction.UnInit:
@@ -70,7 +70,7 @@ public partial class Murfy
 
                 if (ShouldSpawn)
                 {
-                    State.MoveTo(Fsm_WaitToSpawn);
+                    State.MoveTo(_Fsm_WaitToSpawn);
                     return false;
                 }
                 break;
@@ -96,7 +96,7 @@ public partial class Murfy
                 if (ShouldSpawn)
                 {
                     MoveTextBoxIn = false;
-                    State.MoveTo(Fsm_MoveIn);
+                    State.MoveTo(_Fsm_MoveIn);
                     return false;
                 }
                 break;
@@ -237,7 +237,7 @@ public partial class Murfy
                 // If stopped moving
                 if (SavedSpeed == Vector2.Zero && ActionId is not (Action.BeginIdle_Right or Action.BeginIdle_Left))
                 {
-                    State.MoveTo(Fsm_Talk);
+                    State.MoveTo(_Fsm_Talk);
                     return false;
                 }
                 break;
@@ -312,14 +312,14 @@ public partial class Murfy
                 if (isOutsideTargetArea)
                 {
                     MoveTextBoxIn = true;
-                    State.MoveTo(Fsm_MoveIn);
+                    State.MoveTo(_Fsm_MoveIn);
                     return false;
                 }
 
                 // Unused since Rayman can't attack while in a cutscene
                 if (isBeingAttacked)
                 {
-                    State.MoveTo(Fsm_AvoidAttack);
+                    State.MoveTo(_Fsm_AvoidAttack);
                     return false;
                 }
                 break;
@@ -369,7 +369,7 @@ public partial class Murfy
                 if (Timer > 10 && isSafe && Position.Y < TargetPosition.Y + 5)
                 {
                     MoveTextBoxIn = true;
-                    State.MoveTo(Fsm_MoveIn);
+                    State.MoveTo(_Fsm_MoveIn);
                     return false;
                 }
                 break;
@@ -404,7 +404,7 @@ public partial class Murfy
 
                 if (ScreenPosition.Y < -10)
                 {
-                    State.MoveTo(Fsm_Init);
+                    State.MoveTo(_Fsm_Init);
                     return false;
                 }
                 break;

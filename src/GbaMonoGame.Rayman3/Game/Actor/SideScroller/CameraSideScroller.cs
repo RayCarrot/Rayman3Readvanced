@@ -1,15 +1,19 @@
 ﻿using System;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 using ImGuiNET;
 using Microsoft.Xna.Framework.Input;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class CameraSideScroller : CameraActor2D
 {
     public CameraSideScroller(Scene2D scene) : base(scene)
     {
-        State.SetTo(Fsm_Follow);
+        CreateGeneratedStates();
+
+        State.SetTo(_Fsm_Follow);
 
         PreviousLinkedObjectPosition = Vector2.Zero;
 
@@ -136,7 +140,7 @@ public sealed partial class CameraSideScroller : CameraActor2D
                     MoveTargetPos = captorBox.Center - new Vector2(Scene.Resolution.X / 2, (int)(Scene.Resolution.X / 3));
                     Timer = 7;
 
-                    State.MoveTo(Fsm_MoveToTarget);
+                    State.MoveTo(_Fsm_MoveToTarget);
                 }
                 return true;
 
@@ -188,7 +192,7 @@ public sealed partial class CameraSideScroller : CameraActor2D
 
                 Timer = 5;
 
-                State.MoveTo(Fsm_MoveToTarget);
+                State.MoveTo(_Fsm_MoveToTarget);
                 return true;
 
             case Message.Cam_MoveToLinkedObject:
@@ -207,7 +211,7 @@ public sealed partial class CameraSideScroller : CameraActor2D
                 if (param is not true)
                     Timer = 6;
 
-                State.MoveTo(Fsm_MoveToTarget);
+                State.MoveTo(_Fsm_MoveToTarget);
                 return true;
 
             case Message.Cam_SetPosition:
@@ -222,7 +226,7 @@ public sealed partial class CameraSideScroller : CameraActor2D
                 return true;
 
             case Message.Cam_Unlock:
-                State.MoveTo(Fsm_Follow);
+                State.MoveTo(_Fsm_Follow);
                 return true;
 
             default:

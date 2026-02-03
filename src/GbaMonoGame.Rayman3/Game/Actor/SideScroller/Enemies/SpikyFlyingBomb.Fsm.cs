@@ -22,7 +22,7 @@ public partial class SpikyFlyingBomb
 
         if (Destroyed)
         {
-            State.MoveTo(Fsm_Destroyed);
+            State.MoveTo(_Fsm_Destroyed);
             return false;
         }
 
@@ -58,7 +58,7 @@ public partial class SpikyFlyingBomb
                     PhysicalTypeValue.Enemy_Up or 
                     PhysicalTypeValue.Enemy_Down)
                 {
-                    State.MoveTo(Fsm_Move);
+                    State.MoveTo(_Fsm_Move);
                     return false;
                 }
                 break;
@@ -114,7 +114,7 @@ public partial class SpikyFlyingBomb
 
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    State.MoveTo(Fsm_PrepareAttack);
+                    State.MoveTo(_Fsm_PrepareAttack);
                     return false;
                 }
                 break;
@@ -139,7 +139,7 @@ public partial class SpikyFlyingBomb
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Attack);
+                    State.MoveTo(_Fsm_Attack);
                     return false;
                 }
                 break;

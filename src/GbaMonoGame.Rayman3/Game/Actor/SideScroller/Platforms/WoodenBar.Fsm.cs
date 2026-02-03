@@ -26,7 +26,7 @@ public partial class WoodenBar
                     Position.Y + 40 < Scene.MainActor.Position.Y)
                 {
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginHang, this);
-                    State.MoveTo(Fsm_Grabbed);
+                    State.MoveTo(_Fsm_Grabbed);
                     return false;
                 }
                 break;
@@ -162,7 +162,7 @@ public partial class WoodenBar
                 if (!Scene.IsDetectedMainActor(this))
                 {
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_EndHang, this);
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;

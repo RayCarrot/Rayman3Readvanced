@@ -16,7 +16,7 @@ public partial class BreakableWall
             case FsmAction.Step:
                 if (ActionId is Action.Break)
                 {
-                    State.MoveTo(Fsm_Break);
+                    State.MoveTo(_Fsm_Break);
                     return false;
                 }
                 break;
@@ -42,7 +42,7 @@ public partial class BreakableWall
             case FsmAction.Step:
                 if (ActionId is Action.Break && IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;

@@ -21,7 +21,7 @@ public partial class FlyingShell
                 // Wait for countdown to finish
                 if (!TimeAttackInfo.IsActive || TimeAttackInfo.Mode == TimeAttackMode.Play)
                 {
-                    State.MoveTo(Fsm_Fly);
+                    State.MoveTo(_Fsm_Fly);
                     return false;
                 }
                 break;
@@ -101,7 +101,7 @@ public partial class FlyingShell
 
                 if (IsCollidingWithWall())
                 {
-                    State.MoveTo(Fsm_Crash);
+                    State.MoveTo(_Fsm_Crash);
                     return false;
                 }
                 break;

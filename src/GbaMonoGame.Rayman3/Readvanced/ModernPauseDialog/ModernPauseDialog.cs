@@ -3,14 +3,18 @@ using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 using Action = System.Action;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
+[GenerateFsmFields]
 public partial class ModernPauseDialog : Dialog
 {
     public ModernPauseDialog(Scene2D scene, bool canExitLevel) : base(scene)
     {
+        CreateGeneratedStates();
+
         CanExitLevel = canExitLevel;
         PausedMachineId = -1;
     }
@@ -234,7 +238,7 @@ public partial class ModernPauseDialog : Dialog
         }
         else
         {
-            State.SetTo(Fsm_CheckSelection);
+            State.SetTo(_Fsm_CheckSelection);
         }
 
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);

@@ -21,14 +21,14 @@ public partial class Cage
                 if (HitPoints != PrevHitPoints)
                 {
                     PrevHitPoints = HitPoints;
-                    State.MoveTo(Fsm_Damaged);
+                    State.MoveTo(_Fsm_Damaged);
                     return false;
                 }
 
                 // Change idle state after 2 seconds
                 if (Timer >= 120)
                 {
-                    State.MoveTo(Fsm_Blink);
+                    State.MoveTo(_Fsm_Blink);
                     return false;
                 }
                 break;
@@ -57,14 +57,14 @@ public partial class Cage
                 if (HitPoints != PrevHitPoints)
                 {
                     PrevHitPoints = HitPoints;
-                    State.MoveTo(Fsm_Damaged);
+                    State.MoveTo(_Fsm_Damaged);
                     return false;
                 }
 
                 // Go back to the default idle animation when finished
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;
@@ -96,13 +96,13 @@ public partial class Cage
                 if (IsActionFinished && HitPoints != PrevHitPoints)
                 {
                     PrevHitPoints = HitPoints;
-                    State.MoveTo(Fsm_Destroyed);
+                    State.MoveTo(_Fsm_Destroyed);
                     return false;
                 }
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_IdleDamaged);
+                    State.MoveTo(_Fsm_IdleDamaged);
                     return false;
                 }
                 break;
@@ -139,7 +139,7 @@ public partial class Cage
                 if (IsActionFinished && ActionId is Action.GroundedHitRight or Action.GroundedHitLeft or Action.HangingHitRight or Action.HangingHitLeft)
                 {
                     PrevHitPoints = HitPoints;
-                    State.MoveTo(Fsm_Destroyed);
+                    State.MoveTo(_Fsm_Destroyed);
                     return false;
                 }
                 break;
@@ -166,7 +166,7 @@ public partial class Cage
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;

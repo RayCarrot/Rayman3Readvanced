@@ -19,7 +19,7 @@ public partial class BreakableDoor
 
                 if (ActionId is Action.Break_Right or Action.Break_Left)
                 {
-                    State.MoveTo(Fsm_Break);
+                    State.MoveTo(_Fsm_Break);
                     return false;
                 }
                 break;
@@ -43,7 +43,7 @@ public partial class BreakableDoor
             case FsmAction.Step:
                 if (ActionId is Action.Break_Right or Action.Break_Left && IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;

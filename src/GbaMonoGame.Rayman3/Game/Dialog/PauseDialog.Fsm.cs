@@ -195,13 +195,13 @@ public partial class PauseDialog
 
                 if (Rom.Platform == Platform.GBA && sleepMode)
                 {
-                    State.MoveTo(Fsm_SleepMode);
+                    State.MoveTo(_Fsm_SleepMode);
                     return false;
                 }
 
                 if (quitGame)
                 {
-                    State.MoveTo(Fsm_QuitGame);
+                    State.MoveTo(_Fsm_QuitGame);
                     return false;
                 }
                 break;
@@ -238,7 +238,7 @@ public partial class PauseDialog
                 // Text displays for 3 seconds
                 if (SleepModeTimer > 180)
                 {
-                    State.MoveTo(Fsm_CheckSelection);
+                    State.MoveTo(_Fsm_CheckSelection);
                     return false;
                 }
                 break;
@@ -380,7 +380,7 @@ public partial class PauseDialog
 
                 if (goBack)
                 {
-                    State.MoveTo(Fsm_CheckSelection);
+                    State.MoveTo(_Fsm_CheckSelection);
                     return false;
                 }
                 break;
@@ -579,7 +579,7 @@ public partial class PauseDialog
 
                 if (quitGame)
                 {
-                    State.MoveTo(Fsm_QuitGameMulti);
+                    State.MoveTo(_Fsm_QuitGameMulti);
                     return false;
                 }
                 break;
@@ -707,7 +707,7 @@ public partial class PauseDialog
 
                 if (goBack)
                 {
-                    State.MoveTo(Fsm_CheckSelectionMulti);
+                    State.MoveTo(_Fsm_CheckSelectionMulti);
                     return false;
                 }
                 break;

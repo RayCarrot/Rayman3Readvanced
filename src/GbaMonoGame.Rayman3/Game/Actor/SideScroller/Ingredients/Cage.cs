@@ -1,17 +1,21 @@
 ﻿using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class Cage : InteractableActor
 {
     public Cage(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         IsGrounded = actorResource.FirstActionId == 0;
         PrevHitPoints = HitPoints;
         
         CageId = GameInfo.GetCageId();
 
-        State.SetTo(Fsm_Idle);
+        State.SetTo(_Fsm_Idle);
 
         if (GameInfo.IsCageDead(CageId, GameInfo.MapId))
             ProcessMessage(this, Message.Destroy);
@@ -34,7 +38,7 @@ public sealed partial class Cage : InteractableActor
             case Message.Actor_Hurt:
                 BaseActor actor = (BaseActor)param;
                 IsHitToLeft = actor.IsFacingLeft;
-                State.MoveTo(Fsm_Damaged);
+                State.MoveTo(_Fsm_Damaged);
                 HitPoints--;
                 return false;
 
@@ -45,7 +49,7 @@ public sealed partial class Cage : InteractableActor
 
                 if (raymanBody.BodyPartType is RaymanBody.RaymanBodyPartType.SuperFist or RaymanBody.RaymanBodyPartType.SecondSuperFist)
                 {
-                    State.MoveTo(Fsm_Damaged);
+                    State.MoveTo(_Fsm_Damaged);
                     HitPoints--;
                 }
                 return false;

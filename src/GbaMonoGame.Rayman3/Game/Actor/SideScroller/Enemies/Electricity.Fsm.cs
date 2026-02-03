@@ -33,7 +33,7 @@ public partial class Electricity
 
                 if (HitPoints == 0)
                 {
-                    State.MoveTo(Fsm_Deactivated);
+                    State.MoveTo(_Fsm_Deactivated);
                     return false;
                 }
                 break;

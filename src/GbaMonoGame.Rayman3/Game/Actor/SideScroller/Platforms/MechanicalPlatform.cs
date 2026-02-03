@@ -2,13 +2,17 @@
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class MechanicalPlatform : MovableActor
 {
     public MechanicalPlatform(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         InitialPosition = actorResource.Pos.ToVector2();
         IsInvulnerable = true;
         AnimatedObject.ObjPriority = 50;
@@ -25,7 +29,7 @@ public sealed partial class MechanicalPlatform : MovableActor
 
         MechModel.Speed = Vector2.Zero;
 
-        State.SetTo(Fsm_Default);
+        State.SetTo(_Fsm_Default);
     }
 
     public Vector2 InitialPosition { get; }

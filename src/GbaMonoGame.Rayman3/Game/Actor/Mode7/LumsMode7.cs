@@ -1,12 +1,16 @@
 ﻿using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class LumsMode7 : Mode7Actor
 {
     public LumsMode7(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         AnimatedObject.BgPriority = 0;
         Direction = Angle256.Zero;
         ZPos = 0;
@@ -15,11 +19,11 @@ public sealed partial class LumsMode7 : Mode7Actor
 
         if (RSMultiplayer.IsActive)
         {
-            State.SetTo(Fsm_MultiplayerIdle);
+            State.SetTo(_Fsm_MultiplayerIdle);
         }
         else
         {
-            State.SetTo(Fsm_Idle);
+            State.SetTo(_Fsm_Idle);
 
             if (ActionId == Action.YellowLum)
             {

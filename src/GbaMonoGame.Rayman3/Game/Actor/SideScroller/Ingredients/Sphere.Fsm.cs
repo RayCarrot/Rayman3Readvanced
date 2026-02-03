@@ -19,7 +19,7 @@ public partial class Sphere
 
                 if (Scene.IsDetectedMainActor(this) && ((Rayman)Scene.MainActor).AttachedObject == this)
                 {
-                    State.MoveTo(Fsm_PickedUp);
+                    State.MoveTo(_Fsm_PickedUp);
                     return false;
                 }
                 break;
@@ -67,7 +67,7 @@ public partial class Sphere
                 if (type.IsSolid)
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SpherImp_Mix02);
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;
@@ -115,20 +115,20 @@ public partial class Sphere
                 if (Speed.Y == 0 && ActionId == Action.Land)
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SpherImp_Mix02);
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
 
                 if (Scene.IsDetectedMainActor(this) && ((Rayman)Scene.MainActor).AttachedObject == this && Speed.Y > 0)
                 {
-                    State.MoveTo(Fsm_PickedUp);
+                    State.MoveTo(_Fsm_PickedUp);
                     return false;
                 }
 
                 if (shouldRespawn)
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Tag_Mix02);
-                    State.MoveTo(Fsm_Respawn);
+                    State.MoveTo(_Fsm_Respawn);
                     return false;
                 }
                 break;
@@ -173,14 +173,14 @@ public partial class Sphere
 
                 if (Speed == Vector2.Zero && ActionId is Action.Land_Right or Action.Land_Left)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
 
                 if (shouldRespawn)
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Tag_Mix02);
-                    State.MoveTo(Fsm_Respawn);
+                    State.MoveTo(_Fsm_Respawn);
                     return false;
                 }
                 break;
@@ -217,7 +217,7 @@ public partial class Sphere
 
                 if (GameTime.ElapsedFrames - Timer > 180)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;

@@ -1,14 +1,18 @@
 ﻿using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class JanoSkullPlatform : MovableActor
 {
     public JanoSkullPlatform(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         Jano = Scene.GetGameObject<Jano>(1);
         SkullPlatformIndex = 0;
-        State.SetTo(Fsm_Move);
+        State.SetTo(_Fsm_Move);
     }
 
     public Jano Jano { get; }
@@ -36,7 +40,7 @@ public sealed partial class JanoSkullPlatform : MovableActor
         switch (message)
         {
             case Message.Actor_CollideWithSameType:
-                State.MoveTo(Fsm_FallDown);
+                State.MoveTo(_Fsm_FallDown);
                 ActionId = Action.FallDown;
                 return false;
 

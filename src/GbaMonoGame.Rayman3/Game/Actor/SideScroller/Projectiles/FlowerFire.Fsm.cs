@@ -45,7 +45,7 @@ public partial class FlowerFire
             case FsmAction.Step:
                 if (AnimatedObject.EndOfAnimation)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;

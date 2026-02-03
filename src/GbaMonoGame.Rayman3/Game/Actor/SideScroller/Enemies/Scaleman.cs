@@ -1,14 +1,18 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
 // TODO: There's a visual bug with the shadow when the Scaleman fall down. The last frame has a 1-pixel gap between the sprites due to the scaling.
+[GenerateFsmFields]
 public sealed partial class Scaleman : MovableActor
 {
     public Scaleman(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         IsInvulnerable = true;
 
         ScalemanShadow = null;
@@ -18,7 +22,7 @@ public sealed partial class Scaleman : MovableActor
         HitTimer = 101;
         CenterCamera = true;
 
-        State.SetTo(Fsm_PreInit);
+        State.SetTo(_Fsm_PreInit);
     }
 
     public ScalemanShadow ScalemanShadow { get; set; }
@@ -71,7 +75,7 @@ public sealed partial class Scaleman : MovableActor
                         else
                             ActionId = IsFacingRight ? Action.HitBehind_Right : Action.Hit_Left;
 
-                        State.MoveTo(Fsm_Shrink);
+                        State.MoveTo(_Fsm_Shrink);
 
                         ChangeAction();
 
@@ -93,7 +97,7 @@ public sealed partial class Scaleman : MovableActor
                     if (raymanBody.BodyPartType == RaymanBody.RaymanBodyPartType.Torso)
                     {
                         ((FrameSideScroller)Frame.Current).UserInfo.BossHit();
-                        State.MoveTo(Fsm_SmallHit);
+                        State.MoveTo(_Fsm_SmallHit);
                         ChangeAction();
                     }
                 }

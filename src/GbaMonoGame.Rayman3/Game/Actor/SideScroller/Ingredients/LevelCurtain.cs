@@ -1,13 +1,17 @@
 ﻿using System;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class LevelCurtain : ActionActor
 {
     public LevelCurtain(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         InitialActionId = ActionId;
         MapId = ActionId switch
         {
@@ -51,7 +55,7 @@ public sealed partial class LevelCurtain : ActionActor
         {
             if (GameInfo.World1LumsCompleted())
             {
-                State.SetTo(Fsm_Unlocked);
+                State.SetTo(_Fsm_Unlocked);
 
                 if (!GameInfo.PersistentInfo.UnlockedBonus1)
                     IsLocked = true;
@@ -59,14 +63,14 @@ public sealed partial class LevelCurtain : ActionActor
             else
             {
                 IsLocked = true;
-                State.SetTo(Fsm_Locked);
+                State.SetTo(_Fsm_Locked);
             }
         }
         else if (MapId == MapId.Bonus2)
         {
             if (GameInfo.World2LumsCompleted())
             {
-                State.SetTo(Fsm_Unlocked);
+                State.SetTo(_Fsm_Unlocked);
 
                 if (!GameInfo.PersistentInfo.UnlockedBonus2)
                     IsLocked = true;
@@ -74,14 +78,14 @@ public sealed partial class LevelCurtain : ActionActor
             else
             {
                 IsLocked = true;
-                State.SetTo(Fsm_Locked);
+                State.SetTo(_Fsm_Locked);
             }
         }
         else if (MapId == MapId.Bonus3)
         {
             if (GameInfo.World3LumsCompleted())
             {
-                State.SetTo(Fsm_Unlocked);
+                State.SetTo(_Fsm_Unlocked);
 
                 if (!GameInfo.PersistentInfo.UnlockedBonus3)
                     IsLocked = true;
@@ -89,14 +93,14 @@ public sealed partial class LevelCurtain : ActionActor
             else
             {
                 IsLocked = true;
-                State.SetTo(Fsm_Locked);
+                State.SetTo(_Fsm_Locked);
             }
         }
         else if (MapId == MapId.Bonus4)
         {
             if (GameInfo.World4LumsCompleted())
             {
-                State.SetTo(Fsm_Unlocked);
+                State.SetTo(_Fsm_Unlocked);
 
                 if (!GameInfo.PersistentInfo.UnlockedBonus4)
                     IsLocked = true;
@@ -104,7 +108,7 @@ public sealed partial class LevelCurtain : ActionActor
             else
             {
                 IsLocked = true;
-                State.SetTo(Fsm_Locked);
+                State.SetTo(_Fsm_Locked);
             }
         }
         else
@@ -113,12 +117,12 @@ public sealed partial class LevelCurtain : ActionActor
                 MapId is MapId.ChallengeLy1 or MapId.ChallengeLy2 or MapId.ChallengeLyGCN ||
                 (MapId == MapId._1000Lums && GameInfo.GetTotalDeadLums() >= 999))
             {
-                State.SetTo(Fsm_Unlocked);
+                State.SetTo(_Fsm_Unlocked);
             }
             else
             {
                 IsLocked = true;
-                State.SetTo(Fsm_Locked);
+                State.SetTo(_Fsm_Locked);
             }
         }
 

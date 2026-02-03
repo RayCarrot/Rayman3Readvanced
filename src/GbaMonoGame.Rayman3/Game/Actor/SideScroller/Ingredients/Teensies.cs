@@ -1,13 +1,17 @@
 ﻿using System;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
 // Original name: PetitsEtres
+[GenerateFsmFields]
 public sealed partial class Teensies : ActionActor
 {
     public Teensies(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         if (ActionId is
             Action.Init_Master_Right or Action.Init_Master_Left or
             Action.Init_World1_Right or Action.Init_World1_Left or
@@ -27,17 +31,17 @@ public sealed partial class Teensies : ActionActor
             else
             {
                 ActionId = IsFacingRight ? Action.Init_Master_Right : Action.Init_Master_Left;
-                State.SetTo(Fsm_WaitMaster);
+                State.SetTo(_Fsm_WaitMaster);
             }
         }
         // Unused
         else if (ActionId is Action.Init_Victory_Right or Action.Init_Victory_Left)
         {
-            State.SetTo(Fsm_VictoryDance);
+            State.SetTo(_Fsm_VictoryDance);
         }
         else
         {
-            State.SetTo(Fsm_Idle);
+            State.SetTo(_Fsm_Idle);
         }
     }
 

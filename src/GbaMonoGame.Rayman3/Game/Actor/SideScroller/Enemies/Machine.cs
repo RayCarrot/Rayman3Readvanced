@@ -1,12 +1,16 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class Machine : MovableActor
 {
     public Machine(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         Resource = actorResource;
 
         if ((Action)actorResource.FirstActionId == Action.CannonIdle1)
@@ -24,7 +28,7 @@ public sealed partial class Machine : MovableActor
         CogDestroyed = false;
         MurfySpawned = false;
         TextBox = null;
-        State.SetTo(Fsm_Init);
+        State.SetTo(_Fsm_Init);
     }
 
     // For some reason this array has 10 entries, but only 8 are ever used
@@ -105,7 +109,7 @@ public sealed partial class Machine : MovableActor
         switch (message)
         {
             case Message.Actor_Hurt:
-                if (State == Fsm_CogWheelSpinning)
+                if (State == _Fsm_CogWheelSpinning)
                 {
                     CogDestroyed = true;
                     Parent.ProcessMessage(this, Message.Actor_Explode);

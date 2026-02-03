@@ -3,14 +3,18 @@ using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
 // Original name: Murphy
+[GenerateFsmFields]
 public sealed partial class Murfy : MovableActor
 {
     public Murfy(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         TargetActor = (Rayman)Scene.MainActor;
         ShouldSpawn = false;
         MainActorPosition = Vector2.Zero;
@@ -21,7 +25,7 @@ public sealed partial class Murfy : MovableActor
         if (Rom.Platform == Platform.NGage)
             NGage_Unused = true;
 
-        State.SetTo(Fsm_PreInit);
+        State.SetTo(_Fsm_PreInit);
     }
 
     public BaseActor TargetActor { get; set; }
@@ -158,7 +162,7 @@ public sealed partial class Murfy : MovableActor
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
-        if (State == Fsm_Init)
+        if (State == _Fsm_Init)
         {
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__MurfHeli_Mix01);
         }

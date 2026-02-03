@@ -1,12 +1,16 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class WalkingShell : MovableActor
 {
     public WalkingShell(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         AnimatedObject.ObjPriority = 25;
 
         // Custom to allow respawning
@@ -21,7 +25,7 @@ public sealed partial class WalkingShell : MovableActor
         CurrentType = PhysicalTypeValue.None;
         CurrentBottomType = PhysicalTypeValue.None;
 
-        State.SetTo(Fsm_Idle);
+        State.SetTo(_Fsm_Idle);
     }
 
     private const int LoopRadius = 56;
@@ -140,7 +144,7 @@ public sealed partial class WalkingShell : MovableActor
                 LoopAngle = 0;
                 CurrentType = PhysicalTypeValue.None;
                 CurrentBottomType = PhysicalTypeValue.None;
-                State.SetTo(Fsm_Idle);
+                State.SetTo(_Fsm_Idle);
                 return false;
 
             default:

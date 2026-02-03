@@ -20,15 +20,15 @@ public partial class GreenPirate
         // Killed
         if (HitPoints == 0)
         {
-            State.MoveTo(Fsm_Dying);
+            State.MoveTo(_Fsm_Dying);
             return false;
         }
 
         // Taken damage
-        if (HitPoints < PrevHitPoints && State != Fsm_Hit)
+        if (HitPoints < PrevHitPoints && State != _Fsm_Hit)
         {
             PrevHitPoints = HitPoints;
-            State.MoveTo(Fsm_Hit);
+            State.MoveTo(_Fsm_Hit);
             return false;
         }
 
@@ -36,7 +36,7 @@ public partial class GreenPirate
         if (HitPoints < PrevHitPoints)
         {
             PrevHitPoints = HitPoints;
-            State.MoveTo(Fsm_HitKnockBack);
+            State.MoveTo(_Fsm_HitKnockBack);
             return false;
         }
 
@@ -68,7 +68,7 @@ public partial class GreenPirate
                 // Wait for landing to finish
                 if (IsActionFinished && ActionId is Action.Land_Right or Action.Land_Left)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;
@@ -110,7 +110,7 @@ public partial class GreenPirate
 
                 if (IdleDetectionTimer > 50)
                 {
-                    State.MoveTo(Fsm_Attack);
+                    State.MoveTo(_Fsm_Attack);
                     return false;
                 }
                 break;
@@ -155,14 +155,14 @@ public partial class GreenPirate
                 if (IsActionFinished && !IsSecondAttack)
                 {
                     IsSecondAttack = true;
-                    State.MoveTo(Fsm_Attack);
+                    State.MoveTo(_Fsm_Attack);
                     return false;
                 }
 
                 if (IsActionFinished)
                 {
                     IsSecondAttack = false;
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;
@@ -200,7 +200,7 @@ public partial class GreenPirate
                 if (IdleDetectionTimer > 30)
                 {
                     StartInvulnerability();
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;
@@ -239,13 +239,13 @@ public partial class GreenPirate
                         PhysicalTypeValue.MoltenLava ||
                     (type.IsSolid && KnockBackYPosition + 16 < Position.Y))
                 {
-                    State.MoveTo(Fsm_Dying);
+                    State.MoveTo(_Fsm_Dying);
                     return false;
                 }
 
                 if (type.IsSolid)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;

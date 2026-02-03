@@ -45,7 +45,7 @@ public partial class TimeAttackDialog
 
                 if (TimeAttackInfo.Mode != TimeAttackMode.Countdown)
                 {
-                    State.MoveTo(Fsm_Play);
+                    State.MoveTo(_Fsm_Play);
                     return false;
                 }
                 break;

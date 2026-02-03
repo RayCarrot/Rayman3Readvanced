@@ -1,5 +1,4 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
-using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3;
@@ -16,7 +15,7 @@ public partial class Ly
 
             case FsmAction.Step:
                 TextBox = Scene.GetRequiredDialog<TextBoxDialog>();
-                State.MoveTo(Fsm_Idle);
+                State.MoveTo(_Fsm_Idle);
                 return false;
 
             case FsmAction.UnInit:
@@ -38,7 +37,7 @@ public partial class Ly
             case FsmAction.Step:
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    State.MoveTo(Fsm_Talk);
+                    State.MoveTo(_Fsm_Talk);
                     return false;
                 }
                 break;
@@ -97,7 +96,7 @@ public partial class Ly
 
                 if (TextBox.IsFinished)
                 {
-                    State.MoveTo(Fsm_GivePower);
+                    State.MoveTo(_Fsm_GivePower);
                     return false;
                 }
                 break;
@@ -165,7 +164,7 @@ public partial class Ly
 
                 if (IsActionFinished && ActionId == Action.GivePower5)
                 {
-                    State.MoveTo(Fsm_RaymanReceivePower);
+                    State.MoveTo(_Fsm_RaymanReceivePower);
                     return false;
                 }
                 break;
@@ -198,7 +197,7 @@ public partial class Ly
 
                 if (Timer > 150)
                 {
-                    State.MoveTo(Fsm_Leave);
+                    State.MoveTo(_Fsm_Leave);
                     return false;
                 }
                 break;
@@ -222,7 +221,7 @@ public partial class Ly
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;

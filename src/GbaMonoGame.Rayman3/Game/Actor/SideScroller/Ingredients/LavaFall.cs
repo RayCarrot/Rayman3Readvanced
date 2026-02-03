@@ -1,16 +1,20 @@
 ﻿using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class LavaFall : InteractableActor
 {
     public LavaFall(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         BubbleSoundCountdown = 0;
         AnimatedObject.ObjPriority = 48;
         
-        State.SetTo(Fsm_Flow);
+        State.SetTo(_Fsm_Flow);
     }
 
     public byte Timer { get; set; }

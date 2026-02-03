@@ -19,7 +19,7 @@ public partial class Snail
 
                 if (turnAround)
                 {
-                    State.MoveTo(Fsm_TurnAround);
+                    State.MoveTo(_Fsm_TurnAround);
                     return false;
                 }
                 break;
@@ -43,7 +43,7 @@ public partial class Snail
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Move);
+                    State.MoveTo(_Fsm_Move);
                     return false;
                 }
                 break;

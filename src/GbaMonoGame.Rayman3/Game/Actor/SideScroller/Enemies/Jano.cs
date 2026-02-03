@@ -1,15 +1,19 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class Jano : MovableActor
 {
     public Jano(int instanceId, Scene2D scene, ActorResource actorResource) 
         : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         Ammo = 2;
         AlphaBlend = 0x10;
         FirstTimeMovingAway = true;
@@ -24,11 +28,11 @@ public sealed partial class Jano : MovableActor
 
         // Special intro state for time attack to skip the grimace sequence
         if (TimeAttackInfo.IsActive)
-            State.SetTo(Fsm_TimeAttackIntro);
+            State.SetTo(_Fsm_TimeAttackIntro);
         else if (GameInfo.LastGreenLumAlive == 0)
-            State.SetTo(Fsm_Intro);
+            State.SetTo(_Fsm_Intro);
         else
-            State.SetTo(Fsm_Default);
+            State.SetTo(_Fsm_Default);
 
         AnimatedObject.BlendMode = BlendMode.AlphaBlend;
     }

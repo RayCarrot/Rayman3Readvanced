@@ -2,13 +2,17 @@
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public partial class PauseDialog : Dialog
 {
     public PauseDialog(Scene2D scene) : base(scene)
     {
+        CreateGeneratedStates();
+
         PausedMachineId = -1;
     }
 
@@ -299,9 +303,9 @@ public partial class PauseDialog : Dialog
         DrawStep = PauseDialogDrawStep.MoveIn;
 
         if (RSMultiplayer.IsActive)
-            State.SetTo(Fsm_CheckSelectionMulti);
+            State.SetTo(_Fsm_CheckSelectionMulti);
         else
-            State.SetTo(Fsm_CheckSelection);
+            State.SetTo(_Fsm_CheckSelection);
 
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
     }

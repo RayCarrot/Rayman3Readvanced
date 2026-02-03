@@ -77,7 +77,7 @@ public partial class BouncyPlatform
 
                 if (detectedMainActor && ActionId == Action.Idle)
                 {
-                    State.MoveTo(Fsm_Bounce);
+                    State.MoveTo(_Fsm_Bounce);
                     return false;
                 }
                 break;
@@ -185,7 +185,7 @@ public partial class BouncyPlatform
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;

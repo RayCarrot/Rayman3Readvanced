@@ -41,13 +41,13 @@ public partial class Caterpillar
 
                 if (HitPoints == 0)
                 {
-                    State.MoveTo(Fsm_Projectile);
+                    State.MoveTo(_Fsm_Projectile);
                     return false;
                 }
 
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    State.MoveTo(Fsm_Attack);
+                    State.MoveTo(_Fsm_Attack);
                     return false;
                 }
                 break;
@@ -111,13 +111,13 @@ public partial class Caterpillar
 
                 if (HitPoints == 0)
                 {
-                    State.MoveTo(Fsm_Projectile);
+                    State.MoveTo(_Fsm_Projectile);
                     return false;
                 }
 
                 if (reachedTarget)
                 {
-                    State.MoveTo(Fsm_AttackReturn);
+                    State.MoveTo(_Fsm_AttackReturn);
                     return false;
                 }
                 break;
@@ -161,13 +161,13 @@ public partial class Caterpillar
 
                 if (HitPoints == 0)
                 {
-                    State.MoveTo(Fsm_Projectile);
+                    State.MoveTo(_Fsm_Projectile);
                     return false;
                 }
 
                 if (reachedTarget)
                 {
-                    State.MoveTo(Fsm_Move);
+                    State.MoveTo(_Fsm_Move);
                     return false;
                 }
                 break;
@@ -218,7 +218,7 @@ public partial class Caterpillar
 
                 if (Timer >= 240)
                 {
-                    State.MoveTo(Fsm_ProjectileReturn);
+                    State.MoveTo(_Fsm_ProjectileReturn);
                     return false;
                 }
 
@@ -226,14 +226,14 @@ public partial class Caterpillar
                     Scene.IsDetectedMainActor(this) &&
                     ((Rayman)Scene.MainActor).AttachedObject == this)
                 {
-                    State.MoveTo(Fsm_PickedUp);
+                    State.MoveTo(_Fsm_PickedUp);
                     return false;
                 }
 
                 if (Rom.Platform == Platform.NGage &&
                     Scene.GetPhysicalType(new Vector2(Position.X, GetDetectionBox().Bottom)) == PhysicalTypeValue.MoltenLava)
                 {
-                    State.MoveTo(Fsm_Dying);
+                    State.MoveTo(_Fsm_Dying);
                     return false;
                 }
                 break;
@@ -300,13 +300,13 @@ public partial class Caterpillar
 
                 if (HitPoints == 0)
                 {
-                    State.MoveTo(Fsm_Projectile);
+                    State.MoveTo(_Fsm_Projectile);
                     return false;
                 }
 
                 if (returned)
                 {
-                    State.MoveTo(Fsm_Move);
+                    State.MoveTo(_Fsm_Move);
                     return false;
                 }
                 break;
@@ -366,7 +366,7 @@ public partial class Caterpillar
 
                 if (hitOtherObj || Scene.GetPhysicalType(new Vector2(Position.X, GetDetectionBox().Bottom)).IsSolid)
                 {
-                    State.MoveTo(Fsm_Dying);
+                    State.MoveTo(_Fsm_Dying);
                     return false;
                 }
 
@@ -374,7 +374,7 @@ public partial class Caterpillar
                     ((Rayman)Scene.MainActor).AttachedObject == this &&
                     Speed.Y > 0)
                 {
-                    State.MoveTo(Fsm_PickedUp);
+                    State.MoveTo(_Fsm_PickedUp);
                     return false;
                 }
                 break;
@@ -409,7 +409,7 @@ public partial class Caterpillar
                 // NOTE: Checking for the InstaKill type appears to be a mistake in the original code (it checking for <= 32 instead of < 32)
                 if (hitOtherObj || type.IsSolid || type.Value is PhysicalTypeValue.InstaKill or PhysicalTypeValue.MoltenLava)
                 {
-                    State.MoveTo(Fsm_Dying);
+                    State.MoveTo(_Fsm_Dying);
                     return false;
                 }
                 break;

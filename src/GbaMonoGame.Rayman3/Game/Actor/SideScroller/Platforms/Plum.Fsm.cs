@@ -34,7 +34,7 @@ public partial class Plum
                 // Hit
                 if (ActionId == Action.Hit && IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
                 break;
@@ -65,14 +65,14 @@ public partial class Plum
                     if (AnimatedObject.IsFramed)
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SplshGen_Mix04);
 
-                    State.MoveTo(Fsm_Float);
+                    State.MoveTo(_Fsm_Float);
                     return false;
                 }
 
                 // Land on solid (not used in any level)
                 if (groundType.IsSolid)
                 {
-                    State.MoveTo(Fsm_Bounce);
+                    State.MoveTo(_Fsm_Bounce);
                     return false;
                 }
                 break;
@@ -297,13 +297,13 @@ public partial class Plum
 
                 if (fall)
                 {
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
 
                 if (idle)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;
@@ -361,7 +361,7 @@ public partial class Plum
                 // Land in lava
                 if (groundType == PhysicalTypeValue.Lava)
                 {
-                    State.MoveTo(Fsm_Float);
+                    State.MoveTo(_Fsm_Float);
                     return false;
                 }
                 break;

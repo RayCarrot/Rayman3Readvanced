@@ -1,13 +1,17 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class Spider : MovableActor
 {
     public Spider(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         SpawnTimer = 0xFF;
         SoundTimer = 0;
 
@@ -17,10 +21,10 @@ public sealed partial class Spider : MovableActor
 
         // Guard
         if ((Action)actorResource.FirstActionId == Action.Stop_Down)
-            State.SetTo(Fsm_GuardSpawn);
+            State.SetTo(_Fsm_GuardSpawn);
         // Chase
         else
-            State.SetTo(Fsm_ChaseSpawn);
+            State.SetTo(_Fsm_ChaseSpawn);
     }
 
     public Vector2 InititialPosition { get; set; }
@@ -106,7 +110,7 @@ public sealed partial class Spider : MovableActor
         switch (message)
         {
             case Message.Actor_Start:
-                if (State == Fsm_ChaseSpawn)
+                if (State == _Fsm_ChaseSpawn)
                 {
                     Rayman rayman = (Rayman)Scene.MainActor;
                     if (rayman.State == rayman.Fsm_Climb)
@@ -136,7 +140,7 @@ public sealed partial class Spider : MovableActor
         //       mode), and since it's off-screen first this makes all channels stay deactivated until the animation updates. The
         //       reason we have to do this extra step to ensure they stay deactivated is because the game might be running in a high
         //       enough resolution where the spider is initially on screen, and because framing affine channel sprites isn't implemented.
-        if (State == Fsm_ChaseSpawn && SpawnTimer == 0xFF)
+        if (State == _Fsm_ChaseSpawn && SpawnTimer == 0xFF)
             AnimatedObject.DeactivateAllChannels();
 
         base.Draw(animationPlayer, forceDraw);

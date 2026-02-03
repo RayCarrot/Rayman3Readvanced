@@ -3,13 +3,17 @@ using System.Diagnostics;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class MissileMode7 : Mode7Actor
 {
     public MissileMode7(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         Debug.Assert(InstanceId < RSMultiplayer.MaxPlayersCount, "The main actor must be the 4 first game objects");
 
         if (InstanceId != 0 && InstanceId >= RSMultiplayer.PlayersCount)
@@ -45,7 +49,7 @@ public sealed partial class MissileMode7 : Mode7Actor
         CustomScaleTimer = 0;
         IsJumping = false;
 
-        State.SetTo(Fsm_Start);
+        State.SetTo(_Fsm_Start);
     }
 
     public int PrevHitPoints { get; set; }
@@ -202,7 +206,7 @@ public sealed partial class MissileMode7 : Mode7Actor
                     if (finishedRace)
                     {
                         frame.SaveLums();
-                        State.MoveTo(Fsm_FinishedRace);
+                        State.MoveTo(_Fsm_FinishedRace);
                         SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.Play__win3, 0);
                         LevelMusicManager.HasOverridenLevelMusic = false;
                     }
@@ -316,7 +320,7 @@ public sealed partial class MissileMode7 : Mode7Actor
                     }
 
                     if (finishedRace)
-                        State.MoveTo(Fsm_FinishedRace);
+                        State.MoveTo(_Fsm_FinishedRace);
 
                     raceManager.IncDistance(InstanceId);
                 }
@@ -389,7 +393,7 @@ public sealed partial class MissileMode7 : Mode7Actor
             if (Debug_NoClip)
                 MechModel.Speed = Vector2.Zero;
             else
-                State.MoveTo(Fsm_Default);
+                State.MoveTo(_Fsm_Default);
         }
     }
 
@@ -457,19 +461,19 @@ public sealed partial class MissileMode7 : Mode7Actor
                 return true;
 
             case Message.Actor_Explode:
-                if (State != Fsm_Dying)
-                    State.MoveTo(Fsm_Dying);
+                if (State != _Fsm_Dying)
+                    State.MoveTo(_Fsm_Dying);
                 return true;
 
             case Message.MissileMode7_StartRace:
-                State.MoveTo(Fsm_Default);
+                State.MoveTo(_Fsm_Default);
 
                 if (!RSMultiplayer.IsActive || IsLinkedCameraObject())
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Motor01_Mix12);
                 return true;
 
             case Message.MissileMode7_EndRace:
-                State.MoveTo(Fsm_FinishedRace);
+                State.MoveTo(_Fsm_FinishedRace);
                 return true;
 
             default:

@@ -21,14 +21,14 @@ public partial class FallingPlatform
 
                 if (GameTime != GbaMonoGame.GameTime.ElapsedFrames)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
 
                 if (Scene.IsDetectedMainActor(this) && Scene.MainActor.Position.Y <= Position.Y)
                 {
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_LinkMovement, this);
-                    State.MoveTo(Fsm_Timed);
+                    State.MoveTo(_Fsm_Timed);
                     return false;
                 }
                 break;
@@ -76,13 +76,13 @@ public partial class FallingPlatform
 
                 if (GameTime != GbaMonoGame.GameTime.ElapsedFrames)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
 
                 if (Timer > 80)
                 {
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
                 break;
@@ -109,13 +109,13 @@ public partial class FallingPlatform
 
                 if (GameTime != GbaMonoGame.GameTime.ElapsedFrames)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
                 break;
@@ -159,7 +159,7 @@ public partial class FallingPlatform
 
                 if (GameTime != GbaMonoGame.GameTime.ElapsedFrames || type.IsSolid || !AnimatedObject.IsFramed)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
 

@@ -1,16 +1,20 @@
 ﻿using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
 // Original name: FleurFeu
+[GenerateFsmFields]
 public sealed partial class FlowerFire : BaseActor
 {
     public FlowerFire(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         AnimatedObject.CurrentAnimation = 0;
         AnimatedObject.ObjPriority = 15;
 
-        State.SetTo(Fsm_Default);
+        State.SetTo(_Fsm_Default);
     }
 
     public byte Timer { get; set; }
@@ -33,7 +37,7 @@ public sealed partial class FlowerFire : BaseActor
         switch (message)
         {
             case Message.Actor_LightOnFireRight:
-                State.MoveTo(Fsm_End);
+                State.MoveTo(_Fsm_End);
                 return false;
 
             default:

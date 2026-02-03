@@ -2,13 +2,17 @@
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class SamMode7 : Mode7Actor
 {
     public SamMode7(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         ShouldDraw = false;
         AnimatedObject.BgPriority = 0;
         RenderHeight = 16;
@@ -17,7 +21,7 @@ public sealed partial class SamMode7 : Mode7Actor
         WaterSplashObj = null;
         TetherSparkles = null;
 
-        State.SetTo(Fsm_Init);
+        State.SetTo(_Fsm_Init);
 
         _debugCollisionPositionPointAObject = new DebugPointAObject()
         {
@@ -55,7 +59,7 @@ public sealed partial class SamMode7 : Mode7Actor
             if (Debug_NoClip)
                 MechModel.Speed = Vector2.Zero;
             else
-                State.MoveTo(Fsm_Move);
+                State.MoveTo(_Fsm_Move);
         }
     }
 

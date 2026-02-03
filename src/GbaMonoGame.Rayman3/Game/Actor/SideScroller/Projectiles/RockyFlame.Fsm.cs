@@ -53,7 +53,7 @@ public partial class RockyFlame
                 if (rayman.State == rayman.Fsm_SuperHelico || 
                     (ActionId == Action.Flame && IsActionFinished))
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;

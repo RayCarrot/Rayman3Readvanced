@@ -17,7 +17,7 @@ public partial class Arrive
                 if (Scene.IsDetectedMainActor(this))
                 {
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
-                    State.MoveTo(Fsm_EndLevel);
+                    State.MoveTo(_Fsm_EndLevel);
                     return false;
                 }
                 break;
@@ -72,16 +72,16 @@ public partial class Arrive
 
                 if (skipCutscene)
                 {
-                    State.MoveTo(Fsm_EndLevel);
+                    State.MoveTo(_Fsm_EndLevel);
                     return false;
                 }
 
                 if (endLevel)
                 {
                     if (Rom.Platform == Platform.GBA)
-                        State.MoveTo(Fsm_Cutscene);
+                        State.MoveTo(_Fsm_Cutscene);
                     else
-                        State.MoveTo(Fsm_EndLevel);
+                        State.MoveTo(_Fsm_EndLevel);
 
                     return false;
                 }
@@ -106,7 +106,7 @@ public partial class Arrive
             case FsmAction.Step:
                 if (Scene.GetRequiredDialog<TextBoxDialog>().IsFinished)
                 {
-                    State.MoveTo(Fsm_EndLevel);
+                    State.MoveTo(_Fsm_EndLevel);
                     return false;
                 }
                 break;

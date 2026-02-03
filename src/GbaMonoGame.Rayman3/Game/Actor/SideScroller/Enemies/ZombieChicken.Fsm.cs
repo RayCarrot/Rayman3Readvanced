@@ -16,7 +16,7 @@ public partial class ZombieChicken
 
         if (HitPoints == 0)
         {
-            State.MoveTo(Fsm_Dying);
+            State.MoveTo(_Fsm_Dying);
             return false;
         }
 
@@ -47,7 +47,7 @@ public partial class ZombieChicken
 
                 if (Scene.MainActor.GetDetectionBox().Intersects(actionBox))
                 {
-                    State.MoveTo(Fsm_MoveDown);
+                    State.MoveTo(_Fsm_MoveDown);
                     return false;
                 }
                 break;
@@ -80,19 +80,19 @@ public partial class ZombieChicken
 
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    State.MoveTo(Fsm_Attack);
+                    State.MoveTo(_Fsm_Attack);
                     return false;
                 }
 
                 if (TurnAround)
                 {
-                    State.MoveTo(Fsm_TurnAround);
+                    State.MoveTo(_Fsm_TurnAround);
                     return false;
                 }
 
                 if (Speed.Y >= 1)
                 {
-                    State.MoveTo(Fsm_MoveUp);
+                    State.MoveTo(_Fsm_MoveUp);
                     return false;
                 }
                 break;
@@ -125,19 +125,19 @@ public partial class ZombieChicken
 
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    State.MoveTo(Fsm_Attack);
+                    State.MoveTo(_Fsm_Attack);
                     return false;
                 }
 
                 if (TurnAround)
                 {
-                    State.MoveTo(Fsm_TurnAround);
+                    State.MoveTo(_Fsm_TurnAround);
                     return false;
                 }
 
                 if (Speed.Y <= -1)
                 {
-                    State.MoveTo(Fsm_MoveDown);
+                    State.MoveTo(_Fsm_MoveDown);
                     return false;
                 }
                 break;
@@ -168,7 +168,7 @@ public partial class ZombieChicken
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_TurnAround);
+                    State.MoveTo(_Fsm_TurnAround);
                     return false;
                 }
                 break;
@@ -198,13 +198,13 @@ public partial class ZombieChicken
 
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    State.MoveTo(Fsm_Attack);
+                    State.MoveTo(_Fsm_Attack);
                     return false;
                 }
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_MoveDown);
+                    State.MoveTo(_Fsm_MoveDown);
                     return false;
                 }
                 break;
@@ -236,7 +236,7 @@ public partial class ZombieChicken
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;

@@ -1,12 +1,16 @@
 ﻿using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class ItemsMulti : BaseActor
 {
     public ItemsMulti(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         AnimatedObject.CurrentAnimation = actorResource.FirstActionId;
         ActionId = (Action)actorResource.FirstActionId;
         
@@ -32,7 +36,7 @@ public sealed partial class ItemsMulti : BaseActor
             SpawnCountdown = 0;
         }
 
-        State.SetTo(Fsm_Items);
+        State.SetTo(_Fsm_Items);
     }
 
     public ushort Timer { get; set; }

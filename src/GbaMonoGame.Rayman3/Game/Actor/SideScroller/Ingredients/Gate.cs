@@ -1,13 +1,17 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
 // Original name: Grille
+[GenerateFsmFields]
 public sealed partial class Gate : InteractableActor
 {
     public Gate(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         IsOpen = false;
         AnimatedObject.ObjPriority = 61;
 
@@ -18,7 +22,7 @@ public sealed partial class Gate : InteractableActor
             _ => 1
         };
 
-        State.SetTo(Fsm_Closed);
+        State.SetTo(_Fsm_Closed);
     }
 
     public bool IsOpen { get; set; }
@@ -30,7 +34,7 @@ public sealed partial class Gate : InteractableActor
             !Scene.GetGameObject(actorResource.Links[0].Value).IsEnabled)
         {
             IsOpen = true;
-            State.SetTo(Fsm_Closed);
+            State.SetTo(_Fsm_Closed);
 
             if (actorResource.Links[1] != null)
                 Scene.GetGameObject<Switch>(actorResource.Links[1].Value).SetToActivated();

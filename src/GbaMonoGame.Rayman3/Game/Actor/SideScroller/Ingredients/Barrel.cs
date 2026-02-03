@@ -1,11 +1,15 @@
 ﻿using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class Barrel : MovableActor
 {
     public Barrel(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         InitialHitPoints = HitPoints;
         
         // Float right
@@ -30,7 +34,7 @@ public sealed partial class Barrel : MovableActor
         BarrelSplash = null;
         LastHitBodyPartType = null;
 
-        State.SetTo(Fsm_WaitForHit);
+        State.SetTo(_Fsm_WaitForHit);
     }
 
     public bool MoveOnWater { get; }
@@ -56,12 +60,12 @@ public sealed partial class Barrel : MovableActor
                 if (MoveOnWater && 
                     bodyPartType is RaymanBody.RaymanBodyPartType.SuperFist or RaymanBody.RaymanBodyPartType.SecondSuperFist)
                 {
-                    State.MoveTo(Fsm_FallIntoWater);
+                    State.MoveTo(_Fsm_FallIntoWater);
                 }
 
-                if (State == Fsm_WaitForHit)
+                if (State == _Fsm_WaitForHit)
                     LastHitBodyPartType = bodyPartType;
-                else if (State == Fsm_Hit && bodyPartType != LastHitBodyPartType)
+                else if (State == _Fsm_Hit && bodyPartType != LastHitBodyPartType)
                     // In the game this is 0xFE and 0xFF is null, but we use -1 since we just need a different value
                     LastHitBodyPartType = (RaymanBody.RaymanBodyPartType?)-1;
 

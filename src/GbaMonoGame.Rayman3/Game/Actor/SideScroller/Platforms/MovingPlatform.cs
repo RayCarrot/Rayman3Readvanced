@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class MovingPlatform : MovableActor
 {
     public MovingPlatform(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
@@ -294,9 +296,9 @@ public sealed partial class MovingPlatform : MovableActor
         if (InitialAction is Action.Unused_Left or Action.Unused_Right or Action.Unused_Up or Action.Unused_Down)
             State.SetTo(null);
         else if (InitialAction is Action.MoveAccelerated_Left or Action.MoveAccelerated_Right or Action.MoveAccelerated_Up or Action.MoveAccelerated_Down)
-            State.SetTo(Fsm_MoveAccelerated);
+            State.SetTo(_Fsm_MoveAccelerated);
         else
-            State.SetTo(Fsm_Move);
+            State.SetTo(_Fsm_Move);
     }
 
     public void Destroy()
@@ -304,7 +306,7 @@ public sealed partial class MovingPlatform : MovableActor
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumTimer_Mix02);
 
         if (ResurrectsImmediately)
-            State.MoveTo(Fsm_Respawn);
+            State.MoveTo(_Fsm_Respawn);
         else
             ProcessMessage(this, Message.Destroy);
     }

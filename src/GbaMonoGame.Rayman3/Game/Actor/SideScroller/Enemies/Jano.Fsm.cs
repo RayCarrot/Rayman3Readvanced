@@ -48,7 +48,7 @@ public partial class Jano
                 // Wait for Rayman to reach the position
                 if (Scene.MainActor.Position.X > 375)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;
@@ -113,7 +113,7 @@ public partial class Jano
 
                 if (IsActionFinished && ActionId is Action.Grimace_Right or Action.Grimace_Left && Timer > 60)
                 {
-                    State.MoveTo(Fsm_MoveAway);
+                    State.MoveTo(_Fsm_MoveAway);
                     return false;
                 }
                 break;
@@ -158,32 +158,32 @@ public partial class Jano
                 // Move away if Rayman gets too close
                 if (!IsOnLeftSide && Position.X - Scene.MainActor.Position.X < 50)
                 {
-                    State.MoveTo(Fsm_BeginMoveAway);
+                    State.MoveTo(_Fsm_BeginMoveAway);
                     return false;
                 }
 
                 if (!IsOnLeftSide && Position.X - Scene.MainActor.Position.X < 120 && Scene.MainActor.Speed.Y == 0)
                 {
-                    State.MoveTo(Fsm_BeginMoveAway);
+                    State.MoveTo(_Fsm_BeginMoveAway);
                     return false;
                 }
 
                 if (IsOnLeftSide && Scene.MainActor.Position.X - Position.X < 50)
                 {
-                    State.MoveTo(Fsm_BeginMoveAway);
+                    State.MoveTo(_Fsm_BeginMoveAway);
                     return false;
                 }
 
                 if (IsOnLeftSide && Scene.MainActor.Position.X - Position.X < 120 && Scene.MainActor.Speed.Y == 0)
                 {
-                    State.MoveTo(Fsm_BeginMoveAway);
+                    State.MoveTo(_Fsm_BeginMoveAway);
                     return false;
                 }
 
                 // Attack if there is remaining ammo
                 if (Timer > 60 && Ammo != 0)
                 {
-                    State.MoveTo(Fsm_Attack);
+                    State.MoveTo(_Fsm_Attack);
                     return false;
                 }
 
@@ -191,7 +191,7 @@ public partial class Jano
                 if (Timer > 60)
                 {
                     RefillAmmo();
-                    State.MoveTo(Fsm_CreateSkullPlatform);
+                    State.MoveTo(_Fsm_CreateSkullPlatform);
                     return false;
                 }
                 break;
@@ -227,7 +227,7 @@ public partial class Jano
 
                 if (IsActionFinished && ActionId is Action.Grimace_Right or Action.Grimace_Left)
                 {
-                    State.MoveTo(Fsm_MoveAway);
+                    State.MoveTo(_Fsm_MoveAway);
                     return false;
                 }
                 break;
@@ -311,7 +311,7 @@ public partial class Jano
 
                 if (Position.X > 2050)
                 {
-                    State.MoveTo(Fsm_CheckComplete);
+                    State.MoveTo(_Fsm_CheckComplete);
                     return false;
                 }
 
@@ -320,14 +320,14 @@ public partial class Jano
                     Scene.MainActor.Position.X > 1400 &&
                     Scene.MainActor.Speed.Y == 0)
                 {
-                    State.MoveTo(Fsm_CheckComplete);
+                    State.MoveTo(_Fsm_CheckComplete);
                     return false;
                 }
 
                 if (IsActionFinished && 
                     ActionId is Action.TurnAroundFast_Right or Action.TurnAroundFast_Left)
                 {
-                    State.MoveTo(Fsm_MoveBack);
+                    State.MoveTo(_Fsm_MoveBack);
                     return false;
                 }
                 break;
@@ -364,7 +364,7 @@ public partial class Jano
 
                 if (Timer > 45 && Scene.MainActor.Speed.Y == 0)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;
@@ -475,13 +475,13 @@ public partial class Jano
 
                 if (CheckCurrentPhase() != 3 && IsActionFinished && ActionId == Action.CreateSkullPlatform4)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
 
                 if (CheckCurrentPhase() == 3 && IsActionFinished && ActionId == Action.CreateSkullPlatform4)
                 {
-                    State.MoveTo(Fsm_StandAside);
+                    State.MoveTo(_Fsm_StandAside);
                     return false;
                 }
                 break;
@@ -568,71 +568,71 @@ public partial class Jano
                 // Move away if Rayman gets too close
                 if (!IsOnLeftSide && Position.X - Scene.MainActor.Position.X < 50)
                 {
-                    State.MoveTo(Fsm_BeginMoveAway);
+                    State.MoveTo(_Fsm_BeginMoveAway);
                     return false;
                 }
 
                 if (!IsOnLeftSide && Position.X - Scene.MainActor.Position.X < 120 && Scene.MainActor.Speed.Y == 0)
                 {
-                    State.MoveTo(Fsm_BeginMoveAway);
+                    State.MoveTo(_Fsm_BeginMoveAway);
                     return false;
                 }
 
                 if (IsOnLeftSide && Scene.MainActor.Position.X - Position.X < 50)
                 {
-                    State.MoveTo(Fsm_BeginMoveAway);
+                    State.MoveTo(_Fsm_BeginMoveAway);
                     return false;
                 }
 
                 if (IsOnLeftSide && Scene.MainActor.Position.X - Position.X < 120 && Scene.MainActor.Speed.Y == 0)
                 {
-                    State.MoveTo(Fsm_BeginMoveAway);
+                    State.MoveTo(_Fsm_BeginMoveAway);
                     return false;
                 }
 
                 // Finished shooting, not phase 3
                 if (IsActionFinished && Ammo == 0 && CheckCurrentPhase() != 3)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
 
                 // Finished shooting, phase 3
                 if (IsActionFinished && Ammo == 0 && CheckCurrentPhase() == 3)
                 {
-                    State.MoveTo(Fsm_SwitchSide);
+                    State.MoveTo(_Fsm_SwitchSide);
                     return false;
                 }
 
                 // Why does the game check these again??
                 if (!IsOnLeftSide && Position.X - Scene.MainActor.Position.X < 50)
                 {
-                    State.MoveTo(Fsm_BeginMoveAway);
+                    State.MoveTo(_Fsm_BeginMoveAway);
                     return false;
                 }
 
                 if (!IsOnLeftSide && Position.X - Scene.MainActor.Position.X < 120 && Scene.MainActor.Speed.Y == 0)
                 {
-                    State.MoveTo(Fsm_BeginMoveAway);
+                    State.MoveTo(_Fsm_BeginMoveAway);
                     return false;
                 }
 
                 if (IsOnLeftSide && Scene.MainActor.Position.X - Position.X < 50)
                 {
-                    State.MoveTo(Fsm_BeginMoveAway);
+                    State.MoveTo(_Fsm_BeginMoveAway);
                     return false;
                 }
 
                 if (IsOnLeftSide && Scene.MainActor.Position.X - Position.X < 120 && Scene.MainActor.Speed.Y == 0)
                 {
-                    State.MoveTo(Fsm_BeginMoveAway);
+                    State.MoveTo(_Fsm_BeginMoveAway);
                     return false;
                 }
 
                 // Attack again if reached target and waited half a second
                 if (Single.IsNaN(TargetPosition.Y) && Timer > 30)
                 {
-                    State.MoveTo(Fsm_Attack);
+                    State.MoveTo(_Fsm_Attack);
                     return false;
                 }
                 break;
@@ -692,14 +692,14 @@ public partial class Jano
                 if (isFinished && IsOnLeftSide)
                 {
                     RefillAmmo();
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
 
                 if (isFinished && !IsOnLeftSide)
                 {
                     RefillAmmo();
-                    State.MoveTo(Fsm_CreateSkullPlatform);
+                    State.MoveTo(_Fsm_CreateSkullPlatform);
                     return false;
                 }
                 break;
@@ -731,13 +731,13 @@ public partial class Jano
 
                 if (Scene.MainActor.LinkedMovementActor != null)
                 {
-                    State.MoveTo(Fsm_MoveAway);
+                    State.MoveTo(_Fsm_MoveAway);
                     return false;
                 }
 
                 if (!hasActiveSkullPlatforms)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;
@@ -772,13 +772,13 @@ public partial class Jano
                     Scene.MainActor.Speed.Y == 0 &&
                     rayman.State != rayman.Fsm_HangOnEdge)
                 {
-                    State.MoveTo(Fsm_Complete);
+                    State.MoveTo(_Fsm_Complete);
                     return false;
                 }
 
                 if (Scene.MainActor.Position.X < 1400 && Scene.MainActor.Speed.Y == 0)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;
@@ -811,7 +811,7 @@ public partial class Jano
 
                 if (Timer > 90)
                 {
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                     return false;
                 }
                 break;

@@ -15,7 +15,7 @@ public partial class Wall
             case FsmAction.Step:
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    State.MoveTo(Fsm_Variant1State2);
+                    State.MoveTo(_Fsm_Variant1State2);
                     return false;
                 }
                 break;
@@ -39,7 +39,7 @@ public partial class Wall
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Variant1State3);
+                    State.MoveTo(_Fsm_Variant1State3);
                     return false;
                 }
                 break;
@@ -66,7 +66,7 @@ public partial class Wall
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Variant1State4);
+                    State.MoveTo(_Fsm_Variant1State4);
                     return false;
                 }
                 break;
@@ -100,7 +100,7 @@ public partial class Wall
             case FsmAction.Step:
                 if (GameTime.ElapsedFrames - Timer >= 240)
                 {
-                    State.MoveTo(Fsm_Variant2State3);
+                    State.MoveTo(_Fsm_Variant2State3);
                     return false;
                 }
                 break;
@@ -125,7 +125,7 @@ public partial class Wall
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Variant2State3);
+                    State.MoveTo(_Fsm_Variant2State3);
                     return false;
                 }
                 break;
@@ -152,7 +152,7 @@ public partial class Wall
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Variant2State4);
+                    State.MoveTo(_Fsm_Variant2State4);
                     return false;
                 }
                 break;
@@ -180,7 +180,7 @@ public partial class Wall
 
                 if (GameTime.ElapsedFrames - Timer >= 240)
                 {
-                    State.MoveTo(Fsm_Variant2State5);
+                    State.MoveTo(_Fsm_Variant2State5);
                     return false;
                 }
                 break;
@@ -207,7 +207,7 @@ public partial class Wall
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Variant2State1);
+                    State.MoveTo(_Fsm_Variant2State1);
                     return false;
                 }
                 break;

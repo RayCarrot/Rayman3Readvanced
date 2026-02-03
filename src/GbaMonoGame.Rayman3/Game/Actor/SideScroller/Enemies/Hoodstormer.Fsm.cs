@@ -12,7 +12,7 @@ public partial class Hoodstormer
             Scene.MainActor.ReceiveDamage(AttackPoints);
 
         if (HitPoints == 0 && 
-            State == Fsm_Attack && 
+            State == _Fsm_Attack && 
             AnimatedObject.CurrentFrame is > 0 and < 4 or > 5 and < 9) 
         {
             ShootMissile();
@@ -20,7 +20,7 @@ public partial class Hoodstormer
 
         if (HitPoints == 0)
         {
-            State.MoveTo(Fsm_Dying);
+            State.MoveTo(_Fsm_Dying);
             return false;
         }
 
@@ -43,7 +43,7 @@ public partial class Hoodstormer
                 if ((IsFacingRight && Scene.MainActor.Position.X - Position.X < 220) ||
                     (IsFacingLeft && Position.X - Scene.MainActor.Position.X < 220))
                 {
-                    State.MoveTo(Fsm_Fly);
+                    State.MoveTo(_Fsm_Fly);
                     return false;
                 }
                 break;
@@ -71,7 +71,7 @@ public partial class Hoodstormer
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Wait);
+                    State.MoveTo(_Fsm_Wait);
                     return false;
                 }
                 break;
@@ -107,7 +107,7 @@ public partial class Hoodstormer
 
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    State.MoveTo(Fsm_Attack);
+                    State.MoveTo(_Fsm_Attack);
                     return false;
                 }
                 break;
@@ -144,7 +144,7 @@ public partial class Hoodstormer
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_FlyAway);
+                    State.MoveTo(_Fsm_FlyAway);
                     return false;
                 }
                 break;
@@ -204,7 +204,7 @@ public partial class Hoodstormer
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Wait);
+                    State.MoveTo(_Fsm_Wait);
                     return false;
                 }
                 break;

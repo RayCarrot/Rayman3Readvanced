@@ -25,13 +25,13 @@ public partial class Skull
 
                 if (isActionFinished && InitialAction == Action.SpinStart)
                 {
-                    State.MoveTo(Fsm_Spin);
+                    State.MoveTo(_Fsm_Spin);
                     return false;
                 }
 
                 if (isActionFinished)
                 {
-                    State.MoveTo(Fsm_Move);
+                    State.MoveTo(_Fsm_Move);
                     return false;
                 }
                 break;
@@ -80,13 +80,13 @@ public partial class Skull
 
                 if (IsActionFinished && (Timer & 0xf000) != 0)
                 {
-                    State.MoveTo(Fsm_Stationary);
+                    State.MoveTo(_Fsm_Stationary);
                     return false;
                 }
 
                 if (IsActionFinished && ActionId == Action.Spin_7)
                 {
-                    State.MoveTo(Fsm_Despawn);
+                    State.MoveTo(_Fsm_Despawn);
                     return false;
                 }
                 break;
@@ -114,7 +114,7 @@ public partial class Skull
                 if (type == PhysicalTypeValue.Enemy_Up)
                 {
                     CheckAgainstObjectCollision = true;
-                    State.MoveTo(Fsm_Despawn);
+                    State.MoveTo(_Fsm_Despawn);
                     return false;
                 }
 
@@ -123,7 +123,7 @@ public partial class Skull
                     if (AnimatedObject.IsFramed)
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SkullHit_Mix02);
 
-                    State.MoveTo(Fsm_Stationary);
+                    State.MoveTo(_Fsm_Stationary);
                     return false;
                 }
                 break;
@@ -182,7 +182,7 @@ public partial class Skull
 
                 if (Timer > 360)
                 {
-                    State.MoveTo(Fsm_Despawn);
+                    State.MoveTo(_Fsm_Despawn);
                     return false;
                 }
                 break;
@@ -229,7 +229,7 @@ public partial class Skull
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Spawn);
+                    State.MoveTo(_Fsm_Spawn);
                     return false;
                 }
                 break;
@@ -329,7 +329,7 @@ public partial class Skull
                 if (type == PhysicalTypeValue.Enemy_Up)
                 {
                     CheckAgainstObjectCollision = true;
-                    State.MoveTo(Fsm_Despawn);
+                    State.MoveTo(_Fsm_Despawn);
                     return false;
                 }
                 break;

@@ -1,12 +1,16 @@
 ﻿using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class Sphere : MovableActor
 {
     public Sphere(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         AnimatedObject.ObjPriority = 60;
         Color = (Action)actorResource.FirstActionId == Action.Init_Purple ? SphereColor.Purple : SphereColor.Yellow;
 
@@ -16,7 +20,7 @@ public sealed partial class Sphere : MovableActor
         InitialPosition = Position;
         Timer = 0;
 
-        State.SetTo(Fsm_Idle);
+        State.SetTo(_Fsm_Idle);
     }
 
     public SphereColor Color { get; }
@@ -32,15 +36,15 @@ public sealed partial class Sphere : MovableActor
         switch (message)
         {
             case Message.Actor_ThrowUp:
-                State.MoveTo(Fsm_ThrownUp);
+                State.MoveTo(_Fsm_ThrownUp);
                 return false;
 
             case Message.Actor_ThrowForward:
-                State.MoveTo(Fsm_ThrownForward);
+                State.MoveTo(_Fsm_ThrownForward);
                 return false;
 
             case Message.Actor_Drop:
-                State.MoveTo(Fsm_Drop);
+                State.MoveTo(_Fsm_Drop);
                 return false;
 
             case Message.Actor_ReloadAnimation:
@@ -54,7 +58,7 @@ public sealed partial class Sphere : MovableActor
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
-        if (State == Fsm_Respawn)
+        if (State == _Fsm_Respawn)
             AnimatedObject.IsFramed = Scene.Camera.IsActorFramed(this) && (GameTime.ElapsedFrames & 1) != 0;
         else
             AnimatedObject.IsFramed = Scene.Camera.IsActorFramed(this);

@@ -1,14 +1,18 @@
 ﻿using System;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class Lums : BaseActor
 {
     public Lums(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         // NOTE: In the game it creates a special version of the AnimatedObject for this class called AObjectLum.
         //       That allows a palette to be defined, and doesn't handle things like sound events, boxes etc. We
         //       can however keep using the default AnimatedObject class here.
@@ -82,7 +86,7 @@ public sealed partial class Lums : BaseActor
 
         if (!RSMultiplayer.IsActive)
         {
-            State.SetTo(Fsm_Idle);
+            State.SetTo(_Fsm_Idle);
 
             if (ActionId == Action.GreenLum)
             {
@@ -94,7 +98,7 @@ public sealed partial class Lums : BaseActor
         }
         else
         {
-            State.SetTo(Fsm_MultiplayerIdle);
+            State.SetTo(_Fsm_MultiplayerIdle);
             Timer = 0xFF;
             LumId = instanceId;
             MultiplayerInfo.TagInfo.SaveLumPosition(instanceId, actorResource);
@@ -165,7 +169,7 @@ public sealed partial class Lums : BaseActor
                 if (State.IsSet)
                     State.MoveTo(null);
                 else
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                 return false;
 
             case Message.Actor_ReloadAnimation:
@@ -179,7 +183,7 @@ public sealed partial class Lums : BaseActor
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
-        if (State != Fsm_MultiplayerDelay && State != Fsm_Delay && State.IsSet)
+        if (State != _Fsm_MultiplayerDelay && State != _Fsm_Delay && State.IsSet)
         {
             if (Scene.Camera.IsActorFramed(this))
             {

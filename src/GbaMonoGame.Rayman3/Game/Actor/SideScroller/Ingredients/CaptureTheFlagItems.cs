@@ -1,16 +1,20 @@
 ﻿using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class CaptureTheFlagItems : ActionActor
 {
     public CaptureTheFlagItems(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         Timer = 0;
         InitialActionId = (Action)actorResource.FirstActionId;
 
-        State.SetTo(Fsm_Default);
+        State.SetTo(_Fsm_Default);
     }
 
     public Action InitialActionId { get; set; }

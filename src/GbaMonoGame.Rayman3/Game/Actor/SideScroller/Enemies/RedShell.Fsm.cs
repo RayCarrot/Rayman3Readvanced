@@ -61,7 +61,7 @@ public partial class RedShell
 
                 if (Scene.IsDetectedMainActor(this, 0, 0, addLeft, addRight))
                 {
-                    State.MoveTo(Fsm_ChargeAttack);
+                    State.MoveTo(_Fsm_ChargeAttack);
                     return false;
                 }
                 break;
@@ -85,7 +85,7 @@ public partial class RedShell
             case FsmAction.Step:
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    State.MoveTo(Fsm_Patrolling);
+                    State.MoveTo(_Fsm_Patrolling);
                     return false;
                 }
                 break;
@@ -125,7 +125,7 @@ public partial class RedShell
 
                 if (Scene.IsDetectedMainActor(this, 0, 0, addLeft, addRight))
                 {
-                    State.MoveTo(Fsm_Patrolling);
+                    State.MoveTo(_Fsm_Patrolling);
                     return false;
                 }
                 break;

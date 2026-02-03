@@ -25,7 +25,7 @@ public partial class FallingBridge
                     }
 
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_LinkMovement, this);
-                    State.MoveTo(Fsm_Timed);
+                    State.MoveTo(_Fsm_Timed);
                     return false;
                 }
                 break;
@@ -71,7 +71,7 @@ public partial class FallingBridge
 
                 if (Timer > 180)
                 {
-                    State.MoveTo(Fsm_Fall);
+                    State.MoveTo(_Fsm_Fall);
                     return false;
                 }
                 break;
@@ -122,7 +122,7 @@ public partial class FallingBridge
 
                 if (type.IsSolid || !AnimatedObject.IsFramed)
                 {
-                    State.MoveTo(Fsm_Break);
+                    State.MoveTo(_Fsm_Break);
                     return false;
                 }
                 break;
@@ -147,7 +147,7 @@ public partial class FallingBridge
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;

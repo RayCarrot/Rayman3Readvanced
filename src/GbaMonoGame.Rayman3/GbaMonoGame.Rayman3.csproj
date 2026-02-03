@@ -45,6 +45,10 @@
     <ProjectReference Include="..\GbaMonoGame.TgxEngine\GbaMonoGame.TgxEngine.csproj" />
     <ProjectReference Include="..\GbaMonoGame.Editor\GbaMonoGame.Editor.csproj" />
     <ProjectReference Include="..\GbaMonoGame\GbaMonoGame.csproj" />
+
+    <ProjectReference Include="..\GbaMonoGame.FsmSourceGenerator\GbaMonoGame.FsmSourceGenerator.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
   </ItemGroup>
 
   <ItemGroup>

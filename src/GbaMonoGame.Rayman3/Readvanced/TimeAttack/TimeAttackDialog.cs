@@ -2,15 +2,19 @@
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
 // TODO: Load and Init might be called multiple times
+[GenerateFsmFields]
 public partial class TimeAttackDialog : Dialog
 {
     public TimeAttackDialog(Scene2D scene) : base(scene)
     {
-        State.SetTo(Fsm_Countdown);
+        CreateGeneratedStates();
+
+        State.SetTo(_Fsm_Countdown);
     }
 
     private const int CountdownStartTime = 50;

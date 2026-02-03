@@ -14,7 +14,7 @@ public partial class ExplosionMode7
 
             case FsmAction.Step:
                 if (IsActionFinished)
-                    State.MoveTo(Fsm_Default);
+                    State.MoveTo(_Fsm_Default);
                 break;
 
             case FsmAction.UnInit:

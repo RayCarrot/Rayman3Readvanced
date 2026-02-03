@@ -3,15 +3,19 @@ using System.Diagnostics;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public partial class UserInfoMulti2D : Dialog
 {
     #region Constructor
 
     public UserInfoMulti2D(Scene2D scene) : base(scene)
     {
+        CreateGeneratedStates();
+
         Times = new int[RSMultiplayer.MaxPlayersCount];
         EnergyShots = new int[RSMultiplayer.MaxPlayersCount];
 
@@ -57,7 +61,7 @@ public partial class UserInfoMulti2D : Dialog
 
         ScoreBar = new ScoreBar(Scene);
 
-        State.MoveTo(Fsm_Play);
+        State.MoveTo(_Fsm_Play);
     }
 
     #endregion
@@ -336,7 +340,7 @@ public partial class UserInfoMulti2D : Dialog
             digit.CurrentAnimation = 15;
 
         if (IsGameOver)
-            State.MoveTo(Fsm_GameOver);
+            State.MoveTo(_Fsm_GameOver);
 
         // Helper method
         void removePlayer(int machineIdToRemove)
@@ -386,7 +390,7 @@ public partial class UserInfoMulti2D : Dialog
         for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
             Scene.GetGameObject(id).ProcessMessage(this, Message.Rayman_MultiplayerGameOver);
 
-        State.MoveTo(Fsm_GameOver);
+        State.MoveTo(_Fsm_GameOver);
     }
 
     // N-Gage exclusive
@@ -407,7 +411,7 @@ public partial class UserInfoMulti2D : Dialog
         for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
             Scene.GetGameObject(id).ProcessMessage(this, Message.Rayman_MultiplayerGameOver);
 
-        State.MoveTo(Fsm_GameOver);
+        State.MoveTo(_Fsm_GameOver);
     }
 
     // N-Gage exclusive
@@ -424,7 +428,7 @@ public partial class UserInfoMulti2D : Dialog
         for (int i = 0; i < MultiplayerManager.PlayersCount; i++)
             Scene.GetGameObject(i).ProcessMessage(this, Message.Rayman_MultiplayerGameOver);
 
-        State.MoveTo(Fsm_GameOver);
+        State.MoveTo(_Fsm_GameOver);
     }
 
     public void InitGlobox(int machineId)

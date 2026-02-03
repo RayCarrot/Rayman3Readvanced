@@ -1,15 +1,19 @@
 ﻿using System.Diagnostics;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
 // Original name: CagoulardVolant
+[GenerateFsmFields]
 public sealed partial class Hoodstormer : MovableActor
 {
     public Hoodstormer(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
-        State.SetTo(Fsm_Wait);
+        CreateGeneratedStates();
+
+        State.SetTo(_Fsm_Wait);
     }
 
     private void ShootMissile()

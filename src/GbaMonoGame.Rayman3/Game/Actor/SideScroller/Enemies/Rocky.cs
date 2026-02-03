@@ -3,15 +3,19 @@ using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
 // TODO: Camera shake doesn't work when in high res
+[GenerateFsmFields]
 public sealed partial class Rocky : MovableActor
 {
     public Rocky(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
-        State.SetTo(Fsm_Init);
+        CreateGeneratedStates();
+
+        State.SetTo(_Fsm_Init);
         
         BossHealth = 3;
         Position = Position with { X = 210 };
@@ -148,8 +152,8 @@ public sealed partial class Rocky : MovableActor
         {
             case Message.Actor_Hit:
                 Vector2 hitPos = ((GameObject)param).Position;
-                if (State == Fsm_Default && hitPos.Y < Position.Y - 30)
-                    State.MoveTo(Fsm_Hit);
+                if (State == _Fsm_Default && hitPos.Y < Position.Y - 30)
+                    State.MoveTo(_Fsm_Hit);
                 return false;
 
             default:

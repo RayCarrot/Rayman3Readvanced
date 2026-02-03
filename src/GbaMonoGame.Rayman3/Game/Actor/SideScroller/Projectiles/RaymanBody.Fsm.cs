@@ -57,7 +57,7 @@ public partial class RaymanBody
 
         if (moveBackwards)
         {
-            State.MoveTo(Fsm_MoveBackwards);
+            State.MoveTo(_Fsm_MoveBackwards);
             return false;
         }
 
@@ -75,13 +75,13 @@ public partial class RaymanBody
             case FsmAction.Step:
                 if (BodyPartType == RaymanBodyPartType.HitEffect)
                 {
-                    State.MoveTo(Fsm_HitEffect);
+                    State.MoveTo(_Fsm_HitEffect);
                     return false;
                 }
                 
                 if (ActionId != Action.Idle)
                 {
-                    State.MoveTo(Fsm_MoveForward);
+                    State.MoveTo(_Fsm_MoveForward);
                     return false;
                 }
                 break;
@@ -151,7 +151,7 @@ public partial class RaymanBody
 
                 if (reverseDirection)
                 {
-                    State.MoveTo(Fsm_MoveBackwards);
+                    State.MoveTo(_Fsm_MoveBackwards);
                     return false;
                 }
                 break;
@@ -244,7 +244,7 @@ public partial class RaymanBody
 
                 if (remainingDist < 25)
                 {
-                    State.MoveTo(Fsm_Wait);
+                    State.MoveTo(_Fsm_Wait);
                     return false;
                 }
                 break;
@@ -278,7 +278,7 @@ public partial class RaymanBody
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Wait);
+                    State.MoveTo(_Fsm_Wait);
                     return false;
                 }
                 break;

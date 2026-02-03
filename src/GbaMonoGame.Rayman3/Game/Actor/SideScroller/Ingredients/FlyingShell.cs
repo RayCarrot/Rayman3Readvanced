@@ -1,18 +1,22 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class FlyingShell : MovableActor
 {
     public FlyingShell(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         CrashTimer = 0;
         Ammo = 0;
 
-        State.SetTo(Fsm_Init);
+        State.SetTo(_Fsm_Init);
     }
 
     public EnergyBall EnergyBall { get; set; }
@@ -130,7 +134,7 @@ public sealed partial class FlyingShell : MovableActor
             }
             else
             {
-                State.MoveTo(Fsm_Fly);
+                State.MoveTo(_Fsm_Fly);
                 ChangeAction();
             }
         }
@@ -168,7 +172,7 @@ public sealed partial class FlyingShell : MovableActor
                 }
                 else if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
                 {
-                    State.MoveTo(Fsm_GameCubeEndMap);
+                    State.MoveTo(_Fsm_GameCubeEndMap);
                 }
                 else
                 {
@@ -186,17 +190,17 @@ public sealed partial class FlyingShell : MovableActor
                 return false;
 
             case Message.Actor_Hurt:
-                if (State != Fsm_Crash)
-                    State.MoveTo(Fsm_Crash);
+                if (State != _Fsm_Crash)
+                    State.MoveTo(_Fsm_Crash);
                 return false;
 
             case Message.Rayman_Stop:
-                State.MoveTo(Fsm_Stop);
+                State.MoveTo(_Fsm_Stop);
                 return false;
 
             case Message.Rayman_Resume:
-                if (State != Fsm_Crash)
-                    State.MoveTo(Fsm_Fly);
+                if (State != _Fsm_Crash)
+                    State.MoveTo(_Fsm_Fly);
                 return false;
 
             case Message.FlyingShell_RefillAmmo:

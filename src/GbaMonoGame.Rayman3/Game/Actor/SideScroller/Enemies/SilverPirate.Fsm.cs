@@ -21,15 +21,15 @@ public partial class SilverPirate
         // Killed
         if (HitPoints == 0)
         {
-            State.MoveTo(Fsm_Dying);
+            State.MoveTo(_Fsm_Dying);
             return false;
         }
 
         // Taken damage
-        if (HitPoints < PrevHitPoints && State != Fsm_Hit)
+        if (HitPoints < PrevHitPoints && State != _Fsm_Hit)
         {
             PrevHitPoints = HitPoints;
-            State.MoveTo(Fsm_Hit);
+            State.MoveTo(_Fsm_Hit);
             return false;
         }
 
@@ -37,7 +37,7 @@ public partial class SilverPirate
         if (HitPoints < PrevHitPoints)
         {
             PrevHitPoints = HitPoints;
-            State.MoveTo(Fsm_HitKnockBack);
+            State.MoveTo(_Fsm_HitKnockBack);
             return false;
         }
 
@@ -69,7 +69,7 @@ public partial class SilverPirate
                 // Wait for landing to finish
                 if (IsActionFinished && ActionId is Action.Land_Right or Action.Land_Left)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;
@@ -111,13 +111,13 @@ public partial class SilverPirate
                     Rayman.Action.EndChargeFist_Right or Rayman.Action.EndChargeFist_Left or 
                     Rayman.Action.EndChargeSecondFist_Right or Rayman.Action.EndChargeSecondFist_Left)
                 {
-                    State.MoveTo(Fsm_Jump);
+                    State.MoveTo(_Fsm_Jump);
                     return false;
                 }
 
                 if (GameTime.ElapsedFrames - AttackTimer > 60 && Scene.IsDetectedMainActor(this))
                 {
-                    State.MoveTo(Fsm_Attack);
+                    State.MoveTo(_Fsm_Attack);
                     return false;
                 }
                 break;
@@ -146,7 +146,7 @@ public partial class SilverPirate
 
                 if (Scene.GetPhysicalType(Position).IsSolid)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;
@@ -190,7 +190,7 @@ public partial class SilverPirate
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_Idle);
+                    State.MoveTo(_Fsm_Idle);
                     return false;
                 }
                 break;
@@ -226,7 +226,7 @@ public partial class SilverPirate
                 if (Scene.GetPhysicalType(Position).IsSolid && GameTime.ElapsedFrames - DoubleHitTimer > 20)
                 {
                     StartInvulnerability();
-                    State.MoveTo(Fsm_Attack);
+                    State.MoveTo(_Fsm_Attack);
                     return false;
                 }
                 break;
@@ -265,13 +265,13 @@ public partial class SilverPirate
                         PhysicalTypeValue.MoltenLava ||
                     (type.IsSolid && KnockBackYPosition + 16 < Position.Y))
                 {
-                    State.MoveTo(Fsm_Dying);
+                    State.MoveTo(_Fsm_Dying);
                     return false;
                 }
 
                 if (type.IsSolid)
                 {
-                    State.MoveTo(Fsm_Attack);
+                    State.MoveTo(_Fsm_Attack);
                     return false;
                 }
                 break;

@@ -47,7 +47,7 @@ public partial class Grolgoth
                 break;
 
             case FsmAction.Step:
-                State.MoveTo(Fsm_GroundDefault);
+                State.MoveTo(_Fsm_GroundDefault);
                 break;
 
             case FsmAction.UnInit:
@@ -82,7 +82,7 @@ public partial class Grolgoth
                 // Deploy bomb
                 if (IsActionFinished && Timer > 5 && AttackCount == 0)
                 {
-                    State.MoveTo(Fsm_GroundDeployBomb);
+                    State.MoveTo(_Fsm_GroundDeployBomb);
                     return false;
                 }
 
@@ -90,7 +90,7 @@ public partial class Grolgoth
                 if ((AttackCount != 0 && BossHealth < 3 && rand > 25) || 
                     (BossHealth > 2 && AttackCount > 1))
                 {
-                    State.MoveTo(Fsm_GroundShootEnergyShots);
+                    State.MoveTo(_Fsm_GroundShootEnergyShots);
                     return false;
                 }
 
@@ -98,14 +98,14 @@ public partial class Grolgoth
                 if ((AttackCount != 0 && BossHealth < 3 && rand <= 25) ||
                     (AttackCount == 1 && BossHealth >= 3 && BossHealth != 5))
                 {
-                    State.MoveTo(Fsm_GroundShootLasers);
+                    State.MoveTo(_Fsm_GroundShootLasers);
                     return false;
                 }
 
                 // Deploy bomb
                 if (IsActionFinished && Timer > 5 && AttackCount == 1 && BossHealth == 5)
                 {
-                    State.MoveTo(Fsm_GroundDeployBomb);
+                    State.MoveTo(_Fsm_GroundDeployBomb);
                     return false;
                 }
                 break;
@@ -169,7 +169,7 @@ public partial class Grolgoth
                         Action.Ground_ShootEnergyShotsHigh_Right or Action.Ground_ShootEnergyShotsHigh_Left or 
                         Action.Ground_ShootEnergyShotsLow_Right or Action.Ground_ShootEnergyShotsLow_Left)
                 {
-                    State.MoveTo(Fsm_GroundDefault);
+                    State.MoveTo(_Fsm_GroundDefault);
                     return false;
                 }
                 break;
@@ -220,7 +220,7 @@ public partial class Grolgoth
 
                 if (IsActionFinished && ActionId is Action.Ground_EndShootLasers_Right or Action.Ground_EndShootLasers_Left)
                 {
-                    State.MoveTo(Fsm_GroundDefault);
+                    State.MoveTo(_Fsm_GroundDefault);
                     return false;
                 }
                 break;
@@ -314,7 +314,7 @@ public partial class Grolgoth
 
                 if (IsActionFinished && ActionId is Action.Ground_Hit4_Right or Action.Ground_Hit4_Left)
                 {
-                    State.MoveTo(Fsm_GroundFlyUp);
+                    State.MoveTo(_Fsm_GroundFlyUp);
                     return false;
                 }
                 break;
@@ -369,13 +369,13 @@ public partial class Grolgoth
 
                 if (ActionId is Action.Ground_FallDown_Right or Action.Ground_FallDown_Left && BossHealth != 0)
                 {
-                    State.MoveTo(Fsm_GroundFallDown);
+                    State.MoveTo(_Fsm_GroundFallDown);
                     return false;
                 }
 
                 if (ActionId is Action.Ground_FallDown_Right or Action.Ground_FallDown_Left && BossHealth == 0)
                 {
-                    State.MoveTo(Fsm_GroundDying);
+                    State.MoveTo(_Fsm_GroundDying);
                     return false;
                 }
                 break;
@@ -454,7 +454,7 @@ public partial class Grolgoth
 
                 if (ActionId is Action.Ground_Land_Right or Action.Ground_Land_Left && IsActionFinished)
                 {
-                    State.MoveTo(Fsm_GroundDefault);
+                    State.MoveTo(_Fsm_GroundDefault);
                     return false;
                 }
                 break;
@@ -486,7 +486,7 @@ public partial class Grolgoth
             case FsmAction.Step:
                 Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
                 ProcessMessage(this, Message.Destroy);
-                State.MoveTo(Fsm_GroundDefault);
+                State.MoveTo(_Fsm_GroundDefault);
                 return false;
 
             case FsmAction.UnInit:
@@ -528,7 +528,7 @@ public partial class Grolgoth
 
                 if (IsActionFinished && ActionId == Action.Air_FallDown_Left)
                 {
-                    State.MoveTo(Fsm_AirShootMissile);
+                    State.MoveTo(_Fsm_AirShootMissile);
                     return false;
                 }
                 break;
@@ -566,7 +566,7 @@ public partial class Grolgoth
                 if ((Timer > 300 && BossHealth > 1) ||
                     (Timer > 75 && BossHealth == 1))
                 {
-                    State.MoveTo(Fsm_AirShootMissile);
+                    State.MoveTo(_Fsm_AirShootMissile);
                     return false;
                 }
                 break;
@@ -608,7 +608,7 @@ public partial class Grolgoth
                 }
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_AirDefault);
+                    State.MoveTo(_Fsm_AirDefault);
                     return false;
                 }
                 break;
@@ -636,7 +636,7 @@ public partial class Grolgoth
 
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_AirDefault);
+                    State.MoveTo(_Fsm_AirDefault);
                     return false;
                 }
                 break;
@@ -681,13 +681,13 @@ public partial class Grolgoth
                 if (type == PhysicalTypeValue.InstaKill && BossHealth != 0)
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BossHurt_Mix02);
-                    State.MoveTo(Fsm_AirHit2);
+                    State.MoveTo(_Fsm_AirHit2);
                     return false;
                 }
 
                 if (type == PhysicalTypeValue.InstaKill && BossHealth == 0)
                 {
-                    State.MoveTo(Fsm_AirDying);
+                    State.MoveTo(_Fsm_AirDying);
                     return false;
                 }
                 break;
@@ -741,7 +741,7 @@ public partial class Grolgoth
 
                 if (ActionId is Action.Air_BeginFlyUp_Right or Action.Air_BeginFlyUp_Left && IsActionFinished)
                 {
-                    State.MoveTo(Fsm_AirAttack);
+                    State.MoveTo(_Fsm_AirAttack);
                     return false;
                 }
                 break;
@@ -833,7 +833,7 @@ public partial class Grolgoth
                 if (ActionId is Action.Air_FallDown_Right or Action.Air_FallDown_Left && IsActionFinished)
                 {
                     Unused = 0;
-                    State.MoveTo(Fsm_AirShootMissile);
+                    State.MoveTo(_Fsm_AirShootMissile);
                     return false;
                 }
                 break;

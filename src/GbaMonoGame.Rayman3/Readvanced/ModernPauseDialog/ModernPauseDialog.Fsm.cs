@@ -84,7 +84,7 @@ public partial class ModernPauseDialog
                 
                 if (OptionsMenu.DrawStep == PauseDialogDrawStep.Hide)
                 {
-                    State.MoveTo(Fsm_CheckSelection);
+                    State.MoveTo(_Fsm_CheckSelection);
                     return false;
                 }
                 break;

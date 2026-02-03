@@ -52,25 +52,25 @@ public partial class Machine
                 // Cog wheel part
                 if (BossHealth is 1 or 2 or 3)
                 {
-                    State.MoveTo(Fsm_CogWheelSpinning);
+                    State.MoveTo(_Fsm_CogWheelSpinning);
                     return false;
                 }
                 // Parent if in time attack
                 else if (BossHealth == 4 && TimeAttackInfo.IsActive)
                 {
-                    State.MoveTo(Fsm_TimeAttackIntro);
+                    State.MoveTo(_Fsm_TimeAttackIntro);
                     return false;
                 }
                 // Parent if died at least once
                 else if (BossHealth == 4 && GameInfo.LastGreenLumAlive != 0)
                 {
-                    State.MoveTo(Fsm_CannonFire);
+                    State.MoveTo(_Fsm_CannonFire);
                     return false;
                 }
                 // Parent first time
                 else if (BossHealth == 4 && GameInfo.LastGreenLumAlive == 0)
                 {
-                    State.MoveTo(Fsm_CannonIntro);
+                    State.MoveTo(_Fsm_CannonIntro);
                     return false;
                 }
                 break;
@@ -121,7 +121,7 @@ public partial class Machine
 
                 if (CogDestroyed)
                 {
-                    State.MoveTo(Fsm_PartDestroyed);
+                    State.MoveTo(_Fsm_PartDestroyed);
                     return false;
                 }
                 break;
@@ -160,7 +160,7 @@ public partial class Machine
 
                 if (ScreenPosition.Y > Scene.Resolution.Y)
                 {
-                    State.MoveTo(Fsm_Init);
+                    State.MoveTo(_Fsm_Init);
                     return false;
                 }
                 break;
@@ -219,7 +219,7 @@ public partial class Machine
 
                 if (Timer > 190 && ActionId == Action.CannonIdle2 && IsActionFinished)
                 {
-                    State.MoveTo(Fsm_CannonFire);
+                    State.MoveTo(_Fsm_CannonFire);
                     return false;
                 }
                 break;
@@ -246,7 +246,7 @@ public partial class Machine
                 // Wait for countdown to finish
                 if (TimeAttackInfo.Mode == TimeAttackMode.Play)
                 {
-                    State.MoveTo(Fsm_CannonFire);
+                    State.MoveTo(_Fsm_CannonFire);
                     return false;
                 }
                 break;
@@ -321,7 +321,7 @@ public partial class Machine
 
                 if (BossHealth == 0)
                 {
-                    State.MoveTo(Fsm_CannonDestroyed);
+                    State.MoveTo(_Fsm_CannonDestroyed);
                     return false;
                 }
                 break;
@@ -376,7 +376,7 @@ public partial class Machine
                 if (BossHealth > 30)
                 {
                     BossHealth = 0;
-                    State.MoveTo(Fsm_PartDestroyed);
+                    State.MoveTo(_Fsm_PartDestroyed);
                     return false;
                 }
                 break;

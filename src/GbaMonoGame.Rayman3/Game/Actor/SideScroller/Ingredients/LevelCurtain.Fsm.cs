@@ -95,7 +95,7 @@ public partial class LevelCurtain
                 if (enterCurtain)
                 {
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_Stop);
-                    State.MoveTo(Fsm_EnterCurtain);
+                    State.MoveTo(_Fsm_EnterCurtain);
                     return false;
                 }
                 break;
@@ -145,7 +145,7 @@ public partial class LevelCurtain
 
                 if (transitionToLevel)
                 {
-                    State.MoveTo(Fsm_TransitionToLevel);
+                    State.MoveTo(_Fsm_TransitionToLevel);
                     return false;
                 }
                 break;
@@ -170,7 +170,7 @@ public partial class LevelCurtain
             case FsmAction.Step:
                 if (((World)Frame.Current).FinishedTransitioningOut)
                 {
-                    State.MoveTo(Fsm_Unlocked);
+                    State.MoveTo(_Fsm_Unlocked);
                     return false;
                 }
                 break;

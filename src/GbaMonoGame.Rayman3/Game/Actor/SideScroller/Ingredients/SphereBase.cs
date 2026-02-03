@@ -1,12 +1,16 @@
 ﻿using System;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class SphereBase : ActionActor
 {
     public SphereBase(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         AnimatedObject.ObjPriority = 15;
 
         Resource = actorResource;
@@ -20,7 +24,7 @@ public sealed partial class SphereBase : ActionActor
         if (Color == Sphere.SphereColor.Purple)
             AnimatedObject.BasePaletteIndex = 1;
 
-        State.SetTo(Fsm_Deactivated);
+        State.SetTo(_Fsm_Deactivated);
     }
 
     public ActorResource Resource { get; }

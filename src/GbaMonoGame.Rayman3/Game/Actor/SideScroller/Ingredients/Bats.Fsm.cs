@@ -21,7 +21,7 @@ public partial class Bats
 
                 if (detected)
                 {
-                    State.MoveTo(Fsm_FlyStart);
+                    State.MoveTo(_Fsm_FlyStart);
                     return false;
                 }
                 break;
@@ -47,7 +47,7 @@ public partial class Bats
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_FlyAway);
+                    State.MoveTo(_Fsm_FlyAway);
                     return false;
                 }
                 break;
@@ -132,7 +132,7 @@ public partial class Bats
             case FsmAction.Step:
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    State.MoveTo(Fsm_StationaryFlap);
+                    State.MoveTo(_Fsm_StationaryFlap);
                     return false;
                 }
                 break;
@@ -156,7 +156,7 @@ public partial class Bats
             case FsmAction.Step:
                 if (!AnimatedObject.IsFramed)
                 {
-                    State.MoveTo(Fsm_StationaryWait);
+                    State.MoveTo(_Fsm_StationaryWait);
                     return false;
                 }
                 break;

@@ -15,7 +15,7 @@ public partial class UnusedBouncyPlatform
             case FsmAction.Step:
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    State.MoveTo(Fsm_Bounce);
+                    State.MoveTo(_Fsm_Bounce);
                     return false;
                 }
                 break;
@@ -40,7 +40,7 @@ public partial class UnusedBouncyPlatform
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    State.MoveTo(Fsm_DealDamage);
+                    State.MoveTo(_Fsm_DealDamage);
                     return false;
                 }
                 break;

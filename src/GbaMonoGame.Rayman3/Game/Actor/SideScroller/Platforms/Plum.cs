@@ -1,13 +1,17 @@
 ﻿using System;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateFsmFields]
 public sealed partial class Plum : MovableActor
 {
     public Plum(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         Resource = actorResource;
 
         FloatSpeedX = 0;
@@ -16,9 +20,9 @@ public sealed partial class Plum : MovableActor
         ShouldSetInitialSpeed = true;
 
         if ((Action)actorResource.FirstActionId == Action.Fall)
-            State.SetTo(Fsm_Fall);
+            State.SetTo(_Fsm_Fall);
         else
-            State.SetTo(Fsm_Idle);
+            State.SetTo(_Fsm_Idle);
     }
 
     private const uint MinChargePower = 2;

@@ -3,15 +3,20 @@ using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
 // Original name: InGameDlg
+[GenerateFsmFields]
 public partial class TextBoxDialog : Dialog
 {
     #region Constructor
 
-    public TextBoxDialog(Scene2D scene) : base(scene) { }
+    public TextBoxDialog(Scene2D scene) : base(scene)
+    {
+        CreateGeneratedStates();
+    }
 
     #endregion
 
@@ -174,27 +179,27 @@ public partial class TextBoxDialog : Dialog
     public void MoveInOurOut(bool moveIn)
     {
         if (moveIn)
-            State.MoveTo(Fsm_MoveIn);
+            State.MoveTo(_Fsm_MoveIn);
         else
-            State.MoveTo(Fsm_MoveOut);
+            State.MoveTo(_Fsm_MoveOut);
     }
 
     public void MoveToNextText()
     {
-        if (State == Fsm_WaitForNextText)
+        if (State == _Fsm_WaitForNextText)
             NextText = true;
     }
 
     public void Skip()
     {
-        if (State == Fsm_WaitForNextText)
+        if (State == _Fsm_WaitForNextText)
         {
             CurrentTextLine = 0;
             ShouldPlayedLySound = true;
             ShouldPlayRaymanSound = true;
             ShouldPlayedMurfySound = true;
             IsFinished = true;
-            State.MoveTo(Fsm_TransitionTextIn);
+            State.MoveTo(_Fsm_TransitionTextIn);
         }
     }
 
