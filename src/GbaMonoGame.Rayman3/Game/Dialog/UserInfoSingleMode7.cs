@@ -2,6 +2,7 @@
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -15,6 +16,13 @@ public class UserInfoSingleMode7 : Dialog
 
         IsCountdownActive = false;
         IsPaused = false;
+
+        // Disable lums and timer bars in time attack
+        if (TimeAttackInfo.IsActive)
+        {
+            LumsBar.Disable();
+            TimerBar.Disable();
+        }
     }
 
     public LifeBar LifeBar { get; }
@@ -200,7 +208,7 @@ public class UserInfoSingleMode7 : Dialog
             }
         }
 
-        if (IsCountdownActive && !IsPaused)
+        if (IsCountdownActive && !IsPaused && !TimeAttackInfo.IsActive)
             animationPlayer.PlayFront(Countdown);
     }
 }

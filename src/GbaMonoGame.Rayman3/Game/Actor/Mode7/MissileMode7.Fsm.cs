@@ -1,6 +1,7 @@
 ﻿using System;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
@@ -376,6 +377,9 @@ public partial class MissileMode7
                     InvulnerabilityTimer = 0;
                 else
                     InvulnerabilityTimer = 800;
+
+                if (TimeAttackInfo.IsActive)
+                    TimeAttackInfo.Pause();
                 break;
 
             case FsmAction.Step:
@@ -414,6 +418,15 @@ public partial class MissileMode7
                 }
 
                 InvulnerabilityTimer++;
+
+                // Custom to transition to time attack score screen
+                if (TimeAttackInfo.IsActive)
+                {
+                    if (InvulnerabilityTimer == 974)
+                        TimeAttackInfo.SetMode(TimeAttackMode.Score);
+                    
+                    return true;
+                }
 
                 if (InvulnerabilityTimer > 974)
                 {

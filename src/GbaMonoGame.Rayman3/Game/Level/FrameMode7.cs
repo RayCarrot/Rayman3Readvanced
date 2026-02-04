@@ -30,6 +30,7 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
 
     public Dialog UserInfo { get; set; }
     public Dialog PauseDialog { get; set; }
+    public TimeAttackDialog TimeAttackDialog { get; set; }
     public CheatDialog CheatDialog { get; set; }
 
     public bool CanPause { get; set; }
@@ -57,6 +58,20 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
 
         // Create pause dialog, but don't add yet
         PauseDialog = Engine.ActiveConfig.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, !TimeAttackInfo.IsActive) : new PauseDialog(Scene);
+
+        // Custom for the time attack mode
+        if (TimeAttackInfo.IsActive)
+        {
+            // Add dialog for the HUD
+            TimeAttackDialog = new TimeAttackDialog(Scene);
+            Scene.AddDialog(TimeAttackDialog, false, false);
+
+            // Add actors (time freeze items)
+            foreach (ActorResource actorResource in TimeAttackActors.GetTimeAttackActors(GameInfo.MapId))
+                Scene.KnotManager.AddAlwaysActor(Scene, actorResource);
+
+            Scene.KnotManager.AddPendingActors();
+        }
 
         // Custom cheat dialog
         if (!RSMultiplayer.IsActive)
@@ -182,6 +197,11 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
     public override void Init()
     {
         GameInfo.InitLevel(LevelType.Normal);
+
+        // Custom for the time attack mode
+        if (TimeAttackInfo.IsActive)
+            TimeAttackInfo.InitLevel(GameInfo.MapId);
+
         Timer = 0;
         CommonInit();
     }
@@ -227,7 +247,14 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
             {
                 CurrentStepAction = Step_Pause_Init;
                 GameTime.Pause();
+
+                if (TimeAttackInfo.IsActive)
+                    TimeAttackInfo.Pause();
             }
+
+            // Custom to transition to time attack score screen
+            if (TimeAttackInfo.Mode == TimeAttackMode.Score)
+                CurrentStepAction = Step_TimeAttackScore_Init;
 
             // Custom cheat dialog
             if (Engine.ActiveConfig.Tweaks.AllowCheatMenu && JoyPad.IsButtonJustPressed(GbaInput.Select) &&
@@ -282,6 +309,7 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
 
         Scene.Step();
         UserInfo.Draw(Scene.AnimationPlayer);
+        TimeAttackDialog?.Draw(Scene.AnimationPlayer);
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
         CurrentStepAction = Step_Pause_Paused;
@@ -297,7 +325,10 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
         // The original game doesn't have this check, but since we're still running the game loop
         // while in the simulated sleep mode we have to make sure to not draw the HUD then
         if (PauseDialog is not PauseDialog { IsInSleepMode: true })
+        {
             UserInfo.Draw(Scene.AnimationPlayer);
+            TimeAttackDialog?.Draw(Scene.AnimationPlayer);
+        }
 
         // NOTE: It's probably an oversight in the original game to still animate tiles even when paused
         if (!Engine.ActiveConfig.Tweaks.FixBugs)
@@ -336,6 +367,31 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
         Scene.AnimationPlayer.Execute();
         CurrentStepAction = Step_Normal;
         GameTime.Resume();
+
+        if (TimeAttackInfo.IsActive)
+            TimeAttackInfo.Resume();
+    }
+
+    // Custom
+    public void Step_TimeAttackScore_Init()
+    {
+        // Apply same fade as when pausing
+        Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease, FadeFlags.Screen0);
+        Gfx.Fade = AlphaCoefficient.FromGbaValue(6);
+
+        // Create and add the score dialog as a modal
+        Scene.AddDialog(new TimeAttackScoreDialog(Scene), true, false);
+
+        Scene.Step();
+        Scene.AnimationPlayer.Execute();
+
+        CurrentStepAction = Step_TimeAttackScore_Score;
+    }
+
+    public void Step_TimeAttackScore_Score()
+    {
+        Scene.Step();
+        Scene.AnimationPlayer.Execute();
     }
 
     public void Step_CheatDialog()

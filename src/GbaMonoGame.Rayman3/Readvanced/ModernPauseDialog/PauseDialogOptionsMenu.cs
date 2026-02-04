@@ -234,6 +234,8 @@ public class PauseDialogOptionsMenu
             
             case FrameSingleMode7 frameSingleMode7:
                 frameSingleMode7.UserInfo.MoveOutBars();
+
+                frameSingleMode7.TimeAttackDialog?.MoveOutBars();
                 break;
             
             case FrameWaterSkiMode7 frameWaterSkiMode7:
@@ -287,6 +289,8 @@ public class PauseDialogOptionsMenu
 
             case FrameSingleMode7 frameSingleMode7:
                 frameSingleMode7.UserInfo.MoveInBars();
+
+                frameSingleMode7.TimeAttackDialog?.MoveInBars();
                 break;
 
             case FrameWaterSkiMode7 frameWaterSkiMode7:
