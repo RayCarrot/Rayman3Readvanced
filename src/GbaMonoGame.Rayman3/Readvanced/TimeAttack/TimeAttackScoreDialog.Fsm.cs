@@ -19,7 +19,9 @@ public partial class TimeAttackScoreDialog
                 if (Timer == 50)
                 {
                     // Start playing music
-                    Rayman3SoundEvent musicEvent = NewRecord ? Rayman3SoundEvent.Play__barrel_BA : Rayman3SoundEvent.Play__barrel;
+                    ReadvancedSoundEvent musicEvent = NewRecord 
+                        ? ReadvancedSoundEvent.Play__timeattack_score2 
+                        : ReadvancedSoundEvent.Play__timeattack_score;
                     if (!SoundEventsManager.IsSongPlaying(musicEvent))
                         SoundEventsManager.ProcessEvent(musicEvent);
 

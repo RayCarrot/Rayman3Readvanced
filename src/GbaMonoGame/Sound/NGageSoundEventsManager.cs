@@ -127,41 +127,57 @@ public class NGageSoundEventsManager : SoundEventsManager
                 // Load music from XM and instruments
                 if (evt.IsMusic)
                 {
-                    Music music = new()
+                    // Check if we have a physical file for the sound, and if so load from the file
+                    if (songPhysicalFileNames.TryGetValue(evt.SoundResourceId, out string physicalFileName))
                     {
-                        XmSound = new Openmpt(),
-                        FileName = songResourceFileNames[evt.SoundResourceId]
-                    };
+                        Music music = new()
+                        {   
+                            XmSound = new Openmpt(),
+                            FileName = physicalFileName
+                        };
 
-                    // Load the instruments data
-                    if (!loadedInstruments.TryGetValue(evt.InstrumentsResourceId, out byte[] instruments))
-                    {
-                        RawResource instrumentsResource = Rom.LoadResource<RawResource>(evt.InstrumentsResourceId);
-                        instruments = instrumentsResource.RawData;
-                        loadedInstruments[evt.InstrumentsResourceId] = instruments;
+                        music.XmSound.load($"Assets/Rayman3/{physicalFileName}.xm");
+
+                        _musicTable[evt.SoundResourceId] = music;
                     }
-
-                    // Load the XM data
-                    RawResource xmResource = Rom.LoadResource<RawResource>(evt.SoundResourceId);
-                    byte[] xm = xmResource.RawData;
-
-                    IntPtr xmPtr = IntPtr.Zero;
-                    try
+                    else
                     {
-                        int combinedXmLength = xm.Length + instruments.Length - 2;
-                        xmPtr = Marshal.AllocHGlobal(combinedXmLength);
-                        Marshal.Copy(xm, 0, xmPtr, xm.Length);
-                        Marshal.Copy(instruments, 2, xmPtr + xm.Length, instruments.Length - 2);
+                        Music music = new()
+                        {
+                            XmSound = new Openmpt(),
+                            FileName = songResourceFileNames[evt.SoundResourceId]
+                        };
 
-                        music.XmSound.loadMem(xmPtr, (uint)combinedXmLength, true, false);
-                    }
-                    finally
-                    {
-                        if (xmPtr != IntPtr.Zero)
-                            Marshal.FreeHGlobal(xmPtr);
-                    }
+                        // Load the instruments data
+                        if (!loadedInstruments.TryGetValue(evt.InstrumentsResourceId, out byte[] instruments))
+                        {
+                            RawResource instrumentsResource = Rom.LoadResource<RawResource>(evt.InstrumentsResourceId);
+                            instruments = instrumentsResource.RawData;
+                            loadedInstruments[evt.InstrumentsResourceId] = instruments;
+                        }
 
-                    _musicTable[evt.SoundResourceId] = music;
+                        // Load the XM data
+                        RawResource xmResource = Rom.LoadResource<RawResource>(evt.SoundResourceId);
+                        byte[] xm = xmResource.RawData;
+
+                        IntPtr xmPtr = IntPtr.Zero;
+                        try
+                        {
+                            int combinedXmLength = xm.Length + instruments.Length - 2;
+                            xmPtr = Marshal.AllocHGlobal(combinedXmLength);
+                            Marshal.Copy(xm, 0, xmPtr, xm.Length);
+                            Marshal.Copy(instruments, 2, xmPtr + xm.Length, instruments.Length - 2);
+
+                            music.XmSound.loadMem(xmPtr, (uint)combinedXmLength, true, false);
+                        }
+                        finally
+                        {
+                            if (xmPtr != IntPtr.Zero)
+                                Marshal.FreeHGlobal(xmPtr);
+                        }
+
+                        _musicTable[evt.SoundResourceId] = music;
+                    }
                 }
                 // Load sound effects WAV
                 else

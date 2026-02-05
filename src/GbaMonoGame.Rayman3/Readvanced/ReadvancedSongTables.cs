@@ -11,6 +11,8 @@ public static class ReadvancedSongTables
     {
         [1000] = "NewSfx/PadStamp01_Mix01_Gba",
         [1001] = "NewSfx/PadStamp02_Mix01_Gba",
+        [1002] = "NewMusic/timeattack_score_Gba",
+        [1003] = "NewMusic/timeattack_score2_Gba",
     };
 
     // Samples are higher volume
@@ -18,6 +20,8 @@ public static class ReadvancedSongTables
     {
         [1000] = "NewSfx/PadStamp01_Mix01_NGage",
         [1001] = "NewSfx/PadStamp02_Mix01_NGage",
+        [1002] = "NewMusic/timeattack_score_NGage",
+        [1003] = "NewMusic/timeattack_score2_NGage",
     };
 
     public static Dictionary<int, SoundEvent> GbaSoundEvents => new()
@@ -39,6 +43,26 @@ public static class ReadvancedSongTables
             Priority = 50,
             ResourceId = 1001,
             SoundType = SoundType.Sfx,
+            EnablePan = false,
+            EnableRollOff = false,
+        },
+        // Play__timeattack_score
+        [1002] = new()
+        {
+            Type = SoundEvent.SoundEventType.Play,
+            Priority = 100,
+            ResourceId = 1002,
+            SoundType = SoundType.Music,
+            EnablePan = false,
+            EnableRollOff = false,
+        },
+        // Play__timeattack_score2
+        [1003] = new()
+        {
+            Type = SoundEvent.SoundEventType.Play,
+            Priority = 100,
+            ResourceId = 1003,
+            SoundType = SoundType.Music,
             EnablePan = false,
             EnableRollOff = false,
         },
@@ -68,6 +92,28 @@ public static class ReadvancedSongTables
             PlaySong = true,
             IsMusic = false
         },
+        // Play__timeattack_score
+        [1002] = new()
+        {
+            IsValid = true,
+            SoundResourceId = 1002,
+            InstrumentsResourceId = -1,
+            Volume = 7,
+            Loop = true,
+            PlaySong = true,
+            IsMusic = true
+        },
+        // Play__timeattack_score2
+        [1003] = new()
+        {
+            IsValid = true,
+            SoundResourceId = 1003,
+            InstrumentsResourceId = -1,
+            Volume = 7,
+            Loop = true,
+            PlaySong = true,
+            IsMusic = true
+        },
     };
 
     public static Dictionary<int, SoundResource> GbaSoundResources => new()
@@ -89,6 +135,24 @@ public static class ReadvancedSongTables
             SongTableIndex = 1001,
             Loop = false,
             IsMusic = false,
+        },
+        // timeattack_score
+        [1002] = new()
+        {
+            Id = 1002,
+            Type = SoundResource.ResourceType.Song,
+            SongTableIndex = 1002,
+            Loop = true,
+            IsMusic = true,
+        },
+        // timeattack_score2
+        [1003] = new()
+        {
+            Id = 1003,
+            Type = SoundResource.ResourceType.Song,
+            SongTableIndex = 1003,
+            Loop = true,
+            IsMusic = true,
         },
         // Originally had it set up to randomize through the resource, but
         // changed to do it through code to support the N-Gage version
