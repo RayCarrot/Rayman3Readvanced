@@ -93,7 +93,8 @@ See [assets](docs/assets.md) for a comprehensive list of where each asset comes 
 - [Fancy2209](https://github.com/Fancy2209)
 
 **Audio**
-- [MilesTheCreator](https://bsky.app/profile/milesthecreator.bsky.social) (extracting GBA songs, general audio assistance)
+- [MilesTheCreator](https://bsky.app/profile/milesthecreator.bsky.social) (custom music, extracting GBA songs, general audio assistance)
+- [Robin](https://github.com/rtsonneveld) (custom music)
 
 **Game reverse engineering**
 - [Droolie](https://github.com/byvar) (from [Ray1Map](https://github.com/BinarySerializer/Ray1Map))

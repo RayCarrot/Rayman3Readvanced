@@ -50,6 +50,7 @@ public class Credits : Frame
         "-",
         "*Readvanced Audio:",
         "MilesTheCreator",
+        "Robin",
         "-",
         "*Game Reverse Engineering:",
         "Droolie",
