@@ -40,7 +40,7 @@ public class SineWaveRenderer : IScreenRenderer
         return new Box(0, 0, maxStartX + Texture.Width, Texture.Height);
     }
 
-    // TODO: Can be optimized. First x number of lines are blank. And also we could add culling for off-screen lines.
+    // NOTE: Can be optimized. First x number of lines are blank. And also we could add culling for off-screen lines.
     public void Draw(GfxRenderer renderer, GfxScreen screen, Vector2 position, Color color)
     {
         renderer.BeginSpriteRender(screen.RenderOptions);

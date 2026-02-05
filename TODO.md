@@ -87,12 +87,6 @@ Rewarded for things such as:
     - Collect all yellow lums in race during a single lap.
     - Beat Marshes of Awakening 1 without moving to the side (so only jumping).
 
-### Time trials
-List of time trials which you can play from different pre-selected levels. Probably not the entire levels since that doesn't sound fun. Have it be more like Rayman Origins where it's only part of a level.
-- While in a level you have ways of freezing the timer. This can be special time freeze items we add, or it's from collecting lums and cages. This adds risk vs reward as you might want to go out of your way to find these. Perhaps collecting them all gives you a time bonus at the end, like how Crash Team Racing does?
-- Finishing a time trial gives you either bronze, silver or gold. Show these next to each time trial in the list. You want to get all gold!
-- Finishing a time trial saves your ghost (we can do that by saving Rayman's state, pos, anim etc., each frame). Upon replaying you can show the ghost. Perhaps the bronze, silver and gold requirements each also have ghosts which are pre-recorded?
-
 ### Interactive Playground
 Unlocks once you get all achievements and is inspired by the Insomniac Museum areas. It's a big level which showcases unused features, bugs and other interesting details about the game. It has Murfy stones you walk up to for conversations with Murfy about the different things being shown.
 
@@ -114,3 +108,4 @@ It might be fun to include some cheat codes. These can be triggered by holding t
 - In levels where the cycles of objects matters, like the flying keg ones, it doesn't line up well if all objects are always loaded, making some parts impossible to beat
 - When all object are active it causes issues with cycles being different. This is noticeable for the walking shell sections, the precipice and the flying keg sections.
 - Saved window position and size might become invalid, such as becoming negative. Auto fix if wrong.
+- When running on integrated graphics in a WindowsDX build it seems to have minor graphics glitches like screen tearing (noticeable in the scrolling clouds background of the first level).

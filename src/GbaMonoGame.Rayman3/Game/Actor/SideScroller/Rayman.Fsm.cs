@@ -3037,7 +3037,7 @@ public partial class Rayman
                             if (value is >= 10 and <= 14 or >= 27 and <= 34)
                                 PreviousXSpeed += 4;
                             else
-                                PreviousXSpeed += 0.5f; // TODO: Option to use a value of 1 since it looks better - same below too
+                                PreviousXSpeed += 0.5f;
 
                             if (PreviousXSpeed > 80)
                                 PreviousXSpeed = 80;

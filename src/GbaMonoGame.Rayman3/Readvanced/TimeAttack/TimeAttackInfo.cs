@@ -30,6 +30,7 @@ public static class TimeAttackInfo
 
     public static void Init()
     {
+        // TODO: In GameOptions each option has a TimeAttackValue. If null then don't override. Otherwise we lock it.
         // TODO: Look more into which values to change, this is temporary. The visual options might affect Random seed. However Random only matters for gameplay for Grolgoth, Jano, Rocky. None of them use the visual effects.
         // Save configs
         Engine.OverrideActiveConfig(new ActiveGameConfig(
