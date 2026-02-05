@@ -12,6 +12,8 @@ public sealed partial class MovingPlatform : MovableActor
 {
     public MovingPlatform(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
+        CreateGeneratedStates();
+
         Resource = actorResource;
         
         AnimatedObject.ObjPriority = 50;
