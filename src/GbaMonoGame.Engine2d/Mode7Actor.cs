@@ -18,6 +18,10 @@ public abstract class Mode7Actor : MovableActor
         AnimatedObject.BgPriority = 0;
     }
 
+    // Custom so we can define an alpha without modifying the animated object (since
+    // that gets overriden by fading out the object as it exists the view)
+    public AlphaCoefficient Alpha { get; set; } = AlphaCoefficient.Max;
+
     public float ZPos { get; set; }
     public bool IsAffine { get; set; }
     public int RenderHeight { get; set; }

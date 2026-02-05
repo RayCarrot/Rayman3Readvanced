@@ -5,21 +5,25 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 
 public class GhostPlayer
 {
-    public GhostPlayer(Scene2D scene, GhostFrame[] frames)
+    public GhostPlayer(Scene2D scene, GhostMapData ghostMapData)
     {
         Scene = scene;
-        _frames = frames;
+        _frames = ghostMapData.Frames;
+        _isMode7 = ghostMapData.IsMode7;
     }
 
-    private readonly Dictionary<int, Ghost> _ghostActors = [];
+    private const float GhostAlpha = 0.6f;
+
+    private readonly Dictionary<int, BaseActor> _ghostActors = [];
     private readonly GhostFrame[] _frames;
     private int _frameIndex;
+    private readonly bool _isMode7;
 
     public Scene2D Scene { get; }
 
-    private Ghost CreateGhostActor(BaseActor baseActor)
+    private BaseActor CreateGhostActor(BaseActor baseActor)
     {
-        Ghost ghost = (Ghost)Scene.KnotManager.AddAlwaysActor(Scene, new ActorResource
+        BaseActor ghost = Scene.KnotManager.AddAlwaysActor(Scene, new ActorResource
         {
             Pos = default,
             IsEnabled = true,
@@ -28,14 +32,23 @@ public class GhostPlayer
             IsProjectile = false,
             ResurrectsImmediately = false,
             ResurrectsLater = false,
-            Type = (byte)ReadvancedActorType.Ghost,
+            Type = (byte)(_isMode7 ? ReadvancedActorType.GhostMode7 : ReadvancedActorType.Ghost),
             Idx_ActorModel = 0xFF,
             Links = [0xFF, 0xFF, 0xFF, 0xFF],
             Model = baseActor.ActorModel,
         });
         ghost.AnimatedObject.IsSoundEnabled = false;
-        ghost.AnimatedObject.BlendMode = BlendMode.AlphaBlend;
-        ghost.AnimatedObject.Alpha = 0.6f;
+
+        if (ghost is GhostMode7 ghostMode7)
+        {
+            ghostMode7.Alpha = GhostAlpha;
+        }
+        else
+        {
+            ghost.AnimatedObject.BlendMode = BlendMode.AlphaBlend;
+            ghost.AnimatedObject.Alpha = GhostAlpha;
+        }
+
         return ghost;
     }
 
@@ -45,26 +58,30 @@ public class GhostPlayer
         {
             GhostFrame frame = _frames[_frameIndex];
 
-            foreach (Ghost ghostActor in _ghostActors.Values)
+            foreach (BaseActor ghostActor in _ghostActors.Values)
                 ghostActor.ProcessMessage(this, Message.Destroy);
 
             foreach (GhostActorFrame ghostActorFrame in frame.Actors)
             {
-                if (!_ghostActors.TryGetValue(ghostActorFrame.InstanceId, out Ghost ghostActor))
+                if (!_ghostActors.TryGetValue(ghostActorFrame.InstanceId, out BaseActor ghostActor))
                 {
                     ghostActor = CreateGhostActor(Scene.GetGameObject<BaseActor>(ghostActorFrame.InstanceId));
                     _ghostActors.Add(ghostActorFrame.InstanceId, ghostActor);
                 }
 
                 ghostActor.ProcessMessage(this, Message.ResurrectWakeUp);
-                ghostActor.ApplyFrame(ghostActorFrame);
+
+                if (ghostActor is Ghost ghost)
+                    ghost.ApplyFrame(ghostActorFrame);
+                else if (ghostActor is GhostMode7 ghostMode7)
+                    ghostMode7.ApplyFrame(ghostActorFrame);
             }
 
             _frameIndex++;
         }
         else if (_frameIndex == _frames.Length)
         {
-            foreach (Ghost ghostActor in _ghostActors.Values)
+            foreach (BaseActor ghostActor in _ghostActors.Values)
                 ghostActor.ProcessMessage(this, Message.Destroy);
 
             _frameIndex++;

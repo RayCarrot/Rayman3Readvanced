@@ -5,7 +5,6 @@ using BinarySerializer.Ubisoft.GbaEngine;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
-// TODO: Add support for Mode7 levels
 public static class TimeAttackInfo
 {
     private const int RandomSeed = 0x12345678; // The value doesn't matter - just needs to be constant
@@ -256,7 +255,7 @@ public static class TimeAttackInfo
             return;
         }
 
-        GhostPlayer = new GhostPlayer(scene, mapGhost.Frames);
+        GhostPlayer = new GhostPlayer(scene, mapGhost);
     }
 
     public static void StepGhostPlayer()

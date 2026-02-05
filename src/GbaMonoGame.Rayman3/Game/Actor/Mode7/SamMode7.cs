@@ -180,7 +180,7 @@ public sealed partial class SamMode7 : Mode7Actor
                 {
                     Vector2 pos = ((i + 1) * ((Position - mainActor.Position) / 8) + mainActor.Position);
                     float zPos = 24 + mainActor.ZPos / 8 * (8 - i);
-                    ((CameraActorMode7)Scene.Camera).IsAnimatedObjectFramed(TetherSparkles[i], pos, zPos, false);
+                    ((CameraActorMode7)Scene.Camera).IsAnimatedObjectFramed(TetherSparkles[i], pos, zPos, false, Alpha);
                 }
 
                 foreach (AnimatedObject tetherSparkle in TetherSparkles)

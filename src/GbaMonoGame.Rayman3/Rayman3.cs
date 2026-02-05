@@ -224,6 +224,7 @@ public class Rayman3 : GbaGame
             { (ActorType)ReadvancedActorType.TimeFreezeItemSparkles, (instanceId, scene, resource) => new TimeFreezeItemSparkles(instanceId, scene, resource) },
             { (ActorType)ReadvancedActorType.TimeDecrease, (instanceId, scene, resource) => new TimeDecrease(instanceId, scene, resource) },
             { (ActorType)ReadvancedActorType.Ghost, (instanceId, scene, resource) => new Ghost(instanceId, scene, resource) },
+            { (ActorType)ReadvancedActorType.GhostMode7, (instanceId, scene, resource) => new GhostMode7(instanceId, scene, resource) },
         }, x => ((ActorType)x).ToString());
         
         Dictionary<MapId, LevelFactory.CreateLevel> levelCreations = new()

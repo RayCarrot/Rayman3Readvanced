@@ -18,7 +18,7 @@ public abstract class CameraActorMode7 : CameraActor
     //       sprites render at a different size for us than in the original game.
 
     // Custom method so we can use IsActorFramed without an actor
-    public bool IsAnimatedObjectFramed(AnimatedObject animatedObject, Vector2 position, float zPos, bool isAffine)
+    public bool IsAnimatedObjectFramed(AnimatedObject animatedObject, Vector2 position, float zPos, bool isAffine, AlphaCoefficient alpha)
     {
         TgxCameraMode7 cam = (TgxCameraMode7)Scene.Playfield.Camera;
 
@@ -44,12 +44,17 @@ public abstract class CameraActorMode7 : CameraActor
         {
             // The game doesn't do this, but it looks nicer if we fade in the objects as they enter the view
             animatedObject.BlendMode = BlendMode.AlphaBlend;
-            animatedObject.Alpha = MathF.Min((cam.CameraFar - camDist) / FadeDistance, AlphaCoefficient.MaxValue);
+            animatedObject.Alpha = MathF.Min((cam.CameraFar - camDist) / FadeDistance, AlphaCoefficient.MaxValue) * alpha;
+        }
+        else if (alpha != AlphaCoefficient.Max)
+        {
+            animatedObject.BlendMode = BlendMode.AlphaBlend;
+            animatedObject.Alpha = AlphaCoefficient.Max;
         }
         else
         {
             animatedObject.BlendMode = BlendMode.None;
-            animatedObject.Alpha = AlphaCoefficient.MaxValue;
+            animatedObject.Alpha = AlphaCoefficient.Max;
         }
 
         // Get the projection and view from the camera
@@ -93,12 +98,16 @@ public abstract class CameraActorMode7 : CameraActor
 
     public override bool IsActorFramed(BaseActor actor)
     {
-        // Get the z position
+        // Get the z position and optional alpha
         float zPos = 0;
+        AlphaCoefficient alpha = AlphaCoefficient.Max;
         if (actor is Mode7Actor mode7Actor2)
+        {
             zPos = mode7Actor2.ZPos;
+            alpha = mode7Actor2.Alpha;
+        }
 
-        bool isFramed = IsAnimatedObjectFramed(actor.AnimatedObject, actor.Position, zPos, actor is Mode7Actor { IsAffine: true });
+        bool isFramed = IsAnimatedObjectFramed(actor.AnimatedObject, actor.Position, zPos, actor is Mode7Actor { IsAffine: true }, alpha);
 
         if (actor is Mode7Actor mode7Actor)
         {

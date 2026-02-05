@@ -6,4 +6,5 @@ public enum ReadvancedActorType
     TimeFreezeItemSparkles = 201,
     TimeDecrease = 202,
     Ghost = 203,
+    GhostMode7 = 204,
 }
