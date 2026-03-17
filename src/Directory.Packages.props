@@ -3,8 +3,8 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.3.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="5.3.0" />
     <PackageVersion Include="MonoGame.Framework.WindowsDX" Version="3.8.4.1" />
     <PackageVersion Include="MonoGame.Framework.DesktopGL" Version="3.8.4.1" />
     <PackageVersion Include="MonoGame.Content.Builder.Task" Version="3.8.4.1" />
@@ -13,9 +13,9 @@
     <PackageVersion Include="ImGui.NET" Version="1.91.6.1" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageVersion Include="GbaMonoGame.Native" Version="1.0.0" />
-    <PackageVersion Include="System.Text.Encoding.CodePages" Version="10.0.2" />
+    <PackageVersion Include="System.Text.Encoding.CodePages" Version="10.0.5" />
     <PackageVersion Include="BenchmarkDotNet" Version="0.15.8" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageVersion Include="Magick.NET-Q8-AnyCPU" Version="14.10.2" />
+    <PackageVersion Include="Magick.NET-Q8-AnyCPU" Version="14.11.0" />
   </ItemGroup>
 </Project>
