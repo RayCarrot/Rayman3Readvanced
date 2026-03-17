@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -739,6 +740,122 @@ public static class GameInfo
         GameCubeCollectedYellowLumsCount = 0;
         GameCubeCollectedCagesCount = 0;
         LevelType = type;
+    }
+
+    public static void SetLevelRichPresence()
+    {
+        string presence = GetLevelName(MapId);
+        if (RSMultiplayer.IsActive)
+            presence += " (Multiplayer)";
+        else if (TimeAttackInfo.IsActive)
+            presence += " (Time Attack)";
+        Engine.RichPresenceManager.SetPresence(presence);
+    }
+
+    // Custom method so we can easily get the name of a map
+    public static string GetLevelName(MapId mapId)
+    {
+        switch (mapId)
+        {
+            case <= MapId.ChallengeLyGCN:
+                return Localization.GetText(TextBankId.LevelNames, Levels[(int)mapId].NameTextId)[0];
+
+            case MapId.Power1:
+                return GetLevelName(MapId.WoodLight_M2);
+
+            case MapId.Power2:
+                return GetLevelName(MapId.BossMachine);
+
+            case MapId.Power3:
+                return GetLevelName(MapId.EchoingCaves_M2);
+            
+            case MapId.Power4:
+                return GetLevelName(MapId.BossRockAndLava);
+            
+            case MapId.Power5:
+                return GetLevelName(MapId.SanctuaryOfStoneAndFire_M3);
+            
+            case MapId.Power6:
+                return GetLevelName(MapId.BossScaleMan);
+
+            case MapId.World1:
+                return Localization.GetText(TextBankId.LevelNames, 31)[0];
+
+            case MapId.World2:
+                return Localization.GetText(TextBankId.LevelNames, 32)[0];
+
+            case MapId.World3:
+                return Localization.GetText(TextBankId.LevelNames, 33)[0];
+
+            case MapId.World4:
+                return Localization.GetText(TextBankId.LevelNames, 34)[0];
+
+            case MapId.WorldMap:
+                return "Worldmap";
+
+            case MapId.GbaMulti_MissileRace when Rom.Platform is Platform.GBA:
+                return Localization.GetText(TextBankId.Connectivity, 13)[0];
+
+            case MapId.GbaMulti_MissileArena when Rom.Platform is Platform.GBA:
+                return Localization.GetText(TextBankId.Connectivity, 14)[0];
+
+            case MapId.GbaMulti_TagWeb when Rom.Platform is Platform.GBA:
+                return Localization.GetText(TextBankId.Connectivity, 9)[0];
+
+            case MapId.GbaMulti_TagSlide when Rom.Platform is Platform.GBA:
+                return Localization.GetText(TextBankId.Connectivity, 10)[0];
+
+            case MapId.GbaMulti_CatAndMouseSlide when Rom.Platform is Platform.GBA:
+                return Localization.GetText(TextBankId.Connectivity, 11)[0];
+
+            case MapId.GbaMulti_CatAndMouseSpider when Rom.Platform is Platform.GBA:
+                return Localization.GetText(TextBankId.Connectivity, 12)[0];
+
+            case MapId.NGageMulti_CaptureTheFlagMiddleGround when Rom.Platform is Platform.NGage:
+                return Localization.GetText(TextBankId.Connectivity, 10)[0];
+
+            case MapId.NGageMulti_CaptureTheFlagFloors when Rom.Platform is Platform.NGage:
+                return Localization.GetText(TextBankId.Connectivity, 11)[0];
+
+            case MapId.NGageMulti_CaptureTheFlagOneForAll when Rom.Platform is Platform.NGage:
+                return Localization.GetText(TextBankId.Connectivity, 12)[0];
+
+            case MapId.NGageMulti_CaptureTheFlagAllForOne when Rom.Platform is Platform.NGage:
+                return Localization.GetText(TextBankId.Connectivity, 13)[0];
+
+            case MapId.NGageMulti_CaptureTheFlagTeamWork when Rom.Platform is Platform.NGage:
+                return Localization.GetText(TextBankId.Connectivity, 14)[0];
+
+            case MapId.NGageMulti_CaptureTheFlagTeamPlayer when Rom.Platform is Platform.NGage:
+                return Localization.GetText(TextBankId.Connectivity, 15)[0];
+
+            case MapId.NGageMulti_TagWeb when Rom.Platform is Platform.NGage:
+                return Localization.GetText(TextBankId.Connectivity, 16)[0];
+
+            case MapId.NGageMulti_TagSlide when Rom.Platform is Platform.NGage:
+                return Localization.GetText(TextBankId.Connectivity, 17)[0];
+
+            case MapId.NGageMulti_CatAndMouseSlide when Rom.Platform is Platform.NGage:
+                return Localization.GetText(TextBankId.Connectivity, 18)[0];
+
+            case MapId.NGageMulti_CatAndMouseSpider when Rom.Platform is Platform.NGage:
+                return Localization.GetText(TextBankId.Connectivity, 19)[0];
+
+            case MapId.GameCube_Bonus1:
+            case MapId.GameCube_Bonus2:
+            case MapId.GameCube_Bonus3:
+            case MapId.GameCube_Bonus4:
+            case MapId.GameCube_Bonus5:
+            case MapId.GameCube_Bonus6:
+            case MapId.GameCube_Bonus7:
+            case MapId.GameCube_Bonus8:
+            case MapId.GameCube_Bonus9:
+            case MapId.GameCube_Bonus10:
+                return $"GameCube Bonus {mapId - MapId.GameCube_Bonus1 + 1}";
+
+            default:
+                return String.Empty;
+        }
     }
 
     public static bool IsFirstTimeCompletingLevel()

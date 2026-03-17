@@ -45,6 +45,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
     {
         MapId prevMap = GameInfo.MapId;
         GameInfo.InitLevel(LevelType.Normal);
+        GameInfo.SetLevelRichPresence();
         LevelMusicManager.Init();
 
         TransitionsFX.Init(true);

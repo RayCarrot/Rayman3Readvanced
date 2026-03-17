@@ -19,6 +19,7 @@
     <PackageReference Include="ini-parser" />
     <PackageReference Include="ImGui.NET" />
     <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="DiscordRichPresence" />
     <PackageReference Include="GbaMonoGame.Native" />
   </ItemGroup>
 

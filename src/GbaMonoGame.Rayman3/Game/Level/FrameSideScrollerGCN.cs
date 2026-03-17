@@ -71,6 +71,8 @@ public class FrameSideScrollerGCN : FrameSideScroller
         PreviousPowers = GameInfo.Powers;
         GameInfo.EnablePower(Power.All);
 
+        GameInfo.SetLevelRichPresence();
+
         // Optionally force GCN levels to show 0 lums and cages since they never have any
         if (Engine.ActiveConfig.Tweaks.FixBugs)
         {

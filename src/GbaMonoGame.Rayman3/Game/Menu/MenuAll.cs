@@ -512,6 +512,8 @@ public partial class MenuAll : Frame, IHasPlayfield
 
     public override void Init()
     {
+        Engine.RichPresenceManager.SetPresence("Main Menu");
+
         LoadGameInfo();
 
         AnimationPlayer = new AnimationPlayer(false, null);

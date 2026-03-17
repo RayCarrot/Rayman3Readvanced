@@ -279,6 +279,8 @@ public class ModernMenuAll : Frame, IHasPlayfield
 
     public override void Init()
     {
+        Engine.RichPresenceManager.SetPresence("Main Menu");
+
         RenderContext renderContext = new FixedResolutionRenderContext(Resolution.Modern);
 
         LoadGameInfo();

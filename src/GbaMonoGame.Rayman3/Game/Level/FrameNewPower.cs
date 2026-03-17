@@ -59,6 +59,7 @@ public class FrameNewPower : Frame, IHasScene, IHasPlayfield
     public override void Init()
     {
         GameInfo.InitLevel(LevelType.Normal);
+        GameInfo.SetLevelRichPresence();
 
         LevelMusicManager.Init();
         TransitionsFX.Init(true);

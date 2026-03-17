@@ -82,6 +82,8 @@ public static class Engine
 
     public static MessageManager MessageManager { get; } = new();
 
+    public static RichPresenceManager RichPresenceManager { get; private set; }
+
     #endregion
 
     #region Methods
@@ -178,6 +180,8 @@ public static class Engine
         GameWindow = gameWindow;
         GameViewPort = new GbaGameViewPort();
         GameRenderContext = new GameRenderContext();
+        RichPresenceManager = new RichPresenceManager();
+        RichPresenceManager.Initialize();
 
         Gfx.Load();
 
@@ -186,8 +190,9 @@ public static class Engine
 
     public static void UnInit()
     {
-        FixContentManager.Dispose();
-        FrameContentManager.Dispose();
+        FixContentManager?.Dispose();
+        FrameContentManager?.Dispose();
+        RichPresenceManager?.Dispose();
     }
 
     public static void Step()

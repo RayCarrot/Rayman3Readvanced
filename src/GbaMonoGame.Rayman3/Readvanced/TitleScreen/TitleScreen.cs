@@ -221,6 +221,8 @@ public class TitleScreen : Frame
 
     public override void Init()
     {
+        Engine.RichPresenceManager.SetPresence("Title Screen");
+
         RenderContext renderContext = new FixedResolutionRenderContext(Resolution.Modern);
 
         AnimationPlayer = new AnimationPlayer(false, null);

@@ -111,6 +111,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
     public override void Init()
     {
         GameInfo.InitLevel(LevelType.Normal);
+        GameInfo.SetLevelRichPresence();
 
         // Custom for the time attack mode
         if (TimeAttackInfo.IsActive)

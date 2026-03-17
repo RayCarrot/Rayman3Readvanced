@@ -733,6 +733,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
         TransitionsFX.Init(true);
         GameInfo.InitLevel(LevelType.Normal);
+        GameInfo.SetLevelRichPresence();
         LevelMusicManager.Init();
         
         Scene = new Scene2D((int)GameInfo.MapId, x => new CameraWorldMap(x), 3, 1);

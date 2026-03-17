@@ -57,7 +57,8 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
     public override void Init()
     {
         GameInfo.InitLevel(LevelType.Multiplayer);
-        
+        GameInfo.SetLevelRichPresence();
+
         TransitionsFX.Init(false);
         TransitionsFX.FadeInInit(1);
 

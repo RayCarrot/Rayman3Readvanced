@@ -98,6 +98,7 @@ public class FrameMissileMultiMode7 : FrameMode7
     public override void Init()
     {
         GameInfo.InitLevel(LevelType.Multiplayer);
+        GameInfo.SetLevelRichPresence();
         Timer = 0;
         CommonInit();
         UserInfo = new UserInfoMultiMode7(Scene);

@@ -16,6 +16,7 @@ public class EchoingCaves_M2 : FrameSideScroller
     private void InitScene()
     {
         GameInfo.InitLevel(LevelType.Normal);
+        GameInfo.SetLevelRichPresence();
 
         CanPause = true;
         Fog = null;

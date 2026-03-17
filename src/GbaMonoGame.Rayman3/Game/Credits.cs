@@ -525,6 +525,8 @@ public class Credits : Frame
 
     public override void Init()
     {
+        Engine.RichPresenceManager.SetPresence("Credits");
+
         TransitionsFX.Init(true);
         TransitionsFX.FadeInInit(2);
 

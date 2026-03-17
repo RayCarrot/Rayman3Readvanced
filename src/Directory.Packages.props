@@ -17,5 +17,6 @@
     <PackageVersion Include="BenchmarkDotNet" Version="0.15.8" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageVersion Include="Magick.NET-Q8-AnyCPU" Version="14.11.0" />
+    <PackageVersion Include="DiscordRichPresence" Version="1.6.1.70" />
   </ItemGroup>
 </Project>

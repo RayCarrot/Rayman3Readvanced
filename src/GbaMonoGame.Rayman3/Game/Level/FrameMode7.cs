@@ -9,11 +9,11 @@ using Action = System.Action;
 
 namespace GbaMonoGame.Rayman3;
 
-public class FrameMode7 : Frame, IHasScene, IHasPlayfield
+public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
 {
     #region Constructor
 
-    public FrameMode7(MapId mapId)
+    protected FrameMode7(MapId mapId)
     {
         GameInfo.SetNextMapId(mapId);
         PausedMachineId = 0;
@@ -197,6 +197,7 @@ public class FrameMode7 : Frame, IHasScene, IHasPlayfield
     public override void Init()
     {
         GameInfo.InitLevel(LevelType.Normal);
+        GameInfo.SetLevelRichPresence();
 
         // Custom for the time attack mode
         if (TimeAttackInfo.IsActive)
