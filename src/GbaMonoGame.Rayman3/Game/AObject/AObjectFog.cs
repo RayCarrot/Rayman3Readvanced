@@ -7,16 +7,14 @@ namespace GbaMonoGame.Rayman3;
 
 // Custom object for rendering fog. The game doesn't do this - it uses a normal AnimatedObject. However, there
 // are issues with how it's implemented. The game has sprites wrap around at 512 because of the x position
-// in the OAM being a 9-bit signed value, but the wrapping isn't seamless and causes sprites to overlap. This
-// is an issue here because of alpha being used, so the overlapping sprites would have their alpha blend together.
-public class AObjectFog : AObject
+// in the OAM being a 9-bit signed value, but the wrapping isn't seamless and causes sprites to overlap. It's
+// barely noticeable, but we can provide a modern render mode where this doesn't happen.
+public class AObjectFog : AnimatedObject
 {
     #region Constructor
 
-    public AObjectFog(AnimatedObjectResource resource)
+    public AObjectFog(AnimatedObjectResource resource, bool isDynamic) : base(resource, isDynamic)
     {
-        Resource = resource;
-
         // The sprites in the first two channels are the only unique sprites. So we can use these and tile them across.
         SpriteChannels =
         [
@@ -29,14 +27,15 @@ public class AObjectFog : AObject
 
     #region Public Properties
 
-    public const int Width = SpriteWidth * SpritesCount;
-    public const int SpriteWidth = 32;
-    public const int SpritesCount = 2;
+    // The actual animation width is 540, but it gets wrapped as 512, so we treat it as 512 with an overflow part
+    public const int GbaWidth = 512;
+    
+    public const int ModernWidth = ModernSpriteWidth * ModernSpritesCount;
+    public const int ModernSpriteWidth = 32;
+    public const int ModernSpritesCount = 2;
 
-    public AnimatedObjectResource Resource { get; }
     public AnimationChannel[] SpriteChannels { get; }
-
-    public AlphaCoefficient Alpha { get; set; } = AlphaCoefficient.Max;
+    public bool ModernMode { get; set; }
 
     #endregion
 
@@ -85,11 +84,49 @@ public class AObjectFog : AObject
 
     public override void Execute(Action<short> soundEventCallback)
     {
-        Vector2 pos = GetAnchoredPosition();
+        if (ModernMode)
+        {
+            // In modern mode we manually draw the sprites so they wrap
+            Vector2 pos = GetAnchoredPosition();
 
-        float camWidth = RenderContext.Resolution.X;
-        for (int i = 0; i < camWidth / SpriteWidth + SpritesCount; i++)
-            DrawSprite(SpriteChannels[i % SpritesCount], pos + new Vector2(SpriteWidth * i, 0));
+            float camWidth = RenderContext.Resolution.X;
+            for (int i = 0; i < camWidth / ModernSpriteWidth + ModernSpritesCount; i++)
+                DrawSprite(SpriteChannels[i % ModernSpritesCount], pos + new Vector2(ModernSpriteWidth * i, 0));
+        }
+        else
+        {
+            // In the original mode we use the original animation, however we still need to wrap
+            // since the game might be rendering in a higher resolution!
+
+            Vector2 screenPos = ScreenPos;
+
+            // Get the camera bounds
+            const float camMinX = 0;
+            float maxResX = RenderOptions.RenderContext.Resolution.X;
+
+            // Wrap the position
+            float wrappedPos = MathHelpers.Mod(screenPos.X, GbaWidth);
+
+            // Calculate the start and end positions
+            float startX = camMinX - GbaWidth + (wrappedPos == 0 ? GbaWidth : wrappedPos);
+            float fullWidth = maxResX - startX;
+            float wrappedEnd = MathHelpers.Mod(fullWidth, GbaWidth);
+            float endX = maxResX + GbaWidth - (wrappedEnd == 0 ? GbaWidth : wrappedEnd);
+
+            // We need to increment the end one more step since the animation has a min value of -255 rather than 0
+            endX += GbaWidth;
+
+            // Draw wrapped
+            int countX = (int)Math.Ceiling((endX - startX) / GbaWidth);
+            for (int x = 0; x < countX; x++)
+            {
+                ScreenPos = screenPos with { X = startX + x * GbaWidth };
+                base.Execute(soundEventCallback);
+            }
+
+            // Restore the original position
+            ScreenPos = screenPos;
+        }
     }
 
     #endregion
