@@ -1,4 +1,5 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using System;
+using BinarySerializer.Ubisoft.GbaEngine;
 using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame;
@@ -102,7 +103,7 @@ public class GfxScreen
             float fullWidth = maxResX - startX;
             float fullHeight = maxResY - startY;
 
-            Vector2 wrappedEnd = new(fullWidth % size.X, fullHeight % size.Y);
+            Vector2 wrappedEnd = new(MathHelpers.Mod(fullWidth, size.X), MathHelpers.Mod(fullHeight, size.Y));
             float endX = maxResX + size.X - (wrappedEnd.X == 0 ? size.X : wrappedEnd.X);
             float endY = maxResY + size.Y - (wrappedEnd.Y == 0 ? size.Y : wrappedEnd.Y);
 
@@ -121,13 +122,19 @@ public class GfxScreen
 
             // Draw the background to fill out the visible range
             CurrentWrapY = 0;
-            for (float y = startY; y < endY; y += size.Y)
-            {
-                CurrentWrapX = 0;
 
-                for (float x = startX; x < endX; x += size.X)
+            int countX = (int)MathF.Ceiling((endX - startX) / size.X);
+            int countY = (int)MathF.Ceiling((endY - startY) / size.Y);
+            for (int y = 0; y < countY; y++)
+            {
+                float absY = startY + y * size.Y;
+                
+                CurrentWrapX = 0;
+                
+                for (int x = 0; x < countX; x++)
                 {
-                    Renderer?.Draw(renderer, this, new Vector2(x, y), color);
+                    float absX = startX + x * size.X;
+                    Renderer?.Draw(renderer, this, new Vector2(absX, absY), color);
                     CurrentWrapX++;
                 }
 
