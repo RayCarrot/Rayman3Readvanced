@@ -149,11 +149,14 @@ public abstract class GbaGame : Game
             FrameManager.SetNextFrame(CreateFatalErrorFrame(ex));
         }
 
-        // If this frame did a load, and thus might have taken longer than 1/60th of a second, then
-        // we disable fixed time step to avoid MonoGame repeatedly calling Update() to make up for
-        // the lost time, and thus drop frames
+        // If this frame did a load, and thus might have taken longer than 1/60th of a
+        // second, then we reset the timers to avoid MonoGame repeatedly calling Update()
+        // to make up for the lost time, and thus dropping frames
         if (Engine.IsLoading)
-            IsFixedTimeStep = false;
+        {
+            ResetElapsedTime();
+            Engine.IsLoading = false;
+        }
 
         if (DebugMode)
             _updateTimeStopWatch.Stop();
@@ -234,13 +237,6 @@ public abstract class GbaGame : Game
 
         // Update mouse visibility
         IsMouseVisible = !_graphics.IsFullScreen || DebugMode;
-
-        // If the previous frame was loading, then we disable it now
-        if (Engine.IsLoading)
-        {
-            Engine.IsLoading = false;
-            IsFixedTimeStep = true;
-        }
 
         _skippedDraws++;
 
