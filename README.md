@@ -1,7 +1,7 @@
 # Rayman 3 Readvanced
 
 > [!NOTE]
-> This project is currently still in development and as such there are no builds available to download yet. You can view the current progress of this port in [the progress document](PROGRESS.md) as well as the currently planned features in [the todo document](TODO.md).
+> This project is currently still in development and as such there are no builds available to download yet. You can view the list of remaining features in [the todo document](TODO.md).
 
 ![Title screen](assets/logo/Rayman%203%20Readvanced.png)
 
