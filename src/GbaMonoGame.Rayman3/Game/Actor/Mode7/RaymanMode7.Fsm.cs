@@ -153,7 +153,6 @@ public partial class RaymanMode7
                     Vector3 screenPos = ((TgxPlayfieldMode7)Scene.Playfield).Camera.Project(new Vector3(Position, 0));
                     float screenX = Math.Abs(Scene.Resolution.X / 2 - screenPos.X);
 
-                    // TODO: Update this if we adjust the zoom
                     // NOTE: The screen pos produces slightly different offsets from the original game due to the zoom being different. In
                     //       the original game the range is usually around +/- 40 while we get +/- 30. We multiply here to adjust this.
                     screenX *= 40 / 30f;

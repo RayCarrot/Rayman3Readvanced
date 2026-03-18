@@ -20,7 +20,7 @@ public class TgxCameraMode7 : TgxCamera
     private bool _isCameraFarDirty = true;
     private Vector2 _prevResolution = Vector2.Zero;
 
-    // TODO: Rework with scanline base 0. Also zoom in more like in og game - might fix z-pos issue.
+    // NOTE: If we change these values then we need to remember to change the pitch distance math in RaymanMode7!
     private float _cameraFieldOfView = MathHelper.PiOver4;
     private float _cameraDistance = 790.0f;
     private float _cameraTargetHeight = -85.0f;
@@ -167,6 +167,7 @@ public class TgxCameraMode7 : TgxCamera
 
         // If we changed the horizon then we have to vertically shift the map. The game uses 0 as the base, but we
         // use the default horizon value as the base instead since that's what the camera values are all based on.
+        // Ideally the math should have been based on 0 as the base, but it's not really worth changing now.
         float verticalShift = DefaultHorizon - Horizon;
 
         // Convert from screen space to clip space (-1 to 1)

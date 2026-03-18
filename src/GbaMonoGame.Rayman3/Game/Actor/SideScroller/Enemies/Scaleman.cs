@@ -5,7 +5,6 @@ using GbaMonoGame.FsmSourceGenerator;
 
 namespace GbaMonoGame.Rayman3;
 
-// TODO: There's a visual bug with the shadow when the Scaleman fall down. The last frame has a 1-pixel gap between the sprites due to the scaling.
 [GenerateFsmFields]
 public sealed partial class Scaleman : MovableActor
 {

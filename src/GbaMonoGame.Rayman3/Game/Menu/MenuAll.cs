@@ -536,7 +536,6 @@ public partial class MenuAll : Frame, IHasPlayfield
         switch (InitialPage)
         {
             case InitialMenuPage.Language:
-                // TODO: Only if option to have improvements enabled
                 // NOTE: The game doesn't do this, but this allows the saved language to be pre-selected
                 SelectedOption = Localization.LanguageId;
                 Anims.LanguageList.CurrentAnimation = LanguagesBaseAnimation + SelectedOption;
