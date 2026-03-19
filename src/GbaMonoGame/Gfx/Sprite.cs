@@ -73,7 +73,26 @@ public class Sprite
             rotation = 0;
         }
 
-        Vector2 scale = AffineMatrix?.Scale ?? Vector2.One;
+        Vector2 scale;
+        if (AffineMatrix != null)
+        {
+            // We round the scale to the nearest pixels in order to reduce sub-pixel scaling. This
+            // is to avoid issues in high resolution where there becomes a gap in-between two sprites
+            // in an animation due to scale values in the animations not always exactly aligning.
+            // This was especially noticeable for the cage icon animation in the overworlds and the
+            // shadow of the Scaleman when landing.
+            Vector2 scaleAdjustSize;
+            if (Center)
+                scaleAdjustSize = textureRectangle.Size.ToVector2() / 2f;
+            else
+                scaleAdjustSize = textureRectangle.Size.ToVector2();
+
+            scale = Vector2.Round(scaleAdjustSize * AffineMatrix.Value.Scale) / scaleAdjustSize;
+        }
+        else
+        {
+            scale = Vector2.One;
+        }
 
         renderer.Draw(
             texture: Texture, 
