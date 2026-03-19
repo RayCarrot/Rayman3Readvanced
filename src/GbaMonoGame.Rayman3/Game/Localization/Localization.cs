@@ -109,6 +109,10 @@ public static class Localization
             textBanks.Add(new TextBank(texts));
         }
 
+        // TODO: Don't hard-code this here!
+        // Get the Readvanced text banks
+        textBanks.Add(new TextBank([]));
+
         _textBanks = textBanks.ToArray();
     }
 

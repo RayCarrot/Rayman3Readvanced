@@ -14,4 +14,5 @@ public enum TextBankId
     TextBoxTeensies = 9,
     Credits = 10,
     Connectivity = 11,
+    Readvanced = 12, // New for Readvanced
 }
