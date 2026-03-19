@@ -8,7 +8,7 @@ public static class Engine
 {
     #region Paths
 
-    public static string DataDirectoryName => "Data";
+    public static string DataDirectoryName => "UserData";
     public static string AssetsDirectoryName => "Assets";
     public static string CrashlogFileName => "crashlog.txt";
     public static string ConfigFileName => "config.ini";

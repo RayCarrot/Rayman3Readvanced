@@ -8,6 +8,9 @@ namespace GbaMonoGame.Rayman3;
 
 public static class SaveGameManager
 {
+    private const string SaveDirectoryName = "Saves";
+    private const string TimeAttackGhostsDirectoryName = "Ghosts";
+    
     private const string SaveFileExtension = ".sav";
     private const string SaveSlotFileName = "slot";
     private const string TimeAttackSaveFileName = "timeattack";
@@ -16,13 +19,18 @@ public static class SaveGameManager
     private static PhysicalFile GetSlotFile(int index)
     {
         string fileName = $"{SaveSlotFileName}{index + 1}";
-        return GetSaveFile(fileName);
+        return GetSaveFile(Path.Combine(SaveDirectoryName, fileName));
+    }
+
+    private static PhysicalFile GetTimeAttackFile()
+    {
+        return GetSaveFile(Path.Combine(SaveDirectoryName, TimeAttackSaveFileName));
     }
 
     private static PhysicalFile GetTimeAttackGhostFile(MapId mapId)
     {
-        string fileName = $"Ghosts/{TimeAttackGhostFileName}_{(int)mapId}";
-        return GetSaveFile(fileName);
+        string fileName = $"{TimeAttackGhostFileName}_{(int)mapId}";
+        return GetSaveFile(Path.Combine(TimeAttackGhostsDirectoryName, fileName));
     }
 
     private static PhysicalFile GetSaveFile(string fileName)
@@ -128,7 +136,7 @@ public static class SaveGameManager
     {
         try
         {
-            PhysicalFile file = GetSaveFile(TimeAttackSaveFileName);
+            PhysicalFile file = GetTimeAttackFile();
 
             if (!file.SourceFileExists)
                 return null;
@@ -153,7 +161,7 @@ public static class SaveGameManager
     {
         try
         {
-            PhysicalFile file = GetSaveFile(TimeAttackSaveFileName);
+            PhysicalFile file = GetTimeAttackFile();
 
             Context context = Rom.Context;
 
