@@ -39,7 +39,7 @@ public class Mode7FogScreenEffect : ScreenEffect
             // Convert to 0-1 range from GBA's 0-16 range
             fade /= 16;
 
-            renderer.DrawFilledRectangle(new Vector2(0, currentScanline), new Vector2(res.X, nextScanline - currentScanline), Color.White * fade);
+            renderer.DrawFilledRectangle(new Vector2(0, currentScanline), new Vector2(res.X, nextScanline - currentScanline), new Color(Color.White, fade));
 
             currentScanline = nextScanline;
         }

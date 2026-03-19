@@ -44,7 +44,8 @@ public class FrameWaterSkiMode7 : FrameMode7
             new Mode7FogScreenEffect.FogLine(0x0, 0x16),
         ])
         {
-            RenderContext = Scene.RenderContext
+            RenderContext = Scene.RenderContext,
+            BlendMode = BlendMode.AlphaBlend
         };
 
         Gfx.SetScreenEffect(Mode7FogScreenEffect);
