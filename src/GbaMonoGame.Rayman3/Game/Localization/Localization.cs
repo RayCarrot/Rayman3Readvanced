@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using BinarySerializer.Ubisoft.GbaEngine;
-using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -51,9 +50,9 @@ public static class Localization
     {
         Text text = _textBanks[(int)bankId].Texts[textId];
         
-        string[] strings = new string[text.LinesCount];
+        string[] strings = new string[text.Lines.Count];
         for (int i = 0; i < strings.Length; i++)
-            strings[i] = text.Lines.Value[i];
+            strings[i] = text.Lines[i];
 
         return strings;
     }
@@ -91,7 +90,26 @@ public static class Localization
         LanguageId = languageId;
         LanguageUiIndex = Language.UiIndex;
 
-        _textBanks = Rom.Loader.Rayman3_LocalizedTextBanks.TextBanks[languageId].Value.Select(x => x.Value).ToArray();
+        // Get the text banks for the specified language
+        List<TextBank> textBanks = new();
+
+        // Get the text banks from the ROM
+        foreach (TextBankResource textBankResource in Rom.Loader.Rayman3_LocalizedTextBanks.TextBanks[languageId].Value!)
+        {
+            List<Text> texts = new();
+
+            foreach (TextResource text in textBankResource.Texts)
+            {
+                List<string> lines = new();
+                foreach (string line in text.Lines.Value)
+                    lines.Add(line);
+                texts.Add(new Text(lines));
+            }
+
+            textBanks.Add(new TextBank(texts));
+        }
+
+        _textBanks = textBanks.ToArray();
     }
 
     public static void UnInit()

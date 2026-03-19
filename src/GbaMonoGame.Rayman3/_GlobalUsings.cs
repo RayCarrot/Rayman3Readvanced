@@ -19,3 +19,5 @@ global using CaptorResource = BinarySerializer.Ubisoft.GbaEngine.Captor;
 global using Scene2DResource = BinarySerializer.Ubisoft.GbaEngine.Scene2D;
 global using ActResource = BinarySerializer.Ubisoft.GbaEngine.Rayman3.Act;
 global using AnimActorResource = BinarySerializer.Ubisoft.GbaEngine.AnimActor;
+global using TextBankResource = BinarySerializer.Ubisoft.GbaEngine.Rayman3.TextBank;
+global using TextResource = BinarySerializer.Ubisoft.GbaEngine.Rayman3.Text;
