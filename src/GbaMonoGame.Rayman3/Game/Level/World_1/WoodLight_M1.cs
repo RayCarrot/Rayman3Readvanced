@@ -1,4 +1,6 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
+using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
@@ -7,11 +9,32 @@ public class WoodLight_M1 : FrameSideScroller
 {
     public WoodLight_M1(MapId mapId) : base(mapId) { }
 
+    // For time attack
+    public TextBoxDialog TextBox { get; set; }
+    public uint TimeAttackTextBoxTimer { get; set; }
+    public bool IsShowingTimeAttackTextBox { get; set; }
+
+    private bool HasDestroyedAnyTimeFreezeItems()
+    {
+        foreach (GameObject obj in Scene.KnotManager.GameObjects)
+        {
+            if (!obj.IsEnabled && obj is BaseActor { Type: (int)ReadvancedActorType.TimeFreezeItem })
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public override void Init()
     {
         base.Init();
 
-        Scene.AddDialog(new TextBoxDialog(Scene), false, false);
+        TextBox = new TextBoxDialog(Scene);
+        Scene.AddDialog(TextBox, false, false);
+
+        TimeAttackTextBoxTimer = 0;
 
         TgxTileLayer cloudsLayer = ((TgxPlayfield2D)Scene.Playfield).TileLayers[0];
         TextureScreenRenderer renderer;
@@ -28,6 +51,29 @@ public class WoodLight_M1 : FrameSideScroller
             // Need to limit the background to 256 since the rest is just transparent
             renderer.TextureRectangle = renderer.TextureRectangle with { Width = 256 };
             cloudsLayer.Screen.Renderer = renderer;
+        }
+    }
+
+    public override void Step()
+    {
+        if (TimeAttackInfo.IsActive && TimeAttackInfo.Mode == TimeAttackMode.Play && CurrentStepAction == Step_Normal)
+            TimeAttackTextBoxTimer++;
+
+        base.Step();
+
+        if (TimeAttackTextBoxTimer == 200 && !HasDestroyedAnyTimeFreezeItems())
+        {
+            TextBox.SetCutsceneCharacter(TextBoxCutsceneCharacter.Murfy);
+            TextBox.TextBankId = TextBankId.Readvanced;
+            TextBox.SetText(0);
+            TextBox.MoveInOurOut(true);
+            IsShowingTimeAttackTextBox = true;
+        }
+
+        if (IsShowingTimeAttackTextBox && TimeAttackTextBoxTimer > 300 && HasDestroyedAnyTimeFreezeItems())
+        {
+            TextBox.MoveInOurOut(false);
+            IsShowingTimeAttackTextBox = false;
         }
     }
 }

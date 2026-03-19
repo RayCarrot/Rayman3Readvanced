@@ -111,7 +111,10 @@ public static class Localization
 
         // TODO: Don't hard-code this here!
         // Get the Readvanced text banks
-        textBanks.Add(new TextBank([]));
+        textBanks.Add(new TextBank(
+        [
+            new Text(["2:Hit the butterflies to decrease", "the timer."])
+        ]));
 
         _textBanks = textBanks.ToArray();
     }

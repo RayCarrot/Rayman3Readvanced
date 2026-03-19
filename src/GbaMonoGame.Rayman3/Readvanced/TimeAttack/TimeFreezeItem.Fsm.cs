@@ -60,7 +60,7 @@ public partial class TimeFreezeItem
         switch (action)
         {
             case FsmAction.Init:
-                // Freeze the timer
+                // Remove time
                 TimeAttackInfo.RemoveTime(TimeDecreaseSecondsValue * 60);
 
                 // Change action to the dying one, playing a faster animation
