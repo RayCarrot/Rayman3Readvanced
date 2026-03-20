@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using BinarySerializer.Nintendo.GBA;
 using Microsoft.Xna.Framework;
@@ -18,7 +19,7 @@ public class TileMapScreenRenderer : IScreenRenderer
         Width = width;
         Height = height;
         TileMap = tileMap;
-        TileTextures = tileTextures;
+        TileTextures = tileTextures.ToFrozenDictionary();
         Is8Bit = is8Bit;
 
         _replacedTiles = new Dictionary<int, int>();
@@ -30,7 +31,7 @@ public class TileMapScreenRenderer : IScreenRenderer
     public int Height { get; }
     public MapTile[] TileMap { get; }
     public bool Is8Bit { get; }
-    public Dictionary<int, Texture2D> TileTextures { get; }
+    public FrozenDictionary<int, Texture2D> TileTextures { get; }
 
     private Rectangle GetVisibleTilesArea(Vector2 position, GfxScreen screen)
     {

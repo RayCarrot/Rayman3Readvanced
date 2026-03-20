@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Frozen;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -7,7 +8,7 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 public static class ReadvancedFonts
 {
     // TODO: Define remaining glyphs and improve layout offsets (maybe auto-generate based on overlapping pixels?)
-    private static readonly Dictionary<char, Font.Glyph> _menuGlyphs = new()
+    private static readonly FrozenDictionary<char, Font.Glyph> _menuGlyphs = new Dictionary<char, Font.Glyph>()
     {
         [' '] = new(Rectangle.Empty, layoutEndOffset: 5),
         ['!'] = new(new Rectangle(16, 8, 5, 13)),
@@ -29,7 +30,7 @@ public static class ReadvancedFonts
                 ['A'] = -1,
                 ['N'] = -1,
                 ['T'] = -2,
-            }
+            }.ToFrozenDictionary()
         },
         ['.'] = new(new Rectangle(169, 16, 4, 4), renderOffset: new Vector2(0, -1)),
         ['/'] = new(new Rectangle(178, 8, 7, 12), renderOffset: new Vector2(0, -1)),
@@ -62,7 +63,7 @@ public static class ReadvancedFonts
                 ['T'] = -2,
                 ['V'] = -1,
                 ['W'] = -1,
-            }
+            }.ToFrozenDictionary()
         },
         ['B'] = new(new Rectangle(21, 47, 9, 12))
         {
@@ -70,7 +71,7 @@ public static class ReadvancedFonts
             {
                 ['/'] = -1,
                 ['T'] = -1,
-            }
+            }.ToFrozenDictionary()
         },
         ['C'] = new(new Rectangle(35, 47, 9, 12)),
         ['D'] = new(new Rectangle(48, 47, 9, 12)),
@@ -84,7 +85,7 @@ public static class ReadvancedFonts
             GlyphSpecificLayoutStartOffsets = new Dictionary<char, float>()
             {
                 ['O'] = -2,
-            }
+            }.ToFrozenDictionary()
         },
         ['K'] = new(new Rectangle(134, 47, 9, 13), renderOffset: new Vector2(0, 1)),
         ['L'] = new(new Rectangle(147, 47, 8, 12)),
@@ -95,7 +96,7 @@ public static class ReadvancedFonts
             GlyphSpecificLayoutStartOffsets = new Dictionary<char, float>()
             {
                 ['N'] = -1,
-            }
+            }.ToFrozenDictionary()
         },
 
         ['P'] = new(new Rectangle(6, 67, 9, 12)),
@@ -112,7 +113,7 @@ public static class ReadvancedFonts
                 ['L'] = -2,
                 ['O'] = -1,
                 ['X'] = -2,
-            }
+            }.ToFrozenDictionary()
         },
         ['U'] = new(new Rectangle(74, 67, 9, 12)),
         ['V'] = new(new Rectangle(88, 67, 10, 12))
@@ -121,7 +122,7 @@ public static class ReadvancedFonts
             {
                 ['A'] = -2,
                 ['I'] = -1,
-            }
+            }.ToFrozenDictionary()
         },
         ['W'] = new(new Rectangle(103, 67, 13, 12)),
         ['X'] = new(new Rectangle(120, 67, 12, 12))
@@ -129,14 +130,14 @@ public static class ReadvancedFonts
             GlyphSpecificLayoutStartOffsets = new Dictionary<char, float>()
             {
                 ['O'] = -1,
-            }
+            }.ToFrozenDictionary()
         },
         ['Y'] = new(new Rectangle(136, 67, 10, 12))
         {
             GlyphSpecificLayoutStartOffsets = new Dictionary<char, float>()
             {
                 ['A'] = -3,
-            }
+            }.ToFrozenDictionary()
         },
         ['Z'] = new(new Rectangle(150, 67, 9, 12)),
         ['['] = new(new Rectangle(164, 66, 5, 16), renderOffset: new Vector2(0, 3)),
@@ -173,7 +174,7 @@ public static class ReadvancedFonts
         ['x'] = new(new Rectangle(121, 108, 10, 10), renderOffset: new Vector2(0, 1)),
         ['y'] = new(new Rectangle(135, 108, 9, 13), renderOffset: new Vector2(0, 4)),
         ['z'] = new(new Rectangle(149, 108, 7, 9)),
-    };
+    }.ToFrozenDictionary();
 
     public static Font MenuYellow { get; private set; }
     public static Font MenuWhite { get; private set; }

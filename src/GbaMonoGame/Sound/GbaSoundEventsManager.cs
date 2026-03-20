@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -20,7 +21,6 @@ public class GbaSoundEventsManager : SoundEventsManager
         _soloud = new Soloud();
         _soloud.init();
 
-        _songTable = new Dictionary<int, Song>();
         _soundEvents = soundEvents;
         _soundResources = soundResources;
 
@@ -30,8 +30,8 @@ public class GbaSoundEventsManager : SoundEventsManager
         _songInstances = new List<SongInstance>();
 
         Stopwatch sw = Stopwatch.StartNew();
-        
-        LoadSongs(songPhysicalFileNames);
+
+        _songTable = LoadSongs(songPhysicalFileNames);
         
         sw.Stop();
 
@@ -43,7 +43,7 @@ public class GbaSoundEventsManager : SoundEventsManager
     #region Private Fields
 
     private readonly Soloud _soloud;
-    private readonly Dictionary<int, Song> _songTable;
+    private readonly FrozenDictionary<int, Song> _songTable;
     private readonly SoundEvent[] _soundEvents;
     private readonly SoundResource[] _soundResources;
     private readonly float[] _volumePerType;
@@ -92,10 +92,11 @@ public class GbaSoundEventsManager : SoundEventsManager
 
     #region Private Methods
 
-    private void LoadSongs(Dictionary<int, string> songPhysicalFileNames)
+    private FrozenDictionary<int, Song> LoadSongs(Dictionary<int, string> songPhysicalFileNames)
     {
         //StringBuilder sb = new();
 
+        Dictionary<int, Song> songTable = new();
         Dictionary<string, Song> loadedSounds = new();
         foreach (var songTableEntry in songPhysicalFileNames)
         {
@@ -105,7 +106,7 @@ public class GbaSoundEventsManager : SoundEventsManager
             // Check if already loaded
             if (loadedSounds.TryGetValue(songTableEntry.Value, out Song song))
             {
-                _songTable[songTableEntry.Key] = song;
+                songTable[songTableEntry.Key] = song;
             }
             else
             {
@@ -124,11 +125,13 @@ public class GbaSoundEventsManager : SoundEventsManager
                 song.WavSound.setLoopPoint(loopPoint);
 
                 loadedSounds[songTableEntry.Value] = song;
-                _songTable[songTableEntry.Key] = song;
+                songTable[songTableEntry.Key] = song;
             }
         }
 
         //File.WriteAllText("LoopPoints.txt", sb.ToString());
+
+        return songTable.ToFrozenDictionary();
     }
 
     private double GetLoopPointInSeconds(string fileName)

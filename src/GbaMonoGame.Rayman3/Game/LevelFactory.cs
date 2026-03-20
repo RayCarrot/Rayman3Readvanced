@@ -1,22 +1,22 @@
 ﻿using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace GbaMonoGame.Rayman3;
 
 public static class LevelFactory
 {
-    private static Dictionary<int, CreateLevel> _levelCreations;
+    private static FrozenDictionary<int, CreateLevel> _levelCreations;
 
     public static void Init<T>(Dictionary<T, CreateLevel> levelCreations)
         where T : Enum
     {
-        _levelCreations = levelCreations.ToDictionary(x => (int)(object)x.Key, x => x.Value);
+        _levelCreations = levelCreations.ToFrozenDictionary(x => (int)(object)x.Key, x => x.Value);
     }
 
     public static void Init(Dictionary<int, CreateLevel> levelCreations)
     {
-        _levelCreations = levelCreations;
+        _levelCreations = levelCreations.ToFrozenDictionary();
     }
 
     public static Frame Create(MapId mapId)

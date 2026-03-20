@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Frozen;
+using System.Collections.Generic;
 using BinarySerializer.Ubisoft.GbaEngine;
 using Microsoft.Xna.Framework.Input;
 
@@ -7,7 +8,7 @@ namespace GbaMonoGame;
 // Custom code to allow different button mappings per platform/setting
 public partial class SimpleJoyPad
 {
-    private static Dictionary<Rayman3Input, GbaInput[]> Rayman3ModernInputs { get; } = new()
+    private static FrozenDictionary<Rayman3Input, GbaInput[]> Rayman3ModernInputs { get; } = new Dictionary<Rayman3Input, GbaInput[]>
     {
         [Rayman3Input.MenuUp] = [GbaInput.Up],
         [Rayman3Input.MenuDown] = [GbaInput.Down],
@@ -40,8 +41,8 @@ public partial class SimpleJoyPad
         [Rayman3Input.ActorAttack] = [GbaInput.B],
         [Rayman3Input.ActorSpecialLeft] = [GbaInput.L],
         [Rayman3Input.ActorSpecialRight] = [GbaInput.R],
-    };
-    private static Dictionary<Rayman3Input, GbaInput[]> Rayman3GbaInputs { get; } = new()
+    }.ToFrozenDictionary();
+    private static FrozenDictionary<Rayman3Input, GbaInput[]> Rayman3GbaInputs { get; } = new Dictionary<Rayman3Input, GbaInput[]>
     {
         [Rayman3Input.MenuUp] = [GbaInput.Up],
         [Rayman3Input.MenuDown] = [GbaInput.Down],
@@ -74,8 +75,8 @@ public partial class SimpleJoyPad
         [Rayman3Input.ActorAttack] = [GbaInput.B],
         [Rayman3Input.ActorSpecialLeft] = [GbaInput.L],
         [Rayman3Input.ActorSpecialRight] = [GbaInput.R],
-    };
-    private static Dictionary<Rayman3Input, GbaInput[]> Rayman3NGageInputs { get; } = new()
+    }.ToFrozenDictionary();
+    private static FrozenDictionary<Rayman3Input, GbaInput[]> Rayman3NGageInputs { get; } = new Dictionary<Rayman3Input, GbaInput[]>
     {
         [Rayman3Input.MenuUp] = [GbaInput.Up],
         [Rayman3Input.MenuDown] = [GbaInput.Down],
@@ -108,10 +109,10 @@ public partial class SimpleJoyPad
         [Rayman3Input.ActorAttack] = [GbaInput.B],
         [Rayman3Input.ActorSpecialLeft] = [GbaInput.L],
         [Rayman3Input.ActorSpecialRight] = [GbaInput.R],
-    };
+    }.ToFrozenDictionary();
 
     // Additional keyboard inputs to allow if they're not mapped (so you can pause with ESC etc.)
-    private static Dictionary<Rayman3Input, Keys[]> Rayman3StandardKeyboardInputs { get; } = new()
+    private static FrozenDictionary<Rayman3Input, Keys[]> Rayman3StandardKeyboardInputs { get; } = new Dictionary<Rayman3Input, Keys[]>
     {
         [Rayman3Input.MenuUp] = [],
         [Rayman3Input.MenuDown] = [],
@@ -144,7 +145,7 @@ public partial class SimpleJoyPad
         [Rayman3Input.ActorAttack] = [],
         [Rayman3Input.ActorSpecialLeft] = [],
         [Rayman3Input.ActorSpecialRight] = [],
-    };
+    }.ToFrozenDictionary();
 
     private static GbaInput[] GetGbaInputs(Rayman3Input rayman3Input)
     {

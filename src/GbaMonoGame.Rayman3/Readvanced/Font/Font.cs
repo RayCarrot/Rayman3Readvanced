@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Frozen;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,7 +8,7 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 
 public class Font
 {
-    public Font(Texture2D texture, Dictionary<char, Glyph> glyphs, float lineHeight)
+    public Font(Texture2D texture, FrozenDictionary<char, Glyph> glyphs, float lineHeight)
     {
         Texture = texture;
         Glyphs = glyphs;
@@ -16,7 +16,7 @@ public class Font
     }
 
     public Texture2D Texture { get; }
-    public Dictionary<char, Glyph> Glyphs { get; }
+    public FrozenDictionary<char, Glyph> Glyphs { get; }
     public float LineHeight { get; }
 
     public float GetWidth(string text, int charIndex)
@@ -186,6 +186,6 @@ public class Font
         public Vector2 RenderOffset { get; }
         public float LayoutStartOffset { get; }
         public float LayoutEndOffset { get; }
-        public Dictionary<char, float> GlyphSpecificLayoutStartOffsets { get; init; }
+        public FrozenDictionary<char, float> GlyphSpecificLayoutStartOffsets { get; init; }
     }
 }

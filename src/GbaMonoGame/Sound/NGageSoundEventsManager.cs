@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -20,9 +21,6 @@ public class NGageSoundEventsManager : SoundEventsManager
 
         _soundEvents = soundEvents;
 
-        _musicTable = new Dictionary<int, Music>();
-        _soundEffectsTable = new Dictionary<int, SoundEffect>();
-
         _currentMusicVolume = 1;
         _musicFadeVolume = 0;
         _doesCurrentMusicLoop = false;
@@ -34,7 +32,8 @@ public class NGageSoundEventsManager : SoundEventsManager
 
         Stopwatch sw = Stopwatch.StartNew();
 
-        LoadSongs(songResourceFileNames, songPhysicalFileNames, soundEvents);
+        _musicTable = LoadMusic(songResourceFileNames, songPhysicalFileNames, soundEvents);
+        _soundEffectsTable = LoadSoundEffects(songResourceFileNames, songPhysicalFileNames, soundEvents);
 
         sw.Stop();
 
@@ -53,8 +52,8 @@ public class NGageSoundEventsManager : SoundEventsManager
     private readonly Soloud _soloud;
     private readonly NGageSoundEvent[] _soundEvents;
 
-    private readonly Dictionary<int, Music> _musicTable;
-    private readonly Dictionary<int, SoundEffect> _soundEffectsTable;
+    private readonly FrozenDictionary<int, Music> _musicTable;
+    private readonly FrozenDictionary<int, SoundEffect> _soundEffectsTable;
 
     private readonly Dictionary<int, SoundEffectInstance> _soundEffectInstances = new(); // On N-Gage this is max 64 songs, but we don't need that limit
 
@@ -113,119 +112,130 @@ public class NGageSoundEventsManager : SoundEventsManager
 
     #region Private Methods
 
-    private void LoadSongs(Dictionary<int, string> songResourceFileNames, Dictionary<int, string> songPhysicalFileNames, NGageSoundEvent[] soundEvents)
+    private static FrozenDictionary<int, Music> LoadMusic(Dictionary<int, string> songResourceFileNames, Dictionary<int, string> songPhysicalFileNames, NGageSoundEvent[] soundEvents)
     {
-        HashSet<int> loadedSounds = new();
+        Dictionary<int, Music> musicTable = new();
         Dictionary<int, byte[]> loadedInstruments = new();
         foreach (NGageSoundEvent evt in soundEvents)
         {
             if (!evt.IsValid)
                 continue;
 
-            if (loadedSounds.Add(evt.SoundResourceId))
+            // Load music from XM and instruments
+            if (evt.IsMusic && !musicTable.ContainsKey(evt.SoundResourceId))
             {
-                // Load music from XM and instruments
-                if (evt.IsMusic)
+                // Check if we have a physical file for the sound, and if so load from the file
+                if (songPhysicalFileNames.TryGetValue(evt.SoundResourceId, out string physicalFileName))
                 {
-                    // Check if we have a physical file for the sound, and if so load from the file
-                    if (songPhysicalFileNames.TryGetValue(evt.SoundResourceId, out string physicalFileName))
+                    Music music = new()
                     {
-                        Music music = new()
-                        {   
-                            XmSound = new Openmpt(),
-                            FileName = physicalFileName
-                        };
+                        XmSound = new Openmpt(),
+                        FileName = physicalFileName
+                    };
 
-                        music.XmSound.load($"Assets/Rayman3/{physicalFileName}.xm");
+                    music.XmSound.load($"Assets/Rayman3/{physicalFileName}.xm");
 
-                        _musicTable[evt.SoundResourceId] = music;
-                    }
-                    else
-                    {
-                        Music music = new()
-                        {
-                            XmSound = new Openmpt(),
-                            FileName = songResourceFileNames[evt.SoundResourceId]
-                        };
-
-                        // Load the instruments data
-                        if (!loadedInstruments.TryGetValue(evt.InstrumentsResourceId, out byte[] instruments))
-                        {
-                            RawResource instrumentsResource = Rom.LoadResource<RawResource>(evt.InstrumentsResourceId);
-                            instruments = instrumentsResource.RawData;
-                            loadedInstruments[evt.InstrumentsResourceId] = instruments;
-                        }
-
-                        // Load the XM data
-                        RawResource xmResource = Rom.LoadResource<RawResource>(evt.SoundResourceId);
-                        byte[] xm = xmResource.RawData;
-
-                        IntPtr xmPtr = IntPtr.Zero;
-                        try
-                        {
-                            int combinedXmLength = xm.Length + instruments.Length - 2;
-                            xmPtr = Marshal.AllocHGlobal(combinedXmLength);
-                            Marshal.Copy(xm, 0, xmPtr, xm.Length);
-                            Marshal.Copy(instruments, 2, xmPtr + xm.Length, instruments.Length - 2);
-
-                            music.XmSound.loadMem(xmPtr, (uint)combinedXmLength, true, false);
-                        }
-                        finally
-                        {
-                            if (xmPtr != IntPtr.Zero)
-                                Marshal.FreeHGlobal(xmPtr);
-                        }
-
-                        _musicTable[evt.SoundResourceId] = music;
-                    }
+                    musicTable[evt.SoundResourceId] = music;
                 }
-                // Load sound effects WAV
                 else
                 {
-                    // Check if we have a physical file for the sound, and if so load from the file
-                    if (songPhysicalFileNames.TryGetValue(evt.SoundResourceId, out string physicalFileName))
+                    Music music = new()
                     {
-                        SoundEffect soundEffect = new()
-                        {
-                            WavSound = new Wav(),
-                            FileName = physicalFileName
-                        };
+                        XmSound = new Openmpt(),
+                        FileName = songResourceFileNames[evt.SoundResourceId]
+                    };
 
-                        soundEffect.WavSound.load($"Assets/Rayman3/{physicalFileName}.wav");
-
-                        _soundEffectsTable[evt.SoundResourceId] = soundEffect;
-                    }
-                    // Otherwise load from resources
-                    else
+                    // Load the instruments data
+                    if (!loadedInstruments.TryGetValue(evt.InstrumentsResourceId, out byte[] instruments))
                     {
-                        SoundEffect soundEffect = new()
-                        {
-                            WavSound = new Wav(),
-                            FileName = songResourceFileNames[evt.SoundResourceId]
-                        };
-
-                        RawResource resource = Rom.LoadResource<RawResource>(evt.SoundResourceId);
-                        byte[] rawData = resource.RawData;
-
-                        IntPtr resourcePtr = IntPtr.Zero;
-                        try
-                        {
-                            resourcePtr = Marshal.AllocHGlobal(rawData.Length);
-                            Marshal.Copy(rawData, 0, resourcePtr, rawData.Length);
-
-                            soundEffect.WavSound.loadMem(resourcePtr, (uint)rawData.Length, true, false);
-                        }
-                        finally
-                        {
-                            if (resourcePtr != IntPtr.Zero)
-                                Marshal.FreeHGlobal(resourcePtr);
-                        }
-
-                        _soundEffectsTable[evt.SoundResourceId] = soundEffect;
+                        RawResource instrumentsResource = Rom.LoadResource<RawResource>(evt.InstrumentsResourceId);
+                        instruments = instrumentsResource.RawData;
+                        loadedInstruments[evt.InstrumentsResourceId] = instruments;
                     }
+
+                    // Load the XM data
+                    RawResource xmResource = Rom.LoadResource<RawResource>(evt.SoundResourceId);
+                    byte[] xm = xmResource.RawData;
+
+                    IntPtr xmPtr = IntPtr.Zero;
+                    try
+                    {
+                        int combinedXmLength = xm.Length + instruments.Length - 2;
+                        xmPtr = Marshal.AllocHGlobal(combinedXmLength);
+                        Marshal.Copy(xm, 0, xmPtr, xm.Length);
+                        Marshal.Copy(instruments, 2, xmPtr + xm.Length, instruments.Length - 2);
+
+                        music.XmSound.loadMem(xmPtr, (uint)combinedXmLength, true, false);
+                    }
+                    finally
+                    {
+                        if (xmPtr != IntPtr.Zero)
+                            Marshal.FreeHGlobal(xmPtr);
+                    }
+
+                    musicTable[evt.SoundResourceId] = music;
                 }
             }
         }
+
+        return musicTable.ToFrozenDictionary();
+    }
+
+    private static FrozenDictionary<int, SoundEffect> LoadSoundEffects(Dictionary<int, string> songResourceFileNames, Dictionary<int, string> songPhysicalFileNames, NGageSoundEvent[] soundEvents)
+    {
+        Dictionary<int, SoundEffect> soundEffectsTable = new();
+        foreach (NGageSoundEvent evt in soundEvents)
+        {
+            if (!evt.IsValid)
+                continue;
+
+            if (!evt.IsMusic && !soundEffectsTable.ContainsKey(evt.SoundResourceId))
+            {
+                // Check if we have a physical file for the sound, and if so load from the file
+                if (songPhysicalFileNames.TryGetValue(evt.SoundResourceId, out string physicalFileName))
+                {
+                    SoundEffect soundEffect = new()
+                    {
+                        WavSound = new Wav(),
+                        FileName = physicalFileName
+                    };
+
+                    soundEffect.WavSound.load($"Assets/Rayman3/{physicalFileName}.wav");
+
+                    soundEffectsTable[evt.SoundResourceId] = soundEffect;
+                }
+                // Otherwise load from resources
+                else
+                {
+                    SoundEffect soundEffect = new()
+                    {
+                        WavSound = new Wav(),
+                        FileName = songResourceFileNames[evt.SoundResourceId]
+                    };
+
+                    RawResource resource = Rom.LoadResource<RawResource>(evt.SoundResourceId);
+                    byte[] rawData = resource.RawData;
+
+                    IntPtr resourcePtr = IntPtr.Zero;
+                    try
+                    {
+                        resourcePtr = Marshal.AllocHGlobal(rawData.Length);
+                        Marshal.Copy(rawData, 0, resourcePtr, rawData.Length);
+
+                        soundEffect.WavSound.loadMem(resourcePtr, (uint)rawData.Length, true, false);
+                    }
+                    finally
+                    {
+                        if (resourcePtr != IntPtr.Zero)
+                            Marshal.FreeHGlobal(resourcePtr);
+                    }
+
+                    soundEffectsTable[evt.SoundResourceId] = soundEffect;
+                }
+            }
+        }
+
+        return soundEffectsTable.ToFrozenDictionary();
     }
 
     private void SetNextMusic(int soundResId, int instrumentsResId, float volume, bool loop)

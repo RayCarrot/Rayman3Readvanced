@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using ImGuiNET;
 using static GbaMonoGame.Logger;
@@ -18,13 +19,13 @@ public class LoggerDebugWindow : DebugWindow
 
     private readonly List<Log> _logs = [];
 
-    private readonly Dictionary<LogType, Vector4> _colors = new()
+    private readonly FrozenDictionary<LogType, Vector4> _colors = new Dictionary<LogType, Vector4>()
     {
         [LogType.NotImplemented] = new Vector4(42 / 255f, 175 / 255f, 212 / 255f, 1.0f),
         [LogType.Debug] = new Vector4(214 / 255f, 157 / 255f, 132 / 255f, 1.0f),
         [LogType.Info] = new Vector4(45 / 255f, 157 / 255f, 163 / 255f, 1.0f),
         [LogType.Error] = new Vector4(245 / 255f, 91 / 255f, 101 / 255f, 1.0f),
-    };
+    }.ToFrozenDictionary();
 
     private readonly LogType[] _logTypes = Enum.GetValues<LogType>();
     private LogType _activeLogTypes = LogType.NotImplemented | LogType.Info | LogType.Error;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine;
@@ -192,7 +193,7 @@ public static class TimeAttackInfo
 
     public static TimeAttackTime[] GetTargetTimes(MapId mapId)
     {
-        Dictionary<MapId, TimeAttackTime[]> dictionary = Rom.Platform switch
+        FrozenDictionary<MapId, TimeAttackTime[]> dictionary = Rom.Platform switch
         {
             Platform.GBA => TimeAttackTimes.Gba,
             Platform.NGage => TimeAttackTimes.NGage,

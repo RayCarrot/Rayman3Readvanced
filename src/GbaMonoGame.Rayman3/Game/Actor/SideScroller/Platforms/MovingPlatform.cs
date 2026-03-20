@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
@@ -23,7 +24,7 @@ public sealed partial class MovingPlatform : MovableActor
     }
 
     // Not used in any level
-    private readonly Dictionary<Action, AcceleratedInfo> _acceleratedInfos = new()
+    private readonly FrozenDictionary<Action, AcceleratedInfo> _acceleratedInfos = new Dictionary<Action, AcceleratedInfo>()
     {
         [Action.MoveAccelerated_Left] = new AcceleratedInfo(
             Acceleration: MathHelpers.FromFixedPoint(-0x800), 
@@ -45,7 +46,7 @@ public sealed partial class MovingPlatform : MovableActor
             Deceleration: MathHelpers.FromFixedPoint(0x500), 
             DecelerationDistance: new Vector2(0, 24), 
             NextType: PhysicalTypeValue.MovingPlatform_Up),
-    };
+    }.ToFrozenDictionary();
 
     public ActorResource Resource { get; }
     public float ReturnXPosition { get; }

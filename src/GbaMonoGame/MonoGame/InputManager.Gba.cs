@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Frozen;
+using System.Collections.Generic;
 using BinarySerializer.Ubisoft.GbaEngine;
 
 namespace GbaMonoGame;
 
 public static partial class InputManager
 {
-    private static readonly Dictionary<Input, GbaInput> _gbaInputMapping = new()
+    private static readonly FrozenDictionary<Input, GbaInput> _gbaInputMapping = new Dictionary<Input, GbaInput>
     {
         [Input.Gba_A] = GbaInput.A,
         [Input.Gba_B] = GbaInput.B,
@@ -17,7 +18,7 @@ public static partial class InputManager
         [Input.Gba_Down] = GbaInput.Down,
         [Input.Gba_R] = GbaInput.R,
         [Input.Gba_L] = GbaInput.L,
-    };
+    }.ToFrozenDictionary();
 
     public static GbaInput GetGbaInput(Input input) => _gbaInputMapping[input];
     public static bool TryGetGbaInput(Input input, out GbaInput gbaInput) => _gbaInputMapping.TryGetValue(input, out gbaInput);

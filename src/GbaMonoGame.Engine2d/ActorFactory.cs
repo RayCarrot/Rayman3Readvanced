@@ -1,24 +1,24 @@
 ﻿using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace GbaMonoGame.Engine2d;
 
 public static class ActorFactory
 {
-    private static Dictionary<int, CreateActor> _actorCreations;
+    private static FrozenDictionary<int, CreateActor> _actorCreations;
     private static Func<int, string> _getActorTypeNameFunc;
 
     public static void Init<T>(Dictionary<T, CreateActor> actorCreations, Func<int, string> getActorTypeNameFunc)
         where T : Enum
     {
-        _actorCreations = actorCreations.ToDictionary(x => (int)(object)x.Key, x => x.Value);
+        _actorCreations = actorCreations.ToFrozenDictionary(x => (int)(object)x.Key, x => x.Value);
         _getActorTypeNameFunc = getActorTypeNameFunc;
     }
 
     public static void Init(Dictionary<int, CreateActor> actorCreations, Func<int, string> getActorTypeNameFunc)
     {
-        _actorCreations = actorCreations;
+        _actorCreations = actorCreations.ToFrozenDictionary();
         _getActorTypeNameFunc = getActorTypeNameFunc;
     }
 
