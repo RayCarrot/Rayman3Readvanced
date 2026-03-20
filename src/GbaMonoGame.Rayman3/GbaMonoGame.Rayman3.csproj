@@ -67,7 +67,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Data\imgui.ini">
+    <None Update="UserData\imgui.ini">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="libopenmpt_license.txt">
