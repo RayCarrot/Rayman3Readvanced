@@ -10,6 +10,8 @@ using Microsoft.Xna.Framework.Graphics;
 namespace GbaMonoGame.Rayman3.Readvanced;
 
 // TODO: Remember cursor position from last page. Maybe dictionary with page types? Use this when returning from time attack too. And any other way of accessing the main menu.
+// TODO: For a lot of the UI object positioning we multiply by a fraction. Ideally we shouldn't use fractional positioning.
+// TODO: A lot of menu pages rely on re-used hard-coded values. Move to constants where possible.
 public class ModernMenuAll : Frame, IHasPlayfield
 {
     #region Constructor

@@ -112,6 +112,7 @@ public static class GameOptions
                     getData: _ => Engine.LocalConfig.Controls.UseStandardKeyboardKeys,
                     setData: data => Engine.LocalConfig.Controls.UseStandardKeyboardKeys = data,
                     getCustomName: _ => null),
+                // TODO: Add option for vibration intensity
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "CONTROLLER VIBRATION",
                     infoText: null,
