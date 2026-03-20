@@ -34,10 +34,7 @@ public class LoggerDebugWindow : DebugWindow
     {
         string message = e.Args.Length == 0 ? e.Message : String.Format(e.Message, e.Args);
         Log log = new(message, e.Type, _colors[e.Type]);
-
-        // Only add if not already logged. This is because some logs will be sent out every frame.
-        if (!_logs.Contains(log))
-            _logs.Add(log);
+        _logs.Add(log);
     }
 
     public override string Name => "Log Output";
@@ -69,8 +66,9 @@ public class LoggerDebugWindow : DebugWindow
 
         ImGui.Spacing();
 
-        foreach (Log log in _logs)
+        for (int i = _logs.Count - 1; i >= 0; i--)
         {
+            Log log = _logs[i];
             if ((_activeLogTypes & log.Type) == 0)
                 continue;
 

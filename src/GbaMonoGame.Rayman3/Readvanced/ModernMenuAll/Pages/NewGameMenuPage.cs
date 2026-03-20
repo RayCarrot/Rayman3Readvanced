@@ -62,7 +62,7 @@ public class NewGameMenuPage : MenuPage
                 // Create a new context for reading the save
                 using Context context = new(saveDirPath,
                     settings: serializerSettings,
-                    systemLogger: new BinarySerializerSystemLogger());
+                    systemLogger: BinarySerializerSystemLogger.Create());
 
                 context.AddSettings(new GbaEngineSettings
                 {
@@ -105,7 +105,7 @@ public class NewGameMenuPage : MenuPage
                 // Create a new context for reading the save
                 using Context context = new(saveDirPath,
                     settings: serializerSettings,
-                    systemLogger: new BinarySerializerSystemLogger());
+                    systemLogger: BinarySerializerSystemLogger.Create());
 
                 context.AddSettings(new GbaEngineSettings
                 {

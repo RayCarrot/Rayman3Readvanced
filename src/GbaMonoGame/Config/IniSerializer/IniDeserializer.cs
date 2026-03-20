@@ -93,7 +93,8 @@ public class IniDeserializer : BaseIniSerializer
         }
         catch (Exception e)
         {
-            Logger.Error($"Failed to parse value '{stringValue}' for key '{valueKey}' in section '{sectionKey}': {e.Message}");
+            Logger.Error("Failed to parse value '{0}' for key '{1}' in section '{2}': {3}", 
+                stringValue, valueKey, sectionKey, e.Message);
             return value;
         }
     }
@@ -119,7 +120,7 @@ public class IniDeserializer : BaseIniSerializer
         }
         catch (Exception e)
         {
-            Logger.Error($"Failed to parse dictionary in section '{sectionKey}': {e.Message}");
+            Logger.Error("Failed to parse dictionary in section '{0}': {1}", sectionKey, e.Message);
             return dictionary;
         }
     }

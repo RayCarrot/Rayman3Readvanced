@@ -629,8 +629,8 @@ public class AnimatedObject : AObject
                 case AnimationChannelType.DisplacementVector:
                     if (!IsDelayMode)
                     {
-                        // Appears mostly unused in Rayman 3. Only used for ship in final boss and Ly, but seems to always be 0 anyway.
-                        Logger.NotImplemented("Not implemented displacement vectors");
+                        // NOTE: Not implemented. Appears mostly unused in Rayman 3. Only used for ship in final boss and Ly, but
+                        //       seems to always be 0 anyway.
                     }
                     break;
 

@@ -5,6 +5,8 @@ namespace GbaMonoGame;
 
 public static class Logger
 {
+    public static bool IsEnabled => Engine.ActiveConfig?.Debug.DebugModeEnabled == true;
+
     public static event EventHandler<LogEventArgs> Log;
 
     private static void OnLog(LogEventArgs e)
@@ -15,28 +17,28 @@ public static class Logger
     [StringFormatMethod("message")]
     public static void NotImplemented(string message, params object[] args)
     {
-        if (Engine.ActiveConfig?.Debug.DebugModeEnabled == true)
+        if (IsEnabled)
             OnLog(new LogEventArgs(message, args, LogType.NotImplemented));
     }
 
     [StringFormatMethod("message")]
     public static void Debug(string message, params object[] args)
     {
-        if (Engine.ActiveConfig?.Debug.DebugModeEnabled == true)
+        if (IsEnabled)
             OnLog(new LogEventArgs(message, args, LogType.Debug));
     }
 
     [StringFormatMethod("message")]
     public static void Info(string message, params object[] args)
     {
-        if (Engine.ActiveConfig?.Debug.DebugModeEnabled == true)
+        if (IsEnabled)
             OnLog(new LogEventArgs(message, args, LogType.Info));
     }
 
     [StringFormatMethod("message")]
     public static void Error(string message, params object[] args)
     {
-        if (Engine.ActiveConfig?.Debug.DebugModeEnabled == true)
+        if (IsEnabled)
             OnLog(new LogEventArgs(message, args, LogType.Error));
     }
 

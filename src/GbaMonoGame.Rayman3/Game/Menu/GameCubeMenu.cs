@@ -93,7 +93,7 @@ public partial class GameCubeMenu : Frame
         // Create a new context for reading the disc.
         using Context context = new(isoDirPath,
             settings: serializerSettings,
-            systemLogger: new BinarySerializerSystemLogger());
+            systemLogger: BinarySerializerSystemLogger.Create());
 
         context.AddFile(new LinearFile(context, isoFileName));
         GCM gcm = FileFactory.Read<GCM>(context, isoFileName);

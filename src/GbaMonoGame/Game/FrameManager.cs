@@ -84,7 +84,7 @@ public static class FrameManager
 
             sw.Stop();
 
-            Logger.Info("Loaded new frame in {0} ms", sw.ElapsedMilliseconds);
+            Logger.Info("Loaded new frame of type {0} in {1} ms", CurrentFrame.GetType().Name, sw.ElapsedMilliseconds);
 
             // The game doesn't return here, but it always calls VSync in the init function, so this
             // will basically do the same thing. And this way we limit the loading to a single

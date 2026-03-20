@@ -144,7 +144,7 @@ public static class Rom
                 : null;
 
             // Create the binary context
-            _context = new Context(GameDirectory, serializerLogger: serializerLogger, systemLogger: new BinarySerializerSystemLogger());
+            _context = new Context(GameDirectory, serializerLogger: serializerLogger, systemLogger: BinarySerializerSystemLogger.Create());
 
             // Create and add the game settings
             GbaEngineSettings settings = new() { Game = Game, Platform = Platform };

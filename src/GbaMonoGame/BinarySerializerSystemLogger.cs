@@ -4,6 +4,14 @@ namespace GbaMonoGame;
 
 public class BinarySerializerSystemLogger : ISystemLogger
 {
+    public static BinarySerializerSystemLogger Create()
+    {
+        if (Logger.IsEnabled)
+            return new();
+        else
+            return null;
+    }
+
     public void Log(LogLevel logLevel, object log, params object[] args)
     {
         switch (logLevel)
