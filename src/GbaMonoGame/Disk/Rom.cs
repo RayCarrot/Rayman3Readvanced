@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using BinarySerializer;
+using BinarySerializer.Nintendo.GBA;
 using BinarySerializer.Ubisoft.GbaEngine;
 
 namespace GbaMonoGame;
@@ -51,6 +53,21 @@ public static class Rom
 
     #region Private Methods
 
+    private static Dictionary<DefinedPointer, long> GetGbaPointers(ROMHeader header, Game game, bool throwIfNotFound)
+    {
+        string gameCode = header.GameCode;
+
+        return game switch
+        {
+            Game.Rayman3 when gameCode is "AYZP" => DefinedPointers.Rayman3_GBA_EU, // Rayman 3 (Europe)
+            Game.Rayman3 when gameCode is "AYZE" => DefinedPointers.Rayman3_GBA_US, // Rayman 3 (USA)
+            Game.Rayman3 when gameCode is "BX5P" => DefinedPointers.Rayman3_GBA_10thAnniversary_EU, // Rayman 10th Anniversary (Europe)
+            Game.Rayman3 when gameCode is "BX5E" => DefinedPointers.Rayman3_GBA_10thAnniversary_US, // Rayman 10th Anniversary (USA)
+            Game.Rayman3 when gameCode is "BWZP" => DefinedPointers.Rayman3_GBA_WinnieThePoohPack_EU, // Winnie the Pooh's Rumbly Tumbly Adventure & Rayman 3 (Europe)
+            _ => throwIfNotFound ? throw new Exception($"Unsupported game {game} and/or code {gameCode}") : null
+        };
+    }
+
     private static void LoadRom()
     {
         using Context context = Context;
@@ -64,17 +81,7 @@ public static class Rom
             loader.LoadFiles(romFileName, cache: true);
             loader.LoadRomHeader(romFileName);
 
-            string gameCode = loader.RomHeader.GameCode;
-
-            context.AddPreDefinedPointers(Game switch
-            {
-                Game.Rayman3 when gameCode is "AYZP" => DefinedPointers.Rayman3_GBA_EU, // Rayman 3 (Europe)
-                Game.Rayman3 when gameCode is "AYZE" => DefinedPointers.Rayman3_GBA_US, // Rayman 3 (USA)
-                Game.Rayman3 when gameCode is "BX5P" => DefinedPointers.Rayman3_GBA_10thAnniversary_EU, // Rayman 10th Anniversary (Europe)
-                Game.Rayman3 when gameCode is "BX5E" => DefinedPointers.Rayman3_GBA_10thAnniversary_US, // Rayman 10th Anniversary (USA)
-                Game.Rayman3 when gameCode is "BWZP" => DefinedPointers.Rayman3_GBA_WinnieThePoohPack_EU, // Winnie the Pooh's Rumbly Tumbly Adventure & Rayman 3 (Europe)
-                _ => throw new Exception($"Unsupported game {Game} and/or code {gameCode}")
-            });
+            context.AddPreDefinedPointers(GetGbaPointers(loader.RomHeader, Game, true));
 
             settings.SetDefinedResources(DefinedResources.Rayman3_GBA);
 
@@ -84,6 +91,7 @@ public static class Rom
 
             Logger.Info("Loaded ROM data in {0} ms", sw.ElapsedMilliseconds);
 
+            string gameCode = loader.RomHeader.GameCode;
             _region = gameCode[3] switch
             {
                 'P' => Region.Europe,
@@ -122,6 +130,18 @@ public static class Rom
     #endregion
 
     #region Public Methods
+
+    public static bool ValidateGbaRom(string filePath, Game game)
+    {
+        string dir = Path.GetDirectoryName(filePath) ?? String.Empty;
+        string fileName = Path.GetFileName(filePath);
+
+        using Context context = new(dir, systemLogger: BinarySerializerSystemLogger.Create());
+        context.AddFile(new MemoryMappedFile(context, fileName, Constants.Address_ROM));
+        ROMHeader header = FileFactory.Read<ROMHeader>(context, fileName);
+
+        return GetGbaPointers(header, game, false) != null;
+    }
 
     public static void Init(string gameDirectory, string[] gameFileNames, Game game, Platform platform)
     {

@@ -159,24 +159,49 @@ public class TitleScreen : Frame
 
                         if (selectedFilePath != null)
                         {
-                            // TODO: Verify the file
-
+                            bool isValid;
                             try
                             {
-                                // Copy the file
-                                Directory.CreateDirectory(gameDirectory);
-                                File.Copy(selectedFilePath, Path.Combine(gameDirectory, gameFileNames[0]));
+                                if (Rom.ValidateGbaRom(selectedFilePath, Game.Rayman3))
+                                {
+                                    isValid = true;
+                                }
+                                else
+                                {
+                                    isValid = false;
+                                    Engine.MessageManager.EnqueueMessage(
+                                        text: "The game ROM is not valid. Make sure it's one of the supported versions of Rayman 3.",
+                                        header: "Invalid game ROM");
+                                }
                             }
                             catch (Exception ex)
                             {
+                                isValid = false;
                                 Engine.MessageManager.EnqueueExceptionMessage(
                                     ex: ex,
-                                    text: "An error occurred when copying the selected game ROM.",
-                                    header: "Error copying game ROM");
+                                    text: "An error occurred when validating the selected game ROM.",
+                                    header: "Error validating game ROM");
                             }
 
-                            // Update
-                            UpdateGameOptions(game);
+                            if (isValid)
+                            {
+                                try
+                                {
+                                    // Copy the file
+                                    Directory.CreateDirectory(gameDirectory);
+                                    File.Copy(selectedFilePath, Path.Combine(gameDirectory, gameFileNames[0]));
+                                }
+                                catch (Exception ex)
+                                {
+                                    Engine.MessageManager.EnqueueExceptionMessage(
+                                        ex: ex,
+                                        text: "An error occurred when copying the selected game ROM.",
+                                        header: "Error copying game ROM");
+                                }
+
+                                // Update
+                                UpdateGameOptions(game);
+                            }
                         }
                     }
                     else if (game.Platform == Platform.NGage)
@@ -191,12 +216,20 @@ public class TitleScreen : Frame
                                 if (Directory.Exists(Path.Combine(selectedDirectoryPath, "system")))
                                     selectedDirectoryPath = Path.Combine(selectedDirectoryPath, "system", "apps", "rayman3");
 
-                                // TODO: Verify the directory
-
-                                // Copy the files
-                                Directory.CreateDirectory(gameDirectory);
-                                foreach (string gameFileName in gameFileNames)
-                                    File.Copy(Path.Combine(selectedDirectoryPath, gameFileName), Path.Combine(gameDirectory, gameFileName));
+                                // Make sure the files exist
+                                if (gameFileNames.Any(x => !File.Exists(Path.Combine(selectedDirectoryPath, x))))
+                                {
+                                    Engine.MessageManager.EnqueueMessage(
+                                        text: $"The game folder is not valid. Make sure the following files exist:{Environment.NewLine}{String.Join(Environment.NewLine, gameFileNames)}",
+                                        header: "Invalid game location");
+                                }
+                                // Copy the files if valid
+                                else
+                                {
+                                    Directory.CreateDirectory(gameDirectory);
+                                    foreach (string gameFileName in gameFileNames)
+                                        File.Copy(Path.Combine(selectedDirectoryPath, gameFileName), Path.Combine(gameDirectory, gameFileName));
+                                }
                             }
                             catch (Exception ex)
                             {
