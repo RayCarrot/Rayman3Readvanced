@@ -103,7 +103,7 @@ public static class GameOptions
                     }),
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "USE STANDARD KEYBOARD KEYS",
-                    infoText: null,
+                    infoText: "Allow standard keyboard keys like Enter, Space, Escape and Backspace to be mapped to common in-game actions, unless there already is a custom mapping for those keys.",
                     items:
                     [
                         new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
