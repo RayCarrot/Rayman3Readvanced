@@ -81,8 +81,6 @@ public class TitleScreen : Frame
         // Load the language
         Localization.SetLanguage(Engine.LocalConfig.Display.Language);
 
-        // TODO: Load saved volume
-
         int? lastSaveSlot = Games[SelectedGameIndex].Platform switch
         {
             Platform.GBA => Engine.LocalConfig.General.LastPlayedGbaSaveSlot,
