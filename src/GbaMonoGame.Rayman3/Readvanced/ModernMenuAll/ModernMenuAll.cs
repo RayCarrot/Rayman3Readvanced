@@ -80,7 +80,7 @@ public class ModernMenuAll : Frame, IHasPlayfield
                 GameInfo.Load(i);
 
                 // Get the info from the slot
-                Slots[i] = new Slot(GameInfo.GetTotalDeadLums(), GameInfo.GetTotalDeadCages(), GameInfo.PersistentInfo.Lives);
+                Slots[i] = new Slot(GameInfo.GetTotalDeadLums(), GameInfo.GetTotalDeadCages(), GameInfo.PersistentInfo.Lives, GameInfo.GetPlayTime());
 
                 if (Rom.Platform == Platform.GBA)
                 {
@@ -577,7 +577,7 @@ public class ModernMenuAll : Frame, IHasPlayfield
 
     #region Data Types
 
-    public record Slot(int LumsCount, int CagesCount, int LivesCount);
+    public record Slot(int LumsCount, int CagesCount, int LivesCount, TimeSpan PlayTime);
 
     #endregion
 }

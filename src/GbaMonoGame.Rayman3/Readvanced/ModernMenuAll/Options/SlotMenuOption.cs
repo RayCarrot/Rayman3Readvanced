@@ -97,7 +97,7 @@ public class SlotMenuOption : MenuOption
         {
             BgPriority = bgPriority,
             ObjPriority = 0,
-            Text = "1:54:03", // TODO: Get actual time from save slot
+            Text = Slot?.PlayTime.ToString(@"hh\:mm\:ss") ?? "00:00:00",
             Color = TextColor.Menu,
             RenderContext = renderContext,
         };
@@ -145,9 +145,11 @@ public class SlotMenuOption : MenuOption
             animationPlayer.Play(CageIcon);
             animationPlayer.Play(CageText);
 
-            // TODO: Make displaying play time optional
-            animationPlayer.Play(TimeIcon);
-            animationPlayer.Play(TimeText);
+            if (Slot.PlayTime != TimeSpan.Zero)
+            {
+                animationPlayer.Play(TimeIcon);
+                animationPlayer.Play(TimeText);
+            }
         }
     }
 }

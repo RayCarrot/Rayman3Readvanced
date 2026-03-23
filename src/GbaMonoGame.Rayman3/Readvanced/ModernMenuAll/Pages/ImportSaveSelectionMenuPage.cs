@@ -1,4 +1,5 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+﻿using System;
+using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
@@ -25,11 +26,11 @@ public class ImportSaveSelectionMenuPage : MenuPage
         {
             // Load the save slot
             if (save != null)
-                GameInfo.Load(save);
+                GameInfo.Load(ReadvancedSlot.FromSaveGame(save));
 
             ModernMenuAll.Slot slot = save == null || GameInfo.PersistentInfo.Lives == 0
                 ? null
-                : new ModernMenuAll.Slot(GameInfo.GetTotalDeadLums(), GameInfo.GetTotalDeadCages(), GameInfo.PersistentInfo.Lives);
+                : new ModernMenuAll.Slot(GameInfo.GetTotalDeadLums(), GameInfo.GetTotalDeadCages(), GameInfo.PersistentInfo.Lives, TimeSpan.Zero);
 
             AddOption(new SlotMenuOption(slot));
         }
@@ -57,8 +58,10 @@ public class ImportSaveSelectionMenuPage : MenuPage
                         SoundEventsManager.StopAllSongs();
 
                         // Load the game
-                        GameInfo.Load(SaveSlots[SelectedOption]);
+                        GameInfo.Load(ReadvancedSlot.FromSaveGame(SaveSlots[SelectedOption]));
                         GameInfo.GotoLastSaveGame();
+
+                        GameInfo.StartPlayTime();
 
                         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                         Gfx.Fade = AlphaCoefficient.Max;

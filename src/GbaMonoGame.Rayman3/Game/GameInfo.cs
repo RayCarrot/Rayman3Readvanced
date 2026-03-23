@@ -35,11 +35,16 @@ public static class GameInfo
     public static ActorSoundFlags ActorSoundFlags { get; set; } // Defines if actor type has made sound this frame to avoid repeated sounds
 
     public static int CurrentSlot { get; set; }
-    public static SaveGameSlot PersistentInfo { get; set; } = new()
+    public static ReadvancedSlot SaveSlot { get; set; } = new()
     {
-        Lums = new byte[125],
-        Cages = new byte[7],
+        SaveGame = new SaveGameSlot
+        {
+            Lums = new byte[125],
+            Cages = new byte[7],
+        },
     };
+    public static SaveGameSlot PersistentInfo => SaveSlot.SaveGame;
+    public static Stopwatch PlayTimer { get; } = new(); // Custom for keeping track of slot play time
 
     public static LevelInfo Level => Levels[(int)MapId];
     public static LevelInfo[] Levels => Rom.Loader.Rayman3_LevelInfo;
@@ -60,10 +65,13 @@ public static class GameInfo
 
     public static void UnInit()
     {
-        PersistentInfo = new SaveGameSlot()
+        SaveSlot = new()
         {
-            Lums = new byte[125],
-            Cages = new byte[7],
+            SaveGame = new SaveGameSlot
+            {
+                Lums = new byte[125],
+                Cages = new byte[7],
+            },
         };
     }
 
@@ -96,28 +104,32 @@ public static class GameInfo
         PersistentInfo.UnlockedFinalBoss = false;
         PersistentInfo.UnlockedLyChallengeGCN = false;
         PersistentInfo.CompletedGCNBonusLevels = 0;
+
+        SaveSlot.PlayTime = 0;
     }
 
     public static void Load(int saveSlot)
     {
-        SaveGameSlot save = SaveGameManager.LoadSlot(saveSlot);
+        ReadvancedSlot save = SaveGameManager.LoadSlot(saveSlot);
         if (save != null)
-            PersistentInfo = save;
+            SaveSlot = save;
         else
             ResetPersistentInfo();
     }
 
-    public static void Load(SaveGameSlot save)
+    public static void Load(ReadvancedSlot save)
     {
         if (save != null)
-            PersistentInfo = save;
+            SaveSlot = save;
         else
             ResetPersistentInfo();
     }
 
     public static void Save(int saveSlot)
     {
-        SaveGameManager.SaveSlot(saveSlot, PersistentInfo);
+        SavePlayTime();
+        SaveGameManager.SaveSlot(saveSlot, SaveSlot);
+        StartPlayTime();
 
         if (Rom.Platform == Platform.GBA)
             Engine.LocalConfig.General.LastPlayedGbaSaveSlot = CurrentSlot;
@@ -914,5 +926,24 @@ public static class GameInfo
             return ((FrameSideScrollerGCN)Frame.Current).MapInfo.StartSpecialMusicSoundEvent;
         else
             return Level.StartSpecialMusicSoundEvent;
+    }
+
+    // Custom for slot play time
+    public static void StartPlayTime()
+    {
+        PlayTimer.Restart();
+    }
+
+    // Custom for slot play time
+    public static void SavePlayTime()
+    {
+        PlayTimer.Stop();
+        SaveSlot.PlayTime += PlayTimer.ElapsedMilliseconds;
+    }
+
+    // Custom for slot play time
+    public static TimeSpan GetPlayTime()
+    {
+        return TimeSpan.FromMilliseconds(SaveSlot.PlayTime);
     }
 }

@@ -69,6 +69,7 @@ public class Rayman3DebugWindow : DebugWindow
                 if (ImGui.Button("Load"))
                 {
                     GameInfo.GotoLastSaveGame();
+                    GameInfo.StartPlayTime();
                 }
 
                 ImGui.SameLine();

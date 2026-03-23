@@ -1,10 +1,8 @@
 ﻿using System;
 using System.IO;
 using BinarySerializer;
-using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
-using GbaMonoGame.Rayman3.Readvanced;
 
-namespace GbaMonoGame.Rayman3;
+namespace GbaMonoGame.Rayman3.Readvanced;
 
 public static class SaveGameManager
 {
@@ -71,7 +69,7 @@ public static class SaveGameManager
         }
     }
 
-    public static SaveGameSlot LoadSlot(int index)
+    public static ReadvancedSlot LoadSlot(int index)
     {
         try
         {
@@ -83,7 +81,7 @@ public static class SaveGameManager
             Context context = Rom.Context;
 
             using (context)
-                return FileFactory.Read<SaveGameSlot>(context, file.FilePath);
+                return FileFactory.Read<ReadvancedSlot>(context, file.FilePath);
         }
         catch (Exception ex)
         {
@@ -96,7 +94,7 @@ public static class SaveGameManager
         }
     }
 
-    public static void SaveSlot(int index, SaveGameSlot save)
+    public static void SaveSlot(int index, ReadvancedSlot save)
     {
         try
         {
@@ -105,7 +103,7 @@ public static class SaveGameManager
             Context context = Rom.Context;
 
             using (context)
-                FileFactory.Write<SaveGameSlot>(context, file.FilePath, save);
+                FileFactory.Write<ReadvancedSlot>(context, file.FilePath, save);
         }
         catch (Exception ex)
         {

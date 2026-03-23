@@ -96,6 +96,7 @@ public class TitleScreen : Frame
             // Load the save slot
             GameInfo.Load(lastSaveSlot.Value);
             GameInfo.GotoLastSaveGame();
+            GameInfo.StartPlayTime();
             GameInfo.CurrentSlot = lastSaveSlot.Value;
         }
         else

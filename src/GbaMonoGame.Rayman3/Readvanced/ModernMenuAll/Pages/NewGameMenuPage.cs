@@ -37,6 +37,8 @@ public class NewGameMenuPage : MenuPage
                     FrameManager.SetNextFrame(new Act1());
                     GameInfo.ResetPersistentInfo();
 
+                    GameInfo.StartPlayTime();
+
                     Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                     Gfx.Fade = AlphaCoefficient.Max;
 

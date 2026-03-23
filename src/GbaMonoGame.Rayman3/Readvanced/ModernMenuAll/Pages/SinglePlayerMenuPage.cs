@@ -229,6 +229,8 @@ public class SinglePlayerMenuPage : MenuPage
                                         GameInfo.Load(SelectedOption);
                                         GameInfo.GotoLastSaveGame();
 
+                                        GameInfo.StartPlayTime();
+
                                         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                                         Gfx.Fade = AlphaCoefficient.Max;
 

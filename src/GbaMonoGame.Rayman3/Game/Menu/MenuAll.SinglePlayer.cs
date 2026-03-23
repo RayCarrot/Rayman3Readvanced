@@ -1,6 +1,7 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
+using GbaMonoGame.Rayman3.Readvanced;
 using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
@@ -179,6 +180,8 @@ public partial class MenuAll
                             GameInfo.Load(SelectedOption);
                             GameInfo.GotoLastSaveGame();
                         }
+
+                        GameInfo.StartPlayTime();
 
                         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                         Gfx.Fade = AlphaCoefficient.Max;
