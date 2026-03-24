@@ -61,6 +61,7 @@ However online multiplayer would be much more complicated. The game expects the 
     - Power6
     - Worldmap
     - Check multiplayer, menus etc. and check N-Gage
+- Make 60fps transitions optional. A lot of the ones in the game run at a lower framerate (by checking `GameTime.ElapsedFrames`) and currently we have it hard-coded to run them all in 60fps instead.
 
 ## ⭐ Bonus
 ### Achievements
@@ -94,6 +95,9 @@ Allow you to install mods to the game by creating a folder for each mod which ca
 A level editor could be created where you can create your own levels using tilesets from the existing levels, or add your own tilesets. You could even just use a static texture for the level map, but collision has to always be tile-based.
 
 The actors could be selected from a list, where each actor has a list of valid initial states it can be in.
+
+### J2ME version
+Potentially include a remade version of the J2ME game as a bonus. It's a simple game to decompile since one of the versions has full debug symbols.
 
 ### Cheat codes
 It might be fun to include some cheat codes. These can be triggered by holding the select button while typing on the keyboard. Ideas:

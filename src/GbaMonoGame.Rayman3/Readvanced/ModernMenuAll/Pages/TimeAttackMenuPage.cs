@@ -626,7 +626,7 @@ public class TimeAttackMenuPage : MenuPage
                     }
                     break;
 
-                // TODO: Implement
+                // TODO: Implement - use these names: "Ly", "Clark", "Globox" and "Murfy".
                 case TimeAttackGhostType.Guide:
                     Name = "GLOBOX";
                     Time = new TimeAttackTime(TimeAttackTimeType.Record, 44 * 60 + 03);
