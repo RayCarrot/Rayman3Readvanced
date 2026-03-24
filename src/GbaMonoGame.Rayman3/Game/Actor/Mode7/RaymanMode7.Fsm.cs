@@ -179,7 +179,7 @@ public partial class RaymanMode7
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SkiLoop1);
                 }
 
-                if (JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump) && ProcessJoypad)
+                if (JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump, buffered: true) && ProcessJoypad)
                 {
                     State.MoveTo(_Fsm_Jump);
                     return false;

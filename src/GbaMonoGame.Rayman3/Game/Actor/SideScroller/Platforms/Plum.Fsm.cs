@@ -210,7 +210,7 @@ public partial class Plum
                         Timer++;
 
                         // Detach main actor from plum
-                        if ((JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump) || Timer == 8) && mainActor.AttachedObject == this)
+                        if ((JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump, buffered: true) || Timer == 8) && mainActor.AttachedObject == this)
                         {
                             mainActor.ProcessMessage(this, Message.Rayman_DetachPlum);
                             mainActor.ProcessMessage(this, Message.Rayman_AllowSafetyJump, this);

@@ -29,7 +29,7 @@ public partial class Rayman
         }
 
         // Jump while sliding
-        if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && SlideType != null)
+        if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump, buffered: true) && SlideType != null)
         {
             State.MoveTo(_Fsm_JumpSlide);
             return false;
@@ -368,7 +368,7 @@ public partial class Rayman
                 }
 
                 // Jump
-                if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && CanJump)
+                if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump, buffered: true) && CanJump)
                 {
                     PlaySound(Rayman3SoundEvent.Stop__Grimace1_Mix04);
                     State.MoveTo(_Fsm_Jump);
@@ -533,7 +533,7 @@ public partial class Rayman
                 }
 
                 // Jump
-                if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump))
+                if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump, buffered: true))
                 {
                     State.MoveTo(_Fsm_Jump);
                     return false;
@@ -788,7 +788,7 @@ public partial class Rayman
                 }
 
                 // Jump
-                if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump))
+                if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump, buffered: true))
                 {
                     State.MoveTo(_Fsm_Jump);
                     return false;
@@ -1079,7 +1079,7 @@ public partial class Rayman
                 }
 
                 // Jump
-                if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump))
+                if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump, buffered: true))
                 {
                     HangOnEdgeDelay = 30;
                     State.MoveTo(_Fsm_Jump);
@@ -1128,7 +1128,7 @@ public partial class Rayman
                 AttackInTheAir();
 
                 // Jump
-                if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && CanSafetyJump)
+                if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump, buffered: true) && CanSafetyJump)
                 {
                     State.MoveTo(_Fsm_Jump);
                     return false;
@@ -1807,7 +1807,7 @@ public partial class Rayman
                 }
 
                 // Jump
-                if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && !topType.IsSolid && CanJump)
+                if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump, buffered: true) && !topType.IsSolid && CanJump)
                 {
                     State.MoveTo(_Fsm_Jump);
                     return false;
@@ -1921,7 +1921,7 @@ public partial class Rayman
                 }
 
                 // Jump
-                if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && !topType.IsSolid)
+                if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump, buffered: true) && !topType.IsSolid)
                 {
                     State.MoveTo(_Fsm_Jump);
                     return false;
@@ -2452,7 +2452,7 @@ public partial class Rayman
 
                 Timer++;
 
-                if (ActionId == Action.WallJump_Idle && MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump))
+                if (ActionId == Action.WallJump_Idle && MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump, buffered: true))
                 {
                     State.MoveTo(_Fsm_WallJump);
                     return false;
@@ -2568,7 +2568,7 @@ public partial class Rayman
 
                 // Keep the same frame across all climbing animations
                 int animFrame = AnimatedObject.CurrentFrame;
-                bool jump = MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump);
+                bool jump = MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump, buffered: true);
 
                 ClimbDirection climbHoriontal = IsOnClimbableHorizontal();
                 ClimbDirection climbVertical = IsOnClimbableVertical();
@@ -3109,7 +3109,7 @@ public partial class Rayman
                     }
                 }
 
-                if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && !Scene.GetPhysicalType(Position).IsSolid)
+                if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump, buffered: true) && !Scene.GetPhysicalType(Position).IsSolid)
                 {
                     State.MoveTo(_Fsm_Jump);
                     return false;
@@ -3355,7 +3355,8 @@ public partial class Rayman
                 }
 
                 // Throw
-                if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) || MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorAttack))
+                if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump, buffered: true) || 
+                    MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorAttack, buffered: true))
                 {
                     State.MoveTo(_Fsm_ThrowObject);
                     return false;
@@ -3451,7 +3452,8 @@ public partial class Rayman
                 }
 
                 // Throw
-                if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) || MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorAttack))
+                if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump, buffered: true) || 
+                    MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorAttack, buffered: true))
                 {
                     State.MoveTo(_Fsm_ThrowObject);
                     return false;
@@ -3783,7 +3785,7 @@ public partial class Rayman
                 }
 
                 // Jump
-                if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump))
+                if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump, buffered: true))
                 {
                     Position = Position with { Y = GetActionBox().Top - 16 };
 
@@ -3887,7 +3889,7 @@ public partial class Rayman
                 }
 
                 // Jump
-                if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && !topType.IsSolid)
+                if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump, buffered: true) && !topType.IsSolid)
                 {
                     Position = Position with { Y = GetActionBox().Top - 20 };
                     if (Rom.Platform == Platform.NGage)
