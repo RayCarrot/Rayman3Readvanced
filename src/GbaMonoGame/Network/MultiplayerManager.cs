@@ -156,7 +156,14 @@ public static class MultiplayerManager
             if (LostConnectionTimer > 4)
                 return false;
 
-            return RSMultiplayer.MubState == MubState.Connected;
+            if (RSMultiplayer.MubState != MubState.Connected)
+                return false;
+
+            // Custom for buffered inputs
+            if (HasReadJoyPads())
+                MultiJoyPad.PushBufferedJoyPads();
+
+            return true;
         }
         else if (Rom.Platform == Platform.NGage)
         {
@@ -180,6 +187,10 @@ public static class MultiplayerManager
                 if (SyncTime == 0)
                     PendingSystemSyncPause = true;
             }
+
+            // Custom for buffered inputs
+            if (HasReadJoyPads())
+                MultiJoyPad.PushBufferedJoyPads();
 
             // NOTE: The game has a condition here
             return true;

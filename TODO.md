@@ -33,7 +33,6 @@ However online multiplayer would be much more complicated. The game expects the 
 - Option not to cache serialized data from the ROM. Currently it always does that.
 
 ### ✨ Optional improvements
-- Buffered inputs for specific things like jumping (including for the walking shell).
 - N-Gage specific features that could be enabled in the GBA version:
     - Allow skipping intro early.
     - After pausing in multiplayer it shows the countdown again.

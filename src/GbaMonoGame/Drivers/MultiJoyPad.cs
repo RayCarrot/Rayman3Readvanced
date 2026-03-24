@@ -17,6 +17,10 @@ public static class MultiJoyPad
             ValidFlags[i] = new bool[BufferedFramesCount];
 
         FirstReadFlags = new bool[MaxPlayersCount];
+
+        JoyPadBuffers = new JoyPadBuffer[MaxPlayersCount];
+        for (int i = 0; i < JoyPadBuffers.Length; i++)
+            JoyPadBuffers[i] = new JoyPadBuffer();
     }
 
     private const int BufferedFramesCount = 4;
@@ -25,6 +29,8 @@ public static class MultiJoyPad
     public static SimpleJoyPad[][] JoyPads { get; }
     public static bool[][] ValidFlags { get; }
     public static bool[] FirstReadFlags { get; }
+
+    public static JoyPadBuffer[] JoyPadBuffers { get; } // Custom for buffered inputs
 
     public static void Init()
     {
@@ -139,67 +145,129 @@ public static class MultiJoyPad
             ValidFlags[id][machineTimer % BufferedFramesCount] = false;
     }
 
-    public static bool IsButtonPressed(int machineId, GbaInput gbaInput)
+    public static void PushBufferedJoyPads()
     {
-        if (RSMultiplayer.IsActive)
-            return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonPressed(gbaInput);
-        else
-            return JoyPad.IsButtonPressed(gbaInput);
+        for (int id = 0; id < RSMultiplayer.MaxPlayersCount; id++)
+            JoyPadBuffers[id].Push(GetSimpleJoyPadForCurrentFrame(id));
     }
 
-    public static bool IsButtonReleased(int machineId, GbaInput gbaInput)
+    public static bool IsButtonPressed(int machineId, GbaInput gbaInput, bool buffered = false)
     {
         if (RSMultiplayer.IsActive)
-            return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonReleased(gbaInput);
+        {
+            if (Engine.ActiveConfig.Tweaks.UseInputBuffering && buffered)
+                return JoyPadBuffers[machineId].IsButtonPressed(gbaInput);
+            else
+                return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonPressed(gbaInput);
+        }
         else
-            return JoyPad.IsButtonReleased(gbaInput);
+        {
+            return JoyPad.IsButtonPressed(gbaInput, buffered);
+        }
     }
 
-    public static bool IsButtonJustPressed(int machineId, GbaInput gbaInput)
+    public static bool IsButtonReleased(int machineId, GbaInput gbaInput, bool buffered = false)
     {
         if (RSMultiplayer.IsActive)
-            return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonJustPressed(gbaInput);
+        {
+            if (Engine.ActiveConfig.Tweaks.UseInputBuffering && buffered)
+                return JoyPadBuffers[machineId].IsButtonReleased(gbaInput);
+            else
+                return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonReleased(gbaInput);
+        }
         else
-            return JoyPad.IsButtonJustPressed(gbaInput);
+        {
+            return JoyPad.IsButtonReleased(gbaInput, buffered);
+        }
     }
 
-    public static bool IsButtonJustReleased(int machineId, GbaInput gbaInput)
+    public static bool IsButtonJustPressed(int machineId, GbaInput gbaInput, bool buffered = false)
     {
         if (RSMultiplayer.IsActive)
-            return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonJustReleased(gbaInput);
+        {
+            if (Engine.ActiveConfig.Tweaks.UseInputBuffering && buffered)
+                return JoyPadBuffers[machineId].IsButtonJustPressed(gbaInput);
+            else
+                return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonJustPressed(gbaInput);
+        }
         else
-            return JoyPad.IsButtonJustReleased(gbaInput);
+        {
+            return JoyPad.IsButtonJustPressed(gbaInput, buffered);
+        }
     }
 
-    public static bool IsButtonPressed(int machineId, Rayman3Input rayman3Input)
+    public static bool IsButtonJustReleased(int machineId, GbaInput gbaInput, bool buffered = false)
     {
         if (RSMultiplayer.IsActive)
-            return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonPressed(rayman3Input);
+        {
+            if (Engine.ActiveConfig.Tweaks.UseInputBuffering && buffered)
+                return JoyPadBuffers[machineId].IsButtonJustReleased(gbaInput);
+            else
+                return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonJustReleased(gbaInput);
+        }
         else
-            return JoyPad.IsButtonPressed(rayman3Input);
+        {
+            return JoyPad.IsButtonJustReleased(gbaInput, buffered);
+        }
     }
 
-    public static bool IsButtonReleased(int machineId, Rayman3Input rayman3Input)
+    public static bool IsButtonPressed(int machineId, Rayman3Input rayman3Input, bool buffered = false)
     {
         if (RSMultiplayer.IsActive)
-            return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonReleased(rayman3Input);
+        {
+            if (Engine.ActiveConfig.Tweaks.UseInputBuffering && buffered)
+                return JoyPadBuffers[machineId].IsButtonPressed(rayman3Input);
+            else
+                return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonPressed(rayman3Input);
+        }
         else
-            return JoyPad.IsButtonReleased(rayman3Input);
+        {
+            return JoyPad.IsButtonPressed(rayman3Input, buffered);
+        }
     }
 
-    public static bool IsButtonJustPressed(int machineId, Rayman3Input rayman3Input)
+    public static bool IsButtonReleased(int machineId, Rayman3Input rayman3Input, bool buffered = false)
     {
         if (RSMultiplayer.IsActive)
-            return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonJustPressed(rayman3Input);
+        {
+            if (Engine.ActiveConfig.Tweaks.UseInputBuffering && buffered)
+                return JoyPadBuffers[machineId].IsButtonReleased(rayman3Input);
+            else
+                return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonReleased(rayman3Input);
+        }
         else
-            return JoyPad.IsButtonJustPressed(rayman3Input);
+        {
+            return JoyPad.IsButtonReleased(rayman3Input, buffered);
+        }
     }
 
-    public static bool IsButtonJustReleased(int machineId, Rayman3Input rayman3Input)
+    public static bool IsButtonJustPressed(int machineId, Rayman3Input rayman3Input, bool buffered = false)
     {
         if (RSMultiplayer.IsActive)
-            return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonJustReleased(rayman3Input);
+        {
+            if (Engine.ActiveConfig.Tweaks.UseInputBuffering && buffered)
+                return JoyPadBuffers[machineId].IsButtonJustPressed(rayman3Input);
+            else
+                return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonJustPressed(rayman3Input);
+        }
         else
-            return JoyPad.IsButtonJustReleased(rayman3Input);
+        {
+            return JoyPad.IsButtonJustPressed(rayman3Input, buffered);
+        }
+    }
+
+    public static bool IsButtonJustReleased(int machineId, Rayman3Input rayman3Input, bool buffered = false)
+    {
+        if (RSMultiplayer.IsActive)
+        {
+            if (Engine.ActiveConfig.Tweaks.UseInputBuffering && buffered)
+                return JoyPadBuffers[machineId].IsButtonJustReleased(rayman3Input);
+            else
+                return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonJustReleased(rayman3Input);
+        }
+        else
+        {
+            return JoyPad.IsButtonJustReleased(rayman3Input, buffered);
+        }
     }
 }

@@ -419,6 +419,17 @@ public static class GameOptions
                     getData: _ => Engine.LocalConfig.Tweaks.VersatileWalljumps,
                     setData: data => Engine.LocalConfig.Tweaks.VersatileWalljumps = data,
                     getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "INPUT BUFFERING",
+                    infoText: "Allows certain button inputs to be buffered, making the game feel more responsive.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, TweaksPreset.Readvanced)
+                    ],
+                    getData: _ => Engine.LocalConfig.Tweaks.UseInputBuffering,
+                    setData: data => Engine.LocalConfig.Tweaks.UseInputBuffering = data,
+                    getCustomName: _ => null),
             ]),
             new GameOptionsGroup("DIFFICULTY",
             [

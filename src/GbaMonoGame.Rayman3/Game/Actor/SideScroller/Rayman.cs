@@ -286,64 +286,35 @@ public sealed partial class Rayman : MovableActor
 
     private bool IsDirectionalButtonPressed(Rayman3Input rayman3Input)
     {
-        if (RSMultiplayer.IsActive)
-        {
-            if (ReverseControlsTimer != 0)
-                rayman3Input = ReverseControls(rayman3Input);
+        if (RSMultiplayer.IsActive && ReverseControlsTimer != 0)
+            rayman3Input = ReverseControls(rayman3Input);
 
-            SimpleJoyPad joyPad = MultiJoyPad.GetSimpleJoyPadForCurrentFrame(InstanceId);
-            return joyPad.IsButtonPressed(rayman3Input);
-        }
-        else
-        {
-            return JoyPad.IsButtonPressed(rayman3Input);
-        }
+        return MultiJoyPad.IsButtonPressed(InstanceId, rayman3Input);
     }
 
     private bool IsDirectionalButtonReleased(Rayman3Input rayman3Input)
     {
-        if (RSMultiplayer.IsActive)
-        {
-            if (ReverseControlsTimer != 0)
-                rayman3Input = ReverseControls(rayman3Input);
+        if (RSMultiplayer.IsActive && ReverseControlsTimer != 0)
+            rayman3Input = ReverseControls(rayman3Input);
 
-            return MultiJoyPad.GetSimpleJoyPadForCurrentFrame(InstanceId).IsButtonReleased(rayman3Input);
-        }
-        else
-        {
-            return JoyPad.IsButtonReleased(rayman3Input);
-        }
+        return MultiJoyPad.IsButtonReleased(InstanceId, rayman3Input);
     }
 
     private bool IsDirectionalButtonJustPressed(Rayman3Input rayman3Input)
     {
-        if (RSMultiplayer.IsActive)
-        {
-            if (ReverseControlsTimer != 0)
-                rayman3Input = ReverseControls(rayman3Input);
+        if (RSMultiplayer.IsActive && ReverseControlsTimer != 0)
+            rayman3Input = ReverseControls(rayman3Input);
 
-            return MultiJoyPad.GetSimpleJoyPadForCurrentFrame(InstanceId).IsButtonJustPressed(rayman3Input);
-        }
-        else
-        {
-            return JoyPad.IsButtonJustPressed(rayman3Input);
-        }
+        return MultiJoyPad.IsButtonJustPressed(InstanceId, rayman3Input);
     }
 
     // Unused
     private bool IsDirectionalButtonJustReleased(Rayman3Input rayman3Input)
     {
-        if (RSMultiplayer.IsActive)
-        {
-            if (ReverseControlsTimer != 0)
-                rayman3Input = ReverseControls(rayman3Input);
+        if (RSMultiplayer.IsActive && ReverseControlsTimer != 0)
+            rayman3Input = ReverseControls(rayman3Input);
 
-            return MultiJoyPad.GetSimpleJoyPadForCurrentFrame(InstanceId).IsButtonJustReleased(rayman3Input);
-        }
-        else
-        {
-            return JoyPad.IsButtonJustReleased(rayman3Input);
-        }
+        return MultiJoyPad.IsButtonJustReleased(InstanceId, rayman3Input);
     }
 
     private bool MultiplayerMoveFaster(bool hasNGageBug = false)
