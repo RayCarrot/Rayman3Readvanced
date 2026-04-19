@@ -109,11 +109,13 @@ public static class Localization
             textBanks.Add(new TextBank(texts));
         }
 
-        // TODO: Don't hard-code this here!
+        // TODO: Don't hard-code this here! Use constants/enums to index.
         // Get the Readvanced text banks
         textBanks.Add(new TextBank(
         [
-            new Text(["2:Hit the butterflies to decrease", "the timer."])
+            new Text(["2:Hit the butterflies to decrease", "the timer."]),
+            new Text(["2:Use L and R to move to the side", "without turning."]),
+            new Text(["2:Use your body to hit his head", "when he's vulnerable."]),
         ]));
 
         _textBanks = textBanks.ToArray();

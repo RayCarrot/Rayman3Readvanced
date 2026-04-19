@@ -45,8 +45,6 @@ However online multiplayer would be much more complicated. The game expects the 
 - Move faster in worldmap (when holding down button?).
 - Do not show N-Gage button prompts in the corners.
 - Remove stray pixels and fix bad tiling in levels.
-- More tutorial boxes from Murfy, explain strafing for race levels, how to damage Scaleman boss, blue lums not being usable yet etc.
-- Standardized button mapping. This makes the menus use standardized buttons, and for the intro you can press any button to continue and not just the start button.
 - Restore 2 hp from red lums instead of 1, name it "restore double hit-points".
 - Disable flashing lights option. Use for race levels and lightning effect.
 - Enable roll-off and pan for more sounds. Might sound distracting though.

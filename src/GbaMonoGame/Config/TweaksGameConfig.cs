@@ -23,6 +23,7 @@ public record TweaksGameConfig : IniSectionObject
         PlayCheatTriggerSound = true;
         VersatileWalljumps = true;
         UseInputBuffering = true;
+        ShowAdditionalGameplayHints = true;
     }
 
     public override string SectionKey => "Tweaks";
@@ -44,6 +45,7 @@ public record TweaksGameConfig : IniSectionObject
     public bool PlayCheatTriggerSound { get; set; }
     public bool VersatileWalljumps { get; set; }
     public bool UseInputBuffering { get; set; }
+    public bool ShowAdditionalGameplayHints { get; set; }
 
     public override void Serialize(BaseIniSerializer serializer)
     {
@@ -64,5 +66,6 @@ public record TweaksGameConfig : IniSectionObject
         PlayCheatTriggerSound = serializer.Serialize<bool>(PlayCheatTriggerSound, "PlayCheatTriggerSound");
         VersatileWalljumps = serializer.Serialize<bool>(VersatileWalljumps, "VersatileWalljumps");
         UseInputBuffering = serializer.Serialize<bool>(UseInputBuffering, "UseInputBuffering");
+        ShowAdditionalGameplayHints = serializer.Serialize<bool>(ShowAdditionalGameplayHints, "ShowAdditionalTutorials");
     }
 }
