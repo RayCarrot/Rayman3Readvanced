@@ -580,7 +580,8 @@ public partial class Scaleman
                         else if (ActionId is Action.Hop_Right or Action.Hop_Left)
                         {
                             // Custom for showing a hint to the player
-                            ((BossScaleMan)Frame.Current).ShowAttackHint = true;
+                            if (HitPoints == 6)
+                                ((BossScaleMan)Frame.Current).ShowAttackHint = true;
 
                             Timer = 91;
                             State.MoveTo(_Fsm_Default);
