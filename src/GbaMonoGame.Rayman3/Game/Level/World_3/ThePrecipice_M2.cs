@@ -64,15 +64,18 @@ public class ThePrecipice_M2 : FrameSideScroller
         {
             // NOTE: The N-Gage version forgot to remove this code (which they did for The Echoing Caves 2), meaning it
             //       causes graphical glitches! But we remove it here since the draw buffer works differently.
-            if (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage)
+            if (!Engine.LocalConfig.Display.DisableFlashingLights && 
+                (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage))
                 bgScreen.IsEnabled = false;
 
             // NOTE: The original game turns off the rain blending during the lightning, but we don't have to
-            if (!Engine.ActiveConfig.Tweaks.VisualImprovements)
+            if (!Engine.ActiveConfig.Tweaks.VisualImprovements && !Engine.LocalConfig.Display.DisableFlashingLights)
                 rainScreen.BlendMode = BlendMode.None;
 
             Gfx.FadeControl = new FadeControl(FadeMode.BrightnessIncrease);
-            Gfx.Fade = AlphaCoefficient.Max;
+            Gfx.Fade = Engine.LocalConfig.Display.DisableFlashingLights
+                ? AlphaCoefficient.None
+                : AlphaCoefficient.Max;
 
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Thunder1_Mix04);
             return;
@@ -81,7 +84,9 @@ public class ThePrecipice_M2 : FrameSideScroller
         // Frame 1
         if (time == LightningTime + 1)
         {
-            Gfx.Fade = AlphaCoefficient.FromGbaValue(15);
+            Gfx.Fade = Engine.LocalConfig.Display.DisableFlashingLights
+                ? AlphaCoefficient.None
+                : AlphaCoefficient.FromGbaValue(15);
 
             if (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage)
                 Gfx.ClearColor = Color.White;
@@ -91,7 +96,9 @@ public class ThePrecipice_M2 : FrameSideScroller
         // Frame 2-7
         if (time >= LightningTime + 2 && time < LightningTime + 8)
         {
-            Gfx.Fade = AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
+            Gfx.Fade = Engine.LocalConfig.Display.DisableFlashingLights
+                ? AlphaCoefficient.None
+                : AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
             return;
         }
 
@@ -99,14 +106,18 @@ public class ThePrecipice_M2 : FrameSideScroller
         if (time >= LightningTime + 8 && time < LightningTime + 16)
         {
             bgScreen.IsEnabled = true;
-            Gfx.Fade = AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
+            Gfx.Fade = Engine.LocalConfig.Display.DisableFlashingLights
+                ? AlphaCoefficient.None
+                : AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
             return;
         }
 
         // Frame 16-30
         if (time >= LightningTime + 16 && time < LightningTime + 31)
         {
-            Gfx.Fade = AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
+            Gfx.Fade = Engine.LocalConfig.Display.DisableFlashingLights
+                ? AlphaCoefficient.None
+                : AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
             return;
         }
 

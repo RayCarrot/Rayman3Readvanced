@@ -307,7 +307,8 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                 }
             }
 
-            lightningSkyScreen.RenderOptions = lightningSkyScreen.RenderOptions with { PaletteTexture = LightningSkyPaletteTextures[value] };
+            if (!Engine.LocalConfig.Display.DisableFlashingLights)
+                lightningSkyScreen.RenderOptions = lightningSkyScreen.RenderOptions with { PaletteTexture = LightningSkyPaletteTextures[value] };
 
             LightningValue++;
 

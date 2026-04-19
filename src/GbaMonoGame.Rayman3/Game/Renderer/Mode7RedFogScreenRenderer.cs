@@ -23,6 +23,8 @@ public class Mode7RedFogScreenRenderer : IScreenRenderer
 
         Vector2 res = screen.RenderContext.Resolution;
 
+        int colorAdd = Engine.LocalConfig.Display.DisableFlashingLights ? 0 : ColorAdd;
+
         float currentScanline = 0;
         for (int i = 0; i < FogLines.Length; i++)
         {
@@ -30,7 +32,7 @@ public class Mode7RedFogScreenRenderer : IScreenRenderer
             
             float nextScanline = i + 1 == FogLines.Length ? res.Y : FogLines[i + 1].Scanline;
 
-            color = new Color(ColorHelpers.FromRGB555(fogLine.Color + ColorAdd), color.A);
+            color = new Color(ColorHelpers.FromRGB555(fogLine.Color + colorAdd), color.A);
             renderer.DrawFilledRectangle(new Vector2(0, currentScanline), new Vector2(res.X, nextScanline - currentScanline), color);
 
             currentScanline = nextScanline;

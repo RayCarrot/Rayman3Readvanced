@@ -102,11 +102,14 @@ public class EchoingCaves_M2 : FrameSideScroller
         if (time == LightningTime)
         {
             // N-Gage doesn't hide the background due to the brightness effect not being implemented
-            if (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage)
+            if (!Engine.LocalConfig.Display.DisableFlashingLights && 
+                (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage))
                 bgScreen.IsEnabled = false;
 
             Gfx.FadeControl = new FadeControl(FadeMode.BrightnessIncrease);
-            Gfx.Fade = AlphaCoefficient.Max;
+            Gfx.Fade = Engine.LocalConfig.Display.DisableFlashingLights
+                ? AlphaCoefficient.None
+                : AlphaCoefficient.Max;
             lightningScreen.Offset = new Vector2(Random.GetNumber(16), Random.GetNumber(96));
             lightningScreen.IsEnabled = true;
 
@@ -117,7 +120,9 @@ public class EchoingCaves_M2 : FrameSideScroller
         // Frame 1
         if (time == LightningTime + 1)
         {
-            Gfx.Fade = AlphaCoefficient.FromGbaValue(15);
+            Gfx.Fade = Engine.LocalConfig.Display.DisableFlashingLights 
+                ? AlphaCoefficient.None 
+                : AlphaCoefficient.FromGbaValue(15);
             Gfx.ClearColor = Color.White;
             return;
         }
@@ -125,7 +130,9 @@ public class EchoingCaves_M2 : FrameSideScroller
         // Frame 2-7
         if (time >= LightningTime + 2 && time < LightningTime + 8)
         {
-            Gfx.Fade = AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
+            Gfx.Fade = Engine.LocalConfig.Display.DisableFlashingLights 
+                ? AlphaCoefficient.None
+                : AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
             Gfx.ClearColor = Color.White;
             return;
         }
@@ -135,7 +142,9 @@ public class EchoingCaves_M2 : FrameSideScroller
         {
             bgScreen.IsEnabled = true;
             lightningScreen.IsEnabled = false;
-            Gfx.Fade = AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
+            Gfx.Fade = Engine.LocalConfig.Display.DisableFlashingLights 
+                ? AlphaCoefficient.None
+                : AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
             Gfx.ClearColor = Color.White;
             return;
         }
@@ -143,7 +152,9 @@ public class EchoingCaves_M2 : FrameSideScroller
         // Frame 16-30
         if (time >= LightningTime + 16 && time < LightningTime + 31)
         {
-            Gfx.Fade = AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
+            Gfx.Fade = Engine.LocalConfig.Display.DisableFlashingLights
+                ? AlphaCoefficient.None
+                : AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
             Gfx.ClearColor = Color.White;
             return;
         }

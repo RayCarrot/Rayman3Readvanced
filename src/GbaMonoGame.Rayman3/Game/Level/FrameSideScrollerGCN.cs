@@ -365,14 +365,17 @@ public class FrameSideScrollerGCN : FrameSideScroller
                 // Frame 0
                 if (time == LightningTime)
                 {
-                    bgScreen.IsEnabled = false;
+                    if (!Engine.LocalConfig.Display.DisableFlashingLights)
+                        bgScreen.IsEnabled = false;
 
                     // NOTE: The original game turns off the rain blending during the lightning, but we don't have to
-                    if (!Engine.ActiveConfig.Tweaks.VisualImprovements)
+                    if (!Engine.ActiveConfig.Tweaks.VisualImprovements && !Engine.LocalConfig.Display.DisableFlashingLights)
                         rainScreen.BlendMode = BlendMode.None;
 
                     Gfx.FadeControl = new FadeControl(FadeMode.BrightnessIncrease);
-                    Gfx.Fade = AlphaCoefficient.Max;
+                    Gfx.Fade = Engine.LocalConfig.Display.DisableFlashingLights
+                        ? AlphaCoefficient.None
+                        : AlphaCoefficient.Max;
 
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Thunder1_Mix04);
                     return;
@@ -381,7 +384,9 @@ public class FrameSideScrollerGCN : FrameSideScroller
                 // Frame 1
                 if (time == LightningTime + 1)
                 {
-                    Gfx.Fade = AlphaCoefficient.FromGbaValue(15);
+                    Gfx.Fade = Engine.LocalConfig.Display.DisableFlashingLights
+                        ? AlphaCoefficient.None
+                        : AlphaCoefficient.FromGbaValue(15);
                     Gfx.ClearColor = Color.White;
                     return;
                 }
@@ -389,7 +394,9 @@ public class FrameSideScrollerGCN : FrameSideScroller
                 // Frame 2-7
                 if (time >= LightningTime + 2 && time < LightningTime + 8)
                 {
-                    Gfx.Fade = AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
+                    Gfx.Fade = Engine.LocalConfig.Display.DisableFlashingLights
+                        ? AlphaCoefficient.None
+                        : AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
                     return;
                 }
 
@@ -397,14 +404,18 @@ public class FrameSideScrollerGCN : FrameSideScroller
                 if (time >= LightningTime + 8 && time < LightningTime + 16)
                 {
                     bgScreen.IsEnabled = true;
-                    Gfx.Fade = AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
+                    Gfx.Fade = Engine.LocalConfig.Display.DisableFlashingLights
+                        ? AlphaCoefficient.None
+                        : AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
                     return;
                 }
 
                 // Frame 16-30
                 if (time >= LightningTime + 16 && time < LightningTime + 31)
                 {
-                    Gfx.Fade = AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
+                    Gfx.Fade = Engine.LocalConfig.Display.DisableFlashingLights
+                        ? AlphaCoefficient.None
+                        : AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
                     return;
                 }
 

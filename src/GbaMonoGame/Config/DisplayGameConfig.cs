@@ -19,6 +19,7 @@ public record DisplayGameConfig : IniSectionObject
         WindowIsMaximized = false;
         LockWindowAspectRatio = true;
         DisableCameraShake = false;
+        DisableFlashingLights = false;
     }
 
     public override string SectionKey => "Display";
@@ -31,6 +32,7 @@ public record DisplayGameConfig : IniSectionObject
     public bool WindowIsMaximized { get; set; }
     public bool LockWindowAspectRatio { get; set; }
     public bool DisableCameraShake { get; set; }
+    public bool DisableFlashingLights { get; set; }
 
     public override void Serialize(BaseIniSerializer serializer)
     {
@@ -42,5 +44,6 @@ public record DisplayGameConfig : IniSectionObject
         WindowIsMaximized = serializer.Serialize<bool>(WindowIsMaximized, "WindowIsMaximized");
         LockWindowAspectRatio = serializer.Serialize<bool>(LockWindowAspectRatio, "LockWindowAspectRatio");
         DisableCameraShake = serializer.Serialize<bool>(DisableCameraShake, "DisableCameraShake");
+        DisableFlashingLights = serializer.Serialize<bool>(DisableFlashingLights, "DisableFlashingLights");
     }
 }

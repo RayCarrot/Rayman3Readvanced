@@ -87,6 +87,17 @@ public static class GameOptions
                     getData: _ => Engine.LocalConfig.Display.DisableCameraShake,
                     setData: data => Engine.LocalConfig.Display.DisableCameraShake = data,
                     getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "DISABLE FLASHING LIGHTS",
+                    infoText: "Disables instances of flashing lights.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true)
+                    ],
+                    getData: _ => Engine.LocalConfig.Display.DisableFlashingLights,
+                    setData: data => Engine.LocalConfig.Display.DisableFlashingLights = data,
+                    getCustomName: _ => null),
             ]),
             new GameOptionsGroup("CONTROLS",
             [
