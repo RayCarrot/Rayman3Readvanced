@@ -452,6 +452,17 @@ public static class GameOptions
                     getData: _ => Engine.LocalConfig.Tweaks.ShowAdditionalGameplayHints,
                     setData: data => Engine.LocalConfig.Tweaks.ShowAdditionalGameplayHints = data,
                     getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "ALLOW RUN ON WORLDMAP",
+                    infoText: "Allows you to move faster on the worldmap by holding down B.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, TweaksPreset.Readvanced)
+                    ],
+                    getData: _ => Engine.LocalConfig.Tweaks.AllowRunOnWorldmap,
+                    setData: data => Engine.LocalConfig.Tweaks.AllowRunOnWorldmap = data,
+                    getCustomName: _ => null),
             ]),
             new GameOptionsGroup("DIFFICULTY",
             [

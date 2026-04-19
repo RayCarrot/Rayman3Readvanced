@@ -42,7 +42,6 @@ However online multiplayer would be much more complicated. The game expects the 
 - Fix the helico animation hitbox for Rayman.
 - Allow pressing jump to let go off monkey bars.
 - Lower initial plum speed when jumping onto it on the lava. Right now it's either 1 or 0.5, so an option is to always use 0.5.
-- Move faster in worldmap (when holding down button?).
 - Do not show N-Gage button prompts in the corners.
 - Remove stray pixels and fix bad tiling in levels.
 - Restore 2 hp from red lums instead of 1, name it "restore double hit-points".

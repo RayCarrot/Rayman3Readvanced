@@ -1119,6 +1119,17 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
         Vector2 camDelta = Vector2.Zero;
 
+        // Optionally increase animation speed to move faster
+        if (Engine.ActiveConfig.Tweaks.AllowRunOnWorldmap && 
+            CurrentMovement != WorldMapMovement.None && 
+            JoyPad.IsButtonPressed(Rayman3Input.ActorAttack))
+        {
+            if (!Rayman.EndOfAnimation)
+                Rayman.ComputeNextFrame();
+            if (!Rayman.EndOfAnimation)
+                Rayman.ComputeNextFrame();
+        }
+
         switch (CurrentMovement)
         {
             case WorldMapMovement.World1To2:

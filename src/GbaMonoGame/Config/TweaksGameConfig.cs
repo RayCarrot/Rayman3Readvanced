@@ -24,6 +24,7 @@ public record TweaksGameConfig : IniSectionObject
         VersatileWalljumps = true;
         UseInputBuffering = true;
         ShowAdditionalGameplayHints = true;
+        AllowRunOnWorldmap = true;
     }
 
     public override string SectionKey => "Tweaks";
@@ -46,6 +47,7 @@ public record TweaksGameConfig : IniSectionObject
     public bool VersatileWalljumps { get; set; }
     public bool UseInputBuffering { get; set; }
     public bool ShowAdditionalGameplayHints { get; set; }
+    public bool AllowRunOnWorldmap { get; set; }
 
     public override void Serialize(BaseIniSerializer serializer)
     {
@@ -67,5 +69,6 @@ public record TweaksGameConfig : IniSectionObject
         VersatileWalljumps = serializer.Serialize<bool>(VersatileWalljumps, "VersatileWalljumps");
         UseInputBuffering = serializer.Serialize<bool>(UseInputBuffering, "UseInputBuffering");
         ShowAdditionalGameplayHints = serializer.Serialize<bool>(ShowAdditionalGameplayHints, "ShowAdditionalTutorials");
+        AllowRunOnWorldmap = serializer.Serialize<bool>(AllowRunOnWorldmap, "AllowRunOnWorldmap");
     }
 }
