@@ -1,6 +1,7 @@
-using ImGuiNET;
-using System.Linq;
 using System;
+using System.Linq;
+using BinarySerializer.Nintendo.GBA;
+using ImGuiNET;
 using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.TgxEngine;
@@ -8,6 +9,24 @@ namespace GbaMonoGame.TgxEngine;
 public class PlayfieldDebugWindow : DebugWindow
 {
     public override string Name => "Playfield";
+    public int TileSelectionLayer { get; set; } = -1;
+    public Point SelectedTile { get; set; }
+
+    private void UpdateMouseDetection(TgxPlayfield2D playfield2D)
+    {
+        if (TileSelectionLayer == -1 || TileSelectionLayer >= playfield2D.TileLayers.Count)
+            return;
+
+        TgxTileLayer tileLayer = playfield2D.TileLayers[TileSelectionLayer];
+        RenderContext renderContext = tileLayer.Screen.RenderContext;
+
+        if (!InputManager.IsMouseOnScreen(renderContext))
+            return;
+
+        Vector2 mousePos = InputManager.GetMousePosition(renderContext);
+        Vector2 tile = (mousePos + tileLayer.Screen.Offset) / Tile.Size;
+        SelectedTile = tile.ToFloorPoint();
+    }
 
     private void DrawPlayfield2D(TgxPlayfield2D playfield2D)
     {
@@ -77,6 +96,46 @@ public class PlayfieldDebugWindow : DebugWindow
             }
             ImGui.EndTable();
         }
+
+        ImGui.Spacing();
+        ImGui.Spacing();
+        ImGui.SeparatorText("Tile Selection");
+
+        if (ImGui.RadioButton("None", TileSelectionLayer == -1))
+        {
+            TileSelectionLayer = -1;
+            SelectedTile = Point.Zero;
+        }
+
+        for (int i = 0; i < playfield2D.TileLayers.Count; i++)
+        {
+            ImGui.SameLine();
+            if (ImGui.RadioButton($"Layer {i}", TileSelectionLayer == i))
+            {
+                TileSelectionLayer = i;
+                SelectedTile = Point.Zero;
+            }
+        }
+
+        UpdateMouseDetection(playfield2D);
+
+        if (TileSelectionLayer != -1 && TileSelectionLayer < playfield2D.TileLayers.Count)
+        {
+            TgxTileLayer tileLayer = playfield2D.TileLayers[TileSelectionLayer];
+            int tileIndex = SelectedTile.Y * tileLayer.Width + SelectedTile.X;
+
+            if (tileIndex >= tileLayer.TileMap.Length)
+                return;
+
+            MapTile mapTile = tileLayer.TileMap[tileIndex];
+
+            ImGui.Text($"Position: {SelectedTile.X} x {SelectedTile.Y}");
+            ImGui.Text($"Map index: {tileIndex}");
+            ImGui.Text($"Tile index: {mapTile.TileIndex}");
+            ImGui.Text($"Palette index: {mapTile.PaletteIndex}");
+            ImGui.Text($"Flip X: {mapTile.FlipX}");
+            ImGui.Text($"Flip Y: {mapTile.FlipY}");
+        }
     }
 
     private void DrawPlayfieldMode7(TgxPlayfieldMode7 playfieldMode7)
@@ -126,5 +185,41 @@ public class PlayfieldDebugWindow : DebugWindow
             DrawPlayfield2D(playfield2D);
         else if (Frame.Current is IHasPlayfield { Playfield: TgxPlayfieldMode7 playfieldMode7 })
             DrawPlayfieldMode7(playfieldMode7);
+    }
+
+    public override void DrawGame(GfxRenderer renderer)
+    {
+        if (Frame.Current is not IHasPlayfield { Playfield: TgxPlayfield2D playfield2D } )
+            return;
+
+        if (TileSelectionLayer == -1 || TileSelectionLayer >= playfield2D.TileLayers.Count)
+            return;
+
+        TgxTileLayer tileLayer = playfield2D.TileLayers[TileSelectionLayer];
+        RenderContext renderContext = tileLayer.Screen.RenderContext;
+        Vector2 res = renderContext.Resolution;
+
+        renderer.BeginSpriteRender(new RenderOptions()
+        {
+            RenderContext = renderContext,
+        });
+
+        float offY = tileLayer.Screen.Offset.Y % Tile.Size;
+        if (offY != 0)
+            offY = Tile.Size - offY;
+        for (float y = offY; y < res.Y; y += Tile.Size)
+        {
+            renderer.DrawLine(new Vector2(0, y), new Vector2(res.X, y), Color.Black);
+        }
+
+        float offX = tileLayer.Screen.Offset.X % Tile.Size;
+        if (offX != 0)
+            offX = Tile.Size - offX;
+        for (float x = offX; x < res.X; x += Tile.Size)
+        {
+            renderer.DrawLine(new Vector2(x, 0), new Vector2(x, res.Y), Color.Black);
+        }
+
+        renderer.DrawRectangle((SelectedTile.ToVector2() * new Vector2(Tile.Size)) - tileLayer.Screen.Offset, new Vector2(Tile.Size), Color.Yellow);
     }
 }
