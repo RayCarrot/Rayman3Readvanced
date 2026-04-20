@@ -71,6 +71,9 @@ public class NGageSoundEventsManager : SoundEventsManager
     private int _nextMusicSoundResId;
     private int _nextMusicInstrumentsResId;
 
+    // Save callbacks for optional sound panning and roll-off like on GBA
+    private CallBackSet _callBacks;
+
     #endregion
 
     #region Private Properties
@@ -289,7 +292,7 @@ public class NGageSoundEventsManager : SoundEventsManager
         return soundResId == _nextMusicSoundResId && _soloud.isValidVoiceHandle(_musicVoiceHandle);
     }
 
-    private void PlaySoundEffect(int soundResId, float volume, bool loop)
+    private void PlaySoundEffect(int soundResId, float volume, bool loop, object readvancedObject)
     {
         if (SoundEffectsVolume > 0 && !IsSoundEffectPlaying(soundResId))
         {
@@ -304,6 +307,7 @@ public class NGageSoundEventsManager : SoundEventsManager
                 SoundResourceId = soundResId,
                 Loop = loop,
                 Volume = volume,
+                ReadvancedObj = readvancedObject,
                 Soloud = _soloud,
                 SoundEffect = soundEffect,
                 VoiceHandle = handle,
@@ -385,6 +389,23 @@ public class NGageSoundEventsManager : SoundEventsManager
                 float volume = soundEffectInstance.Volume *
                                (SoundEffectsVolume / SoundEngineInterface.MaxVolume) *
                                Engine.LocalConfig.Sound.SfxVolume;
+
+                // Optionally use same panning and roll-off as GBA
+                object obj = soundEffectInstance.ReadvancedObj;
+                if (Engine.LocalConfig.Sound.ForceSoundPanning && obj != null)
+                {
+                    Vector2 mikePos = _callBacks.GetMikePosition(obj);
+                    GbaSoundEventsManager.CalculateRollOffAndPan(_callBacks, mikePos, out float vol, out float pan, obj);
+                    volume *= vol / SoundEngineInterface.MaxVolume;
+
+                    _soloud.setPan(soundEffectInstance.VoiceHandle, pan switch
+                    {
+                        > 0 => pan / SoundEngineInterface.MaxPan,
+                        < 0 => -pan / SoundEngineInterface.MinPan,
+                        _ => 0
+                    });
+                }
+
                 _soloud.setVolume(soundEffectInstance.VoiceHandle, volume * SfxVolumeFactor);
             }
             else
@@ -394,7 +415,11 @@ public class NGageSoundEventsManager : SoundEventsManager
         }
     }
 
-    protected override void SetCallBacksImpl(CallBackSet callBacks) { }
+    protected override void SetCallBacksImpl(CallBackSet callBacks)
+    {
+        // Save callbacks for optional sound panning and roll-off like on GBA
+        _callBacks = callBacks;
+    }
 
     protected override void ProcessEventImpl(short soundEventId, object readvancedObject, object originalObject)
     {
@@ -414,7 +439,7 @@ public class NGageSoundEventsManager : SoundEventsManager
         else
         {
             if (evt.PlaySong)
-                PlaySoundEffect(evt.SoundResourceId, evt.Volume / 7f, evt.Loop);
+                PlaySoundEffect(evt.SoundResourceId, evt.Volume / 7f, evt.Loop, readvancedObject);
             else
                 StopSoundEffect(evt.SoundResourceId);
         }
@@ -596,6 +621,7 @@ public class NGageSoundEventsManager : SoundEventsManager
                 Soloud.setPause(VoiceHandle, value || InGamePaused);
             }
         }
+        public object ReadvancedObj { get; init; } // For optional sound panning and roll-off like on GBA
 
         // Soloud
         public bool IsValid => Soloud.isValidVoiceHandle(VoiceHandle);

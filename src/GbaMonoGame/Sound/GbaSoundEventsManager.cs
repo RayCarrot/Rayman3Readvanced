@@ -52,7 +52,7 @@ public class GbaSoundEventsManager : SoundEventsManager
     private bool _hasSetRandomSeed;
     private uint _randomSeed;
     
-    private readonly int[] _rollOffTable =
+    private static readonly int[] _rollOffTable =
     [
         0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80,
         0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80,
@@ -322,23 +322,6 @@ public class GbaSoundEventsManager : SoundEventsManager
             ProcessEvent(nextEventId, readvancedObject, originalObject);
     }
 
-    private void CalculateRollOffAndPan(Vector2 mikePos, out float rollOffLvl, out float dx, object obj)
-    {
-        Vector2 objPos = _callBacks.GetObjectPosition(obj);
-
-        Vector2 dist = mikePos - objPos;
-        Vector2 absDist = new(Math.Abs(dist.X), Math.Abs(dist.Y));
-
-        float largestDist = absDist.Y < absDist.X ? absDist.X : absDist.Y;
-        float rollOffIndex = largestDist + absDist.Y + absDist.X / 2;
-
-        if (rollOffIndex > _rollOffTable.Length - 1)
-            rollOffIndex = _rollOffTable.Length - 1;
-
-        rollOffLvl = _rollOffTable[(int)rollOffIndex];
-        dx = Math.Clamp(-dist.X / 2, SoundEngineInterface.MinPan, SoundEngineInterface.MaxPan);
-    }
-
     private void UpdateVolumeAndPan(SongInstance songInstance)
     {
         float vol;
@@ -359,7 +342,7 @@ public class GbaSoundEventsManager : SoundEventsManager
             object obj = forceRollOffAndPan && songInstance.OriginalObj == null ? songInstance.ReadvancedObj : songInstance.OriginalObj;
 
             Vector2 mikePos = _callBacks.GetMikePosition(obj);
-            CalculateRollOffAndPan(mikePos, out vol, out pan, obj);
+            CalculateRollOffAndPan(_callBacks, mikePos, out vol, out pan, obj);
 
             if (!enableRollOff)
                 vol = SoundEngineInterface.MaxVolume;
@@ -622,6 +605,28 @@ public class GbaSoundEventsManager : SoundEventsManager
 
         _soloud.deinit();
         _soloud.Dispose();
+    }
+
+    #endregion
+
+    #region Public Methods
+
+    // Make this static so we can optionally use this from the N-Gage manager
+    public static void CalculateRollOffAndPan(CallBackSet callBackSet, Vector2 mikePos, out float rollOffLvl, out float dx, object obj)
+    {
+        Vector2 objPos = callBackSet.GetObjectPosition(obj);
+
+        Vector2 dist = mikePos - objPos;
+        Vector2 absDist = new(Math.Abs(dist.X), Math.Abs(dist.Y));
+
+        float largestDist = absDist.Y < absDist.X ? absDist.X : absDist.Y;
+        float rollOffIndex = largestDist + absDist.Y + absDist.X / 2;
+
+        if (rollOffIndex > _rollOffTable.Length - 1)
+            rollOffIndex = _rollOffTable.Length - 1;
+
+        rollOffLvl = _rollOffTable[(int)rollOffIndex];
+        dx = Math.Clamp(-dist.X / 2, SoundEngineInterface.MinPan, SoundEngineInterface.MaxPan);
     }
 
     #endregion
