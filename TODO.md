@@ -45,8 +45,7 @@ However online multiplayer would be much more complicated. The game expects the 
 - Do not show N-Gage button prompts in the corners.
 - Remove stray pixels and fix bad tiling in levels.
 - Restore 2 hp from red lums instead of 1, name it "restore double hit-points".
-- Enable roll-off and pan for more sounds. Might sound distracting though.
-- Press the select button while in a hub world to bring up level info bars for every level for that hub in a vertical, scrollable, list, with you selecting one to teleport to that level curtain.
+- Press the select button while in a hub world to bring up level info bars for every level for that hub in a vertical, scrollable, list, with you selecting one to teleport to that level curtain. Or rather, in pause menu have "levels" option which unlocks once final boss is beaten and shows the options canvas with a level list, for that world only.
 - Extend backgrounds so that they can render in the modern widescreen resolution without scaling:
     - BossMachine ✔️
     - BossRockAndLava

@@ -81,7 +81,7 @@ public sealed partial class Grolgoth : MovableActor
                     projectile.ActionId = GrolgothProjectile.Action.Laser_Right;
                     projectile.MechModel.Speed = new Vector2(3 + MathHelpers.FromFixedPoint(Random.GetNumber(0x20001)), 0);
 
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Laser3_Mix03);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Laser3_Mix03, this);
 
                     projectile.ChangeAction();
                 }
@@ -93,8 +93,8 @@ public sealed partial class Grolgoth : MovableActor
                     else
                         projectile.Position = new Vector2(Position.X + 16, InitialYPosition + 72);
 
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Laser4_Mix01);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Laser4_Mix01);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Laser4_Mix01, this);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Laser4_Mix01, this);
 
                     projectile.ActionId = GrolgothProjectile.Action.EnergyBall_Right;
                     projectile.MechModel.Speed = new Vector2(2.5f, 0);
@@ -114,7 +114,7 @@ public sealed partial class Grolgoth : MovableActor
                     projectile.ActionId = GrolgothProjectile.Action.Laser_Left;
                     projectile.MechModel.Speed = new Vector2(-(3 + MathHelpers.FromFixedPoint(Random.GetNumber(0x20001))), 0);
 
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Laser3_Mix03);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Laser3_Mix03, this);
 
                     projectile.ChangeAction();
                 }
@@ -126,8 +126,8 @@ public sealed partial class Grolgoth : MovableActor
                     else
                         projectile.Position = new Vector2(Position.X - 16, InitialYPosition + 72);
 
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Laser4_Mix01);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Laser4_Mix01);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Laser4_Mix01, this);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Laser4_Mix01, this);
 
                     projectile.ActionId = GrolgothProjectile.Action.EnergyBall_Left;
                     projectile.MechModel.Speed = new Vector2(-2.5f, 0);
@@ -149,7 +149,7 @@ public sealed partial class Grolgoth : MovableActor
             if (projectile != null)
             {
                 if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__Fire02_Laser4_Mix01))
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Fire02_Laser4_Mix01);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Fire02_Laser4_Mix01, this);
 
                 if ((AttackCount == 6 && i < 3) || BossHealth == 3)
                 {
@@ -369,7 +369,7 @@ public sealed partial class Grolgoth : MovableActor
             projectile.ActionId = GrolgothProjectile.Action.MissileDefault;
             projectile.ChangeAction();
 
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MachAtk2_Mix02);
+            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MachAtk2_Mix02, this);
         }
     }
 

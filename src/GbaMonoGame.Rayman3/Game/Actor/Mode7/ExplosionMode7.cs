@@ -26,8 +26,8 @@ public sealed partial class ExplosionMode7 : Mode7Actor
         switch (message)
         {
             case Message.ResurrectWakeUp:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07, this);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07, this);
                 break;
         }
 

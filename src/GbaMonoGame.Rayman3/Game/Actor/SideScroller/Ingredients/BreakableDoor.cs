@@ -31,7 +31,7 @@ public sealed partial class BreakableDoor : InteractableActor
                 RaymanBody bodyPart = (RaymanBody)param;
 
                 if (bodyPart.BodyPartType is not (RaymanBody.RaymanBodyPartType.SuperFist or RaymanBody.RaymanBodyPartType.SecondSuperFist))
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodImp_Mix03);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodImp_Mix03, this);
 
                 ActionId = IsFacingRight ? Action.Shake_Right : Action.Shake_Left;
                 return false;

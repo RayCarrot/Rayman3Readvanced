@@ -56,13 +56,13 @@ public sealed partial class MechanicalPlatform : MovableActor
                         ActionId = IsFacingRight ? Action.HardHit_Right : Action.HardHit_Left;
 
                         if (body.BodyPartType is not (RaymanBody.RaymanBodyPartType.SuperFist or RaymanBody.RaymanBodyPartType.SecondSuperFist))
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PinBall_Mix02);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PinBall_Mix02, this);
                     }
                     else
                     {
                         SpeedY = -4;
                         ActionId = IsFacingRight ? Action.SoftHit_Right : Action.SoftHit_Left;
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PinBall_Low);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PinBall_Low, this);
                     }
 
                     ChangeAction();
@@ -112,7 +112,7 @@ public sealed partial class MechanicalPlatform : MovableActor
             //       it only triggers every second time the platform is punched. This is because the platform doesn't land
             //       at the same height from the ground each time.
             if (Math.Abs(rotation.Value - 62) < 1.0 && !SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__Cloche01_Mix01))
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Cloche01_Mix01);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Cloche01_Mix01, this);
         }
         else
         {

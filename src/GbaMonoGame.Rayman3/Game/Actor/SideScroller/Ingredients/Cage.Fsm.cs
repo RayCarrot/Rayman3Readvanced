@@ -48,7 +48,7 @@ public partial class Cage
             case FsmAction.Init:
                 // If all objects are kept active we only want to make this sound when framed
                 if (!Scene.KeepAllObjectsActive || AnimatedObject.IsFramed)
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CageSnd1_Mix02__or__CageSnd2_Mix02);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CageSnd1_Mix02__or__CageSnd2_Mix02, this);
                 ActionId = IsGrounded ? Action.GroundedBlink : Action.HangingBlink;
                 break;
 
@@ -82,7 +82,7 @@ public partial class Cage
         switch (action)
         {
             case FsmAction.Init:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CageHit_Mix07);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CageHit_Mix07, this);
 
                 if (IsGrounded)
                     ActionId = IsHitToLeft ? Action.GroundedHitLeft : Action.GroundedHitRight;
@@ -126,7 +126,7 @@ public partial class Cage
             case FsmAction.Step:
                 if (PrevHitPoints != HitPoints)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CageHit_Mix07);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CageHit_Mix07, this);
 
                     if (IsGrounded)
                         ActionId = IsHitToLeft ? Action.GroundedHitLeft : Action.GroundedHitRight;
@@ -158,7 +158,7 @@ public partial class Cage
         {
             case FsmAction.Init:
                 GameInfo.KillCage(CageId);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CageTrsh_Mix05);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CageTrsh_Mix05, this);
                 ActionId = IsGrounded ? Action.GroundedBreak : Action.HangingBreak;
                 Scene.MainActor.ProcessMessage(this, Message.Rayman_CollectCage);
                 break;

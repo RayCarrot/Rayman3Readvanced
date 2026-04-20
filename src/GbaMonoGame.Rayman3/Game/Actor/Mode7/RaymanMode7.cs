@@ -108,7 +108,7 @@ public sealed partial class RaymanMode7 : Mode7Actor
 
             case Message.Rayman_FinishLevel:
                 ProcessJoypad = false;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02, this);
                 SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.Play__win3, 0);
                 LevelMusicManager.HasOverridenLevelMusic = false;
                 return true;

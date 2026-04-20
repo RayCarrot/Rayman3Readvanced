@@ -6,6 +6,7 @@ public record SoundGameConfig : IniSectionObject
     {
         SfxVolume = 1;
         MusicVolume = 1;
+        ForceSoundPanning = true;
         PlayMusicWhenPaused = null;
         DisableLowHealthSound = false;
     }
@@ -14,6 +15,7 @@ public record SoundGameConfig : IniSectionObject
 
     public float MusicVolume { get; set; }
     public float SfxVolume { get; set; }
+    public bool ForceSoundPanning { get; set; }
     public bool? PlayMusicWhenPaused { get; set; } // null for original behavior
     public bool DisableLowHealthSound { get; set; }
 
@@ -21,6 +23,7 @@ public record SoundGameConfig : IniSectionObject
     {
         MusicVolume = serializer.Serialize<float>(MusicVolume, "MusicVolume");
         SfxVolume = serializer.Serialize<float>(SfxVolume, "SfxVolume");
+        ForceSoundPanning = serializer.Serialize<bool>(ForceSoundPanning, "ForceSoundPanning");
         PlayMusicWhenPaused = serializer.Serialize<bool?>(PlayMusicWhenPaused, "PlayMusicWhenPaused");
         DisableLowHealthSound = serializer.Serialize<bool>(DisableLowHealthSound, "DisableLowHealthSound");
     }

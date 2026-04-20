@@ -164,7 +164,7 @@ public partial class Spider
                 {
                     // Return the camera to the main actor
                     Scene.Camera.ProcessMessage(this, Message.Cam_MoveToLinkedObject, false);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoPeur1_Mix03);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoPeur1_Mix03, this);
                     spawned = true;
                 }
 
@@ -272,7 +272,7 @@ public partial class Spider
             case FsmAction.Init:
                 IsNotAttacking = false;
                 Timer = 30;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SpidrAtk_Mix02);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SpidrAtk_Mix02, this);
                 break;
 
             case FsmAction.Step:
@@ -761,7 +761,7 @@ public partial class Spider
                     if (Timer >= 30)
                     {
                         IsNotAttacking = true;
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SpidrAtk_Mix02);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SpidrAtk_Mix02, this);
 
                         float diffX = Scene.MainActor.Position.X - Position.X;
                         float diffY = Scene.MainActor.Position.Y - (Position.Y + 24);

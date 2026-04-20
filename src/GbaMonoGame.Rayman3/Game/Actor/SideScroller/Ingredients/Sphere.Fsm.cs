@@ -66,7 +66,7 @@ public partial class Sphere
 
                 if (type.IsSolid)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SpherImp_Mix02);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SpherImp_Mix02, this);
                     State.MoveTo(_Fsm_Idle);
                     return false;
                 }
@@ -97,7 +97,7 @@ public partial class Sphere
 
                 if (type.IsSolid && ActionId != Action.Land)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SpherImp_Mix02);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SpherImp_Mix02, this);
                     ActionId = Action.Land;
                 }
 
@@ -114,7 +114,7 @@ public partial class Sphere
 
                 if (Speed.Y == 0 && ActionId == Action.Land)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SpherImp_Mix02);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SpherImp_Mix02, this);
                     State.MoveTo(_Fsm_Idle);
                     return false;
                 }
@@ -127,7 +127,7 @@ public partial class Sphere
 
                 if (shouldRespawn)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Tag_Mix02);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Tag_Mix02, this);
                     State.MoveTo(_Fsm_Respawn);
                     return false;
                 }
@@ -159,12 +159,12 @@ public partial class Sphere
                 if (type.IsSolid && ActionId is Action.Land_Right or Action.Land_Left && !HasPlayedLandingSound)
                 {
                     HasPlayedLandingSound = true;
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SpherImp_Mix02);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SpherImp_Mix02, this);
                 }
 
                 if (type.IsSolid && ActionId is not (Action.Land_Right or Action.Land_Left))
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SpherImp_Mix02);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SpherImp_Mix02, this);
                     ActionId = ActionId == Action.ThrownForward_Right ? Action.Land_Right : Action.Land_Left;
                 }
 
@@ -179,7 +179,7 @@ public partial class Sphere
 
                 if (shouldRespawn)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Tag_Mix02);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Tag_Mix02, this);
                     State.MoveTo(_Fsm_Respawn);
                     return false;
                 }
@@ -212,7 +212,7 @@ public partial class Sphere
                 }
                 else if (ActionId == Action.Idle && GameTime.ElapsedFrames - Timer == 122 && AnimatedObject.IsFramed)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Appear_SocleFX1_Mix01);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Appear_SocleFX1_Mix01, this);
                 }
 
                 if (GameTime.ElapsedFrames - Timer > 180)

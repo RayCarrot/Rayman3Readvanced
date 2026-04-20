@@ -18,7 +18,7 @@ public partial class Balloon
             case FsmAction.Step:
                 if (!HasPlayedSound && AnimatedObject.IsFramed)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BallInit_Mix01);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BallInit_Mix01, this);
                     HasPlayedSound = true;
                 }
 
@@ -104,7 +104,7 @@ public partial class Balloon
                 Scene.MainActor.Position = Scene.MainActor.Position with { Y = detectionBox.Top };
                 Scene.MainActor.ProcessMessage(this, Message.Rayman_Bounce);
                 
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Bounce02_Mix03);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Bounce02_Mix03, this);
                 
                 ActionId = Action.Pop;
                 Timer = 0;

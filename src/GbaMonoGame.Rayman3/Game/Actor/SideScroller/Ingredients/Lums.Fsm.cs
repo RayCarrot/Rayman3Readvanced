@@ -82,7 +82,7 @@ public partial class Lums
                         return true;
 
                     Timer = 0;
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumBleu_Mix02);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumBleu_Mix02, this);
                 }
                 else
                 {
@@ -92,8 +92,8 @@ public partial class Lums
                             if (!IsGhost)
                                 GameInfo.KillLum(LumId);
                             
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumOrag_Mix06);
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumOrag_Mix06);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumOrag_Mix06, this);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumOrag_Mix06, this);
                             
                             // Set a different sound pitch if already collected
                             if (IsGhost)
@@ -101,13 +101,13 @@ public partial class Lums
                             break;
 
                         case Action.RedLum:
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumRed_Mix03);
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumRed_Mix03);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumRed_Mix03, this);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumRed_Mix03, this);
                             break;
                         
                         case Action.GreenLum:
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumGreen_Mix04);
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumGreen_Mix04);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumGreen_Mix04, this);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumGreen_Mix04, this);
 
                             Vector2 pos = Position;
                             pos.Y -= MathHelpers.Mod(pos.Y, Tile.Size);
@@ -118,13 +118,13 @@ public partial class Lums
                             break;
 
                         case Action.BlueLum:
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumBleu_Mix02);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumBleu_Mix02, this);
                             break;
 
                         case Action.WhiteLum:
                             GameInfo.HasCollectedWhiteLum = true;
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumSlvr_Mix02);
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumSlvr_Mix02);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumSlvr_Mix02, this);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumSlvr_Mix02, this);
                             break;
 
                         case Action.BigYellowLum:
@@ -132,7 +132,7 @@ public partial class Lums
                             break;
 
                         case Action.BigBlueLum:
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumBleu_Mix02);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumBleu_Mix02, this);
                             break;
                     }
                 }
@@ -201,7 +201,7 @@ public partial class Lums
                     Position.Y - camPos.Y > 0 &&
                     Position.Y - camPos.Y < Scene.Resolution.Y)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Appear_SocleFX1_Mix01);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Appear_SocleFX1_Mix01, this);
                 }
 
                 if (ActionId == Action.BlueLum)
@@ -280,13 +280,13 @@ public partial class Lums
                 {
                     if (Timer == MultiplayerManager.MachineId)
                     {
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumBleu_Mix02);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumBleu_Mix02, this);
                     }
                 }
                 else if (ActionId == Action.WhiteLum)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumSlvr_Mix02);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumSlvr_Mix02);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumSlvr_Mix02, this);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumSlvr_Mix02, this);
                 }
 
                 Scene.GetGameObject(Timer).ProcessMessage(this, ActionId switch

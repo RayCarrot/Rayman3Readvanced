@@ -396,7 +396,7 @@ public class NGageSoundEventsManager : SoundEventsManager
 
     protected override void SetCallBacksImpl(CallBackSet callBacks) { }
 
-    protected override void ProcessEventImpl(short soundEventId, object obj)
+    protected override void ProcessEventImpl(short soundEventId, object readvancedObject, object originalObject)
     {
         if (soundEventId < 0 || soundEventId >= _soundEvents.Length)
             return;
@@ -440,7 +440,7 @@ public class NGageSoundEventsManager : SoundEventsManager
     
     protected override short ReplaceAllSongsImpl(short soundEventId, float fadeOut)
     {
-        ProcessEventImpl(soundEventId, null);
+        ProcessEventImpl(soundEventId, null, null);
         return 0;
     }
 

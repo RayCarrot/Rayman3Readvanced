@@ -50,7 +50,7 @@ public sealed partial class Spider : MovableActor
         {
             SoundTimer--;
             if (SoundTimer == 0)
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoPeur1_Mix03);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoPeur1_Mix03, this);
         }
     }
 

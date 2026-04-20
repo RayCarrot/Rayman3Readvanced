@@ -49,7 +49,7 @@ public partial class FallingPlatform
                 Timer = 0;
 
                 if (AnimatedObject.IsFramed && !SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__PF2Crac_Mix02__or__RootOut_Pitch))
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PF2Crac_Mix02__or__RootOut_Pitch);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PF2Crac_Mix02__or__RootOut_Pitch, this);
 
                 ActionId = Action.Shake;
                 break;
@@ -134,7 +134,7 @@ public partial class FallingPlatform
         {
             case FsmAction.Init:
                 if (AnimatedObject.IsFramed && !SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__PF1Fall_PF2Fall_Mix03))
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PF1Fall_PF2Fall_Mix03);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PF1Fall_PF2Fall_Mix03, this);
 
                 ActionId = Action.Fall;
                 Timer = 0;

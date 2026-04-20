@@ -47,7 +47,7 @@ public partial class FlyingBomb
                     else if (AnimatedObject.IsFramed && (GameInfo.ActorSoundFlags & ActorSoundFlags.FlyingBomb) == 0)
                     {
                         if (SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__BombFly_Mix03))
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BombFly_Mix03);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BombFly_Mix03, this);
 
                         SoundDelay = 60;
                     }
@@ -175,7 +175,7 @@ public partial class FlyingBomb
                     else if (AnimatedObject.IsFramed && (GameInfo.ActorSoundFlags & ActorSoundFlags.FlyingBomb) == 0)
                     {
                         if (SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__BombFly_Mix03))
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BombFly_Mix03);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BombFly_Mix03, this);
 
                         SoundDelay = 60;
                     }
@@ -222,7 +222,7 @@ public partial class FlyingBomb
                 MechModel.Speed = speed;
 
                 if ((ActorType)Type == ActorType.Mine)
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Laser4_Mix01);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Laser4_Mix01, this);
                 break;
 
             case FsmAction.Step:
@@ -239,7 +239,7 @@ public partial class FlyingBomb
                     else if (AnimatedObject.IsFramed && (GameInfo.ActorSoundFlags & ActorSoundFlags.FlyingBomb) == 0)
                     {
                         if (SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__BombFly_Mix03))
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BombFly_Mix03);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BombFly_Mix03, this);
 
                         SoundDelay = 60;
                     }
@@ -319,9 +319,9 @@ public partial class FlyingBomb
 
                 if (AnimatedObject.IsFramed)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BombFly_Mix03);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07, this);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BombFly_Mix03, this);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07, this);
                 }
 
                 if (explosion != null)

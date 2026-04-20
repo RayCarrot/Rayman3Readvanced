@@ -104,7 +104,7 @@ public abstract class BaseActor : GameObject
 
     public bool IsLinkedCameraObject()
     {
-        return InstanceId == Scene.Camera.LinkedObject.InstanceId;
+        return InstanceId == Scene.Camera.LinkedObject?.InstanceId;
     }
 
     public Box GetViewBox() => Box.Offset(_viewBox, Position);

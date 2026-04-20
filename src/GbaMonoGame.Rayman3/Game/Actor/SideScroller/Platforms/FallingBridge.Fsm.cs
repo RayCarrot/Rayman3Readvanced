@@ -47,7 +47,7 @@ public partial class FallingBridge
                 ActionId = IsLeftBridgePart ? Action.Shake_Left : Action.Shake_Right;
 
                 if (AnimatedObject.IsFramed && !SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__PF2Crac_Mix02__or__RootOut_Pitch))
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PF2Crac_Mix02__or__RootOut_Pitch);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PF2Crac_Mix02__or__RootOut_Pitch, this);
                 break;
 
             case FsmAction.Step:
@@ -98,7 +98,7 @@ public partial class FallingBridge
                 }
 
                 if (AnimatedObject.IsFramed && !SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__PF2Fall_Mix03))
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PF2Fall_Mix03);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PF2Fall_Mix03, this);
                 break;
 
             case FsmAction.Step:

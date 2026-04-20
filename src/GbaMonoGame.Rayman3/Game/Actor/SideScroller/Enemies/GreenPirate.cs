@@ -24,7 +24,7 @@ public sealed partial class GreenPirate : PirateBaseActor
         if (energyBall == null)
             return;
 
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Laser2_Mix02);
+        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Laser2_Mix02, this);
 
         float yOffset = highShot ? -32 : -16;
 
@@ -54,7 +54,7 @@ public sealed partial class GreenPirate : PirateBaseActor
         // Custom to prevent fall sounds from playing on level load when playing with all objects loaded
         if (QueueFallSound && AnimatedObject.IsFramed)
         {
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraJump_BigFoot1_Mix02);
+            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraJump_BigFoot1_Mix02, this);
             QueueFallSound = false;
         }
     }

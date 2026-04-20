@@ -198,7 +198,7 @@ public partial class Caterpillar
                 
                 Timer = 0;
 
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MumuHit_SkullHit_Mix02);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MumuHit_SkullHit_Mix02, this);
                 break;
 
             case FsmAction.Step:
@@ -274,7 +274,7 @@ public partial class Caterpillar
 
                 IsInvulnerable = false;
 
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MumuWake_LumHit_Mix03);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MumuWake_LumHit_Mix03, this);
                 break;
 
             case FsmAction.Step:
@@ -427,7 +427,7 @@ public partial class Caterpillar
         switch (action)
         {
             case FsmAction.Init:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MumuDead_Mix04);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MumuDead_Mix04, this);
                 ActionId = Action.Dying;
                 break;
 

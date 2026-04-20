@@ -95,7 +95,7 @@ public partial class BouncyPlatform
         switch (action)
         {
             case FsmAction.Init:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Bounce00_Mix03);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Bounce00_Mix03, this);
 
                 if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive)
                 {

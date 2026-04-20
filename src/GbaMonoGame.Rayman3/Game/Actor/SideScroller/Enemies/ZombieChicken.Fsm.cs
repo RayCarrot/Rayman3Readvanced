@@ -10,7 +10,7 @@ public partial class ZombieChicken
         bool isFramed = AnimatedObject.IsFramed;
 
         if (isFramed && !HasPlayedSound && SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__RireMumu_Mix03))
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__RireMumu_Mix03);
+            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__RireMumu_Mix03, this);
 
         HasPlayedSound = isFramed;
 
@@ -227,7 +227,7 @@ public partial class ZombieChicken
                 else
                     ActionId = FaceLeftWhenDying ? Action.DyingBack_Left : Action.DyingFront_Right;
                 
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__GhstDead_Mix05);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__GhstDead_Mix05, this);
                 break;
 
             case FsmAction.Step:

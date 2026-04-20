@@ -210,6 +210,17 @@ public static class GameOptions
                     infoText: "The volume for sound effects.",
                     getVolume: () => Engine.LocalConfig.Sound.SfxVolume,
                     setVolume: data => Engine.LocalConfig.Sound.SfxVolume = data),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "AUDIO PANNING",
+                    infoText: "Indicates if audio panning for sound effects should be enabled. This is only for the GBA version.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true),
+                    ],
+                    getData: _ => Engine.LocalConfig.Sound.ForceSoundPanning,
+                    setData: data => Engine.LocalConfig.Sound.ForceSoundPanning = data,
+                    getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool?>(
                     text: "PLAY MUSIC WHEN PAUSED",
                     infoText: "Indicates if the music should keep playing when paused. The original behavior is for it to do so only for the N-Gage version.",

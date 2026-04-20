@@ -31,7 +31,7 @@ public partial class Grenade
                 if (TouchingMapTimer == 0 && IsTouchingMap)
                 {
                     TouchingMapTimer++;
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Grenad01_Mix03);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Grenad01_Mix03, this);
                 }
 
                 PhysicalType type = Scene.GetPhysicalType(Position + new Vector2(0, 8));
@@ -48,15 +48,15 @@ public partial class Grenade
             case FsmAction.UnInit:
                 Explosion explosion = Scene.CreateProjectile<Explosion>(ActorType.Explosion);
                 
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07, this);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07, this);
                 
                 if (explosion != null)
                     explosion.Position = Position;
 
                 IsTouchingMap = false;
                 ProcessMessage(this, Message.Destroy);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Grenad01_Mix03);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Grenad01_Mix03, this);
                 break;
         }
 

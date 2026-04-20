@@ -121,7 +121,7 @@ public partial class Rocky
 
                 if (AnimatedObject.CurrentFrame == 9 && Timer == 0)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BigFoot1_Mix02);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BigFoot1_Mix02, this);
                     Scene.Camera.ProcessMessage(this, Message.Cam_Shake, 128);
                     SpawnFlames();
                     Timer = 1;
@@ -149,7 +149,7 @@ public partial class Rocky
         switch (action)
         {
             case FsmAction.Init:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BossVO02_Mix01);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BossVO02_Mix01, this);
                 ActionId = IsFacingRight ? Action.Punch_Right : Action.Punch_Left;
                 Timer = 0;
                 break;
@@ -187,7 +187,7 @@ public partial class Rocky
         {
             case FsmAction.Init:
                 AttackCount--;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Combust1_Mix02);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Combust1_Mix02, this);
                 break;
 
             case FsmAction.Step:
@@ -237,7 +237,7 @@ public partial class Rocky
                     ActionId = IsFacingRight ? Action.Charge_Right : Action.Charge_Left;
                 }
 
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Combust1_Mix02);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Combust1_Mix02, this);
                 break;
         }
 
@@ -262,7 +262,7 @@ public partial class Rocky
 
                 Timer = 0;
                 AttackCount = BossHealth == 3 ? 5 : 8;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Combust1_Mix02);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Combust1_Mix02, this);
                 break;
 
             case FsmAction.Step:
@@ -301,7 +301,7 @@ public partial class Rocky
                 break;
 
             case FsmAction.UnInit:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Combust1_Mix02);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Combust1_Mix02, this);
                 break;
         }
 
@@ -313,11 +313,11 @@ public partial class Rocky
         switch (action)
         {
             case FsmAction.Init:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MetlImp1_PiraHit3_Mix03);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MetlImp1_PiraHit3_Mix03, this);
                 ActionId = IsFacingRight ? Action.Hit_Right : Action.Hit_Left;
                 BossHealth--;
                 ((FrameSideScroller)Frame.Current).UserInfo.BossHit();
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumTimer_Mix02);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumTimer_Mix02, this);
                 Scene.MainActor.ProcessMessage(this, Message.Rayman_EndSuperHelico);
                 break;
 
@@ -360,7 +360,7 @@ public partial class Rocky
         {
             case FsmAction.Init:
                 ActionId = IsFacingRight ? Action.Dying_Right : Action.Dying_Left;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalDead_Mix02);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalDead_Mix02, this);
                 break;
 
             case FsmAction.Step:

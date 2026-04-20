@@ -15,8 +15,8 @@ public partial class Skull
 
                 if (AnimatedObject.IsFramed)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__SkulInit_Mix04);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SkulInit_Mix04);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__SkulInit_Mix04, this);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SkulInit_Mix04, this);
                 }
                 break;
 
@@ -121,7 +121,7 @@ public partial class Skull
                 if (isHit)
                 {
                     if (AnimatedObject.IsFramed)
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SkullHit_Mix02);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SkullHit_Mix02, this);
 
                     State.MoveTo(_Fsm_Stationary);
                     return false;
@@ -155,13 +155,13 @@ public partial class Skull
                     ChangeAction();
 
                     if (AnimatedObject.IsFramed)
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SkulShak_Mix01);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SkulShak_Mix01, this);
                 }
 
                 if (IsActionFinished && ActionId == Action.StationaryShake)
                 {
                     if (AnimatedObject.IsFramed)
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SkulShak_Mix01);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SkulShak_Mix01, this);
                 }
 
                 MovableActor mainActor = Scene.MainActor;
@@ -202,8 +202,8 @@ public partial class Skull
             case FsmAction.Init:
                 if (AnimatedObject.IsFramed)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__SkullEnd_Mix02);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SkullEnd_Mix02);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__SkullEnd_Mix02, this);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SkullEnd_Mix02, this);
                 }
 
                 ActionId = Action.Despawn;
@@ -290,7 +290,7 @@ public partial class Skull
 
                     if (ActionId == Action.SolidMove_Wait)
                     {
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SkullHit_Mix02);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SkullHit_Mix02, this);
                         ActionId = Action.SolidMove_Right;
                     }
                 }

@@ -48,7 +48,7 @@ public partial class WoodenShieldedHoodboom
                         if (TauntFlag)
                         {
                             ActionId = IsFacingRight ? Action.Taunt_Right : Action.Taunt_Left;
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CagOno01_Mix01);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CagOno01_Mix01, this);
                         }
                         else
                         {
@@ -226,7 +226,7 @@ public partial class WoodenShieldedHoodboom
                         JustHitShield = true;
 
                         if (HitPoints != 0)
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodImp_Mix03);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodImp_Mix03, this);
                     }
                     // Second hit
                     else
@@ -241,9 +241,9 @@ public partial class WoodenShieldedHoodboom
                         HasShield = false;
 
                         if (HitPoints != 0)
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodImp_Mix03);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodImp_Mix03, this);
 
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CagoTurn_Mix03);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CagoTurn_Mix03, this);
                     }
                 }
                 break;
@@ -292,8 +292,8 @@ public partial class WoodenShieldedHoodboom
                 IsInvulnerable = false;
                 IsSolid = false;
 
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Boing_Mix02);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CagoDie2_Mix01);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Boing_Mix02, this);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CagoDie2_Mix01, this);
                 break;
 
             case FsmAction.Step:

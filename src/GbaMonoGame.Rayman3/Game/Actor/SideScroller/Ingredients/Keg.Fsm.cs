@@ -59,8 +59,8 @@ public partial class Keg
             case FsmAction.Init:
                 ActionId = Action.Fall;
                 Position = InitialPos;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BarlFall_Mix04);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BarlFall_Mix04);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BarlFall_Mix04, this);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BarlFall_Mix04, this);
                 LastActorToPlayFallSound = InstanceId;
                 break;
 
@@ -70,7 +70,7 @@ public partial class Keg
                 {
                     // Optionally fix a bug where the keg might stop the sound of another keg if another one has spawned
                     if (Engine.ActiveConfig.Tweaks.FixBugs && LastActorToPlayFallSound == InstanceId)
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BarlFall_Mix04);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BarlFall_Mix04, this);
 
                     if (Scene.IsHitMainActor(this))
                         Scene.MainActor.ReceiveDamage(AttackPoints);
@@ -133,7 +133,7 @@ public partial class Keg
                 else if (ActionId == Action.EjectFromDispenser && Speed.Y == 0)
                 {
                     if (AnimatedObject.IsFramed)
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodImp_Mix03);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodImp_Mix03, this);
 
                     ActionId = Action.Bounce;
                     Timer = 0;
@@ -148,7 +148,7 @@ public partial class Keg
 
             case FsmAction.UnInit:
                 if (AnimatedObject.IsFramed)
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodImp_Mix03);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodImp_Mix03, this);
                 AnimatedObject.BgPriority = 1;
                 break;
         }
@@ -415,7 +415,7 @@ public partial class Keg
                 }
                 else if (ActionId == Action.Idle && Timer == 182 && AnimatedObject.IsFramed)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Appear_SocleFX1_Mix01);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Appear_SocleFX1_Mix01, this);
                 }
 
                 if (Timer > 240)
@@ -451,7 +451,7 @@ public partial class Keg
                 // Start flying after igniting for 1 second
                 if (Timer > 60 && ActionId is Action.Ignite_Right or Action.Ignite_Left)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Combust1_Mix02);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Combust1_Mix02, this);
                     ActionId = IsFacingRight ? Action.Flying_Right : Action.Flying_Left;
                     Scene.MainActor.ProcessMessage(this, IsFacingRight ? Message.Rayman_FlyWithKegRight : Message.Rayman_FlyWithKegLeft);
                     SpawnedDebrisCount = 0;
@@ -459,7 +459,7 @@ public partial class Keg
                 // Flying for 10.5 seconds
                 else if (Timer > 630 && ActionId is Action.Flying_Right or Action.Flying_Left)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Combust1_Mix02);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Combust1_Mix02, this);
                     ActionId = IsFacingRight ? Action.StopFlying_Right : Action.StopFlying_Left;
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_EndFlyWithKeg);
                 }
@@ -480,7 +480,7 @@ public partial class Keg
                             Scene.MainActor.ProcessMessage(this, Message.Actor_Explode);
                         else
                             Scene.MainActor.ProcessMessage(this, Message.Readvanced_RespawnDeath);
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Combust1_Mix02);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Combust1_Mix02, this);
                         respawn = true;
                     }
                 }
@@ -532,7 +532,7 @@ public partial class Keg
                     Scene.GetPhysicalType(Position) == PhysicalTypeValue.MoltenLava || 
                     respawn)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Combust1_Mix02);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Combust1_Mix02, this);
                     respawn = true;
                     SpawnExplosion(true);
                 }

@@ -37,7 +37,7 @@ public partial class BreakableDoor
         switch (action)
         {
             case FsmAction.Init:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodBrk1_Mix04);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodBrk1_Mix04, this);
                 break;
 
             case FsmAction.Step:

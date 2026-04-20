@@ -18,7 +18,7 @@ public abstract class SoundEventsManager
 
     protected abstract void RefreshEventSetImpl();
     protected abstract void SetCallBacksImpl(CallBackSet callBacks);
-    protected abstract void ProcessEventImpl(short soundEventId, object obj);
+    protected abstract void ProcessEventImpl(short soundEventId, object readvancedObject, object originalObject);
     protected abstract bool IsSongPlayingImpl(short soundEventId);
     protected abstract void SetSoundPitchImpl(short soundEventId, float pitch);
     protected abstract short ReplaceAllSongsImpl(short soundEventId, float fadeOut);
@@ -54,10 +54,12 @@ public abstract class SoundEventsManager
 
     public static void SetCallBacks(CallBackSet callBacks) => Current.SetCallBacksImpl(callBacks);
 
-    public static void ProcessEvent(Enum soundEventId) => ProcessEvent(soundEventId, null);
-    public static void ProcessEvent(short soundEventId) => ProcessEvent(soundEventId, null);
-    public static void ProcessEvent(Enum soundEventId, object obj) => ProcessEvent((short)(object)soundEventId, obj);
-    public static void ProcessEvent(short soundEventId, object obj) => Current.ProcessEventImpl(soundEventId, obj);
+    public static void ProcessEvent(Enum soundEventId) => ProcessEvent(soundEventId, null, null);
+    public static void ProcessEvent(short soundEventId) => ProcessEvent(soundEventId, null, null);
+    public static void ProcessEvent(Enum soundEventId, object readvancedObject) => ProcessEvent(soundEventId, readvancedObject, null);
+    public static void ProcessEvent(short soundEventId, object readvancedObject) => ProcessEvent(soundEventId, readvancedObject, null);
+    public static void ProcessEvent(Enum soundEventId, object readvancedObject, object originalObject) => ProcessEvent((short)(object)soundEventId, readvancedObject, originalObject);
+    public static void ProcessEvent(short soundEventId, object readvancedObject, object originalObject) => Current.ProcessEventImpl(soundEventId, readvancedObject, originalObject);
 
     public static bool IsSongPlaying(Enum soundEventId) => IsSongPlaying((short)(object)soundEventId);
     public static bool IsSongPlaying(short soundEventId) => Current.IsSongPlayingImpl(soundEventId);

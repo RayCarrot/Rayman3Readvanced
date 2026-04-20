@@ -1966,7 +1966,7 @@ public partial class Rayman
                 {
                     // NOTE: Probably a bug in the GBA code since this causes the sound to play twice. This was fixed for N-Gage.
                     if (Rom.Platform == Platform.GBA && !Engine.ActiveConfig.Tweaks.FixBugs)
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Charge_Mix05);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Charge_Mix05, this);
 
                     ActionId = IsFacingRight ? Action.Hang_ChargeAttack_Right : Action.Hang_ChargeAttack_Left;
                     Timer = GameTime.ElapsedFrames;
@@ -4695,7 +4695,7 @@ public partial class Rayman
                 NextActionId = null;
 
                 if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01))
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01, this);
                 break;
 
             case FsmAction.Step:

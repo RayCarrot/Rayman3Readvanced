@@ -18,7 +18,7 @@ public partial class WaterSplash
                 if (ActionId == 1)
                 {
                     if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__SplshGen_Mix04))
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SplshGen_Mix04);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SplshGen_Mix04, this);
 
                     ActionId = 0;
                 }

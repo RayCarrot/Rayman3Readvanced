@@ -102,7 +102,7 @@ public sealed partial class FlyingShell : MovableActor
         if (EnergyBall != null)
         {
             Ammo--;
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Laser3_Mix03);
+            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Laser3_Mix03, this);
             
             if (Speed.X <= 0)
             {
@@ -163,7 +163,7 @@ public sealed partial class FlyingShell : MovableActor
         switch (message)
         {
             case Message.Rayman_FinishLevel:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Motor01_Mix12);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Motor01_Mix12, this);
 
                 if (TimeAttackInfo.IsActive)
                 {

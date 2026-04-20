@@ -176,11 +176,11 @@ public sealed partial class MissileMode7 : Mode7Actor
                     if (raceManager.CurrentLap < raceManager.CurrentTempLap)
                     {
                         if (raceManager.CurrentTempLap == 2)
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LineFX01_Mix02_P1_);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LineFX01_Mix02_P1_, this);
                         else if (raceManager.CurrentTempLap == 3)
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LineFX01_Mix02_P2_);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LineFX01_Mix02_P2_, this);
                         else if (raceManager.CurrentTempLap == 4)
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02, this);
 
                         raceManager.CurrentLap = raceManager.CurrentTempLap;
 
@@ -292,7 +292,7 @@ public sealed partial class MissileMode7 : Mode7Actor
 
                         if (InstanceId == MultiplayerManager.MachineId)
                         {
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02, this);
                             raceManager.IsRacing = false;
                         }
 
@@ -307,9 +307,9 @@ public sealed partial class MissileMode7 : Mode7Actor
                             if (InstanceId == MultiplayerManager.MachineId)
                             {
                                 if (raceManager.PlayersCurrentTempLap[InstanceId] == 2)
-                                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LineFX01_Mix02_P1_);
+                                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LineFX01_Mix02_P1_, this);
                                 else if (raceManager.PlayersCurrentTempLap[InstanceId] == 3)
-                                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LineFX01_Mix02_P2_);
+                                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LineFX01_Mix02_P2_, this);
                             }
 
                             raceManager.PlayersLastLapRaceTime[InstanceId] = raceManager.RaceTime;
@@ -436,11 +436,11 @@ public sealed partial class MissileMode7 : Mode7Actor
                     if (!RSMultiplayer.IsActive || IsLinkedCameraObject())
                     {
                         if (CollectedBlueLums == 1)
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumBoost_Mix01GEN_P1);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumBoost_Mix01GEN_P1, this);
                         else if (CollectedBlueLums == 2)
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumBoost_Mix01GEN_P2);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumBoost_Mix01GEN_P2, this);
                         else if (CollectedBlueLums == 3)
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumBoost_Mix01GEN_P3);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumBoost_Mix01GEN_P3, this);
                     }
                 }
 
@@ -469,7 +469,7 @@ public sealed partial class MissileMode7 : Mode7Actor
                 State.MoveTo(_Fsm_Default);
 
                 if (!RSMultiplayer.IsActive || IsLinkedCameraObject())
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Motor01_Mix12);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Motor01_Mix12, this);
                 return true;
 
             case Message.MissileMode7_EndRace:
@@ -541,7 +541,7 @@ public sealed partial class MissileMode7 : Mode7Actor
                             if (actor1.IsLinkedCameraObject() || actor2.IsLinkedCameraObject()) 
                             {
                                 if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__PinBall_Mix02)) 
-                                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PinBall_Mix02);
+                                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PinBall_Mix02, this);
                             }
                         }
 

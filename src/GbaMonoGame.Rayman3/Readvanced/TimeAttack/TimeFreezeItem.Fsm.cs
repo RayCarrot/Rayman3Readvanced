@@ -28,8 +28,8 @@ public partial class TimeFreezeItem
                 if (HitPoints == 0)
                 {
                     // Play sound
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumRed_Mix03);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumRed_Mix03);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumRed_Mix03, this);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumRed_Mix03, this);
                     
                     // Random pitch (only very slight variation)
                     SoundEventsManager.SetSoundPitch(Rayman3SoundEvent.Play__LumRed_Mix03, Random.GetNumber(192));

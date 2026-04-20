@@ -30,7 +30,7 @@ public partial class JanoSkullPlatform
                     if (activeFist != null && activeFist.GetDetectionBox().Intersects(detectionBox))
                     {
                         activeFist.ProcessMessage(this, Message.RaymanBody_FinishAttack);
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SkullHit_Mix02);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SkullHit_Mix02, this);
                         isHit = true;
                         break;
                     }
@@ -133,7 +133,7 @@ public partial class JanoSkullPlatform
                     if (ActionId != Action.Shake && ActionId != Action.SolidMove_Stationary)
                     {
                         ActionId = Action.Shake;
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SkulShak_Mix01);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SkulShak_Mix01, this);
                     }
                 }
                 // Move down to target
@@ -393,7 +393,7 @@ public partial class JanoSkullPlatform
         {
             case FsmAction.Init:
                 if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__SpherImp_Mix02))
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SpherImp_Mix02);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SpherImp_Mix02, this);
                 
                 SpawnHitEffect();
 

@@ -74,7 +74,7 @@ public sealed partial class Jano : MovableActor
 
         if (shot != null)
         {
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__JanoShot_Mix01);
+            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__JanoShot_Mix01, this);
 
             int dir;
             if (ActionId == Action.Attack_Right)
@@ -101,7 +101,7 @@ public sealed partial class Jano : MovableActor
 
     private void ShootMultiple()
     {
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__JanoShot_Mix01);
+        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__JanoShot_Mix01, this);
 
         for (int i = 0; i < 10; i++)
         {

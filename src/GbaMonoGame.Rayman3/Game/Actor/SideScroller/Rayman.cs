@@ -339,7 +339,7 @@ public sealed partial class Rayman : MovableActor
     private void PlaySound(Rayman3SoundEvent soundEventId)
     {
         if (Scene.Camera.LinkedObject == this)
-            SoundEventsManager.ProcessEvent(soundEventId);
+            SoundEventsManager.ProcessEvent(soundEventId, this);
     }
 
     private bool IsBossFight()
@@ -1913,7 +1913,7 @@ public sealed partial class Rayman : MovableActor
             case Message.Rayman_BeginSwing:
                 if (!HasPower(Power.Grab))
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumVioNP_SkulShak_Mix01);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumVioNP_SkulShak_Mix01, this);
                     return false;
                 }
 
@@ -2125,7 +2125,7 @@ public sealed partial class Rayman : MovableActor
                 return false;
 
             case Message.Rayman_PickUpFlag when Rom.Platform == Platform.NGage:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play_NGage_Unnamed1);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play_NGage_Unnamed1, this);
                 RemovePower(Power.All);
                 FlagData.PickedUpFlag = (CaptureTheFlagFlag)param;
                 FlagData.CanPickUpDroppedFlag = false;

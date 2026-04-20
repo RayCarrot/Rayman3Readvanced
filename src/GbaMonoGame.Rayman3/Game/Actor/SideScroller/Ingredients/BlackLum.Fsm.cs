@@ -94,7 +94,7 @@ public partial class BlackLum
                 ActionId = posDiff.X < 0 ? Action.Fly_Left : Action.Fly_Right;
 
                 ChangeAction();
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumAtk01_Mix02);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumAtk01_Mix02, this);
                 break;
 
             case FsmAction.Step:
@@ -137,8 +137,8 @@ public partial class BlackLum
         {
             case FsmAction.Init:
                 ActionId = IsFacingRight ? Action.Dying_Right : Action.Dying_Left;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumAtk01_Mix02);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MumuDead_Mix04);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumAtk01_Mix02, this);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MumuDead_Mix04, this);
                 break;
 
             case FsmAction.Step:

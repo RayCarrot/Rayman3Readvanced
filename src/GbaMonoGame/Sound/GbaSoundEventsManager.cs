@@ -237,7 +237,7 @@ public class GbaSoundEventsManager : SoundEventsManager
         return null;
     }
 
-    private void CreateSong(short soundEventId, SoundResource res, SoundEvent evt, object obj)
+    private void CreateSong(short soundEventId, SoundResource res, SoundEvent evt, object readvancedObject, object originalObject)
     {
         // NOTE: On GBA only 4 songs can play at once. It checks if there's an available one, or one with lower priority. We however don't need that.
 
@@ -249,7 +249,8 @@ public class GbaSoundEventsManager : SoundEventsManager
         // Create a new song instance
         SongInstance songInstance = new()
         {
-            Obj = obj,
+            ReadvancedObj = readvancedObject,
+            OriginalObj = originalObject,
             EventId = soundEventId,
             NextSoundEventId = -1,
             Priority = evt.Priority,
@@ -277,13 +278,13 @@ public class GbaSoundEventsManager : SoundEventsManager
         _soloud.setPause(handle, false);
     }
 
-    private void ReplaceSong(short soundEventId, short nextEventId, float fadeOut, object obj)
+    private void ReplaceSong(short soundEventId, short nextEventId, float fadeOut, object readvancedObject, object originalObject)
     {
         bool foundSong = false;
 
         foreach (SongInstance song in _songInstances)
         {
-            if (song.IsPlaying && !song.IsFadingOut && song.EventId == soundEventId && song.Obj == obj)
+            if (song.IsPlaying && !song.IsFadingOut && song.EventId == soundEventId && song.OriginalObj == originalObject)
             {
                 if (song.Volume != SoundEngineInterface.MaxVolume)
                     fadeOut = 0;
@@ -318,7 +319,7 @@ public class GbaSoundEventsManager : SoundEventsManager
         }
 
         if (!foundSong && nextEventId != -1)
-            ProcessEvent(nextEventId, obj);
+            ProcessEvent(nextEventId, readvancedObject, originalObject);
     }
 
     private void CalculateRollOffAndPan(Vector2 mikePos, out float rollOffLvl, out float dx, object obj)
@@ -343,17 +344,26 @@ public class GbaSoundEventsManager : SoundEventsManager
         float vol;
         float pan;
 
-        if (songInstance.Obj == null && (songInstance.IsRollOffEnabled || songInstance.IsPanEnabled))
+        if (songInstance.OriginalObj == null && (songInstance.IsRollOffEnabled || songInstance.IsPanEnabled))
             throw new Exception("Song has roll-off or pan enabled, but no object is set!");
 
-        if (songInstance.IsRollOffEnabled || songInstance.IsPanEnabled)
-        {
-            Vector2 mikePos = _callBacks.GetMikePosition(songInstance.Obj);
-            CalculateRollOffAndPan(mikePos, out vol, out pan, songInstance.Obj);
+        // Optionally force roll-off and pan
+        Debug.Assert(songInstance.ReadvancedObj == null || !songInstance.IsMusic, "The Readvanced object is set for a music sound");
+        bool forceRollOffAndPan = Engine.LocalConfig.Sound.ForceSoundPanning && songInstance.ReadvancedObj != null && !songInstance.IsMusic;
+        
+        bool enableRollOff = songInstance.IsRollOffEnabled || forceRollOffAndPan;
+        bool enablePan = songInstance.IsPanEnabled || forceRollOffAndPan;
 
-            if (!songInstance.IsRollOffEnabled)
+        if (enableRollOff || enablePan)
+        {
+            object obj = forceRollOffAndPan && songInstance.OriginalObj == null ? songInstance.ReadvancedObj : songInstance.OriginalObj;
+
+            Vector2 mikePos = _callBacks.GetMikePosition(obj);
+            CalculateRollOffAndPan(mikePos, out vol, out pan, obj);
+
+            if (!enableRollOff)
                 vol = SoundEngineInterface.MaxVolume;
-            if (!songInstance.IsPanEnabled)
+            if (!enablePan)
                 pan = 0;
         }
         else
@@ -404,7 +414,7 @@ public class GbaSoundEventsManager : SoundEventsManager
                 song.IsPlaying = false;
 
                 if (song.NextSoundEventId != -1)
-                    ProcessEvent(song.NextSoundEventId, song.Obj);
+                    ProcessEvent(song.NextSoundEventId, song.ReadvancedObj, song.OriginalObj);
             }
             else if (!song.IsFadingOut)
             {
@@ -421,7 +431,7 @@ public class GbaSoundEventsManager : SoundEventsManager
         _callBacks = callBacks;
     }
 
-    protected override void ProcessEventImpl(short soundEventId, object obj)
+    protected override void ProcessEventImpl(short soundEventId, object readvancedObject, object originalObject)
     {
         SoundEvent evt = GetEventFromId(soundEventId);
 
@@ -435,15 +445,15 @@ public class GbaSoundEventsManager : SoundEventsManager
                 SoundResource res = GetSoundResource(evt.ResourceId);
 
                 if (res != null)
-                    CreateSong(soundEventId, res, evt, obj);
+                    CreateSong(soundEventId, res, evt, readvancedObject, originalObject);
                 break;
 
             case SoundEvent.SoundEventType.Stop:
-                ReplaceSong(evt.StopEventId, -1, evt.FadeOutTime, obj);
+                ReplaceSong(evt.StopEventId, -1, evt.FadeOutTime, readvancedObject, originalObject);
                 break;
 
             case SoundEvent.SoundEventType.StopAndGo:
-                ReplaceSong(evt.StopEventId, evt.NextEventId, evt.FadeOutTime, obj);
+                ReplaceSong(evt.StopEventId, evt.NextEventId, evt.FadeOutTime, readvancedObject, originalObject);
                 break;
         }
     }
@@ -478,7 +488,7 @@ public class GbaSoundEventsManager : SoundEventsManager
                 {
                     if (!song.IsFadingOut)
                     {
-                        ReplaceSong(song.EventId, soundEventId, fadeOut, null);
+                        ReplaceSong(song.EventId, soundEventId, fadeOut, null, null);
                         firstEventId = song.EventId;
                     }
                     else
@@ -491,7 +501,7 @@ public class GbaSoundEventsManager : SoundEventsManager
                 }
                 else
                 {
-                    ReplaceSong(song.EventId, -1, fadeOut, null);
+                    ReplaceSong(song.EventId, -1, fadeOut, null, null);
                 }
             }
         }
@@ -508,7 +518,7 @@ public class GbaSoundEventsManager : SoundEventsManager
                 _soloud.stop(songInstance.VoiceHandle);
                 _songInstances.Remove(songInstance);
 
-                ProcessEvent(songInstance.NextSoundEventId, songInstance.Obj);
+                ProcessEvent(songInstance.NextSoundEventId, songInstance.ReadvancedObj, songInstance.OriginalObj);
             }
         }
     }
@@ -629,7 +639,8 @@ public class GbaSoundEventsManager : SoundEventsManager
         private bool _inGamePaused;
         private bool _inEnginePaused;
 
-        public object Obj { get; init; }
+        public object ReadvancedObj { get; init; }
+        public object OriginalObj { get; init; }
         public short EventId { get; init; }
         public short NextSoundEventId { get; set; }
         public int Priority { get; init; }

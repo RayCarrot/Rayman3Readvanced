@@ -38,7 +38,7 @@ public partial class Barrel
         {
             case FsmAction.Init:
                 ActionId = Action.BeginHitImpact;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodImp_Mix03);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodImp_Mix03, this);
                 break;
 
             case FsmAction.Step:
@@ -89,7 +89,7 @@ public partial class Barrel
         {
             case FsmAction.Init:
                 ActionId = LastHitFacingLeft ? Action.FallLeft : Action.FallRight;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodImp_Mix03);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodImp_Mix03, this);
                 break;
 
             case FsmAction.Step:
@@ -114,7 +114,7 @@ public partial class Barrel
         {
             case FsmAction.Init:
                 ActionId = Action.Break;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodBrk1_Mix04);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodBrk1_Mix04, this);
                 break;
 
             case FsmAction.Step:
@@ -139,7 +139,7 @@ public partial class Barrel
         {
             case FsmAction.Init:
                 ActionId = Action.FallRight;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodImp_Mix03);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodImp_Mix03, this);
                 EngineBox originalDetectionBox = ActorModel.DetectionBox;
                 SetDetectionBox(new Box(-20, originalDetectionBox.Bottom - 38, 20, originalDetectionBox.Bottom));
                 break;
@@ -193,7 +193,7 @@ public partial class Barrel
                 if (BarrelSplash != null)
                     BarrelSplash.Position = new Vector2(Position.X + 4, InitialWaterPosition.Y - 10);
 
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BigSplsh_SplshGen_Mix04);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BigSplsh_SplshGen_Mix04, this);
                 break;
 
             case FsmAction.Step:
@@ -386,7 +386,7 @@ public partial class Barrel
                         InitialHitPoints = 0;
 
                         if (AnimatedObject.IsFramed)
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LavaBubl_Mix02);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LavaBubl_Mix02, this);
                     }
                 }
                 // Finished sinking

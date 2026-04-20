@@ -21,13 +21,13 @@ public partial class RedShell
         {
             Explosion explosion = Scene.CreateProjectile<Explosion>(ActorType.Explosion);
 
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07);
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07);
+            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07, this);
+            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07, this);
 
             if (explosion != null)
                 explosion.Position = Position - new Vector2(0, 32);
 
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Combust1_Mix02);
+            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Combust1_Mix02, this);
             ProcessMessage(this, Message.Destroy);
         }
 
@@ -146,7 +146,7 @@ public partial class RedShell
                 CheckAgainstObjectCollision = false;
                 IsInvulnerable = true;
                 ActionId = IsFacingRight ? Action.PrepareChargeAttack_Right : Action.PrepareChargeAttack_Left;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Combust1_Mix02);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Combust1_Mix02, this);
                 break;
 
             case FsmAction.Step:
@@ -180,13 +180,13 @@ public partial class RedShell
                 {
                     Explosion explosion = Scene.CreateProjectile<Explosion>(ActorType.Explosion);
 
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07, this);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07, this);
 
                     if (explosion != null)
                         explosion.Position = Position;
 
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Combust1_Mix02);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Combust1_Mix02, this);
                     ProcessMessage(this, Message.Destroy);
                 }
 
@@ -209,7 +209,7 @@ public partial class RedShell
         switch (action)
         {
             case FsmAction.Init:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__HorseCry_Mix02);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__HorseCry_Mix02, this);
 
                 if (ActionId is Action.Sleep_Right or Action.Sleep_Left)
                     ActionId = IsFacingRight ? Action.WakeUp_Right : Action.WakeUp_Left;
@@ -225,8 +225,8 @@ public partial class RedShell
                 {
                     Explosion explosion = Scene.CreateProjectile<Explosion>(ActorType.Explosion);
 
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07, this);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07, this);
 
                     if (explosion != null)
                         explosion.Position = Position;

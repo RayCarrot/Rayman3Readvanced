@@ -1,17 +1,8 @@
-﻿using System;
+﻿namespace GbaMonoGame;
 
-namespace GbaMonoGame;
-
-public class CallBackSet
+public abstract class CallBackSet
 {
-    public CallBackSet(Func<object, Vector2> getObjectPosition, Func<object, Vector2> getMikePosition, Func<int> getSwitchIndex)
-    {
-        GetObjectPosition = getObjectPosition;
-        GetMikePosition = getMikePosition;
-        GetSwitchIndex = getSwitchIndex;
-    }
-
-    public Func<object, Vector2> GetObjectPosition { get; }
-    public Func<object, Vector2> GetMikePosition { get; }
-    public Func<int> GetSwitchIndex { get; } // Unused in Rayman 3
+    public abstract Vector2 GetObjectPosition(object obj);
+    public abstract Vector2 GetMikePosition(object obj);
+    public abstract int GetSwitchIndex();
 }

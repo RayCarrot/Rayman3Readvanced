@@ -79,23 +79,7 @@ public class Rayman3 : GbaGame
         }
 
         // Set sound engine callbacks
-        SoundEventsManager.SetCallBacks(new CallBackSet(
-            getObjectPosition: x =>
-            {
-                if (x is not GameObject obj)
-                    return Vector2.Zero;
-
-                return new Vector2(obj.Position.X, 0);
-            },
-            getMikePosition: x =>
-            {
-                if (x is not GameObject obj)
-                    return Vector2.Zero;
-
-                TgxCamera cam = obj.Scene.Playfield.Camera;
-                return new Vector2(cam.Position.X + obj.Scene.Resolution.X / 2, 0);
-            },
-            getSwitchIndex: () => 0));
+        SoundEventsManager.SetCallBacks(new Rayman3CallBackSet());
 
         // Load fonts
         FontManager.Load(Rom.Loader.Font8, Rom.Loader.Font16, Rom.Loader.Font32);

@@ -237,7 +237,7 @@ public partial class Scaleman
                         if (Timer >= 540)
                             ActionId = IsFacingRight ? Action.Emerge_Right : Action.Emerge_Left;
 
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalBong_PinBall_Mix02);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalBong_PinBall_Mix02, this);
                     }
                     else if (ActionId is Action.Emerge_Right or Action.Emerge_Left)
                     {
@@ -299,7 +299,7 @@ public partial class Scaleman
                 MechModel.Speed = MechModel.Speed with { Y = -3 };
                 Timer++;
                 ScalemanShadow.AnimatedObject.CurrentAnimation = 12;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalUp_Mix03);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalUp_Mix03, this);
                 break;
 
             case FsmAction.Step:
@@ -393,7 +393,7 @@ public partial class Scaleman
                     MechModel.Speed = new Vector2(0, 3);
 
                 ScalemanShadow.AnimatedObject.CurrentAnimation = 11;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalUp_Mix03);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalUp_Mix03, this);
                 break;
 
             case FsmAction.Step:
@@ -518,7 +518,7 @@ public partial class Scaleman
         switch (action)
         {
             case FsmAction.Init:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalFlee_Mix02);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalFlee_Mix02, this);
 
                 if (IsSecondPhase())
                     ActionId = IsFacingRight ? Action.Small_RunFast_Right : Action.Small_RunFast_Left;
@@ -558,7 +558,7 @@ public partial class Scaleman
 
                 if (Timer >= 340)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__ScalFlee_Mix02);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__ScalFlee_Mix02, this);
 
                     if (IsActionFinished)
                     {
@@ -571,7 +571,7 @@ public partial class Scaleman
                         else if (ActionId is Action.Small_Hop_Right or Action.Small_Hop_Left)
                         {
                             ActionId = IsFacingRight ? Action.Grow_Right : Action.Grow_Left;
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScaMorf2_Mix02);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScaMorf2_Mix02, this);
                         }
                         else if (ActionId is Action.Grow_Right or Action.Grow_Left)
                         {
@@ -594,7 +594,7 @@ public partial class Scaleman
                 break;
 
             case FsmAction.UnInit:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__ScalFlee_Mix02);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__ScalFlee_Mix02, this);
                 break;
         }
 
@@ -607,7 +607,7 @@ public partial class Scaleman
         {
             case FsmAction.Init:
                 ActionId = IsFacingRight ? Action.Small_Hit_Right : Action.Small_Hit_Left;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScaHurt2_Mix02);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScaHurt2_Mix02, this);
                 HitPoints--;
                 HitTimer = 0;
                 break;
@@ -618,14 +618,14 @@ public partial class Scaleman
                     if (ActionId is Action.Small_Hit_Right or Action.Small_Hit_Left)
                     {
                         ActionId = IsFacingRight ? Action.Grow_Right : Action.Grow_Left;
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScaMorf2_Mix02);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScaMorf2_Mix02, this);
                     }
                     else if (ActionId is Action.Grow_Right or Action.Grow_Left)
                     {
                         if (HitPoints == 3)
                         {
                             ActionId = IsFacingRight ? Action.CreateRedLum_Right : Action.CreateRedLum_Left;
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalGrrr_Mix02);
+                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalGrrr_Mix02, this);
                         }
                         else if (HitPoints == 0)
                         {
@@ -664,7 +664,7 @@ public partial class Scaleman
         switch (action)
         {
             case FsmAction.Init:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalDead_Mix02);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalDead_Mix02, this);
                 ActionId = IsFacingRight ? Action.Dying_Right : Action.Dying_Left;
                 break;
 

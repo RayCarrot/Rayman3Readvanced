@@ -60,7 +60,7 @@ public partial class GreenPirate
                     if (Scene.KeepAllObjectsActive && !AnimatedObject.IsFramed)
                         QueueFallSound = true;
                     else
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraJump_BigFoot1_Mix02);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraJump_BigFoot1_Mix02, this);
 
                     ActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
                 }
@@ -134,7 +134,7 @@ public partial class GreenPirate
                 else
                     ActionId = Position.X - Scene.MainActor.Position.X < 0 ? Action.ShootLow_Right : Action.ShootLow_Left;
 
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraAtk1_Mix01__or__PiraHurt_Mix02);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraAtk1_Mix01__or__PiraHurt_Mix02, this);
                 break;
 
             case FsmAction.Step:
@@ -185,7 +185,7 @@ public partial class GreenPirate
                 else
                     ActionId = IsFacingRight ? Action.Hit_Right : Action.Hit_Left;
                 
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraHit1_Mix02__or__PiraHit3_Mix03);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraHit1_Mix02__or__PiraHit3_Mix03, this);
                 IdleDetectionTimer = 0;
                 break;
 
@@ -222,7 +222,7 @@ public partial class GreenPirate
                 ActionId = IsFacingRight ? Action.HitKnockBack_Right : Action.HitKnockBack_Left;
                 StartInvulnerability();
                 CheckAgainstMapCollision = false;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraHit1_Mix02__or__PiraHit3_Mix03);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraHit1_Mix02__or__PiraHit3_Mix03, this);
                 break;
 
             case FsmAction.Step:
@@ -264,14 +264,14 @@ public partial class GreenPirate
         {
             case FsmAction.Init:
                 ActionId = IsFacingRight ? Action.Dying_Right : Action.Dying_Left;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraHit1_Mix02__or__PiraHit3_Mix03);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraHit1_Mix02__or__PiraHit3_Mix03, this);
                 IsSolid = false;
                 LevelMusicManager.StopSpecialMusic();
                 break;
 
             case FsmAction.Step:
                 if (!AnimatedObject.IsDelayMode && AnimatedObject.CurrentFrame == 5)
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraDead_Mix05);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraDead_Mix05, this);
 
                 if (IsActionFinished)
                 {

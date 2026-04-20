@@ -26,7 +26,7 @@ public partial class LevelCurtain
                         if (mainActor.Speed.Y == 0)
                         {
                             if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__Tag_Mix02))
-                                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Tag_Mix02);
+                                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Tag_Mix02, this);
 
                             mainActor.ProcessMessage(this, Message.Rayman_EnterLockedLevel);
                         }
@@ -117,7 +117,7 @@ public partial class LevelCurtain
                 {
                     ActionId = Action.EnterCurtain1;
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_EnterLevel);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Curtain_YoyoMove_Mix02);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Curtain_YoyoMove_Mix02, this);
                 }
                 break;
 
@@ -130,7 +130,7 @@ public partial class LevelCurtain
                     {
                         ActionId = Action.EnterCurtain1;
                         Scene.MainActor.ProcessMessage(this, Message.Rayman_EnterLevel);
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Curtain_YoyoMove_Mix02);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Curtain_YoyoMove_Mix02, this);
                     }
                     else if (ActionId == Action.EnterCurtain1)
                     {

@@ -33,7 +33,7 @@ public class World : FrameWorldSideScroller
         CurrentExStepAction = StepEx_MoveInCurtains;
         PaletteFadeValue = 0;
         Gfx.FadeControl = FadeControl.None;
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Curtain_YoyoMove_Mix02);
+        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Curtain_YoyoMove_Mix02, Scene.MainActor);
     }
 
     public void InitExiting()

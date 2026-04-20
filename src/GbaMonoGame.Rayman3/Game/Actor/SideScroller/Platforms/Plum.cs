@@ -82,7 +82,7 @@ public sealed partial class Plum : MovableActor
                 }
 
                 BounceSpeedX = ((MovableActor)param).Speed.X / 4;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Boing_Mix02);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Boing_Mix02, this);
                 return false;
 
             default:

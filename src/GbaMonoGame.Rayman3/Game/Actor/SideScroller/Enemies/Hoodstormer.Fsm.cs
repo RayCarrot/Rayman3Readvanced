@@ -98,7 +98,7 @@ public partial class Hoodstormer
                 else
                     throw new UnsupportedPlatformException();
 
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CagouRit_Mix03);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CagouRit_Mix03, this);
                 break;
 
             case FsmAction.Step:
@@ -196,9 +196,9 @@ public partial class Hoodstormer
                 ActionId = IsFacingRight ? Action.Dying_Right : Action.Dying_Left;
 
                 if (SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__CagouRit_Mix03))
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__CagouRit_Mix03);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__CagouRit_Mix03, this);
 
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CaFlyDie_Mix03);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CaFlyDie_Mix03, this);
                 break;
 
             case FsmAction.Step:

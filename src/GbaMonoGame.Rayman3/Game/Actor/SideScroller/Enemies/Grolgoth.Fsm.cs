@@ -160,7 +160,7 @@ public partial class Grolgoth
                     if (Timer == 0)
                     {
                         Timer = 1;
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BossVO03_Mix01);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BossVO03_Mix01, this);
                         ShootFromGround();
                     }
                 }
@@ -250,7 +250,7 @@ public partial class Grolgoth
 
                 if (ActionId is Action.Ground_BeginDeployBomb_Right or Action.Ground_BeginDeployBomb_Left && IsActionFinished)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MachAtk2_Mix02);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MachAtk2_Mix02, this);
 
                     if (BossHealth < 3)
                         DeployBigGroundBombs();
@@ -283,7 +283,7 @@ public partial class Grolgoth
             case FsmAction.Init:
                 BossHealth--;
                 ((FrameSideScroller)Frame.Current).UserInfo.BossHit();
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BossHurt_Mix02);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BossHurt_Mix02, this);
                 ActionId = IsFacingRight ? Action.Ground_Hit1_Right : Action.Ground_Hit1_Left;
                 break;
 
@@ -298,7 +298,7 @@ public partial class Grolgoth
                     if (ActionId is Action.Ground_Hit1_Right or Action.Ground_Hit1_Left)
                     {
                         ActionId = IsFacingRight ? Action.Ground_Hit2_Right : Action.Ground_Hit2_Left;
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BossVO03_Mix01);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BossVO03_Mix01, this);
                     }
                     else if (ActionId is Action.Ground_Hit2_Right or Action.Ground_Hit2_Left)
                     {
@@ -344,7 +344,7 @@ public partial class Grolgoth
                 {
                     if (IsActionFinished)
                     {
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Laser4_Mix01);
+                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Laser4_Mix01, this);
                         ActionId = IsFacingRight ? Action.Ground_FlyUp_Right : Action.Ground_FlyUp_Left;
                     }
                 }
@@ -445,7 +445,7 @@ public partial class Grolgoth
                 // Land
                 else if (InitialYPosition < Position.Y)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BigFoot1_Mix02);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BigFoot1_Mix02, this);
                     Scene.Camera.ProcessMessage(this, Message.Cam_Shake, 96);
                     Position = Position with { Y = InitialYPosition };
                     ActionId = IsFacingRight ? Action.Ground_Land_Right : Action.Ground_Land_Left;
@@ -460,7 +460,7 @@ public partial class Grolgoth
                 break;
 
             case FsmAction.UnInit:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Propulse_Combust1_Mix02);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Propulse_Combust1_Mix02, this);
                 AttackCount = BossHealth switch
                 {
                     1 => 8,
@@ -522,7 +522,7 @@ public partial class Grolgoth
                 {
                     Position = Position with { Y = InitialYPosition };
                     ActionId = Action.Air_FallDown_Left;
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MachAtk1_Mix01);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MachAtk1_Mix01, this);
                     ChangeAction();
                 }
 
@@ -593,7 +593,7 @@ public partial class Grolgoth
                     return false;
 
                 if (Timer == 0 && AnimatedObject.CurrentFrame == 4)
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BossVO03_Mix01);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BossVO03_Mix01, this);
 
                 if (Timer == 0 && AnimatedObject.CurrentFrame == 5)
                 {
@@ -669,7 +669,7 @@ public partial class Grolgoth
                 Timer++;
 
                 if (Timer == 20)
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BossHurt_Mix02);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BossHurt_Mix02, this);
 
                 Box detectionBox = GetDetectionBox();
 
@@ -680,7 +680,7 @@ public partial class Grolgoth
 
                 if (type == PhysicalTypeValue.InstaKill && BossHealth != 0)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BossHurt_Mix02);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BossHurt_Mix02, this);
                     State.MoveTo(_Fsm_AirHit2);
                     return false;
                 }
@@ -693,7 +693,7 @@ public partial class Grolgoth
                 break;
 
             case FsmAction.UnInit:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BigSplsh_SplshGen_Mix04);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BigSplsh_SplshGen_Mix04, this);
                 Timer = 0;
                 break;
         }
@@ -723,7 +723,7 @@ public partial class Grolgoth
                 Timer++;
 
                 if (Timer == 90)
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BossHurt_Mix02);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BossHurt_Mix02, this);
 
                 if (IsActionFinished)
                 {
@@ -747,8 +747,8 @@ public partial class Grolgoth
                 break;
 
             case FsmAction.UnInit:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Laser4_Mix01);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Laser4_Mix01);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Laser4_Mix01, this);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Laser4_Mix01, this);
                 break;
         }
 
@@ -816,7 +816,7 @@ public partial class Grolgoth
                     Position = Position with { Y = InitialYPosition };
                     ChangeAction();
 
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MachAtk1_Mix01);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MachAtk1_Mix01, this);
 
                     if ((BossHealth & 1) == 0)
                     {
@@ -852,7 +852,7 @@ public partial class Grolgoth
         {
             case FsmAction.Init:
                 ActionId = Action.Air_Dying1_Left;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalDead_Mix02);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalDead_Mix02, this);
                 break;
 
             case FsmAction.Step:

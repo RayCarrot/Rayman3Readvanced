@@ -37,7 +37,7 @@ public partial class SpikyBag
                 ActionId = Action.BeginSwing;
 
                 if (AnimatedObject.IsFramed)
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BallSwng_LumSwing_Mix03);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BallSwng_LumSwing_Mix03, this);
                 break;
 
             case FsmAction.Step:
@@ -67,7 +67,7 @@ public partial class SpikyBag
                 ActionId = Action.Swing;
 
                 if (AnimatedObject.IsFramed)
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BallSwng_LumSwing_Mix03);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BallSwng_LumSwing_Mix03, this);
                 break;
 
             case FsmAction.Step:
@@ -79,7 +79,7 @@ public partial class SpikyBag
                     AnimatedObject.CurrentAnimation is 0 or 2 && 
                     AnimatedObject.IsFramed)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BallSwng_LumSwing_Mix03);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BallSwng_LumSwing_Mix03, this);
                 }
 
                 if (IsActionFinished)

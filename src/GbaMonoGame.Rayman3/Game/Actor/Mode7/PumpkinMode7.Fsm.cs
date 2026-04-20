@@ -36,7 +36,7 @@ public partial class PumpkinMode7
             case FsmAction.Init:
                 Scene.MainActor.ReceiveDamage(AttackPoints);
                 ActionId = Action.Break;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PlumSnd1_Mix03);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PlumSnd1_Mix03, this);
                 break;
 
             case FsmAction.Step:

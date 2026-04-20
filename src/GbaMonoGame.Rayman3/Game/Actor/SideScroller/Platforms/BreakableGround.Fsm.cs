@@ -51,7 +51,7 @@ public partial class BreakableGround
         {
             case FsmAction.Init:
                 IsSolid = false;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodBrk1_Mix04);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodBrk1_Mix04, this);
                 break;
 
             case FsmAction.Step:

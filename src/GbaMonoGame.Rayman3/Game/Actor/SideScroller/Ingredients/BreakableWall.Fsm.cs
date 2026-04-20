@@ -35,8 +35,8 @@ public partial class BreakableWall
         {
             case FsmAction.Init:
                 IsSolid = false;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WWallBrk_PF2Fall_Mix03);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodImp_Mix03);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WWallBrk_PF2Fall_Mix03, this);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__WoodImp_Mix03, this);
                 break;
 
             case FsmAction.Step:

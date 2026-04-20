@@ -12,7 +12,7 @@ public partial class FlyingShell
         {
             case FsmAction.Init:
                 ActionId = Action.Idle_Right;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Motor01_Mix12);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Motor01_Mix12, this);
                 break;
 
             case FsmAction.Step:
@@ -155,7 +155,7 @@ public partial class FlyingShell
                 else
                     ActionId = IsFacingRight ? Action.Crash_Right : Action.Crash_Left;
 
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Motor01_Mix12);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Motor01_Mix12, this);
                 break;
 
             case FsmAction.Step:
@@ -163,15 +163,15 @@ public partial class FlyingShell
                 {
                     Explosion explosion = Scene.CreateProjectile<Explosion>(ActorType.Explosion);
 
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07, this);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07, this);
 
                     if (explosion != null)
                         explosion.Position = Position;
                 }
                 else if (CrashTimer == 20)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__RaDeath_Mix03);
+                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__RaDeath_Mix03, this);
                 }
                 else if (CrashTimer == 120)
                 {

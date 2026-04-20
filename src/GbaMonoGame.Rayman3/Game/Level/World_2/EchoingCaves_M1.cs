@@ -209,7 +209,7 @@ public class EchoingCaves_M1 : FrameSideScroller
         {
             Gate gate = Scene.GetGameObject<Gate>(GateActorId);
             gate.ActionId = Gate.Action.Closing_Left;
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__GateClos_MetlGate_Mix01);
+            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__GateClos_MetlGate_Mix01, gate);
         }
     }
 
@@ -230,7 +230,7 @@ public class EchoingCaves_M1 : FrameSideScroller
                 UserInfo.SwitchBar.Switches.CurrentAnimation = 4 - CameraTargetIndex;
                 UserInfo.SwitchBar.ActivatedSwitches = 4 - CameraTargetIndex;
 
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LightFX1_Mix01);
+                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LightFX1_Mix01, s);
             }
         }
 
