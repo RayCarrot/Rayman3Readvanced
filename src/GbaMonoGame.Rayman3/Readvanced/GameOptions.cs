@@ -212,7 +212,7 @@ public static class GameOptions
                     setVolume: data => Engine.LocalConfig.Sound.SfxVolume = data),
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "AUDIO PANNING",
-                    infoText: "Indicates if audio panning for sound effects should be enabled. This is only for the GBA version.",
+                    infoText: "Indicates if audio panning for sound effects should be enabled.",
                     items:
                     [
                         new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
