@@ -129,6 +129,13 @@ public class PlayfieldDebugWindow : DebugWindow
 
             MapTile mapTile = tileLayer.TileMap[tileIndex];
 
+            int tileX = SelectedTile.X;
+            if (ImGui.InputInt("Tile X", ref tileX))
+                SelectedTile = SelectedTile with { X = tileX };
+            int tileY = SelectedTile.Y;
+            if (ImGui.InputInt("Tile Y", ref tileY))
+                SelectedTile = SelectedTile with { Y = tileY };
+
             ImGui.Text($"Position: {SelectedTile.X} x {SelectedTile.Y}");
             ImGui.Text($"Map index: {tileIndex}");
             ImGui.Text($"Tile index: {mapTile.TileIndex}");
