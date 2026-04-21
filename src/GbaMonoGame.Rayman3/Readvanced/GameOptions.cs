@@ -288,6 +288,17 @@ public static class GameOptions
                     setData: data => Engine.LocalConfig.Tweaks.UseExtendedBackgrounds = data,
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
+                    text: "FIX TILING ERRORS",
+                    infoText: "Fixes various tiling errors in the level maps. Doesn't go into effect until the level is restarted.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, TweaksPreset.Readvanced),
+                    ],
+                    getData: _ => Engine.LocalConfig.Tweaks.FixTilingErrors,
+                    setData: data => Engine.LocalConfig.Tweaks.FixTilingErrors = data,
+                    getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
                     text: "USE GBA EFFECTS ON N-GAGE",
                     infoText: "By default the N-Gage version has fewer visual effects than the GBA version. Using this option you can restore them. Some visual effects won't be changed until a new level is loaded.",
                     items:

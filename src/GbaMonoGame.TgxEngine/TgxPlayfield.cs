@@ -22,15 +22,15 @@ public abstract class TgxPlayfield
     public AnimatedTilekitManager AnimatedTilekitManager { get; }
     public TgxTilePhysicalLayer PhysicalLayer { get; set; }
 
-    public static TgxPlayfield Load(PlayfieldResource playfieldResource) => 
-        Load<TgxPlayfield>(playfieldResource);
+    public static TgxPlayfield Load(PlayfieldResource playfieldResource, int sceneId = -1) => 
+        Load<TgxPlayfield>(playfieldResource, sceneId);
 
-    public static T Load<T>(PlayfieldResource playfieldResource)
+    public static T Load<T>(PlayfieldResource playfieldResource, int sceneId = -1)
         where T : TgxPlayfield
     {
         TgxPlayfield playfield = playfieldResource.Type switch
         {
-            PlayfieldType.Playfield2D => new TgxPlayfield2D(playfieldResource.Playfield2D),
+            PlayfieldType.Playfield2D => new TgxPlayfield2D(playfieldResource.Playfield2D, sceneId),
             PlayfieldType.PlayfieldMode7 => new TgxPlayfieldMode7(playfieldResource.PlayfieldMode7),
             PlayfieldType.PlayfieldScope => throw new InvalidOperationException("PlayfieldScope type is currently not supported"),
             _ => throw new InvalidOperationException($"Unsupported playfield type {playfieldResource.Type}")

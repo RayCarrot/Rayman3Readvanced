@@ -6,7 +6,7 @@ namespace GbaMonoGame.TgxEngine;
 
 public class TgxPlayfield2D : TgxPlayfield
 {
-    public TgxPlayfield2D(Playfield2DResource playfieldResource) 
+    public TgxPlayfield2D(Playfield2DResource playfieldResource, int sceneId) 
         : base(new TgxCamera2D(CreateRenderContext(playfieldResource)), playfieldResource.TileKit)
     {
         List<TgxTileLayer> tileLayers = new();
@@ -28,7 +28,7 @@ public class TgxPlayfield2D : TgxPlayfield
                 TgxCluster cluster = Camera.GetCluster(gameLayerResource.TileLayer.ClusterIndex);
                 RenderContext renderContext = cluster.RenderContext;
 
-                TgxTileLayer layer = new(renderContext, gameLayerResource);
+                TgxTileLayer layer = new(renderContext, gameLayerResource, sceneId);
                 tileLayers.Add(layer);
 
                 layer.LoadRenderer(GfxTileKitManager, AnimatedTilekitManager);

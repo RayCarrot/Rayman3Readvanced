@@ -8,6 +8,7 @@ public record TweaksGameConfig : IniSectionObject
 
         InternalGameResolution = defaultResolution;
         UseExtendedBackgrounds = true;
+        FixTilingErrors = true;
         UseGbaEffectsOnNGage = true;
         UseModernMainMenu = true;
         UseModernPauseDialog = true;
@@ -31,6 +32,7 @@ public record TweaksGameConfig : IniSectionObject
 
     public Vector2? InternalGameResolution { get; set; } // Null to use original resolution
     public bool UseExtendedBackgrounds { get; set; }
+    public bool FixTilingErrors { get; set; }
     public bool UseGbaEffectsOnNGage { get; set; }
     public bool UseModernMainMenu { get; set; }
     public bool UseModernPauseDialog { get; set; }
@@ -53,6 +55,7 @@ public record TweaksGameConfig : IniSectionObject
     {
         InternalGameResolution = serializer.Serialize<Vector2?>(InternalGameResolution, "InternalGameResolution");
         UseExtendedBackgrounds = serializer.Serialize<bool>(UseExtendedBackgrounds, "UseExtendedBackgrounds");
+        FixTilingErrors = serializer.Serialize<bool>(FixTilingErrors, "FixTilingErrors");
         UseGbaEffectsOnNGage = serializer.Serialize<bool>(UseGbaEffectsOnNGage, "UseGbaEffectsOnNGage");
         UseModernMainMenu = serializer.Serialize<bool>(UseModernMainMenu, "UseModernMainMenu");
         UseModernPauseDialog = serializer.Serialize<bool>(UseModernPauseDialog, "UseModernPauseDialog");

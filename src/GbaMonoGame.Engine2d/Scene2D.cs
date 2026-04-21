@@ -24,7 +24,7 @@ public class Scene2D
 
         Resource = Rom.LoadResource<Scene2DResource>(id);
 
-        Playfield = TgxPlayfield.Load(Resource.Playfield);
+        Playfield = TgxPlayfield.Load(Resource.Playfield, id);
         
         HudRenderContext = new HudRenderContext(RenderContext);
 
