@@ -153,6 +153,92 @@ public static class Rayman3TileFixes
         DefineLeafTileFix(MapId.MenhirHills_M2, layerId: 3, tileX: 201, tileY: 3, offY: 0, height: 1, flipX: false);
         DefineLeafTileFix(MapId.MenhirHills_M2, layerId: 3, tileX: 275, tileY: 0, offY: 0, height: 3, flipX: true);
         DefineLeafTileFix(MapId.MenhirHills_M2, layerId: 3, tileX: 304, tileY: 2, offY: 0, height: 1, flipX: false);
+
+        // NOTE: Marshes of Awakening 2 is rather messy as it has leftover content from the prev. map, but
+        //       it's hard to fix and not really noticeable in-game, so we skip it...
+
+        // N-Gage exclusive level
+        if (platform == Platform.NGage)
+        {
+            // Out-of-place leftover tiles and a missing tile for spikes
+            TgxTileLayer.DefineTileFix(MapId.MarshAwakening2, layerId: 2, tileX: 18, tileY: 278, newTile: new MapTile(0, 0));
+            TgxTileLayer.DefineTileFix(MapId.MarshAwakening2, layerId: 2, tileX: 19, tileY: 278, newTile: new MapTile(0, 0));
+            TgxTileLayer.DefineTileFix(MapId.MarshAwakening2, layerId: 2, tileX: 19, tileY: 281, newTile: new MapTile(1189, 2));
+            
+            // Out-of-place leftover tiles
+            TgxTileLayer.DefineTileFix(MapId.MarshAwakening2, layerId: 2, tileX: 16, tileY: 638, newTile: new MapTile(0, 0));
+            TgxTileLayer.DefineTileFix(MapId.MarshAwakening2, layerId: 2, tileX: 17, tileY: 638, newTile: new MapTile(0, 0));
+            TgxTileLayer.DefineTileFix(MapId.MarshAwakening2, layerId: 2, tileX: 17, tileY: 639, newTile: new MapTile(0, 0));
+            TgxTileLayer.DefineTileFix(MapId.MarshAwakening2, layerId: 2, tileX: 19, tileY: 640, newTile: new MapTile(0, 0));
+            TgxTileLayer.DefineTileFix(MapId.MarshAwakening2, layerId: 2, tileX: 20, tileY: 638, newTile: new MapTile(0, 0));
+        }
+
+        // Out-of-place tile with a yellow pixel
+        TgxTileLayer.DefineTileFix(MapId.TheCanopy_M2, layerId: 3, tileX: 100, tileY: 153, newTile: new MapTile(0, 0));
+
+        // Out-of-place tile with some yellow pixels
+        TgxTileLayer.DefineTileFix(MapId.TheCanopy_M2, layerId: 2, tileX: 175, tileY: 210, newTile: new MapTile(0, 0));
+
+        // The following fix is already present in the N-Gage version, so only add it for GBA
+        if (platform == Platform.GBA)
+        {
+            // Out-of-place tile with a yellow pixel
+            TgxTileLayer.DefineTileFix(MapId.SanctuaryOfRockAndLava_M3, layerId: 2, tileX: 198, tileY: 10, newTile: new MapTile(0, 0));
+        }
+
+        // Ground shifted downwards
+        DefineRockGroundTileFix(MapId.IronMountains_M2, layerId: 1, tileX: 1065, tileY: 30);
+        TgxTileLayer.DefineTileFix(MapId.IronMountains_M2, layerId: 1, tileX: 1073, tileY: 31, newTile: new MapTile(993, 3, true));
+        TgxTileLayer.DefineTileFix(MapId.IronMountains_M2, layerId: 1, tileX: 1073, tileY: 32, newTile: new MapTile(1002, 3, true));
+        TgxTileLayer.DefineTileFix(MapId.IronMountains_M2, layerId: 1, tileX: 1073, tileY: 33, newTile: new MapTile(1021, 3, true));
+        TgxTileLayer.DefineTileFix(MapId.IronMountains_M2, layerId: 1, tileX: 1073, tileY: 34, newTile: new MapTile(1040, 3, true));
+        TgxTileLayer.DefineTileFix(MapId.IronMountains_M2, layerId: 1, tileX: 1073, tileY: 35, newTile: new MapTile(1059, 3, true));
+        TgxTileLayer.DefineTileFix(MapId.IronMountains_M2, layerId: 1, tileX: 1073, tileY: 36, newTile: new MapTile(1078, 3, true));
+        TgxTileLayer.DefineTileFix(MapId.IronMountains_M2, layerId: 1, tileX: 1073, tileY: 37, newTile: new MapTile(0, 0));
+
+        // The following fixes are already present in the N-Gage version, so only add them for GBA
+        if (platform == Platform.GBA)
+        {
+            // Ground shifted downwards at the end
+            DefineRockGroundTileFix(MapId.IronMountains_M2, layerId: 1, tileX: 1212, tileY: 20);
+
+            // Leftover pot tiles at the end
+            TgxTileLayer.DefineTileFix(MapId.IronMountains_M2, layerId: 1, tileX: 1212, tileY: 12, newTile: new MapTile(0, 0));
+            TgxTileLayer.DefineTileFix(MapId.IronMountains_M2, layerId: 1, tileX: 1212, tileY: 13, newTile: new MapTile(0, 0));
+            TgxTileLayer.DefineTileFix(MapId.IronMountains_M2, layerId: 1, tileX: 1212, tileY: 14, newTile: new MapTile(0, 0));
+            TgxTileLayer.DefineTileFix(MapId.IronMountains_M2, layerId: 1, tileX: 1212, tileY: 15, newTile: new MapTile(0, 0));
+            TgxTileLayer.DefineTileFix(MapId.IronMountains_M2, layerId: 1, tileX: 1213, tileY: 14, newTile: new MapTile(0, 0));
+            TgxTileLayer.DefineTileFix(MapId.IronMountains_M2, layerId: 1, tileX: 1213, tileY: 15, newTile: new MapTile(0, 0));
+        }
+
+        // N-Gage exclusive level
+        if (platform == Platform.NGage)
+        {
+            // Out-of-place tile with some gray pixels
+            TgxTileLayer.DefineTileFix(MapId.MissileRace2, layerId: 3, tileX: 0, tileY: 96, newTile: new MapTile(0, 0));
+
+            // The bottom of a lava tub has the wrong tiles (others do too, but only noticeable here)
+            TgxTileLayer.DefineTileFix(MapId.MissileRace2, layerId: 1, tileX: 0, tileY: 200, newTile: new MapTile(0, 0));
+            TgxTileLayer.DefineTileFix(MapId.MissileRace2, layerId: 1, tileX: 1, tileY: 200, newTile: new MapTile(0, 0));
+            TgxTileLayer.DefineTileFix(MapId.MissileRace2, layerId: 1, tileX: 2, tileY: 200, newTile: new MapTile(1311, 4));
+            TgxTileLayer.DefineTileFix(MapId.MissileRace2, layerId: 1, tileX: 3, tileY: 200, newTile: new MapTile(1312, 4));
+            TgxTileLayer.DefineTileFix(MapId.MissileRace2, layerId: 1, tileX: 4, tileY: 200, newTile: new MapTile(1313, 4));
+            TgxTileLayer.DefineTileFix(MapId.MissileRace2, layerId: 1, tileX: 5, tileY: 200, newTile: new MapTile(1315, 4));
+        }
+
+        // Incomplete warning sign
+        TgxTileLayer.DefineTileFix(MapId.PirateShip_M1, layerId: 3, tileX: 193, tileY: 50, newTile: new MapTile(1894, 6));
+        TgxTileLayer.DefineTileFix(MapId.PirateShip_M1, layerId: 3, tileX: 194, tileY: 50, newTile: new MapTile(1895, 6));
+        TgxTileLayer.DefineTileFix(MapId.PirateShip_M1, layerId: 3, tileX: 195, tileY: 50, newTile: new MapTile(1896, 6));
+        TgxTileLayer.DefineTileFix(MapId.PirateShip_M1, layerId: 3, tileX: 199, tileY: 50, newTile: new MapTile(1900, 6));
+        TgxTileLayer.DefineTileFix(MapId.PirateShip_M1, layerId: 3, tileX: 193, tileY: 51, newTile: new MapTile(1901, 6));
+        TgxTileLayer.DefineTileFix(MapId.PirateShip_M1, layerId: 3, tileX: 194, tileY: 51, newTile: new MapTile(1902, 6));
+        TgxTileLayer.DefineTileFix(MapId.PirateShip_M1, layerId: 3, tileX: 199, tileY: 51, newTile: new MapTile(1903, 6));
+
+        // Out-of-place fence tiles
+        TgxTileLayer.DefineTileFix(MapId.PirateShip_M1, layerId: 1, tileX: 296, tileY: 64, newTile: new MapTile(0, 0));
+        TgxTileLayer.DefineTileFix(MapId.PirateShip_M1, layerId: 1, tileX: 296, tileY: 65, newTile: new MapTile(0, 0));
+        TgxTileLayer.DefineTileFix(MapId.PirateShip_M1, layerId: 1, tileX: 296, tileY: 66, newTile: new MapTile(0, 0));
     }
 
     private static void DefineTreeBranchTileFix(MapId sceneId, int layerId, int tileX, int offY, int height, bool flipX)
@@ -182,6 +268,81 @@ public static class Rayman3TileFixes
             [98, 99],
             [118, 119],
         ], 0);
+    }
+
+    private static void DefineRockGroundTileFix(MapId sceneId, int layerId, int tileX, int tileY)
+    {
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 0, tileY + 0, newTile: new MapTile(1195, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 1, tileY + 0, newTile: new MapTile(1210, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 2, tileY + 0, newTile: new MapTile(1211, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 3, tileY + 0, newTile: new MapTile(1346, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 4, tileY + 0, newTile: new MapTile(1347, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 5, tileY + 0, newTile: new MapTile(986, 3, true));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 6, tileY + 0, newTile: new MapTile(985, 3, true));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 7, tileY + 0, newTile: new MapTile(984, 3, true));
+
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 0, tileY + 1, newTile: new MapTile(1220, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 1, tileY + 1, newTile: new MapTile(1221, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 2, tileY + 1, newTile: new MapTile(1222, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 3, tileY + 1, newTile: new MapTile(1355, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 4, tileY + 1, newTile: new MapTile(1356, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 5, tileY + 1, newTile: new MapTile(996, 3, true));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 6, tileY + 1, newTile: new MapTile(995, 3, true));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 7, tileY + 1, newTile: new MapTile(994, 3, true));
+
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 0, tileY + 2, newTile: new MapTile(1242, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 1, tileY + 2, newTile: new MapTile(1243, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 2, tileY + 2, newTile: new MapTile(1244, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 3, tileY + 2, newTile: new MapTile(1362, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 4, tileY + 2, newTile: new MapTile(1363, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 5, tileY + 2, newTile: new MapTile(1005, 3, true));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 6, tileY + 2, newTile: new MapTile(1004, 3, true));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 7, tileY + 2, newTile: new MapTile(1003, 3, true));
+
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 0, tileY + 3, newTile: new MapTile(0, 0));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 1, tileY + 3, newTile: new MapTile(1263, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 2, tileY + 3, newTile: new MapTile(1264, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 3, tileY + 3, newTile: new MapTile(1367, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 4, tileY + 3, newTile: new MapTile(1368, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 5, tileY + 3, newTile: new MapTile(1366, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 6, tileY + 3, newTile: new MapTile(1367, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 7, tileY + 3, newTile: new MapTile(1368, 3));
+
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 0, tileY + 4, newTile: new MapTile(0, 0));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 1, tileY + 4, newTile: new MapTile(1284, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 2, tileY + 4, newTile: new MapTile(1285, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 3, tileY + 4, newTile: new MapTile(1369, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 4, tileY + 4, newTile: new MapTile(1370, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 5, tileY + 4, newTile: new MapTile(1371, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 6, tileY + 4, newTile: new MapTile(1372, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 7, tileY + 4, newTile: new MapTile(1373, 3));
+
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 0, tileY + 5, newTile: new MapTile(0, 0));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 1, tileY + 5, newTile: new MapTile(1309, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 2, tileY + 5, newTile: new MapTile(1310, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 3, tileY + 5, newTile: new MapTile(1374, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 4, tileY + 5, newTile: new MapTile(1375, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 5, tileY + 5, newTile: new MapTile(1376, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 6, tileY + 5, newTile: new MapTile(1377, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 7, tileY + 5, newTile: new MapTile(1378, 3));
+
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 0, tileY + 6, newTile: new MapTile(0, 0));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 1, tileY + 6, newTile: new MapTile(0, 0));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 2, tileY + 6, newTile: new MapTile(1332, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 3, tileY + 6, newTile: new MapTile(1390, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 4, tileY + 6, newTile: new MapTile(1391, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 5, tileY + 6, newTile: new MapTile(1392, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 6, tileY + 6, newTile: new MapTile(1393, 3));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 7, tileY + 6, newTile: new MapTile(1394, 3));
+
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 0, tileY + 7, newTile: new MapTile(0, 0));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 1, tileY + 7, newTile: new MapTile(0, 0));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 2, tileY + 7, newTile: new MapTile(0, 0));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 3, tileY + 7, newTile: new MapTile(0, 0));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 4, tileY + 7, newTile: new MapTile(0, 0));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 5, tileY + 7, newTile: new MapTile(0, 0));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 6, tileY + 7, newTile: new MapTile(0, 0));
+        TgxTileLayer.DefineTileFix(sceneId, layerId, tileX + 7, tileY + 7, newTile: new MapTile(0, 0));
     }
 
     // Helper for repeating tile shapes
