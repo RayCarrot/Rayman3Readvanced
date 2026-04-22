@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using BinarySerializer.Nintendo.GBA;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.Editor;
 using GbaMonoGame.Engine2d;
@@ -16,94 +15,6 @@ public class Rayman3 : GbaGame
     #region Protected Properties
 
     protected override string Title => "Rayman 3";
-
-    #endregion
-
-    #region Private Methods
-
-    private static void DefineTileFixes()
-    {
-        TgxTileLayer.ClearTileFixes();
-
-        // Out-of-place tile with a pink pixel near Murfy
-        TgxTileLayer.DefineTileFix((int)MapId.WoodLight_M1, layerId: 2, tileX: 153, tileY: 13, newTile: new MapTile(0, 0));
-
-        // Empty tile on the ground
-        TgxTileLayer.DefineTileFix((int)MapId.WoodLight_M1, layerId: 2, tileX: 242, tileY: 36, newTile: new MapTile(1417, 3));
-
-        // Out-of-place rope tile between two climbable nets
-        TgxTileLayer.DefineTileFix((int)MapId.SanctuaryOfBigTree_M2, layerId: 2, tileX: 521, tileY: 0, newTile: new MapTile(0, 0));
-
-        // Out-of-place vertical row of rock tiles in the background
-        TgxTileLayer.DefineTileFix((int)MapId.EchoingCaves_M2, layerId: 1, tileX: 129, tileY: 5, newTile: new MapTile(0, 0));
-        TgxTileLayer.DefineTileFix((int)MapId.EchoingCaves_M2, layerId: 1, tileX: 129, tileY: 6, newTile: new MapTile(0, 0));
-        TgxTileLayer.DefineTileFix((int)MapId.EchoingCaves_M2, layerId: 1, tileX: 129, tileY: 7, newTile: new MapTile(0, 0));
-        TgxTileLayer.DefineTileFix((int)MapId.EchoingCaves_M2, layerId: 1, tileX: 129, tileY: 8, newTile: new MapTile(0, 0));
-
-        // Out-of-place tile next to bones with single white pixel
-        TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M1, layerId: 2, tileX: 62, tileY: 592, newTile: new MapTile(0, 0));
-        TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M1, layerId: 2, tileX: 63, tileY: 440, newTile: new MapTile(0, 0));
-        TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M1, layerId: 2, tileX: 3, tileY: 409, newTile: new MapTile(0, 0));
-        TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M1, layerId: 2, tileX: 62, tileY: 381, newTile: new MapTile(0, 0));
-        TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M1, layerId: 2, tileX: 62, tileY: 234, newTile: new MapTile(0, 0));
-        TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M1, layerId: 2, tileX: 62, tileY: 195, newTile: new MapTile(0, 0));
-        TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M1, layerId: 2, tileX: 66, tileY: 755, newTile: new MapTile(0, 0));
-        TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M1, layerId: 2, tileX: 9, tileY: 425, newTile: new MapTile(0, 0));
-
-        // Incomplete spike next to other spikes
-        TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M1, layerId: 2, tileX: 33, tileY: 817, newTile: new MapTile(0, 0));
-        TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M1, layerId: 2, tileX: 33, tileY: 818, newTile: new MapTile(0, 0));
-        TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M1, layerId: 2, tileX: 33, tileY: 819, newTile: new MapTile(0, 0));
-        TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M1, layerId: 2, tileX: 33, tileY: 820, newTile: new MapTile(0, 0));
-
-        // Missing tile for bone ladder
-        TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M1, layerId: 2, tileX: 66, tileY: 783, newTile: new MapTile(875, 2));
-
-        // The following fixes are already present in the N-Gage version, so only add them for GBA
-        if (Rom.Platform == Platform.GBA)
-        {
-            // Missing tiles on the edge of a pillar
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 187, tileY: 29, newTile: new MapTile(6, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 187, tileY: 30, newTile: new MapTile(30, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 187, tileY: 31, newTile: new MapTile(59, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 187, tileY: 32, newTile: new MapTile(92, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 187, tileY: 33, newTile: new MapTile(132, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 187, tileY: 34, newTile: new MapTile(174, true, false, 3));
-
-            // Bottom part of a pillar shifted to the left
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1250, tileY: 52, newTile: new MapTile(0, 0));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1251, tileY: 52, newTile: new MapTile(1291, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1252, tileY: 52, newTile: new MapTile(1290, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1253, tileY: 52, newTile: new MapTile(1289, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1254, tileY: 52, newTile: new MapTile(1288, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1255, tileY: 52, newTile: new MapTile(1287, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1256, tileY: 52, newTile: new MapTile(1286, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1257, tileY: 52, newTile: new MapTile(1285, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1258, tileY: 52, newTile: new MapTile(1284, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1251, tileY: 53, newTile: new MapTile(804, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1252, tileY: 53, newTile: new MapTile(803, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1253, tileY: 53, newTile: new MapTile(802, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1254, tileY: 53, newTile: new MapTile(801, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1255, tileY: 53, newTile: new MapTile(800, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1256, tileY: 53, newTile: new MapTile(799, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1257, tileY: 53, newTile: new MapTile(798, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1258, tileY: 53, newTile: new MapTile(797, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1259, tileY: 53, newTile: new MapTile(796, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1251, tileY: 54, newTile: new MapTile(834, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1252, tileY: 54, newTile: new MapTile(833, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1253, tileY: 54, newTile: new MapTile(832, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1254, tileY: 54, newTile: new MapTile(831, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1255, tileY: 54, newTile: new MapTile(830, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1256, tileY: 54, newTile: new MapTile(829, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1257, tileY: 54, newTile: new MapTile(828, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1258, tileY: 54, newTile: new MapTile(827, true, false, 3));
-            TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 1259, tileY: 54, newTile: new MapTile(826, true, false, 3));
-        }
-
-        // Out-of-place tile with just a few pixels
-        TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 264, tileY: 17, newTile: new MapTile(0, 0));
-        TgxTileLayer.DefineTileFix((int)MapId.CavesOfBadDreams_M2, layerId: 2, tileX: 260, tileY: 52, newTile: new MapTile(0, 0));
-    }
 
     #endregion
 
@@ -409,7 +320,7 @@ public class Rayman3 : GbaGame
         LevelFactory.Init(levelCreations);
 
         // Define optional tile fixes
-        DefineTileFixes();
+        Rayman3TileFixes.DefineTileFixes(Rom.Platform);
 
         // TODO: Fill out definitions for every actor so they can be used in the editor
         EditorData.Init(

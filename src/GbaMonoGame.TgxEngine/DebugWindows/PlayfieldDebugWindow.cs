@@ -110,7 +110,7 @@ public class PlayfieldDebugWindow : DebugWindow
         for (int i = 0; i < playfield2D.TileLayers.Count; i++)
         {
             ImGui.SameLine();
-            if (ImGui.RadioButton($"Layer {i}", TileSelectionLayer == i))
+            if (ImGui.RadioButton($"Layer {playfield2D.TileLayers[i].LayerId}", TileSelectionLayer == i))
             {
                 TileSelectionLayer = i;
                 SelectedTile = Point.Zero;
@@ -136,7 +136,6 @@ public class PlayfieldDebugWindow : DebugWindow
             if (ImGui.InputInt("Tile Y", ref tileY))
                 SelectedTile = SelectedTile with { Y = tileY };
 
-            ImGui.Text($"Position: {SelectedTile.X} x {SelectedTile.Y}");
             ImGui.Text($"Map index: {tileIndex}");
             ImGui.Text($"Tile index: {mapTile.TileIndex}");
             ImGui.Text($"Palette index: {mapTile.PaletteIndex}");

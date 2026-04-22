@@ -82,6 +82,8 @@ public class TgxTileLayer : TgxGameLayer
     // For tile replacement
     private static readonly Dictionary<int, Dictionary<int, List<(int TileX, int TileY, MapTile NewTile)>>> _tileFixes = new();
     public static void ClearTileFixes() => _tileFixes.Clear();
+    public static void DefineTileFix(Enum sceneId, int layerId, int tileX, int tileY, MapTile newTile) => 
+        DefineTileFix(Convert.ToInt32(sceneId), layerId, tileX, tileY, newTile);
     public static void DefineTileFix(int sceneId, int layerId, int tileX, int tileY, MapTile newTile)
     {
         if (!_tileFixes.TryGetValue(sceneId, out var sceneValue))
