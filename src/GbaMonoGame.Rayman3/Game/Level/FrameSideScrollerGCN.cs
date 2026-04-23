@@ -106,6 +106,10 @@ public class FrameSideScrollerGCN : FrameSideScroller
         PauseDialog = Engine.ActiveConfig.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, true) : new PauseDialog(Scene);
 
         Scene.AddDialog(UserInfo, false, false);
+
+        // Custom cheat dialog
+        CheatDialog = new CheatDialog(Scene);
+
         Scene.Init();
         Scene.Playfield.Step();
 
