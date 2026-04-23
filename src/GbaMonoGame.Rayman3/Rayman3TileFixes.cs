@@ -239,6 +239,54 @@ public static class Rayman3TileFixes
         TgxTileLayer.DefineTileFix(MapId.PirateShip_M1, layerId: 1, tileX: 296, tileY: 64, newTile: new MapTile(0, 0));
         TgxTileLayer.DefineTileFix(MapId.PirateShip_M1, layerId: 1, tileX: 296, tileY: 65, newTile: new MapTile(0, 0));
         TgxTileLayer.DefineTileFix(MapId.PirateShip_M1, layerId: 1, tileX: 296, tileY: 66, newTile: new MapTile(0, 0));
+
+        // Out-of-place tiles with a pink pixel
+        TgxTileLayer.DefineTileFix(MapId.World1, layerId: 2, tileX: 115, tileY: 52, newTile: new MapTile(0, 0));
+        TgxTileLayer.DefineTileFix(MapId.World1, layerId: 2, tileX: 123, tileY: 17, newTile: new MapTile(0, 0));
+
+        // Out-of-place tiles with a brown pixel
+        TgxTileLayer.DefineTileFix(MapId.World4, layerId: 1, tileX: 170, tileY: 34, newTile: new MapTile(0, 0));
+        TgxTileLayer.DefineTileFix(MapId.World4, layerId: 1, tileX: 193, tileY: 49, newTile: new MapTile(0, 0));
+
+        // N-Gage exclusive level
+        if (platform == Platform.NGage)
+        {
+            // Out-of-place tile with a purple pixel
+            TgxTileLayer.DefineTileFix(MapId.NGageMulti_CaptureTheFlagTeamWork, layerId: 1, tileX: 95, tileY: 3, newTile: new MapTile(0, 0));
+        }
+
+        // N-Gage exclusive level
+        if (platform == Platform.NGage)
+        {
+            // Out-of-place tiles with a pink pixel
+            TgxTileLayer.DefineTileFix(MapId.NGageMulti_CaptureTheFlagTeamPlayer, layerId: 2, tileX: 23, tileY: 6, newTile: new MapTile(0, 0));
+            TgxTileLayer.DefineTileFix(MapId.NGageMulti_CaptureTheFlagTeamPlayer, layerId: 2, tileX: 138, tileY: 6, newTile: new MapTile(0, 0));
+        }
+
+        // GBA exclusive levels
+        if (platform == Platform.GBA)
+        {
+            // Out-of-place tile with a red pixel
+            TgxTileLayer.DefineTileFix(MapId.GameCube_Bonus3, layerId: 3, tileX: 141, tileY: 31, newTile: new MapTile(0, 0));
+
+            // Missing and incorrect tiles for the right side of spikes
+            TgxTileLayer.DefineTileFix(MapId.GameCube_Bonus4, layerId: 3, tileX: 38, tileY: 788, newTile: new MapTile(1017, 2, true));
+            TgxTileLayer.DefineTileFix(MapId.GameCube_Bonus4, layerId: 3, tileX: 38, tileY: 789, newTile: new MapTile(1041, 2, true));
+            TgxTileLayer.DefineTileFix(MapId.GameCube_Bonus4, layerId: 3, tileX: 38, tileY: 790, newTile: new MapTile(1071, 2, true));
+            TgxTileLayer.DefineTileFix(MapId.GameCube_Bonus4, layerId: 3, tileX: 38, tileY: 791, newTile: new MapTile(1101, 2, true));
+            TgxTileLayer.DefineTileFix(MapId.GameCube_Bonus4, layerId: 3, tileX: 38, tileY: 792, newTile: new MapTile(1131, 2, true));
+            TgxTileLayer.DefineTileFix(MapId.GameCube_Bonus4, layerId: 3, tileX: 38, tileY: 793, newTile: new MapTile(1159, 2, true));
+            TgxTileLayer.DefineTileFix(MapId.GameCube_Bonus4, layerId: 3, tileX: 38, tileY: 794, newTile: new MapTile(1186, 2, true));
+
+            // Out-of-place tile with an orange pixel
+            TgxTileLayer.DefineTileFix(MapId.GameCube_Bonus4, layerId: 3, tileX: 34, tileY: 536, newTile: new MapTile(0, 0));
+
+            // Out-of-place tiles with purple pixels
+            TgxTileLayer.DefineTileFix(MapId.GameCube_Bonus7, layerId: 2, tileX: 689, tileY: 19, newTile: new MapTile(0, 0));
+            TgxTileLayer.DefineTileFix(MapId.GameCube_Bonus7, layerId: 2, tileX: 689, tileY: 27, newTile: new MapTile(0, 0));
+            TgxTileLayer.DefineTileFix(MapId.GameCube_Bonus7, layerId: 2, tileX: 858, tileY: 19, newTile: new MapTile(0, 0));
+            TgxTileLayer.DefineTileFix(MapId.GameCube_Bonus7, layerId: 2, tileX: 858, tileY: 27, newTile: new MapTile(0, 0));
+        }
     }
 
     private static void DefineTreeBranchTileFix(MapId sceneId, int layerId, int tileX, int offY, int height, bool flipX)

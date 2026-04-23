@@ -96,7 +96,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
         };
 
         TransitionsFX.Init(true);
-        Scene = new Scene2D(Map, x => new CameraSideScroller(x), 3, 1);
+        Scene = new Scene2D((int)GameInfo.MapId, Map, x => new CameraSideScroller(x), 3, 1);
 
         // Add user info (default hud)
         UserInfo = new UserInfoSideScroller(Scene, MapInfo.HasBlueLum);

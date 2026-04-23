@@ -42,7 +42,7 @@ public class Scene2D
     }
 
     // Scene2DGameCube
-    public Scene2D(GameCubeMap map, Func<Scene2D, CameraActor> createCameraFunc, int layersCount, int actorDrawPriority)
+    public Scene2D(int id, GameCubeMap map, Func<Scene2D, CameraActor> createCameraFunc, int layersCount, int actorDrawPriority)
     {
         LayersCount = layersCount;
         ActorDrawPriority = actorDrawPriority;
@@ -53,7 +53,7 @@ public class Scene2D
         Dialogs = new List<Dialog>(layersCount);
         DialogModalFlags = new List<bool>(layersCount);
 
-        Playfield = TgxPlayfield.Load<TgxPlayfield2D>(map.Playfield);
+        Playfield = TgxPlayfield.Load<TgxPlayfield2D>(map.Playfield, id);
         HudRenderContext = new HudRenderContext(RenderContext);
 
         Resource = map.Scene;

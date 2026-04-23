@@ -5,7 +5,7 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
 - The camera doesn't work as well on N-Gage when playing in widescreen due to it being optimized for a portrait aspect ratio. Fix by having a setting for the camera where it's either in GBA, N-Gage or Adaptive mode.
 - First time launching the game, before the title screen, should show options like language, controls and option preset.
 - Use Game Jolt API for achievements and leaderboards.
-- If the screen resolution is not 16:9 then there should be an additional resolution option in that aspect ration.
+- If the screen resolution is not 16:9 then there should be an additional resolution option matching that aspect ratio.
 - Instead of downscaling the menu font we should create separate, smaller, version. Same in other places. This is to keep sprites rendering in the same resolution for an as authentic feel as possible.
 
 ## 💬 Localization
@@ -42,7 +42,6 @@ However online multiplayer would be much more complicated. The game expects the 
 - Fix the helico animation hitbox for Rayman.
 - Allow pressing jump to let go off monkey bars.
 - Lower initial plum speed when jumping onto it on the lava. Right now it's either 1 or 0.5, so an option is to always use 0.5.
-- Remove stray pixels and fix bad tiling in levels.
 - Press the select button while in a hub world to bring up level info bars for every level for that hub in a vertical, scrollable, list, with you selecting one to teleport to that level curtain. Or rather, in pause menu have "levels" option which unlocks once final boss is beaten and shows the options canvas with a level list, for that world only.
 - Extend backgrounds so that they can render in the modern widescreen resolution without scaling:
     - BossMachine ✔️
