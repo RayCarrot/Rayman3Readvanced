@@ -12,7 +12,7 @@ public class TgxTilePhysicalLayer : TgxGameLayer
     
     public RenderContext RenderContext { get; }
     public GfxScreen DebugScreen { get; set; } // Collision map screen for debugging
-    public byte[] CollisionMap { get; }
+    public byte[] CollisionMap { get; set; }
 
     public void EnsureDebugScreenIsCreated()
     {

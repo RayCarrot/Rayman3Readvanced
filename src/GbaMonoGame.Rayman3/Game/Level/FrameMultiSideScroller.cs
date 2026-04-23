@@ -1,4 +1,5 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using System;
+using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.Rayman3.Readvanced;
@@ -100,6 +101,17 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         // On N-Gage it hides the island/mountains background for one of the maps
         if (Rom.Platform == Platform.NGage && GameInfo.MapId == MapId.NGageMulti_CaptureTheFlagTeamPlayer)
             Gfx.GetScreen(1).IsEnabled = false;
+
+        // Optionally fix broken collision
+        if (Engine.ActiveConfig.Tweaks.FixBugs && Rom.Platform == Platform.NGage && GameInfo.MapId == MapId.NGageMulti_CaptureTheFlagTeamPlayer)
+        {
+            byte[] collisionMap = new byte[Scene.Playfield.PhysicalLayer.CollisionMap.Length];
+            Array.Copy(Scene.Playfield.PhysicalLayer.CollisionMap, collisionMap, Scene.Playfield.PhysicalLayer.CollisionMap.Length);
+            Scene.Playfield.PhysicalLayer.CollisionMap[5074] = (byte)PhysicalTypeValue.Solid;
+            Scene.Playfield.PhysicalLayer.CollisionMap[5076] = (byte)PhysicalTypeValue.SolidAngle30Right1;
+            Scene.Playfield.PhysicalLayer.CollisionMap[5077] = (byte)PhysicalTypeValue.SolidAngle30Right2;
+            Scene.Playfield.PhysicalLayer.CollisionMap = collisionMap;
+        }
 
         Scene.AnimationPlayer.Execute();
 
