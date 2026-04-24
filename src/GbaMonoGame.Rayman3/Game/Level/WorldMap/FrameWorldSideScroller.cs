@@ -117,12 +117,11 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.AnimationPlayer.Execute();
         LevelMusicManager.Step();
 
-        if ((JoyPad.IsButtonJustPressed(Rayman3Input.Pause) || (Rom.Platform == Platform.NGage && ForcePauseFrame)) && 
+        // Pause (auto pause code here is same as on N-Gage)
+        if ((JoyPad.IsButtonJustPressed(Rayman3Input.Pause) || PendingAutoPause) && 
             !BlockPause)
         {
-            if (Rom.Platform == Platform.NGage)
-                ForcePauseFrame = false;
-
+            PendingAutoPause = false;
             CurrentStepAction = Step_Pause_Init;
             GameTime.Pause();
         }
@@ -160,8 +159,8 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
     {
         Scene.AddDialog(PauseDialog, true, false);
 
-        if (Rom.Platform == Platform.NGage)
-            BlockPauseFrame = true;
+        // NOTE: Normally only in the N-Gage version
+        BlockAutoPause = true;
 
         Scene.Step();
         UserInfo.Draw(Scene.AnimationPlayer);
@@ -193,8 +192,8 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
     {
         Scene.RemoveLastDialog();
 
-        if (Rom.Platform == Platform.NGage)
-            BlockPauseFrame = false;
+        // NOTE: Normally only in the N-Gage version
+        BlockAutoPause = false;
 
         Scene.RefreshDialogs();
         Scene.ProcessDialogs();
@@ -223,8 +222,8 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
 
-        if (Rom.Platform == Platform.NGage)
-            BlockPauseFrame = false;
+        // NOTE: Normally only in the N-Gage version
+        BlockAutoPause = false;
 
         CurrentStepAction = Step_Normal;
         GameTime.Resume();

@@ -10,6 +10,8 @@ namespace GbaMonoGame;
 /// </summary>
 public static class FrameManager
 {
+    private static bool WasActive { get; set; }
+
     internal static Frame CurrentFrame { get; private set; }
     internal static Frame NextFrame { get; private set; }
 
@@ -90,6 +92,14 @@ public static class FrameManager
             // will basically do the same thing. And this way we limit the loading to a single
             // update cycle and have the next continue on as normal.
             return;
+        }
+
+        // Check if the game was deactivated (window losing focus) and if it should auto-pause
+        if (Engine.ActiveConfig.Tweaks.PauseOnDeactivation && Engine.GbaGame.IsActive != WasActive)
+        {
+            WasActive = Engine.GbaGame.IsActive;
+            if (!Engine.GbaGame.IsActive && !RSMultiplayer.IsActive && !Frame.Current.BlockAutoPause)
+                Frame.Current.PendingAutoPause = true;
         }
 
         // Refresh sound events

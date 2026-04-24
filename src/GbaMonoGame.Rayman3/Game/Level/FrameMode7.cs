@@ -244,8 +244,11 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
 
         if (!RSMultiplayer.IsActive)
         {
-            if (JoyPad.IsButtonJustPressed(Rayman3Input.Pause) && CanPause)
+            // Pause (auto pause code here is same as on N-Gage from the side scroller levels)
+            if ((JoyPad.IsButtonJustPressed(Rayman3Input.Pause) || PendingAutoPause) 
+                && CanPause)
             {
+                PendingAutoPause = false;
                 CurrentStepAction = Step_Pause_Init;
                 GameTime.Pause();
 
@@ -308,6 +311,9 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
 
         Scene.AddDialog(PauseDialog, true, false);
 
+        // NOTE: Same as on N-Gage from the side scroller levels
+        BlockAutoPause = true;
+
         Scene.Step();
         UserInfo.Draw(Scene.AnimationPlayer);
         TimeAttackDialog?.Draw(Scene.AnimationPlayer);
@@ -341,6 +347,9 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
     public void Step_Pause_UnInit()
     {
         Scene.RemoveLastDialog();
+
+        // NOTE: Same as on N-Gage from the side scroller levels
+        BlockAutoPause = false;
 
         Scene.RefreshDialogs();
         Scene.ProcessDialogs();

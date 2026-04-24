@@ -16,9 +16,9 @@ public abstract class Frame
     /// </summary>
     public bool EndOfFrame { get; set; }
 
-    // N-Gage only - for automatically pausing from outside the game
-    public bool BlockPauseFrame { get; set; }
-    public bool ForcePauseFrame { get; set; }
+    // Only originally implemented on N-Gage for automatically pausing from outside the game
+    public bool BlockAutoPause { get; set; }
+    public bool PendingAutoPause { get; set; }
 
     /// <summary>
     /// Initializes the frame. This is called once when the frame is made active.

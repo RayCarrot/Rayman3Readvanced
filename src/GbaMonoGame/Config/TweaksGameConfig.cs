@@ -26,6 +26,7 @@ public record TweaksGameConfig : IniSectionObject
         UseInputBuffering = true;
         ShowAdditionalGameplayHints = true;
         AllowRunOnWorldmap = true;
+        PauseOnDeactivation = true;
     }
 
     public override string SectionKey => "Tweaks";
@@ -50,6 +51,7 @@ public record TweaksGameConfig : IniSectionObject
     public bool UseInputBuffering { get; set; }
     public bool ShowAdditionalGameplayHints { get; set; }
     public bool AllowRunOnWorldmap { get; set; }
+    public bool PauseOnDeactivation { get; set; }
 
     public override void Serialize(BaseIniSerializer serializer)
     {
@@ -73,5 +75,6 @@ public record TweaksGameConfig : IniSectionObject
         UseInputBuffering = serializer.Serialize<bool>(UseInputBuffering, "UseInputBuffering");
         ShowAdditionalGameplayHints = serializer.Serialize<bool>(ShowAdditionalGameplayHints, "ShowAdditionalTutorials");
         AllowRunOnWorldmap = serializer.Serialize<bool>(AllowRunOnWorldmap, "AllowRunOnWorldmap");
+        PauseOnDeactivation = serializer.Serialize<bool>(PauseOnDeactivation, "PauseOnDeactivation");
     }
 }

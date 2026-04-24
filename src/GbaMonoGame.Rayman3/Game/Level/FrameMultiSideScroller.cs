@@ -201,7 +201,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
                         if (MultiplayerManager.PendingSystemSyncPause && CurrentStepAction == Step_Normal && !UserInfo.IsGameOver)
                         {
-                            Current.ForcePauseFrame = false;
+                            Current.PendingAutoPause = false;
                             PausedMachineId = 0;
                             CurrentStepAction = Step_Pause_Init;
                         }
@@ -297,8 +297,8 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
         Scene.AddDialog(PauseDialog, true, false);
 
-        if (Rom.Platform == Platform.NGage)
-            BlockPauseFrame = true;
+        // NOTE: Normally only in the N-Gage version
+        BlockAutoPause = true;
 
         Scene.Step();
         UserInfo.Draw(Scene.AnimationPlayer);
@@ -326,8 +326,8 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
     {
         Scene.RemoveLastDialog();
 
-        if (Rom.Platform == Platform.NGage)
-            BlockPauseFrame = false;
+        // NOTE: Normally only in the N-Gage version
+        BlockAutoPause = false;
 
         Scene.RefreshDialogs();
 
@@ -335,8 +335,8 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
         Scene.ProcessDialogs();
 
-        if (Rom.Platform == Platform.NGage)
-            BlockPauseFrame = false;
+        // NOTE: Normally only in the N-Gage version
+        BlockAutoPause = false;
 
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();

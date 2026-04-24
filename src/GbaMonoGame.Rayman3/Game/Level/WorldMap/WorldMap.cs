@@ -1522,10 +1522,12 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         Scene.AnimationPlayer.Execute();
         LevelMusicManager.Step();
 
-        if (JoyPad.IsButtonJustPressed(Rayman3Input.Pause) && 
+        // Pause (auto pause code here is same as on N-Gage from the side scroller levels)
+        if ((JoyPad.IsButtonJustPressed(Rayman3Input.Pause) || PendingAutoPause) && 
             CurrentExStepAction == StepEx_Play &&
             CircleWipeTransitionMode == TransitionMode.None)
         {
+            PendingAutoPause = false;
             CurrentStepAction = Step_Pause_Init;
             GameTime.Pause();
         }
@@ -1554,6 +1556,10 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
     public void Step_Pause_AddDialog()
     {
         Scene.AddDialog(PauseDialog, true, false);
+
+        // NOTE: Same as on N-Gage from the side scroller levels
+        BlockAutoPause = true;
+
         Scene.Step();
         UserInfo.Draw(Scene.AnimationPlayer);
         Scene.Playfield.Step();
@@ -1583,6 +1589,10 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
     public void Step_Pause_UnInit()
     {
         Scene.RemoveLastDialog();
+
+        // NOTE: Same as on N-Gage from the side scroller levels
+        BlockAutoPause = false;
+
         Scene.RefreshDialogs();
         Scene.ProcessDialogs();
 

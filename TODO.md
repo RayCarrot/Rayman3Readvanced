@@ -38,7 +38,6 @@ However online multiplayer would be much more complicated. The game expects the 
     - After pausing in multiplayer it shows the countdown again.
     - Final boss missile and Hoodstormer move slower.
     - TimerBar sounds during last 10 seconds.
-- Auto-pause if the game window is inactive.
 - Fix the helico animation hitbox for Rayman.
 - Allow pressing jump to let go off monkey bars.
 - Lower initial plum speed when jumping onto it on the lava. Right now it's either 1 or 0.5, so an option is to always use 0.5.

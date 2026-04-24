@@ -485,6 +485,17 @@ public static class GameOptions
                     getData: _ => Engine.LocalConfig.Tweaks.AllowRunOnWorldmap,
                     setData: data => Engine.LocalConfig.Tweaks.AllowRunOnWorldmap = data,
                     getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "PAUSE ON LOST FOCUS",
+                    infoText: "Automatically pauses the game if within a level when the game has lost focus",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true)
+                    ],
+                    getData: _ => Engine.LocalConfig.Tweaks.PauseOnDeactivation,
+                    setData: data => Engine.LocalConfig.Tweaks.PauseOnDeactivation = data,
+                    getCustomName: _ => null),
             ]),
             new GameOptionsGroup("DIFFICULTY",
             [
