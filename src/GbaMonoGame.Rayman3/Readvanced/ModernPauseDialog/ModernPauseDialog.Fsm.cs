@@ -76,12 +76,17 @@ public partial class ModernPauseDialog
         switch (action)
         {
             case FsmAction.Init:
+                MoveInMenu();
                 OptionsMenu.MoveIn();
                 break;
 
             case FsmAction.Step:
+                PauseDialogDrawStep prevDrawStep = OptionsMenu.DrawStep;
                 OptionsMenu.Step();
-                
+
+                if (prevDrawStep != OptionsMenu.DrawStep && OptionsMenu.DrawStep == PauseDialogDrawStep.MoveOut)
+                    MoveOutMenu();
+
                 if (OptionsMenu.DrawStep == PauseDialogDrawStep.Hide)
                 {
                     State.MoveTo(_Fsm_CheckSelection);

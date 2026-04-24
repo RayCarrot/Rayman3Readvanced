@@ -168,6 +168,111 @@ public partial class ModernPauseDialog : Dialog
         }
     }
 
+    private void MoveInMenu()
+    {
+        // Move out the user info bars
+        switch (Frame.Current)
+        {
+            case FrameSideScroller frameSideScroller:
+                // Move out the life, lums and cages bars
+                frameSideScroller.UserInfo.MoveOutBars();
+
+                // The Lums1000Bar can't normally transition out, so we force it to here
+                if (frameSideScroller.UserInfo.Lums1000Bar != null)
+                    frameSideScroller.UserInfo.Lums1000Bar.EnableTransitions = true;
+
+                frameSideScroller.TimeAttackDialog?.MoveOutBars();
+                break;
+
+            case FrameSingleMode7 frameSingleMode7:
+                frameSingleMode7.UserInfo.MoveOutBars();
+
+                frameSingleMode7.TimeAttackDialog?.MoveOutBars();
+                break;
+
+            case FrameWaterSkiMode7 frameWaterSkiMode7:
+                frameWaterSkiMode7.UserInfo.MoveOutBars();
+                break;
+
+            case FrameWorldSideScroller frameWorldSideScroller:
+                frameWorldSideScroller.UserInfo.LifeBar.MoveOut();
+
+                frameWorldSideScroller.UserInfo.Lums1000Bar.MoveOut();
+                frameWorldSideScroller.UserInfo.Lums1000Bar.EnableTransitions = true;
+
+                frameWorldSideScroller.UserInfo.Cages50Bar.MoveOut();
+                frameWorldSideScroller.UserInfo.Cages50Bar.EnableTransitions = true;
+
+                frameWorldSideScroller.UserInfo.MoveOutCurtains();
+                break;
+
+            case WorldMap worldMap:
+                worldMap.UserInfo.LifeBar.MoveOut();
+
+                worldMap.UserInfo.Lums1000Bar.MoveOut();
+                worldMap.UserInfo.Lums1000Bar.EnableTransitions = true;
+
+                worldMap.UserInfo.Cages50Bar.MoveOut();
+                worldMap.UserInfo.Cages50Bar.EnableTransitions = true;
+                break;
+
+            default:
+                throw new InvalidOperationException("Invalid frame");
+        }
+    }
+
+    private void MoveOutMenu()
+    {
+        // Move back in the user info bars
+        switch (Frame.Current)
+        {
+            case FrameSideScroller frameSideScroller:
+                // Only move in the life, lums and cages bars if we're not in a Ly challenge level
+                if (GameInfo.MapId is not (MapId.ChallengeLy1 or MapId.ChallengeLy2 or MapId.ChallengeLyGCN))
+                    frameSideScroller.UserInfo.MoveInBars();
+
+                frameSideScroller.TimeAttackDialog?.MoveInBars();
+                break;
+
+            case FrameSingleMode7 frameSingleMode7:
+                frameSingleMode7.UserInfo.MoveInBars();
+
+                frameSingleMode7.TimeAttackDialog?.MoveInBars();
+                break;
+
+            case FrameWaterSkiMode7 frameWaterSkiMode7:
+                frameWaterSkiMode7.UserInfo.MoveInBars();
+                break;
+
+            case FrameWorldSideScroller frameWorldSideScroller:
+                frameWorldSideScroller.UserInfo.LifeBar.SetToStayVisible();
+                frameWorldSideScroller.UserInfo.LifeBar.MoveIn();
+
+                frameWorldSideScroller.UserInfo.Lums1000Bar.SetToStayVisible();
+                frameWorldSideScroller.UserInfo.Lums1000Bar.MoveIn();
+
+                frameWorldSideScroller.UserInfo.Cages50Bar.SetToStayVisible();
+                frameWorldSideScroller.UserInfo.Cages50Bar.MoveIn();
+
+                frameWorldSideScroller.UserInfo.MoveInCurtains();
+                break;
+
+            case WorldMap worldMap:
+                worldMap.UserInfo.LifeBar.SetToStayVisible();
+                worldMap.UserInfo.LifeBar.MoveIn();
+
+                worldMap.UserInfo.Lums1000Bar.SetToStayVisible();
+                worldMap.UserInfo.Lums1000Bar.MoveIn();
+
+                worldMap.UserInfo.Cages50Bar.SetToStayVisible();
+                worldMap.UserInfo.Cages50Bar.MoveIn();
+                break;
+
+            default:
+                throw new InvalidOperationException("Invalid frame");
+        }
+    }
+
     public override void Load()
     {
         if (Rom.Platform == Platform.NGage)
