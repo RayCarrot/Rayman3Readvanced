@@ -27,6 +27,7 @@ public record TweaksGameConfig : IniSectionObject
         ShowAdditionalGameplayHints = true;
         AllowRunOnWorldmap = true;
         PauseOnDeactivation = true;
+        FixHelicoHitbox = true;
     }
 
     public override string SectionKey => "Tweaks";
@@ -52,6 +53,7 @@ public record TweaksGameConfig : IniSectionObject
     public bool ShowAdditionalGameplayHints { get; set; }
     public bool AllowRunOnWorldmap { get; set; }
     public bool PauseOnDeactivation { get; set; }
+    public bool FixHelicoHitbox { get; set; }
 
     public override void Serialize(BaseIniSerializer serializer)
     {
@@ -76,5 +78,6 @@ public record TweaksGameConfig : IniSectionObject
         ShowAdditionalGameplayHints = serializer.Serialize<bool>(ShowAdditionalGameplayHints, "ShowAdditionalTutorials");
         AllowRunOnWorldmap = serializer.Serialize<bool>(AllowRunOnWorldmap, "AllowRunOnWorldmap");
         PauseOnDeactivation = serializer.Serialize<bool>(PauseOnDeactivation, "PauseOnDeactivation");
+        FixHelicoHitbox = serializer.Serialize<bool>(FixHelicoHitbox, "FixHelicoHitbox");
     }
 }

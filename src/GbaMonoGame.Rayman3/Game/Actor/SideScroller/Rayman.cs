@@ -2280,6 +2280,11 @@ public sealed partial class Rayman : MovableActor
 
     public override void DoBehavior()
     {
+        // Optionally fix the vulnerability hitbox for the first frame of the
+        // helico animation as it's a lot bigger than it should be
+        if (Engine.ActiveConfig.Tweaks.FixHelicoHitbox && AnimatedObject.CurrentAnimation == 4 && AnimatedObject.CurrentFrame == 0)
+            AnimationBoxTable.VulnerabilityBox = new Box(-7, -51, 8, -13);
+
         if (Debug_NoClip)
             DoNoClipBehavior();
         else

@@ -496,6 +496,17 @@ public static class GameOptions
                     getData: _ => Engine.LocalConfig.Tweaks.PauseOnDeactivation,
                     setData: data => Engine.LocalConfig.Tweaks.PauseOnDeactivation = data,
                     getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "CONSISTENT HELICO HITBOX",
+                    infoText: "Updates the hitbox for Rayman's helicopter animation so that it's consistent, fixing the first frame having it be too big",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, TweaksPreset.Readvanced)
+                    ],
+                    getData: _ => Engine.LocalConfig.Tweaks.FixHelicoHitbox,
+                    setData: data => Engine.LocalConfig.Tweaks.FixHelicoHitbox = data,
+                    getCustomName: _ => null),
             ]),
             new GameOptionsGroup("DIFFICULTY",
             [

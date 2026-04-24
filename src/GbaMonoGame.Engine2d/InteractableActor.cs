@@ -10,8 +10,8 @@ public abstract class InteractableActor : ActionActor
     protected InteractableActor(int instanceId, Scene2D scene, ActorResource actorResource, AnimatedObject animatedObject)
         : base(instanceId, scene, actorResource, animatedObject)
     {
-        _animationBoxTable = new BoxTable();
-        AnimatedObject.BoxTable = _animationBoxTable;
+        AnimationBoxTable = new BoxTable();
+        AnimatedObject.BoxTable = AnimationBoxTable;
 
         _debugAttackBoxAObject = new DebugBoxAObject()
         {
@@ -25,13 +25,14 @@ public abstract class InteractableActor : ActionActor
         };
     }
 
-    private readonly BoxTable _animationBoxTable;
     private readonly DebugBoxAObject _debugAttackBoxAObject;
     private readonly DebugBoxAObject _debugVulnerabilityBoxAObject;
+    
+    public BoxTable AnimationBoxTable { get; }
 
     public virtual Box GetAttackBox()
     {
-        Box box = _animationBoxTable.AttackBox;
+        Box box = AnimationBoxTable.AttackBox;
 
         if (AnimatedObject.FlipX)
             box = Box.FlipX(box);
@@ -44,7 +45,7 @@ public abstract class InteractableActor : ActionActor
 
     public virtual Box GetVulnerabilityBox()
     {
-        Box box = _animationBoxTable.VulnerabilityBox;
+        Box box = AnimationBoxTable.VulnerabilityBox;
 
         if (AnimatedObject.FlipX)
             box = Box.FlipX(box);

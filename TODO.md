@@ -38,7 +38,6 @@ However online multiplayer would be much more complicated. The game expects the 
     - After pausing in multiplayer it shows the countdown again.
     - Final boss missile and Hoodstormer move slower.
     - TimerBar sounds during last 10 seconds.
-- Fix the helico animation hitbox for Rayman.
 - Allow pressing jump to let go off monkey bars.
 - Lower initial plum speed when jumping onto it on the lava. Right now it's either 1 or 0.5, so an option is to always use 0.5.
 - Press the select button while in a hub world to bring up level info bars for every level for that hub in a vertical, scrollable, list, with you selecting one to teleport to that level curtain. Or rather, in pause menu have "levels" option which unlocks once final boss is beaten and shows the options canvas with a level list, for that world only.
