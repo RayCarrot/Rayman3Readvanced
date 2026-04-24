@@ -8,10 +8,54 @@ namespace GbaMonoGame.Rayman3;
 
 public static class GameInfo
 {
+    static GameInfo()
+    {
+        LevelMaps =
+        [
+            [MapId.WoodLight_M1, MapId.WoodLight_M2],
+            [MapId.FairyGlade_M1, MapId.FairyGlade_M2],
+            [MapId.MarshAwakening1],
+            [MapId.SanctuaryOfBigTree_M1, MapId.SanctuaryOfBigTree_M2],
+            [MapId.BossMachine],
+            [MapId.Bonus1],
+
+            [MapId.MissileRace1],
+            [MapId.EchoingCaves_M1, MapId.EchoingCaves_M2],
+            [MapId.CavesOfBadDreams_M1, MapId.CavesOfBadDreams_M2],
+            [MapId.MenhirHills_M1, MapId.MenhirHills_M2],
+            [MapId.MarshAwakening2],
+            [MapId.BossBadDreams],
+            [MapId.Bonus2],
+            [MapId.ChallengeLy1],
+
+            [MapId.SanctuaryOfRockAndLava_M1, MapId.SanctuaryOfRockAndLava_M2, MapId.SanctuaryOfRockAndLava_M3],
+            [MapId.BeneathTheSanctuary_M1, MapId.BeneathTheSanctuary_M2],
+            [MapId.ThePrecipice_M1, MapId.ThePrecipice_M2],
+            [MapId.TheCanopy_M1, MapId.TheCanopy_M2],
+            [MapId.SanctuaryOfStoneAndFire_M1, MapId.SanctuaryOfStoneAndFire_M2, MapId.SanctuaryOfStoneAndFire_M3],
+            [MapId.BossRockAndLava],
+            [MapId.Bonus3],
+
+            [MapId.TombOfTheAncients_M1, MapId.TombOfTheAncients_M2],
+            [MapId.IronMountains_M1, MapId.IronMountains_M2],
+            [MapId.MissileRace2],
+            [MapId.PirateShip_M1, MapId.PirateShip_M2],
+            [MapId.BossScaleMan],
+            [MapId.BossFinal_M1],
+            [MapId.Bonus4],
+            [MapId.ChallengeLy2],
+            [MapId._1000Lums],
+            [MapId.ChallengeLyGCN]
+        ];
+    }
+
     public const int LumsPerWorld = 230;
     public const int OriginalSaveSlotsCount = 3;
     public const int ModernSaveSlotsCount = 5;
 
+    // NOTE: In the original game this is only in LevelInfoBar, but we want to use it elsewhere too
+    public static MapId[][] LevelMaps { get; }
+    
     public static MapId? NextMapId { get; set; }
     public static MapId MapId { get; set; }
     public static LevelType LevelType { get; set; }
