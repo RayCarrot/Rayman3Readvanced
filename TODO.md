@@ -34,7 +34,6 @@ However online multiplayer would be much more complicated. The game expects the 
 - Option not to cache serialized data from the ROM. Currently it always does that.
 
 ### ✨ Optional improvements
-- Lower initial plum speed when jumping onto it on the lava. Right now it's either 1 or 0.5, so an option is to always use 0.5.
 - Extend backgrounds so that they can render in the modern widescreen resolution without scaling:
     - BossMachine ✔️
     - BossRockAndLava

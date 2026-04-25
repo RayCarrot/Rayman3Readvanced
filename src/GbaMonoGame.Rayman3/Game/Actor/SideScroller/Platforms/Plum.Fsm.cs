@@ -118,11 +118,11 @@ public partial class Plum
                     // Set initial speed
                     if (ShouldSetInitialSpeed)
                     {
-                        if (mainActor.Speed.X < 0)
+                        if (mainActor.Speed.X < 0 && !Engine.ActiveConfig.Tweaks.LowerInitialPlumSpeed)
                         {
                             FloatSpeedX = -1;
                         }
-                        else if (mainActor.Speed.X > 0)
+                        else if (mainActor.Speed.X > 0 && !Engine.ActiveConfig.Tweaks.LowerInitialPlumSpeed)
                         {
                             FloatSpeedX = 1;
                         }

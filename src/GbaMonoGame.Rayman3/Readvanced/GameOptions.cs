@@ -487,7 +487,7 @@ public static class GameOptions
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "PAUSE ON LOST FOCUS",
-                    infoText: "Automatically pauses the game if within a level when the game has lost focus",
+                    infoText: "Automatically pauses the game if within a level when the game has lost focus.",
                     items:
                     [
                         new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
@@ -498,7 +498,7 @@ public static class GameOptions
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "CONSISTENT HELICO HITBOX",
-                    infoText: "Updates the hitbox for Rayman's helicopter animation so that it's consistent, fixing the first frame having it be too big",
+                    infoText: "Updates the hitbox for Rayman's helicopter animation so that it's consistent, fixing the first frame having it be too big.",
                     items:
                     [
                         new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
@@ -506,6 +506,17 @@ public static class GameOptions
                     ],
                     getData: _ => Engine.LocalConfig.Tweaks.FixHelicoHitbox,
                     setData: data => Engine.LocalConfig.Tweaks.FixHelicoHitbox = data,
+                    getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "LOWER INITIAL PLUM SPEED",
+                    infoText: "Lowers the initial speed of the plum when first landing on it.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, TweaksPreset.Readvanced)
+                    ],
+                    getData: _ => Engine.LocalConfig.Tweaks.LowerInitialPlumSpeed,
+                    setData: data => Engine.LocalConfig.Tweaks.LowerInitialPlumSpeed = data,
                     getCustomName: _ => null),
             ]),
             new GameOptionsGroup("DIFFICULTY",

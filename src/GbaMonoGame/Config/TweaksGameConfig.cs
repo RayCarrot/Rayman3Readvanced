@@ -28,6 +28,7 @@ public record TweaksGameConfig : IniSectionObject
         AllowRunOnWorldmap = true;
         PauseOnDeactivation = true;
         FixHelicoHitbox = true;
+        LowerInitialPlumSpeed = true;
     }
 
     public override string SectionKey => "Tweaks";
@@ -54,6 +55,7 @@ public record TweaksGameConfig : IniSectionObject
     public bool AllowRunOnWorldmap { get; set; }
     public bool PauseOnDeactivation { get; set; }
     public bool FixHelicoHitbox { get; set; }
+    public bool LowerInitialPlumSpeed { get; set; }
 
     public override void Serialize(BaseIniSerializer serializer)
     {
@@ -79,5 +81,6 @@ public record TweaksGameConfig : IniSectionObject
         AllowRunOnWorldmap = serializer.Serialize<bool>(AllowRunOnWorldmap, "AllowRunOnWorldmap");
         PauseOnDeactivation = serializer.Serialize<bool>(PauseOnDeactivation, "PauseOnDeactivation");
         FixHelicoHitbox = serializer.Serialize<bool>(FixHelicoHitbox, "FixHelicoHitbox");
+        LowerInitialPlumSpeed = serializer.Serialize<bool>(LowerInitialPlumSpeed, "LowerInitialPlumSpeed");
     }
 }
