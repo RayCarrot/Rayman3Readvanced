@@ -329,8 +329,11 @@ public partial class ModernPauseDialog : Dialog
         OptionsMenu = new PauseDialogOptionsMenu();
         OptionsMenu.Load();
 
-        LevelsMenu = new PauseDialogLevelsMenu(Scene);
-        LevelsMenu.Load();
+        if (GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
+        {
+            LevelsMenu = new PauseDialogLevelsMenu(Scene);
+            LevelsMenu.Load();
+        }
 
         CursorOffsetY = 0;
     }
@@ -400,7 +403,7 @@ public partial class ModernPauseDialog : Dialog
             foreach (SpriteFontTextObject option in Options)
                 animationPlayer.Play(option);
             OptionsMenu.Draw(animationPlayer);
-            LevelsMenu.Draw(animationPlayer);
+            LevelsMenu?.Draw(animationPlayer);
         }
     }
 }
