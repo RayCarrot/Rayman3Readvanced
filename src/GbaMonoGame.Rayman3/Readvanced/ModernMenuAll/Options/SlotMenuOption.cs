@@ -120,7 +120,7 @@ public class SlotMenuOption : MenuOption
 
         LumIcon.ScreenPos = position + new Vector2(23, 1);
         LumText.ScreenPos = position + new Vector2(45, 1);
-        CageIcon.ScreenPos = position + new Vector2(81, -4);
+        CageIcon.ScreenPos = position + new Vector2(81, -3);
         CageText.ScreenPos = position + new Vector2(106, 1);
         TimeIcon.ScreenPos = position + new Vector2(131, 0);
         TimeText.ScreenPos = position + new Vector2(150, 1);

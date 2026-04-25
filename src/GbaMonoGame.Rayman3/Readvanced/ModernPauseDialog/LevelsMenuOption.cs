@@ -106,11 +106,11 @@ public class LevelsMenuOption : TextMenuOption
         base.SetPosition(position);
 
         if (LumIcon != null)
-            LumIcon.ScreenPos = position + new Vector2(163, 0);
+            LumIcon.ScreenPos = position + new Vector2(163, 1);
         if (LumText != null)
             LumText.ScreenPos = position + new Vector2(185, 1);
         if (CageIcon != null)
-            CageIcon.ScreenPos = position + new Vector2(226, -4);
+            CageIcon.ScreenPos = position + new Vector2(226, -3);
         if (CageText != null)
             CageText.ScreenPos = position + new Vector2(251, 1);
     }
