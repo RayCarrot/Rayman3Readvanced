@@ -11,6 +11,7 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
 ## 💬 Localization
 - If you change the button mapping then the in-game tutorial texts are wrong, such as when Murfy or Ly explain how to perform a move. Find a way to replace this.
 - Translate new text to the available languages. Currently all strings are hard-coded.
+- Make sure all menus work in all languages, so the text doesn't overflow
 
 ## 🧑‍💻 Code
 - Move hard-coded primitive values to constant fields.
@@ -40,7 +41,6 @@ However online multiplayer would be much more complicated. The game expects the 
     - TimerBar sounds during last 10 seconds.
 - Allow pressing jump to let go off monkey bars.
 - Lower initial plum speed when jumping onto it on the lava. Right now it's either 1 or 0.5, so an option is to always use 0.5.
-- Press the select button while in a hub world to bring up level info bars for every level for that hub in a vertical, scrollable, list, with you selecting one to teleport to that level curtain. Or rather, in pause menu have "levels" option which unlocks once final boss is beaten and shows the options canvas with a level list, for that world only.
 - Extend backgrounds so that they can render in the modern widescreen resolution without scaling:
     - BossMachine ✔️
     - BossRockAndLava

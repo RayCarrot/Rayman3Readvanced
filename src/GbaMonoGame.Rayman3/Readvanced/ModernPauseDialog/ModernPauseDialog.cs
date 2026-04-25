@@ -32,6 +32,7 @@ public partial class ModernPauseDialog : Dialog
     public Action[] OptionActions { get; set; }
 
     public PauseDialogOptionsMenu OptionsMenu { get; set; }
+    public PauseDialogLevelsMenu LevelsMenu { get; set; }
 
     public int SelectedOption { get; set; }
     public int SavedSelectedOption { get; set; }
@@ -328,6 +329,9 @@ public partial class ModernPauseDialog : Dialog
         OptionsMenu = new PauseDialogOptionsMenu();
         OptionsMenu.Load();
 
+        LevelsMenu = new PauseDialogLevelsMenu(Scene);
+        LevelsMenu.Load();
+
         CursorOffsetY = 0;
     }
 
@@ -396,6 +400,7 @@ public partial class ModernPauseDialog : Dialog
             foreach (SpriteFontTextObject option in Options)
                 animationPlayer.Play(option);
             OptionsMenu.Draw(animationPlayer);
+            LevelsMenu.Draw(animationPlayer);
         }
     }
 }

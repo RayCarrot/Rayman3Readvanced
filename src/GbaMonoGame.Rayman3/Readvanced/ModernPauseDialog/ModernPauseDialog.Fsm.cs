@@ -23,6 +23,8 @@ public partial class ModernPauseDialog
                 AddOption("OPTIONS", Fsm_Options);
                 if (GameInfo.MapId is not (MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4 or MapId.WorldMap))
                     AddOption("RESTART MAP", Fsm_RestartMap);
+                else
+                    AddOption("LEVELS", Fsm_Levels);
                 // TODO: TimeAttack ? RESTART LEVEL : VIEW ACHIEVEMENTS
                 AddOption(CanExitLevel ? "EXIT LEVEL" : "QUIT GAME", Fsm_QuitGame);
 
@@ -96,6 +98,37 @@ public partial class ModernPauseDialog
 
             case FsmAction.UnInit:
                 Engine.SaveConfig();
+                break;
+        }
+
+        return true;
+    }
+
+    public bool Fsm_Levels(FsmAction action)
+    {
+        switch (action)
+        {
+            case FsmAction.Init:
+                MoveInMenu();
+                LevelsMenu.MoveIn();
+                break;
+
+            case FsmAction.Step:
+                PauseDialogDrawStep prevDrawStep = LevelsMenu.DrawStep;
+                LevelsMenu.Step();
+
+                if (prevDrawStep != LevelsMenu.DrawStep && LevelsMenu.DrawStep == PauseDialogDrawStep.MoveOut)
+                    MoveOutMenu();
+
+                if (LevelsMenu.DrawStep == PauseDialogDrawStep.Hide)
+                {
+                    State.MoveTo(_Fsm_CheckSelection);
+                    return false;
+                }
+                break;
+
+            case FsmAction.UnInit:
+                // Do nothing
                 break;
         }
 
