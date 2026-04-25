@@ -21,11 +21,31 @@ public partial class ModernPauseDialog
                         ((NGageSoundEventsManager)SoundEventsManager.Current).ResumeLoopingSoundEffects();
                 });
                 AddOption("OPTIONS", _Fsm_Options);
-                if (GameInfo.MapId is not (MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4 or MapId.WorldMap))
-                    AddOption("RESTART MAP", _Fsm_RestartMap);
-                else
+
+                // World
+                if (GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
+                {
                     AddOption("LEVELS", _Fsm_Levels);
-                // TODO: TimeAttack ? RESTART LEVEL : VIEW ACHIEVEMENTS
+                    // TODO: "VIEW ACHIEVEMENTS"
+                }
+                // Worldmap
+                else if (GameInfo.MapId == MapId.WorldMap)
+                {
+                    // TODO: "VIEW ACHIEVEMENTS"
+                }
+                // Time attack
+                else if (TimeAttackInfo.IsActive)
+                {
+                    AddOption("RESTART MAP", _Fsm_RestartMap);
+                    // TODO: "RESTART LEVEL"
+                }
+                // Level
+                else
+                {
+                    AddOption("RESTART MAP", _Fsm_RestartMap);
+                    // TODO: "VIEW ACHIEVEMENTS"
+                }
+
                 AddOption(CanExitLevel ? "EXIT LEVEL" : "QUIT GAME", _Fsm_QuitGame);
 
                 SetSelectedOption(SavedSelectedOption);
