@@ -20,13 +20,13 @@ public partial class ModernPauseDialog
                     if (Rom.Platform == Platform.NGage)
                         ((NGageSoundEventsManager)SoundEventsManager.Current).ResumeLoopingSoundEffects();
                 });
-                AddOption("OPTIONS", Fsm_Options);
+                AddOption("OPTIONS", _Fsm_Options);
                 if (GameInfo.MapId is not (MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4 or MapId.WorldMap))
-                    AddOption("RESTART MAP", Fsm_RestartMap);
+                    AddOption("RESTART MAP", _Fsm_RestartMap);
                 else
-                    AddOption("LEVELS", Fsm_Levels);
+                    AddOption("LEVELS", _Fsm_Levels);
                 // TODO: TimeAttack ? RESTART LEVEL : VIEW ACHIEVEMENTS
-                AddOption(CanExitLevel ? "EXIT LEVEL" : "QUIT GAME", Fsm_QuitGame);
+                AddOption(CanExitLevel ? "EXIT LEVEL" : "QUIT GAME", _Fsm_QuitGame);
 
                 SetSelectedOption(SavedSelectedOption);
                 break;
@@ -149,7 +149,7 @@ public partial class ModernPauseDialog
                     if (Rom.Platform == Platform.GBA)
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                 });
-                AddOption("NO", Fsm_CheckSelection, () =>
+                AddOption("NO", _Fsm_CheckSelection, () =>
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
                 });
@@ -258,7 +258,7 @@ public partial class ModernPauseDialog
                     if (Rom.Platform == Platform.GBA)
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                 });
-                AddOption("NO", Fsm_CheckSelection, () =>
+                AddOption("NO", _Fsm_CheckSelection, () =>
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
                 });
