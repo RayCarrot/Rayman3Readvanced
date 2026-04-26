@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using BinarySerializer.Ubisoft.GbaEngine;
 using Microsoft.Xna.Framework;
+using Action = System.Action;
 
 namespace GbaMonoGame;
 
@@ -11,6 +13,7 @@ namespace GbaMonoGame;
 public static class FrameManager
 {
     private static bool WasActive { get; set; }
+    private static List<Action> StepActions { get; } = [];
 
     internal static Frame CurrentFrame { get; private set; }
     internal static Frame NextFrame { get; private set; }
@@ -30,6 +33,11 @@ public static class FrameManager
     public static void ReloadCurrentFrame()
     {
         NextFrame = CurrentFrame;
+    }
+
+    public static void AddStepAction(Action action)
+    {
+        StepActions.Add(action);
     }
 
     /// <summary>
@@ -111,7 +119,11 @@ public static class FrameManager
 
         // Step the currently active frame
         CurrentFrame.Step();
-        
+
+        // Invoke custom step actions
+        foreach (Action action in StepActions)
+            action();
+
         // Update the game time by one game frame
         GameTime.Update();
     }
