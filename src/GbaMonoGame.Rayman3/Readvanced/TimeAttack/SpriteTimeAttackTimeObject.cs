@@ -77,7 +77,7 @@ public class SpriteTimeAttackTimeObject : AObject
             sprite.Priority = BgPriority;
             sprite.RenderOptions = RenderOptions;
             sprite.Alpha = Alpha;
-            Gfx.AddSprite(sprite);
+            Gfx.AddSprite(sprite, SpriteType);
 
             pos += new Vector2(texture.Width + 1, 0);
         }

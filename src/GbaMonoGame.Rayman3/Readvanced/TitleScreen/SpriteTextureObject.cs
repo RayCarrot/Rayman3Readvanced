@@ -20,6 +20,6 @@ public class SpriteTextureObject : AObject
         sprite.Priority = BgPriority;
         sprite.RenderOptions = RenderOptions;
         sprite.Alpha = Alpha;
-        Gfx.AddSprite(sprite);
+        Gfx.AddSprite(sprite, SpriteType);
     }
 }

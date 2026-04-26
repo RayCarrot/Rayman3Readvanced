@@ -63,7 +63,7 @@ public class SpriteFontTextObject : AObject
                 renderOptions: RenderOptions);
 
             if (sprite != null)
-                Gfx.AddSprite(sprite);
+                Gfx.AddSprite(sprite, SpriteType);
         }
     }
 }

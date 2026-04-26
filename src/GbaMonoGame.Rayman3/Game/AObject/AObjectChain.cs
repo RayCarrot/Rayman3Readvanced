@@ -96,7 +96,7 @@ public class AObjectChain : AnimatedObject
         Timer = timer;
         IsDelayMode = isDelayMode;
 
-        IsBackSprite = EnablePriorityManagement && Prios[0];
+        SpriteType = EnablePriorityManagement && Prios[0] ? SpriteType.Back : SpriteType.Default;
 
         base.Execute(soundEventCallback);
 
@@ -112,7 +112,7 @@ public class AObjectChain : AnimatedObject
 
             ScreenPos = ChildrenScreenPositions[i];
 
-            IsBackSprite = EnablePriorityManagement && Prios[i + 1];
+            SpriteType = EnablePriorityManagement && Prios[i + 1] ? SpriteType.Back : SpriteType.Default;
 
             base.Execute(soundEventCallback);
         }

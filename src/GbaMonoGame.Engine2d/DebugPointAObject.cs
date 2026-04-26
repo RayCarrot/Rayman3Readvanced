@@ -22,7 +22,7 @@ public class DebugPointAObject : AObject
         sprite.AffineMatrix = new AffineMatrix(0, size);
         sprite.Color = new Color(Color, alpha);
         sprite.RenderOptions = RenderOptions;
-        Gfx.AddSprite(sprite);
+        Gfx.AddSprite(sprite, SpriteType);
     }
 
     public override void Execute(Action<short> soundEventCallback)

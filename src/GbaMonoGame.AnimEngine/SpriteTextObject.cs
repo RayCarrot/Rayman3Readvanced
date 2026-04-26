@@ -73,7 +73,7 @@ public class SpriteTextObject : AObject
                 affineMatrix: AffineMatrix, 
                 alpha: Alpha, 
                 color: Color, 
-                renderOptions: RenderOptions));
+                renderOptions: RenderOptions), SpriteType);
         }
     }
 }

@@ -119,7 +119,6 @@ public class AnimatedObject : AObject
     public AffineMatrix? AffineMatrix { get; set; }
 
     // Custom
-    public bool IsBackSprite { get; set; }
     public int PaletteCycleIndex { get; set; }
     public bool OverrideGfxColor { get; set; } // Needed for the curtains in the worldmap which are not effected by the palette fading
     public AlphaCoefficient Alpha { get; set; } = AlphaCoefficient.Max;
@@ -614,11 +613,7 @@ public class AnimatedObject : AObject
                     sprite.OverrideGfxColor = OverrideGfxColor;
                     sprite.Alpha = Alpha;
                     sprite.RenderOptions = RenderOptions with { PaletteTexture = paletteTexture };
-
-                    if (IsBackSprite)
-                        Gfx.AddBackSprite(sprite);
-                    else
-                        Gfx.AddSprite(sprite);
+                    Gfx.AddSprite(sprite, SpriteType);
                     break;
 
                 case AnimationChannelType.Sound:

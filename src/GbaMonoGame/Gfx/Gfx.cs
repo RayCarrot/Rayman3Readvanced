@@ -33,12 +33,6 @@ public static class Gfx
     /// Unlike the GBA there is no defined maximum sprite count.
     /// </summary>
     public static List<Sprite> Sprites { get; } = [];
-
-    /// <summary>
-    /// Same as <see cref="Sprites"/>, but for sprites which are added in
-    /// last. Sometimes the game adds sprites at the end of OAM to make
-    /// sure they get a different priority.
-    /// </summary>
     public static List<Sprite> BackSprites { get; } = [];
 
     /// <summary>
@@ -286,8 +280,20 @@ public static class Gfx
         return sprite;
     }
 
-    public static void AddSprite(Sprite sprite) => Sprites.Add(sprite);
-    public static void AddBackSprite(Sprite sprite) => BackSprites.Add(sprite);
+    public static void AddSprite(Sprite sprite, SpriteType type)
+    {
+        switch (type)
+        {
+            case SpriteType.Default:
+            default:
+                Sprites.Add(sprite);
+                break;
+            
+            case SpriteType.Back:
+                BackSprites.Add(sprite);
+                break;
+        }
+    }
     public static void ClearSprites()
     {
         Sprites.Clear();

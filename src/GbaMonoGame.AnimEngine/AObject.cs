@@ -21,6 +21,7 @@ public abstract class AObject
     public HorizontalAnchorMode HorizontalAnchor { get; set; }
     public VerticalAnchorMode VerticalAnchor { get; set; }
 
+    // Custom properties for how to render
     public RenderOptions RenderOptions { get; set; }
     public RenderContext RenderContext
     {
@@ -32,6 +33,7 @@ public abstract class AObject
         get => RenderOptions.BlendMode;
         set => RenderOptions = RenderOptions with { BlendMode = value };
     }
+    public SpriteType SpriteType { get; set; } = SpriteType.Default;
 
     public Vector2 GetAnchoredPosition()
     {

@@ -75,7 +75,7 @@ public class AObjectFog : AnimatedObject
         sprite.Alpha = Alpha;
         sprite.RenderOptions = RenderOptions;
 
-        Gfx.AddSprite(sprite);
+        Gfx.AddSprite(sprite, SpriteType);
     }
 
     #endregion

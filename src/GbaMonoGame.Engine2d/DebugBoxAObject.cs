@@ -29,7 +29,7 @@ public class DebugBoxAObject : AObject
         sprite.Color = Color;
         sprite.Alpha = alpha;
         sprite.RenderOptions = renderOptions;
-        Gfx.AddSprite(sprite);
+        Gfx.AddSprite(sprite, SpriteType);
     }
 
     public override void Execute(Action<short> soundEventCallback)
