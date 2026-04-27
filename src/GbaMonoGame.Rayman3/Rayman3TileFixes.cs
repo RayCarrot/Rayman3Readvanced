@@ -16,6 +16,9 @@ public static class Rayman3TileFixes
         // Empty tile on the ground
         TgxTileLayer.DefineTileFix(MapId.WoodLight_M1, layerId: 2, tileX: 242, tileY: 36, newTile: new MapTile(1417, 3));
 
+        // Out-of-place tile with a pink pixel at the start
+        TgxTileLayer.DefineTileFix(MapId.FairyGlade_M2, layerId: 2, tileX: 101, tileY: 43, newTile: new MapTile(0, 0));
+
         // Out-of-place rope tile between two climbable nets
         TgxTileLayer.DefineTileFix(MapId.SanctuaryOfBigTree_M2, layerId: 2, tileX: 521, tileY: 0, newTile: new MapTile(0, 0));
 
