@@ -34,6 +34,7 @@ public static class Gfx
     /// </summary>
     public static List<Sprite> Sprites { get; } = [];
     public static List<Sprite> BackSprites { get; } = [];
+    public static List<Sprite> OverlaySprites { get; } = [];
 
     /// <summary>
     /// The screen effect to apply, or null if there is none. This is used
@@ -238,6 +239,19 @@ public static class Gfx
         }
     }
 
+    private static void DrawOverlays(GfxRenderer renderer)
+    {
+        for (int layer = 3; layer >= 0; layer--)
+        {
+            for (int j = OverlaySprites.Count - 1; j >= 0; j--)
+            {
+                Sprite sprite = OverlaySprites[j];
+                if (sprite.Priority == layer)
+                    sprite.Draw(renderer, Color.White);
+            }
+        }
+    }
+
     public static void Load()
     {
         Pixel = new Texture2D(Engine.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
@@ -292,12 +306,17 @@ public static class Gfx
             case SpriteType.Back:
                 BackSprites.Add(sprite);
                 break;
+            
+            case SpriteType.Overlay:
+                OverlaySprites.Add(sprite);
+                break;
         }
     }
     public static void ClearSprites()
     {
         Sprites.Clear();
         BackSprites.Clear();
+        OverlaySprites.Clear();
         _spritesPoolIndex = 0;
     }
 
@@ -350,5 +369,8 @@ public static class Gfx
         // Draw the screen effect on GBA if there is one
         if (Rom.IsLoaded && (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage))
             ScreenEffect?.Draw(renderer);
+
+        // Draw overlays
+        DrawOverlays(renderer);
     }
 }

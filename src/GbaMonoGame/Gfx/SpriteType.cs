@@ -12,4 +12,9 @@ public enum SpriteType
     /// sprites at the end of OAM to make sure they get a different priority.
     /// </summary>
     Back,
+
+    /// <summary>
+    /// Sprites which are to be rendered on top of everything else in the screen.
+    /// </summary>
+    Overlay,
 }
