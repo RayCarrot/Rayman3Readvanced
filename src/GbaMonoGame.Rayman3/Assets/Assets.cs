@@ -2,6 +2,12 @@
 
 public static class Assets
 {
+    public const string AchievementIcon32px_TimeAttackBronzeTexture = "Rayman3/Achievements/AchievementIcon32px_TimeAttackBronze";
+    public const string AchievementIcon32px_TimeAttackGoldTexture = "Rayman3/Achievements/AchievementIcon32px_TimeAttackGold";
+    public const string AchievementIcon32px_TimeAttackSilverTexture = "Rayman3/Achievements/AchievementIcon32px_TimeAttackSilver";
+    public const string PopupBackgroundTexture = "Rayman3/Achievements/PopupBackground";
+    public const string PopupBackgroundGoldTexture = "Rayman3/Achievements/PopupBackgroundGold";
+
     public const string Hud_Infinity = "Rayman3/Dialog/Hud_Infinity";
 
     public const string MenuFont_WhiteTexture = "Rayman3/Font/MenuFont_White";
