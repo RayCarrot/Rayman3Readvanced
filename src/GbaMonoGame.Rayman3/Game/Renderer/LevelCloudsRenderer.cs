@@ -22,6 +22,7 @@ public class LevelCloudsRenderer : IScreenRenderer
     private int TextureWidth { get; }
     private int TextureHeight { get; }
 
+    // TODO: Reduce allocation! Check every level for other re-occurring allocations like these.
     private float[] GetScrollOffsets() =>
     [
         -(GameTime.ElapsedFrames / 2f % 256),
