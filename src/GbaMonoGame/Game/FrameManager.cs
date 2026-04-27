@@ -40,6 +40,11 @@ public static class FrameManager
         StepActions.Add(action);
     }
 
+    public static void RemoveStepAction(Action action)
+    {
+        StepActions.Remove(action);
+    }
+
     /// <summary>
     /// Steps the active frame and changes the active frame if scheduled to do so.
     /// </summary>
