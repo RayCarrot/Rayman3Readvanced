@@ -48,7 +48,7 @@ public class ImportSaveSelectionMenuPage : MenuPage
         }
         else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
         {
-            if (Menu.Slots[SelectedOption] != null)
+            if (SaveSlots[SelectedOption] != null)
             {
                 CursorClick(() =>
                 {
