@@ -52,7 +52,7 @@ public class AchievementPopup
         string wrappedText = FontManager.WrapText(TextFontSize, text, availableSize.X);
         string[] lines = wrappedText.Split(['\n', '\r'], StringSplitOptions.RemoveEmptyEntries);
         if (lines.Length > TextLines.Length)
-            throw new Exception($"Achievement name \"{text}\" is too long to fit in the popup");
+            throw new Exception($"Achievement title \"{text}\" is too long to fit in the popup");
 
         // Vertically center the text
         float textHeight = lines.Length * TextLineHeight;
