@@ -127,7 +127,7 @@ public class AchievementsMenuPage : MenuPage
         };
 
         // Add achievements, 3 per row
-        ImmutableArray<AchievementInfo> achievements = AchievementsManager.Achievements.Values;
+        ImmutableArray<AchievementInfo> achievements = AchievementsManager.GetAchievements();
         for (int i = 0; i < achievements.Length; i += AchievementsPerRow)
         {
             ImmutableArray<AchievementInfo> slice = achievements.Slice(i, Math.Min(AchievementsPerRow, achievements.Length - i));

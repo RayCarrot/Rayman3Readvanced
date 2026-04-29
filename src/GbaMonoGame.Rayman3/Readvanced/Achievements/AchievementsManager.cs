@@ -1,5 +1,6 @@
 ﻿using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using BinarySerializer.Ubisoft.GbaEngine;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
@@ -98,10 +99,16 @@ public static class AchievementsManager
         }.ToFrozenDictionary();
     }
 
+    private static FrozenDictionary<AchievementId, AchievementInfo> Achievements { get; }
     private static AchievementPopup Popup { get; set; }
     private static Queue<AchievementId> AchievementsPopupQueue { get; set; }
 
-    public static FrozenDictionary<AchievementId, AchievementInfo> Achievements { get; }
+    public static ImmutableArray<AchievementInfo> GetAchievements()
+    {
+        ImmutableArray<AchievementInfo>.Builder achievementsArrayBuilder = Achievements.Values.ToBuilder();
+        achievementsArrayBuilder.RemoveAll(x => x.ExclusivePlatform != null && x.ExclusivePlatform != Rom.Platform);
+        return achievementsArrayBuilder.ToImmutable();
+    }
 
     public static void Init()
     {
