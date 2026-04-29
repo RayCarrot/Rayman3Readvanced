@@ -13,6 +13,7 @@ public record DisplayGameConfig : IniSectionObject
 
         Language = "en";
         DisplayMode = DisplayMode.Windowed;
+        AltEnterToggle = DisplayMode.Borderless;
         FullscreenResolution = new Point(defaultDisplayMode.Width, defaultDisplayMode.Height);
         WindowPosition = new Point(0, 0);
         WindowResolution = (defaultResolution * defaultWindowScale).ToPoint();
@@ -26,6 +27,7 @@ public record DisplayGameConfig : IniSectionObject
 
     public string Language { get; set; }
     public DisplayMode DisplayMode { get; set; }
+    public DisplayMode? AltEnterToggle { get; set; }
     public Point FullscreenResolution { get; set; }
     public Point WindowPosition { get; set; }
     public Point WindowResolution { get; set; }
@@ -38,6 +40,7 @@ public record DisplayGameConfig : IniSectionObject
     {
         Language = serializer.Serialize<string>(Language, "Language");
         DisplayMode = serializer.Serialize<DisplayMode>(DisplayMode, "DisplayMode");
+        AltEnterToggle = serializer.Serialize<DisplayMode?>(AltEnterToggle, "AltEnterToggle");
         FullscreenResolution = serializer.Serialize<Point>(FullscreenResolution, "FullscreenResolution");
         WindowPosition = serializer.Serialize<Point>(WindowPosition, "WindowPosition");
         WindowResolution = serializer.Serialize<Point>(WindowResolution, "WindowResolution");

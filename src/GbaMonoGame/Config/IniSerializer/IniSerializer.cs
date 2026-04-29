@@ -30,7 +30,7 @@ public class IniSerializer : BaseIniSerializer
         {
             return f.ToString(CultureInfo.InvariantCulture);
         }
-        else if (value is bool || typeof(T).IsEnum)
+        else if (value is bool || typeof(T).IsEnum || Nullable.GetUnderlyingType(typeof(T))?.IsEnum == true)
         {
             return value.ToString();
         }

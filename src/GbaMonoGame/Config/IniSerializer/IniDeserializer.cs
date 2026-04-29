@@ -57,6 +57,13 @@ public class IniDeserializer : BaseIniSerializer
         {
             return (T)Enum.Parse(typeof(T), stringValue);
         }
+        else if (Nullable.GetUnderlyingType(typeof(T)) is { IsEnum: true } enumType)
+        {
+            if (stringValue == String.Empty)
+                return (T)(object)null;
+            else
+                return (T)Enum.Parse(enumType, stringValue);
+        }
         else if (typeof(T) == typeof(Vector2))
         {
             string[] values = stringValue.Split('x');

@@ -221,11 +221,12 @@ public abstract class GbaGame : Game
         InputManager.Update();
 
         // Toggle full-screen
-        if (InputManager.IsKeyPressed(Keys.LeftAlt) && InputManager.IsKeyJustPressed(Keys.Enter))
+        if (Engine.LocalConfig.Display.AltEnterToggle is { } altEnterToggle && 
+            InputManager.IsKeyPressed(Keys.LeftAlt) && InputManager.IsKeyJustPressed(Keys.Enter))
         {
             Engine.GameWindow.DisplayMode = Engine.GameWindow.DisplayMode switch
             {
-                DisplayMode.Windowed => DisplayMode.Fullscreen,
+                DisplayMode.Windowed => altEnterToggle,
                 DisplayMode.Fullscreen => DisplayMode.Windowed,
                 DisplayMode.Borderless => DisplayMode.Windowed,
                 _ => throw new ArgumentOutOfRangeException()

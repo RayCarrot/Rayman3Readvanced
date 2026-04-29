@@ -47,6 +47,18 @@ public static class GameOptions
                     getData: _ => Engine.GameWindow.DisplayMode,
                     setData: data => Engine.GameWindow.DisplayMode = data,
                     getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<DisplayMode?>(
+                    text: "ALT+ENTER TOGGLE",
+                    infoText: "Sets the display mode to toggle to when pressing Alt+Enter.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<DisplayMode?>.Item("FULLSCREEN", DisplayMode.Fullscreen),
+                        new MultiSelectionOptionsMenuOption<DisplayMode?>.Item("BORDERLESS", DisplayMode.Borderless),
+                        new MultiSelectionOptionsMenuOption<DisplayMode?>.Item("NONE", null),
+                    ],
+                    getData: _ => Engine.LocalConfig.Display.AltEnterToggle,
+                    setData: data => Engine.LocalConfig.Display.AltEnterToggle = data,
+                    getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<Point>(
                     text: "FULLSCREEN RESOLUTION",
                     infoText: "The resolution to use when in fullscreen mode.",
