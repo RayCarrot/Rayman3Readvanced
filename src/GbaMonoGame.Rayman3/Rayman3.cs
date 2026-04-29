@@ -323,7 +323,7 @@ public class Rayman3 : GbaGame
         Rayman3TileFixes.DefineTileFixes(Rom.Platform);
 
         // Initialize the achievements manager
-        AchievementsManager.Init();
+        AchievementsManager.Init(Rayman3Achievements.Achievements);
 
         // TODO: Fill out definitions for every actor so they can be used in the editor
         EditorData.Init(
