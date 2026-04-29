@@ -22,7 +22,7 @@ public class BonusMenuPage : MenuPage
             ], 
             action: () =>
             {
-                // TODO: Implement
+                Menu.ChangePage(new AchievementsMenuPage(Menu), NewPageMode.Next);
             }));
         AddOption(new BonusActionMenuOption(
             text: "TIME ATTACK",

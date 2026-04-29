@@ -2,9 +2,14 @@
 
 public static class Assets
 {
+    public const string AchievementIcon32px_LockedTexture = "Rayman3/Achievements/AchievementIcon32px_Locked";
     public const string AchievementIcon32px_TimeAttackBronzeTexture = "Rayman3/Achievements/AchievementIcon32px_TimeAttackBronze";
     public const string AchievementIcon32px_TimeAttackGoldTexture = "Rayman3/Achievements/AchievementIcon32px_TimeAttackGold";
     public const string AchievementIcon32px_TimeAttackSilverTexture = "Rayman3/Achievements/AchievementIcon32px_TimeAttackSilver";
+    public const string AchievementIcon64px_LockedTexture = "Rayman3/Achievements/AchievementIcon64px_Locked";
+    public const string AchievementIcon64px_TimeAttackBronzeTexture = "Rayman3/Achievements/AchievementIcon64px_TimeAttackBronze";
+    public const string AchievementIcon64px_TimeAttackGoldTexture = "Rayman3/Achievements/AchievementIcon64px_TimeAttackGold";
+    public const string AchievementIcon64px_TimeAttackSilverTexture = "Rayman3/Achievements/AchievementIcon64px_TimeAttackSilver";
     public const string PopupBackgroundTexture = "Rayman3/Achievements/PopupBackground";
     public const string PopupBackgroundGoldTexture = "Rayman3/Achievements/PopupBackgroundGold";
 

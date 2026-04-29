@@ -49,9 +49,10 @@ However online multiplayer would be much more complicated. The game expects the 
 ## ⭐ Bonus
 ### Achievements
 #### Progression
-- 🥉 **A Bad Night's Sleep**: Unlock Haunted Dreams
-- 🥉 **It's Getting Hot in Here**: Unlock Magmacosm
-- 🥉 **Storming the Stronghold**: Unlock Pirate Stronghold
+- 🥉 **?**: Complete Forgotten Forests
+- 🥉 **A Bad Night's Sleep**: Complete Haunted Dreams
+- 🥉 **It's Getting Hot in Here**: Complete Magmacosm
+- 🥉 **Storming the Stronghold**: Complete Pirate Stronghold
 - 🥉 **Horrible Machine**: Defeat the machine
 - 🥉 **Skull Bash**: Defeat Jano
 - 🥉 **And a Hard Place**: Defeat Rocky
