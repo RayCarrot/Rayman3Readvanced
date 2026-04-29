@@ -13,10 +13,10 @@
     <PackageVersion Include="ImGui.NET" Version="1.91.6.1" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageVersion Include="GbaMonoGame.Native" Version="1.0.0" />
-    <PackageVersion Include="System.Text.Encoding.CodePages" Version="10.0.5" />
+    <PackageVersion Include="System.Text.Encoding.CodePages" Version="10.0.7" />
     <PackageVersion Include="BenchmarkDotNet" Version="0.15.8" />
-    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageVersion Include="Magick.NET-Q8-AnyCPU" Version="14.11.0" />
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageVersion Include="Magick.NET-Q8-AnyCPU" Version="14.13.0" />
     <PackageVersion Include="DiscordRichPresence" Version="1.6.1.70" />
   </ItemGroup>
 </Project>
