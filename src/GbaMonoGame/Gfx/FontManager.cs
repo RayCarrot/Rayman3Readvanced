@@ -175,12 +175,27 @@ public static class FontManager
             _ => throw new ArgumentOutOfRangeException(nameof(fontSize), fontSize, null)
         };
 
-        int width = 0;
+        int currentWidth = 0;
+        int maxWidth = 0;
 
         foreach (byte c in textBytes)
-            width += loadedFont.Font.CharacterWidths[c];
+        {
+            if (c == '\r' || c == '\n')
+            {
+                if (currentWidth > maxWidth)
+                    maxWidth = currentWidth;
+                currentWidth = 0;
+            }
+            else
+            {
+                currentWidth += loadedFont.Font.CharacterWidths[c];
+            }
+        }
 
-        return width;
+        if (currentWidth > maxWidth)
+            maxWidth = currentWidth;
+
+        return maxWidth;
     }
 
     public static int GetFontHeight(FontSize fontSize)
