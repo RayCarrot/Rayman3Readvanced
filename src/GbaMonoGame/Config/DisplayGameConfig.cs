@@ -12,7 +12,7 @@ public record DisplayGameConfig : IniSectionObject
         const int defaultWindowScale = 4;
 
         Language = "en";
-        DisplayMode = DisplayMode.Fullscreen;
+        DisplayMode = DisplayMode.Windowed;
         FullscreenResolution = new Point(defaultDisplayMode.Width, defaultDisplayMode.Height);
         WindowPosition = new Point(0, 0);
         WindowResolution = (defaultResolution * defaultWindowScale).ToPoint();
