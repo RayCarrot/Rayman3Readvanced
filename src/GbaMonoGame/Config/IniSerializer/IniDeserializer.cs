@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using BinarySerializer;
 using IniParser;
 using IniParser.Model;
 using Microsoft.Xna.Framework;
@@ -25,33 +26,33 @@ public class IniDeserializer : BaseIniSerializer
     {
         if (typeof(T) == typeof(string))
         {
-            return (T)(object)stringValue;
+            return CastTo<T>.From(stringValue);
         }
         else if (typeof(T) == typeof(int))
         {
-            return (T)(object)Int32.Parse(stringValue);
+            return CastTo<T>.From(Int32.Parse(stringValue));
         }
         else if (typeof(T) == typeof(int?))
         {
             if (stringValue == String.Empty)
-                return (T)(object)null;
+                return CastTo<T>.From<int?>(null);
             else
-                return (T)(object)ParseValue<int>(stringValue);
+                return CastTo<T>.From(ParseValue<int>(stringValue));
         }
         else if (typeof(T) == typeof(float))
         {
-            return (T)(object)Single.Parse(stringValue, CultureInfo.InvariantCulture);
+            return CastTo<T>.From(Single.Parse(stringValue, CultureInfo.InvariantCulture));
         }
         else if (typeof(T) == typeof(bool))
         {
-            return (T)(object)Boolean.Parse(stringValue);
+            return CastTo<T>.From(Boolean.Parse(stringValue));
         }
         else if (typeof(T) == typeof(bool?))
         {
             if (stringValue == String.Empty)
-                return (T)(object)null;
+                return CastTo<T>.From<bool?>(null);
             else
-                return (T)(object)Boolean.Parse(stringValue);
+                return CastTo<T>.From(Boolean.Parse(stringValue));
         }
         else if (typeof(T).IsEnum)
         {
@@ -67,19 +68,19 @@ public class IniDeserializer : BaseIniSerializer
         else if (typeof(T) == typeof(Vector2))
         {
             string[] values = stringValue.Split('x');
-            return (T)(object)new Vector2(Single.Parse(values[0], CultureInfo.InvariantCulture), Single.Parse(values[1], CultureInfo.InvariantCulture));
+            return CastTo<T>.From(new Vector2(Single.Parse(values[0], CultureInfo.InvariantCulture), Single.Parse(values[1], CultureInfo.InvariantCulture)));
         }
         else if (typeof(T) == typeof(Vector2?))
         {
             if (stringValue == String.Empty)
-                return (T)(object)null;
+                return CastTo<T>.From<Vector2?>(null);
             else
-                return (T)(object)ParseValue<Vector2>(stringValue);
+                return CastTo<T>.From(ParseValue<Vector2>(stringValue));
         }
         else if (typeof(T) == typeof(Point))
         {
             string[] values = stringValue.Split('x');
-            return (T)(object)new Point(Int32.Parse(values[0]), Int32.Parse(values[1]));
+            return CastTo<T>.From(new Point(Int32.Parse(values[0]), Int32.Parse(values[1])));
         }
         else
         {
