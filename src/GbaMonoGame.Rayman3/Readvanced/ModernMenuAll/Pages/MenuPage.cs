@@ -252,8 +252,7 @@ public abstract class MenuPage
                 break;
         }
 
-        if (UsesCursor)
-            Menu.ManageCursorAndStem();
+        Menu.ManageCursorAndStem();
     }
 
     public enum MenuPageState
