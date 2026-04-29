@@ -25,8 +25,8 @@ public sealed partial class TimeDecrease : BaseActor
             Value = value;
             AnimatedObject.ReplaceSpriteTexture(0, Engine.FrameContentManager.Load<Texture2D>(value switch
             {
-                3 => Assets.TimeDecrease3,
-                5 => Assets.TimeDecrease5,
+                3 => Assets.TimeDecrease3Texture,
+                5 => Assets.TimeDecrease5Texture,
                 _ => throw new InvalidOperationException("Unsupported time decrease value")
             }));
         }
