@@ -26,12 +26,11 @@ public partial class ModernPauseDialog
                 if (GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
                 {
                     AddOption("LEVELS", _Fsm_Levels);
-                    // TODO: "VIEW ACHIEVEMENTS"
                 }
                 // Worldmap
                 else if (GameInfo.MapId == MapId.WorldMap)
                 {
-                    // TODO: "VIEW ACHIEVEMENTS"
+                    // No extra option
                 }
                 // Time attack
                 else if (TimeAttackInfo.IsActive)
@@ -43,7 +42,6 @@ public partial class ModernPauseDialog
                 else
                 {
                     AddOption("RESTART MAP", _Fsm_RestartMap);
-                    // TODO: "VIEW ACHIEVEMENTS"
                 }
 
                 AddOption(CanExitLevel ? "EXIT LEVEL" : "QUIT GAME", _Fsm_QuitGame);
