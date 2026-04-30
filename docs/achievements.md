@@ -9,7 +9,7 @@
 - 🥉 **Skull Bash**: Defeat Jano
 - 🥉 **And a Hard Place**: Defeat Rocky
 - 🥉 **Try that for Size!**: Defeat Scaleman
-- 🥉 **The Grand Finale**: Defeat Razorbeard
+- 🏅 **The Grand Finale**: Defeat Razorbeard
 - 🏅 **Forget Anyone?**: Collect all lums and cages in Forgotten Forests
 - 🏅 **Lucid Dreams**: Collect all lums and cages in Haunted Dreams
 - 🏅 **Through Fire and Flames**: Collect all lums and cages in Magmacosm

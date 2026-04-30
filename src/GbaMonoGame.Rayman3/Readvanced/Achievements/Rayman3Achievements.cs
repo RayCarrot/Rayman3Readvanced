@@ -64,7 +64,7 @@ public static class Rayman3Achievements
             description: "Defeat Scaleman"),
         new AchievementInfo(
             id: AchievementId.DefeatGrolgoth, // TODO: Trigger
-            isGold: false,
+            isGold: true,
             smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
             bigIconTexturePath: Assets.AchievementIcon64px_LockedTexture,
             title: "The Grand Finale",
