@@ -52,14 +52,14 @@ What follows is a list of the supported ROMs. Note that prototype ROMs will not 
 
 The ROMs can be manually managed by placing them in the correct locations:
 
-- GBA: `Data/Gba/rayman3.gba`
-- N-Gage: `Data/NGage/rayman3.app` and `Data/NGage/rayman3.dat`
+- GBA: `UserData/Gba/rayman3.gba`
+- N-Gage: `UserData/NGage/rayman3.app` and `UserData/NGage/rayman3.dat`
 
-Additionally the GBA version allows for 10 bonus levels to be extracted from the GameCube version. This is done by selecting an ISO of the game to extract from. The files can also be manually placed in `Data/Gba` and include the `gba.nfo` and 10 `map.00X` files where X is the map ID.
+Additionally the GBA version allows for 10 bonus levels to be extracted from the GameCube version. This is done by selecting an ISO of the game to extract from. The files can also be manually placed in `UserData/Gba` and include the `gba.nfo` and 10 `map.00X` files where X is the map ID.
 
 ### Save files
 
-The save files are stored as `slotX.sav` files where the X is the save slot number. You can use the save transfer feature in the main menu to transfer to and from GBA and N-Gage for use in emulators.
+The save files are stored as `slotX.sav` files where the X is the save slot number. You can use the import and export options in the single player menu to transfer to and from GBA and N-Gage for use in emulators.
 
 ## Documentation
 
