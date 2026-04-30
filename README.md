@@ -103,7 +103,7 @@ See [assets](docs/assets.md) for a comprehensive list of where each asset comes 
 **New graphics**
 - [alexlimitedgames](https://alexlimitedgames.github.io) (promotional artwork)
 - [XanderNT](https://linktr.ee/XanderNT) (logos and extended backgrounds)
-- [zelenbug](https://gamebanana.com/members/3067029) (textures for new menu, time attack and various other new UI elements)
+- [zelenbug](https://gamebanana.com/members/3067029) (textures for new menu, time attack, achievements and various other new UI elements)
 
 **Testing**
 - [Marteaufou](https://bsky.app/profile/marteaufou.jardindesreves.fr)

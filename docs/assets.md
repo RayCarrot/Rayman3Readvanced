@@ -27,6 +27,7 @@
 
 | Path | Credits | Description |
 |---|---|---|
+| Rayman3/Achievements/... | zelenbug |  |
 | Rayman3/Dialog/... | zelenbug |  |
 | Rayman3/Font/... | RayCarrot<br>zelenbug | See the repo assets for more info |
 | Rayman3/Intro/... | XanderNT | See the repo assets for more info |
