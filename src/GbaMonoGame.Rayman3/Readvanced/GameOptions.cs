@@ -59,6 +59,21 @@ public static class GameOptions
                     getData: _ => Engine.LocalConfig.Display.AltEnterToggle,
                     setData: data => Engine.LocalConfig.Display.AltEnterToggle = data,
                     getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "VSYNC",
+                    infoText: "Sets if vertical synchronization should be used.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true)
+                    ],
+                    getData: _ => Engine.GameWindow.VSync,
+                    setData: data =>
+                    {
+                        Engine.LocalConfig.Display.VSync = data;
+                        Engine.GameWindow.VSync = data;
+                    },
+                    getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<Point>(
                     text: "FULLSCREEN RESOLUTION",
                     infoText: "The resolution to use when in fullscreen mode.",

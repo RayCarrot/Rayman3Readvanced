@@ -126,6 +126,16 @@ public class GbaGameWindow
         }
     }
 
+    public bool VSync
+    {
+        get => _graphics.SynchronizeWithVerticalRetrace;
+        set
+        {
+            _graphics.SynchronizeWithVerticalRetrace = value;
+            _graphics.ApplyChanges();
+        }
+    }
+
 #if DESKTOPGL
     private SDL_WindowFlags GetWindowFlags()
     {

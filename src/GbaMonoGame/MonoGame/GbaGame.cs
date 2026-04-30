@@ -205,6 +205,7 @@ public abstract class GbaGame : Game
         Engine.Init(this, _gameWindow, CreateInitialFrame());
 
         // Apply the window state
+        Engine.GameWindow.VSync = Engine.LocalConfig.Display.VSync;
         Engine.GameWindow.ApplyState();
 
         // Load the renderer
