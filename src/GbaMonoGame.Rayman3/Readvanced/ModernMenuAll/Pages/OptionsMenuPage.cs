@@ -15,10 +15,12 @@ public class OptionsMenuPage : MenuPage
     private const float InfoTextMaxWidth = 260;
     private const float ArrowScale = 1 / 2f;
 
+    public override int GetMaxOptions(int selectedOption) => 
+        selectedOption < Options.Count && ((OptionsMenuOption)Options[selectedOption]).InfoText != null ? 4 : 8;
+
     public override bool UsesCursor => true;
     public override int BackgroundPalette => 1;
     public override int LineHeight => 12;
-    public override int MaxOptions => ShowInfoText ? 4 : 8;
     public override bool HasScrollBar => true;
     public override MenuScrollBarSize ScrollBarSize => ShowInfoText ? MenuScrollBarSize.Small : MenuScrollBarSize.Big;
 

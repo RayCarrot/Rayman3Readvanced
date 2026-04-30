@@ -18,10 +18,11 @@ public class AchievementsMenuPage : MenuPage
     private const int SelectedAchievementIconTopMargin = 36;
     private const int SelectedAchievementDescriptionTopMargin = -2;
 
+    public override int GetMaxOptions(int selectedOption) => 3;
+
     public override bool UsesCursor => false;
     public override int BackgroundPalette => 2;
     public override int LineHeight => 36;
-    public override int MaxOptions => 3;
     public override bool HasScrollBar => true;
     public override MenuScrollBarSize ScrollBarSize => MenuScrollBarSize.Big;
 

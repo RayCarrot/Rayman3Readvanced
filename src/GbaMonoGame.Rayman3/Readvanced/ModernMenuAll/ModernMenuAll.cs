@@ -540,10 +540,10 @@ public class ModernMenuAll : Frame, IHasPlayfield
 
         if (CurrentPage.HasScrollBar)
         {
-            if (CurrentPage.HasScrollableContent)
+            if (CurrentPage.HasScrollableContent(CurrentPage.SelectedOption))
             {
                 ScrollBar.ScrollOffset = CurrentPage.ScrollOffset;
-                ScrollBar.MaxScrollOffset = CurrentPage.MaxScrollOffset;
+                ScrollBar.MaxScrollOffset = CurrentPage.GetMaxScrollOffset(CurrentPage.SelectedOption);
             }
             else
             {

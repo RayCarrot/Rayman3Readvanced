@@ -24,13 +24,13 @@ public abstract class MenuPage
 
     public int SelectedOption { get; set; }
     public int ScrollOffset { get; set; }
-    public bool HasScrollableContent => Options.Count > MaxOptions;
-    public int MaxScrollOffset => Math.Max(Options.Count - MaxOptions, 0);
+    public virtual int GetMaxOptions(int selectedOption) => 6;
+    public int GetMaxScrollOffset(int selectedOption) => Math.Max(Options.Count - GetMaxOptions(selectedOption), 0);
+    public bool HasScrollableContent(int selectedOption) => Options.Count > GetMaxOptions(selectedOption);
 
     public abstract bool UsesCursor { get; }
     public abstract int BackgroundPalette { get; }
     public abstract int LineHeight { get; }
-    public virtual int MaxOptions => 6;
     public virtual bool HasScrollBar => false;
     public virtual MenuScrollBarSize ScrollBarSize => MenuScrollBarSize.Big;
     
@@ -39,7 +39,7 @@ public abstract class MenuPage
     protected void UpdateOptionPositions()
     {
         int index = 0;
-        foreach (MenuOption option in Options.Skip(ScrollOffset).Take(MaxOptions))
+        foreach (MenuOption option in Options.Skip(ScrollOffset).Take(GetMaxOptions(SelectedOption)))
         {
             option.SetPosition(GetOptionPosition(index));
             index++;
@@ -55,7 +55,7 @@ public abstract class MenuPage
 
     protected void DrawOptions(AnimationPlayer animationPlayer)
     {
-        foreach (MenuOption option in Options.Skip(ScrollOffset).Take(MaxOptions))
+        foreach (MenuOption option in Options.Skip(ScrollOffset).Take(GetMaxOptions(SelectedOption)))
             option.Draw(animationPlayer);
     }
 
@@ -90,7 +90,7 @@ public abstract class MenuPage
         int newScrollOffset = ScrollOffset;
         if (newSelectedOption > prevSelectedOption)
         {
-            if (newSelectedOption >= ScrollOffset + MaxOptions)
+            if (newSelectedOption >= ScrollOffset + GetMaxOptions(newSelectedOption))
                 newScrollOffset++;
         }
         else if (newSelectedOption < prevSelectedOption)
@@ -107,7 +107,7 @@ public abstract class MenuPage
         else if (newSelectedOption < 0)
         {
             newSelectedOption = Options.Count - 1;
-            newScrollOffset = MaxScrollOffset;
+            newScrollOffset = GetMaxScrollOffset(newSelectedOption);
         }
 
         bool changed = Menu.SetCursorTarget(newSelectedOption - newScrollOffset, forceUpdate);

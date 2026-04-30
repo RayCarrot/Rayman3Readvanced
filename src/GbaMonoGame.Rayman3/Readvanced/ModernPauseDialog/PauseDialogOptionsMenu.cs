@@ -51,10 +51,10 @@ public class PauseDialogOptionsMenu
 
     public OptionsMenuOption[] Options { get; set; }
     public int SelectedOption { get; set; }
-    public int MaxOptions => ShowInfoText ? 4 : 8;
     public int ScrollOffset { get; set; }
-    public bool HasScrollableContent => Options.Length > MaxOptions;
-    public int MaxScrollOffset => Math.Max(Options.Length - MaxOptions, 0);
+    public int GetMaxOptions(int selectedOption) => selectedOption < Options.Length && Options[selectedOption].InfoText != null ? 4 : 8;
+    public int GetMaxScrollOffset(int selectedOption) => Math.Max(Options.Length - GetMaxOptions(selectedOption), 0);
+    public bool HasScrollableContent(int selectedOption) => Options.Length > GetMaxOptions(selectedOption);
 
     public SpriteTextureObject Canvas { get; set; }
     public AnimatedObject Cursor { get; set; }
@@ -168,7 +168,7 @@ public class PauseDialogOptionsMenu
         int newScrollOffset = ScrollOffset;
         if (newSelectedOption > prevSelectedOption)
         {
-            if (newSelectedOption >= ScrollOffset + MaxOptions)
+            if (newSelectedOption >= ScrollOffset + GetMaxOptions(newSelectedOption))
                 newScrollOffset++;
         }
         else if (newSelectedOption < prevSelectedOption)
@@ -185,7 +185,7 @@ public class PauseDialogOptionsMenu
         else if (newSelectedOption < 0)
         {
             newSelectedOption = Options.Length - 1;
-            newScrollOffset = MaxScrollOffset;
+            newScrollOffset = GetMaxScrollOffset(newSelectedOption);
         }
         SetCursorMovement(CursorOffsetY, (newSelectedOption - newScrollOffset) * LineHeight);
 
@@ -440,7 +440,7 @@ public class PauseDialogOptionsMenu
             Cursor.ScreenPos = Cursor.ScreenPos with { Y = CursorBaseY + CursorOffsetY - OffsetY };
 
             int index = 0;
-            foreach (OptionsMenuOption option in Options.Skip(ScrollOffset).Take(MaxOptions))
+            foreach (OptionsMenuOption option in Options.Skip(ScrollOffset).Take(GetMaxOptions(SelectedOption)))
             {
                 option.SetPosition(GetOptionPosition(index));
                 index++;
@@ -456,7 +456,7 @@ public class PauseDialogOptionsMenu
             // Draw
             animationPlayer.Play(Canvas);
             animationPlayer.Play(Cursor);
-            foreach (OptionsMenuOption option in Options.Skip(ScrollOffset).Take(MaxOptions))
+            foreach (OptionsMenuOption option in Options.Skip(ScrollOffset).Take(GetMaxOptions(SelectedOption)))
                 option.Draw(animationPlayer);
 
             TabBar.Draw(animationPlayer);
@@ -479,10 +479,10 @@ public class PauseDialogOptionsMenu
                 }
             }
 
-            if (HasScrollableContent)
+            if (HasScrollableContent(SelectedOption))
             {
                 ScrollBar.ScrollOffset = ScrollOffset;
-                ScrollBar.MaxScrollOffset = MaxScrollOffset;
+                ScrollBar.MaxScrollOffset = GetMaxScrollOffset(SelectedOption);
             }
             else
             {
