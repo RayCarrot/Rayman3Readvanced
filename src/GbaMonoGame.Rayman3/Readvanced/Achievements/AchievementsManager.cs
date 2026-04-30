@@ -61,6 +61,7 @@ public static class AchievementsManager
     {
         // TODO: Check if already unlocked
         // TODO: Save achievement
-        AchievementsPopupQueue.Enqueue(achievementId);
+        if (Engine.LocalConfig.Display.ShowAchievementPopups)
+            AchievementsPopupQueue.Enqueue(achievementId);
     }
 }

@@ -21,6 +21,7 @@ public record DisplayGameConfig : IniSectionObject
         LockWindowAspectRatio = true;
         DisableCameraShake = false;
         DisableFlashingLights = false;
+        ShowAchievementPopups = true;
     }
 
     public override string SectionKey => "Display";
@@ -35,6 +36,7 @@ public record DisplayGameConfig : IniSectionObject
     public bool LockWindowAspectRatio { get; set; }
     public bool DisableCameraShake { get; set; }
     public bool DisableFlashingLights { get; set; }
+    public bool ShowAchievementPopups { get; set; }
 
     public override void Serialize(BaseIniSerializer serializer)
     {
@@ -48,5 +50,6 @@ public record DisplayGameConfig : IniSectionObject
         LockWindowAspectRatio = serializer.Serialize<bool>(LockWindowAspectRatio, "LockWindowAspectRatio");
         DisableCameraShake = serializer.Serialize<bool>(DisableCameraShake, "DisableCameraShake");
         DisableFlashingLights = serializer.Serialize<bool>(DisableFlashingLights, "DisableFlashingLights");
+        ShowAchievementPopups = serializer.Serialize<bool>(ShowAchievementPopups, "ShowAchievementPopups");
     }
 }
