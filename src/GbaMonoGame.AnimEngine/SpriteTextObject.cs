@@ -32,6 +32,14 @@ public class SpriteTextObject : AObject
 
     public int GetStringWidth() => FontManager.GetStringWidth(FontSize, TextBytes);
 
+    public void WrapText(float width)
+    {
+        if (AffineMatrix != null)
+            width *= 1 / AffineMatrix.Value.Scale.X;
+
+        Text = FontManager.WrapText(FontSize, Text, width);
+    }
+
     public void SetYScaling(float scale)
     {
         AffineMatrix = new AffineMatrix(1, 0, 0, scale);

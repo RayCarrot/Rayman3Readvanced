@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Immutable;
+using System.Diagnostics;
+using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,6 +20,9 @@ public class AchievementsMenuPage : MenuPage
     private const int SelectedAchievementIconSize = 48;
     private const int SelectedAchievementIconTopMargin = 38;
     private const int SelectedAchievementDescriptionTopMargin = -2;
+    private const FontSize SelectedAchievementDescriptionFontSize = FontSize.Font32;
+    private const float SelectedAchievementDescriptionScale = 3 / 10f; // Scale down to fit
+    private const int SelectedAchievementDescriptionMaxLines = 3;
 
     public override int GetMaxOptions(int selectedOption) => 3;
 
@@ -48,8 +53,8 @@ public class AchievementsMenuPage : MenuPage
             throw new Exception($"Achievement title \"{achievement.Title}\" is too long to fit in the menu");
 
         float textHeight = lines.Length * titleFont.LineHeight;
-        Vector2 textPos = Cloth.ScreenPos + 
-                          new Vector2(LeftMargin, SelectedAchievementTitleTopMargin) + 
+        Vector2 textPos = Cloth.ScreenPos +
+                          new Vector2(LeftMargin, SelectedAchievementTitleTopMargin) +
                           new Vector2(0, ((SelectedAchievementTitleMaxLines * titleFont.LineHeight) - textHeight) / 2f);
 
         // Set each title text line
@@ -71,7 +76,9 @@ public class AchievementsMenuPage : MenuPage
         SelectedAchievementIcon.Texture = Engine.FixContentManager.Load<Texture2D>(achievement.BigIconTexturePath);
 
         // Set the text and wrap
-        SelectedAchievementDescription.Text = FontManager.WrapText(SelectedAchievementDescription.FontSize, achievement.Description, availableWidth);
+        SelectedAchievementDescription.Text = achievement.Description;
+        SelectedAchievementDescription.WrapText(availableWidth);
+        Debug.Assert(SelectedAchievementDescription.Text.Count(x => x == '\n') + 1 <= SelectedAchievementDescriptionMaxLines, "Description has too many lines");
     }
 
     protected override bool SetSelectedOption(int selectedOption, bool playSound = true, bool forceUpdate = false)
@@ -125,7 +132,8 @@ public class AchievementsMenuPage : MenuPage
             ScreenPos = Cloth.ScreenPos + new Vector2(LeftMargin, SelectedAchievementIconTopMargin + SelectedAchievementIconSize + SelectedAchievementDescriptionTopMargin),
             RenderContext = RenderContext,
             Color = TextColor.TextBox,
-            FontSize = FontSize.Font16,
+            FontSize = SelectedAchievementDescriptionFontSize,
+            AffineMatrix = new AffineMatrix(0, new Vector2(SelectedAchievementDescriptionScale))
         };
 
         // Add achievements, 3 per row

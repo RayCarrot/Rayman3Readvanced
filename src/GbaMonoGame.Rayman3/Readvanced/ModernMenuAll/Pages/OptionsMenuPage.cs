@@ -73,9 +73,9 @@ public class OptionsMenuPage : MenuPage
         {
             ShowInfoText = true;
 
-            string wrappedInfoText = FontManager.WrapText(InfoText.FontSize, option.InfoText, InfoTextMaxWidth * (1 / InfoTextScale));
-            Debug.Assert(wrappedInfoText.Count(x => x == '\n') + 1 <= InfoTextMaxLines, "Info text has too many lines");
-            InfoText.Text = wrappedInfoText;
+            InfoText.Text = option.InfoText;
+            InfoText.WrapText(InfoTextMaxWidth);
+            Debug.Assert(InfoText.Text.Count(x => x == '\n') + 1 <= InfoTextMaxLines, "Info text has too many lines");
         }
         else
         {
