@@ -51,52 +51,79 @@ public class Font
     {
         StringBuilder wrappedText = new();
 
-        float xPos = 0;
-        int startIndex = 0;
+        float currentWidth = 0;
+        int currentLineStartIndex = 0;
 
-        for (int charIndex = 0; charIndex < text.Length; charIndex++)
+        // Enumerate every character
+        int charIndex = 0;
+        while (charIndex < text.Length)
         {
+            // Handle line breaks
             if (text[charIndex] == '\r' || text[charIndex] == '\n')
             {
-                wrappedText.AppendLine(text[startIndex..charIndex]);
+                // Add the current line
+                wrappedText.AppendLine(text[currentLineStartIndex..charIndex]);
 
+                // Handle \r\n as a single line break, skipping the second character
                 if (charIndex + 1 < text.Length && text[charIndex] == '\r' && text[charIndex + 1] == '\n')
                     charIndex += 2;
                 else
-                    charIndex += 1;
+                    charIndex++;
 
-                startIndex = charIndex;
-                xPos = 0;
+                // Set up a new line
+                currentLineStartIndex = charIndex;
+                currentWidth = 0;
                 continue;
             }
 
-            xPos += GetWidth(text, charIndex);
+            // Get the width of the current character
+            float charWidth = GetWidth(text, charIndex);
 
-            if (xPos >= width)
+            // Check if we've exceeded the width limit
+            if (currentWidth + charWidth > width)
             {
-                for (int i = charIndex; i >= startIndex; i--)
+                // Go back and try to find a space to break on within the same line
+                bool foundSpace = false;
+                for (int i = charIndex - 1; i >= currentLineStartIndex; i--)
                 {
+                    // Space found, add line break
                     if (text[i] == ' ')
                     {
-                        wrappedText.AppendLine(text[startIndex..i]);
+                        // Add the current line
+                        wrappedText.AppendLine(text[currentLineStartIndex..i]);
+                        foundSpace = true;
+
+                        // Next line should start from the character after the space
                         charIndex = i + 1;
-                        startIndex = charIndex;
-                        xPos = 0;
+
+                        // Set up a new line
+                        currentLineStartIndex = i + 1; // +1 to skip the space character
+                        currentWidth = 0;
                         break;
                     }
                 }
 
-                if (xPos != 0)
+                // No space was found, fall back to breaking at the current character
+                if (!foundSpace)
                 {
-                    wrappedText.AppendLine(text[startIndex..(charIndex - 1)]);
-                    charIndex--;
-                    startIndex = charIndex;
-                    xPos = 0;
+                    // Add the current line
+                    wrappedText.AppendLine(text[currentLineStartIndex..charIndex]);
+
+                    // Set up a new line
+                    currentLineStartIndex = charIndex;
+                    currentWidth = 0;
                 }
+
+                continue;
             }
+
+            // Increment the current width and continue onto the next character
+            currentWidth += charWidth;
+
+            charIndex++;
         }
 
-        wrappedText.Append(text[startIndex..]);
+        wrappedText.Append(text[currentLineStartIndex..]);
 
         return wrappedText.ToString();
     }
