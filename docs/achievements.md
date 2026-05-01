@@ -22,15 +22,15 @@
 - 🏅 **Champion**: Earn gold in every time attack level
 
 ### Other
-- 🥉 **Scrapped Metal**: Defeat a pirate of every rank
-- 🥉 **Your Lava Bath Is Ready**: Defeat a pirate by knocking it into the lava
 - 🥉 **Return to Sender**: Defeat a pirate with a keg
 - 🏅 **Ssssam Forces**: Complete Swamp of Bégoniax without moving to the side (GBA only)
 - 🥉 **geK gniylF**: Ride a flying keg backwards
-- 🏅 **Let the Dead Rest**: Complete the first section of Void of Bones with hitting 17 or fewer skull platforms
+- 🏅 **Let the Dead Rest**: Complete the first section of Void of Bones while hitting 17 or fewer skull platforms
 - 🏅 **Don't Stop Me Now**: Complete Prickly Passage without dying
 - 🏅 **Going Down**: Complete Free Falling without taking the checkpoint (N-Gage only)
+- 🥉 **Your Lava Bath Is Ready**: Defeat a pirate by knocking it into the lava
 - 🏅 **No, Jump Good**: Defeat Rocky without using the blue lum
 - 🏅 **Pacifist**: Complete Wicked Flow without defeating any black lums
 - 🏅 **Burning Rubber**: Complete Magma Mayhem 2 without taking any damage
+- 🥉 **Scrapped Metal**: Defeat a pirate of every rank
 - 🥉 **Retro**: View the original main menu

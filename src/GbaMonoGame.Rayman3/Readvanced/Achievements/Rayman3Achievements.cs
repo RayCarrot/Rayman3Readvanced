@@ -140,5 +140,91 @@ public static class Rayman3Achievements
             bigIconTexturePath: Assets.AchievementIcon48px_TimeAttackGoldTexture,
             title: "Champion",
             description: "Earn gold in every time attack level"),
+        new AchievementInfo(
+            id: AchievementId.DefeatPirateWithKeg, // TODO: Trigger
+            isGold: false,
+            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
+            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            title: "Return to Sender",
+            description: "Defeat a pirate with a keg"),
+        new AchievementInfo(
+            id: AchievementId.CompleteMarshes1WithoutMoving, // TODO: Trigger
+            isGold: true,
+            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
+            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            title: "Ssssam Forces",
+            description: "Complete Swamp of Bégoniax without moving to the side",
+            exclusivePlatform: Platform.GBA),
+        new AchievementInfo(
+            id: AchievementId.RideKegBackwards, // TODO: Trigger
+            isGold: false,
+            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
+            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            title: "geK gniylF",
+            description: "Ride a flying keg backwards"),
+        new AchievementInfo(
+            id: AchievementId.CompleteCaveBadDreamsWithMaxSkullHits, // TODO: Trigger
+            isGold: true,
+            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
+            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            title: "Let the Dead Rest",
+            description: "Complete the first section of Void of Bones while hitting 17 or fewer skull platforms"),
+        new AchievementInfo(
+            id: AchievementId.CompleteMenhirHillsWithoutDying, // TODO: Trigger
+            isGold: true,
+            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
+            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            title: "Don't Stop Me Now",
+            description: "Complete Prickly Passage without dying"),
+        new AchievementInfo(
+            id: AchievementId.CompleteFreeFallingWithoutCheckpoint, // TODO: Trigger
+            isGold: true,
+            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
+            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            title: "Going Down",
+            description: "Complete Free Falling without taking the checkpoint",
+            exclusivePlatform: Platform.NGage),
+        new AchievementInfo(
+            id: AchievementId.DefeatPirateWithLava, // TODO: Trigger
+            isGold: false,
+            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
+            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            title: "Your Lava Bath Is Ready",
+            description: "Defeat a pirate by knocking it into the lava"),
+        new AchievementInfo(
+            id: AchievementId.DefeatRockyWithoutBlueLum, // TODO: Trigger
+            isGold: true,
+            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
+            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            title: "No, Jump Good",
+            description: "Defeat Rocky without using the blue lum"),
+        new AchievementInfo(
+            id: AchievementId.CompleteRockAndLavaWithoutDefeatingBlackLums, // TODO: Trigger
+            isGold: true,
+            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
+            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            title: "Pacifist",
+            description: "Complete Wicked Flow without defeating any black lums"),
+        new AchievementInfo(
+            id: AchievementId.CompleteMissileRace2WithoutDamage, // TODO: Trigger
+            isGold: true,
+            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
+            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            title: "Burning Rubber",
+            description: "Complete Magma Mayhem 2 without taking any damage"),
+        new AchievementInfo(
+            id: AchievementId.DefeatPirateOfEveryRank, // TODO: Trigger
+            isGold: false,
+            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
+            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            title: "Scrapped Metal",
+            description: "Defeat a pirate of every rank"),
+        new AchievementInfo(
+            id: AchievementId.ViewOriginalMenu, // TODO: Trigger
+            isGold: false,
+            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
+            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            title: "Retro",
+            description: "View the original main menu"),
     ];
 }
