@@ -11,11 +11,12 @@ public class AchievementsMenuPage : MenuPage
     public AchievementsMenuPage(ModernMenuAll menu) : base(menu) { }
 
     private const int AchievementsPerRow = 3;
-    private const int HorizontalMargin = 8;
+    private const int LeftMargin = 8;
+    private const int RightMargin = 12;
     private const int SelectedAchievementTitleTopMargin = 20;
     private const int SelectedAchievementTitleMaxLines = 2;
-    private const int SelectedAchievementIconSize = 64;
-    private const int SelectedAchievementIconTopMargin = 36;
+    private const int SelectedAchievementIconSize = 48;
+    private const int SelectedAchievementIconTopMargin = 38;
     private const int SelectedAchievementDescriptionTopMargin = -2;
 
     public override int GetMaxOptions(int selectedOption) => 3;
@@ -37,7 +38,7 @@ public class AchievementsMenuPage : MenuPage
         AchievementInfo achievement = option.Achievements[option.SelectedIndex];
 
         // Get the available width
-        int availableWidth = Cloth.Texture.Width - HorizontalMargin - HorizontalMargin;
+        int availableWidth = Cloth.Texture.Width - LeftMargin - RightMargin;
 
         // Set the title
         Font titleFont = SelectedAchievementTitleLines[0].Font;
@@ -48,7 +49,7 @@ public class AchievementsMenuPage : MenuPage
 
         float textHeight = lines.Length * titleFont.LineHeight;
         Vector2 textPos = Cloth.ScreenPos + 
-                          new Vector2(HorizontalMargin, SelectedAchievementTitleTopMargin) + 
+                          new Vector2(LeftMargin, SelectedAchievementTitleTopMargin) + 
                           new Vector2(0, ((SelectedAchievementTitleMaxLines * titleFont.LineHeight) - textHeight) / 2f);
 
         // Set each title text line
@@ -121,7 +122,7 @@ public class AchievementsMenuPage : MenuPage
         {
             BgPriority = 3,
             ObjPriority = 0,
-            ScreenPos = Cloth.ScreenPos + new Vector2(HorizontalMargin, SelectedAchievementIconTopMargin + SelectedAchievementIconSize + SelectedAchievementDescriptionTopMargin),
+            ScreenPos = Cloth.ScreenPos + new Vector2(LeftMargin, SelectedAchievementIconTopMargin + SelectedAchievementIconSize + SelectedAchievementDescriptionTopMargin),
             RenderContext = RenderContext,
             Color = TextColor.TextBox,
             FontSize = FontSize.Font16,

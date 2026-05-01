@@ -2,14 +2,26 @@
 
 public static class Assets
 {
+    public const string AchievementIcon32px_CompleteWorld1Texture = "Rayman3/Achievements/AchievementIcon32px_CompleteWorld1";
+    public const string AchievementIcon32px_CompleteWorld2Texture = "Rayman3/Achievements/AchievementIcon32px_CompleteWorld2";
+    public const string AchievementIcon32px_CompleteWorld3Texture = "Rayman3/Achievements/AchievementIcon32px_CompleteWorld3";
+    public const string AchievementIcon32px_CompleteWorld4Texture = "Rayman3/Achievements/AchievementIcon32px_CompleteWorld4";
+    public const string AchievementIcon32px_DefeatGrolgothTexture = "Rayman3/Achievements/AchievementIcon32px_DefeatGrolgoth";
+    public const string AchievementIcon32px_DefeatJanoTexture = "Rayman3/Achievements/AchievementIcon32px_DefeatJano";
     public const string AchievementIcon32px_LockedTexture = "Rayman3/Achievements/AchievementIcon32px_Locked";
     public const string AchievementIcon32px_TimeAttackBronzeTexture = "Rayman3/Achievements/AchievementIcon32px_TimeAttackBronze";
     public const string AchievementIcon32px_TimeAttackGoldTexture = "Rayman3/Achievements/AchievementIcon32px_TimeAttackGold";
     public const string AchievementIcon32px_TimeAttackSilverTexture = "Rayman3/Achievements/AchievementIcon32px_TimeAttackSilver";
-    public const string AchievementIcon64px_LockedTexture = "Rayman3/Achievements/AchievementIcon64px_Locked";
-    public const string AchievementIcon64px_TimeAttackBronzeTexture = "Rayman3/Achievements/AchievementIcon64px_TimeAttackBronze";
-    public const string AchievementIcon64px_TimeAttackGoldTexture = "Rayman3/Achievements/AchievementIcon64px_TimeAttackGold";
-    public const string AchievementIcon64px_TimeAttackSilverTexture = "Rayman3/Achievements/AchievementIcon64px_TimeAttackSilver";
+    public const string AchievementIcon48px_CompleteWorld1Texture = "Rayman3/Achievements/AchievementIcon48px_CompleteWorld1";
+    public const string AchievementIcon48px_CompleteWorld2Texture = "Rayman3/Achievements/AchievementIcon48px_CompleteWorld2";
+    public const string AchievementIcon48px_CompleteWorld3Texture = "Rayman3/Achievements/AchievementIcon48px_CompleteWorld3";
+    public const string AchievementIcon48px_CompleteWorld4Texture = "Rayman3/Achievements/AchievementIcon48px_CompleteWorld4";
+    public const string AchievementIcon48px_DefeatGrolgothTexture = "Rayman3/Achievements/AchievementIcon48px_DefeatGrolgoth";
+    public const string AchievementIcon48px_DefeatJanoTexture = "Rayman3/Achievements/AchievementIcon48px_DefeatJano";
+    public const string AchievementIcon48px_LockedTexture = "Rayman3/Achievements/AchievementIcon48px_Locked";
+    public const string AchievementIcon48px_TimeAttackBronzeTexture = "Rayman3/Achievements/AchievementIcon48px_TimeAttackBronze";
+    public const string AchievementIcon48px_TimeAttackGoldTexture = "Rayman3/Achievements/AchievementIcon48px_TimeAttackGold";
+    public const string AchievementIcon48px_TimeAttackSilverTexture = "Rayman3/Achievements/AchievementIcon48px_TimeAttackSilver";
     public const string PopupBackgroundTexture = "Rayman3/Achievements/PopupBackground";
     public const string PopupBackgroundGoldTexture = "Rayman3/Achievements/PopupBackgroundGold";
 
