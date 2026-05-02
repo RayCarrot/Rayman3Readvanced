@@ -1,7 +1,7 @@
 # Achievements
 
 ### Progression
-- 🥉 **?**: Complete Forgotten Forests
+- 🥉 **First Steps**: Complete Forgotten Forests
 - 🥉 **A Bad Night's Sleep**: Complete Haunted Dreams
 - 🥉 **It's Getting Hot in Here**: Complete Magmacosm
 - 🥉 **Storming the Stronghold**: Complete Pirate Stronghold
@@ -13,12 +13,12 @@
 - 🏅 **Forget Anyone?**: Collect all lums and cages in Forgotten Forests
 - 🏅 **Lucid Dreams**: Collect all lums and cages in Haunted Dreams
 - 🏅 **Through Fire and Flames**: Collect all lums and cages in Magmacosm
-- 🏅 **?**: Collect all lums and cages in Pirate Stronghold
-- 🏅 **How Did It Get Here?**: Collect the secret lum
+- 🏅 **Quest for Booty**: Collect all lums and cages in Pirate Stronghold
+- 🏅 **Omniscient**: Collect the secret lum
 - 🏅 **Square Eyes**: Complete all GameCube bonus levels (GBA only)
 - 🏅 **Hide and Seek Master**: Find all hidden lives
-- 🥉 **?**: Earn bronze in every time attack level
-- 🥉 **?**: Earn silver in every time attack level
+- 🥉 **Gotta Go Fast**: Earn bronze in every time attack level
+- 🥉 **Speedster**: Earn silver in every time attack level
 - 🏅 **Champion**: Earn gold in every time attack level
 
 ### Other

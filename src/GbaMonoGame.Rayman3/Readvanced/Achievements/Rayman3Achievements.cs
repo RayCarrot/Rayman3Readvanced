@@ -11,7 +11,7 @@ public static class Rayman3Achievements
             isGold: false,
             smallIconTexturePath: Assets.AchievementIcon32px_CompleteWorld1Texture,
             bigIconTexturePath: Assets.AchievementIcon48px_CompleteWorld1Texture,
-            title: "Unknown name", // TODO: Name
+            title: "First Steps",
             description: "Complete Forgotten Forests"),
         new AchievementInfo(
             id: AchievementId.CompleteWorld2,
@@ -95,14 +95,14 @@ public static class Rayman3Achievements
             isGold: true,
             smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
             bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
-            title: "Unknown name", // TODO: Name
+            title: "Quest for Booty",
             description: "Collect all lums and cages in Pirate Stronghold"),
         new AchievementInfo(
             id: AchievementId.Collect1000thLum,
             isGold: true,
             smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
             bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
-            title: "How Did It Get Here?",
+            title: "Omniscient",
             description: "Collect the secret lum"),
         new AchievementInfo(
             id: AchievementId.CompleteGCNBonus, // TODO: Trigger
@@ -124,14 +124,14 @@ public static class Rayman3Achievements
             isGold: false,
             smallIconTexturePath: Assets.AchievementIcon32px_TimeAttackBronzeTexture,
             bigIconTexturePath: Assets.AchievementIcon48px_TimeAttackBronzeTexture,
-            title: "Unknown name", // TODO: Name
+            title: "Gotta Go Fast",
             description: "Earn bronze in every time attack level"),
         new AchievementInfo(
             id: AchievementId.TimeAttackSilver, // TODO: Trigger
             isGold: false,
             smallIconTexturePath: Assets.AchievementIcon32px_TimeAttackSilverTexture,
             bigIconTexturePath: Assets.AchievementIcon48px_TimeAttackSilverTexture,
-            title: "Unknown name", // TODO: Name
+            title: "Speedster",
             description: "Earn silver in every time attack level"),
         new AchievementInfo(
             id: AchievementId.TimeAttackGold, // TODO: Trigger
