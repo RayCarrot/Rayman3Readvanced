@@ -10,6 +10,7 @@ public static class AchievementsManager
     private static ImmutableArray<AchievementInfo> AchievementsArray { get; set; }
     private static AchievementPopup Popup { get; set; }
     private static Queue<AchievementId> AchievementsPopupQueue { get; set; }
+    private static AchievementsSave Save { get; set; }
 
     public static AchievementInfo GetAchievement(AchievementId achievementId) => AchievementsDictionary[achievementId];
     public static ImmutableArray<AchievementInfo> GetAchievements() => AchievementsArray;
@@ -26,6 +27,8 @@ public static class AchievementsManager
         Popup.Init();
         AchievementsPopupQueue = new Queue<AchievementId>();
 
+        Save = SaveGameManager.LoadAchievementsSave() ?? new AchievementsSave();
+
         FrameManager.AddStepAction(Step);
     }
 
@@ -36,6 +39,8 @@ public static class AchievementsManager
 
         Popup = null;
         AchievementsPopupQueue = null;
+
+        Save = null;
 
         FrameManager.RemoveStepAction(Step);
     }
@@ -57,11 +62,38 @@ public static class AchievementsManager
         Popup.Draw();
     }
 
+    public static bool IsUnlocked(AchievementId achievementId)
+    {
+        return Save.UnlockedAchievements[(int)achievementId];
+    }
+
     public static void Unlock(AchievementId achievementId)
     {
-        // TODO: Check if already unlocked
-        // TODO: Save achievement
+        int id = (int)achievementId;
+
+        // Check if already unlocked
+        if (Save.UnlockedAchievements[id])
+            return;
+
+        // Save
+        Save.UnlockedAchievements[id] = true;
+        SaveGameManager.SaveAchievementsSave(Save);
+
+        // Show popup
         if (Engine.LocalConfig.Display.ShowAchievementPopups)
             AchievementsPopupQueue.Enqueue(achievementId);
+    }
+
+    public static void Lock(AchievementId achievementId)
+    {
+        int id = (int)achievementId;
+
+        // Check if already locked
+        if (!Save.UnlockedAchievements[id])
+            return;
+
+        // Save
+        Save.UnlockedAchievements[id] = false;
+        SaveGameManager.SaveAchievementsSave(Save);
     }
 }

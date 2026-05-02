@@ -11,6 +11,7 @@ public static class SaveGameManager
     
     private const string SaveFileExtension = ".sav";
     private const string SaveSlotFileName = "slot";
+    private const string AchievementsSaveFileName = "achievements";
     private const string TimeAttackSaveFileName = "timeattack";
     private const string TimeAttackGhostFileName = "ghost";
 
@@ -18,6 +19,11 @@ public static class SaveGameManager
     {
         string fileName = $"{SaveSlotFileName}{index + 1}";
         return GetSaveFile(Path.Combine(SaveDirectoryName, fileName));
+    }
+
+    private static PhysicalFile GetAchievementsFile()
+    {
+        return GetSaveFile(Path.Combine(SaveDirectoryName, AchievementsSaveFileName));
     }
 
     private static PhysicalFile GetTimeAttackFile()
@@ -127,6 +133,51 @@ public static class SaveGameManager
                 ex: ex,
                 text: "An error occurred when deleting the save.",
                 header: "Error deleting game save");
+        }
+    }
+
+    public static AchievementsSave LoadAchievementsSave()
+    {
+        try
+        {
+            PhysicalFile file = GetAchievementsFile();
+
+            if (!file.SourceFileExists)
+                return null;
+
+            Context context = Rom.Context;
+
+            using (context)
+                return FileFactory.Read<AchievementsSave>(context, file.FilePath);
+        }
+        catch (Exception ex)
+        {
+            Engine.MessageManager.EnqueueExceptionMessage(
+                ex: ex,
+                text: "An error occurred when reading the achievements save.",
+                header: "Error reading achievements save");
+
+            return null;
+        }
+    }
+
+    public static void SaveAchievementsSave(AchievementsSave save)
+    {
+        try
+        {
+            PhysicalFile file = GetAchievementsFile();
+
+            Context context = Rom.Context;
+
+            using (context)
+                FileFactory.Write<AchievementsSave>(context, file.FilePath, save);
+        }
+        catch (Exception ex)
+        {
+            Engine.MessageManager.EnqueueExceptionMessage(
+                ex: ex,
+                text: "An error occurred when saving the achievements save.",
+                header: "Error saving achievements save");
         }
     }
 
