@@ -287,40 +287,40 @@ public static class Rayman3Achievements
 
         // Check for world completions
         if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.SanctuaryOfBigTree_M2)
-            AchievementsManager.Unlock(AchievementId.CompleteWorld1);
+            AchievementsInfo.Unlock(AchievementId.CompleteWorld1);
         if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.MarshAwakening2)
-            AchievementsManager.Unlock(AchievementId.CompleteWorld2);
+            AchievementsInfo.Unlock(AchievementId.CompleteWorld2);
         if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.SanctuaryOfRockAndLava_M3)
-            AchievementsManager.Unlock(AchievementId.CompleteWorld3);
+            AchievementsInfo.Unlock(AchievementId.CompleteWorld3);
         if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.PirateShip_M2)
-            AchievementsManager.Unlock(AchievementId.CompleteWorld4);
+            AchievementsInfo.Unlock(AchievementId.CompleteWorld4);
 
         // Check for boss defeats
         if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossMachine)
-            AchievementsManager.Unlock(AchievementId.DefeatBossMachine);
+            AchievementsInfo.Unlock(AchievementId.DefeatBossMachine);
         if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossBadDreams)
-            AchievementsManager.Unlock(AchievementId.DefeatBossBadDreams);
+            AchievementsInfo.Unlock(AchievementId.DefeatBossBadDreams);
         if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossRockAndLava)
-            AchievementsManager.Unlock(AchievementId.DefeatBossRockAndLava);
+            AchievementsInfo.Unlock(AchievementId.DefeatBossRockAndLava);
         if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossScaleMan)
-            AchievementsManager.Unlock(AchievementId.DefeatBossScaleMan);
+            AchievementsInfo.Unlock(AchievementId.DefeatBossScaleMan);
         if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossFinal_M2)
-            AchievementsManager.Unlock(AchievementId.DefeatBossFinal);
+            AchievementsInfo.Unlock(AchievementId.DefeatBossFinal);
 
         // Check for world collection completions
         if (AllLumsAndCagesInLevels(World1Maps))
-            AchievementsManager.Unlock(AchievementId.CollectAllWorld1);
+            AchievementsInfo.Unlock(AchievementId.CollectAllWorld1);
         if (AllLumsAndCagesInLevels(World2Maps))
-            AchievementsManager.Unlock(AchievementId.CollectAllWorld2);
+            AchievementsInfo.Unlock(AchievementId.CollectAllWorld2);
         if (AllLumsAndCagesInLevels(World3Maps))
-            AchievementsManager.Unlock(AchievementId.CollectAllWorld3);
+            AchievementsInfo.Unlock(AchievementId.CollectAllWorld3);
         if (AllLumsAndCagesInLevels(World4Maps))
-            AchievementsManager.Unlock(AchievementId.CollectAllWorld4);
+            AchievementsInfo.Unlock(AchievementId.CollectAllWorld4);
         if (GameInfo.GetTotalDeadLums() == 1000)
-            AchievementsManager.Unlock(AchievementId.Collect1000thLum);
+            AchievementsInfo.Unlock(AchievementId.Collect1000thLum);
 
         // Check for GCN bonus completion
         if (GameInfo.PersistentInfo.CompletedGCNBonusLevels == 10)
-            AchievementsManager.Unlock(AchievementId.CompleteGCNBonus);
+            AchievementsInfo.Unlock(AchievementId.CompleteGCNBonus);
     }
 }

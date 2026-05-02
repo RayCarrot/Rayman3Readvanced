@@ -267,7 +267,7 @@ public partial class RedPirate
                     (type.IsSolid && KnockBackPosition.Y + 16 < Position.Y))
                 {
                     if (type.Value == PhysicalTypeValue.MoltenLava)
-                        AchievementsManager.Unlock(AchievementId.DefeatPirateWithLava);
+                        AchievementsInfo.Unlock(AchievementId.DefeatPirateWithLava);
 
                     Ammo = 1;
                     State.MoveTo(_Fsm_Dying);

@@ -307,7 +307,7 @@ public partial class GameCubeMenu : Frame
         State.MoveTo(_Fsm_PreInit);
 
         if (GameInfo.PersistentInfo.CompletedGCNBonusLevels == 10)
-            AchievementsManager.Unlock(AchievementId.CompleteGCNBonus);
+            AchievementsInfo.Unlock(AchievementId.CompleteGCNBonus);
     }
 
     public override void UnInit()

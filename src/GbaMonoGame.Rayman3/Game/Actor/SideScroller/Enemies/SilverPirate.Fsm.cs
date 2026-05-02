@@ -267,7 +267,7 @@ public partial class SilverPirate
                     (type.IsSolid && KnockBackYPosition + 16 < Position.Y))
                 {
                     if (type.Value == PhysicalTypeValue.MoltenLava)
-                        AchievementsManager.Unlock(AchievementId.DefeatPirateWithLava);
+                        AchievementsInfo.Unlock(AchievementId.DefeatPirateWithLava);
 
                     State.MoveTo(_Fsm_Dying);
                     return false;

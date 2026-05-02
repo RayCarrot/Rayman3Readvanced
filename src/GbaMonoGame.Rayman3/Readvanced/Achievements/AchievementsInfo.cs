@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
-public static class AchievementsManager
+public static class AchievementsInfo
 {
     private static FrozenDictionary<AchievementId, AchievementInfo> AchievementsDictionary { get; set; }
     private static ImmutableArray<AchievementInfo> AchievementsArray { get; set; }

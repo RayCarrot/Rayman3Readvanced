@@ -157,19 +157,19 @@ public class Rayman3DebugWindow : DebugWindow
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem("Achievements"))
+            if (ImGui.BeginTabItem("Achievements Info"))
             {
                 ImGui.SeparatorText("Unlocks");
 
-                foreach (AchievementInfo achievement in AchievementsManager.GetAchievements())
+                foreach (AchievementInfo achievement in AchievementsInfo.GetAchievements())
                 {
-                    bool unlocked = AchievementsManager.IsUnlocked(achievement.Id);
+                    bool unlocked = AchievementsInfo.IsUnlocked(achievement.Id);
                     if (ImGui.Checkbox($"{achievement.Id}: {achievement.Title}", ref unlocked))
                     {
                         if (unlocked)
-                            AchievementsManager.Unlock(achievement.Id);
+                            AchievementsInfo.Unlock(achievement.Id);
                         else
-                            AchievementsManager.Lock(achievement.Id);
+                            AchievementsInfo.Lock(achievement.Id);
                     }
                 }
 

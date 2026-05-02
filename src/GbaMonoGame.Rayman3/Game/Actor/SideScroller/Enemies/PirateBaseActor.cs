@@ -95,7 +95,7 @@ public abstract class PirateBaseActor : MovableActor
                 }
 
                 if (hitActor.Type == (int)ActorType.Keg)
-                    AchievementsManager.Unlock(AchievementId.DefeatPirateWithKeg);
+                    AchievementsInfo.Unlock(AchievementId.DefeatPirateWithKeg);
                 return false;
 
             default:

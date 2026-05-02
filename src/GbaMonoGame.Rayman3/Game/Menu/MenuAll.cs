@@ -612,7 +612,7 @@ public partial class MenuAll : Frame, IHasPlayfield
 
         SteamTimer = 0;
 
-        AchievementsManager.Unlock(AchievementId.ViewOriginalMenu);
+        AchievementsInfo.Unlock(AchievementId.ViewOriginalMenu);
     }
 
     public override void UnInit()

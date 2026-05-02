@@ -189,7 +189,7 @@ public sealed partial class FlyingShell : MovableActor
                     else
                     {
                         // If we play without fixing bugs then the achievement for completing world 4 won't unlock, so manually unlock it here
-                        AchievementsManager.Unlock(AchievementId.CompleteWorld4);
+                        AchievementsInfo.Unlock(AchievementId.CompleteWorld4);
                     }
                 }
                 return false;
