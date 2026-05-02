@@ -1,5 +1,6 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -239,6 +240,9 @@ public partial class GreenPirate
                         PhysicalTypeValue.MoltenLava ||
                     (type.IsSolid && KnockBackYPosition + 16 < Position.Y))
                 {
+                    if (type.Value == PhysicalTypeValue.MoltenLava)
+                        AchievementsManager.Unlock(AchievementId.DefeatPirateWithLava);
+
                     State.MoveTo(_Fsm_Dying);
                     return false;
                 }

@@ -1,5 +1,6 @@
 ﻿using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -92,6 +93,9 @@ public abstract class PirateBaseActor : MovableActor
                 {
                     HitFromFront = true;
                 }
+
+                if (hitActor.Type == (int)ActorType.Keg)
+                    AchievementsManager.Unlock(AchievementId.DefeatPirateWithKeg);
                 return false;
 
             default:

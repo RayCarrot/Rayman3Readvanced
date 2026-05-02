@@ -3639,6 +3639,9 @@ public partial class Rayman
 
                     StartFlyingWithKegRight = false;
                     ActionId = IsFacingRight ? Action.FlyForwardWithKeg_Right : Action.FlyBackwardsWithKeg_Right;
+
+                    if (IsFacingLeft)
+                        AchievementsManager.Unlock(AchievementId.RideKegBackwards);
                 }
                 else if (StartFlyingWithKegLeft)
                 {

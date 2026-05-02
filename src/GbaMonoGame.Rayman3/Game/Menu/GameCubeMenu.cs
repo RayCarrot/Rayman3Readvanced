@@ -8,6 +8,7 @@ using BinarySerializer.Nintendo.GCN;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.FsmSourceGenerator;
+using GbaMonoGame.Rayman3.Readvanced;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
 
@@ -304,6 +305,9 @@ public partial class GameCubeMenu : Frame
         WaitingForConnection = false;
         IsActive = true;
         State.MoveTo(_Fsm_PreInit);
+
+        if (GameInfo.PersistentInfo.CompletedGCNBonusLevels == 10)
+            AchievementsManager.Unlock(AchievementId.CompleteGCNBonus);
     }
 
     public override void UnInit()

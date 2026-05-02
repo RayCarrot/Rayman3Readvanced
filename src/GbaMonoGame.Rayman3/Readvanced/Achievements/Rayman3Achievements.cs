@@ -105,7 +105,7 @@ public static class Rayman3Achievements
             title: "Omniscient",
             description: "Collect the secret lum"),
         new AchievementInfo(
-            id: AchievementId.CompleteGCNBonus, // TODO: Trigger
+            id: AchievementId.CompleteGCNBonus,
             isGold: true,
             smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
             bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
@@ -141,7 +141,7 @@ public static class Rayman3Achievements
             title: "Champion",
             description: "Earn gold in every time attack level"),
         new AchievementInfo(
-            id: AchievementId.DefeatPirateWithKeg, // TODO: Trigger
+            id: AchievementId.DefeatPirateWithKeg,
             isGold: false,
             smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
             bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
@@ -156,7 +156,7 @@ public static class Rayman3Achievements
             description: "Complete Swamp of Bégoniax without moving to the side",
             exclusivePlatform: Platform.GBA),
         new AchievementInfo(
-            id: AchievementId.RideKegBackwards, // TODO: Trigger
+            id: AchievementId.RideKegBackwards,
             isGold: false,
             smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
             bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
@@ -185,7 +185,7 @@ public static class Rayman3Achievements
             description: "Complete Free Falling without taking the checkpoint",
             exclusivePlatform: Platform.NGage),
         new AchievementInfo(
-            id: AchievementId.DefeatPirateWithLava, // TODO: Trigger
+            id: AchievementId.DefeatPirateWithLava,
             isGold: false,
             smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
             bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
@@ -220,12 +220,48 @@ public static class Rayman3Achievements
             title: "Scrapped Metal",
             description: "Defeat a pirate of every rank"),
         new AchievementInfo(
-            id: AchievementId.ViewOriginalMenu, // TODO: Trigger
+            id: AchievementId.ViewOriginalMenu,
             isGold: false,
             smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
             bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
             title: "Retro",
             description: "View the original main menu"),
+    ];
+
+    // Doesn't include bosses since they don't have cages or lums
+    private static MapId[] World1Maps { get; } =
+    [
+        MapId.WoodLight_M1, MapId.WoodLight_M2,
+        MapId.FairyGlade_M1, MapId.FairyGlade_M2,
+        MapId.MarshAwakening1,
+        MapId.SanctuaryOfBigTree_M1, MapId.SanctuaryOfBigTree_M2,
+        MapId.Bonus1
+    ];
+    private static MapId[] World2Maps { get; } =
+    [
+        MapId.MissileRace1,
+        MapId.EchoingCaves_M1, MapId.EchoingCaves_M2,
+        MapId.CavesOfBadDreams_M1, MapId.CavesOfBadDreams_M2,
+        MapId.MenhirHills_M1, MapId.MenhirHills_M2,
+        MapId.MarshAwakening2,
+        MapId.Bonus2
+    ];
+    private static MapId[] World3Maps { get; } =
+    [
+        MapId.SanctuaryOfStoneAndFire_M1, MapId.SanctuaryOfStoneAndFire_M2, MapId.SanctuaryOfStoneAndFire_M3,
+        MapId.BeneathTheSanctuary_M1, MapId.BeneathTheSanctuary_M2,
+        MapId.ThePrecipice_M1, MapId.ThePrecipice_M2,
+        MapId.TheCanopy_M1, MapId.TheCanopy_M2,
+        MapId.SanctuaryOfRockAndLava_M1, MapId.SanctuaryOfRockAndLava_M2, MapId.SanctuaryOfRockAndLava_M3,
+        MapId.Bonus3
+    ];
+    private static MapId[] World4Maps { get; } =
+    [
+        MapId.TombOfTheAncients_M1, MapId.TombOfTheAncients_M2,
+        MapId.IronMountains_M1, MapId.IronMountains_M2,
+        MapId.MissileRace2,
+        MapId.PirateShip_M1, MapId.PirateShip_M2,
+        MapId.Bonus4
     ];
 
     private static bool AllLumsAndCagesInLevels(MapId[] maps)
@@ -272,45 +308,19 @@ public static class Rayman3Achievements
             AchievementsManager.Unlock(AchievementId.DefeatBossFinal);
 
         // Check for world collection completions
-        if (AllLumsAndCagesInLevels(
-            [
-                MapId.WoodLight_M1, MapId.WoodLight_M2, 
-                MapId.FairyGlade_M1, MapId.FairyGlade_M2, 
-                MapId.MarshAwakening1, 
-                MapId.SanctuaryOfBigTree_M1, MapId.SanctuaryOfBigTree_M2, 
-                MapId.Bonus1
-            ]))
+        if (AllLumsAndCagesInLevels(World1Maps))
             AchievementsManager.Unlock(AchievementId.CollectAllWorld1);
-        if (AllLumsAndCagesInLevels(
-            [
-                MapId.MissileRace1,
-                MapId.EchoingCaves_M1, MapId.EchoingCaves_M2,
-                MapId.CavesOfBadDreams_M1, MapId.CavesOfBadDreams_M2,
-                MapId.MenhirHills_M1, MapId.MenhirHills_M2,
-                MapId.MarshAwakening2,
-                MapId.Bonus2
-            ]))
+        if (AllLumsAndCagesInLevels(World2Maps))
             AchievementsManager.Unlock(AchievementId.CollectAllWorld2);
-        if (AllLumsAndCagesInLevels(
-            [
-                MapId.SanctuaryOfStoneAndFire_M1, MapId.SanctuaryOfStoneAndFire_M2, MapId.SanctuaryOfStoneAndFire_M3,
-                MapId.BeneathTheSanctuary_M1, MapId.BeneathTheSanctuary_M2,
-                MapId.ThePrecipice_M1, MapId.ThePrecipice_M2,
-                MapId.TheCanopy_M1, MapId.TheCanopy_M2,
-                MapId.SanctuaryOfRockAndLava_M1, MapId.SanctuaryOfRockAndLava_M2, MapId.SanctuaryOfRockAndLava_M3,
-                MapId.Bonus3
-            ]))
+        if (AllLumsAndCagesInLevels(World3Maps))
             AchievementsManager.Unlock(AchievementId.CollectAllWorld3);
-        if (AllLumsAndCagesInLevels(
-            [
-                MapId.TombOfTheAncients_M1, MapId.TombOfTheAncients_M2,
-                MapId.IronMountains_M1, MapId.IronMountains_M2,
-                MapId.MissileRace2,
-                MapId.PirateShip_M1, MapId.PirateShip_M2,
-                MapId.Bonus4
-            ]))
+        if (AllLumsAndCagesInLevels(World4Maps))
             AchievementsManager.Unlock(AchievementId.CollectAllWorld4);
         if (GameInfo.GetTotalDeadLums() == 1000)
             AchievementsManager.Unlock(AchievementId.Collect1000thLum);
+
+        // Check for GCN bonus completion
+        if (GameInfo.PersistentInfo.CompletedGCNBonusLevels == 10)
+            AchievementsManager.Unlock(AchievementId.CompleteGCNBonus);
     }
 }

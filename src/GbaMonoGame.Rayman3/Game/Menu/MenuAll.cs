@@ -611,6 +611,8 @@ public partial class MenuAll : Frame, IHasPlayfield
         TransitionsFX.FadeInInit(1);
 
         SteamTimer = 0;
+
+        AchievementsManager.Unlock(AchievementId.ViewOriginalMenu);
     }
 
     public override void UnInit()
