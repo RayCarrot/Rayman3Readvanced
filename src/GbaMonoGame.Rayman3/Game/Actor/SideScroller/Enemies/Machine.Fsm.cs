@@ -351,7 +351,10 @@ public partial class Machine
                 {
                     Rayman rayman = (Rayman)Scene.MainActor;
                     if (rayman.State != rayman.Fsm_Dying && rayman.State != rayman.Fsm_RespawnDeath && rayman.State != rayman.Fsm_EndMap)
+                    {
+                        AchievementsManager.Unlock(AchievementId.DefeatBossMachine);
                         rayman.ProcessMessage(this, Message.Rayman_FinishLevel);
+                    }
                 }
 
                 // Fall down

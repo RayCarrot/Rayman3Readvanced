@@ -494,6 +494,8 @@ public static class GameInfo
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumTotal_Mix02);
                 LevelMusicManager.OverrideLevelMusic(Rayman3SoundEvent.Play__win2);
             }
+
+            Rayman3Achievements.CheckProgressionBasedAchievements();
         }
     }
 
@@ -512,6 +514,8 @@ public static class GameInfo
             // NOTE: Game also checks to MapId is not 0xFF, but that shouldn't be possible
             if (HasCollectedAllCagesInLevel())
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumTotal_Mix02);
+
+            Rayman3Achievements.CheckProgressionBasedAchievements();
         }
     }
 
@@ -923,6 +927,8 @@ public static class GameInfo
     {
         if (MapId < MapId.Bonus1 && PersistentInfo.LastCompletedLevel < (int)MapId)
             PersistentInfo.LastCompletedLevel = (byte)MapId;
+
+        Rayman3Achievements.CheckProgressionBasedAchievements();
     }
 
     public static void ModifyLives(int change)

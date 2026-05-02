@@ -186,6 +186,11 @@ public sealed partial class FlyingShell : MovableActor
                         GameInfo.PersistentInfo.LastPlayedLevel = (byte)GameInfo.MapId;
                         GameInfo.Save(GameInfo.CurrentSlot);
                     }
+                    else
+                    {
+                        // If we play without fixing bugs then the achievement for completing world 4 won't unlock, so manually unlock it here
+                        AchievementsManager.Unlock(AchievementId.CompleteWorld4);
+                    }
                 }
                 return false;
 

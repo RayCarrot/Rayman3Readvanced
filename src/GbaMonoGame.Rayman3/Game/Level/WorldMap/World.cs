@@ -1,6 +1,7 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
 using Action = System.Action;
@@ -176,6 +177,8 @@ public class World : FrameWorldSideScroller
 
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
+
+        Rayman3Achievements.CheckProgressionBasedAchievements();
     }
 
     public override void Step()
