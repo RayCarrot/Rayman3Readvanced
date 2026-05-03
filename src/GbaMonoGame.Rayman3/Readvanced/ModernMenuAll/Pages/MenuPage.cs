@@ -110,7 +110,7 @@ public abstract class MenuPage
             newScrollOffset = GetMaxScrollOffset(newSelectedOption);
         }
 
-        bool changed = Menu.SetCursorTarget(newSelectedOption - newScrollOffset, forceUpdate);
+        bool changed = !UsesCursor || Menu.SetCursorTarget(newSelectedOption - newScrollOffset, forceUpdate);
 
         if (changed)
         {

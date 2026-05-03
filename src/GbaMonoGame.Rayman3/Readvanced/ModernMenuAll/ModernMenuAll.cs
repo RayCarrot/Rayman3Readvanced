@@ -168,6 +168,9 @@ public class ModernMenuAll : Frame, IHasPlayfield
 
         Cursor.ScreenPos = Cursor.ScreenPos with { Y = CursorBaseY };
         SetCursorToIdle();
+
+        CursorStartY = null;
+        CursorDestY = null;
     }
 
     public void ManageCursorAndStem()
