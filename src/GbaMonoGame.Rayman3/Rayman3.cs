@@ -242,7 +242,7 @@ public class Rayman3 : GbaGame
             { MapId.BeneathTheSanctuary_M2, mapId => new FrameSideScroller(mapId) },
             { MapId.ThePrecipice_M1, mapId => new ThePrecipice_M1(mapId) },
             { MapId.ThePrecipice_M2, mapId => new ThePrecipice_M2(mapId) },
-            { MapId.BossRockAndLava, mapId => new FrameSideScroller(mapId) },
+            { MapId.BossRockAndLava, mapId => new BossRockAndLava(mapId) },
             { MapId.TheCanopy_M1, mapId => new FrameSideScroller(mapId) },
             { MapId.TheCanopy_M2, mapId => new FrameSideScroller(mapId) },
             { MapId.SanctuaryOfRockAndLava_M1, mapId => new SanctuaryOfRockAndLava(mapId) },

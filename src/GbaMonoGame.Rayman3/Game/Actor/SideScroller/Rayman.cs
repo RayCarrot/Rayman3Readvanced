@@ -1715,6 +1715,9 @@ public sealed partial class Rayman : MovableActor
 
                 IsSuperHelicoActive = true;
                 MultiplayerBlueLumTimer = 300;
+
+                if (GameInfo.MapId == MapId.BossRockAndLava)
+                    Rayman3Achievements.BossRockAndLava_HasUsedBlueLum = true;
                 return false;
 
             case Message.Rayman_CollectWhiteLum:

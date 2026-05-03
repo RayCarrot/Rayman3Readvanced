@@ -1,5 +1,6 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -120,6 +121,9 @@ public partial class Skull
 
                 if (isHit)
                 {
+                    if (GameInfo.MapId == MapId.CavesOfBadDreams_M1)
+                        Rayman3Achievements.CaveBadDreamsM1_HitSkulls++;
+
                     if (AnimatedObject.IsFramed)
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SkullHit_Mix02, this);
 

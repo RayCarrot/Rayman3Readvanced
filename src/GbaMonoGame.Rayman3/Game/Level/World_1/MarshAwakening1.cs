@@ -1,4 +1,5 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -45,6 +46,8 @@ public class MarshAwakening1 : FrameWaterSkiMode7
 
         TextBox.SetCutsceneCharacter(TextBoxCutsceneCharacter.Murfy);
         TextBox.SetText(6);
+
+        Rayman3Achievements.MarshAwakening1_HasMoved = false;
     }
 
     public override void UnInit()

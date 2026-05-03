@@ -2,6 +2,7 @@
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.FsmSourceGenerator;
+using GbaMonoGame.Rayman3.Readvanced;
 using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
@@ -111,6 +112,9 @@ public sealed partial class RaymanMode7 : Mode7Actor
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02, this);
                 SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.Play__win3, 0);
                 LevelMusicManager.HasOverridenLevelMusic = false;
+
+                if (GameInfo.MapId == MapId.MarshAwakening1 && !Rayman3Achievements.MarshAwakening1_HasMoved)
+                    AchievementsInfo.Unlock(AchievementId.CompleteMarshAwakening1WithoutMoving);
                 return true;
 
             case Message.Actor_Start:

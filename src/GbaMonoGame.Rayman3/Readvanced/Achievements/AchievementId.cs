@@ -22,7 +22,7 @@ public enum AchievementId
     TimeAttackSilver = 17,
     TimeAttackGold = 18,
     DefeatPirateWithKeg = 19,
-    CompleteMarshes1WithoutMoving = 20,
+    CompleteMarshAwakening1WithoutMoving = 20,
     RideKegBackwards = 21,
     CompleteCaveBadDreamsWithMaxSkullHits = 22,
     CompleteMenhirHillsWithoutDying = 23,

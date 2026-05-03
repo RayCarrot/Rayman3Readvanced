@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GbaMonoGame.Rayman3.Readvanced;
+using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -18,5 +19,7 @@ public class MissileRace2 : FrameSingleMode7
             new(4), new(5), new(6),
             new(7), new(8), new(9)
         ], 3, 3);
+
+        Rayman3Achievements.MissileRace2_HasTakenDamage = false;
     }
 }

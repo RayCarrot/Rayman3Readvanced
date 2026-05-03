@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 using GbaMonoGame.TgxEngine;
 using Vector3 = Microsoft.Xna.Framework.Vector3;
 
@@ -69,11 +70,21 @@ public partial class RaymanMode7
         if (ProcessJoypad)
         {
             if (JoyPad.IsButtonPressed(Rayman3Input.ActorLeft))
+            {
+                if (GameInfo.MapId == MapId.MarshAwakening1)
+                    Rayman3Achievements.MarshAwakening1_HasMoved = true;
                 MoveSpeed = 1.375f;
+            }
             else if (JoyPad.IsButtonPressed(Rayman3Input.ActorRight))
+            {
+                if (GameInfo.MapId == MapId.MarshAwakening1)
+                    Rayman3Achievements.MarshAwakening1_HasMoved = true;
                 MoveSpeed = -1.375f;
+            }
             else
+            {
                 MoveSpeed = 0;
+            }
         }
         else
         {

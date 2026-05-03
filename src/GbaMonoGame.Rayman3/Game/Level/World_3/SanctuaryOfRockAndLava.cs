@@ -1,4 +1,5 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
+using GbaMonoGame.Rayman3.Readvanced;
 using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
@@ -31,6 +32,9 @@ public class SanctuaryOfRockAndLava : FrameSideScroller
 
             FadeOutTimer = 0xFF;
         }
+
+        if (GameInfo.MapId == MapId.SanctuaryOfRockAndLava_M1 && GameInfo.LastGreenLumAlive == 0)
+            Rayman3Achievements.SanctuaryOfRockAndLava_HasKilledBlackLum = false;
     }
 
     public override void Step()

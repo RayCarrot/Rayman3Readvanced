@@ -1,5 +1,6 @@
 ﻿using System;
 using BinarySerializer.Ubisoft.GbaEngine;
+using GbaMonoGame.Rayman3.Readvanced;
 using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
@@ -48,6 +49,9 @@ public class CavesOfBadDreams : FrameSideScroller
                 Amplitude = 24
             };
         }
+
+        if (GameInfo.MapId == MapId.CavesOfBadDreams_M1 && GameInfo.LastGreenLumAlive == 0)
+            Rayman3Achievements.CaveBadDreamsM1_HitSkulls = 0;
     }
 
     public override void Step()

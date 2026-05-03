@@ -1,6 +1,7 @@
 ﻿using System;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -10,6 +11,9 @@ public partial class BlackLum
     {
         if (HitPoints == 0)
         {
+            if (GameInfo.MapId is MapId.SanctuaryOfRockAndLava_M1 or MapId.SanctuaryOfRockAndLava_M2 or MapId.SanctuaryOfRockAndLava_M3)
+                Rayman3Achievements.SanctuaryOfRockAndLava_HasKilledBlackLum = true;
+
             State.MoveTo(_Fsm_Dying);
             return false;
         }

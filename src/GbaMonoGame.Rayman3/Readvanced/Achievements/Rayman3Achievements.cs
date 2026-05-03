@@ -148,7 +148,7 @@ public static class Rayman3Achievements
             title: "Return to Sender",
             description: "Defeat a pirate with a keg"),
         new AchievementInfo(
-            id: AchievementId.CompleteMarshes1WithoutMoving, // TODO: Trigger
+            id: AchievementId.CompleteMarshAwakening1WithoutMoving,
             isGold: true,
             smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
             bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
@@ -163,21 +163,21 @@ public static class Rayman3Achievements
             title: "geK gniylF",
             description: "Ride a flying keg backwards"),
         new AchievementInfo(
-            id: AchievementId.CompleteCaveBadDreamsWithMaxSkullHits, // TODO: Trigger
+            id: AchievementId.CompleteCaveBadDreamsWithMaxSkullHits,
             isGold: true,
             smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
             bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
             title: "Let the Dead Rest",
             description: "Complete the first section of Void of Bones while hitting 17 or fewer skull platforms"),
         new AchievementInfo(
-            id: AchievementId.CompleteMenhirHillsWithoutDying, // TODO: Trigger
+            id: AchievementId.CompleteMenhirHillsWithoutDying,
             isGold: true,
             smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
             bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
             title: "Don't Stop Me Now",
             description: "Complete Prickly Passage without dying"),
         new AchievementInfo(
-            id: AchievementId.CompleteFreeFallingWithoutCheckpoint, // TODO: Trigger
+            id: AchievementId.CompleteFreeFallingWithoutCheckpoint,
             isGold: true,
             smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
             bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
@@ -192,21 +192,21 @@ public static class Rayman3Achievements
             title: "Your Lava Bath Is Ready",
             description: "Defeat a pirate by knocking it into the lava"),
         new AchievementInfo(
-            id: AchievementId.DefeatRockyWithoutBlueLum, // TODO: Trigger
+            id: AchievementId.DefeatRockyWithoutBlueLum,
             isGold: true,
             smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
             bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
             title: "No, Jump Good",
             description: "Defeat Rocky without using the blue lum"),
         new AchievementInfo(
-            id: AchievementId.CompleteRockAndLavaWithoutDefeatingBlackLums, // TODO: Trigger
+            id: AchievementId.CompleteRockAndLavaWithoutDefeatingBlackLums,
             isGold: true,
             smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
             bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
             title: "Pacifist",
             description: "Complete Wicked Flow without defeating any black lums"),
         new AchievementInfo(
-            id: AchievementId.CompleteMissileRace2WithoutDamage, // TODO: Trigger
+            id: AchievementId.CompleteMissileRace2WithoutDamage,
             isGold: true,
             smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
             bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
@@ -227,6 +227,14 @@ public static class Rayman3Achievements
             title: "Retro",
             description: "View the original main menu"),
     ];
+
+    // Tracking achievement progress
+    public static bool MarshAwakening1_HasMoved { get; set; }
+    public static int CaveBadDreamsM1_HitSkulls { get; set; }
+    public static bool MenhirHills_HasDied { get; set; }
+    public static bool BossRockAndLava_HasUsedBlueLum { get; set; }
+    public static bool SanctuaryOfRockAndLava_HasKilledBlackLum { get; set; }
+    public static bool MissileRace2_HasTakenDamage { get; set; }
 
     // Doesn't include bosses since they don't have cages or lums
     private static MapId[] World1Maps { get; } =
@@ -320,7 +328,7 @@ public static class Rayman3Achievements
             AchievementsInfo.Unlock(AchievementId.Collect1000thLum);
 
         // Check for GCN bonus completion
-        if (GameInfo.PersistentInfo.CompletedGCNBonusLevels == 10)
+        if (Rom.Platform == Platform.GBA && GameInfo.PersistentInfo.CompletedGCNBonusLevels == 10)
             AchievementsInfo.Unlock(AchievementId.CompleteGCNBonus);
     }
 }

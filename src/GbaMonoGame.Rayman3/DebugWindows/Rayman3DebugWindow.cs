@@ -159,7 +159,16 @@ public class Rayman3DebugWindow : DebugWindow
 
             if (ImGui.BeginTabItem("Achievements Info"))
             {
-                ImGui.SeparatorText("Unlocks");
+                ImGui.SeparatorText("Tracking");
+
+                ImGui.Text($"{nameof(Rayman3Achievements.MarshAwakening1_HasMoved)}: {Rayman3Achievements.MarshAwakening1_HasMoved}");
+                ImGui.Text($"{nameof(Rayman3Achievements.CaveBadDreamsM1_HitSkulls)}: {Rayman3Achievements.CaveBadDreamsM1_HitSkulls}");
+                ImGui.Text($"{nameof(Rayman3Achievements.MenhirHills_HasDied)}: {Rayman3Achievements.MenhirHills_HasDied}");
+                ImGui.Text($"{nameof(Rayman3Achievements.BossRockAndLava_HasUsedBlueLum)}: {Rayman3Achievements.BossRockAndLava_HasUsedBlueLum}");
+                ImGui.Text($"{nameof(Rayman3Achievements.SanctuaryOfRockAndLava_HasKilledBlackLum)}: {Rayman3Achievements.SanctuaryOfRockAndLava_HasKilledBlackLum}");
+                ImGui.Text($"{nameof(Rayman3Achievements.MissileRace2_HasTakenDamage)}: {Rayman3Achievements.MissileRace2_HasTakenDamage}");
+
+                ImGui.SeparatorText("Achievements");
 
                 foreach (AchievementInfo achievement in AchievementsInfo.GetAchievements())
                 {

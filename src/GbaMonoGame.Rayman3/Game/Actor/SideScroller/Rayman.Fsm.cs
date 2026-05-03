@@ -3972,6 +3972,21 @@ public partial class Rayman
                 {
                     ActionId = IsFacingRight ? Action.Fall_Right : Action.Fall_Left;
                 }
+
+                if (FinishedMap)
+                {
+                    if (GameInfo.MapId == MapId.CavesOfBadDreams_M1 && Rayman3Achievements.CaveBadDreamsM1_HitSkulls <= 17) 
+                        AchievementsInfo.Unlock(AchievementId.CompleteCaveBadDreamsWithMaxSkullHits);
+                    if (GameInfo.MapId == MapId.MenhirHills_M2 && !Rayman3Achievements.MenhirHills_HasDied) 
+                        AchievementsInfo.Unlock(AchievementId.CompleteMenhirHillsWithoutDying);
+                    if (Rom.Platform == Platform.NGage && GameInfo.MapId == MapId.MarshAwakening2 && GameInfo.LastGreenLumAlive == 0) 
+                        AchievementsInfo.Unlock(AchievementId.CompleteFreeFallingWithoutCheckpoint);
+                    if (GameInfo.MapId == MapId.BossRockAndLava && !Rayman3Achievements.BossRockAndLava_HasUsedBlueLum) 
+                        AchievementsInfo.Unlock(AchievementId.DefeatRockyWithoutBlueLum);
+                    if (GameInfo.MapId == MapId.SanctuaryOfRockAndLava_M3 && !Rayman3Achievements.SanctuaryOfRockAndLava_HasKilledBlackLum) 
+                        AchievementsInfo.Unlock(AchievementId.CompleteRockAndLavaWithoutDefeatingBlackLums);
+                }
+
                 break;
 
             case FsmAction.Step:
@@ -4459,6 +4474,9 @@ public partial class Rayman
                     AttachedObject.ProcessMessage(this, Message.Actor_Drop);
                     AttachedObject = null;
                 }
+
+                if (GameInfo.MapId is MapId.MenhirHills_M1 or MapId.MenhirHills_M2)
+                    Rayman3Achievements.MenhirHills_HasDied = true;
                 break;
 
             case FsmAction.Step:

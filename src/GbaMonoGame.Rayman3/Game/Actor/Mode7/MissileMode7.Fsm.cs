@@ -72,6 +72,9 @@ public partial class MissileMode7
 
                 InvulnerabilityTimer = 0;
                 IsInvulnerable = true;
+
+                if (GameInfo.MapId == MapId.MissileRace2)
+                    Rayman3Achievements.MissileRace2_HasTakenDamage = true;
             }
 
             if (HitPoints == 0 && RSMultiplayer.IsActive)
@@ -380,6 +383,9 @@ public partial class MissileMode7
 
                 if (TimeAttackInfo.IsActive)
                     TimeAttackInfo.Pause();
+
+                if (GameInfo.MapId == MapId.MissileRace2 && !Rayman3Achievements.MissileRace2_HasTakenDamage)
+                    AchievementsInfo.Unlock(AchievementId.CompleteMissileRace2WithoutDamage);
                 break;
 
             case FsmAction.Step:

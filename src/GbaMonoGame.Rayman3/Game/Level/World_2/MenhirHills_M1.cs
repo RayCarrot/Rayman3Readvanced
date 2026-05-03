@@ -1,4 +1,6 @@
-﻿namespace GbaMonoGame.Rayman3;
+﻿using GbaMonoGame.Rayman3.Readvanced;
+
+namespace GbaMonoGame.Rayman3;
 
 public class MenhirHills_M1 : FrameSideScroller
 {
@@ -9,5 +11,8 @@ public class MenhirHills_M1 : FrameSideScroller
         base.Init();
 
         Scene.AddDialog(new TextBoxDialog(Scene), false, false);
+
+        if (GameInfo.LastGreenLumAlive == 0)
+            Rayman3Achievements.MenhirHills_HasDied = false;
     }
 }
