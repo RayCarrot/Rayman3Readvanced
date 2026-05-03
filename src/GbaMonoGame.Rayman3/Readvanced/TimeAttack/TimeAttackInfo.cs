@@ -206,6 +206,53 @@ public static class TimeAttackInfo
             return [];
     }
 
+    public static void GetTotalEarnedMedals(
+        out int earnedBronzeModels, out int earnedSilverModels, out int earnedGoldModels,
+        out int totalBronzeModels, out int totalSilverMedals, out int totalGoldMedal)
+    {
+        FrozenDictionary<MapId, TimeAttackTime[]> dictionary = Rom.Platform switch
+        {
+            Platform.GBA => TimeAttackTimes.Gba,
+            Platform.NGage => TimeAttackTimes.NGage,
+            _ => throw new UnsupportedPlatformException()
+        };
+
+        earnedBronzeModels = 0;
+        earnedSilverModels = 0;
+        earnedGoldModels = 0;
+        totalBronzeModels = 0;
+        totalSilverMedals = 0;
+        totalGoldMedal = 0;
+        foreach (KeyValuePair<MapId, TimeAttackTime[]> valuePair in dictionary)
+        {
+            TimeAttackTime? recordTime = TimeAttackDataManager.GetRecordTime(valuePair.Key);
+
+            foreach (TimeAttackTime targetTime in valuePair.Value)
+            {
+                bool earned = recordTime?.Time <= targetTime.Time;
+
+                switch (targetTime.Type)
+                {
+                    case TimeAttackTimeType.Bronze:
+                        if (earned) 
+                            earnedBronzeModels++;
+                        totalBronzeModels++;
+                        break;
+                    case TimeAttackTimeType.Silver:
+                        if (earned) 
+                            earnedSilverModels++;
+                        totalSilverMedals++;
+                        break;
+                    case TimeAttackTimeType.Gold:
+                        if (earned) 
+                            earnedGoldModels++;
+                        totalGoldMedal++;
+                        break;
+                }
+            }
+        }
+    }
+
     public static void SaveTime()
     {
         if (LevelId == null || CurrentMapId == null)
@@ -222,6 +269,8 @@ public static class TimeAttackInfo
         }
 
         TimeAttackDataManager.SaveRecordTime(LevelId.Value, Timer, ghostSave);
+
+        Rayman3Achievements.CheckTimeAttackAchievements();
     }
 
     public static void InitGhostRecorder(Scene2D scene)

@@ -120,21 +120,21 @@ public static class Rayman3Achievements
             title: "Hide and Seek Master",
             description: "Find all hidden lives"),
         new AchievementInfo(
-            id: AchievementId.TimeAttackBronze, // TODO: Trigger
+            id: AchievementId.TimeAttackBronze,
             isGold: false,
             smallIconTexturePath: Assets.AchievementIcon32px_TimeAttackBronzeTexture,
             bigIconTexturePath: Assets.AchievementIcon48px_TimeAttackBronzeTexture,
             title: "Gotta Go Fast",
             description: "Earn bronze in every time attack level"),
         new AchievementInfo(
-            id: AchievementId.TimeAttackSilver, // TODO: Trigger
+            id: AchievementId.TimeAttackSilver,
             isGold: false,
             smallIconTexturePath: Assets.AchievementIcon32px_TimeAttackSilverTexture,
             bigIconTexturePath: Assets.AchievementIcon48px_TimeAttackSilverTexture,
             title: "Speedster",
             description: "Earn silver in every time attack level"),
         new AchievementInfo(
-            id: AchievementId.TimeAttackGold, // TODO: Trigger
+            id: AchievementId.TimeAttackGold,
             isGold: true,
             smallIconTexturePath: Assets.AchievementIcon32px_TimeAttackGoldTexture,
             bigIconTexturePath: Assets.AchievementIcon48px_TimeAttackGoldTexture,
@@ -330,5 +330,19 @@ public static class Rayman3Achievements
         // Check for GCN bonus completion
         if (Rom.Platform == Platform.GBA && GameInfo.PersistentInfo.CompletedGCNBonusLevels == 10)
             AchievementsInfo.Unlock(AchievementId.CompleteGCNBonus);
+    }
+
+    public static void CheckTimeAttackAchievements()
+    {
+        TimeAttackInfo.GetTotalEarnedMedals(
+            out int earnedBronze, out int earnedSilver, out int earnedGold,
+            out int totalBronze, out int totalSilver, out int totalGold);
+
+        if (earnedBronze == totalBronze)
+            AchievementsInfo.Unlock(AchievementId.TimeAttackBronze);
+        if (earnedSilver == totalSilver)
+            AchievementsInfo.Unlock(AchievementId.TimeAttackSilver);
+        if (earnedGold == totalGold)
+            AchievementsInfo.Unlock(AchievementId.TimeAttackGold);
     }
 }
