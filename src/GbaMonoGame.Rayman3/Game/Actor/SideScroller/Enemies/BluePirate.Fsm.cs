@@ -1,6 +1,7 @@
 ﻿using System;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -293,6 +294,7 @@ public partial class BluePirate
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraDead_Mix05, this);
                 IsSolid = false;
                 LevelMusicManager.StopSpecialMusic();
+                Rayman3Achievements.DefeatPirateType(PirateType.Blue);
                 break;
 
             case FsmAction.Step:

@@ -271,6 +271,7 @@ public partial class GreenPirate
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraHit1_Mix02__or__PiraHit3_Mix03, this);
                 IsSolid = false;
                 LevelMusicManager.StopSpecialMusic();
+                Rayman3Achievements.DefeatPirateType(PirateType.Green);
                 break;
 
             case FsmAction.Step:

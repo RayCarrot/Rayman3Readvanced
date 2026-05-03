@@ -213,7 +213,7 @@ public static class Rayman3Achievements
             title: "Burning Rubber",
             description: "Complete Magma Mayhem 2 without taking any damage"),
         new AchievementInfo(
-            id: AchievementId.DefeatPirateOfEveryRank, // TODO: Trigger
+            id: AchievementId.DefeatEveryPirateType,
             isGold: false,
             smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
             bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
@@ -344,5 +344,16 @@ public static class Rayman3Achievements
             AchievementsInfo.Unlock(AchievementId.TimeAttackSilver);
         if (earnedGold == totalGold)
             AchievementsInfo.Unlock(AchievementId.TimeAttackGold);
+    }
+
+    public static void DefeatPirateType(PirateType pirateType)
+    {
+        if (!RSMultiplayer.IsActive && !TimeAttackInfo.IsActive)
+        {
+            GameInfo.SaveSlot.DefeatedPirateTypes |= pirateType;
+
+            if (GameInfo.SaveSlot.DefeatedPirateTypes == PirateType.All)
+                AchievementsInfo.Unlock(AchievementId.DefeatEveryPirateType);
+        }
     }
 }

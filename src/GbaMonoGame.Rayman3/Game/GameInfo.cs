@@ -150,6 +150,7 @@ public static class GameInfo
         PersistentInfo.CompletedGCNBonusLevels = 0;
 
         SaveSlot.PlayTime = 0;
+        SaveSlot.DefeatedPirateTypes = PirateType.None;
     }
 
     public static void Load(int saveSlot)

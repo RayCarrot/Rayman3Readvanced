@@ -31,7 +31,7 @@ public enum AchievementId
     DefeatRockyWithoutBlueLum = 26,
     CompleteRockAndLavaWithoutDefeatingBlackLums = 27,
     CompleteMissileRace2WithoutDamage = 28,
-    DefeatPirateOfEveryRank = 29,
+    DefeatEveryPirateType = 29,
     ViewOriginalMenu = 30,
     Count = 31,
 }
