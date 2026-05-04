@@ -30,8 +30,8 @@ public class BossMachine : FrameSideScroller
         // Load the texture for the extended background layer
         string extendedLayerTextureName = Rom.Platform switch
         {
-            Platform.GBA => Assets.BossMachine_ExtendedLayer0_GBATexture,
-            Platform.NGage => Assets.BossMachine_ExtendedLayer0_NGageTexture,
+            Platform.GBA => Assets.Level.BossMachine_ExtendedLayer0_GBA,
+            Platform.NGage => Assets.Level.BossMachine_ExtendedLayer0_NGage,
             _ => throw new UnsupportedPlatformException()
         };
         Texture2D extendedLayerTexture = Engine.FrameContentManager.Load<Texture2D>(extendedLayerTextureName);

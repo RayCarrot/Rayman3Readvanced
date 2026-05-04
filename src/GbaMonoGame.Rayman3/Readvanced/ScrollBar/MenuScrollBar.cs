@@ -9,7 +9,7 @@ public class MenuScrollBar
 {
     public MenuScrollBar(RenderContext renderContext, Vector2 position, int bgPriority)
     {
-        Texture2D scrollBarThumbTexture = Engine.FixContentManager.Load<Texture2D>(Assets.ScrollBarThumbTexture);
+        Texture2D scrollBarThumbTexture = Engine.FixContentManager.Load<Texture2D>(Assets.Menu.ScrollBarThumb);
 
         Position = position;
 
@@ -48,8 +48,8 @@ public class MenuScrollBar
 
             ScrollBar.Texture = Engine.FixContentManager.Load<Texture2D>(value switch
             {
-                MenuScrollBarSize.Small => Assets.ScrollBarSmallTexture,
-                MenuScrollBarSize.Big => Assets.ScrollBarBigTexture,
+                MenuScrollBarSize.Small => Assets.Menu.ScrollBarSmall,
+                MenuScrollBarSize.Big => Assets.Menu.ScrollBarBig,
                 _ => throw new ArgumentOutOfRangeException(nameof(value), value, null)
             });
         }

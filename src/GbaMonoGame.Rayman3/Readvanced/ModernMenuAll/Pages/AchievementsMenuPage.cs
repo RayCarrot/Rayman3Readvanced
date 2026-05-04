@@ -102,7 +102,7 @@ public class AchievementsMenuPage : MenuPage
             ObjPriority = 0,
             ScreenPos = new Vector2(190, 38),
             RenderContext = RenderContext,
-            Texture = Engine.FrameContentManager.Load<Texture2D>(Assets.ClothTexture)
+            Texture = Engine.FrameContentManager.Load<Texture2D>(Assets.Menu.Cloth)
         };
 
         SelectedAchievementTitleLines = new SpriteFontTextObject[SelectedAchievementTitleMaxLines];

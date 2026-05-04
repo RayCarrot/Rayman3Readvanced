@@ -8,7 +8,7 @@ public class CollisionMapScreenRenderer : IScreenRenderer
 {
     public CollisionMapScreenRenderer(int width, int height, byte[] collisionMap)
     {
-        TileSetTexture = Engine.FixContentManager.Load<Texture2D>(Assets.CollisionTileSetTexture);
+        TileSetTexture = Engine.FixContentManager.Load<Texture2D>(Assets.Playfield.CollisionTileSet);
         Width = width;
         Height = height;
         CollisionMap = collisionMap;

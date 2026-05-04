@@ -13,14 +13,14 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
     {
         Camera = playfield.Camera;
 
-        Shader = Engine.FrameContentManager.Load<Effect>(Assets.FogVertexShader);
+        Shader = Engine.FrameContentManager.Load<Effect>(Assets.Mode7.FogVertexShader);
         FadeDistance = fadeDistance;
 
         TgxRotscaleLayerMode7 layer = playfield.RotScaleLayers[0];
 
         // Create the textures (use a separate one for the sides since we want it to be smaller)
         Texture2D topTexture = CreateTexture(playfield.GfxTileKitManager, layer.TileMap, layer.Width, wallPoint, wallSize);
-        Texture2D sideTexture = Engine.FrameContentManager.Load<Texture2D>(Assets.Mode7WallSideTexture);
+        Texture2D sideTexture = Engine.FrameContentManager.Load<Texture2D>(Assets.Mode7.Mode7WallSide);
 
         Vector3 wallBoxSize = new Vector3(wallSize.X, wallSize.Y, wallHeight) * Tile.Size;
 

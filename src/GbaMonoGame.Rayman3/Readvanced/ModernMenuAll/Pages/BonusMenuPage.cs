@@ -25,7 +25,7 @@ public class BonusMenuPage : MenuPage
             text: "ACHIEVEMENTS", 
             collections:
             [
-                new BonusActionMenuOption.Collection(Assets.AchievementsIconTexture, $"{earnedAchievements}/{totalAchievements}"),
+                new BonusActionMenuOption.Collection(Assets.Achievements.AchievementsIcon, $"{earnedAchievements}/{totalAchievements}"),
             ], 
             action: () =>
             {
@@ -35,9 +35,9 @@ public class BonusMenuPage : MenuPage
             text: "TIME ATTACK",
             collections:
             [
-                new BonusActionMenuOption.Collection(Assets.BronzeStarSmallTexture, $"{earnedBronze}/{totalBronze}"),
-                new BonusActionMenuOption.Collection(Assets.SilverStarSmallTexture, $"{earnedSilver}/{totalSilver}"),
-                new BonusActionMenuOption.Collection(Assets.GoldStarSmallTexture, $"{earnedGold}/{totalGold}"),
+                new BonusActionMenuOption.Collection(Assets.TimeAttack.BronzeStarSmall, $"{earnedBronze}/{totalBronze}"),
+                new BonusActionMenuOption.Collection(Assets.TimeAttack.SilverStarSmall, $"{earnedSilver}/{totalSilver}"),
+                new BonusActionMenuOption.Collection(Assets.TimeAttack.GoldStarSmall, $"{earnedGold}/{totalGold}"),
             ], 
             action: () =>
             {

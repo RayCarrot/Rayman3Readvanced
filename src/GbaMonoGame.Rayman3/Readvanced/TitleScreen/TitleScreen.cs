@@ -263,11 +263,11 @@ public class TitleScreen : Frame
         if (FadeIn)
             TransitionsFX.FadeInInit(4);
 
-        CloudsShader = Engine.FrameContentManager.Load<Effect>(Assets.TitleScreenCloudsShader);
+        CloudsShader = Engine.FrameContentManager.Load<Effect>(Assets.TitleScreen.TitleScreenCloudsShader);
 
-        Texture2D gbaClouds = Engine.FrameContentManager.Load<Texture2D>(Assets.TitleScreenGBACloudsTexture);
-        Texture2D nGageClouds = Engine.FrameContentManager.Load<Texture2D>(Assets.TitleScreenNGageCloudsTexture);
-        Texture2D background = Engine.FrameContentManager.Load<Texture2D>(Assets.TitleScreenTexture);
+        Texture2D gbaClouds = Engine.FrameContentManager.Load<Texture2D>(Assets.TitleScreen.GBAClouds);
+        Texture2D nGageClouds = Engine.FrameContentManager.Load<Texture2D>(Assets.TitleScreen.NGageClouds);
+        Texture2D background = Engine.FrameContentManager.Load<Texture2D>(Assets.TitleScreen.Background);
 
         CloudsShader.Parameters["SecondaryTexture"].SetValue(nGageClouds);
 

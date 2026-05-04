@@ -12,7 +12,7 @@ public class MenuTabBar
         AnimatedObjectResource startEraseAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuStartEraseAnimations);
         Texture2D tabHeadersTexture = Engine.FixContentManager.Load<Texture2D>(tabNames.Length switch
         {
-            5 => Assets.TabBar_5Texture,
+            5 => Assets.Menu.TabBar_5,
             _ => throw new InvalidOperationException("Unsupported number of tabs")
         });
 

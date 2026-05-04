@@ -11,221 +11,221 @@ public static class Rayman3Achievements
         new AchievementInfo(
             id: AchievementId.CompleteWorld1,
             isGold: false,
-            smallIconTexturePath: Assets.AchievementIcon32px_CompleteWorld1Texture,
-            bigIconTexturePath: Assets.AchievementIcon48px_CompleteWorld1Texture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_CompleteWorld1,
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_CompleteWorld1,
             title: "First Steps",
             description: "Complete Forgotten Forests"),
         new AchievementInfo(
             id: AchievementId.CompleteWorld2,
             isGold: false,
-            smallIconTexturePath: Assets.AchievementIcon32px_CompleteWorld2Texture,
-            bigIconTexturePath: Assets.AchievementIcon48px_CompleteWorld2Texture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_CompleteWorld2,
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_CompleteWorld2,
             title: "A Bad Night's Sleep",
             description: "Complete Haunted Dreams"),
         new AchievementInfo(
             id: AchievementId.CompleteWorld3,
             isGold: false,
-            smallIconTexturePath: Assets.AchievementIcon32px_CompleteWorld3Texture,
-            bigIconTexturePath: Assets.AchievementIcon48px_CompleteWorld3Texture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_CompleteWorld3,
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_CompleteWorld3,
             title: "It's Getting Hot in Here",
             description: "Complete Magmacosm"),
         new AchievementInfo(
             id: AchievementId.CompleteWorld4,
             isGold: false,
-            smallIconTexturePath: Assets.AchievementIcon32px_CompleteWorld4Texture,
-            bigIconTexturePath: Assets.AchievementIcon48px_CompleteWorld4Texture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_CompleteWorld4,
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_CompleteWorld4,
             title: "Storming the Stronghold",
             description: "Complete Pirate Stronghold"),
         new AchievementInfo(
             id: AchievementId.DefeatBossMachine,
             isGold: false,
-            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
-            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "Horrible Machine",
             description: "Defeat the machine"),
         new AchievementInfo(
             id: AchievementId.DefeatBossBadDreams,
             isGold: false,
-            smallIconTexturePath: Assets.AchievementIcon32px_DefeatBossBadDreamsTexture,
-            bigIconTexturePath: Assets.AchievementIcon48px_DefeatBossBadDreamsTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_DefeatBossBadDreams,
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_DefeatBossBadDreams,
             title: "Skull Bash",
             description: "Defeat Jano"),
         new AchievementInfo(
             id: AchievementId.DefeatBossRockAndLava,
             isGold: false,
-            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
-            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "And a Hard Place",
             description: "Defeat Rocky"),
         new AchievementInfo(
             id: AchievementId.DefeatBossScaleMan,
             isGold: false,
-            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
-            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "Try that for Size!",
             description: "Defeat Scaleman"),
         new AchievementInfo(
             id: AchievementId.DefeatBossFinal,
             isGold: true,
-            smallIconTexturePath: Assets.AchievementIcon32px_DefeatBossFinalTexture,
-            bigIconTexturePath: Assets.AchievementIcon48px_DefeatBossFinalTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_DefeatBossFinal,
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_DefeatBossFinal,
             title: "The Grand Finale",
             description: "Defeat Razorbeard"),
         new AchievementInfo(
             id: AchievementId.CollectAllWorld1,
             isGold: true,
-            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
-            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "Forget Anyone?",
             description: "Collect all lums and cages in Forgotten Forests"),
         new AchievementInfo(
             id: AchievementId.CollectAllWorld2,
             isGold: true,
-            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
-            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "Lucid Dreams",
             description: "Collect all lums and cages in Haunted Dreams"),
         new AchievementInfo(
             id: AchievementId.CollectAllWorld3,
             isGold: true,
-            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
-            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "Through Fire and Flames",
             description: "Collect all lums and cages in Magmacosm"),
         new AchievementInfo(
             id: AchievementId.CollectAllWorld4,
             isGold: true,
-            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
-            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "Quest for Booty",
             description: "Collect all lums and cages in Pirate Stronghold"),
         new AchievementInfo(
             id: AchievementId.Collect1000thLum,
             isGold: true,
-            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
-            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "Omniscient",
             description: "Collect the secret lum"),
         new AchievementInfo(
             id: AchievementId.CompleteGCNBonus,
             isGold: true,
-            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
-            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "Square Eyes",
             description: "Complete all GameCube bonus levels",
             exclusivePlatform: Platform.GBA),
         new AchievementInfo(
             id: AchievementId.CollectAllLives, // TODO: Trigger
             isGold: true,
-            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
-            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "Hide and Seek Master",
             description: "Find all hidden lives"),
         new AchievementInfo(
             id: AchievementId.TimeAttackBronze,
             isGold: false,
-            smallIconTexturePath: Assets.AchievementIcon32px_TimeAttackBronzeTexture,
-            bigIconTexturePath: Assets.AchievementIcon48px_TimeAttackBronzeTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_TimeAttackBronze,
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_TimeAttackBronze,
             title: "Gotta Go Fast",
             description: "Earn bronze in every time attack level"),
         new AchievementInfo(
             id: AchievementId.TimeAttackSilver,
             isGold: false,
-            smallIconTexturePath: Assets.AchievementIcon32px_TimeAttackSilverTexture,
-            bigIconTexturePath: Assets.AchievementIcon48px_TimeAttackSilverTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_TimeAttackSilver,
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_TimeAttackSilver,
             title: "Speedster",
             description: "Earn silver in every time attack level"),
         new AchievementInfo(
             id: AchievementId.TimeAttackGold,
             isGold: true,
-            smallIconTexturePath: Assets.AchievementIcon32px_TimeAttackGoldTexture,
-            bigIconTexturePath: Assets.AchievementIcon48px_TimeAttackGoldTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_TimeAttackGold,
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_TimeAttackGold,
             title: "Champion",
             description: "Earn gold in every time attack level"),
         new AchievementInfo(
             id: AchievementId.DefeatPirateWithKeg,
             isGold: false,
-            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
-            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "Return to Sender",
             description: "Defeat a pirate with a keg"),
         new AchievementInfo(
             id: AchievementId.CompleteMarshAwakening1WithoutMoving,
             isGold: true,
-            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
-            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "Ssssam Forces",
             description: "Complete Swamp of Bégoniax without moving to the side",
             exclusivePlatform: Platform.GBA),
         new AchievementInfo(
             id: AchievementId.RideKegBackwards,
             isGold: false,
-            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
-            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "geK gniylF",
             description: "Ride a flying keg backwards"),
         new AchievementInfo(
             id: AchievementId.CompleteCaveBadDreamsWithMaxSkullHits,
             isGold: true,
-            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
-            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "Let the Dead Rest",
             description: "Complete the first section of Void of Bones while hitting 17 or fewer skull platforms"),
         new AchievementInfo(
             id: AchievementId.CompleteMenhirHillsWithoutDying,
             isGold: true,
-            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
-            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "Don't Stop Me Now",
             description: "Complete Prickly Passage without dying"),
         new AchievementInfo(
             id: AchievementId.CompleteFreeFallingWithoutCheckpoint,
             isGold: true,
-            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
-            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "Going Down",
             description: "Complete Free Falling without taking the checkpoint",
             exclusivePlatform: Platform.NGage),
         new AchievementInfo(
             id: AchievementId.DefeatPirateWithLava,
             isGold: false,
-            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
-            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "Your Lava Bath Is Ready",
             description: "Defeat a pirate by knocking it into the lava"),
         new AchievementInfo(
             id: AchievementId.DefeatRockyWithoutBlueLum,
             isGold: true,
-            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
-            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "No, Jump Good",
             description: "Defeat Rocky without using the blue lum"),
         new AchievementInfo(
             id: AchievementId.CompleteRockAndLavaWithoutDefeatingBlackLums,
             isGold: true,
-            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
-            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "Pacifist",
             description: "Complete Wicked Flow without defeating any black lums"),
         new AchievementInfo(
             id: AchievementId.CompleteMissileRace2WithoutDamage,
             isGold: true,
-            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
-            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "Burning Rubber",
             description: "Complete Magma Mayhem 2 without taking any damage"),
         new AchievementInfo(
             id: AchievementId.DefeatEveryPirateType,
             isGold: false,
-            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
-            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "Scrapped Metal",
             description: "Defeat a pirate of every rank"),
         new AchievementInfo(
             id: AchievementId.ViewOriginalMenu,
             isGold: false,
-            smallIconTexturePath: Assets.AchievementIcon32px_LockedTexture, // TODO: Texture
-            bigIconTexturePath: Assets.AchievementIcon48px_LockedTexture,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "Retro",
             description: "View the original main menu"),
     ];

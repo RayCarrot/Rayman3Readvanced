@@ -17,21 +17,21 @@ public sealed partial class TimeFreezeItem : MovableActor
         // Load the sprites and set the time decrease value
         if ((Action)actorResource.FirstActionId == Action.Init_Decrease3)
         {
-            AnimatedObject.ReplaceSpriteTexture(0, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Blue0_Texture));
-            AnimatedObject.ReplaceSpriteTexture(1, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Blue1_Texture));
-            AnimatedObject.ReplaceSpriteTexture(2, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Blue2_Texture));
-            AnimatedObject.ReplaceSpriteTexture(3, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Blue3_Texture));
-            AnimatedObject.ReplaceSpriteTexture(4, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Blue4_Texture));
+            AnimatedObject.ReplaceSpriteTexture(0, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeFreezeItem_Blue0));
+            AnimatedObject.ReplaceSpriteTexture(1, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeFreezeItem_Blue1));
+            AnimatedObject.ReplaceSpriteTexture(2, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeFreezeItem_Blue2));
+            AnimatedObject.ReplaceSpriteTexture(3, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeFreezeItem_Blue3));
+            AnimatedObject.ReplaceSpriteTexture(4, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeFreezeItem_Blue4));
 
             TimeDecreaseSecondsValue = 3;
         }
         else if ((Action)actorResource.FirstActionId == Action.Init_Decrease5)
         {
-            AnimatedObject.ReplaceSpriteTexture(0, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Orange0_Texture));
-            AnimatedObject.ReplaceSpriteTexture(1, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Orange1_Texture));
-            AnimatedObject.ReplaceSpriteTexture(2, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Orange2_Texture));
-            AnimatedObject.ReplaceSpriteTexture(3, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Orange3_Texture));
-            AnimatedObject.ReplaceSpriteTexture(4, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeFreezeItem_Orange4_Texture));
+            AnimatedObject.ReplaceSpriteTexture(0, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeFreezeItem_Orange0));
+            AnimatedObject.ReplaceSpriteTexture(1, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeFreezeItem_Orange1));
+            AnimatedObject.ReplaceSpriteTexture(2, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeFreezeItem_Orange2));
+            AnimatedObject.ReplaceSpriteTexture(3, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeFreezeItem_Orange3));
+            AnimatedObject.ReplaceSpriteTexture(4, Engine.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeFreezeItem_Orange4));
 
             TimeDecreaseSecondsValue = 5;
         }

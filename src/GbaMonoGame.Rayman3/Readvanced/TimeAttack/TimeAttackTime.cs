@@ -10,14 +10,14 @@ public readonly struct TimeAttackTime(TimeAttackTimeType type, int time)
     public Texture2D LoadIcon(bool filledIn)
     {
         if (!filledIn && Type != TimeAttackTimeType.Record)
-            return Engine.FrameContentManager.Load<Texture2D>(Assets.BlankStarSmallTexture);
+            return Engine.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.BlankStarSmall);
 
         return Engine.FrameContentManager.Load<Texture2D>(Type switch
         {
-            TimeAttackTimeType.Bronze => Assets.BronzeStarSmallTexture,
-            TimeAttackTimeType.Silver => Assets.SilverStarSmallTexture,
-            TimeAttackTimeType.Gold => Assets.GoldStarSmallTexture,
-            TimeAttackTimeType.Record => Assets.PersonalRecordIconTexture,
+            TimeAttackTimeType.Bronze => Assets.TimeAttack.BronzeStarSmall,
+            TimeAttackTimeType.Silver => Assets.TimeAttack.SilverStarSmall,
+            TimeAttackTimeType.Gold => Assets.TimeAttack.GoldStarSmall,
+            TimeAttackTimeType.Record => Assets.TimeAttack.PersonalRecordIcon,
             _ => null
         });
     }
@@ -25,13 +25,13 @@ public readonly struct TimeAttackTime(TimeAttackTimeType type, int time)
     public Texture2D LoadBigIcon(bool filledIn)
     {
         if (!filledIn && Type != TimeAttackTimeType.Record)
-            return Engine.FrameContentManager.Load<Texture2D>(Assets.BlankStarBigTexture);
+            return Engine.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.BlankStarBig);
 
         return Engine.FrameContentManager.Load<Texture2D>(Type switch
         {
-            TimeAttackTimeType.Bronze => Assets.BronzeStarBigTexture,
-            TimeAttackTimeType.Silver => Assets.SilverStarBigTexture,
-            TimeAttackTimeType.Gold => Assets.GoldStarBigTexture,
+            TimeAttackTimeType.Bronze => Assets.TimeAttack.BronzeStarBig,
+            TimeAttackTimeType.Silver => Assets.TimeAttack.SilverStarBig,
+            TimeAttackTimeType.Gold => Assets.TimeAttack.GoldStarBig,
             _ => null
         });
     }

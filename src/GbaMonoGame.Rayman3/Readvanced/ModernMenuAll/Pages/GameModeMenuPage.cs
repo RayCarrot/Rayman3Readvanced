@@ -142,7 +142,7 @@ public class GameModeMenuPage : MenuPage
         ];
 
         GameLogo.ReplaceAnimation(animId, anim);
-        GameLogo.ReplaceSpriteTexture(tileIndex, Engine.FrameContentManager.Load<Texture2D>(Assets.MenuLogoTexture));
+        GameLogo.ReplaceSpriteTexture(tileIndex, Engine.FrameContentManager.Load<Texture2D>(Assets.Menu.MenuLogo));
     }
 
     protected override void Init()

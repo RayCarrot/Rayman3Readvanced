@@ -97,8 +97,8 @@ public class AchievementPopup
         RenderContext renderContext = Engine.GameRenderContext;
 
         // Load textures
-        BackgroundTexture = Engine.FixContentManager.Load<Texture2D>(Assets.PopupBackgroundTexture);
-        BackgroundGoldTexture = Engine.FixContentManager.Load<Texture2D>(Assets.PopupBackgroundGoldTexture);
+        BackgroundTexture = Engine.FixContentManager.Load<Texture2D>(Assets.Achievements.PopupBackground);
+        BackgroundGoldTexture = Engine.FixContentManager.Load<Texture2D>(Assets.Achievements.PopupBackgroundGold);
 
         // Create objects
         Background = new SpriteTextureObject()

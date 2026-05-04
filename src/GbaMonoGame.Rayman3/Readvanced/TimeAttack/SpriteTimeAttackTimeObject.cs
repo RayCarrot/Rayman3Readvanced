@@ -26,18 +26,18 @@ public class SpriteTimeAttackTimeObject : AObject
     {
         return Engine.FrameContentManager.Load<Texture2D>(timeChar switch
         {
-            '0' => Assets.TimeDigit_0_Texture,
-            '1' => Assets.TimeDigit_1_Texture,
-            '2' => Assets.TimeDigit_2_Texture,
-            '3' => Assets.TimeDigit_3_Texture,
-            '4' => Assets.TimeDigit_4_Texture,
-            '5' => Assets.TimeDigit_5_Texture,
-            '6' => Assets.TimeDigit_6_Texture,
-            '7' => Assets.TimeDigit_7_Texture,
-            '8' => Assets.TimeDigit_8_Texture,
-            '9' => Assets.TimeDigit_9_Texture,
-            ':' => Assets.TimeDigit_ColonTexture,
-            '.' => Assets.TimeDigit_DotTexture,
+            '0' => Assets.TimeAttack.TimeDigit_0,
+            '1' => Assets.TimeAttack.TimeDigit_1,
+            '2' => Assets.TimeAttack.TimeDigit_2,
+            '3' => Assets.TimeAttack.TimeDigit_3,
+            '4' => Assets.TimeAttack.TimeDigit_4,
+            '5' => Assets.TimeAttack.TimeDigit_5,
+            '6' => Assets.TimeAttack.TimeDigit_6,
+            '7' => Assets.TimeAttack.TimeDigit_7,
+            '8' => Assets.TimeAttack.TimeDigit_8,
+            '9' => Assets.TimeAttack.TimeDigit_9,
+            ':' => Assets.TimeAttack.TimeDigit_Colon,
+            '.' => Assets.TimeAttack.TimeDigit_Dot,
             _ => throw new Exception("Invalid time char"),
         });
     }
