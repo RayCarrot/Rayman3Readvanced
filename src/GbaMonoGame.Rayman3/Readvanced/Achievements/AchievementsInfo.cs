@@ -62,6 +62,18 @@ public static class AchievementsInfo
         Popup.Draw();
     }
 
+    public static void GetTotalEarnedAchievements(out int earnedAchievements, out int totalAchievements)
+    {
+        earnedAchievements = 0;
+        totalAchievements = 0;
+        foreach (AchievementInfo achievementInfo in GetAchievements())
+        {
+            if (IsUnlocked(achievementInfo.Id))
+                earnedAchievements++;
+            totalAchievements++;
+        }
+    }
+
     public static bool IsUnlocked(AchievementId achievementId)
     {
         return Save.UnlockedAchievements[(int)achievementId];

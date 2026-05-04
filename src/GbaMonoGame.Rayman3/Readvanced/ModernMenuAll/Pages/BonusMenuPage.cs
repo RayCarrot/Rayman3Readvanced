@@ -12,13 +12,20 @@ public class BonusMenuPage : MenuPage
 
     protected override void Init()
     {
-        // TODO: Add proper values and icons (icons are currently temporary)
+        // Get achievements
+        AchievementsInfo.GetTotalEarnedAchievements(out int earnedAchievements, out int totalAchievements);
+
+        // Get time attack medals
+        TimeAttackInfo.GetTotalEarnedMedals(
+            out int earnedBronze, out int earnedSilver, out int earnedGold, 
+            out int totalBronze, out int totalSilver, out int totalGold);
+
         // Add menu options
         AddOption(new BonusActionMenuOption(
             text: "ACHIEVEMENTS", 
             collections:
             [
-                new BonusActionMenuOption.Collection(Assets.SaveSlotTimeTexture, "10/55"),
+                new BonusActionMenuOption.Collection(Assets.AchievementsIconTexture, $"{earnedAchievements}/{totalAchievements}"),
             ], 
             action: () =>
             {
@@ -28,15 +35,24 @@ public class BonusMenuPage : MenuPage
             text: "TIME ATTACK",
             collections:
             [
-                new BonusActionMenuOption.Collection(Assets.BronzeStarSmallTexture, "25/28"),
-                new BonusActionMenuOption.Collection(Assets.SilverStarSmallTexture, "15/28"),
-                new BonusActionMenuOption.Collection(Assets.GoldStarSmallTexture, "2/28"),
+                new BonusActionMenuOption.Collection(Assets.BronzeStarSmallTexture, $"{earnedBronze}/{totalBronze}"),
+                new BonusActionMenuOption.Collection(Assets.SilverStarSmallTexture, $"{earnedSilver}/{totalSilver}"),
+                new BonusActionMenuOption.Collection(Assets.GoldStarSmallTexture, $"{earnedGold}/{totalGold}"),
             ], 
             action: () =>
             {
                 Menu.ChangePage(new TimeAttackMenuPage(Menu), NewPageMode.Next);
             }));
-        AddOption(new TextMenuOption("LEVEL EDITOR"));
+        AddOption(new ActionMenuOption("ORIGINAL MENU", () =>
+        {
+            CursorClick(() =>
+            {
+                FadeOut(2, () =>
+                {
+                    FrameManager.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));
+                });
+            });
+        }));
     }
 
     protected override void Step_Active()

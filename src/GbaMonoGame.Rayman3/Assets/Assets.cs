@@ -22,6 +22,7 @@ public static class Assets
     public const string AchievementIcon48px_TimeAttackBronzeTexture = "Rayman3/Achievements/AchievementIcon48px_TimeAttackBronze";
     public const string AchievementIcon48px_TimeAttackGoldTexture = "Rayman3/Achievements/AchievementIcon48px_TimeAttackGold";
     public const string AchievementIcon48px_TimeAttackSilverTexture = "Rayman3/Achievements/AchievementIcon48px_TimeAttackSilver";
+    public const string AchievementsIconTexture = "Rayman3/Achievements/AchievementsIcon";
     public const string PopupBackgroundTexture = "Rayman3/Achievements/PopupBackground";
     public const string PopupBackgroundGoldTexture = "Rayman3/Achievements/PopupBackgroundGold";
 
