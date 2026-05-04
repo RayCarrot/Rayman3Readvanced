@@ -21,6 +21,7 @@
 - For some reason the animations for the Caterpillar enemy is referenced from the root resource table, yet it's never used from there.
 - The order of the levels ids from the curtains in the hub worlds reflect the original order rather than the order they appear in the final game.
 - The Single Pak multiplayer mode normally downloads a compressed ROM into WRAM and plays from that. However there still exists uncompressed code for the Single Pak mode in the normal ROM which appears to be an earlier version of it, perhaps for testing it without the connectivity (since the code is missing that part, among other things).
+- The N-Gage versions adds support for auto-pausing the game based on the application state. This is however not implemented in the worldmap, even though it works for the hub world levels. There are also leftovers of it in the multiplayer levels, but the code isn't fully implemented, so it doesn't work.
 
 ### Sounds
 - The music `lyfreeVOX4` is unused and has no corresponding sound event.
@@ -385,6 +386,7 @@ Most actors have the first animation be unused and just single frame, most likel
 ![Animation 10](discoveries_assets/Lums_Anim_10.gif)
 
 - The multiplayer states have leftover checks for big blue lums even if it's unused. The code isn't fully functional though and will set the wrong animation.
+- When a white lum is collected in a level it sets a temporary flag that a white lum has been collected in the current level. If you die and the level reloads then the white lum won't respawn again if this flag has been set. However, this is a single flag which doesn't track which white lum was collected, meaning it won't work correctly if there are more than one in a level. This is the case for the second map of Boulder Brink where there are two of them. Collecting one and then dying will thus cause the second one to also despawn.
 
 #### Murfy
 - The N-Gage version has an additional boolean value which is set to true and never used again.
@@ -591,6 +593,7 @@ Most actors have the first animation be unused and just single frame, most likel
 
 ### Levels
 - The N-Gage `Capture the Flag` levels have a boolean indicating if it's the first round of the match. This is however never checked against and is thus unused.
+- The N-Gage multiplayer map `Team Player` has incorrect collision tiles on the left side, causing your movement to become very shaky when walking on it.
 - The second map of `Wanderwood Forest` and both maps of `Shining Glade` have unused code for updating the water palette to give it a glowing effect. One color is however bugged, making parts appear red.
 - The N-Gage exclusive level `Ascension` has 3 red pirate enemies which are spawned from captors. However they're incorrectly set to be enabled by default, even before being spawned, making you able to defeat some of them twice.
 - In `Garish Gears` the hatch layer is misaligned in the N-Gage version, making it not cover the actual hatch.
