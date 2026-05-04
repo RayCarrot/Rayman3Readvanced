@@ -5,7 +5,15 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 
 public class ReadvancedSlot : BaseReadvancedSave
 {
-    public int Version { get; set; }
+    public ReadvancedSlot()
+    {
+        SaveGame = null;
+        PlayTime = 0;
+        DefeatedPirateTypes = PirateType.None;
+        CollectedWhiteLums = [];
+    }
+
+    public const int Version = 1;
 
     // Original save
     public SaveGameSlot SaveGame { get; set; }
@@ -15,6 +23,7 @@ public class ReadvancedSlot : BaseReadvancedSave
 
     // Achievements tracking
     public PirateType DefeatedPirateTypes { get; set; }
+    public CollectedWhiteLum[] CollectedWhiteLums { get; set; }
 
     public static ReadvancedSlot FromSaveGame(SaveGameSlot save)
     {
@@ -29,9 +38,14 @@ public class ReadvancedSlot : BaseReadvancedSave
         base.SerializeImpl(s);
         s.SerializeMagicString("SAVE", 4);
 
-        Version = s.Serialize<int>(Version, name: nameof(Version));
+        int version = s.Serialize<int>(Version, name: nameof(Version));
         SaveGame = s.SerializeObject<SaveGameSlot>(SaveGame, name: nameof(SaveGame));
         PlayTime = s.Serialize<long>(PlayTime, name: nameof(PlayTime));
         DefeatedPirateTypes = s.Serialize<PirateType>(DefeatedPirateTypes, name: nameof(DefeatedPirateTypes));
+        if (version >= 1)
+        {
+            CollectedWhiteLums = s.SerializeArraySize<CollectedWhiteLum, byte>(CollectedWhiteLums, name: nameof(CollectedWhiteLums));
+            CollectedWhiteLums = s.SerializeIntoArray<CollectedWhiteLum>(CollectedWhiteLums, CollectedWhiteLums.Length, CollectedWhiteLum.SerializeInto, name: nameof(CollectedWhiteLums));
+        }
     }
 }

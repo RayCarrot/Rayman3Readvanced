@@ -151,6 +151,7 @@ public static class GameInfo
 
         SaveSlot.PlayTime = 0;
         SaveSlot.DefeatedPirateTypes = PirateType.None;
+        SaveSlot.CollectedWhiteLums = [];
     }
 
     public static void Load(int saveSlot)

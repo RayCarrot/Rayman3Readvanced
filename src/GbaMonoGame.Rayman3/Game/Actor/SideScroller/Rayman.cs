@@ -1731,6 +1731,8 @@ public sealed partial class Rayman : MovableActor
                         HitPoints = 5;
                         ((FrameSideScroller)Frame.Current).UserInfo.UpdateLife();
                     }
+
+                    Rayman3Achievements.CollectWhiteLum((Lums)sender);
                 }
                 return false;
 

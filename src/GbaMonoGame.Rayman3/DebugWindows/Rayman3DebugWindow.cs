@@ -162,6 +162,7 @@ public class Rayman3DebugWindow : DebugWindow
                 ImGui.SeparatorText("Tracking");
 
                 ImGui.Text($"{nameof(ReadvancedSlot.DefeatedPirateTypes)}: {GameInfo.SaveSlot.DefeatedPirateTypes}");
+                ImGui.Text($"{nameof(ReadvancedSlot.CollectedWhiteLums)}: {GameInfo.SaveSlot.CollectedWhiteLums.Length}");
                 ImGui.Text($"{nameof(Rayman3Achievements.MarshAwakening1_HasMoved)}: {Rayman3Achievements.MarshAwakening1_HasMoved}");
                 ImGui.Text($"{nameof(Rayman3Achievements.CaveBadDreamsM1_HitSkulls)}: {Rayman3Achievements.CaveBadDreamsM1_HitSkulls}");
                 ImGui.Text($"{nameof(Rayman3Achievements.MenhirHills_HasDied)}: {Rayman3Achievements.MenhirHills_HasDied}");

@@ -1,4 +1,6 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using System;
+using System.Linq;
+using BinarySerializer.Ubisoft.GbaEngine;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
@@ -289,6 +291,42 @@ public static class Rayman3Achievements
         return collectedLums == totalLums && collectedCages == totalCages;
     }
 
+    private static int GetTotalLivesCount()
+    {
+        // FairyGlade_M1
+        // FairyGlade_M2
+        // MarshAwakening1 (N-Gage only)
+        // SanctuaryOfBigTree_M1
+        // SanctuaryOfBigTree_M2
+        // EchoingCaves_M1
+        // EchoingCaves_M2
+        // CavesOfBadDreams_M1
+        // CavesOfBadDreams_M2
+        // SanctuaryOfStoneAndFire_M3
+        // BeneathTheSanctuary_M1
+        // ThePrecipice_M1
+        // ThePrecipice_M2
+        // ThePrecipice_M2
+        // TheCanopy_M1
+        // TheCanopy_M2
+        // SanctuaryOfRockAndLava_M1
+        // SanctuaryOfRockAndLava_M2
+        // SanctuaryOfRockAndLava_M3
+        // IronMountains_M2
+        // PirateShip_M2
+        // Bonus1
+        // Bonus2
+        // Bonus3
+        // ChallengeLy1
+
+        return Rom.Platform switch
+        {
+            Platform.GBA => 24,
+            Platform.NGage => 25,
+            _ => throw new UnsupportedPlatformException()
+        };
+    }
+
     public static void CheckProgressionBasedAchievements()
     {
         // Check all progression-based achievements here so that they can be retroactively unlocked if importing a save
@@ -354,6 +392,26 @@ public static class Rayman3Achievements
 
             if (GameInfo.SaveSlot.DefeatedPirateTypes == PirateType.All)
                 AchievementsInfo.Unlock(AchievementId.DefeatEveryPirateType);
+        }
+    }
+
+    public static void CollectWhiteLum(Lums lum)
+    {
+        if (!RSMultiplayer.IsActive && !TimeAttackInfo.IsActive)
+        {
+            byte mapId = (byte)GameInfo.MapId;
+            int instanceId = lum.InstanceId;
+
+            if (!GameInfo.SaveSlot.CollectedWhiteLums.Any(x => x.MapId == mapId && x.InstanceId == instanceId))
+            {
+                CollectedWhiteLum[] collectedWhiteLums = new CollectedWhiteLum[GameInfo.SaveSlot.CollectedWhiteLums.Length + 1];
+                Array.Copy(GameInfo.SaveSlot.CollectedWhiteLums, collectedWhiteLums, GameInfo.SaveSlot.CollectedWhiteLums.Length);
+                collectedWhiteLums[^1] = new CollectedWhiteLum(mapId, instanceId);
+                GameInfo.SaveSlot.CollectedWhiteLums = collectedWhiteLums;
+
+                if (GameInfo.SaveSlot.CollectedWhiteLums.Length == GetTotalLivesCount())
+                    AchievementsInfo.Unlock(AchievementId.CollectAllLives);
+            }
         }
     }
 }
