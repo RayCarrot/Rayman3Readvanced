@@ -13,6 +13,90 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin AchievementIcon32px_CollectAllLives.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon32px_CollectAllLives.png
+
+#begin AchievementIcon32px_CollectAllWorld1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon32px_CollectAllWorld1.png
+
+#begin AchievementIcon32px_CollectAllWorld2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon32px_CollectAllWorld2.png
+
+#begin AchievementIcon32px_CollectAllWorld3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon32px_CollectAllWorld3.png
+
+#begin AchievementIcon32px_CollectAllWorld4.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon32px_CollectAllWorld4.png
+
+#begin AchievementIcon32px_CompleteGCNBonus.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon32px_CompleteGCNBonus.png
+
+#begin AchievementIcon32px_CompleteRockAndLavaWithoutDefeatingBlackLums.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon32px_CompleteRockAndLavaWithoutDefeatingBlackLums.png
+
 #begin AchievementIcon32px_CompleteWorld1.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -85,6 +169,78 @@
 /processorParam:TextureFormat=Color
 /build:Rayman3/Achievements/AchievementIcon32px_DefeatBossFinal.png
 
+#begin AchievementIcon32px_DefeatBossMachine.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon32px_DefeatBossMachine.png
+
+#begin AchievementIcon32px_DefeatBossRockAndLava.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon32px_DefeatBossRockAndLava.png
+
+#begin AchievementIcon32px_DefeatBossScaleMan.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon32px_DefeatBossScaleMan.png
+
+#begin AchievementIcon32px_DefeatEveryPirateType.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon32px_DefeatEveryPirateType.png
+
+#begin AchievementIcon32px_DefeatPirateWithKeg.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon32px_DefeatPirateWithKeg.png
+
+#begin AchievementIcon32px_DefeatPirateWithLava.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon32px_DefeatPirateWithLava.png
+
 #begin AchievementIcon32px_Locked.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -96,6 +252,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Rayman3/Achievements/AchievementIcon32px_Locked.png
+
+#begin AchievementIcon32px_RideKegBackwards.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon32px_RideKegBackwards.png
 
 #begin AchievementIcon32px_TimeAttackBronze.png
 /importer:TextureImporter
@@ -132,6 +300,90 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Rayman3/Achievements/AchievementIcon32px_TimeAttackSilver.png
+
+#begin AchievementIcon48px_CollectAllLives.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon48px_CollectAllLives.png
+
+#begin AchievementIcon48px_CollectAllWorld1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon48px_CollectAllWorld1.png
+
+#begin AchievementIcon48px_CollectAllWorld2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon48px_CollectAllWorld2.png
+
+#begin AchievementIcon48px_CollectAllWorld3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon48px_CollectAllWorld3.png
+
+#begin AchievementIcon48px_CollectAllWorld4.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon48px_CollectAllWorld4.png
+
+#begin AchievementIcon48px_CompleteGCNBonus.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon48px_CompleteGCNBonus.png
+
+#begin AchievementIcon48px_CompleteRockAndLavaWithoutDefeatingBlackLums.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon48px_CompleteRockAndLavaWithoutDefeatingBlackLums.png
 
 #begin AchievementIcon48px_CompleteWorld1.png
 /importer:TextureImporter
@@ -205,6 +457,78 @@
 /processorParam:TextureFormat=Color
 /build:Rayman3/Achievements/AchievementIcon48px_DefeatBossFinal.png
 
+#begin AchievementIcon48px_DefeatBossMachine.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon48px_DefeatBossMachine.png
+
+#begin AchievementIcon48px_DefeatBossRockAndLava.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon48px_DefeatBossRockAndLava.png
+
+#begin AchievementIcon48px_DefeatBossScaleMan.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon48px_DefeatBossScaleMan.png
+
+#begin AchievementIcon48px_DefeatEveryPirateType.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon48px_DefeatEveryPirateType.png
+
+#begin AchievementIcon48px_DefeatPirateWithKeg.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon48px_DefeatPirateWithKeg.png
+
+#begin AchievementIcon48px_DefeatPirateWithLava.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon48px_DefeatPirateWithLava.png
+
 #begin AchievementIcon48px_Locked.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -216,6 +540,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Rayman3/Achievements/AchievementIcon48px_Locked.png
+
+#begin AchievementIcon48px_RideKegBackwards.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Rayman3/Achievements/AchievementIcon48px_RideKegBackwards.png
 
 #begin AchievementIcon48px_TimeAttackBronze.png
 /importer:TextureImporter

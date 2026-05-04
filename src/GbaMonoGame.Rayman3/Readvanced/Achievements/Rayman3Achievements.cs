@@ -39,8 +39,8 @@ public static class Rayman3Achievements
         new AchievementInfo(
             id: AchievementId.DefeatBossMachine,
             isGold: false,
-            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
-            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_DefeatBossMachine,
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_DefeatBossMachine,
             title: "Horrible Machine",
             description: "Defeat the machine"),
         new AchievementInfo(
@@ -53,15 +53,15 @@ public static class Rayman3Achievements
         new AchievementInfo(
             id: AchievementId.DefeatBossRockAndLava,
             isGold: false,
-            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
-            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_DefeatBossRockAndLava,
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_DefeatBossRockAndLava,
             title: "And a Hard Place",
             description: "Defeat Rocky"),
         new AchievementInfo(
             id: AchievementId.DefeatBossScaleMan,
             isGold: false,
-            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
-            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_DefeatBossScaleMan,
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_DefeatBossScaleMan,
             title: "Try that for Size!",
             description: "Defeat Scaleman"),
         new AchievementInfo(
@@ -74,29 +74,29 @@ public static class Rayman3Achievements
         new AchievementInfo(
             id: AchievementId.CollectAllWorld1,
             isGold: true,
-            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
-            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_CollectAllWorld1,
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_CollectAllWorld1,
             title: "Forget Anyone?",
             description: "Collect all lums and cages in Forgotten Forests"),
         new AchievementInfo(
             id: AchievementId.CollectAllWorld2,
             isGold: true,
-            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
-            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_CollectAllWorld2,
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_CollectAllWorld2,
             title: "Lucid Dreams",
             description: "Collect all lums and cages in Haunted Dreams"),
         new AchievementInfo(
             id: AchievementId.CollectAllWorld3,
             isGold: true,
-            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
-            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_CollectAllWorld3,
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_CollectAllWorld3,
             title: "Through Fire and Flames",
             description: "Collect all lums and cages in Magmacosm"),
         new AchievementInfo(
             id: AchievementId.CollectAllWorld4,
             isGold: true,
-            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
-            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_CollectAllWorld4,
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_CollectAllWorld4,
             title: "Quest for Booty",
             description: "Collect all lums and cages in Pirate Stronghold"),
         new AchievementInfo(
@@ -109,16 +109,16 @@ public static class Rayman3Achievements
         new AchievementInfo(
             id: AchievementId.CompleteGCNBonus,
             isGold: true,
-            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
-            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_CompleteGCNBonus,
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_CompleteGCNBonus,
             title: "Square Eyes",
             description: "Complete all GameCube bonus levels",
             exclusivePlatform: Platform.GBA),
         new AchievementInfo(
-            id: AchievementId.CollectAllLives, // TODO: Trigger
+            id: AchievementId.CollectAllLives,
             isGold: true,
-            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
-            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_CollectAllLives,
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_CollectAllLives,
             title: "Hide and Seek Master",
             description: "Find all hidden lives"),
         new AchievementInfo(
@@ -145,8 +145,8 @@ public static class Rayman3Achievements
         new AchievementInfo(
             id: AchievementId.DefeatPirateWithKeg,
             isGold: false,
-            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
-            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_DefeatPirateWithKeg,
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_DefeatPirateWithKeg,
             title: "Return to Sender",
             description: "Defeat a pirate with a keg"),
         new AchievementInfo(
@@ -160,8 +160,8 @@ public static class Rayman3Achievements
         new AchievementInfo(
             id: AchievementId.RideKegBackwards,
             isGold: false,
-            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
-            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_RideKegBackwards,
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_RideKegBackwards,
             title: "geK gniylF",
             description: "Ride a flying keg backwards"),
         new AchievementInfo(
@@ -189,8 +189,8 @@ public static class Rayman3Achievements
         new AchievementInfo(
             id: AchievementId.DefeatPirateWithLava,
             isGold: false,
-            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
-            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_DefeatPirateWithLava,
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_DefeatPirateWithLava,
             title: "Your Lava Bath Is Ready",
             description: "Defeat a pirate by knocking it into the lava"),
         new AchievementInfo(
@@ -203,8 +203,8 @@ public static class Rayman3Achievements
         new AchievementInfo(
             id: AchievementId.CompleteRockAndLavaWithoutDefeatingBlackLums,
             isGold: true,
-            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
-            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_CompleteRockAndLavaWithoutDefeatingBlackLums,
+            bigIconTexturePath: Assets.Achievements. AchievementIcon48px_CompleteRockAndLavaWithoutDefeatingBlackLums,
             title: "Pacifist",
             description: "Complete Wicked Flow without defeating any black lums"),
         new AchievementInfo(
@@ -217,8 +217,8 @@ public static class Rayman3Achievements
         new AchievementInfo(
             id: AchievementId.DefeatEveryPirateType,
             isGold: false,
-            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
-            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_DefeatEveryPirateType,
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_DefeatEveryPirateType,
             title: "Scrapped Metal",
             description: "Defeat a pirate of every rank"),
         new AchievementInfo(
