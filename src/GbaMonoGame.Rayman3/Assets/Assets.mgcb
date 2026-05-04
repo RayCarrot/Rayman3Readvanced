@@ -109,7 +109,7 @@
 /processorParam:TextureFormat=Color
 /build:Rayman3/Achievements/AchievementIcon32px_CompleteWorld4.png
 
-#begin AchievementIcon32px_DefeatGrolgoth.png
+#begin AchievementIcon32px_DefeatBossFinal.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -119,9 +119,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_DefeatGrolgoth.png
+/build:Rayman3/Achievements/AchievementIcon32px_DefeatBossFinal.png
 
-#begin AchievementIcon32px_DefeatJano.png
+#begin AchievementIcon32px_DefeatBossBadDreams.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -131,7 +131,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_DefeatJano.png
+/build:Rayman3/Achievements/AchievementIcon32px_DefeatBossBadDreams.png
 
 #begin AchievementIcon32px_TimeAttackBronze.png
 /importer:TextureImporter
@@ -229,7 +229,7 @@
 /processorParam:TextureFormat=Color
 /build:Rayman3/Achievements/AchievementIcon48px_CompleteWorld4.png
 
-#begin AchievementIcon48px_DefeatGrolgoth.png
+#begin AchievementIcon48px_DefeatBossFinal.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -239,9 +239,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_DefeatGrolgoth.png
+/build:Rayman3/Achievements/AchievementIcon48px_DefeatBossFinal.png
 
-#begin AchievementIcon48px_DefeatJano.png
+#begin AchievementIcon48px_DefeatBossBadDreams.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -251,7 +251,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_DefeatJano.png
+/build:Rayman3/Achievements/AchievementIcon48px_DefeatBossBadDreams.png
 
 #begin AchievementIcon48px_TimeAttackBronze.png
 /importer:TextureImporter

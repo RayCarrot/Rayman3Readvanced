@@ -46,8 +46,8 @@ public static class Rayman3Achievements
         new AchievementInfo(
             id: AchievementId.DefeatBossBadDreams,
             isGold: false,
-            smallIconTexturePath: Assets.AchievementIcon32px_DefeatJanoTexture,
-            bigIconTexturePath: Assets.AchievementIcon48px_DefeatJanoTexture,
+            smallIconTexturePath: Assets.AchievementIcon32px_DefeatBossBadDreamsTexture,
+            bigIconTexturePath: Assets.AchievementIcon48px_DefeatBossBadDreamsTexture,
             title: "Skull Bash",
             description: "Defeat Jano"),
         new AchievementInfo(
@@ -67,8 +67,8 @@ public static class Rayman3Achievements
         new AchievementInfo(
             id: AchievementId.DefeatBossFinal,
             isGold: true,
-            smallIconTexturePath: Assets.AchievementIcon32px_DefeatGrolgothTexture,
-            bigIconTexturePath: Assets.AchievementIcon48px_DefeatGrolgothTexture,
+            smallIconTexturePath: Assets.AchievementIcon32px_DefeatBossFinalTexture,
+            bigIconTexturePath: Assets.AchievementIcon48px_DefeatBossFinalTexture,
             title: "The Grand Finale",
             description: "Defeat Razorbeard"),
         new AchievementInfo(
