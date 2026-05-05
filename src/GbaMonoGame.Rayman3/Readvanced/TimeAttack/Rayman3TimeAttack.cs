@@ -17,6 +17,11 @@ public static class Rayman3TimeAttack
     private const int World4 = 3;
     private const int WorldBonus = 4;
 
+    private static int GetTime(int minutes, int seconds, int centiseconds)
+    {
+        return (minutes * 60 * 60) + (seconds * 60) + (centiseconds * 60 / 100);
+    }
+
     public static TimeAttackLevelInfo[] LevelInfos { get; } =
     [
         // Wanderwood Forest
@@ -25,9 +30,9 @@ public static class Rayman3TimeAttack
             world: World1,
             targetTimes: 
             [
-                new(TimeAttackTimeType.Bronze, 60 * 60),
-                new(TimeAttackTimeType.Silver, 50 * 60),
-                new(TimeAttackTimeType.Gold, 45 * 60),
+                new(TimeAttackTimeType.Bronze, GetTime(01, 00, 00)),
+                new(TimeAttackTimeType.Silver, GetTime(00, 50, 00)),
+                new(TimeAttackTimeType.Gold,   GetTime(00, 45, 00)),
             ],
             actors: new Dictionary<MapId, TimeFreezeItemResource[]>()
             {
