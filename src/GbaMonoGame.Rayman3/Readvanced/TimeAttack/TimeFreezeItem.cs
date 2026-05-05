@@ -75,8 +75,8 @@ public sealed partial class TimeFreezeItem : MovableActor
         {
             // Save the hit speed
             case Message.Actor_Hit:
-                RaymanBody raymanBody = (RaymanBody)param;
-                HitSpeedX = raymanBody.Speed.X;
+                MovableActor hitActor = (MovableActor)param;
+                HitSpeedX = hitActor.Speed.X;
                 return false;
 
             default:

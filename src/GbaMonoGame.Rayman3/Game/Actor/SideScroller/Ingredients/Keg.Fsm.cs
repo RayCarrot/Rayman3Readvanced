@@ -2,6 +2,7 @@
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -282,6 +283,11 @@ public partial class Keg
                         hitObj.ReceiveDamage(50);
                         hitObj.ProcessMessage(this, Message.Actor_Hit, this);
                         landed = true;
+                    }
+                    else if ((ReadvancedActorType)hitObj.Type == ReadvancedActorType.TimeFreezeItem)
+                    {
+                        hitObj.ReceiveDamage(1);
+                        hitObj.ProcessMessage(this, Message.Actor_Hit, this);
                     }
                 }
 
