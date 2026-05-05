@@ -1,6 +1,7 @@
 ﻿using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
@@ -17,7 +18,9 @@ public static class AchievementsInfo
 
     public static void Init(AchievementInfo[] achievements)
     {
-        AchievementsDictionary = achievements.ToFrozenDictionary(x => x.Id);
+        AchievementsDictionary = achievements.
+            Where(x => x.ExclusivePlatform == null || x.ExclusivePlatform == Rom.Platform).
+            ToFrozenDictionary(x => x.Id);
         ImmutableArray<AchievementInfo>.Builder achievementsArrayBuilder = ImmutableArray.CreateBuilder<AchievementInfo>();
         achievementsArrayBuilder.AddRange(achievements);
         achievementsArrayBuilder.RemoveAll(x => x.ExclusivePlatform != null && x.ExclusivePlatform != Rom.Platform);
