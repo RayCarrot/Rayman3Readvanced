@@ -158,6 +158,14 @@ public static class Rayman3Achievements
             description: "Complete Swamp of Bégoniax without moving to the side",
             exclusivePlatform: Platform.GBA),
         new AchievementInfo(
+            id: AchievementId.CompleteMissileRace1WithoutStrafing,
+            isGold: true,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
+            title: "Call Me Old-Fashioned!",
+            description: "Complete Magma Mayhem without moving sideways",
+            exclusivePlatform: Platform.GBA),
+        new AchievementInfo(
             id: AchievementId.RideKegBackwards,
             isGold: false,
             smallIconTexturePath: Assets.Achievements.AchievementIcon32px_RideKegBackwards,
@@ -222,6 +230,13 @@ public static class Rayman3Achievements
             title: "Scrapped Metal",
             description: "Defeat a pirate of every rank"),
         new AchievementInfo(
+            id: AchievementId.MultiplayerWin, // TODO: Trigger
+            isGold: true,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
+            title: "Top of the World",
+            description: "Win a Multiplayer Game"),
+        new AchievementInfo(
             id: AchievementId.ViewOriginalMenu,
             isGold: false,
             smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
@@ -232,6 +247,7 @@ public static class Rayman3Achievements
 
     // Tracking achievement progress
     public static bool MarshAwakening1_HasMoved { get; set; }
+    public static bool MissileRace1_HasStrafed { get; set; }
     public static int CaveBadDreamsM1_HitSkulls { get; set; }
     public static bool MenhirHills_HasDied { get; set; }
     public static bool BossRockAndLava_HasUsedBlueLum { get; set; }

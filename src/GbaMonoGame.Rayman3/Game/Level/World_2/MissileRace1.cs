@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GbaMonoGame.Rayman3.Readvanced;
+using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -34,6 +35,8 @@ public class MissileRace1 : FrameSingleMode7
             new(6), new(1), new(7),
             new(8), new(5), new(9)
         ], 3, 3);
+
+        Rayman3Achievements.MissileRace1_HasStrafed = false;
     }
 
     public override void Step()

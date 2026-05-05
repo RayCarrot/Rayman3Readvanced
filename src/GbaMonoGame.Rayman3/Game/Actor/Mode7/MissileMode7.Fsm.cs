@@ -208,11 +208,13 @@ public partial class MissileMode7
                     {
                         MechModel.Speed = MechModel.Speed with { X = MechModel.Speed.X + MechModel.Speed.Y / 64 };
                         MechModel.Speed = MechModel.Speed with { Y = MechModel.Speed.Y - MechModel.Speed.X / 64 };
+                        Rayman3Achievements.MissileRace1_HasStrafed = true;
                     }
                     else if (MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorSpecialRight) && !MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorSpecialLeft))
                     {
                         MechModel.Speed = MechModel.Speed with { X = MechModel.Speed.X - MechModel.Speed.Y / 64 };
                         MechModel.Speed = MechModel.Speed with { Y = MechModel.Speed.Y + MechModel.Speed.X / 64 };
+                        Rayman3Achievements.MissileRace1_HasStrafed = true;
                     }
 
                     if (MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorLeft))
@@ -384,6 +386,8 @@ public partial class MissileMode7
                 if (TimeAttackInfo.IsActive)
                     TimeAttackInfo.Pause();
 
+                if (GameInfo.MapId == MapId.MissileRace1 && !Rayman3Achievements.MissileRace1_HasStrafed)
+                    AchievementsInfo.Unlock(AchievementId.CompleteMissileRace1WithoutStrafing);
                 if (GameInfo.MapId == MapId.MissileRace2 && !Rayman3Achievements.MissileRace2_HasTakenDamage)
                     AchievementsInfo.Unlock(AchievementId.CompleteMissileRace2WithoutDamage);
                 break;

@@ -24,6 +24,7 @@
 ### Other
 - 🥉 **Return to Sender**: Defeat a pirate with a keg
 - 🏅 **Ssssam Forces**: Complete Swamp of Bégoniax without moving to the side (GBA only)
+- 🥉 **Call Me Old-Fashioned!**: Complete Magma Mayhem without moving sideways (GBA only)
 - 🥉 **geK gniylF**: Ride a flying keg backwards
 - 🏅 **Let the Dead Rest**: Complete the first section of Void of Bones while hitting 17 or fewer skull platforms
 - 🏅 **Don't Stop Me Now**: Complete Prickly Passage without dying
@@ -33,4 +34,5 @@
 - 🏅 **Pacifist**: Complete Wicked Flow without defeating any black lums
 - 🏅 **Burning Rubber**: Complete Magma Mayhem 2 without taking any damage
 - 🥉 **Scrapped Metal**: Defeat a pirate of every rank
+- 🥉 **Top of the World**: Win a Multiplayer Game
 - 🥉 **Retro**: View the original main menu
