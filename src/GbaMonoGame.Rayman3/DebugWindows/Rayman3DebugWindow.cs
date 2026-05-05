@@ -253,7 +253,7 @@ public class Rayman3DebugWindow : DebugWindow
                             {
                                 TimeFreezeItem timeFreezeItem = (TimeFreezeItem)actor;
                                 sb.AppendLine($"new({nameof(TimeFreezeItem)}.{nameof(TimeFreezeItem.Action)}.{timeFreezeItem.InitialAction}, " +
-                                              $"new BinarySerializer.Ubisoft.GbaEngine.Vector2({(short)timeFreezeItem.InitialPosition.X}, {(short)timeFreezeItem.InitialPosition.Y})),");
+                                              $"new({(short)timeFreezeItem.InitialPosition.X}, {(short)timeFreezeItem.InitialPosition.Y})),");
                             }
                         }
 

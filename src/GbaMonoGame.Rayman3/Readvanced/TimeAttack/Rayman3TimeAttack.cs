@@ -58,11 +58,29 @@ public static class Rayman3TimeAttack
             world: World1,
             targetTimes: 
             [
-                // TODO: Define times
+                new(TimeAttackTimeType.Bronze, GetTime(02, 05, 00)),
+                new(TimeAttackTimeType.Silver, GetTime(01, 52, 00)),
+                new(TimeAttackTimeType.Gold,   GetTime(01, 45, 00)),
             ],
             actors: new Dictionary<MapId, TimeFreezeItemResource[]>()
             {
-                // TODO: Define actors
+                [MapId.FairyGlade_M1] =
+                [
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(1101, 434)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(1621, 124)),
+                    new(TimeFreezeItem.Action.Init_Decrease5, new(2435, 158)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(2053, 385)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(3181, 151)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(2894, 166)),
+                ],
+                [MapId.FairyGlade_M2] =
+                [
+                    new(TimeFreezeItem.Action.Init_Decrease5, new(943, 278)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(2250, 347)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(3847, 378)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(5185, 348)),
+                    new(TimeFreezeItem.Action.Init_Decrease5, new(6519, 336)),
+                ]
             }.ToFrozenDictionary()),
         // Skipping Swamp of Bégoniax (GBA)
         // Ascension (N-Gage)
