@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
@@ -73,6 +74,7 @@ public static class GameInfo
     public static bool CanShowMurfyHelp { get; set; }
     public static bool IsInWorldMap { get; set; }
     public static bool HasCollectedWhiteLum { get; set; }
+    public static List<int> CollectedWhiteLums { get; } = new(2); // Custom to allow multiple white lums in a level, such as in The Precipice 2
     public static ushort BlueLumsTimer { get; set; }
     public static Power Powers { get; set; }
     public static Cheat Cheats { get; set; }
@@ -102,6 +104,7 @@ public static class GameInfo
         Powers = Power.None;
         Cheats = Cheat.None;
         HasCollectedWhiteLum = false;
+        CollectedWhiteLums.Clear();
         CanShowMurfyHelp = true;
         IsInWorldMap = false;
         ResetPersistentInfo();
@@ -684,6 +687,7 @@ public static class GameInfo
         NextMapId = mapId;
         LoadedGreenLums = 0;
         HasCollectedWhiteLum = false;
+        CollectedWhiteLums.Clear();
         SetPowerBasedOnMap((MapId)PersistentInfo.LastCompletedLevel);
 
         switch (mapId)

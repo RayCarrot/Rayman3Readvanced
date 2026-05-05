@@ -61,8 +61,17 @@ public sealed partial class Lums : BaseActor
             case Action.WhiteLum:
                 AnimatedObject.BasePaletteIndex = 1;
 
-                if (GameInfo.HasCollectedWhiteLum && !RSMultiplayer.IsActive)
-                    ProcessMessage(this, Message.Destroy);
+                // Optionally fix allowing multiple white lums in a level, such as The Precipice 2
+                if (Engine.ActiveConfig.Tweaks.FixBugs)
+                {
+                    if (GameInfo.CollectedWhiteLums.Contains(InstanceId) && !RSMultiplayer.IsActive)
+                        ProcessMessage(this, Message.Destroy);
+                }
+                else
+                {
+                    if (GameInfo.HasCollectedWhiteLum && !RSMultiplayer.IsActive)
+                        ProcessMessage(this, Message.Destroy);
+                }
 
                 // Don't include white lums in time attack
                 if (TimeAttackInfo.IsActive)
