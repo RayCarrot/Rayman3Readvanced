@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine;
 
@@ -11,6 +12,9 @@ public static class TimeAttackInfo
     private const int RandomSeed = 0x12345678; // The value doesn't matter - just needs to be constant
     private const int MinTime = 0;
     private const int MaxTime = 356400; // 99:00:00
+
+    private static FrozenDictionary<MapId, TimeAttackLevelInfo> LevelInfosDictionary { get; set; }
+    private static ImmutableArray<TimeAttackLevelInfo> LevelInfosArray { get; set; }
 
     private static MapId? CurrentMapId { get; set; }
     private static int SavedTimer { get; set; }
@@ -29,7 +33,27 @@ public static class TimeAttackInfo
     public static GhostRecorder GhostRecorder { get; set; }
     public static GhostPlayer GhostPlayer { get; set; }
 
-    public static void Init()
+    public static TimeAttackLevelInfo GetLevelInfo(MapId mapId) => LevelInfosDictionary[mapId];
+    public static ImmutableArray<TimeAttackLevelInfo> GetLevelInfos() => LevelInfosArray;
+
+    public static void Init(TimeAttackLevelInfo[] levelInfos)
+    {
+        LevelInfosDictionary = levelInfos.
+            Where(x => x.ExclusivePlatform == null || x.ExclusivePlatform == Rom.Platform).
+            ToFrozenDictionary(x => x.Level);
+        ImmutableArray<TimeAttackLevelInfo>.Builder levelInfosArrayBuilder = ImmutableArray.CreateBuilder<TimeAttackLevelInfo>();
+        levelInfosArrayBuilder.AddRange(levelInfos);
+        levelInfosArrayBuilder.RemoveAll(x => x.ExclusivePlatform != null && x.ExclusivePlatform != Rom.Platform);
+        LevelInfosArray = levelInfosArrayBuilder.ToImmutable();
+    }
+
+    public static void UnInit()
+    {
+        LevelInfosDictionary = null;
+        LevelInfosArray = default;
+    }
+
+    public static void Start()
     {
         // TODO: In GameOptions each option has a TimeAttackValue. If null then don't override. Otherwise we lock it.
         // TODO: Look more into which values to change, this is temporary. The visual options might affect Random seed. However Random only matters for gameplay for Grolgoth, Jano, Rocky. None of them use the visual effects.
@@ -77,7 +101,7 @@ public static class TimeAttackInfo
         SavedRecordedGhostData.Clear();
         IsActive = true;
         IsPaused = false;
-        Mode = TimeAttackMode.Init;
+        Mode = TimeAttackMode.Start;
         Timer = 0;
         TargetTimes = [];
         MapGhosts = null;
@@ -85,7 +109,7 @@ public static class TimeAttackInfo
         GhostPlayer = null;
     }
 
-    public static void UnInit()
+    public static void End()
     {
         Engine.RestoreActiveConfig();
 
@@ -188,46 +212,99 @@ public static class TimeAttackInfo
         }
 
         IsPaused = false;
-        Mode = TimeAttackMode.Init;
+        Mode = TimeAttackMode.Start;
+    }
+
+    public static IReadOnlyCollection<ActorResource> GetActors()
+    {
+        if (LevelId == null || CurrentMapId == null)
+            return [];
+
+        TimeAttackLevelInfo levelInfo = GetLevelInfo(LevelId.Value);
+
+        // Add the time freeze items
+        List<ActorResource> actors = [];
+        foreach (TimeFreezeItemResource timeFreezeItem in levelInfo.Actors.GetValueOrDefault(CurrentMapId.Value, []))
+        {
+            actors.Add(new ActorResource()
+            {
+                Pos = timeFreezeItem.Pos,
+                IsEnabled = true,
+                IsAwake = true,
+                IsAnimatedObjectDynamic = false,
+                IsProjectile = false,
+                ResurrectsImmediately = false,
+                ResurrectsLater = false,
+                Type = (byte)ReadvancedActorType.TimeFreezeItem,
+                Idx_ActorModel = 0xFF,
+                FirstActionId = (byte)timeFreezeItem.FirstActionId,
+                Links = [0xFF, 0xFF, 0xFF, 0xFF],
+                Model = TimeAttackActorModels.TimeFreezeItemActorModel,
+            });
+        }
+
+        // Add max 3 projectile actors
+        int projectilesCount = Math.Min(actors.Count, 3);
+
+        // TODO: Update model to have a bigger viewbox
+        // Load Power1 scene to get the sparkles model from it
+        Scene2DResource sceneResource = Rom.LoadResource<Scene2DResource>((int)MapId.Power1);
+        ActorModel sparklesModel = sceneResource.AlwaysActors.First(x => (ActorType)x.Type == ActorType.ChainedSparkles).Model;
+
+        for (int i = 0; i < projectilesCount; i++)
+        {
+            // Add sparkles
+            actors.Add(new ActorResource
+            {
+                Pos = new BinarySerializer.Ubisoft.GbaEngine.Vector2(0, 0),
+                IsEnabled = false,
+                IsAwake = false,
+                IsAnimatedObjectDynamic = false,
+                IsProjectile = true,
+                ResurrectsImmediately = false,
+                ResurrectsLater = false,
+                Type = (byte)ReadvancedActorType.TimeFreezeItemSparkles,
+                Model = sparklesModel,
+            });
+
+            // Add time decrease
+            actors.Add(new ActorResource
+            {
+                Pos = new BinarySerializer.Ubisoft.GbaEngine.Vector2(0, 0),
+                IsEnabled = false,
+                IsAwake = false,
+                IsAnimatedObjectDynamic = false,
+                IsProjectile = true,
+                ResurrectsImmediately = false,
+                ResurrectsLater = false,
+                Type = (byte)ReadvancedActorType.TimeDecrease,
+                Model = TimeAttackActorModels.TimeDecreaseActorModel,
+            });
+        }
+
+        return actors;
     }
 
     public static TimeAttackTime[] GetTargetTimes(MapId mapId)
     {
-        FrozenDictionary<MapId, TimeAttackTime[]> dictionary = Rom.Platform switch
-        {
-            Platform.GBA => TimeAttackTimes.Gba,
-            Platform.NGage => TimeAttackTimes.NGage,
-            _ => throw new UnsupportedPlatformException()
-        };
-
-        if (dictionary.TryGetValue(mapId, out TimeAttackTime[] targetTimes))
-            return targetTimes;
-        else
-            return [];
+        return GetLevelInfo(mapId).TargetTimes;
     }
 
     public static void GetTotalEarnedMedals(
         out int earnedBronzeModels, out int earnedSilverModels, out int earnedGoldModels,
         out int totalBronzeModels, out int totalSilverMedals, out int totalGoldMedal)
     {
-        FrozenDictionary<MapId, TimeAttackTime[]> dictionary = Rom.Platform switch
-        {
-            Platform.GBA => TimeAttackTimes.Gba,
-            Platform.NGage => TimeAttackTimes.NGage,
-            _ => throw new UnsupportedPlatformException()
-        };
-
         earnedBronzeModels = 0;
         earnedSilverModels = 0;
         earnedGoldModels = 0;
         totalBronzeModels = 0;
         totalSilverMedals = 0;
         totalGoldMedal = 0;
-        foreach (KeyValuePair<MapId, TimeAttackTime[]> valuePair in dictionary)
+        foreach (TimeAttackLevelInfo levelInfo in GetLevelInfos())
         {
-            TimeAttackTime? recordTime = TimeAttackDataManager.GetRecordTime(valuePair.Key);
+            TimeAttackTime? recordTime = TimeAttackDataManager.GetRecordTime(levelInfo.Level);
 
-            foreach (TimeAttackTime targetTime in valuePair.Value)
+            foreach (TimeAttackTime targetTime in levelInfo.TargetTimes)
             {
                 bool earned = recordTime?.Time <= targetTime.Time;
 

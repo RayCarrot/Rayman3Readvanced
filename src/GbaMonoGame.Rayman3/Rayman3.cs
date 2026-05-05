@@ -322,8 +322,11 @@ public class Rayman3 : GbaGame
         // Define optional tile fixes
         Rayman3TileFixes.DefineTileFixes(Rom.Platform);
 
-        // Initialize the achievements manager
+        // Initialize the achievements
         AchievementsInfo.Init(Rayman3Achievements.Achievements);
+
+        // Initialize the time attack
+        TimeAttackInfo.Init(Rayman3TimeAttack.LevelInfos);
 
         // TODO: Fill out definitions for every actor so they can be used in the editor
         EditorData.Init(
@@ -343,6 +346,7 @@ public class Rayman3 : GbaGame
         FontManager.Unload();
         TimeAttackDataManager.Unload();
         AchievementsInfo.UnInit();
+        TimeAttackInfo.UnInit();
     }
 
     protected override void Initialize()

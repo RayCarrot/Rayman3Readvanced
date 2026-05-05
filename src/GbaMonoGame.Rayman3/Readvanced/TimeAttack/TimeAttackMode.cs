@@ -3,7 +3,7 @@
 public enum TimeAttackMode
 {
     None,
-    Init,
+    Start,
     Countdown,
     Play,
     Score,
