@@ -1314,36 +1314,6 @@ public sealed partial class Rayman : MovableActor
         }
     }
 
-    private bool IsLavaInLevel()
-    {
-        // The game forgets to check for this level, making it not spawn the lava splash!
-        if (Engine.ActiveConfig.Tweaks.FixBugs)
-        {
-            if (GameInfo.MapId is MapId.GameCube_Bonus3)
-                return true;
-        }
-
-        return GameInfo.MapId is 
-            MapId.SanctuaryOfStoneAndFire_M1 or 
-            MapId.SanctuaryOfStoneAndFire_M2 or 
-            MapId.SanctuaryOfStoneAndFire_M3 or 
-            MapId.BeneathTheSanctuary_M1 or 
-            MapId.BeneathTheSanctuary_M2 or 
-            MapId.BossRockAndLava or // Has no lava
-            MapId.SanctuaryOfRockAndLava_M1 or 
-            MapId.SanctuaryOfRockAndLava_M2 or 
-            MapId.SanctuaryOfRockAndLava_M3 or 
-            MapId.IronMountains_M1 or 
-            MapId.IronMountains_M2 or 
-            MapId.MissileRace2 or // Mode7 level, doesn't use the Rayman actor
-            MapId.PirateShip_M1 or 
-            MapId.PirateShip_M2 or 
-            MapId.BossFinal_M1 or // Has no lava
-            MapId.Bonus3 or 
-            MapId._1000Lums or 
-            MapId.GameCube_Bonus6;
-    }
-
     private void AutoSave()
     {
         if ((!FinishedMap || GameInfo.MapId is not (
@@ -2162,6 +2132,36 @@ public sealed partial class Rayman : MovableActor
             default:
                 return false;
         }
+    }
+
+    public bool IsLavaInLevel()
+    {
+        // The game forgets to check for this level, making it not spawn the lava splash!
+        if (Engine.ActiveConfig.Tweaks.FixBugs)
+        {
+            if (GameInfo.MapId is MapId.GameCube_Bonus3)
+                return true;
+        }
+
+        return GameInfo.MapId is
+            MapId.SanctuaryOfStoneAndFire_M1 or
+            MapId.SanctuaryOfStoneAndFire_M2 or
+            MapId.SanctuaryOfStoneAndFire_M3 or
+            MapId.BeneathTheSanctuary_M1 or
+            MapId.BeneathTheSanctuary_M2 or
+            MapId.BossRockAndLava or // Has no lava
+            MapId.SanctuaryOfRockAndLava_M1 or
+            MapId.SanctuaryOfRockAndLava_M2 or
+            MapId.SanctuaryOfRockAndLava_M3 or
+            MapId.IronMountains_M1 or
+            MapId.IronMountains_M2 or
+            MapId.MissileRace2 or // Mode7 level, doesn't use the Rayman actor
+            MapId.PirateShip_M1 or
+            MapId.PirateShip_M2 or
+            MapId.BossFinal_M1 or // Has no lava
+            MapId.Bonus3 or
+            MapId._1000Lums or
+            MapId.GameCube_Bonus6;
     }
 
     public void SetPower(Power power)
