@@ -18,6 +18,10 @@ public class EchoingCaves_M2 : FrameSideScroller
         GameInfo.InitLevel(LevelType.Normal);
         GameInfo.SetLevelRichPresence();
 
+        // Custom for the time attack mode
+        if (TimeAttackInfo.IsActive)
+            TimeAttackInfo.InitLevel(GameInfo.MapId);
+
         CanPause = true;
         Fog = null;
         LevelMusicManager.Init();
@@ -37,6 +41,23 @@ public class EchoingCaves_M2 : FrameSideScroller
 
         // Create pause dialog, but don't add yet
         PauseDialog = Engine.ActiveConfig.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, !TimeAttackInfo.IsActive) : new PauseDialog(Scene);
+
+        // Custom for the time attack mode
+        if (TimeAttackInfo.IsActive)
+        {
+            // Add dialog for the HUD
+            TimeAttackDialog = new TimeAttackDialog(Scene);
+            Scene.AddDialog(TimeAttackDialog, false, false);
+
+            // Add actors (time freeze items)
+            foreach (ActorResource actorResource in TimeAttackInfo.GetActors())
+                Scene.KnotManager.AddAlwaysActor(Scene, actorResource);
+
+            Scene.KnotManager.AddPendingActors();
+        }
+
+        // Custom cheat dialog
+        CheatDialog = new CheatDialog(Scene);
 
         Scene.Init();
         Scene.Playfield.Step();
