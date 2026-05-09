@@ -473,7 +473,7 @@ public class Scene2D
 
     public void DrawDebugBoxes()
     {
-        foreach (BaseActor actor in Iterate<BaseActor>(IteratorFlags.AlwaysActor | IteratorFlags.Actor | IteratorFlags.Captor | IteratorFlags.Enabled))
+        foreach (GameObject actor in Iterate<GameObject>(IteratorFlags.AlwaysActor | IteratorFlags.Actor | IteratorFlags.Captor | IteratorFlags.Enabled))
         {
             actor.DrawDebugBoxes(AnimationPlayer);
         }
