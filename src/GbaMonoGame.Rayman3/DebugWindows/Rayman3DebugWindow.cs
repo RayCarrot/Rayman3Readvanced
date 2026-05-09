@@ -214,7 +214,7 @@ public class Rayman3DebugWindow : DebugWindow
                         if (InputManager.IsMouseOnScreen(frame.Scene.RenderContext) && InputManager.IsMouseLeftButtonJustPressed())
                         {
                             Vector2 mousePos = InputManager.GetMousePosition(frame.Scene.RenderContext) + frame.Scene.Playfield.Camera.Position;
-                            frame.Scene.KnotManager.AddAlwaysActor(frame.Scene, new ActorResource
+                            frame.Scene.KnotManager.AddActor(frame.Scene, new ActorResource
                             {
                                 Pos = new BinarySerializer.Ubisoft.GbaEngine.Vector2((short)mousePos.X, (short)mousePos.Y),
                                 IsEnabled = true,
@@ -227,13 +227,13 @@ public class Rayman3DebugWindow : DebugWindow
                                 FirstActionId = (byte)TimeFreezeItemAction,
                                 Links = [0xFF, 0xFF, 0xFF, 0xFF],
                                 Model = TimeAttackActorModels.TimeFreezeItemActorModel,
-                            });
+                            }, GameObjectType.AlwaysActor);
                         }
                     }
 
                     if (ImGui.Button("Resurrect all"))
                     {
-                        foreach (BaseActor actor in new DisabledAlwaysActorIterator(frame.Scene))
+                        foreach (BaseActor actor in frame.Scene.Iterate<BaseActor>(IteratorFlags.AlwaysActor | IteratorFlags.Disabled))
                         {
                             if ((ReadvancedActorType)actor.Type == ReadvancedActorType.TimeFreezeItem)
                             {
@@ -247,7 +247,7 @@ public class Rayman3DebugWindow : DebugWindow
                     {
                         StringBuilder sb = new();
 
-                        foreach (BaseActor actor in new AlwaysActorIterator(frame.Scene))
+                        foreach (BaseActor actor in frame.Scene.Iterate<BaseActor>(IteratorFlags.AlwaysActor))
                         {
                             if ((ReadvancedActorType)actor.Type == ReadvancedActorType.TimeFreezeItem)
                             {

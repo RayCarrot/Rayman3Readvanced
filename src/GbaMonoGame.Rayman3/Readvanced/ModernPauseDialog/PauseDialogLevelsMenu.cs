@@ -160,7 +160,7 @@ public class PauseDialogLevelsMenu
         // Add the levels from the level curtains
         SelectedOption = 0;
         List<LevelsMenuOption> options = [];
-        foreach (BaseActor actor in new ActorIterator(Scene))
+        foreach (BaseActor actor in Scene.Iterate<BaseActor>(IteratorFlags.Actor))
         {
             if (actor.Type == (int)ActorType.LevelCurtain)
             {

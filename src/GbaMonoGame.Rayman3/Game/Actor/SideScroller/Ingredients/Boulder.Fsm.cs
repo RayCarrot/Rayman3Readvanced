@@ -153,7 +153,7 @@ public partial class Boulder
                     if (type.Value is PhysicalTypeValue.InstaKill or PhysicalTypeValue.MoltenLava)
                     {
                         bool activeBoulder = false;
-                        foreach (BaseActor actor in new EnabledActorIterator(Scene))
+                        foreach (BaseActor actor in Scene.Iterate<BaseActor>(IteratorFlags.Actor | IteratorFlags.Enabled))
                         {
                             if (actor != this && (ActorType)actor.Type == ActorType.Boulder && actor.State != _Fsm_Wait)
                             {

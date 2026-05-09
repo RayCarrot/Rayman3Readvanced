@@ -325,12 +325,12 @@ public class Scene2D
 
     public void ActorBehaviorStep()
     {
-        foreach (BaseActor actor in new EnabledAlwaysActorIterator(this))
+        foreach (BaseActor actor in Iterate<BaseActor>(IteratorFlags.AlwaysActor | IteratorFlags.Enabled))
         {
             actor.DoBehavior();
         }
 
-        foreach (BaseActor actor in new EnabledActorIterator(this))
+        foreach (BaseActor actor in Iterate<BaseActor>(IteratorFlags.Actor | IteratorFlags.Enabled))
         {
             actor.DoBehavior();
         }
@@ -342,14 +342,14 @@ public class Scene2D
         bool newKnot = KnotManager.UpdateCurrentKnot(Playfield, camPos, KeepAllObjectsActive);
 
         // Resurrect always actors if immediate
-        foreach (BaseActor obj in new DisabledAlwaysActorIterator(this))
+        foreach (BaseActor obj in Iterate<BaseActor>(IteratorFlags.AlwaysActor | IteratorFlags.Disabled))
         {
             if (obj.ResurrectsImmediately)
                 obj.ProcessMessage(null, Message.Resurrect);
         }
 
         // Resurrect actors and captors if immediate
-        foreach (GameObject obj in new DisabledActorCaptorIterator(this))
+        foreach (GameObject obj in Iterate<GameObject>(IteratorFlags.Actor | IteratorFlags.Captor | IteratorFlags.Disabled))
         {
             if (obj.ResurrectsImmediately)
                 obj.ProcessMessage(null, Message.Resurrect);
@@ -360,7 +360,7 @@ public class Scene2D
         {
             if (newKnot && KnotManager.PreviousKnot != null)
             {
-                foreach (GameObject obj in new DisabledActorCaptorIterator(this, knot: KnotManager.PreviousKnot))
+                foreach (GameObject obj in Iterate<GameObject>(IteratorFlags.Actor | IteratorFlags.Captor | IteratorFlags.Disabled, IteratorKnot.Previous))
                 {
                     if (obj.ResurrectsLater && !KnotManager.IsInCurrentKnot(this, obj.InstanceId))
                         obj.ProcessMessage(null, Message.Resurrect);
@@ -374,7 +374,7 @@ public class Scene2D
             const float margin = 64;
             Box viewBox = new(Playfield.Camera.Position - new Vector2(margin), Resolution + new Vector2(margin * 2));
 
-            foreach (GameObject obj in new DisabledActorCaptorIterator(this))
+            foreach (GameObject obj in Iterate<GameObject>(IteratorFlags.Actor | IteratorFlags.Captor | IteratorFlags.Disabled))
             {
                 if (obj.ResurrectsLater && !viewBox.Contains(obj.Position))
                     obj.ProcessMessage(null, Message.Resurrect);
@@ -384,12 +384,12 @@ public class Scene2D
 
     public void ActorStep()
     {
-        foreach (BaseActor actor in new EnabledAlwaysActorIterator(this))
+        foreach (BaseActor actor in Iterate<BaseActor>(IteratorFlags.AlwaysActor | IteratorFlags.Enabled))
         {
             actor.Step();
         }
 
-        foreach (BaseActor actor in new EnabledActorIterator(this))
+        foreach (BaseActor actor in Iterate<BaseActor>(IteratorFlags.Actor | IteratorFlags.Enabled))
         {
             actor.Step();
         }
@@ -397,13 +397,13 @@ public class Scene2D
 
     public void ActorMoveStep()
     {
-        foreach (BaseActor actor in new EnabledAlwaysActorIterator(this))
+        foreach (BaseActor actor in Iterate<BaseActor>(IteratorFlags.AlwaysActor | IteratorFlags.Enabled))
         {
             if (actor is MovableActor movableActor)
                 movableActor.Move();
         }
 
-        foreach (BaseActor actor in new EnabledActorIterator(this))
+        foreach (BaseActor actor in Iterate<BaseActor>(IteratorFlags.Actor | IteratorFlags.Enabled))
         {
             if (actor is MovableActor movableActor)
                 movableActor.Move();
@@ -412,7 +412,7 @@ public class Scene2D
 
     public void CaptorStep()
     {
-        foreach (Captor captor in new EnabledCaptorIterator(this))
+        foreach (Captor captor in Iterate<Captor>(IteratorFlags.Captor | IteratorFlags.Enabled))
         {
             if (captor.TriggerOnMainActorDetection)
             {
@@ -424,7 +424,7 @@ public class Scene2D
             {
                 if (!captor.IsDetected)
                 {
-                    foreach (BaseActor actor in new EnabledAlwaysActorIterator(this))
+                    foreach (BaseActor actor in Iterate<BaseActor>(IteratorFlags.AlwaysActor | IteratorFlags.Enabled))
                     {
                         // Skip main actor if not in multiplayer
                         if (!RSMultiplayer.IsActive && actor.InstanceId == 0)
@@ -437,7 +437,7 @@ public class Scene2D
                         }
                     }
 
-                    foreach (BaseActor actor in new EnabledActorIterator(this))
+                    foreach (BaseActor actor in Iterate<BaseActor>(IteratorFlags.Actor | IteratorFlags.Enabled))
                     {
                         if (actor.IsAgainstCaptor && actor is ActionActor actionActor)
                         {
@@ -455,12 +455,12 @@ public class Scene2D
 
     public void DrawActors()
     {
-        foreach (BaseActor actor in new EnabledAlwaysActorIterator(this))
+        foreach (BaseActor actor in Iterate<BaseActor>(IteratorFlags.AlwaysActor | IteratorFlags.Enabled))
         {
             actor.Draw(AnimationPlayer, false);
         }
 
-        foreach (BaseActor actor in new EnabledActorIterator(this))
+        foreach (BaseActor actor in Iterate<BaseActor>(IteratorFlags.Actor | IteratorFlags.Enabled))
         {
             actor.Draw(AnimationPlayer, false);
         }
@@ -473,14 +473,9 @@ public class Scene2D
 
     public void DrawDebugBoxes()
     {
-        foreach (BaseActor actor in new EnabledAlwaysActorIterator(this))
+        foreach (BaseActor actor in Iterate<BaseActor>(IteratorFlags.AlwaysActor | IteratorFlags.Actor | IteratorFlags.Captor | IteratorFlags.Enabled))
         {
             actor.DrawDebugBoxes(AnimationPlayer);
-        }
-
-        foreach (GameObject gameObject in new EnabledActorCaptorIterator(this))
-        {
-            gameObject.DrawDebugBoxes(AnimationPlayer);
         }
     }
 
@@ -519,7 +514,7 @@ public class Scene2D
     {
         Box attackBox = actor.GetAttackBox();
 
-        foreach (BaseActor actorToCheck in new EnabledAlwaysActorIterator(this))
+        foreach (BaseActor actorToCheck in Iterate<BaseActor>(IteratorFlags.AlwaysActor | IteratorFlags.Enabled))
         {
             // Ignore main actor if not in multiplayer
             if (!RSMultiplayer.IsActive && actorToCheck.InstanceId == 0)
@@ -533,7 +528,7 @@ public class Scene2D
                 return interactableActor;
         }
 
-        foreach (BaseActor actorToCheck in new EnabledActorIterator(this))
+        foreach (BaseActor actorToCheck in Iterate<BaseActor>(IteratorFlags.Actor | IteratorFlags.Enabled))
         {
             // Check for collision
             if (actorToCheck != actor &&
@@ -550,7 +545,7 @@ public class Scene2D
     {
         Box attackBox = actor.GetAttackBox();
 
-        foreach (BaseActor actorToCheck in new EnabledAlwaysActorIterator(this))
+        foreach (BaseActor actorToCheck in Iterate<BaseActor>(IteratorFlags.AlwaysActor | IteratorFlags.Enabled))
         {
             // Ignore main actor if not in multiplayer
             if (!RSMultiplayer.IsActive && actorToCheck.InstanceId == 0)
@@ -565,7 +560,7 @@ public class Scene2D
                 return interactableActor;
         }
 
-        foreach (BaseActor actorToCheck in new EnabledActorIterator(this))
+        foreach (BaseActor actorToCheck in Iterate<BaseActor>(IteratorFlags.Actor | IteratorFlags.Enabled))
         {
             // Check for collision
             if (actorToCheck != actor &&
@@ -577,6 +572,12 @@ public class Scene2D
         }
 
         return null;
+    }
+
+    public ObjectIterator<T> Iterate<T>(IteratorFlags flags, IteratorKnot knot = IteratorKnot.Current)
+        where T : GameObject
+    {
+        return new ObjectIterator<T>(KnotManager, flags, knot);
     }
 
     public GameObject GetGameObject(int instanceId) => KnotManager.GetGameObject(instanceId);

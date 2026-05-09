@@ -516,7 +516,7 @@ public abstract class MovableActor : InteractableActor
 
                 Box detectionBox = GetDetectionBox();
 
-                foreach (BaseActor actor in new EnabledAlwaysActorIterator(Scene))
+                foreach (BaseActor actor in Scene.Iterate<BaseActor>(IteratorFlags.AlwaysActor | IteratorFlags.Enabled))
                 {
                     if (actor != this && actor.IsSolid && actor is ActionActor actionActor)
                     {
@@ -541,7 +541,7 @@ public abstract class MovableActor : InteractableActor
                     }
                 }
 
-                foreach (BaseActor actor in new EnabledActorIterator(Scene))
+                foreach (BaseActor actor in Scene.Iterate<BaseActor>(IteratorFlags.Actor | IteratorFlags.Enabled))
                 {
                     if (actor != this && actor.IsSolid && actor is ActionActor actionActor)
                     {

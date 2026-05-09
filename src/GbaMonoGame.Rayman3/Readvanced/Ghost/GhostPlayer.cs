@@ -23,7 +23,7 @@ public class GhostPlayer
 
     private BaseActor CreateGhostActor(BaseActor baseActor)
     {
-        BaseActor ghost = Scene.KnotManager.AddAlwaysActor(Scene, new ActorResource
+        BaseActor ghost = Scene.KnotManager.AddActor(Scene, new ActorResource
         {
             Pos = default,
             IsEnabled = true,
@@ -36,7 +36,7 @@ public class GhostPlayer
             Idx_ActorModel = 0xFF,
             Links = [0xFF, 0xFF, 0xFF, 0xFF],
             Model = baseActor.ActorModel,
-        });
+        }, GameObjectType.AlwaysActor);
         ghost.AnimatedObject.IsSoundEnabled = false;
 
         if (ghost is GhostMode7 ghostMode7)

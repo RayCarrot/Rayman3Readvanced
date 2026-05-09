@@ -1,5 +1,6 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
+using GbaMonoGame.Engine2d;
 using GbaMonoGame.Rayman3.Readvanced;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
@@ -51,7 +52,7 @@ public class EchoingCaves_M2 : FrameSideScroller
 
             // Add actors (time freeze items)
             foreach (ActorResource actorResource in TimeAttackInfo.GetActors())
-                Scene.KnotManager.AddAlwaysActor(Scene, actorResource);
+                Scene.KnotManager.AddActor(Scene, actorResource, GameObjectType.AlwaysActor);
 
             Scene.KnotManager.AddPendingActors();
         }

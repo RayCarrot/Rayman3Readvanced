@@ -4538,12 +4538,7 @@ public partial class Rayman
                     ActionId = safePosition.IsFacingRight ? Action.Spawn_Right : Action.Spawn_Left;
 
                     // Respawn some actors
-                    foreach (BaseActor obj in new DisabledAlwaysActorIterator(Scene))
-                    {
-                        if (!obj.ResurrectsLater)
-                            obj.ProcessMessage(this, Message.Readvanced_RespawnDeath);
-                    }
-                    foreach (BaseActor obj in new DisabledActorIterator(Scene))
+                    foreach (BaseActor obj in Scene.Iterate<BaseActor>(IteratorFlags.AlwaysActor | IteratorFlags.Actor | IteratorFlags.Disabled))
                     {
                         if (!obj.ResurrectsLater)
                             obj.ProcessMessage(this, Message.Readvanced_RespawnDeath);

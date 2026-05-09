@@ -15,7 +15,7 @@ public partial class SphereBase
 
             case FsmAction.Step:
                 // Check for collision with sphere
-                foreach (BaseActor actor in new EnabledAlwaysActorIterator(Scene))
+                foreach (BaseActor actor in Scene.Iterate<BaseActor>(IteratorFlags.AlwaysActor | IteratorFlags.Enabled))
                 {
                     // Verify type
                     if (actor.Type != (int)ActorType.Sphere)

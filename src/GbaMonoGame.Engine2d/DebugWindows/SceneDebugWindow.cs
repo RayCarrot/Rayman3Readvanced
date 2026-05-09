@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using GbaMonoGame.TgxEngine;
 using ImGuiNET;
 using Microsoft.Xna.Framework;
@@ -41,7 +40,7 @@ public class SceneDebugWindow : DebugWindow
 
         Vector2 mousePos = InputManager.GetMousePosition(scene.RenderContext);
 
-        foreach (GameObject gameObject in new EnabledAlwaysActorIterator(scene).Concat(new EnabledActorCaptorIterator(scene)))
+        foreach (GameObject gameObject in scene.Iterate<GameObject>(IteratorFlags.AlwaysActor | IteratorFlags.Actor | IteratorFlags.Captor | IteratorFlags.Enabled))
         {
             Box box = Box.Offset(GetObjBox(gameObject) , - scene.Playfield.Camera.Position);
 
@@ -69,6 +68,7 @@ public class SceneDebugWindow : DebugWindow
         ImGui.SeparatorText("General");
 
         ImGui.Text($"Keep all objects active: {scene2D.KeepAllObjectsActive}");
+        ImGui.Text($"Added actors: {scene2D.KnotManager.AddedGameObjectsCount}");
 
         if (ImGui.Button("Deselect object"))
             SelectedGameObject = null;
@@ -79,7 +79,7 @@ public class SceneDebugWindow : DebugWindow
 
         if (ImGui.BeginListBox("##_alwaysActors", new System.Numerics.Vector2(300, 150)))
         {
-            foreach (BaseActor actor in scene2D.KnotManager.AlwaysActors)
+            foreach (BaseActor actor in scene2D.Iterate<BaseActor>(IteratorFlags.AlwaysActor, IteratorKnot.All))
             {
                 bool isSelected = SelectedGameObject == actor;
                 if (ImGui.Selectable($"{actor.InstanceId}. {ActorFactory.GetActorTypeName(actor.Type)}", isSelected))
@@ -97,7 +97,7 @@ public class SceneDebugWindow : DebugWindow
 
         if (ImGui.BeginListBox("##_actors", new System.Numerics.Vector2(300, 300)))
         {
-            foreach (BaseActor actor in scene2D.KnotManager.Actors)
+            foreach (BaseActor actor in scene2D.Iterate<BaseActor>(IteratorFlags.Actor, IteratorKnot.All))
             {
                 bool isSelected = SelectedGameObject == actor;
                 if (ImGui.Selectable($"{actor.InstanceId}. {ActorFactory.GetActorTypeName(actor.Type)}", isSelected))
@@ -115,7 +115,7 @@ public class SceneDebugWindow : DebugWindow
 
         if (scene2D.KnotManager.CaptorsCount > 0 && ImGui.BeginListBox("##_captors", new System.Numerics.Vector2(300, 80)))
         {
-            foreach (Captor captor in scene2D.KnotManager.Captors)
+            foreach (Captor captor in scene2D.Iterate<Captor>(IteratorFlags.Captor, IteratorKnot.All))
             {
                 bool isSelected = SelectedGameObject == captor;
                 if (ImGui.Selectable($"{captor.InstanceId}. Captor", isSelected))
@@ -124,31 +124,6 @@ public class SceneDebugWindow : DebugWindow
 
             ImGui.EndListBox();
         }
-
-        ImGui.Spacing();
-        ImGui.Spacing();
-        ImGui.SeparatorText("Added always actors");
-
-        ImGui.Text($"Count: {scene2D.KnotManager.AddedAlwaysActors.Count}");
-
-        if (scene2D.KnotManager.AddedAlwaysActors.Count > 0 && ImGui.BeginListBox("##_addedAlwaysActors", new System.Numerics.Vector2(300, 80)))
-        {
-            foreach (BaseActor actor in scene2D.KnotManager.AddedAlwaysActors)
-            {
-                bool isSelected = SelectedGameObject == actor;
-                if (ImGui.Selectable($"{actor.InstanceId}. {ActorFactory.GetActorTypeName(actor.Type)}", isSelected))
-                    SelectedGameObject = actor;
-            }
-
-            ImGui.EndListBox();
-        }
-
-        ImGui.Spacing();
-        ImGui.Spacing();
-        ImGui.SeparatorText("Knots");
-
-        ImGui.Text("Count: 0");
-        ImGui.Text("TODO: Implement");
 
         ImGui.Spacing();
         ImGui.Spacing();

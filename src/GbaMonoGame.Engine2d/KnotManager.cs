@@ -13,63 +13,39 @@ public class KnotManager
     public KnotManager(Scene2DResource sceneResource)
     {
         GameObjects = new List<GameObject>(sceneResource.GameObjectCount);
-        AlwaysActors = new BaseActor[sceneResource.AlwaysActorsCount];
-        Actors = new BaseActor[sceneResource.ActorsCount];
-        Captors = new Captor[sceneResource.CaptorsCount];
-        PendingAddedAlwaysActors = new List<BaseActor>();
-        AddedAlwaysActors = new List<BaseActor>();
+        GameObjectTypes = new List<GameObjectType>(sceneResource.GameObjectCount);
+
+        PendingAddedGameObjects = [];
+        PendingAddedGameObjectTypes = [];
         KnotsWidth = sceneResource.KnotsWidth;
         Knots = sceneResource.Knots;
 
         if (sceneResource.GameObjectCount != sceneResource.AlwaysActorsCount + sceneResource.ActorsCount + sceneResource.CaptorsCount)
             throw new Exception("Invalid game objects count");
-
-        // Create a special knot with every object which we use when loading all objects at once
-        _fullKnot = new Knot
-        {
-            ActorsCount = (byte)ActorsCount,
-            CaptorsCount = (byte)CaptorsCount,
-            ActorIds = Enumerable.Range(ActorsIndex, ActorsCount).Select(x => (byte)x).ToArray(),
-            CaptorIds = Enumerable.Range(CaptorsIndex, CaptorsCount).Select(x => (byte)x).ToArray(),
-        };
     }
-
-    #endregion
-
-    #region Private Fields
-
-    private readonly Knot _fullKnot;
 
     #endregion
 
     #region Public Properties
 
-    public List<GameObject> GameObjects { get; set; }
-    public int GameObjectsCount => GameObjects.Count;
-    
-    public BaseActor[] AlwaysActors { get; }
-    public int AlwaysActorsCount => AlwaysActors.Length;
-    public int AlwaysActorsIndex => 0;
-    
-    public BaseActor[] Actors { get; }
-    public int ActorsCount => Actors.Length;
-    public int ActorsIndex => AlwaysActorsIndex + AlwaysActorsCount;
+    public List<GameObject> GameObjects { get; }
+    public List<GameObjectType> GameObjectTypes { get; }
 
-    public Captor[] Captors { get; }
-    public int CaptorsCount => Captors.Length;
-    public int CaptorsIndex => ActorsIndex + ActorsCount;
+    public int GameObjectsCount { get; private set; }
+    public int AlwaysActorsCount { get; private set; }
+    public int ActorsCount { get; private set; }
+    public int CaptorsCount { get; private set; }
+    public int AddedGameObjectsCount { get; private set; }
 
-    // Custom list of always actors - removes the projectile limit
-    public List<BaseActor> PendingAddedAlwaysActors { get; }
-    public List<BaseActor> AddedAlwaysActors { get; }
-    public int AddedAlwaysActorsCount => AddedAlwaysActors.Count;
-    public int AddedAlwaysActorsIndex => CaptorsIndex + CaptorsCount;
+    // Custom pending objects, allow us to add new ones (such as more projectiles)
+    public List<GameObject> PendingAddedGameObjects { get; }
+    public List<GameObjectType> PendingAddedGameObjectTypes { get; }
 
     public Knot[] Knots { get; }
     public byte KnotsWidth { get; }
 
-    public Knot CurrentKnot { get; set; }
-    public Knot PreviousKnot { get; set; }
+    public Knot CurrentKnot { get; private set; }
+    public Knot PreviousKnot { get; private set; }
 
     #endregion
 
@@ -82,42 +58,53 @@ public class KnotManager
         Scene2DResource sceneResource = scene.Resource;
         int instanceId = 0;
 
+        // Get the counts
+        GameObjectsCount = sceneResource.GameObjectCount;
+        AlwaysActorsCount = sceneResource.AlwaysActorsCount;
+        ActorsCount = sceneResource.ActorsCount;
+        CaptorsCount = sceneResource.CaptorsCount;
+
         // Create always actors
-        for (int i = 0; i < sceneResource.AlwaysActors.Length; i++)
+        foreach (ActorResource alwaysActor in sceneResource.AlwaysActors)
         {
-            AlwaysActors[i] = ActorFactory.Create(instanceId, scene, sceneResource.AlwaysActors[i]);
-            GameObjects.Add(AlwaysActors[i]);
+            GameObjects.Add(ActorFactory.Create(instanceId, scene, alwaysActor));
+            GameObjectTypes.Add(GameObjectType.AlwaysActor);
             instanceId++;
         }
 
         // Create actors
-        for (int i = 0; i < sceneResource.Actors.Length; i++)
+        foreach (ActorResource actor in sceneResource.Actors)
         {
-            Actors[i] = ActorFactory.Create(instanceId, scene, sceneResource.Actors[i]);
-            GameObjects.Add(Actors[i]);
+            GameObjects.Add(ActorFactory.Create(instanceId, scene, actor));
+            GameObjectTypes.Add(GameObjectType.Actor);
             instanceId++;
         }
 
         // Create captors
-        for (int i = 0; i < sceneResource.Captors.Length; i++)
+        foreach (CaptorResource captor in sceneResource.Captors)
         {
-            Captors[i] = new Captor(instanceId, scene, sceneResource.Captors[i]);
-            GameObjects.Add(Captors[i]);
+            GameObjects.Add(new Captor(instanceId, scene, captor));
             instanceId++;
         }
 
-        // Initialize always actors
-        for (int i = 0; i < AlwaysActors.Length; i++)
-            AlwaysActors[i].Init(sceneResource.AlwaysActors[i]);
-
-        // Initialize actors
-        for (int i = 0; i < Actors.Length; i++)
-            Actors[i].Init(sceneResource.Actors[i]);
+        // Initialize the actors
+        for (int i = 0; i < GameObjects.Count; i++)
+        {
+            if (GameObjectTypes[i] == GameObjectType.AlwaysActor)
+                ((BaseActor)GameObjects[i]).Init(sceneResource.AlwaysActors[i]);
+            else if (GameObjectTypes[i] == GameObjectType.Actor)
+                ((BaseActor)GameObjects[i]).Init(sceneResource.Actors[i - sceneResource.AlwaysActorsCount]);
+        }
     }
 
     public GameObject GetGameObject(int instanceId)
     {
         return GameObjects[instanceId];
+    }
+
+    public GameObjectType GetGameObjectType(int instanceId)
+    {
+        return GameObjectTypes[instanceId];
     }
 
     public bool UpdateCurrentKnot(TgxPlayfield playfield, Vector2 camPos, bool keepObjectsActive)
@@ -126,7 +113,7 @@ public class KnotManager
 
         if (keepObjectsActive)
         {
-            knot = _fullKnot;
+            knot = null;
         }
         else
         {
@@ -160,7 +147,7 @@ public class KnotManager
 
     public bool IsInCurrentKnot(Scene2D scene, int instanceId)
     {
-        foreach (GameObject gameObject in new ActorCaptorIterator(scene))
+        foreach (GameObject gameObject in scene.Iterate<GameObject>(IteratorFlags.Actor | IteratorFlags.Captor))
         {
             if (gameObject.InstanceId == instanceId)
                 return true;
@@ -171,7 +158,7 @@ public class KnotManager
 
     public bool IsInPreviousKnot(Scene2D scene, int instanceId)
     {
-        foreach (GameObject gameObject in new ActorCaptorIterator(scene, PreviousKnot))
+        foreach (GameObject gameObject in scene.Iterate<GameObject>(IteratorFlags.Actor | IteratorFlags.Captor, IteratorKnot.Previous))
         {
             if (gameObject.InstanceId == instanceId)
                 return true;
@@ -187,21 +174,46 @@ public class KnotManager
 
     public void AddPendingActors()
     {
-        GameObjects.AddRange(PendingAddedAlwaysActors);
-        AddedAlwaysActors.AddRange(PendingAddedAlwaysActors);
-        PendingAddedAlwaysActors.Clear();
+        if (PendingAddedGameObjects.Count == 0)
+            return;
+
+        GameObjects.AddRange(PendingAddedGameObjects);
+        GameObjectsCount += PendingAddedGameObjects.Count;
+        AddedGameObjectsCount += PendingAddedGameObjects.Count;
+        PendingAddedGameObjects.Clear();
+        
+        GameObjectTypes.AddRange(PendingAddedGameObjectTypes);
+        foreach (GameObjectType type in PendingAddedGameObjectTypes)
+        {
+            switch (type)
+            {
+                case GameObjectType.AlwaysActor:
+                    AlwaysActorsCount++;
+                    break;
+                
+                case GameObjectType.Actor:
+                    ActorsCount++;
+                    break;
+                
+                case GameObjectType.Captor:
+                    CaptorsCount++;
+                    break;
+            }
+        }
+        PendingAddedGameObjectTypes.Clear();
     }
 
-    public BaseActor AddAlwaysActor(Scene2D scene, ActorResource actorResource)
+    public BaseActor AddActor(Scene2D scene, ActorResource actorResource, GameObjectType type)
     {
         // Get the next instance id
-        int instanceId = GameObjectsCount + PendingAddedAlwaysActors.Count;
+        int instanceId = GameObjectsCount + PendingAddedGameObjects.Count;
         
         // Create the actor
         BaseActor actor = ActorFactory.Create(instanceId, scene, actorResource);
 
         // Add to pending list of actors
-        PendingAddedAlwaysActors.Add(actor);
+        PendingAddedGameObjects.Add(actor);
+        PendingAddedGameObjectTypes.Add(type);
 
         // Initialize
         actor.Init(actorResource);
@@ -211,7 +223,7 @@ public class KnotManager
 
     public BaseActor CreateProjectile(Scene2D scene, int actorType, bool allowAddWhenNeeded)
     {
-        foreach (BaseActor actor in new DisabledActorIterator(scene))
+        foreach (BaseActor actor in scene.Iterate<BaseActor>(IteratorFlags.Actor | IteratorFlags.Disabled))
         {
             if (actor.IsProjectile && actor.Type == actorType)
             {
@@ -220,7 +232,7 @@ public class KnotManager
             }
         }
 
-        foreach (BaseActor actor in new DisabledAlwaysActorIterator(scene))
+        foreach (BaseActor actor in scene.Iterate<BaseActor>(IteratorFlags.AlwaysActor | IteratorFlags.Disabled))
         {
             if (actor.IsProjectile && actor.Type == actorType)
             {
@@ -241,7 +253,7 @@ public class KnotManager
             if (actorResource == null)
                 return null;
 
-            BaseActor projectile = AddAlwaysActor(scene, actorResource);
+            BaseActor projectile = AddActor(scene, actorResource, GameObjectType.AlwaysActor);
 
             projectile.ProcessMessage(null, Message.ResurrectWakeUp);
 

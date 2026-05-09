@@ -68,7 +68,7 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
 
             // Add actors (time freeze items)
             foreach (ActorResource actorResource in TimeAttackInfo.GetActors())
-                Scene.KnotManager.AddAlwaysActor(Scene, actorResource);
+                Scene.KnotManager.AddActor(Scene, actorResource, GameObjectType.AlwaysActor);
 
             Scene.KnotManager.AddPendingActors();
         }
