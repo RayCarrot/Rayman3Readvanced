@@ -1,7 +1,7 @@
 # Rayman 3 Readvanced
 
 > [!NOTE]
-> This project is currently still in development and as such there are no builds available to download yet. You can view the list of remaining features in [the todo document](TODO.md).
+> This project is currently still in development and as such there are no builds available to download yet. As such, please do not distribute early copies of the game. It is open source during development to make easier to contribute to and provide an easy way to view how the original game's code works. You can view the list of remaining features in [the todo document](TODO.md). Once the game is complete there will be provided builds for all supported platforms.
 
 ![Title screen](assets/logo/Rayman%203%20Readvanced.png)
 
