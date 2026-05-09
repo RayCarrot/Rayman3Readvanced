@@ -84,6 +84,7 @@ public class KnotManager
         foreach (CaptorResource captor in sceneResource.Captors)
         {
             GameObjects.Add(new Captor(instanceId, scene, captor));
+            GameObjectTypes.Add(GameObjectType.Captor);
             instanceId++;
         }
 
