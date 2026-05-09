@@ -25,12 +25,12 @@ public class GhostRecorder
     public void Step()
     {
         List<GhostActorFrame> actorFrames = [];
-        foreach (BaseActor actor in Scene.Iterate<BaseActor>(IteratorFlags.AlwaysActor | IteratorFlags.Enabled))
+        foreach (BaseActor actor in Scene.Iterate<BaseActor>(IteratorFlags.AlwaysActor | IteratorFlags.Enabled, IteratorKnot.All))
         {
             if (Array.IndexOf(_actorTypes, (ActorType)actor.Type) >= 0)
                 actorFrames.Add(GhostActorFrame.FromActor(actor, _isMode7));
         }
-        foreach (BaseActor actor in Scene.Iterate<BaseActor>(IteratorFlags.Actor | IteratorFlags.Enabled))
+        foreach (BaseActor actor in Scene.Iterate<BaseActor>(IteratorFlags.Actor | IteratorFlags.Enabled, IteratorKnot.All))
         {
             if (Array.IndexOf(_actorTypes, (ActorType)actor.Type) >= 0)
                 actorFrames.Add(GhostActorFrame.FromActor(actor, _isMode7));

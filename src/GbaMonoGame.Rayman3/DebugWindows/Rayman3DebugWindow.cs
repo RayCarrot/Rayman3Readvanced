@@ -233,7 +233,7 @@ public class Rayman3DebugWindow : DebugWindow
 
                     if (ImGui.Button("Resurrect all"))
                     {
-                        foreach (BaseActor actor in frame.Scene.Iterate<BaseActor>(IteratorFlags.AlwaysActor | IteratorFlags.Disabled))
+                        foreach (BaseActor actor in frame.Scene.Iterate<BaseActor>(IteratorFlags.AlwaysActor | IteratorFlags.Disabled, IteratorKnot.All))
                         {
                             if ((ReadvancedActorType)actor.Type == ReadvancedActorType.TimeFreezeItem)
                             {
@@ -247,7 +247,7 @@ public class Rayman3DebugWindow : DebugWindow
                     {
                         StringBuilder sb = new();
 
-                        foreach (BaseActor actor in frame.Scene.Iterate<BaseActor>(IteratorFlags.AlwaysActor))
+                        foreach (BaseActor actor in frame.Scene.Iterate<BaseActor>(IteratorFlags.AlwaysActor, IteratorKnot.All))
                         {
                             if ((ReadvancedActorType)actor.Type == ReadvancedActorType.TimeFreezeItem)
                             {
