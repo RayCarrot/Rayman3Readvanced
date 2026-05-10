@@ -48,7 +48,7 @@ public partial class FlyingShell
                 break;
 
             case FsmAction.Step:
-                ((CameraSideScroller)Scene.Camera).HorizontalOffset = CameraOffset.Center;
+                ((CameraSideScroller)Scene.Camera).SetHorizontalOffset(CameraOffset.Center);
 
                 // Change direction
                 if (ActionId is Action.ChangeDirection_Right or Action.ChangeDirection_Left && IsActionFinished)

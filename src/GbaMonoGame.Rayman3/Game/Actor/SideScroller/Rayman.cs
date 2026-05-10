@@ -2019,7 +2019,7 @@ public sealed partial class Rayman : MovableActor
                 if (State == _Fsm_MultiplayerDying && IsLocalPlayer)
                 {
                     Scene.Camera.LinkedObject = Scene.GetGameObject<MovableActor>(((FrameMultiSideScroller)Frame.Current).UserInfo.TagId);
-                    ((CameraSideScroller)Scene.Camera).HorizontalOffset = CameraOffset.Multiplayer;
+                    ((CameraSideScroller)Scene.Camera).SetHorizontalOffset(CameraOffset.Multiplayer);
                     Scene.Camera.ProcessMessage(this, Message.Cam_MoveToLinkedObject, true);
                 }
                 return false;
@@ -2360,9 +2360,9 @@ public sealed partial class Rayman : MovableActor
                 (AttachedObject == null || (ActorType)AttachedObject.Type != ActorType.Plum))
             {
                 if (IsFacingRight)
-                    cam.HorizontalOffset = Speed.X < 0 ? CameraOffset.DefaultReversed : CameraOffset.Default;
+                    cam.SetHorizontalOffset(Speed.X < 0 ? CameraOffset.DefaultReversed : CameraOffset.Default);
                 else
-                    cam.HorizontalOffset = Speed.X < 0 ? CameraOffset.Default : CameraOffset.DefaultReversed;
+                    cam.SetHorizontalOffset(Speed.X < 0 ? CameraOffset.Default : CameraOffset.DefaultReversed);
 
                 PlumCameraTimer--;
             }
@@ -2370,7 +2370,7 @@ public sealed partial class Rayman : MovableActor
             // Special camera code for the exclusive N-Gage falling levels
             if ((GameInfo.MapId == MapId.MarshAwakening2 || GameInfo.MapId == MapId.MissileRace2) && Speed.Y > 0)
             {
-                cam.HorizontalOffset = CameraOffset.Multiplayer;
+                cam.SetHorizontalOffset(CameraOffset.Multiplayer);
                 CameraTargetY = 70;
                 cam.ProcessMessage(this, Message.Cam_FollowPositionY, CameraTargetY);
             }

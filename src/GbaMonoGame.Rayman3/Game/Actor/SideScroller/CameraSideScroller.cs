@@ -234,6 +234,16 @@ public sealed partial class CameraSideScroller : CameraActor2D
         }
     }
 
+    public void SetHorizontalOffset(float offset)
+    {
+        HorizontalOffset = offset;
+    }
+
+    public void SetSpeed(Vector2 speed)
+    {
+        Speed = speed;
+    }
+
     public override void Step()
     {
         if (Debug_FreeMoveCamera)

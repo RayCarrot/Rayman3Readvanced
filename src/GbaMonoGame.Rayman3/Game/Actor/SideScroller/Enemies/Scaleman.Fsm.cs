@@ -63,7 +63,7 @@ public partial class Scaleman
                 {
                     Scene.Camera.LinkedObject = Scene.MainActor;
                     Scene.Camera.ProcessMessage(this, Message.Cam_MoveToLinkedObject, false);
-                    ((CameraSideScroller)Scene.Camera).Speed = ((CameraSideScroller)Scene.Camera).Speed with { X = -7 };
+                    ((CameraSideScroller)Scene.Camera).SetSpeed(((CameraSideScroller)Scene.Camera).Speed with { X = -7 });
                 }
                 break;
         }

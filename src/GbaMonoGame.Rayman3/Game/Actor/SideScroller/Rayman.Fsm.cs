@@ -75,7 +75,7 @@ public partial class Rayman
         if (Rom.Platform == Platform.GBA)
         {
             CameraSideScroller cam = (CameraSideScroller)Scene.Camera;
-            cam.HorizontalOffset = CameraOffset.Center;
+            cam.SetHorizontalOffset(CameraOffset.Center);
         }
 
         if (DisableAttackTimer != 0)
@@ -105,7 +105,7 @@ public partial class Rayman
 
             if (ResetCameraOffsetTimer > 60)
             {
-                cam.HorizontalOffset = CameraOffset.Default;
+                cam.SetHorizontalOffset(CameraOffset.Default);
                 ResetCameraOffset = false;
             }
         }
@@ -186,21 +186,21 @@ public partial class Rayman
                 CameraSideScroller cam = (CameraSideScroller)Scene.Camera;
                 if (GameInfo.MapId == MapId.TheCanopy_M2)
                 {
-                    cam.HorizontalOffset = CameraOffset.Center;
+                    cam.SetHorizontalOffset(CameraOffset.Center);
                 }
                 else
                 {
                     if (!RSMultiplayer.IsActive)
-                        cam.HorizontalOffset = CameraOffset.Default;
+                        cam.SetHorizontalOffset(CameraOffset.Default);
                     else if (IsLocalPlayer)
-                        cam.HorizontalOffset = CameraOffset.Multiplayer;
+                        cam.SetHorizontalOffset(CameraOffset.Multiplayer);
                 }
 
                 if (IsLocalPlayer)
                     cam.ProcessMessage(this, Message.Cam_ResetUnknownMode);
 
                 if (GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
-                    cam.HorizontalOffset = CameraOffset.Center;
+                    cam.SetHorizontalOffset(CameraOffset.Center);
                 break;
 
             case FsmAction.Step:
@@ -457,7 +457,7 @@ public partial class Rayman
                     CameraSideScroller cam = (CameraSideScroller)Scene.Camera;
 
                     if (cam.HorizontalOffset == CameraOffset.Center)
-                        cam.HorizontalOffset = CameraOffset.Default;
+                        cam.SetHorizontalOffset(CameraOffset.Default);
                 }
                 break;
         }
@@ -1323,7 +1323,7 @@ public partial class Rayman
 
                 if (IsSuperHelicoActive)
                 {
-                    cam.HorizontalOffset = CameraOffset.Center;
+                    cam.SetHorizontalOffset(CameraOffset.Center);
                     PreviousXSpeed = 0;
                 }
                 break;
@@ -1535,7 +1535,7 @@ public partial class Rayman
 
             case FsmAction.UnInit:
                 PreviousXSpeed = 0;
-                cam.HorizontalOffset = CameraOffset.Default;
+                cam.SetHorizontalOffset(CameraOffset.Default);
                 PlaySound(Rayman3SoundEvent.Stop__Helico01_Mix10);
                 PlaySound(Rayman3SoundEvent.Stop__Charge_Mix05);
                 PlaySound(Rayman3SoundEvent.Stop__Charge2_Mix04);
@@ -2011,9 +2011,9 @@ public partial class Rayman
                         CameraSideScroller cam = (CameraSideScroller)Scene.Camera;
 
                         if (IsFacingRight)
-                            cam.HorizontalOffset = Speed.X < 0 ? CameraOffset.DefaultReversed : CameraOffset.Default;
+                            cam.SetHorizontalOffset(Speed.X < 0 ? CameraOffset.DefaultReversed : CameraOffset.Default);
                         else
-                            cam.HorizontalOffset = Speed.X < 0 ? CameraOffset.Default : CameraOffset.DefaultReversed;
+                            cam.SetHorizontalOffset(Speed.X < 0 ? CameraOffset.Default : CameraOffset.DefaultReversed);
                     }
                 }
                 else
@@ -2083,7 +2083,7 @@ public partial class Rayman
                     if (Rom.Platform == Platform.NGage && AttachedObject?.Type == (int)ActorType.Plum && IsLocalPlayer)
                     {
                         CameraSideScroller cam = (CameraSideScroller)Scene.Camera;
-                        cam.HorizontalOffset = CameraOffset.NGagePlum;
+                        cam.SetHorizontalOffset(CameraOffset.NGagePlum);
                     }
                 }
 
@@ -2258,11 +2258,11 @@ public partial class Rayman
 
                     if (RSMultiplayer.IsActive)
                     {
-                        cam.HorizontalOffset = CameraOffset.Multiplayer;
+                        cam.SetHorizontalOffset(CameraOffset.Multiplayer);
                     }
                     else
                     {
-                        cam.HorizontalOffset = CameraOffset.Default;
+                        cam.SetHorizontalOffset(CameraOffset.Default);
                         ResetCameraOffset = true;
                         ResetCameraOffsetTimer = 0;
                     }
@@ -2601,7 +2601,7 @@ public partial class Rayman
                     }
                     else if (Timer > 50 && !RSMultiplayer.IsActive)
                     {
-                        cam.HorizontalOffset = CameraOffset.Default;
+                        cam.SetHorizontalOffset(CameraOffset.Default);
                         Timer = 0;
                     }
                 }
@@ -2629,7 +2629,7 @@ public partial class Rayman
                     }
                     else if (Timer > 50 && !RSMultiplayer.IsActive)
                     {
-                        cam.HorizontalOffset = CameraOffset.Default;
+                        cam.SetHorizontalOffset(CameraOffset.Default);
                         Timer = 0;
                     }
                 }
@@ -2637,7 +2637,7 @@ public partial class Rayman
                 {
                     // Center camera, only on GBA
                     if (Rom.Platform == Platform.GBA)
-                        cam.HorizontalOffset = CameraOffset.Center;
+                        cam.SetHorizontalOffset(CameraOffset.Center);
 
                     Timer = 0;
                 }
@@ -2778,7 +2778,7 @@ public partial class Rayman
 
             case FsmAction.UnInit:
                 if (!RSMultiplayer.IsActive)
-                    cam.HorizontalOffset = CameraOffset.Default;
+                    cam.SetHorizontalOffset(CameraOffset.Default);
 
                 if (!MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorAttack) && IsLocalPlayer)
                     cam.ProcessMessage(this, Message.Cam_ResetUnknownMode);
@@ -2997,7 +2997,7 @@ public partial class Rayman
                     }
                 }
 
-                cam.HorizontalOffset = AnimatedObject.CurrentFrame < 19 ? CameraOffset.Default : CameraOffset.DefaultReversed;
+                cam.SetHorizontalOffset(AnimatedObject.CurrentFrame < 19 ? CameraOffset.Default : CameraOffset.DefaultReversed);
 
                 CreateSwingProjectiles();
                 PlaySound(Rayman3SoundEvent.Play__LumMauve_Mix02);
@@ -3009,11 +3009,11 @@ public partial class Rayman
 
                 if (AnimatedObject.CurrentFrame == 19 && Timer == 0)
                 {
-                    cam.HorizontalOffset = CameraOffset.DefaultReversed;
+                    cam.SetHorizontalOffset(CameraOffset.DefaultReversed);
                 }
                 else if (AnimatedObject.CurrentFrame == 39 && Timer == 128)
                 {
-                    cam.HorizontalOffset = CameraOffset.Default;
+                    cam.SetHorizontalOffset(CameraOffset.Default);
                 }
 
                 if (TempFlag)
@@ -3133,7 +3133,7 @@ public partial class Rayman
 
                 TempFlag = false;
 
-                cam.HorizontalOffset = GameInfo.MapId == MapId.TheCanopy_M2 ? CameraOffset.Center : CameraOffset.Default;
+                cam.SetHorizontalOffset(GameInfo.MapId == MapId.TheCanopy_M2 ? CameraOffset.Center : CameraOffset.Default);
                 break;
         }
 
@@ -3782,9 +3782,9 @@ public partial class Rayman
                 if (Rom.Platform == Platform.NGage)
                 {
                     if (IsFacingRight)
-                        cam.HorizontalOffset = ((MovableActor)AttachedObject).Speed.X < 0 ? CameraOffset.DefaultReversed : CameraOffset.Default;
+                        cam.SetHorizontalOffset(((MovableActor)AttachedObject).Speed.X < 0 ? CameraOffset.DefaultReversed : CameraOffset.Default);
                     else
-                        cam.HorizontalOffset = ((MovableActor)AttachedObject).Speed.X < 0 ? CameraOffset.Default : CameraOffset.DefaultReversed;
+                        cam.SetHorizontalOffset(((MovableActor)AttachedObject).Speed.X < 0 ? CameraOffset.Default : CameraOffset.DefaultReversed);
                 }
 
                 // Jump
@@ -4687,7 +4687,7 @@ public partial class Rayman
                 ActionId = Action.EnterCurtain_Right;
 
                 CameraSideScroller cam = (CameraSideScroller)Scene.Camera;
-                cam.HorizontalOffset = CameraOffset.Center;
+                cam.SetHorizontalOffset(CameraOffset.Center);
                 break;
 
             case FsmAction.Step:
@@ -4806,7 +4806,7 @@ public partial class Rayman
                                 ? FlagData.SpectatePlayerId
                                 : userInfo.TagId;
                             Scene.Camera.LinkedObject = Scene.GetGameObject<MovableActor>(id);
-                            ((CameraSideScroller)Scene.Camera).HorizontalOffset = CameraOffset.Multiplayer;
+                            ((CameraSideScroller)Scene.Camera).SetHorizontalOffset(CameraOffset.Multiplayer);
                             Scene.Camera.ProcessMessage(this, Message.Cam_MoveToLinkedObject, true);
                         }
                     }
@@ -4840,7 +4840,7 @@ public partial class Rayman
 
                 if (IsLocalPlayer)
                 {
-                    ((CameraSideScroller)Scene.Camera).HorizontalOffset = CameraOffset.Multiplayer;
+                    ((CameraSideScroller)Scene.Camera).SetHorizontalOffset(CameraOffset.Multiplayer);
                     Scene.Camera.ProcessMessage(this, Message.Cam_MoveToLinkedObject, true);
                 }
                 break;
@@ -4910,7 +4910,7 @@ public partial class Rayman
 
                     // Move camera to the winner
                     Scene.Camera.LinkedObject = Scene.GetGameObject<Rayman>(winnerId);
-                    ((CameraSideScroller)Scene.Camera).HorizontalOffset = CameraOffset.Multiplayer;
+                    ((CameraSideScroller)Scene.Camera).SetHorizontalOffset(CameraOffset.Multiplayer);
                     Scene.Camera.ProcessMessage(this, Message.Cam_MoveToLinkedObject, true);
 
                     ActionId = IsFacingRight ? Action.Dying_Right : Action.Dying_Left;
@@ -5186,7 +5186,7 @@ public partial class Rayman
         {
             case FsmAction.Init:
                 CameraSideScroller cam = (CameraSideScroller)Scene.Camera;
-                cam.HorizontalOffset = GameInfo.MapId == MapId.TheCanopy_M2 ? CameraOffset.Center : CameraOffset.Default;
+                cam.SetHorizontalOffset(GameInfo.MapId == MapId.TheCanopy_M2 ? CameraOffset.Center : CameraOffset.Default);
                 cam.ProcessMessage(this, Message.Cam_ResetUnknownMode);
                 break;
 

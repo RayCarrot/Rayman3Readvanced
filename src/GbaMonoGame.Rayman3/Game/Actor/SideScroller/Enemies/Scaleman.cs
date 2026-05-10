@@ -109,7 +109,7 @@ public sealed partial class Scaleman : MovableActor
 
     public override void Step()
     {
-        ((CameraSideScroller)Scene.Camera).HorizontalOffset = CenterCamera ? CameraOffset.Center : CameraOffset.Default;
+        ((CameraSideScroller)Scene.Camera).SetHorizontalOffset(CenterCamera ? CameraOffset.Center : CameraOffset.Default);
 
         if (HitTimer <= 100)
             HitTimer++;
