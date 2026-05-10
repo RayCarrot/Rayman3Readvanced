@@ -22,6 +22,8 @@ public enum Message
 
     // Readvanced
     Readvanced_RespawnDeath = 300,
+    Readvanced_StopMoving = 301,
+    Readvanced_ResumeMoving = 302,
 
     // Rayman 3
     // 1000-1001 are unused

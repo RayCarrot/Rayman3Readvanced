@@ -82,6 +82,79 @@ public class EchoingCaves_M2 : FrameSideScroller
         ((TgxPlayfield2D)Scene.Playfield).TileLayers[1].Screen.Priority = 1;
         ((TgxPlayfield2D)Scene.Playfield).TileLayers[2].Screen.Priority = 0;
         ((TgxPlayfield2D)Scene.Playfield).TileLayers[3].Screen.Priority = 2;
+
+        // Fix the moving helicopter bomb cycles if all objects are active, since otherwise their cycles will be
+        // arbitrary and could result in the section being impossible to complete. We fix this by disabling them
+        // and adding captors to resurrect them at the exact same point they would normally spawn from the knots.
+        if (Scene.KeepAllObjectsActive)
+        {
+            Vector2 captorSize = new(16, Scene.Playfield.PhysicalLayer.PixelHeight);
+            if (Rom.Platform == Platform.GBA)
+            {
+                // Stop moving the bombs
+                Scene.GetGameObject(50).ProcessMessage(this, Message.Readvanced_StopMoving);
+                Scene.GetGameObject(51).ProcessMessage(this, Message.Readvanced_StopMoving);
+                Scene.GetGameObject(52).ProcessMessage(this, Message.Readvanced_StopMoving);
+                Scene.GetGameObject(47).ProcessMessage(this, Message.Readvanced_StopMoving);
+                Scene.GetGameObject(48).ProcessMessage(this, Message.Readvanced_StopMoving);
+                Scene.GetGameObject(49).ProcessMessage(this, Message.Readvanced_StopMoving);
+
+                // Add captors for each point where the original game would load a new knot
+                Scene.KnotManager.AddCaptor(Scene, new Box(new Vector2(7259, 0), captorSize),
+                [
+                    new CaptorEvent { MessageId = (ushort)Message.Readvanced_ResumeMoving, Param = 50, TriggerIterationIndex = 0 },
+                    new CaptorEvent { MessageId = (ushort)Message.Readvanced_ResumeMoving, Param = 51, TriggerIterationIndex = 0 },
+                    new CaptorEvent { MessageId = (ushort)Message.Readvanced_ResumeMoving, Param = 52, TriggerIterationIndex = 0 },
+                ]);
+                Scene.KnotManager.AddCaptor(Scene, new Box(new Vector2(7739, 0), captorSize),
+                [
+                    new CaptorEvent { MessageId = (ushort)Message.Readvanced_ResumeMoving, Param = 47, TriggerIterationIndex = 0 },
+                    new CaptorEvent { MessageId = (ushort)Message.Readvanced_ResumeMoving, Param = 48, TriggerIterationIndex = 0 },
+                ]);
+                // For this last one we move it back 1 cycle (Rayman's speed is 3 and the cycle takes 306 frames) since
+                // otherwise it'd be on screen before it gets triggered.
+                Scene.KnotManager.AddCaptor(Scene, new Box(new Vector2(7979 - (3 * 306), 0), captorSize),
+                [
+                    new CaptorEvent { MessageId = (ushort)Message.Readvanced_ResumeMoving, Param = 49, TriggerIterationIndex = 0 },
+                ]);
+            }
+            else if (Rom.Platform == Platform.NGage)
+            {
+                // Stop moving the bombs
+                Scene.GetGameObject(56).ProcessMessage(this, Message.Readvanced_StopMoving);
+                Scene.GetGameObject(57).ProcessMessage(this, Message.Readvanced_StopMoving);
+                Scene.GetGameObject(58).ProcessMessage(this, Message.Readvanced_StopMoving);
+                Scene.GetGameObject(54).ProcessMessage(this, Message.Readvanced_StopMoving);
+                Scene.GetGameObject(53).ProcessMessage(this, Message.Readvanced_StopMoving);
+                Scene.GetGameObject(55).ProcessMessage(this, Message.Readvanced_StopMoving);
+
+                // NOTE: Sadly multiple bombs here are visible on screen before getting triggered
+
+                // Add captors for each point where the original game would load a new knot
+                Scene.KnotManager.AddCaptor(Scene, new Box(new Vector2(7260, 0), captorSize),
+                [
+                    new CaptorEvent { MessageId = (ushort)Message.Readvanced_ResumeMoving, Param = 56, TriggerIterationIndex = 0 },
+                ]);
+                Scene.KnotManager.AddCaptor(Scene, new Box(new Vector2(7437, 0), captorSize),
+                [
+                    new CaptorEvent { MessageId = (ushort)Message.Readvanced_ResumeMoving, Param = 57, TriggerIterationIndex = 0 },
+                    new CaptorEvent { MessageId = (ushort)Message.Readvanced_ResumeMoving, Param = 58, TriggerIterationIndex = 0 },
+                ]);
+                Scene.KnotManager.AddCaptor(Scene, new Box(new Vector2(7788, 0), captorSize),
+                [
+                    new CaptorEvent { MessageId = (ushort)Message.Readvanced_ResumeMoving, Param = 54, TriggerIterationIndex = 0 },
+                ]);
+                Scene.KnotManager.AddCaptor(Scene, new Box(new Vector2(7965, 0), captorSize),
+                [
+                    new CaptorEvent { MessageId = (ushort)Message.Readvanced_ResumeMoving, Param = 53, TriggerIterationIndex = 0 },
+                    new CaptorEvent { MessageId = (ushort)Message.Readvanced_ResumeMoving, Param = 55, TriggerIterationIndex = 0 },
+                ]);
+            }
+            else
+            {
+                throw new UnsupportedPlatformException();
+            }
+        }
     }
 
     public override void UnInit()

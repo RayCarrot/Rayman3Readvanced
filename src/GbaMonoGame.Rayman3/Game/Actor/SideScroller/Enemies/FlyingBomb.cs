@@ -117,6 +117,27 @@ public sealed partial class FlyingBomb : MovableActor
         return false;
     }
 
+    protected override bool ProcessMessageImpl(object sender, Message message, object param)
+    {
+        if (base.ProcessMessageImpl(sender, message, param))
+            return false;
+
+        // Custom message handlers for fixing cycles
+        switch (message)
+        {
+            case Message.Readvanced_StopMoving:
+                State.MoveTo(_Fsm_Stationary);
+                return false;
+
+            case Message.Readvanced_ResumeMoving:
+                State.MoveTo(_Fsm_Move);
+                return false;
+
+            default:
+                return false;
+        }
+    }
+
     public override void Step()
     {
         base.Step();

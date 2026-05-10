@@ -222,6 +222,48 @@ public class KnotManager
         return actor;
     }
 
+    public Captor AddCaptor(Scene2D scene, Box box, CaptorEvent[] events)
+    {
+        return AddCaptor(scene, new CaptorResource
+        {
+            Pos = new BinarySerializer.Ubisoft.GbaEngine.Vector2((short)box.Position.X, (short)box.Position.Y),
+            IsEnabled = true,
+            IsAwake = true,
+            IsAnimatedObjectDynamic = false,
+            IsProjectile = false,
+            ResurrectsImmediately = false,
+            ResurrectsLater = false,
+            Flag_6 = true,
+            Flag_7 = true,
+            EventsCount = (byte)events.Length,
+            TriggerOnMainActorDetection = true,
+            IsDetected = false,
+            CaptorFlag_2 = false,
+            Idx_Events = 0,
+            Byte_07 = 0,
+            BoxTop = (short)box.Top,
+            BoxLeft = (short)box.Left,
+            BoxBottom = (short)box.Bottom,
+            BoxRight = (short)box.Right,
+            Events = new CaptorEvents { Events = events }
+        });
+    }
+
+    public Captor AddCaptor(Scene2D scene, CaptorResource captorResource)
+    {
+        // Get the next instance id
+        int instanceId = GameObjectsCount + PendingAddedGameObjects.Count;
+        
+        // Create the captor
+        Captor captor = new(instanceId, scene, captorResource);
+
+        // Add to pending list of actors
+        PendingAddedGameObjects.Add(captor);
+        PendingAddedGameObjectTypes.Add(GameObjectType.Captor);
+
+        return captor;
+    }
+
     public BaseActor CreateProjectile(Scene2D scene, int actorType, bool allowAddWhenNeeded)
     {
         foreach (BaseActor actor in scene.Iterate<BaseActor>(IteratorFlags.Actor | IteratorFlags.Disabled))
