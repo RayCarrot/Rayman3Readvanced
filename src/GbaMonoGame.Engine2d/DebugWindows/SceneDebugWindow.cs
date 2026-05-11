@@ -31,6 +31,17 @@ public class SceneDebugWindow : DebugWindow
             throw new Exception("Unsupported object type");
     }
 
+    private uint GetObjectColor(GameObject obj)
+    {
+        if (!obj.IsEnabled)
+            return 0xff0000ff; // Red
+
+        if (obj.IsInCurrentKnot)
+            return 0xff00ff40; // Green
+
+        return 0xffffffff; // White
+    }
+
     private void UpdateMouseDetection(Scene2D scene)
     {
         if (!InputManager.IsMouseOnScreen(scene.RenderContext))
@@ -57,7 +68,6 @@ public class SceneDebugWindow : DebugWindow
         }
     }
 
-    // TODO: Change color based on if in current knot, active etc.
     public override void Draw(DebugLayout debugLayout, DebugLayoutTextureManager textureManager)
     {
         if (Frame.Current is not IHasScene { Scene: { } scene2D }) 
@@ -82,9 +92,13 @@ public class SceneDebugWindow : DebugWindow
         {
             foreach (BaseActor actor in scene2D.Iterate<BaseActor>(IteratorFlags.AlwaysActor, IteratorKnot.All))
             {
+                ImGui.PushStyleColor(ImGuiCol.Text, GetObjectColor(actor));
+
                 bool isSelected = SelectedGameObject == actor;
                 if (ImGui.Selectable($"{actor.InstanceId}. {ActorFactory.GetActorTypeName(actor.Type)}", isSelected))
                     SelectedGameObject = actor;
+                
+                ImGui.PopStyleColor();
             }
 
             ImGui.EndListBox();
@@ -100,9 +114,13 @@ public class SceneDebugWindow : DebugWindow
         {
             foreach (BaseActor actor in scene2D.Iterate<BaseActor>(IteratorFlags.Actor, IteratorKnot.All))
             {
+                ImGui.PushStyleColor(ImGuiCol.Text, GetObjectColor(actor));
+
                 bool isSelected = SelectedGameObject == actor;
                 if (ImGui.Selectable($"{actor.InstanceId}. {ActorFactory.GetActorTypeName(actor.Type)}", isSelected))
                     SelectedGameObject = actor;
+
+                ImGui.PopStyleColor();
             }
 
             ImGui.EndListBox();
@@ -118,9 +136,13 @@ public class SceneDebugWindow : DebugWindow
         {
             foreach (Captor captor in scene2D.Iterate<Captor>(IteratorFlags.Captor, IteratorKnot.All))
             {
+                ImGui.PushStyleColor(ImGuiCol.Text, GetObjectColor(captor));
+                
                 bool isSelected = SelectedGameObject == captor;
                 if (ImGui.Selectable($"{captor.InstanceId}. Captor", isSelected))
                     SelectedGameObject = captor;
+
+                ImGui.PopStyleColor();
             }
 
             ImGui.EndListBox();
