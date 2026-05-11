@@ -10,30 +10,31 @@ namespace GbaMonoGame.Engine2d;
 public readonly struct ObjectIterator<T>
     where T : GameObject
 {
-    public ObjectIterator(KnotManager knotManager, IteratorFlags flags, IteratorKnot knot)
+    public ObjectIterator(Scene2D scene, IteratorFlags flags, IteratorKnot knot)
     {
-        _knotManager = knotManager;
+        _scene = scene;
         _flags = flags;
         _knot = knot;
     }
 
-    private readonly KnotManager _knotManager;
+    private readonly Scene2D _scene;
     private readonly IteratorFlags _flags;
     private readonly IteratorKnot _knot;
 
-    public Enumerator GetEnumerator() => new(_knotManager, _flags, _knot);
+    public Enumerator GetEnumerator() => new(_scene, _flags, _knot);
 
     public struct Enumerator
     {
-        public Enumerator(KnotManager knotManager, IteratorFlags flags, IteratorKnot knot)
+        public Enumerator(Scene2D scene, IteratorFlags flags, IteratorKnot knot)
         {
-            _knotManager = knotManager;
+            _knotManager = scene.KnotManager;
             _flags = flags;
             _knot = knot switch
             {
+                IteratorKnot.Default => scene.KeepAllObjectsActive ? null : scene.KnotManager.CurrentKnot,
                 IteratorKnot.All => null,
-                IteratorKnot.Current => knotManager.CurrentKnot,
-                IteratorKnot.Previous => knotManager.PreviousKnot,
+                IteratorKnot.Current => scene.KnotManager.CurrentKnot,
+                IteratorKnot.Previous => scene.KnotManager.PreviousKnot,
                 _ => throw new ArgumentOutOfRangeException(nameof(knot), knot, null)
             };
         }

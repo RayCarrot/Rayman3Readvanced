@@ -14,6 +14,9 @@ public abstract class CameraActor : Object
     public Scene2D Scene { get; }
     public MovableActor LinkedObject { get; set; }
 
+    // Custom property so cameras can override the position to use for knots
+    public virtual Vector2 KnotPosition => Scene.Playfield.Camera.Position;
+
     public virtual void Step()
     {
         State.Step();

@@ -108,32 +108,31 @@ public class KnotManager
         return GameObjectTypes[instanceId];
     }
 
-    public bool UpdateCurrentKnot(TgxPlayfield playfield, Vector2 camPos, bool keepObjectsActive)
+    public bool UpdateCurrentKnot(TgxPlayfield playfield, Vector2 camPos)
     {
-        Knot knot;
+        // We always have to use the original resolution for the knots since they're pre-calculated with that
+        Vector2 res = Rom.OriginalResolution;
 
-        if (keepObjectsActive)
-        {
-            knot = null;
-        }
-        else
-        {
-            if (playfield is TgxPlayfieldMode7)
-                camPos -= Rom.OriginalResolution / 2;
+        // Mode7 is centered
+        if (playfield is TgxPlayfieldMode7)
+            camPos -= res / 2;
 
-            TgxGameLayer physicalLayer = playfield.PhysicalLayer;
-            Vector2 res = playfield.RenderContext.Resolution;
+        TgxGameLayer physicalLayer = playfield.PhysicalLayer;
 
-            if (physicalLayer.PixelWidth - res.X <= camPos.X)
-                camPos.X = physicalLayer.PixelWidth - res.X - 1;
+        if (physicalLayer.PixelWidth - res.X <= camPos.X)
+            camPos.X = physicalLayer.PixelWidth - res.X - 1;
 
-            if (physicalLayer.PixelHeight - res.Y <= camPos.Y)
-                camPos.Y = physicalLayer.PixelHeight - res.Y - 1;
+        if (physicalLayer.PixelHeight - res.Y <= camPos.Y)
+            camPos.Y = physicalLayer.PixelHeight - res.Y - 1;
 
-            int knotX = (int)(camPos.X / Rom.OriginalResolution.X);
-            int knotY = (int)(camPos.Y / Rom.OriginalResolution.Y);
-            knot = Knots[knotX + knotY * KnotsWidth];
-        }
+        int knotX = (int)(camPos.X / res.X);
+        int knotY = (int)(camPos.Y / res.Y);
+
+        // The original game doesn't do this, but since we support higher resolutions we make sure we don't go out of bounds
+        knotX = Math.Clamp(knotX, 0, KnotsWidth);
+        knotY = Math.Clamp(knotY, 0, Knots.Length / KnotsWidth);
+
+        Knot knot = Knots[knotX + knotY * KnotsWidth];
 
         if (knot == CurrentKnot)
             return false;
@@ -148,7 +147,7 @@ public class KnotManager
 
     public bool IsInCurrentKnot(Scene2D scene, int instanceId)
     {
-        foreach (GameObject gameObject in scene.Iterate<GameObject>(IteratorFlags.Actor | IteratorFlags.Captor))
+        foreach (GameObject gameObject in scene.Iterate<GameObject>(IteratorFlags.Actor | IteratorFlags.Captor, IteratorKnot.Current))
         {
             if (gameObject.InstanceId == instanceId)
                 return true;

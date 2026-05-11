@@ -338,8 +338,8 @@ public class Scene2D
 
     public void ResurrectActors()
     {
-        Vector2 camPos = Playfield.Camera.Position;
-        bool newKnot = KnotManager.UpdateCurrentKnot(Playfield, camPos, KeepAllObjectsActive);
+        Vector2 camPos = Camera.KnotPosition;
+        bool newKnot = KnotManager.UpdateCurrentKnot(Playfield, camPos);
 
         // Resurrect always actors if immediate
         foreach (BaseActor obj in Iterate<BaseActor>(IteratorFlags.AlwaysActor | IteratorFlags.Disabled))
@@ -356,27 +356,11 @@ public class Scene2D
         }
 
         // Resurrect actors and captors if later
-        if (!KeepAllObjectsActive)
+        if (newKnot && KnotManager.PreviousKnot != null)
         {
-            if (newKnot && KnotManager.PreviousKnot != null)
+            foreach (GameObject obj in Iterate<GameObject>(IteratorFlags.Actor | IteratorFlags.Captor | IteratorFlags.Disabled, IteratorKnot.Previous))
             {
-                foreach (GameObject obj in Iterate<GameObject>(IteratorFlags.Actor | IteratorFlags.Captor | IteratorFlags.Disabled, IteratorKnot.Previous))
-                {
-                    if (obj.ResurrectsLater && !KnotManager.IsInCurrentKnot(this, obj.InstanceId))
-                        obj.ProcessMessage(null, Message.Resurrect);
-                }
-            }
-        }
-        // If we keep all objects active then we can't use the knots to determine if the
-        // object should be resurrected. Instead we check if the object is off-screen.
-        else if (Playfield is TgxPlayfield2D)
-        {
-            const float margin = 64;
-            Box viewBox = new(Playfield.Camera.Position - new Vector2(margin), Resolution + new Vector2(margin * 2));
-
-            foreach (GameObject obj in Iterate<GameObject>(IteratorFlags.Actor | IteratorFlags.Captor | IteratorFlags.Disabled))
-            {
-                if (obj.ResurrectsLater && !viewBox.Contains(obj.Position))
+                if (obj.ResurrectsLater && !KnotManager.IsInCurrentKnot(this, obj.InstanceId))
                     obj.ProcessMessage(null, Message.Resurrect);
             }
         }
@@ -574,10 +558,10 @@ public class Scene2D
         return null;
     }
 
-    public ObjectIterator<T> Iterate<T>(IteratorFlags flags, IteratorKnot knot = IteratorKnot.Current)
+    public ObjectIterator<T> Iterate<T>(IteratorFlags flags, IteratorKnot knot = IteratorKnot.Default)
         where T : GameObject
     {
-        return new ObjectIterator<T>(KnotManager, flags, knot);
+        return new ObjectIterator<T>(this, flags, knot);
     }
 
     public GameObject GetGameObject(int instanceId) => KnotManager.GetGameObject(instanceId);

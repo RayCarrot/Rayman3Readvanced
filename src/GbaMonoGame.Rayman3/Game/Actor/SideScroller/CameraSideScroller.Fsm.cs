@@ -17,7 +17,7 @@ public partial class CameraSideScroller
                     IsFacingRight = LinkedObject.IsFacingRight;
 
                     UpdateTargetX();
-                    Speed = Speed with { X = TargetX < LinkedObject.ScreenPosition.X ? 1 : -1 };
+                    Speed = Speed with { X = TargetX < LinkedObjectScreenPosition.X ? 1 : -1 };
                 }
 
                 Timer = 0;
@@ -32,7 +32,7 @@ public partial class CameraSideScroller
                 float linkedObjDeltaX = LinkedObject.Position.X - PreviousLinkedObjectPosition.X;
 
                 // If we're within 4 pixels of the target...
-                if (Math.Abs(LinkedObject.ScreenPosition.X - TargetX) <= 4)
+                if (Math.Abs(LinkedObjectScreenPosition.X - TargetX) <= 4)
                 {
                     // Follow the linked object's movement
                     Speed = Speed with { X = linkedObjDeltaX };
@@ -43,13 +43,13 @@ public partial class CameraSideScroller
                     Timer++;
 
                     // Reset speed x if we're switching direction to move
-                    if ((LinkedObject.ScreenPosition.X < TargetX && Speed.X > 0) ||
-                        (LinkedObject.ScreenPosition.X > TargetX && Speed.X < 0))
+                    if ((LinkedObjectScreenPosition.X < TargetX && Speed.X > 0) ||
+                        (LinkedObjectScreenPosition.X > TargetX && Speed.X < 0))
                     {
                         Speed = Speed with { X = 0 };
                     }
 
-                    float dir = LinkedObject.ScreenPosition.X > TargetX ? 1 : -1;
+                    float dir = LinkedObjectScreenPosition.X > TargetX ? 1 : -1;
 
                     // If the linked object is moving faster than 2...
                     if (Math.Abs(linkedObjDeltaX) > 2)
@@ -71,11 +71,11 @@ public partial class CameraSideScroller
                     {
                         // If the linked object is within 40 pixels of the horizontal offset...
                         if ((LinkedObject.IsFacingRight &&
-                             ScaledHorizontalOffset + 40 > LinkedObject.ScreenPosition.X &&
-                             ScaledHorizontalOffset <= LinkedObject.ScreenPosition.X) ||
+                             ScaledHorizontalOffset + 40 > LinkedObjectScreenPosition.X &&
+                             ScaledHorizontalOffset <= LinkedObjectScreenPosition.X) ||
                           (LinkedObject.IsFacingLeft &&
-                           Scene.Resolution.X - 40 - ScaledHorizontalOffset < LinkedObject.ScreenPosition.X &&
-                           Scene.Resolution.X - ScaledHorizontalOffset > LinkedObject.ScreenPosition.X))
+                           Resolution.X - 40 - ScaledHorizontalOffset < LinkedObjectScreenPosition.X &&
+                           Resolution.X - ScaledHorizontalOffset > LinkedObjectScreenPosition.X))
                         {
                             // If timer is greater than 2, slow down the speed if it's absolute greater than 1
                             if (Timer > 2 && Math.Abs(Speed.X) > 1)
@@ -101,10 +101,10 @@ public partial class CameraSideScroller
                 // Do not follow Y (unless near the edge). Used when jumping for example.
                 if (FollowYMode == FollowMode.DoNotFollow)
                 {
-                    float yOff = Scene.Resolution.Y - Rom.OriginalResolution.Y;
+                    float yOff = Resolution.Y - Rom.OriginalResolution.Y;
 
-                    if ((LinkedObject.ScreenPosition.Y < 70 + yOff / 2 && linkedObjDeltaY < 0) ||
-                        (LinkedObject.ScreenPosition.Y > 130 + yOff && linkedObjDeltaY > 0))
+                    if ((LinkedObjectScreenPosition.Y < 70 + yOff / 2 && linkedObjDeltaY < 0) ||
+                        (LinkedObjectScreenPosition.Y > 130 + yOff && linkedObjDeltaY > 0))
                     {
                         Speed = Speed with { Y = linkedObjDeltaY };
                     }
@@ -113,7 +113,7 @@ public partial class CameraSideScroller
                 // Follow Y, the default
                 else
                 {
-                    if (Math.Abs(LinkedObject.ScreenPosition.Y - ScaledTargetY) <= 4)
+                    if (Math.Abs(LinkedObjectScreenPosition.Y - ScaledTargetY) <= 4)
                     {
                         Speed = Speed with { Y = linkedObjDeltaY };
 
@@ -122,13 +122,13 @@ public partial class CameraSideScroller
                     }
                     else
                     {
-                        if (ScaledTargetY < LinkedObject.ScreenPosition.Y)
+                        if (ScaledTargetY < LinkedObjectScreenPosition.Y)
                         {
                             if (linkedObjDeltaY >= 2)
                             {
                                 Speed = Speed with { Y = 5 };
                             }
-                            else if (LinkedObject.ScreenPosition.Y - ScaledTargetY >= 21)
+                            else if (LinkedObjectScreenPosition.Y - ScaledTargetY >= 21)
                             {
                                 Speed = Speed with { Y = 3 };
                             }
@@ -147,7 +147,7 @@ public partial class CameraSideScroller
                             {
                                 Speed = Speed with { Y = -5 };
                             }
-                            else if (LinkedObject.ScreenPosition.Y - ScaledTargetY <= -21)
+                            else if (LinkedObjectScreenPosition.Y - ScaledTargetY <= -21)
                             {
                                 Speed = Speed with { Y = -3 };
                             }
@@ -169,11 +169,8 @@ public partial class CameraSideScroller
                 // Clamp speed
                 camDelta = new Vector2(Math.Clamp(camDelta.X, -7, 7), Math.Clamp(camDelta.Y, -7, 7));
 
-                TgxCamera2D tgxCam = ((TgxPlayfield2D)Scene.Playfield).Camera;
-                TgxCluster mainCluster = tgxCam.GetMainCluster();
-
                 // Move camera
-                tgxCam.Position += camDelta;
+                Position += camDelta;
 
                 if (FollowYMode == FollowMode.DoNotFollow)
                     Speed = Speed with { Y = 0 };
@@ -181,8 +178,8 @@ public partial class CameraSideScroller
                 PreviousLinkedObjectPosition = LinkedObject.Position;
 
                 // Reset if changed direction
-                if (!mainCluster.IsOnLimit(Edge.Left) &&
-                    !mainCluster.IsOnLimit(Edge.Right) &&
+                if (!IsOnLimit(Edge.Left) &&
+                    !IsOnLimit(Edge.Right) &&
                     LinkedObject.IsFacingRight != IsFacingRight)
                 {
                     State.MoveTo(_Fsm_Follow);
@@ -210,8 +207,7 @@ public partial class CameraSideScroller
         {
             case FsmAction.Init:
                 {
-                    TgxCamera2D tgxCam = ((TgxPlayfield2D)Scene.Playfield).Camera;
-                    Vector2 pos = tgxCam.Position;
+                    Vector2 pos = Position;
                     float dist = Vector2.Distance(MoveTargetPos, pos);
 
                     if (dist != 0)
@@ -225,19 +221,17 @@ public partial class CameraSideScroller
 
             case FsmAction.Step:
                 {
-                    TgxCamera2D tgxCam = ((TgxPlayfield2D)Scene.Playfield).Camera;
-                    TgxCluster mainCluster = tgxCam.GetMainCluster();
-                    Vector2 pos = tgxCam.Position;
+                    Vector2 pos = Position;
 
                     // Reset X
                     if (Speed.X > 0)
                     {
-                        if (pos.X + Speed.X > MoveTargetPos.X || mainCluster.IsOnLimit(Edge.Right))
+                        if (pos.X + Speed.X > MoveTargetPos.X || IsOnLimit(Edge.Right))
                             Speed = new Vector2(0, RSMultiplayer.IsActive ? Speed.Y : 0);
                     }
                     else if (Speed.X < 0)
                     {
-                        if (pos.X + Speed.X < MoveTargetPos.X || mainCluster.IsOnLimit(Edge.Left))
+                        if (pos.X + Speed.X < MoveTargetPos.X || IsOnLimit(Edge.Left))
                             Speed = new Vector2(0, RSMultiplayer.IsActive ? Speed.Y : 0);
                     }
 
@@ -246,12 +240,12 @@ public partial class CameraSideScroller
                         // Reset Y
                         if (Speed.Y > 0)
                         {
-                            if (pos.Y + Speed.Y > MoveTargetPos.Y || mainCluster.IsOnLimit(Edge.Bottom))
+                            if (pos.Y + Speed.Y > MoveTargetPos.Y || IsOnLimit(Edge.Bottom))
                                 Speed = new Vector2(Speed.X, 0);
                         }
                         else if (Speed.Y < 0)
                         {
-                            if (pos.Y + Speed.Y < MoveTargetPos.Y || mainCluster.IsOnLimit(Edge.Top))
+                            if (pos.Y + Speed.Y < MoveTargetPos.Y || IsOnLimit(Edge.Top))
                                 Speed = new Vector2(Speed.X, 0);
                         }
                     }
@@ -263,13 +257,14 @@ public partial class CameraSideScroller
                     camDelta = new Vector2(Math.Clamp(camDelta.X, -8, 8), Math.Clamp(camDelta.Y, -8, 8));
 
                     // Move camera
-                    tgxCam.Position += camDelta;
+                    Position += camDelta;
 
                     // Reached target
                     if ((Timer == 6 && Speed.X == 0) ||
                         (RSMultiplayer.IsActive && Speed == Vector2.Zero))
                     {
-                        Scene.MainActor.ProcessMessage(this, Message.Rayman_Resume);
+                        if (!IsKnotsSource)
+                            Scene.MainActor.ProcessMessage(this, Message.Rayman_Resume);
                         State.MoveTo(_Fsm_Follow);
                         return false;
                     }
@@ -302,7 +297,7 @@ public partial class CameraSideScroller
                 if (Unknown is UnknownMode.Default or UnknownMode.UnusedWithInputs)
                 {
                     if (JoyPad.IsButtonPressed(Rayman3Input.ActorLeft))
-                        targetX = Scene.Resolution.X - (RSMultiplayer.IsActive ? CameraOffset.Multiplayer : CameraOffset.Default);
+                        targetX = Resolution.X - (RSMultiplayer.IsActive ? CameraOffset.Multiplayer : CameraOffset.Default);
                     else if (JoyPad.IsButtonPressed(Rayman3Input.ActorRight))
                         targetX = RSMultiplayer.IsActive ? CameraOffset.Multiplayer : CameraOffset.Default;
                     else
@@ -320,37 +315,36 @@ public partial class CameraSideScroller
                 else
                     TargetY = 80;
 
-                TgxCamera2D tgxCam = ((TgxPlayfield2D)Scene.Playfield).Camera;
                 Vector2 camDelta = Vector2.Zero;
 
                 float diffX = LinkedObject.Position.X - TargetX;
-                if (diffX > tgxCam.Position.X)
+                if (diffX > Position.X)
                 {
-                    if (diffX - tgxCam.Position.X < 3)
+                    if (diffX - Position.X < 3)
                         camDelta.X = LinkedObject.Position.X - PreviousLinkedObjectPosition.X;
                     else
                         camDelta.X = 3;
                 }
-                else if (diffX < tgxCam.Position.X)
+                else if (diffX < Position.X)
                 {
-                    if (tgxCam.Position.X - diffX < 3)
+                    if (Position.X - diffX < 3)
                         camDelta.X = LinkedObject.Position.X - PreviousLinkedObjectPosition.X;
                     else
                         camDelta.X = -3;
                 }
 
                 float diffY = LinkedObject.Position.Y - TargetY;
-                if (diffY - 48 > tgxCam.Position.Y)
+                if (diffY - 48 > Position.Y)
                 {
-                    if (diffY - (tgxCam.Position.Y + 48) < 3)
+                    if (diffY - (Position.Y + 48) < 3)
                         camDelta.Y = LinkedObject.Position.Y - PreviousLinkedObjectPosition.Y;
                     else
                         camDelta.Y = 3;
                 }
-                else if (diffY - 48 < tgxCam.Position.Y)
+                else if (diffY - 48 < Position.Y)
                 {
 
-                    if (tgxCam.Position.Y + 48 - diffY < 3)
+                    if (Position.Y + 48 - diffY < 3)
                         camDelta.Y = LinkedObject.Position.Y - PreviousLinkedObjectPosition.Y;
                     else
                         camDelta.Y = -3;
@@ -362,7 +356,7 @@ public partial class CameraSideScroller
                 camDelta = new Vector2(Math.Clamp(camDelta.X, -7, 7), Math.Clamp(camDelta.Y, -7, 7));
 
                 // Move camera
-                tgxCam.Position += camDelta;
+                Position += camDelta;
 
                 PreviousLinkedObjectPosition = LinkedObject.Position;
 

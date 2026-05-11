@@ -1,6 +1,7 @@
 ﻿using System;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.FsmSourceGenerator;
+using GbaMonoGame.TgxEngine;
 using ImGuiNET;
 using Microsoft.Xna.Framework.Input;
 
@@ -9,9 +10,14 @@ namespace GbaMonoGame.Rayman3;
 [GenerateFsmFields]
 public sealed partial class CameraSideScroller : CameraActor2D
 {
-    public CameraSideScroller(Scene2D scene) : base(scene)
+    public CameraSideScroller(Scene2D scene) : this(scene, false) { }
+    private CameraSideScroller(Scene2D scene, bool isKnotsSource) : base(scene)
     {
         CreateGeneratedStates();
+        
+        IsKnotsSource = isKnotsSource;
+        if (!IsKnotsSource)
+            KnotsSource = new CameraSideScroller(scene, true);
 
         State.SetTo(_Fsm_Follow);
 
@@ -45,6 +51,34 @@ public sealed partial class CameraSideScroller : CameraActor2D
     private float ScaledHorizontalOffset => ScaleXValue(HorizontalOffset);
     private float ScaledTargetY => ScaleYValue(TargetY);
 
+    // Custom second camera which always uses the original resolution to get accurate knots positions
+    private bool IsKnotsSource { get; }
+    private CameraSideScroller KnotsSource { get; }
+    private Vector2 KnotsSourcePosition { get; set; }
+    private Vector2 Resolution => IsKnotsSource ? Rom.OriginalResolution : Scene.Resolution;
+    private Vector2 Position
+    {
+        get => IsKnotsSource ? KnotsSourcePosition : Scene.Playfield.Camera.Position;
+        set
+        {
+            if (IsKnotsSource)
+            {
+                TgxCamera2D tgxCam = ((TgxPlayfield2D)Scene.Playfield).Camera;
+                TgxCluster mainCluster = tgxCam.GetMainCluster();
+                KnotsSourcePosition = Vector2.Clamp(value, mainCluster.MinPosition, mainCluster.GetMaxPosition(Rom.OriginalResolution));
+            }
+            else
+            {
+                Scene.Playfield.Camera.Position = value;
+            }
+        }
+    }
+    private Vector2 LinkedObjectScreenPosition => IsKnotsSource 
+        ? LinkedObject.ScreenPosition + Scene.Playfield.Camera.Position - Position
+        : LinkedObject.ScreenPosition;
+
+    public override Vector2 KnotPosition => KnotsSource.Position;
+
     public float HorizontalOffset { get; set; }
     public float TargetX { get; set; }
     public float TargetY { get; set; }
@@ -66,14 +100,41 @@ public sealed partial class CameraSideScroller : CameraActor2D
 
     // Handle scaling by centering the target offsets within the new scaled view area
     private float ScaleXValue(float value) => value + 
-                                              (Scene.Resolution.X - Rom.OriginalResolution.X) / 2;
+                                              (Resolution.X - Rom.OriginalResolution.X) / 2;
     private float ScaleYValue(float value) => value +
-                                              (Scene.Resolution.Y - Rom.OriginalResolution.Y) / 2;
+                                              (Resolution.Y - Rom.OriginalResolution.Y) / 2;
+
+    private bool IsOnLimit(Edge limit)
+    {
+        TgxCamera2D tgxCam = ((TgxPlayfield2D)Scene.Playfield).Camera;
+        TgxCluster mainCluster = tgxCam.GetMainCluster();
+
+        // We have to manually check the limit for the knots source camera since the resolution is different
+        if (IsKnotsSource)
+        {
+            Vector2 minPos = mainCluster.MinPosition;
+            Vector2 maxPos = mainCluster.GetMaxPosition(Rom.OriginalResolution);
+
+            return limit switch
+            {
+                // In the game these are == checks, but since we're dealing with floats here they're <= and >=
+                Edge.Top => Position.Y <= minPos.Y,
+                Edge.Right => Position.X >= maxPos.X,
+                Edge.Bottom => Position.Y >= maxPos.Y,
+                Edge.Left => Position.X <= minPos.X,
+                _ => throw new ArgumentOutOfRangeException(nameof(limit), limit, null)
+            };
+        }
+        else
+        {
+            return mainCluster.IsOnLimit(limit);
+        }
+    }
 
     private void UpdateTargetX()
     {
         if (LinkedObject.IsFacingLeft)
-            TargetX = Scene.Resolution.X - ScaledHorizontalOffset;
+            TargetX = Resolution.X - ScaledHorizontalOffset;
         else
             TargetX = ScaledHorizontalOffset;
     }
@@ -125,6 +186,9 @@ public sealed partial class CameraSideScroller : CameraActor2D
 
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {
+        KnotsSource?.LinkedObject = LinkedObject;
+        KnotsSource?.ProcessMessage(sender, message, param);
+
         if (base.ProcessMessageImpl(sender, message, param))
             return false;
 
@@ -137,7 +201,7 @@ public sealed partial class CameraSideScroller : CameraActor2D
                     Captor captor = (Captor)param;
                     Box captorBox = captor.GetCaptorBox();
 
-                    MoveTargetPos = captorBox.Center - new Vector2(Scene.Resolution.X / 2, (int)(Scene.Resolution.X / 3));
+                    MoveTargetPos = captorBox.Center - new Vector2(Resolution.X / 2, (int)(Resolution.X / 3));
                     Timer = 7;
 
                     State.MoveTo(_Fsm_MoveToTarget);
@@ -183,7 +247,7 @@ public sealed partial class CameraSideScroller : CameraActor2D
                 MoveTargetPos = (Vector2)param;
 
                 // Scale the target based on the new resolution
-                MoveTargetPos -= (Scene.Resolution - Rom.OriginalResolution) / 2;
+                MoveTargetPos -= (Resolution - Rom.OriginalResolution) / 2;
 
                 if (MoveTargetPos.X < 0)
                     MoveTargetPos = MoveTargetPos with { X = 0 };
@@ -197,7 +261,7 @@ public sealed partial class CameraSideScroller : CameraActor2D
 
             case Message.Cam_MoveToLinkedObject:
                 float xOffset = LinkedObject.IsFacingLeft
-                    ? Scene.Resolution.X - ScaledHorizontalOffset
+                    ? Resolution.X - ScaledHorizontalOffset
                     : ScaledHorizontalOffset;
                 float yOffset = ScaledTargetY;
 
@@ -215,12 +279,12 @@ public sealed partial class CameraSideScroller : CameraActor2D
                 return true;
 
             case Message.Cam_SetPosition:
-                Scene.Playfield.Camera.Position = (Vector2)param;
+                Position = (Vector2)param;
                 return true;
 
             case Message.Cam_Lock:
                 if (param is Vector2 pos)
-                    Scene.Playfield.Camera.Position = pos;
+                    Position = pos;
 
                 State.MoveTo(null);
                 return true;
@@ -236,20 +300,28 @@ public sealed partial class CameraSideScroller : CameraActor2D
 
     public void SetHorizontalOffset(float offset)
     {
+        KnotsSource?.HorizontalOffset = offset;
         HorizontalOffset = offset;
     }
 
     public void SetSpeed(Vector2 speed)
     {
+        KnotsSource?.Speed = speed;
         Speed = speed;
     }
 
     public override void Step()
     {
+        KnotsSource?.LinkedObject = LinkedObject;
+        KnotsSource?.Step();
+
         if (Debug_FreeMoveCamera)
         {
             if (InputManager.GetMouseState().RightButton == ButtonState.Pressed)
-                Scene.Playfield.Camera.Position += InputManager.GetMousePositionDelta(Scene.RenderContext) * -1;
+            {
+                Position += InputManager.GetMousePositionDelta(Scene.RenderContext) * -1;
+                KnotsSource?.Position = Position;
+            }
         }
         else
         {
@@ -259,6 +331,9 @@ public sealed partial class CameraSideScroller : CameraActor2D
 
     public override void SetFirstPosition()
     {
+        KnotsSource?.LinkedObject = LinkedObject;
+        KnotsSource?.SetFirstPosition();
+
         if (LinkedObject == null)
             throw new Exception("The camera has no linked actor");
 
@@ -269,7 +344,7 @@ public sealed partial class CameraSideScroller : CameraActor2D
         {
             pos = new Vector2(0, LinkedObject.Position.Y);
         }
-        else if (LinkedObject.Position.X < Scene.Resolution.X - ScaledHorizontalOffset && LinkedObject.IsFacingLeft)
+        else if (LinkedObject.Position.X < Resolution.X - ScaledHorizontalOffset && LinkedObject.IsFacingLeft)
         {
             pos = new Vector2(0, LinkedObject.Position.Y);
         }
@@ -284,7 +359,7 @@ public sealed partial class CameraSideScroller : CameraActor2D
             else
             {
                 if (LinkedObject.IsFacingLeft)
-                    xOffset = ScaledHorizontalOffset - Scene.Resolution.X;
+                    xOffset = ScaledHorizontalOffset - Resolution.X;
                 else
                     xOffset = -ScaledHorizontalOffset;
             }
@@ -294,7 +369,7 @@ public sealed partial class CameraSideScroller : CameraActor2D
 
         pos.Y = Math.Max(pos.Y - ScaleYValue(120), 0);
 
-        Scene.Playfield.Camera.Position = pos;
+        Position = pos;
         PreviousLinkedObjectPosition = LinkedObject.Position;
     }
 
@@ -305,8 +380,15 @@ public sealed partial class CameraSideScroller : CameraActor2D
         ImGui.Text($"State: {State}");
 
         bool freeMove = Debug_FreeMoveCamera;
-        ImGui.Checkbox("Free move (right mouse button)", ref freeMove);
-        Debug_FreeMoveCamera = freeMove;
+        if (ImGui.Checkbox("Free move (right mouse button)", ref freeMove))
+            Debug_FreeMoveCamera = freeMove;
+
+        ImGui.Spacing();
+
+        ImGui.Text($"Position: {Position.X} x {Position.Y}");
+        ImGui.Text($"KnotsSource Position: {KnotsSource?.Position.X} x {KnotsSource?.Position.Y}");
+
+        ImGui.Spacing();
 
         ImGui.Text($"Speed: {Speed.X} x {Speed.Y}");
         ImGui.Text($"Target: {TargetX} x {ScaledTargetY}");
