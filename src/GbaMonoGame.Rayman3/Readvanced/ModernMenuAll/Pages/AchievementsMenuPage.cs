@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
+// TODO: Indicate if achievement is earned
 public class AchievementsMenuPage : MenuPage
 {
     public AchievementsMenuPage(ModernMenuAll menu) : base(menu) { }

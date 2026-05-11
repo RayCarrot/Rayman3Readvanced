@@ -57,6 +57,7 @@ public class SceneDebugWindow : DebugWindow
         }
     }
 
+    // TODO: Change color based on if in current knot, active etc.
     public override void Draw(DebugLayout debugLayout, DebugLayoutTextureManager textureManager)
     {
         if (Frame.Current is not IHasScene { Scene: { } scene2D }) 
