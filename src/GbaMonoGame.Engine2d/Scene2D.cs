@@ -377,12 +377,12 @@ public class Scene2D
             if (KnotManager.PreviousKnot == null)
             {
                 // Default actors and captors to not be in a knot
-                foreach (BaseActor obj in Iterate<BaseActor>(IteratorFlags.Actor | IteratorFlags.Captor, IteratorKnot.All))
+                foreach (GameObject obj in Iterate<GameObject>(IteratorFlags.Actor | IteratorFlags.Captor, IteratorKnot.All))
                     obj.ProcessMessage(null, Message.Readvanced_LeaveCurrentKnot);
             }
 
             // Check for actors in the current knot, but not the previous one
-            foreach (BaseActor obj in Iterate<BaseActor>(IteratorFlags.Actor | IteratorFlags.Captor | IteratorFlags.Enabled, IteratorKnot.Current))
+            foreach (GameObject obj in Iterate<GameObject>(IteratorFlags.Actor | IteratorFlags.Captor | IteratorFlags.Enabled, IteratorKnot.Current))
             {
                 if (KnotManager.PreviousKnot == null || !KnotManager.IsInPreviousKnot(this, obj.InstanceId))
                     obj.ProcessMessage(null, Message.Readvanced_EnterCurrentKnot);
@@ -391,7 +391,7 @@ public class Scene2D
             // Check for actors in the previous knot, but not the current one
             if (KnotManager.PreviousKnot != null)
             {
-                foreach (BaseActor obj in Iterate<BaseActor>(IteratorFlags.Actor | IteratorFlags.Captor | IteratorFlags.Enabled, IteratorKnot.Previous))
+                foreach (GameObject obj in Iterate<GameObject>(IteratorFlags.Actor | IteratorFlags.Captor | IteratorFlags.Enabled, IteratorKnot.Previous))
                 {
                     if (!KnotManager.IsInCurrentKnot(this, obj.InstanceId))
                         obj.ProcessMessage(null, Message.Readvanced_LeaveCurrentKnot);
