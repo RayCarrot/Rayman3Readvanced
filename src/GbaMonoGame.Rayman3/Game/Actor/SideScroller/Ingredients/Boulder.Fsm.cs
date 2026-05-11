@@ -103,8 +103,8 @@ public partial class Boulder
 
                 if (Speed.Y == 0)
                 {
-                    // If all objects are kept active we only want to make this sound when framed
-                    if (!Scene.KeepAllObjectsActive || AnimatedObject.IsFramed)
+                    // If all objects are kept active we only want to make this sound when in the current knot
+                    if (!Scene.KeepAllObjectsActive || IsInCurrentKnot)
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BallImp1_BigFoot1_Mix02, this);
 
                     if (Scene.Camera.IsActorFramed(this))

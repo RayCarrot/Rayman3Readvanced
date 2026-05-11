@@ -57,13 +57,7 @@ public partial class LevelCurtain
                 {
                     ((World)Frame.Current).UserInfo.SetLevelInfoBar((int)InitialActionId);
 
-                    // If we keep all objects active we only want to send the message the first frame Rayman is
-                    // in front of the curtain or else it might conflict with other curtains also active.
-                    if (!Scene.KeepAllObjectsActive || !IsRaymanInFront)
-                    {
-                        Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginInFrontOfLevelCurtain);
-                        IsRaymanInFront = true;
-                    }
+                    Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginInFrontOfLevelCurtain);
 
                     if ((JoyPad.IsButtonPressed(Rayman3Input.ActorUp) || JoyPad.IsButtonPressed(Rayman3Input.ActorJump)) &&
                         JoyPad.IsButtonReleased(Rayman3Input.ActorLeft) &&
@@ -83,13 +77,10 @@ public partial class LevelCurtain
                 }
                 else
                 {
-                    // If we keep all objects active we only want to send the message the first frame Rayman is
-                    // not in front of the curtain or else it might conflict with other curtains also active.
-                    if (!Scene.KeepAllObjectsActive || IsRaymanInFront)
-                    {
+                    // If we keep all objects active we only want to send the message if this curtain
+                    // is in the current knot or else it'd cancel other level curtains
+                    if (!Scene.KeepAllObjectsActive || IsInCurrentKnot)
                         Scene.MainActor.ProcessMessage(this, Message.Rayman_EndInFrontOfLevelCurtain);
-                        IsRaymanInFront = false;
-                    }
                 }
 
                 if (enterCurtain)

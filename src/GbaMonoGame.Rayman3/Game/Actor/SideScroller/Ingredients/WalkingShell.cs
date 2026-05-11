@@ -72,14 +72,10 @@ public sealed partial class WalkingShell : MovableActor
 
     private bool IsNearBreakableDoor()
     {
-        foreach (BaseActor actor in Scene.Iterate<BaseActor>(IteratorFlags.Actor | IteratorFlags.Enabled))
+        foreach (BaseActor actor in Scene.Iterate<BaseActor>(IteratorFlags.Actor | IteratorFlags.Enabled, IteratorKnot.Current))
         {
             if (actor.Type == (int)ActorType.BreakableDoor && actor.Position.X - Position.X < 220)
-            {
-                // If all objects are active then make sure we're not past the door
-                if (!Scene.KeepAllObjectsActive || actor.Position.X - Position.X >= 0)
-                    return true;
-            }
+                return true;
         }
 
         return false;

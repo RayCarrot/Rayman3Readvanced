@@ -95,9 +95,9 @@ public partial class BluePirate
                 else if (IsFacingLeft && Scene.MainActor.Position.X > Position.X)
                     ActionId = Action.Idle_Right;
 
-                // If all objects are kept active we don't want the pirate to keep attacking from off-screen
-                // since it'll play sounds and use up the projectiles, meaning other enemies can't use them
-                if (Scene.KeepAllObjectsActive && !AnimatedObject.IsFramed)
+                // If all objects are kept active we don't want the pirate to keep attacking when not in the current
+                // knot since it'll play sounds and use up the projectiles, meaning other enemies can't use them
+                if (Scene.KeepAllObjectsActive && !IsInCurrentKnot)
                     IdleDetectionTimer = 0;
 
                 IdleDetectionTimer++;

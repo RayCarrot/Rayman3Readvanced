@@ -43,6 +43,9 @@ public abstract class GameObject : Object
     public bool Flag_6 { get; set; } // Unused in Rayman 3
     public bool Flag_7 { get; set; } // Unused in Rayman 3
 
+    // Custom to track if in the current knot, since in higher resolution we have all objects active
+    public bool IsInCurrentKnot { get; set; }
+
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {
         switch (message)
@@ -60,15 +63,26 @@ public abstract class GameObject : Object
 
             case Message.Destroy:
                 IsEnabled = false;
+                IsInCurrentKnot = false;
                 return true;
 
             case Message.Resurrect:
                 IsEnabled = true;
+                IsInCurrentKnot = Scene.KnotManager.IsInCurrentKnot(Scene, InstanceId);
                 return true;
 
             case Message.ResurrectWakeUp:
                 IsEnabled = true;
                 IsAwake = true;
+                IsInCurrentKnot = Scene.KnotManager.IsInCurrentKnot(Scene, InstanceId);
+                return true;
+
+            case Message.Readvanced_EnterCurrentKnot:
+                IsInCurrentKnot = true;
+                return true;
+
+            case Message.Readvanced_LeaveCurrentKnot:
+                IsInCurrentKnot = false;
                 return true;
 
             default:
@@ -87,6 +101,7 @@ public abstract class GameObject : Object
         ImGui.Text($"Projectile: {IsProjectile}");
         ImGui.Text($"ResurrectsImmediately: {ResurrectsImmediately}");
         ImGui.Text($"ResurrectsLater: {ResurrectsLater}");
+        ImGui.Text($"IsInCurrentKnot: {IsInCurrentKnot}");
         base.DrawDebugLayout(debugLayout, textureManager);
     }
 }

@@ -364,6 +364,40 @@ public class Scene2D
                     obj.ProcessMessage(null, Message.Resurrect);
             }
         }
+
+        // Custom code so that actors can change their behavior based on if they're in the current knot or not. This is
+        // because in higher resolutions we keep all objects active since you can see beyond the current knot. But this
+        // has the issue of the cycles being off, which is problematic for auto-scrollers like the flying keg sections.
+        // So with this actors can change to an idle state when not in the current knot.
+        if (newKnot)
+        {
+            // NOTE: Always actors are not processed here as they are always active regardless
+
+            // If there was no previous knot then we've entered the first knot, so initialize objects to their defaults
+            if (KnotManager.PreviousKnot == null)
+            {
+                // Default actors and captors to not be in a knot
+                foreach (BaseActor obj in Iterate<BaseActor>(IteratorFlags.Actor | IteratorFlags.Captor, IteratorKnot.All))
+                    obj.ProcessMessage(null, Message.Readvanced_LeaveCurrentKnot);
+            }
+
+            // Check for actors in the current knot, but not the previous one
+            foreach (BaseActor obj in Iterate<BaseActor>(IteratorFlags.Actor | IteratorFlags.Captor | IteratorFlags.Enabled, IteratorKnot.Current))
+            {
+                if (KnotManager.PreviousKnot == null || !KnotManager.IsInPreviousKnot(this, obj.InstanceId))
+                    obj.ProcessMessage(null, Message.Readvanced_EnterCurrentKnot);
+            }
+
+            // Check for actors in the previous knot, but not the current one
+            if (KnotManager.PreviousKnot != null)
+            {
+                foreach (BaseActor obj in Iterate<BaseActor>(IteratorFlags.Actor | IteratorFlags.Captor | IteratorFlags.Enabled, IteratorKnot.Previous))
+                {
+                    if (!KnotManager.IsInCurrentKnot(this, obj.InstanceId))
+                        obj.ProcessMessage(null, Message.Readvanced_LeaveCurrentKnot);
+                }
+            }
+        }
     }
 
     public void ActorStep()

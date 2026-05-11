@@ -46,8 +46,8 @@ public partial class Cage
         switch (action)
         {
             case FsmAction.Init:
-                // If all objects are kept active we only want to make this sound when framed
-                if (!Scene.KeepAllObjectsActive || AnimatedObject.IsFramed)
+                // If all objects are kept active we only want to make this sound when in the current knot
+                if (!Scene.KeepAllObjectsActive || IsInCurrentKnot)
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CageSnd1_Mix02__or__CageSnd2_Mix02, this);
                 ActionId = IsGrounded ? Action.GroundedBlink : Action.HangingBlink;
                 break;
