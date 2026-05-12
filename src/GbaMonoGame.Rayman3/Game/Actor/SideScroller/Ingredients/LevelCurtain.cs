@@ -136,6 +136,9 @@ public sealed partial class LevelCurtain : ActionActor
     public MapId MapId { get; }
     public bool IsLocked { get; set; }
 
+    // Custom property to fix bug
+    public bool IsRaymanInFront { get; set; }
+
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {
         if (base.ProcessMessageImpl(sender, message, param))

@@ -57,7 +57,12 @@ public partial class LevelCurtain
                 {
                     ((World)Frame.Current).UserInfo.SetLevelInfoBar((int)InitialActionId);
 
-                    Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginInFrontOfLevelCurtain);
+                    // Optionally fix bug where multiple curtains conflict with each other if active at once
+                    if (!Engine.ActiveConfig.Tweaks.FixBugs || !IsRaymanInFront)
+                    {
+                        Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginInFrontOfLevelCurtain);
+                        IsRaymanInFront = true;
+                    }
 
                     if ((JoyPad.IsButtonPressed(Rayman3Input.ActorUp) || JoyPad.IsButtonPressed(Rayman3Input.ActorJump)) &&
                         JoyPad.IsButtonReleased(Rayman3Input.ActorLeft) &&
@@ -77,10 +82,12 @@ public partial class LevelCurtain
                 }
                 else
                 {
-                    // If we keep all objects active we only want to send the message if this curtain
-                    // is in the current knot or else it'd cancel other level curtains
-                    if (!Scene.KeepAllObjectsActive || IsInCurrentKnot)
+                    // Optionally fix bug where multiple curtains conflict with each other if active at once
+                    if (!Engine.ActiveConfig.Tweaks.FixBugs || IsRaymanInFront)
+                    {
                         Scene.MainActor.ProcessMessage(this, Message.Rayman_EndInFrontOfLevelCurtain);
+                        IsRaymanInFront = false;
+                    }
                 }
 
                 if (enterCurtain)

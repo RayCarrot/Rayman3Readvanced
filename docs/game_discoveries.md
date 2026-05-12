@@ -380,6 +380,9 @@ Most actors have the first animation be unused and just single frame, most likel
 #### KegFire
 - The actor is set up with actions for facing both right and left, yet it's hard-coded to only ever face right.
 
+#### LevelCurtain
+- There's a bug where if several level curtains are active in the same knot then they will conflict with each other when setting the flag on Rayman for if he's in front of a level curtain. For example, if Rayman is in front of level curtain A, then level curtain A will set the flag, but level curtain B will come in and clear it. This causes some level curtains to not behave correctly, such as the one for Hoodlum's Hideout, making Rayman's spawning animation not play when exiting the level and having the camera not be locked as it should.
+
 #### Lums
 - There's an unused versions of the yellow lum that's bigger and is worth 10 lums when collected:
 
