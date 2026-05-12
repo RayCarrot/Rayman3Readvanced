@@ -7,6 +7,7 @@ public record TweaksGameConfig : IniSectionObject
         Vector2 defaultResolution = Resolution.Modern;
 
         InternalGameResolution = defaultResolution;
+        KeepAllKnotsActive = null;
         UseExtendedBackgrounds = true;
         FixTilingErrors = true;
         UseGbaEffectsOnNGage = true;
@@ -34,6 +35,7 @@ public record TweaksGameConfig : IniSectionObject
     public override string SectionKey => "Tweaks";
 
     public Vector2? InternalGameResolution { get; set; } // Null to use original resolution
+    public bool? KeepAllKnotsActive { get; set; } // Null for auto
     public bool UseExtendedBackgrounds { get; set; }
     public bool FixTilingErrors { get; set; }
     public bool UseGbaEffectsOnNGage { get; set; }
@@ -60,6 +62,7 @@ public record TweaksGameConfig : IniSectionObject
     public override void Serialize(BaseIniSerializer serializer)
     {
         InternalGameResolution = serializer.Serialize<Vector2?>(InternalGameResolution, "InternalGameResolution");
+        KeepAllKnotsActive = serializer.Serialize<bool?>(KeepAllKnotsActive, "KeepAllKnotsActive");
         UseExtendedBackgrounds = serializer.Serialize<bool>(UseExtendedBackgrounds, "UseExtendedBackgrounds");
         FixTilingErrors = serializer.Serialize<bool>(FixTilingErrors, "FixTilingErrors");
         UseGbaEffectsOnNGage = serializer.Serialize<bool>(UseGbaEffectsOnNGage, "UseGbaEffectsOnNGage");

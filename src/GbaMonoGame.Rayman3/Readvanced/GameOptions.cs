@@ -314,6 +314,18 @@ public static class GameOptions
                             Engine.SetInternalGameResolution(data);
                     },
                     getCustomName: data => $"{data.X}x{data.Y}"),
+                new MultiSelectionOptionsMenuOption<bool?>(
+                    text: "KEEP ALL SECTORS ACTIVE",
+                    infoText: "When playing in a higher resolution there will be more sectors visible on screen than originally intended. Keeping them all active prevents pop-in. Auto keeps them active only when playing in a different resolution or a Mode7 level.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool?>.Item("AUTO", null),
+                        new MultiSelectionOptionsMenuOption<bool?>.Item("YES", true),
+                        new MultiSelectionOptionsMenuOption<bool?>.Item("NO", false),
+                    ],
+                    getData: _ => Engine.LocalConfig.Tweaks.KeepAllKnotsActive,
+                    setData: data => Engine.LocalConfig.Tweaks.KeepAllKnotsActive = data,
+                    getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "USE EXTENDED BACKGROUNDS",
                     infoText: "Replaces the backgrounds of some levels with extended ones to better fit higher resolution. Doesn't go into effect until the level is restarted.",

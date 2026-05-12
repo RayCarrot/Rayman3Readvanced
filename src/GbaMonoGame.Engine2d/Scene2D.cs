@@ -91,9 +91,8 @@ public class Scene2D
 
     public MovableActor MainActor => (MovableActor)(RSMultiplayer.IsActive ? GetGameObject(RSMultiplayer.MachineId) : GetGameObject(0));
 
-    // If we're playing in a different resolution than the original we can't use
-    // the knots (object sectors). Instead we keep all objects active at all times.
-    public bool KeepAllObjectsActive => Resolution != Rom.OriginalResolution || Playfield is TgxPlayfieldMode7;
+    public bool KeepAllObjectsActive => Engine.ActiveConfig.Tweaks.KeepAllKnotsActive ?? 
+                                        Resolution != Rom.OriginalResolution || Playfield is TgxPlayfieldMode7;
 
     public void Init()
     {
