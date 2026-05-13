@@ -97,19 +97,30 @@ public partial class CheatDialog : Dialog
         ];
 
         Vector2 pos = new(30, 30);
-        const int lineHeight = 16;
+        float lineHeight = 16;
         const int boxPadding = 8;
         
-        int boxWidth = 0;
+        float widestText = 0;
         foreach (CheatItem cheatItem in CheatItems)
         {
             int width = cheatItem.TextObject.GetStringWidth();
-            if (width > boxWidth)
-                boxWidth = width;
+            if (width > widestText)
+                widestText = width;
+        }
+
+        // Scale text to fit
+        float availableTextWidth = Scene.RenderContext.Resolution.X - (pos.X + boxPadding + boxPadding);
+        if (widestText > availableTextWidth)
+        {
+            float scale = availableTextWidth / widestText;
+            foreach (CheatItem cheatItem in CheatItems)
+                cheatItem.SetScale(scale);
+            lineHeight *= scale;
+            widestText = availableTextWidth;
         }
 
         BoxObject.ScreenPos = pos - new Vector2(boxPadding);
-        BoxObject.Size = new Vector2(boxPadding + boxWidth + boxPadding, boxPadding + CheatItems.Length * lineHeight + boxPadding);
+        BoxObject.Size = new Vector2(boxPadding + widestText + boxPadding, boxPadding + CheatItems.Length * lineHeight + boxPadding);
 
         foreach (CheatItem cheatItem in CheatItems)
         {
@@ -176,6 +187,11 @@ public partial class CheatDialog : Dialog
         public void SetPosition(Vector2 position)
         {
             TextObject.ScreenPos = position;
+        }
+
+        public void SetScale(float scale)
+        {
+            TextObject.AffineMatrix = new AffineMatrix(0, new Vector2(scale));
         }
 
         public void Invoke()
