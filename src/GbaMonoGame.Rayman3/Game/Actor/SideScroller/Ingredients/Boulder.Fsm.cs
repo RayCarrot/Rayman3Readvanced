@@ -216,14 +216,22 @@ public partial class Boulder
 
                 AnimatedObject.AffineMatrix = new AffineMatrix(Rotation, 1, 1);
 
-                // The original game slows down the boulder when it's on-screen. However this doesn't
-                // work well in high resolution since it will always be on-screen then. So we use a
-                // distance check instead and also check if it's currently in the spawn cutscene.
-                bool slowSpeed;
+                // The boulder slows down when it's on screen. If we play in a higher resolution then this will cause
+                // it to move slowly too often, so we use the simulated knot position, since that uses the original
+                // resolution as the base, to determine if it's considered being on screen or not.
+                bool isFramed;
                 if (Scene.Resolution == Rom.OriginalResolution)
-                    slowSpeed = Scene.Camera.IsActorFramed(this);
+                {
+                    isFramed = Scene.Camera.IsActorFramed(this);
+                }
                 else
-                    slowSpeed = Timer < 90 || Vector2.Distance(Position, Scene.MainActor.Position) < 160;
+                {
+                    Box viewBox = GetViewBox();
+                    Box camBox = new(((CameraSideScroller)Scene.Camera).KnotPosition, Rom.OriginalResolution);
+                    isFramed = viewBox.Intersects(camBox);
+                }
+
+                bool slowSpeed = isFramed;
 
                 if (IsMovingRight)
                 {
