@@ -319,7 +319,7 @@ public static class GameOptions
                     infoText: "When playing in a higher resolution there will be more sectors visible on screen than originally intended. Keeping them all active prevents pop-in. Auto keeps them active only when playing in a different resolution or a Mode7 level.",
                     items:
                     [
-                        new MultiSelectionOptionsMenuOption<bool?>.Item("AUTO", null),
+                        new MultiSelectionOptionsMenuOption<bool?>.Item("AUTO", null, TweaksPreset.Readvanced),
                         new MultiSelectionOptionsMenuOption<bool?>.Item("YES", true),
                         new MultiSelectionOptionsMenuOption<bool?>.Item("NO", false),
                     ],
