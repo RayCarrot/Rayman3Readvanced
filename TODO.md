@@ -2,20 +2,26 @@
 This document contains a list of planned features for Rayman 3 Readvanced, in no particular order. Besides this there are also various TODO comments in the code which should be resolved. I'll gladly accept any help anyone would be willing to provide for this project!
 
 ## 📃 General
-- The camera doesn't work as well on N-Gage when playing in widescreen due to it being optimized for a portrait aspect ratio. Fix by having a setting for the camera where it's either in GBA, N-Gage or Adaptive mode.
-- First time launching the game, before the title screen, should show options like language, controls and option preset.
-- Use Game Jolt API for achievements and leaderboards.
+- First time launching the game, before the title screen, it should show options like language, controls and option preset.
+- Use Game Jolt API for achievements and time attack leaderboards.
 - If the screen resolution is not 16:9 then there should be an additional resolution option matching that aspect ratio.
-- Instead of downscaling the menu font we should create separate, smaller, version. Same in other places. This is to keep sprites rendering in the same resolution for an as authentic feel as possible.
 
 ## 💬 Localization
-- If you change the button mapping then the in-game tutorial texts are wrong, such as when Murfy or Ly explain how to perform a move. Find a way to replace this.
-- Translate new text to the available languages. Currently all strings are hard-coded.
-- Make sure all menus work in all languages, so the text doesn't overflow
+- If you change the button mapping then the in-game tutorial texts are wrong, such as when Murfy or Ly explain how to perform a move. Find a way to replace this. Perhaps instead of showing the input as text we show an icon of the key/button?
+- Translate new text to the available languages. Currently all new strings are hard-coded, so it should be moved to a new text bank.
+- Make sure all menus work in all languages, so the text doesn't overflow.
 
 ## 🧑‍💻 Code
 - Move hard-coded primitive values to constant fields.
-- Optimize BinarySerializer more. Pointers should ideally be structs instead of classes in order to reduce allocations. We could also serialize animation channels as a `ushort[]` which saves on a lot of allocations. Analyze with VS profiler to see where allocations happen and check with BenchmarkDotNet. 
+- Optimize BinarySerializer more. Pointers should ideally be structs instead of classes in order to reduce allocations. We could also serialize animation channels as a `ushort[]` which saves on a lot of allocations. Analyze with VS profiler to see where allocations happen and check with BenchmarkDotNet. Also look into how caching is handled. Do we really need to cache everything, including levels?
+- Use StringPool for the localized text? https://learn.microsoft.com/en-us/dotnet/communitytoolkit/high-performance/stringpool
+- Make loading the ROM faster. Currently it parses all non-resource data at the start, which is overkill. Some performance logs:
+    - Loaded ROM in 11 ms
+    - Loaded font & sound banks in 41 ms
+    - Loaded text banks in 33 ms
+    - Loaded acts in 54 ms
+    - Loaded bitmaps in 9 ms
+    - Loaded replays in 6 ms
 - Try and reduce the number of allocations per frame as much as possible.
 
 ## 🎮 Multiplayer
@@ -49,11 +55,6 @@ Unlocks once you get all achievements and is inspired by the Insomniac Museum ar
 
 ### Mods
 Allow you to install mods to the game by creating a folder for each mod which can they contain replaced textures, text, sounds etc. as well as new languages for fan-translations.
-
-### Level editor
-A level editor could be created where you can create your own levels using tilesets from the existing levels, or add your own tilesets. You could even just use a static texture for the level map, but collision has to always be tile-based.
-
-The actors could be selected from a list, where each actor has a list of valid initial states it can be in.
 
 ### J2ME version
 Potentially include a remade version of the J2ME game as a bonus. It's a simple game to decompile since one of the versions has full debug symbols.
