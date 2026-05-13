@@ -598,6 +598,7 @@ Most actors have the first animation be unused and just single frame, most likel
 - The N-Gage `Capture the Flag` levels have a boolean indicating if it's the first round of the match. This is however never checked against and is thus unused.
 - The N-Gage multiplayer map `Team Player` has incorrect collision tiles on the left side, causing your movement to become very shaky when walking on it.
 - The second map of `Wanderwood Forest` and both maps of `Shining Glade` have unused code for updating the water palette to give it a glowing effect. One color is however bugged, making parts appear red.
+- In the `Swamp of Bégoniax` levels there are some helicopter bombs placed slightly below the collision tiles which determine its movement direction, causing it to move to the right by default, and thus get out of bounds of the map.
 - The N-Gage exclusive level `Ascension` has 3 red pirate enemies which are spawned from captors. However they're incorrectly set to be enabled by default, even before being spawned, making you able to defeat some of them twice.
 - In `Garish Gears` the hatch layer is misaligned in the N-Gage version, making it not cover the actual hatch.
 - In the `Hoodlum Hideout` level there is code for spawning leaves which fall to the ground. The random range for the x-position is incorrectly hard-coded to 0-240 in the N-Gage version since the resolution is different there. The y-position also has a random range of 0-0, making the randomization pointless.

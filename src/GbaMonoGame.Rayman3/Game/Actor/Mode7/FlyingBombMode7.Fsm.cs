@@ -44,7 +44,9 @@ public partial class FlyingBombMode7
 
                 float zPos = ZPos;
 
-                ZPos += ZPosSpeed;
+                // Prevent moving if outside the current knot to avoid desyncing the cycles
+                if (!Scene.KeepAllObjectsActive || IsInCurrentKnot)
+                    ZPos += ZPosSpeed;
 
                 if (Scene.IsDetectedMainActor(this) && 
                     ((Mode7Actor)Scene.MainActor).ZPos > zPos - 24 && 
@@ -82,6 +84,10 @@ public partial class FlyingBombMode7
                     PhysicalTypeValue.Enemy_Down => Angle256.Quarter * 3,
                     _ => Direction
                 };
+
+                // Prevent moving if outside the current knot to avoid desyncing the cycles
+                if (Scene.KeepAllObjectsActive && !IsInCurrentKnot)
+                    Position -= Speed;
 
                 if (Scene.IsDetectedMainActor(this) && ((Mode7Actor)Scene.MainActor).ZPos < 24)
                 {

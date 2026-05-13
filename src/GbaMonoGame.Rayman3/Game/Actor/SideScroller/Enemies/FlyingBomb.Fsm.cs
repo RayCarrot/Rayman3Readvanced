@@ -101,6 +101,10 @@ public partial class FlyingBomb
                     CurrentDirectionalType = Scene.GetPhysicalType(Position);
                 }
 
+                // Prevent moving if outside the current knot to avoid desyncing the cycles for flying keg levels
+                if (Scene.KeepAllObjectsActive && !IsInCurrentKnot)
+                    Position -= Speed;
+
                 if (Destroyed || HitWall())
                 {
                     State.MoveTo(_Fsm_Destroyed);

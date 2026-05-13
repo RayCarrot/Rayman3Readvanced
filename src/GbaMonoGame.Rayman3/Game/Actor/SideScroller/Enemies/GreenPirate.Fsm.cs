@@ -104,10 +104,8 @@ public partial class GreenPirate
 
                 // If all objects are kept active we don't want the pirate to keep attacking when not in the current
                 // knot since it'll play sounds and use up the projectiles, meaning other enemies can't use them
-                if (Scene.KeepAllObjectsActive && !IsInCurrentKnot)
-                    IdleDetectionTimer = 0;
-
-                IdleDetectionTimer++;
+                if (!Scene.KeepAllObjectsActive || IsInCurrentKnot)
+                    IdleDetectionTimer++;
 
                 if (IdleDetectionTimer > 50)
                 {

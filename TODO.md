@@ -65,7 +65,5 @@ It might be fun to include some cheat codes. These can be triggered by holding t
 
 ## 🐞 Bugs
 - An exception gets thrown if closing the game while it's loading the rom.
-- In levels where the cycles of objects matters, like the flying keg ones, it doesn't line up well if all objects are always loaded, making some parts impossible to beat
-- When all object are active it causes issues with cycles being different. This is noticeable for the walking shell sections, the precipice and the flying keg sections. Possibly for the waterski levels too.
 - Saved window position and size might become invalid, such as becoming negative. Auto fix if wrong.
 - When running on integrated graphics in a WindowsDX build it seems to have minor graphics glitches like screen tearing (noticeable in the scrolling clouds background of the first level).

@@ -52,6 +52,10 @@ public partial class SpikyFlyingBomb
 
                 ManageSound();
 
+                // Prevent moving if outside the current knot to avoid desyncing the cycles
+                if (Scene.KeepAllObjectsActive && !IsInCurrentKnot)
+                    Position -= Speed;
+
                 if (CurrentDirectionalType is 
                     PhysicalTypeValue.Enemy_Left or 
                     PhysicalTypeValue.Enemy_Right or 
