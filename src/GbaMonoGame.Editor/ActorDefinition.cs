@@ -1,11 +1,10 @@
 ﻿using System;
+using BinarySerializer;
 
 namespace GbaMonoGame.Editor;
 
 public class ActorDefinition
 {
-    public ActorDefinition(Enum actorId, string name, ActorActionDefinition[] actions) : this((int)(object)actorId, name, actions) { }
-
     public ActorDefinition(int actorId, string name, ActorActionDefinition[] actions)
     {
         ActorId = actorId;
@@ -16,4 +15,10 @@ public class ActorDefinition
     public int ActorId { get; }
     public string Name { get; }
     public ActorActionDefinition[] Actions { get; }
+}
+
+public class ActorDefinition<T> : ActorDefinition
+    where T : Enum
+{
+    public ActorDefinition(T actorId, string name, ActorActionDefinition[] actions) : base(CastTo<int>.From(actorId), name, actions) { }
 }

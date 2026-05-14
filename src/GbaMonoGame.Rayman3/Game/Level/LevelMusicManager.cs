@@ -1,4 +1,5 @@
 ﻿using System;
+using BinarySerializer;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 
@@ -253,7 +254,7 @@ public static class LevelMusicManager
             ShouldPlaySpecialMusic = true;
     }
 
-    public static void OverrideLevelMusic(Enum soundEventId) => OverrideLevelMusic((short)(object)soundEventId);
+    public static void OverrideLevelMusic<T>(T soundEventId) where T : Enum => OverrideLevelMusic(CastTo<short>.From(soundEventId));
     public static void OverrideLevelMusic(short soundEventId)
     {
         if (HasOverridenLevelMusic) 

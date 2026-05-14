@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using BinarySerializer;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -11,7 +12,7 @@ public static class LevelFactory
     public static void Init<T>(Dictionary<T, CreateLevel> levelCreations)
         where T : Enum
     {
-        _levelCreations = levelCreations.ToFrozenDictionary(x => (int)(object)x.Key, x => x.Value);
+        _levelCreations = levelCreations.ToFrozenDictionary(x => CastTo<int>.From(x.Key), x => x.Value);
     }
 
     public static void Init(Dictionary<int, CreateLevel> levelCreations)

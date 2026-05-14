@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using BinarySerializer;
 
 namespace GbaMonoGame.Engine2d;
 
@@ -12,7 +13,7 @@ public static class ActorFactory
     public static void Init<T>(Dictionary<T, CreateActor> actorCreations, Func<int, string> getActorTypeNameFunc)
         where T : Enum
     {
-        _actorCreations = actorCreations.ToFrozenDictionary(x => (int)(object)x.Key, x => x.Value);
+        _actorCreations = actorCreations.ToFrozenDictionary(x => CastTo<int>.From(x.Key), x => x.Value);
         _getActorTypeNameFunc = getActorTypeNameFunc;
     }
 

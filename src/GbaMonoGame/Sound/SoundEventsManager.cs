@@ -1,4 +1,5 @@
 ﻿using System;
+using BinarySerializer;
 using BinarySerializer.Ubisoft.GbaEngine;
 
 namespace GbaMonoGame;
@@ -54,20 +55,20 @@ public abstract class SoundEventsManager
 
     public static void SetCallBacks(CallBackSet callBacks) => Current.SetCallBacksImpl(callBacks);
 
-    public static void ProcessEvent(Enum soundEventId) => ProcessEvent(soundEventId, null, null);
+    public static void ProcessEvent<T>(T soundEventId) where T : Enum => ProcessEvent(soundEventId, null, null);
     public static void ProcessEvent(short soundEventId) => ProcessEvent(soundEventId, null, null);
-    public static void ProcessEvent(Enum soundEventId, object readvancedObject) => ProcessEvent(soundEventId, readvancedObject, null);
+    public static void ProcessEvent<T>(T soundEventId, object readvancedObject) where T : Enum => ProcessEvent(soundEventId, readvancedObject, null);
     public static void ProcessEvent(short soundEventId, object readvancedObject) => ProcessEvent(soundEventId, readvancedObject, null);
-    public static void ProcessEvent(Enum soundEventId, object readvancedObject, object originalObject) => ProcessEvent((short)(object)soundEventId, readvancedObject, originalObject);
+    public static void ProcessEvent<T>(T soundEventId, object readvancedObject, object originalObject) where T : Enum => ProcessEvent(CastTo<short>.From(soundEventId), readvancedObject, originalObject);
     public static void ProcessEvent(short soundEventId, object readvancedObject, object originalObject) => Current.ProcessEventImpl(soundEventId, readvancedObject, originalObject);
 
-    public static bool IsSongPlaying(Enum soundEventId) => IsSongPlaying((short)(object)soundEventId);
+    public static bool IsSongPlaying<T>(T soundEventId) where T : Enum => IsSongPlaying(CastTo<short>.From(soundEventId));
     public static bool IsSongPlaying(short soundEventId) => Current.IsSongPlayingImpl(soundEventId);
 
-    public static void SetSoundPitch(Enum soundEventId, float pitch) => SetSoundPitch((short)(object)soundEventId, pitch);
+    public static void SetSoundPitch<T>(T soundEventId, float pitch) where T : Enum => SetSoundPitch(CastTo<short>.From(soundEventId), pitch);
     public static void SetSoundPitch(short soundEventId, float pitch) => Current.SetSoundPitchImpl(soundEventId, pitch);
 
-    public static short ReplaceAllSongs(Enum soundEventId, float fadeOut) => ReplaceAllSongs((short)(object)soundEventId, fadeOut);
+    public static short ReplaceAllSongs<T>(T soundEventId, float fadeOut) where T : Enum => ReplaceAllSongs(CastTo<short>.From(soundEventId), fadeOut);
     public static short ReplaceAllSongs(short soundEventId, float fadeOut) => Current.ReplaceAllSongsImpl(soundEventId, fadeOut);
 
     public static void FinishReplacingAllSongs() => Current.FinishReplacingAllSongsImpl();

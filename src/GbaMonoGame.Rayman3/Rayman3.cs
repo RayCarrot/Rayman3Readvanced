@@ -331,7 +331,7 @@ public class Rayman3 : GbaGame
         // TODO: Fill out definitions for every actor so they can be used in the editor
         EditorData.Init(
         [
-            new ActorDefinition(ActorType.Rayman, "Rayman",
+            new ActorDefinition<ActorType>(ActorType.Rayman, "Rayman",
             [
                 new ActorActionDefinition { ActionId = 0, Name = "Default" }
             ])
