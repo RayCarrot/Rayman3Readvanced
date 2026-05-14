@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
+using ImGuiNET;
 
 namespace GbaMonoGame.Engine2d;
 
@@ -8,7 +9,7 @@ public class Captor : GameObject
 {
     public Captor(int instanceId, Scene2D scene, CaptorResource captorResource) : base(instanceId, scene, captorResource)
     {
-        TriggerIterationIndex = 0;
+        TriggerTimer = 0;
 
         TriggerOnMainActorDetection = captorResource.TriggerOnMainActorDetection;
         IsDetected = captorResource.IsDetected;
@@ -40,7 +41,7 @@ public class Captor : GameObject
     public CaptorEvent[] Events { get; }
     public int OriginalEventsToTrigger { get; set; }
     public int EventsToTrigger { get; set; }
-    public int TriggerIterationIndex { get; set; }
+    public int TriggerTimer { get; set; }
 
     public Box GetCaptorBox() => _captorBox;
 
@@ -66,7 +67,7 @@ public class Captor : GameObject
         // Trigger the events at the current index
         foreach (CaptorEvent evt in Events)
         {
-            if (evt.TriggerIterationIndex == TriggerIterationIndex)
+            if (evt.Delay == TriggerTimer)
             {
                 Message msg = (Message)evt.MessageId;
 
@@ -97,13 +98,13 @@ public class Captor : GameObject
             }
         }
 
-        TriggerIterationIndex++;
+        TriggerTimer++;
 
         // All events have been triggered
         if (EventsToTrigger == 0)
         {
             ProcessMessage(this, Message.Destroy);
-            TriggerIterationIndex = 0;
+            TriggerTimer = 0;
             EventsToTrigger = OriginalEventsToTrigger;
             IsDetected = false;
         }
@@ -118,6 +119,35 @@ public class Captor : GameObject
         {
             _debugCaptorBoxAObject.Size = captorBox.Size;
             animationPlayer.PlayFront(_debugCaptorBoxAObject);
+        }
+    }
+
+    public override void DrawDebugLayout(DebugLayout debugLayout, DebugLayoutTextureManager textureManager)
+    {
+        base.DrawDebugLayout(debugLayout, textureManager);
+
+        if (ImGui.BeginTable("_events", 3))
+        {
+            ImGui.TableSetupColumn(nameof(CaptorEvent.MessageId));
+            ImGui.TableSetupColumn(nameof(CaptorEvent.Param));
+            ImGui.TableSetupColumn(nameof(CaptorEvent.Delay));
+            ImGui.TableHeadersRow();
+
+            foreach (CaptorEvent evt in Events)
+            {
+                ImGui.TableNextRow();
+
+                ImGui.TableNextColumn();
+                ImGui.Text($"{evt.MessageId}");
+
+                ImGui.TableNextColumn();
+                ImGui.Text($"{evt.Param}");
+
+                ImGui.TableNextColumn();
+                ImGui.Text($"{evt.Delay}");
+            }
+
+            ImGui.EndTable();
         }
     }
 }
