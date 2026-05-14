@@ -243,8 +243,8 @@ public static class TimeAttackInfo
             });
         }
 
-        // Add max 3 projectile actors
-        int projectilesCount = Math.Min(actors.Count, 3);
+        // Add max 5 projectile actors
+        int projectilesCount = Math.Min(actors.Count, 5);
 
         // TODO: Update model to have a bigger viewbox
         // Load Power1 scene to get the sparkles model from it
