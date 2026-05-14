@@ -24,6 +24,14 @@ public partial class TimeFreezeItem
                 Position = InitialPosition + new Vector2(0, offsetY);
                 SinValue += SineWaveSpeed;
 
+                // Check for hit from Rayman on flying keg
+                if (Scene.MainActor is Rayman rayman && 
+                    rayman.State == rayman.Fsm_FlyWithKeg &&
+                    Scene.MainActor.GetDetectionBox().Intersects(GetVulnerabilityBox()))
+                {
+                    HitPoints = 0;
+                }
+
                 // Check for hit
                 if (HitPoints == 0)
                 {
