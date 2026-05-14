@@ -30,9 +30,9 @@ public static class Rayman3TimeAttack
             world: World1,
             targetTimes: 
             [
-                new(TimeAttackTimeType.Bronze, GetTime(01, 00, 00)),
-                new(TimeAttackTimeType.Silver, GetTime(00, 50, 00)),
-                new(TimeAttackTimeType.Gold,   GetTime(00, 45, 00)),
+                new(TimeAttackTimeType.Bronze, GetTime(00, 55, 00)),
+                new(TimeAttackTimeType.Silver, GetTime(00, 47, 00)),
+                new(TimeAttackTimeType.Gold,   GetTime(00, 42, 00)),
             ],
             actors: new Dictionary<MapId, TimeFreezeItemResource[]>()
             {
@@ -58,9 +58,9 @@ public static class Rayman3TimeAttack
             world: World1,
             targetTimes: 
             [
-                new(TimeAttackTimeType.Bronze, GetTime(02, 05, 00)),
-                new(TimeAttackTimeType.Silver, GetTime(01, 52, 00)),
-                new(TimeAttackTimeType.Gold,   GetTime(01, 45, 00)),
+                new(TimeAttackTimeType.Bronze, GetTime(02, 02, 00)),
+                new(TimeAttackTimeType.Silver, GetTime(01, 50, 00)),
+                new(TimeAttackTimeType.Gold,   GetTime(01, 44, 00)),
             ],
             actors: new Dictionary<MapId, TimeFreezeItemResource[]>()
             {
@@ -89,36 +89,87 @@ public static class Rayman3TimeAttack
             world: World1,
             targetTimes: 
             [
-                // TODO: Define times
+                new(TimeAttackTimeType.Bronze, GetTime(00, 52, 00)),
+                new(TimeAttackTimeType.Silver, GetTime(00, 44, 00)),
+                new(TimeAttackTimeType.Gold,   GetTime(00, 38, 00)),
             ],
             actors: new Dictionary<MapId, TimeFreezeItemResource[]>()
             {
-                // TODO: Define actors
+                [MapId.MarshAwakening1] =
+                [
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(616, 1464)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(133, 959)),
+                    new(TimeFreezeItem.Action.Init_Decrease5, new(902, 456)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(334, 86)),
+                ]
             }.ToFrozenDictionary(),
             exclusivePlatform: Platform.NGage),
-        // Garish Gears
+        // Separating between GBA and N-Gage since the Y offsets are different
+        // Garish Gears (GBA)
         new TimeAttackLevelInfo(
             level: MapId.BossMachine,
             world: World1,
             targetTimes: 
             [
-                // TODO: Define times
+                new(TimeAttackTimeType.Bronze, GetTime(01, 00, 00)),
+                new(TimeAttackTimeType.Silver, GetTime(00, 45, 00)),
+                new(TimeAttackTimeType.Gold,   GetTime(00, 40, 00)),
             ],
             actors: new Dictionary<MapId, TimeFreezeItemResource[]>()
             {
-                // TODO: Define actors
-            }.ToFrozenDictionary()),
+                [MapId.BossMachine] =
+                [
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(378, 4)),
+                    new(TimeFreezeItem.Action.Init_Decrease5, new(290, 4)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(202, 4)),
+                ]
+            }.ToFrozenDictionary(),
+            exclusivePlatform: Platform.GBA),
+        // Garish Gears (N-Gage)
+        new TimeAttackLevelInfo(
+            level: MapId.BossMachine,
+            world: World1,
+            targetTimes: 
+            [
+                new(TimeAttackTimeType.Bronze, GetTime(01, 00, 00)),
+                new(TimeAttackTimeType.Silver, GetTime(00, 45, 00)),
+                new(TimeAttackTimeType.Gold,   GetTime(00, 40, 00)),
+            ],
+            actors: new Dictionary<MapId, TimeFreezeItemResource[]>()
+            {
+                [MapId.BossMachine] =
+                [
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(378, 4 + 48)),
+                    new(TimeFreezeItem.Action.Init_Decrease5, new(290, 4 + 48)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(202, 4 + 48)),
+                ]
+            }.ToFrozenDictionary(),
+            exclusivePlatform: Platform.NGage),
         // Hoodlum Hideout
         new TimeAttackLevelInfo(
             level: MapId.SanctuaryOfBigTree_M1,
             world: World1,
             targetTimes: 
             [
-                // TODO: Define times
+                new(TimeAttackTimeType.Bronze, GetTime(03, 00, 00)),
+                new(TimeAttackTimeType.Silver, GetTime(02, 42, 00)),
+                new(TimeAttackTimeType.Gold,   GetTime(02, 33, 00)),
             ],
             actors: new Dictionary<MapId, TimeFreezeItemResource[]>()
             {
-                // TODO: Define actors
+                [MapId.SanctuaryOfBigTree_M1] =
+                [
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(941, 347)),
+                    new(TimeFreezeItem.Action.Init_Decrease5, new(1999, 72)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(3701, 94)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(3915, 123)),
+                ],
+                [MapId.SanctuaryOfBigTree_M2] =
+                [
+                    new(TimeFreezeItem.Action.Init_Decrease5, new(52, 192)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(4180, 122)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(4512, 181)),
+                ]
             }.ToFrozenDictionary()),
         // Magma Mayhem (GBA)
         new TimeAttackLevelInfo(
@@ -126,11 +177,13 @@ public static class Rayman3TimeAttack
             world: World2,
             targetTimes: 
             [
-                // TODO: Define times
+                new(TimeAttackTimeType.Bronze, GetTime(02, 00, 00)),
+                new(TimeAttackTimeType.Silver, GetTime(01, 55, 00)),
+                new(TimeAttackTimeType.Gold,   GetTime(01, 50, 00)),
             ],
             actors: new Dictionary<MapId, TimeFreezeItemResource[]>()
             {
-                // TODO: Define actors
+                // None
             }.ToFrozenDictionary(),
             exclusivePlatform: Platform.GBA),
         // Ly's Punch Challenge 1 (N-Gage)
@@ -152,11 +205,26 @@ public static class Rayman3TimeAttack
             world: World2,
             targetTimes:
             [
-                // TODO: Define times
+                new(TimeAttackTimeType.Bronze, GetTime(03, 14, 00)),
+                new(TimeAttackTimeType.Silver, GetTime(03, 02, 00)),
+                new(TimeAttackTimeType.Gold,   GetTime(02, 55, 00)),
             ],
             actors: new Dictionary<MapId, TimeFreezeItemResource[]>()
             {
-                // TODO: Define actors
+                [MapId.EchoingCaves_M1] =
+                [
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(46, 502)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(2080, 510)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(2188, 510)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(3478, 450)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(21, 177)),
+                ],
+                [MapId.EchoingCaves_M2] =
+                [
+                    new(TimeFreezeItem.Action.Init_Decrease5, new(1564, 82)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(4342, 77)),
+                    new(TimeFreezeItem.Action.Init_Decrease5, new(5767, 65)),
+                ]
             }.ToFrozenDictionary()),
         // Void of Bones
         new TimeAttackLevelInfo(
@@ -164,11 +232,37 @@ public static class Rayman3TimeAttack
             world: World2,
             targetTimes:
             [
-                // TODO: Define times
+                new(TimeAttackTimeType.Bronze, GetTime(06, 15, 00)),
+                new(TimeAttackTimeType.Silver, GetTime(05, 56, 00)),
+                new(TimeAttackTimeType.Gold,   GetTime(05, 40, 00)),
             ],
             actors: new Dictionary<MapId, TimeFreezeItemResource[]>()
             {
-                // TODO: Define actors
+                [MapId.CavesOfBadDreams_M1] =
+                [
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(41, 8196)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(494, 7623)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(98, 7123)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(540, 5287)),
+                    new(TimeFreezeItem.Action.Init_Decrease5, new(488, 4554)),
+                    new(TimeFreezeItem.Action.Init_Decrease5, new(518, 4554)),
+                    new(TimeFreezeItem.Action.Init_Decrease5, new(548, 4554)),
+                    new(TimeFreezeItem.Action.Init_Decrease5, new(503, 4522)),
+                    new(TimeFreezeItem.Action.Init_Decrease5, new(533, 4522)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(314, 2483)),
+                ],
+                [MapId.CavesOfBadDreams_M2] =
+                [
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(1106, 242)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(2205, 263)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(2813, 200)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(5164, 309)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(7636, 290)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(8774, 104)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(8945, 104)),
+                    new(TimeFreezeItem.Action.Init_Decrease5, new(9989, 403)),
+                    new(TimeFreezeItem.Action.Init_Decrease5, new(10794, 359)),
+                ]
             }.ToFrozenDictionary()),
         // Jano's Nest
         new TimeAttackLevelInfo(
