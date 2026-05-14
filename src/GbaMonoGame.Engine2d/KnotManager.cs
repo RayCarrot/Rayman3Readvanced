@@ -100,12 +100,20 @@ public class KnotManager
 
     public GameObject GetGameObject(int instanceId)
     {
-        return GameObjects[instanceId];
+        if (instanceId < GameObjects.Count)
+            return GameObjects[instanceId];
+
+        instanceId -= GameObjects.Count;
+        return PendingAddedGameObjects[instanceId];
     }
 
     public GameObjectType GetGameObjectType(int instanceId)
     {
-        return GameObjectTypes[instanceId];
+        if (instanceId < GameObjects.Count)
+            return GameObjectTypes[instanceId];
+
+        instanceId -= GameObjects.Count;
+        return PendingAddedGameObjectTypes[instanceId];
     }
 
     public bool UpdateCurrentKnot(TgxPlayfield playfield, Vector2 camPos)
