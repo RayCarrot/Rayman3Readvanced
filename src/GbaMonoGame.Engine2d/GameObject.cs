@@ -68,13 +68,15 @@ public abstract class GameObject : Object
 
             case Message.Resurrect:
                 IsEnabled = true;
-                IsInCurrentKnot = Scene.KnotManager.IsInCurrentKnot(Scene, InstanceId);
+                IsInCurrentKnot = Scene.KnotManager.GetGameObjectType(InstanceId) == GameObjectType.AlwaysActor || 
+                                  Scene.KnotManager.IsInCurrentKnot(Scene, InstanceId);
                 return true;
 
             case Message.ResurrectWakeUp:
                 IsEnabled = true;
                 IsAwake = true;
-                IsInCurrentKnot = Scene.KnotManager.IsInCurrentKnot(Scene, InstanceId);
+                IsInCurrentKnot = Scene.KnotManager.GetGameObjectType(InstanceId) == GameObjectType.AlwaysActor ||
+                                  Scene.KnotManager.IsInCurrentKnot(Scene, InstanceId);
                 return true;
 
             case Message.Readvanced_EnterCurrentKnot:

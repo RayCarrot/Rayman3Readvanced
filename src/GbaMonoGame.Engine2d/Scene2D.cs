@@ -375,6 +375,10 @@ public class Scene2D
             // If there was no previous knot then we've entered the first knot, so initialize objects to their defaults
             if (KnotManager.PreviousKnot == null)
             {
+                // Default always actor to be in current knot
+                foreach (GameObject obj in Iterate<GameObject>(IteratorFlags.AlwaysActor, IteratorKnot.All))
+                    obj.ProcessMessage(null, Message.Readvanced_EnterCurrentKnot);
+
                 // Default actors and captors to not be in a knot
                 foreach (GameObject obj in Iterate<GameObject>(IteratorFlags.Actor | IteratorFlags.Captor, IteratorKnot.All))
                     obj.ProcessMessage(null, Message.Readvanced_LeaveCurrentKnot);
