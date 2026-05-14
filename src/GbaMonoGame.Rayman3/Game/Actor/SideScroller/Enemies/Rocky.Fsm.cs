@@ -62,11 +62,11 @@ public partial class Rocky
                 }
 
                 Rayman rayman = (Rayman)Scene.MainActor;
-                if (rayman.State == rayman.Fsm_SuperHelico && ActionId is not (Action.PreparePunch_Right or Action.PreparePunch_Left))
+                if (rayman.State == rayman._Fsm_SuperHelico && ActionId is not (Action.PreparePunch_Right or Action.PreparePunch_Left))
                 {
                     ActionId = IsFacingRight ? Action.PreparePunch_Right : Action.PreparePunch_Left;
                 }
-                else if (rayman.State != rayman.Fsm_SuperHelico && ActionId is Action.PreparePunch_Right or Action.PreparePunch_Left)
+                else if (rayman.State != rayman._Fsm_SuperHelico && ActionId is Action.PreparePunch_Right or Action.PreparePunch_Left)
                 {
                     if (BossHealth == 1)
                         ActionId = IsFacingRight ? Action.IdlePhase3_Right : Action.IdlePhase3_Left;
@@ -76,7 +76,7 @@ public partial class Rocky
                         ActionId = IsFacingRight ? Action.IdlePhase1_Right : Action.IdlePhase1_Left;
                 }
 
-                if (rayman.State == rayman.Fsm_SuperHelico && 
+                if (rayman.State == rayman._Fsm_SuperHelico && 
                     Math.Abs(Position.X - Scene.MainActor.Position.X) < 90)
                 {
                     State.MoveTo(_Fsm_PunchAttack);
@@ -84,7 +84,7 @@ public partial class Rocky
                 }
 
                 if (!Scene.MainActor.IsInvulnerable && 
-                    rayman.State != rayman.Fsm_SuperHelico && 
+                    rayman.State != rayman._Fsm_SuperHelico && 
                     BlueLum is not { IsEnabled: true } && 
                     Timer > 60)
                 {
@@ -128,7 +128,7 @@ public partial class Rocky
                 }
 
                 Rayman rayman = (Rayman)Scene.MainActor;
-                if (IsActionFinished || rayman.State == rayman.Fsm_SuperHelico)
+                if (IsActionFinished || rayman.State == rayman._Fsm_SuperHelico)
                 {
                     State.MoveTo(_Fsm_Default);
                     return false;
@@ -332,13 +332,13 @@ public partial class Rocky
 
                 Rayman rayman = (Rayman)Scene.MainActor;
 
-                if (IsActionFinished && rayman.State != rayman.Fsm_SuperHelico && BossHealth == 0)
+                if (IsActionFinished && rayman.State != rayman._Fsm_SuperHelico && BossHealth == 0)
                 {
                     State.MoveTo(_Fsm_Dying);
                     return false;
                 }
 
-                if (IsActionFinished && rayman.State != rayman.Fsm_SuperHelico && BossHealth != 0)
+                if (IsActionFinished && rayman.State != rayman._Fsm_SuperHelico && BossHealth != 0)
                 {
                     ActionId = IsFacingRight ? Action.PrepareCharge_Right : Action.PrepareCharge_Left;
                     State.MoveTo(_Fsm_ChargeAttack);

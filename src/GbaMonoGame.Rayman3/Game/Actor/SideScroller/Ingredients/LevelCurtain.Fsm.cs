@@ -74,7 +74,7 @@ public partial class LevelCurtain
                     else
                     {
                         Rayman rayman = (Rayman)Scene.MainActor;
-                        if (ActionId != Action.Sparkle && rayman.State != rayman.Fsm_Default)
+                        if (ActionId != Action.Sparkle && rayman.State != rayman._Fsm_Default)
                             ActionId = Action.Sparkle;
                         else if (IsActionFinished)
                             ActionId = InitialActionId;

@@ -26,7 +26,7 @@ public partial class TimeFreezeItem
 
                 // Check for hit from Rayman on flying keg
                 if (Scene.MainActor is Rayman rayman && 
-                    rayman.State == rayman.Fsm_FlyWithKeg &&
+                    rayman.State == rayman._Fsm_FlyWithKeg &&
                     Scene.MainActor.GetDetectionBox().Intersects(GetVulnerabilityBox()))
                 {
                     HitPoints = 0;

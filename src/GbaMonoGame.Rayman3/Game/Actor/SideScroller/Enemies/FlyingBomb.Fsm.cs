@@ -73,7 +73,7 @@ public partial class FlyingBomb
 
                     Rayman rayman = (Rayman)Scene.MainActor;
 
-                    if (rayman.State == rayman.Fsm_Cutscene &&
+                    if (rayman.State == rayman._Fsm_Cutscene &&
                         Math.Abs(Position.X - Scene.MainActor.Position.X) < 300)
                     {
                         Destroyed = true;

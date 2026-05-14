@@ -27,10 +27,10 @@ public partial class WalkingShell
             if (IsHitBreakableDoor() ||
                 Speed.X == 0 ||
                 CurrentType == PhysicalTypeValue.Water ||
-                rayman.State == rayman.Fsm_Dying ||
-                rayman.State == rayman.Fsm_RespawnDeath)
+                rayman.State == rayman._Fsm_Dying ||
+                rayman.State == rayman._Fsm_RespawnDeath)
             {
-                if (IsRaymanMounted && rayman.State != rayman.Fsm_RespawnDeath)
+                if (IsRaymanMounted && rayman.State != rayman._Fsm_RespawnDeath)
                     Scene.MainActor.ReceiveDamage(3);
 
                 IsRaymanMounted = false;

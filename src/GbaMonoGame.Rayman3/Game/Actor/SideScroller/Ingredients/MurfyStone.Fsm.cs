@@ -23,7 +23,7 @@ public partial class MurfyStone
                         
                         Timer = 0;
 
-                        if (Scene.MainActor is Rayman rayman && rayman.State == rayman.Fsm_Default)
+                        if (Scene.MainActor is Rayman rayman && rayman.State == rayman._Fsm_Default)
                             RaymanIdleTimer++;
                         else
                             RaymanIdleTimer = 0;
@@ -47,7 +47,7 @@ public partial class MurfyStone
                 }
                 else
                 {
-                    if (HasTriggered && (Scene.MainActor is not Rayman rayman || rayman.State != rayman.Fsm_Default))
+                    if (HasTriggered && (Scene.MainActor is not Rayman rayman || rayman.State != rayman._Fsm_Default))
                     {
                         HasTriggered = false;
                         RaymanIdleTimer = 0;

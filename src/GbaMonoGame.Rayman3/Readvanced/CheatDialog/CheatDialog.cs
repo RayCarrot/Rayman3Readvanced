@@ -51,7 +51,7 @@ public partial class CheatDialog : Dialog
                         FrameSingleMode7 frame = (FrameSingleMode7)Frame.Current;
                         MissileMode7 actor = (MissileMode7)Scene.MainActor;
                         frame.SaveLums();
-                        actor.State.MoveTo(actor.Fsm_FinishedRace);
+                        actor.State.MoveTo(actor._Fsm_FinishedRace);
                         SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.Play__win3, 0);
                         LevelMusicManager.HasOverridenLevelMusic = false;
                     }
@@ -59,7 +59,7 @@ public partial class CheatDialog : Dialog
                     {
                         RaymanMode7 actor = (RaymanMode7)Scene.MainActor;
                         SamMode7 sam = Scene.GetGameObject<SamMode7>(actor.SamActorId);
-                        sam.State.MoveTo(sam.Fsm_End);
+                        sam.State.MoveTo(sam._Fsm_End);
                     }
                     else
                     {

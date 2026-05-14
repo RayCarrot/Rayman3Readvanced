@@ -771,7 +771,7 @@ public partial class Jano
                 if (CheckCurrentPhase() == 4 && 
                     Position.X > 1750 && 
                     Scene.MainActor.Speed.Y == 0 &&
-                    rayman.State != rayman.Fsm_HangOnEdge)
+                    rayman.State != rayman._Fsm_HangOnEdge)
                 {
                     State.MoveTo(_Fsm_Complete);
                     return false;

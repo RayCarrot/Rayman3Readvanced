@@ -310,7 +310,7 @@ public partial class Machine
                              (Timer > 330 && BossHealth == 1))
                     {
                         Rayman rayman = (Rayman)Scene.MainActor;
-                        if (rayman.State != rayman.Fsm_Cutscene)
+                        if (rayman.State != rayman._Fsm_Cutscene)
                         {
                             ActionId = Action.CannonBeginFire;
                             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MachAtk1_Mix01, this);
@@ -350,7 +350,7 @@ public partial class Machine
                 if (Scene.MainActor.Speed.Y == 0)
                 {
                     Rayman rayman = (Rayman)Scene.MainActor;
-                    if (rayman.State != rayman.Fsm_Dying && rayman.State != rayman.Fsm_RespawnDeath && rayman.State != rayman.Fsm_EndMap)
+                    if (rayman.State != rayman._Fsm_Dying && rayman.State != rayman._Fsm_RespawnDeath && rayman.State != rayman._Fsm_EndMap)
                     {
                         AchievementsInfo.Unlock(AchievementId.DefeatBossMachine);
                         rayman.ProcessMessage(this, Message.Rayman_FinishLevel);

@@ -50,7 +50,7 @@ public partial class RockyFlame
                 }
 
                 Rayman rayman = (Rayman)Scene.MainActor;
-                if (rayman.State == rayman.Fsm_SuperHelico || 
+                if (rayman.State == rayman._Fsm_SuperHelico || 
                     (ActionId == Action.Flame && IsActionFinished))
                 {
                     State.MoveTo(_Fsm_Default);

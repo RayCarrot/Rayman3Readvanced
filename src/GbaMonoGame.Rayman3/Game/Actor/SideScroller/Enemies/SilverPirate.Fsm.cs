@@ -166,7 +166,7 @@ public partial class SilverPirate
         {
             case FsmAction.Init:
                 Rayman rayman = (Rayman)Scene.MainActor;
-                HighShot = Position.Y >= Scene.MainActor.Position.Y && rayman.State != rayman.Fsm_Crouch && rayman.State != rayman.Fsm_Crawl;
+                HighShot = Position.Y >= Scene.MainActor.Position.Y && rayman.State != rayman._Fsm_Crouch && rayman.State != rayman._Fsm_Crawl;
 
                 if (HighShot)
                     ActionId = Position.X - Scene.MainActor.Position.X < 0 ? Action.ShootHigh_Right : Action.ShootHigh_Left;

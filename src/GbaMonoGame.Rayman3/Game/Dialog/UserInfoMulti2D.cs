@@ -587,7 +587,7 @@ public partial class UserInfoMulti2D : Dialog
         if (rayman != null)
         {
             Vector2 mainActorPos = rayman.ScreenPosition;
-            float offsetY = rayman.State == rayman.Fsm_Crouch ? 30 : 50;
+            float offsetY = rayman.State == rayman._Fsm_Crouch ? 30 : 50;
 
             ReverseControlsEffectIcon.ScreenPos = mainActorPos + new Vector2(-5, -offsetY);
             InvisibilityEffectIcon.ScreenPos = mainActorPos + new Vector2(0, -offsetY - 5);

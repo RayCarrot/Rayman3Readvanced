@@ -55,7 +55,7 @@ public class FsmFieldsGenerator : IIncrementalGenerator
         // Add fields for each state method
         sb.AppendLine();
         foreach (string methodName in fsmClass.StateMethodNames)
-            sb.AppendLine($"    private GbaMonoGame.FiniteStateMachine.Fsm _{methodName};");
+            sb.AppendLine($"    public GbaMonoGame.FiniteStateMachine.Fsm _{methodName};");
 
         // Add the method to create the states
         sb.AppendLine();

@@ -113,7 +113,7 @@ public sealed partial class Spider : MovableActor
                 if (State == _Fsm_ChaseSpawn)
                 {
                     Rayman rayman = (Rayman)Scene.MainActor;
-                    if (rayman.State == rayman.Fsm_Climb)
+                    if (rayman.State == rayman._Fsm_Climb)
                     {
                         SpawnTimer = 0;
                         
