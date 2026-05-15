@@ -35,7 +35,7 @@ public partial class ModernPauseDialog
                 // Time attack
                 else if (TimeAttackInfo.IsActive)
                 {
-                    AddOption("RESTART MAP", _Fsm_RestartMap);
+                    AddOption("RESTART MAP", _Fsm_RestartMap); // TODO: Remove option?
                     // TODO: "RESTART LEVEL"
                 }
                 // Level
