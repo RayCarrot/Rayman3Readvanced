@@ -270,11 +270,13 @@ public static class Rayman3TimeAttack
             world: World2,
             targetTimes:
             [
-                // TODO: Define times
+                new(TimeAttackTimeType.Bronze, GetTime(01, 36, 00)),
+                new(TimeAttackTimeType.Silver, GetTime(01, 29, 00)),
+                new(TimeAttackTimeType.Gold,   GetTime(01, 24, 00)),
             ],
             actors: new Dictionary<MapId, TimeFreezeItemResource[]>()
             {
-                // TODO: Define actors
+                // None
             }.ToFrozenDictionary()),
         // Prickly Passage
         new TimeAttackLevelInfo(
@@ -286,7 +288,19 @@ public static class Rayman3TimeAttack
             ],
             actors: new Dictionary<MapId, TimeFreezeItemResource[]>()
             {
-                // TODO: Define actors
+                [MapId.MenhirHills_M1] =
+                [
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(1073, 91)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(3357, 28)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(7354, 21)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(10276, 94)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(11963, 21)),
+                ],
+                [MapId.MenhirHills_M2] =
+                [
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(4763, 25)),
+                    new(TimeFreezeItem.Action.Init_Decrease3, new(9571, 44)),
+                ]
             }.ToFrozenDictionary()),
         // Skipping Swamp of Bégoniax 2 (GBA)
         // Free Falling (N-Gage)
