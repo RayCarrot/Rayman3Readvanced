@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.Json;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.Editor;
 using GbaMonoGame.Engine2d;
@@ -12,9 +14,28 @@ namespace GbaMonoGame.Rayman3;
 
 public class Rayman3 : GbaGame
 {
+    #region Configs
+
+    private readonly JsonSerializerOptions _configJsonOptions = new() { ReadCommentHandling = JsonCommentHandling.Skip };
+
+    private TimeAttackLevelInfo[] _timeAttackConfig;
+
+    #endregion
+
     #region Protected Properties
 
     protected override string Title => "Rayman 3";
+
+    #endregion
+
+    #region Private Methods
+
+    private T DeserializeConfig<T>(string configName)
+    {
+        string filePath = Path.Combine(Engine.AssetsDirectoryName, "Rayman3", "Config", $"{configName}.jsonc");
+        string json = File.ReadAllText(filePath);
+        return JsonSerializer.Deserialize<T>(json, _configJsonOptions);
+    }
 
     #endregion
 
@@ -326,7 +347,7 @@ public class Rayman3 : GbaGame
         AchievementsInfo.Init(Rayman3Achievements.Achievements);
 
         // Initialize the time attack
-        TimeAttackInfo.Init(Rayman3TimeAttack.LevelInfos);
+        TimeAttackInfo.Init(_timeAttackConfig);
 
         // TODO: Fill out definitions for every actor so they can be used in the editor
         EditorData.Init(
@@ -355,6 +376,9 @@ public class Rayman3 : GbaGame
 
         // Load fonts
         ReadvancedFonts.Load();
+
+        // Load configs
+        _timeAttackConfig = DeserializeConfig<TimeAttackLevelInfo[]>("TimeAttackConfig");
     }
 
     protected override void AddDebugWindowsAndMenus(DebugLayout debugLayout)

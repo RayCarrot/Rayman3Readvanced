@@ -1,11 +1,24 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using System.Text.Json.Serialization;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
-public readonly struct TimeAttackTime(TimeAttackTimeType type, int time)
+public readonly struct TimeAttackTime
 {
-    public TimeAttackTimeType Type { get; } = type;
-    public int Time { get; } = time;
+    [JsonConstructor]
+    public TimeAttackTime(TimeAttackTimeType type, int time)
+    {
+        Type = type;
+        Time = time;
+    }
+
+    [JsonPropertyName("type")]
+    [JsonConverter(typeof(JsonStringEnumConverter<TimeAttackTimeType>))]
+    public TimeAttackTimeType Type { get; }
+
+    [JsonPropertyName("time")]
+    [JsonConverter(typeof(TimeAttackTimeJsonConverter))]
+    public int Time { get; }
 
     public Texture2D LoadIcon(bool filledIn)
     {

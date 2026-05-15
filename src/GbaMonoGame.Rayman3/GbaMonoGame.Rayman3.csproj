@@ -52,16 +52,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Assets\Rayman3\Music\*.wav">
+    <None Update="**\*.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\Rayman3\Sfx\*.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\Rayman3\NewMusic\*.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\Rayman3\NewSfx\*.wav">
+    <None Update="**\*.jsonc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

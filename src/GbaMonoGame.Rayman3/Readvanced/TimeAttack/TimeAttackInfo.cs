@@ -224,11 +224,11 @@ public static class TimeAttackInfo
 
         // Add the time freeze items
         List<ActorResource> actors = [];
-        foreach (TimeFreezeItemResource timeFreezeItem in levelInfo.Actors.GetValueOrDefault(CurrentMapId.Value, []))
+        foreach (TimeFreezeItemInstance timeFreezeItem in levelInfo.Actors.GetValueOrDefault(CurrentMapId.Value, []))
         {
             actors.Add(new ActorResource()
             {
-                Pos = timeFreezeItem.Pos,
+                Pos = new BinarySerializer.Ubisoft.GbaEngine.Vector2(timeFreezeItem.X, timeFreezeItem.Y),
                 IsEnabled = true,
                 IsAwake = true,
                 IsAnimatedObjectDynamic = false,
@@ -237,7 +237,12 @@ public static class TimeAttackInfo
                 ResurrectsLater = false,
                 Type = (byte)ReadvancedActorType.TimeFreezeItem,
                 Idx_ActorModel = 0xFF,
-                FirstActionId = (byte)timeFreezeItem.FirstActionId,
+                FirstActionId = (byte)(timeFreezeItem.Time switch
+                {
+                    3 => TimeFreezeItem.Action.Init_Decrease3,
+                    5 => TimeFreezeItem.Action.Init_Decrease5,
+                    _ => throw new Exception($"Invalid time value {timeFreezeItem.Time}")
+                }),
                 Links = [0xFF, 0xFF, 0xFF, 0xFF],
                 Model = TimeAttackActorModels.TimeFreezeItemActorModel,
             });

@@ -1,0 +1,466 @@
+[
+    // Wanderwood Forest
+    {
+        "level": 0,
+        "world": 0,
+        "target_times": [
+            { "type": "bronze", "time": "00:55.00" },
+            { "type": "silver", "time": "00:47.00" },
+            { "type": "gold",   "time": "00:42.00" }
+        ],
+        "actors": {
+            "0": [
+                { "time": 3, "x": 300, "y": 197 },
+                { "time": 3, "x": 998, "y": 158 },
+                { "time": 3, "x": 1637, "y": 252 },
+                { "time": 3, "x": 3046, "y": 44 }
+            ],
+            "1": [
+                { "time": 3, "x": 428, "y": 232 },
+                { "time": 3, "x": 1983, "y": 342 },
+                { "time": 5, "x": 2610, "y": 125 },
+                { "time": 3, "x": 2795, "y": 130 },
+                { "time": 3, "x": 3631, "y": 54 }
+            ]
+        }
+    },
+    // Shining Glade
+    {
+        "level": 2,
+        "world": 0,
+        "target_times": [
+            { "type": "bronze", "time": "02:02.00" },
+            { "type": "silver", "time": "01:50.00" },
+            { "type": "gold",   "time": "01:44.00" }
+        ],
+        "actors": {
+            "2": [
+                { "time": 3, "x": 1101, "y": 434 },
+                { "time": 3, "x": 1621, "y": 124 },
+                { "time": 5, "x": 2435, "y": 158 },
+                { "time": 3, "x": 2053, "y": 385 },
+                { "time": 3, "x": 3181, "y": 151 },
+                { "time": 3, "x": 2894, "y": 166 }
+            ],
+            "3": [
+                { "time": 5, "x": 943, "y": 278 },
+                { "time": 3, "x": 2250, "y": 347 },
+                { "time": 3, "x": 3847, "y": 378 },
+                { "time": 3, "x": 5185, "y": 348 },
+                { "time": 5, "x": 6519, "y": 336 }
+            ]
+        }
+    },
+    // Skipping Swamp of Bégoniax (GBA)
+    // Ascension (N-Gage)
+    {
+        "level": 4,
+        "world": 0,
+        "target_times": [
+            { "type": "bronze", "time": "00:52.00" },
+            { "type": "silver", "time": "00:44.00" },
+            { "type": "gold",   "time": "00:38.00" }
+        ],
+        "actors": {
+            "4": [
+                { "time": 3, "x": 616, "y": 1464 },
+                { "time": 3, "x": 133, "y": 959 },
+                { "time": 5, "x": 902, "y": 456 },
+                { "time": 3, "x": 334, "y": 86 }
+            ]
+        },
+        "exclusive_platform": "ngage"
+    },
+    // Separating between GBA and N-Gage since the Y offsets are different
+    // Garish Gears (GBA)
+    {
+        "level": 5,
+        "world": 0,
+        "target_times": [
+            { "type": "bronze", "time": "01:00.00" },
+            { "type": "silver", "time": "00:45.00" },
+            { "type": "gold",   "time": "00:40.00" }
+        ],
+        "actors": {
+            "5": [
+                { "time": 3, "x": 378, "y": 4 },
+                { "time": 5, "x": 290, "y": 4 },
+                { "time": 3, "x": 202, "y": 4 }
+            ]
+        },
+        "exclusive_platform": "gba"
+    },
+    // Garish Gears (N-Gage)
+    {
+        "level": 5,
+        "world": 0,
+        "target_times": [
+            { "type": "bronze", "time": "01:00.00" },
+            { "type": "silver", "time": "00:45.00" },
+            { "type": "gold",   "time": "00:40.00" }
+        ],
+        "actors": {
+            "5": [
+                { "time": 3, "x": 378, "y": 52 },
+                { "time": 5, "x": 290, "y": 52 },
+                { "time": 3, "x": 202, "y": 52 }
+            ]
+        },
+        "exclusive_platform": "ngage"
+    },
+    // Hoodlum Hideout
+    {
+        "level": 6,
+        "world": 0,
+        "target_times": [
+            { "type": "bronze", "time": "03:00.00" },
+            { "type": "silver", "time": "02:42.00" },
+            { "type": "gold",   "time": "02:33.00" }
+        ],
+        "actors": {
+            "6": [
+                { "time": 3, "x": 941, "y": 347 },
+                { "time": 5, "x": 1999, "y": 72 },
+                { "time": 3, "x": 3701, "y": 94 },
+                { "time": 3, "x": 3915, "y": 123 }
+            ],
+            "7": [
+                { "time": 5, "x": 52, "y": 192 },
+                { "time": 3, "x": 4180, "y": 122 },
+                { "time": 3, "x": 4512, "y": 181 }
+            ]
+        }
+    },
+    // Magma Mayhem (GBA)
+    {
+        "level": 8,
+        "world": 1,
+        "target_times": [
+            { "type": "bronze", "time": "02:00.00" },
+            { "type": "silver", "time": "01:55.00" },
+            { "type": "gold",   "time": "01:50.00" }
+        ],
+        "actors": {
+            // None
+        },
+        "exclusive_platform": "gba"
+    },
+    // Ly's Punch Challenge 1 (N-Gage)
+    {
+        "level": 8,
+        "world": 1,
+        "target_times": [
+            // TODO: Implement
+        ],
+        "actors": {
+            // TODO: Implement
+        },
+        "exclusive_platform": "ngage"
+    },
+    // Vertigo Wastes
+    {
+        "level": 9,
+        "world": 1,
+        "target_times": [
+            { "type": "bronze", "time": "03:14.00" },
+            { "type": "silver", "time": "03:02.00" },
+            { "type": "gold",   "time": "02:55.00" }
+        ],
+        "actors": {
+            "9": [
+                { "time": 3, "x": 46, "y": 502 },
+                { "time": 3, "x": 2080, "y": 510 },
+                { "time": 3, "x": 2188, "y": 510 },
+                { "time": 3, "x": 3478, "y": 450 },
+                { "time": 3, "x": 21, "y": 177 }
+            ],
+            "10": [
+                { "time": 5, "x": 1564, "y": 82 },
+                { "time": 3, "x": 4342, "y": 77 },
+                { "time": 5, "x": 5767, "y": 65 }
+            ]
+        }
+    },
+    // Void of Bones
+    {
+        "level": 11,
+        "world": 1,
+        "target_times": [
+            { "type": "bronze", "time": "06:15.00" },
+            { "type": "silver", "time": "05:56.00" },
+            { "type": "gold",   "time": "05:40.00" }
+        ],
+        "actors": {
+            "11": [
+                { "time": 3, "x": 41, "y": 8196 },
+                { "time": 3, "x": 494, "y": 7623 },
+                { "time": 3, "x": 98, "y": 7123 },
+                { "time": 3, "x": 540, "y": 5287 },
+                { "time": 5, "x": 488, "y": 4554 },
+                { "time": 5, "x": 518, "y": 4554 },
+                { "time": 5, "x": 548, "y": 4554 },
+                { "time": 5, "x": 503, "y": 4522 },
+                { "time": 5, "x": 533, "y": 4522 },
+                { "time": 3, "x": 314, "y": 2483 }
+            ],
+            "12": [
+                { "time": 3, "x": 1106, "y": 242 },
+                { "time": 3, "x": 2205, "y": 263 },
+                { "time": 3, "x": 2813, "y": 200 },
+                { "time": 3, "x": 5164, "y": 309 },
+                { "time": 3, "x": 7636, "y": 290 },
+                { "time": 3, "x": 8774, "y": 104 },
+                { "time": 3, "x": 8945, "y": 104 },
+                { "time": 5, "x": 9989, "y": 403 },
+                { "time": 5, "x": 10794, "y": 359 }
+            ]
+        }
+    },
+    // Jano's Nest
+    {
+        "level": 13,
+        "world": 1,
+        "target_times": [
+            { "type": "bronze", "time": "01:36.00" },
+            { "type": "silver", "time": "01:29.00" },
+            { "type": "gold",   "time": "01:24.00" }
+        ],
+        "actors": {
+            // None
+        }
+    },
+    // Prickly Passage
+    {
+        "level": 14,
+        "world": 1,
+        "target_times": [
+            // TODO: Implement
+        ],
+        "actors": {
+            "14": [
+                { "time": 3, "x": 1073, "y": 91 },
+                { "time": 3, "x": 3357, "y": 28 },
+                { "time": 3, "x": 7354, "y": 21 },
+                { "time": 3, "x": 10276, "y": 94 },
+                { "time": 3, "x": 11963, "y": 21 }
+            ],
+            "15": [
+                { "time": 3, "x": 4763, "y": 25 },
+                { "time": 3, "x": 9571, "y": 44 }
+            ]
+        }
+    },
+    // Skipping Swamp of Bégoniax 2 (GBA)
+    // Free Falling (N-Gage)
+    {
+        "level": 16,
+        "world": 1,
+        "target_times": [
+            // TODO: Implement
+        ],
+        "actors": {
+            // TODO: Implement
+        },
+        "exclusive_platform": "ngage"
+    },
+    // River of Fire
+    {
+        "level": 17,
+        "world": 2,
+        "target_times": [
+            // TODO: Implement
+        ],
+        "actors": {
+            // TODO: Implement
+        }
+    },
+    // The Underlands
+    {
+        "level": 20,
+        "world": 2,
+        "target_times": [
+            // TODO: Implement
+        ],
+        "actors": {
+            // TODO: Implement
+        }
+    },
+    // Boulder Brink
+    {
+        "level": 22,
+        "world": 2,
+        "target_times": [
+            // TODO: Implement
+        ],
+        "actors": {
+            // TODO: Implement
+        }
+    },
+    // Den of Rocky
+    {
+        "level": 24,
+        "world": 2,
+        "target_times": [
+            // TODO: Implement
+        ],
+        "actors": {
+            // TODO: Implement
+        }
+    },
+    // Wretched Ruins
+    {
+        "level": 25,
+        "world": 2,
+        "target_times": [
+            // TODO: Implement
+        ],
+        "actors": {
+            // TODO: Implement
+        }
+    },
+    // Wicked Flow
+    {
+        "level": 27,
+        "world": 2,
+        "target_times": [
+            // TODO: Implement
+        ],
+        "actors": {
+            // TODO: Implement
+        }
+    },
+    // Creeping Chaos
+    {
+        "level": 30,
+        "world": 3,
+        "target_times": [
+            // TODO: Implement
+        ],
+        "actors": {
+            // TODO: Implement
+        }
+    },
+    // Scaleman's Keep
+    {
+        "level": 32,
+        "world": 3,
+        "target_times": [
+            // TODO: Implement
+        ],
+        "actors": {
+            // TODO: Implement
+        }
+    },
+    // The Mettleworks
+    {
+        "level": 33,
+        "world": 3,
+        "target_times": [
+            // TODO: Implement
+        ],
+        "actors": {
+            // TODO: Implement
+        }
+    },
+    // Magma Mayhem 2 (GBA)
+    {
+        "level": 35,
+        "world": 3,
+        "target_times": [
+            // TODO: Implement
+        ],
+        "actors": {
+            // TODO: Implement
+        },
+        "exclusive_platform": "gba"
+    },
+    // Falling Down (N-Gage)
+    {
+        "level": 35,
+        "world": 3,
+        "target_times": [
+            // TODO: Implement
+        ],
+        "actors": {
+            // TODO: Implement
+        },
+        "exclusive_platform": "ngage"
+    },
+    // Razor Slide
+    {
+        "level": 36,
+        "world": 3,
+        "target_times": [
+            // TODO: Implement
+        ],
+        "actors": {
+            // TODO: Implement
+        }
+    },
+    // Heart of the Ancients
+    {
+        "level": 38,
+        "world": 3,
+        "target_times": [
+            // TODO: Implement
+        ],
+        "actors": {
+            // TODO: Implement
+        }
+    },
+    // Mega Havoc 1
+    {
+        "level": 40,
+        "world": 4,
+        "target_times": [
+            // TODO: Implement
+        ],
+        "actors": {
+            // TODO: Implement
+        }
+    },
+    // Mega Havoc 2
+    {
+        "level": 41,
+        "world": 4,
+        "target_times": [
+            // TODO: Implement
+        ],
+        "actors": {
+            // TODO: Implement
+        }
+    },
+    // Mega Havoc 3
+    {
+        "level": 42,
+        "world": 4,
+        "target_times": [
+            // TODO: Implement
+        ],
+        "actors": {
+            // TODO: Implement
+        }
+    },
+    // Mega Havoc 4
+    {
+        "level": 43,
+        "world": 4,
+        "target_times": [
+            // TODO: Implement
+        ],
+        "actors": {
+            // TODO: Implement
+        }
+    },
+    // Lum Challenge
+    {
+        "level": 44,
+        "world": 4,
+        "target_times": [
+            // TODO: Implement
+        ],
+        "actors": {
+            // TODO: Implement
+        }
+    }
+]
