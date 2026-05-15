@@ -235,7 +235,7 @@ public partial class Spider
                 if ((!IsSpiderFacingLeft && Position.X + 37 <= Scene.MainActor.Position.X) ||
                     (IsSpiderFacingLeft && Position.X - 37 >= Scene.MainActor.Position.X))
                 {
-                    if (Position.Y + 72 > Scene.MainActor.Position.Y - 24 &&
+                    if (Position.Y + 72 > Scene.MainActor.Position.Y - 24 ||
                         Position.Y - 72 < Scene.MainActor.Position.Y - 24)
                     {
                         outOfRange = true;
