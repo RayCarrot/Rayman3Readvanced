@@ -1,9 +1,8 @@
-﻿using System;
+﻿#nullable disable
 using System.Globalization;
-using System.Linq;
 using Newtonsoft.Json;
 
-namespace GbaMonoGame;
+namespace GbaMonoGame.Tools;
 
 /// <summary>
 /// Serializes a byte array as a hex string
