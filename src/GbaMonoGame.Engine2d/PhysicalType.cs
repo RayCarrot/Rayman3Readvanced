@@ -48,12 +48,14 @@ public readonly struct PhysicalType
             _ => throw new Exception($"The physical value {this} is not an angled block")
         };
 
-        // NOTE: Generally we don't want to floor floats so that we can keep sub-pixel positions, however
+        // NOTE: Generally we don't want to round floats so that we can keep sub-pixel positions, however
         //       in this case it causes issues when actors move down on sloped ground as they don't move
         //       down with it fast enough to keep up with the slope, and thus can get de-synced. This is
         //       an issue with the Slapdash enemy in Hoodlum Hideout 2 when charging down the slopes. It
         //       also causes an issue in Mega Havoc 4 where the boulders get stuck on the slopes.
-        topSolid = MathF.Floor(topSolid);
+        //       Originally the float was floored instead of rounded here, but it caused an issue with the
+        //       walking shell where it could fall through the ground when moving up slopes.
+        topSolid = MathF.Round(topSolid);
 
         return topSolid;
     }
