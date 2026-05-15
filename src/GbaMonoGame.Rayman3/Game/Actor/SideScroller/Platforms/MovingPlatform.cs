@@ -314,6 +314,27 @@ public sealed partial class MovingPlatform : MovableActor
             ProcessMessage(this, Message.Destroy);
     }
 
+    protected override bool ProcessMessageImpl(object sender, Message message, object param)
+    {
+        if (base.ProcessMessageImpl(sender, message, param))
+            return false;
+
+        switch (message)
+        {
+            // Reset moving platforms which move upon contact, such as in Wicked Flow
+            case Message.Readvanced_ResetOnRespawnDeath:
+                if (InitialAction is Action.WaitForContact or Action.WaitForContactWithReturn && IsActivated)
+                {
+                    Position = Resource.Pos.ToVector2();
+                    Setup();
+                }
+                return false;
+
+            default:
+                return false;
+        }
+    }
+
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
         if (ShouldDraw)

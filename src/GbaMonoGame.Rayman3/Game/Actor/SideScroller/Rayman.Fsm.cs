@@ -4537,11 +4537,17 @@ public partial class Rayman
                     // Respawn animation
                     ActionId = safePosition.IsFacingRight ? Action.Spawn_Right : Action.Spawn_Left;
 
-                    // Respawn some actors
+                    // Resurrect some actors
                     foreach (BaseActor obj in Scene.Iterate<BaseActor>(IteratorFlags.AlwaysActor | IteratorFlags.Actor | IteratorFlags.Disabled, IteratorKnot.All))
                     {
                         if (!obj.ResurrectsLater)
-                            obj.ProcessMessage(this, Message.Readvanced_RespawnDeath);
+                            obj.ProcessMessage(this, Message.Readvanced_ResurrectOnRespawnDeath);
+                    }
+
+                    // Reset some actors
+                    foreach (BaseActor obj in Scene.Iterate<BaseActor>(IteratorFlags.AlwaysActor | IteratorFlags.Actor | IteratorFlags.Enabled, IteratorKnot.All))
+                    {
+                        obj.ProcessMessage(this, Message.Readvanced_ResetOnRespawnDeath);
                     }
                 }
                 // Respawn animation finished (stop after 20 frames to avoid showing the part where you land on the ground)

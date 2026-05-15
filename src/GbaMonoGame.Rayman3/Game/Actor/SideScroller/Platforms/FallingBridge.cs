@@ -35,7 +35,7 @@ public sealed partial class FallingBridge : MovableActor
 
         switch (message)
         {
-            case Message.Readvanced_RespawnDeath:
+            case Message.Readvanced_ResurrectOnRespawnDeath:
                 if (!DisabledFromLink)
                     ProcessMessage(this, Message.Resurrect);
                 return false;

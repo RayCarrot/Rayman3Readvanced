@@ -21,9 +21,10 @@ public enum Message
     Captor_Trigger_SendMessageWithCaptorParam = 204,
 
     // Readvanced
-    Readvanced_RespawnDeath = 300,
-    Readvanced_EnterCurrentKnot = 301,
-    Readvanced_LeaveCurrentKnot = 302,
+    Readvanced_ResurrectOnRespawnDeath = 300,
+    Readvanced_ResetOnRespawnDeath = 301,
+    Readvanced_EnterCurrentKnot = 302,
+    Readvanced_LeaveCurrentKnot = 303,
 
     // Rayman 3
     // 1000-1001 are unused

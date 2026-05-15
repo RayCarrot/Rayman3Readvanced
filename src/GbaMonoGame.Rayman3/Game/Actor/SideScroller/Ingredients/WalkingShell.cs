@@ -130,7 +130,7 @@ public sealed partial class WalkingShell : MovableActor
 
         switch (message)
         {
-            case Message.Readvanced_RespawnDeath:
+            case Message.Readvanced_ResurrectOnRespawnDeath:
                 ProcessMessage(this, Message.Resurrect);
                 Position = InitialPosition;
                 LoopPosition = Vector2.Zero;

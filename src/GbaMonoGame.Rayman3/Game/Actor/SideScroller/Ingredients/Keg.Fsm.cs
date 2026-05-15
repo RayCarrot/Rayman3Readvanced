@@ -485,7 +485,7 @@ public partial class Keg
                         if (!Engine.ActiveConfig.Difficulty.NoInstaKills)
                             Scene.MainActor.ProcessMessage(this, Message.Actor_Explode);
                         else
-                            Scene.MainActor.ProcessMessage(this, Message.Readvanced_RespawnDeath);
+                            Scene.MainActor.ProcessMessage(this, Message.Readvanced_ResurrectOnRespawnDeath);
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Combust1_Mix02, this);
                         respawn = true;
                     }
