@@ -247,15 +247,26 @@ public class Rayman3DebugWindow : DebugWindow
                     {
                         StringBuilder sb = new();
 
+                        bool first = true;
                         foreach (BaseActor actor in frame.Scene.Iterate<BaseActor>(IteratorFlags.AlwaysActor, IteratorKnot.All))
                         {
                             if ((ReadvancedActorType)actor.Type == ReadvancedActorType.TimeFreezeItem)
                             {
                                 TimeFreezeItem timeFreezeItem = (TimeFreezeItem)actor;
-                                sb.AppendLine($"new({nameof(TimeFreezeItem)}.{nameof(TimeFreezeItem.Action)}.{timeFreezeItem.InitialAction}, " +
-                                              $"new({(short)timeFreezeItem.InitialPosition.X}, {(short)timeFreezeItem.InitialPosition.Y})),");
+
+                                int x = (short)timeFreezeItem.InitialPosition.X;
+                                int y = (short)timeFreezeItem.InitialPosition.Y;
+                                int time = timeFreezeItem.InitialAction == TimeFreezeItem.Action.Init_Decrease3 ? 3 : 5;
+
+                                if (!first)
+                                    sb.AppendLine();
+                                sb.Append($"{{ \"time\": {time}, \"x\": {x}, \"y\": {y} }},");
+                                first = false;
                             }
                         }
+
+                        // Remove last comma
+                        sb.Remove(sb.Length - 1, 1);
 
                         ImGui.SetClipboardText(sb.ToString());
                     }
