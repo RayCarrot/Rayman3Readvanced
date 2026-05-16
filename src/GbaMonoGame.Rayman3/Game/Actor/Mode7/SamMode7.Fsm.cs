@@ -81,8 +81,7 @@ public partial class SamMode7
 
                 Timer++;
 
-                if (WaterSplashObj != null)
-                    WaterSplashObj.Position = Position + Speed * -4;
+                WaterSplashObj?.Position = Position + Speed * -4;
 
                 if (type == PhysicalTypeValue.MovingPlatform_Stop)
                 {
@@ -152,8 +151,7 @@ public partial class SamMode7
                     GameInfo.Save(GameInfo.CurrentSlot);
                 }
 
-                if (WaterSplashObj != null)
-                    WaterSplashObj.Position = Position;
+                WaterSplashObj?.Position = Position;
                 break;
 
             case FsmAction.UnInit:

@@ -374,8 +374,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         Gfx.FadeControl = SavedFadeControl;
         Gfx.Fade = AlphaCoefficient.None;
 
-        if (Fog != null)
-            Fog.ShouldDraw = true;
+        Fog?.ShouldDraw = true;
 
         UserInfo.ProcessMessage(this, Message.UserInfo_Unpause);
 

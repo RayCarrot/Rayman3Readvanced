@@ -847,8 +847,7 @@ public sealed partial class Rayman : MovableActor
             else if (type == PhysicalTypeValue.Water)
             {
                 WaterSplash waterSplash = Scene.CreateProjectile<WaterSplash>(ActorType.WaterSplash);
-                if (waterSplash != null)
-                    waterSplash.Position = Position;
+                waterSplash?.Position = Position;
 
                 ActionId = IsFacingRight ? Action.Drown_Right : Action.Drown_Left;
             }

@@ -179,8 +179,7 @@ public partial class ModernPauseDialog : Dialog
                 frameSideScroller.UserInfo.MoveOutBars();
 
                 // The Lums1000Bar can't normally transition out, so we force it to here
-                if (frameSideScroller.UserInfo.Lums1000Bar != null)
-                    frameSideScroller.UserInfo.Lums1000Bar.EnableTransitions = true;
+                frameSideScroller.UserInfo.Lums1000Bar?.EnableTransitions = true;
 
                 frameSideScroller.TimeAttackDialog?.MoveOutBars();
                 break;

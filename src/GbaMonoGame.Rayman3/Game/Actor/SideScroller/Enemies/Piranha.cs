@@ -22,8 +22,7 @@ public sealed partial class Piranha : MovableActor
     private void SpawnSplash()
     {
         WaterSplash waterSplash = Scene.CreateProjectile<WaterSplash>(ActorType.WaterSplash);
-        if (waterSplash != null)
-            waterSplash.Position = Position;
+        waterSplash?.Position = Position;
     }
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)

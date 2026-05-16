@@ -34,13 +34,11 @@ public class TgxTilePhysicalLayer : TgxGameLayer
 
     public override void SetOffset(Vector2 offset)
     {
-        if (DebugScreen != null)
-            DebugScreen.Offset = offset;
+        DebugScreen?.Offset = offset;
     }
 
     public override void SetWorldViewProjMatrix(Matrix worldViewProj)
     {
-        if (DebugScreen != null)
-            DebugScreen.RenderOptions = DebugScreen.RenderOptions with { WorldViewProj = worldViewProj };
+        DebugScreen?.RenderOptions = DebugScreen.RenderOptions with { WorldViewProj = worldViewProj };
     }
 }

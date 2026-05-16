@@ -102,8 +102,7 @@ public partial class TimeFreezeItem
                 AnimatedObject.AffineMatrix = new AffineMatrix(0, new Vector2(1 - Timer / (float)DeathDuration, 1));
 
                 // Update the sparkles position
-                if (SparklesProjectile != null)
-                    SparklesProjectile.Position = Position;
+                SparklesProjectile?.Position = Position;
 
                 if (Timer == DeathDuration)
                 {

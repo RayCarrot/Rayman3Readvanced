@@ -242,8 +242,7 @@ public sealed partial class MovingPlatform : MovableActor
             else
             {
                 Explosion explosion = Scene.CreateProjectile<Explosion>(ActorType.Explosion);
-                if (explosion != null)
-                    explosion.Position = Position;
+                explosion?.Position = Position;
                 Destroy();
             }
         }
@@ -253,8 +252,7 @@ public sealed partial class MovingPlatform : MovableActor
             Scene.MainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
 
             Explosion explosion = Scene.CreateProjectile<Explosion>(ActorType.Explosion);
-            if (explosion != null)
-                explosion.Position = Position - new Vector2(0, 8);
+            explosion?.Position = Position - new Vector2(0, 8);
             Destroy();
         }
     }

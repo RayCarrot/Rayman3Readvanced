@@ -328,8 +328,7 @@ public partial class FlyingBomb
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07, this);
                 }
 
-                if (explosion != null)
-                    explosion.Position = Position;
+                explosion?.Position = Position;
 
                 State.MoveTo(_Fsm_Move);
                 return false;

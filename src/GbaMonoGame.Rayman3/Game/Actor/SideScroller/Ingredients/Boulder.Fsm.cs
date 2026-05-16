@@ -110,8 +110,7 @@ public partial class Boulder
                     if (Scene.Camera.IsActorFramed(this))
                     {
                         Explosion impact = Scene.CreateProjectile<Explosion>(ActorType.Impact);
-                        if (impact != null)
-                            impact.Position = Position;
+                        impact?.Position = Position;
                     }
 
                     if (PendingShake)

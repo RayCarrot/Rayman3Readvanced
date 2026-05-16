@@ -166,16 +166,13 @@ public partial class Barrel
 
             case FsmAction.UnInit:
                 WaterSplash waterSplash = Scene.CreateProjectile<WaterSplash>(ActorType.WaterSplash);
-                if (waterSplash != null)
-                    waterSplash.Position = Position;
+                waterSplash?.Position = Position;
 
                 waterSplash = Scene.CreateProjectile<WaterSplash>(ActorType.WaterSplash);
-                if (waterSplash != null)
-                    waterSplash.Position = Position - new Vector2(16, 0);
+                waterSplash?.Position = Position - new Vector2(16, 0);
 
                 waterSplash = Scene.CreateProjectile<WaterSplash>(ActorType.WaterSplash);
-                if (waterSplash != null)
-                    waterSplash.Position = Position + new Vector2(16, 0);
+                waterSplash?.Position = Position + new Vector2(16, 0);
                 break;
         }
 
@@ -190,15 +187,13 @@ public partial class Barrel
                 ActionId = Action.LandInWater;
 
                 BarrelSplash = Scene.CreateProjectile<BarrelSplash>(ActorType.BarrelSplash);
-                if (BarrelSplash != null)
-                    BarrelSplash.Position = new Vector2(Position.X + 4, InitialWaterPosition.Y - 10);
+                BarrelSplash?.Position = new Vector2(Position.X + 4, InitialWaterPosition.Y - 10);
 
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BigSplsh_SplshGen_Mix04, this);
                 break;
 
             case FsmAction.Step:
-                if (BarrelSplash != null)
-                    BarrelSplash.Position = Position;
+                BarrelSplash?.Position = Position;
 
                 if (IsActionFinished)
                 {
@@ -240,8 +235,7 @@ public partial class Barrel
 
                 Timer++;
 
-                if (BarrelSplash != null)
-                    BarrelSplash.Position = new Vector2(Position.X + 4, InitialWaterPosition.Y - 10);
+                BarrelSplash?.Position = new Vector2(Position.X + 4, InitialWaterPosition.Y - 10);
 
                 if (linkedMovement)
                 {
@@ -288,8 +282,7 @@ public partial class Barrel
 
                 Timer++;
 
-                if (BarrelSplash != null)
-                    BarrelSplash.Position = new Vector2(Position.X + 4, InitialWaterPosition.Y - 10);
+                BarrelSplash?.Position = new Vector2(Position.X + 4, InitialWaterPosition.Y - 10);
 
                 if (Scene.GetPhysicalType(physicalPos).IsSolid)
                 {
@@ -335,8 +328,7 @@ public partial class Barrel
 
                 Timer++;
 
-                if (BarrelSplash != null)
-                    BarrelSplash.Position = new Vector2(Position.X + 4, InitialWaterPosition.Y - 10);
+                BarrelSplash?.Position = new Vector2(Position.X + 4, InitialWaterPosition.Y - 10);
 
                 if (Scene.GetPhysicalType(physicalPos).IsSolid)
                 {
@@ -395,8 +387,7 @@ public partial class Barrel
                     BarrelSplash?.ProcessMessage(this, Message.Destroy);
 
                     WaterSplash waterSplash = Scene.CreateProjectile<WaterSplash>(ActorType.WaterSplash);
-                    if (waterSplash != null)
-                        waterSplash.Position = Position - new Vector2(0, 48);
+                    waterSplash?.Position = Position - new Vector2(0, 48);
 
                     if (Scene.MainActor.LinkedMovementActor == this)
                         Scene.MainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);

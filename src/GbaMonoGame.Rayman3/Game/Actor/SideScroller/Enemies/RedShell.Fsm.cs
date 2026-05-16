@@ -24,8 +24,7 @@ public partial class RedShell
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07, this);
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07, this);
 
-            if (explosion != null)
-                explosion.Position = Position - new Vector2(0, 32);
+            explosion?.Position = Position - new Vector2(0, 32);
 
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Combust1_Mix02, this);
             ProcessMessage(this, Message.Destroy);
@@ -183,8 +182,7 @@ public partial class RedShell
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07, this);
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07, this);
 
-                    if (explosion != null)
-                        explosion.Position = Position;
+                    explosion?.Position = Position;
 
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Combust1_Mix02, this);
                     ProcessMessage(this, Message.Destroy);
@@ -228,8 +226,7 @@ public partial class RedShell
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07, this);
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07, this);
 
-                    if (explosion != null)
-                        explosion.Position = Position;
+                    explosion?.Position = Position;
 
                     ProcessMessage(this, Message.Destroy);
                 }

@@ -67,8 +67,7 @@ public sealed partial class Keg : MovableActor
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07, this);
         }
 
-        if (explosion != null)
-            explosion.Position = Position - new Vector2(0, 8);
+        explosion?.Position = Position - new Vector2(0, 8);
     }
 
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
@@ -95,10 +94,9 @@ public sealed partial class Keg : MovableActor
                 Explosion explosion = Scene.CreateProjectile<Explosion>(ActorType.Explosion);
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07, this);
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07, this);
-                
-                if (explosion != null)
-                    explosion.Position = Position - new Vector2(0, 8);
-                
+
+                explosion?.Position = Position - new Vector2(0, 8);
+
                 State.MoveTo(_Fsm_Respawn);
                 return false;
 
