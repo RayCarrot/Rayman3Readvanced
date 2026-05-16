@@ -63,8 +63,9 @@ public sealed partial class Keg : MovableActor
 
         if (forcePlaySound || AnimatedObject.IsFramed)
         {
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07, this);
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07, this);
+            // Set object to explosion rather than 'this' since the keg resets its position when exploded
+            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07, explosion);
+            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07, explosion);
         }
 
         explosion?.Position = Position - new Vector2(0, 8);
