@@ -159,7 +159,7 @@ public static class Rom
             _platform = platform;
 
             // Create a serializer logger
-            ISerializerLogger serializerLogger = Engine.ActiveConfig.Debug.WriteSerializerLog
+            ISerializerLogger serializerLogger = Engine.Config.Active.Debug.WriteSerializerLog
                 ? new FileSerializerLogger(FileManager.GetDataFile(Paths.SerializerLogFileName))
                 : null;
 
@@ -182,7 +182,7 @@ public static class Rom
             };
 
             // Set the internal resolution if it's null
-            if (Engine.ActiveConfig.Tweaks.InternalGameResolution == null)
+            if (Engine.Config.Active.Tweaks.InternalGameResolution == null)
                 Engine.InternalGameResolution = OriginalResolution;
 
             _originalGameRenderContext = new FixedResolutionRenderContext(OriginalResolution);

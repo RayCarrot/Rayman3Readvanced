@@ -11,7 +11,7 @@ public class Rayman3CallBackSet : CallBackSet
         if (obj is not GameObject gameObject)
             return Vector2.Zero;
 
-        if (Engine.LocalConfig.Sound.ForceSoundPanning)
+        if (Engine.Config.Local.Sound.ForceSoundPanning)
         {
             // NOTE: The game doesn't do this, but it also never has audio panning or roll-off for Mode7 objects.
             if (obj is Mode7Actor mode7Actor)
@@ -35,7 +35,7 @@ public class Rayman3CallBackSet : CallBackSet
         if (obj is not GameObject gameObject)
             return Vector2.Zero;
 
-        if (Engine.LocalConfig.Sound.ForceSoundPanning)
+        if (Engine.Config.Local.Sound.ForceSoundPanning)
         {
             // NOTE: The game doesn't do this, but it also never has audio panning or roll-off for Mode7 objects.
             if (obj is Mode7Actor mode7Actor)

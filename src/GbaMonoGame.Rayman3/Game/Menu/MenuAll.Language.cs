@@ -111,8 +111,8 @@ public partial class MenuAll
                 }
 
                 Rayman3.Loc.SetLanguage(SelectedOption);
-                Engine.LocalConfig.Display.Language = Rayman3.Loc.Language.Locale;
-                Engine.SaveConfig();
+                Engine.Config.Local.Display.Language = Rayman3.Loc.Language.Locale;
+                Engine.Config.Save();
 
                 TransitionValue = 0;
                 SelectedOption = 0;

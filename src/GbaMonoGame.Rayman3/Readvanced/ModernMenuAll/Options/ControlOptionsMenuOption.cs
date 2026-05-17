@@ -53,8 +53,8 @@ public class ControlOptionsMenuOption : OptionsMenuOption
 
     private void UpdateKeyboardInput(Keys key, IReadOnlyList<OptionsMenuOption> options)
     {
-        Keys prevKey = Engine.LocalConfig.Controls.KeyboardControls[Input];
-        Engine.LocalConfig.Controls.KeyboardControls[Input] = key;
+        Keys prevKey = Engine.Config.Local.Controls.KeyboardControls[Input];
+        Engine.Config.Local.Controls.KeyboardControls[Input] = key;
 
         // Set as pressed key to avoid it being seen as just having pressed this input
         if (InputManager.TryGetGbaInput(Input, out GbaInput gbaInput))
@@ -65,9 +65,9 @@ public class ControlOptionsMenuOption : OptionsMenuOption
         {
             // Swap
             if (input != Input &&
-                Engine.LocalConfig.Controls.KeyboardControls[input] == key)
+                Engine.Config.Local.Controls.KeyboardControls[input] == key)
             {
-                Engine.LocalConfig.Controls.KeyboardControls[input] = prevKey;
+                Engine.Config.Local.Controls.KeyboardControls[input] = prevKey;
 
                 if (InputManager.TryGetGbaInput(input, out GbaInput gbaInput2))
                     JoyPad.Current.KeyStatus |= gbaInput2;
@@ -80,8 +80,8 @@ public class ControlOptionsMenuOption : OptionsMenuOption
 
     private void UpdateGamePadInput(Buttons button, IReadOnlyList<OptionsMenuOption> options)
     {
-        Buttons prevButton = Engine.LocalConfig.Controls.GamePadControls[Input];
-        Engine.LocalConfig.Controls.GamePadControls[Input] = button;
+        Buttons prevButton = Engine.Config.Local.Controls.GamePadControls[Input];
+        Engine.Config.Local.Controls.GamePadControls[Input] = button;
 
         // Set as pressed key to avoid it being seen as just having pressed this input
         if (InputManager.TryGetGbaInput(Input, out GbaInput gbaInput))
@@ -92,9 +92,9 @@ public class ControlOptionsMenuOption : OptionsMenuOption
         {
             // Swap
             if (input != Input && 
-                Engine.LocalConfig.Controls.GamePadControls[input] == button)
+                Engine.Config.Local.Controls.GamePadControls[input] == button)
             {
-                Engine.LocalConfig.Controls.GamePadControls[input] = prevButton;
+                Engine.Config.Local.Controls.GamePadControls[input] = prevButton;
 
                 if (InputManager.TryGetGbaInput(input, out GbaInput gbaInput2))
                     JoyPad.Current.KeyStatus |= gbaInput2;

@@ -20,7 +20,7 @@ public sealed partial class Electricity : InteractableActor
             left += 58;
 
             // The hitbox is misaligned in the original game as it doesn't account for the width here
-            if (Engine.ActiveConfig.Tweaks.FixBugs)
+            if (Engine.Config.Active.Tweaks.FixBugs)
                 left -= 12;
         }
         else if (InitialActionId == Action.DoubleActivated_Right)

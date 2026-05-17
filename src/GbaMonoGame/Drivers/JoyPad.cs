@@ -9,7 +9,7 @@ public static class JoyPad
 
     public static bool IsInReplayMode => Current.IsInReplayMode;
     public static bool IsReplayFinished => Current.IsReplayFinished;
-    public static bool AllowBufferedInputs => !Current.IsInReplayMode && Engine.ActiveConfig.Tweaks.UseInputBuffering;
+    public static bool AllowBufferedInputs => !Current.IsInReplayMode && Engine.Config.Active.Tweaks.UseInputBuffering;
 
     public static void SetReplayData(GbaInput[] replayData) => Current.SetReplayData(replayData);
 

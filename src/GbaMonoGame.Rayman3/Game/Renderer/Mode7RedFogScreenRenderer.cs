@@ -23,7 +23,7 @@ public class Mode7RedFogScreenRenderer : IScreenRenderer
 
         Vector2 res = screen.RenderContext.Resolution;
 
-        int colorAdd = Engine.LocalConfig.Display.DisableFlashingLights ? 0 : ColorAdd;
+        int colorAdd = Engine.Config.Local.Display.DisableFlashingLights ? 0 : ColorAdd;
 
         float currentScanline = 0;
         for (int i = 0; i < FogLines.Length; i++)

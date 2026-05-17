@@ -42,7 +42,7 @@ public class CircleTransitionScreenEffect : ScreenEffect
                 float width = (float)Math.Sqrt(Math.Pow(radius, 2) - Math.Pow(y, 2));
 
                 // The original game stores the width as an integer, losing precision
-                if (!Engine.ActiveConfig.Tweaks.VisualImprovements)
+                if (!Engine.Config.Active.Tweaks.VisualImprovements)
                     width = (int)width;
                 
                 float lineWidth = radius - width;

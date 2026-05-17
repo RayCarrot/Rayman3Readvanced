@@ -41,7 +41,7 @@ public class EchoingCaves_M2 : FrameSideScroller
         Scene.AddDialog(UserInfo, false, false);
 
         // Create pause dialog, but don't add yet
-        PauseDialog = Engine.ActiveConfig.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, !Rayman3.TimeAttack.IsActive) : new PauseDialog(Scene);
+        PauseDialog = Engine.Config.Active.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, !Rayman3.TimeAttack.IsActive) : new PauseDialog(Scene);
 
         // Custom for the time attack mode
         if (Rayman3.TimeAttack.IsActive)
@@ -124,12 +124,12 @@ public class EchoingCaves_M2 : FrameSideScroller
         if (time == LightningTime)
         {
             // N-Gage doesn't hide the background due to the brightness effect not being implemented
-            if (!Engine.LocalConfig.Display.DisableFlashingLights && 
-                (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage))
+            if (!Engine.Config.Local.Display.DisableFlashingLights && 
+                (Rom.Platform == Platform.GBA || Engine.Config.Active.Tweaks.UseGbaEffectsOnNGage))
                 bgScreen.IsEnabled = false;
 
             Gfx.FadeControl = new FadeControl(FadeMode.BrightnessIncrease);
-            Gfx.Fade = Engine.LocalConfig.Display.DisableFlashingLights
+            Gfx.Fade = Engine.Config.Local.Display.DisableFlashingLights
                 ? AlphaCoefficient.None
                 : AlphaCoefficient.Max;
             lightningScreen.Offset = new Vector2(Random.GetNumber(16), Random.GetNumber(96));
@@ -142,7 +142,7 @@ public class EchoingCaves_M2 : FrameSideScroller
         // Frame 1
         if (time == LightningTime + 1)
         {
-            Gfx.Fade = Engine.LocalConfig.Display.DisableFlashingLights 
+            Gfx.Fade = Engine.Config.Local.Display.DisableFlashingLights 
                 ? AlphaCoefficient.None 
                 : AlphaCoefficient.FromGbaValue(15);
             Gfx.ClearColor = Color.White;
@@ -152,7 +152,7 @@ public class EchoingCaves_M2 : FrameSideScroller
         // Frame 2-7
         if (time >= LightningTime + 2 && time < LightningTime + 8)
         {
-            Gfx.Fade = Engine.LocalConfig.Display.DisableFlashingLights 
+            Gfx.Fade = Engine.Config.Local.Display.DisableFlashingLights 
                 ? AlphaCoefficient.None
                 : AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
             Gfx.ClearColor = Color.White;
@@ -164,7 +164,7 @@ public class EchoingCaves_M2 : FrameSideScroller
         {
             bgScreen.IsEnabled = true;
             lightningScreen.IsEnabled = false;
-            Gfx.Fade = Engine.LocalConfig.Display.DisableFlashingLights 
+            Gfx.Fade = Engine.Config.Local.Display.DisableFlashingLights 
                 ? AlphaCoefficient.None
                 : AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
             Gfx.ClearColor = Color.White;
@@ -174,7 +174,7 @@ public class EchoingCaves_M2 : FrameSideScroller
         // Frame 16-30
         if (time >= LightningTime + 16 && time < LightningTime + 31)
         {
-            Gfx.Fade = Engine.LocalConfig.Display.DisableFlashingLights
+            Gfx.Fade = Engine.Config.Local.Display.DisableFlashingLights
                 ? AlphaCoefficient.None
                 : AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
             Gfx.ClearColor = Color.White;

@@ -80,7 +80,7 @@ public class AchievementsManager
         SaveGameManager.SaveAchievementsSave(Save);
 
         // Show popup
-        if (Engine.LocalConfig.Display.ShowAchievementPopups)
+        if (Engine.Config.Local.Display.ShowAchievementPopups)
             AchievementsPopupQueue.Enqueue(achievementId);
     }
 

@@ -31,7 +31,7 @@ public class CavesOfBadDreams : FrameSideScroller
         skullScreen.BlendMode = BlendMode.AlphaBlend;
         skullScreen.Alpha = AlphaCoefficient.None;
 
-        UseSinWaveEffect = Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage;
+        UseSinWaveEffect = Rom.Platform == Platform.GBA || Engine.Config.Active.Tweaks.UseGbaEffectsOnNGage;
 
         if (UseSinWaveEffect)
             skullScreen.IsEnabled = false;

@@ -43,7 +43,7 @@ public class FogDialog : Dialog
         // render each sprite one by one, making sure they don't overlap. If not then
         // we use the original rendering using the single-frame animation where they
         // overlap in some places.
-        Fog.ModernMode = Engine.ActiveConfig.Tweaks.VisualImprovements;
+        Fog.ModernMode = Engine.Config.Active.Tweaks.VisualImprovements;
 
         Vector2 camPos = Scene.Playfield.Camera.Position;
         int height = Scene.Playfield.PhysicalLayer.PixelHeight;

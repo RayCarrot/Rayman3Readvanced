@@ -36,7 +36,7 @@ public sealed partial class Lums : BaseActor
 
                     if (GameInfo.IsLumDead(LumId, GameInfo.MapId))
                     {
-                        if (!Engine.ActiveConfig.Tweaks.ShowCollectedLums)
+                        if (!Engine.Config.Active.Tweaks.ShowCollectedLums)
                         {
                             ProcessMessage(this, Message.Destroy);
                         }
@@ -62,7 +62,7 @@ public sealed partial class Lums : BaseActor
                 AnimatedObject.BasePaletteIndex = 1;
 
                 // Optionally fix allowing multiple white lums in a level, such as The Precipice 2
-                if (Engine.ActiveConfig.Tweaks.FixBugs)
+                if (Engine.Config.Active.Tweaks.FixBugs)
                 {
                     if (GameInfo.CollectedWhiteLums.Contains(InstanceId) && !RSMultiplayer.IsActive)
                         ProcessMessage(this, Message.Destroy);
@@ -101,7 +101,7 @@ public sealed partial class Lums : BaseActor
             {
                 LumId = GameInfo.GetGreenLumsId();
 
-                if (GameInfo.IsGreenLumDead(LumId) || Engine.ActiveConfig.Difficulty.NoCheckpoints)
+                if (GameInfo.IsGreenLumDead(LumId) || Engine.Config.Active.Difficulty.NoCheckpoints)
                     ProcessMessage(this, Message.Destroy);
             }
         }

@@ -59,7 +59,7 @@ public partial class GrolgothProjectile
                             if (IsVerticalOscillationMovingDown)
                             {
                                 // There's a bug where the final else condition never gets hit, making the bomb keep vertically shaking
-                                if (Engine.ActiveConfig.Tweaks.FixBugs)
+                                if (Engine.Config.Active.Tweaks.FixBugs)
                                 {
                                     if (Position.Y > VerticalOscillationOffset + 2)
                                     {

@@ -12,7 +12,7 @@ public class NGageAscension : FrameSideScroller
     {
         base.Init();
 
-        if (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage)
+        if (Rom.Platform == Platform.GBA || Engine.Config.Active.Tweaks.UseGbaEffectsOnNGage)
         {
             TgxTileLayer cloudsLayer = ((TgxPlayfield2D)Scene.Playfield).TileLayers[0];
             TextureScreenRenderer renderer = (TextureScreenRenderer)cloudsLayer.Screen.Renderer;
@@ -22,7 +22,7 @@ public class NGageAscension : FrameSideScroller
         // The red pirate enemies are enabled by default even though they're linked to a captor. This
         // is not normally visible in the original game due to the small screen width, but here it
         // becomes very noticeable in high resolution.
-        if (Engine.ActiveConfig.Tweaks.FixBugs)
+        if (Engine.Config.Active.Tweaks.FixBugs)
         {
             Scene.GetGameObject(77).ProcessMessage(this, Message.Destroy);
             Scene.GetGameObject(80).ProcessMessage(this, Message.Destroy);

@@ -163,7 +163,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.AddDialog(UserInfo, false, false);
 
         // Create pause dialog, but don't add yet
-        PauseDialog = Engine.ActiveConfig.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, !Rayman3.TimeAttack.IsActive) : new PauseDialog(Scene);
+        PauseDialog = Engine.Config.Active.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, !Rayman3.TimeAttack.IsActive) : new PauseDialog(Scene);
         
         // Custom for the time attack mode
         if (Rayman3.TimeAttack.IsActive)
@@ -256,7 +256,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
             CurrentStepAction = Step_TimeAttackScore_Init;
 
         // Custom cheat dialog
-        if (Engine.ActiveConfig.Tweaks.AllowCheatMenu && JoyPad.IsButtonJustPressed(GbaInput.Select) && 
+        if (Engine.Config.Active.Tweaks.AllowCheatMenu && JoyPad.IsButtonJustPressed(GbaInput.Select) && 
             JoyPad.IsButtonReleased(GbaInput.L) && JoyPad.IsButtonReleased(GbaInput.R))
         {
             GameTime.Pause();
@@ -264,13 +264,13 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
             CurrentStepAction = Step_CheatDialog;
         }
         // NOTE: These cheats are normally only in the game prototypes
-        else if (Engine.ActiveConfig.Tweaks.AllowPrototypeCheats)
+        else if (Engine.Config.Active.Tweaks.AllowPrototypeCheats)
         {
             if (JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.L))
             {
                 Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
 
-                if (Engine.LocalConfig.Tweaks.PlayCheatTriggerSound)
+                if (Engine.Config.Local.Tweaks.PlayCheatTriggerSound)
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
             }
 
@@ -278,7 +278,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
             {
                 GameInfo.EnableCheat(Scene, Cheat.Invulnerable);
 
-                if (Engine.LocalConfig.Tweaks.PlayCheatTriggerSound)
+                if (Engine.Config.Local.Tweaks.PlayCheatTriggerSound)
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
             }
         }
@@ -343,7 +343,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         }
 
         // NOTE: It's probably an oversight in the original game to still animate tiles even when paused
-        if (!Engine.ActiveConfig.Tweaks.FixBugs)
+        if (!Engine.Config.Active.Tweaks.FixBugs)
             Scene.Playfield.Step();
         
         Scene.AnimationPlayer.Execute();

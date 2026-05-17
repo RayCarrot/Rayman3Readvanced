@@ -118,11 +118,11 @@ public partial class Plum
                     // Set initial speed
                     if (ShouldSetInitialSpeed)
                     {
-                        if (mainActor.Speed.X < 0 && !Engine.ActiveConfig.Tweaks.LowerInitialPlumSpeed)
+                        if (mainActor.Speed.X < 0 && !Engine.Config.Active.Tweaks.LowerInitialPlumSpeed)
                         {
                             FloatSpeedX = -1;
                         }
-                        else if (mainActor.Speed.X > 0 && !Engine.ActiveConfig.Tweaks.LowerInitialPlumSpeed)
+                        else if (mainActor.Speed.X > 0 && !Engine.Config.Active.Tweaks.LowerInitialPlumSpeed)
                         {
                             FloatSpeedX = 1;
                         }
@@ -186,7 +186,7 @@ public partial class Plum
                 //       climb collision, which makes it play the wrong animation
                 // In the air
                 else if (groundType == PhysicalTypeValue.None || 
-                         (Engine.ActiveConfig.Tweaks.FixBugs && groundType == PhysicalTypeValue.Climb))
+                         (Engine.Config.Active.Tweaks.FixBugs && groundType == PhysicalTypeValue.Climb))
                 {
                     if (!DisableMessages)
                     {

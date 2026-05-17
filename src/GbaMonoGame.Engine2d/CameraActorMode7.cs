@@ -40,7 +40,7 @@ public abstract class CameraActorMode7 : CameraActor
         if (camDist >= cam.CameraFar)
             return false;
 
-        if (Engine.ActiveConfig.Tweaks.VisualImprovements)
+        if (Engine.Config.Active.Tweaks.VisualImprovements)
         {
             // The game doesn't do this, but it looks nicer if we fade in the objects as they enter the view
             animatedObject.BlendMode = BlendMode.AlphaBlend;

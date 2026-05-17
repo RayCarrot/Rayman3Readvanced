@@ -166,7 +166,7 @@ public static class Gfx
         if ((FadeControl.Flags & (FadeFlags)(1 << layer)) != 0)
             DrawFade(renderer);
 
-        if (Rom.IsLoaded && (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage) && _drawnSpriteLayers[layer])
+        if (Rom.IsLoaded && (Rom.Platform == Platform.GBA || Engine.Config.Active.Tweaks.UseGbaEffectsOnNGage) && _drawnSpriteLayers[layer])
         {
             // Draw sprites using depth stencil since they couldn't be drawn to the layer render target
             for (int j = 0; j < BackSprites.Count; j++)
@@ -213,7 +213,7 @@ public static class Gfx
 
     private static void DrawFade(GfxRenderer renderer)
     {
-        if ((!Rom.IsLoaded || Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage) && 
+        if ((!Rom.IsLoaded || Rom.Platform == Platform.GBA || Engine.Config.Active.Tweaks.UseGbaEffectsOnNGage) && 
             FadeControl.Mode != FadeMode.None &&
             Fade.Value is > 0 and <= 1)
         {
@@ -337,7 +337,7 @@ public static class Gfx
 
     public static void Draw(GfxRenderer renderer)
     {
-        if (Rom.IsLoaded && (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage))
+        if (Rom.IsLoaded && (Rom.Platform == Platform.GBA || Engine.Config.Active.Tweaks.UseGbaEffectsOnNGage))
         {
             // First draw the sprites to a render target for each layer. This is because alpha has to be managed
             // separately for sprites in order to match GBA behavior (i.e. sprites on the same layer should
@@ -350,7 +350,7 @@ public static class Gfx
         }
 
         // Draw clear color on GBA
-        if (Rom.IsLoaded && (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage))
+        if (Rom.IsLoaded && (Rom.Platform == Platform.GBA || Engine.Config.Active.Tweaks.UseGbaEffectsOnNGage))
         {
             renderer.BeginSpriteRender(new RenderOptions()
             {
@@ -368,7 +368,7 @@ public static class Gfx
             DrawFade(renderer);
 
         // Draw the screen effect on GBA if there is one
-        if (Rom.IsLoaded && (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage))
+        if (Rom.IsLoaded && (Rom.Platform == Platform.GBA || Engine.Config.Active.Tweaks.UseGbaEffectsOnNGage))
             ScreenEffect?.Draw(renderer);
 
         // Draw overlays

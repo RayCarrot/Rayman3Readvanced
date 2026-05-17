@@ -30,7 +30,7 @@ public static class Rayman3
         TimeAttack = new TimeAttackManager(timeAttackLevelInfos);
 
         // Initialize services
-        Loc.SetLanguage(Engine.LocalConfig.Display.Language);
+        Loc.SetLanguage(Engine.Config.Local.Display.Language);
         FrameManager.AddStepAction(Achievements.Step);
     }
 

@@ -290,7 +290,7 @@ public class Credits : Frame
             case TextMode.Wait:
                 int waitTime = 0;
 
-                if (Engine.ActiveConfig.Tweaks.FixBugs)
+                if (Engine.Config.Active.Tweaks.FixBugs)
                 {
                     waitTime = NamesCount * 30;
                 }
@@ -583,7 +583,7 @@ public class Credits : Frame
         {
             SoundEventsManager.StopAllSongs();
 
-            if (Engine.ActiveConfig.Tweaks.UseModernMainMenu)
+            if (Engine.Config.Active.Tweaks.UseModernMainMenu)
                 FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
             else
                 FrameManager.SetNextFrame(new MenuAll(CalledFromOptionsMenu ? InitialMenuPage.Options : InitialMenuPage.GameMode));

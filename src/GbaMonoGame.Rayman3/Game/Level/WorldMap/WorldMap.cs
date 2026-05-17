@@ -242,7 +242,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
         Point size = lightningRenderer.Texture.Bounds.Size;
 
-        if (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage)
+        if (Rom.Platform == Platform.GBA || Engine.Config.Active.Tweaks.UseGbaEffectsOnNGage)
         {
             // NOTE: The game only does this if ScrollX > 152, but we can ignore that
 
@@ -307,7 +307,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                 }
             }
 
-            if (!Engine.LocalConfig.Display.DisableFlashingLights)
+            if (!Engine.Config.Local.Display.DisableFlashingLights)
                 lightningSkyScreen.RenderOptions = lightningSkyScreen.RenderOptions with { PaletteTexture = LightningSkyPaletteTextures[value] };
 
             LightningValue++;
@@ -480,7 +480,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                     
                     GameInfo.Save(GameInfo.CurrentSlot);
 
-                    if (Engine.LocalConfig.Tweaks.PlayCheatTriggerSound)
+                    if (Engine.Config.Local.Tweaks.PlayCheatTriggerSound)
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
                 }
                 break;
@@ -509,7 +509,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                     
                     CheatValue = 0;
 
-                    if (Engine.LocalConfig.Tweaks.PlayCheatTriggerSound)
+                    if (Engine.Config.Local.Tweaks.PlayCheatTriggerSound)
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
                 }
                 break;
@@ -549,7 +549,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                  
                     GameInfo.Save(GameInfo.CurrentSlot);
 
-                    if (Engine.LocalConfig.Tweaks.PlayCheatTriggerSound)
+                    if (Engine.Config.Local.Tweaks.PlayCheatTriggerSound)
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
                 }
                 break;
@@ -609,7 +609,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
                     GameInfo.Save(GameInfo.CurrentSlot);
 
-                    if (Engine.LocalConfig.Tweaks.PlayCheatTriggerSound)
+                    if (Engine.Config.Local.Tweaks.PlayCheatTriggerSound)
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
                 }
                 break;
@@ -651,7 +651,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         WorldNameAlpha = 0;
         EnterWorldStep = 0;
 
-        if (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage)
+        if (Rom.Platform == Platform.GBA || Engine.Config.Active.Tweaks.UseGbaEffectsOnNGage)
             LightningCountdown = 0;
 
         FullWorldName.Alpha = AlphaCoefficient.FromGbaValue(WorldNameAlpha);
@@ -744,7 +744,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         ((TgxPlayfield2D)Scene.Playfield).RenderContext.MaxResolution = maxRes;
 
         // Create pause dialog, but don't add yet
-        PauseDialog = Engine.ActiveConfig.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, false) : new PauseDialog(Scene);
+        PauseDialog = Engine.Config.Active.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, false) : new PauseDialog(Scene);
 
         Scene.Init();
         Scene.Playfield.Step();
@@ -1120,7 +1120,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         Vector2 camDelta = Vector2.Zero;
 
         // Optionally increase animation speed to move faster
-        if (Engine.ActiveConfig.Tweaks.AllowRunOnWorldmap && 
+        if (Engine.Config.Active.Tweaks.AllowRunOnWorldmap && 
             CurrentMovement != WorldMapMovement.None && 
             JoyPad.IsButtonPressed(Rayman3Input.ActorAttack))
         {
@@ -1580,7 +1580,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             UserInfo.Draw(Scene.AnimationPlayer);
 
         // NOTE: It's probably an oversight in the original game to still animate tiles even when paused
-        if (!Engine.ActiveConfig.Tweaks.FixBugs)
+        if (!Engine.Config.Active.Tweaks.FixBugs)
             Scene.Playfield.Step();
 
         Scene.AnimationPlayer.Execute();

@@ -63,7 +63,7 @@ public abstract class GbaGame : Game
         Engine.GameWindow.SaveState();
 
         // Save config
-        Engine.SaveConfig();
+        Engine.Config.Save();
     }
 
     private void Rom_Loaded(object sender, EventArgs e)
@@ -71,7 +71,7 @@ public abstract class GbaGame : Game
         // Load the game
         LoadGame();
 
-        if (Engine.ActiveConfig.Debug.DebugModeEnabled)
+        if (Engine.Config.Active.Debug.DebugModeEnabled)
         {
             // Load the debug layout
             if (_debugLayout == null)
@@ -198,7 +198,7 @@ public abstract class GbaGame : Game
         Engine.LoadConfig();
 
         // Create the logger window now so we can start receiving logs during initialization
-        if (Engine.ActiveConfig.Debug.DebugModeEnabled)
+        if (Engine.Config.Active.Debug.DebugModeEnabled)
             _loggerWindow = new LoggerDebugWindow();
 
         // Load the engine
@@ -208,13 +208,13 @@ public abstract class GbaGame : Game
         FrameManager.SetNextFrame(CreateInitialFrame());
 
         // Apply the window state
-        Engine.GameWindow.VSync = Engine.LocalConfig.Display.VSync;
+        Engine.GameWindow.VSync = Engine.Config.Local.Display.VSync;
         Engine.GameWindow.ApplyState();
 
         // Load the renderer
         _gfxRenderer = new GfxRenderer(GraphicsDevice);
 
-        if (Engine.ActiveConfig.Debug.DebugModeEnabled)
+        if (Engine.Config.Active.Debug.DebugModeEnabled)
             _debugGameRenderTarget = new GbaRenderTarget(GraphicsDevice, GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
     }
 
@@ -225,7 +225,7 @@ public abstract class GbaGame : Game
         InputManager.Update();
 
         // Toggle full-screen
-        if (Engine.LocalConfig.Display.AltEnterToggle is { } altEnterToggle && 
+        if (Engine.Config.Local.Display.AltEnterToggle is { } altEnterToggle && 
             InputManager.IsKeyPressed(Keys.LeftAlt) && InputManager.IsKeyJustPressed(Keys.Enter))
         {
             Engine.GameWindow.DisplayMode = Engine.GameWindow.DisplayMode switch
@@ -266,7 +266,7 @@ public abstract class GbaGame : Game
             Pause();
         }
 
-        if (Engine.ActiveConfig.Debug.DebugModeEnabled)
+        if (Engine.Config.Active.Debug.DebugModeEnabled)
         {
             // Toggle debug mode
             if (InputManager.IsInputJustPressed(Input.Debug_ToggleDebugMode) && _debugLayout != null)
@@ -328,12 +328,12 @@ public abstract class GbaGame : Game
 
         if (!DebugMode && 
             (Engine.GameWindow.GetResolution() != _prevWindowResolution || 
-             Engine.ActiveConfig.Tweaks.InternalGameResolution != _prevInternalResolution || 
-             Engine.LocalConfig.Display.LockWindowAspectRatio != _prevLockWindowAspectRatio))
+             Engine.Config.Active.Tweaks.InternalGameResolution != _prevInternalResolution || 
+             Engine.Config.Local.Display.LockWindowAspectRatio != _prevLockWindowAspectRatio))
         {
             Point newRes = Engine.GameWindow.GetResolution();
             
-            if (Engine.LocalConfig.Display.LockWindowAspectRatio && Engine.GameWindow.IsResizable())
+            if (Engine.Config.Local.Display.LockWindowAspectRatio && Engine.GameWindow.IsResizable())
             {
                 Vector2 resolution = Engine.InternalGameResolution;
 
@@ -346,7 +346,7 @@ public abstract class GbaGame : Game
 
             _prevWindowResolution = newRes;
             _prevInternalResolution = Engine.InternalGameResolution;
-            _prevLockWindowAspectRatio = Engine.LocalConfig.Display.LockWindowAspectRatio;
+            _prevLockWindowAspectRatio = Engine.Config.Local.Display.LockWindowAspectRatio;
 
             Engine.GameViewPort.Resize(Engine.GameWindow.GetResolution().ToVector2());
         }

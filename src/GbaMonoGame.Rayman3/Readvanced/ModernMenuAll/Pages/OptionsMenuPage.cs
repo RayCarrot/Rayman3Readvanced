@@ -215,7 +215,7 @@ public class OptionsMenuPage : MenuPage
     protected override void UnInit()
     {
         // Save
-        Engine.SaveConfig();
+        Engine.Config.Save();
     }
 
     protected override void Draw(AnimationPlayer animationPlayer)

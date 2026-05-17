@@ -42,7 +42,7 @@ public class WoodLight_M1 : FrameSideScroller
             renderer = (TextureScreenRenderer)multiScreenRenderer.Sections[0].ScreenRenderer;
         else
             renderer = (TextureScreenRenderer)cloudsLayer.Screen.Renderer;
-        if (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage)
+        if (Rom.Platform == Platform.GBA || Engine.Config.Active.Tweaks.UseGbaEffectsOnNGage)
         {
             cloudsLayer.Screen.Renderer = new LevelCloudsRenderer(renderer.Texture, [32, 120, 227]);
         }

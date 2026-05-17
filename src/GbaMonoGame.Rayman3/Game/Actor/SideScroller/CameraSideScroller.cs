@@ -234,7 +234,7 @@ public sealed partial class CameraSideScroller : CameraActor2D
                 return true;
 
             case Message.Cam_Shake:
-                if (!Engine.LocalConfig.Display.DisableCameraShake)
+                if (!Engine.Config.Local.Display.DisableCameraShake)
                 {
                     ShakeLength = (int)param;
                     HasStartedShake = false;

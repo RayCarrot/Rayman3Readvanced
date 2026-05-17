@@ -16,7 +16,7 @@ public class MissileRace1 : FrameSingleMode7
         base.Init();
 
         // Custom textbox for strafing hint
-        if (Engine.ActiveConfig.Tweaks.ShowAdditionalGameplayHints)
+        if (Engine.Config.Active.Tweaks.ShowAdditionalGameplayHints)
         {
             TextBox = new(Scene);
             Scene.AddDialog(TextBox, false, false);

@@ -330,7 +330,7 @@ public partial class MenuAll
                     StartEraseMode = StartEraseMode.TransitionInSelection;
 
                     // Optionally fix a bug of the wrong animation being shown after erasing a slot
-                    if (SelectedStartEraseOption == 1 || !Engine.LocalConfig.Tweaks.FixBugs)
+                    if (SelectedStartEraseOption == 1 || !Engine.Config.Local.Tweaks.FixBugs)
                         Anims.StartEraseSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2;
                     else
                         Anims.StartEraseSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2 + 1;

@@ -108,7 +108,7 @@ public static class FrameManager
         }
 
         // Check if the game was deactivated (window losing focus) and if it should auto-pause
-        if (Engine.ActiveConfig.Tweaks.PauseOnDeactivation && Engine.GbaGame.IsActive != WasActive)
+        if (Engine.Config.Active.Tweaks.PauseOnDeactivation && Engine.GbaGame.IsActive != WasActive)
         {
             WasActive = Engine.GbaGame.IsActive;
             if (!Engine.GbaGame.IsActive && !RSMultiplayer.IsActive && !Frame.Current.BlockAutoPause)

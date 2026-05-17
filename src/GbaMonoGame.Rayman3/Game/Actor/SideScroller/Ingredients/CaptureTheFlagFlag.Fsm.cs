@@ -40,7 +40,7 @@ public partial class CaptureTheFlagFlag
 
                 // Optionally fix the palette being wrong
                 SavedPaletteIndex = AnimatedObject.BasePaletteIndex;
-                if (Engine.ActiveConfig.Tweaks.FixBugs)
+                if (Engine.Config.Active.Tweaks.FixBugs)
                 {
                     if (MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Solo)
                     {

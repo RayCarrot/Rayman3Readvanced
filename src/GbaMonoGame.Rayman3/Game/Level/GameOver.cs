@@ -219,7 +219,7 @@ public class GameOver : Frame
         Timer = 0x3c;
 
         // NOTE: Since there's no fade-in it means it will take 1 frame for the sprites to show. Optionally fix by rendering now.
-        if (Engine.ActiveConfig.Tweaks.FixBugs)
+        if (Engine.Config.Active.Tweaks.FixBugs)
         {
             AnimationPlayer.Play(Butterfly1);
             AnimationPlayer.Play(Butterfly2);
@@ -345,7 +345,7 @@ public class GameOver : Frame
             case GameOverMode.ReturnToMenu:
                 if (!TransitionsFX.IsFadingOut)
                 {
-                    if (Engine.ActiveConfig.Tweaks.UseModernMainMenu)
+                    if (Engine.Config.Active.Tweaks.UseModernMainMenu)
                         FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
                     else
                         FrameManager.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));

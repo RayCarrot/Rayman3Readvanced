@@ -37,7 +37,7 @@ public partial class MurfyStone
                             GameObject murfy = Scene.GetGameObject(MurfyId.Value);
 
                             // The horizontal resolution is incorrectly used here
-                            if (Engine.ActiveConfig.Tweaks.FixBugs)
+                            if (Engine.Config.Active.Tweaks.FixBugs)
                                 murfy.Position = murfy.Position with { Y = Position.Y - Scene.Resolution.Y };
                             else
                                 murfy.Position = murfy.Position with { Y = Position.Y - Scene.Resolution.X };

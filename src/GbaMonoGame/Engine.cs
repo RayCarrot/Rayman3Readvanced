@@ -9,22 +9,7 @@ public static class Engine
 {
     #region Properties
 
-    /// <summary>
-    /// The full, local, game config. Avoid using this to read the config as the <see cref="ActiveConfig"/>
-    /// may be overriden and temporarily contain a different config.
-    /// </summary>
-    public static LocalGameConfig LocalConfig { get; private set; }
-
-    /// <summary>
-    /// The currently active game config. This is either the same as <see cref="LocalConfig"/> or a
-    /// temporarily overriden config.
-    /// </summary>
-    public static ActiveGameConfig ActiveConfig { get; private set; }
-
-    /// <summary>
-    /// Indicates if the game config has been overriden.
-    /// </summary>
-    public static bool IsConfigOverrided { get; private set; }
+    public static ConfigManager Config { get; private set; }
 
     public static bool IsLoading { get; set; }
 
@@ -85,74 +70,19 @@ public static class Engine
 
     public static void LoadConfig()
     {
-        string filePath = FileManager.GetDataFile(Paths.ConfigFileName);
-        LocalGameConfig config = new();
-
-        try
-        {
-            config.Serialize(new IniDeserializer(filePath));
-        }
-        catch (Exception ex)
-        {
-            // Recreate and serialize without a file source to reset to default values
-            config = new LocalGameConfig();
-            config.Serialize(new IniDeserializer(null));
-
-            MessageManager.EnqueueExceptionMessage(
-                ex: ex,
-                text: $"An error occurred when reading the saved game options.{Environment.NewLine}All options will be reset to their default values.", 
-                header: "Error reading game options");
-        }
-
-        LocalConfig = config;
-
-        ActiveConfig = new ActiveGameConfig(LocalConfig.Tweaks, LocalConfig.Difficulty, LocalConfig.Debug);
-        IsConfigOverrided = false;
+        Config = new ConfigManager();
 
         // If the internal resolution is null then we default to the original resolution
-        if (config.Tweaks.InternalGameResolution == null)
+        if (Config.Active.Tweaks.InternalGameResolution == null)
             InternalGameResolution = Rom.IsLoaded ? Rom.OriginalResolution : Resolution.Modern;
         else
-            InternalGameResolution = config.Tweaks.InternalGameResolution.Value;
-    }
-
-    public static void SaveConfig()
-    {
-        string filePath = FileManager.GetDataFile(Paths.ConfigFileName);
-        IniSerializer serializer = new();
-        LocalConfig.Serialize(serializer);
-
-        try
-        {
-            serializer.Save(filePath);
-        }
-        catch (Exception ex)
-        {
-            MessageManager.EnqueueExceptionMessage(
-                ex: ex, 
-                text: "An error occurred when saving the game options.", 
-                header: "Error reading game options");
-        }
-    }
-
-    public static void OverrideActiveConfig(ActiveGameConfig activeGameConfig)
-    {
-        ActiveConfig = activeGameConfig;
-        IsConfigOverrided = true;
-        UpdateInternalGameResolution();
-    }
-
-    public static void RestoreActiveConfig()
-    {
-        ActiveConfig = new ActiveGameConfig(LocalConfig.Tweaks, LocalConfig.Difficulty, LocalConfig.Debug);
-        IsConfigOverrided = false;
-        UpdateInternalGameResolution();
+            InternalGameResolution = Config.Active.Tweaks.InternalGameResolution.Value;
     }
 
     public static void UpdateInternalGameResolution()
     {
-        if (InternalGameResolution != ActiveConfig.Tweaks.InternalGameResolution)
-            SetInternalGameResolution(ActiveConfig.Tweaks.InternalGameResolution!.Value);
+        if (InternalGameResolution != Config.Active.Tweaks.InternalGameResolution)
+            SetInternalGameResolution(Config.Active.Tweaks.InternalGameResolution!.Value);
     }
 
     public static void SetInternalGameResolution(Vector2 resolution)

@@ -88,7 +88,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         UserInfo = new UserInfoMulti2D(Scene);
         Scene.AddDialog(UserInfo, false, false);
 
-        PauseDialog = Engine.ActiveConfig.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, false) : new PauseDialog(Scene);
+        PauseDialog = Engine.Config.Active.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, false) : new PauseDialog(Scene);
 
         Scene.Init();
 
@@ -103,7 +103,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
             Gfx.GetScreen(1).IsEnabled = false;
 
         // Optionally fix broken collision
-        if (Engine.ActiveConfig.Tweaks.FixBugs && Rom.Platform == Platform.NGage && GameInfo.MapId == MapId.NGageMulti_CaptureTheFlagTeamPlayer)
+        if (Engine.Config.Active.Tweaks.FixBugs && Rom.Platform == Platform.NGage && GameInfo.MapId == MapId.NGageMulti_CaptureTheFlagTeamPlayer)
         {
             byte[] collisionMap = new byte[Scene.Playfield.PhysicalLayer.CollisionMap.Length];
             Array.Copy(Scene.Playfield.PhysicalLayer.CollisionMap, collisionMap, Scene.Playfield.PhysicalLayer.CollisionMap.Length);
@@ -186,7 +186,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
                         }
                         else
                         {
-                            if (Engine.ActiveConfig.Tweaks.UseModernMainMenu)
+                            if (Engine.Config.Active.Tweaks.UseModernMainMenu)
                                 FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.Multiplayer));
                             else
                                 FrameManager.SetNextFrame(new MenuAll(InitialMenuPage.Multiplayer));
@@ -232,7 +232,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
             InitialMenuPage menuPage = Rom.Platform == Platform.GBA && EndOfFrame
                 ? InitialMenuPage.Multiplayer
                 : InitialMenuPage.MultiplayerLostConnection;
-            if (Engine.ActiveConfig.Tweaks.UseModernMainMenu)
+            if (Engine.Config.Active.Tweaks.UseModernMainMenu)
                 FrameManager.SetNextFrame(new ModernMenuAll(menuPage));
             else
                 FrameManager.SetNextFrame(new MenuAll(menuPage));
@@ -316,7 +316,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         UserInfo.Draw(Scene.AnimationPlayer);
 
         // NOTE: It's probably an oversight in the original game to still animate tiles even when paused
-        if (!Engine.ActiveConfig.Tweaks.FixBugs)
+        if (!Engine.Config.Active.Tweaks.FixBugs)
             Scene.Playfield.Step();
 
         Scene.AnimationPlayer.Execute();

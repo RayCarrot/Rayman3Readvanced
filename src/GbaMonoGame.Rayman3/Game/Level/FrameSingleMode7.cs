@@ -71,7 +71,7 @@ public class FrameSingleMode7 : FrameMode7
 
         // NOTE: The game doesn't show the fog while transitioning, but we can do that
         bool showFog = (!TransitionsFX.IsFadingIn && !TransitionsFX.IsFadingOut) ||
-                       Engine.ActiveConfig.Tweaks.VisualImprovements;
+                       Engine.Config.Active.Tweaks.VisualImprovements;
         if (showFog && !IsPaused())
         {
             FogScreen.IsEnabled = true;

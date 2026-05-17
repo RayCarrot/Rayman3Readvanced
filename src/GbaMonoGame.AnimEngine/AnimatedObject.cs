@@ -378,7 +378,7 @@ public class AnimatedObject : AObject
         // NOTE: The game doesn't update this if in delay mode, however that causes issues and should probably be considered
         //       a bug. Cause the object's position might still change even though the animation frame is the same! It's most
         //       noticeable in boss fights where there's a frame or two where a sprite is missing when they move onto the screen.
-        if (!IsDelayMode || Engine.ActiveConfig.Tweaks.FixBugs)
+        if (!IsDelayMode || Engine.Config.Active.Tweaks.FixBugs)
         {
             // Get the wrap box
             Box wrapBox = GetAnimationWrapBox(CurrentAnimation);

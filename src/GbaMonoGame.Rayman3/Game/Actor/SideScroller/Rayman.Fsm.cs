@@ -161,7 +161,7 @@ public partial class Rayman
         {
             if (RSMultiplayer.IsActive)
                 State.MoveTo(_Fsm_MultiplayerDying);
-            else if (!Engine.ActiveConfig.Difficulty.NoInstaKills || HitPoints <= 2)
+            else if (!Engine.Config.Active.Difficulty.NoInstaKills || HitPoints <= 2)
                 State.MoveTo(_Fsm_Dying);
             else
                 State.MoveTo(_Fsm_RespawnDeath);
@@ -294,7 +294,7 @@ public partial class Rayman
                         NextActionId = null;
 
                         // Optionally fix bug of grimace sound continuing to play when looking up
-                        if (Engine.ActiveConfig.Tweaks.FixBugs)
+                        if (Engine.Config.Active.Tweaks.FixBugs)
                             PlaySound(Rayman3SoundEvent.Stop__Grimace1_Mix04);
                     }
                 }
@@ -839,7 +839,7 @@ public partial class Rayman
                     ActionId = IsFacingRight ? Action.Jump_Right : Action.Jump_Left;
 
                     // Optionally don't play when entering level curtain
-                    if (!Engine.ActiveConfig.Tweaks.FixBugs || !IsInFrontOfLevelCurtain)
+                    if (!Engine.Config.Active.Tweaks.FixBugs || !IsInFrontOfLevelCurtain)
                         PlaySound(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01);
                 }
 
@@ -1965,7 +1965,7 @@ public partial class Rayman
                          Action.Hang_EndMove_Right or Action.Hang_EndMove_Left)
                 {
                     // NOTE: Probably a bug in the GBA code since this causes the sound to play twice. This was fixed for N-Gage.
-                    if (Rom.Platform == Platform.GBA && !Engine.ActiveConfig.Tweaks.FixBugs)
+                    if (Rom.Platform == Platform.GBA && !Engine.Config.Active.Tweaks.FixBugs)
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Charge_Mix05, this);
 
                     ActionId = IsFacingRight ? Action.Hang_ChargeAttack_Right : Action.Hang_ChargeAttack_Left;
@@ -2023,7 +2023,7 @@ public partial class Rayman
                 }
 
                 // Optionally fix sliding sound keep playing when attack
-                if (Engine.ActiveConfig.Tweaks.FixBugs)
+                if (Engine.Config.Active.Tweaks.FixBugs)
                 {
                     if (IsSliding)
                     {
@@ -2233,7 +2233,7 @@ public partial class Rayman
                 }
 
                 // The N-Gage version fixes a soft-lock that can happen if attacking while shocked
-                if ((Rom.Platform == Platform.NGage || Engine.ActiveConfig.Tweaks.FixBugs) &&
+                if ((Rom.Platform == Platform.NGage || Engine.Config.Active.Tweaks.FixBugs) &&
                     ActionId is Action.Damage_Shock_Right or Action.Damage_Shock_Left)
                 {
                     ActionId = IsFacingRight ? Action.Damage_Hit_Right : Action.Damage_Hit_Left;
@@ -2358,7 +2358,7 @@ public partial class Rayman
                     return false;
 
                 // Change direction
-                if (Engine.ActiveConfig.Tweaks.VersatileWalljumps)
+                if (Engine.Config.Active.Tweaks.VersatileWalljumps)
                 {
                     if (IsDirectionalButtonPressed(Rayman3Input.ActorLeft) && IsFacingRight)
                         AnimatedObject.FlipX = true;
@@ -2366,7 +2366,7 @@ public partial class Rayman
                         AnimatedObject.FlipX = false;
                 }
 
-                if (Engine.ActiveConfig.Tweaks.VersatileWalljumps)
+                if (Engine.Config.Active.Tweaks.VersatileWalljumps)
                 {
                     // Allow attacking while falling
                     AttackInTheAir();
@@ -2385,7 +2385,7 @@ public partial class Rayman
                         SetWallJumpAction(Action.WallJump_Fall);
                 }
 
-                if (Engine.ActiveConfig.Tweaks.VersatileWalljumps && MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump))
+                if (Engine.Config.Active.Tweaks.VersatileWalljumps && MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump))
                 {
                     State.MoveTo(_Fsm_Helico);
                     return false;
@@ -2497,7 +2497,7 @@ public partial class Rayman
                     return false;
 
                 // Change direction
-                if (Engine.ActiveConfig.Tweaks.VersatileWalljumps)
+                if (Engine.Config.Active.Tweaks.VersatileWalljumps)
                 {
                     // Allow attacking in the air
                     AttackInTheAir();
@@ -2525,7 +2525,7 @@ public partial class Rayman
                     return false;
                 }
 
-                if (Engine.ActiveConfig.Tweaks.VersatileWalljumps && MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump))
+                if (Engine.Config.Active.Tweaks.VersatileWalljumps && MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump))
                 {
                     State.MoveTo(_Fsm_Helico);
                     return false;
@@ -3033,7 +3033,7 @@ public partial class Rayman
                         if (PreviousXSpeed < 80)
                         {
                             // NOTE: Bug in the original game where it uses the wrong variable!
-                            int value = Engine.ActiveConfig.Tweaks.FixBugs ? AnimatedObject.CurrentFrame : (int)ActionId;
+                            int value = Engine.Config.Active.Tweaks.FixBugs ? AnimatedObject.CurrentFrame : (int)ActionId;
                             if (value is >= 10 and <= 14 or >= 27 and <= 34)
                                 PreviousXSpeed += 4;
                             else
@@ -3079,7 +3079,7 @@ public partial class Rayman
                         if (PreviousXSpeed < 80)
                         {
                             // NOTE: Bug in the original game where it uses the wrong variable!
-                            int value = Engine.ActiveConfig.Tweaks.FixBugs ? AnimatedObject.CurrentFrame : (int)ActionId;
+                            int value = Engine.Config.Active.Tweaks.FixBugs ? AnimatedObject.CurrentFrame : (int)ActionId;
                             if (value is >= 10 and <= 14 or >= 27 and <= 34)
                                 PreviousXSpeed += 4;
                             else
@@ -3445,7 +3445,7 @@ public partial class Rayman
                 if (IsDirectionalButtonReleased(Rayman3Input.ActorLeft) && IsDirectionalButtonReleased(Rayman3Input.ActorRight) &&
                     // NOTE: There is a bug here where if you've just started falling then the attached object is null
                     //       which will cause the next state to crash due to a null pointer!
-                    !(Engine.ActiveConfig.Tweaks.FixBugs && AttachedObject == null))
+                    !(Engine.Config.Active.Tweaks.FixBugs && AttachedObject == null))
                 {
                     State.MoveTo(_Fsm_CarryObject);
                     return false;
@@ -3614,7 +3614,7 @@ public partial class Rayman
 
                 // If you survive from the keg before it finishes the sequence (such as by crashing into a bomb) then
                 // the DropObject value won't get reset and stay true, making you unable to grab onto a keg after this.
-                if (Engine.ActiveConfig.Tweaks.FixBugs || Engine.ActiveConfig.Difficulty.NoInstaKills)
+                if (Engine.Config.Active.Tweaks.FixBugs || Engine.Config.Active.Difficulty.NoInstaKills)
                     DropObject = false;
                 break;
 
@@ -4145,7 +4145,7 @@ public partial class Rayman
                             break;
 
                         // NOTE: The original game doesn't do this, meaning that the transition would play twice!
-                        case MapId.GameCube_Bonus3 when Engine.ActiveConfig.Tweaks.FixBugs:
+                        case MapId.GameCube_Bonus3 when Engine.Config.Active.Tweaks.FixBugs:
                             // Do nothing - FrameSideScrollerGCN.FadeOut handles it
                             break;
 
@@ -4351,7 +4351,7 @@ public partial class Rayman
 
                 // NOTE: The original code is bugged here - it checks if the flag is false instead of true! This causes it to not work. The flag
                 // is meant to be true if you started out climbing, and then set to false after 25 frames, allowing you to climb again.
-                if (Engine.ActiveConfig.Tweaks.FixBugs)
+                if (Engine.Config.Active.Tweaks.FixBugs)
                 {
                     if (TempFlag && Timer > 25)
                         TempFlag = false;
@@ -4460,7 +4460,7 @@ public partial class Rayman
                     ((SanctuaryOfRockAndLava)Frame.Current).FadeOut();
                 }
                 // NOTE: The original game doesn't do this, meaning that the transition would play twice!
-                else if (GameInfo.MapId == MapId.GameCube_Bonus3 && Engine.ActiveConfig.Tweaks.FixBugs)
+                else if (GameInfo.MapId == MapId.GameCube_Bonus3 && Engine.Config.Active.Tweaks.FixBugs)
                 {
                     // Do nothing - FrameSideScrollerGCN.FadeOut handles it
                 }

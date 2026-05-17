@@ -60,12 +60,12 @@ public class GbaGameWindow
             if (DisplayMode == DisplayMode.Windowed)
                 return GetResolution();
             else
-                return Engine.LocalConfig.Display.WindowResolution;
+                return Engine.Config.Local.Display.WindowResolution;
         }
         set
         {
-            Engine.LocalConfig.Display.WindowResolution = value;
-            Engine.LocalConfig.Display.WindowIsMaximized = false;
+            Engine.Config.Local.Display.WindowResolution = value;
+            Engine.Config.Local.Display.WindowIsMaximized = false;
 
             if (DisplayMode == DisplayMode.Windowed)
             {
@@ -91,11 +91,11 @@ public class GbaGameWindow
             if (DisplayMode == DisplayMode.Fullscreen)
                 return GetResolution();
             else
-                return Engine.LocalConfig.Display.FullscreenResolution;
+                return Engine.Config.Local.Display.FullscreenResolution;
         }
         set
         {
-            Engine.LocalConfig.Display.FullscreenResolution = value;
+            Engine.Config.Local.Display.FullscreenResolution = value;
 
             if (DisplayMode == DisplayMode.Fullscreen)
                 ApplyState();
@@ -121,7 +121,7 @@ public class GbaGameWindow
         set
         {
             SaveState();
-            Engine.LocalConfig.Display.DisplayMode = value;
+            Engine.Config.Local.Display.DisplayMode = value;
             ApplyState();
         }
     }
@@ -214,43 +214,43 @@ public class GbaGameWindow
         {
             if (_graphics.HardwareModeSwitch)
             {
-                Engine.LocalConfig.Display.DisplayMode = DisplayMode.Fullscreen;
-                Engine.LocalConfig.Display.FullscreenResolution = GetResolution();
+                Engine.Config.Local.Display.DisplayMode = DisplayMode.Fullscreen;
+                Engine.Config.Local.Display.FullscreenResolution = GetResolution();
             }
             else
             {
-                Engine.LocalConfig.Display.DisplayMode = DisplayMode.Borderless;
+                Engine.Config.Local.Display.DisplayMode = DisplayMode.Borderless;
             }
         }
         else
         {
-            Engine.LocalConfig.Display.DisplayMode = DisplayMode.Windowed;
-            Engine.LocalConfig.Display.WindowPosition = _window.Position;
-            Engine.LocalConfig.Display.WindowResolution = GetResolution();
+            Engine.Config.Local.Display.DisplayMode = DisplayMode.Windowed;
+            Engine.Config.Local.Display.WindowPosition = _window.Position;
+            Engine.Config.Local.Display.WindowResolution = GetResolution();
 
 #if WINDOWSDX
-            Engine.LocalConfig.Display.WindowIsMaximized = _form.WindowState == FormWindowState.Maximized;
+            Engine.Config.Local.Display.WindowIsMaximized = _form.WindowState == FormWindowState.Maximized;
 #elif DESKTOPGL
             SDL_WindowFlags flags = GetWindowFlags();
-            Engine.LocalConfig.Display.WindowIsMaximized = (flags & SDL_WindowFlags.SDL_WINDOW_MAXIMIZED) != 0;
+            Engine.Config.Local.Display.WindowIsMaximized = (flags & SDL_WindowFlags.SDL_WINDOW_MAXIMIZED) != 0;
 #endif
         }
     }
 
     public void ApplyState()
     {
-        switch (Engine.LocalConfig.Display.DisplayMode)
+        switch (Engine.Config.Local.Display.DisplayMode)
         {
             case DisplayMode.Windowed:
-                SetResolution(Engine.LocalConfig.Display.WindowResolution, DisplayMode.Windowed);
+                SetResolution(Engine.Config.Local.Display.WindowResolution, DisplayMode.Windowed);
 
-                if (Engine.LocalConfig.Display.WindowPosition != Point.Zero)
-                    _window.Position = Engine.LocalConfig.Display.WindowPosition;
+                if (Engine.Config.Local.Display.WindowPosition != Point.Zero)
+                    _window.Position = Engine.Config.Local.Display.WindowPosition;
 
 #if WINDOWSDX
-                _form.WindowState = Engine.LocalConfig.Display.WindowIsMaximized ? FormWindowState.Maximized : FormWindowState.Normal;
+                _form.WindowState = Engine.Config.Local.Display.WindowIsMaximized ? FormWindowState.Maximized : FormWindowState.Normal;
 #elif DESKTOPGL
-                if (Engine.LocalConfig.Display.WindowIsMaximized)
+                if (Engine.Config.Local.Display.WindowIsMaximized)
                     SDL_MaximizeWindow(_sdlWindowHandle);
                 else
                     SDL_RestoreWindow(_sdlWindowHandle);
@@ -258,7 +258,7 @@ public class GbaGameWindow
                 break;
 
             case DisplayMode.Fullscreen:
-                SetResolution(Engine.LocalConfig.Display.FullscreenResolution, DisplayMode.Fullscreen);
+                SetResolution(Engine.Config.Local.Display.FullscreenResolution, DisplayMode.Fullscreen);
                 break;
 
             case DisplayMode.Borderless:

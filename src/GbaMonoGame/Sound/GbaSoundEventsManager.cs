@@ -332,7 +332,7 @@ public class GbaSoundEventsManager : SoundEventsManager
 
         // Optionally force roll-off and pan
         Debug.Assert(songInstance.ReadvancedObj == null || !songInstance.IsMusic, "The Readvanced object is set for a music sound");
-        bool forceRollOffAndPan = Engine.LocalConfig.Sound.ForceSoundPanning && songInstance.ReadvancedObj != null && !songInstance.IsMusic;
+        bool forceRollOffAndPan = Engine.Config.Local.Sound.ForceSoundPanning && songInstance.ReadvancedObj != null && !songInstance.IsMusic;
         
         bool enableRollOff = songInstance.IsRollOffEnabled || forceRollOffAndPan;
         bool enablePan = songInstance.IsPanEnabled || forceRollOffAndPan;
@@ -358,9 +358,9 @@ public class GbaSoundEventsManager : SoundEventsManager
         vol *= GetVolumeForType(songInstance.SoundType) / SoundEngineInterface.MaxVolume;
 
         if (songInstance.SoundType == SoundType.Sfx)
-            vol *= Engine.LocalConfig.Sound.SfxVolume;
+            vol *= Engine.Config.Local.Sound.SfxVolume;
         else if (songInstance.SoundType == SoundType.Music)
-            vol *= Engine.LocalConfig.Sound.MusicVolume;
+            vol *= Engine.Config.Local.Sound.MusicVolume;
 
         if (songInstance.Volume != vol || songInstance.Pan != pan)
         {
@@ -518,7 +518,7 @@ public class GbaSoundEventsManager : SoundEventsManager
     {
         foreach (SongInstance playingSong in _songInstances)
         {
-            if (Engine.LocalConfig.Sound.PlayMusicWhenPaused != true || playingSong.SoundType == SoundType.Sfx)
+            if (Engine.Config.Local.Sound.PlayMusicWhenPaused != true || playingSong.SoundType == SoundType.Sfx)
             {
                 playingSong.StopIfNotLooping = true; // Not actually set here, but always set alongside PauseAll, so might as well do it here
                 playingSong.InGamePaused = true;

@@ -115,7 +115,7 @@ public partial class ModernPauseDialog
                 break;
 
             case FsmAction.UnInit:
-                Engine.SaveConfig();
+                Engine.Config.Save();
                 break;
         }
 
@@ -255,7 +255,7 @@ public partial class ModernPauseDialog
 
                         if (Rayman3.TimeAttack.IsActive)
                         {
-                            if (Engine.ActiveConfig.Tweaks.UseModernMainMenu)
+                            if (Engine.Config.Active.Tweaks.UseModernMainMenu)
                                 FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.TimeAttack));
                             else
                                 FrameManager.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));
@@ -266,7 +266,7 @@ public partial class ModernPauseDialog
                         }
                         else
                         {
-                            if (Engine.ActiveConfig.Tweaks.UseModernMainMenu)
+                            if (Engine.Config.Active.Tweaks.UseModernMainMenu)
                                 FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
                             else
                                 FrameManager.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));

@@ -67,7 +67,7 @@ public sealed partial class Rayman : MovableActor
                     // data does not match the palettes. The correct colors are there though, so we can fix it by re-ordering them.
                     PaletteResource fixPalette(PaletteResource pal)
                     {
-                        if (Engine.ActiveConfig.Tweaks.FixBugs)
+                        if (Engine.Config.Active.Tweaks.FixBugs)
                         {
                             PaletteResource fixedPal = new()
                             {
@@ -329,7 +329,7 @@ public sealed partial class Rayman : MovableActor
             MultiplayerGameType.RayTag => InstanceId == tagId,
             MultiplayerGameType.CatAndMouse => InstanceId != tagId,
             // NOTE: Some checks are bugged in the N-Gage version and use the same condition as for Cat and Mouse!
-            MultiplayerGameType.CaptureTheFlag when Rom.Platform == Platform.NGage => hasNGageBug && !Engine.ActiveConfig.Tweaks.FixBugs 
+            MultiplayerGameType.CaptureTheFlag when Rom.Platform == Platform.NGage => hasNGageBug && !Engine.Config.Active.Tweaks.FixBugs 
                 ? InstanceId != tagId 
                 : FlagData.PickedUpFlag == null,
             _ => false
@@ -503,7 +503,7 @@ public sealed partial class Rayman : MovableActor
             bodyPart.AnimatedObject.BasePaletteIndex = FlagData.PlayerPaletteId - 1;
         }
         // Optionally fix colors for GBA too, so the body-shot matches the player color
-        else if (Engine.ActiveConfig.Tweaks.FixBugs && RSMultiplayer.IsActive && Rom.Platform == Platform.GBA)
+        else if (Engine.Config.Active.Tweaks.FixBugs && RSMultiplayer.IsActive && Rom.Platform == Platform.GBA)
         {
             bodyPart.AnimatedObject.Palettes = AnimatedObject.Palettes;
             bodyPart.AnimatedObject.BasePaletteIndex = AnimatedObject.BasePaletteIndex;
@@ -1003,7 +1003,7 @@ public sealed partial class Rayman : MovableActor
             // created either. So if you have the options set to fix bugs, and also to add projectiles when needed
             // (since we need more than 8!) then allow it to continue creating new sparkle projectiles until
             // reaching the minimum distance.
-            if (index > 8 && !(Engine.ActiveConfig.Tweaks.FixBugs && Engine.ActiveConfig.Tweaks.AddProjectilesWhenNeeded))
+            if (index > 8 && !(Engine.Config.Active.Tweaks.FixBugs && Engine.Config.Active.Tweaks.AddProjectilesWhenNeeded))
                 return;
         }
 
@@ -1259,7 +1259,7 @@ public sealed partial class Rayman : MovableActor
         ActionId = action;
 
         // Change the direction if needed (wall jump actions only have one direction defined!)
-        if (Engine.ActiveConfig.Tweaks.VersatileWalljumps && !tmpIsFacingRight)
+        if (Engine.Config.Active.Tweaks.VersatileWalljumps && !tmpIsFacingRight)
         {
             ChangeAction();
             AnimatedObject.FlipX = true;
@@ -1485,7 +1485,7 @@ public sealed partial class Rayman : MovableActor
 
     private void ToggleNoClip()
     {
-        if (Engine.ActiveConfig.Debug.DebugModeEnabled && InputManager.IsInputJustPressed(Input.Debug_ToggleNoClip))
+        if (Engine.Config.Active.Debug.DebugModeEnabled && InputManager.IsInputJustPressed(Input.Debug_ToggleNoClip))
         {
             Debug_NoClip = !Debug_NoClip;
 
@@ -1669,7 +1669,7 @@ public sealed partial class Rayman : MovableActor
                 return false;
 
             case Message.Rayman_CollectRedLum:
-                if (HitPoints < 5 && !Engine.ActiveConfig.Difficulty.OneHitPoint)
+                if (HitPoints < 5 && !Engine.Config.Active.Difficulty.OneHitPoint)
                     HitPoints++;
 
                 ((FrameSideScroller)Frame.Current).UserInfo.UpdateLife();
@@ -1695,7 +1695,7 @@ public sealed partial class Rayman : MovableActor
                     GameInfo.ModifyLives(1);
 
                     // Restore hp instead if playing with infinite lives
-                    if (Engine.ActiveConfig.Difficulty.InfiniteLives && !Engine.ActiveConfig.Difficulty.OneHitPoint)
+                    if (Engine.Config.Active.Difficulty.InfiniteLives && !Engine.Config.Active.Difficulty.OneHitPoint)
                     {
                         HitPoints = 5;
                         ((FrameSideScroller)Frame.Current).UserInfo.UpdateLife();
@@ -2136,7 +2136,7 @@ public sealed partial class Rayman : MovableActor
     public bool IsLavaInLevel()
     {
         // The game forgets to check for this level, making it not spawn the lava splash!
-        if (Engine.ActiveConfig.Tweaks.FixBugs)
+        if (Engine.Config.Active.Tweaks.FixBugs)
         {
             if (GameInfo.MapId is MapId.GameCube_Bonus3)
                 return true;
@@ -2187,7 +2187,7 @@ public sealed partial class Rayman : MovableActor
 
     public override void Init(ActorResource actorResource)
     {
-        if (Engine.ActiveConfig.Difficulty.OneHitPoint)
+        if (Engine.Config.Active.Difficulty.OneHitPoint)
             HitPoints = 1;
 
         AnimatedObject.ObjPriority = IsLocalPlayer ? 16 : 17;
@@ -2286,7 +2286,7 @@ public sealed partial class Rayman : MovableActor
     {
         // Optionally fix the vulnerability hitbox for the first frame of the
         // helico animation as it's a lot bigger than it should be
-        if (Engine.ActiveConfig.Tweaks.FixHelicoHitbox && AnimatedObject.CurrentAnimation == 4 && AnimatedObject.CurrentFrame == 0)
+        if (Engine.Config.Active.Tweaks.FixHelicoHitbox && AnimatedObject.CurrentAnimation == 4 && AnimatedObject.CurrentFrame == 0)
             AnimationBoxTable.VulnerabilityBox = new Box(-7, -51, 8, -13);
 
         if (Debug_NoClip)
@@ -2299,7 +2299,7 @@ public sealed partial class Rayman : MovableActor
     {
         base.Step();
 
-        if (Engine.ActiveConfig.Difficulty.OneHitPoint && HitPoints > 1)
+        if (Engine.Config.Active.Difficulty.OneHitPoint && HitPoints > 1)
         {
             HitPoints = 1;
             PrevHitPoints = HitPoints;

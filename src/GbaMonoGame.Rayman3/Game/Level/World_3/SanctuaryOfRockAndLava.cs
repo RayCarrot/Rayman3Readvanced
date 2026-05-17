@@ -19,7 +19,7 @@ public class SanctuaryOfRockAndLava : FrameSideScroller
     {
         base.Init();
 
-        if (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage)
+        if (Rom.Platform == Platform.GBA || Engine.Config.Active.Tweaks.UseGbaEffectsOnNGage)
         {
             TgxTileLayer lavaLayer = ((TgxPlayfield2D)Scene.Playfield).TileLayers[0];
             TextureScreenRenderer renderer;
@@ -41,7 +41,7 @@ public class SanctuaryOfRockAndLava : FrameSideScroller
     {
         base.Step();
 
-        if (Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage)
+        if (Rom.Platform == Platform.GBA || Engine.Config.Active.Tweaks.UseGbaEffectsOnNGage)
         {
             Vector2 camPos = Scene.Playfield.Camera.Position;
             TgxTileLayer lavaLayer = ((TgxPlayfield2D)Scene.Playfield).TileLayers[0];
@@ -52,7 +52,7 @@ public class SanctuaryOfRockAndLava : FrameSideScroller
                 ((SanctuaryLavaRenderer)lavaLayer.Screen.Renderer).SinValue++;
         }
 
-        if ((Rom.Platform == Platform.GBA || Engine.ActiveConfig.Tweaks.UseGbaEffectsOnNGage) && FadeOutTimer != 0xFF)
+        if ((Rom.Platform == Platform.GBA || Engine.Config.Active.Tweaks.UseGbaEffectsOnNGage) && FadeOutTimer != 0xFF)
         {
             if (FadeOutTimer < 16)
             {

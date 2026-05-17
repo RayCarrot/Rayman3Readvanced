@@ -70,7 +70,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
         }
 
         // Create pause dialog, but don't add yet
-        PauseDialog = Engine.ActiveConfig.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, false) : new PauseDialog(Scene);
+        PauseDialog = Engine.Config.Active.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, false) : new PauseDialog(Scene);
 
         // Custom cheat dialog
         CheatDialog = new CheatDialog(Scene);
@@ -127,7 +127,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
         }
 
         // Custom cheat dialog
-        if (Engine.ActiveConfig.Tweaks.AllowCheatMenu && JoyPad.IsButtonJustPressed(GbaInput.Select))
+        if (Engine.Config.Active.Tweaks.AllowCheatMenu && JoyPad.IsButtonJustPressed(GbaInput.Select))
         {
             GameTime.Pause();
             Scene.AddDialog(CheatDialog, true, false);
@@ -182,7 +182,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
             UserInfo.Draw(Scene.AnimationPlayer);
 
         // NOTE: It's probably an oversight in the original game to still animate tiles even when paused
-        if (!Engine.ActiveConfig.Tweaks.FixBugs)
+        if (!Engine.Config.Active.Tweaks.FixBugs)
             Scene.Playfield.Step();
 
         Scene.AnimationPlayer.Execute();
