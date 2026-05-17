@@ -11,7 +11,7 @@ public static partial class InputManager
     private static void UpdateKeyboard()
     {
         _previousKeyboardState = _keyboardState;
-        _keyboardState = Engine.GbaGame.IsActive ? Keyboard.GetState() : new KeyboardState();
+        _keyboardState = Engine.Window.IsActive ? Keyboard.GetState() : new KeyboardState();
     }
 
     private static Input GetInputsFromKeyboard()

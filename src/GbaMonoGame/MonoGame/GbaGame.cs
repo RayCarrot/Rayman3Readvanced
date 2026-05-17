@@ -26,7 +26,7 @@ public abstract class GbaGame : Game
     private readonly GraphicsDeviceManager _graphics;
     private readonly Stopwatch _updateTimeStopWatch;
 
-    private GbaGameWindow _gameWindow;
+    private GameWindowManager _gameWindowManager;
     private GfxRenderer _gfxRenderer;
     private DebugLayout _debugLayout;
     private GbaRenderTarget _debugGameRenderTarget;
@@ -60,7 +60,7 @@ public abstract class GbaGame : Game
     private void GbaGame_Exiting(object sender, EventArgs e)
     {
         // Save window state
-        Engine.GameWindow.SaveState();
+        Engine.Window.SaveState();
 
         // Save config
         Engine.Config.Save();
@@ -182,9 +182,9 @@ public abstract class GbaGame : Game
         SetFramerate(Framerate);
 
         // Initialize the window
-        _gameWindow = new GbaGameWindow(Window, _graphics);
-        _gameWindow.SetTitle(Title);
-        _gameWindow.SetResizeMode(
+        _gameWindowManager = new GameWindowManager(this, Window, _graphics);
+        _gameWindowManager.SetTitle(Title);
+        _gameWindowManager.SetResizeMode(
             allowResize: true, 
             minSize: new Point(100, 100), 
             maxSize: new Point(GraphicsDevice.Adapter.CurrentDisplayMode.Width, GraphicsDevice.Adapter.CurrentDisplayMode.Height));
@@ -195,21 +195,21 @@ public abstract class GbaGame : Game
         Rom.Unloaded += Rom_Unloaded;
 
         // Load the config
-        Engine.LoadConfig();
+        ConfigManager config = new();
 
         // Create the logger window now so we can start receiving logs during initialization
-        if (Engine.Config.Active.Debug.DebugModeEnabled)
+        if (config.Active.Debug.DebugModeEnabled)
             _loggerWindow = new LoggerDebugWindow();
 
         // Load the engine
-        Engine.Init(this, GraphicsDevice, Services, _gameWindow);
+        Engine.Init(config, new ApplicationManager(this), _gameWindowManager, GraphicsDevice, Services);
         
         // Set the initial frame
         FrameManager.SetNextFrame(CreateInitialFrame());
 
         // Apply the window state
-        Engine.GameWindow.VSync = Engine.Config.Local.Display.VSync;
-        Engine.GameWindow.ApplyState();
+        Engine.Window.VSync = Engine.Config.Local.Display.VSync;
+        Engine.Window.ApplyState();
 
         // Load the renderer
         _gfxRenderer = new GfxRenderer(GraphicsDevice);
@@ -228,7 +228,7 @@ public abstract class GbaGame : Game
         if (Engine.Config.Local.Display.AltEnterToggle is { } altEnterToggle && 
             InputManager.IsKeyPressed(Keys.LeftAlt) && InputManager.IsKeyJustPressed(Keys.Enter))
         {
-            Engine.GameWindow.DisplayMode = Engine.GameWindow.DisplayMode switch
+            Engine.Window.DisplayMode = Engine.Window.DisplayMode switch
             {
                 DisplayMode.Windowed => altEnterToggle,
                 DisplayMode.Fullscreen => DisplayMode.Windowed,
@@ -327,13 +327,13 @@ public abstract class GbaGame : Game
             _debugGameRenderTarget.BeginRender();
 
         if (!DebugMode && 
-            (Engine.GameWindow.GetResolution() != _prevWindowResolution || 
+            (Engine.Window.GetResolution() != _prevWindowResolution || 
              Engine.Config.Active.Tweaks.InternalGameResolution != _prevInternalResolution || 
              Engine.Config.Local.Display.LockWindowAspectRatio != _prevLockWindowAspectRatio))
         {
-            Point newRes = Engine.GameWindow.GetResolution();
+            Point newRes = Engine.Window.GetResolution();
             
-            if (Engine.Config.Local.Display.LockWindowAspectRatio && Engine.GameWindow.IsResizable())
+            if (Engine.Config.Local.Display.LockWindowAspectRatio && Engine.Window.IsResizable())
             {
                 Vector2 resolution = Engine.InternalGameResolution;
 
@@ -341,14 +341,14 @@ public abstract class GbaGame : Game
 
                 newRes = new Vector2(resolution.X * screenScale, resolution.Y * screenScale).ToRoundedPoint();
 
-                Engine.GameWindow.WindowResolution = newRes;
+                Engine.Window.WindowResolution = newRes;
             }
 
             _prevWindowResolution = newRes;
             _prevInternalResolution = Engine.InternalGameResolution;
             _prevLockWindowAspectRatio = Engine.Config.Local.Display.LockWindowAspectRatio;
 
-            Engine.GameViewPort.Resize(Engine.GameWindow.GetResolution().ToVector2());
+            Engine.GameViewPort.Resize(Engine.Window.GetResolution().ToVector2());
         }
 
         // Clear screen

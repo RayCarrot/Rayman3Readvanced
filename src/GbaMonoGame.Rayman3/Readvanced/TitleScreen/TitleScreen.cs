@@ -324,7 +324,10 @@ public class TitleScreen : Frame
         QuitGameOptionsList = new TitleScreenOptionsList(renderContext, Cursor, new Vector2(basePosX + gamesDistance / 2f, basePosY + 16));
         QuitGameOptionsList.SetOptions(
         [
-            new TitleScreenOptionsList.Option("YES", Engine.ExitGame),
+            new TitleScreenOptionsList.Option("YES", () =>
+            {
+                Engine.App.Exit();
+            }),
             new TitleScreenOptionsList.Option("NO", () =>
             {
                 foreach (TitleScreenGame game in Games)

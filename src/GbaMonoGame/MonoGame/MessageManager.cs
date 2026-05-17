@@ -28,16 +28,16 @@ public class MessageManager
         {
 #if WINDOWSDX
             // Force windowed mode for this
-            DisplayMode prevDisplayMode = Engine.GameWindow.DisplayMode;
-            if (Engine.GameWindow.DisplayMode != DisplayMode.Windowed)
-                Engine.GameWindow.DisplayMode = DisplayMode.Windowed;
+            DisplayMode prevDisplayMode = Engine.Window.DisplayMode;
+            if (Engine.Window.DisplayMode != DisplayMode.Windowed)
+                Engine.Window.DisplayMode = DisplayMode.Windowed;
 
             // Use WinForms messagebox on Windows since it looks nicer than the custom MonoGame one
             System.Windows.Forms.MessageBox.Show(msg.Text, msg.Header, System.Windows.Forms.MessageBoxButtons.OK);
             
             // Restore the display mode
             if (prevDisplayMode != DisplayMode.Windowed)
-                Engine.GameWindow.DisplayMode = prevDisplayMode;
+                Engine.Window.DisplayMode = prevDisplayMode;
 #else
             _messageTask = Microsoft.Xna.Framework.Input.MessageBox.Show(msg.Header, msg.Text, ["OK"]);
 #endif

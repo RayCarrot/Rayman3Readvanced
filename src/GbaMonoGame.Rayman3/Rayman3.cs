@@ -8,6 +8,7 @@ public static class Rayman3
 {
     private static readonly JsonSerializerOptions _configJsonOptions = new() { ReadCommentHandling = JsonCommentHandling.Skip };
 
+    // Services
     public static LocalizationManager Loc { get; private set; }
     public static AchievementsManager Achievements { get; private set; }
     public static TimeAttackManager TimeAttack { get; private set; }

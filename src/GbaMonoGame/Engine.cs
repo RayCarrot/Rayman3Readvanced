@@ -9,14 +9,14 @@ public static class Engine
 {
     #region Properties
 
+    // Services
     public static ConfigManager Config { get; private set; }
+    public static ApplicationManager App { get; private set; }
+    public static GameWindowManager Window { get; private set; }
 
+    // State
     public static bool IsLoading { get; set; }
 
-    /// <summary>
-    /// The game instance.
-    /// </summary>
-    public static GbaGame GbaGame { get; private set; }
 
     /// <summary>
     /// The graphics device to use for creating textures.
@@ -45,8 +45,6 @@ public static class Engine
 
     public static GbaGameViewPort GameViewPort { get; private set; }
 
-    public static GbaGameWindow GameWindow { get; private set; }
-
     public static Cache<Texture2D> TextureCache { get; } = new();
     public static Cache<Palette> PaletteCache { get; } = new();
 
@@ -68,17 +66,6 @@ public static class Engine
         IsLoading = true;
     }
 
-    public static void LoadConfig()
-    {
-        Config = new ConfigManager();
-
-        // If the internal resolution is null then we default to the original resolution
-        if (Config.Active.Tweaks.InternalGameResolution == null)
-            InternalGameResolution = Rom.IsLoaded ? Rom.OriginalResolution : Resolution.Modern;
-        else
-            InternalGameResolution = Config.Active.Tweaks.InternalGameResolution.Value;
-    }
-
     public static void UpdateInternalGameResolution()
     {
         if (InternalGameResolution != Config.Active.Tweaks.InternalGameResolution)
@@ -91,21 +78,40 @@ public static class Engine
         GameViewPort.UpdateRenderBox();
     }
 
-    public static void Init(GbaGame gbaGame, GraphicsDevice graphicsDevice, IServiceProvider serviceProvider, GbaGameWindow gameWindow)
+    public static void Init(
+        ConfigManager config, 
+        ApplicationManager app, 
+        GameWindowManager window, 
+        GraphicsDevice graphicsDevice, 
+        IServiceProvider serviceProvider)
     {
         // Register encoding provider to be able to use Windows 1252
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-        GbaGame = gbaGame;
+        // Create services
+        Config = config;
+        App = app;
+        Window = window;
+
+        // Initialize services
+        if (Config.Active.Tweaks.InternalGameResolution == null)
+        {
+            // If the internal resolution is null then we default to the original resolution
+            InternalGameResolution = Rom.IsLoaded ? Rom.OriginalResolution : Resolution.Modern;
+        }
+        else
+        {
+            InternalGameResolution = Config.Active.Tweaks.InternalGameResolution.Value;
+        }
+
+        // TODO: Refactor
         GraphicsDevice = graphicsDevice;
         FixContentManager = new ContentManager(serviceProvider, Paths.AssetsDirectoryName);
         FrameContentManager = new ContentManager(serviceProvider, Paths.AssetsDirectoryName);
-        GameWindow = gameWindow;
         GameViewPort = new GbaGameViewPort();
         GameRenderContext = new GameRenderContext();
         RichPresenceManager = new RichPresenceManager();
         RichPresenceManager.Initialize();
-
         Gfx.Load();
     }
 
@@ -119,11 +125,6 @@ public static class Engine
     public static void Step()
     {
         FrameManager.Step();
-    }
-
-    public static void ExitGame()
-    {
-        GbaGame.Exit();
     }
 
     #endregion

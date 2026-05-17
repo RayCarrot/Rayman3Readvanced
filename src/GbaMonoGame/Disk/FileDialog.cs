@@ -11,9 +11,9 @@ public static class FileDialog
     public static string OpenFile(string title, FileFilter filter)
     {
         // Force windowed mode for this
-        DisplayMode prevDisplayMode = Engine.GameWindow.DisplayMode;
-        if (Engine.GameWindow.DisplayMode != DisplayMode.Windowed)
-            Engine.GameWindow.DisplayMode = DisplayMode.Windowed;
+        DisplayMode prevDisplayMode = Engine.Window.DisplayMode;
+        if (Engine.Window.DisplayMode != DisplayMode.Windowed)
+            Engine.Window.DisplayMode = DisplayMode.Windowed;
 
         try
         {
@@ -47,16 +47,16 @@ public static class FileDialog
         {
             // Restore the display mode
             if (prevDisplayMode != DisplayMode.Windowed)
-                Engine.GameWindow.DisplayMode = prevDisplayMode;
+                Engine.Window.DisplayMode = prevDisplayMode;
         }
     }
 
     public static string OpenFolder(string title)
     {
         // Force windowed mode for this
-        DisplayMode prevDisplayMode = Engine.GameWindow.DisplayMode;
-        if (Engine.GameWindow.DisplayMode != DisplayMode.Windowed)
-            Engine.GameWindow.DisplayMode = DisplayMode.Windowed;
+        DisplayMode prevDisplayMode = Engine.Window.DisplayMode;
+        if (Engine.Window.DisplayMode != DisplayMode.Windowed)
+            Engine.Window.DisplayMode = DisplayMode.Windowed;
 
         try
         {
@@ -89,7 +89,7 @@ public static class FileDialog
         {
             // Restore the display mode
             if (prevDisplayMode != DisplayMode.Windowed)
-                Engine.GameWindow.DisplayMode = prevDisplayMode;
+                Engine.Window.DisplayMode = prevDisplayMode;
         }
     }
 

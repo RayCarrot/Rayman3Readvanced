@@ -44,8 +44,8 @@ public static class GameOptions
                         new MultiSelectionOptionsMenuOption<DisplayMode>.Item("FULLSCREEN", DisplayMode.Fullscreen),
                         new MultiSelectionOptionsMenuOption<DisplayMode>.Item("BORDERLESS", DisplayMode.Borderless)
                     ],
-                    getData: _ => Engine.GameWindow.DisplayMode,
-                    setData: data => Engine.GameWindow.DisplayMode = data,
+                    getData: _ => Engine.Window.DisplayMode,
+                    setData: data => Engine.Window.DisplayMode = data,
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<DisplayMode?>(
                     text: "ALT+ENTER TOGGLE",
@@ -67,11 +67,11 @@ public static class GameOptions
                         new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
                         new MultiSelectionOptionsMenuOption<bool>.Item("ON", true)
                     ],
-                    getData: _ => Engine.GameWindow.VSync,
+                    getData: _ => Engine.Window.VSync,
                     setData: data =>
                     {
                         Engine.Config.Local.Display.VSync = data;
-                        Engine.GameWindow.VSync = data;
+                        Engine.Window.VSync = data;
                     },
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<Point>(
@@ -80,8 +80,8 @@ public static class GameOptions
                     items: adapter.SupportedDisplayModes.
                         Select(x => new MultiSelectionOptionsMenuOption<Point>.Item($"{x.Width}x{x.Height}", new Point(x.Width, x.Height))).
                         ToArray(),
-                    getData: _ => Engine.GameWindow.FullscreenResolution,
-                    setData: data => Engine.GameWindow.FullscreenResolution = data,
+                    getData: _ => Engine.Window.FullscreenResolution,
+                    setData: data => Engine.Window.FullscreenResolution = data,
                     getCustomName: data => $"{data.X}x{data.Y}"),
                 new MultiSelectionOptionsMenuOption<float>(
                     text: "WINDOW RESOLUTION",
@@ -89,8 +89,8 @@ public static class GameOptions
                     items: Enumerable.Range(1, windowResCount).
                         Select(x => new MultiSelectionOptionsMenuOption<float>.Item($"{x}x", x)).
                         ToArray(),
-                    getData: _ => Engine.GameWindow.WindowResolution.ToVector2().X / Engine.InternalGameResolution.X,
-                    setData: data => Engine.GameWindow.WindowResolution = (Engine.InternalGameResolution * data).ToPoint(),
+                    getData: _ => Engine.Window.WindowResolution.ToVector2().X / Engine.InternalGameResolution.X,
+                    setData: data => Engine.Window.WindowResolution = (Engine.InternalGameResolution * data).ToPoint(),
                     getCustomName: data => $"{data:0.00}x"),
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "LOCK WINDOW ASPECT RATIO",

@@ -12,7 +12,7 @@ public static partial class InputManager
     private static void UpdateMouse()
     {
         _previousMouseState = _mouseState;
-        _mouseState = Engine.GbaGame.IsActive ? Mouse.GetState() : new MouseState();
+        _mouseState = Engine.Window.IsActive ? Mouse.GetState() : new MouseState();
     }
 
     public static bool IsMouseOnScreen(RenderContext renderContext)

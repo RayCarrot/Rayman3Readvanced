@@ -68,7 +68,7 @@ public class GfxDebugWindow : DebugWindow
             {
                 ImGui.SeparatorText("Resolution");
 
-                Point windowRes = Engine.GameWindow.GetResolution();
+                Point windowRes = Engine.Window.GetResolution();
                 Vector2 viewPortFullSize = Engine.GameViewPort.FullSize;
                 Box viewPortRenderBox = Engine.GameViewPort.RenderBox;
                 ImGui.Text($"Window resolution: {windowRes.X} x {windowRes.Y}");

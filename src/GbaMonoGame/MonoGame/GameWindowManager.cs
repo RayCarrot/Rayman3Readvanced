@@ -12,10 +12,11 @@ using System.Runtime.InteropServices;
 
 namespace GbaMonoGame;
 
-public class GbaGameWindow
+public class GameWindowManager
 {
-    public GbaGameWindow(GameWindow window, GraphicsDeviceManager graphics)
+    public GameWindowManager(Game game, GameWindow window, GraphicsDeviceManager graphics)
     {
+        _game = game;
         _window = window;
         _graphics = graphics;
 
@@ -44,13 +45,14 @@ public class GbaGameWindow
     private static extern void SDL_MaximizeWindow(IntPtr window);
 #endif
 
-    private GameWindow _window { get; }
-    private GraphicsDeviceManager _graphics { get; }
+    private readonly Game _game;
+    private readonly GameWindow _window;
+    private readonly GraphicsDeviceManager _graphics;
 
 #if WINDOWSDX
-    private Form _form { get; }
+    private readonly Form _form;
 #elif DESKTOPGL
-    private IntPtr _sdlWindowHandle { get; }
+    private readonly IntPtr _sdlWindowHandle;
 #endif
 
     public Point WindowResolution
@@ -135,6 +137,8 @@ public class GbaGameWindow
             _graphics.ApplyChanges();
         }
     }
+
+    public bool IsActive => _game.IsActive;
 
 #if DESKTOPGL
     private SDL_WindowFlags GetWindowFlags()
