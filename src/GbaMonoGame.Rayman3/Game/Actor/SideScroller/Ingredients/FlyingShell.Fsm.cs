@@ -211,7 +211,7 @@ public partial class FlyingShell
                     if (GameInfo.PersistentInfo.CompletedGCNBonusLevels < frame.GcnMapId + 1)
                         GameInfo.PersistentInfo.CompletedGCNBonusLevels = (byte)(frame.GcnMapId + 1);
 
-                    FrameManager.SetNextFrame(new GameCubeMenu());
+                    Engine.FrameMngr.SetNextFrame(new GameCubeMenu());
 
                     GameInfo.Save(GameInfo.CurrentSlot);
                 }

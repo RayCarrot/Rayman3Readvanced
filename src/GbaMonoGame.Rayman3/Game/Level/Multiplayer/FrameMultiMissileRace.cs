@@ -49,9 +49,9 @@ public class FrameMultiMissileRace : FrameMissileMultiMode7
                 ? InitialMenuPage.Multiplayer
                 : InitialMenuPage.MultiplayerLostConnection;
             if (Engine.Config.Active.Tweaks.UseModernMainMenu)
-                FrameManager.SetNextFrame(new ModernMenuAll(menuPage));
+                Engine.FrameMngr.SetNextFrame(new ModernMenuAll(menuPage));
             else
-                FrameManager.SetNextFrame(new MenuAll(menuPage));
+                Engine.FrameMngr.SetNextFrame(new MenuAll(menuPage));
         }
     }
 }

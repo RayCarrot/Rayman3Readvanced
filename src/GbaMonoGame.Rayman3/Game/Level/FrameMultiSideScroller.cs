@@ -182,14 +182,14 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
                     {
                         if (MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && !((FrameMultiCaptureTheFlag)Current).IsMatchOver)
                         {
-                            FrameManager.ReloadCurrentFrame();
+                            Engine.FrameMngr.ReloadCurrentFrame();
                         }
                         else
                         {
                             if (Engine.Config.Active.Tweaks.UseModernMainMenu)
-                                FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.Multiplayer));
+                                Engine.FrameMngr.SetNextFrame(new ModernMenuAll(InitialMenuPage.Multiplayer));
                             else
-                                FrameManager.SetNextFrame(new MenuAll(InitialMenuPage.Multiplayer));
+                                Engine.FrameMngr.SetNextFrame(new MenuAll(InitialMenuPage.Multiplayer));
 
                             Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                             Gfx.Fade = AlphaCoefficient.Max;
@@ -233,9 +233,9 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
                 ? InitialMenuPage.Multiplayer
                 : InitialMenuPage.MultiplayerLostConnection;
             if (Engine.Config.Active.Tweaks.UseModernMainMenu)
-                FrameManager.SetNextFrame(new ModernMenuAll(menuPage));
+                Engine.FrameMngr.SetNextFrame(new ModernMenuAll(menuPage));
             else
-                FrameManager.SetNextFrame(new MenuAll(menuPage));
+                Engine.FrameMngr.SetNextFrame(new MenuAll(menuPage));
 
             Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
             Gfx.Fade = AlphaCoefficient.Max;

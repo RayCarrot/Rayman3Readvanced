@@ -346,9 +346,9 @@ public class GameOver : Frame
                 if (!TransitionsFX.IsFadingOut)
                 {
                     if (Engine.Config.Active.Tweaks.UseModernMainMenu)
-                        FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
+                        Engine.FrameMngr.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
                     else
-                        FrameManager.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));
+                        Engine.FrameMngr.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));
                 }
 
                 break;

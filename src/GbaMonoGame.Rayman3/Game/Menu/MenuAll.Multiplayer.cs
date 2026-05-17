@@ -196,14 +196,14 @@ public partial class MenuAll
                 MultiplayerInfo.SetGameType(MultiplayerGameType.RayTag);
 
                 if (MultiplayerMapId == 0)
-                    FrameManager.SetNextFrame(new FrameMultiTag(Rom.Platform switch
+                    Engine.FrameMngr.SetNextFrame(new FrameMultiTag(Rom.Platform switch
                     {
                         Platform.GBA => MapId.GbaMulti_TagWeb,
                         Platform.NGage => MapId.NGageMulti_TagWeb,
                         _ => throw new UnsupportedPlatformException()
                     }));
                 else if (MultiplayerMapId == 1)
-                    FrameManager.SetNextFrame(new FrameMultiTag(Rom.Platform switch
+                    Engine.FrameMngr.SetNextFrame(new FrameMultiTag(Rom.Platform switch
                     {
                         Platform.GBA => MapId.GbaMulti_TagSlide,
                         Platform.NGage => MapId.NGageMulti_TagSlide,
@@ -216,14 +216,14 @@ public partial class MenuAll
                 MultiplayerInfo.SetGameType(MultiplayerGameType.CatAndMouse);
 
                 if (MultiplayerMapId == 0)
-                    FrameManager.SetNextFrame(new FrameMultiCatAndMouse(Rom.Platform switch
+                    Engine.FrameMngr.SetNextFrame(new FrameMultiCatAndMouse(Rom.Platform switch
                     {
                         Platform.GBA => MapId.GbaMulti_CatAndMouseSlide,
                         Platform.NGage => MapId.NGageMulti_CatAndMouseSlide,
                         _ => throw new UnsupportedPlatformException()
                     }));
                 else if (MultiplayerMapId == 1)
-                    FrameManager.SetNextFrame(new FrameMultiCatAndMouse(Rom.Platform switch
+                    Engine.FrameMngr.SetNextFrame(new FrameMultiCatAndMouse(Rom.Platform switch
                     {
                         Platform.GBA => MapId.GbaMulti_CatAndMouseSpider,
                         Platform.NGage => MapId.NGageMulti_CatAndMouseSpider,
@@ -235,9 +235,9 @@ public partial class MenuAll
                 MultiplayerInfo.SetGameType(MultiplayerGameType.Missile);
 
                 if (MultiplayerMapId == 0)
-                    FrameManager.SetNextFrame(new FrameMultiMissileRace());
+                    Engine.FrameMngr.SetNextFrame(new FrameMultiMissileRace());
                 else if (MultiplayerMapId == 1)
-                    FrameManager.SetNextFrame(new FrameMultiMissileArena());
+                    Engine.FrameMngr.SetNextFrame(new FrameMultiMissileArena());
                 break;
 
             case 0 when Rom.Platform == Platform.NGage:
@@ -246,7 +246,7 @@ public partial class MenuAll
 
                 MapId mapId = MapId.NGageMulti_CaptureTheFlagMiddleGround + CaptureTheFlagSoloMode * 2 + (int)CaptureTheFlagMode * 4 + MultiplayerMapId;
                 FrameMultiCaptureTheFlag frame = new(mapId);
-                FrameManager.SetNextFrame(frame);
+                Engine.FrameMngr.SetNextFrame(frame);
                 frame.InitNewGame(CaptureTheFlagTargetTime, CaptureTheFlagTargetFlagsCount, CaptureTheFlagMode);
                 break;
         }

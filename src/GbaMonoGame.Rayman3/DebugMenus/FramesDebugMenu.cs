@@ -209,7 +209,7 @@ public class FramesDebugMenu : DebugMenu
                 if (SoundEventsManager.IsLoaded)
                     SoundEventsManager.StopAllSongs();
 
-                FrameManager.SetNextFrame(menuItem.CreateFrame());
+                Engine.FrameMngr.SetNextFrame(menuItem.CreateFrame());
             }
 
             if (menuItem.EndWithSeparator)

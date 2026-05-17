@@ -49,7 +49,7 @@ public class BonusMenuPage : MenuPage
             {
                 FadeOut(2, () =>
                 {
-                    FrameManager.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));
+                    Engine.FrameMngr.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));
                 });
             });
         }));

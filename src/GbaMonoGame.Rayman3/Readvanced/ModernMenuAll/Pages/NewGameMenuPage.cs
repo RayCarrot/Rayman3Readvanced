@@ -34,7 +34,7 @@ public class NewGameMenuPage : MenuPage
                     SoundEventsManager.StopAllSongs();
 
                     // Create a new game
-                    FrameManager.SetNextFrame(new Act1());
+                    Engine.FrameMngr.SetNextFrame(new Act1());
                     GameInfo.ResetPersistentInfo();
 
                     GameInfo.StartPlayTime();

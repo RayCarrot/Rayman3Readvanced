@@ -75,7 +75,7 @@ public class Rayman3DebugWindow : DebugWindow
                 ImGui.SameLine();
                 if (ImGui.Button("New game"))
                 {
-                    FrameManager.SetNextFrame(new Act1());
+                    Engine.FrameMngr.SetNextFrame(new Act1());
                     GameInfo.ResetPersistentInfo();
                 }
 

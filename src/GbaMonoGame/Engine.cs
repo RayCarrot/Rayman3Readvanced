@@ -14,6 +14,7 @@ public static class Engine
     public static AssetManager Assets { get; private set; }
     public static MessageManager Messages { get; private set; }
     public static RichPresenceManager RichPresence { get; private set; }
+    public static FrameManager FrameMngr { get; private set; }
 
     // TODO: Refactor
 
@@ -34,7 +35,8 @@ public static class Engine
         ViewPortManager viewPort,
         AssetManager assets,
         MessageManager messages,
-        RichPresenceManager richPresence)
+        RichPresenceManager richPresence,
+        FrameManager frameMngr)
     {
         // Register encoding provider to be able to use Windows 1252
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -47,6 +49,7 @@ public static class Engine
         Assets = assets;
         Messages = messages;
         RichPresence = richPresence;
+        FrameMngr = frameMngr;
 
         // Initialize services
         if (Config.Active.Tweaks.InternalGameResolution == null)
@@ -78,11 +81,12 @@ public static class Engine
         Assets = null;
         Messages = null;
         RichPresence = null;
+        FrameMngr = null;
     }
 
     public static void Step()
     {
-        FrameManager.Step();
+        FrameMngr.Step();
     }
 
     #endregion

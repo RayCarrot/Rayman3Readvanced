@@ -12,6 +12,6 @@ public class Act4 : Act
         base.Step();
 
         if (IsFinished)
-            FrameManager.SetNextFrame(LevelFactory.Create(MapId.World4));
+            Engine.FrameMngr.SetNextFrame(LevelFactory.Create(MapId.World4));
     }
 }

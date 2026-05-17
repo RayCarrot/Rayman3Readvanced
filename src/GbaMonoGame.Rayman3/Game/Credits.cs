@@ -584,9 +584,9 @@ public class Credits : Frame
             SoundEventsManager.StopAllSongs();
 
             if (Engine.Config.Active.Tweaks.UseModernMainMenu)
-                FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
+                Engine.FrameMngr.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
             else
-                FrameManager.SetNextFrame(new MenuAll(CalledFromOptionsMenu ? InitialMenuPage.Options : InitialMenuPage.GameMode));
+                Engine.FrameMngr.SetNextFrame(new MenuAll(CalledFromOptionsMenu ? InitialMenuPage.Options : InitialMenuPage.GameMode));
         }
 
         // NOTE: This only runs every second frame on N-Gage, probably to compensate for less lag

@@ -181,7 +181,7 @@ public class GameModeMenuPage : MenuPage
                 {
                     FadeOut(4, () =>
                     {
-                        FrameManager.SetNextFrame(new Credits(false));
+                        Engine.FrameMngr.SetNextFrame(new Credits(false));
                     });
                 });
             }));
@@ -194,7 +194,7 @@ public class GameModeMenuPage : MenuPage
                     FadeOut(4, () =>
                     {
                         Rom.UnInit();
-                        FrameManager.SetNextFrame(new TitleScreen(true));
+                        Engine.FrameMngr.SetNextFrame(new TitleScreen(true));
                     });
                 });
             }));

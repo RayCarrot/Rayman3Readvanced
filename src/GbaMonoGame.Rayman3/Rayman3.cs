@@ -32,14 +32,14 @@ public static class Rayman3
 
         // Initialize services
         Loc.SetLanguage(Engine.Config.Local.Display.Language);
-        FrameManager.AddStepAction(Achievements.Step);
+        Engine.FrameMngr.AddStepAction(Achievements.Step);
     }
 
     public static void UnInit()
     {
         // Uninitialize services
         if (Achievements != null)
-            FrameManager.RemoveStepAction(Achievements.Step);
+            Engine.FrameMngr.RemoveStepAction(Achievements.Step);
 
         // Remove services
         Loc = null;

@@ -171,7 +171,7 @@ public partial class MenuAll
                         if (Slots[SelectedOption] == null)
                         {
                             // Create a new game
-                            FrameManager.SetNextFrame(new Act1());
+                            Engine.FrameMngr.SetNextFrame(new Act1());
                             GameInfo.ResetPersistentInfo();
                         }
                         else

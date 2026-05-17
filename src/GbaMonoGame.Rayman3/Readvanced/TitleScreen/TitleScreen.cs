@@ -99,7 +99,7 @@ public class TitleScreen : Frame
         else
         {
             // Set the initial frame
-            FrameManager.SetNextFrame(Games[SelectedGameIndex].Platform switch
+            Engine.FrameMngr.SetNextFrame(Games[SelectedGameIndex].Platform switch
             {
                 Platform.GBA => new Intro(),
                 Platform.NGage => new NGageSplashScreensAct(),

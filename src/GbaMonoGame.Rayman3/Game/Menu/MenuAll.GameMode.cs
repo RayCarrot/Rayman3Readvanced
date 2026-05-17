@@ -220,7 +220,7 @@ public partial class MenuAll
         if (IsLoadingModernMenu)
         {
             if (!TransitionsFX.IsFadingOut)
-                FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
+                Engine.FrameMngr.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
         }
         else
         {

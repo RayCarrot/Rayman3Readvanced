@@ -13,7 +13,7 @@ public class BossFinal : FrameSideScroller
         if (EndOfFrame)
         {
             if (GameInfo.MapId == MapId.BossFinal_M2)
-                FrameManager.SetNextFrame(new Act6());
+                Engine.FrameMngr.SetNextFrame(new Act6());
             else
                 GameInfo.LoadLevel(GameInfo.GetNextLevelId());
         }

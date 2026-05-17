@@ -489,7 +489,7 @@ public partial class GameCubeMenu
                                     Map = FileFactory.Read<GameCubeMap>(Rom.Context, filePath);
                                 }
 
-                                FrameManager.SetNextFrame(new FrameSideScrollerGCN(MapInfos.Maps[SelectedMap], Map, SelectedMap));
+                                Engine.FrameMngr.SetNextFrame(new FrameSideScrollerGCN(MapInfos.Maps[SelectedMap], Map, SelectedMap));
                             }
 
                             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
@@ -644,7 +644,7 @@ public partial class GameCubeMenu
             case FsmAction.Step:
                 if (JoyBus.HasReceivedData)
                 {
-                    FrameManager.SetNextFrame(new FrameSideScrollerGCN(MapInfos.Maps[SelectedMap], Map, SelectedMap));
+                    Engine.FrameMngr.SetNextFrame(new FrameSideScrollerGCN(MapInfos.Maps[SelectedMap], Map, SelectedMap));
 
                     if (JoyBus.ReceivedData == 0x22222222)
                     {

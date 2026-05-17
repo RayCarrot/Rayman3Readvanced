@@ -175,7 +175,7 @@ public class TimeAttackManager
                 break;
         }
 
-        FrameManager.SetNextFrame(LevelFactory.Create(mapId));
+        Engine.FrameMngr.SetNextFrame(LevelFactory.Create(mapId));
     }
 
     public void InitLevel(MapId mapId)

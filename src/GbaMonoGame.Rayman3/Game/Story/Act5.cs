@@ -12,6 +12,6 @@ public class Act5 : Act
         base.Step();
 
         if (IsFinished)
-            FrameManager.SetNextFrame(LevelFactory.Create(MapId.PirateShip_M1));
+            Engine.FrameMngr.SetNextFrame(LevelFactory.Create(MapId.PirateShip_M1));
     }
 }

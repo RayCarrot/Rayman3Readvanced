@@ -51,6 +51,6 @@ public class NGageSplashScreensAct : Act
         base.Step();
 
         if (IsFinished)
-            FrameManager.SetNextFrame(new Intro());
+            Engine.FrameMngr.SetNextFrame(new Intro());
     }
 }

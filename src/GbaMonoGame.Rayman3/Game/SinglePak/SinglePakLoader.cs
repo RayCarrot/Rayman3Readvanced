@@ -25,6 +25,6 @@ public class SinglePakLoader
     public void DecompressAndPlay(int language)
     {
         // The game loads some graphics and then creates an infinite game loop for loading the game, decompressing it into RAM and running it
-        FrameManager.SetNextFrame(new SinglePak());
+        Engine.FrameMngr.SetNextFrame(new SinglePak());
     }
 }

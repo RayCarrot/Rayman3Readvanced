@@ -4167,7 +4167,7 @@ public partial class Rayman
                         if (GameInfo.PersistentInfo.CompletedGCNBonusLevels < gcnMapId + 1)
                             GameInfo.PersistentInfo.CompletedGCNBonusLevels = (byte)(gcnMapId + 1);
 
-                        FrameManager.SetNextFrame(new GameCubeMenu());
+                        Engine.FrameMngr.SetNextFrame(new GameCubeMenu());
                         GameInfo.Save(GameInfo.CurrentSlot);
                     }
                     else if (GameInfo.IsFirstTimeCompletingLevel())
@@ -4214,7 +4214,7 @@ public partial class Rayman
                     if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
                     {
                         ((FrameSideScrollerGCN)Frame.Current).RestoreMapAndPowers();
-                        FrameManager.SetNextFrame(new GameCubeMenu());
+                        Engine.FrameMngr.SetNextFrame(new GameCubeMenu());
                     }
                     else if (GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
                     {

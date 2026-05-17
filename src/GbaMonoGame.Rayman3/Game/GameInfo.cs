@@ -575,15 +575,15 @@ public static class GameInfo
 
         if (mapId == MapId.MarshAwakening1 && PersistentInfo.LastCompletedLevel < (int)MapId.MarshAwakening1)
         {
-            FrameManager.SetNextFrame(new Act2());
+            Engine.FrameMngr.SetNextFrame(new Act2());
         }
         else if (mapId == MapId.PirateShip_M1 && PersistentInfo.LastCompletedLevel < (int)MapId.PirateShip_M1)
         {
-            FrameManager.SetNextFrame(new Act5());
+            Engine.FrameMngr.SetNextFrame(new Act5());
         }
         else
         {
-            FrameManager.SetNextFrame(LevelFactory.Create(mapId));
+            Engine.FrameMngr.SetNextFrame(LevelFactory.Create(mapId));
         }
     }
 
@@ -592,12 +592,12 @@ public static class GameInfo
         if (PersistentInfo.Lives == 0)
         {
             // Game over
-            FrameManager.SetNextFrame(new GameOver());
+            Engine.FrameMngr.SetNextFrame(new GameOver());
         }
         else
         {
             // Reload current map
-            FrameManager.ReloadCurrentFrame();
+            Engine.FrameMngr.ReloadCurrentFrame();
         }
     }
 

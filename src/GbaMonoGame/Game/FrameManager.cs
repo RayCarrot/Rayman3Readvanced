@@ -8,21 +8,21 @@ using Action = System.Action;
 namespace GbaMonoGame;
 
 /// <summary>
-/// Manages the currently active frame.
+/// Manages the currently active frame
 /// </summary>
-public static class FrameManager
+public class FrameManager
 {
-    private static bool WasActive { get; set; }
-    private static List<Action> StepActions { get; } = [];
+    private readonly List<Action> _stepActions = [];
+    private bool _wasActive;
 
-    internal static Frame CurrentFrame { get; private set; }
-    internal static Frame NextFrame { get; private set; }
+    public Frame CurrentFrame { get; private set; }
+    public Frame NextFrame { get; private set; }
 
     /// <summary>
     /// Sets the next frame to be made active. This will go into effect at the start of the next game frame.
     /// </summary>
     /// <param name="frame">The new frame</param>
-    public static void SetNextFrame(Frame frame)
+    public void SetNextFrame(Frame frame)
     {
         NextFrame = frame;
     }
@@ -30,25 +30,25 @@ public static class FrameManager
     /// <summary>
     /// Reloads the current frame. In the original game this is the equivalent of setting the next frame to the current one.
     /// </summary>
-    public static void ReloadCurrentFrame()
+    public void ReloadCurrentFrame()
     {
         NextFrame = CurrentFrame;
     }
 
-    public static void AddStepAction(Action action)
+    public void AddStepAction(Action action)
     {
-        StepActions.Add(action);
+        _stepActions.Add(action);
     }
 
-    public static void RemoveStepAction(Action action)
+    public void RemoveStepAction(Action action)
     {
-        StepActions.Remove(action);
+        _stepActions.Remove(action);
     }
 
     /// <summary>
     /// Steps the active frame and changes the active frame if scheduled to do so.
     /// </summary>
-    public static void Step()
+    public void Step()
     {
         // Scan for new button inputs
         JoyPad.Scan();
@@ -104,9 +104,9 @@ public static class FrameManager
         }
 
         // Check if the game was deactivated (window losing focus) and if it should auto-pause
-        if (Engine.Config.Active.Tweaks.PauseOnDeactivation && Engine.App.IsActive != WasActive)
+        if (Engine.Config.Active.Tweaks.PauseOnDeactivation && Engine.App.IsActive != _wasActive)
         {
-            WasActive = Engine.App.IsActive;
+            _wasActive = Engine.App.IsActive;
             if (!Engine.App.IsActive && !RSMultiplayer.IsActive && !Frame.Current.BlockAutoPause)
                 Frame.Current.PendingAutoPause = true;
         }
@@ -122,7 +122,7 @@ public static class FrameManager
         CurrentFrame.Step();
 
         // Invoke custom step actions
-        foreach (Action action in StepActions)
+        foreach (Action action in _stepActions)
             action();
 
         // Update the game time by one game frame

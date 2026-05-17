@@ -360,7 +360,7 @@ public partial class PauseDialog
                         SoundEventsManager.StopAllSongs();
                         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                         Gfx.Fade = AlphaCoefficient.Max;
-                        FrameManager.SetNextFrame(new GameCubeMenu());
+                        Engine.FrameMngr.SetNextFrame(new GameCubeMenu());
                     }
                     else
                     {
@@ -369,9 +369,9 @@ public partial class PauseDialog
                         Gfx.Fade = AlphaCoefficient.Max;
 
                         if (Engine.Config.Active.Tweaks.UseModernMainMenu)
-                            FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
+                            Engine.FrameMngr.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
                         else
-                            FrameManager.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));
+                            Engine.FrameMngr.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));
                     }
 
                     if (Rom.Platform == Platform.GBA)
@@ -697,9 +697,9 @@ public partial class PauseDialog
                     Gfx.Fade = AlphaCoefficient.Max;
 
                     if (Engine.Config.Active.Tweaks.UseModernMainMenu)
-                        FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.Multiplayer));
+                        Engine.FrameMngr.SetNextFrame(new ModernMenuAll(InitialMenuPage.Multiplayer));
                     else
-                        FrameManager.SetNextFrame(new MenuAll(InitialMenuPage.Multiplayer));
+                        Engine.FrameMngr.SetNextFrame(new MenuAll(InitialMenuPage.Multiplayer));
 
                     if (Rom.Platform == Platform.GBA)
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);

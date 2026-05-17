@@ -190,7 +190,7 @@ public partial class ModernPauseDialog
                         GameInfo.LastGreenLumAlive = 0;
 
                         // Reload map
-                        FrameManager.ReloadCurrentFrame();
+                        Engine.FrameMngr.ReloadCurrentFrame();
                     }
                 }
                 else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
@@ -256,20 +256,20 @@ public partial class ModernPauseDialog
                         if (Rayman3.TimeAttack.IsActive)
                         {
                             if (Engine.Config.Active.Tweaks.UseModernMainMenu)
-                                FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.TimeAttack));
+                                Engine.FrameMngr.SetNextFrame(new ModernMenuAll(InitialMenuPage.TimeAttack));
                             else
-                                FrameManager.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));
+                                Engine.FrameMngr.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));
                         }
                         else if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
                         {
-                            FrameManager.SetNextFrame(new GameCubeMenu());
+                            Engine.FrameMngr.SetNextFrame(new GameCubeMenu());
                         }
                         else
                         {
                             if (Engine.Config.Active.Tweaks.UseModernMainMenu)
-                                FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
+                                Engine.FrameMngr.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
                             else
-                                FrameManager.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));
+                                Engine.FrameMngr.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));
                         }
                     }
 
@@ -297,7 +297,7 @@ public partial class ModernPauseDialog
                         if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
                         {
                             ((FrameSideScrollerGCN)Frame.Current).RestoreMapAndPowers();
-                            FrameManager.SetNextFrame(new GameCubeMenu());
+                            Engine.FrameMngr.SetNextFrame(new GameCubeMenu());
                         }
                         else
                         {

@@ -146,7 +146,7 @@ public abstract class GbaGame : Game
         }
         catch (Exception ex)
         {
-            FrameManager.SetNextFrame(CreateFatalErrorFrame(ex));
+            Engine.FrameMngr.SetNextFrame(CreateFatalErrorFrame(ex));
         }
 
         // If this frame did a load, and thus might have taken longer than 1/60th of a
@@ -211,10 +211,11 @@ public abstract class GbaGame : Game
             viewPort: new ViewPortManager(), 
             assets: new AssetManager(Services), 
             messages: new MessageManager(),
-            richPresence: new RichPresenceManager());
+            richPresence: new RichPresenceManager(),
+            frameMngr: new FrameManager());
         
         // Set the initial frame
-        FrameManager.SetNextFrame(CreateInitialFrame());
+        Engine.FrameMngr.SetNextFrame(CreateInitialFrame());
 
         // Apply the window state
         Engine.Window.VSync = Engine.Config.Local.Display.VSync;

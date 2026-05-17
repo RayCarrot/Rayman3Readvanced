@@ -335,7 +335,7 @@ public class LevelSelect : Frame
 
         if (SelectedWorldIndex == 5)
         {
-            FrameManager.SetNextFrame((int)SelectedMapId switch
+            Engine.FrameMngr.SetNextFrame((int)SelectedMapId switch
             {
                 0 => new Act1(),
                 1 => new Act2(),
@@ -348,7 +348,7 @@ public class LevelSelect : Frame
         }
         else
         {
-            FrameManager.SetNextFrame(LevelFactory.Create(SelectedMapId));
+            Engine.FrameMngr.SetNextFrame(LevelFactory.Create(SelectedMapId));
         }
     }
 

@@ -15,6 +15,6 @@ public class Act2 : Act
 
         // NOTE: The N-Gage version immediately skips this cutscene
         if (IsFinished || Rom.Platform == Platform.NGage)
-            FrameManager.SetNextFrame(LevelFactory.Create(MapId.MarshAwakening1));
+            Engine.FrameMngr.SetNextFrame(LevelFactory.Create(MapId.MarshAwakening1));
     }
 }

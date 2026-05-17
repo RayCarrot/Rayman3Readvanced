@@ -1377,7 +1377,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         {
             if (WorldId == WorldId.World4 && !GameInfo.PersistentInfo.PlayedAct4)
             {
-                FrameManager.SetNextFrame(new Act4());
+                Engine.FrameMngr.SetNextFrame(new Act4());
                 SoundEventsManager.StopAllSongs();
                 GameInfo.PersistentInfo.PlayedAct4 = true;
                 GameInfo.Save(GameInfo.CurrentSlot);
@@ -1470,7 +1470,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                 bottom: MathF.Max(128 - Timer, 104));
 
             if (Timer >= 48)
-                FrameManager.SetNextFrame(new GameCubeMenu());
+                Engine.FrameMngr.SetNextFrame(new GameCubeMenu());
 
             Timer++;
         }

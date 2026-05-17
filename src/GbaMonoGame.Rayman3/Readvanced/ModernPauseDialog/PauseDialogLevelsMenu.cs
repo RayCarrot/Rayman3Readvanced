@@ -246,7 +246,7 @@ public class PauseDialogLevelsMenu
                 GameInfo.PersistentInfo.LastPlayedLevel = (byte)GameInfo.LevelMaps[option.LevelCurtainId][0];
                 GameTime.Resume();
                 SoundEventsManager.StopAllSongs();
-                FrameManager.ReloadCurrentFrame();
+                Engine.FrameMngr.ReloadCurrentFrame();
             }
         }
 

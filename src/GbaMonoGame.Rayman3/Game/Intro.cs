@@ -448,7 +448,7 @@ public class Intro : Frame, IHasPlayfield
 
         if (Engine.Config.Active.Tweaks.AllowPrototypeCheats && JoyPad.IsButtonJustPressed(GbaInput.L))
         {
-            FrameManager.SetNextFrame(new LevelSelect());
+            Engine.FrameMngr.SetNextFrame(new LevelSelect());
             Rayman3.Loc.SetLanguage(0);
             Random.SetSeed(GameTime.ElapsedFrames);
 
@@ -659,7 +659,7 @@ public class Intro : Frame, IHasPlayfield
             Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
             Gfx.Fade = AlphaCoefficient.Max;
 
-            FrameManager.SetNextFrame(Menu);
+            Engine.FrameMngr.SetNextFrame(Menu);
             Random.SetSeed(GameTime.ElapsedFrames);
         }
     }

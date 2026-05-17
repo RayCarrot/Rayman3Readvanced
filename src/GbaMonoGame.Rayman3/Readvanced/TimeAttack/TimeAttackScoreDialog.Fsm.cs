@@ -181,9 +181,9 @@ public partial class TimeAttackScoreDialog
                                 Gfx.Fade = AlphaCoefficient.Max;
 
                                 if (Engine.Config.Active.Tweaks.UseModernMainMenu)
-                                    FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.TimeAttack));
+                                    Engine.FrameMngr.SetNextFrame(new ModernMenuAll(InitialMenuPage.TimeAttack));
                                 else
-                                    FrameManager.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));
+                                    Engine.FrameMngr.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));
                             }
 
                             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);

@@ -9,7 +9,7 @@ public abstract class Frame
     /// <summary>
     /// Gets the currently active frame.
     /// </summary>
-    public static Frame Current => FrameManager.CurrentFrame;
+    public static Frame Current => Engine.FrameMngr.CurrentFrame;
 
     /// <summary>
     /// Indicates if the frame is scheduled to end.

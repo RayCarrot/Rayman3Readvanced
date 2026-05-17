@@ -424,7 +424,7 @@ public partial class MenuAll
         if (IsLoadingCredits)
         {
             if (!TransitionsFX.IsFadingOut)
-                FrameManager.SetNextFrame(new Credits(true));
+                Engine.FrameMngr.SetNextFrame(new Credits(true));
         }
         else
         {

@@ -14,7 +14,7 @@ public class BossBadDreams : FrameSideScroller
         {
             // Show boss ending cutscene first time
             if (GameInfo.PersistentInfo.LastCompletedLevel == (int)MapId.BossBadDreams)
-                FrameManager.SetNextFrame(new Act3());
+                Engine.FrameMngr.SetNextFrame(new Act3());
             else
                 GameInfo.LoadLevel(GameInfo.GetNextLevelId());
         }
