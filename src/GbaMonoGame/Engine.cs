@@ -12,6 +12,7 @@ public static class Engine
     public static GameWindowManager Window { get; private set; }
     public static ViewPortManager ViewPort { get; private set; }
     public static AssetManager Assets { get; private set; }
+    public static MessageManager Messages { get; private set; }
 
     // TODO: Refactor
 
@@ -22,7 +23,6 @@ public static class Engine
     /// </summary>
     public static DisposableResources DisposableResources { get; } = new();
 
-    public static MessageManager MessageManager { get; } = new();
 
     public static RichPresenceManager RichPresenceManager { get; private set; }
 
@@ -35,7 +35,8 @@ public static class Engine
         ApplicationManager app, 
         GameWindowManager window,
         ViewPortManager viewPort,
-        AssetManager assets)
+        AssetManager assets,
+        MessageManager messages)
     {
         // Register encoding provider to be able to use Windows 1252
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -46,6 +47,7 @@ public static class Engine
         Window = window;
         ViewPort = viewPort;
         Assets = assets;
+        Messages = messages;
 
         // Initialize services
         if (Config.Active.Tweaks.InternalGameResolution == null)
@@ -76,6 +78,7 @@ public static class Engine
         Window = null;
         ViewPort = null;
         Assets = null;
+        Messages = null;
     }
 
     public static void Step()

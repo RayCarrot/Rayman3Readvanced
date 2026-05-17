@@ -66,7 +66,7 @@ public static class SaveGameManager
         }
         catch (Exception ex)
         {
-            Engine.MessageManager.EnqueueExceptionMessage(
+            Engine.Messages.EnqueueExceptionMessage(
                 ex: ex,
                 text: "An error occurred when finding the save.",
                 header: "Error finding game save");
@@ -91,7 +91,7 @@ public static class SaveGameManager
         }
         catch (Exception ex)
         {
-            Engine.MessageManager.EnqueueExceptionMessage(
+            Engine.Messages.EnqueueExceptionMessage(
                 ex: ex,
                 text: "An error occurred when reading the save.",
                 header: "Error reading game save");
@@ -113,7 +113,7 @@ public static class SaveGameManager
         }
         catch (Exception ex)
         {
-            Engine.MessageManager.EnqueueExceptionMessage(
+            Engine.Messages.EnqueueExceptionMessage(
                 ex: ex,
                 text: "An error occurred when saving the game.",
                 header: "Error saving game");   
@@ -129,7 +129,7 @@ public static class SaveGameManager
         }
         catch (Exception ex)
         {
-            Engine.MessageManager.EnqueueExceptionMessage(
+            Engine.Messages.EnqueueExceptionMessage(
                 ex: ex,
                 text: "An error occurred when deleting the save.",
                 header: "Error deleting game save");
@@ -152,7 +152,7 @@ public static class SaveGameManager
         }
         catch (Exception ex)
         {
-            Engine.MessageManager.EnqueueExceptionMessage(
+            Engine.Messages.EnqueueExceptionMessage(
                 ex: ex,
                 text: "An error occurred when reading the achievements save.",
                 header: "Error reading achievements save");
@@ -174,7 +174,7 @@ public static class SaveGameManager
         }
         catch (Exception ex)
         {
-            Engine.MessageManager.EnqueueExceptionMessage(
+            Engine.Messages.EnqueueExceptionMessage(
                 ex: ex,
                 text: "An error occurred when saving the achievements save.",
                 header: "Error saving achievements save");
@@ -197,7 +197,7 @@ public static class SaveGameManager
         }
         catch (Exception ex)
         {
-            Engine.MessageManager.EnqueueExceptionMessage(
+            Engine.Messages.EnqueueExceptionMessage(
                 ex: ex,
                 text: "An error occurred when reading the time attack save.",
                 header: "Error reading time attack save");
@@ -219,7 +219,7 @@ public static class SaveGameManager
         }
         catch (Exception ex)
         {
-            Engine.MessageManager.EnqueueExceptionMessage(
+            Engine.Messages.EnqueueExceptionMessage(
                 ex: ex,
                 text: "An error occurred when saving the time attack save.",
                 header: "Error saving time attack save");
@@ -242,7 +242,7 @@ public static class SaveGameManager
         }
         catch (Exception ex)
         {
-            Engine.MessageManager.EnqueueExceptionMessage(
+            Engine.Messages.EnqueueExceptionMessage(
                 ex: ex,
                 text: "An error occurred when reading the time attack ghost.",
                 header: "Error reading time attack ghost");
@@ -264,7 +264,7 @@ public static class SaveGameManager
         }
         catch (Exception ex)
         {
-            Engine.MessageManager.EnqueueExceptionMessage(
+            Engine.Messages.EnqueueExceptionMessage(
                 ex: ex,
                 text: "An error occurred when saving the time attack ghost.",
                 header: "Error saving time attack ghost");

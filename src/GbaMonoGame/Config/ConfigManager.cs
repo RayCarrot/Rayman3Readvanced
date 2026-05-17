@@ -19,7 +19,7 @@ public class ConfigManager
             config = new LocalGameConfig();
             config.Serialize(new IniDeserializer(null));
 
-            Engine.MessageManager.EnqueueExceptionMessage(
+            Engine.Messages.EnqueueExceptionMessage(
                 ex: ex,
                 text: $"An error occurred when reading the saved game options.{Environment.NewLine}All options will be reset to their default values.",
                 header: "Error reading game options");
@@ -66,7 +66,7 @@ public class ConfigManager
         }
         catch (Exception ex)
         {
-            Engine.MessageManager.EnqueueExceptionMessage(
+            Engine.Messages.EnqueueExceptionMessage(
                 ex: ex,
                 text: "An error occurred when saving the game options.",
                 header: "Error reading game options");

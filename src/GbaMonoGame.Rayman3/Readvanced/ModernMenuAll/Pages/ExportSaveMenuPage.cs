@@ -61,7 +61,7 @@ public class ExportSaveMenuPage : MenuPage
             }
             catch (Exception ex)
             {
-                Engine.MessageManager.EnqueueExceptionMessage(
+                Engine.Messages.EnqueueExceptionMessage(
                     ex: ex,
                     text: "The selected save file is either not valid or could not be read properly.",
                     header: "Invalid save");
@@ -103,7 +103,7 @@ public class ExportSaveMenuPage : MenuPage
             }
             catch (Exception ex)
             {
-                Engine.MessageManager.EnqueueExceptionMessage(
+                Engine.Messages.EnqueueExceptionMessage(
                     ex: ex,
                     text: "The selected save file is either not valid or could not be read properly.",
                     header: "Invalid save");

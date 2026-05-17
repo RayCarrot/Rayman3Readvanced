@@ -123,7 +123,7 @@ public abstract class GbaGame : Game
 
     private void StepEngine()
     {
-        if (Engine.MessageManager.IsShowingMessage())
+        if (Engine.Messages.IsShowingMessage())
             return;
 
         if (IsPaused)
@@ -161,7 +161,7 @@ public abstract class GbaGame : Game
         if (DebugMode)
             _updateTimeStopWatch.Stop();
 
-        Engine.MessageManager.ShowQueuedMessage();
+        Engine.Messages.ShowQueuedMessage();
     }
 
     #endregion
@@ -204,7 +204,13 @@ public abstract class GbaGame : Game
         _applicationManager = new ApplicationManager(this);
 
         // Load the engine
-        Engine.Init(config, _applicationManager, _gameWindowManager, new ViewPortManager(), new AssetManager(Services));
+        Engine.Init(
+            config: config, 
+            app: _applicationManager, 
+            window: _gameWindowManager, 
+            viewPort: new ViewPortManager(), 
+            assets: new AssetManager(Services), 
+            messages: new MessageManager());
         
         // Set the initial frame
         FrameManager.SetNextFrame(CreateInitialFrame());

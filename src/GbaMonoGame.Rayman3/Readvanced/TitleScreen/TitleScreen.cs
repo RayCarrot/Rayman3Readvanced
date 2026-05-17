@@ -165,7 +165,7 @@ public class TitleScreen : Frame
                                 else
                                 {
                                     isValid = false;
-                                    Engine.MessageManager.EnqueueMessage(
+                                    Engine.Messages.EnqueueMessage(
                                         text: "The game ROM is not valid. Make sure it's one of the supported versions of Rayman 3.",
                                         header: "Invalid game ROM");
                                 }
@@ -173,7 +173,7 @@ public class TitleScreen : Frame
                             catch (Exception ex)
                             {
                                 isValid = false;
-                                Engine.MessageManager.EnqueueExceptionMessage(
+                                Engine.Messages.EnqueueExceptionMessage(
                                     ex: ex,
                                     text: "An error occurred when validating the selected game ROM.",
                                     header: "Error validating game ROM");
@@ -189,7 +189,7 @@ public class TitleScreen : Frame
                                 }
                                 catch (Exception ex)
                                 {
-                                    Engine.MessageManager.EnqueueExceptionMessage(
+                                    Engine.Messages.EnqueueExceptionMessage(
                                         ex: ex,
                                         text: "An error occurred when copying the selected game ROM.",
                                         header: "Error copying game ROM");
@@ -215,7 +215,7 @@ public class TitleScreen : Frame
                                 // Make sure the files exist
                                 if (gameFileNames.Any(x => !File.Exists(Path.Combine(selectedDirectoryPath, x))))
                                 {
-                                    Engine.MessageManager.EnqueueMessage(
+                                    Engine.Messages.EnqueueMessage(
                                         text: $"The game folder is not valid. Make sure the following files exist:{Environment.NewLine}{String.Join(Environment.NewLine, gameFileNames)}",
                                         header: "Invalid game location");
                                 }
@@ -229,7 +229,7 @@ public class TitleScreen : Frame
                             }
                             catch (Exception ex)
                             {
-                                Engine.MessageManager.EnqueueExceptionMessage(
+                                Engine.Messages.EnqueueExceptionMessage(
                                     ex: ex,
                                     text: "An error occurred when copying the selected game ROM.",
                                     header: "Error copying game ROM");
