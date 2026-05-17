@@ -13,7 +13,7 @@ public class BonusMenuPage : MenuPage
     protected override void Init()
     {
         // Get achievements
-        AchievementsInfo.GetTotalEarnedAchievements(out int earnedAchievements, out int totalAchievements);
+        Rayman3.Achievements.GetTotalEarnedAchievements(out int earnedAchievements, out int totalAchievements);
 
         // Get time attack medals
         TimeAttackInfo.GetTotalEarnedMedals(

@@ -864,7 +864,7 @@ public partial class Grolgoth
                     }
                     else
                     {
-                        AchievementsInfo.Unlock(AchievementId.DefeatBossFinal);
+                        Rayman3.Achievements.Unlock(AchievementId.DefeatBossFinal);
                         Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
                         ProcessMessage(this, Message.Destroy);
                     }

@@ -349,41 +349,41 @@ public static class Rayman3Achievements
 
         // Check for world completions
         if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.SanctuaryOfBigTree_M2)
-            AchievementsInfo.Unlock(AchievementId.CompleteWorld1);
+            Rayman3.Achievements.Unlock(AchievementId.CompleteWorld1);
         if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.MarshAwakening2)
-            AchievementsInfo.Unlock(AchievementId.CompleteWorld2);
+            Rayman3.Achievements.Unlock(AchievementId.CompleteWorld2);
         if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.SanctuaryOfRockAndLava_M3)
-            AchievementsInfo.Unlock(AchievementId.CompleteWorld3);
+            Rayman3.Achievements.Unlock(AchievementId.CompleteWorld3);
         if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.PirateShip_M2)
-            AchievementsInfo.Unlock(AchievementId.CompleteWorld4);
+            Rayman3.Achievements.Unlock(AchievementId.CompleteWorld4);
 
         // Check for boss defeats
         if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossMachine)
-            AchievementsInfo.Unlock(AchievementId.DefeatBossMachine);
+            Rayman3.Achievements.Unlock(AchievementId.DefeatBossMachine);
         if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossBadDreams)
-            AchievementsInfo.Unlock(AchievementId.DefeatBossBadDreams);
+            Rayman3.Achievements.Unlock(AchievementId.DefeatBossBadDreams);
         if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossRockAndLava)
-            AchievementsInfo.Unlock(AchievementId.DefeatBossRockAndLava);
+            Rayman3.Achievements.Unlock(AchievementId.DefeatBossRockAndLava);
         if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossScaleMan)
-            AchievementsInfo.Unlock(AchievementId.DefeatBossScaleMan);
+            Rayman3.Achievements.Unlock(AchievementId.DefeatBossScaleMan);
         if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossFinal_M2)
-            AchievementsInfo.Unlock(AchievementId.DefeatBossFinal);
+            Rayman3.Achievements.Unlock(AchievementId.DefeatBossFinal);
 
         // Check for world collection completions
         if (AllLumsAndCagesInLevels(World1Maps))
-            AchievementsInfo.Unlock(AchievementId.CollectAllWorld1);
+            Rayman3.Achievements.Unlock(AchievementId.CollectAllWorld1);
         if (AllLumsAndCagesInLevels(World2Maps))
-            AchievementsInfo.Unlock(AchievementId.CollectAllWorld2);
+            Rayman3.Achievements.Unlock(AchievementId.CollectAllWorld2);
         if (AllLumsAndCagesInLevels(World3Maps))
-            AchievementsInfo.Unlock(AchievementId.CollectAllWorld3);
+            Rayman3.Achievements.Unlock(AchievementId.CollectAllWorld3);
         if (AllLumsAndCagesInLevels(World4Maps))
-            AchievementsInfo.Unlock(AchievementId.CollectAllWorld4);
+            Rayman3.Achievements.Unlock(AchievementId.CollectAllWorld4);
         if (GameInfo.GetTotalDeadLums() == 1000)
-            AchievementsInfo.Unlock(AchievementId.Collect1000thLum);
+            Rayman3.Achievements.Unlock(AchievementId.Collect1000thLum);
 
         // Check for GCN bonus completion
         if (Rom.Platform == Platform.GBA && GameInfo.PersistentInfo.CompletedGCNBonusLevels == 10)
-            AchievementsInfo.Unlock(AchievementId.CompleteGCNBonus);
+            Rayman3.Achievements.Unlock(AchievementId.CompleteGCNBonus);
     }
 
     public static void CheckTimeAttackAchievements()
@@ -393,11 +393,11 @@ public static class Rayman3Achievements
             out int totalBronze, out int totalSilver, out int totalGold);
 
         if (earnedBronze == totalBronze)
-            AchievementsInfo.Unlock(AchievementId.TimeAttackBronze);
+            Rayman3.Achievements.Unlock(AchievementId.TimeAttackBronze);
         if (earnedSilver == totalSilver)
-            AchievementsInfo.Unlock(AchievementId.TimeAttackSilver);
+            Rayman3.Achievements.Unlock(AchievementId.TimeAttackSilver);
         if (earnedGold == totalGold)
-            AchievementsInfo.Unlock(AchievementId.TimeAttackGold);
+            Rayman3.Achievements.Unlock(AchievementId.TimeAttackGold);
     }
 
     public static void DefeatPirateType(PirateType pirateType)
@@ -407,7 +407,7 @@ public static class Rayman3Achievements
             GameInfo.SaveSlot.DefeatedPirateTypes |= pirateType;
 
             if (GameInfo.SaveSlot.DefeatedPirateTypes == PirateType.All)
-                AchievementsInfo.Unlock(AchievementId.DefeatEveryPirateType);
+                Rayman3.Achievements.Unlock(AchievementId.DefeatEveryPirateType);
         }
     }
 
@@ -426,7 +426,7 @@ public static class Rayman3Achievements
                 GameInfo.SaveSlot.CollectedWhiteLums = collectedWhiteLums;
 
                 if (GameInfo.SaveSlot.CollectedWhiteLums.Length == GetTotalLivesCount())
-                    AchievementsInfo.Unlock(AchievementId.CollectAllLives);
+                    Rayman3.Achievements.Unlock(AchievementId.CollectAllLives);
             }
         }
     }

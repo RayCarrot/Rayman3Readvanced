@@ -374,7 +374,7 @@ public partial class Rocky
                 break;
 
             case FsmAction.UnInit:
-                AchievementsInfo.Unlock(AchievementId.DefeatBossRockAndLava);
+                Rayman3.Achievements.Unlock(AchievementId.DefeatBossRockAndLava);
                 Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
                 ProcessMessage(this, Message.Destroy);
                 break;

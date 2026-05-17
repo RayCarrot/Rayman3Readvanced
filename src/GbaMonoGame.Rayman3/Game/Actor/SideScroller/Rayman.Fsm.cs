@@ -3641,7 +3641,7 @@ public partial class Rayman
                     ActionId = IsFacingRight ? Action.FlyForwardWithKeg_Right : Action.FlyBackwardsWithKeg_Right;
 
                     if (IsFacingLeft)
-                        AchievementsInfo.Unlock(AchievementId.RideKegBackwards);
+                        Rayman3.Achievements.Unlock(AchievementId.RideKegBackwards);
                 }
                 else if (StartFlyingWithKegLeft)
                 {
@@ -3976,15 +3976,15 @@ public partial class Rayman
                 if (FinishedMap)
                 {
                     if (GameInfo.MapId == MapId.CavesOfBadDreams_M1 && Rayman3Achievements.CaveBadDreamsM1_HitSkulls <= 17) 
-                        AchievementsInfo.Unlock(AchievementId.CompleteCaveBadDreamsWithMaxSkullHits);
+                        Rayman3.Achievements.Unlock(AchievementId.CompleteCaveBadDreamsWithMaxSkullHits);
                     if (GameInfo.MapId == MapId.MenhirHills_M2 && !Rayman3Achievements.MenhirHills_HasDied) 
-                        AchievementsInfo.Unlock(AchievementId.CompleteMenhirHillsWithoutDying);
+                        Rayman3.Achievements.Unlock(AchievementId.CompleteMenhirHillsWithoutDying);
                     if (Rom.Platform == Platform.NGage && GameInfo.MapId == MapId.MarshAwakening2 && GameInfo.LastGreenLumAlive == 0) 
-                        AchievementsInfo.Unlock(AchievementId.CompleteFreeFallingWithoutCheckpoint);
+                        Rayman3.Achievements.Unlock(AchievementId.CompleteFreeFallingWithoutCheckpoint);
                     if (GameInfo.MapId == MapId.BossRockAndLava && !Rayman3Achievements.BossRockAndLava_HasUsedBlueLum) 
-                        AchievementsInfo.Unlock(AchievementId.DefeatRockyWithoutBlueLum);
+                        Rayman3.Achievements.Unlock(AchievementId.DefeatRockyWithoutBlueLum);
                     if (GameInfo.MapId == MapId.SanctuaryOfRockAndLava_M3 && !Rayman3Achievements.SanctuaryOfRockAndLava_HasKilledBlackLum) 
-                        AchievementsInfo.Unlock(AchievementId.CompleteRockAndLavaWithoutDefeatingBlackLums);
+                        Rayman3.Achievements.Unlock(AchievementId.CompleteRockAndLavaWithoutDefeatingBlackLums);
                 }
 
                 break;

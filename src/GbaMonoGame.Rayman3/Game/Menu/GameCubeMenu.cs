@@ -307,7 +307,7 @@ public partial class GameCubeMenu : Frame
         State.MoveTo(_Fsm_PreInit);
 
         if (GameInfo.PersistentInfo.CompletedGCNBonusLevels == 10)
-            AchievementsInfo.Unlock(AchievementId.CompleteGCNBonus);
+            Rayman3.Achievements.Unlock(AchievementId.CompleteGCNBonus);
     }
 
     public override void UnInit()

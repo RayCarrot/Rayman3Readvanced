@@ -267,7 +267,7 @@ public partial class RedPirate
                     (type.IsSolid && KnockBackPosition.Y + 16 < Position.Y))
                 {
                     if (type.Value == PhysicalTypeValue.MoltenLava && Scene.MainActor is Rayman rayman && rayman.IsLavaInLevel())
-                        AchievementsInfo.Unlock(AchievementId.DefeatPirateWithLava);
+                        Rayman3.Achievements.Unlock(AchievementId.DefeatPirateWithLava);
 
                     Ammo = 1;
                     State.MoveTo(_Fsm_Dying);

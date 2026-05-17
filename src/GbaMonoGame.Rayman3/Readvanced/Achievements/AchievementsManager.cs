@@ -5,18 +5,9 @@ using System.Linq;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
-public static class AchievementsInfo
+public class AchievementsManager
 {
-    private static FrozenDictionary<AchievementId, AchievementInfo> AchievementsDictionary { get; set; }
-    private static ImmutableArray<AchievementInfo> AchievementsArray { get; set; }
-    private static AchievementPopup Popup { get; set; }
-    private static Queue<AchievementId> AchievementsPopupQueue { get; set; }
-    private static AchievementsSave Save { get; set; }
-
-    public static AchievementInfo GetAchievement(AchievementId achievementId) => AchievementsDictionary[achievementId];
-    public static ImmutableArray<AchievementInfo> GetAchievements() => AchievementsArray;
-
-    public static void Init(AchievementInfo[] achievements)
+    public AchievementsManager(AchievementInfo[] achievements)
     {
         AchievementsDictionary = achievements.
             Where(x => x.ExclusivePlatform == null || x.ExclusivePlatform == Rom.Platform).
@@ -31,24 +22,18 @@ public static class AchievementsInfo
         AchievementsPopupQueue = new Queue<AchievementId>();
 
         Save = SaveGameManager.LoadAchievementsSave() ?? new AchievementsSave();
-
-        FrameManager.AddStepAction(Step);
     }
 
-    public static void UnInit()
-    {
-        AchievementsDictionary = null;
-        AchievementsArray = default;
+    private FrozenDictionary<AchievementId, AchievementInfo> AchievementsDictionary { get; }
+    private ImmutableArray<AchievementInfo> AchievementsArray { get; }
+    private AchievementPopup Popup { get; }
+    private Queue<AchievementId> AchievementsPopupQueue { get; }
+    private AchievementsSave Save { get; }
 
-        Popup = null;
-        AchievementsPopupQueue = null;
+    public AchievementInfo GetAchievement(AchievementId achievementId) => AchievementsDictionary[achievementId];
+    public ImmutableArray<AchievementInfo> GetAchievements() => AchievementsArray;
 
-        Save = null;
-
-        FrameManager.RemoveStepAction(Step);
-    }
-
-    public static void Step()
+    public void Step()
     {
         // Show next achievement from the queue
         if (!Popup.IsShowingPopup && AchievementsPopupQueue.TryDequeue(out AchievementId achievementId))
@@ -65,7 +50,7 @@ public static class AchievementsInfo
         Popup.Draw();
     }
 
-    public static void GetTotalEarnedAchievements(out int earnedAchievements, out int totalAchievements)
+    public void GetTotalEarnedAchievements(out int earnedAchievements, out int totalAchievements)
     {
         earnedAchievements = 0;
         totalAchievements = 0;
@@ -77,12 +62,12 @@ public static class AchievementsInfo
         }
     }
 
-    public static bool IsUnlocked(AchievementId achievementId)
+    public bool IsUnlocked(AchievementId achievementId)
     {
         return Save.UnlockedAchievements[(int)achievementId];
     }
 
-    public static void Unlock(AchievementId achievementId)
+    public void Unlock(AchievementId achievementId)
     {
         int id = (int)achievementId;
 
@@ -99,7 +84,7 @@ public static class AchievementsInfo
             AchievementsPopupQueue.Enqueue(achievementId);
     }
 
-    public static void Lock(AchievementId achievementId)
+    public void Lock(AchievementId achievementId)
     {
         int id = (int)achievementId;
 

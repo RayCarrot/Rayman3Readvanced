@@ -173,15 +173,15 @@ public class Rayman3DebugWindow : DebugWindow
 
                 ImGui.SeparatorText("Achievements");
 
-                foreach (AchievementInfo achievement in AchievementsInfo.GetAchievements())
+                foreach (AchievementInfo achievement in Rayman3.Achievements.GetAchievements())
                 {
-                    bool unlocked = AchievementsInfo.IsUnlocked(achievement.Id);
+                    bool unlocked = Rayman3.Achievements.IsUnlocked(achievement.Id);
                     if (ImGui.Checkbox($"{achievement.Id}: {achievement.Title}", ref unlocked))
                     {
                         if (unlocked)
-                            AchievementsInfo.Unlock(achievement.Id);
+                            Rayman3.Achievements.Unlock(achievement.Id);
                         else
-                            AchievementsInfo.Lock(achievement.Id);
+                            Rayman3.Achievements.Lock(achievement.Id);
                     }
                 }
 

@@ -95,7 +95,7 @@ public abstract class PirateBaseActor : MovableActor
                 }
 
                 if (hitActor.Type == (int)ActorType.Keg)
-                    AchievementsInfo.Unlock(AchievementId.DefeatPirateWithKeg);
+                    Rayman3.Achievements.Unlock(AchievementId.DefeatPirateWithKeg);
                 return false;
 
             default:

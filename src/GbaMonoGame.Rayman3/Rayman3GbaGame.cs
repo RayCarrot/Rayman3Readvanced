@@ -346,8 +346,8 @@ public class Rayman3GbaGame : GbaGame
         // Define optional tile fixes
         Rayman3TileFixes.DefineTileFixes(Rom.Platform);
 
-        // Initialize the achievements
-        AchievementsInfo.Init(Rayman3Achievements.Achievements);
+        // Initialize game services
+        Rayman3.Init();
 
         // Initialize the time attack
         TimeAttackInfo.Init(_timeAttackConfig);
@@ -369,7 +369,7 @@ public class Rayman3GbaGame : GbaGame
         SoundEventsManager.Unload();
         FontManager.Unload();
         TimeAttackDataManager.Unload();
-        AchievementsInfo.UnInit();
+        Rayman3.UnInit();
         TimeAttackInfo.UnInit();
     }
 

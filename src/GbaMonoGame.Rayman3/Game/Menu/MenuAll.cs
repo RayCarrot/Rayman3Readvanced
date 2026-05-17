@@ -612,7 +612,7 @@ public partial class MenuAll : Frame, IHasPlayfield
 
         SteamTimer = 0;
 
-        AchievementsInfo.Unlock(AchievementId.ViewOriginalMenu);
+        Rayman3.Achievements.Unlock(AchievementId.ViewOriginalMenu);
     }
 
     public override void UnInit()
