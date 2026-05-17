@@ -27,22 +27,21 @@ public class EditorCamera
     private const float DefaultScale = 1.5f;
     private const float MouseWheelZoomSpeed = 0.05f;
 
-    private Vector2 _position;
-
     public Box ScrollBounds { get; }
     public EditorRenderContext RenderContext { get; }
     public Vector2 Position
     {
-        get => _position;
+        get;
         set
         {
             Vector2 minPos = ScrollBounds.Position;
-            Vector2 maxPos = new(Math.Max(minPos.X, ScrollBounds.Right - RenderContext.Resolution.X), Math.Max(minPos.Y, ScrollBounds.Bottom - RenderContext.Resolution.Y));
+            Vector2 maxPos = new(Math.Max(minPos.X, ScrollBounds.Right - RenderContext.Resolution.X),
+                Math.Max(minPos.Y, ScrollBounds.Bottom - RenderContext.Resolution.Y));
 
-            _position = Vector2.Clamp(value, minPos, maxPos);
+            field = Vector2.Clamp(value, minPos, maxPos);
 
             foreach (TgxGameLayer gameLayer in GameLayers)
-                gameLayer.SetOffset(_position - gameLayer.Origin);
+                gameLayer.SetOffset(field - gameLayer.Origin);
         }
     }
     public List<TgxGameLayer> GameLayers { get; }

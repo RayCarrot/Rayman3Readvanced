@@ -19,8 +19,6 @@ public class TgxCluster
             : new ParallaxClusterRenderContext(renderContext, this);
     }
 
-    private Vector2 _position;
-
     public List<TgxGameLayer> Layers { get; }
 
     public Vector2 Origin { get; set; } // Custom
@@ -28,13 +26,13 @@ public class TgxCluster
 
     public Vector2 Position
     {
-        get => _position;
+        get;
         set
         {
-            _position = Vector2.Clamp(value, MinPosition, MaxPosition);
+            field = Vector2.Clamp(value, MinPosition, MaxPosition);
 
             foreach (TgxGameLayer layer in Layers)
-                layer.SetOffset(_position - layer.Origin);
+                layer.SetOffset(field - layer.Origin);
         }
     }
 

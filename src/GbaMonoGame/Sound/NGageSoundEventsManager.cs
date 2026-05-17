@@ -78,15 +78,12 @@ public class NGageSoundEventsManager : SoundEventsManager
 
     #region Private Properties
 
-    private bool _isMusicInGamePaused;
-    private bool _isMusicInEnginePaused;
-
     private bool IsMusicInGamePaused
     {
-        get => _isMusicInGamePaused;
+        get;
         set
         {
-            _isMusicInGamePaused = value;
+            field = value;
 
             if (_soloud.isValidVoiceHandle(_musicVoiceHandle))
                 _soloud.setPause(_musicVoiceHandle, value || IsMusicInEnginePaused);
@@ -94,10 +91,10 @@ public class NGageSoundEventsManager : SoundEventsManager
     }
     private bool IsMusicInEnginePaused
     {
-        get => _isMusicInEnginePaused;
+        get;
         set
         {
-            _isMusicInEnginePaused = value;
+            field = value;
 
             if (_soloud.isValidVoiceHandle(_musicVoiceHandle))
                 _soloud.setPause(_musicVoiceHandle, value || IsMusicInGamePaused);
@@ -594,9 +591,6 @@ public class NGageSoundEventsManager : SoundEventsManager
 
     private class SoundEffectInstance
     {
-        private bool _inGamePaused;
-        private bool _inEnginePaused;
-
         // N-Gage
         public int SoundResourceId { get; init; }
         public bool Loop { get; init; }
@@ -605,19 +599,19 @@ public class NGageSoundEventsManager : SoundEventsManager
         // Custom
         public bool InGamePaused
         {
-            get => _inGamePaused;
+            get;
             set
             {
-                _inGamePaused = value;
+                field = value;
                 Soloud.setPause(VoiceHandle, value || InEnginePaused);
             }
         }
         public bool InEnginePaused
         {
-            get => _inEnginePaused;
+            get;
             set
             {
-                _inEnginePaused = value;
+                field = value;
                 Soloud.setPause(VoiceHandle, value || InGamePaused);
             }
         }

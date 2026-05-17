@@ -641,9 +641,6 @@ public class GbaSoundEventsManager : SoundEventsManager
 
     private class SongInstance
     {
-        private bool _inGamePaused;
-        private bool _inEnginePaused;
-
         public object ReadvancedObj { get; init; }
         public object OriginalObj { get; init; }
         public short EventId { get; init; }
@@ -668,19 +665,19 @@ public class GbaSoundEventsManager : SoundEventsManager
         // Custom
         public bool InGamePaused
         {
-            get => _inGamePaused;
+            get;
             set
             {
-                _inGamePaused = value;
+                field = value;
                 Soloud.setPause(VoiceHandle, value || InEnginePaused);
             }
         }
         public bool InEnginePaused
         {
-            get => _inEnginePaused;
+            get;
             set
             {
-                _inEnginePaused = value;
+                field = value;
                 Soloud.setPause(VoiceHandle, value || InGamePaused);
             }
         }

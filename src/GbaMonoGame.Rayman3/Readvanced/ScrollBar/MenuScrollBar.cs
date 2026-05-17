@@ -34,17 +34,15 @@ public class MenuScrollBar
     private const float ThumbOffsetX = 5;
     private const float ThumbOffsetY = 16;
 
-    private MenuScrollBarSize _size;
-
     public MenuScrollBarSize Size
     {
-        get => _size;
+        get;
         set
         {
-            if (value == _size && ScrollBar.Texture != null)
+            if (value == field && ScrollBar.Texture != null)
                 return;
 
-            _size = value;
+            field = value;
 
             ScrollBar.Texture = Engine.Assets.FixContentManager.Load<Texture2D>(value switch
             {

@@ -11,15 +11,13 @@ public class SpriteTextObject : AObject
         FontSize = FontSize.Font16;
     }
 
-    private string _text;
-
     private byte[] TextBytes { get; set; }
     public string Text
     {
-        get => _text;
+        get;
         set
         {
-            _text = value;
+            field = value;
             TextBytes = Engine.Font.GetTextBytes(value);
         }
     }

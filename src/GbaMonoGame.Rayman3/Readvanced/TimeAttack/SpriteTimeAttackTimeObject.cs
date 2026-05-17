@@ -7,15 +7,14 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 // Custom object to render time
 public class SpriteTimeAttackTimeObject : AObject
 {
-    private TimeAttackTime _time;
     private string _timeString;
 
     public TimeAttackTime Time
     {
-        get => _time;
+        get;
         set
         {
-            _time = value;
+            field = value;
             _timeString = value.ToTimeString();
         }
     }

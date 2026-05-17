@@ -36,7 +36,6 @@ public class AnimatedObject : AObject
 
     #region Private Fields
 
-    private int _currentAnimation;
     private int _currentFrame;
 
     #endregion
@@ -66,10 +65,10 @@ public class AnimatedObject : AObject
     // Animation state
     public int CurrentAnimation
     {
-        get => _currentAnimation;
+        get;
         set
         {
-            _currentAnimation = value;
+            field = value;
             Rewind();
         }
     }

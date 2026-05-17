@@ -36,8 +36,6 @@ public class TgxTextLayerMode7 : TgxGameLayer
         Gfx.AddScreen(Screen);
     }
 
-    private Vector2 _scrolledPosition;
-
     public TextLayerMode7Resource Resource { get; }
     public GfxScreen Screen { get; }
     public MapTile[] TileMap { get; }
@@ -46,10 +44,10 @@ public class TgxTextLayerMode7 : TgxGameLayer
 
     public Vector2 ScrolledPosition
     {
-        get => _scrolledPosition;
+        get;
         set
         {
-            _scrolledPosition = value;
+            field = value;
             SetOffset(value);
         }
     }

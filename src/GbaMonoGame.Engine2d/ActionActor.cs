@@ -33,7 +33,6 @@ public abstract class ActionActor : BaseActor
         };
     }
 
-    private int _actionId;
     private Box _detectionBox;
     private Box _actionBox;
     private readonly DebugBoxAObject _debugDetectionBoxAObject;
@@ -46,10 +45,10 @@ public abstract class ActionActor : BaseActor
 
     public sealed override int ActionId
     {
-        get => _actionId;
+        get;
         set
         {
-            _actionId = value;
+            field = value;
             NewAction = true;
         }
     }

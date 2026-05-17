@@ -11,8 +11,6 @@ public abstract class RenderContext
     private Vector2 _lastGameResolution;
 
     private Vector2 _resolution;
-    private float _scale;
-    private Viewport _viewPort;
 
     protected virtual HorizontalAlignment HorizontalAlignment => HorizontalAlignment.Center;
     protected virtual VerticalAlignment VerticalAlignment => VerticalAlignment.Center;
@@ -35,9 +33,9 @@ public abstract class RenderContext
         get
         {
             Update();
-            return _scale;
+            return field;
         }
-        private set => _scale = value;
+        private set;
     }
 
     public Viewport Viewport
@@ -45,9 +43,9 @@ public abstract class RenderContext
         get
         {
             Update();
-            return _viewPort;
+            return field;
         }
-        private set => _viewPort = value;
+        private set;
     }
 
     protected abstract Vector2 GetResolution();
