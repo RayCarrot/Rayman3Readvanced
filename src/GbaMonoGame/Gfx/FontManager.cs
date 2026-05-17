@@ -7,16 +7,23 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame;
 
-public static class FontManager
+public class FontManager : IDisposable
 {
     private const int TextureWidth = 512;
     private const int Padding = 2;
 
-    private static LoadedFont _font8;
-    private static LoadedFont _font16;
-    private static LoadedFont _font32;
+    public FontManager(Font font8, Font font16, Font font32)
+    {
+        _font8 = new LoadedFont(font8, CreateFontTexture(font8, Color.White, Color.Transparent), GetFontCharacterRectangles(font8));
+        _font16 = new LoadedFont(font16, CreateFontTexture(font16, Color.White, Color.Transparent), GetFontCharacterRectangles(font16));
+        _font32 = new LoadedFont(font32, CreateFontTexture(font32, Color.White, Color.Transparent), GetFontCharacterRectangles(font32));
+    }
 
-    public static Encoding Encoding { get; } = Encoding.GetEncoding(1252);
+    private readonly LoadedFont _font8;
+    private readonly LoadedFont _font16;
+    private readonly LoadedFont _font32;
+
+    public Encoding Encoding { get; } = Encoding.GetEncoding(1252);
 
     private static Point GetCharSizeInTexture(Font font)
     {
@@ -117,39 +124,6 @@ public static class FontManager
         return rects;
     }
 
-    public static void Load(Font font8, Font font16, Font font32)
-    {
-        _font8 = new LoadedFont(font8, CreateFontTexture(font8, Color.White, Color.Transparent), GetFontCharacterRectangles(font8));
-        _font16 = new LoadedFont(font16, CreateFontTexture(font16, Color.White, Color.Transparent), GetFontCharacterRectangles(font16));
-        _font32 = new LoadedFont(font32, CreateFontTexture(font32, Color.White, Color.Transparent), GetFontCharacterRectangles(font32));
-    }
-
-    public static void Unload()
-    {
-        _font8?.Texture.Dispose();
-        _font16?.Texture.Dispose();
-        _font32?.Texture.Dispose();
-        
-        _font8 = null;
-        _font16 = null;
-        _font32 = null;
-    }
-
-    public static byte[] GetTextBytes(string text)
-    {
-        return Encoding.GetBytes(text);
-    }
-
-    public static byte[] GetTextBytes(string text, int index, int count)
-    {
-        return Encoding.GetBytes(text, index, count);
-    }
-
-    public static string GetTextString(byte[] bytes)
-    {
-        return Encoding.GetString(bytes);
-    }
-
     public static Matrix CreateTextTransformation(Vector2 position, Vector2 scale, Vector2 origin)
     {
         Matrix transformation = Matrix.Identity;
@@ -160,12 +134,27 @@ public static class FontManager
         return transformation;
     }
 
-    public static int GetStringWidth(FontSize fontSize, string text)
+    public byte[] GetTextBytes(string text)
+    {
+        return Encoding.GetBytes(text);
+    }
+
+    public byte[] GetTextBytes(string text, int index, int count)
+    {
+        return Encoding.GetBytes(text, index, count);
+    }
+
+    public string GetTextString(byte[] bytes)
+    {
+        return Encoding.GetString(bytes);
+    }
+
+    public int GetStringWidth(FontSize fontSize, string text)
     {
         return GetStringWidth(fontSize, GetTextBytes(text));
     }
 
-    public static int GetStringWidth(FontSize fontSize, byte[] textBytes)
+    public int GetStringWidth(FontSize fontSize, byte[] textBytes)
     {
         LoadedFont loadedFont = fontSize switch
         {
@@ -198,7 +187,7 @@ public static class FontManager
         return maxWidth;
     }
 
-    public static int GetFontHeight(FontSize fontSize)
+    public int GetFontHeight(FontSize fontSize)
     {
         LoadedFont loadedFont = fontSize switch
         {
@@ -211,7 +200,7 @@ public static class FontManager
         return loadedFont.Font.CharacterHeight;
     }
 
-    public static string WrapText(FontSize fontSize, string text, float width)
+    public string WrapText(FontSize fontSize, string text, float width)
     {
         LoadedFont loadedFont = fontSize switch
         {
@@ -302,7 +291,7 @@ public static class FontManager
         return wrappedText.ToString();
     }
 
-    public static Sprite GetCharacterSprite(
+    public Sprite GetCharacterSprite(
         byte c, 
         FontSize fontSize, 
         Matrix transformation,
@@ -338,6 +327,13 @@ public static class FontManager
         position += new Vector2(loadedFont.Font.CharacterWidths[c], 0);
 
         return sprite;
+    }
+
+    public void Dispose()
+    {
+        _font8?.Texture.Dispose();
+        _font16?.Texture.Dispose();
+        _font32?.Texture.Dispose();
     }
 
     private record LoadedFont(Font Font, Texture2D Texture, Rectangle[] CharacterRectangles);

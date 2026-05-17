@@ -49,7 +49,7 @@ public class AchievementPopup
             y: BoxHeight);
 
         // Wrap the text to fit
-        string wrappedText = FontManager.WrapText(TextFontSize, text, availableSize.X);
+        string wrappedText = Engine.Font.WrapText(TextFontSize, text, availableSize.X);
         string[] lines = wrappedText.Split(['\n', '\r'], StringSplitOptions.RemoveEmptyEntries);
         if (lines.Length > TextLines.Length)
             throw new Exception($"Achievement title \"{text}\" is too long to fit in the popup");
@@ -68,7 +68,7 @@ public class AchievementPopup
             }
 
             string line = lines[i];
-            Vector2 posOffset = new((availableSize.X - FontManager.GetStringWidth(TextFontSize, line)) / 2f, TextLineHeight * i);
+            Vector2 posOffset = new((availableSize.X - Engine.Font.GetStringWidth(TextFontSize, line)) / 2f, TextLineHeight * i);
             TextLinesScreenPos[i] = textPos + posOffset;
             TextLines[i].Text = line;
         }

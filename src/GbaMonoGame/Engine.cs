@@ -14,6 +14,9 @@ public static class Engine
     public static RichPresenceManager RichPresence { get; private set; }
     public static FrameManager FrameMngr { get; private set; }
 
+    // Game services
+    public static FontManager Font { get; private set; }
+
     public static void InitEngine(
         ConfigManager config, 
         ApplicationManager app, 
@@ -50,9 +53,11 @@ public static class Engine
         RichPresence.Initialize();
     }
 
-    public static void InitGame()
+    public static void InitGame(
+        FontManager font)
     {
-        // Do nothing
+        // Set services
+        Font = font;
     }
 
     public static void UnInitEngine()
@@ -75,7 +80,11 @@ public static class Engine
 
     public static void UnInitGame()
     {
-        // Do nothing
+        // Uninitialize services
+        Font?.Dispose();
+
+        // Remove services
+        Font = null;
     }
 
     public static void Step()

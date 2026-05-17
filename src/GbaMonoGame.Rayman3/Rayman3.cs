@@ -364,7 +364,6 @@ public static class Rayman3
 
         // Initialize other data
         InitSounds();
-        FontManager.Load(Rom.Loader.Font8, Rom.Loader.Font16, Rom.Loader.Font32);
         Rayman3TileFixes.DefineTileFixes(Rom.Platform);
         InitEditorData();
     }
@@ -388,7 +387,6 @@ public static class Rayman3
         // Unload other data
         GameInfo.UnInit();
         SoundEventsManager.Unload();
-        FontManager.Unload();
         TimeAttackDataManager.Unload();
     }
 }

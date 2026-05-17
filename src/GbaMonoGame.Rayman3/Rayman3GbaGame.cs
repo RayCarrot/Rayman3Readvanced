@@ -30,7 +30,8 @@ public class Rayman3GbaGame : GbaGame
 
     protected override void InitGame()
     {
-        Engine.InitGame();
+        Engine.InitGame(
+            font: new FontManager(Rom.Loader.Font8, Rom.Loader.Font16, Rom.Loader.Font32));
         Rayman3.InitGame();
     }
 

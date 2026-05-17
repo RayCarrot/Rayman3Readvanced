@@ -20,7 +20,7 @@ public class SpriteTextObject : AObject
         set
         {
             _text = value;
-            TextBytes = FontManager.GetTextBytes(value);
+            TextBytes = Engine.Font.GetTextBytes(value);
         }
     }
 
@@ -30,14 +30,14 @@ public class SpriteTextObject : AObject
 
     public AlphaCoefficient Alpha { get; set; } = AlphaCoefficient.Max;
 
-    public int GetStringWidth() => FontManager.GetStringWidth(FontSize, TextBytes);
+    public int GetStringWidth() => Engine.Font.GetStringWidth(FontSize, TextBytes);
 
     public void WrapText(float width)
     {
         if (AffineMatrix != null)
             width *= 1 / AffineMatrix.Value.Scale.X;
 
-        Text = FontManager.WrapText(FontSize, Text, width);
+        Text = Engine.Font.WrapText(FontSize, Text, width);
     }
 
     public void SetYScaling(float scale)
@@ -53,7 +53,7 @@ public class SpriteTextObject : AObject
         Vector2 originalPos = GetAnchoredPosition();
 
         // Vertically center so that the Y scaling works
-        float height = FontManager.GetFontHeight(FontSize);
+        float height = Engine.Font.GetFontHeight(FontSize);
         Vector2 origin = new(0, height / 2f);
         Matrix transformation = FontManager.CreateTextTransformation(originalPos, AffineMatrix?.Scale ?? Vector2.One, origin);
 
@@ -72,7 +72,7 @@ public class SpriteTextObject : AObject
                 continue;
             }
 
-            Gfx.AddSprite(FontManager.GetCharacterSprite(
+            Gfx.AddSprite(Engine.Font.GetCharacterSprite(
                 c: c, 
                 fontSize: FontSize, 
                 transformation: transformation,

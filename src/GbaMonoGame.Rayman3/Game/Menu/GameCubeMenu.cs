@@ -171,7 +171,7 @@ public partial class GameCubeMenu : Frame
 
     private void ShowCustomText(string text)
     {
-        string[] textLines = FontManager.WrapText(Anims.StatusText.FontSize, text, 120).Split('\n');
+        string[] textLines = Engine.Font.WrapText(Anims.StatusText.FontSize, text, 120).Split('\n');
 
         for (int i = 0; i < Anims.ReusableTexts.Length + 1; i++)
         {
