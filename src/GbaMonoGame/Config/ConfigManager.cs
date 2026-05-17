@@ -48,6 +48,12 @@ public class ConfigManager
     /// </summary>
     public bool IsOverrided { get; private set; }
 
+    private void UpdateInternalGameResolution()
+    {
+        if (Engine.ViewPort.InternalGameResolution != Engine.Config.Active.Tweaks.InternalGameResolution)
+            Engine.ViewPort.SetInternalGameResolution(Engine.Config.Active.Tweaks.InternalGameResolution!.Value);
+    }
+
     public void Save()
     {
         string filePath = FileManager.GetDataFile(Paths.ConfigFileName);
@@ -71,13 +77,13 @@ public class ConfigManager
     {
         Active = activeGameConfig;
         IsOverrided = true;
-        Engine.UpdateInternalGameResolution();
+        UpdateInternalGameResolution();
     }
 
     public void RestoreActive()
     {
         Active = new ActiveGameConfig(Local.Tweaks, Local.Difficulty, Local.Debug);
         IsOverrided = false;
-        Engine.UpdateInternalGameResolution();
+        UpdateInternalGameResolution();
     }
 }

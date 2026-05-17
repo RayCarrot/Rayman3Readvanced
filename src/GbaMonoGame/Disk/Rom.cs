@@ -183,7 +183,7 @@ public static class Rom
 
             // Set the internal resolution if it's null
             if (Engine.Config.Active.Tweaks.InternalGameResolution == null)
-                Engine.InternalGameResolution = OriginalResolution;
+                Engine.ViewPort.SetInternalGameResolution(OriginalResolution);
 
             _originalGameRenderContext = new FixedResolutionRenderContext(OriginalResolution);
             _originalScaledGameRenderContext = new OriginalScaledGameRenderContext();

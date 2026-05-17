@@ -368,7 +368,7 @@ public class LevelSelect : Frame
             Text = "Select a savegame slot:",
             Color = TextColor.LevelSelect,
             ScreenPos = new Vector2(60, 20),
-            RenderContext = Engine.GameRenderContext,
+            RenderContext = Engine.ViewPort.GameRenderContext,
         };
 
         Rows = new SpriteTextObject[4];
@@ -379,7 +379,7 @@ public class LevelSelect : Frame
                 Text = "WoodLight #1",
                 Color = TextColor.LevelSelect,
                 ScreenPos = new Vector2(30, 60 + RowHeight * i),
-                RenderContext = Engine.GameRenderContext,
+                RenderContext = Engine.ViewPort.GameRenderContext,
             };
         }
 
@@ -389,7 +389,7 @@ public class LevelSelect : Frame
             // NOTE: The color is supposed to be red, but the color gets set after the text is drawn, so it's never used
             Color = TextColor.LevelSelect,
             ScreenPos = new Vector2(10, 60),
-            RenderContext = Engine.GameRenderContext,
+            RenderContext = Engine.ViewPort.GameRenderContext,
         };
 
         InitSelectSaveSlot();

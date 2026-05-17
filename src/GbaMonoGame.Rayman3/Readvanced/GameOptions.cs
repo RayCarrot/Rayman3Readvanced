@@ -89,8 +89,8 @@ public static class GameOptions
                     items: Enumerable.Range(1, windowResCount).
                         Select(x => new MultiSelectionOptionsMenuOption<float>.Item($"{x}x", x)).
                         ToArray(),
-                    getData: _ => Engine.Window.WindowResolution.ToVector2().X / Engine.InternalGameResolution.X,
-                    setData: data => Engine.Window.WindowResolution = (Engine.InternalGameResolution * data).ToPoint(),
+                    getData: _ => Engine.Window.WindowResolution.ToVector2().X / Engine.ViewPort.InternalGameResolution.X,
+                    setData: data => Engine.Window.WindowResolution = (Engine.ViewPort.InternalGameResolution * data).ToPoint(),
                     getCustomName: data => $"{data:0.00}x"),
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "LOCK WINDOW ASPECT RATIO",
@@ -305,13 +305,13 @@ public static class GameOptions
                         new MultiSelectionOptionsMenuOption<Vector2>.Item($"ORIGINAL ({originalRes.X}x{originalRes.Y})", originalRes, TweaksPreset.Original),
                         new MultiSelectionOptionsMenuOption<Vector2>.Item($"WIDESCREEN ({modernRes.X}x{modernRes.Y})", modernRes, TweaksPreset.Readvanced), // 16:9
                     ],
-                    getData: _ => Engine.InternalGameResolution,
+                    getData: _ => Engine.ViewPort.InternalGameResolution,
                     setData: data =>
                     {
                         Engine.Config.Local.Tweaks.InternalGameResolution = data == originalRes ? null : data;
 
                         if (!Engine.Config.IsOverrided)
-                            Engine.SetInternalGameResolution(data);
+                            Engine.ViewPort.SetInternalGameResolution(data);
                     },
                     getCustomName: data => $"{data.X}x{data.Y}"),
                 new MultiSelectionOptionsMenuOption<bool?>(

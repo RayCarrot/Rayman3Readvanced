@@ -54,7 +54,7 @@ public abstract class RenderContext
 
     public void UpdateResolution()
     {
-        _lastGameResolution = Engine.InternalGameResolution;
+        _lastGameResolution = Engine.ViewPort.InternalGameResolution;
 
         Vector2 prevResolution = _resolution;
 
@@ -68,20 +68,20 @@ public abstract class RenderContext
 
     private void UpdateScale()
     {
-        _lastViewPortRenderBox = Engine.GameViewPort.RenderBox;
-        _lastViewPortFullSize = Engine.GameViewPort.FullSize;
+        _lastViewPortRenderBox = Engine.ViewPort.RenderBox;
+        _lastViewPortFullSize = Engine.ViewPort.FullSize;
 
         // Get the view port render box. This is the area on the screen we want to draw to.
         Vector2 viewPortRenderBoxSize;
         Vector2 viewPortRenderBoxPos;
         if (FitToGameViewPort)
         {
-            viewPortRenderBoxSize = Engine.GameViewPort.RenderBox.Size;
-            viewPortRenderBoxPos = Engine.GameViewPort.RenderBox.Position;
+            viewPortRenderBoxSize = Engine.ViewPort.RenderBox.Size;
+            viewPortRenderBoxPos = Engine.ViewPort.RenderBox.Position;
         }
         else
         {
-            viewPortRenderBoxSize = Engine.GameViewPort.FullSize;
+            viewPortRenderBoxSize = Engine.ViewPort.FullSize;
             viewPortRenderBoxPos = Vector2.Zero;
         }
 
@@ -167,12 +167,12 @@ public abstract class RenderContext
 
     public virtual void Update()
     {
-        if (Engine.InternalGameResolution != _lastGameResolution)
+        if (Engine.ViewPort.InternalGameResolution != _lastGameResolution)
             UpdateResolution();
         
-        if (FitToGameViewPort && Engine.GameViewPort.RenderBox != _lastViewPortRenderBox)
+        if (FitToGameViewPort && Engine.ViewPort.RenderBox != _lastViewPortRenderBox)
             UpdateScale();
-        else if (!FitToGameViewPort && Engine.GameViewPort.FullSize != _lastViewPortFullSize)
+        else if (!FitToGameViewPort && Engine.ViewPort.FullSize != _lastViewPortFullSize)
             UpdateScale();
     }
 }

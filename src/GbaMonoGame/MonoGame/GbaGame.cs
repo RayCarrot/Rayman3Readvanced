@@ -81,7 +81,7 @@ public abstract class GbaGame : Game
                 _debugLayout.LoadContent(this);
             }
 
-            _debugLayout.AddWindow(new GameDebugWindow(_debugGameRenderTarget, Engine.GameViewPort));
+            _debugLayout.AddWindow(new GameDebugWindow(_debugGameRenderTarget, Engine.ViewPort));
             _debugLayout.AddWindow(_performanceWindow = new PerformanceDebugWindow());
             _debugLayout.AddWindow(_loggerWindow);
             _debugLayout.AddWindow(new GfxDebugWindow());
@@ -204,7 +204,7 @@ public abstract class GbaGame : Game
         _applicationManager = new ApplicationManager(this);
 
         // Load the engine
-        Engine.Init(config, _applicationManager, _gameWindowManager, new AssetManager(Services));
+        Engine.Init(config, _applicationManager, _gameWindowManager, new ViewPortManager(), new AssetManager(Services));
         
         // Set the initial frame
         FrameManager.SetNextFrame(CreateInitialFrame());
@@ -337,7 +337,7 @@ public abstract class GbaGame : Game
             
             if (Engine.Config.Local.Display.LockWindowAspectRatio && Engine.Window.IsResizable())
             {
-                Vector2 resolution = Engine.InternalGameResolution;
+                Vector2 resolution = Engine.ViewPort.InternalGameResolution;
 
                 float screenScale = newRes.X / resolution.X;
 
@@ -347,10 +347,10 @@ public abstract class GbaGame : Game
             }
 
             _prevWindowResolution = newRes;
-            _prevInternalResolution = Engine.InternalGameResolution;
+            _prevInternalResolution = Engine.ViewPort.InternalGameResolution;
             _prevLockWindowAspectRatio = Engine.Config.Local.Display.LockWindowAspectRatio;
 
-            Engine.GameViewPort.Resize(Engine.Window.GetResolution().ToVector2());
+            Engine.ViewPort.Resize(Engine.Window.GetResolution().ToVector2());
         }
 
         // Clear screen

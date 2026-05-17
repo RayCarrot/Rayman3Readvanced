@@ -75,7 +75,7 @@ public class AnimationViewer : Frame
             ScreenPos = Vector2.Zero,
             HorizontalAnchor = HorizontalAnchorMode.Center,
             VerticalAnchor = VerticalAnchorMode.Center,
-            RenderContext = Engine.GameRenderContext,
+            RenderContext = Engine.ViewPort.GameRenderContext,
         };
         SelectedAnimationIndex = 0;
 
@@ -150,7 +150,7 @@ public class AnimationViewer : Frame
             Color = Color.White,
             ScreenPos = new Vector2(0, 10),
             HorizontalAnchor = HorizontalAnchorMode.Center,
-            RenderContext = new FixedResolutionRenderContext(Engine.InternalGameResolution * 2),
+            RenderContext = new FixedResolutionRenderContext(Engine.ViewPort.InternalGameResolution * 2),
         };
 
         InfoText = new SpriteTextObject()
@@ -159,7 +159,7 @@ public class AnimationViewer : Frame
             FontSize = FontSize.Font32,
             Color = Color.White,
             ScreenPos = new Vector2(30, 30),
-            RenderContext = new FixedResolutionRenderContext(Engine.InternalGameResolution * 6),
+            RenderContext = new FixedResolutionRenderContext(Engine.ViewPort.InternalGameResolution * 6),
         };
 
         HoldButtonTimer = 0;

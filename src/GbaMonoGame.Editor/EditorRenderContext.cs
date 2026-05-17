@@ -7,7 +7,7 @@ public class EditorRenderContext : RenderContext
 
     protected override Vector2 GetResolution()
     {
-        Vector2 newGameResolution = Engine.InternalGameResolution * EditorScale;
+        Vector2 newGameResolution = Engine.ViewPort.InternalGameResolution * EditorScale;
 
         Vector2 max = MaxResolution;
 

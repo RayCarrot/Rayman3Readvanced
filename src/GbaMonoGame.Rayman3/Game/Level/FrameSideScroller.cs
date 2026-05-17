@@ -121,7 +121,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         LevelMusicManager.Init();
         CircleTransitionScreenEffect = new CircleTransitionScreenEffect()
         {
-            RenderContext = Engine.GameRenderContext,
+            RenderContext = Engine.ViewPort.GameRenderContext,
         };
         TransitionsFX.Init(true);
         Scene = new Scene2D((int)GameInfo.MapId, x => new CameraSideScroller(x), 4, 1);

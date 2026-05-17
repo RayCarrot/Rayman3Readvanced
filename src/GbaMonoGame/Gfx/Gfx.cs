@@ -72,7 +72,7 @@ public static class Gfx
     {
         // Update the sprite render target render context resolution to match the full view port size
         // since each layer should be drawn to a texture which represents the entire screen
-        SpriteRenderTargetRenderContext.SetResolution(Engine.GameViewPort.FullSize);
+        SpriteRenderTargetRenderContext.SetResolution(Engine.ViewPort.FullSize);
 
         // Draw each game layer (3-0, although the order technically doesn't matter here)
         for (int i = 3; i >= 0; i--)
@@ -109,7 +109,7 @@ public static class Gfx
             GbaRenderTarget renderTarget = SpriteRenderTargets[i];
 
             // Update the size to match the full view port size
-            renderTarget.SetSize(Engine.GameViewPort.FullSize.ToFloorPoint());
+            renderTarget.SetSize(Engine.ViewPort.FullSize.ToFloorPoint());
 
             // Begin rendering to the render target
             renderTarget.BeginRender();
@@ -219,7 +219,7 @@ public static class Gfx
         {
             renderer.BeginSpriteRender(new RenderOptions()
             {
-                RenderContext = Engine.GameRenderContext,
+                RenderContext = Engine.ViewPort.GameRenderContext,
                 BlendMode = BlendMode.AlphaBlend,
             });
 
@@ -229,11 +229,11 @@ public static class Gfx
                     throw new InvalidOperationException("Alpha blending should be handled per screen and object!");
 
                 case FadeMode.BrightnessIncrease:
-                    renderer.DrawFilledRectangle(Vector2.Zero, Engine.GameRenderContext.Resolution, Color.White * Fade);
+                    renderer.DrawFilledRectangle(Vector2.Zero, Engine.ViewPort.GameRenderContext.Resolution, Color.White * Fade);
                     break;
 
                 case FadeMode.BrightnessDecrease:
-                    renderer.DrawFilledRectangle(Vector2.Zero, Engine.GameRenderContext.Resolution, Color.Black * Fade);
+                    renderer.DrawFilledRectangle(Vector2.Zero, Engine.ViewPort.GameRenderContext.Resolution, Color.Black * Fade);
                     break;
             }
         }
@@ -271,7 +271,7 @@ public static class Gfx
         // Create the render context for drawing the sprite render targets. This should match the full screen
         // size and we don't want to force it to fit within the game's viewport since any black space around it
         // would be included in the render target texture anyway.
-        SpriteRenderTargetRenderContext = new FixedResolutionRenderContext(Engine.GameViewPort.FullSize, fitToGameViewPort: false);
+        SpriteRenderTargetRenderContext = new FixedResolutionRenderContext(Engine.ViewPort.FullSize, fitToGameViewPort: false);
     }
 
     public static void AddScreen(GfxScreen screen)
@@ -354,9 +354,9 @@ public static class Gfx
         {
             renderer.BeginSpriteRender(new RenderOptions()
             {
-                RenderContext = Engine.GameRenderContext,
+                RenderContext = Engine.ViewPort.GameRenderContext,
             });
-            renderer.DrawFilledRectangle(Vector2.Zero, Engine.GameRenderContext.Resolution, ClearColor);
+            renderer.DrawFilledRectangle(Vector2.Zero, Engine.ViewPort.GameRenderContext.Resolution, ClearColor);
         }
 
         // Draw each game layer (3-0)

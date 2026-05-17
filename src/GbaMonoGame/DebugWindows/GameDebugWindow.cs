@@ -9,10 +9,10 @@ namespace GbaMonoGame;
 /// </summary>
 public class GameDebugWindow : DebugWindow
 {
-    public GameDebugWindow(GbaRenderTarget gameRenderTarget, GbaGameViewPort gameViewPort)
+    public GameDebugWindow(GbaRenderTarget gameRenderTarget, ViewPortManager gameViewPortManager)
     {
         GameRenderTarget = gameRenderTarget;
-        GameViewPort = gameViewPort;
+        GameViewPortManager = gameViewPortManager;
     }
 
     private Point _previousWindowSize;
@@ -20,7 +20,7 @@ public class GameDebugWindow : DebugWindow
     public override string Name => "Game";
     public override bool CanClose => false;
     public GbaRenderTarget GameRenderTarget { get; }
-    public GbaGameViewPort GameViewPort { get; }
+    public ViewPortManager GameViewPortManager { get; }
 
     public void RefreshSize()
     {
@@ -36,7 +36,7 @@ public class GameDebugWindow : DebugWindow
         {
             _previousWindowSize = newSize;
             GameRenderTarget.SetSize(newSize);
-            GameViewPort.Resize(newSize.ToVector2());
+            GameViewPortManager.Resize(newSize.ToVector2());
         }
 
         if (GameRenderTarget.RenderTarget != null)

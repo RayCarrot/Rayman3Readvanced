@@ -28,17 +28,17 @@ public class GfxDebugWindow : DebugWindow
         graphicsDevice.SetRenderTarget(renderTarget);
         graphicsDevice.DepthStencilState = DepthStencilState.Default;
 
-        Vector2 oldResolution = Engine.InternalGameResolution;
+        Vector2 oldResolution = Engine.ViewPort.InternalGameResolution;
         Vector2 oldOffset = screen.Offset;
         RenderContext oldRenderContext = screen.RenderOptions.RenderContext;
         BlendMode oldBlendMode = screen.RenderOptions.BlendMode;
 
-        Engine.SetInternalGameResolution(size);
+        Engine.ViewPort.SetInternalGameResolution(size);
         screen.Offset = Vector2.Zero;
         screen.RenderContext = new FixedResolutionRenderContext(size);
         screen.BlendMode = BlendMode.None;
 
-        Engine.GameViewPort.Resize(size);
+        Engine.ViewPort.Resize(size);
 
         graphicsDevice.Clear(Color.Transparent);
 
@@ -47,7 +47,7 @@ public class GfxDebugWindow : DebugWindow
         screen.Draw(renderer, Color.White);
         renderer.EndRender();
 
-        Engine.SetInternalGameResolution(oldResolution);
+        Engine.ViewPort.SetInternalGameResolution(oldResolution);
         screen.Offset = oldOffset;
         screen.RenderContext = oldRenderContext;
         screen.BlendMode = oldBlendMode;
@@ -69,26 +69,26 @@ public class GfxDebugWindow : DebugWindow
                 ImGui.SeparatorText("Resolution");
 
                 Point windowRes = Engine.Window.GetResolution();
-                Vector2 viewPortFullSize = Engine.GameViewPort.FullSize;
-                Box viewPortRenderBox = Engine.GameViewPort.RenderBox;
+                Vector2 viewPortFullSize = Engine.ViewPort.FullSize;
+                Box viewPortRenderBox = Engine.ViewPort.RenderBox;
                 ImGui.Text($"Window resolution: {windowRes.X} x {windowRes.Y}");
                 ImGui.Text($"Viewport full size: {viewPortFullSize.X} x {viewPortFullSize.Y}");
                 ImGui.Text($"Viewport render box position: {viewPortRenderBox.Position.X} x {viewPortRenderBox.Position.X}");
                 ImGui.Text($"Viewport render box size: {viewPortRenderBox.Size.X} x {viewPortRenderBox.Size.X}");
                 ImGui.Text($"Original game resolution: {Rom.OriginalResolution.X} x {Rom.OriginalResolution.Y}");
                 ImGui.Text($"Original scaled game resolution: {Rom.OriginalScaledGameRenderContext.Resolution.X} x {Rom.OriginalScaledGameRenderContext.Resolution.Y}");
-                ImGui.Text($"Internal game resolution: {Engine.InternalGameResolution.X} x {Engine.InternalGameResolution.Y}");
+                ImGui.Text($"Internal game resolution: {Engine.ViewPort.InternalGameResolution.X} x {Engine.ViewPort.InternalGameResolution.Y}");
 
-                float resX = Engine.InternalGameResolution.X;
-                float resY = Engine.InternalGameResolution.Y;
+                float resX = Engine.ViewPort.InternalGameResolution.X;
+                float resY = Engine.ViewPort.InternalGameResolution.Y;
                 if (ImGui.SliderFloat("Internal resolution X", ref resX, Single.Epsilon, 1000))
                 {
-                    Engine.SetInternalGameResolution(new Vector2(resX, resY));
+                    Engine.ViewPort.SetInternalGameResolution(new Vector2(resX, resY));
                     Engine.Config.Local.Tweaks.InternalGameResolution = new Vector2(resX, resY);
                 }
                 if (ImGui.SliderFloat("Internal resolution Y", ref resY, Single.Epsilon, 1000))
                 {
-                    Engine.SetInternalGameResolution(new Vector2(resX, resY));
+                    Engine.ViewPort.SetInternalGameResolution(new Vector2(resX, resY));
                     Engine.Config.Local.Tweaks.InternalGameResolution = new Vector2(resX, resY);
                 }
 

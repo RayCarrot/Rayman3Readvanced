@@ -728,7 +728,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         CircleWipeTransitionScreenEffect = new CircleWipeTransitionScreenEffect
         {
             Value = 256,
-            RenderContext = Engine.GameRenderContext,
+            RenderContext = Engine.ViewPort.GameRenderContext,
         };
         Gfx.SetScreenEffect(CircleWipeTransitionScreenEffect);
 

@@ -5,5 +5,5 @@
 /// </summary>
 public sealed class GameRenderContext : RenderContext
 {
-    protected override Vector2 GetResolution() => Engine.InternalGameResolution;
+    protected override Vector2 GetResolution() => Engine.ViewPort.InternalGameResolution;
 }

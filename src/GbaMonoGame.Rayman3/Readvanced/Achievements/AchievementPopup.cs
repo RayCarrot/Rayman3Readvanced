@@ -94,7 +94,7 @@ public class AchievementPopup
     public void Init()
     {
         AnimationPlayer = new AnimationPlayer(false, null);
-        RenderContext renderContext = Engine.GameRenderContext;
+        RenderContext renderContext = Engine.ViewPort.GameRenderContext;
 
         // Load textures
         BackgroundTexture = Engine.Assets.FixContentManager.Load<Texture2D>(Assets.Achievements.PopupBackground);

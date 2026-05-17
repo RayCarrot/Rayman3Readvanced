@@ -41,7 +41,7 @@ public class FrameFatalError : Frame
         Text = new SpriteFontTextObject
         {
             ScreenPos = new Vector2(5, 5),
-            RenderContext = Engine.GameRenderContext,
+            RenderContext = Engine.ViewPort.GameRenderContext,
             Text = $"FATAL ERROR - Press any button to quit\n\n\n{Exception}",
             Font = ReadvancedFonts.MenuYellow,
             AffineMatrix = new AffineMatrix(0, new Vector2(0.3f))

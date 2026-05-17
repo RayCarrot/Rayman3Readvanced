@@ -92,7 +92,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
 
         CircleTransitionScreenEffect = new CircleTransitionScreenEffect()
         {
-            RenderContext = Engine.GameRenderContext,
+            RenderContext = Engine.ViewPort.GameRenderContext,
         };
 
         TransitionsFX.Init(true);

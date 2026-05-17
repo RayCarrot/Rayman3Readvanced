@@ -12,6 +12,6 @@ public class HudRenderContext : RenderContext
     protected override Vector2 GetResolution()
     {
         // Internal game resolution, but with the aspect ratio used in the scene
-        return Engine.GameRenderContext.Resolution.ShrinkToAspectRatio(SceneRenderContext.Resolution);
+        return Engine.ViewPort.GameRenderContext.Resolution.ShrinkToAspectRatio(SceneRenderContext.Resolution);
     }
 }
