@@ -442,7 +442,7 @@ public class LevelSelect : Frame
 
     public void Step_SelectLanguage()
     {
-        Language[] languages = Localization.GetLanguages();
+        Language[] languages = Rayman3.Loc.GetLanguages();
 
         if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
         {
@@ -465,7 +465,7 @@ public class LevelSelect : Frame
         else if (JoyPad.IsButtonJustPressed(Rayman3Input.LevelSelectMenuConfirm))
         {
             InitSelectStartingLevel();
-            Localization.SetLanguage(SelectedLanguageIndex);
+            Rayman3.Loc.SetLanguage(SelectedLanguageIndex);
         }
 
         AnimationPlayer.Play(Header);

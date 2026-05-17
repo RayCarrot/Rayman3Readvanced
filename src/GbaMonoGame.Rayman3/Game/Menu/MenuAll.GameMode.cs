@@ -137,10 +137,10 @@ public partial class MenuAll
 
     private void Step_InitializeTransitionToGameMode()
     {
-        Anims.GameModeList.CurrentAnimation = Localization.LanguageUiIndex * GameModeOptionsCount + SelectedOption;
+        Anims.GameModeList.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * GameModeOptionsCount + SelectedOption;
 
         // Center sprites if English
-        if (Localization.LanguageId == 0)
+        if (Rayman3.Loc.LanguageId == 0)
         {
             if (Rom.Platform == Platform.GBA)
             {
@@ -228,13 +228,13 @@ public partial class MenuAll
             {
                 SelectOption(SelectedOption == 0 ? GameModeOptionsCount - 1 : SelectedOption - 1, true);
 
-                Anims.GameModeList.CurrentAnimation = Localization.LanguageUiIndex * GameModeOptionsCount + SelectedOption;
+                Anims.GameModeList.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * GameModeOptionsCount + SelectedOption;
             }
             else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
             {
                 SelectOption(SelectedOption == GameModeOptionsCount - 1 ? 0 : SelectedOption + 1, true);
 
-                Anims.GameModeList.CurrentAnimation = Localization.LanguageUiIndex * GameModeOptionsCount + SelectedOption;
+                Anims.GameModeList.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * GameModeOptionsCount + SelectedOption;
             }
             else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
             {

@@ -27,7 +27,7 @@ public partial class MenuAll
         {
             if (IsMusicOn())
             {
-                switch (Localization.LanguageId)
+                switch (Rayman3.Loc.LanguageId)
                 {
                     case 0:
                     case 1:
@@ -60,7 +60,7 @@ public partial class MenuAll
             }
             else
             {
-                switch (Localization.LanguageId)
+                switch (Rayman3.Loc.LanguageId)
                 {
                     case 0:
                     case 1:
@@ -125,7 +125,7 @@ public partial class MenuAll
         {
             if (IsSfxOn())
             {
-                switch (Localization.LanguageId)
+                switch (Rayman3.Loc.LanguageId)
                 {
                     case 0:
                     case 1:
@@ -158,7 +158,7 @@ public partial class MenuAll
             }
             else
             {
-                switch (Localization.LanguageId)
+                switch (Rayman3.Loc.LanguageId)
                 {
                     case 0:
                     case 1:
@@ -307,12 +307,12 @@ public partial class MenuAll
 
     private void Step_InitializeTransitionToOptions()
     {
-        Anims.OptionsSelection.CurrentAnimation = Localization.LanguageUiIndex * OptionsOptionsCount + SelectedOption;
+        Anims.OptionsSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * OptionsOptionsCount + SelectedOption;
         UpdateMusicVolumeAnimations();
         UpdateSfxVolumeAnimations();
 
         // Center sprites if English
-        if (Localization.LanguageId == 0)
+        if (Rayman3.Loc.LanguageId == 0)
         {
             if (Rom.Platform == Platform.GBA)
             {
@@ -335,7 +335,7 @@ public partial class MenuAll
 
             // Center sprites if English
             int x;
-            if (Localization.LanguageId == 0)
+            if (Rayman3.Loc.LanguageId == 0)
             {
                 x = Rom.Platform switch
                 {
@@ -378,7 +378,7 @@ public partial class MenuAll
 
         // Center sprites if English
         int x;
-        if (Localization.LanguageId == 0)
+        if (Rayman3.Loc.LanguageId == 0)
         {
             x = Rom.Platform switch
             {
@@ -435,7 +435,7 @@ public partial class MenuAll
                 else
                     SelectOption(SelectedOption - 1, true);
 
-                Anims.OptionsSelection.CurrentAnimation = Localization.LanguageUiIndex * OptionsOptionsCount + SelectedOption;
+                Anims.OptionsSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * OptionsOptionsCount + SelectedOption;
             }
             else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown) && Anims.Cursor.CurrentAnimation == 0)
             {
@@ -444,7 +444,7 @@ public partial class MenuAll
                 else
                     SelectOption(SelectedOption + 1, true);
 
-                Anims.OptionsSelection.CurrentAnimation = Localization.LanguageUiIndex * OptionsOptionsCount + SelectedOption;
+                Anims.OptionsSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * OptionsOptionsCount + SelectedOption;
             }
             else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack) && Anims.Cursor.CurrentAnimation == 0)
             {
@@ -574,7 +574,7 @@ public partial class MenuAll
 
             // Center sprites if English
             int x;
-            if (Localization.LanguageId == 0)
+            if (Rayman3.Loc.LanguageId == 0)
             {
                 x = Rom.Platform switch
                 {

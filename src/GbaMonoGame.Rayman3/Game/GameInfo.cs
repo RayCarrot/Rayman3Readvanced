@@ -824,7 +824,7 @@ public static class GameInfo
         switch (mapId)
         {
             case <= MapId.ChallengeLyGCN:
-                return Localization.GetText(TextBankId.LevelNames, Levels[(int)mapId].NameTextId)[0];
+                return Rayman3.Loc.GetText(TextBankId.LevelNames, Levels[(int)mapId].NameTextId)[0];
 
             case MapId.Power1:
                 return GetLevelName(MapId.WoodLight_M2);
@@ -845,67 +845,67 @@ public static class GameInfo
                 return GetLevelName(MapId.BossScaleMan);
 
             case MapId.World1:
-                return Localization.GetText(TextBankId.LevelNames, 31)[0];
+                return Rayman3.Loc.GetText(TextBankId.LevelNames, 31)[0];
 
             case MapId.World2:
-                return Localization.GetText(TextBankId.LevelNames, 32)[0];
+                return Rayman3.Loc.GetText(TextBankId.LevelNames, 32)[0];
 
             case MapId.World3:
-                return Localization.GetText(TextBankId.LevelNames, 33)[0];
+                return Rayman3.Loc.GetText(TextBankId.LevelNames, 33)[0];
 
             case MapId.World4:
-                return Localization.GetText(TextBankId.LevelNames, 34)[0];
+                return Rayman3.Loc.GetText(TextBankId.LevelNames, 34)[0];
 
             case MapId.WorldMap:
                 return "Worldmap";
 
             case MapId.GbaMulti_MissileRace when Rom.Platform is Platform.GBA:
-                return Localization.GetText(TextBankId.Connectivity, 13)[0];
+                return Rayman3.Loc.GetText(TextBankId.Connectivity, 13)[0];
 
             case MapId.GbaMulti_MissileArena when Rom.Platform is Platform.GBA:
-                return Localization.GetText(TextBankId.Connectivity, 14)[0];
+                return Rayman3.Loc.GetText(TextBankId.Connectivity, 14)[0];
 
             case MapId.GbaMulti_TagWeb when Rom.Platform is Platform.GBA:
-                return Localization.GetText(TextBankId.Connectivity, 9)[0];
+                return Rayman3.Loc.GetText(TextBankId.Connectivity, 9)[0];
 
             case MapId.GbaMulti_TagSlide when Rom.Platform is Platform.GBA:
-                return Localization.GetText(TextBankId.Connectivity, 10)[0];
+                return Rayman3.Loc.GetText(TextBankId.Connectivity, 10)[0];
 
             case MapId.GbaMulti_CatAndMouseSlide when Rom.Platform is Platform.GBA:
-                return Localization.GetText(TextBankId.Connectivity, 11)[0];
+                return Rayman3.Loc.GetText(TextBankId.Connectivity, 11)[0];
 
             case MapId.GbaMulti_CatAndMouseSpider when Rom.Platform is Platform.GBA:
-                return Localization.GetText(TextBankId.Connectivity, 12)[0];
+                return Rayman3.Loc.GetText(TextBankId.Connectivity, 12)[0];
 
             case MapId.NGageMulti_CaptureTheFlagMiddleGround when Rom.Platform is Platform.NGage:
-                return Localization.GetText(TextBankId.Connectivity, 10)[0];
+                return Rayman3.Loc.GetText(TextBankId.Connectivity, 10)[0];
 
             case MapId.NGageMulti_CaptureTheFlagFloors when Rom.Platform is Platform.NGage:
-                return Localization.GetText(TextBankId.Connectivity, 11)[0];
+                return Rayman3.Loc.GetText(TextBankId.Connectivity, 11)[0];
 
             case MapId.NGageMulti_CaptureTheFlagOneForAll when Rom.Platform is Platform.NGage:
-                return Localization.GetText(TextBankId.Connectivity, 12)[0];
+                return Rayman3.Loc.GetText(TextBankId.Connectivity, 12)[0];
 
             case MapId.NGageMulti_CaptureTheFlagAllForOne when Rom.Platform is Platform.NGage:
-                return Localization.GetText(TextBankId.Connectivity, 13)[0];
+                return Rayman3.Loc.GetText(TextBankId.Connectivity, 13)[0];
 
             case MapId.NGageMulti_CaptureTheFlagTeamWork when Rom.Platform is Platform.NGage:
-                return Localization.GetText(TextBankId.Connectivity, 14)[0];
+                return Rayman3.Loc.GetText(TextBankId.Connectivity, 14)[0];
 
             case MapId.NGageMulti_CaptureTheFlagTeamPlayer when Rom.Platform is Platform.NGage:
-                return Localization.GetText(TextBankId.Connectivity, 15)[0];
+                return Rayman3.Loc.GetText(TextBankId.Connectivity, 15)[0];
 
             case MapId.NGageMulti_TagWeb when Rom.Platform is Platform.NGage:
-                return Localization.GetText(TextBankId.Connectivity, 16)[0];
+                return Rayman3.Loc.GetText(TextBankId.Connectivity, 16)[0];
 
             case MapId.NGageMulti_TagSlide when Rom.Platform is Platform.NGage:
-                return Localization.GetText(TextBankId.Connectivity, 17)[0];
+                return Rayman3.Loc.GetText(TextBankId.Connectivity, 17)[0];
 
             case MapId.NGageMulti_CatAndMouseSlide when Rom.Platform is Platform.NGage:
-                return Localization.GetText(TextBankId.Connectivity, 18)[0];
+                return Rayman3.Loc.GetText(TextBankId.Connectivity, 18)[0];
 
             case MapId.NGageMulti_CatAndMouseSpider when Rom.Platform is Platform.NGage:
-                return Localization.GetText(TextBankId.Connectivity, 19)[0];
+                return Rayman3.Loc.GetText(TextBankId.Connectivity, 19)[0];
 
             case MapId.GameCube_Bonus1:
             case MapId.GameCube_Bonus2:

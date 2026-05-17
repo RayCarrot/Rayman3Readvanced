@@ -74,7 +74,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
             PauseSign = new AnimatedObject(resource, resource.IsDynamic)
             {
                 IsFramed = true,
-                CurrentAnimation = Localization.LanguageUiIndex,
+                CurrentAnimation = Rayman3.Loc.LanguageUiIndex,
                 BgPriority = 0,
                 ObjPriority = 2,
                 ScreenPos = new Vector2(88, 104),

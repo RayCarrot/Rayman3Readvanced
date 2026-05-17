@@ -81,9 +81,6 @@ public class Rayman3GbaGame : GbaGame
         // Set sound engine callbacks
         SoundEventsManager.SetCallBacks(new Rayman3CallBackSet());
 
-        // Load the language
-        Localization.SetLanguage(Engine.LocalConfig.Display.Language);
-
         // Load fonts
         FontManager.Load(Rom.Loader.Font8, Rom.Loader.Font16, Rom.Loader.Font32);
 
@@ -341,7 +338,6 @@ public class Rayman3GbaGame : GbaGame
     protected override void UnloadGame()
     {
         GameInfo.UnInit();
-        Localization.UnInit();
         SoundEventsManager.Unload();
         FontManager.Unload();
         TimeAttackDataManager.Unload();

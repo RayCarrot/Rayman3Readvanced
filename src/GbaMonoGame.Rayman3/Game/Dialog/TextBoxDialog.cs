@@ -54,7 +54,7 @@ public partial class TextBoxDialog : Dialog
 
     private void UpdateText(int textObjectIndex)
     {
-        CurrentText = Localization.GetText(TextBankId, TextId);
+        CurrentText = Rayman3.Loc.GetText(TextBankId, TextId);
 
         if (textObjectIndex != 0)
             IsFinished = false;

@@ -258,10 +258,10 @@ public partial class MenuAll
 
     private void Step_InitializeTransitionToMultiplayerModeSelection()
     {
-        Anims.MultiplayerModeSelection.CurrentAnimation = Localization.LanguageUiIndex * 2;
+        Anims.MultiplayerModeSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2;
 
         // Center sprites if English
-        if (Localization.LanguageId == 0)
+        if (Rayman3.Loc.LanguageId == 0)
             Anims.MultiplayerModeSelection.ScreenPos = Anims.MultiplayerModeSelection.ScreenPos with { X = 86 };
 
         CurrentStepAction = Step_TransitionToMultiplayerModeSelection;
@@ -294,7 +294,7 @@ public partial class MenuAll
         if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp) || JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
         {
             SelectOption(SelectedOption == 0 ? 1 : 0, true);
-            Anims.MultiplayerModeSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + SelectedOption;
+            Anims.MultiplayerModeSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2 + SelectedOption;
         }
         else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
@@ -347,10 +347,10 @@ public partial class MenuAll
 
     private void Step_InitializeTransitionToMultiplayerConnectionSelection()
     {
-        Anims.MultiplayerConnectionSelection.CurrentAnimation = Localization.LanguageUiIndex * 2;
+        Anims.MultiplayerConnectionSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2;
 
         // Center sprites if English
-        if (Localization.LanguageId == 0)
+        if (Rayman3.Loc.LanguageId == 0)
             Anims.MultiplayerConnectionSelection.ScreenPos = Anims.MultiplayerConnectionSelection.ScreenPos with { X = 58 };
 
         CurrentStepAction = Step_TransitionToMultiplayerConnectionSelection;
@@ -383,7 +383,7 @@ public partial class MenuAll
         if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp) || JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
         {
             SelectOption(SelectedOption == 0 ? 2 : 0, true);
-            Anims.MultiplayerConnectionSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + SelectedOption / 2;
+            Anims.MultiplayerConnectionSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2 + SelectedOption / 2;
         }
         else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
@@ -563,9 +563,9 @@ public partial class MenuAll
 
         int stringsCount;
         if (finishedSearchingForHosts)
-            stringsCount = Localization.GetText(TextBankId.Connectivity, 29).Length;
+            stringsCount = Rayman3.Loc.GetText(TextBankId.Connectivity, 29).Length;
         else
-            stringsCount = Localization.GetText(TextBankId.Connectivity, 28).Length;
+            stringsCount = Rayman3.Loc.GetText(TextBankId.Connectivity, 28).Length;
 
         float arrowYPos = 58 + (96 + stringsCount * -16) / 2f + (stringsCount - 1) * 16;
 
@@ -1567,7 +1567,7 @@ public partial class MenuAll
 
     private void Step_InitializeTransitionToMultiplayerTypeSelection()
     {
-        Anims.MultiplayerTypeName.CurrentAnimation = MultiplayerType + Localization.LanguageUiIndex * MultiplayerTypeAnimationsCount;
+        Anims.MultiplayerTypeName.CurrentAnimation = MultiplayerType + Rayman3.Loc.LanguageUiIndex * MultiplayerTypeAnimationsCount;
         Anims.MultiplayerTypeFrame.CurrentAnimation = 2;
         Anims.ArrowLeft.CurrentAnimation = 1;
         Anims.ArrowRight.CurrentAnimation = 0;
@@ -1576,7 +1576,7 @@ public partial class MenuAll
         if (Rom.Platform == Platform.NGage)
         {
             ShouldTextBlink = true;
-            string text = Localization.GetText(TextBankId.Connectivity, 34)[0]; // Please wait
+            string text = Rayman3.Loc.GetText(TextBankId.Connectivity, 34)[0]; // Please wait
             int width = FontManager.GetStringWidth(Anims.Texts[4].FontSize, text);
             Anims.Texts[4].ScreenPos = new Vector2(108 - width / 2f, 110);
             Anims.Texts[4].Text = text;
@@ -1686,7 +1686,7 @@ public partial class MenuAll
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     MultiplayerType--;
-                    Anims.MultiplayerTypeName.CurrentAnimation = MultiplayerType + Localization.LanguageUiIndex * MultiplayerTypeAnimationsCount;
+                    Anims.MultiplayerTypeName.CurrentAnimation = MultiplayerType + Rayman3.Loc.LanguageUiIndex * MultiplayerTypeAnimationsCount;
                     Anims.MultiplayerTypeIcon.CurrentAnimation = MultiplayerType;
                 }
 
@@ -1694,7 +1694,7 @@ public partial class MenuAll
                 {
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     MultiplayerType++;
-                    Anims.MultiplayerTypeName.CurrentAnimation = MultiplayerType + Localization.LanguageUiIndex * MultiplayerTypeAnimationsCount;
+                    Anims.MultiplayerTypeName.CurrentAnimation = MultiplayerType + Rayman3.Loc.LanguageUiIndex * MultiplayerTypeAnimationsCount;
                     Anims.MultiplayerTypeIcon.CurrentAnimation = MultiplayerType;
                 }
                 else if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuConfirm))
@@ -1892,12 +1892,12 @@ public partial class MenuAll
         {
             Anims.MultiplayerMapSelection.CurrentAnimation = MultiplayerType;
 
-            Anims.MultiplayerMapName1.Text = Localization.GetText(TextBankId.Connectivity, 9 + MultiplayerType * 2)[0];
+            Anims.MultiplayerMapName1.Text = Rayman3.Loc.GetText(TextBankId.Connectivity, 9 + MultiplayerType * 2)[0];
             Anims.MultiplayerMapName1.ScreenPos = new Vector2(
                 x: 140 - Anims.MultiplayerMapName1.GetStringWidth() / 2f,
                 y: 56);
 
-            Anims.MultiplayerMapName2.Text = Localization.GetText(TextBankId.Connectivity, 10 + MultiplayerType * 2)[0];
+            Anims.MultiplayerMapName2.Text = Rayman3.Loc.GetText(TextBankId.Connectivity, 10 + MultiplayerType * 2)[0];
             Anims.MultiplayerMapName2.ScreenPos = new Vector2(
                 x: 140 - Anims.MultiplayerMapName2.GetStringWidth() / 2f,
                 y: 96);
@@ -1911,31 +1911,31 @@ public partial class MenuAll
 
             if (MultiplayerType == 0)
             {
-                Anims.MultiplayerMapName1.Text = Localization.GetText(TextBankId.Connectivity, 10 + (int)CaptureTheFlagMode * 4 + CaptureTheFlagSoloMode * 2)[0];
+                Anims.MultiplayerMapName1.Text = Rayman3.Loc.GetText(TextBankId.Connectivity, 10 + (int)CaptureTheFlagMode * 4 + CaptureTheFlagSoloMode * 2)[0];
                 Anims.MultiplayerMapName1.ScreenPos = new Vector2(
                     x: 108 - Anims.MultiplayerMapName1.GetStringWidth() / 2f,
                     y: 84);
 
-                Anims.MultiplayerMapName2.Text = Localization.GetText(TextBankId.Connectivity, 11 + (int)CaptureTheFlagMode * 4 + CaptureTheFlagSoloMode * 2)[0];
+                Anims.MultiplayerMapName2.Text = Rayman3.Loc.GetText(TextBankId.Connectivity, 11 + (int)CaptureTheFlagMode * 4 + CaptureTheFlagSoloMode * 2)[0];
                 Anims.MultiplayerMapName2.ScreenPos = new Vector2(
                     x: 108 - Anims.MultiplayerMapName2.GetStringWidth() / 2f,
                     y: 124);
             }
             else
             {
-                Anims.MultiplayerMapName1.Text = Localization.GetText(TextBankId.Connectivity, 14 + MultiplayerType * 2)[0];
+                Anims.MultiplayerMapName1.Text = Rayman3.Loc.GetText(TextBankId.Connectivity, 14 + MultiplayerType * 2)[0];
                 Anims.MultiplayerMapName1.ScreenPos = new Vector2(
                     x: 108 - Anims.MultiplayerMapName1.GetStringWidth() / 2f,
                     y: 80);
 
-                Anims.MultiplayerMapName2.Text = Localization.GetText(TextBankId.Connectivity, 15 + MultiplayerType * 2)[0];
+                Anims.MultiplayerMapName2.Text = Rayman3.Loc.GetText(TextBankId.Connectivity, 15 + MultiplayerType * 2)[0];
                 Anims.MultiplayerMapName2.ScreenPos = new Vector2(
                     x: 108 - Anims.MultiplayerMapName2.GetStringWidth() / 2f,
                     y: 120);
             }
 
             ShouldTextBlink = true;
-            string text = Localization.GetText(TextBankId.Connectivity, 34)[0]; // Please wait
+            string text = Rayman3.Loc.GetText(TextBankId.Connectivity, 34)[0]; // Please wait
             int width = FontManager.GetStringWidth(Anims.Texts[4].FontSize, text);
             Anims.Texts[4].ScreenPos = new Vector2(108 - width / 2f, 136);
             Anims.Texts[4].Text = text;
@@ -2239,8 +2239,8 @@ public partial class MenuAll
 
     private void Step_InitializeTransitionToMultiplayerFlagOptions()
     {
-        Anims.MultiplayerCaptureTheFlagOptions.CurrentAnimation = Localization.LanguageUiIndex;
-        Anims.MultiplayerCaptureTheFlagModeName.CurrentAnimation = 5 + Localization.LanguageUiIndex;
+        Anims.MultiplayerCaptureTheFlagOptions.CurrentAnimation = Rayman3.Loc.LanguageUiIndex;
+        Anims.MultiplayerCaptureTheFlagModeName.CurrentAnimation = 5 + Rayman3.Loc.LanguageUiIndex;
         Anims.MultiplayerCaptureTheFlagOptionsArrowLeft.CurrentAnimation = 15;
         Anims.MultiplayerCaptureTheFlagOptionsArrowRight.CurrentAnimation = 16;
         Anims.MultiplayerCaptureTheFlagOptionsColon.CurrentAnimation = 17;
@@ -2315,7 +2315,7 @@ public partial class MenuAll
                     Anims.MultiplayerCaptureTheFlagOptionsArrowRight.ScreenPos = Anims.MultiplayerCaptureTheFlagOptionsArrowRight.ScreenPos with { Y = y };
 
                     // Huh?
-                    Anims.OptionsSelection.CurrentAnimation = SelectedOption + Localization.LanguageUiIndex * 3;
+                    Anims.OptionsSelection.CurrentAnimation = SelectedOption + Rayman3.Loc.LanguageUiIndex * 3;
                 }
                 else if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuDown))
                 {
@@ -2326,7 +2326,7 @@ public partial class MenuAll
                     Anims.MultiplayerCaptureTheFlagOptionsArrowRight.ScreenPos = Anims.MultiplayerCaptureTheFlagOptionsArrowRight.ScreenPos with { Y = y };
 
                     // Huh?
-                    Anims.OptionsSelection.CurrentAnimation = SelectedOption + Localization.LanguageUiIndex * 3;
+                    Anims.OptionsSelection.CurrentAnimation = SelectedOption + Rayman3.Loc.LanguageUiIndex * 3;
                 }
                 else if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuLeft))
                 {
@@ -2338,13 +2338,13 @@ public partial class MenuAll
                         {
                             CaptureTheFlagMode = CaptureTheFlagMode.Teams;
                             CaptureTheFlagSoloMode = 0;
-                            Anims.MultiplayerCaptureTheFlagModeName.CurrentAnimation = 10 + Localization.LanguageUiIndex;
+                            Anims.MultiplayerCaptureTheFlagModeName.CurrentAnimation = 10 + Rayman3.Loc.LanguageUiIndex;
                         }
                         else
                         {
                             CaptureTheFlagMode = CaptureTheFlagMode.Solo;
                             CaptureTheFlagSoloMode = MultiplayerManager.PlayersCount > 2 ? 1 : 0;
-                            Anims.MultiplayerCaptureTheFlagModeName.CurrentAnimation = 5 + Localization.LanguageUiIndex;
+                            Anims.MultiplayerCaptureTheFlagModeName.CurrentAnimation = 5 + Rayman3.Loc.LanguageUiIndex;
                         }
                     }
                     else if (option == 1)
@@ -2380,13 +2380,13 @@ public partial class MenuAll
                         {
                             CaptureTheFlagMode = CaptureTheFlagMode.Teams;
                             CaptureTheFlagSoloMode = 0;
-                            Anims.MultiplayerCaptureTheFlagModeName.CurrentAnimation = 10 + Localization.LanguageUiIndex;
+                            Anims.MultiplayerCaptureTheFlagModeName.CurrentAnimation = 10 + Rayman3.Loc.LanguageUiIndex;
                         }
                         else
                         {
                             CaptureTheFlagMode = CaptureTheFlagMode.Solo;
                             CaptureTheFlagSoloMode = MultiplayerManager.PlayersCount > 2 ? 1 : 0;
-                            Anims.MultiplayerCaptureTheFlagModeName.CurrentAnimation = 5 + Localization.LanguageUiIndex;
+                            Anims.MultiplayerCaptureTheFlagModeName.CurrentAnimation = 5 + Rayman3.Loc.LanguageUiIndex;
                         }
                     }
                     else if (option == 1)
@@ -2738,7 +2738,7 @@ public partial class MenuAll
         SinglePakLoader.Step();
 
         if (SinglePakLoader.HasFinishedDownload())
-            SinglePakLoader.DecompressAndPlay(Localization.LanguageId);
+            SinglePakLoader.DecompressAndPlay(Rayman3.Loc.LanguageId);
 
         // Go back
         if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuBack))

@@ -23,7 +23,7 @@ public class WorldNameBar : Bar
 
     public void SetWorldId(WorldId worldId)
     {
-        string worldNameText = Localization.GetText(TextBankId.LevelNames, worldId switch
+        string worldNameText = Rayman3.Loc.GetText(TextBankId.LevelNames, worldId switch
         {
             WorldId.World1 => 31,
             WorldId.World2 => 32,

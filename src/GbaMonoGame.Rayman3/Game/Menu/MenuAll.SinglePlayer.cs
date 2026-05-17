@@ -75,9 +75,9 @@ public partial class MenuAll
             slotCageText.Text = "50";
 
         foreach (AnimatedObject slotEmptyText in Anims.SlotEmptyTexts)
-            slotEmptyText.CurrentAnimation = Localization.LanguageUiIndex;
+            slotEmptyText.CurrentAnimation = Rayman3.Loc.LanguageUiIndex;
 
-        Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 1;
+        Anims.StartEraseSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2 + 1;
 
         if (Rom.Platform == Platform.GBA)
             Anims.StartEraseCursor.CurrentAnimation = 40;
@@ -196,7 +196,7 @@ public partial class MenuAll
                     if (SelectedStartEraseOption != 0)
                     {
                         SelectStartEraseOption(0);
-                        Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 1;
+                        Anims.StartEraseSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2 + 1;
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
                 }
@@ -206,7 +206,7 @@ public partial class MenuAll
                     if (SelectedStartEraseOption != 1)
                     {
                         SelectStartEraseOption(1);
-                        Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2;
+                        Anims.StartEraseSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2;
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
                 }
@@ -257,7 +257,7 @@ public partial class MenuAll
                 {
                     TransitionValue = 0;
                     StartEraseMode = StartEraseMode.TransitionInConfirmErase;
-                    Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 21;
+                    Anims.StartEraseSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2 + 21;
 
                     if (Rom.Platform == Platform.GBA)
                         Anims.StartEraseSelection.ScreenPos = new Vector2(144, -80);
@@ -289,7 +289,7 @@ public partial class MenuAll
                     if (SelectedStartEraseOption != 0)
                     {
                         SelectStartEraseOption(0);
-                        Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 20;
+                        Anims.StartEraseSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2 + 20;
                         // NOTE: The game mistakenly passes in 0 as obj here, but nothing happens since pan and roll-off aren't enabled for this event
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
@@ -300,7 +300,7 @@ public partial class MenuAll
                     if (SelectedStartEraseOption != 1)
                     {
                         SelectStartEraseOption(1);
-                        Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 21;
+                        Anims.StartEraseSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2 + 21;
                         // NOTE: The game mistakenly passes in 0 as obj here, but nothing happens since pan and roll-off aren't enabled for this event
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
@@ -331,9 +331,9 @@ public partial class MenuAll
 
                     // Optionally fix a bug of the wrong animation being shown after erasing a slot
                     if (SelectedStartEraseOption == 1 || !Engine.LocalConfig.Tweaks.FixBugs)
-                        Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2;
+                        Anims.StartEraseSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2;
                     else
-                        Anims.StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 1;
+                        Anims.StartEraseSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2 + 1;
 
                     if (Rom.Platform == Platform.GBA)
                         Anims.StartEraseSelection.ScreenPos = new Vector2(80, -50);

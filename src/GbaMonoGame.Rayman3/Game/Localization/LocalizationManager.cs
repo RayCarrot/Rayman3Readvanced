@@ -4,7 +4,7 @@ using BinarySerializer.Ubisoft.GbaEngine;
 
 namespace GbaMonoGame.Rayman3;
 
-public static class Localization
+public class LocalizationManager
 {
     // NOTE: The original level select names have a typo for Deutsch and in N-Gage it swaps Italian and Spanish - these are fixed here
     private static readonly Language[] _gbaLanguages = 
@@ -30,13 +30,13 @@ public static class Localization
         new(englishName: "German",    gameName: "Deutsch",    levelSelectName: "Deutsch",     locale: "de-DE", uiIndex: 3),
     ];
 
-    private static TextBank[] _textBanks;
+    private TextBank[] _textBanks;
 
-    public static Language Language { get; private set; }
-    public static int LanguageId { get; private set; }
-    public static int LanguageUiIndex { get; private set; }
+    public Language Language { get; private set; }
+    public int LanguageId { get; private set; }
+    public int LanguageUiIndex { get; private set; }
 
-    public static Language[] GetLanguages()
+    public Language[] GetLanguages()
     {
         return Rom.Platform switch
         {
@@ -46,7 +46,7 @@ public static class Localization
         };
     }
 
-    public static string[] GetText(TextBankId bankId, int textId)
+    public string[] GetText(TextBankId bankId, int textId)
     {
         Text text = _textBanks[(int)bankId].Texts[textId];
         
@@ -57,24 +57,24 @@ public static class Localization
         return strings;
     }
 
-    public static int GetLanguageId(string locale)
+    public int GetLanguageId(string locale)
     {
         Language[] languages = GetLanguages();
         return Array.FindIndex(languages, x => x.Locale == locale);
     }
 
-    public static Language GetLanguage(int languageId)
+    public Language GetLanguage(int languageId)
     {
         Language[] languages = GetLanguages();
         return languages[languageId];
     }
 
-    public static void SetLanguage(Language language)
+    public void SetLanguage(Language language)
     {
         SetLanguage(language.Locale);
     }
 
-    public static void SetLanguage(string locale)
+    public void SetLanguage(string locale)
     {
         int id = GetLanguageId(locale);
 
@@ -84,7 +84,7 @@ public static class Localization
         SetLanguage(id);
     }
 
-    public static void SetLanguage(int languageId)
+    public void SetLanguage(int languageId)
     {
         Language = GetLanguage(languageId);
         LanguageId = languageId;
@@ -119,13 +119,5 @@ public static class Localization
         ]));
 
         _textBanks = textBanks.ToArray();
-    }
-
-    public static void UnInit()
-    {
-        Language = null;
-        LanguageId = 0;
-        LanguageUiIndex = 0;
-        _textBanks = null;
     }
 }

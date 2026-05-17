@@ -7,7 +7,7 @@ public class TimeAttackLevelMenuOption : TextMenuOption
     private static string GetLevelName(MapId map)
     {
         int textId = GameInfo.Levels[(int)map].NameTextId;
-        string name = Localization.GetText(TextBankId.LevelNames, textId)[0];
+        string name = Rayman3.Loc.GetText(TextBankId.LevelNames, textId)[0];
         return name.ToUpperInvariant().Replace('’', '\''); // TODO: Improve (’ is not in the font)
     }
 }

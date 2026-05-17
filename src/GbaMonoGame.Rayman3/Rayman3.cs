@@ -8,6 +8,7 @@ public static class Rayman3
 {
     private static readonly JsonSerializerOptions _configJsonOptions = new() { ReadCommentHandling = JsonCommentHandling.Skip };
 
+    public static LocalizationManager Loc { get; private set; }
     public static AchievementsManager Achievements { get; private set; }
     public static TimeAttackManager TimeAttack { get; private set; }
 
@@ -24,19 +25,24 @@ public static class Rayman3
         TimeAttackLevelInfo[] timeAttackLevelInfos = DeserializeConfig<TimeAttackLevelInfo[]>("TimeAttackConfig");
 
         // Create services
+        Loc = new LocalizationManager();
         Achievements = new AchievementsManager(Rayman3Achievements.Achievements);
         TimeAttack = new TimeAttackManager(timeAttackLevelInfos);
 
         // Initialize services
+        Loc.SetLanguage(Engine.LocalConfig.Display.Language);
         FrameManager.AddStepAction(Achievements.Step);
     }
 
     public static void UnInit()
     {
         // Uninitialize services
-        FrameManager.RemoveStepAction(Achievements.Step);
+        if (Achievements != null)
+            FrameManager.RemoveStepAction(Achievements.Step);
 
         // Remove services
+        Loc = null;
         Achievements = null;
+        TimeAttack = null;
     }
 }

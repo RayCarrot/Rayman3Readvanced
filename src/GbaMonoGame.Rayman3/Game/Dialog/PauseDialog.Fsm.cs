@@ -41,18 +41,18 @@ public partial class PauseDialog
                     if (Rom.Platform == Platform.GBA)
                         PauseSelection.CurrentAnimation = SelectedOption switch
                         {
-                            0 => 0 + Localization.LanguageUiIndex,
-                            1 => 10 + Localization.LanguageUiIndex,
-                            2 => 20 + Localization.LanguageUiIndex,
+                            0 => 0 + Rayman3.Loc.LanguageUiIndex,
+                            1 => 10 + Rayman3.Loc.LanguageUiIndex,
+                            2 => 20 + Rayman3.Loc.LanguageUiIndex,
                             _ => throw new IndexOutOfRangeException(),
                         };
                     else if (Rom.Platform == Platform.NGage)
                         PauseSelection.CurrentAnimation = SelectedOption switch
                         {
-                            0 => 0 + Localization.LanguageUiIndex,
-                            1 => 5 + Localization.LanguageUiIndex,
-                            2 => 25 + Localization.LanguageUiIndex,
-                            3 => 10 + Localization.LanguageUiIndex,
+                            0 => 0 + Rayman3.Loc.LanguageUiIndex,
+                            1 => 5 + Rayman3.Loc.LanguageUiIndex,
+                            2 => 25 + Rayman3.Loc.LanguageUiIndex,
+                            3 => 10 + Rayman3.Loc.LanguageUiIndex,
                             _ => throw new IndexOutOfRangeException(),
                         };
                     else
@@ -71,18 +71,18 @@ public partial class PauseDialog
                     if (Rom.Platform == Platform.GBA)
                         PauseSelection.CurrentAnimation = SelectedOption switch
                         {
-                            0 => 0 + Localization.LanguageUiIndex,
-                            1 => 10 + Localization.LanguageUiIndex,
-                            2 => 20 + Localization.LanguageUiIndex,
+                            0 => 0 + Rayman3.Loc.LanguageUiIndex,
+                            1 => 10 + Rayman3.Loc.LanguageUiIndex,
+                            2 => 20 + Rayman3.Loc.LanguageUiIndex,
                             _ => throw new IndexOutOfRangeException(),
                         };
                     else if (Rom.Platform == Platform.NGage)
                         PauseSelection.CurrentAnimation = SelectedOption switch
                         {
-                            0 => 0 + Localization.LanguageUiIndex,
-                            1 => 5 + Localization.LanguageUiIndex,
-                            2 => 25 + Localization.LanguageUiIndex,
-                            3 => 10 + Localization.LanguageUiIndex,
+                            0 => 0 + Rayman3.Loc.LanguageUiIndex,
+                            1 => 5 + Rayman3.Loc.LanguageUiIndex,
+                            2 => 25 + Rayman3.Loc.LanguageUiIndex,
+                            3 => 10 + Rayman3.Loc.LanguageUiIndex,
                             _ => throw new IndexOutOfRangeException(),
                         };
                     else
@@ -266,12 +266,12 @@ public partial class PauseDialog
                 if (Rom.Platform == Platform.GBA)
                 {
                     SelectedOption = 1;
-                    PauseSelection.CurrentAnimation = 40 + Localization.LanguageUiIndex;
+                    PauseSelection.CurrentAnimation = 40 + Rayman3.Loc.LanguageUiIndex;
                 }
                 else if (Rom.Platform == Platform.NGage)
                 {
                     SelectedOption = 0;
-                    PauseSelection.CurrentAnimation = 15 + Localization.LanguageUiIndex;
+                    PauseSelection.CurrentAnimation = 15 + Rayman3.Loc.LanguageUiIndex;
                 }
                 else
                 {
@@ -303,16 +303,16 @@ public partial class PauseDialog
                     if (Rom.Platform == Platform.GBA)
                     {
                         if (SelectedOption == 0)
-                            PauseSelection.CurrentAnimation = 40 + Localization.LanguageUiIndex;
+                            PauseSelection.CurrentAnimation = 40 + Rayman3.Loc.LanguageUiIndex;
                         else
-                            PauseSelection.CurrentAnimation = 30 + Localization.LanguageUiIndex;
+                            PauseSelection.CurrentAnimation = 30 + Rayman3.Loc.LanguageUiIndex;
                     }
                     else if (Rom.Platform == Platform.NGage)
                     {
                         if (SelectedOption == 0)
-                            PauseSelection.CurrentAnimation = 20 + Localization.LanguageUiIndex;
+                            PauseSelection.CurrentAnimation = 20 + Rayman3.Loc.LanguageUiIndex;
                         else
-                            PauseSelection.CurrentAnimation = 15 + Localization.LanguageUiIndex;
+                            PauseSelection.CurrentAnimation = 15 + Rayman3.Loc.LanguageUiIndex;
                     }
                     else
                     {
@@ -330,7 +330,7 @@ public partial class PauseDialog
 
                     if (Rom.Platform == Platform.GBA)
                     {
-                        PauseSelection.CurrentAnimation = 20 + Localization.LanguageUiIndex;
+                        PauseSelection.CurrentAnimation = 20 + Rayman3.Loc.LanguageUiIndex;
                         PrevSelectedOption = SelectedOption;
                         SelectedOption = 2;
                     }
@@ -340,7 +340,7 @@ public partial class PauseDialog
                         MusicVolume.ActivateAllChannels();
                         SfxVolume.ActivateAllChannels();
 
-                        PauseSelection.CurrentAnimation = 10 + Localization.LanguageUiIndex;
+                        PauseSelection.CurrentAnimation = 10 + Rayman3.Loc.LanguageUiIndex;
                         PrevSelectedOption = SelectedOption;
                         SelectedOption = 3;
                     }
@@ -426,17 +426,17 @@ public partial class PauseDialog
                     if (Rom.Platform == Platform.GBA)
                         PauseSelection.CurrentAnimation = SelectedOption switch
                         {
-                            0 => 50 + Localization.LanguageUiIndex,
-                            1 => 60 + Localization.LanguageUiIndex,
+                            0 => 50 + Rayman3.Loc.LanguageUiIndex,
+                            1 => 60 + Rayman3.Loc.LanguageUiIndex,
                             _ => throw new IndexOutOfRangeException(),
                         };
                     else if (Rom.Platform == Platform.NGage)
                         PauseSelection.CurrentAnimation = SelectedOption switch
                         {
-                            0 => 0 + Localization.LanguageUiIndex,
-                            1 => 5 + Localization.LanguageUiIndex,
-                            2 => 25 + Localization.LanguageUiIndex,
-                            3 => 10 + Localization.LanguageUiIndex,
+                            0 => 0 + Rayman3.Loc.LanguageUiIndex,
+                            1 => 5 + Rayman3.Loc.LanguageUiIndex,
+                            2 => 25 + Rayman3.Loc.LanguageUiIndex,
+                            3 => 10 + Rayman3.Loc.LanguageUiIndex,
                             _ => throw new IndexOutOfRangeException(),
                         };
                     else
@@ -455,17 +455,17 @@ public partial class PauseDialog
                     if (Rom.Platform == Platform.GBA)
                         PauseSelection.CurrentAnimation = SelectedOption switch
                         {
-                            0 => 50 + Localization.LanguageUiIndex,
-                            1 => 60 + Localization.LanguageUiIndex,
+                            0 => 50 + Rayman3.Loc.LanguageUiIndex,
+                            1 => 60 + Rayman3.Loc.LanguageUiIndex,
                             _ => throw new IndexOutOfRangeException(),
                         };
                     else if (Rom.Platform == Platform.NGage)
                         PauseSelection.CurrentAnimation = SelectedOption switch
                         {
-                            0 => 0 + Localization.LanguageUiIndex,
-                            1 => 5 + Localization.LanguageUiIndex,
-                            2 => 25 + Localization.LanguageUiIndex,
-                            3 => 10 + Localization.LanguageUiIndex,
+                            0 => 0 + Rayman3.Loc.LanguageUiIndex,
+                            1 => 5 + Rayman3.Loc.LanguageUiIndex,
+                            2 => 25 + Rayman3.Loc.LanguageUiIndex,
+                            3 => 10 + Rayman3.Loc.LanguageUiIndex,
                             _ => throw new IndexOutOfRangeException(),
                         };
                     else
@@ -605,12 +605,12 @@ public partial class PauseDialog
                 if (Rom.Platform == Platform.GBA)
                 {
                     SelectedOption = 1;
-                    PauseSelection.CurrentAnimation = 40 + Localization.LanguageUiIndex;
+                    PauseSelection.CurrentAnimation = 40 + Rayman3.Loc.LanguageUiIndex;
                 }
                 else if (Rom.Platform == Platform.NGage)
                 {
                     SelectedOption = 0;
-                    PauseSelection.CurrentAnimation = 15 + Localization.LanguageUiIndex;
+                    PauseSelection.CurrentAnimation = 15 + Rayman3.Loc.LanguageUiIndex;
                 }
                 else
                 {
@@ -643,16 +643,16 @@ public partial class PauseDialog
                     if (Rom.Platform == Platform.GBA)
                     {
                         if (SelectedOption == 0)
-                            PauseSelection.CurrentAnimation = 40 + Localization.LanguageUiIndex;
+                            PauseSelection.CurrentAnimation = 40 + Rayman3.Loc.LanguageUiIndex;
                         else
-                            PauseSelection.CurrentAnimation = 30 + Localization.LanguageUiIndex;
+                            PauseSelection.CurrentAnimation = 30 + Rayman3.Loc.LanguageUiIndex;
                     }
                     else if (Rom.Platform == Platform.NGage)
                     {
                         if (SelectedOption == 0)
-                            PauseSelection.CurrentAnimation = 20 + Localization.LanguageUiIndex;
+                            PauseSelection.CurrentAnimation = 20 + Rayman3.Loc.LanguageUiIndex;
                         else
-                            PauseSelection.CurrentAnimation = 15 + Localization.LanguageUiIndex;
+                            PauseSelection.CurrentAnimation = 15 + Rayman3.Loc.LanguageUiIndex;
                     }
                     else
                     {
@@ -670,7 +670,7 @@ public partial class PauseDialog
 
                     if (Rom.Platform == Platform.GBA)
                     {
-                        PauseSelection.CurrentAnimation = 60 + Localization.LanguageUiIndex;
+                        PauseSelection.CurrentAnimation = 60 + Rayman3.Loc.LanguageUiIndex;
                         PrevSelectedOption = SelectedOption;
                         SelectedOption = 1;
                     }
@@ -680,7 +680,7 @@ public partial class PauseDialog
                         MusicVolume.ActivateAllChannels();
                         SfxVolume.ActivateAllChannels();
 
-                        PauseSelection.CurrentAnimation = 10 + Localization.LanguageUiIndex;
+                        PauseSelection.CurrentAnimation = 10 + Rayman3.Loc.LanguageUiIndex;
                         PrevSelectedOption = SelectedOption;
                         SelectedOption = 3;
                     }

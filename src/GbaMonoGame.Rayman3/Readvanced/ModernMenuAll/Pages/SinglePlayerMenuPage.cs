@@ -83,7 +83,7 @@ public class SinglePlayerMenuPage : MenuPage
 
     private void SetReadvancedStartEraseSelectionTexture(int index)
     {
-        string path = _readvancedStartEraseSelectionTexturePaths[Localization.LanguageUiIndex * 3 + index];
+        string path = _readvancedStartEraseSelectionTexturePaths[Rayman3.Loc.LanguageUiIndex * 3 + index];
         ReadvancedStartEraseSelection.Texture = Engine.FrameContentManager.Load<Texture2D>(path);
     }
 
@@ -136,7 +136,7 @@ public class SinglePlayerMenuPage : MenuPage
             BgPriority = 1,
             ObjPriority = 0,
             ScreenPos = new Vector2(110, 30),
-            CurrentAnimation = Localization.LanguageUiIndex * 2 + 1,
+            CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2 + 1,
             RenderContext = RenderContext,
         };
 
@@ -278,7 +278,7 @@ public class SinglePlayerMenuPage : MenuPage
                 {
                     TransitionValue = 0;
                     EraseSaveStage = StartEraseMode.TransitionInConfirmErase;
-                    StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 21;
+                    StartEraseSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2 + 21;
                     StartEraseSelection.ScreenPos = new Vector2(174, -80);
                     StartEraseCursor.ScreenPos = StartEraseCursor.ScreenPos with { Y = -38 };
                 }
@@ -303,7 +303,7 @@ public class SinglePlayerMenuPage : MenuPage
                     if (SelectedStartEraseOption != 0)
                     {
                         SelectStartEraseOption(0);
-                        StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 20;
+                        StartEraseSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2 + 20;
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
                 }
@@ -313,7 +313,7 @@ public class SinglePlayerMenuPage : MenuPage
                     if (SelectedStartEraseOption != 1)
                     {
                         SelectStartEraseOption(1);
-                        StartEraseSelection.CurrentAnimation = Localization.LanguageUiIndex * 2 + 21;
+                        StartEraseSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2 + 21;
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
                 }

@@ -24,7 +24,7 @@ public class LevelsMenuOption : TextMenuOption
     {
         // TODO: Fix replacing char (same as in time attack)
         if (isAvailable)
-            return Localization.GetText(TextBankId.LevelNames, GameInfo.Levels[(int)GameInfo.LevelMaps[levelCurtainId][0]].NameTextId)[0].ToUpperInvariant().Replace('’', '\'');
+            return Rayman3.Loc.GetText(TextBankId.LevelNames, GameInfo.Levels[(int)GameInfo.LevelMaps[levelCurtainId][0]].NameTextId)[0].ToUpperInvariant().Replace('’', '\'');
         else
             return "??";
     }

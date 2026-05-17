@@ -1032,7 +1032,7 @@ public partial class UserInfoMulti2D : Dialog
                 IsFramed = true,
                 BgPriority = 0,
                 ObjPriority = 2,
-                CurrentAnimation = Localization.LanguageUiIndex,
+                CurrentAnimation = Rayman3.Loc.LanguageUiIndex,
                 ScreenPos = new Vector2(0, IsSuddenDeath ? 36 : 180),
                 HorizontalAnchor = HorizontalAnchorMode.Center,
                 VerticalAnchor = VerticalAnchorMode.Scale,

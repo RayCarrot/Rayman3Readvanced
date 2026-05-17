@@ -321,7 +321,7 @@ public class Intro : Frame, IHasPlayfield
             CurrentAnimation = Rom.Platform switch
             {
                 Platform.GBA => 9,
-                Platform.NGage => 9 + Localization.LanguageUiIndex,
+                Platform.NGage => 9 + Rayman3.Loc.LanguageUiIndex,
                 _ => throw new UnsupportedPlatformException(),
             },
             RenderContext = Rom.OriginalGameRenderContext,
@@ -449,7 +449,7 @@ public class Intro : Frame, IHasPlayfield
         if (Engine.ActiveConfig.Tweaks.AllowPrototypeCheats && JoyPad.IsButtonJustPressed(GbaInput.L))
         {
             FrameManager.SetNextFrame(new LevelSelect());
-            Localization.SetLanguage(0);
+            Rayman3.Loc.SetLanguage(0);
             Random.SetSeed(GameTime.ElapsedFrames);
 
             if (Engine.LocalConfig.Tweaks.PlayCheatTriggerSound)

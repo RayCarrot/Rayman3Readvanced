@@ -93,7 +93,7 @@ public class TimeAttackMenuPage : MenuPage
 
         string worldName = SelectedWorld == 4 
             ? "Bonus" 
-            : Localization.GetText(TextBankId.LevelNames, 31 + SelectedWorld)[0];
+            : Rayman3.Loc.GetText(TextBankId.LevelNames, 31 + SelectedWorld)[0];
         WorldName.Text = worldName;
         WorldName.ScreenPos = WorldNameCanvas.ScreenPos + new Vector2(-WorldName.GetStringWidth() / 2f, -15);
     }

@@ -31,7 +31,7 @@ public class LevelInfoBar : Bar
     private string GetLevelName()
     {
         int textId = GameInfo.Levels[(int)GameInfo.LevelMaps[LevelCurtainId][0]].NameTextId;
-        return Localization.GetText(TextBankId.LevelNames, textId)[0];
+        return Rayman3.Loc.GetText(TextBankId.LevelNames, textId)[0];
     }
 
     public void SetLevel(int levelCurtainId)

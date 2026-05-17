@@ -34,7 +34,7 @@ public partial class MenuAll
     {
         CurrentStepAction = Step_TransitionToLanguage;
         SetBackgroundPalette(1);
-        SelectOption(Localization.LanguageId, false);
+        SelectOption(Rayman3.Loc.LanguageId, false);
         Anims.LanguageList.CurrentAnimation = LanguagesBaseAnimation + SelectedOption;
         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
         ResetStem();
@@ -110,8 +110,8 @@ public partial class MenuAll
                     SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
                 }
 
-                Localization.SetLanguage(SelectedOption);
-                Engine.LocalConfig.Display.Language = Localization.Language.Locale;
+                Rayman3.Loc.SetLanguage(SelectedOption);
+                Engine.LocalConfig.Display.Language = Rayman3.Loc.Language.Locale;
                 Engine.SaveConfig();
 
                 TransitionValue = 0;
@@ -123,11 +123,11 @@ public partial class MenuAll
                     GameLogoYOffset = 56;
                     GameLogoYSpeed = 12;
                     
-                    Anims.GameModeList.CurrentAnimation = Localization.LanguageUiIndex * 3 + SelectedOption;
+                    Anims.GameModeList.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 3 + SelectedOption;
                 }
 
                 // Center sprites if English
-                if (Localization.LanguageId == 0)
+                if (Rayman3.Loc.LanguageId == 0)
                 {
                     if (Rom.Platform == Platform.GBA)
                     {

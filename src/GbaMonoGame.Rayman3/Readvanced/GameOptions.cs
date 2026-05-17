@@ -25,13 +25,13 @@ public static class GameOptions
                 new MultiSelectionOptionsMenuOption<Language>(
                     text: "LANGUAGE",
                     infoText: "The language to use for any localized text.",
-                    items: Localization.GetLanguages().
+                    items: Rayman3.Loc.GetLanguages().
                         Select(x => new MultiSelectionOptionsMenuOption<Language>.Item(x.EnglishName.ToUpper(), x)).
                         ToArray(),
-                    getData: _ => Localization.Language,
+                    getData: _ => Rayman3.Loc.Language,
                     setData: data =>
                     {
-                        Localization.SetLanguage(data);
+                        Rayman3.Loc.SetLanguage(data);
                         Engine.LocalConfig.Display.Language = data.Locale;
                     },
                     getCustomName: _ => null),

@@ -229,7 +229,7 @@ public class UserInfoMultiMode7 : Dialog
         WrongWayText = new SpriteTextObject()
         {
             Color = TextColor.RaceWrongWayText,
-            Text = Localization.GetText(TextBankId.Connectivity, 16)[0],
+            Text = Rayman3.Loc.GetText(TextBankId.Connectivity, 16)[0],
             ScreenPos = new Vector2(0, 70),
             HorizontalAnchor = HorizontalAnchorMode.Center,
             VerticalAnchor = VerticalAnchorMode.Scale,

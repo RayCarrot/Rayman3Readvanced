@@ -218,8 +218,8 @@ public partial class PauseDialog : Dialog
         {
             IsFramed = true,
             CurrentAnimation = RSMultiplayer.IsActive && Rom.Platform == Platform.GBA 
-                ? Localization.LanguageUiIndex + 50 
-                : Localization.LanguageUiIndex,
+                ? Rayman3.Loc.LanguageUiIndex + 50 
+                : Rayman3.Loc.LanguageUiIndex,
             ScreenPos = new Vector2(Rom.Platform switch
             {
                 Platform.GBA => 84,
@@ -232,7 +232,7 @@ public partial class PauseDialog : Dialog
 
         if (Rom.Platform == Platform.GBA)
         {
-            string[] textLines = Localization.GetText(TextBankId.Connectivity, 15);
+            string[] textLines = Rayman3.Loc.GetText(TextBankId.Connectivity, 15);
 
             SleepModeTexts = new SpriteTextObject[4];
             for (int i = 0; i < SleepModeTexts.Length; i++)
@@ -255,7 +255,7 @@ public partial class PauseDialog : Dialog
             SelectSymbol = new AnimatedObject(symbolsResource, false)
             {
                 IsFramed = true,
-                CurrentAnimation = Localization.LanguageUiIndex,
+                CurrentAnimation = Rayman3.Loc.LanguageUiIndex,
                 ScreenPos = new Vector2(-1, -18),
                 VerticalAnchor = VerticalAnchorMode.Bottom,
                 RenderContext = Scene.HudRenderContext,
@@ -263,7 +263,7 @@ public partial class PauseDialog : Dialog
             BackSymbol = new AnimatedObject(symbolsResource, false)
             {
                 IsFramed = true,
-                CurrentAnimation = 5 + Localization.LanguageUiIndex,
+                CurrentAnimation = 5 + Rayman3.Loc.LanguageUiIndex,
                 ScreenPos = new Vector2(-1, -18), // Set X when drawing
                 HorizontalAnchor = HorizontalAnchorMode.Right,
                 VerticalAnchor = VerticalAnchorMode.Bottom,
@@ -380,12 +380,12 @@ public partial class PauseDialog : Dialog
                 animationPlayer.Play(MusicVolume);
                 animationPlayer.Play(SfxVolume);
 
-                SelectSymbol.CurrentAnimation = Localization.LanguageUiIndex;
-                BackSymbol.CurrentAnimation = 5 + Localization.LanguageUiIndex;
+                SelectSymbol.CurrentAnimation = Rayman3.Loc.LanguageUiIndex;
+                BackSymbol.CurrentAnimation = 5 + Rayman3.Loc.LanguageUiIndex;
 
                 BackSymbol.ScreenPos = BackSymbol.ScreenPos with
                 {
-                    X = Localization.LanguageUiIndex switch
+                    X = Rayman3.Loc.LanguageUiIndex switch
                     {
                         1 => -55,
                         2 => -50,

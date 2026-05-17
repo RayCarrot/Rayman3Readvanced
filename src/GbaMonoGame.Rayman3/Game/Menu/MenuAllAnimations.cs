@@ -485,7 +485,7 @@ public class MenuAllAnimations
                 IsFramed = true,
                 BgPriority = 0,
                 ObjPriority = 0,
-                CurrentAnimation = Localization.LanguageUiIndex,
+                CurrentAnimation = Rayman3.Loc.LanguageUiIndex,
                 ScreenPos = new Vector2(-1, 190),
                 RenderContext = renderContext,
             };
@@ -493,7 +493,7 @@ public class MenuAllAnimations
             BackSymbol = new AnimatedObject(symbolAnimations, false)
             {
                 IsFramed = true,
-                CurrentAnimation = 5 + Localization.LanguageUiIndex,
+                CurrentAnimation = 5 + Rayman3.Loc.LanguageUiIndex,
                 ScreenPos = new Vector2(-1, 190),
                 HorizontalAnchor = HorizontalAnchorMode.Right,
                 RenderContext = renderContext,

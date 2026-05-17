@@ -46,7 +46,7 @@ public abstract class Act : Frame
         if (textId == -1)
             return;
 
-        CurrentText = Localization.GetText((TextBankId)ActResource.TextBankId, textId);
+        CurrentText = Rayman3.Loc.GetText((TextBankId)ActResource.TextBankId, textId);
 
         float centerX = Rom.OriginalResolution.X / 2f;
         float baseY = Rom.Platform switch
@@ -263,7 +263,7 @@ public abstract class Act : Frame
             SkipSymbol = new AnimatedObject(skipSymbolResource, false)
             {
                 IsFramed = true,
-                CurrentAnimation = 10 + Localization.LanguageUiIndex,
+                CurrentAnimation = 10 + Rayman3.Loc.LanguageUiIndex,
                 ScreenPos = new Vector2(-1, 190),
                 RenderContext = Rom.OriginalGameRenderContext,
             };

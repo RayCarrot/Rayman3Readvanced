@@ -128,7 +128,7 @@ public partial class MenuAll : Frame, IHasPlayfield
     {
         ShouldTextBlink = blink;
 
-        string[] text = Localization.GetText(TextBankId.Connectivity, textId);
+        string[] text = Rayman3.Loc.GetText(TextBankId.Connectivity, textId);
 
         Debug.Assert(text.Length <= Anims.Texts.Length, "Too many lines for this text");
 
@@ -154,7 +154,7 @@ public partial class MenuAll : Frame, IHasPlayfield
 
         ShouldTextBlink = blink;
 
-        string[] text = Localization.GetText(TextBankId.Connectivity, textId);
+        string[] text = Rayman3.Loc.GetText(TextBankId.Connectivity, textId);
 
         baseY ??= text.Length * -16 + 96;
 
@@ -538,7 +538,7 @@ public partial class MenuAll : Frame, IHasPlayfield
         {
             case InitialMenuPage.Language:
                 // NOTE: The game doesn't do this, but this allows the saved language to be pre-selected
-                SelectedOption = Localization.LanguageId;
+                SelectedOption = Rayman3.Loc.LanguageId;
                 Anims.LanguageList.CurrentAnimation = LanguagesBaseAnimation + SelectedOption;
 
                 CurrentStepAction = Rom.Platform switch
@@ -645,12 +645,12 @@ public partial class MenuAll : Frame, IHasPlayfield
 
         if (Rom.Platform == Platform.NGage)
         {
-            Anims.SelectSymbol.CurrentAnimation = Localization.LanguageUiIndex;
-            Anims.BackSymbol.CurrentAnimation = 5 + Localization.LanguageUiIndex;
+            Anims.SelectSymbol.CurrentAnimation = Rayman3.Loc.LanguageUiIndex;
+            Anims.BackSymbol.CurrentAnimation = 5 + Rayman3.Loc.LanguageUiIndex;
 
             Anims.BackSymbol.ScreenPos = Anims.BackSymbol.ScreenPos with
             {
-                X = Localization.LanguageUiIndex switch
+                X = Rayman3.Loc.LanguageUiIndex switch
                 {
                     1 => 121,
                     2 => 126,

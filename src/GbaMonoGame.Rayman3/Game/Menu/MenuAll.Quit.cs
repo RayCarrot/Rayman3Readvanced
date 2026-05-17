@@ -12,8 +12,8 @@ public partial class MenuAll
     {
         SelectOption(0, false);
 
-        Anims.QuitSelection.CurrentAnimation = 15 + Localization.LanguageUiIndex + SelectedOption * 5;
-        Anims.QuitHeader.CurrentAnimation = 34 + Localization.LanguageUiIndex;
+        Anims.QuitSelection.CurrentAnimation = 15 + Rayman3.Loc.LanguageUiIndex + SelectedOption * 5;
+        Anims.QuitHeader.CurrentAnimation = 34 + Rayman3.Loc.LanguageUiIndex;
         Anims.GameLogo.CurrentAnimation = 0;
 
         CurrentStepAction = Step_TransitionToQuit;
@@ -52,12 +52,12 @@ public partial class MenuAll
         if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
         {
             SelectOption(SelectedOption == 0 ? 1 : 0, true);
-            Anims.QuitSelection.CurrentAnimation = 15 + Localization.LanguageUiIndex + SelectedOption * 5;
+            Anims.QuitSelection.CurrentAnimation = 15 + Rayman3.Loc.LanguageUiIndex + SelectedOption * 5;
         }
         else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
         {
             SelectOption(SelectedOption == 1 ? 0 : 1, true);
-            Anims.QuitSelection.CurrentAnimation = 15 + Localization.LanguageUiIndex + SelectedOption * 5;
+            Anims.QuitSelection.CurrentAnimation = 15 + Rayman3.Loc.LanguageUiIndex + SelectedOption * 5;
         }
         else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
         {

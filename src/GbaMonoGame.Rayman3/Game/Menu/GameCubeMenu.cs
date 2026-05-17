@@ -157,7 +157,7 @@ public partial class GameCubeMenu : Frame
         if (!UseJoyBus)
             return;
 
-        string[] text = Localization.GetText(TextBankId.Connectivity, 6);
+        string[] text = Rayman3.Loc.GetText(TextBankId.Connectivity, 6);
 
         for (int i = 0; i < text.Length; i++)
         {

@@ -636,7 +636,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
     private void WorldNameInit()
     {
-        string worldNameText = Localization.GetText(TextBankId.LevelNames, WorldId switch
+        string worldNameText = Rayman3.Loc.GetText(TextBankId.LevelNames, WorldId switch
         {
             WorldId.World1 => 31,
             WorldId.World2 => 32,

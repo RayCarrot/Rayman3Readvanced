@@ -102,7 +102,7 @@ public class Credits : Frame
     private void InitText()
     {
         string[] addedCredits = AddedCredits;
-        string[] originalCredits = Localization.GetText(TextBankId.Credits, 0);
+        string[] originalCredits = Rayman3.Loc.GetText(TextBankId.Credits, 0);
         LocString = new string[addedCredits.Length + originalCredits.Length];
         Array.Copy(addedCredits, 0, LocString, 0, addedCredits.Length);
         Array.Copy(originalCredits, 0, LocString, addedCredits.Length, originalCredits.Length);
