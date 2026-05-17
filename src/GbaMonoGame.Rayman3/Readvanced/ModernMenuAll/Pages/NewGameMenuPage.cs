@@ -74,7 +74,7 @@ public class NewGameMenuPage : MenuPage
 
                 context.AddFile(new LinearFile(context, saveFileName));
 
-                Engine.BeginLoad();
+                Engine.App.BeginLoad();
                 EEPROM<SaveGame> saveGame = FileFactory.Read<EEPROM<SaveGame>>(context, saveFileName,
                     (_, x) => x.Pre_Size = EEPROM<SaveGame>.EEPROMSize.Kbit_4);
 
@@ -117,7 +117,7 @@ public class NewGameMenuPage : MenuPage
 
                 context.AddFile(new LinearFile(context, saveFileName));
 
-                Engine.BeginLoad();
+                Engine.App.BeginLoad();
                 NGageSaveGame saveGame = FileFactory.Read<NGageSaveGame>(context, saveFileName);
 
                 SaveGameSlot[] slots = saveGame.Slots.Select((x, i) => saveGame.ValidSlots[i] ? x : null).ToArray();

@@ -12,10 +12,7 @@ public static class Engine
     public static GameWindowManager Window { get; private set; }
     public static AssetManager Assets { get; private set; }
 
-    // State
-    public static bool IsLoading { get; set; }
-
-
+    // TODO: Refactor
 
     /// <summary>
     /// The internal game resolution used for the aspect ratio and scaling.
@@ -42,11 +39,6 @@ public static class Engine
     #endregion
 
     #region Methods
-
-    public static void BeginLoad()
-    {
-        IsLoading = true;
-    }
 
     public static void UpdateInternalGameResolution()
     {

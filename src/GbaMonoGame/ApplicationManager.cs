@@ -11,6 +11,14 @@ public class ApplicationManager
 
     private readonly Game _game;
 
+    public bool IsActive => _game.IsActive;
+    public bool IsLoading { get; set; }
+
+    public void BeginLoad()
+    {
+        IsLoading = true;
+    }
+
     public void Exit()
     {
         _game.Exit();

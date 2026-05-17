@@ -14,9 +14,8 @@ namespace GbaMonoGame;
 
 public class GameWindowManager
 {
-    public GameWindowManager(Game game, GameWindow window, GraphicsDeviceManager graphics)
+    public GameWindowManager(GameWindow window, GraphicsDeviceManager graphics)
     {
-        _game = game;
         _window = window;
         _graphics = graphics;
 
@@ -45,7 +44,6 @@ public class GameWindowManager
     private static extern void SDL_MaximizeWindow(IntPtr window);
 #endif
 
-    private readonly Game _game;
     private readonly GameWindow _window;
     private readonly GraphicsDeviceManager _graphics;
 
@@ -137,8 +135,6 @@ public class GameWindowManager
             _graphics.ApplyChanges();
         }
     }
-
-    public bool IsActive => _game.IsActive;
 
 #if DESKTOPGL
     private SDL_WindowFlags GetWindowFlags()

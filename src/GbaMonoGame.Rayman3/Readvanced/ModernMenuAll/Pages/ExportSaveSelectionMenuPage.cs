@@ -82,7 +82,7 @@ public class ExportSaveSelectionMenuPage : MenuPage
                             saveGame.Obj.Slots[SelectedOption].SaveSlot = GameInfo.PersistentInfo;
 
                             // Write the save file
-                            Engine.BeginLoad();
+                            Engine.App.BeginLoad();
                             FileFactory.Write(SaveContext, SaveFileName, saveGame);
                         }
                         break;
@@ -101,7 +101,7 @@ public class ExportSaveSelectionMenuPage : MenuPage
                             saveGame.ValidSlots[SelectedOption] = true;
 
                             // Write the save file
-                            Engine.BeginLoad();
+                            Engine.App.BeginLoad();
                             FileFactory.Write(SaveContext, SaveFileName, saveGame);
                         }
                         break;

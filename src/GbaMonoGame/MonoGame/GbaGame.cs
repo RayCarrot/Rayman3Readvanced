@@ -26,6 +26,7 @@ public abstract class GbaGame : Game
     private readonly GraphicsDeviceManager _graphics;
     private readonly Stopwatch _updateTimeStopWatch;
 
+    private ApplicationManager _applicationManager;
     private GameWindowManager _gameWindowManager;
     private GfxRenderer _gfxRenderer;
     private DebugLayout _debugLayout;
@@ -151,10 +152,10 @@ public abstract class GbaGame : Game
         // If this frame did a load, and thus might have taken longer than 1/60th of a
         // second, then we reset the timers to avoid MonoGame repeatedly calling Update()
         // to make up for the lost time, and thus dropping frames
-        if (Engine.IsLoading)
+        if (_applicationManager.IsLoading)
         {
             ResetElapsedTime();
-            Engine.IsLoading = false;
+            _applicationManager.IsLoading = false;
         }
 
         if (DebugMode)
@@ -181,7 +182,7 @@ public abstract class GbaGame : Game
         SetFramerate(Framerate);
 
         // Initialize the window
-        _gameWindowManager = new GameWindowManager(this, Window, _graphics);
+        _gameWindowManager = new GameWindowManager(Window, _graphics);
         _gameWindowManager.SetTitle(Title);
         _gameWindowManager.SetResizeMode(
             allowResize: true, 
@@ -200,8 +201,10 @@ public abstract class GbaGame : Game
         if (config.Active.Debug.DebugModeEnabled)
             _loggerWindow = new LoggerDebugWindow();
 
+        _applicationManager = new ApplicationManager(this);
+
         // Load the engine
-        Engine.Init(config, new ApplicationManager(this), _gameWindowManager, new AssetManager(Services));
+        Engine.Init(config, _applicationManager, _gameWindowManager, new AssetManager(Services));
         
         // Set the initial frame
         FrameManager.SetNextFrame(CreateInitialFrame());

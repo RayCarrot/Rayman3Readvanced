@@ -68,7 +68,7 @@ public partial class GameCubeMenu : Frame
 
     private bool ExtractGameCubeFiles(string isoFilePath)
     {
-        Engine.BeginLoad();
+        Engine.App.BeginLoad();
 
         // Start by verifying the file
         string gameId;

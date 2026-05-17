@@ -66,7 +66,7 @@ public partial class GameCubeMenu
                     {
                         using (Rom.Context)
                         {
-                            Engine.BeginLoad();
+                            Engine.App.BeginLoad();
                             MapInfos = FileFactory.Read<GameCubeMapInfos>(Rom.Context, MapInfosFileName);
                         }
                     }
@@ -477,7 +477,7 @@ public partial class GameCubeMenu
                             }
                             else
                             {
-                                Engine.BeginLoad();
+                                Engine.App.BeginLoad();
 
                                 using (Rom.Context)
                                 {

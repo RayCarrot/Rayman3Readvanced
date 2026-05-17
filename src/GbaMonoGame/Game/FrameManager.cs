@@ -82,7 +82,7 @@ public static class FrameManager
             Engine.RichPresenceManager.SetIdlePresence();
 
             // Initializing a new frame might take longer than 1/60th of a second, so we mark it as a load
-            Engine.BeginLoad();
+            Engine.App.BeginLoad();
 
             Stopwatch sw = Stopwatch.StartNew();
 
@@ -104,10 +104,10 @@ public static class FrameManager
         }
 
         // Check if the game was deactivated (window losing focus) and if it should auto-pause
-        if (Engine.Config.Active.Tweaks.PauseOnDeactivation && Engine.Window.IsActive != WasActive)
+        if (Engine.Config.Active.Tweaks.PauseOnDeactivation && Engine.App.IsActive != WasActive)
         {
-            WasActive = Engine.Window.IsActive;
-            if (!Engine.Window.IsActive && !RSMultiplayer.IsActive && !Frame.Current.BlockAutoPause)
+            WasActive = Engine.App.IsActive;
+            if (!Engine.App.IsActive && !RSMultiplayer.IsActive && !Frame.Current.BlockAutoPause)
                 Frame.Current.PendingAutoPause = true;
         }
 
