@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -6,17 +7,6 @@ namespace GbaMonoGame;
 
 public static class Engine
 {
-    #region Paths
-
-    public static string DataDirectoryName => "UserData";
-    public static string AssetsDirectoryName => "Assets";
-    public static string CrashlogFileName => "crashlog.txt";
-    public static string ConfigFileName => "config.ini";
-    public static string ImgGuiConfigFileName => "imgui.ini";
-    public static string SerializerLogFileName => "serializerLog.txt";
-
-    #endregion
-
     #region Properties
 
     /// <summary>
@@ -95,7 +85,7 @@ public static class Engine
 
     public static void LoadConfig()
     {
-        string filePath = FileManager.GetDataFile(ConfigFileName);
+        string filePath = FileManager.GetDataFile(Paths.ConfigFileName);
         LocalGameConfig config = new();
 
         try
@@ -128,7 +118,7 @@ public static class Engine
 
     public static void SaveConfig()
     {
-        string filePath = FileManager.GetDataFile(ConfigFileName);
+        string filePath = FileManager.GetDataFile(Paths.ConfigFileName);
         IniSerializer serializer = new();
         LocalConfig.Serialize(serializer);
 
@@ -171,12 +161,15 @@ public static class Engine
         GameViewPort.UpdateRenderBox();
     }
 
-    public static void Init(GbaGame gbaGame, GbaGameWindow gameWindow, Frame initialFrame)
+    public static void Init(GbaGame gbaGame, GraphicsDevice graphicsDevice, IServiceProvider serviceProvider, GbaGameWindow gameWindow)
     {
+        // Register encoding provider to be able to use Windows 1252
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
         GbaGame = gbaGame;
-        GraphicsDevice = gbaGame.GraphicsDevice;
-        FixContentManager = new ContentManager(gbaGame.Services, AssetsDirectoryName);
-        FrameContentManager = new ContentManager(gbaGame.Services, AssetsDirectoryName);
+        GraphicsDevice = graphicsDevice;
+        FixContentManager = new ContentManager(serviceProvider, Paths.AssetsDirectoryName);
+        FrameContentManager = new ContentManager(serviceProvider, Paths.AssetsDirectoryName);
         GameWindow = gameWindow;
         GameViewPort = new GbaGameViewPort();
         GameRenderContext = new GameRenderContext();
@@ -184,8 +177,6 @@ public static class Engine
         RichPresenceManager.Initialize();
 
         Gfx.Load();
-
-        FrameManager.SetNextFrame(initialFrame);
     }
 
     public static void UnInit()
@@ -198,6 +189,11 @@ public static class Engine
     public static void Step()
     {
         FrameManager.Step();
+    }
+
+    public static void ExitGame()
+    {
+        GbaGame.Exit();
     }
 
     #endregion

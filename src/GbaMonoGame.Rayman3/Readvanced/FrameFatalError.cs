@@ -22,7 +22,7 @@ public class FrameFatalError : Frame
     {
         try
         {
-            string crashLogFilePath = FileManager.GetDataFile(Engine.CrashlogFileName);
+            string crashLogFilePath = FileManager.GetDataFile(Paths.CrashlogFileName);
             File.WriteAllText(crashLogFilePath, Exception?.ToString());
         }
         catch
@@ -58,7 +58,7 @@ public class FrameFatalError : Frame
             JoyPad.IsButtonJustPressed(GbaInput.Select) ||
             InputManager.IsKeyJustPressed(Keys.Escape))
         {
-            Engine.GbaGame.Exit();
+            Engine.ExitGame();
         }
 
         AnimationPlayer.Play(Text);

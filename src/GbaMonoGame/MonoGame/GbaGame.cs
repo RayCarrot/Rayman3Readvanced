@@ -202,7 +202,10 @@ public abstract class GbaGame : Game
             _loggerWindow = new LoggerDebugWindow();
 
         // Load the engine
-        Engine.Init(this, _gameWindow, CreateInitialFrame());
+        Engine.Init(this, GraphicsDevice, Services, _gameWindow);
+        
+        // Set the initial frame
+        FrameManager.SetNextFrame(CreateInitialFrame());
 
         // Apply the window state
         Engine.GameWindow.VSync = Engine.LocalConfig.Display.VSync;

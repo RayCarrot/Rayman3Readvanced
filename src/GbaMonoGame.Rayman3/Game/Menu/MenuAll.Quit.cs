@@ -66,7 +66,7 @@ public partial class MenuAll
             if (SelectedOption == 0)
                 NextStepAction = Step_InitializeTransitionToGameMode;
             else if (SelectedOption == 1)
-                Engine.GbaGame.Exit();
+                Engine.ExitGame();
 
             CurrentStepAction = Step_TransitionOutOfQuit;
             SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);

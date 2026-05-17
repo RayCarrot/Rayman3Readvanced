@@ -160,7 +160,7 @@ public static class Rom
 
             // Create a serializer logger
             ISerializerLogger serializerLogger = Engine.ActiveConfig.Debug.WriteSerializerLog
-                ? new FileSerializerLogger(FileManager.GetDataFile(Engine.SerializerLogFileName))
+                ? new FileSerializerLogger(FileManager.GetDataFile(Paths.SerializerLogFileName))
                 : null;
 
             // Create the binary context

@@ -11,7 +11,7 @@ public static class GameOptions
     public static GameOptionsGroup[] Create()
     {
         // Get graphics properties
-        GraphicsAdapter adapter = Engine.GbaGame.GraphicsDevice.Adapter;
+        GraphicsAdapter adapter = Engine.GraphicsDevice.Adapter;
         Vector2 originalRes = Rom.OriginalResolution;
         Vector2 modernRes = Resolution.Modern;
         Vector2 screenRes = new(adapter.CurrentDisplayMode.Width, adapter.CurrentDisplayMode.Height);

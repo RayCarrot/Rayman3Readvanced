@@ -9,9 +9,6 @@ internal class Program
 #endif
     public static void Main(string[] args)
     {
-        // Register encoding provider to be able to use Windows 1252
-        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
         // Try and default to use dedicated GPU
         try
         {

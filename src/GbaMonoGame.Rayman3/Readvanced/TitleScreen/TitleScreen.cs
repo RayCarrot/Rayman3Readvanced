@@ -78,9 +78,6 @@ public class TitleScreen : Frame
         // Save last played platform
         Engine.LocalConfig.General.LastPlayedPlatform = Games[SelectedGameIndex].Platform;
 
-        // Load the language
-        Localization.SetLanguage(Engine.LocalConfig.Display.Language);
-
         int? lastSaveSlot = Games[SelectedGameIndex].Platform switch
         {
             Platform.GBA => Engine.LocalConfig.General.LastPlayedGbaSaveSlot,
@@ -327,10 +324,7 @@ public class TitleScreen : Frame
         QuitGameOptionsList = new TitleScreenOptionsList(renderContext, Cursor, new Vector2(basePosX + gamesDistance / 2f, basePosY + 16));
         QuitGameOptionsList.SetOptions(
         [
-            new TitleScreenOptionsList.Option("YES", () =>
-            {
-                Engine.GbaGame.Exit();
-            }),
+            new TitleScreenOptionsList.Option("YES", Engine.ExitGame),
             new TitleScreenOptionsList.Option("NO", () =>
             {
                 foreach (TitleScreenGame game in Games)

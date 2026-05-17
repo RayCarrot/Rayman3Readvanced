@@ -32,7 +32,7 @@ public class Rayman3 : GbaGame
 
     private T DeserializeConfig<T>(string configName)
     {
-        string filePath = Path.Combine(Engine.AssetsDirectoryName, "Rayman3", "Config", $"{configName}.jsonc");
+        string filePath = Path.Combine(Paths.AssetsDirectoryName, "Rayman3", "Config", $"{configName}.jsonc");
         string json = File.ReadAllText(filePath);
         return JsonSerializer.Deserialize<T>(json, _configJsonOptions);
     }
@@ -101,6 +101,9 @@ public class Rayman3 : GbaGame
 
         // Set sound engine callbacks
         SoundEventsManager.SetCallBacks(new Rayman3CallBackSet());
+
+        // Load the language
+        Localization.SetLanguage(Engine.LocalConfig.Display.Language);
 
         // Load fonts
         FontManager.Load(Rom.Loader.Font8, Rom.Loader.Font16, Rom.Loader.Font32);
