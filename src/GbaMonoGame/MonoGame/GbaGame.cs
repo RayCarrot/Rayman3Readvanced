@@ -106,9 +106,6 @@ public abstract class GbaGame : Game
 
         // Clear the cache
         Engine.Assets.UnloadAllCache();
-
-        // Dispose resources
-        Engine.DisposableResources.DisposeAll();
     }
 
     #endregion

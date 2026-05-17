@@ -10,13 +10,22 @@ namespace GbaMonoGame;
 /// <summary>
 /// Manages the currently active frame
 /// </summary>
-public class FrameManager
+public class FrameManager : IDisposable
 {
+    private readonly List<IDisposable> _resources = [];
     private readonly List<Action> _stepActions = [];
     private bool _wasActive;
 
     public Frame CurrentFrame { get; private set; }
     public Frame NextFrame { get; private set; }
+
+    private void DisposeResources()
+    {
+        foreach (IDisposable disposable in _resources)
+            disposable.Dispose();
+
+        _resources.Clear();
+    }
 
     /// <summary>
     /// Sets the next frame to be made active. This will go into effect at the start of the next game frame.
@@ -33,6 +42,11 @@ public class FrameManager
     public void ReloadCurrentFrame()
     {
         NextFrame = CurrentFrame;
+    }
+
+    public void RegisterDisposableResource(IDisposable resource)
+    {
+        _resources.Add(resource);
     }
 
     public void AddStepAction(Action action)
@@ -75,7 +89,7 @@ public class FrameManager
                 Engine.Assets.UnloadFrameCache();
 
                 // Dispose resources
-                Engine.DisposableResources.DisposeAll();
+                DisposeResources();
             }
 
             // Revert the rich presence to the default idle state (might get overriden when we initialize the new frame)
@@ -127,5 +141,13 @@ public class FrameManager
 
         // Update the game time by one game frame
         GameTime.Update();
+    }
+
+    public void Dispose()
+    {
+        CurrentFrame = null;
+        NextFrame = null;
+        DisposeResources();
+        _stepActions.Clear();
     }
 }

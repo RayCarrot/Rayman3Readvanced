@@ -12,7 +12,7 @@ public class MeshScreenRenderer : IScreenRenderer
             TextureEnabled = true,
         };
 
-        Engine.DisposableResources.Register(Shader);
+        Engine.FrameMngr.RegisterDisposableResource(Shader);
     }
 
     public BasicEffect Shader { get; }

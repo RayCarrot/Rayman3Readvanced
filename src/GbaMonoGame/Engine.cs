@@ -4,8 +4,6 @@ namespace GbaMonoGame;
 
 public static class Engine
 {
-    #region Properties
-
     // Services
     public static ConfigManager Config { get; private set; }
     public static ApplicationManager App { get; private set; }
@@ -15,18 +13,6 @@ public static class Engine
     public static MessageManager Messages { get; private set; }
     public static RichPresenceManager RichPresence { get; private set; }
     public static FrameManager FrameMngr { get; private set; }
-
-    // TODO: Refactor
-
-
-    /// <summary>
-    /// Disposable resources to dispose when loading a new frame
-    /// </summary>
-    public static DisposableResources DisposableResources { get; } = new();
-
-    #endregion
-
-    #region Methods
 
     public static void Init(
         ConfigManager config, 
@@ -72,6 +58,7 @@ public static class Engine
         // Uninitialize services
         Assets?.Dispose();
         RichPresence?.Dispose();
+        FrameMngr?.Dispose();
 
         // Remove services
         Config = null;
@@ -88,6 +75,4 @@ public static class Engine
     {
         FrameMngr.Step();
     }
-
-    #endregion
 }

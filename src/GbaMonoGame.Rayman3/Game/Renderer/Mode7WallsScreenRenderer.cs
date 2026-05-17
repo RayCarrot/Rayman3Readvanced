@@ -30,8 +30,8 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
             CreateMesh(layer.TileMap, layer.Width, layer.Height, wallPoint, wallSize, wallBoxSize, sideTexture, false)
         ];
 
-        Engine.DisposableResources.Register(Shader);
-        Engine.DisposableResources.Register(topTexture);
+        Engine.FrameMngr.RegisterDisposableResource(Shader);
+        Engine.FrameMngr.RegisterDisposableResource(topTexture);
     }
 
     public TgxCameraMode7 Camera { get; }
@@ -186,8 +186,8 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
         IndexBuffer indexBuffer = new(Engine.Assets.GraphicsDevice, IndexElementSize.SixteenBits, indices.Count, BufferUsage.WriteOnly);
         indexBuffer.SetData(indices.ToArray());
 
-        Engine.DisposableResources.Register(vertexBuffer);
-        Engine.DisposableResources.Register(indexBuffer);
+        Engine.FrameMngr.RegisterDisposableResource(vertexBuffer);
+        Engine.FrameMngr.RegisterDisposableResource(indexBuffer);
 
         return new MeshFragment(PrimitiveType.TriangleList, vertexBuffer, indexBuffer, indices.Count / 3, texture);
     }
