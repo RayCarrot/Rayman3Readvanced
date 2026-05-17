@@ -12,7 +12,7 @@ using GbaMonoGame.TgxEngine;
 
 namespace GbaMonoGame.Rayman3;
 
-public class Rayman3 : GbaGame
+public class Rayman3GbaGame : GbaGame
 {
     #region Configs
 

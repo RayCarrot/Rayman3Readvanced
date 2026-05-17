@@ -20,7 +20,7 @@ internal class Program
         }
 
         // Create and run the game
-        using var game = new GbaMonoGame.Rayman3.Rayman3();
+        using var game = new GbaMonoGame.Rayman3.Rayman3GbaGame();
         game.Run();
     }
 }
