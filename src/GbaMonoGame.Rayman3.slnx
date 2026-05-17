@@ -1,0 +1,27 @@
+<Solution>
+  <Folder Name="/Binary/">
+    <Project Path="../sub-modules/BinarySerializer.Nintendo/src/BinarySerializer.Nintendo.csproj" />
+    <Project Path="../sub-modules/BinarySerializer.Ubisoft.GbaEngine/src/BinarySerializer.Ubisoft.GbaEngine.csproj" />
+    <Project Path="../sub-modules/BinarySerializer/src/BinarySerializer.csproj" />
+  </Folder>
+  <Folder Name="/Engine/">
+    <Project Path="GbaMonoGame.AnimEngine/GbaMonoGame.AnimEngine.csproj" />
+    <Project Path="GbaMonoGame.Editor/GbaMonoGame.Editor.csproj" />
+    <Project Path="GbaMonoGame.Engine2d/GbaMonoGame.Engine2d.csproj" />
+    <Project Path="GbaMonoGame.Native/GbaMonoGame.Native.csproj" />
+    <Project Path="GbaMonoGame.TgxEngine/GbaMonoGame.TgxEngine.csproj" />
+    <Project Path="GbaMonoGame/GbaMonoGame.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="nuget.config" />
+  </Folder>
+  <Folder Name="/Source Generators/">
+    <Project Path="GbaMonoGame.FsmSourceGenerator/GbaMonoGame.FsmSourceGenerator.csproj" />
+  </Folder>
+  <Project Path="GbaMonoGame.Benchmarks/GbaMonoGame.Benchmarks.csproj" />
+  <Project Path="GbaMonoGame.GenerateAssets/GbaMonoGame.GenerateAssets.csproj" />
+  <Project Path="GbaMonoGame.Rayman3/GbaMonoGame.Rayman3.csproj" />
+  <Project Path="GbaMonoGame.Tools/GbaMonoGame.Tools.csproj" />
+</Solution>
