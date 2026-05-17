@@ -513,7 +513,7 @@ public partial class MenuAll : Frame, IHasPlayfield
 
     public override void Init()
     {
-        Engine.RichPresenceManager.SetPresence("Main Menu");
+        Engine.RichPresence.SetPresence("Main Menu");
 
         LoadGameInfo();
 

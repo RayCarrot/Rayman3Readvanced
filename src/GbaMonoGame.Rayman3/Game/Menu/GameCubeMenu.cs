@@ -231,7 +231,7 @@ public partial class GameCubeMenu : Frame
 
     public override void Init()
     {
-        Engine.RichPresenceManager.SetPresence("GameCube Bonus Menu");
+        Engine.RichPresence.SetPresence("GameCube Bonus Menu");
 
         AnimationPlayer = new AnimationPlayer(false, null);
 

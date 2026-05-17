@@ -79,7 +79,7 @@ public static class FrameManager
             }
 
             // Revert the rich presence to the default idle state (might get overriden when we initialize the new frame)
-            Engine.RichPresenceManager.SetIdlePresence();
+            Engine.RichPresence.SetIdlePresence();
 
             // Initializing a new frame might take longer than 1/60th of a second, so we mark it as a load
             Engine.App.BeginLoad();

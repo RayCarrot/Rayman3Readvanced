@@ -210,7 +210,8 @@ public abstract class GbaGame : Game
             window: _gameWindowManager, 
             viewPort: new ViewPortManager(), 
             assets: new AssetManager(Services), 
-            messages: new MessageManager());
+            messages: new MessageManager(),
+            richPresence: new RichPresenceManager());
         
         // Set the initial frame
         FrameManager.SetNextFrame(CreateInitialFrame());

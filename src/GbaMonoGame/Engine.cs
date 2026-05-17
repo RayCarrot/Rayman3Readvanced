@@ -13,18 +13,15 @@ public static class Engine
     public static ViewPortManager ViewPort { get; private set; }
     public static AssetManager Assets { get; private set; }
     public static MessageManager Messages { get; private set; }
+    public static RichPresenceManager RichPresence { get; private set; }
 
     // TODO: Refactor
-
 
 
     /// <summary>
     /// Disposable resources to dispose when loading a new frame
     /// </summary>
     public static DisposableResources DisposableResources { get; } = new();
-
-
-    public static RichPresenceManager RichPresenceManager { get; private set; }
 
     #endregion
 
@@ -36,7 +33,8 @@ public static class Engine
         GameWindowManager window,
         ViewPortManager viewPort,
         AssetManager assets,
-        MessageManager messages)
+        MessageManager messages,
+        RichPresenceManager richPresence)
     {
         // Register encoding provider to be able to use Windows 1252
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -48,6 +46,7 @@ public static class Engine
         ViewPort = viewPort;
         Assets = assets;
         Messages = messages;
+        RichPresence = richPresence;
 
         // Initialize services
         if (Config.Active.Tweaks.InternalGameResolution == null)
@@ -59,10 +58,9 @@ public static class Engine
         {
             ViewPort.SetInternalGameResolution(Config.Active.Tweaks.InternalGameResolution.Value);
         }
+        RichPresence.Initialize();
 
         // TODO: Refactor
-        RichPresenceManager = new RichPresenceManager();
-        RichPresenceManager.Initialize();
         Gfx.Load();
     }
 
@@ -70,7 +68,7 @@ public static class Engine
     {
         // Uninitialize services
         Assets?.Dispose();
-        RichPresenceManager?.Dispose();
+        RichPresence?.Dispose();
 
         // Remove services
         Config = null;
@@ -79,6 +77,7 @@ public static class Engine
         ViewPort = null;
         Assets = null;
         Messages = null;
+        RichPresence = null;
     }
 
     public static void Step()

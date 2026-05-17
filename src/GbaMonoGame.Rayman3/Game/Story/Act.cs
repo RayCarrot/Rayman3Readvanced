@@ -171,7 +171,7 @@ public abstract class Act : Frame
 
     protected void Init(ActResource resource)
     {
-        Engine.RichPresenceManager.SetPresence("Cutscene");
+        Engine.RichPresence.SetPresence("Cutscene");
 
         TransitionsFX.Init(false);
         TransitionsFX.FadeInInit(1);

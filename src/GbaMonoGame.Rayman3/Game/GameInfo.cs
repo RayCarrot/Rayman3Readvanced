@@ -815,7 +815,7 @@ public static class GameInfo
             presence += " (Multiplayer)";
         else if (Rayman3.TimeAttack.IsActive)
             presence += " (Time Attack)";
-        Engine.RichPresenceManager.SetPresence(presence);
+        Engine.RichPresence.SetPresence(presence);
     }
 
     // Custom method so we can easily get the name of a map
