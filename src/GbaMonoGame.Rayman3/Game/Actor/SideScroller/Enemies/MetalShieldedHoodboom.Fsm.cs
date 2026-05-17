@@ -36,7 +36,7 @@ public partial class MetalShieldedHoodboom
                 dying = HasBeenHitOnce;
 
                 if (!dying)
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CagouHit_Mix03, this);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__CagouHit_Mix03, this);
 
                 HasBeenHitOnce = true;
                 InvulnerabilityTimer = GameTime.ElapsedFrames;
@@ -294,8 +294,8 @@ public partial class MetalShieldedHoodboom
             case FsmAction.Init:
                 ActionId = IsFacingRight ? Action.Dying_Right : Action.Dying_Left;
                 IsInvulnerable = false;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Boing_Mix02, this);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CagoDie2_Mix01, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Boing_Mix02, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__CagoDie2_Mix01, this);
                 break;
 
             case FsmAction.Step:

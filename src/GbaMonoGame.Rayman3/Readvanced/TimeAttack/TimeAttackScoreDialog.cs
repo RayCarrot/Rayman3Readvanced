@@ -107,7 +107,7 @@ public partial class TimeAttackScoreDialog : Dialog
 
     private void BeginCircleTransition()
     {
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SlideOut_Mix01);
+        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__SlideOut_Mix01);
 
         CircleTransitionValue = 252;
 

@@ -32,7 +32,7 @@ public sealed partial class Hoodstormer : MovableActor
             energyBall.ActionId = IsFacingRight ? EnergyBall.Action.DownShot_Right : EnergyBall.Action.DownShot_Left;
             energyBall.ChangeAction();
 
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Laser3_Mix03, this);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Laser3_Mix03, this);
         }
     }
 }

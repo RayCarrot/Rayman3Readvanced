@@ -127,7 +127,7 @@ public class MultiSelectionOptionsMenuOption<T> : OptionsMenuOption
                 _selectedIndex = _displayNames.Length - 1;
 
             UpdateSelection();
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
         }
         else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
         {
@@ -136,7 +136,7 @@ public class MultiSelectionOptionsMenuOption<T> : OptionsMenuOption
                 _selectedIndex = 0;
 
             UpdateSelection();
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
         }
 
         return EditStepResult.None;

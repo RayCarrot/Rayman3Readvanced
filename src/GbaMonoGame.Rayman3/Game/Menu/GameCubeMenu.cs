@@ -23,7 +23,7 @@ public partial class GameCubeMenu : Frame
     {
         CreateGeneratedStates();
 
-        SoundEventsManager.StopAllSongs();
+        Engine.Sem.StopAllSongs();
 
         // Use filesystem for now. In the future we can allow JoyBus mode and perhaps connect to
         // Dolphin through TCP (see https://github.dev/mgba-emu/mgba/tree/master/src/gba/sio).

@@ -104,7 +104,7 @@ public class GameOver : Frame
         {
             Timer = 0;
             Countdown1.CurrentAnimation = 9;
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__GameOver_BeepFX01_Mix02);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__GameOver_BeepFX01_Mix02);
         }
     }
 
@@ -128,7 +128,7 @@ public class GameOver : Frame
             RenderContext = Rom.OriginalGameRenderContext,
         });
 
-        AnimationPlayer = new AnimationPlayer(false, SoundEventsManager.ProcessEvent);
+        AnimationPlayer = new AnimationPlayer(false, Engine.Sem.ProcessEvent);
 
         AnimatedObjectResource raymanAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.GameOverRaymanAnimations);
         AnimatedObjectResource countdownAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.GameOverCountdownAnimations);
@@ -214,7 +214,7 @@ public class GameOver : Frame
         };
 
         Mode = GameOverMode.Intro;
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__tizetre_Swing);
+        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__tizetre_Swing);
         IsCountdownFacingRight = true;
         Timer = 0x3c;
 
@@ -233,12 +233,12 @@ public class GameOver : Frame
         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
         Gfx.Fade = AlphaCoefficient.Max;
 
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__tizetre_Swing);
+        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__tizetre_Swing);
 
         Gfx.ClearColor = Color.Black;
 
         if (Mode == GameOverMode.ReturnToMenu)
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
     }
 
     public override void Step()
@@ -267,7 +267,7 @@ public class GameOver : Frame
 
                 if (JoyPad.IsButtonJustPressed(Rayman3Input.GameOverContinue))
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
                     Mode = GameOverMode.Continue;
                 }
                 else if (Timer > 60)
@@ -278,7 +278,7 @@ public class GameOver : Frame
                     {
                         Countdown2.CurrentAnimation = Countdown1.CurrentAnimation;
                         Countdown1.CurrentAnimation--;
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__GameOver_BeepFX01_Mix02);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__GameOver_BeepFX01_Mix02);
                     }
                     else
                     {
@@ -294,7 +294,7 @@ public class GameOver : Frame
                     if (IsPlayingIdleRaymanAnimation())
                     {
                         Rayman.CurrentAnimation = 8;
-                        SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.Play__win3, 0);
+                        Engine.Sem.ReplaceAllSongs(Rayman3SoundEvent.Play__win3, 0);
                     }
                     else if (Rayman.CurrentAnimation != 9)
                     {
@@ -324,12 +324,12 @@ public class GameOver : Frame
                         Mode = GameOverMode.ReturnToMenu;
                         TransitionsFX.FadeOutInit(2);
 
-                        SoundEventsManager.StopAllSongs();
+                        Engine.Sem.StopAllSongs();
                     }
                 }
                 else if (Rayman.CurrentAnimation == 7 && Rayman.CurrentFrame == 25 && !Rayman.IsDelayMode)
                 {
-                    SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.Play__death, 0);
+                    Engine.Sem.ReplaceAllSongs(Rayman3SoundEvent.Play__death, 0);
                 }
                 break;
 

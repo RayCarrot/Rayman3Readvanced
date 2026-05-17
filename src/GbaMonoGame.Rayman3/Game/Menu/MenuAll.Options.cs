@@ -94,7 +94,7 @@ public partial class MenuAll
         }
         else if (Rom.Platform == Platform.NGage)
         {
-            switch (((NGageSoundEventsManager)SoundEventsManager.Current).MusicVolume)
+            switch (((NGageSoundEventsManager)Engine.Sem).MusicVolume)
             {
                 case 0:
                     Anims.MusicVolume.CurrentAnimation = 28;
@@ -192,7 +192,7 @@ public partial class MenuAll
         }
         else if (Rom.Platform == Platform.NGage)
         {
-            switch (((NGageSoundEventsManager)SoundEventsManager.Current).SoundEffectsVolume)
+            switch (((NGageSoundEventsManager)Engine.Sem).SoundEffectsVolume)
             {
                 case 0:
                     Anims.SfxVolume.CurrentAnimation = 28;
@@ -220,37 +220,37 @@ public partial class MenuAll
     // GBA
     private void ToggleMusicOnOff()
     {
-        if (SoundEventsManager.GetVolumeForType(SoundType.Music) == 0)
-            SoundEventsManager.SetVolumeForType(SoundType.Music, SoundEngineInterface.MaxVolume);
+        if (Engine.Sem.GetVolumeForType(SoundType.Music) == 0)
+            Engine.Sem.SetVolumeForType(SoundType.Music, SoundEngineInterface.MaxVolume);
         else
-            SoundEventsManager.SetVolumeForType(SoundType.Music, 0);
+            Engine.Sem.SetVolumeForType(SoundType.Music, 0);
     }
 
     // GBA
     private void ToggleSfxOnOff()
     {
-        if (SoundEventsManager.GetVolumeForType(SoundType.Sfx) == 0)
-            SoundEventsManager.SetVolumeForType(SoundType.Sfx, SoundEngineInterface.MaxVolume);
+        if (Engine.Sem.GetVolumeForType(SoundType.Sfx) == 0)
+            Engine.Sem.SetVolumeForType(SoundType.Sfx, SoundEngineInterface.MaxVolume);
         else
-            SoundEventsManager.SetVolumeForType(SoundType.Sfx, 0);
+            Engine.Sem.SetVolumeForType(SoundType.Sfx, 0);
     }
 
     // GBA
     private bool IsMusicOn()
     {
-        return SoundEventsManager.GetVolumeForType(SoundType.Music) == SoundEngineInterface.MaxVolume;
+        return Engine.Sem.GetVolumeForType(SoundType.Music) == SoundEngineInterface.MaxVolume;
     }
 
     // GBA
     private bool IsSfxOn()
     {
-        return SoundEventsManager.GetVolumeForType(SoundType.Sfx) == SoundEngineInterface.MaxVolume;
+        return Engine.Sem.GetVolumeForType(SoundType.Sfx) == SoundEngineInterface.MaxVolume;
     }
 
     // N-Gage
     private void ModifyMusicVolume(int volDelta)
     {
-        float currentVolume = ((NGageSoundEventsManager)SoundEventsManager.Current).MusicVolume;
+        float currentVolume = ((NGageSoundEventsManager)Engine.Sem).MusicVolume;
         float newVolume = 0;
 
         if (0 < volDelta)
@@ -271,13 +271,13 @@ public partial class MenuAll
                 newVolume = 0;
         }
 
-        ((NGageSoundEventsManager)SoundEventsManager.Current).MusicVolume = newVolume;
+        ((NGageSoundEventsManager)Engine.Sem).MusicVolume = newVolume;
     }
 
     // N-Gage
     private void ModifySfxVolume(int volDelta)
     {
-        float currentVolume = ((NGageSoundEventsManager)SoundEventsManager.Current).SoundEffectsVolume;
+        float currentVolume = ((NGageSoundEventsManager)Engine.Sem).SoundEffectsVolume;
         float newVolume = 0;
 
         if (0 < volDelta)
@@ -298,7 +298,7 @@ public partial class MenuAll
                 newVolume = 0;
         }
 
-        ((NGageSoundEventsManager)SoundEventsManager.Current).SoundEffectsVolume = newVolume;
+        ((NGageSoundEventsManager)Engine.Sem).SoundEffectsVolume = newVolume;
     }
 
     #endregion
@@ -361,7 +361,7 @@ public partial class MenuAll
         else
         {
             CurrentStepAction = Step_TransitionToOptions;
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
         }
 
         ResetStem();
@@ -453,7 +453,7 @@ public partial class MenuAll
                 NextStepAction = Step_InitializeTransitionToGameMode;
                 CurrentStepAction = Step_TransitionOutOfOptions;
                 TransitionOutCursorAndStem();
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
             }
             else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm) && Anims.Cursor.CurrentAnimation == 0)
             {
@@ -468,7 +468,7 @@ public partial class MenuAll
                     }
                     else if (Rom.Platform == Platform.NGage)
                     {
-                        if (((NGageSoundEventsManager)SoundEventsManager.Current).MusicVolume < SoundEngineInterface.MaxVolume)
+                        if (((NGageSoundEventsManager)Engine.Sem).MusicVolume < SoundEngineInterface.MaxVolume)
                             ModifyMusicVolume(1);
                         else
                             ModifyMusicVolume(-3);
@@ -489,7 +489,7 @@ public partial class MenuAll
                     }
                     else if (Rom.Platform == Platform.NGage)
                     {
-                        if (((NGageSoundEventsManager)SoundEventsManager.Current).SoundEffectsVolume < SoundEngineInterface.MaxVolume)
+                        if (((NGageSoundEventsManager)Engine.Sem).SoundEffectsVolume < SoundEngineInterface.MaxVolume)
                             ModifySfxVolume(1);
                         else
                             ModifySfxVolume(-3);
@@ -502,7 +502,7 @@ public partial class MenuAll
                     UpdateSfxVolumeAnimations();
                 }
 
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
             }
             else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft) && Anims.Cursor.CurrentAnimation == 0)
             {
@@ -511,14 +511,14 @@ public partial class MenuAll
                     Anims.Cursor.CurrentAnimation = 16;
                     ModifyMusicVolume(-1);
                     UpdateMusicVolumeAnimations();
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                 }
                 else if (SelectedOption == 1)
                 {
                     Anims.Cursor.CurrentAnimation = 16;
                     ModifySfxVolume(-1);
                     UpdateSfxVolumeAnimations();
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                 }
             }
             else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight) && Anims.Cursor.CurrentAnimation == 0)
@@ -528,14 +528,14 @@ public partial class MenuAll
                     Anims.Cursor.CurrentAnimation = 16;
                     ModifyMusicVolume(1);
                     UpdateMusicVolumeAnimations();
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                 }
                 else if (SelectedOption == 1)
                 {
                     Anims.Cursor.CurrentAnimation = 16;
                     ModifySfxVolume(1);
                     UpdateSfxVolumeAnimations();
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                 }
             }
 
@@ -552,7 +552,7 @@ public partial class MenuAll
                 {
                     NextStepAction = Step_InitializeTransitionToLanguage;
                     CurrentStepAction = Step_TransitionOutOfOptions;
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                     TransitionOutCursorAndStem();
                 }
             }

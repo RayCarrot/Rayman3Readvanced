@@ -109,8 +109,8 @@ public sealed partial class RaymanMode7 : Mode7Actor
 
             case Message.Rayman_FinishLevel:
                 ProcessJoypad = false;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02, this);
-                SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.Play__win3, 0);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02, this);
+                Engine.Sem.ReplaceAllSongs(Rayman3SoundEvent.Play__win3, 0);
                 LevelMusicManager.HasOverridenLevelMusic = false;
 
                 if (GameInfo.MapId == MapId.MarshAwakening1 && !Rayman3Achievements.MarshAwakening1_HasMoved)

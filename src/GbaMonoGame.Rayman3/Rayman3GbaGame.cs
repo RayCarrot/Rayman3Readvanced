@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using BinarySerializer.Ubisoft.GbaEngine;
-using GbaMonoGame.Editor;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.Rayman3.Readvanced;
 using GbaMonoGame.TgxEngine;
@@ -31,6 +26,7 @@ public class Rayman3GbaGame : GbaGame
     protected override void InitGame()
     {
         Engine.InitGame(
+            sem: Rayman3.CreateSoundEventsManager(),
             font: new FontManager(Rom.Loader.Font8, Rom.Loader.Font16, Rom.Loader.Font32));
         Rayman3.InitGame();
     }

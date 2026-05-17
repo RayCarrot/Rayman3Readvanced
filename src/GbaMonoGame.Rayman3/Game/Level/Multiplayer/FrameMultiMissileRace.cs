@@ -43,7 +43,7 @@ public class FrameMultiMissileRace : FrameMissileMultiMode7
         }
         else
         {
-            SoundEventsManager.StopAllSongs();
+            Engine.Sem.StopAllSongs();
 
             InitialMenuPage menuPage = EndOfFrame
                 ? InitialMenuPage.Multiplayer

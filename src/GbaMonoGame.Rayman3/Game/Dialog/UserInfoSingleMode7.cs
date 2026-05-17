@@ -202,9 +202,9 @@ public class UserInfoSingleMode7 : Dialog
 
             if ((GameTime.ElapsedFrames & 0x4f) == 0x4f && 
                 (GameTime.ElapsedFrames & 0x20) != 0 && 
-                !SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__OnoEquil_Mix03))
+                !Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__OnoEquil_Mix03))
             {
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoEquil_Mix03);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__OnoEquil_Mix03);
             }
         }
 

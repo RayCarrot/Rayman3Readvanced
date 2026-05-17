@@ -22,8 +22,8 @@ public partial class TimeAttackScoreDialog
                     ReadvancedSoundEvent musicEvent = NewRecord 
                         ? ReadvancedSoundEvent.Play__timeattack_score2 
                         : ReadvancedSoundEvent.Play__timeattack_score;
-                    if (!SoundEventsManager.IsSongPlaying(musicEvent))
-                        SoundEventsManager.ProcessEvent(musicEvent);
+                    if (!Engine.Sem.IsSongPlaying(musicEvent))
+                        Engine.Sem.ProcessEvent(musicEvent);
 
                     // Check if the target time was beaten
                     if (Rayman3.TimeAttack.Timer <= TimeTargets[TimeTargetTransitionIndex].Time.Time)
@@ -104,7 +104,7 @@ public partial class TimeAttackScoreDialog
                         Rayman3.TimeAttack.SaveTime();
 
                         // Play sound
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumTotal_Mix02);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LumTotal_Mix02);
                     }
 
                     State.MoveTo(_Fsm_ShowOptions);
@@ -145,7 +145,7 @@ public partial class TimeAttackScoreDialog
                     {
                         if (StepCircleTransition())
                         {
-                            SoundEventsManager.StopAllSongs();
+                            Engine.Sem.StopAllSongs();
                             Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                             Gfx.Fade = AlphaCoefficient.Max;
 
@@ -159,12 +159,12 @@ public partial class TimeAttackScoreDialog
                         if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
                         {
                             SetSelectedOption(SelectedOption - 1);
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                         }
                         else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
                         {
                             SetSelectedOption(SelectedOption + 1);
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                         }
                         else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
                         {
@@ -176,7 +176,7 @@ public partial class TimeAttackScoreDialog
                             // Continue
                             else if (SelectedOption == 1)
                             {
-                                SoundEventsManager.StopAllSongs();
+                                Engine.Sem.StopAllSongs();
                                 Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                                 Gfx.Fade = AlphaCoefficient.Max;
 
@@ -186,7 +186,7 @@ public partial class TimeAttackScoreDialog
                                     Engine.FrameMngr.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));
                             }
 
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                         }
                     }
 

@@ -381,7 +381,7 @@ public class GbaSoundEventsManager : SoundEventsManager
 
     #region Protected Methods
 
-    protected override void RefreshEventSetImpl()
+    public override void RefreshEventSet()
     {
         foreach (SongInstance song in _songInstances.ToArray())
         {
@@ -409,12 +409,12 @@ public class GbaSoundEventsManager : SoundEventsManager
         }
     }
     
-    protected override void SetCallBacksImpl(CallBackSet callBacks)
+    public override void SetCallBacks(CallBackSet callBacks)
     {
         _callBacks = callBacks;
     }
 
-    protected override void ProcessEventImpl(short soundEventId, object readvancedObject, object originalObject)
+    public override void ProcessEvent(short soundEventId, object readvancedObject, object originalObject)
     {
         SoundEvent evt = GetEventFromId(soundEventId);
 
@@ -441,12 +441,12 @@ public class GbaSoundEventsManager : SoundEventsManager
         }
     }
 
-    protected override bool IsSongPlayingImpl(short soundEventId)
+    public override bool IsSongPlaying(short soundEventId)
     {
         return _songInstances.Any(x => x.IsPlaying && x.EventId == soundEventId);
     }
 
-    protected override void SetSoundPitchImpl(short soundEventId, float pitch)
+    public override void SetSoundPitch(short soundEventId, float pitch)
     {
         foreach (SongInstance songInstance in _songInstances)
         {
@@ -458,7 +458,7 @@ public class GbaSoundEventsManager : SoundEventsManager
         }
     }
 
-    protected override short ReplaceAllSongsImpl(short soundEventId, float fadeOut)
+    public override short ReplaceAllSongs(short soundEventId, float fadeOut)
     {
         bool firstSong = true;
         short firstEventId = -1;
@@ -492,7 +492,7 @@ public class GbaSoundEventsManager : SoundEventsManager
         return firstEventId;
     }
 
-    protected override void FinishReplacingAllSongsImpl()
+    public override void FinishReplacingAllSongs()
     {
         foreach (SongInstance songInstance in _songInstances.ToArray())
         {
@@ -506,7 +506,7 @@ public class GbaSoundEventsManager : SoundEventsManager
         }
     }
 
-    protected override void StopAllSongsImpl()
+    public override void StopAllSongs()
     {
         foreach (SongInstance songInstance in _songInstances)
             _soloud.stop(songInstance.VoiceHandle);
@@ -514,7 +514,7 @@ public class GbaSoundEventsManager : SoundEventsManager
         _songInstances.Clear();
     }
 
-    protected override void PauseAllSongsImpl()
+    public override void PauseAllSongs()
     {
         foreach (SongInstance playingSong in _songInstances)
         {
@@ -526,7 +526,7 @@ public class GbaSoundEventsManager : SoundEventsManager
         }
     }
 
-    protected override void ResumeAllSongsImpl()
+    public override void ResumeAllSongs()
     {
         // NOTE: In the original game it seems to not resume sound effects, unless they're looping, in which case they play from the beginning
         foreach (SongInstance playingSong in _songInstances)
@@ -536,7 +536,7 @@ public class GbaSoundEventsManager : SoundEventsManager
         }
     }
 
-    protected override float GetVolumeForTypeImpl(SoundType type)
+    public override float GetVolumeForType(SoundType type)
     {
         if ((byte)type > 7)
             throw new ArgumentOutOfRangeException(nameof(type), type, "Type must be a value between 0-7");
@@ -544,7 +544,7 @@ public class GbaSoundEventsManager : SoundEventsManager
         return _volumePerType[(byte)type];
     }
 
-    protected override void SetVolumeForTypeImpl(SoundType type, float newVolume)
+    public override void SetVolumeForType(SoundType type, float newVolume)
     {
         if ((byte)type > 7)
             throw new ArgumentOutOfRangeException(nameof(type), type, "Type must be a value between 0-7");
@@ -555,19 +555,19 @@ public class GbaSoundEventsManager : SoundEventsManager
         _volumePerType[(byte)type] = newVolume;
     }
 
-    protected override void ForcePauseAllSongsImpl()
+    public override void ForcePauseAllSongs()
     {
         foreach (SongInstance playingSong in _songInstances)
             playingSong.InEnginePaused = true;
     }
 
-    protected override void ForceResumeAllSongsImpl()
+    public override void ForceResumeAllSongs()
     {
         foreach (SongInstance playingSong in _songInstances)
             playingSong.InEnginePaused = false;
     }
     
-    protected override void DrawDebugLayoutImpl()
+    public override void DrawDebugLayout()
     {
         if (ImGui.BeginTable("_songs", 4))
         {
@@ -598,7 +598,7 @@ public class GbaSoundEventsManager : SoundEventsManager
         }
     }
 
-    protected override void UnloadImpl()
+    public override void Unload()
     {
         foreach (Song song in _songTable.Values)
             song.WavSound.Dispose();

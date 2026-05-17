@@ -18,8 +18,8 @@ public partial class Jano
             {
                 AlphaBlend -= 0.5f;
 
-                if (AlphaBlend <= 4 && !SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__JanoRire_Mix01))
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__JanoRire_Mix01, this);
+                if (AlphaBlend <= 4 && !Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__JanoRire_Mix01))
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__JanoRire_Mix01, this);
             }
         }
         else
@@ -102,7 +102,7 @@ public partial class Jano
                 else if (Timer == 30)
                 {
                     ((Rayman)Scene.MainActor).ActionId = Rayman.Action.Idle_Grimace_Right;
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Grimace1_Mix04, this);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Grimace1_Mix04, this);
                     Timer = 31;
                     ActionId = Action.Grimace_Left;
                 }
@@ -249,7 +249,7 @@ public partial class Jano
                 if (FirstTimeMovingAway)
                     FirstTimeMovingAway = false;
                 else
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Janogrrr_Mix03, this);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Janogrrr_Mix03, this);
 
                 if (ActionId is not (Action.Move_Right or Action.Move_Left))
                     ActionId = IsOnLeftSide ? Action.TurnAroundSlow_Right : Action.TurnAroundSlow_Left;
@@ -335,7 +335,7 @@ public partial class Jano
 
             case FsmAction.UnInit:
                 Scene.MainActor.ProcessMessage(this, Message.Rayman_Resume);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Grimace1_Mix04, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__Grimace1_Mix04, this);
                 break;
         }
 
@@ -798,7 +798,7 @@ public partial class Jano
         {
             case FsmAction.Init:
                 ActionId = Action.Complete;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalDead_Mix02, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__ScalDead_Mix02, this);
                 Rayman3.Achievements.Unlock(AchievementId.DefeatBossBadDreams);
                 Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
                 Timer = 0;

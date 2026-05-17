@@ -341,7 +341,7 @@ public class NGageSoundEventsManager : SoundEventsManager
 
     #region Protected Methods
 
-    protected override void RefreshEventSetImpl()
+    public override void RefreshEventSet()
     {
         // Fade in music if there's no new music to be played
         if (_currentMusicSoundResId == _nextMusicSoundResId && _currentMusicSoundResId >= 0)
@@ -415,13 +415,13 @@ public class NGageSoundEventsManager : SoundEventsManager
         }
     }
 
-    protected override void SetCallBacksImpl(CallBackSet callBacks)
+    public override void SetCallBacks(CallBackSet callBacks)
     {
         // Save callbacks for optional sound panning and roll-off like on GBA
         _callBacks = callBacks;
     }
 
-    protected override void ProcessEventImpl(short soundEventId, object readvancedObject, object originalObject)
+    public override void ProcessEvent(short soundEventId, object readvancedObject, object originalObject)
     {
         if (soundEventId < 0 || soundEventId >= _soundEvents.Length)
             return;
@@ -445,7 +445,7 @@ public class NGageSoundEventsManager : SoundEventsManager
         }
     }
 
-    protected override bool IsSongPlayingImpl(short soundEventId)
+    public override bool IsSongPlaying(short soundEventId)
     {
         if (soundEventId < 0 || soundEventId >= _soundEvents.Length)
             return false;
@@ -461,34 +461,34 @@ public class NGageSoundEventsManager : SoundEventsManager
             return IsSoundEffectPlaying(soundEventId);
     }
 
-    protected override void SetSoundPitchImpl(short soundEventId, float pitch) { }
+    public override void SetSoundPitch(short soundEventId, float pitch) { }
     
-    protected override short ReplaceAllSongsImpl(short soundEventId, float fadeOut)
+    public override short ReplaceAllSongs(short soundEventId, float fadeOut)
     {
-        ProcessEventImpl(soundEventId, null, null);
+        ProcessEvent(soundEventId, null, null);
         return 0;
     }
 
-    protected override void FinishReplacingAllSongsImpl() { }
+    public override void FinishReplacingAllSongs() { }
 
-    protected override void StopAllSongsImpl() { }
+    public override void StopAllSongs() { }
 
-    protected override void PauseAllSongsImpl()
+    public override void PauseAllSongs()
     {
         if (Engine.Config.Local.Sound.PlayMusicWhenPaused == false)
             IsMusicInGamePaused = true;
     }
 
-    protected override void ResumeAllSongsImpl()
+    public override void ResumeAllSongs()
     {
         IsMusicInGamePaused = false;
     }
 
-    protected override float GetVolumeForTypeImpl(SoundType type) => SoundEngineInterface.MaxVolume;
+    public override float GetVolumeForType(SoundType type) => SoundEngineInterface.MaxVolume;
 
-    protected override void SetVolumeForTypeImpl(SoundType type, float newVolume) { }
+    public override void SetVolumeForType(SoundType type, float newVolume) { }
 
-    protected override void ForcePauseAllSongsImpl()
+    public override void ForcePauseAllSongs()
     {
         IsMusicInEnginePaused = true;
 
@@ -496,7 +496,7 @@ public class NGageSoundEventsManager : SoundEventsManager
             soundEffectInstance.InEnginePaused = true;
     }
 
-    protected override void ForceResumeAllSongsImpl()
+    public override void ForceResumeAllSongs()
     {
         IsMusicInEnginePaused = false;
 
@@ -504,7 +504,7 @@ public class NGageSoundEventsManager : SoundEventsManager
             soundEffectInstance.InEnginePaused = false;
     }
 
-    protected override void DrawDebugLayoutImpl()
+    public override void DrawDebugLayout()
     {
         ImGui.Text($"Music loop: {_doesCurrentMusicLoop}");
         ImGui.Text($"Music volume: {_currentMusicVolume}");
@@ -542,7 +542,7 @@ public class NGageSoundEventsManager : SoundEventsManager
         }
     }
 
-    protected override void UnloadImpl()
+    public override void Unload()
     {
         foreach (Music music in _musicTable.Values)
             music.XmSound.Dispose();

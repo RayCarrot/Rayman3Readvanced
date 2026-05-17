@@ -136,7 +136,7 @@ public partial class ModernPauseDialog : Dialog
 
     private void BeginCircleTransition()
     {
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SlideOut_Mix01);
+        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__SlideOut_Mix01);
 
         CircleTransitionValue = 252;
 
@@ -276,7 +276,7 @@ public partial class ModernPauseDialog : Dialog
     public override void Load()
     {
         if (Rom.Platform == Platform.NGage)
-            ((NGageSoundEventsManager)SoundEventsManager.Current).PauseLoopingSoundEffects();
+            ((NGageSoundEventsManager)Engine.Sem).PauseLoopingSoundEffects();
 
         AnimatedObjectResource canvasResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.PauseCanvasAnimations);
         Canvas = new AnimatedObject(canvasResource, false)
@@ -352,7 +352,7 @@ public partial class ModernPauseDialog : Dialog
             State.SetTo(_Fsm_CheckSelection);
         }
 
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
+        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
     }
 
     public override void Draw(AnimationPlayer animationPlayer)

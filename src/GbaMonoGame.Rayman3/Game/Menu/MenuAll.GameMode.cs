@@ -62,7 +62,7 @@ public partial class MenuAll
             Anims.GameLogo.ScreenPos = Anims.GameLogo.ScreenPos with { Y = y };
 
             if (GameLogoYSpeed == 20 && GameLogoSinValue == 96)
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Pannel_BigFoot1_Mix02);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Pannel_BigFoot1_Mix02);
 
             if (GameLogoSinValue == 0)
                 GameLogoYSpeed -= 4;
@@ -169,7 +169,7 @@ public partial class MenuAll
         else
         {
             CurrentStepAction = Step_TransitionToGameMode;
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
         }
 
         IsLoadingMultiplayerMap = false;
@@ -254,16 +254,16 @@ public partial class MenuAll
                 };
 
                 CurrentStepAction = Step_TransitionOutOfGameMode;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                 SelectOption(0, false);
                 TransitionValue = 0;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                 TransitionOutCursorAndStem();
             }
             // Custom to return to the modern menu
             else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
             {
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                 IsLoadingModernMenu = true;
                 TransitionsFX.FadeOutInit(4);
             }

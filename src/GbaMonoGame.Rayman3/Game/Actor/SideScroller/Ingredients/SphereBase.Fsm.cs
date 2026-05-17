@@ -57,7 +57,7 @@ public partial class SphereBase
         switch (action)
         {
             case FsmAction.Init:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SocleFX1_Mix01, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__SocleFX1_Mix01, this);
                 ActionId = Action.Activating;
 
                 // Send message to linked actors

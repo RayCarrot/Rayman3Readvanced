@@ -79,21 +79,21 @@ public class FrameWaterSkiMode7 : FrameMode7
                 {
                     UserInfo.CountdownValue = 1;
                     UserInfo.ShowCountdown = true;
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CountDwn_Mix07_P1_);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__CountDwn_Mix07_P1_);
                 }
                 // 2
                 else if (WaterskiTimer == 64)
                 {
                     UserInfo.CountdownValue = 2;
                     UserInfo.ShowCountdown = true;
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CountDwn_Mix07_P2_);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__CountDwn_Mix07_P2_);
                 }
                 // 3
                 else if (WaterskiTimer == 96)
                 {
                     UserInfo.CountdownValue = 3;
                     UserInfo.ShowCountdown = true;
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CountDwn_Mix07_P3_);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__CountDwn_Mix07_P3_);
                 }
                 // GO!
                 else if (WaterskiTimer == 128)
@@ -102,7 +102,7 @@ public class FrameWaterSkiMode7 : FrameMode7
                     Scene.MainActor.ProcessMessage(this, Message.Actor_Start);
                     UserInfo.CountdownValue = 0;
                     UserInfo.ShowCountdown = true;
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoGO_Mix02);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__OnoGO_Mix02);
                 }
                 else if (WaterskiTimer == 180)
                 {

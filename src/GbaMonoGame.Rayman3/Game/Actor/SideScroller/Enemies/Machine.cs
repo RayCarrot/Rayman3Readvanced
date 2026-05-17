@@ -15,7 +15,7 @@ public sealed partial class Machine : MovableActor
 
         if ((Action)actorResource.FirstActionId == Action.CannonIdle1)
         {
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MachMotr_Mix01, this, this);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MachMotr_Mix01, this, this);
             BossHealth = 4;
             AnimatedObject.ObjPriority = 62;
         }

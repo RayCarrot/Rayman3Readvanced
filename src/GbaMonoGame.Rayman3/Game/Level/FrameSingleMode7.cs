@@ -103,7 +103,7 @@ public class FrameSingleMode7 : FrameMode7
         int lumsBarValue = UserInfo.LumsBar.CollectedLumsDigitValue1 * 10 + UserInfo.LumsBar.CollectedLumsDigitValue2;
         if (lumsBarValue == GameInfo.GetLumsCountForCurrentMap())
         {
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumTotal_Mix02);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LumTotal_Mix02);
             LevelMusicManager.OverrideLevelMusic(Rayman3SoundEvent.Play__win2);
         }
     }

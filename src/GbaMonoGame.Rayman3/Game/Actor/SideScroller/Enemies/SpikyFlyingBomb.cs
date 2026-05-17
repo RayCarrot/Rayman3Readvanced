@@ -53,8 +53,8 @@ public sealed partial class SpikyFlyingBomb : MovableActor
         }
         else if (AnimatedObject.IsFramed && (GameInfo.ActorSoundFlags & ActorSoundFlags.FlyingBomb) == 0)
         {
-            if (SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__BombFly_Mix03))
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BombFly_Mix03, this);
+            if (Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__BombFly_Mix03))
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__BombFly_Mix03, this);
 
             SoundDelay = 60;
         }

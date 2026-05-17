@@ -68,7 +68,7 @@ public partial class WalkingShell
                     Scene.MainActor.Position.X <= Position.X &&
                     Rayman.ActionId != Rayman.Action.WalkingShell_Mount)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__HorseCry_Mix02, this);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__HorseCry_Mix02, this);
 
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_MountWalkingShell, this);
                     Rayman.Position = Position;
@@ -91,7 +91,7 @@ public partial class WalkingShell
 
             case FsmAction.UnInit:
                 ((CameraSideScroller)Scene.Camera).SetHorizontalOffset(CameraOffset.WalkingShell);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoGO_Mix02, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__OnoGO_Mix02, this);
                 break;
         }
 
@@ -104,7 +104,7 @@ public partial class WalkingShell
         {
             case FsmAction.Init:
                 SafetyJumpTimer = 0;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__RocktLeg_Mix03, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__RocktLeg_Mix03, this);
 
                 if (ActionId != Action.EndBoost)
                 {
@@ -130,7 +130,7 @@ public partial class WalkingShell
                     }
                     else
                     {
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__RocktLeg_Mix03, this);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__RocktLeg_Mix03, this);
                     }
                 }
 
@@ -139,7 +139,7 @@ public partial class WalkingShell
                 {
                     Rayman.ActionId = Rayman.Action.WalkingShell_BeginBoost;
                     ActionId = Action.BeginBoost;
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoEfor2_Mix03, this);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__OnoEfor2_Mix03, this);
                     State.MoveTo(_Fsm_Boost);
                     return false;
                 }
@@ -194,8 +194,8 @@ public partial class WalkingShell
                         Rayman.ActionId = Rayman.Action.WalkingShell_Boost;
                 }
 
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__RocktLeg_Mix03, this);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__RoktSpin_Mix03, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__RocktLeg_Mix03, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__RoktSpin_Mix03, this);
                 break;
 
             case FsmAction.Step:
@@ -275,12 +275,12 @@ public partial class WalkingShell
                 if (IsRaymanMounted)
                     Rayman.ActionId = Rayman.Action.WalkingShell_Jump;
 
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01, this);
 
                 // Jump off if near breakable door
                 if (IsNearBreakableDoor())
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01, this);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01, this);
                     IsRaymanMounted = false;
                     ((CameraSideScroller)Scene.Camera).SetHorizontalOffset(CameraOffset.Default);
                     Rayman.PreviousXSpeed = Speed.X;
@@ -382,7 +382,7 @@ public partial class WalkingShell
                     Rayman.ActionId = Rayman.Action.WalkingShell_Loop;
 
                 ((CameraSideScroller)Scene.Camera).SetHorizontalOffset(CameraOffset.Default);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumSwing_Mix03, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LumSwing_Mix03, this);
                 break;
 
             case FsmAction.Step:
@@ -430,8 +430,8 @@ public partial class WalkingShell
 
                 if (LoopAngle == 192)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoWoHoo_Mix01, this);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__RaySpin_Mix06, this);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__OnoWoHoo_Mix01, this);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__RaySpin_Mix06, this);
                 }
 
                 // Finished loop
@@ -487,7 +487,7 @@ public partial class WalkingShell
                     }
                     else if (ActionId == Action.Walk)
                     {
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__RocktLeg_Mix03, this);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__RocktLeg_Mix03, this);
                     }
                     else if (ActionId == Action.BeginBoost && IsActionFinished)
                     {

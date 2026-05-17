@@ -36,7 +36,7 @@ public partial class MenuAll
         SetBackgroundPalette(1);
         SelectOption(Rayman3.Loc.LanguageId, false);
         Anims.LanguageList.CurrentAnimation = LanguagesBaseAnimation + SelectedOption;
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
+        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
         ResetStem();
     }
 
@@ -80,7 +80,7 @@ public partial class MenuAll
                 Anims.LanguageList.CurrentAnimation = LanguagesBaseAnimation + SelectedOption;
 
                 // NOTE: The game mistakenly passes in 0 as obj here, but nothing happens since pan and roll-off aren't enabled for this event
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
             }
             else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
             {
@@ -98,7 +98,7 @@ public partial class MenuAll
                 Anims.LanguageList.CurrentAnimation = LanguagesBaseAnimation + SelectedOption;
 
                 // NOTE: The game mistakenly passes in 0 as obj here, but nothing happens since pan and roll-off aren't enabled for this event
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
             }
             else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
             {
@@ -106,8 +106,8 @@ public partial class MenuAll
 
                 if (Rom.Platform == Platform.GBA)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
                 }
 
                 Rayman3.Loc.SetLanguage(SelectedOption);
@@ -153,7 +153,7 @@ public partial class MenuAll
                 }
                 else if (Rom.Platform == Platform.NGage)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                     TransitionOutCursorAndStem();
                 }
                 else
@@ -164,7 +164,7 @@ public partial class MenuAll
             else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
             {
                 CurrentStepAction = Step_TransitionOutOfLanguage;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                 TransitionValue = 0;
                 SelectedOption = 0;
                 PrevSelectedOption = 0;

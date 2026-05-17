@@ -85,14 +85,14 @@ public class PauseDialogLevelsMenu
     {
         Cursor.CurrentAnimation = 16;
 
-        if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__Valid01_Mix01))
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+        if (!Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__Valid01_Mix01))
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
     }
 
     private void InvalidCursorClick()
     {
         Cursor.CurrentAnimation = 16;
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
+        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
     }
 
     private void SetSelectedOption(int selectedOption, bool playSound = true)
@@ -113,12 +113,12 @@ public class PauseDialogLevelsMenu
         Options[newSelectedOption].ChangeIsSelected(true);
 
         if (playSound)
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
     }
 
     public void MoveIn()
     {
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
 
         OffsetY = TransitionHeight;
         DrawStep = PauseDialogDrawStep.MoveIn;
@@ -126,7 +126,7 @@ public class PauseDialogLevelsMenu
 
     public void MoveOut()
     {
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
         
         OffsetY = 0;
         DrawStep = PauseDialogDrawStep.MoveOut;
@@ -229,7 +229,7 @@ public class PauseDialogLevelsMenu
             else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
             {
                 // Go back
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
                 MoveOut();
             }
         }
@@ -245,7 +245,7 @@ public class PauseDialogLevelsMenu
                 LevelsMenuOption option = Options[SelectedOption];
                 GameInfo.PersistentInfo.LastPlayedLevel = (byte)GameInfo.LevelMaps[option.LevelCurtainId][0];
                 GameTime.Resume();
-                SoundEventsManager.StopAllSongs();
+                Engine.Sem.StopAllSongs();
                 Engine.FrameMngr.ReloadCurrentFrame();
             }
         }

@@ -95,7 +95,7 @@ public partial class UserInfoMulti2D
                     }
                     else
                     {
-                        SoundEventsManager.ProcessEvent(StartCountdownValue switch
+                        Engine.Sem.ProcessEvent(StartCountdownValue switch
                         {
                             5 => Rayman3SoundEvent.Play__CountDwn_Mix07_P1_,
                             4 => Rayman3SoundEvent.Play__CountDwn_Mix07_P2_,
@@ -114,7 +114,7 @@ public partial class UserInfoMulti2D
                     if (GloboxMachineId != MultiplayerManager.MachineId)
                     {
                         if (GloboxCountdown is 360 or 180)
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Globox_Mix04);
+                            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Globox_Mix04);
 
                         if (GloboxCountdown is >= 120 and <= 125 or >= 200 and <= 205)
                             Globox.CurrentAnimation = 6;

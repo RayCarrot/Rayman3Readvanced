@@ -52,8 +52,8 @@ public sealed partial class BoulderMode7 : Mode7Actor
                 player.MechModel.Speed -= angleVector.FlipY() * force;
                 player.MechModel.Acceleration = Vector2.Zero;
 
-                if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__PinBall_Mix02))
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PinBall_Mix02, this);
+                if (!Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__PinBall_Mix02))
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PinBall_Mix02, this);
             }
         }
     }

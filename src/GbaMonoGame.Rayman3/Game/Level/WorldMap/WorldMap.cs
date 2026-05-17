@@ -481,7 +481,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                     GameInfo.Save(GameInfo.CurrentSlot);
 
                     if (Engine.Config.Local.Tweaks.PlayCheatTriggerSound)
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
                 }
                 break;
 
@@ -510,7 +510,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                     CheatValue = 0;
 
                     if (Engine.Config.Local.Tweaks.PlayCheatTriggerSound)
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
                 }
                 break;
 
@@ -550,7 +550,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                     GameInfo.Save(GameInfo.CurrentSlot);
 
                     if (Engine.Config.Local.Tweaks.PlayCheatTriggerSound)
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
                 }
                 break;
 
@@ -610,7 +610,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                     GameInfo.Save(GameInfo.CurrentSlot);
 
                     if (Engine.Config.Local.Tweaks.PlayCheatTriggerSound)
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
                 }
                 break;
         }
@@ -751,7 +751,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
         Scene.AnimationPlayer.Execute();
 
-        if (!SoundEventsManager.IsSongPlaying(GameInfo.GetLevelMusicSoundEvent()))
+        if (!Engine.Sem.IsSongPlaying(GameInfo.GetLevelMusicSoundEvent()))
             GameInfo.PlayLevelMusic();
 
         UserInfo = new UserInfoWorldMap(Scene, GameInfo.GetLevelHasBlueLum());
@@ -853,7 +853,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
         CurrentStepAction = Step_Normal;
 
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Spirale_Mix01);
+        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Spirale_Mix01);
 
         CheatValue = 0;
 
@@ -906,7 +906,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             if (Timer == 120)
             {
                 WorldPaths[0].CurrentAnimation = 0;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PathFX_Mix01);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PathFX_Mix01);
                 Scene.AnimationPlayer.Play(WorldPaths[0]);
             }
 
@@ -949,7 +949,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             if (Timer == 120)
             {
                 WorldPaths[1].CurrentAnimation = 1;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PathFX_Mix01);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PathFX_Mix01);
                 Scene.AnimationPlayer.Play(WorldPaths[1]);
             }
 
@@ -994,7 +994,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             if (Timer == 120)
             {
                 WorldPaths[2].CurrentAnimation = 2;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PathFX_Mix01);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PathFX_Mix01);
                 Scene.AnimationPlayer.Play(WorldPaths[2]);
             }
 
@@ -1113,7 +1113,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
                 SelectedWorldType = WorldType.World;
                 CircleWipeTransitionMode = TransitionMode.Out;
                 Gfx.SetScreenEffect(CircleWipeTransitionScreenEffect);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Spirale_Mix01);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Spirale_Mix01);
             }
         }
 
@@ -1378,7 +1378,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             if (WorldId == WorldId.World4 && !GameInfo.PersistentInfo.PlayedAct4)
             {
                 Engine.FrameMngr.SetNextFrame(new Act4());
-                SoundEventsManager.StopAllSongs();
+                Engine.Sem.StopAllSongs();
                 GameInfo.PersistentInfo.PlayedAct4 = true;
                 GameInfo.Save(GameInfo.CurrentSlot);
             }
@@ -1543,8 +1543,8 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
         Scene.ProcessDialogs();
 
-        SoundEventsManager.FinishReplacingAllSongs();
-        SoundEventsManager.PauseAllSongs();
+        Engine.Sem.FinishReplacingAllSongs();
+        Engine.Sem.PauseAllSongs();
 
         UserInfo.ProcessMessage(this, Message.UserInfo_Pause);
 
@@ -1617,7 +1617,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
         Scene.Step();
 
-        SoundEventsManager.ResumeAllSongs();
+        Engine.Sem.ResumeAllSongs();
 
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();

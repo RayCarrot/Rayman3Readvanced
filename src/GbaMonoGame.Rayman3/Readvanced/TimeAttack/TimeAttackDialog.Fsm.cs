@@ -20,22 +20,22 @@ public partial class TimeAttackDialog
                 {
                     case CountdownStartTime + CountdownSpeed * 0:
                         SetCountdownValue(3);
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CountDwn_Mix07_P1_);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__CountDwn_Mix07_P1_);
                         break;
 
                     case CountdownStartTime + CountdownSpeed * 1:
                         SetCountdownValue(2);
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CountDwn_Mix07_P2_);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__CountDwn_Mix07_P2_);
                         break;
 
                     case CountdownStartTime + CountdownSpeed * 2:
                         SetCountdownValue(1);
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CountDwn_Mix07_P3_);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__CountDwn_Mix07_P3_);
                         break;
 
                     case CountdownStartTime + CountdownSpeed * 3:
                         SetCountdownValue(0);
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoGO_Mix02);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__OnoGO_Mix02);
                         break;
 
                     case CountdownStartTime + CountdownSpeed * 4:

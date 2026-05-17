@@ -28,10 +28,10 @@ public class NewGameMenuPage : MenuPage
         {
             CursorClick(() =>
             {
-                SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.None, 1);
+                Engine.Sem.ReplaceAllSongs(Rayman3SoundEvent.None, 1);
                 FadeOut(2, () =>
                 {
-                    SoundEventsManager.StopAllSongs();
+                    Engine.Sem.StopAllSongs();
 
                     // Create a new game
                     Engine.FrameMngr.SetNextFrame(new Act1());

@@ -89,7 +89,7 @@ public class TimeAttackMenuPage : MenuPage
         SetSelectedOption(0, playSound: false, forceUpdate: true);
 
         if (playSound)
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
 
         string worldName = SelectedWorld == 4 
             ? "Bonus" 
@@ -128,7 +128,7 @@ public class TimeAttackMenuPage : MenuPage
         }
 
         if (playSound)
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
     }
 
     private void LoadGhostOptions()
@@ -186,7 +186,7 @@ public class TimeAttackMenuPage : MenuPage
         SetGhostSelectionText(ghostOption.Name, ghostOption.Type == TimeAttackGhostType.None ? null : ghostOption.Time.ToTimeString());
 
         if (playSound)
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
     }
 
     private void SetGhostSelectionText(string name, string time)
@@ -420,10 +420,10 @@ public class TimeAttackMenuPage : MenuPage
                 {
                     CursorClick(() =>
                     {
-                        SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.None, 1);
+                        Engine.Sem.ReplaceAllSongs(Rayman3SoundEvent.None, 1);
                         FadeOut(2, () =>
                         {
-                            SoundEventsManager.StopAllSongs();
+                            Engine.Sem.StopAllSongs();
                             Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                             Gfx.Fade = AlphaCoefficient.Max;
 
@@ -437,7 +437,7 @@ public class TimeAttackMenuPage : MenuPage
             {
                 HasSelectedLevel = false;
                 SetSelectedOption(SelectedOption, playSound: false, forceUpdate: true);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
                 WorldNameArrows.Resume();
             }
         }

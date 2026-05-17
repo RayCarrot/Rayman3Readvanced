@@ -49,7 +49,7 @@ public class WorldNameBar : Bar
     public void MoveOutWorldNameBar()
     {
         if (WorldNameBarDrawStep == BarDrawStep.Wait)
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PannelDw_Mix01);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PannelDw_Mix01);
 
         WorldNameBarDrawStep = BarDrawStep.MoveOut;
     }
@@ -102,7 +102,7 @@ public class WorldNameBar : Bar
                 if (OffsetY != 0)
                 {
                     if (OffsetY == 36)
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PannelUp_Mix01);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PannelUp_Mix01);
 
                     OffsetY -= 2;
                 }

@@ -81,7 +81,7 @@ public partial class PauseDialog : Dialog
 
     private void SetMusicVolumeAnimation()
     {
-        switch (((NGageSoundEventsManager)SoundEventsManager.Current).MusicVolume)
+        switch (((NGageSoundEventsManager)Engine.Sem).MusicVolume)
         {
             case 0:
                 MusicVolume.CurrentAnimation = 30;
@@ -103,7 +103,7 @@ public partial class PauseDialog : Dialog
 
     private void SetSfxVolumeAnimation()
     {
-        switch (((NGageSoundEventsManager)SoundEventsManager.Current).SoundEffectsVolume)
+        switch (((NGageSoundEventsManager)Engine.Sem).SoundEffectsVolume)
         {
             case 0:
                 SfxVolume.CurrentAnimation = 30;
@@ -125,7 +125,7 @@ public partial class PauseDialog : Dialog
 
     private void ModifyMusicVolume(int volDelta)
     {
-        float currentVolume = ((NGageSoundEventsManager)SoundEventsManager.Current).MusicVolume;
+        float currentVolume = ((NGageSoundEventsManager)Engine.Sem).MusicVolume;
         float newVolume = 0;
         
         if (0 < volDelta)
@@ -146,12 +146,12 @@ public partial class PauseDialog : Dialog
                 newVolume = 0;
         }
 
-        ((NGageSoundEventsManager)SoundEventsManager.Current).MusicVolume = newVolume;
+        ((NGageSoundEventsManager)Engine.Sem).MusicVolume = newVolume;
     }
 
     private void ModifySfxVolume(int volDelta)
     {
-        float currentVolume = ((NGageSoundEventsManager)SoundEventsManager.Current).SoundEffectsVolume;
+        float currentVolume = ((NGageSoundEventsManager)Engine.Sem).SoundEffectsVolume;
         float newVolume = 0;
 
         if (0 < volDelta)
@@ -172,7 +172,7 @@ public partial class PauseDialog : Dialog
                 newVolume = 0;
         }
 
-        ((NGageSoundEventsManager)SoundEventsManager.Current).SoundEffectsVolume = newVolume;
+        ((NGageSoundEventsManager)Engine.Sem).SoundEffectsVolume = newVolume;
     }
 
     public override void Load()
@@ -181,7 +181,7 @@ public partial class PauseDialog : Dialog
         //       reloaded into VRAM. We don't need to do that though due to how the graphics system works here, so just always create everything.
 
         if (Rom.Platform == Platform.NGage)
-            ((NGageSoundEventsManager)SoundEventsManager.Current).PauseLoopingSoundEffects();
+            ((NGageSoundEventsManager)Engine.Sem).PauseLoopingSoundEffects();
 
         AnimatedObjectResource canvasResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.PauseCanvasAnimations);
         Canvas = new AnimatedObject(canvasResource, false)
@@ -307,7 +307,7 @@ public partial class PauseDialog : Dialog
         else
             State.SetTo(_Fsm_CheckSelection);
 
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
+        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
     }
 
     public override void Draw(AnimationPlayer animationPlayer)

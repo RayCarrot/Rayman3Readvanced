@@ -206,9 +206,7 @@ public class FramesDebugMenu : DebugMenu
             }
             else if (ImGui.MenuItem(menuItem.Name))
             {
-                if (SoundEventsManager.IsLoaded)
-                    SoundEventsManager.StopAllSongs();
-
+                Engine.Sem?.StopAllSongs();
                 Engine.FrameMngr.SetNextFrame(menuItem.CreateFrame());
             }
 

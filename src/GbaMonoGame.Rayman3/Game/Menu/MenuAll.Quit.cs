@@ -69,10 +69,10 @@ public partial class MenuAll
                 Engine.App.Exit();
 
             CurrentStepAction = Step_TransitionOutOfQuit;
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
             SelectOption(0, false);
             TransitionValue = 0;
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
             TransitionOutCursorAndStem();
         }
         else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
@@ -80,10 +80,10 @@ public partial class MenuAll
             Anims.Cursor.CurrentAnimation = 16;
             NextStepAction = Step_InitializeTransitionToGameMode;
             CurrentStepAction = Step_TransitionOutOfQuit;
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
             SelectOption(0, false);
             TransitionValue = 0;
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
             TransitionOutCursorAndStem();
         }
 

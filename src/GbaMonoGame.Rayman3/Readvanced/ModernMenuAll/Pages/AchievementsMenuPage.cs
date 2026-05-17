@@ -165,14 +165,14 @@ public class AchievementsMenuPage : MenuPage
             AchievementMenuOption option = (AchievementMenuOption)Options[SelectedOption];
             option.SetSelectedIndex(option.SelectedIndex - 1);
             UpdateSelectedAchievement();
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
         }
         else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
         {
             AchievementMenuOption option = (AchievementMenuOption)Options[SelectedOption];
             option.SetSelectedIndex(option.SelectedIndex + 1);
             UpdateSelectedAchievement();
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
         }
         else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {

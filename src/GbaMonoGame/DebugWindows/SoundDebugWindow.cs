@@ -11,8 +11,8 @@ public class SoundDebugWindow : DebugWindow
         ImGui.SeparatorText("Songs");
 
         if (ImGui.Button("Stop all"))
-            SoundEventsManager.StopAllSongs();
+            Engine.Sem.StopAllSongs();
 
-        SoundEventsManager.DrawDebugLayout();
+        Engine.Sem.DrawDebugLayout();
     }
 }

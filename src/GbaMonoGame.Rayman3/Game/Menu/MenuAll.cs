@@ -470,7 +470,7 @@ public partial class MenuAll : Frame, IHasPlayfield
             SelectedOption = selectedOption;
 
             if (playSound)
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
         }
     }
 
@@ -547,7 +547,7 @@ public partial class MenuAll : Frame, IHasPlayfield
                     Platform.NGage => Step_InitializeTransitionToLanguage,
                     _ => throw new UnsupportedPlatformException()
                 };
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
                 break;
 
             case InitialMenuPage.GameMode:
@@ -587,10 +587,10 @@ public partial class MenuAll : Frame, IHasPlayfield
                 throw new Exception("Invalid start page for MenuAll");
         }
 
-        if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__raytheme) &&
-            !SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__sadslide))
+        if (!Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__raytheme) &&
+            !Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__sadslide))
         {
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__raytheme);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__raytheme);
             SoundEngineInterface.SetNbVoices(10);
         }
 
@@ -627,7 +627,7 @@ public partial class MenuAll : Frame, IHasPlayfield
 
         // Custom to prevent music from stopping when loading the modern menu
         if (!IsLoadingModernMenu)
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__raytheme);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__raytheme);
 
         Playfield.UnInit();
     }

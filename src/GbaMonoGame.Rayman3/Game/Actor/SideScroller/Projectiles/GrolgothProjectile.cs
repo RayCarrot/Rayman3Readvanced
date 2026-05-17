@@ -72,8 +72,8 @@ public sealed partial class GrolgothProjectile : MovableActor
         }
         else if (AnimatedObject.IsFramed && (GameInfo.ActorSoundFlags & ActorSoundFlags.FlyingBomb) == 0)
         {
-            if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__BombFly_Mix03))
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BombFly_Mix03, this);
+            if (!Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__BombFly_Mix03))
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__BombFly_Mix03, this);
 
             BombSoundTimer = 60;
         }
@@ -164,7 +164,7 @@ public sealed partial class GrolgothProjectile : MovableActor
         if (MissileTimer >= 240)
         {
             if (MissileTimer == 240)
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Missile1_Mix01, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Missile1_Mix01, this);
 
             MechModel.Speed = MathHelpers.DirectionalVector256(Rotation) * -fastSpeed;
             return;
@@ -173,7 +173,7 @@ public sealed partial class GrolgothProjectile : MovableActor
         if (MissileTimer > 210)
         {
             if ((MissileTimer & 7) == 0)
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BeepFX01_Mix02, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__BeepFX01_Mix02, this);
         }
         else if (MissileTimer == 180)
         {
@@ -182,7 +182,7 @@ public sealed partial class GrolgothProjectile : MovableActor
         else if (MissileTimer > 150)
         {
             if ((MissileTimer & 0xF) == 0)
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BeepFX01_Mix02, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__BeepFX01_Mix02, this);
         }
         else if (MissileTimer > 60)
         {
@@ -190,11 +190,11 @@ public sealed partial class GrolgothProjectile : MovableActor
                 ActionId = Action.MissileBeep;
 
             if ((MissileTimer & 0x1F) == 0)
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BeepFX01_Mix02, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__BeepFX01_Mix02, this);
         }
 
-        if (SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__BeepFX01_Mix02))
-            SoundEventsManager.SetSoundPitch(Rayman3SoundEvent.Play__BeepFX01_Mix02, MissileTimer * 4);
+        if (Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__BeepFX01_Mix02))
+            Engine.Sem.SetSoundPitch(Rayman3SoundEvent.Play__BeepFX01_Mix02, MissileTimer * 4);
 
         if ((Scene.MainActor.Position.X > Position.X && Speed.X > 0 && Scene.MainActor.Speed.X < 0) ||
             (Scene.MainActor.Position.X < Position.X && Speed.X < 0 && Scene.MainActor.Speed.X > 0))
@@ -294,9 +294,9 @@ public sealed partial class GrolgothProjectile : MovableActor
         Explosion explosion = Scene.CreateProjectile<Explosion>(ActorType.Explosion);
         if (explosion != null)
         {
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Missile1_Mix01, this);
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07, this);
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07, this);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__Missile1_Mix01, this);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07, this);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07, this);
             explosion.Position = Position;
         }
 
@@ -317,7 +317,7 @@ public sealed partial class GrolgothProjectile : MovableActor
                     ActionId is Action.SmallGroundBomb_Right or Action.SmallGroundBomb_Left) &&
                     IsFacingLeft != raymanBody.IsFacingLeft)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MetlImp1_PiraHit3_Mix03, this);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MetlImp1_PiraHit3_Mix03, this);
                     ActionId = IsFacingRight ? Action.SmallGroundBombReverse_Left : Action.SmallGroundBombReverse_Right;
                 }
                 else if (ActionId == Action.BigExplodingBomb)
@@ -325,8 +325,8 @@ public sealed partial class GrolgothProjectile : MovableActor
                     Explosion explosion = Scene.CreateProjectile<Explosion>(ActorType.Explosion);
                     if (explosion != null)
                     {
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07, this);
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07, this);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07, this);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07, this);
                         explosion.Position = Position;
                     }
 
@@ -334,7 +334,7 @@ public sealed partial class GrolgothProjectile : MovableActor
                 }
                 else if (ActionId != Action.FallingBomb)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MetlImp1_PiraHit3_Mix03, this);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MetlImp1_PiraHit3_Mix03, this);
                 }
                 return false;
 

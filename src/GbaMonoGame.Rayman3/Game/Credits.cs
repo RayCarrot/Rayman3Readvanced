@@ -554,8 +554,8 @@ public class Credits : Frame
         InitText();
         InitWheel();
 
-        if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__happyslide))
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__happyslide);
+        if (!Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__happyslide))
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__happyslide);
 
         Timer = 0;
     }
@@ -566,7 +566,7 @@ public class Credits : Frame
         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
         Gfx.Fade = AlphaCoefficient.Max;
         
-        SoundEventsManager.StopAllSongs();
+        Engine.Sem.StopAllSongs();
     }
 
     public override void Step()
@@ -581,7 +581,7 @@ public class Credits : Frame
         }
         else if (!TransitionsFX.IsFadingOut)
         {
-            SoundEventsManager.StopAllSongs();
+            Engine.Sem.StopAllSongs();
 
             if (Engine.Config.Active.Tweaks.UseModernMainMenu)
                 Engine.FrameMngr.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));

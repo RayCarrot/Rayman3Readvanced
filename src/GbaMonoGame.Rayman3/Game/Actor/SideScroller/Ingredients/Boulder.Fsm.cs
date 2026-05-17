@@ -105,7 +105,7 @@ public partial class Boulder
                 {
                     // If all objects are kept active we only want to make this sound when in the current knot
                     if (!Scene.KeepAllObjectsActive || IsInCurrentKnot)
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BallImp1_BigFoot1_Mix02, this);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__BallImp1_BigFoot1_Mix02, this);
 
                     if (Scene.Camera.IsActorFramed(this))
                     {
@@ -163,10 +163,10 @@ public partial class Boulder
 
                         if (!activeBoulder && 
                             GameInfo.MapId != MapId.Bonus4 &&
-                            !SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__win3) && 
+                            !Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__win3) && 
                             !LevelMusicManager.HasOverridenLevelMusic)
                         {
-                            SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.Play__canopy, 3);
+                            Engine.Sem.ReplaceAllSongs(Rayman3SoundEvent.Play__canopy, 3);
                         }
 
                         ProcessMessage(this, Message.Destroy);

@@ -23,7 +23,7 @@ public partial class Plum
                         ScreenPosition.X <= Scene.Resolution.X - 25)
                     {
                         Timer = 1;
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PlumSnd2_Mix03, this);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PlumSnd2_Mix03, this);
                     }
                     else
                     {
@@ -63,7 +63,7 @@ public partial class Plum
                 if (groundType == PhysicalTypeValue.Lava)
                 {
                     if (AnimatedObject.IsFramed)
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SplshGen_Mix04, this);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__SplshGen_Mix04, this);
 
                     State.MoveTo(_Fsm_Float);
                     return false;
@@ -110,8 +110,8 @@ public partial class Plum
                 // Attach to main actor
                 if (Scene.IsDetectedMainActor(this) && mainActor.AttachedObject != this && mainActor.Position.Y <= Position.Y)
                 {
-                    if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__VibraFLW_Mix02) && Scene.MainActor.HitPoints != 0)
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__VibraFLW_Mix02, this);
+                    if (!Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__VibraFLW_Mix02) && Scene.MainActor.HitPoints != 0)
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__VibraFLW_Mix02, this);
 
                     mainActor.ProcessMessage(this, Message.Rayman_AttachPlum, this);
 

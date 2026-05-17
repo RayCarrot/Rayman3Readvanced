@@ -125,7 +125,7 @@ public abstract class MenuPage
             }
 
             if (playSound)
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
         }
 
         return changed;
@@ -161,7 +161,7 @@ public abstract class MenuPage
 
                 Menu.SetBackgroundPalette(BackgroundPalette);
                 
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
                 State = MenuPageState.TransitionIn;
                 ClickCallback = null;
                 FadeOutCallback = null;

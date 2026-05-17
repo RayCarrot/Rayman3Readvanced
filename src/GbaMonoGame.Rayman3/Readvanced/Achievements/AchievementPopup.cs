@@ -88,7 +88,7 @@ public class AchievementPopup
     {
         DrawStep = BarDrawStep.MoveIn;
         OffsetY = MinY;
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumTotal_Mix02);
+        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LumTotal_Mix02);
     }
 
     public void Init()

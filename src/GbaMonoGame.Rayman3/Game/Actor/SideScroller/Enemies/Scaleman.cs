@@ -38,7 +38,7 @@ public sealed partial class Scaleman : MovableActor
         RedLum = Scene.CreateProjectile<Lums>(ActorType.Lums);
         if (RedLum != null)
         {
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Sparkles_Mix01, this);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Sparkles_Mix01, this);
             RedLum.ProcessMessage(this, Message.Lum_ToggleVisibility);
             RedLum.AnimatedObject.CurrentAnimation = 3;
             RedLum.ActionId = Lums.Action.RedLum;

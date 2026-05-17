@@ -164,7 +164,7 @@ public sealed partial class Murfy : MovableActor
     {
         if (State == _Fsm_Init)
         {
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__MurfHeli_Mix01, this);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__MurfHeli_Mix01, this);
         }
         else
         {
@@ -172,12 +172,12 @@ public sealed partial class Murfy : MovableActor
 
             if (AnimatedObject.IsFramed)
             {
-                if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__MurfHeli_Mix01))
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MurfHeli_Mix01, this);
+                if (!Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__MurfHeli_Mix01))
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MurfHeli_Mix01, this);
             }
             else
             {
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__MurfHeli_Mix01, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__MurfHeli_Mix01, this);
             }
         }
     }

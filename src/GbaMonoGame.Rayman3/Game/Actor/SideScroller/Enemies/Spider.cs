@@ -50,7 +50,7 @@ public sealed partial class Spider : MovableActor
         {
             SoundTimer--;
             if (SoundTimer == 0)
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoPeur1_Mix03, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__OnoPeur1_Mix03, this);
         }
     }
 
@@ -120,8 +120,8 @@ public sealed partial class Spider : MovableActor
                         Scene.Camera.ProcessMessage(this, Message.Cam_MoveToTarget, InititialPosition - new Vector2(60, 60));
                         Scene.MainActor.ProcessMessage(this, Message.Rayman_Stop);
 
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__ancients);
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Horror_Mix08);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__ancients);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Horror_Mix08);
                     }
                 }
                 return false;

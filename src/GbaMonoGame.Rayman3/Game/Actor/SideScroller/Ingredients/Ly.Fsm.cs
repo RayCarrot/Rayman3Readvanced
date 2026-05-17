@@ -116,7 +116,7 @@ public partial class Ly
         {
             case FsmAction.Init:
                 ActionId = Action.GivePower1;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LyMagic1_Mix01, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LyMagic1_Mix01, this);
                 break;
 
             case FsmAction.Step:
@@ -124,7 +124,7 @@ public partial class Ly
                 {
                     if (ActionId == Action.GivePower1)
                     {
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LyMagic2_Mix07, this);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LyMagic2_Mix07, this);
                         ActionId = Action.GivePower2;
                     }
                     else if (ActionId == Action.GivePower2)
@@ -141,7 +141,7 @@ public partial class Ly
                     }
                     else if (ActionId == Action.GivePower5)
                     {
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__NewPower_Mix06, this);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__NewPower_Mix06, this);
                         ((Rayman)Scene.MainActor).ActionId = Rayman.Action.NewPower_Right;
 
                         ChainedSparkles sparkle = Scene.CreateProjectile<ChainedSparkles>(ActorType.ChainedSparkles);

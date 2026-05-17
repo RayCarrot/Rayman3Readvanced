@@ -49,8 +49,8 @@ public sealed partial class Boulder : MovableActor
                 {
                     Timer = 0;
 
-                    if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__rockchase))
-                        SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.Play__rockchase, 3);
+                    if (!Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__rockchase))
+                        Engine.Sem.ReplaceAllSongs(Rayman3SoundEvent.Play__rockchase, 3);
                 }
                 return false;
 

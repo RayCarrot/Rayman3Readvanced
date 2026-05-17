@@ -33,8 +33,7 @@ public class FrameFatalError : Frame
         Gfx.FadeControl = FadeControl.None;
         Gfx.Fade = AlphaCoefficient.None;
 
-        if (SoundEventsManager.IsLoaded)
-            SoundEventsManager.StopAllSongs();
+        Engine.Sem?.StopAllSongs();
 
         AnimationPlayer = new AnimationPlayer(false, null);
 

@@ -79,7 +79,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
         // NOTE: The game calls vsync, steps the playfield and executes the animations here, but we do
         //       that in the derived classed instead since this is all to be run in one game frame.
 
-        if (Rom.Platform == Platform.NGage || !SoundEventsManager.IsSongPlaying(GameInfo.GetLevelMusicSoundEvent()))
+        if (Rom.Platform == Platform.NGage || !Engine.Sem.IsSongPlaying(GameInfo.GetLevelMusicSoundEvent()))
             GameInfo.PlayLevelMusic();
 
         BlockPause = false;
@@ -94,7 +94,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.UnInit();
         Scene = null;
 
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumTimer_Mix02);
+        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__LumTimer_Mix02);
     }
 
     public override void Step()
@@ -147,8 +147,8 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
 
         Scene.ProcessDialogs();
 
-        SoundEventsManager.FinishReplacingAllSongs();
-        SoundEventsManager.PauseAllSongs();
+        Engine.Sem.FinishReplacingAllSongs();
+        Engine.Sem.PauseAllSongs();
 
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
@@ -217,7 +217,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
         
         UserInfo.ProcessMessage(this, Message.UserInfo_Unpause);
 
-        SoundEventsManager.ResumeAllSongs();
+        Engine.Sem.ResumeAllSongs();
         
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();

@@ -88,7 +88,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
         LevelMusicManager.Init();
 
         if (MapInfo.StartMusicSoundEvent != Rayman3SoundEvent.None)
-            SoundEventsManager.ProcessEvent(MapInfo.StartMusicSoundEvent);
+            Engine.Sem.ProcessEvent(MapInfo.StartMusicSoundEvent);
 
         CircleTransitionScreenEffect = new CircleTransitionScreenEffect()
         {
@@ -381,7 +381,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
                         ? AlphaCoefficient.None
                         : AlphaCoefficient.Max;
 
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Thunder1_Mix04);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Thunder1_Mix04);
                     return;
                 }
 

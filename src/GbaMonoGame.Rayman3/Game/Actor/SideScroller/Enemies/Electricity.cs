@@ -53,7 +53,7 @@ public sealed partial class Electricity : InteractableActor
         base.Step();
 
         if ((GameInfo.ActorSoundFlags & ActorSoundFlags.Electricity) == 0)
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Electric_Mix02, this);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__Electric_Mix02, this);
     }
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)

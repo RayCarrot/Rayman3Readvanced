@@ -264,7 +264,7 @@ public class LevelInfoBar : Bar
                 if (OffsetY != 0)
                 {
                     if (OffsetY == 36)
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PannelUp_Mix01);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PannelUp_Mix01);
 
                     OffsetY -= 2;
                 }
@@ -291,7 +291,7 @@ public class LevelInfoBar : Bar
                 {
                     OffsetY = 0;
                     LevelInfoBarDrawStep = BarDrawStep.MoveOut;
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PannelDw_Mix01);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PannelDw_Mix01);
                 }
                 else
                 {

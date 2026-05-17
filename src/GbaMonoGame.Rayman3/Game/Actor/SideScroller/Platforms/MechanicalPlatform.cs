@@ -56,13 +56,13 @@ public sealed partial class MechanicalPlatform : MovableActor
                         ActionId = IsFacingRight ? Action.HardHit_Right : Action.HardHit_Left;
 
                         if (body.BodyPartType is not (RaymanBody.RaymanBodyPartType.SuperFist or RaymanBody.RaymanBodyPartType.SecondSuperFist))
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PinBall_Mix02, this);
+                            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PinBall_Mix02, this);
                     }
                     else
                     {
                         SpeedY = -4;
                         ActionId = IsFacingRight ? Action.SoftHit_Right : Action.SoftHit_Left;
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PinBall_Low, this);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PinBall_Low, this);
                     }
 
                     ChangeAction();
@@ -111,8 +111,8 @@ public sealed partial class MechanicalPlatform : MovableActor
             //       when it has rotated all the way, i.e. yDist is at its max. It's however bugged in the original game as
             //       it only triggers every second time the platform is punched. This is because the platform doesn't land
             //       at the same height from the ground each time.
-            if (Math.Abs(rotation.Value - 62) < 1.0 && !SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__Cloche01_Mix01))
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Cloche01_Mix01, this);
+            if (Math.Abs(rotation.Value - 62) < 1.0 && !Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__Cloche01_Mix01))
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Cloche01_Mix01, this);
         }
         else
         {

@@ -64,7 +64,7 @@ public partial class RedPirate
                     if (Scene.KeepAllObjectsActive && !AnimatedObject.IsFramed)
                         QueueFallSound = true;
                     else
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraJump_BigFoot1_Mix02, this);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PiraJump_BigFoot1_Mix02, this);
 
                     ActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
                 }
@@ -169,7 +169,7 @@ public partial class RedPirate
                 if (Ammo == 0)
                     Ammo = Random.GetNumber(1) + 1;
 
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraAtk1_Mix01__or__PiraHurt_Mix02, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PiraAtk1_Mix01__or__PiraHurt_Mix02, this);
 
                 ActionId = Position.X - Scene.MainActor.Position.X < 0 ? Action.Shoot_Right : Action.Shoot_Left;
                 break;
@@ -208,7 +208,7 @@ public partial class RedPirate
         switch (action)
         {
             case FsmAction.Init:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraHit1_Mix02__or__PiraHit3_Mix03, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PiraHit1_Mix02__or__PiraHit3_Mix03, this);
                 if (HitFromFront)
                     ActionId = IsFacingRight ? Action.HitBehind_Right : Action.HitBehind_Left;
                 else
@@ -246,7 +246,7 @@ public partial class RedPirate
         {
             case FsmAction.Init:
                 KnockBackPosition = Position;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraHit1_Mix02__or__PiraHit3_Mix03, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PiraHit1_Mix02__or__PiraHit3_Mix03, this);
                 ActionId = IsFacingRight ? Action.HitKnockBack_Right : Action.HitKnockBack_Left;
                 StartInvulnerability();
                 CheckAgainstMapCollision = false;
@@ -327,7 +327,7 @@ public partial class RedPirate
                     ActionId = IsFacingRight ? Action.DyingBehind_Right : Action.DyingBehind_Left;
                 else
                     ActionId = IsFacingRight ? Action.Dying_Right : Action.Dying_Left;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraHit1_Mix02__or__PiraHit3_Mix03, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PiraHit1_Mix02__or__PiraHit3_Mix03, this);
                 IsSolid = false;
                 LevelMusicManager.StopSpecialMusic();
                 Rayman3Achievements.DefeatPirateType(PirateType.Red);
@@ -335,7 +335,7 @@ public partial class RedPirate
 
             case FsmAction.Step:
                 if (!AnimatedObject.IsDelayMode && AnimatedObject.CurrentFrame == 5)
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraDead_Mix05, this);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PiraDead_Mix05, this);
 
                 if (IsActionFinished)
                 {

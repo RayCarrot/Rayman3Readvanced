@@ -267,8 +267,22 @@ public static class Rayman3
         LevelFactory.Init(levelCreations);
     }
 
-    private static void InitSounds()
+    private static void InitEditorData()
     {
+        // TODO: Fill out definitions for every actor so they can be used in the editor
+        EditorData.Init(
+        [
+            new ActorDefinition<ActorType>(ActorType.Rayman, "Rayman",
+            [
+                new ActorActionDefinition { ActionId = 0, Name = "Default" }
+            ])
+        ]);
+    }
+
+    public static SoundEventsManager CreateSoundEventsManager()
+    {
+        SoundEventsManager sem;
+
         // Load sound manager
         if (Rom.Platform == Platform.GBA)
         {
@@ -297,7 +311,7 @@ public static class Rayman3
                 soundResources[readvancedSoundResource.Key] = readvancedSoundResource.Value;
             }
 
-            SoundEventsManager.Load(new GbaSoundEventsManager(songTable, soundEvents.ToArray(), soundResources.ToArray()));
+            sem = new GbaSoundEventsManager(songTable, soundEvents.ToArray(), soundResources.ToArray());
         }
         else if (Rom.Platform == Platform.NGage)
         {
@@ -315,7 +329,7 @@ public static class Rayman3
                 soundEvents[readvancedSoundEvent.Key] = readvancedSoundEvent.Value;
             }
 
-            SoundEventsManager.Load(new NGageSoundEventsManager(songTable, readvancedSongTable, soundEvents.ToArray()));
+            sem = new NGageSoundEventsManager(songTable, readvancedSongTable, soundEvents.ToArray());
         }
         else
         {
@@ -323,19 +337,9 @@ public static class Rayman3
         }
 
         // Set sound engine callbacks
-        SoundEventsManager.SetCallBacks(new Rayman3CallBackSet());
-    }
+        sem.SetCallBacks(new Rayman3CallBackSet());
 
-    private static void InitEditorData()
-    {
-        // TODO: Fill out definitions for every actor so they can be used in the editor
-        EditorData.Init(
-        [
-            new ActorDefinition<ActorType>(ActorType.Rayman, "Rayman",
-            [
-                new ActorActionDefinition { ActionId = 0, Name = "Default" }
-            ])
-        ]);
+        return sem;
     }
 
     public static void InitEngine()
@@ -363,7 +367,6 @@ public static class Rayman3
         InitLevelFactory();
 
         // Initialize other data
-        InitSounds();
         Rayman3TileFixes.DefineTileFixes(Rom.Platform);
         InitEditorData();
     }
@@ -386,7 +389,6 @@ public static class Rayman3
 
         // Unload other data
         GameInfo.UnInit();
-        SoundEventsManager.Unload();
         TimeAttackDataManager.Unload();
     }
 }

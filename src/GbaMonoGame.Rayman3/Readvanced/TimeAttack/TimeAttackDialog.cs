@@ -134,7 +134,7 @@ public partial class TimeAttackDialog : Dialog
             bool blink = !Rayman3.TimeAttack.IsPaused && timeDiff <= TargetBlinkRange;
 
             if (blink && timeDiff % 60 == 30)
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__GameOver_BeepFX01_Mix02);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__GameOver_BeepFX01_Mix02);
 
             if (!blink || timeDiff % 60 < 30)
             {

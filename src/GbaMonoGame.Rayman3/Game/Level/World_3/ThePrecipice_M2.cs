@@ -77,7 +77,7 @@ public class ThePrecipice_M2 : FrameSideScroller
                 ? AlphaCoefficient.None
                 : AlphaCoefficient.Max;
 
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Thunder1_Mix04);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Thunder1_Mix04);
             return;
         }
 

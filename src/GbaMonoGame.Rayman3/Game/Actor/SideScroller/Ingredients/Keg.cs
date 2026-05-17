@@ -52,8 +52,8 @@ public sealed partial class Keg : MovableActor
         {
             debris.Position = Position + new Vector2(Random.GetNumber(33) - 16, 0);
             debris.ActionId = Random.GetNumber(7) / 2; // 0-3
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BarlLeaf_SkiWeed_Mix02, this);
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BarlLeaf_SkiWeed_Mix02, this);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__BarlLeaf_SkiWeed_Mix02, this);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__BarlLeaf_SkiWeed_Mix02, this);
         }
     }
 
@@ -64,8 +64,8 @@ public sealed partial class Keg : MovableActor
         if (forcePlaySound || AnimatedObject.IsFramed)
         {
             // Set object to explosion rather than 'this' since the keg resets its position when exploded
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07, explosion);
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07, explosion);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07, explosion);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07, explosion);
         }
 
         explosion?.Position = Position - new Vector2(0, 8);
@@ -93,8 +93,8 @@ public sealed partial class Keg : MovableActor
 
             case Message.Actor_Hurt:
                 Explosion explosion = Scene.CreateProjectile<Explosion>(ActorType.Explosion);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07, this);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07, this);
 
                 explosion?.Position = Position - new Vector2(0, 8);
 

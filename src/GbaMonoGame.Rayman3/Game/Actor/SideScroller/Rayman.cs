@@ -339,13 +339,13 @@ public sealed partial class Rayman : MovableActor
     private void PlaySound(Rayman3SoundEvent soundEventId)
     {
         if (Scene.Camera.LinkedObject == this)
-            SoundEventsManager.ProcessEvent(soundEventId, this);
+            Engine.Sem.ProcessEvent(soundEventId, this);
     }
 
     private bool IsBossFight()
     {
         // Ly levels use the map id of the previous map, so don't count this as a boss fight then
-        if (SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__lyfree))
+        if (Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__lyfree))
             return false;
 
         return GameInfo.MapId is MapId.BossMachine or MapId.BossBadDreams or MapId.BossRockAndLava or MapId.BossScaleMan or MapId.BossFinal_M1;
@@ -789,7 +789,7 @@ public sealed partial class Rayman : MovableActor
 
             takenDamage = true;
 
-            if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__OnoRcvH1_Mix04))
+            if (!Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__OnoRcvH1_Mix04))
                 PlaySound(Rayman3SoundEvent.Play__OnoRcvH1_Mix04);
         }
 
@@ -908,10 +908,10 @@ public sealed partial class Rayman : MovableActor
 
     private void SlidingOnSlippery()
     {
-        if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__SldGreen_SkiLoop1))
+        if (!Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__SldGreen_SkiLoop1))
             PlaySound(Rayman3SoundEvent.Play__SldGreen_SkiLoop1);
 
-        SoundEventsManager.SetSoundPitch(Rayman3SoundEvent.Play__SldGreen_SkiLoop1, Math.Abs(Speed.X) * 256);
+        Engine.Sem.SetSoundPitch(Rayman3SoundEvent.Play__SldGreen_SkiLoop1, Math.Abs(Speed.X) * 256);
 
         if (PreviousXSpeed < -1.5f)
         {
@@ -1887,7 +1887,7 @@ public sealed partial class Rayman : MovableActor
             case Message.Rayman_BeginSwing:
                 if (!HasPower(Power.Grab))
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumVioNP_SkulShak_Mix01, this);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LumVioNP_SkulShak_Mix01, this);
                     return false;
                 }
 
@@ -2099,7 +2099,7 @@ public sealed partial class Rayman : MovableActor
                 return false;
 
             case Message.Rayman_PickUpFlag when Rom.Platform == Platform.NGage:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play_NGage_Unnamed1, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play_NGage_Unnamed1, this);
                 RemovePower(Power.All);
                 FlagData.PickedUpFlag = (CaptureTheFlagFlag)param;
                 FlagData.CanPickUpDroppedFlag = false;

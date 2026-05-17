@@ -82,8 +82,8 @@ public partial class SpikyFlyingBomb
             case FsmAction.Init:
                 Explosion explosion = Scene.CreateProjectile<Explosion>(ActorType.Explosion);
 
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07, this);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__BangGen1_Mix07, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__BangGen1_Mix07, this);
 
                 explosion?.Position = Position;
 

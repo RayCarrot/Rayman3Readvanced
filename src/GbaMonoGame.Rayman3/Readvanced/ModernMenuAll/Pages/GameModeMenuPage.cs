@@ -50,7 +50,7 @@ public class GameModeMenuPage : MenuPage
             GameLogo.ScreenPos = GameLogo.ScreenPos with { Y = y };
 
             if (GameLogoYSpeed == 20 && GameLogoSinValue == 96)
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Pannel_BigFoot1_Mix02);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Pannel_BigFoot1_Mix02);
 
             if (GameLogoSinValue == 0)
                 GameLogoYSpeed -= 4;

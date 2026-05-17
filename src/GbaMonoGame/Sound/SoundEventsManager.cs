@@ -6,84 +6,48 @@ namespace GbaMonoGame;
 
 public abstract class SoundEventsManager
 {
-    #region Public Properties
-
-    public static bool IsLoaded => Current != null;
-
-    // Allow a separate GBA and N-Gage implementation due to them having entirely different sound code
-    public static SoundEventsManager Current { get; private set; }
-
-    #endregion
-
-    #region Protected Methods
-
-    protected abstract void RefreshEventSetImpl();
-    protected abstract void SetCallBacksImpl(CallBackSet callBacks);
-    protected abstract void ProcessEventImpl(short soundEventId, object readvancedObject, object originalObject);
-    protected abstract bool IsSongPlayingImpl(short soundEventId);
-    protected abstract void SetSoundPitchImpl(short soundEventId, float pitch);
-    protected abstract short ReplaceAllSongsImpl(short soundEventId, float fadeOut);
-    protected abstract void FinishReplacingAllSongsImpl();
-    protected abstract void StopAllSongsImpl();
-    protected abstract void PauseAllSongsImpl();
-    protected abstract void ResumeAllSongsImpl();
-    protected abstract float GetVolumeForTypeImpl(SoundType type);
-    protected abstract void SetVolumeForTypeImpl(SoundType type, float newVolume);
-
-    protected abstract void ForcePauseAllSongsImpl();
-    protected abstract void ForceResumeAllSongsImpl();
-    protected abstract void DrawDebugLayoutImpl();
-    protected abstract void UnloadImpl();
-
-    #endregion
-
-    #region Public Methods
-
-    public static void Load(SoundEventsManager manager)
-    {
-        SoundEngineInterface.Load();
-        Current = manager;
-    }
-
-    public static void Unload()
-    {
-        Current?.UnloadImpl();
-        Current = null;
-    }
-
-    public static void RefreshEventSet() => Current.RefreshEventSetImpl();
-
-    public static void SetCallBacks(CallBackSet callBacks) => Current.SetCallBacksImpl(callBacks);
-
-    public static void ProcessEvent<T>(T soundEventId) where T : Enum => ProcessEvent(soundEventId, null, null);
-    public static void ProcessEvent(short soundEventId) => ProcessEvent(soundEventId, null, null);
-    public static void ProcessEvent<T>(T soundEventId, object readvancedObject) where T : Enum => ProcessEvent(soundEventId, readvancedObject, null);
-    public static void ProcessEvent(short soundEventId, object readvancedObject) => ProcessEvent(soundEventId, readvancedObject, null);
-    public static void ProcessEvent<T>(T soundEventId, object readvancedObject, object originalObject) where T : Enum => ProcessEvent(CastTo<short>.From(soundEventId), readvancedObject, originalObject);
-    public static void ProcessEvent(short soundEventId, object readvancedObject, object originalObject) => Current.ProcessEventImpl(soundEventId, readvancedObject, originalObject);
-
-    public static bool IsSongPlaying<T>(T soundEventId) where T : Enum => IsSongPlaying(CastTo<short>.From(soundEventId));
-    public static bool IsSongPlaying(short soundEventId) => Current.IsSongPlayingImpl(soundEventId);
-
-    public static void SetSoundPitch<T>(T soundEventId, float pitch) where T : Enum => SetSoundPitch(CastTo<short>.From(soundEventId), pitch);
-    public static void SetSoundPitch(short soundEventId, float pitch) => Current.SetSoundPitchImpl(soundEventId, pitch);
-
-    public static short ReplaceAllSongs<T>(T soundEventId, float fadeOut) where T : Enum => ReplaceAllSongs(CastTo<short>.From(soundEventId), fadeOut);
-    public static short ReplaceAllSongs(short soundEventId, float fadeOut) => Current.ReplaceAllSongsImpl(soundEventId, fadeOut);
-
-    public static void FinishReplacingAllSongs() => Current.FinishReplacingAllSongsImpl();
-
-    public static void StopAllSongs() => Current.StopAllSongsImpl();
-    public static void PauseAllSongs() => Current.PauseAllSongsImpl();
-    public static void ResumeAllSongs() => Current.ResumeAllSongsImpl();
-
-    public static float GetVolumeForType(SoundType type) => Current.GetVolumeForTypeImpl(type);
-    public static void SetVolumeForType(SoundType type, float newVolume) => Current.SetVolumeForTypeImpl(type, newVolume);
+    // Implementation
+    public abstract void RefreshEventSet();
+    public abstract void SetCallBacks(CallBackSet callBacks);
+    public abstract void ProcessEvent(short soundEventId, object readvancedObject, object originalObject);
+    public abstract bool IsSongPlaying(short soundEventId);
+    public abstract void SetSoundPitch(short soundEventId, float pitch);
+    public abstract short ReplaceAllSongs(short soundEventId, float fadeOut);
+    public abstract void FinishReplacingAllSongs();
+    public abstract void StopAllSongs();
+    public abstract void PauseAllSongs();
+    public abstract void ResumeAllSongs();
+    public abstract float GetVolumeForType(SoundType type);
+    public abstract void SetVolumeForType(SoundType type, float newVolume);
 
     // Custom
-    public static void ForcePauseAllSongs() => Current.ForcePauseAllSongsImpl();
-    public static void ForceResumeAllSongs() => Current.ForceResumeAllSongsImpl();
-    public static void DrawDebugLayout() => Current.DrawDebugLayoutImpl();
+    public abstract void ForcePauseAllSongs();
+    public abstract void ForceResumeAllSongs();
+    public abstract void DrawDebugLayout();
+    public abstract void Unload();
 
-    #endregion
+    // Helpers
+    public void ProcessEvent<T>(T soundEventId) 
+        where T : Enum => 
+        ProcessEvent(soundEventId, null, null);
+    public void ProcessEvent(short soundEventId) => 
+        ProcessEvent(soundEventId, null, null);
+    public void ProcessEvent<T>(T soundEventId, object readvancedObject) 
+        where T : Enum => 
+        ProcessEvent(soundEventId, readvancedObject, null);
+    public void ProcessEvent(short soundEventId, object readvancedObject) => 
+        ProcessEvent(soundEventId, readvancedObject, null);
+    public void ProcessEvent<T>(T soundEventId, object readvancedObject, object originalObject) 
+        where T : Enum => 
+        ProcessEvent(CastTo<short>.From(soundEventId), readvancedObject, originalObject);
+
+    public bool IsSongPlaying<T>(T soundEventId) 
+        where T : Enum => 
+        IsSongPlaying(CastTo<short>.From(soundEventId));
+    public void SetSoundPitch<T>(T soundEventId, float pitch) 
+        where T : Enum => 
+        SetSoundPitch(CastTo<short>.From(soundEventId), pitch);
+    public short ReplaceAllSongs<T>(T soundEventId, float fadeOut) 
+        where T : Enum => 
+        ReplaceAllSongs(CastTo<short>.From(soundEventId), fadeOut);
 }

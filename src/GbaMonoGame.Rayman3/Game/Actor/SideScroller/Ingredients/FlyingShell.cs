@@ -28,7 +28,7 @@ public sealed partial class FlyingShell : MovableActor
 
     private void UpdateSoundPitch()
     {
-        SoundEventsManager.SetSoundPitch(Rayman3SoundEvent.Play__Motor01_Mix12, 192 + (160 - Position.Y) * 8);
+        Engine.Sem.SetSoundPitch(Rayman3SoundEvent.Play__Motor01_Mix12, 192 + (160 - Position.Y) * 8);
     }
 
     private bool IsCollidingWithWall()
@@ -102,7 +102,7 @@ public sealed partial class FlyingShell : MovableActor
         if (EnergyBall != null)
         {
             Ammo--;
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Laser3_Mix03, this);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Laser3_Mix03, this);
             
             if (Speed.X <= 0)
             {
@@ -163,7 +163,7 @@ public sealed partial class FlyingShell : MovableActor
         switch (message)
         {
             case Message.Rayman_FinishLevel:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Motor01_Mix12, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__Motor01_Mix12, this);
 
                 if (Rayman3.TimeAttack.IsActive)
                 {

@@ -23,8 +23,8 @@ public partial class CaptureTheFlagFlagBase
                     if (param.Value != null && GetViewBox().Intersects(AttachedObject.GetDetectionBox()))
                     {
                         AttachedObject.ProcessMessage(this, Message.Rayman_CaptureFlag);
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play_NGage_Unnamed2, this);
-                        ((NGageSoundEventsManager)SoundEventsManager.Current).PauseLoopingSoundEffects();
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play_NGage_Unnamed2, this);
+                        ((NGageSoundEventsManager)Engine.Sem).PauseLoopingSoundEffects();
                         HasReceivedFlag = true;
                         ActionId = Action.Shine;
                     }

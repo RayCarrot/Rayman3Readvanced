@@ -15,6 +15,7 @@ public static class Engine
     public static FrameManager FrameMngr { get; private set; }
 
     // Game services
+    public static SoundEventsManager Sem { get; private set; }
     public static FontManager Font { get; private set; }
 
     public static void InitEngine(
@@ -54,9 +55,11 @@ public static class Engine
     }
 
     public static void InitGame(
+        SoundEventsManager sem,
         FontManager font)
     {
         // Set services
+        Sem = sem;
         Font = font;
     }
 
@@ -84,6 +87,7 @@ public static class Engine
         Font?.Dispose();
 
         // Remove services
+        Sem = null;
         Font = null;
     }
 

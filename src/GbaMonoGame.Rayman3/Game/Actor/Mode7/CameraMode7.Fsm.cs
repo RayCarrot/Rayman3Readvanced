@@ -65,8 +65,8 @@ public partial class CameraMode7
             case FsmAction.Step:
                 if (RSMultiplayer.IsActive)
                 {
-                    if (!SoundEventsManager.IsSongPlaying(GameInfo.GetLevelMusicSoundEvent()) &&
-                        !SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__win3))
+                    if (!Engine.Sem.IsSongPlaying(GameInfo.GetLevelMusicSoundEvent()) &&
+                        !Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__win3))
                     {
                         GameInfo.PlayLevelMusic();
                     }

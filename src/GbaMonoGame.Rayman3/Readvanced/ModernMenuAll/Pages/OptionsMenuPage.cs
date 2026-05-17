@@ -57,7 +57,7 @@ public class OptionsMenuPage : MenuPage
         SetSelectedOption(0, playSound: false, forceUpdate: true);
 
         if (playSound)
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
     }
 
     protected override bool SetSelectedOption(int selectedOption, bool playSound = true, bool forceUpdate = false)
@@ -199,7 +199,7 @@ public class OptionsMenuPage : MenuPage
             {
                 IsEditingOption = false;
                 option.Reset(OptionsMenuOptions);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
             }
         }
 

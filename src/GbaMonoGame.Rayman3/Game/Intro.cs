@@ -303,7 +303,7 @@ public class Intro : Frame, IHasPlayfield
             ((MenuAll)Menu).LoadGameInfo();
         }
 
-        AnimationPlayer = new AnimationPlayer(true, SoundEventsManager.ProcessEvent);
+        AnimationPlayer = new AnimationPlayer(true, Engine.Sem.ProcessEvent);
 
         AnimatedObjectResource introAnimResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.IntroAnimations);
 
@@ -416,8 +416,8 @@ public class Intro : Frame, IHasPlayfield
         IsSkipping = false;
         PaletteFadeValue = PaletteFadeMaxValue;
 
-        SoundEventsManager.SetVolumeForType(SoundType.Music, 0);
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__sadslide);
+        Engine.Sem.SetVolumeForType(SoundType.Music, 0);
+        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__sadslide);
 
         if (Engine.Config.Active.Tweaks.UseReadvancedLogo)
             ReplaceLogo();
@@ -425,14 +425,14 @@ public class Intro : Frame, IHasPlayfield
 
     public override void UnInit()
     {
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__sadslide);
+        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__sadslide);
 
         Playfield.UnInit();
 
         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
         Gfx.Fade = AlphaCoefficient.Max;
 
-        SoundEventsManager.SetVolumeForType(SoundType.Music, SoundEngineInterface.MaxVolume);
+        Engine.Sem.SetVolumeForType(SoundType.Music, SoundEngineInterface.MaxVolume);
     }
 
     public override void Step()
@@ -442,7 +442,7 @@ public class Intro : Frame, IHasPlayfield
 
         // Fade in music
         if (GameTime.ElapsedFrames <= 64)
-            SoundEventsManager.SetVolumeForType(SoundType.Music, GameTime.ElapsedFrames * 2);
+            Engine.Sem.SetVolumeForType(SoundType.Music, GameTime.ElapsedFrames * 2);
 
         CurrentStepAction();
 
@@ -453,7 +453,7 @@ public class Intro : Frame, IHasPlayfield
             Random.SetSeed(GameTime.ElapsedFrames);
 
             if (Engine.Config.Local.Tweaks.PlayCheatTriggerSound)
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
         }
     }
 
@@ -630,7 +630,7 @@ public class Intro : Frame, IHasPlayfield
             if (BlackLumAndLogoObj.CurrentAnimation == 7)
             {
                 BlackLumAndLogoObj.CurrentAnimation = 8;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__raytheme__After__sadslide);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__raytheme__After__sadslide);
                 CurrentStepAction = Step_6;
             }
             else
@@ -702,7 +702,7 @@ public class Intro : Frame, IHasPlayfield
 
         if (PaletteFadeValue == PaletteFadeMaxValue - 2)
         {
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__raytheme__After__sadslide);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__raytheme__After__sadslide);
         }
         else if (PaletteFadeValue > PaletteFadeMaxValue)
         {

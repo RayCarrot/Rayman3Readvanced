@@ -36,7 +36,7 @@ public partial class Switch
         {
             case FsmAction.Init:
                 ActionId = Action.Activating;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03, this);
 
                 if (Links[0] == null)
                 {

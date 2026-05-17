@@ -180,7 +180,7 @@ public class SinglePlayerMenuPage : MenuPage
 
                     SelectStartEraseOption(newIndex);
                     SetReadvancedStartEraseSelectionTexture(newIndex);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
                 // Move right
                 else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRightExt))
@@ -191,7 +191,7 @@ public class SinglePlayerMenuPage : MenuPage
 
                     SelectStartEraseOption(newIndex);
                     SetReadvancedStartEraseSelectionTexture(newIndex);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
                 // Move up
                 else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
@@ -220,10 +220,10 @@ public class SinglePlayerMenuPage : MenuPage
                             {
                                 CursorClick(() =>
                                 {
-                                    SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.None, 1);
+                                    Engine.Sem.ReplaceAllSongs(Rayman3SoundEvent.None, 1);
                                     FadeOut(2, () =>
                                     {
-                                        SoundEventsManager.StopAllSongs();
+                                        Engine.Sem.StopAllSongs();
 
                                         // Load an existing game
                                         GameInfo.Load(SelectedOption);
@@ -304,7 +304,7 @@ public class SinglePlayerMenuPage : MenuPage
                     {
                         SelectStartEraseOption(0);
                         StartEraseSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2 + 20;
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
                 }
                 // Move right
@@ -314,7 +314,7 @@ public class SinglePlayerMenuPage : MenuPage
                     {
                         SelectStartEraseOption(1);
                         StartEraseSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2 + 21;
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
                 }
                 // Erase slot
@@ -327,7 +327,7 @@ public class SinglePlayerMenuPage : MenuPage
                         Menu.Slots[SelectedOption] = null;
                         ((SlotMenuOption)Options[SelectedOption]).Slot = null;
                         SaveGameManager.DeleteSlot(SelectedOption);
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
                 }
                 break;

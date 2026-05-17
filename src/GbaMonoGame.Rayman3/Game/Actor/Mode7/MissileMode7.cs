@@ -154,7 +154,7 @@ public sealed partial class MissileMode7 : Mode7Actor
         float pitch = Speed.Length() * 512;
         if (IsJumping)
             pitch += 1024;
-        SoundEventsManager.SetSoundPitch(Rayman3SoundEvent.Play__Motor01_Mix12, pitch);
+        Engine.Sem.SetSoundPitch(Rayman3SoundEvent.Play__Motor01_Mix12, pitch);
 
         // Update if we're facing the right direction
         raceManager.DrivingTheRightWay = IsFacingTheRightDirection(RaceDirection);
@@ -176,11 +176,11 @@ public sealed partial class MissileMode7 : Mode7Actor
                     if (raceManager.CurrentLap < raceManager.CurrentTempLap)
                     {
                         if (raceManager.CurrentTempLap == 2)
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LineFX01_Mix02_P1_, this);
+                            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LineFX01_Mix02_P1_, this);
                         else if (raceManager.CurrentTempLap == 3)
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LineFX01_Mix02_P2_, this);
+                            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LineFX01_Mix02_P2_, this);
                         else if (raceManager.CurrentTempLap == 4)
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02, this);
+                            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02, this);
 
                         raceManager.CurrentLap = raceManager.CurrentTempLap;
 
@@ -207,7 +207,7 @@ public sealed partial class MissileMode7 : Mode7Actor
                     {
                         frame.SaveLums();
                         State.MoveTo(_Fsm_FinishedRace);
-                        SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.Play__win3, 0);
+                        Engine.Sem.ReplaceAllSongs(Rayman3SoundEvent.Play__win3, 0);
                         LevelMusicManager.HasOverridenLevelMusic = false;
                     }
                 }
@@ -248,7 +248,7 @@ public sealed partial class MissileMode7 : Mode7Actor
             float pitch = Speed.Length() * 512;
             if (IsJumping)
                 pitch += 256;
-            SoundEventsManager.SetSoundPitch(Rayman3SoundEvent.Play__Motor01_Mix12, pitch);
+            Engine.Sem.SetSoundPitch(Rayman3SoundEvent.Play__Motor01_Mix12, pitch);
 
             // Update if we're facing the right direction
             raceManager.DrivingTheRightWay = IsFacingTheRightDirection(RaceDirection);
@@ -292,7 +292,7 @@ public sealed partial class MissileMode7 : Mode7Actor
 
                         if (InstanceId == MultiplayerManager.MachineId)
                         {
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02, this);
+                            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02, this);
                             raceManager.IsRacing = false;
                         }
 
@@ -307,9 +307,9 @@ public sealed partial class MissileMode7 : Mode7Actor
                             if (InstanceId == MultiplayerManager.MachineId)
                             {
                                 if (raceManager.PlayersCurrentTempLap[InstanceId] == 2)
-                                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LineFX01_Mix02_P1_, this);
+                                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LineFX01_Mix02_P1_, this);
                                 else if (raceManager.PlayersCurrentTempLap[InstanceId] == 3)
-                                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LineFX01_Mix02_P2_, this);
+                                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LineFX01_Mix02_P2_, this);
                             }
 
                             raceManager.PlayersLastLapRaceTime[InstanceId] = raceManager.RaceTime;
@@ -436,11 +436,11 @@ public sealed partial class MissileMode7 : Mode7Actor
                     if (!RSMultiplayer.IsActive || IsLinkedCameraObject())
                     {
                         if (CollectedBlueLums == 1)
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumBoost_Mix01GEN_P1, this);
+                            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LumBoost_Mix01GEN_P1, this);
                         else if (CollectedBlueLums == 2)
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumBoost_Mix01GEN_P2, this);
+                            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LumBoost_Mix01GEN_P2, this);
                         else if (CollectedBlueLums == 3)
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumBoost_Mix01GEN_P3, this);
+                            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LumBoost_Mix01GEN_P3, this);
                     }
                 }
 
@@ -469,7 +469,7 @@ public sealed partial class MissileMode7 : Mode7Actor
                 State.MoveTo(_Fsm_Default);
 
                 if (!RSMultiplayer.IsActive || IsLinkedCameraObject())
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Motor01_Mix12, this);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Motor01_Mix12, this);
                 return true;
 
             case Message.MissileMode7_EndRace:
@@ -540,8 +540,8 @@ public sealed partial class MissileMode7 : Mode7Actor
 
                             if (actor1.IsLinkedCameraObject() || actor2.IsLinkedCameraObject()) 
                             {
-                                if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__PinBall_Mix02)) 
-                                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PinBall_Mix02, this);
+                                if (!Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__PinBall_Mix02)) 
+                                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PinBall_Mix02, this);
                             }
                         }
 

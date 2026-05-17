@@ -108,11 +108,11 @@ public partial class Slapdash
         switch (action)
         {
             case FsmAction.Init:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__CagoAttk_Mix03, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__CagoAttk_Mix03, this);
 
                 // If all objects are kept active we only want to make this sound when in the current knot
                 if (!Scene.KeepAllObjectsActive || IsInCurrentKnot)
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CagoTurn_Mix03, this);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__CagoTurn_Mix03, this);
 
                 // The game does +2 or +4 to the action here, but it's cleaner to just handle each valid case
                 if (ActionId is 
@@ -160,7 +160,7 @@ public partial class Slapdash
         {
             case FsmAction.Init:
                 ActionId = IsFacingRight ? Action.BeginChargeAttack_Right : Action.BeginChargeAttack_Left;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CagoAttk_Mix03, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__CagoAttk_Mix03, this);
                 break;
 
             case FsmAction.Step:
@@ -282,7 +282,7 @@ public partial class Slapdash
                 ActionId = IsFacingRight ? Action.Hit_Right : Action.Hit_Left;
                 PrevHitPoints = HitPoints;
                 StartInvulnerability();
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CagouHit_Mix03, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__CagouHit_Mix03, this);
                 break;
 
             case FsmAction.Step:
@@ -312,7 +312,7 @@ public partial class Slapdash
         {
             case FsmAction.Init:
                 ActionId = IsFacingRight ? Action.Dying_Right : Action.Dying_Left;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CagoDie2_Mix01, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__CagoDie2_Mix01, this);
                 IsSolid = false;
                 break;
 

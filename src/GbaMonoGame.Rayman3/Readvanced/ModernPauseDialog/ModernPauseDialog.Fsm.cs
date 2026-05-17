@@ -15,10 +15,10 @@ public partial class ModernPauseDialog
                 AddOption("CONTINUE", null, () =>
                 {
                     DrawStep = PauseDialogDrawStep.MoveOut;
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
 
                     if (Rom.Platform == Platform.NGage)
-                        ((NGageSoundEventsManager)SoundEventsManager.Current).ResumeLoopingSoundEffects();
+                        ((NGageSoundEventsManager)Engine.Sem).ResumeLoopingSoundEffects();
                 });
                 AddOption("OPTIONS", _Fsm_Options);
 
@@ -55,23 +55,23 @@ public partial class ModernPauseDialog
                 if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
                 {
                     SetSelectedOption(SelectedOption - 1);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
                 else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
                 {
                     SetSelectedOption(SelectedOption + 1);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
                 else if (JoyPad.IsButtonJustPressed(Rayman3Input.PauseMenuBack))
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
                     SetSelectedOption(0);
                     InvokeSelectedOption();
                     hasSelectedOption = true;
                 }
                 else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     InvokeSelectedOption();
                     hasSelectedOption = true;
                 }
@@ -165,11 +165,11 @@ public partial class ModernPauseDialog
                     BeginCircleTransition();
 
                     if (Rom.Platform == Platform.GBA)
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                 });
                 AddOption("NO", _Fsm_CheckSelection, () =>
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
                 });
 
                 SetSelectedOption(1);
@@ -184,7 +184,7 @@ public partial class ModernPauseDialog
                     {
                         // Resume
                         GameTime.Resume();
-                        SoundEventsManager.StopAllSongs();
+                        Engine.Sem.StopAllSongs();
 
                         // Reset checkpoint
                         GameInfo.LastGreenLumAlive = 0;
@@ -196,12 +196,12 @@ public partial class ModernPauseDialog
                 else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
                 {
                     SetSelectedOption(SelectedOption - 1);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
                 else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
                 {
                     SetSelectedOption(SelectedOption + 1);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
                 else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
                 {
@@ -249,7 +249,7 @@ public partial class ModernPauseDialog
                     {
                         GameTime.Resume();
 
-                        SoundEventsManager.StopAllSongs();
+                        Engine.Sem.StopAllSongs();
                         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                         Gfx.Fade = AlphaCoefficient.Max;
 
@@ -274,11 +274,11 @@ public partial class ModernPauseDialog
                     }
 
                     if (Rom.Platform == Platform.GBA)
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                 });
                 AddOption("NO", _Fsm_CheckSelection, () =>
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
                 });
 
                 SetSelectedOption(1);
@@ -292,7 +292,7 @@ public partial class ModernPauseDialog
                     if (StepCircleTransition())
                     {
                         GameTime.Resume();
-                        SoundEventsManager.StopAllSongs();
+                        Engine.Sem.StopAllSongs();
 
                         if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
                         {
@@ -311,12 +311,12 @@ public partial class ModernPauseDialog
                 else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
                 {
                     SetSelectedOption(SelectedOption - 1);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
                 else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
                 {
                     SetSelectedOption(SelectedOption + 1);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
                 else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
                 {

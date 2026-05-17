@@ -88,7 +88,7 @@ public class EchoingCaves_M2 : FrameSideScroller
     {
         base.UnInit();
 
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__barrel);
+        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__barrel);
     }
 
     public override void Step()
@@ -135,7 +135,7 @@ public class EchoingCaves_M2 : FrameSideScroller
             lightningScreen.Offset = new Vector2(Random.GetNumber(16), Random.GetNumber(96));
             lightningScreen.IsEnabled = true;
 
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Thunder1_Mix04);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Thunder1_Mix04);
             return;
         }
 

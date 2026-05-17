@@ -126,8 +126,7 @@ public class FrameManager : IDisposable
         }
 
         // Refresh sound events
-        if (SoundEventsManager.IsLoaded)
-            SoundEventsManager.RefreshEventSet();
+        Engine.Sem?.RefreshEventSet();
 
         if (CurrentFrame == null)
             throw new Exception("No current frame to step into");

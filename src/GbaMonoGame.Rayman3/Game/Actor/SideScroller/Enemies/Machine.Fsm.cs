@@ -202,7 +202,7 @@ public partial class Machine
                     else if (AnimatedObject.CurrentFrame == 3)
                     {
                         SpawnHelicopterBomb();
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MachAtk2_Mix02, this);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MachAtk2_Mix02, this);
                         AnimatedObject.CurrentFrame = 4;
                     }
                 }
@@ -214,7 +214,7 @@ public partial class Machine
                 else if (Timer == 130)
                 {
                     ActionId = Action.CannonBeginFire;
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MachAtk1_Mix01, this);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MachAtk1_Mix01, this);
                 }
 
                 if (Timer > 190 && ActionId == Action.CannonIdle2 && IsActionFinished)
@@ -295,7 +295,7 @@ public partial class Machine
                         else if (AnimatedObject.CurrentFrame == 2)
                         {
                             SpawnHelicopterBomb();
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MachAtk2_Mix02, this);
+                            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MachAtk2_Mix02, this);
                             AnimatedObject.CurrentFrame = 4;
                         }
                     }
@@ -313,7 +313,7 @@ public partial class Machine
                         if (rayman.State != rayman._Fsm_Cutscene)
                         {
                             ActionId = Action.CannonBeginFire;
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MachAtk1_Mix01, this);
+                            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MachAtk1_Mix01, this);
                             Timer = 0;
                         }
                     }
@@ -339,10 +339,10 @@ public partial class Machine
         switch (action)
         {
             case FsmAction.Init:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__MachAtk1_Mix01, this);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__MachAtk2_Mix02, this);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__MachMotr_Mix01, this, this);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__ScalDead_Mix02, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__MachAtk1_Mix01, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__MachAtk2_Mix02, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__MachMotr_Mix01, this, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__ScalDead_Mix02, this);
                 break;
 
             case FsmAction.Step:

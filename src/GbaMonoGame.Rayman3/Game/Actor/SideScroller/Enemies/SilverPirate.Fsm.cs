@@ -62,7 +62,7 @@ public partial class SilverPirate
                     if (Scene.KeepAllObjectsActive && !AnimatedObject.IsFramed)
                         QueueFallSound = true;
                     else
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraJump_BigFoot1_Mix02, this);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PiraJump_BigFoot1_Mix02, this);
 
                     ActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
                 }
@@ -153,7 +153,7 @@ public partial class SilverPirate
                 break;
 
             case FsmAction.UnInit:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraJump_BigFoot1_Mix02, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PiraJump_BigFoot1_Mix02, this);
                 break;
         }
 
@@ -173,7 +173,7 @@ public partial class SilverPirate
                 else
                     ActionId = Position.X - Scene.MainActor.Position.X < 0 ? Action.ShootLow_Right : Action.ShootLow_Left;
 
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraAtk1_Mix01__or__PiraHurt_Mix02, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PiraAtk1_Mix01__or__PiraHurt_Mix02, this);
                 break;
 
             case FsmAction.Step:
@@ -209,7 +209,7 @@ public partial class SilverPirate
         switch (action)
         {
             case FsmAction.Init:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraHit1_Mix02__or__PiraHit3_Mix03, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PiraHit1_Mix02__or__PiraHit3_Mix03, this);
                 if (HitFromFront)
                     ActionId = IsFacingRight ? Action.HitBehind_Right : Action.HitBehind_Left;
                 else
@@ -246,7 +246,7 @@ public partial class SilverPirate
         {
             case FsmAction.Init:
                 KnockBackYPosition = Position.Y;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraHit1_Mix02__or__PiraHit3_Mix03, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PiraHit1_Mix02__or__PiraHit3_Mix03, this);
                 ActionId = IsFacingRight ? Action.HitKnockBack1_Right : Action.HitKnockBack1_Left;
                 StartInvulnerability();
                 CheckAgainstMapCollision = false;
@@ -299,7 +299,7 @@ public partial class SilverPirate
                     ActionId = IsFacingRight ? Action.Dying_Right : Action.Dying_Left;
 
                 IsSolid = false;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraHit1_Mix02__or__PiraHit3_Mix03, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PiraHit1_Mix02__or__PiraHit3_Mix03, this);
                 LevelMusicManager.StopSpecialMusic();
                 Rayman3Achievements.DefeatPirateType(PirateType.Silver);
                 break;
@@ -316,7 +316,7 @@ public partial class SilverPirate
                 }
 
                 if (!AnimatedObject.IsDelayMode && AnimatedObject.CurrentFrame == 5)
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraDead_Mix05, this);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PiraDead_Mix05, this);
 
                 if (IsActionFinished)
                 {

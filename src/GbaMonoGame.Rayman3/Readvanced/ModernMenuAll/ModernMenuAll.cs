@@ -110,7 +110,7 @@ public class ModernMenuAll : Frame, IHasPlayfield
         }
         else
         {
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
 
             if (CurrentPage.UsesCursor)
             {
@@ -142,13 +142,13 @@ public class ModernMenuAll : Frame, IHasPlayfield
     public void CursorClick()
     {
         Cursor.CurrentAnimation = 16;
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
     }
 
     public void InvalidCursorClick()
     {
         Cursor.CurrentAnimation = 16;
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
+        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
     }
 
     public bool HasFinishedCursorClick()
@@ -486,10 +486,10 @@ public class ModernMenuAll : Frame, IHasPlayfield
         }
 
         // Play the music
-        if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__raytheme) &&
-            !SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__sadslide))
+        if (!Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__raytheme) &&
+            !Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__sadslide))
         {
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__raytheme);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__raytheme);
         }
 
         GameTime.Resume();
@@ -504,8 +504,7 @@ public class ModernMenuAll : Frame, IHasPlayfield
     {
         GameTime.Resume();
 
-        if (SoundEventsManager.IsLoaded)
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__raytheme);
+        Engine.Sem?.ProcessEvent(Rayman3SoundEvent.Stop__raytheme);
 
         Playfield.UnInit();
     }

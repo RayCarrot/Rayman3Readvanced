@@ -92,7 +92,7 @@ public partial class MenuAll
         }
 
         CurrentStepAction = Step_TransitionToSinglePlayer;
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
+        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
         ResetStem();
         SetBackgroundPalette(1);
         PrevSelectedStartEraseOption = 0;
@@ -166,7 +166,7 @@ public partial class MenuAll
                 {
                     if (!TransitionsFX.IsFadingOut)
                     {
-                        SoundEventsManager.StopAllSongs();
+                        Engine.Sem.StopAllSongs();
 
                         if (Slots[SelectedOption] == null)
                         {
@@ -197,7 +197,7 @@ public partial class MenuAll
                     {
                         SelectStartEraseOption(0);
                         Anims.StartEraseSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2 + 1;
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
                 }
                 // Move start/erase to erase
@@ -207,7 +207,7 @@ public partial class MenuAll
                     {
                         SelectStartEraseOption(1);
                         Anims.StartEraseSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2;
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
                 }
                 // Move up
@@ -233,17 +233,17 @@ public partial class MenuAll
 
                     if (SelectedStartEraseOption != 1)
                     {
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
                     else if (Slots[SelectedOption] != null)
                     {
                         StartEraseMode = StartEraseMode.TransitionOutSelection;
                         TransitionValue = 0;
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
                     else
                     {
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
                     }
                 }
                 break;
@@ -291,7 +291,7 @@ public partial class MenuAll
                         SelectStartEraseOption(0);
                         Anims.StartEraseSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2 + 20;
                         // NOTE: The game mistakenly passes in 0 as obj here, but nothing happens since pan and roll-off aren't enabled for this event
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
                 }
                 // Move right
@@ -302,7 +302,7 @@ public partial class MenuAll
                         SelectStartEraseOption(1);
                         Anims.StartEraseSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2 + 21;
                         // NOTE: The game mistakenly passes in 0 as obj here, but nothing happens since pan and roll-off aren't enabled for this event
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
                 }
                 // Erase slot
@@ -314,7 +314,7 @@ public partial class MenuAll
                     {
                         Slots[SelectedOption] = null;
                         SaveGameManager.DeleteSlot(SelectedOption);
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
                 }
                 break;
@@ -366,7 +366,7 @@ public partial class MenuAll
                 case StartEraseMode.Selection:
                     NextStepAction = Step_InitializeTransitionToGameMode;
                     CurrentStepAction = Step_TransitionOutOfSinglePlayer;
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                     TransitionValue = 0;
                     SelectOption(0, false);
                     TransitionOutCursorAndStem();
@@ -416,7 +416,7 @@ public partial class MenuAll
 
             if (SelectedStartEraseOption == 0)
             {
-                SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.None, 1);
+                Engine.Sem.ReplaceAllSongs(Rayman3SoundEvent.None, 1);
                 IsStartingGame = true;
                 TransitionsFX.FadeOutInit(2);
             }

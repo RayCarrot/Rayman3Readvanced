@@ -216,7 +216,7 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
         Scene = null;
 
         GameInfo.StopLevelMusic();
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Motor01_Mix12);
+        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__Motor01_Mix12);
     }
 
     public override void Step()
@@ -293,8 +293,8 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
 
         UserInfo.ProcessMessage(this, Message.UserInfo_Pause);
 
-        SoundEventsManager.FinishReplacingAllSongs();
-        SoundEventsManager.PauseAllSongs();
+        Engine.Sem.FinishReplacingAllSongs();
+        Engine.Sem.PauseAllSongs();
 
         Scene.ProcessDialogs();
         Scene.Playfield.Step();
@@ -371,7 +371,7 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
 
         UserInfo.ProcessMessage(this, Message.UserInfo_Unpause);
 
-        SoundEventsManager.ResumeAllSongs();
+        Engine.Sem.ResumeAllSongs();
         Scene.Step();
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();

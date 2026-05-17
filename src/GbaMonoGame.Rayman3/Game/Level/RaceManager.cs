@@ -55,22 +55,22 @@ public class RaceManager
 
                 case 60:
                     UserInfo.SetCountdownValue(3);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CountDwn_Mix07_P1_);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__CountDwn_Mix07_P1_);
                     break;
 
                 case 120:
                     UserInfo.SetCountdownValue(2);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CountDwn_Mix07_P2_);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__CountDwn_Mix07_P2_);
                     break;
 
                 case 180:
                     UserInfo.SetCountdownValue(1);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__CountDwn_Mix07_P3_);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__CountDwn_Mix07_P3_);
                     break;
 
                 case 240:
                     UserInfo.SetCountdownValue(0);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoGO_Mix02);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__OnoGO_Mix02);
                     IsRacing = true;
                     Scene.MainActor.ProcessMessage(this, Message.MissileMode7_StartRace);
                     break;
@@ -97,7 +97,7 @@ public class RaceManager
                         RemainingTime = 356400; // 99:00:00
 
                         if (Engine.Config.Local.Tweaks.PlayCheatTriggerSound)
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
+                            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
                     }
                 }
             }

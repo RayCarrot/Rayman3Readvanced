@@ -17,8 +17,8 @@ public partial class Electricity
             case FsmAction.Step:
                 if (AnimatedObject.IsFramed)
                 {
-                    if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__Electric_Mix02))
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Electric_Mix02, this);
+                    if (!Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__Electric_Mix02))
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Electric_Mix02, this);
 
                     GameInfo.ActorSoundFlags |= ActorSoundFlags.Electricity;
                 }
@@ -59,7 +59,7 @@ public partial class Electricity
                     Action.DoubleActivated_Right => Action.DoubleDeactivated_Right,
                     _ => throw new Exception("Invalid initial action id")
                 };
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03, this);
                 break;
 
             case FsmAction.Step:

@@ -53,7 +53,7 @@ public class MarshAwakening1 : FrameWaterSkiMode7
     public override void UnInit()
     {
         base.UnInit();
-        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__SkiLoop1);
+        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__SkiLoop1);
     }
 
     public override void Step()

@@ -229,8 +229,8 @@ public partial class ChainedSparkles
 
                 Timer++;
 
-                if (Timer == 40 && SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02))
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02, this);
+                if (Timer == 40 && Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02))
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02, this);
 
                 if (Timer > 125)
                 {

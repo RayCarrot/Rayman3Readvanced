@@ -197,7 +197,7 @@ public partial class GameCubeMenu
         switch (action)
         {
             case FsmAction.Init:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
                 TransitionOutScreenEffect = new GameCubeMenuTransitionOutScreenEffect()
                 {
                     RenderContext = Rom.OriginalGameRenderContext,
@@ -492,11 +492,11 @@ public partial class GameCubeMenu
                                 Engine.FrameMngr.SetNextFrame(new FrameSideScrollerGCN(MapInfos.Maps[SelectedMap], Map, SelectedMap));
                             }
 
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                         }
                         else
                         {
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
+                            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
                         }
                     }
 
@@ -509,7 +509,7 @@ public partial class GameCubeMenu
 
                         MapSelectionUpdateText();
                         JoyBus.SendValue(2);
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
 
                     // Move down
@@ -521,7 +521,7 @@ public partial class GameCubeMenu
 
                         MapSelectionUpdateText();
                         JoyBus.SendValue(1);
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     }
                 }
 

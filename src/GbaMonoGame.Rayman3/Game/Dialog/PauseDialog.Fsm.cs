@@ -58,7 +58,7 @@ public partial class PauseDialog
                     else
                         throw new UnsupportedPlatformException();
 
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
                 else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
                 {
@@ -88,19 +88,19 @@ public partial class PauseDialog
                     else
                         throw new UnsupportedPlatformException();
 
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
                 else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
                 {
                     if (SelectedOption == 1)
                     {
                         ModifyMusicVolume(-1);
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
                     else if (SelectedOption == 2)
                     {
                         ModifySfxVolume(-1);
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
                 }
                 else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
@@ -108,38 +108,38 @@ public partial class PauseDialog
                     if (SelectedOption == 1)
                     {
                         ModifyMusicVolume(1);
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
                     else if (SelectedOption == 2)
                     {
                         ModifySfxVolume(1);
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
                 }
                 else if (JoyPad.IsButtonJustPressed(Rayman3Input.PauseMenuBack))
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
                     DrawStep = PauseDialogDrawStep.MoveOut;
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
 
                     if (Rom.Platform == Platform.NGage)
-                        ((NGageSoundEventsManager)SoundEventsManager.Current).ResumeLoopingSoundEffects();
+                        ((NGageSoundEventsManager)Engine.Sem).ResumeLoopingSoundEffects();
 
                     resume = true;
                 }
                 else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
 
                     switch (SelectedOption)
                     {
                         // Continue
                         case 0:
                             DrawStep = PauseDialogDrawStep.MoveOut;
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+                            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
 
                             if (Rom.Platform == Platform.NGage)
-                                ((NGageSoundEventsManager)SoundEventsManager.Current).ResumeLoopingSoundEffects();
+                                ((NGageSoundEventsManager)Engine.Sem).ResumeLoopingSoundEffects();
 
                             resume = true;
                             break;
@@ -151,7 +151,7 @@ public partial class PauseDialog
 
                         // Music volume
                         case 1 when Rom.Platform == Platform.NGage:
-                            if (((NGageSoundEventsManager)SoundEventsManager.Current).MusicVolume < SoundEngineInterface.MaxVolume)
+                            if (((NGageSoundEventsManager)Engine.Sem).MusicVolume < SoundEngineInterface.MaxVolume)
                                 ModifyMusicVolume(1);
                             else
                                 ModifyMusicVolume(-3);
@@ -159,7 +159,7 @@ public partial class PauseDialog
 
                         // Sfx volume
                         case 2 when Rom.Platform == Platform.NGage:
-                            if (((NGageSoundEventsManager)SoundEventsManager.Current).SoundEffectsVolume < SoundEngineInterface.MaxVolume)
+                            if (((NGageSoundEventsManager)Engine.Sem).SoundEffectsVolume < SoundEngineInterface.MaxVolume)
                                 ModifySfxVolume(1);
                             else
                                 ModifySfxVolume(-3);
@@ -321,12 +321,12 @@ public partial class PauseDialog
 
                     PrevSelectedOption = SelectedOption;
                     SelectedOption = SelectedOption == 0 ? 1 : 0;
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
                 else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack) || 
                          (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm) && SelectedOption == resumeOptionIndex))
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
 
                     if (Rom.Platform == Platform.GBA)
                     {
@@ -357,14 +357,14 @@ public partial class PauseDialog
 
                     if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
                     {
-                        SoundEventsManager.StopAllSongs();
+                        Engine.Sem.StopAllSongs();
                         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                         Gfx.Fade = AlphaCoefficient.Max;
                         Engine.FrameMngr.SetNextFrame(new GameCubeMenu());
                     }
                     else
                     {
-                        SoundEventsManager.StopAllSongs();
+                        Engine.Sem.StopAllSongs();
                         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                         Gfx.Fade = AlphaCoefficient.Max;
 
@@ -375,7 +375,7 @@ public partial class PauseDialog
                     }
 
                     if (Rom.Platform == Platform.GBA)
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                 }
 
                 if (goBack)
@@ -442,7 +442,7 @@ public partial class PauseDialog
                     else
                         throw new UnsupportedPlatformException();
 
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
                 else if (MultiJoyPad.IsButtonJustPressed(PausedMachineId, Rayman3Input.MenuDown))
                 {
@@ -471,19 +471,19 @@ public partial class PauseDialog
                     else
                         throw new UnsupportedPlatformException();
 
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
                 else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
                 {
                     if (SelectedOption == 1)
                     {
                         ModifyMusicVolume(-1);
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
                     else if (SelectedOption == 2)
                     {
                         ModifySfxVolume(-1);
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
                 }
                 else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
@@ -491,38 +491,38 @@ public partial class PauseDialog
                     if (SelectedOption == 1)
                     {
                         ModifyMusicVolume(1);
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
                     else if (SelectedOption == 2)
                     {
                         ModifySfxVolume(1);
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
                 }
                 else if (MultiJoyPad.IsButtonJustPressed(PausedMachineId, Rayman3Input.PauseMenuBack))
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
                     DrawStep = PauseDialogDrawStep.MoveOut;
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
 
                     if (Rom.Platform == Platform.NGage)
-                        ((NGageSoundEventsManager)SoundEventsManager.Current).ResumeLoopingSoundEffects();
+                        ((NGageSoundEventsManager)Engine.Sem).ResumeLoopingSoundEffects();
 
                     resume = true;
                 }
                 else if (MultiJoyPad.IsButtonJustPressed(PausedMachineId, Rayman3Input.MenuConfirm))
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
 
                     switch (SelectedOption)
                     {
                         // Continue
                         case 0:
                             DrawStep = PauseDialogDrawStep.MoveOut;
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
+                            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
 
                             if (Rom.Platform == Platform.NGage)
-                                ((NGageSoundEventsManager)SoundEventsManager.Current).ResumeLoopingSoundEffects();
+                                ((NGageSoundEventsManager)Engine.Sem).ResumeLoopingSoundEffects();
 
                             resume = true;
                             break;
@@ -549,7 +549,7 @@ public partial class PauseDialog
                     {
                         // Music volume
                         case 1:
-                            if (((NGageSoundEventsManager)SoundEventsManager.Current).MusicVolume < SoundEngineInterface.MaxVolume)
+                            if (((NGageSoundEventsManager)Engine.Sem).MusicVolume < SoundEngineInterface.MaxVolume)
                                 ModifyMusicVolume(1);
                             else
                                 ModifyMusicVolume(-3);
@@ -557,7 +557,7 @@ public partial class PauseDialog
 
                         // Sfx volume
                         case 2:
-                            if (((NGageSoundEventsManager)SoundEventsManager.Current).SoundEffectsVolume < SoundEngineInterface.MaxVolume)
+                            if (((NGageSoundEventsManager)Engine.Sem).SoundEffectsVolume < SoundEngineInterface.MaxVolume)
                                 ModifySfxVolume(1);
                             else
                                 ModifySfxVolume(-3);
@@ -661,12 +661,12 @@ public partial class PauseDialog
 
                     PrevSelectedOption = SelectedOption;
                     SelectedOption = SelectedOption == 0 ? 1 : 0;
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
                 else if (MultiJoyPad.IsButtonJustPressed(PausedMachineId, Rayman3Input.MenuBack) || 
                          (MultiJoyPad.IsButtonJustPressed(PausedMachineId, Rayman3Input.MenuConfirm) && SelectedOption == resumeOptionIndex))
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
 
                     if (Rom.Platform == Platform.GBA)
                     {
@@ -702,7 +702,7 @@ public partial class PauseDialog
                         Engine.FrameMngr.SetNextFrame(new MenuAll(InitialMenuPage.Multiplayer));
 
                     if (Rom.Platform == Platform.GBA)
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                 }
 
                 if (goBack)

@@ -146,7 +146,7 @@ public abstract class Act : Frame
         ActFrame frame = ActResource.Frames.Value[CurrentFrameIndex];
 
         if (frame.MusicSongEvent != Rayman3SoundEvent.None)
-            SoundEventsManager.ProcessEvent(frame.MusicSongEvent);
+            Engine.Sem.ProcessEvent(frame.MusicSongEvent);
 
         IScreenRenderer renderer = new TextureScreenRenderer(Engine.Assets.TextureCache.GetOrCreateObject(
             pointer: frame.Bitmap.Offset,
@@ -181,7 +181,7 @@ public abstract class Act : Frame
         ActResource = resource;
 
         if (resource.StartMusicSoundEvent != Rayman3SoundEvent.None)
-            SoundEventsManager.ProcessEvent(resource.StartMusicSoundEvent);
+            Engine.Sem.ProcessEvent(resource.StartMusicSoundEvent);
 
         AnimationPlayer = new AnimationPlayer(false, null);
 
@@ -287,7 +287,7 @@ public abstract class Act : Frame
     public override void UnInit()
     {
         if (ActResource.StopMusicSoundEvent != Rayman3SoundEvent.None)
-            SoundEventsManager.ProcessEvent(ActResource.StopMusicSoundEvent);
+            Engine.Sem.ProcessEvent(ActResource.StopMusicSoundEvent);
 
         Gfx.ClearColor = Color.Black;
     }
@@ -316,8 +316,8 @@ public abstract class Act : Frame
                 CurrentFrameIndex = ActResource.LastFrameIndex;
                 TransitionsFX.FadeOutInit(1);
                 IsFadingOut = true;
-                SoundEventsManager.StopAllSongs();
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                Engine.Sem.StopAllSongs();
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
             }
             else if (IsTransitioningTextOut)
             {
@@ -334,7 +334,7 @@ public abstract class Act : Frame
                 {
                     TransitionsFX.FadeOutInit(1);
                     IsFadingOut = true;
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                 }
                 else
                 {

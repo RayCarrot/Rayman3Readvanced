@@ -93,7 +93,7 @@ public partial class SamMode7
                 if (Engine.Config.Active.Tweaks.AllowPrototypeCheats && JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.L))
                 {
                     if (Engine.Config.Local.Tweaks.PlayCheatTriggerSound)
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
 
                     State.MoveTo(_Fsm_End);
                     return false;
@@ -138,7 +138,7 @@ public partial class SamMode7
                 // Stop music
                 else if (Timer == 216)
                 {
-                    SoundEventsManager.StopAllSongs();
+                    Engine.Sem.StopAllSongs();
                 }
                 // Save and end level
                 else if (Timer == 218)

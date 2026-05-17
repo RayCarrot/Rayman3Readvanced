@@ -406,9 +406,7 @@ public abstract class GbaGame : Game
             return;
 
         IsPaused = true;
-
-        if (SoundEventsManager.IsLoaded)
-            SoundEventsManager.ForcePauseAllSongs();
+        Engine.Sem?.ForcePauseAllSongs();
     }
 
     public void Resume()
@@ -417,9 +415,7 @@ public abstract class GbaGame : Game
             return;
 
         IsPaused = false;
-        
-        if (SoundEventsManager.IsLoaded)
-            SoundEventsManager.ForceResumeAllSongs();
+        Engine.Sem?.ForceResumeAllSongs();
     }
 
     #endregion

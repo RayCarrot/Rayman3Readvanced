@@ -140,7 +140,7 @@ public class AnimationViewer : Frame
     {
         TransitionsFX.Init(true);
         TransitionsFX.FadeInInit(2);
-        AnimationPlayer = new AnimationPlayer(false, SoundEventsManager.ProcessEvent);
+        AnimationPlayer = new AnimationPlayer(false, Engine.Sem.ProcessEvent);
         Gfx.ClearColor = Color.Fuchsia;
 
         SelectionText = new SpriteTextObject()

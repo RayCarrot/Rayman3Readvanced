@@ -38,7 +38,7 @@ public partial class Gate
                 IsSolid = false;
 
                 if (AnimatedObject.IsFramed)
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MetlGate_Mix01, this);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MetlGate_Mix01, this);
                 break;
 
             case FsmAction.Step:

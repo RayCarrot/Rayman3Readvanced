@@ -79,9 +79,9 @@ public partial class Vines
         switch (action)
         {
             case FsmAction.Init:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__RootOut_Mix04, this);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__RootIn_Mix01, this);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__RootOut_Mix04, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__RootOut_Mix04, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__RootIn_Mix01, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__RootOut_Mix04, this);
 
                 ActionId = IsFacingDown ? Action.Extend_Down : Action.Extend_Up;
                 break;
@@ -137,9 +137,9 @@ public partial class Vines
         switch (action)
         {
             case FsmAction.Init:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__RootOut_Mix04, this);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__RootIn_Mix01, this);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__RootIn_Mix01, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__RootOut_Mix04, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__RootIn_Mix01, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__RootIn_Mix01, this);
 
                 ActionId = IsFacingDown ? Action.Retract_Down : Action.Retract_Up;
                 

@@ -43,8 +43,8 @@ public partial class LumsMode7
                     else
                         GameInfo.KillLum(LumId);
 
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumOrag_Mix06, this);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumOrag_Mix06, this);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__LumOrag_Mix06, this);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LumOrag_Mix06, this);
 
                     ProcessMessage(this, Message.Destroy);
                 }
@@ -56,7 +56,7 @@ public partial class LumsMode7
                 else if (!RSMultiplayer.IsActive && ActionId == Action.RedLum)
                 {
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_CollectRedLum);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumRed_Mix03, this);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LumRed_Mix03, this);
                 }
 
                 Timer = 0;
@@ -115,7 +115,7 @@ public partial class LumsMode7
                             player.ProcessMessage(this, Message.Rayman_CollectRedLum);
                          
                             if (id == MultiplayerManager.MachineId)
-                                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumRed_Mix03, this);
+                                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LumRed_Mix03, this);
                         }
 
                         collected = true;

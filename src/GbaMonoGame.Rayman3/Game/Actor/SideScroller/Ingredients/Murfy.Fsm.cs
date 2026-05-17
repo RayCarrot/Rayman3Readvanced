@@ -390,7 +390,7 @@ public partial class Murfy
                 ActionId = IsFacingRight ? Action.BeginLeave_Right : Action.BeginLeave_Left;
                 SavedSpeed = SavedSpeed with { Y = -1 };
                 TextBox.MoveInOurOut(false);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MurfyVO3A_Mix01, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MurfyVO3A_Mix01, this);
                 break;
 
             case FsmAction.Step:

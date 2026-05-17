@@ -52,7 +52,7 @@ public partial class CheatDialog : Dialog
                         MissileMode7 actor = (MissileMode7)Scene.MainActor;
                         frame.SaveLums();
                         actor.State.MoveTo(actor._Fsm_FinishedRace);
-                        SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.Play__win3, 0);
+                        Engine.Sem.ReplaceAllSongs(Rayman3SoundEvent.Play__win3, 0);
                         LevelMusicManager.HasOverridenLevelMusic = false;
                     }
                     else if (Scene.MainActor.Type == (int)ActorType.RaymanMode7)

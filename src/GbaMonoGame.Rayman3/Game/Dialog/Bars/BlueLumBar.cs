@@ -216,8 +216,8 @@ public class BlueLumBar : Bar
         GameInfo.BlueLumsTimer--;
 
         if (GameInfo.BlueLumsTimer == 78)
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumTimer_Mix02);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LumTimer_Mix02);
         else if (GameInfo.IsBlueLumsTimeOver())
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumTimer_Mix02);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__LumTimer_Mix02);
     }
 }

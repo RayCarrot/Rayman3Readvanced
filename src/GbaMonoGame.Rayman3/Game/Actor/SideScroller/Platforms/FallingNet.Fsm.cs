@@ -39,8 +39,8 @@ public partial class FallingNet
                 Timer = 0;
                 ActionId = Action.Shake;
 
-                if (AnimatedObject.IsFramed && !SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__PF2Crac_Mix02__or__RootOut_Pitch))
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PF2Crac_Mix02__or__RootOut_Pitch, this);
+                if (AnimatedObject.IsFramed && !Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__PF2Crac_Mix02__or__RootOut_Pitch))
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PF2Crac_Mix02__or__RootOut_Pitch, this);
                 break;
 
             case FsmAction.Step:
@@ -78,8 +78,8 @@ public partial class FallingNet
         switch (action)
         {
             case FsmAction.Init:
-                if (AnimatedObject.IsFramed && !SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__PF2Fall_Mix03))
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PF2Fall_Mix03, this);
+                if (AnimatedObject.IsFramed && !Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__PF2Fall_Mix03))
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PF2Fall_Mix03, this);
 
                 ActionId = Action.Fall;
                 break;

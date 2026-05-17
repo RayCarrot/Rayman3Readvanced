@@ -470,7 +470,7 @@ public partial class Rayman
         switch (action)
         {
             case FsmAction.Init:
-                if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__OnoEquil_Mix03))
+                if (!Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__OnoEquil_Mix03))
                     PlaySound(Rayman3SoundEvent.Play__OnoEquil_Mix03);
 
                 Timer = 120;
@@ -496,7 +496,7 @@ public partial class Rayman
                 {
                     Timer = 120;
 
-                    if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__OnoEquil_Mix03))
+                    if (!Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__OnoEquil_Mix03))
                         PlaySound(Rayman3SoundEvent.Play__OnoEquil_Mix03);
                 }
 
@@ -1966,7 +1966,7 @@ public partial class Rayman
                 {
                     // NOTE: Probably a bug in the GBA code since this causes the sound to play twice. This was fixed for N-Gage.
                     if (Rom.Platform == Platform.GBA && !Engine.Config.Active.Tweaks.FixBugs)
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Charge_Mix05, this);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Charge_Mix05, this);
 
                     ActionId = IsFacingRight ? Action.Hang_ChargeAttack_Right : Action.Hang_ChargeAttack_Left;
                     Timer = GameTime.ElapsedFrames;
@@ -2027,10 +2027,10 @@ public partial class Rayman
                 {
                     if (IsSliding)
                     {
-                        if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__SldGreen_SkiLoop1))
+                        if (!Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__SldGreen_SkiLoop1))
                             PlaySound(Rayman3SoundEvent.Play__SldGreen_SkiLoop1);
 
-                        SoundEventsManager.SetSoundPitch(Rayman3SoundEvent.Play__SldGreen_SkiLoop1, Math.Abs(Speed.X) * 256);
+                        Engine.Sem.SetSoundPitch(Rayman3SoundEvent.Play__SldGreen_SkiLoop1, Math.Abs(Speed.X) * 256);
                     }
                     else
                     {
@@ -3628,12 +3628,12 @@ public partial class Rayman
 
                     if (SongAlternation)
                     {
-                        SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.Play__barrel_BA, 3);
+                        Engine.Sem.ReplaceAllSongs(Rayman3SoundEvent.Play__barrel_BA, 3);
                         SongAlternation = false;
                     }
                     else
                     {
-                        SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.Play__barrel, 3);
+                        Engine.Sem.ReplaceAllSongs(Rayman3SoundEvent.Play__barrel, 3);
                         SongAlternation = true;
                     }
 
@@ -3649,12 +3649,12 @@ public partial class Rayman
 
                     if (SongAlternation)
                     {
-                        SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.Play__barrel_BA, 3);
+                        Engine.Sem.ReplaceAllSongs(Rayman3SoundEvent.Play__barrel_BA, 3);
                         SongAlternation = false;
                     }
                     else
                     {
-                        SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.Play__barrel, 3);
+                        Engine.Sem.ReplaceAllSongs(Rayman3SoundEvent.Play__barrel, 3);
                         SongAlternation = true;
                     }
 
@@ -3729,7 +3729,7 @@ public partial class Rayman
                 CheckAgainstMapCollision = true;
                 Position -= new Vector2(0, -22);
                 SetDetectionBox(new Box(ActorModel.DetectionBox));
-                SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.Play__echocave, 3);
+                Engine.Sem.ReplaceAllSongs(Rayman3SoundEvent.Play__echocave, 3);
                 break;
         }
 
@@ -3948,7 +3948,7 @@ public partial class Rayman
                             GameInfo.MapId != MapId.BossMachine &&
                             GameInfo.MapId != MapId.BossRockAndLava)
                         {
-                            SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.Play__win3, 0);
+                            Engine.Sem.ReplaceAllSongs(Rayman3SoundEvent.Play__win3, 0);
                         }
                         else
                         {
@@ -3990,8 +3990,8 @@ public partial class Rayman
                 break;
 
             case FsmAction.Step:
-                if (SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__win3))
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__canopy);
+                if (Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__win3))
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__canopy);
 
                 // Don't allow horizontal movement while falling
                 if (ActionId is Action.Fall_Right or Action.Fall_Left)
@@ -4022,7 +4022,7 @@ public partial class Rayman
                             GameInfo.MapId != MapId.BossMachine &&
                             GameInfo.MapId != MapId.BossRockAndLava)
                         {
-                            SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.Play__win3, 0);
+                            Engine.Sem.ReplaceAllSongs(Rayman3SoundEvent.Play__win3, 0);
                         }
                         else
                         {
@@ -4061,17 +4061,17 @@ public partial class Rayman
                 if (ActionId is Action.Idle_Right or Action.Idle_Left or Action.ReturnFromLevel_Right or Action.ReturnFromLevel_Left &&
                     ((!FinishedMap && Timer == 150) || (FinishedMap && Timer == 100)))
                 {
-                    if (SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__Win_BOSS))
+                    if (Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__Win_BOSS))
                     {
                         Timer -= 2;
                         return true;
                     }
 
                     if (GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
-                        SoundEventsManager.StopAllSongs();
+                        Engine.Sem.StopAllSongs();
 
                     if (FinishedMap)
-                        SoundEventsManager.StopAllSongs();
+                        Engine.Sem.StopAllSongs();
 
                     return true;
                 }
@@ -4716,8 +4716,8 @@ public partial class Rayman
                 ActionId = IsFacingRight ? Action.LockedLevelCurtain_Right : Action.LockedLevelCurtain_Left;
                 NextActionId = null;
 
-                if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01))
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01, this);
+                if (!Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01))
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01, this);
                 break;
 
             case FsmAction.Step:
@@ -4745,12 +4745,12 @@ public partial class Rayman
 
                 if (SongAlternation)
                 {
-                    SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.Play__rocket_BA, 3);
+                    Engine.Sem.ReplaceAllSongs(Rayman3SoundEvent.Play__rocket_BA, 3);
                     SongAlternation = false;
                 }
                 else
                 {
-                    SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.Play__rocket, 3);
+                    Engine.Sem.ReplaceAllSongs(Rayman3SoundEvent.Play__rocket, 3);
                     SongAlternation = true;
                 }
                 break;
@@ -4763,7 +4763,7 @@ public partial class Rayman
                 break;
 
             case FsmAction.UnInit:
-                SoundEventsManager.ReplaceAllSongs(Rayman3SoundEvent.Play__bigtrees, 3);
+                Engine.Sem.ReplaceAllSongs(Rayman3SoundEvent.Play__bigtrees, 3);
                 break;
         }
 

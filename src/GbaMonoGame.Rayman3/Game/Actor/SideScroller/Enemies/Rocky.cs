@@ -124,7 +124,7 @@ public sealed partial class Rocky : MovableActor
                 BlueLum = Scene.CreateProjectile<Lums>(ActorType.Lums);
                 BlueLum.AnimatedObject.BasePaletteIndex = 1;
                 BlueLum.AnimatedObject.CurrentAnimation = 0;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Appear_SocleFX1_Mix01, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Appear_SocleFX1_Mix01, this);
             }
             else
             {
@@ -132,7 +132,7 @@ public sealed partial class Rocky : MovableActor
 
                 // It's probably an oversight to not have the sound play here
                 if (Engine.Config.Active.Tweaks.FixBugs)
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Appear_SocleFX1_Mix01, this);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Appear_SocleFX1_Mix01, this);
             }
 
             BlueLum.ActionId = Lums.Action.BlueLum;

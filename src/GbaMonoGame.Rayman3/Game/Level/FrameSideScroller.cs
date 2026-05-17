@@ -94,13 +94,13 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         {
             CircleTransitionValue = 0;
             CircleTransitionMode = TransitionMode.In;
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SlideIn_Mix02);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__SlideIn_Mix02);
         }
         else
         {
             CircleTransitionValue = 252;
             CircleTransitionMode = TransitionMode.Out;
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SlideOut_Mix01);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__SlideOut_Mix01);
         }
 
         CircleTransitionScreenEffect.RenderContext = Scene.RenderContext;
@@ -207,7 +207,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         Gfx.ClearScreenEffect();
 
         GameInfo.StopLevelMusic();
-        SoundEventsManager.StopAllSongs();
+        Engine.Sem.StopAllSongs();
     }
 
     public override void Step()
@@ -271,7 +271,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
                 Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
 
                 if (Engine.Config.Local.Tweaks.PlayCheatTriggerSound)
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
             }
 
             if (JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.R))
@@ -279,7 +279,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
                 GameInfo.EnableCheat(Scene, Cheat.Invulnerable);
 
                 if (Engine.Config.Local.Tweaks.PlayCheatTriggerSound)
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
             }
         }
     }
@@ -303,8 +303,8 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
 
         UserInfo.ProcessMessage(this, Message.UserInfo_Pause);
 
-        SoundEventsManager.FinishReplacingAllSongs();
-        SoundEventsManager.PauseAllSongs();
+        Engine.Sem.FinishReplacingAllSongs();
+        Engine.Sem.PauseAllSongs();
 
         Scene.ProcessDialogs();
         Scene.Playfield.Step();
@@ -378,7 +378,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
 
         UserInfo.ProcessMessage(this, Message.UserInfo_Unpause);
 
-        SoundEventsManager.ResumeAllSongs();
+        Engine.Sem.ResumeAllSongs();
         Scene.Step();
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();

@@ -19,7 +19,7 @@ public partial class MurfyStone
                     if (!HasTriggered)
                     {
                         if (Timer > 180)
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Whistle1_Mix01, this);
+                            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Whistle1_Mix01, this);
                         
                         Timer = 0;
 

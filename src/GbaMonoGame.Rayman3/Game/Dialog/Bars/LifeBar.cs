@@ -120,7 +120,7 @@ public class LifeBar : Bar
             // NOTE: There's a bug where if you pause on the same frame as this sound should be playing then it
             //       will keep playing every single frame! Optionally fix by checking so the time isn't paused.
             if (!(GameTime.IsPaused && Engine.Config.Active.Tweaks.FixBugs))
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MinHP);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MinHP);
         }
 
         // Check if hp has changed

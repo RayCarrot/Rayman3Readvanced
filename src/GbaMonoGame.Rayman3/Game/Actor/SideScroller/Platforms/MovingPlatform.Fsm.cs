@@ -71,7 +71,7 @@ public partial class MovingPlatform
                         ActionAfterImpact = ActionId;
                         ActionId = Action.Impact;
                         ChangeAction();
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__VibraFLW_Mix02, this);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__VibraFLW_Mix02, this);
                     }
                 }
                 // Unlink from main actor if no longer colliding
@@ -126,7 +126,7 @@ public partial class MovingPlatform
                     Debug.Assert(Fire != null, "The flower fire projectile could not be created");
                     
                     AnimatedObject.CurrentAnimation = 5;
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BBQ_Mix10, this);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__BBQ_Mix10, this);
 
                     Fire?.Platform = this;
                 }
@@ -223,7 +223,7 @@ public partial class MovingPlatform
                         ActionAfterImpact = ActionId;
                         ActionId = Action.Impact;
                         ChangeAction();
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__VibraFLW_Mix02, this);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__VibraFLW_Mix02, this);
                     }
                 }
                 // Unlink from main actor if no longer colliding
@@ -314,7 +314,7 @@ public partial class MovingPlatform
                         ActionAfterImpact = ActionId;
                         ActionId = Action.Impact;
                         ChangeAction();
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__VibraFLW_Mix02, this);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__VibraFLW_Mix02, this);
                     }
                 }
                 // Unlink from main actor if no longer colliding
@@ -423,7 +423,7 @@ public partial class MovingPlatform
                 else if (Timer == 121)
                 {
                     if (AnimatedObject.IsFramed)
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Appear_SocleFX1_Mix01, this);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Appear_SocleFX1_Mix01, this);
                 }
 
                 if (IsActionFinished && ActionId == Action.MoveAccelerated_Left)
@@ -498,7 +498,7 @@ public partial class MovingPlatform
                         ActionAfterImpact = ActionId;
                         ActionId = Action.Impact;
                         ChangeAction();
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__VibraFLW_Mix02, this);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__VibraFLW_Mix02, this);
                     }
                 }
                 // Unlink from main actor if no longer colliding

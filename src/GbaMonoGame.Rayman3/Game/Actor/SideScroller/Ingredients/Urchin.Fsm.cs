@@ -29,7 +29,7 @@ public partial class Urchin
                          (GameInfo.ActorSoundFlags & ActorSoundFlags.Urchin) == 0 &&
                          IsActionFinished)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__BlobFX02_Mix02, this);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__BlobFX02_Mix02, this);
                 }
 
                 if (AnimatedObject.IsFramed)

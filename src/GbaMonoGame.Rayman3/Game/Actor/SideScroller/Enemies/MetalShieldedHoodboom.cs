@@ -45,7 +45,7 @@ public sealed partial class MetalShieldedHoodboom : InteractableActor
         {
             // Hit shield
             case Message.Actor_Hit:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MetlImp1_PiraHit3_Mix03, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MetlImp1_PiraHit3_Mix03, this);
                 return false;
 
             default:

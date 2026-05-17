@@ -39,8 +39,8 @@ public partial class RaymanMode7
 
                     ReceiveDamage(1);
 
-                    if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__SkiWeed_Mix02))
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SkiWeed_Mix02, this);
+                    if (!Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__SkiWeed_Mix02))
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__SkiWeed_Mix02, this);
                 }
             }
 
@@ -159,7 +159,7 @@ public partial class RaymanMode7
                 AnimatedObject.Timer = animTimer;
                 AnimatedObject.IsDelayMode = isDelayMode;
 
-                if (SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__SkiLoop1))
+                if (Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__SkiLoop1))
                 {
                     Vector3 screenPos = ((TgxPlayfieldMode7)Scene.Playfield).Camera.Project(new Vector3(Position, 0));
                     float screenX = Math.Abs(Scene.Resolution.X / 2 - screenPos.X);
@@ -168,12 +168,12 @@ public partial class RaymanMode7
                     //       the original game the range is usually around +/- 40 while we get +/- 30. We multiply here to adjust this.
                     screenX *= 40 / 30f;
 
-                    SoundEventsManager.SetSoundPitch(Rayman3SoundEvent.Play__SkiLoop1, screenX * 16 + 192);
+                    Engine.Sem.SetSoundPitch(Rayman3SoundEvent.Play__SkiLoop1, screenX * 16 + 192);
                 }
 
                 if (MechModel.Speed.X <= 1)
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__SkiLoop1, this);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__SkiLoop1, this);
                     AnimatedObject.CurrentFrame = 0;
                 }
                 else if ((GameTime.ElapsedFrames & 7) == 0)
@@ -186,8 +186,8 @@ public partial class RaymanMode7
                         waterSplash.ChangeAction();
                     }
 
-                    if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__SkiLoop1))
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SkiLoop1, this);
+                    if (!Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__SkiLoop1))
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__SkiLoop1, this);
                 }
 
                 if (JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump, buffered: true) && ProcessJoypad)
@@ -210,8 +210,8 @@ public partial class RaymanMode7
         switch (action)
         {
             case FsmAction.Init:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__SkiLoop1, this);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__SkiLoop1, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01, this);
                 ZPosSpeed = 8;
                 ZPosDeacceleration = 3 / 8f; 
                 break;
@@ -246,7 +246,7 @@ public partial class RaymanMode7
                 break;
 
             case FsmAction.UnInit:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__SplshGen_Mix04, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__SplshGen_Mix04, this);
                 break;
         }
 
@@ -258,7 +258,7 @@ public partial class RaymanMode7
         switch (action)
         {
             case FsmAction.Init:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__OnoRcvH1_Mix04, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__OnoRcvH1_Mix04, this);
                 InvulnerabilityTimer = 0;
                 IsInvulnerable = true;
                 break;
@@ -296,12 +296,12 @@ public partial class RaymanMode7
             case FsmAction.Init:
                 InvulnerabilityTimer = 0;
                 GameInfo.ModifyLives(-1);
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__RaDeath_Mix03, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__RaDeath_Mix03, this);
                 ReceiveDamage(255);
                 Scene.GetGameObject(SamActorId).ProcessMessage(this, Message.Actor_End);
                 ActionId = Action.Dying;
                 MechModel.Speed = MechModel.Speed with { Y = 0 };
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__SkiLoop1, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__SkiLoop1, this);
                 break;
 
             case FsmAction.Step:

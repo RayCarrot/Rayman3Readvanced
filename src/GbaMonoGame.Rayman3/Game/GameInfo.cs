@@ -271,7 +271,7 @@ public static class GameInfo
     public static void IncBlueLumsTime()
     {
         if (IsBlueLumsNearEnd())
-            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__LumTimer_Mix02);
+            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__LumTimer_Mix02);
 
         BlueLumsTimer += 304;
         if (BlueLumsTimer > 416)
@@ -485,7 +485,7 @@ public static class GameInfo
             
             if (GameCubeCollectedYellowLumsCount == YellowLumsCount)
             {
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumTotal_Mix02);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LumTotal_Mix02);
                 LevelMusicManager.OverrideLevelMusic(Rayman3SoundEvent.Play__win2);
             }
         }
@@ -496,7 +496,7 @@ public static class GameInfo
             // NOTE: Game also checks to MapId is not 0xFF, but that shouldn't be possible
             if (HasCollectedAllLumsInLevel() && LevelType != LevelType.Race)
             {
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumTotal_Mix02);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LumTotal_Mix02);
                 LevelMusicManager.OverrideLevelMusic(Rayman3SoundEvent.Play__win2);
             }
 
@@ -510,7 +510,7 @@ public static class GameInfo
         {
             GameCubeCollectedCagesCount++;
             if (GameCubeCollectedCagesCount == CagesCount)
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumTotal_Mix02);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LumTotal_Mix02);
         }
         else
         {
@@ -518,7 +518,7 @@ public static class GameInfo
 
             // NOTE: Game also checks to MapId is not 0xFF, but that shouldn't be possible
             if (HasCollectedAllCagesInLevel())
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumTotal_Mix02);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LumTotal_Mix02);
 
             Rayman3Achievements.CheckProgressionBasedAchievements();
         }
@@ -959,13 +959,13 @@ public static class GameInfo
 
     public static void PlayLevelMusic()
     {
-        SoundEventsManager.ProcessEvent(Level.StartMusicSoundEvent);
+        Engine.Sem.ProcessEvent(Level.StartMusicSoundEvent);
     }
 
     public static void StopLevelMusic()
     {
         if (LevelType != LevelType.GameCube)
-            SoundEventsManager.ProcessEvent(Level.StopMusicSoundEvent);
+            Engine.Sem.ProcessEvent(Level.StopMusicSoundEvent);
     }
 
     public static Rayman3SoundEvent GetLevelMusicSoundEvent()

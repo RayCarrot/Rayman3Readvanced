@@ -18,7 +18,7 @@ public class Scene2D
         Camera = createCameraFunc(this);
 
         AllowModalDialogs = true;
-        AnimationPlayer = new AnimationPlayer(false, SoundEventsManager.ProcessEvent);
+        AnimationPlayer = new AnimationPlayer(false, Engine.Sem.ProcessEvent);
         Dialogs = new List<Dialog>(layersCount);
         DialogModalFlags = new List<bool>(layersCount);
 
@@ -49,7 +49,7 @@ public class Scene2D
         Camera = createCameraFunc(this);
 
         AllowModalDialogs = true;
-        AnimationPlayer = new AnimationPlayer(false, SoundEventsManager.ProcessEvent);
+        AnimationPlayer = new AnimationPlayer(false, Engine.Sem.ProcessEvent);
         Dialogs = new List<Dialog>(layersCount);
         DialogModalFlags = new List<bool>(layersCount);
 

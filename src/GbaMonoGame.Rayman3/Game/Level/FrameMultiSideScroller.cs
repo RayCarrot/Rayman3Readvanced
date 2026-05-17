@@ -128,7 +128,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         Scene = null;
 
         GameInfo.StopLevelMusic();
-        SoundEventsManager.StopAllSongs();
+        Engine.Sem.StopAllSongs();
     }
 
     public override void Step()
@@ -164,14 +164,14 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
                     Scene.AnimationPlayer.PlayFront(PauseSign);
 
                     if (!IsShowingPauseSign)
-                        ((NGageSoundEventsManager)SoundEventsManager.Current).PauseLoopingSoundEffects();
+                        ((NGageSoundEventsManager)Engine.Sem).PauseLoopingSoundEffects();
 
                     IsShowingPauseSign = true;
                 }
                 else
                 {
                     if (IsShowingPauseSign)
-                        ((NGageSoundEventsManager)SoundEventsManager.Current).ResumeLoopingSoundEffects();
+                        ((NGageSoundEventsManager)Engine.Sem).ResumeLoopingSoundEffects();
 
                     IsShowingPauseSign = false;
                 }
@@ -227,7 +227,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         }
         else
         {
-            SoundEventsManager.StopAllSongs();
+            Engine.Sem.StopAllSongs();
 
             InitialMenuPage menuPage = Rom.Platform == Platform.GBA && EndOfFrame
                 ? InitialMenuPage.Multiplayer
@@ -279,8 +279,8 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
         UserInfo.ProcessMessage(this, Message.UserInfo_Pause);
 
-        SoundEventsManager.FinishReplacingAllSongs();
-        SoundEventsManager.PauseAllSongs();
+        Engine.Sem.FinishReplacingAllSongs();
+        Engine.Sem.PauseAllSongs();
 
         Scene.ProcessDialogs();
         Scene.Playfield.Step();
@@ -351,7 +351,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         UserInfo.ProcessMessage(this, Message.UserInfo_Unpause);
 
         Scene.Step();
-        SoundEventsManager.ResumeAllSongs();
+        Engine.Sem.ResumeAllSongs();
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
         CurrentStepAction = Step_Normal;

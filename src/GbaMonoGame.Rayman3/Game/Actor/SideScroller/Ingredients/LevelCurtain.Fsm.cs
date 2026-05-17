@@ -25,8 +25,8 @@ public partial class LevelCurtain
 
                         if (mainActor.Speed.Y == 0)
                         {
-                            if (!SoundEventsManager.IsSongPlaying(Rayman3SoundEvent.Play__Tag_Mix02))
-                                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Tag_Mix02, this);
+                            if (!Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__Tag_Mix02))
+                                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Tag_Mix02, this);
 
                             mainActor.ProcessMessage(this, Message.Rayman_EnterLockedLevel);
                         }
@@ -115,7 +115,7 @@ public partial class LevelCurtain
                 {
                     ActionId = Action.EnterCurtain1;
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_EnterLevel);
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Curtain_YoyoMove_Mix02, this);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Curtain_YoyoMove_Mix02, this);
                 }
                 break;
 
@@ -128,7 +128,7 @@ public partial class LevelCurtain
                     {
                         ActionId = Action.EnterCurtain1;
                         Scene.MainActor.ProcessMessage(this, Message.Rayman_EnterLevel);
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__Curtain_YoyoMove_Mix02, this);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Curtain_YoyoMove_Mix02, this);
                     }
                     else if (ActionId == Action.EnterCurtain1)
                     {
@@ -177,7 +177,7 @@ public partial class LevelCurtain
                 Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                 Gfx.Fade = AlphaCoefficient.Max;
 
-                SoundEventsManager.StopAllSongs();
+                Engine.Sem.StopAllSongs();
                 GameInfo.LoadLevel(MapId);
                 break;
         }

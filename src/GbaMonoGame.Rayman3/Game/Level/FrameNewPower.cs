@@ -110,7 +110,7 @@ public class FrameNewPower : Frame, IHasScene, IHasPlayfield
         Scene = null;
 
         GameInfo.StopLevelMusic();
-        SoundEventsManager.StopAllSongs();
+        Engine.Sem.StopAllSongs();
         SoundEngineInterface.SetNbVoices(7);
     }
 
@@ -142,7 +142,7 @@ public class FrameNewPower : Frame, IHasScene, IHasPlayfield
                     // Stop music
                     if (!HasStoppedMusic)
                     {
-                        SoundEventsManager.StopAllSongs();
+                        Engine.Sem.StopAllSongs();
                         HasStoppedMusic = true;
                     }
                     // End level

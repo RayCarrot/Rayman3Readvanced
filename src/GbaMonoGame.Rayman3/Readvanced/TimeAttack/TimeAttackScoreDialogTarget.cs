@@ -70,9 +70,9 @@ public class TimeAttackScoreDialogTarget
                 // 60/40 chance for either sound to play. This could be done through
                 // a random resource, but then it wouldn't work for the N-Gage version.
                 if (Random.GetNumber(100) < 60)
-                    SoundEventsManager.ProcessEvent(ReadvancedSoundEvent.Play__PadStamp01_Mix01);
+                    Engine.Sem.ProcessEvent(ReadvancedSoundEvent.Play__PadStamp01_Mix01);
                 else
-                    SoundEventsManager.ProcessEvent(ReadvancedSoundEvent.Play__PadStamp02_Mix01);
+                    Engine.Sem.ProcessEvent(ReadvancedSoundEvent.Play__PadStamp02_Mix01);
             }
         }
 

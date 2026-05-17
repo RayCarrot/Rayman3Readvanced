@@ -54,7 +54,7 @@ public partial class BluePirate
                     if (Scene.KeepAllObjectsActive && !AnimatedObject.IsFramed)
                         QueueFallSound = true;
                     else
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraJump_BigFoot1_Mix02, this);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PiraJump_BigFoot1_Mix02, this);
 
                     ActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
                 }
@@ -120,7 +120,7 @@ public partial class BluePirate
         switch (action)
         {
             case FsmAction.Init:
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraAtk1_Mix01__or__PiraHurt_Mix02, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PiraAtk1_Mix01__or__PiraHurt_Mix02, this);
                 ActionId = Position.X - Scene.MainActor.Position.X < 0 ? Action.AttackExtend_Right : Action.AttackExtend_Left;
                 break;
 
@@ -255,7 +255,7 @@ public partial class BluePirate
                 else
                     ActionId = IsFacingRight ? Action.Hit_Right : Action.Hit_Left;
 
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraHit1_Mix02__or__PiraHit3_Mix03, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PiraHit1_Mix02__or__PiraHit3_Mix03, this);
                 IdleDetectionTimer = 0;
                 StartInvulnerability();
                 break;
@@ -289,7 +289,7 @@ public partial class BluePirate
         {
             case FsmAction.Init:
                 ActionId = IsFacingRight ? Action.Dying_Right : Action.Dying_Left;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__PiraDead_Mix05, this);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PiraDead_Mix05, this);
                 IsSolid = false;
                 LevelMusicManager.StopSpecialMusic();
                 Rayman3Achievements.DefeatPirateType(PirateType.Blue);

@@ -85,7 +85,7 @@ public class TimerBar : Bar
             if (minutes == 0 && seconds <= 10 && seconds != 0 && centiSeconds == 0 && PreviousSecondsValue != seconds)
             {
                 PreviousSecondsValue = seconds;
-                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__GameOver_BeepFX01_Mix02);
+                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__GameOver_BeepFX01_Mix02);
             }
         }
 

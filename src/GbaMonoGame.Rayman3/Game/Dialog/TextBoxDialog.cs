@@ -77,11 +77,11 @@ public partial class TextBoxDialog : Dialog
                     if (OffsetY > 44)
                         NextSoundEvent = Rayman3SoundEvent.Play__RyVOLy_Mix01;
                     else
-                        SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__RyVOLy_Mix01);
+                        Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__RyVOLy_Mix01);
                 }
                 else
                 {
-                    SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__RyVO1_Mix01__or__RyVO2_Mix01__or__RyVO3_Mix01);
+                    Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__RyVO1_Mix01__or__RyVO2_Mix01__or__RyVO3_Mix01);
                 }
             }
             // Character speaking
@@ -98,11 +98,11 @@ public partial class TextBoxDialog : Dialog
                             if (OffsetY > 44)
                                 NextSoundEvent = Rayman3SoundEvent.Play__MurfyVO4A_Mix01;
                             else
-                                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MurfyVO4A_Mix01);
+                                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MurfyVO4A_Mix01);
                         }
                         else
                         {
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__MurfyVO1A_Mix01__or__MurfyVO1B_Mix01);
+                            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MurfyVO1A_Mix01__or__MurfyVO1B_Mix01);
                         }
 
                         break;
@@ -114,7 +114,7 @@ public partial class TextBoxDialog : Dialog
                             if (OffsetY > 44)
                                 NextSoundEvent = Rayman3SoundEvent.Play__LyVO1_Mix01;
                             else
-                                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LyVO1_Mix01);
+                                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LyVO1_Mix01);
                         }
                         break;
 
@@ -124,11 +124,11 @@ public partial class TextBoxDialog : Dialog
                             if (OffsetY > 44)
                                 NextSoundEvent = Rayman3SoundEvent.Play__TiztrVO1_Mix01;
                             else
-                                SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__TiztrVO1_Mix01);
+                                Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__TiztrVO1_Mix01);
                         }
                         else
                         {
-                            SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__TiztrVO2_Mix01__or__TiztrVO3_Mix01__or__TiztrVO4_Mix01);
+                            Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__TiztrVO2_Mix01__or__TiztrVO3_Mix01__or__TiztrVO4_Mix01);
                         }
                         break;
                 }
@@ -294,7 +294,7 @@ public partial class TextBoxDialog : Dialog
 
         if (NextSoundEvent != Rayman3SoundEvent.None)
         {
-            SoundEventsManager.ProcessEvent(NextSoundEvent);
+            Engine.Sem.ProcessEvent(NextSoundEvent);
             NextSoundEvent = Rayman3SoundEvent.None;
         }
 
