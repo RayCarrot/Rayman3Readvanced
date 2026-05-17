@@ -4,7 +4,7 @@ namespace GbaMonoGame;
 
 public static class Engine
 {
-    // Services
+    // Engine services
     public static ConfigManager Config { get; private set; }
     public static ApplicationManager App { get; private set; }
     public static GameWindowManager Window { get; private set; }
@@ -14,7 +14,7 @@ public static class Engine
     public static RichPresenceManager RichPresence { get; private set; }
     public static FrameManager FrameMngr { get; private set; }
 
-    public static void Init(
+    public static void InitEngine(
         ConfigManager config, 
         ApplicationManager app, 
         GameWindowManager window,
@@ -27,7 +27,7 @@ public static class Engine
         // Register encoding provider to be able to use Windows 1252
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-        // Create services
+        // Set services
         Config = config;
         App = app;
         Window = window;
@@ -48,12 +48,14 @@ public static class Engine
             ViewPort.SetInternalGameResolution(Config.Active.Tweaks.InternalGameResolution.Value);
         }
         RichPresence.Initialize();
-
-        // TODO: Refactor
-        Gfx.Load();
     }
 
-    public static void UnInit()
+    public static void InitGame()
+    {
+        // Do nothing
+    }
+
+    public static void UnInitEngine()
     {
         // Uninitialize services
         Assets?.Dispose();
@@ -69,6 +71,11 @@ public static class Engine
         Messages = null;
         RichPresence = null;
         FrameMngr = null;
+    }
+
+    public static void UnInitGame()
+    {
+        // Do nothing
     }
 
     public static void Step()

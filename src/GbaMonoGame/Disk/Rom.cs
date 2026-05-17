@@ -143,7 +143,38 @@ public static class Rom
         return GetGbaPointers(header, game, false) != null;
     }
 
-    public static void Init(string gameDirectory, string[] gameFileNames, Game game, Platform platform)
+    public static void GetGamePaths(Game game, Platform platform, out string gameDirectory, out string[] gameFileNames)
+    {
+        string gameName = game switch
+        {
+            Game.Rayman3 => "rayman3",
+            _ => throw new ArgumentOutOfRangeException(nameof(game), game, null)
+        };
+
+        if (platform == Platform.GBA)
+        {
+            gameDirectory = FileManager.GetDataDirectory("Gba");
+            gameFileNames =
+            [
+                $"{gameName}.gba"
+            ];
+        }
+        else if (platform == Platform.NGage)
+        {
+            gameDirectory = FileManager.GetDataDirectory("NGage");
+            gameFileNames =
+            [
+                $"{gameName}.app",
+                $"{gameName}.dat",
+            ];
+        }
+        else
+        {
+            throw new UnsupportedPlatformException();
+        }
+    }
+
+    public static void Init(Game game, Platform platform)
     {
         if (IsLoaded)
             throw new Exception("The rom is already loaded");
@@ -152,6 +183,9 @@ public static class Rom
         {
             IsLoaded = true;
 
+            // Get the paths
+            GetGamePaths(game, platform, out string gameDirectory, out string[] gameFileNames);
+            
             // Set properties
             _gameDirectory = gameDirectory;
             _gameFileNames = gameFileNames;

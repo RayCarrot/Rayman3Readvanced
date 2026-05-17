@@ -70,7 +70,7 @@ public abstract class GbaGame : Game
     private void Rom_Loaded(object sender, EventArgs e)
     {
         // Load the game
-        LoadGame();
+        InitGame();
 
         if (Engine.Config.Active.Debug.DebugModeEnabled)
         {
@@ -96,7 +96,7 @@ public abstract class GbaGame : Game
     private void Rom_Unloaded(object sender, EventArgs e)
     {
         // Unload the game
-        UnloadGame();
+        UnInitGame();
 
         // Clear debug windows and menus
         _debugLayout?.Clear();
@@ -167,8 +167,10 @@ public abstract class GbaGame : Game
 
     protected abstract Frame CreateInitialFrame();
     protected abstract Frame CreateFatalErrorFrame(Exception exception);
-    protected virtual void LoadGame() { }
-    protected virtual void UnloadGame() { }
+    protected virtual void InitEngine() { }
+    protected virtual void InitGame() { }
+    protected virtual void UnInitEngine() { }
+    protected virtual void UnInitGame() { }
     protected virtual void AddDebugWindowsAndMenus(DebugLayout debugLayout) { }
 
     protected override void Initialize()
@@ -200,8 +202,8 @@ public abstract class GbaGame : Game
 
         _applicationManager = new ApplicationManager(this);
 
-        // Load the engine
-        Engine.Init(
+        // Initialize the engine
+        Engine.InitEngine(
             config: config, 
             app: _applicationManager, 
             window: _gameWindowManager, 
@@ -210,7 +212,13 @@ public abstract class GbaGame : Game
             messages: new MessageManager(),
             richPresence: new RichPresenceManager(),
             frameMngr: new FrameManager());
-        
+
+        // Load the graphics management
+        Gfx.Load();
+
+        // Init the engine from the game implementation
+        InitEngine();
+
         // Set the initial frame
         Engine.FrameMngr.SetNextFrame(CreateInitialFrame());
 
@@ -218,7 +226,7 @@ public abstract class GbaGame : Game
         Engine.Window.VSync = Engine.Config.Local.Display.VSync;
         Engine.Window.ApplyState();
 
-        // Load the renderer
+        // Create the renderer
         _gfxRenderer = new GfxRenderer(GraphicsDevice);
 
         if (Engine.Config.Active.Debug.DebugModeEnabled)
@@ -383,7 +391,8 @@ public abstract class GbaGame : Game
     protected override void Dispose(bool disposing)
     {
         Rom.UnInit();
-        Engine.UnInit();
+        Engine.UnInitEngine();
+        UnInitEngine();
         base.Dispose(disposing);
     }
 

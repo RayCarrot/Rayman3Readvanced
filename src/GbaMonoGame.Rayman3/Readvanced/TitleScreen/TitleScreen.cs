@@ -33,42 +33,11 @@ public class TitleScreen : Frame
     public TitleScreenOptionsList QuitGameOptionsList { get; set; }
     public int SelectedGameIndex { get; set; }
 
-    private void GetGamePaths(Platform platform, out string gameDirectory, out string[] gameFileNames)
-    {
-        if (platform == Platform.GBA)
-        {
-            gameDirectory = FileManager.GetDataDirectory("Gba");
-            gameFileNames =
-            [
-               "rayman3.gba"
-            ];
-        }
-        else if (platform == Platform.NGage)
-        {
-            gameDirectory = FileManager.GetDataDirectory("NGage");
-            gameFileNames =
-            [
-                "rayman3.app",
-                "rayman3.dat",
-            ];
-        }
-        else
-        {
-            throw new UnsupportedPlatformException();
-        }
-    }
 
     private void LoadRom(Platform platform)
     {
         // Load the rom asynchronously while fading out
-        LoadRomTask = Task.Run(() =>
-        {
-            // Get the game paths
-            GetGamePaths(platform, out string gameDirectory, out string[] gameFileNames);
-
-            // Initialize the rom
-            Rom.Init(gameDirectory, gameFileNames, Game.Rayman3, platform);
-        });
+        LoadRomTask = Task.Run(() => Rom.Init(Game.Rayman3, platform));
 
         TransitionsFX.FadeOutInit(2);
     }
@@ -114,7 +83,7 @@ public class TitleScreen : Frame
     private void UpdateGameOptions(TitleScreenGame game)
     {
         // Get the game paths
-        GetGamePaths(game.Platform, out string gameDirectory, out string[] gameFileNames);
+        Rom.GetGamePaths(Game.Rayman3, game.Platform, out string gameDirectory, out string[] gameFileNames);
 
         // The rom exists!
         if (gameFileNames.All(x => File.Exists(Path.Combine(gameDirectory, x))))
