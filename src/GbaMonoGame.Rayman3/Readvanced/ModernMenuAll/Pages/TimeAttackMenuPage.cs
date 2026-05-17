@@ -18,7 +18,7 @@ public class TimeAttackMenuPage : MenuPage
     public TimeAttackMenuPage(ModernMenuAll menu) : base(menu)
     {
         // Get the level infos
-        ImmutableArray<TimeAttackLevelInfo> levelInfos = TimeAttackInfo.GetLevelInfos();
+        ImmutableArray<TimeAttackLevelInfo> levelInfos = Rayman3.TimeAttack.GetLevelInfos();
         
         // Determine the worlds count
         int worldsCount = levelInfos.Max(x => x.World) + 1;
@@ -217,7 +217,7 @@ public class TimeAttackMenuPage : MenuPage
 
             TimeAttackTime? recordTime = TimeAttackDataManager.GetRecordTime(mapId);
 
-            TimeAttackTime[] targetTimes = TimeAttackInfo.GetTargetTimes(mapId);
+            TimeAttackTime[] targetTimes = Rayman3.TimeAttack.GetTargetTimes(mapId);
             for (int i = 0; i < TargetTimes.Length; i++)
             {
                 TimeAttackTime? targetTime = i < targetTimes.Length ? targetTimes[i] : null;
@@ -237,11 +237,11 @@ public class TimeAttackMenuPage : MenuPage
     protected override void Init()
     {
         MapId selectedMap = Maps[0][0];
-        if (TimeAttackInfo.IsActive)
+        if (Rayman3.TimeAttack.IsActive)
         {
-            if (TimeAttackInfo.LevelId != null)
-                selectedMap = TimeAttackInfo.LevelId.Value;
-            TimeAttackInfo.End();
+            if (Rayman3.TimeAttack.LevelId != null)
+                selectedMap = Rayman3.TimeAttack.LevelId.Value;
+            Rayman3.TimeAttack.End();
         }
 
         WorldOptions = new TimeAttackLevelMenuOption[Maps.Length][];
@@ -427,8 +427,8 @@ public class TimeAttackMenuPage : MenuPage
                             Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                             Gfx.Fade = AlphaCoefficient.Max;
 
-                            TimeAttackInfo.Start();
-                            TimeAttackInfo.LoadLevel(SelectedMap, GhostOptions[SelectedGhostOption].Type);
+                            Rayman3.TimeAttack.Start();
+                            Rayman3.TimeAttack.LoadLevel(SelectedMap, GhostOptions[SelectedGhostOption].Type);
                         });
                     });
                 }

@@ -69,7 +69,7 @@ public partial class TimeFreezeItem
         {
             case FsmAction.Init:
                 // Remove time
-                TimeAttackInfo.RemoveTime(TimeDecreaseSecondsValue * 60);
+                Rayman3.TimeAttack.RemoveTime(TimeDecreaseSecondsValue * 60);
 
                 // Change action to the dying one, playing a faster animation
                 ActionId = Action.Dying;

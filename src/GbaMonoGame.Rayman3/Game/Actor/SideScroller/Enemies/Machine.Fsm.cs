@@ -56,7 +56,7 @@ public partial class Machine
                     return false;
                 }
                 // Parent if in time attack
-                else if (BossHealth == 4 && TimeAttackInfo.IsActive)
+                else if (BossHealth == 4 && Rayman3.TimeAttack.IsActive)
                 {
                     State.MoveTo(_Fsm_TimeAttackIntro);
                     return false;
@@ -244,7 +244,7 @@ public partial class Machine
 
             case FsmAction.Step:
                 // Wait for countdown to finish
-                if (TimeAttackInfo.Mode == TimeAttackMode.Play)
+                if (Rayman3.TimeAttack.Mode == TimeAttackMode.Play)
                 {
                     State.MoveTo(_Fsm_CannonFire);
                     return false;

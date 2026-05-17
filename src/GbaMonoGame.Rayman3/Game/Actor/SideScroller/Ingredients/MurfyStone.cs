@@ -12,7 +12,7 @@ public sealed partial class MurfyStone : BaseActor
         CreateGeneratedStates();
 
         // Disable Murfy stones for the time attack mode
-        if (TimeAttackInfo.IsActive)
+        if (Rayman3.TimeAttack.IsActive)
             ProcessMessage(this, Message.Destroy);
 
         MurfyId = actorResource.Links[0];

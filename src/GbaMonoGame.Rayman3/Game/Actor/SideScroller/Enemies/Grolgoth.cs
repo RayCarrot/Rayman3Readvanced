@@ -35,7 +35,7 @@ public sealed partial class Grolgoth : MovableActor
         }
         else if (GameInfo.MapId == MapId.BossFinal_M2)
         {
-            if (GameInfo.LastGreenLumAlive == 0 && !TimeAttackInfo.IsActive)
+            if (GameInfo.LastGreenLumAlive == 0 && !Rayman3.TimeAttack.IsActive)
             {
                 State.SetTo(_Fsm_AirInit);
                 Timer = 0;

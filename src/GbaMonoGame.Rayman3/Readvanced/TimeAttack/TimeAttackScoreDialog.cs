@@ -19,11 +19,11 @@ public partial class TimeAttackScoreDialog : Dialog
         Timer = 0;
 
         // Get the map
-        MapId = TimeAttackInfo.LevelId ?? throw new Exception("Finished time attack with no level set");
+        MapId = Rayman3.TimeAttack.LevelId ?? throw new Exception("Finished time attack with no level set");
         
         // Check if the time is a new record
         TimeAttackTime? recordTime = TimeAttackDataManager.GetRecordTime(MapId);
-        NewRecord = recordTime == null || TimeAttackInfo.Timer < recordTime.Value.Time;
+        NewRecord = recordTime == null || Rayman3.TimeAttack.Timer < recordTime.Value.Time;
 
         State.SetTo(_Fsm_ShowTargets);
     }
@@ -148,7 +148,7 @@ public partial class TimeAttackScoreDialog : Dialog
             ObjPriority = 0,
             ScreenPos = new Vector2(164, 9),
             RenderContext = Scene.HudRenderContext,
-            Time = new TimeAttackTime(TimeAttackTimeType.Record, TimeAttackInfo.Timer),
+            Time = new TimeAttackTime(TimeAttackTimeType.Record, Rayman3.TimeAttack.Timer),
         };
 
         if (NewRecord)
@@ -188,7 +188,7 @@ public partial class TimeAttackScoreDialog : Dialog
             RecordTimeIcon.ScreenPos = RecordTimeText.ScreenPos + new Vector2(-18, -2);
         }
 
-        TimeTargets = TimeAttackInfo.TargetTimes.
+        TimeTargets = Rayman3.TimeAttack.TargetTimes.
             Where(x => x.Type != TimeAttackTimeType.Record).
             Select((x, i) => new TimeAttackScoreDialogTarget(x, Scene.HudRenderContext, new Vector2(80 + i * 96, 80))).
             ToArray();

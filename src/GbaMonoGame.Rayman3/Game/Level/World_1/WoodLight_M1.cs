@@ -56,7 +56,7 @@ public class WoodLight_M1 : FrameSideScroller
 
     public override void Step()
     {
-        if (TimeAttackInfo.IsActive && TimeAttackInfo.Mode == TimeAttackMode.Play && CurrentStepAction == Step_Normal)
+        if (Rayman3.TimeAttack.IsActive && Rayman3.TimeAttack.Mode == TimeAttackMode.Play && CurrentStepAction == Step_Normal)
             TimeAttackTextBoxTimer++;
 
         base.Step();

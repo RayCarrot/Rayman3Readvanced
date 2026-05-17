@@ -192,10 +192,10 @@ public class Rayman3DebugWindow : DebugWindow
             {
                 ImGui.SeparatorText("General");
 
-                TimeAttackInfo.IsActive = ImGuiExt.Checkbox("Active", TimeAttackInfo.IsActive);
-                TimeAttackInfo.IsPaused = ImGuiExt.Checkbox("Paused", TimeAttackInfo.IsPaused);
-                ImGui.Text($"Mode: {TimeAttackInfo.Mode}");
-                ImGui.Text($"Timer: {TimeAttackInfo.Timer}");
+                Rayman3.TimeAttack.IsActive = ImGuiExt.Checkbox("Active", Rayman3.TimeAttack.IsActive);
+                Rayman3.TimeAttack.IsPaused = ImGuiExt.Checkbox("Paused", Rayman3.TimeAttack.IsPaused);
+                ImGui.Text($"Mode: {Rayman3.TimeAttack.Mode}");
+                ImGui.Text($"Timer: {Rayman3.TimeAttack.Timer}");
 
                 if (Frame.Current is IHasScene frame)
                 {

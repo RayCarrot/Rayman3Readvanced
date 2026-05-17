@@ -43,9 +43,9 @@ public partial class TimeAttackDialog : Dialog
     {
         // Determine the current target time
         int targetTime = -1;
-        for (int i = TimeAttackInfo.TargetTimes.Length - 1; i >= 0; i--)
+        for (int i = Rayman3.TimeAttack.TargetTimes.Length - 1; i >= 0; i--)
         {
-            if (TimeAttackInfo.Timer <= TimeAttackInfo.TargetTimes[i].Time)
+            if (Rayman3.TimeAttack.Timer <= Rayman3.TimeAttack.TargetTimes[i].Time)
             {
                 targetTime = i;
                 break;
@@ -56,7 +56,7 @@ public partial class TimeAttackDialog : Dialog
             return;
 
         TargetTimeIndex = targetTime;
-        TargetTime = TargetTimeIndex == -1 ? default : TimeAttackInfo.TargetTimes[TargetTimeIndex];
+        TargetTime = TargetTimeIndex == -1 ? default : Rayman3.TimeAttack.TargetTimes[TargetTimeIndex];
 
         if (TargetTimeIndex != -1)
         {
@@ -98,7 +98,7 @@ public partial class TimeAttackDialog : Dialog
             RenderContext = Scene.HudRenderContext,
         };
 
-        if (TimeAttackInfo.Mode == TimeAttackMode.Countdown && CountdownValue != -1)
+        if (Rayman3.TimeAttack.Mode == TimeAttackMode.Countdown && CountdownValue != -1)
             Countdown.CurrentAnimation = CountdownValue;
 
         TargetTimeIcon = new SpriteTextureObject
@@ -123,15 +123,15 @@ public partial class TimeAttackDialog : Dialog
 
     public override void Draw(AnimationPlayer animationPlayer)
     {
-        TimerBar.DrawTime(animationPlayer, TimeAttackInfo.Timer);
+        TimerBar.DrawTime(animationPlayer, Rayman3.TimeAttack.Timer);
 
-        if (TimeAttackInfo.Mode == TimeAttackMode.Countdown && CountdownValue != -1 && !TimeAttackInfo.IsPaused)
+        if (Rayman3.TimeAttack.Mode == TimeAttackMode.Countdown && CountdownValue != -1 && !Rayman3.TimeAttack.IsPaused)
             animationPlayer.PlayFront(Countdown);
 
         if (TargetTimeIndex != -1 && !HideTargetTime)
         {
-            int timeDiff = TargetTime.Time - TimeAttackInfo.Timer;
-            bool blink = !TimeAttackInfo.IsPaused && timeDiff <= TargetBlinkRange;
+            int timeDiff = TargetTime.Time - Rayman3.TimeAttack.Timer;
+            bool blink = !Rayman3.TimeAttack.IsPaused && timeDiff <= TargetBlinkRange;
 
             if (blink && timeDiff % 60 == 30)
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__GameOver_BeepFX01_Mix02);

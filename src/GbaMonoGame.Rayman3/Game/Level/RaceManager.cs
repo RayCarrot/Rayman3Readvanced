@@ -34,9 +34,9 @@ public class RaceManager
 
     public void Step()
     {
-        if (TimeAttackInfo.IsActive)
+        if (Rayman3.TimeAttack.IsActive)
         {
-            if (Timer == 0 && TimeAttackInfo.Mode == TimeAttackMode.Play)
+            if (Timer == 0 && Rayman3.TimeAttack.Mode == TimeAttackMode.Play)
             {
                 Timer = 1;
                 IsRacing = true;

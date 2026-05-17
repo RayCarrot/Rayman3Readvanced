@@ -19,7 +19,7 @@ public partial class FlyingShell
                 UpdateSoundPitch();
 
                 // Wait for countdown to finish
-                if (!TimeAttackInfo.IsActive || TimeAttackInfo.Mode == TimeAttackMode.Play)
+                if (!Rayman3.TimeAttack.IsActive || Rayman3.TimeAttack.Mode == TimeAttackMode.Play)
                 {
                     State.MoveTo(_Fsm_Fly);
                     return false;

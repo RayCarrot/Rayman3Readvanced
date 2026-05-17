@@ -18,7 +18,7 @@ public class UserInfoSingleMode7 : Dialog
         IsPaused = false;
 
         // Disable lums and timer bars in time attack
-        if (TimeAttackInfo.IsActive)
+        if (Rayman3.TimeAttack.IsActive)
         {
             LumsBar.Disable();
             TimerBar.Disable();
@@ -208,7 +208,7 @@ public class UserInfoSingleMode7 : Dialog
             }
         }
 
-        if (IsCountdownActive && !IsPaused && !TimeAttackInfo.IsActive)
+        if (IsCountdownActive && !IsPaused && !Rayman3.TimeAttack.IsActive)
             animationPlayer.PlayFront(Countdown);
     }
 }

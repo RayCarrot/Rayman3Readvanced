@@ -72,7 +72,7 @@ public partial class Grolgoth
                     return false;
 
                 // Wait for time attack countdown
-                if (TimeAttackInfo.IsActive && TimeAttackInfo.Mode != TimeAttackMode.Play)
+                if (Rayman3.TimeAttack.IsActive && Rayman3.TimeAttack.Mode != TimeAttackMode.Play)
                     return true;
 
                 Timer++;
@@ -559,7 +559,7 @@ public partial class Grolgoth
                     return false;
 
                 // Wait for time attack countdown
-                if (TimeAttackInfo.IsActive && TimeAttackInfo.Mode != TimeAttackMode.Play)
+                if (Rayman3.TimeAttack.IsActive && Rayman3.TimeAttack.Mode != TimeAttackMode.Play)
                     return true;
 
                 Timer++;

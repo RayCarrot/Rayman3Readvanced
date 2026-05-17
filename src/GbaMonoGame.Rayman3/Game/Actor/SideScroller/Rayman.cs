@@ -201,7 +201,7 @@ public sealed partial class Rayman : MovableActor
         LastSafePositionBuffer = new SafePosition[10];
         LastSafePositionBufferIndex = 0;
 
-        if (TimeAttackInfo.IsActive)
+        if (Rayman3.TimeAttack.IsActive)
             State.SetTo(_Fsm_TimeAttackStart);
         else
             State.SetTo(_Fsm_LevelStart);

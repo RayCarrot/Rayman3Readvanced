@@ -74,7 +74,7 @@ public sealed partial class Lums : BaseActor
                 }
 
                 // Don't include white lums in time attack
-                if (TimeAttackInfo.IsActive)
+                if (Rayman3.TimeAttack.IsActive)
                     ProcessMessage(this, Message.Destroy);
 
                 AnimatedObject.CurrentAnimation = 3;

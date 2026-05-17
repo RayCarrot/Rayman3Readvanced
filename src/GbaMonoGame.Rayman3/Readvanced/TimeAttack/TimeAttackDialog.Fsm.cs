@@ -10,7 +10,7 @@ public partial class TimeAttackDialog
         {
             case FsmAction.Init:
                 CountdownValue = -1;
-                TimeAttackInfo.SetMode(TimeAttackMode.Countdown);
+                Rayman3.TimeAttack.SetMode(TimeAttackMode.Countdown);
                 break;
 
             case FsmAction.Step:
@@ -39,11 +39,11 @@ public partial class TimeAttackDialog
                         break;
 
                     case CountdownStartTime + CountdownSpeed * 4:
-                        TimeAttackInfo.SetMode(TimeAttackMode.Play);
+                        Rayman3.TimeAttack.SetMode(TimeAttackMode.Play);
                         break;
                 }
 
-                if (TimeAttackInfo.Mode != TimeAttackMode.Countdown)
+                if (Rayman3.TimeAttack.Mode != TimeAttackMode.Countdown)
                 {
                     State.MoveTo(_Fsm_Play);
                     return false;
@@ -63,20 +63,20 @@ public partial class TimeAttackDialog
         switch (action)
         {
             case FsmAction.Init:
-                TimeAttackInfo.InitGhostRecorder(Scene);
-                TimeAttackInfo.InitGhostPlayer(Scene);
+                Rayman3.TimeAttack.InitGhostRecorder(Scene);
+                Rayman3.TimeAttack.InitGhostPlayer(Scene);
                 break;
 
             case FsmAction.Step:
                 // Increment timer
-                TimeAttackInfo.AddTime(1);
+                Rayman3.TimeAttack.AddTime(1);
 
                 // Update target time
                 UpdateTargetTime();
 
                 // Step the ghosts
-                TimeAttackInfo.StepGhostRecorder();
-                TimeAttackInfo.StepGhostPlayer();
+                Rayman3.TimeAttack.StepGhostRecorder();
+                Rayman3.TimeAttack.StepGhostPlayer();
                 break;
 
             case FsmAction.UnInit:

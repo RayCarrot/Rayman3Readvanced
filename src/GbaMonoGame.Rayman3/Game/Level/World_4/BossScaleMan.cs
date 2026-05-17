@@ -15,7 +15,7 @@ public class BossScaleMan : FrameSideScroller
     {
         base.Init();
 
-        if (!TimeAttackInfo.IsActive)
+        if (!Rayman3.TimeAttack.IsActive)
         {
             Scene.Camera.LinkedObject = Scene.GetGameObject<MovableActor>(1);
             Scene.MainActor.ProcessMessage(this, Message.Rayman_Stop);

@@ -49,7 +49,7 @@ public class UserInfoSideScroller : Dialog
         }
 
         // Disable lums and cages bars in time attack
-        if (TimeAttackInfo.IsActive)
+        if (Rayman3.TimeAttack.IsActive)
         {
             if (LumsBar != null)
             {

@@ -26,7 +26,7 @@ public partial class TimeAttackScoreDialog
                         SoundEventsManager.ProcessEvent(musicEvent);
 
                     // Check if the target time was beaten
-                    if (TimeAttackInfo.Timer <= TimeTargets[TimeTargetTransitionIndex].Time.Time)
+                    if (Rayman3.TimeAttack.Timer <= TimeTargets[TimeTargetTransitionIndex].Time.Time)
                     {
                         TimeTargets[TimeTargetTransitionIndex].TransitionIn();
                         TimeTargetTransitionIndex++;
@@ -101,7 +101,7 @@ public partial class TimeAttackScoreDialog
                     if (NewRecord)
                     {
                         // Save the record time
-                        TimeAttackInfo.SaveTime();
+                        Rayman3.TimeAttack.SaveTime();
 
                         // Play sound
                         SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Play__LumTotal_Mix02);
@@ -149,9 +149,9 @@ public partial class TimeAttackScoreDialog
                             Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                             Gfx.Fade = AlphaCoefficient.Max;
 
-                            TimeAttackInfo.End();
-                            TimeAttackInfo.Start();
-                            TimeAttackInfo.LoadLevel(MapId, TimeAttackInfo.GhostType);
+                            Rayman3.TimeAttack.End();
+                            Rayman3.TimeAttack.Start();
+                            Rayman3.TimeAttack.LoadLevel(MapId, Rayman3.TimeAttack.GhostType);
                         }
                     }
                     else

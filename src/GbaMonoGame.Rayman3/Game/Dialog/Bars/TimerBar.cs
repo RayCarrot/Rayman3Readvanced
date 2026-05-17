@@ -80,7 +80,7 @@ public class TimerBar : Bar
         int centiSeconds = secondsRemainingTime * 100 / 60;
 
         // On N-Gage it plays a beep every second for the last 10 seconds (don't do this if in time attack though!)
-        if (Rom.Platform == Platform.NGage && !TimeAttackInfo.IsActive)
+        if (Rom.Platform == Platform.NGage && !Rayman3.TimeAttack.IsActive)
         {
             if (minutes == 0 && seconds <= 10 && seconds != 0 && centiSeconds == 0 && PreviousSecondsValue != seconds)
             {

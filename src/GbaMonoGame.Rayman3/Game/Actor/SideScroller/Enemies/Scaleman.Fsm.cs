@@ -18,7 +18,7 @@ public partial class Scaleman
 
             case FsmAction.Step:
                 // Wait for countdown to finish in time attack
-                if (!TimeAttackInfo.IsActive || TimeAttackInfo.Mode == TimeAttackMode.Play)
+                if (!Rayman3.TimeAttack.IsActive || Rayman3.TimeAttack.Mode == TimeAttackMode.Play)
                 {
                     State.MoveTo(_Fsm_Init);
                     return false;
@@ -51,7 +51,7 @@ public partial class Scaleman
                     }
 
                     // Skip delay in time attack
-                    if (Timer >= 90 || TimeAttackInfo.IsActive)
+                    if (Timer >= 90 || Rayman3.TimeAttack.IsActive)
                         ActionId = IsFacingRight ? Action.Submerge_Right : Action.Submerge_Left;
                 }
 
@@ -59,7 +59,7 @@ public partial class Scaleman
                 break;
 
             case FsmAction.UnInit:
-                if (!TimeAttackInfo.IsActive)
+                if (!Rayman3.TimeAttack.IsActive)
                 {
                     Scene.Camera.LinkedObject = Scene.MainActor;
                     Scene.Camera.ProcessMessage(this, Message.Cam_MoveToLinkedObject, false);

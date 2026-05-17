@@ -16,7 +16,7 @@ public class BonusMenuPage : MenuPage
         Rayman3.Achievements.GetTotalEarnedAchievements(out int earnedAchievements, out int totalAchievements);
 
         // Get time attack medals
-        TimeAttackInfo.GetTotalEarnedMedals(
+        Rayman3.TimeAttack.GetTotalEarnedMedals(
             out int earnedBronze, out int earnedSilver, out int earnedGold, 
             out int totalBronze, out int totalSilver, out int totalGold);
 

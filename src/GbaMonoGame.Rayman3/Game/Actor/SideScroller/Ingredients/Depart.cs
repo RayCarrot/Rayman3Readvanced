@@ -12,7 +12,7 @@ public sealed partial class Depart : ActionActor
         CreateGeneratedStates();
 
         // Don't show in time attack mode
-        if (TimeAttackInfo.IsActive)
+        if (Rayman3.TimeAttack.IsActive)
             ProcessMessage(this, Message.Destroy);
 
         // The behavior to end a level with the sign facing to the right is unused in the final version of the game

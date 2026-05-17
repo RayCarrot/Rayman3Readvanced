@@ -165,10 +165,10 @@ public sealed partial class FlyingShell : MovableActor
             case Message.Rayman_FinishLevel:
                 SoundEventsManager.ProcessEvent(Rayman3SoundEvent.Stop__Motor01_Mix12, this);
 
-                if (TimeAttackInfo.IsActive)
+                if (Rayman3.TimeAttack.IsActive)
                 {
-                    TimeAttackInfo.Pause();
-                    TimeAttackInfo.SetMode(TimeAttackMode.Score);
+                    Rayman3.TimeAttack.Pause();
+                    Rayman3.TimeAttack.SetMode(TimeAttackMode.Score);
                 }
                 else if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
                 {

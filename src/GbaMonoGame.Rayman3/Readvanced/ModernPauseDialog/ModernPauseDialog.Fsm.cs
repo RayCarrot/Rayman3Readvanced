@@ -33,7 +33,7 @@ public partial class ModernPauseDialog
                     // No extra option
                 }
                 // Time attack
-                else if (TimeAttackInfo.IsActive)
+                else if (Rayman3.TimeAttack.IsActive)
                 {
                     AddOption("RESTART MAP", _Fsm_RestartMap); // TODO: Remove option?
                     // TODO: "RESTART LEVEL"
@@ -253,7 +253,7 @@ public partial class ModernPauseDialog
                         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                         Gfx.Fade = AlphaCoefficient.Max;
 
-                        if (TimeAttackInfo.IsActive)
+                        if (Rayman3.TimeAttack.IsActive)
                         {
                             if (Engine.ActiveConfig.Tweaks.UseModernMainMenu)
                                 FrameManager.SetNextFrame(new ModernMenuAll(InitialMenuPage.TimeAttack));

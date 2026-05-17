@@ -57,17 +57,17 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
         Scene = new Scene2D((int)GameInfo.MapId, x => new CameraMode7(x), 3, 1);
 
         // Create pause dialog, but don't add yet
-        PauseDialog = Engine.ActiveConfig.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, !TimeAttackInfo.IsActive) : new PauseDialog(Scene);
+        PauseDialog = Engine.ActiveConfig.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, !Rayman3.TimeAttack.IsActive) : new PauseDialog(Scene);
 
         // Custom for the time attack mode
-        if (TimeAttackInfo.IsActive)
+        if (Rayman3.TimeAttack.IsActive)
         {
             // Add dialog for the HUD
             TimeAttackDialog = new TimeAttackDialog(Scene);
             Scene.AddDialog(TimeAttackDialog, false, false);
 
             // Add actors (time freeze items)
-            foreach (ActorResource actorResource in TimeAttackInfo.GetActors())
+            foreach (ActorResource actorResource in Rayman3.TimeAttack.GetActors())
                 Scene.KnotManager.AddActor(Scene, actorResource, GameObjectType.AlwaysActor);
 
             Scene.KnotManager.AddPendingActors();
@@ -200,8 +200,8 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
         GameInfo.SetLevelRichPresence();
 
         // Custom for the time attack mode
-        if (TimeAttackInfo.IsActive)
-            TimeAttackInfo.InitLevel(GameInfo.MapId);
+        if (Rayman3.TimeAttack.IsActive)
+            Rayman3.TimeAttack.InitLevel(GameInfo.MapId);
 
         Timer = 0;
         CommonInit();
@@ -252,12 +252,12 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
                 CurrentStepAction = Step_Pause_Init;
                 GameTime.Pause();
 
-                if (TimeAttackInfo.IsActive)
-                    TimeAttackInfo.Pause();
+                if (Rayman3.TimeAttack.IsActive)
+                    Rayman3.TimeAttack.Pause();
             }
 
             // Custom to transition to time attack score screen
-            if (TimeAttackInfo.Mode == TimeAttackMode.Score)
+            if (Rayman3.TimeAttack.Mode == TimeAttackMode.Score)
                 CurrentStepAction = Step_TimeAttackScore_Init;
 
             // Custom cheat dialog
@@ -378,8 +378,8 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
         CurrentStepAction = Step_Normal;
         GameTime.Resume();
 
-        if (TimeAttackInfo.IsActive)
-            TimeAttackInfo.Resume();
+        if (Rayman3.TimeAttack.IsActive)
+            Rayman3.TimeAttack.Resume();
     }
 
     // Custom

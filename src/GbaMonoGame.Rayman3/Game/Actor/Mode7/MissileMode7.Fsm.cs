@@ -383,8 +383,8 @@ public partial class MissileMode7
                 else
                     InvulnerabilityTimer = 800;
 
-                if (TimeAttackInfo.IsActive)
-                    TimeAttackInfo.Pause();
+                if (Rayman3.TimeAttack.IsActive)
+                    Rayman3.TimeAttack.Pause();
 
                 if (GameInfo.MapId == MapId.MissileRace1 && !Rayman3Achievements.MissileRace1_HasStrafed)
                     Rayman3.Achievements.Unlock(AchievementId.CompleteMissileRace1WithoutStrafing);
@@ -430,10 +430,10 @@ public partial class MissileMode7
                 InvulnerabilityTimer++;
 
                 // Custom to transition to time attack score screen
-                if (TimeAttackInfo.IsActive)
+                if (Rayman3.TimeAttack.IsActive)
                 {
                     if (InvulnerabilityTimer == 974)
-                        TimeAttackInfo.SetMode(TimeAttackMode.Score);
+                        Rayman3.TimeAttack.SetMode(TimeAttackMode.Score);
                     
                     return true;
                 }

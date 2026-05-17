@@ -813,7 +813,7 @@ public static class GameInfo
         string presence = GetLevelName(MapId);
         if (RSMultiplayer.IsActive)
             presence += " (Multiplayer)";
-        else if (TimeAttackInfo.IsActive)
+        else if (Rayman3.TimeAttack.IsActive)
             presence += " (Time Attack)";
         Engine.RichPresenceManager.SetPresence(presence);
     }

@@ -7,36 +7,9 @@ using BinarySerializer.Ubisoft.GbaEngine;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
-public static class TimeAttackInfo
+public class TimeAttackManager
 {
-    private const int RandomSeed = 0x12345678; // The value doesn't matter - just needs to be constant
-    private const int MinTime = 0;
-    private const int MaxTime = 356400; // 99:00:00
-
-    private static FrozenDictionary<MapId, TimeAttackLevelInfo> LevelInfosDictionary { get; set; }
-    private static ImmutableArray<TimeAttackLevelInfo> LevelInfosArray { get; set; }
-
-    private static MapId? CurrentMapId { get; set; }
-    private static int SavedTimer { get; set; }
-    private static uint SavedRandomSeed { get; set; }
-    private static List<GhostMapData> SavedRecordedGhostData { get; } = [];
-
-    public static bool IsActive { get; set; }
-    public static bool IsPaused { get; set; }
-    public static MapId? LevelId { get; set; }
-    public static TimeAttackMode Mode { get; set; }
-    public static int Timer { get; set; }
-    public static TimeAttackTime[] TargetTimes { get; set; }
-
-    public static TimeAttackGhostType GhostType { get; set; }
-    public static GhostMapData[] MapGhosts { get; set; }
-    public static GhostRecorder GhostRecorder { get; set; }
-    public static GhostPlayer GhostPlayer { get; set; }
-
-    public static TimeAttackLevelInfo GetLevelInfo(MapId mapId) => LevelInfosDictionary[mapId];
-    public static ImmutableArray<TimeAttackLevelInfo> GetLevelInfos() => LevelInfosArray;
-
-    public static void Init(TimeAttackLevelInfo[] levelInfos)
+    public TimeAttackManager(TimeAttackLevelInfo[] levelInfos)
     {
         LevelInfosDictionary = levelInfos.
             Where(x => x.ExclusivePlatform == null || x.ExclusivePlatform == Rom.Platform).
@@ -47,13 +20,34 @@ public static class TimeAttackInfo
         LevelInfosArray = levelInfosArrayBuilder.ToImmutable();
     }
 
-    public static void UnInit()
-    {
-        LevelInfosDictionary = null;
-        LevelInfosArray = default;
-    }
+    private const int RandomSeed = 0x12345678; // The value doesn't matter - just needs to be constant
+    private const int MinTime = 0;
+    private const int MaxTime = 356400; // 99:00:00
 
-    public static void Start()
+    private FrozenDictionary<MapId, TimeAttackLevelInfo> LevelInfosDictionary { get; }
+    private ImmutableArray<TimeAttackLevelInfo> LevelInfosArray { get; }
+
+    private MapId? CurrentMapId { get; set; }
+    private int SavedTimer { get; set; }
+    private uint SavedRandomSeed { get; set; }
+    private List<GhostMapData> SavedRecordedGhostData { get; } = [];
+
+    public bool IsActive { get; set; }
+    public bool IsPaused { get; set; }
+    public MapId? LevelId { get; set; }
+    public TimeAttackMode Mode { get; set; }
+    public int Timer { get; set; }
+    public TimeAttackTime[] TargetTimes { get; set; }
+
+    public TimeAttackGhostType GhostType { get; set; }
+    public GhostMapData[] MapGhosts { get; set; }
+    public GhostRecorder GhostRecorder { get; set; }
+    public GhostPlayer GhostPlayer { get; set; }
+
+    public TimeAttackLevelInfo GetLevelInfo(MapId mapId) => LevelInfosDictionary[mapId];
+    public ImmutableArray<TimeAttackLevelInfo> GetLevelInfos() => LevelInfosArray;
+
+    public void Start()
     {
         // TODO: In GameOptions each option has a TimeAttackValue. If null then don't override. Otherwise we lock it.
         // TODO: Look more into which values to change, this is temporary. The visual options might affect Random seed. However Random only matters for gameplay for Grolgoth, Jano, Rocky. None of them use the visual effects.
@@ -109,7 +103,7 @@ public static class TimeAttackInfo
         GhostPlayer = null;
     }
 
-    public static void End()
+    public void End()
     {
         Engine.RestoreActiveConfig();
 
@@ -127,7 +121,7 @@ public static class TimeAttackInfo
         GhostPlayer = null;
     }
 
-    public static void LoadLevel(MapId mapId, TimeAttackGhostType ghostType)
+    public void LoadLevel(MapId mapId, TimeAttackGhostType ghostType)
     {
         LevelId = mapId;
 
@@ -184,7 +178,7 @@ public static class TimeAttackInfo
         FrameManager.SetNextFrame(LevelFactory.Create(mapId));
     }
 
-    public static void InitLevel(MapId mapId)
+    public void InitLevel(MapId mapId)
     {
         // If this is a new map...
         if (CurrentMapId != mapId)
@@ -215,7 +209,7 @@ public static class TimeAttackInfo
         Mode = TimeAttackMode.Start;
     }
 
-    public static IReadOnlyCollection<ActorResource> GetActors()
+    public IReadOnlyCollection<ActorResource> GetActors()
     {
         if (LevelId == null || CurrentMapId == null)
             return [];
@@ -290,12 +284,12 @@ public static class TimeAttackInfo
         return actors;
     }
 
-    public static TimeAttackTime[] GetTargetTimes(MapId mapId)
+    public TimeAttackTime[] GetTargetTimes(MapId mapId)
     {
         return GetLevelInfo(mapId).TargetTimes;
     }
 
-    public static void GetTotalEarnedMedals(
+    public void GetTotalEarnedMedals(
         out int earnedBronzeModels, out int earnedSilverModels, out int earnedGoldModels,
         out int totalBronzeModels, out int totalSilverMedals, out int totalGoldMedal)
     {
@@ -335,7 +329,7 @@ public static class TimeAttackInfo
         }
     }
 
-    public static void SaveTime()
+    public void SaveTime()
     {
         if (LevelId == null || CurrentMapId == null)
             return;
@@ -355,7 +349,7 @@ public static class TimeAttackInfo
         Rayman3Achievements.CheckTimeAttackAchievements();
     }
 
-    public static void InitGhostRecorder(Scene2D scene)
+    public void InitGhostRecorder(Scene2D scene)
     {
         GhostRecorder = new GhostRecorder(scene, 
         [
@@ -367,12 +361,12 @@ public static class TimeAttackInfo
         ]);
     }
 
-    public static void StepGhostRecorder()
+    public void StepGhostRecorder()
     {
         GhostRecorder?.Step();
     }
 
-    public static void InitGhostPlayer(Scene2D scene)
+    public void InitGhostPlayer(Scene2D scene)
     {
         if (LevelId == null)
         {
@@ -391,27 +385,27 @@ public static class TimeAttackInfo
         GhostPlayer = new GhostPlayer(scene, mapGhost);
     }
 
-    public static void StepGhostPlayer()
+    public void StepGhostPlayer()
     {
         GhostPlayer?.Step();
     }
 
-    public static void SetMode(TimeAttackMode mode)
+    public void SetMode(TimeAttackMode mode)
     {
         Mode = mode;
     }
 
-    public static void Pause()
+    public void Pause()
     {
         IsPaused = true;
     }
 
-    public static void Resume()
+    public void Resume()
     {
         IsPaused = false;
     }
 
-    public static void RemoveTime(int timeDelta)
+    public void RemoveTime(int timeDelta)
     {
         if (IsPaused || Mode != TimeAttackMode.Play)
             return;
@@ -421,7 +415,7 @@ public static class TimeAttackInfo
             Timer = MinTime;
     }
 
-    public static void AddTime(int timeDelta)
+    public void AddTime(int timeDelta)
     {
         if (IsPaused || Mode != TimeAttackMode.Play)
             return;

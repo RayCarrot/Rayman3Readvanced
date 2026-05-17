@@ -20,7 +20,7 @@ public partial class Rocky
                 Scene.Camera.ProcessMessage(this, Message.Cam_FollowPositionY, 155);
 
                 // If in time attack then wait for the countdown to finish
-                if ((!TimeAttackInfo.IsActive || TimeAttackInfo.Mode == TimeAttackMode.Play) && 
+                if ((!Rayman3.TimeAttack.IsActive || Rayman3.TimeAttack.Mode == TimeAttackMode.Play) && 
                     Math.Abs(Position.X - Scene.MainActor.Position.X) < 200)
                 {
                     State.MoveTo(_Fsm_Default);

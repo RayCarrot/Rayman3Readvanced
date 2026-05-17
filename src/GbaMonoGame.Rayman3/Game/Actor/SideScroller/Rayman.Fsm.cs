@@ -588,7 +588,7 @@ public partial class Rayman
                     if (!RSMultiplayer.IsActive)
                     {
                         // Randomly look around for Globox in the first level
-                        if (!TimeAttackInfo.IsActive && GameInfo.MapId == MapId.WoodLight_M1 && GameInfo.LastGreenLumAlive == 0)
+                        if (!Rayman3.TimeAttack.IsActive && GameInfo.MapId == MapId.WoodLight_M1 && GameInfo.LastGreenLumAlive == 0)
                         {
                             if (Random.GetNumber(501) > 400)
                                 ActionId = IsFacingRight ? Action.Walk_LookAround_Right : Action.Walk_LookAround_Left;
@@ -630,7 +630,7 @@ public partial class Rayman
                 }
 
                 // Randomly look around for Globox in the first level
-                if (!TimeAttackInfo.IsActive && GameInfo.MapId == MapId.WoodLight_M1 && GameInfo.LastGreenLumAlive == 0)
+                if (!Rayman3.TimeAttack.IsActive && GameInfo.MapId == MapId.WoodLight_M1 && GameInfo.LastGreenLumAlive == 0)
                 {
                     FirstLevelIdleTimer++;
 
@@ -738,7 +738,7 @@ public partial class Rayman
                             Action.Walk_Right or Action.Walk_Left or
                             Action.Walk_LookAround_Right or Action.Walk_LookAround_Left))
                         {
-                            if (!TimeAttackInfo.IsActive && GameInfo.MapId == MapId.WoodLight_M1 && GameInfo.LastGreenLumAlive == 0)
+                            if (!Rayman3.TimeAttack.IsActive && GameInfo.MapId == MapId.WoodLight_M1 && GameInfo.LastGreenLumAlive == 0)
                                 ActionId = IsFacingRight ? Action.Walk_LookAround_Right : Action.Walk_LookAround_Left;
                             else
                                 ActionId = IsFacingRight ? Action.Walk_Right : Action.Walk_Left;
@@ -3965,8 +3965,8 @@ public partial class Rayman
                     if (Frame.Current is FrameSideScroller sideScroller2)
                         sideScroller2.IsTimed = false;
 
-                    if (TimeAttackInfo.IsActive)
-                        TimeAttackInfo.Pause();
+                    if (Rayman3.TimeAttack.IsActive)
+                        Rayman3.TimeAttack.Pause();
                 }
                 else
                 {
@@ -4039,20 +4039,20 @@ public partial class Rayman
                     if (Frame.Current is FrameSideScroller sideScroller2)
                         sideScroller2.IsTimed = false;
 
-                    if (TimeAttackInfo.IsActive)
-                        TimeAttackInfo.Pause();
+                    if (Rayman3.TimeAttack.IsActive)
+                        Rayman3.TimeAttack.Pause();
 
                     return true;
                 }
 
                 // Custom to transition to time attack score screen if the last map
-                if (TimeAttackInfo.IsActive && GameInfo.GetNextLevelId() is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
+                if (Rayman3.TimeAttack.IsActive && GameInfo.GetNextLevelId() is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
                 {
                     if (IsActionFinished && ActionId is Action.Victory_Right or Action.Victory_Left)
                         ActionId = IsFacingRight ? Action.Idle_Right : Action.Idle_Left;
 
                     if (Timer == 100)
-                        TimeAttackInfo.SetMode(TimeAttackMode.Score);
+                        Rayman3.TimeAttack.SetMode(TimeAttackMode.Score);
 
                     return true;
                 }
@@ -4227,7 +4227,7 @@ public partial class Rayman
                     }
                 }
 
-                if (!TimeAttackInfo.IsActive)
+                if (!Rayman3.TimeAttack.IsActive)
                     AutoSave();
                 break;
 
@@ -5203,7 +5203,7 @@ public partial class Rayman
                     ChangeAction();
                 }
 
-                if (TimeAttackInfo.Mode == TimeAttackMode.Play)
+                if (Rayman3.TimeAttack.Mode == TimeAttackMode.Play)
                 {
                     State.MoveTo(_Fsm_Default);
                     return false;

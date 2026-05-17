@@ -27,7 +27,7 @@ public sealed partial class Jano : MovableActor
         Position = Position with { Y = OffsetY + 150 };
 
         // Special intro state for time attack to skip the grimace sequence
-        if (TimeAttackInfo.IsActive)
+        if (Rayman3.TimeAttack.IsActive)
             State.SetTo(_Fsm_TimeAttackIntro);
         else if (GameInfo.LastGreenLumAlive == 0)
             State.SetTo(_Fsm_Intro);

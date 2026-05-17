@@ -32,7 +32,7 @@ public class BossFinalBar : Bar
         };
 
         // Re-position the health bar in time attack to avoid the UI overlapping
-        if (Phase == 0 && TimeAttackInfo.IsActive)
+        if (Phase == 0 && Rayman3.TimeAttack.IsActive)
         {
             BossHealthBar.VerticalAnchor = VerticalAnchorMode.Bottom;
             BossHealthBar.ScreenPos = BossHealthBar.ScreenPos with { Y = -9 };

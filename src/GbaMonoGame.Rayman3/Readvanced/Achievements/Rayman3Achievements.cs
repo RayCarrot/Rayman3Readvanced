@@ -388,7 +388,7 @@ public static class Rayman3Achievements
 
     public static void CheckTimeAttackAchievements()
     {
-        TimeAttackInfo.GetTotalEarnedMedals(
+        Rayman3.TimeAttack.GetTotalEarnedMedals(
             out int earnedBronze, out int earnedSilver, out int earnedGold,
             out int totalBronze, out int totalSilver, out int totalGold);
 
@@ -402,7 +402,7 @@ public static class Rayman3Achievements
 
     public static void DefeatPirateType(PirateType pirateType)
     {
-        if (!RSMultiplayer.IsActive && !TimeAttackInfo.IsActive)
+        if (!RSMultiplayer.IsActive && !Rayman3.TimeAttack.IsActive)
         {
             GameInfo.SaveSlot.DefeatedPirateTypes |= pirateType;
 
@@ -413,7 +413,7 @@ public static class Rayman3Achievements
 
     public static void CollectWhiteLum(Lums lum)
     {
-        if (!RSMultiplayer.IsActive && !TimeAttackInfo.IsActive)
+        if (!RSMultiplayer.IsActive && !Rayman3.TimeAttack.IsActive)
         {
             byte mapId = (byte)GameInfo.MapId;
             int instanceId = lum.InstanceId;
