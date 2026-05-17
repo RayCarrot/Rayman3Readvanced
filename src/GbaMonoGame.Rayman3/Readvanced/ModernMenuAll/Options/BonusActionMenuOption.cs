@@ -26,7 +26,7 @@ public class BonusActionMenuOption : ActionMenuOption
             {
                 BgPriority = bgPriority,
                 ObjPriority = 0,
-                Texture = Engine.FrameContentManager.Load<Texture2D>(Collections[i].IconTexture),
+                Texture = Engine.Assets.FrameContentManager.Load<Texture2D>(Collections[i].IconTexture),
                 RenderContext = renderContext,
             };
         }

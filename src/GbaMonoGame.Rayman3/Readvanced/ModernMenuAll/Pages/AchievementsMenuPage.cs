@@ -74,7 +74,7 @@ public class AchievementsMenuPage : MenuPage
         }
 
         // Set the icon
-        SelectedAchievementIcon.Texture = Engine.FixContentManager.Load<Texture2D>(achievement.BigIconTexturePath);
+        SelectedAchievementIcon.Texture = Engine.Assets.FixContentManager.Load<Texture2D>(achievement.BigIconTexturePath);
 
         // Set the text and wrap
         SelectedAchievementDescription.Text = achievement.Description;
@@ -103,7 +103,7 @@ public class AchievementsMenuPage : MenuPage
             ObjPriority = 0,
             ScreenPos = new Vector2(190, 38),
             RenderContext = RenderContext,
-            Texture = Engine.FrameContentManager.Load<Texture2D>(Assets.Menu.Cloth)
+            Texture = Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.Menu.Cloth)
         };
 
         SelectedAchievementTitleLines = new SpriteFontTextObject[SelectedAchievementTitleMaxLines];

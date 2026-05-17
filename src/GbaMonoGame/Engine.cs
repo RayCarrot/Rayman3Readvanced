@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
+﻿using System.Text;
 
 namespace GbaMonoGame;
 
@@ -13,25 +10,12 @@ public static class Engine
     public static ConfigManager Config { get; private set; }
     public static ApplicationManager App { get; private set; }
     public static GameWindowManager Window { get; private set; }
+    public static AssetManager Assets { get; private set; }
 
     // State
     public static bool IsLoading { get; set; }
 
 
-    /// <summary>
-    /// The graphics device to use for creating textures.
-    /// </summary>
-    public static GraphicsDevice GraphicsDevice { get; private set; }
-
-    /// <summary>
-    /// The fixed content manager to load contents which should stay loaded through the entire lifecycle of the game.
-    /// </summary>
-    public static ContentManager FixContentManager { get; private set; }
-
-    /// <summary>
-    /// The frame content manager to load contents which should be unloaded when changing the current <see cref="Frame"/>.
-    /// </summary>
-    public static ContentManager FrameContentManager { get; private set; }
 
     /// <summary>
     /// The internal game resolution used for the aspect ratio and scaling.
@@ -45,8 +29,6 @@ public static class Engine
 
     public static GbaGameViewPort GameViewPort { get; private set; }
 
-    public static Cache<Texture2D> TextureCache { get; } = new();
-    public static Cache<Palette> PaletteCache { get; } = new();
 
     /// <summary>
     /// Disposable resources to dispose when loading a new frame
@@ -82,8 +64,7 @@ public static class Engine
         ConfigManager config, 
         ApplicationManager app, 
         GameWindowManager window, 
-        GraphicsDevice graphicsDevice, 
-        IServiceProvider serviceProvider)
+        AssetManager assets)
     {
         // Register encoding provider to be able to use Windows 1252
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -92,6 +73,7 @@ public static class Engine
         Config = config;
         App = app;
         Window = window;
+        Assets = assets;
 
         // Initialize services
         if (Config.Active.Tweaks.InternalGameResolution == null)
@@ -105,9 +87,6 @@ public static class Engine
         }
 
         // TODO: Refactor
-        GraphicsDevice = graphicsDevice;
-        FixContentManager = new ContentManager(serviceProvider, Paths.AssetsDirectoryName);
-        FrameContentManager = new ContentManager(serviceProvider, Paths.AssetsDirectoryName);
         GameViewPort = new GbaGameViewPort();
         GameRenderContext = new GameRenderContext();
         RichPresenceManager = new RichPresenceManager();
@@ -117,9 +96,15 @@ public static class Engine
 
     public static void UnInit()
     {
-        FixContentManager?.Dispose();
-        FrameContentManager?.Dispose();
+        // Uninitialize services
+        Assets?.Dispose();
         RichPresenceManager?.Dispose();
+
+        // Remove services
+        Config = null;
+        App = null;
+        Window = null;
+        Assets = null;
     }
 
     public static void Step()

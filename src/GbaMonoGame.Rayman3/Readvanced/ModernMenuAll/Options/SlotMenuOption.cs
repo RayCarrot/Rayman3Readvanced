@@ -47,8 +47,8 @@ public class SlotMenuOption : MenuOption
                 ObjPriority = 0,
                 Texture = index switch
                 {
-                    3 => Engine.FrameContentManager.Load<Texture2D>(Assets.Menu.SaveSlotIcon_4),
-                    4 => Engine.FrameContentManager.Load<Texture2D>(Assets.Menu.SaveSlotIcon_5),
+                    3 => Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.Menu.SaveSlotIcon_4),
+                    4 => Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.Menu.SaveSlotIcon_5),
                     _ => throw new Exception(),
                 },
                 RenderContext = renderContext,
@@ -90,7 +90,7 @@ public class SlotMenuOption : MenuOption
         {
             BgPriority = bgPriority,
             ObjPriority = 0,
-            Texture = Engine.FrameContentManager.Load<Texture2D>(Assets.Menu.SaveSlotTime),
+            Texture = Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.Menu.SaveSlotTime),
             RenderContext = renderContext,
         };
         TimeText = new SpriteTextObject()

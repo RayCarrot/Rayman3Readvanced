@@ -12,7 +12,7 @@ public class SpritePalettes
         for (int i = 0; i < Palettes.Length; i++)
         {
             PaletteResource paletteResource = palettes[i];
-            Palettes[i] = Engine.PaletteCache.GetOrCreateObject(
+            Palettes[i] = Engine.Assets.PaletteCache.GetOrCreateObject(
                 pointer: paletteResource.Offset,
                 id: 0,
                 data: paletteResource,

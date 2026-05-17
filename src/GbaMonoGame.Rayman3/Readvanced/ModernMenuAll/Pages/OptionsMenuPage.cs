@@ -91,7 +91,7 @@ public class OptionsMenuPage : MenuPage
         Tabs = GameOptions.Create();
 
         // Create animations
-        Texture2D infoTextBoxTexture = Engine.FixContentManager.Load<Texture2D>(Assets.Menu.MenuTextBox);
+        Texture2D infoTextBoxTexture = Engine.Assets.FixContentManager.Load<Texture2D>(Assets.Menu.MenuTextBox);
 
         TabBar = new MenuTabBar(RenderContext, new Vector2(63, -37), 1, Tabs.Select(x => x.Name).ToArray());
 

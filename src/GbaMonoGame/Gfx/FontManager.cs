@@ -38,7 +38,7 @@ public static class FontManager
         // Use a single texture for the entire texture for better performance
         int charsPerRow = TextureWidth / charSize.X;
         int textureHeight = (int)BitOperations.RoundUpToPowerOf2((uint)(charSize.Y * (Font.CharactersCount / charsPerRow)));
-        Texture2D tex = new(Engine.GraphicsDevice, TextureWidth, textureHeight);
+        Texture2D tex = new(Engine.Assets.GraphicsDevice, TextureWidth, textureHeight);
         Color[] texColors = new Color[tex.Width * tex.Height];
 
         // Pad out end of array

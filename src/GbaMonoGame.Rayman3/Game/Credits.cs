@@ -409,13 +409,13 @@ public class Credits : Frame
         for (int i = 0; i < textures.Length; i++)
         {
             Texture tex = textureTable.Textures[i].Value;
-            textures[i] = Engine.TextureCache.GetOrCreateObject(
+            textures[i] = Engine.Assets.TextureCache.GetOrCreateObject(
                 pointer: textureTable.Offset,
                 id: i,
                 data: (Texture: tex, Palette: paletteTable.Palettes[0].Value),
                 createObjFunc: static data =>
                 {
-                    Palette palette = Engine.PaletteCache.GetOrCreateObject(
+                    Palette palette = Engine.Assets.PaletteCache.GetOrCreateObject(
                         pointer: data.Palette.Offset,
                         id: 0,
                         data: data.Palette,
@@ -460,7 +460,7 @@ public class Credits : Frame
             }
 
             VertexBuffer vertexBuffer = new(
-                graphicsDevice: Engine.GraphicsDevice, 
+                graphicsDevice: Engine.Assets.GraphicsDevice, 
                 vertexDeclaration: VertexPositionColorTexture.VertexDeclaration, 
                 vertexCount: vertexData.Length, 
                 bufferUsage: BufferUsage.WriteOnly);

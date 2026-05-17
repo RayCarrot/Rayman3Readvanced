@@ -115,7 +115,7 @@ public static class Gfx
             renderTarget.BeginRender();
 
             // Clear the buffer with transparency
-            Engine.GraphicsDevice.Clear(Color.Transparent);
+            Engine.Assets.GraphicsDevice.Clear(Color.Transparent);
 
             // Draw the sprites. Make sure to change from AlphaBlend to AlphaBlendOverwrite since we don't want
             // to blend the sprites on the same layer. Also ignore any sprites using the depth stencil since we
@@ -255,17 +255,17 @@ public static class Gfx
 
     public static void Load()
     {
-        Pixel = new Texture2D(Engine.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
+        Pixel = new Texture2D(Engine.Assets.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
         Pixel.SetData([Color.White]);
 
         // Create the render targets for each sprite later. Make sure the surface format is set to Color
         // so that we preserve transparency!
         SpriteRenderTargets = 
         [
-            new GbaRenderTarget(Engine.GraphicsDevice, SurfaceFormat.Color, DepthFormat.None),
-            new GbaRenderTarget(Engine.GraphicsDevice, SurfaceFormat.Color, DepthFormat.None),
-            new GbaRenderTarget(Engine.GraphicsDevice, SurfaceFormat.Color, DepthFormat.None),
-            new GbaRenderTarget(Engine.GraphicsDevice, SurfaceFormat.Color, DepthFormat.None),
+            new GbaRenderTarget(Engine.Assets.GraphicsDevice, SurfaceFormat.Color, DepthFormat.None),
+            new GbaRenderTarget(Engine.Assets.GraphicsDevice, SurfaceFormat.Color, DepthFormat.None),
+            new GbaRenderTarget(Engine.Assets.GraphicsDevice, SurfaceFormat.Color, DepthFormat.None),
+            new GbaRenderTarget(Engine.Assets.GraphicsDevice, SurfaceFormat.Color, DepthFormat.None),
         ];
 
         // Create the render context for drawing the sprite render targets. This should match the full screen

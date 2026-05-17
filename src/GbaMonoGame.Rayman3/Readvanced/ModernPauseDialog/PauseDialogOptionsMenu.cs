@@ -242,8 +242,8 @@ public class PauseDialogOptionsMenu
 
         // Create animations
         AnimatedObjectResource propsAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuPropAnimations);
-        Texture2D canvasTexture = Engine.FixContentManager.Load<Texture2D>(Assets.Menu.OptionsDialogBoard);
-        Texture2D infoTextBoxTexture = Engine.FixContentManager.Load<Texture2D>(Assets.Menu.MenuTextBox);
+        Texture2D canvasTexture = Engine.Assets.FixContentManager.Load<Texture2D>(Assets.Menu.OptionsDialogBoard);
+        Texture2D infoTextBoxTexture = Engine.Assets.FixContentManager.Load<Texture2D>(Assets.Menu.MenuTextBox);
 
         Canvas = new SpriteTextureObject
         {

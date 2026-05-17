@@ -7,7 +7,7 @@ namespace GbaMonoGame;
 public class TiledTexture2D : Texture2D
 {
     public TiledTexture2D(byte[] tileSet, int tileIndex, int paletteIndex, Palette palette, bool is8Bit) :
-        base(Engine.GraphicsDevice, Tile.Size, Tile.Size)
+        base(Engine.Assets.GraphicsDevice, Tile.Size, Tile.Size)
     {
         Color[] texColors = new Color[Width * Height];
 
@@ -29,7 +29,7 @@ public class TiledTexture2D : Texture2D
         this(width, height, tileSet, tileMap, 0, palette, is8Bit) { }
 
     public TiledTexture2D(int width, int height, byte[] tileSet, MapTile[] tileMap, int baseTileIndex, Palette palette, bool is8Bit) :
-        base(Engine.GraphicsDevice, width * Tile.Size, height * Tile.Size)
+        base(Engine.Assets.GraphicsDevice, width * Tile.Size, height * Tile.Size)
     {
         Color[] texColors = new Color[Width * Height];
 

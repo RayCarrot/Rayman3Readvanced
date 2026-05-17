@@ -13,14 +13,14 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
     {
         Camera = playfield.Camera;
 
-        Shader = Engine.FrameContentManager.Load<Effect>(Assets.Mode7.FogVertexShader);
+        Shader = Engine.Assets.FrameContentManager.Load<Effect>(Assets.Mode7.FogVertexShader);
         FadeDistance = fadeDistance;
 
         TgxRotscaleLayerMode7 layer = playfield.RotScaleLayers[0];
 
         // Create the textures (use a separate one for the sides since we want it to be smaller)
         Texture2D topTexture = CreateTexture(playfield.GfxTileKitManager, layer.TileMap, layer.Width, wallPoint, wallSize);
-        Texture2D sideTexture = Engine.FrameContentManager.Load<Texture2D>(Assets.Mode7.Mode7WallSide);
+        Texture2D sideTexture = Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.Mode7.Mode7WallSide);
 
         Vector3 wallBoxSize = new Vector3(wallSize.X, wallSize.Y, wallHeight) * Tile.Size;
 
@@ -179,11 +179,11 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
         }
 
         // Create the vertex buffer
-        VertexBuffer vertexBuffer = new(Engine.GraphicsDevice, VertexPositionTexture.VertexDeclaration, vertices.Count, BufferUsage.WriteOnly);
+        VertexBuffer vertexBuffer = new(Engine.Assets.GraphicsDevice, VertexPositionTexture.VertexDeclaration, vertices.Count, BufferUsage.WriteOnly);
         vertexBuffer.SetData(vertices.ToArray());
 
         // Create the index buffer
-        IndexBuffer indexBuffer = new(Engine.GraphicsDevice, IndexElementSize.SixteenBits, indices.Count, BufferUsage.WriteOnly);
+        IndexBuffer indexBuffer = new(Engine.Assets.GraphicsDevice, IndexElementSize.SixteenBits, indices.Count, BufferUsage.WriteOnly);
         indexBuffer.SetData(indices.ToArray());
 
         Engine.DisposableResources.Register(vertexBuffer);
@@ -202,8 +202,8 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
         // Begin rendering the mesh, culling clockwise
         renderer.BeginMeshRender(screen.RenderOptions, RasterizerState.CullClockwise);
 
-        Engine.GraphicsDevice.BlendState = BlendState.NonPremultiplied;
-        Engine.GraphicsDevice.BlendFactor = Color.White;
+        Engine.Assets.GraphicsDevice.BlendState = BlendState.NonPremultiplied;
+        Engine.Assets.GraphicsDevice.BlendFactor = Color.White;
 
         // Update the shader
         Shader.Parameters["WorldViewProj"].SetValue(Camera.ViewProjectionMatrix);
@@ -217,7 +217,7 @@ public class Mode7WallsScreenRenderer : IScreenRenderer
             foreach (EffectPass pass in passes)
             {
                 pass.Apply();
-                meshFragment.Draw(Engine.GraphicsDevice);
+                meshFragment.Draw(Engine.Assets.GraphicsDevice);
             }
         }
     }

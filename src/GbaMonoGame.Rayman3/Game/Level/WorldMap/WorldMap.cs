@@ -202,7 +202,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             }
 
             LightningSkyPaletteTextures[value] = new PaletteTexture(
-                Texture: Engine.TextureCache.GetOrCreateObject(
+                Texture: Engine.Assets.TextureCache.GetOrCreateObject(
                     pointer: tileKitManager.SelectedPalette.CachePointer,
                     id: value,
                     data: colors,
@@ -371,7 +371,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             }
 
             VolcanoPaletteTextures[value] = new PaletteTexture(
-                Texture: Engine.TextureCache.GetOrCreateObject(
+                Texture: Engine.Assets.TextureCache.GetOrCreateObject(
                     pointer: tileKitManager.SelectedPalette.CachePointer,
                     id: LightningSkyPaletteTextures.Length + value,
                     data: colors,

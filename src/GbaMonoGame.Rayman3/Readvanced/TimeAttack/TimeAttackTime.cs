@@ -23,9 +23,9 @@ public readonly struct TimeAttackTime
     public Texture2D LoadIcon(bool filledIn)
     {
         if (!filledIn && Type != TimeAttackTimeType.Record)
-            return Engine.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.BlankStarSmall);
+            return Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.BlankStarSmall);
 
-        return Engine.FrameContentManager.Load<Texture2D>(Type switch
+        return Engine.Assets.FrameContentManager.Load<Texture2D>(Type switch
         {
             TimeAttackTimeType.Bronze => Assets.TimeAttack.BronzeStarSmall,
             TimeAttackTimeType.Silver => Assets.TimeAttack.SilverStarSmall,
@@ -38,9 +38,9 @@ public readonly struct TimeAttackTime
     public Texture2D LoadBigIcon(bool filledIn)
     {
         if (!filledIn && Type != TimeAttackTimeType.Record)
-            return Engine.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.BlankStarBig);
+            return Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.BlankStarBig);
 
-        return Engine.FrameContentManager.Load<Texture2D>(Type switch
+        return Engine.Assets.FrameContentManager.Load<Texture2D>(Type switch
         {
             TimeAttackTimeType.Bronze => Assets.TimeAttack.BronzeStarBig,
             TimeAttackTimeType.Silver => Assets.TimeAttack.SilverStarBig,

@@ -92,13 +92,13 @@ public class ExportDebugMenu : DebugMenu
 
             if (textureIndex != -1)
             {
-                Texture2D tex = Engine.TextureCache.GetOrCreateObject(
+                Texture2D tex = Engine.Assets.TextureCache.GetOrCreateObject(
                     pointer: textureTable.Offset,
                     id: textureIndex,
                     data: (Texture: textureTable.Textures[textureIndex].Value, Palette: paletteTable.Palettes[0].Value),
                     createObjFunc: static data =>
                     {
-                        Palette palette = Engine.PaletteCache.GetOrCreateObject(
+                        Palette palette = Engine.Assets.PaletteCache.GetOrCreateObject(
                             pointer: data.Palette.Offset,
                             id: 0,
                             data: data.Palette,

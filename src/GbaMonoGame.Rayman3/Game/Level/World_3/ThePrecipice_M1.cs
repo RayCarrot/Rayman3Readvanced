@@ -48,7 +48,7 @@ public class ThePrecipice_M1 : FrameSideScroller
             colors[49] = colors[49] with { G = (byte)green };
 
             PaletteTextures[i] = new PaletteTexture(
-                Texture: Engine.TextureCache.GetOrCreateObject(
+                Texture: Engine.Assets.TextureCache.GetOrCreateObject(
                     pointer: tileKitManager.SelectedPalette.CachePointer,
                     id: 1 + i,
                     data: colors,

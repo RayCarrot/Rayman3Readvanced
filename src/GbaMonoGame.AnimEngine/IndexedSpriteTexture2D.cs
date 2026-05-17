@@ -10,7 +10,7 @@ public class IndexedSpriteTexture2D : Texture2D
     { }
 
     public IndexedSpriteTexture2D(AnimatedObjectResource resource, Constants.Size shape, int tileIndex) :
-        base(Engine.GraphicsDevice, shape.Width, shape.Height, false,
+        base(Engine.Assets.GraphicsDevice, shape.Width, shape.Height, false,
 #if DESKTOPGL // Alpha8 binds to GL_LUMINANCE on OpenGL which is deprecated
             SurfaceFormat.Color
 #else

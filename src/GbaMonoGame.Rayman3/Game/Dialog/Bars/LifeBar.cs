@@ -28,7 +28,7 @@ public class LifeBar : Bar
         {
             InfiniteSymbol = new SpriteTextureObject
             {
-                Texture = Engine.FixContentManager.Load<Texture2D>(Assets.Dialog.Hud_Infinity),
+                Texture = Engine.Assets.FixContentManager.Load<Texture2D>(Assets.Dialog.Hud_Infinity),
                 ScreenPos = new Vector2(40, 6),
                 BgPriority = 0,
                 ObjPriority = 0,

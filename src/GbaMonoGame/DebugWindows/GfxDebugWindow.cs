@@ -14,7 +14,7 @@ public class GfxDebugWindow : DebugWindow
     // NOTE: This seems to have some issue where the screen is shifted one pixel down on the texture - not sure why
     private void ExportScreen(GfxScreen screen)
     {
-        GraphicsDevice graphicsDevice = Engine.GraphicsDevice;
+        GraphicsDevice graphicsDevice = Engine.Assets.GraphicsDevice;
         Vector2 size = screen.Renderer.GetSize(screen);
 
         using RenderTarget2D renderTarget = new(
@@ -227,8 +227,8 @@ public class GfxDebugWindow : DebugWindow
             {
                 ImGui.SeparatorText("Cache");
 
-                ImGui.Text($"Cached textures: {Engine.TextureCache.GetCount()}");
-                ImGui.Text($"Cached palettes: {Engine.PaletteCache.GetCount()}");
+                ImGui.Text($"Cached textures: {Engine.Assets.TextureCache.GetCount()}");
+                ImGui.Text($"Cached palettes: {Engine.Assets.PaletteCache.GetCount()}");
 
                 ImGui.EndTabItem();
             }

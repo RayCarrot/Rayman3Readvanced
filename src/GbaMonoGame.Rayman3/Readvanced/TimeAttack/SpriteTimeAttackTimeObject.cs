@@ -24,7 +24,7 @@ public class SpriteTimeAttackTimeObject : AObject
 
     private Texture2D GetTexture(char timeChar)
     {
-        return Engine.FrameContentManager.Load<Texture2D>(timeChar switch
+        return Engine.Assets.FrameContentManager.Load<Texture2D>(timeChar switch
         {
             '0' => Assets.TimeAttack.TimeDigit_0,
             '1' => Assets.TimeAttack.TimeDigit_1,

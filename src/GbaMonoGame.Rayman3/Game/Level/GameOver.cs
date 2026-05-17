@@ -117,7 +117,7 @@ public class GameOver : Frame
             IsEnabled = true,
             Priority = 1,
             Offset = Vector2.Zero,
-            Renderer = new TextureScreenRenderer(Engine.TextureCache.GetOrCreateObject(
+            Renderer = new TextureScreenRenderer(Engine.Assets.TextureCache.GetOrCreateObject(
                 pointer: Rom.Loader.Rayman3_GameOverBitmap.Offset,
                 id: 0,
                 createObjFunc: static () => new BitmapTexture2D(

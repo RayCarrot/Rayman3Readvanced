@@ -73,7 +73,7 @@ public class WoodLight_M2 : FrameSideScroller
             }
 
             WaterPaletteTextures[value] = new PaletteTexture(
-                Texture: Engine.TextureCache.GetOrCreateObject(
+                Texture: Engine.Assets.TextureCache.GetOrCreateObject(
                     pointer: tileKitManager.SelectedPalette.CachePointer,
                     id: value,
                     data: colors,

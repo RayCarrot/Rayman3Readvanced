@@ -5,7 +5,7 @@ namespace GbaMonoGame;
 
 public class BitmapTexture2D : Texture2D
 {
-    public BitmapTexture2D(int width, int height, byte[] bitmap, Palette palette) : base(Engine.GraphicsDevice, width, height)
+    public BitmapTexture2D(int width, int height, byte[] bitmap, Palette palette) : base(Engine.Assets.GraphicsDevice, width, height)
     {
         Color[] texColors = new Color[width * height];
 

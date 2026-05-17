@@ -12,7 +12,7 @@ public class PaletteTexture2D : Texture2D
 {
     public PaletteTexture2D(PaletteResource palette) : this(palette.Colors) { }
 
-    public PaletteTexture2D(IReadOnlyList<BaseColor> palette) : base(Engine.GraphicsDevice, TextureWidth, GetHeight(palette.Count))
+    public PaletteTexture2D(IReadOnlyList<BaseColor> palette) : base(Engine.Assets.GraphicsDevice, TextureWidth, GetHeight(palette.Count))
     {
         Color[] texColors = new Color[Width * Height];
         
@@ -25,7 +25,7 @@ public class PaletteTexture2D : Texture2D
 
     public PaletteTexture2D(Palette palette) : this(palette.Colors) { }
 
-    public PaletteTexture2D(Color[] palette) : base(Engine.GraphicsDevice, TextureWidth, GetHeight(palette.Length))
+    public PaletteTexture2D(Color[] palette) : base(Engine.Assets.GraphicsDevice, TextureWidth, GetHeight(palette.Length))
     {
         Color[] texColors = new Color[Width * Height];
         
@@ -36,7 +36,7 @@ public class PaletteTexture2D : Texture2D
         SetData(texColors);
     }
 
-    public PaletteTexture2D(PaletteResource[] palettes) : base(Engine.GraphicsDevice, TextureWidth, GetHeight(palettes.Sum(x => x.Colors.Length)))
+    public PaletteTexture2D(PaletteResource[] palettes) : base(Engine.Assets.GraphicsDevice, TextureWidth, GetHeight(palettes.Sum(x => x.Colors.Length)))
     {
         Color[] texColors = new Color[Width * Height];
         
@@ -61,7 +61,7 @@ public class PaletteTexture2D : Texture2D
         SetData(texColors);
     }
 
-    public PaletteTexture2D(Palette[] palettes) : base(Engine.GraphicsDevice, TextureWidth, GetHeight(palettes.Sum(x => x.Colors.Length)))
+    public PaletteTexture2D(Palette[] palettes) : base(Engine.Assets.GraphicsDevice, TextureWidth, GetHeight(palettes.Sum(x => x.Colors.Length)))
     {
         Color[] texColors = new Color[Width * Height];
         

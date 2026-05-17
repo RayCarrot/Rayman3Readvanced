@@ -71,16 +71,12 @@ public static class FrameManager
             // If loading a new frame...
             if (CurrentFrame != NextFrame)
             {
-                // Clear cache
-                Engine.TextureCache.Clear();
-                Engine.PaletteCache.Clear();
+                // Clear cache from previous frame
+                Engine.Assets.UnloadFrameCache();
 
                 // Dispose resources
                 Engine.DisposableResources.DisposeAll();
             }
-
-            // Unload contents loaded by the previous frame
-            Engine.FrameContentManager.Unload();
 
             // Revert the rich presence to the default idle state (might get overriden when we initialize the new frame)
             Engine.RichPresenceManager.SetIdlePresence();

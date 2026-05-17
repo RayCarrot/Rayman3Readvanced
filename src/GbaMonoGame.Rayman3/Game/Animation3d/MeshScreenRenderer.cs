@@ -7,7 +7,7 @@ public class MeshScreenRenderer : IScreenRenderer
 {
     public MeshScreenRenderer()
     {
-        Shader = new BasicEffect(Engine.GraphicsDevice)
+        Shader = new BasicEffect(Engine.Assets.GraphicsDevice)
         {
             TextureEnabled = true,
         };
@@ -49,7 +49,7 @@ public class MeshScreenRenderer : IScreenRenderer
             foreach (EffectPass pass in passes)
             {
                 pass.Apply();
-                meshFragment.Draw(Engine.GraphicsDevice);
+                meshFragment.Draw(Engine.Assets.GraphicsDevice);
             }
         }
     }

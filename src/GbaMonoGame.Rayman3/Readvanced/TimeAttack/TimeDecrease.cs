@@ -23,7 +23,7 @@ public sealed partial class TimeDecrease : BaseActor
         if (value != Value)
         {
             Value = value;
-            AnimatedObject.ReplaceSpriteTexture(0, Engine.FrameContentManager.Load<Texture2D>(value switch
+            AnimatedObject.ReplaceSpriteTexture(0, Engine.Assets.FrameContentManager.Load<Texture2D>(value switch
             {
                 3 => Assets.TimeAttack.TimeDecrease3,
                 5 => Assets.TimeAttack.TimeDecrease5,

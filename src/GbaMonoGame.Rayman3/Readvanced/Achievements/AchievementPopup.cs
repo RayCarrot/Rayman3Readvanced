@@ -81,7 +81,7 @@ public class AchievementPopup
 
     public void SetIcon(string iconPath)
     {
-        Icon.Texture = Engine.FixContentManager.Load<Texture2D>(iconPath);
+        Icon.Texture = Engine.Assets.FixContentManager.Load<Texture2D>(iconPath);
     }
 
     public void MoveIn()
@@ -97,8 +97,8 @@ public class AchievementPopup
         RenderContext renderContext = Engine.GameRenderContext;
 
         // Load textures
-        BackgroundTexture = Engine.FixContentManager.Load<Texture2D>(Assets.Achievements.PopupBackground);
-        BackgroundGoldTexture = Engine.FixContentManager.Load<Texture2D>(Assets.Achievements.PopupBackgroundGold);
+        BackgroundTexture = Engine.Assets.FixContentManager.Load<Texture2D>(Assets.Achievements.PopupBackground);
+        BackgroundGoldTexture = Engine.Assets.FixContentManager.Load<Texture2D>(Assets.Achievements.PopupBackgroundGold);
 
         // Create objects
         Background = new SpriteTextureObject()

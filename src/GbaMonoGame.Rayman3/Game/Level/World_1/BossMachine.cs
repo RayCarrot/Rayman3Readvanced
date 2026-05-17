@@ -34,7 +34,7 @@ public class BossMachine : FrameSideScroller
             Platform.NGage => Assets.Level.BossMachine_ExtendedLayer0_NGage,
             _ => throw new UnsupportedPlatformException()
         };
-        Texture2D extendedLayerTexture = Engine.FrameContentManager.Load<Texture2D>(extendedLayerTextureName);
+        Texture2D extendedLayerTexture = Engine.Assets.FrameContentManager.Load<Texture2D>(extendedLayerTextureName);
 
         // Get the origin for the extended background layer
         Vector2 origin = Rom.Platform switch

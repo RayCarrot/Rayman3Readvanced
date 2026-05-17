@@ -138,7 +138,7 @@ public class Intro : Frame, IHasPlayfield
         {
             var letter = letters[letterIndex];
             if (letter.FileName != null)
-                BlackLumAndLogoObj.ReplaceSpriteTexture(baseTileIndex + letterIndex, Engine.FrameContentManager.Load<Texture2D>(letter.FileName));
+                BlackLumAndLogoObj.ReplaceSpriteTexture(baseTileIndex + letterIndex, Engine.Assets.FrameContentManager.Load<Texture2D>(letter.FileName));
         }
 
         Point originalBaseOffset = letters[0].OriginalOffset;
@@ -196,7 +196,7 @@ public class Intro : Frame, IHasPlayfield
         }
 
         // Replace the "READVANCED" subtitle sprite texture
-        BlackLumAndLogoObj.ReplaceSpriteTexture(baseTileIndex + letters.Length, Engine.FrameContentManager.Load<Texture2D>(Assets.Intro.IntroLogo_Part8));
+        BlackLumAndLogoObj.ReplaceSpriteTexture(baseTileIndex + letters.Length, Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.Intro.IntroLogo_Part8));
 
         Point newOffset = new(44, 67);
         Point offset = originalBaseOffset + (newOffset - newBaseOffset);

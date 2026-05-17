@@ -10,7 +10,7 @@ public class SpriteTexture2D : Texture2D
         this(resource, Constants.GetSpriteShape(spriteShape, spriteSize), palette, tileIndex) { }
 
     public SpriteTexture2D(AnimatedObjectResource resource, Constants.Size shape, Palette palette, int tileIndex) :
-        base(Engine.GraphicsDevice, shape.Width, shape.Height)
+        base(Engine.Assets.GraphicsDevice, shape.Width, shape.Height)
     {
         Color[] texColors = new Color[Width * Height];
         byte[] tileSet = resource.SpriteTable.Data;

@@ -71,7 +71,7 @@ public class FairyGlade_M1 : FrameSideScroller
             }
 
             WaterPaletteTextures[value] = new PaletteTexture(
-                Texture: Engine.TextureCache.GetOrCreateObject(
+                Texture: Engine.Assets.TextureCache.GetOrCreateObject(
                     pointer: tileKitManager.SelectedPalette.CachePointer,
                     id: value,
                     data: colors,

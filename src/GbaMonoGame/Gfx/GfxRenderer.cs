@@ -17,20 +17,20 @@ public class GfxRenderer
         _spriteBatch = new SpriteBatch(graphicsDevice);
         _spriteRasterizerState = RasterizerState.CullNone;
 
-        _defaultShader = Engine.FixContentManager.Load<Effect>(Assets.Gfx.DefaultShader);
+        _defaultShader = Engine.Assets.FixContentManager.Load<Effect>(Assets.Gfx.DefaultShader);
 
-        _paletteShader = Engine.FixContentManager.Load<Effect>(Assets.Gfx.PaletteShader);
+        _paletteShader = Engine.Assets.FixContentManager.Load<Effect>(Assets.Gfx.PaletteShader);
         _paletteShaderPaletteTextureParam = _paletteShader.Parameters["PaletteTexture"];
         _paletteShaderPaletteIndexParam = _paletteShader.Parameters["PaletteIndex"];
         _paletteShaderPaletteHeightParam = _paletteShader.Parameters["PaletteHeight"];
 
-        _paletteVertexShader = Engine.FixContentManager.Load<Effect>(Assets.Gfx.PaletteVertexShader);
+        _paletteVertexShader = Engine.Assets.FixContentManager.Load<Effect>(Assets.Gfx.PaletteVertexShader);
         _paletteVertexShaderPaletteTextureParam = _paletteVertexShader.Parameters["PaletteTexture"];
         _paletteVertexShaderPaletteIndexParam = _paletteVertexShader.Parameters["PaletteIndex"];
         _paletteVertexShaderPaletteHeightParam = _paletteVertexShader.Parameters["PaletteHeight"];
         _paletteVertexShaderWorldViewProjParam = _paletteVertexShader.Parameters["WorldViewProj"];
 
-        _vertexShader = Engine.FixContentManager.Load<Effect>(Assets.Gfx.VertexShader);
+        _vertexShader = Engine.Assets.FixContentManager.Load<Effect>(Assets.Gfx.VertexShader);
         _vertexShaderWorldViewProjParam = _vertexShader.Parameters["WorldViewProj"];
 
         _blendStates = new Dictionary<BlendMode, BlendState>()

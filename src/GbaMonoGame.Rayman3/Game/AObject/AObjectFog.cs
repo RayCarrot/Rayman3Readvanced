@@ -44,7 +44,7 @@ public class AObjectFog : AnimatedObject
     private void DrawSprite(AnimationChannel channel, Vector2 screenPos)
     {
         // Get or create the sprite texture
-        Texture2D texture = Engine.TextureCache.GetOrCreateObject(
+        Texture2D texture = Engine.Assets.TextureCache.GetOrCreateObject(
             pointer: Resource.Offset,
             id: channel.TileIndex,
             data: new SpriteDefine(
@@ -57,7 +57,7 @@ public class AObjectFog : AnimatedObject
         int paletteIndex = channel.PalIndex;
             
         RenderOptions = RenderOptions with { PaletteTexture = new PaletteTexture(
-            Texture: Engine.TextureCache.GetOrCreateObject(
+            Texture: Engine.Assets.TextureCache.GetOrCreateObject(
                 pointer: Resource.Palettes.Offset,
                 id: 0,
                 data: Resource.Palettes,

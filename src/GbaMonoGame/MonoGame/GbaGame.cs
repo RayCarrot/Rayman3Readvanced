@@ -104,8 +104,7 @@ public abstract class GbaGame : Game
         Gfx.Clear();
 
         // Clear the cache
-        Engine.TextureCache.Clear();
-        Engine.PaletteCache.Clear();
+        Engine.Assets.UnloadAllCache();
 
         // Dispose resources
         Engine.DisposableResources.DisposeAll();
@@ -202,7 +201,7 @@ public abstract class GbaGame : Game
             _loggerWindow = new LoggerDebugWindow();
 
         // Load the engine
-        Engine.Init(config, new ApplicationManager(this), _gameWindowManager, GraphicsDevice, Services);
+        Engine.Init(config, new ApplicationManager(this), _gameWindowManager, new AssetManager(Services));
         
         // Set the initial frame
         FrameManager.SetNextFrame(CreateInitialFrame());

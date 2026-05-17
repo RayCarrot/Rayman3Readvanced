@@ -6,7 +6,7 @@ namespace GbaMonoGame;
 public class IndexedTiledTexture2D : Texture2D
 {
     public IndexedTiledTexture2D(byte[] tileSet, int tileIndex, bool is8Bit, int colorOffset) :
-        base(Engine.GraphicsDevice, Tile.Size, Tile.Size, false,
+        base(Engine.Assets.GraphicsDevice, Tile.Size, Tile.Size, false,
 #if DESKTOPGL // Alpha8 binds to GL_LUMINANCE on OpenGL which is deprecated
             SurfaceFormat.Color
 #else
@@ -42,7 +42,7 @@ public class IndexedTiledTexture2D : Texture2D
     { }
 
     public IndexedTiledTexture2D(int fullWidth, int fullHeight, int startX, int startY, int width, int height, byte[] tileSet, MapTile[] tileMap, int baseTileIndex, bool is8Bit) :
-        base(Engine.GraphicsDevice, width * Tile.Size, height * Tile.Size, false,
+        base(Engine.Assets.GraphicsDevice, width * Tile.Size, height * Tile.Size, false,
 #if DESKTOPGL // Alpha8 binds to GL_LUMINANCE on OpenGL which is deprecated
             SurfaceFormat.Color
 #else

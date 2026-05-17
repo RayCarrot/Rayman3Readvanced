@@ -84,7 +84,7 @@ public class SinglePlayerMenuPage : MenuPage
     private void SetReadvancedStartEraseSelectionTexture(int index)
     {
         string path = _readvancedStartEraseSelectionTexturePaths[Rayman3.Loc.LanguageUiIndex * 3 + index];
-        ReadvancedStartEraseSelection.Texture = Engine.FrameContentManager.Load<Texture2D>(path);
+        ReadvancedStartEraseSelection.Texture = Engine.Assets.FrameContentManager.Load<Texture2D>(path);
     }
 
     private void ManageStartEraseCursor()

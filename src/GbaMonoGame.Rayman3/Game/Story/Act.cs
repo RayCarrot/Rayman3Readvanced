@@ -148,7 +148,7 @@ public abstract class Act : Frame
         if (frame.MusicSongEvent != Rayman3SoundEvent.None)
             SoundEventsManager.ProcessEvent(frame.MusicSongEvent);
 
-        IScreenRenderer renderer = new TextureScreenRenderer(Engine.TextureCache.GetOrCreateObject(
+        IScreenRenderer renderer = new TextureScreenRenderer(Engine.Assets.TextureCache.GetOrCreateObject(
             pointer: frame.Bitmap.Offset,
             id: 0,
             data: frame,

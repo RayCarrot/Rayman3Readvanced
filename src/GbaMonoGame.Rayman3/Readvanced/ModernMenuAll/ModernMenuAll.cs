@@ -131,7 +131,7 @@ public class ModernMenuAll : Frame, IHasPlayfield
         GfxScreen screen = Playfield.TileLayers[0].Screen;
 
         screen.RenderOptions = screen.RenderOptions with { PaletteTexture = new PaletteTexture(
-            Texture: Engine.TextureCache.GetOrCreateObject(
+            Texture: Engine.Assets.TextureCache.GetOrCreateObject(
                 pointer: tileKitManager.SelectedPalette.CachePointer,
                 id: index + 1, // +1 since 0 is the default
                 data: index,
@@ -416,7 +416,7 @@ public class ModernMenuAll : Frame, IHasPlayfield
 
         // Replace the curtain with a new widescreen texture
         GfxScreen curtainScreen = Playfield.TileLayers[1].Screen;
-        Texture2D curtainTexture = Engine.FrameContentManager.Load<Texture2D>(Assets.Menu.MenuCurtain);
+        Texture2D curtainTexture = Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.Menu.MenuCurtain);
         curtainScreen.Renderer = new TextureScreenRenderer(curtainTexture);
         curtainScreen.RenderOptions = curtainScreen.RenderOptions with { PaletteTexture = null };
         curtainScreen.RenderContext = renderContext;
@@ -428,7 +428,7 @@ public class ModernMenuAll : Frame, IHasPlayfield
 
         // Replace the wooden frame with a new widescreen texture
         GfxScreen woodenFrameScreen = Playfield.TileLayers[2].Screen;
-        Texture2D woodenFrameTexture = Engine.FrameContentManager.Load<Texture2D>(Assets.Menu.MenuWoodenFrame);
+        Texture2D woodenFrameTexture = Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.Menu.MenuWoodenFrame);
         woodenFrameScreen.Renderer = new TextureScreenRenderer(woodenFrameTexture);
         woodenFrameScreen.RenderOptions = woodenFrameScreen.RenderOptions with { PaletteTexture = null };
         woodenFrameScreen.RenderContext = renderContext;
