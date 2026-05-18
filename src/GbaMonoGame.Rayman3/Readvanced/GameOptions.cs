@@ -310,7 +310,7 @@ public static class GameOptions
                     {
                         Engine.Config.Local.Tweaks.InternalGameResolution = data == originalRes ? null : data;
 
-                        if (!Engine.Config.IsOverrided)
+                        if (!Engine.Config.IsOverriden)
                             Engine.ViewPort.SetInternalGameResolution(data);
                     },
                     getCustomName: data => $"{data.X}x{data.Y}"),

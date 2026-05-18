@@ -5,14 +5,14 @@ namespace GbaMonoGame;
 public static class Engine
 {
     // Engine services
-    public static ConfigManager Config { get; private set; }
-    public static ApplicationManager App { get; private set; }
+    public static IConfigManager Config { get; private set; }
+    public static IApplicationManager App { get; private set; }
     public static InputManager Input { get; private set; }
-    public static GameWindowManager Window { get; private set; }
+    public static IGameWindowManager Window { get; private set; }
     public static ViewPortManager ViewPort { get; private set; }
     public static AssetManager Assets { get; private set; }
     public static MessageManager Messages { get; private set; }
-    public static RichPresenceManager RichPresence { get; private set; }
+    public static IRichPresenceManager RichPresence { get; private set; }
     public static FrameManager FrameMngr { get; private set; }
 
     // Game services
@@ -20,14 +20,14 @@ public static class Engine
     public static FontManager Font { get; private set; }
 
     public static void InitEngine(
-        ConfigManager config, 
-        ApplicationManager app, 
+        IConfigManager config,
+        IApplicationManager app, 
         InputManager input,
-        GameWindowManager window,
+        IGameWindowManager window,
         ViewPortManager viewPort,
         AssetManager assets,
         MessageManager messages,
-        RichPresenceManager richPresence,
+        IRichPresenceManager richPresence,
         FrameManager frameMngr)
     {
         // Register encoding provider to be able to use Windows 1252
@@ -54,7 +54,6 @@ public static class Engine
         {
             ViewPort.SetInternalGameResolution(Config.Active.Tweaks.InternalGameResolution.Value);
         }
-        RichPresence.Initialize();
     }
 
     public static void InitGame(

@@ -2,7 +2,7 @@
 
 namespace GbaMonoGame;
 
-public class ConfigManager
+public class ConfigManager : IConfigManager
 {
     public ConfigManager()
     {
@@ -28,7 +28,7 @@ public class ConfigManager
         Local = config;
 
         Active = new ActiveGameConfig(Local.Tweaks, Local.Difficulty, Local.Debug);
-        IsOverrided = false;
+        IsOverriden = false;
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ public class ConfigManager
     /// <summary>
     /// Indicates if the game config has been overriden.
     /// </summary>
-    public bool IsOverrided { get; private set; }
+    public bool IsOverriden { get; private set; }
 
     private void UpdateInternalGameResolution()
     {
@@ -76,14 +76,14 @@ public class ConfigManager
     public void OverrideActive(ActiveGameConfig activeGameConfig)
     {
         Active = activeGameConfig;
-        IsOverrided = true;
+        IsOverriden = true;
         UpdateInternalGameResolution();
     }
 
     public void RestoreActive()
     {
         Active = new ActiveGameConfig(Local.Tweaks, Local.Difficulty, Local.Debug);
-        IsOverrided = false;
+        IsOverriden = false;
         UpdateInternalGameResolution();
     }
 }

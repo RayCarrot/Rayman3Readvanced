@@ -3,24 +3,21 @@ using DiscordRPC;
 
 namespace GbaMonoGame;
 
-public class RichPresenceManager : IDisposable
+public class DiscordRichPresenceManager : IRichPresenceManager
 {
-    public RichPresenceManager()
+    public DiscordRichPresenceManager()
     {
         DiscordClient = new DiscordRpcClient(AppId);
         StartTime = DateTime.UtcNow;
+
+        if (DiscordClient.Initialize())
+            SetIdlePresence();
     }
 
     private const string AppId = "1483522842304712939";
 
     private DateTime StartTime { get; }
     private DiscordRpcClient DiscordClient { get; }
-
-    public void Initialize()
-    {
-        if (DiscordClient.Initialize())
-            SetIdlePresence();
-    }
 
     public void SetIdlePresence()
     {

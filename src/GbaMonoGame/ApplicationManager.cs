@@ -2,7 +2,7 @@
 
 namespace GbaMonoGame;
 
-public class ApplicationManager
+public class ApplicationManager : IApplicationManager
 {
     public ApplicationManager(Game game)
     {

@@ -208,7 +208,7 @@ public abstract class GbaGame : Game
             viewPort: new ViewPortManager(), 
             assets: new AssetManager(Services), 
             messages: new MessageManager(),
-            richPresence: new RichPresenceManager(),
+            richPresence: new DiscordRichPresenceManager(),
             frameMngr: new FrameManager());
 
         // Load the graphics management

@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 
 namespace GbaMonoGame;
 
-public class GameWindowManager
+public class GameWindowManager : IGameWindowManager
 {
     public GameWindowManager(GameWindow window, GraphicsDeviceManager graphics)
     {
