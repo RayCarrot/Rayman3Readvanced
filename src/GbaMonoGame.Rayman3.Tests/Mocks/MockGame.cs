@@ -1,7 +1,9 @@
 using System.ComponentModel.Design;
+using BinarySerializer;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.Rayman3.Tests;
 using Microsoft.Xna.Framework.Graphics;
+using Action = System.Action;
 
 [assembly: AssemblyFixture(typeof(MockGame))]
 
@@ -50,9 +52,35 @@ public sealed class MockGame : IDisposable
 
     private readonly MockGraphicsDeviceService _mockGraphicsDeviceService;
 
+    private GbaInput[] ReadRecording(string fileName)
+    {
+        string filePath = Path.Combine("Recordings", $"{fileName}.rec");
+        
+        using Stream fileStream = File.OpenRead(filePath);
+        using Reader reader = new(fileStream);
+
+        List<GbaInput> inputs = [];
+        while (reader.BaseStream.Position < reader.BaseStream.Length)
+            inputs.Add((GbaInput)reader.ReadUInt16());
+
+        return inputs.ToArray();
+    }
+
     public void Step()
     {
         Engine.Step();
+    }
+
+    public void StepRecording(string fileName, Action stepCallback)
+    {
+        GbaInput[] inputs = ReadRecording(fileName);
+
+        JoyPad.SetReplayData(inputs);
+        for (int i = 0; i < inputs.Length; i++)
+        {
+            Step();
+            stepCallback();
+        }
     }
 
     public void Dispose()

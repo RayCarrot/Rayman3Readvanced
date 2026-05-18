@@ -24,7 +24,7 @@ public readonly struct PhysicalType
 
     public float GetBlockTopSolid(float xPos)
     {
-        // NOTE: Set comment below about flooring floats. This is added to fix Rayman's sloped collision
+        // NOTE: See comment below about flooring floats. This is added to fix Rayman's sloped collision
         //       when using the below fix.
         xPos = MathF.Floor(xPos);
 

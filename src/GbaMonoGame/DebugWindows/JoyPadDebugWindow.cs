@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
+using BinarySerializer;
 using BinarySerializer.Ubisoft.GbaEngine;
 using ImGuiNET;
 
@@ -122,7 +123,14 @@ public class JoyPadDebugWindow : DebugWindow
                 }
                 sb.AppendLine("]");
 
+                // Save as text file
                 File.WriteAllText("JoyPadRecording.txt", sb.ToString());
+
+                // Save as binary file
+                using Stream outputStream = File.Create("JoyPadRecording.rec");
+                using Writer writer = new(outputStream);
+                foreach (GbaInput input in recordedData.Append(GbaInput.None))
+                    writer.Write((ushort)input);
             }
         }
     }
