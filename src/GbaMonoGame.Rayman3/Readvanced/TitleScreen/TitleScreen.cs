@@ -60,6 +60,7 @@ public class TitleScreen : Frame
             Random.SetSeed(GameTime.ElapsedFrames);
 
             // Load the save slot
+            GameInfo.Init();
             GameInfo.Load(lastSaveSlot.Value);
             GameInfo.GotoLastSaveGame();
             GameInfo.StartPlayTime();
