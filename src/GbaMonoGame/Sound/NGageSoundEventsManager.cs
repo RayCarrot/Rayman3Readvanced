@@ -336,7 +336,7 @@ public class NGageSoundEventsManager : SoundEventsManager
 
     #endregion
 
-    #region Protected Methods
+    #region Override Methods
 
     public override void RefreshEventSet()
     {
@@ -539,8 +539,10 @@ public class NGageSoundEventsManager : SoundEventsManager
         }
     }
 
-    public override void Unload()
+    protected override void Dispose(bool disposing)
     {
+        base.Dispose(disposing);
+
         foreach (Music music in _musicTable.Values)
             music.XmSound.Dispose();
 

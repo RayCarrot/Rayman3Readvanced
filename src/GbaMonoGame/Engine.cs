@@ -88,6 +88,7 @@ public static class Engine
     public static void UnInitGame()
     {
         // Uninitialize services
+        Sem?.Dispose();
         Font?.Dispose();
 
         // Remove services

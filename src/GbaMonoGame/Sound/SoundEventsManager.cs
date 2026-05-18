@@ -4,7 +4,7 @@ using BinarySerializer.Ubisoft.GbaEngine;
 
 namespace GbaMonoGame;
 
-public abstract class SoundEventsManager
+public abstract class SoundEventsManager : IDisposable
 {
     // Implementation
     public abstract void RefreshEventSet();
@@ -24,7 +24,6 @@ public abstract class SoundEventsManager
     public abstract void ForcePauseAllSongs();
     public abstract void ForceResumeAllSongs();
     public abstract void DrawDebugLayout();
-    public abstract void Unload();
 
     // Helpers
     public void ProcessEvent<T>(T soundEventId) 
@@ -40,7 +39,6 @@ public abstract class SoundEventsManager
     public void ProcessEvent<T>(T soundEventId, object readvancedObject, object originalObject) 
         where T : Enum => 
         ProcessEvent(CastTo<short>.From(soundEventId), readvancedObject, originalObject);
-
     public bool IsSongPlaying<T>(T soundEventId) 
         where T : Enum => 
         IsSongPlaying(CastTo<short>.From(soundEventId));
@@ -50,4 +48,16 @@ public abstract class SoundEventsManager
     public short ReplaceAllSongs<T>(T soundEventId, float fadeOut) 
         where T : Enum => 
         ReplaceAllSongs(CastTo<short>.From(soundEventId), fadeOut);
+
+    // Disposable
+    protected virtual void Dispose(bool disposing) { }
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+    ~SoundEventsManager()
+    {
+        Dispose(false);
+    }
 }

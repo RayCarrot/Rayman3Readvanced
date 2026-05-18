@@ -379,7 +379,7 @@ public class GbaSoundEventsManager : SoundEventsManager
 
     #endregion
 
-    #region Protected Methods
+    #region Override Methods
 
     public override void RefreshEventSet()
     {
@@ -598,8 +598,10 @@ public class GbaSoundEventsManager : SoundEventsManager
         }
     }
 
-    public override void Unload()
+    protected override void Dispose(bool disposing)
     {
+        base.Dispose(disposing);
+
         foreach (Song song in _songTable.Values)
             song.WavSound.Dispose();
 
