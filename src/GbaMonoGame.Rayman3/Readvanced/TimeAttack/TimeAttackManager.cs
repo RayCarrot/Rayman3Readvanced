@@ -18,6 +18,8 @@ public class TimeAttackManager
         levelInfosArrayBuilder.AddRange(levelInfos);
         levelInfosArrayBuilder.RemoveAll(x => x.ExclusivePlatform != null && x.ExclusivePlatform != Rom.Platform);
         LevelInfosArray = levelInfosArrayBuilder.ToImmutable();
+
+        Save = SaveGameManager.LoadTimeAttackSave() ?? new TimeAttackSave();
     }
 
     private const int RandomSeed = 0x12345678; // The value doesn't matter - just needs to be constant
@@ -26,6 +28,8 @@ public class TimeAttackManager
 
     private FrozenDictionary<MapId, TimeAttackLevelInfo> LevelInfosDictionary { get; }
     private ImmutableArray<TimeAttackLevelInfo> LevelInfosArray { get; }
+
+    private TimeAttackSave Save { get; }
 
     private MapId? CurrentMapId { get; set; }
     private int SavedTimer { get; set; }
@@ -148,7 +152,7 @@ public class TimeAttackManager
 
         // Get the target times
         IEnumerable<TimeAttackTime> targetTimes = GetTargetTimes(mapId);
-        if (TimeAttackDataManager.GetRecordTime(mapId) is { } recordTime)
+        if (GetRecordTime(mapId) is { } recordTime)
             targetTimes = targetTimes.Append(recordTime);
         targetTimes = targetTimes.OrderByDescending(x => x.Time);
         TargetTimes = targetTimes.ToArray();
@@ -289,6 +293,16 @@ public class TimeAttackManager
         return GetLevelInfo(mapId).TargetTimes;
     }
 
+    public TimeAttackTime? GetRecordTime(MapId mapId)
+    {
+        int time = Save.Times[(int)mapId];
+
+        if (time <= 0)
+            return null;
+        else
+            return new TimeAttackTime(TimeAttackTimeType.Record, time);
+    }
+
     public void GetTotalEarnedMedals(
         out int earnedBronzeModels, out int earnedSilverModels, out int earnedGoldModels,
         out int totalBronzeModels, out int totalSilverMedals, out int totalGoldMedal)
@@ -301,7 +315,7 @@ public class TimeAttackManager
         totalGoldMedal = 0;
         foreach (TimeAttackLevelInfo levelInfo in GetLevelInfos())
         {
-            TimeAttackTime? recordTime = TimeAttackDataManager.GetRecordTime(levelInfo.Level);
+            TimeAttackTime? recordTime = GetRecordTime(levelInfo.Level);
 
             foreach (TimeAttackTime targetTime in levelInfo.TargetTimes)
             {
@@ -344,9 +358,20 @@ public class TimeAttackManager
             };
         }
 
-        TimeAttackDataManager.SaveRecordTime(LevelId.Value, Timer, ghostSave);
+        SaveRecordTime(LevelId.Value, Timer, ghostSave);
 
         Rayman3Achievements.CheckTimeAttackAchievements();
+    }
+
+    public void SaveRecordTime(MapId mapId, int time, TimeAttackGhostSave ghostSave)
+    {
+        // Save the time
+        Save.Times[(int)mapId] = time;
+        SaveGameManager.SaveTimeAttackSave(Save);
+
+        // Save the ghost data
+        if (ghostSave != null)
+            SaveGameManager.SaveTimeAttackGhost(ghostSave, mapId);
     }
 
     public void InitGhostRecorder(Scene2D scene)

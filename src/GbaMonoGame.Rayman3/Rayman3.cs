@@ -324,6 +324,5 @@ public static class Rayman3
 
         // Unload other data
         GameInfo.UnInit();
-        TimeAttackDataManager.Unload();
     }
 }

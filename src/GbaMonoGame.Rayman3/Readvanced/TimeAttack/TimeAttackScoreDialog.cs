@@ -22,7 +22,7 @@ public partial class TimeAttackScoreDialog : Dialog
         MapId = Rayman3.TimeAttack.LevelId ?? throw new Exception("Finished time attack with no level set");
         
         // Check if the time is a new record
-        TimeAttackTime? recordTime = TimeAttackDataManager.GetRecordTime(MapId);
+        TimeAttackTime? recordTime = Rayman3.TimeAttack.GetRecordTime(MapId);
         NewRecord = recordTime == null || Rayman3.TimeAttack.Timer < recordTime.Value.Time;
 
         State.SetTo(_Fsm_ShowTargets);
@@ -181,7 +181,7 @@ public partial class TimeAttackScoreDialog : Dialog
                 BlendMode = BlendMode.AlphaBlend,
                 Alpha = 0.7f,
                 RenderContext = Scene.HudRenderContext,
-                Time = TimeAttackDataManager.GetRecordTime(MapId) ?? default,
+                Time = Rayman3.TimeAttack.GetRecordTime(MapId) ?? default,
             };
 
             RecordTimeIcon.Texture = RecordTimeText.Time.LoadIcon(true);

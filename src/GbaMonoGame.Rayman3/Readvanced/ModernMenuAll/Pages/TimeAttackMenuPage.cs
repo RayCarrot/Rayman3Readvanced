@@ -140,7 +140,7 @@ public class TimeAttackMenuPage : MenuPage
     // TODO: Maybe remember last option instead?
     private void SetDefaultSelectedGhostOption()
     {
-        TimeAttackTime? recordTime = TimeAttackDataManager.GetRecordTime(SelectedMap);
+        TimeAttackTime? recordTime = Rayman3.TimeAttack.GetRecordTime(SelectedMap);
 
         GhostOption defaultGhostOption;
         if (recordTime == null)
@@ -215,7 +215,7 @@ public class TimeAttackMenuPage : MenuPage
         {
             MapId mapId = SelectedMap;
 
-            TimeAttackTime? recordTime = TimeAttackDataManager.GetRecordTime(mapId);
+            TimeAttackTime? recordTime = Rayman3.TimeAttack.GetRecordTime(mapId);
 
             TimeAttackTime[] targetTimes = Rayman3.TimeAttack.GetTargetTimes(mapId);
             for (int i = 0; i < TargetTimes.Length; i++)
@@ -543,7 +543,7 @@ public class TimeAttackMenuPage : MenuPage
             switch (Type)
             {
                 case TimeAttackGhostType.Record:
-                    TimeAttackTime? recordTime = TimeAttackDataManager.GetRecordTime(mapId);
+                    TimeAttackTime? recordTime = Rayman3.TimeAttack.GetRecordTime(mapId);
                     if (recordTime != null)
                     {
                         Time = recordTime.Value;
