@@ -54,7 +54,7 @@ public class TitleScreen : Frame
             _ => throw new UnsupportedPlatformException()
         };
 
-        if (LoadLastSave && lastSaveSlot != null && SaveGameManager.SlotExists(lastSaveSlot.Value))
+        if (LoadLastSave && lastSaveSlot != null && Rayman3.Save.SlotExists(lastSaveSlot.Value))
         {
             // The seed normally gets set in the intro, so do it now instead since we're skipping that
             Random.SetSeed(GameTime.ElapsedFrames);

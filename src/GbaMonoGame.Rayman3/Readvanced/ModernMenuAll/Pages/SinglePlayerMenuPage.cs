@@ -326,7 +326,7 @@ public class SinglePlayerMenuPage : MenuPage
                     {
                         Menu.Slots[SelectedOption] = null;
                         ((SlotMenuOption)Options[SelectedOption]).Slot = null;
-                        SaveGameManager.DeleteSlot(SelectedOption);
+                        Rayman3.Save.DeleteSlot(SelectedOption);
                         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
                 }

@@ -4,7 +4,7 @@ using BinarySerializer;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
-public static class SaveGameManager
+public class SaveGameManager : ISaveGameManager
 {
     private const string SaveDirectoryName = "Saves";
     private const string TimeAttackGhostsDirectoryName = "Ghosts";
@@ -57,7 +57,7 @@ public static class SaveGameManager
         }
     }
 
-    public static bool SlotExists(int index)
+    public bool SlotExists(int index)
     {
         try
         {
@@ -75,7 +75,7 @@ public static class SaveGameManager
         }
     }
 
-    public static ReadvancedSlot LoadSlot(int index)
+    public ReadvancedSlot LoadSlot(int index)
     {
         try
         {
@@ -100,7 +100,7 @@ public static class SaveGameManager
         }
     }
 
-    public static void SaveSlot(int index, ReadvancedSlot save)
+    public void SaveSlot(int index, ReadvancedSlot save)
     {
         try
         {
@@ -120,7 +120,7 @@ public static class SaveGameManager
         }
     }
 
-    public static void DeleteSlot(int index)
+    public void DeleteSlot(int index)
     {
         try
         {
@@ -136,7 +136,7 @@ public static class SaveGameManager
         }
     }
 
-    public static AchievementsSave LoadAchievementsSave()
+    public AchievementsSave LoadAchievementsSave()
     {
         try
         {
@@ -161,7 +161,7 @@ public static class SaveGameManager
         }
     }
 
-    public static void SaveAchievementsSave(AchievementsSave save)
+    public void SaveAchievementsSave(AchievementsSave save)
     {
         try
         {
@@ -181,7 +181,7 @@ public static class SaveGameManager
         }
     }
 
-    public static TimeAttackSave LoadTimeAttackSave()
+    public TimeAttackSave LoadTimeAttackSave()
     {
         try
         {
@@ -206,7 +206,7 @@ public static class SaveGameManager
         }
     }
 
-    public static void SaveTimeAttackSave(TimeAttackSave save)
+    public void SaveTimeAttackSave(TimeAttackSave save)
     {
         try
         {
@@ -226,7 +226,7 @@ public static class SaveGameManager
         }
     }
 
-    public static TimeAttackGhostSave LoadTimeAttackGhost(MapId mapId)
+    public TimeAttackGhostSave LoadTimeAttackGhost(MapId mapId)
     {
         try
         {
@@ -251,7 +251,7 @@ public static class SaveGameManager
         }
     }
 
-    public static void SaveTimeAttackGhost(TimeAttackGhostSave save, MapId mapId)
+    public void SaveTimeAttackGhost(TimeAttackGhostSave save, MapId mapId)
     {
         try
         {

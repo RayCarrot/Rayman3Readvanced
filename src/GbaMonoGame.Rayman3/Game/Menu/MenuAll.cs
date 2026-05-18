@@ -484,7 +484,7 @@ public partial class MenuAll : Frame, IHasPlayfield
 
         for (int i = 0; i < GameInfo.OriginalSaveSlotsCount; i++)
         {
-            if (SaveGameManager.SlotExists(i))
+            if (Rayman3.Save.SlotExists(i))
             {
                 // Load the slot
                 GameInfo.Load(i);

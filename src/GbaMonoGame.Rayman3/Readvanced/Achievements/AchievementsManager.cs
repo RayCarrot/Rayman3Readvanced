@@ -21,7 +21,7 @@ public class AchievementsManager
         Popup.Init();
         AchievementsPopupQueue = new Queue<AchievementId>();
 
-        Save = SaveGameManager.LoadAchievementsSave() ?? new AchievementsSave();
+        Save = Rayman3.Save.LoadAchievementsSave() ?? new AchievementsSave();
     }
 
     private FrozenDictionary<AchievementId, AchievementInfo> AchievementsDictionary { get; }
@@ -77,7 +77,7 @@ public class AchievementsManager
 
         // Save
         Save.UnlockedAchievements[id] = true;
-        SaveGameManager.SaveAchievementsSave(Save);
+        Rayman3.Save.SaveAchievementsSave(Save);
 
         // Show popup
         if (Engine.Config.Local.Display.ShowAchievementPopups)
@@ -94,6 +94,6 @@ public class AchievementsManager
 
         // Save
         Save.UnlockedAchievements[id] = false;
-        SaveGameManager.SaveAchievementsSave(Save);
+        Rayman3.Save.SaveAchievementsSave(Save);
     }
 }

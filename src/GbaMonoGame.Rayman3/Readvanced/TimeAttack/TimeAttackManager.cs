@@ -19,7 +19,7 @@ public class TimeAttackManager
         levelInfosArrayBuilder.RemoveAll(x => x.ExclusivePlatform != null && x.ExclusivePlatform != Rom.Platform);
         LevelInfosArray = levelInfosArrayBuilder.ToImmutable();
 
-        Save = SaveGameManager.LoadTimeAttackSave() ?? new TimeAttackSave();
+        Save = Rayman3.Save.LoadTimeAttackSave() ?? new TimeAttackSave();
     }
 
     private const int RandomSeed = 0x12345678; // The value doesn't matter - just needs to be constant
@@ -167,7 +167,7 @@ public class TimeAttackManager
                 break;
 
             case TimeAttackGhostType.Record:
-                MapGhosts = SaveGameManager.LoadTimeAttackGhost(mapId)?.MapGhosts;
+                MapGhosts = Rayman3.Save.LoadTimeAttackGhost(mapId)?.MapGhosts;
                 break;
             
             case TimeAttackGhostType.Guide:
@@ -367,11 +367,11 @@ public class TimeAttackManager
     {
         // Save the time
         Save.Times[(int)mapId] = time;
-        SaveGameManager.SaveTimeAttackSave(Save);
+        Rayman3.Save.SaveTimeAttackSave(Save);
 
         // Save the ghost data
         if (ghostSave != null)
-            SaveGameManager.SaveTimeAttackGhost(ghostSave, mapId);
+            Rayman3.Save.SaveTimeAttackGhost(ghostSave, mapId);
     }
 
     public void InitGhostRecorder(Scene2D scene)

@@ -159,7 +159,7 @@ public static class GameInfo
 
     public static void Load(int saveSlot)
     {
-        ReadvancedSlot save = SaveGameManager.LoadSlot(saveSlot);
+        ReadvancedSlot save = Rayman3.Save.LoadSlot(saveSlot);
         if (save != null)
             SaveSlot = save;
         else
@@ -177,7 +177,7 @@ public static class GameInfo
     public static void Save(int saveSlot)
     {
         SavePlayTime();
-        SaveGameManager.SaveSlot(saveSlot, SaveSlot);
+        Rayman3.Save.SaveSlot(saveSlot, SaveSlot);
         StartPlayTime();
 
         if (Rom.Platform == Platform.GBA)

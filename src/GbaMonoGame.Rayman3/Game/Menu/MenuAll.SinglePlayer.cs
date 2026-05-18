@@ -313,7 +313,7 @@ public partial class MenuAll
                     if (SelectedStartEraseOption == 0 && Slots[SelectedOption] != null)
                     {
                         Slots[SelectedOption] = null;
-                        SaveGameManager.DeleteSlot(SelectedOption);
+                        Rayman3.Save.DeleteSlot(SelectedOption);
                         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
                 }

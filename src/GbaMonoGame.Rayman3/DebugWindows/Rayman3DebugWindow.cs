@@ -89,7 +89,7 @@ public class Rayman3DebugWindow : DebugWindow
                         GameInfo.Init();
                         GameInfo.CurrentSlot = i;
 
-                        if (SaveGameManager.SlotExists(i))
+                        if (Rayman3.Save.SlotExists(i))
                             GameInfo.Load(i);
                     }
                 }

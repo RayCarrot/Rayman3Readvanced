@@ -74,7 +74,7 @@ public class ModernMenuAll : Frame, IHasPlayfield
 
         for (int i = 0; i < Slots.Length; i++)
         {
-            if (SaveGameManager.SlotExists(i))
+            if (Rayman3.Save.SlotExists(i))
             {
                 // Load the slot
                 GameInfo.Load(i);

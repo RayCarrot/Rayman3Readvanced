@@ -13,6 +13,7 @@ public static class Rayman3
     private static readonly JsonSerializerOptions _configJsonOptions = new() { ReadCommentHandling = JsonCommentHandling.Skip };
 
     // Game services
+    public static ISaveGameManager Save { get; private set; }
     public static LocalizationManager Loc { get; private set; }
     public static AchievementsManager Achievements { get; private set; }
     public static TimeAttackManager TimeAttack { get; private set; }
@@ -289,6 +290,7 @@ public static class Rayman3
         TimeAttackLevelInfo[] timeAttackLevelInfos = DeserializeConfig<TimeAttackLevelInfo[]>("TimeAttackConfig");
 
         // Set services
+        Save = new SaveGameManager();
         Loc = new LocalizationManager();
         Achievements = new AchievementsManager(Rayman3Achievements.Achievements);
         TimeAttack = new TimeAttackManager(timeAttackLevelInfos);
