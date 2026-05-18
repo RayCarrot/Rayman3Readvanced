@@ -317,9 +317,9 @@ public sealed partial class CameraSideScroller : CameraActor2D
 
         if (Debug_FreeMoveCamera)
         {
-            if (InputManager.GetMouseState().RightButton == ButtonState.Pressed)
+            if (Engine.Input.GetMouseState().RightButton == ButtonState.Pressed)
             {
-                Position += InputManager.GetMousePositionDelta(Scene.RenderContext) * -1;
+                Position += Engine.Input.GetMousePositionDelta(Scene.RenderContext) * -1;
                 KnotsSource?.Position = Position;
             }
         }

@@ -7,6 +7,7 @@ public static class Engine
     // Engine services
     public static ConfigManager Config { get; private set; }
     public static ApplicationManager App { get; private set; }
+    public static InputManager Input { get; private set; }
     public static GameWindowManager Window { get; private set; }
     public static ViewPortManager ViewPort { get; private set; }
     public static AssetManager Assets { get; private set; }
@@ -21,6 +22,7 @@ public static class Engine
     public static void InitEngine(
         ConfigManager config, 
         ApplicationManager app, 
+        InputManager input,
         GameWindowManager window,
         ViewPortManager viewPort,
         AssetManager assets,
@@ -34,6 +36,7 @@ public static class Engine
         // Set services
         Config = config;
         App = app;
+        Input = input;
         Window = window;
         ViewPort = viewPort;
         Assets = assets;
@@ -73,6 +76,7 @@ public static class Engine
         // Remove services
         Config = null;
         App = null;
+        Input = null;
         Window = null;
         ViewPort = null;
         Assets = null;

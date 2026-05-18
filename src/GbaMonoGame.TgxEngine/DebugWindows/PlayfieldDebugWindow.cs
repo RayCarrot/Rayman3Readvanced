@@ -20,10 +20,10 @@ public class PlayfieldDebugWindow : DebugWindow
         TgxTileLayer tileLayer = playfield2D.TileLayers[TileSelectionLayer];
         RenderContext renderContext = tileLayer.Screen.RenderContext;
 
-        if (!InputManager.IsMouseOnScreen(renderContext))
+        if (!Engine.Input.IsMouseOnScreen(renderContext))
             return;
 
-        Vector2 mousePos = InputManager.GetMousePosition(renderContext);
+        Vector2 mousePos = Engine.Input.GetMousePosition(renderContext);
         Vector2 tile = (mousePos + tileLayer.Screen.Offset) / Tile.Size;
         SelectedTile = tile.ToFloorPoint();
     }

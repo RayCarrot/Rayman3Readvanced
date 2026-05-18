@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GbaMonoGame;
 
-public static partial class InputManager
+public partial class InputManager
 {
     private const float StickThreshhold = 0.5f;
 
@@ -17,15 +17,15 @@ public static partial class InputManager
         Buttons.LeftTrigger, Buttons.RightTrigger,
         Buttons.A, Buttons.B, Buttons.X, Buttons.Y,
     ];
-    private static GamePadState _previousGamePadState;
-    private static GamePadState _gamePadState;
+    private GamePadState _previousGamePadState;
+    private GamePadState _gamePadState;
 
-    private static float _vibrationStrength;
-    private static int _vibrationTimer;
+    private float _vibrationStrength;
+    private int _vibrationTimer;
 
-    public static bool IsGamePadConnected => _gamePadState.IsConnected;
+    public bool IsGamePadConnected => _gamePadState.IsConnected;
 
-    private static void UpdateGamePad()
+    private void UpdateGamePad()
     {
         _previousGamePadState = _gamePadState;
         _gamePadState = GamePad.GetState(PlayerIndex.One);
@@ -45,7 +45,7 @@ public static partial class InputManager
         }
     }
 
-    private static Input GetInputsFromGamePad()
+    private Input GetInputsFromGamePad()
     {
         Input inputs = default;
 
@@ -68,9 +68,9 @@ public static partial class InputManager
         return inputs;
     }
 
-    public static Buttons GetButton(Input input) => Engine.Config.Local.Controls.GamePadControls[input];
+    public Buttons GetButton(Input input) => Engine.Config.Local.Controls.GamePadControls[input];
 
-    public static Buttons GetDefaultButton(Input input)
+    public Buttons GetDefaultButton(Input input)
     {
         return input switch
         {
@@ -97,7 +97,7 @@ public static partial class InputManager
         };
     }
 
-    public static string GetButtonName(Buttons button)
+    public string GetButtonName(Buttons button)
     {
         // TODO: Better names to use? Names based on controller name so we can support PlayStation names?
         return button switch
@@ -132,7 +132,7 @@ public static partial class InputManager
         };
     }
 
-    public static Buttons GetPressedButton()
+    public Buttons GetPressedButton()
     {
         foreach (Buttons button in _validButtons)
         {
@@ -143,12 +143,12 @@ public static partial class InputManager
         return Buttons.None;
     }
 
-    public static bool IsButtonPressed(Buttons button) => _gamePadState.IsButtonDown(button);
-    public static bool IsButtonReleased(Buttons button) => _gamePadState.IsButtonUp(button);
-    public static bool IsButtonJustPressed(Buttons button) => _gamePadState.IsButtonDown(button) && _previousGamePadState.IsButtonUp(button);
-    public static bool IsButtonJustReleased(Buttons button) => _gamePadState.IsButtonUp(button) && _previousGamePadState.IsButtonDown(button);
+    public bool IsButtonPressed(Buttons button) => _gamePadState.IsButtonDown(button);
+    public bool IsButtonReleased(Buttons button) => _gamePadState.IsButtonUp(button);
+    public bool IsButtonJustPressed(Buttons button) => _gamePadState.IsButtonDown(button) && _previousGamePadState.IsButtonUp(button);
+    public bool IsButtonJustReleased(Buttons button) => _gamePadState.IsButtonUp(button) && _previousGamePadState.IsButtonDown(button);
 
-    public static bool IsAnyButtonPressed()
+    public bool IsAnyButtonPressed()
     {
         foreach (Buttons button in _validButtons)
         {
@@ -163,14 +163,14 @@ public static partial class InputManager
         return false;
     }
 
-    public static void SetVibration(float strength, int time)
+    public void SetVibration(float strength, int time)
     {
         _vibrationStrength = strength;
         _vibrationTimer = time;
     }
 
     // TODO: Implement vibration support throughout the game. Maybe tweak values too.
-    public static void SetVibration(VibrationStrength strength, VibrationTime time)
+    public void SetVibration(VibrationStrength strength, VibrationTime time)
     {
         _vibrationStrength = strength switch
         {

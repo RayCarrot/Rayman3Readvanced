@@ -3,18 +3,18 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GbaMonoGame;
 
-public static partial class InputManager
+public partial class InputManager
 {
-    private static KeyboardState _previousKeyboardState;
-    private static KeyboardState _keyboardState;
+    private KeyboardState _previousKeyboardState;
+    private KeyboardState _keyboardState;
 
-    private static void UpdateKeyboard()
+    private void UpdateKeyboard()
     {
         _previousKeyboardState = _keyboardState;
         _keyboardState = Engine.App.IsActive ? Keyboard.GetState() : new KeyboardState();
     }
 
-    private static Input GetInputsFromKeyboard()
+    private Input GetInputsFromKeyboard()
     {
         Input inputs = default;
 
@@ -27,9 +27,9 @@ public static partial class InputManager
         return inputs;
     }
 
-    public static Keys GetKey(Input input) => Engine.Config.Local.Controls.KeyboardControls[input];
+    public Keys GetKey(Input input) => Engine.Config.Local.Controls.KeyboardControls[input];
 
-    public static Keys GetDefaultKey(Input input)
+    public Keys GetDefaultKey(Input input)
     {
         return input switch
         {
@@ -56,12 +56,12 @@ public static partial class InputManager
         };
     }
 
-    public static bool IsKeyMapped(Keys key) => Engine.Config.Local.Controls.KeyboardControls.ContainsValue(key);
+    public bool IsKeyMapped(Keys key) => Engine.Config.Local.Controls.KeyboardControls.ContainsValue(key);
 
     // TODO: Improve with localized names
-    public static string GetKeyName(Keys key) => key.ToString();
+    public string GetKeyName(Keys key) => key.ToString();
 
-    public static Keys GetPressedKey()
+    public Keys GetPressedKey()
     {
         Keys[] keys = _keyboardState.GetPressedKeys();
         
@@ -71,12 +71,12 @@ public static partial class InputManager
             return Keys.None;
     }
 
-    public static bool IsKeyPressed(Keys key) => _keyboardState.IsKeyDown(key);
-    public static bool IsKeyReleased(Keys key) => _keyboardState.IsKeyUp(key);
-    public static bool IsKeyJustPressed(Keys key) => _keyboardState.IsKeyDown(key) && _previousKeyboardState.IsKeyUp(key);
-    public static bool IsKeyJustReleased(Keys key) => _keyboardState.IsKeyUp(key) && _previousKeyboardState.IsKeyDown(key);
+    public bool IsKeyPressed(Keys key) => _keyboardState.IsKeyDown(key);
+    public bool IsKeyReleased(Keys key) => _keyboardState.IsKeyUp(key);
+    public bool IsKeyJustPressed(Keys key) => _keyboardState.IsKeyDown(key) && _previousKeyboardState.IsKeyUp(key);
+    public bool IsKeyJustReleased(Keys key) => _keyboardState.IsKeyUp(key) && _previousKeyboardState.IsKeyDown(key);
 
-    public static bool IsAnyKeyPressed()
+    public bool IsAnyKeyPressed()
     {
         return _keyboardState.GetPressedKeyCount() > 0;
     }

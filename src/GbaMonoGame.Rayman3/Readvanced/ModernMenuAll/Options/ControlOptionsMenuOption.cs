@@ -16,7 +16,7 @@ public class ControlOptionsMenuOption : OptionsMenuOption
         IsAvailableOnGamePad = isAvailableOnGamePad;
     }
 
-    public override bool CanEdit => !(InputManager.InputMode == InputMode.GamePad && !IsAvailableOnGamePad);
+    public override bool CanEdit => !(Engine.Input.InputMode == InputMode.GamePad && !IsAvailableOnGamePad);
 
     public override bool ShowArrows => false;
 
@@ -26,17 +26,17 @@ public class ControlOptionsMenuOption : OptionsMenuOption
 
     private void UpdateSelection()
     {
-        if (InputManager.InputMode == InputMode.Keyboard)
+        if (Engine.Input.InputMode == InputMode.Keyboard)
         {
-            Keys key = InputManager.GetKey(Input);
-            ValueTextObject.Text = InputManager.GetKeyName(key).ToUpper();
+            Keys key = Engine.Input.GetKey(Input);
+            ValueTextObject.Text = Engine.Input.GetKeyName(key).ToUpper();
         }
-        else if (InputManager.InputMode == InputMode.GamePad)
+        else if (Engine.Input.InputMode == InputMode.GamePad)
         {
             if (IsAvailableOnGamePad)
             {
-                Buttons button = InputManager.GetButton(Input);
-                ValueTextObject.Text = InputManager.GetButtonName(button).ToUpper();
+                Buttons button = Engine.Input.GetButton(Input);
+                ValueTextObject.Text = Engine.Input.GetButtonName(button).ToUpper();
             }
             else
             {
@@ -45,10 +45,10 @@ public class ControlOptionsMenuOption : OptionsMenuOption
         }
         else
         {
-            throw new InvalidOperationException($"Input mode {InputManager.InputMode} is not supported");
+            throw new InvalidOperationException($"Input mode {Engine.Input.InputMode} is not supported");
         }
 
-        PreviousInputMode = InputManager.InputMode;
+        PreviousInputMode = Engine.Input.InputMode;
     }
 
     private void UpdateKeyboardInput(Keys key, IReadOnlyList<OptionsMenuOption> options)
@@ -57,7 +57,7 @@ public class ControlOptionsMenuOption : OptionsMenuOption
         Engine.Config.Local.Controls.KeyboardControls[Input] = key;
 
         // Set as pressed key to avoid it being seen as just having pressed this input
-        if (InputManager.TryGetGbaInput(Input, out GbaInput gbaInput))
+        if (Engine.Input.TryGetGbaInput(Input, out GbaInput gbaInput))
             JoyPad.Current.KeyStatus |= gbaInput;
 
         // Check if key is used elsewhere
@@ -69,7 +69,7 @@ public class ControlOptionsMenuOption : OptionsMenuOption
             {
                 Engine.Config.Local.Controls.KeyboardControls[input] = prevKey;
 
-                if (InputManager.TryGetGbaInput(input, out GbaInput gbaInput2))
+                if (Engine.Input.TryGetGbaInput(input, out GbaInput gbaInput2))
                     JoyPad.Current.KeyStatus |= gbaInput2;
 
                 ControlOptionsMenuOption option = options.OfType<ControlOptionsMenuOption>().FirstOrDefault(x => x.Input == input);
@@ -84,7 +84,7 @@ public class ControlOptionsMenuOption : OptionsMenuOption
         Engine.Config.Local.Controls.GamePadControls[Input] = button;
 
         // Set as pressed key to avoid it being seen as just having pressed this input
-        if (InputManager.TryGetGbaInput(Input, out GbaInput gbaInput))
+        if (Engine.Input.TryGetGbaInput(Input, out GbaInput gbaInput))
             JoyPad.Current.KeyStatus |= gbaInput;
 
         // Check if key is used elsewhere
@@ -96,7 +96,7 @@ public class ControlOptionsMenuOption : OptionsMenuOption
             {
                 Engine.Config.Local.Controls.GamePadControls[input] = prevButton;
 
-                if (InputManager.TryGetGbaInput(input, out GbaInput gbaInput2))
+                if (Engine.Input.TryGetGbaInput(input, out GbaInput gbaInput2))
                     JoyPad.Current.KeyStatus |= gbaInput2;
 
                 ControlOptionsMenuOption option = options.OfType<ControlOptionsMenuOption>().FirstOrDefault(x => x.Input == input);
@@ -112,17 +112,17 @@ public class ControlOptionsMenuOption : OptionsMenuOption
 
     public override EditStepResult EditStep(IReadOnlyList<OptionsMenuOption> options)
     {
-        if (InputManager.InputMode == InputMode.Keyboard)
+        if (Engine.Input.InputMode == InputMode.Keyboard)
         {
             ValueTextObject.Text = "PRESS A KEY";
 
-            Keys pressedKey = InputManager.GetPressedKey();
+            Keys pressedKey = Engine.Input.GetPressedKey();
 
             // Don't allow mapping escape since we hard-code that
             if (pressedKey is Keys.None or Keys.Escape)
                 return EditStepResult.None;
 
-            if (!InputManager.IsKeyJustPressed(pressedKey))
+            if (!Engine.Input.IsKeyJustPressed(pressedKey))
                 return EditStepResult.None;
 
             UpdateKeyboardInput(pressedKey, options);
@@ -130,16 +130,16 @@ public class ControlOptionsMenuOption : OptionsMenuOption
 
             return EditStepResult.Apply;
         }
-        else if (InputManager.InputMode == InputMode.GamePad)
+        else if (Engine.Input.InputMode == InputMode.GamePad)
         {
             ValueTextObject.Text = "PRESS A BUTTON";
 
-            Buttons pressedButton = InputManager.GetPressedButton();
+            Buttons pressedButton = Engine.Input.GetPressedButton();
 
             if (pressedButton == Buttons.None)
                 return EditStepResult.None;
 
-            if (!InputManager.IsButtonJustPressed(pressedButton))
+            if (!Engine.Input.IsButtonJustPressed(pressedButton))
                 return EditStepResult.None;
 
             UpdateGamePadInput(pressedButton, options);
@@ -149,14 +149,14 @@ public class ControlOptionsMenuOption : OptionsMenuOption
         }
         else
         {
-            throw new InvalidOperationException($"Input mode {InputManager.InputMode} is not supported");
+            throw new InvalidOperationException($"Input mode {Engine.Input.InputMode} is not supported");
         }
     }
 
     public override void Draw(AnimationPlayer animationPlayer)
     {
         // Update text if the input mode changes
-        if (InputManager.InputMode != PreviousInputMode)
+        if (Engine.Input.InputMode != PreviousInputMode)
             UpdateSelection();
 
         base.Draw(animationPlayer);

@@ -180,7 +180,7 @@ public partial class SimpleJoyPad
 
             for (int i = 0; i < keys.Length; i++)
             {
-                if (!InputManager.IsKeyMapped(keys[i]) && InputManager.IsKeyPressed(keys[i]))
+                if (!Engine.Input.IsKeyMapped(keys[i]) && Engine.Input.IsKeyPressed(keys[i]))
                     return true;
             }
         }
@@ -205,7 +205,7 @@ public partial class SimpleJoyPad
 
             for (int i = 0; i < keys.Length; i++)
             {
-                if (!InputManager.IsKeyMapped(keys[i]) && !InputManager.IsKeyReleased(keys[i]))
+                if (!Engine.Input.IsKeyMapped(keys[i]) && !Engine.Input.IsKeyReleased(keys[i]))
                     return false;
             }
         }
@@ -230,7 +230,7 @@ public partial class SimpleJoyPad
 
             for (int i = 0; i < keys.Length; i++)
             {
-                if (!InputManager.IsKeyMapped(keys[i]) && InputManager.IsKeyJustPressed(keys[i]))
+                if (!Engine.Input.IsKeyMapped(keys[i]) && Engine.Input.IsKeyJustPressed(keys[i]))
                     return true;
             }
         }
@@ -255,7 +255,7 @@ public partial class SimpleJoyPad
 
             for (int i = 0; i < keys.Length; i++)
             {
-                if (!InputManager.IsKeyMapped(keys[i]) && InputManager.IsKeyJustReleased(keys[i]))
+                if (!Engine.Input.IsKeyMapped(keys[i]) && Engine.Input.IsKeyJustReleased(keys[i]))
                     return true;
             }
         }

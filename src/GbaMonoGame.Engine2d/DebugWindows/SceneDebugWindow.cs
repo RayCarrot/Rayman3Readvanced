@@ -44,12 +44,12 @@ public class SceneDebugWindow : DebugWindow
 
     private void UpdateMouseDetection(Scene2D scene)
     {
-        if (!InputManager.IsMouseOnScreen(scene.RenderContext))
+        if (!Engine.Input.IsMouseOnScreen(scene.RenderContext))
             return;
         
         HighlightedGameObject = null;
 
-        Vector2 mousePos = InputManager.GetMousePosition(scene.RenderContext);
+        Vector2 mousePos = Engine.Input.GetMousePosition(scene.RenderContext);
 
         foreach (GameObject gameObject in scene.Iterate<GameObject>(IteratorFlags.AlwaysActor | IteratorFlags.Actor | IteratorFlags.Captor | IteratorFlags.Enabled))
         {
@@ -62,7 +62,7 @@ public class SceneDebugWindow : DebugWindow
             }
         }
 
-        if (InputManager.GetMouseState().LeftButton == ButtonState.Pressed)
+        if (Engine.Input.GetMouseState().LeftButton == ButtonState.Pressed)
         {
             SelectedGameObject = HighlightedGameObject;
         }

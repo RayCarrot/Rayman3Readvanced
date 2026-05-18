@@ -4,7 +4,7 @@ using BinarySerializer.Ubisoft.GbaEngine;
 
 namespace GbaMonoGame;
 
-public static partial class InputManager
+public partial class InputManager
 {
     private static readonly FrozenDictionary<Input, GbaInput> _gbaInputMapping = new Dictionary<Input, GbaInput>
     {
@@ -20,10 +20,10 @@ public static partial class InputManager
         [Input.Gba_L] = GbaInput.L,
     }.ToFrozenDictionary();
 
-    public static GbaInput GetGbaInput(Input input) => _gbaInputMapping[input];
-    public static bool TryGetGbaInput(Input input, out GbaInput gbaInput) => _gbaInputMapping.TryGetValue(input, out gbaInput);
+    public GbaInput GetGbaInput(Input input) => _gbaInputMapping[input];
+    public bool TryGetGbaInput(Input input, out GbaInput gbaInput) => _gbaInputMapping.TryGetValue(input, out gbaInput);
 
-    public static GbaInput GetPressedGbaInputs()
+    public GbaInput GetPressedGbaInputs()
     {
         GbaInput inputs = GbaInput.Valid;
 

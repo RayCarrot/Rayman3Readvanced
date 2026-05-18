@@ -69,7 +69,7 @@ public class EditorCamera
     public void Step()
     {
         // Zoom
-        int wheelDelta = InputManager.GetMouseWheelDelta();
+        int wheelDelta = Engine.Input.GetMouseWheelDelta();
         if (wheelDelta < 0)
         {
             Scale += MouseWheelZoomSpeed;
@@ -84,7 +84,7 @@ public class EditorCamera
         }
 
         // Scroll
-        if (InputManager.GetMouseState().RightButton == ButtonState.Pressed)
-            Position += InputManager.GetMousePositionDelta(RenderContext) * -1;
+        if (Engine.Input.GetMouseState().RightButton == ButtonState.Pressed)
+            Position += Engine.Input.GetMousePositionDelta(RenderContext) * -1;
     }
 }

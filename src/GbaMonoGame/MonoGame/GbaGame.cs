@@ -206,6 +206,7 @@ public abstract class GbaGame : Game
         Engine.InitEngine(
             config: config, 
             app: _applicationManager, 
+            input: new InputManager(),
             window: _gameWindowManager, 
             viewPort: new ViewPortManager(), 
             assets: new AssetManager(Services), 
@@ -237,11 +238,11 @@ public abstract class GbaGame : Game
     {
         base.Update(gameTime);
 
-        InputManager.Update();
+        Engine.Input.Update();
 
         // Toggle full-screen
         if (Engine.Config.Local.Display.AltEnterToggle is { } altEnterToggle && 
-            InputManager.IsKeyPressed(Keys.LeftAlt) && InputManager.IsKeyJustPressed(Keys.Enter))
+            Engine.Input.IsKeyPressed(Keys.LeftAlt) && Engine.Input.IsKeyJustPressed(Keys.Enter))
         {
             Engine.Window.DisplayMode = Engine.Window.DisplayMode switch
             {
@@ -284,7 +285,7 @@ public abstract class GbaGame : Game
         if (Engine.Config.Active.Debug.DebugModeEnabled)
         {
             // Toggle debug mode
-            if (InputManager.IsInputJustPressed(Input.Debug_ToggleDebugMode) && _debugLayout != null)
+            if (Engine.Input.IsInputJustPressed(Input.Debug_ToggleDebugMode) && _debugLayout != null)
             {
                 DebugMode = !DebugMode;
 
@@ -304,7 +305,7 @@ public abstract class GbaGame : Game
             }
 
             // Toggle pause
-            if (InputManager.IsInputJustPressed(Input.Debug_TogglePause))
+            if (Engine.Input.IsInputJustPressed(Input.Debug_TogglePause))
             {
                 if (!IsPaused)
                     Pause();
@@ -313,13 +314,13 @@ public abstract class GbaGame : Game
             }
 
             // Speed up game
-            if (InputManager.IsInputPressed(Input.Debug_SpeedUp))
+            if (Engine.Input.IsInputPressed(Input.Debug_SpeedUp))
                 _speedUp = true;
-            else if (InputManager.IsInputJustReleased(Input.Debug_SpeedUp))
+            else if (Engine.Input.IsInputJustReleased(Input.Debug_SpeedUp))
                 _speedUp = false;
 
             // Run one frame
-            if (InputManager.IsInputJustPressed(Input.Debug_StepOneFrame))
+            if (Engine.Input.IsInputJustPressed(Input.Debug_StepOneFrame))
             {
                 IsPaused = false;
                 RunSingleFrame = true;

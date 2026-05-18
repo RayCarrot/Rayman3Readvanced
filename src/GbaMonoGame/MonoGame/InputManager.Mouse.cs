@@ -2,20 +2,20 @@
 
 namespace GbaMonoGame;
 
-public static partial class InputManager
+public partial class InputManager
 {
-    private static MouseState _previousMouseState;
-    private static MouseState _mouseState;
+    private MouseState _previousMouseState;
+    private MouseState _mouseState;
 
-    public static Vector2 MouseOffset { get; set; }
+    public Vector2 MouseOffset { get; set; }
 
-    private static void UpdateMouse()
+    private void UpdateMouse()
     {
         _previousMouseState = _mouseState;
         _mouseState = Engine.App.IsActive ? Mouse.GetState() : new MouseState();
     }
 
-    public static bool IsMouseOnScreen(RenderContext renderContext)
+    public bool IsMouseOnScreen(RenderContext renderContext)
     {
         Vector2 mousePos = GetMousePosition(renderContext);
 
@@ -30,12 +30,12 @@ public static partial class InputManager
         return true;
     }
 
-    public static Vector2 GetMousePosition(RenderContext renderContext) =>
+    public Vector2 GetMousePosition(RenderContext renderContext) =>
         renderContext.ToWorldPosition(_mouseState.Position.ToVector2() + MouseOffset);
-    public static Vector2 GetMousePositionDelta(RenderContext renderContext) =>
+    public Vector2 GetMousePositionDelta(RenderContext renderContext) =>
         renderContext.ToWorldPosition(_mouseState.Position.ToVector2()) -
         renderContext.ToWorldPosition(_previousMouseState.Position.ToVector2());
-    public static int GetMouseWheelDelta() => _mouseState.ScrollWheelValue - _previousMouseState.ScrollWheelValue;
-    public static MouseState GetMouseState() => _mouseState;
-    public static bool IsMouseLeftButtonJustPressed() => _mouseState.LeftButton == ButtonState.Pressed && _previousMouseState.LeftButton == ButtonState.Released;
+    public int GetMouseWheelDelta() => _mouseState.ScrollWheelValue - _previousMouseState.ScrollWheelValue;
+    public MouseState GetMouseState() => _mouseState;
+    public bool IsMouseLeftButtonJustPressed() => _mouseState.LeftButton == ButtonState.Pressed && _previousMouseState.LeftButton == ButtonState.Released;
 }

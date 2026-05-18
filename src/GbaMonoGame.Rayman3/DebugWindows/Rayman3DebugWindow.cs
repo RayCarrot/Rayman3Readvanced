@@ -211,9 +211,9 @@ public class Rayman3DebugWindow : DebugWindow
                         if (ImGui.RadioButton("Decrease 5", TimeFreezeItemAction == TimeFreezeItem.Action.Init_Decrease5))
                             TimeFreezeItemAction = TimeFreezeItem.Action.Init_Decrease5;
 
-                        if (InputManager.IsMouseOnScreen(frame.Scene.RenderContext) && InputManager.IsMouseLeftButtonJustPressed())
+                        if (Engine.Input.IsMouseOnScreen(frame.Scene.RenderContext) && Engine.Input.IsMouseLeftButtonJustPressed())
                         {
-                            Vector2 mousePos = InputManager.GetMousePosition(frame.Scene.RenderContext) + frame.Scene.Playfield.Camera.Position;
+                            Vector2 mousePos = Engine.Input.GetMousePosition(frame.Scene.RenderContext) + frame.Scene.Playfield.Camera.Position;
                             frame.Scene.KnotManager.AddActor(frame.Scene, new ActorResource
                             {
                                 Pos = new BinarySerializer.Ubisoft.GbaEngine.Vector2((short)mousePos.X, (short)mousePos.Y),

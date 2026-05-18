@@ -146,8 +146,8 @@ public static class GameOptions
                     {
                         foreach (Input input in Enum.GetValues<Input>())
                         {
-                            Engine.Config.Local.Controls.KeyboardControls[input] = InputManager.GetDefaultKey(input);
-                            Engine.Config.Local.Controls.GamePadControls[input] = InputManager.GetDefaultButton(input);
+                            Engine.Config.Local.Controls.KeyboardControls[input] = Engine.Input.GetDefaultKey(input);
+                            Engine.Config.Local.Controls.GamePadControls[input] = Engine.Input.GetDefaultButton(input);
                         }
                     }),
                 new MultiSelectionOptionsMenuOption<bool>(

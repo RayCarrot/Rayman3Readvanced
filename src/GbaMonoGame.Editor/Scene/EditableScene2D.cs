@@ -77,7 +77,7 @@ public class EditableScene2D
 
     public void StepGameObjects()
     {
-        Vector2 mousePos = InputManager.GetMousePosition(Camera.RenderContext) + Camera.Position;
+        Vector2 mousePos = Engine.Input.GetMousePosition(Camera.RenderContext) + Camera.Position;
 
         // Hover over object
         HoverGameObject = null;
@@ -90,7 +90,7 @@ public class EditableScene2D
         }
 
         // Move object
-        if (InputManager.GetMouseState().LeftButton == ButtonState.Pressed)
+        if (Engine.Input.GetMouseState().LeftButton == ButtonState.Pressed)
         {
             if (!IsDraggingObject)
             {
@@ -106,7 +106,7 @@ public class EditableScene2D
             }
 
             if (IsDraggingObject && SelectedGameObject != null)
-                SelectedGameObject.Position += InputManager.GetMousePositionDelta(Camera.RenderContext);
+                SelectedGameObject.Position += Engine.Input.GetMousePositionDelta(Camera.RenderContext);
         }
         else
         {

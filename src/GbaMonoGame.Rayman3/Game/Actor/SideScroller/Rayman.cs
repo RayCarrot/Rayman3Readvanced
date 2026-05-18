@@ -1485,7 +1485,7 @@ public sealed partial class Rayman : MovableActor
 
     private void ToggleNoClip()
     {
-        if (Engine.Config.Active.Debug.DebugModeEnabled && InputManager.IsInputJustPressed(Input.Debug_ToggleNoClip))
+        if (Engine.Config.Active.Debug.DebugModeEnabled && Engine.Input.IsInputJustPressed(Input.Debug_ToggleNoClip))
         {
             Debug_NoClip = !Debug_NoClip;
 

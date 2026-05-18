@@ -1998,7 +1998,7 @@ public partial class Rayman
 
             case FsmAction.Step:
                 if (Timer != 0)
-                    InputManager.SetVibration(VibrationStrength.VeryWeak, VibrationTime.Step);
+                    Engine.Input.SetVibration(VibrationStrength.VeryWeak, VibrationTime.Step);
 
                 // Check for damage
                 if (AttachedObject?.Type == (int)ActorType.Plum)

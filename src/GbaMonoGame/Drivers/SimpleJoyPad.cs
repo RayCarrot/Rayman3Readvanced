@@ -41,7 +41,7 @@ public partial class SimpleJoyPad
 
         if (!IsInReplayMode)
         {
-            inputs = InputManager.GetPressedGbaInputs();
+            inputs = Engine.Input.GetPressedGbaInputs();
             ReceivedInputsFromUser = true;
         }
         else

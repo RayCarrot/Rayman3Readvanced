@@ -2,16 +2,16 @@
 
 namespace GbaMonoGame;
 
-public static partial class InputManager
+public partial class InputManager
 {
     private static readonly Input[] _allInputs = Enum.GetValues<Input>();
 
-    private static Input _previousInputs;
-    private static Input _inputs;
+    private Input _previousInputs;
+    private Input _inputs;
 
-    public static InputMode InputMode { get; private set; }
+    public InputMode InputMode { get; private set; }
 
-    private static void UpdateInput()
+    private void UpdateInput()
     {
         // Switch input mode based on last detected input
         if (InputMode != InputMode.GamePad && IsGamePadConnected && IsAnyButtonPressed())
@@ -35,8 +35,8 @@ public static partial class InputManager
         };
     }
 
-    public static bool IsInputPressed(Input input) => (_inputs & input) != 0;
-    public static bool IsInputReleased(Input input) => (_inputs & input) == 0;
-    public static bool IsInputJustPressed(Input input) => (_inputs & input) != 0 && (_previousInputs & input) == 0;
-    public static bool IsInputJustReleased(Input input) => (_inputs & input) == 0 && (_previousInputs & input) != 0;
+    public bool IsInputPressed(Input input) => (_inputs & input) != 0;
+    public bool IsInputReleased(Input input) => (_inputs & input) == 0;
+    public bool IsInputJustPressed(Input input) => (_inputs & input) != 0 && (_previousInputs & input) == 0;
+    public bool IsInputJustReleased(Input input) => (_inputs & input) == 0 && (_previousInputs & input) != 0;
 }

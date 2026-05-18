@@ -42,7 +42,7 @@ public class GameDebugWindow : DebugWindow
         if (GameRenderTarget.RenderTarget != null)
         {
             IntPtr texPtr = textureManager.BindTexture(GameRenderTarget.RenderTarget);
-            InputManager.MouseOffset = -ImGui.GetCursorScreenPos();
+            Engine.Input.MouseOffset = -ImGui.GetCursorScreenPos();
             ImGui.Image(texPtr, new System.Numerics.Vector2(GameRenderTarget.RenderTarget.Width, GameRenderTarget.RenderTarget.Height));
         }
     }
@@ -54,6 +54,6 @@ public class GameDebugWindow : DebugWindow
 
     public override void OnWindowClosed()
     {
-        InputManager.MouseOffset = Vector2.Zero;
+        Engine.Input.MouseOffset = Vector2.Zero;
     }
 }

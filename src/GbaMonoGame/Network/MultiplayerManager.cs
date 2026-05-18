@@ -136,7 +136,7 @@ public static class MultiplayerManager
                         }
                         else
                         {
-                            MultiJoyPad.Read(MachineId, time.Value, InputManager.GetPressedGbaInputs());
+                            MultiJoyPad.Read(MachineId, time.Value, Engine.Input.GetPressedGbaInputs());
 
                             GbaInput input = MultiJoyPad.GetInput(MachineId, time.Value);
 
@@ -395,7 +395,7 @@ public static class MultiplayerManager
             // Read our inputs
             if ((Flags & 8) == 0 || HasReadClientJoyPads(ElapsedFrames))
             {
-                MultiJoyPad.SetInput(0, ElapsedFrames, InputManager.GetPressedGbaInputs());
+                MultiJoyPad.SetInput(0, ElapsedFrames, Engine.Input.GetPressedGbaInputs());
                 
                 ushort[] packetBuffer = new ushort[RSMultiplayer.PlayersCount];
                 for (int i = 0; i < RSMultiplayer.PlayersCount; i++)
@@ -448,7 +448,7 @@ public static class MultiplayerManager
             }
         }
 
-        GbaInput input = InputManager.GetPressedGbaInputs();
+        GbaInput input = Engine.Input.GetPressedGbaInputs();
         
         if ((Flags & 8) == 0 && PrevDisconnectedInput != input && DisconnectedHasReadNewInputs)
         {

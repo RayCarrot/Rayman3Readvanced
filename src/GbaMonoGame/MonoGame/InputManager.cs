@@ -1,8 +1,8 @@
 ﻿namespace GbaMonoGame;
 
-public static partial class InputManager
+public partial class InputManager
 {
-    public static void Update()
+    public void Update()
     {
         UpdateKeyboard();
         UpdateMouse();
