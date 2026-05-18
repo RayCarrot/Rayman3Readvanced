@@ -103,9 +103,6 @@ public abstract class GbaGame : Game
 
         // Clear graphics
         Gfx.Clear();
-
-        // Clear the cache
-        Engine.Assets.UnloadAllCache();
     }
 
     #endregion
