@@ -99,7 +99,8 @@ public class Rayman3GbaGame : GbaGame
         Engine.InitGame(
             sem: CreateSoundEventsManager(),
             font: new FontManager(Rom.Loader.Font8, Rom.Loader.Font16, Rom.Loader.Font32));
-        Rayman3.InitGame();
+        Rayman3.InitGame(
+            save: new SaveGameManager());
     }
 
     protected override void UnInitEngine()

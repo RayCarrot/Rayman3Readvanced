@@ -4,6 +4,13 @@ namespace GbaMonoGame;
 
 public class ConfigManager : IConfigManager
 {
+    public ConfigManager(LocalGameConfig localConfig)
+    {
+        Local = localConfig;
+        Active = new ActiveGameConfig(Local.Tweaks, Local.Difficulty, Local.Debug);
+        IsOverriden = false;
+    }
+
     public ConfigManager()
     {
         string filePath = FileManager.GetDataFile(Paths.ConfigFileName);

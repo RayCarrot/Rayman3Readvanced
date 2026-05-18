@@ -284,13 +284,14 @@ public static class Rayman3
         ReadvancedFonts.Load();
     }
 
-    public static void InitGame()
+    public static void InitGame(
+        ISaveGameManager save)
     {
         // Load configs
         TimeAttackLevelInfo[] timeAttackLevelInfos = DeserializeConfig<TimeAttackLevelInfo[]>("TimeAttackConfig");
 
         // Set services
-        Save = new SaveGameManager();
+        Save = save;
         Loc = new LocalizationManager();
         Achievements = new AchievementsManager(Rayman3Achievements.Achievements);
         TimeAttack = new TimeAttackManager(timeAttackLevelInfos);

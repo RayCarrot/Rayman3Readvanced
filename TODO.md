@@ -23,8 +23,13 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
     - Loaded bitmaps in 9 ms
     - Loaded replays in 6 ms
 - Try and reduce the number of allocations per frame as much as possible.
-- Move hard-coded data to config files
-- Add unit tests
+- Move hard-coded data to config files, such as song tables and achievements
+
+## 🧪 Unit tests
+- Add tests for core engine functionality
+- Add test for engine libraries
+- Add tests for data loading
+- Add tests for game behavior
 
 ## 🎮 Multiplayer
 Implementing local multiplayer, using multiple game instances (through named pipes) or through LAN, shouldn't be too hard. The game's multiplayer code is very simple, with it usually just sending a single 16-bit value between clients each frame.
