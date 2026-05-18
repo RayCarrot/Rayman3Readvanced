@@ -1,5 +1,4 @@
 ﻿using System;
-using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.FsmSourceGenerator;

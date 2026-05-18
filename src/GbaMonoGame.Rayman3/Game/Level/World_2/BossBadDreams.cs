@@ -1,6 +1,4 @@
-﻿using GbaMonoGame.Rayman3.Readvanced;
-
-namespace GbaMonoGame.Rayman3;
+﻿namespace GbaMonoGame.Rayman3;
 
 public class BossBadDreams : FrameSideScroller
 {
