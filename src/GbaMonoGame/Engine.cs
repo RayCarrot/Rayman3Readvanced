@@ -63,6 +63,9 @@ public static class Engine
         // Set services
         Sem = sem;
         Font = font;
+
+        // Initialize services
+        SoundEngineInterface.Load();
     }
 
     public static void UnInitEngine()
