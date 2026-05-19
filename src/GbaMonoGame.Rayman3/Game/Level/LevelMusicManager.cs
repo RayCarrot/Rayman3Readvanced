@@ -237,7 +237,7 @@ public static class LevelMusicManager
 
     public static void PlaySpecialMusicIfDetectedWith(GameObject obj, Box box)
     {
-        Box objBox = Box.Offset(box, obj.Position);
+        Box objBox = Box.Offset(box, obj.Position.Truncate());
 
         // Extend the box if playing
         if (IsPlayingSpecialMusic)

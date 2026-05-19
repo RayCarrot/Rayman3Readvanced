@@ -36,7 +36,7 @@ public sealed partial class BluePirate : PirateBaseActor
             box = Box.FlipX(box);
 
         _lastChainAttackBox = box;
-        return Box.Offset(box, Position);
+        return Box.Offset(box, Position.Truncate());
     }
 
     public override void DoBehavior()

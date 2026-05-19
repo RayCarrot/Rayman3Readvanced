@@ -157,8 +157,8 @@ public class LevelTests(MockGame game)
         rayman.Position = shell.Position;
         scene.Camera.SetFirstPosition();
 
-        // Wait for the shell to fall
-        while (shell.State != shell._Fsm_Fall)
+        // Wait for the shell to fall or explode
+        while (shell.State != shell._Fsm_Fall && shell.State != null)
             game.Step();
 
         // Validate we haven't clipped through the ground by falling too early

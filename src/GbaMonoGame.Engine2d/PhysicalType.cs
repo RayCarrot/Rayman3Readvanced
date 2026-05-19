@@ -24,10 +24,6 @@ public readonly struct PhysicalType
 
     public float GetBlockTopSolid(float xPos)
     {
-        // NOTE: See comment below about flooring floats. This is added to fix Rayman's sloped collision
-        //       when using the below fix.
-        xPos = MathF.Floor(xPos);
-
         float subTileX = MathHelpers.Mod(xPos, Tile.Size);
 
         // In the game this is done using pre-calculated arrays and rounded down to nearest integer
@@ -52,7 +48,8 @@ public readonly struct PhysicalType
         //       in this case it causes issues when actors move down on sloped ground as they don't move
         //       down with it fast enough to keep up with the slope, and thus can get de-synced. This is
         //       an issue with the Slapdash enemy in Hoodlum Hideout 2 when charging down the slopes. It
-        //       also causes an issue in Mega Havoc 4 where the boulders get stuck on the slopes.
+        //       also causes an issue in Mega Havoc 4 where the boulders get stuck on the slopes. This
+        //       also makes it match what the original game does.
         topSolid = MathF.Floor(topSolid);
 
         return topSolid;

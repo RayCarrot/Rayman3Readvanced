@@ -40,7 +40,7 @@ public abstract class InteractableActor : ActionActor
         if (AnimatedObject.FlipY)
             box = Box.FlipY(box);
 
-        return Box.Offset(box, Position);
+        return Box.Offset(box, Position.Truncate());
     }
 
     public virtual Box GetVulnerabilityBox()
@@ -53,7 +53,7 @@ public abstract class InteractableActor : ActionActor
         if (AnimatedObject.FlipY)
             box = Box.FlipY(box);
 
-        return Box.Offset(box, Position);
+        return Box.Offset(box, Position.Truncate());
     }
 
     public override void DrawDebugBoxes(AnimationPlayer animationPlayer)

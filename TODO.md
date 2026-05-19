@@ -76,4 +76,3 @@ It might be fun to include some cheat codes. These can be triggered by holding t
 - Saved window position and size might become invalid, such as becoming negative. Auto fix if wrong.
 - When running on integrated graphics in a WindowsDX build it seems to have minor graphics glitches like screen tearing (noticeable in the scrolling clouds background of the first level).
 - Some backgrounds scroll too much, making it rather dizzying for the player. For example `SanctuaryOfStoneAndFire_M3` and `GameCube_Bonus2`.
-- Walking shell can clip through the sloped ground after a loop

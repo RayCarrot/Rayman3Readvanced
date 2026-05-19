@@ -28,6 +28,18 @@ public abstract class MovableActor : InteractableActor
     public bool CheckAgainstMapCollision { get; set; }
     public bool CheckAgainstObjectCollision { get; set; }
 
+    private void TruncateX()
+    {
+        Speed = Speed with { X = MathF.Truncate(Speed.X) };
+        Position = Position with { X = MathF.Truncate(Position.X) };
+    }
+
+    private void TruncateY()
+    {
+        Speed = Speed with { Y = MathF.Truncate(Speed.Y) };
+        Position = Position with { Y = MathF.Truncate(Position.Y) };
+    }
+
     private bool CheckObjectCollisionXY(Box actorDetectionBox, Box otherDetectionBox)
     {
         if (!Box.Intersect(actorDetectionBox, otherDetectionBox, out Box intersectBox))
@@ -44,9 +56,7 @@ public abstract class MovableActor : InteractableActor
         {
             Speed -= new Vector2(0, height);
             Position -= new Vector2(0, height);
-
-            // NOTE: The original engine casts speed y and pos y to integers here (floor if positive, ceil if negative)
-
+            TruncateY();
             return true;
         }
 
@@ -57,9 +67,7 @@ public abstract class MovableActor : InteractableActor
         {
             Speed += new Vector2(0, height);
             Position += new Vector2(0, height);
-
-            // NOTE: The original engine casts speed y and pos y to integers here (floor if positive, ceil if negative)
-
+            TruncateY();
             return true;
         }
 
@@ -70,8 +78,7 @@ public abstract class MovableActor : InteractableActor
             {
                 Speed -= new Vector2(width, 0);
                 Position -= new Vector2(width, 0);
-
-                // NOTE: The original engine casts speed x and pos x to integers here (floor if positive, ceil if negative)
+                TruncateX();
             }
         }
         // Moving left
@@ -81,8 +88,7 @@ public abstract class MovableActor : InteractableActor
             {
                 Speed += new Vector2(width, 0);
                 Position += new Vector2(width, 0);
-
-                // NOTE: The original engine casts speed x and pos x to integers here (floor if positive, ceil if negative)
+                TruncateX();
             }
         }
 
@@ -112,7 +118,7 @@ public abstract class MovableActor : InteractableActor
             Position -= new Vector2(width, 0);
         }
 
-        // NOTE: The original engine casts speed x and pos x to integers here (floor if positive, ceil if negative)
+        TruncateX();
 
         return true;
     }
@@ -130,7 +136,7 @@ public abstract class MovableActor : InteractableActor
             _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
         };
 
-        if (resetSpeed )
+        if (resetSpeed)
             Speed = direction switch
             {
                 Direction.Up or Direction.Down => Speed with { Y = 0 },
@@ -141,6 +147,12 @@ public abstract class MovableActor : InteractableActor
             Speed += delta;
 
         Position += delta;
+
+        if (direction is Direction.Up or Direction.Down)
+            TruncateY();
+        else
+            TruncateX();
+
         IsTouchingMap = true;
     }
 
@@ -348,8 +360,8 @@ public abstract class MovableActor : InteractableActor
                     Position -= new Vector2(0, tileHeight);
                 else
                     Position -= new Vector2(0, tileHeight + MathHelpers.Mod(detectionBox.Bottom, Tile.Size));
-
                 Speed = Speed with { Y = 0 };
+                TruncateY();
                 IsTouchingMap = true;
             }
             else
@@ -368,12 +380,14 @@ public abstract class MovableActor : InteractableActor
                     {
                         Position += new Vector2(0, tileHeight - MathHelpers.Mod(detectionBox.Bottom, Tile.Size));
                         Speed = Speed with { Y = 0 };
+                        TruncateY();
                         IsTouchingMap = true;
                     }
                     else if (MathHelpers.Mod(detectionBox.Bottom, Tile.Size) > tileHeight)
                     {
                         Position -= new Vector2(0, MathHelpers.Mod(detectionBox.Bottom, Tile.Size) - tileHeight);
                         Speed = Speed with { Y = 0 };
+                        TruncateY();
                         IsTouchingMap = true;
                     }
                 }

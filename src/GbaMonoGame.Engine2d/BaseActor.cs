@@ -107,7 +107,7 @@ public abstract class BaseActor : GameObject
         return InstanceId == Scene.Camera.LinkedObject?.InstanceId;
     }
 
-    public Box GetViewBox() => Box.Offset(_viewBox, Position);
+    public Box GetViewBox() => Box.Offset(_viewBox, Position.Truncate());
 
     public void RewindAction()
     {
