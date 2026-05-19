@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3.Tests;
@@ -95,6 +96,44 @@ public class LevelTests(MockGame game)
             game.Step();
             Assert.Equal(pos, rayman.Position);
         }
+    }
+
+    [Fact]
+    public void MenhirHills_M1_WalkingShellAfterLoop_DoNotClipThroughSlopedGround()
+    {
+        // Load the map
+        Frame frame = LoadMap(MapId.MenhirHills_M1);
+
+        // Get the scene and main actor
+        Scene2D scene = ((IHasScene)frame).Scene;
+        Rayman rayman = (Rayman)scene.MainActor;
+
+        // Wait for Rayman to be able to move
+        while (rayman.State == rayman._Fsm_LevelStart)
+            game.Step();
+
+        // Place Rayman above the shell
+        rayman.Position = new Vector2(460, 156);
+        rayman.State.MoveTo(rayman._Fsm_Fall);
+
+        // Get the walking shell
+        WalkingShell shell = scene.GetGameObject<WalkingShell>(1);
+
+        // Wait for the shell to start moving
+        while (shell.State != shell._Fsm_Move)
+            game.Step();
+
+        // Move the shell to the start of the loop
+        shell.Position = new Vector2(2251.4863f, 192);
+        rayman.Position = shell.Position;
+        scene.Camera.SetFirstPosition();
+
+        // Wait for the shell to fall
+        while (shell.State != shell._Fsm_Fall)
+            game.Step();
+
+        // Validate we haven't clipped through the ground by falling too early
+        Assert.True(shell.Position.X > 2410);
     }
 
     [Fact]
