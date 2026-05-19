@@ -98,6 +98,36 @@ public class LevelTests(MockGame game)
     }
 
     [Fact]
+    public void SanctuaryOfBigTree_M2_SlapdashChargingDownSlope_DoNotWalkOutOfBounds()
+    {
+        // Load the map
+        Frame frame = LoadMap(MapId.SanctuaryOfBigTree_M2);
+
+        // Get the scene and rayman
+        Scene2D scene = ((IHasScene)frame).Scene;
+        Rayman rayman = (Rayman)scene.MainActor;
+
+        // Move Rayman in front of the Slapdash to trigger the charge
+        rayman.Position = new Vector2(1830, 187);
+        rayman.ActionId = Rayman.Action.Fall_Left;
+        scene.Camera.SetFirstPosition();
+
+        // Get the Slapdash
+        Slapdash slapdash = scene.GetGameObject<Slapdash>(88);
+
+        // Wait for the Slapdash to be near the slope while moving to the right
+        while (slapdash.ActionId is not (Slapdash.Action.Walk_Right or Slapdash.Action.BeginChargeAttack_Right) || slapdash.Position.X < 1740)
+            game.Step();
+
+        // Validate not out of bounds for 200 steps
+        for (int i = 0; i < 200; i++)
+        {
+            game.Step();
+            Assert.True(slapdash.Position.X < 1900);
+        }
+    }
+
+    [Fact]
     public void MenhirHills_M1_WalkingShellAfterLoop_DoNotClipThroughSlopedGround()
     {
         // Load the map
