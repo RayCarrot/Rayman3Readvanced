@@ -15,7 +15,7 @@ public class LevelTests(MockGame game)
     }
 
     [Fact]
-    public void LoadLevelFrames_Run10Steps()
+    public void AllMaps_Run10Steps()
     {
         foreach (MapId[] levelMaps in GameInfo.LevelMaps)
         {
@@ -40,7 +40,7 @@ public class LevelTests(MockGame game)
     }
 
     [Fact]
-    public void Map0_RaymanWalkDownSlopes_DoNotEnterFallState()
+    public void WoodLight_M1_RaymanWalkDownSlopes_DoNotEnterFallState()
     {
         // Load the map
         Frame frame = LoadMap(MapId.WoodLight_M1);
@@ -67,7 +67,7 @@ public class LevelTests(MockGame game)
     }
 
     [Fact]
-    public void Map0_RaymanStandingOnSlopeWithFractionalXPosition_MaintainYPosition()
+    public void WoodLight_M1_RaymanStandingOnSlopeWithFractionalXPos_MaintainYPos()
     {
         // Load the map
         Frame frame = LoadMap(MapId.WoodLight_M1);
@@ -98,7 +98,7 @@ public class LevelTests(MockGame game)
     }
 
     [Fact]
-    public void Map43_RollingBouldersWhenNotFramed_DoNotGetStuckOnSlope()
+    public void Bonus4_RollingBouldersWhenNotFramed_DoNotGetStuckOnSlope()
     {
         // Load the map
         Frame frame = LoadMap(MapId.Bonus4);
@@ -139,7 +139,7 @@ public class LevelTests(MockGame game)
     }
 
     [Fact]
-    public void Map43_RollingBouldersWhenFramed_DoNotGetStuckOnSlope()
+    public void Bonus4_RollingBouldersWhenFramed_DoNotGetStuckOnSlope()
     {
         // Load the map
         Frame frame = LoadMap(MapId.Bonus4);
