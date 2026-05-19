@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3.Tests;
@@ -56,7 +55,7 @@ public class LevelTests(MockGame game)
 
         // Play the recording. It has Rayman walking down slopes at the start of the map. There was a bug
         // where he would enter the falling state here, which shouldn't happen.
-        game.StepRecording("Map0_RaymanWalkDownSlopes_DoNotEnterFallState", () =>
+        game.StepRecording("WoodLight_M1_RaymanWalkDownSlopes_DoNotEnterFallState", () =>
         {
             // Validate not in the fall state
             Assert.NotEqual(rayman._Fsm_Fall, rayman.State.CurrentState);
