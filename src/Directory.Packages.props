@@ -13,10 +13,10 @@
     <PackageVersion Include="ini-parser" Version="2.5.2" />
     <PackageVersion Include="ImGui.NET" Version="1.91.6.1" />
     <PackageVersion Include="GbaMonoGame.Native" Version="1.0.0" />
-    <PackageVersion Include="System.Text.Encoding.CodePages" Version="10.0.7" />
+    <PackageVersion Include="System.Text.Encoding.CodePages" Version="10.0.8" />
     <PackageVersion Include="BenchmarkDotNet" Version="0.15.8" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
-    <PackageVersion Include="Magick.NET-Q8-AnyCPU" Version="14.13.0" />
+    <PackageVersion Include="Magick.NET-Q8-AnyCPU" Version="14.13.1" />
     <PackageVersion Include="DiscordRichPresence" Version="1.6.1.70" />
     <PackageVersion Include="xunit.v3.mtp-v2" Version="3.2.2" />
   </ItemGroup>
