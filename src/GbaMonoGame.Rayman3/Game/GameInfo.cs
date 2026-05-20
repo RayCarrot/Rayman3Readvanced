@@ -223,6 +223,19 @@ public static class GameInfo
         }
     }
 
+    // Custom - the original game doesn't allow them to be disabled
+    public static void DisableCheat(Scene2D scene, Cheat cheat)
+    {
+        Cheats &= ~cheat;
+
+        switch (cheat)
+        {
+            case Cheat.Invulnerable:
+                scene.MainActor.IsInvulnerable = false;
+                break;
+        }
+    }
+
     public static bool IsCheatEnabled(Cheat cheat)
     {
         return (Cheats & cheat) != 0;

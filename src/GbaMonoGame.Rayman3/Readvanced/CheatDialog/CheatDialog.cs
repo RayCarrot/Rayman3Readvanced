@@ -77,6 +77,14 @@ public partial class CheatDialog : Dialog
                 isEnabled: null),
             new CheatItem(
                 renderContext: Scene.RenderContext,
+                text: "99 LIVES",
+                action: _ =>
+                {
+                    GameInfo.ModifyLives(99 - GameInfo.PersistentInfo.Lives);
+                },
+                isEnabled: null),
+            new CheatItem(
+                renderContext: Scene.RenderContext,
                 text: "SHOW OBJECT BOXES",
                 action: item =>
                 {
@@ -94,6 +102,19 @@ public partial class CheatDialog : Dialog
                     Scene.Playfield.PhysicalLayer.DebugScreen.IsEnabled = item.IsEnabled == true;
                 },
                 isEnabled: Scene.Playfield.PhysicalLayer.DebugScreen?.IsEnabled ?? false),
+            new CheatItem(
+                renderContext: Scene.RenderContext,
+                text: "INVULNERABLE",
+                action: item =>
+                {
+                    item.ToggleIsEnabled();
+
+                    if (item.IsEnabled == true)
+                        GameInfo.EnableCheat(Scene, Cheat.Invulnerable);
+                    else
+                        GameInfo.DisableCheat(Scene, Cheat.Invulnerable);
+                },
+                isEnabled: GameInfo.IsCheatEnabled(Cheat.Invulnerable)),
         ];
 
         Vector2 pos = new(30, 30);
