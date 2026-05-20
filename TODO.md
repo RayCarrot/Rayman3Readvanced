@@ -2,7 +2,6 @@
 This document contains a list of planned features for Rayman 3 Readvanced, in no particular order. Besides this there are also various TODO comments in the code which should be resolved. I'll gladly accept any help anyone would be willing to provide for this project!
 
 ## 📃 General
-- First time launching the game, before the title screen, it should show options like language, controls and option preset.
 - Use Game Jolt API for achievements and time attack leaderboards.
 - If the screen resolution is not 16:9 then there should be an additional resolution option matching that aspect ratio.
 
@@ -23,7 +22,7 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
     - Loaded bitmaps in 9 ms
     - Loaded replays in 6 ms
 - Try and reduce the number of allocations per frame as much as possible.
-- Move hard-coded data to config files, such as song tables and achievements
+- Move hard-coded data to config files, such as song tables, achievements, Mode7 camera values and Rayman 3 joypad mapping 
 
 ## 🧪 Unit tests
 - Add tests for core engine functionality
