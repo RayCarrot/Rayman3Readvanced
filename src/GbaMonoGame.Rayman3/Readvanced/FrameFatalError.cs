@@ -22,7 +22,7 @@ public class FrameFatalError : Frame
     {
         try
         {
-            string crashLogFilePath = FileManager.GetDataFile(Paths.CrashlogFileName);
+            string crashLogFilePath = Engine.UserData.GetFile(Paths.CrashlogFileName);
             File.WriteAllText(crashLogFilePath, Exception?.ToString());
         }
         catch

@@ -2,7 +2,7 @@
 
 public static class Paths
 {
-    public static string DataDirectoryName => "UserData";
+    public static string UserDataDirectoryName => "UserData";
     public static string AssetsDirectoryName => "Assets";
     public static string CrashlogFileName => "crashlog.txt";
     public static string SettingsFileName => "settings.ini";

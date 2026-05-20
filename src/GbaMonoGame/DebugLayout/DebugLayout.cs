@@ -43,7 +43,7 @@ public class DebugLayout
         io.ConfigFlags |= ImGuiConfigFlags.DockingEnable;
         
         // Get the config file path
-        string iniFilePath = FileManager.GetDataFile(Paths.ImgGuiConfigFileName);
+        string iniFilePath = Engine.UserData.GetFile(Paths.ImgGuiConfigFileName);
         
         // Convert to ASCII bytes
         byte[] iniFilePathBytes = Encoding.ASCII.GetBytes(iniFilePath);

@@ -13,6 +13,7 @@ public static class Engine
     public static IGameWindowManager Window { get; private set; }
     public static ViewPortManager ViewPort { get; private set; }
     public static AssetManager Assets { get; private set; }
+    public static UserDataManager UserData { get; private set; }
     public static GameConfigManager Config { get; private set; }
     public static MessageManager Messages { get; private set; }
     public static FileDialogManager FileDialog { get; private set; }
@@ -32,6 +33,7 @@ public static class Engine
         IGameWindowManager window,
         ViewPortManager viewPort,
         AssetManager assets,
+        UserDataManager userData,
         GameConfigManager config,
         MessageManager messages,
         FileDialogManager fileDialog,
@@ -50,6 +52,7 @@ public static class Engine
         Window = window;
         ViewPort = viewPort;
         Assets = assets;
+        UserData = userData;
         Config = config;
         Messages = messages;
         FileDialog = fileDialog;
@@ -57,6 +60,7 @@ public static class Engine
         FrameMngr = frameMngr;
 
         // Initialize services
+        Settings.Load();
         if (Settings.Active.Tweaks.InternalGameResolution == null)
         {
             // If the internal resolution is null then we default to the original resolution
@@ -96,6 +100,7 @@ public static class Engine
         Window = null;
         ViewPort = null;
         Assets = null;
+        UserData = null;
         Config = null;
         Messages = null;
         FileDialog = null;

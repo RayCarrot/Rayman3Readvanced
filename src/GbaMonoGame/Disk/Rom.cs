@@ -153,7 +153,7 @@ public static class Rom
 
         if (platform == Platform.GBA)
         {
-            gameDirectory = FileManager.GetDataDirectory("Gba");
+            gameDirectory = Engine.UserData.GetDirectory("Gba");
             gameFileNames =
             [
                 $"{gameName}.gba"
@@ -161,7 +161,7 @@ public static class Rom
         }
         else if (platform == Platform.NGage)
         {
-            gameDirectory = FileManager.GetDataDirectory("NGage");
+            gameDirectory = Engine.UserData.GetDirectory("NGage");
             gameFileNames =
             [
                 $"{gameName}.app",
@@ -194,7 +194,7 @@ public static class Rom
 
             // Create a serializer logger
             ISerializerLogger serializerLogger = Engine.Settings.Active.Debug.WriteSerializerLog
-                ? new FileSerializerLogger(FileManager.GetDataFile(Paths.SerializerLogFileName))
+                ? new FileSerializerLogger(Engine.UserData.GetFile(Paths.SerializerLogFileName))
                 : null;
 
             // Create the binary context

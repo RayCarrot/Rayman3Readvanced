@@ -4,16 +4,32 @@ namespace GbaMonoGame;
 
 public class SettingsManager : ISettingsManager
 {
-    public SettingsManager(LocalGameSettings localSettings)
+    /// <summary>
+    /// The full, local, game settings. Avoid using this to read the settings as <see cref="Active"/>
+    /// may be overriden and temporarily contain a different settings.
+    /// </summary>
+    public LocalGameSettings Local { get; set; }
+
+    /// <summary>
+    /// The currently active game settings. This is either the same as <see cref="Local"/> or a
+    /// temporarily overriden settings.
+    /// </summary>
+    public ActiveGameSettings Active { get; set; }
+
+    /// <summary>
+    /// Indicates if the game settings has been overriden.
+    /// </summary>
+    public bool IsOverriden { get; set; }
+
+    private void UpdateInternalGameResolution()
     {
-        Local = localSettings;
-        Active = new ActiveGameSettings(Local.Tweaks, Local.Difficulty, Local.Debug);
-        IsOverriden = false;
+        if (Engine.ViewPort.InternalGameResolution != Engine.Settings.Active.Tweaks.InternalGameResolution)
+            Engine.ViewPort.SetInternalGameResolution(Engine.Settings.Active.Tweaks.InternalGameResolution!.Value);
     }
 
-    public SettingsManager()
+    public void Load()
     {
-        string filePath = FileManager.GetDataFile(Paths.SettingsFileName);
+        string filePath = Engine.UserData.GetFile(Paths.SettingsFileName);
         LocalGameSettings settings = new();
 
         try
@@ -38,32 +54,9 @@ public class SettingsManager : ISettingsManager
         IsOverriden = false;
     }
 
-    /// <summary>
-    /// The full, local, game settings. Avoid using this to read the settings as <see cref="Active"/>
-    /// may be overriden and temporarily contain a different settings.
-    /// </summary>
-    public LocalGameSettings Local { get; }
-
-    /// <summary>
-    /// The currently active game settings. This is either the same as <see cref="Local"/> or a
-    /// temporarily overriden settings.
-    /// </summary>
-    public ActiveGameSettings Active { get; private set; }
-
-    /// <summary>
-    /// Indicates if the game settings has been overriden.
-    /// </summary>
-    public bool IsOverriden { get; private set; }
-
-    private void UpdateInternalGameResolution()
-    {
-        if (Engine.ViewPort.InternalGameResolution != Engine.Settings.Active.Tweaks.InternalGameResolution)
-            Engine.ViewPort.SetInternalGameResolution(Engine.Settings.Active.Tweaks.InternalGameResolution!.Value);
-    }
-
     public void Save()
     {
-        string filePath = FileManager.GetDataFile(Paths.SettingsFileName);
+        string filePath = Engine.UserData.GetFile(Paths.SettingsFileName);
         IniSerializer serializer = new();
         Local.Serialize(serializer);
 

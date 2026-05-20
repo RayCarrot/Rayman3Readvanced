@@ -20,7 +20,7 @@ public sealed class MockGame : IDisposable
 
         // Initialize the engine
         Engine.InitEngine(
-            settings: new SettingsManager(new LocalGameSettings()),
+            settings: new MockSettingsManager(new LocalGameSettings()),
             app: new MockApplicationManager(),
             input: new InputManager(),
             joyPad: new BufferedJoyPad(),
@@ -28,6 +28,7 @@ public sealed class MockGame : IDisposable
             window: new MockGameWindowManager(),
             viewPort: new ViewPortManager(),
             assets: new AssetManager(serviceProvider),
+            userData: new UserDataManager(),
             config: new GameConfigManager(),
             messages: new MessageManager(),
             fileDialog: new FileDialogManager(),

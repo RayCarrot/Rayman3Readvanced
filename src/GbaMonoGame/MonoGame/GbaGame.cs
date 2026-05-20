@@ -190,18 +190,11 @@ public abstract class GbaGame : Game
         Rom.Loaded += Rom_Loaded;
         Rom.Unloaded += Rom_Unloaded;
 
-        // Load the settings
-        SettingsManager settings = new();
-
-        // Create the logger window now so we can start receiving logs during initialization
-        if (settings.Active.Debug.DebugModeEnabled)
-            _loggerWindow = new LoggerDebugWindow();
-
         _applicationManager = new ApplicationManager(this);
 
         // Initialize the engine
         Engine.InitEngine(
-            settings: settings, 
+            settings: new SettingsManager(), 
             app: _applicationManager, 
             input: new InputManager(),
             joyPad: new BufferedJoyPad(),
@@ -209,11 +202,16 @@ public abstract class GbaGame : Game
             window: _gameWindowManager, 
             viewPort: new ViewPortManager(), 
             assets: new AssetManager(Services),
+            userData: new UserDataManager(),
             config: new GameConfigManager(),
             messages: new MessageManager(),
             fileDialog: new FileDialogManager(),
             richPresence: new DiscordRichPresenceManager(),
             frameMngr: new FrameManager());
+
+        // Create the logger window now so we can start receiving logs during initialization
+        if (Engine.Settings.Active.Debug.DebugModeEnabled)
+            _loggerWindow = new LoggerDebugWindow();
 
         // Load the graphics management
         Gfx.Load();
