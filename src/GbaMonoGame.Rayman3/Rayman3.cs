@@ -270,7 +270,7 @@ public static class Rayman3
     public static void InitEngine()
     {
         // Load configs
-        Engine.Config.Load<TimeAttackConfig>("Rayman3/Config/TimeAttackConfig.jsonc");
+        Engine.Config.Load<TimeAttackConfig>($"{Assets.BaseName}/Config/TimeAttackConfig.jsonc");
 
         // Load custom fonts
         ReadvancedFonts.Load();

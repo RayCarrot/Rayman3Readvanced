@@ -51,7 +51,7 @@ public class Rayman3GbaGame : GbaGame
                 soundResources[readvancedSoundResource.Key] = readvancedSoundResource.Value;
             }
 
-            sem = new GbaSoundEventsManager(songTable, soundEvents.ToArray(), soundResources.ToArray());
+            sem = new GbaSoundEventsManager($"{Paths.AssetsDirectoryName}/{Assets.BaseName}", songTable, soundEvents.ToArray(), soundResources.ToArray());
         }
         else if (Rom.Platform == Platform.NGage)
         {
@@ -69,7 +69,7 @@ public class Rayman3GbaGame : GbaGame
                 soundEvents[readvancedSoundEvent.Key] = readvancedSoundEvent.Value;
             }
 
-            sem = new NGageSoundEventsManager(songTable, readvancedSongTable, soundEvents.ToArray());
+            sem = new NGageSoundEventsManager(songTable, $"{Paths.AssetsDirectoryName}/{Assets.BaseName}", readvancedSongTable, soundEvents.ToArray());
         }
         else
         {

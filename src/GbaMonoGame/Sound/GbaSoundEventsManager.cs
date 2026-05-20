@@ -16,7 +16,7 @@ public class GbaSoundEventsManager : SoundEventsManager
 {
     #region Constructor
 
-    public GbaSoundEventsManager(Dictionary<int, string> songPhysicalFileNames, SoundEvent[] soundEvents, SoundResource[] soundResources)
+    public GbaSoundEventsManager(string songPhysicalBasePath, Dictionary<int, string> songPhysicalFileNames, SoundEvent[] soundEvents, SoundResource[] soundResources)
     {
         _soloud = new Soloud();
         _soloud.init();
@@ -31,7 +31,7 @@ public class GbaSoundEventsManager : SoundEventsManager
 
         Stopwatch sw = Stopwatch.StartNew();
 
-        _songTable = LoadSongs(songPhysicalFileNames);
+        _songTable = LoadSongs(songPhysicalBasePath, songPhysicalFileNames);
         
         sw.Stop();
 
@@ -92,7 +92,7 @@ public class GbaSoundEventsManager : SoundEventsManager
 
     #region Private Methods
 
-    private FrozenDictionary<int, Song> LoadSongs(Dictionary<int, string> songPhysicalFileNames)
+    private FrozenDictionary<int, Song> LoadSongs(string songPhysicalBasePath, Dictionary<int, string> songPhysicalFileNames)
     {
         //StringBuilder sb = new();
 
@@ -116,7 +116,7 @@ public class GbaSoundEventsManager : SoundEventsManager
                     FileName = songTableEntry.Value
                 };
 
-                string fileName = $"Assets/Rayman3/{songTableEntry.Value}.wav";
+                string fileName = Path.Combine(songPhysicalBasePath, $"{songTableEntry.Value}.wav");
 
                 song.WavSound.load(fileName);
 

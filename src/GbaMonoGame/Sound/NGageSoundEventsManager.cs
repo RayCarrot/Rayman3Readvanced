@@ -2,6 +2,7 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using BinarySerializer.Ubisoft.GbaEngine;
@@ -14,7 +15,7 @@ public class NGageSoundEventsManager : SoundEventsManager
 {
     #region Constructor
 
-    public NGageSoundEventsManager(Dictionary<int, string> songResourceFileNames, Dictionary<int, string> songPhysicalFileNames, NGageSoundEvent[] soundEvents)
+    public NGageSoundEventsManager(Dictionary<int, string> songResourceFileNames, string songPhysicalBasePath, Dictionary<int, string> songPhysicalFileNames, NGageSoundEvent[] soundEvents)
     {
         _soloud = new Soloud();
         _soloud.init();
@@ -32,8 +33,8 @@ public class NGageSoundEventsManager : SoundEventsManager
 
         Stopwatch sw = Stopwatch.StartNew();
 
-        _musicTable = LoadMusic(songResourceFileNames, songPhysicalFileNames, soundEvents);
-        _soundEffectsTable = LoadSoundEffects(songResourceFileNames, songPhysicalFileNames, soundEvents);
+        _musicTable = LoadMusic(songResourceFileNames, songPhysicalBasePath, songPhysicalFileNames, soundEvents);
+        _soundEffectsTable = LoadSoundEffects(songResourceFileNames, songPhysicalBasePath, songPhysicalFileNames, soundEvents);
 
         sw.Stop();
 
@@ -112,7 +113,7 @@ public class NGageSoundEventsManager : SoundEventsManager
 
     #region Private Methods
 
-    private static FrozenDictionary<int, Music> LoadMusic(Dictionary<int, string> songResourceFileNames, Dictionary<int, string> songPhysicalFileNames, NGageSoundEvent[] soundEvents)
+    private static FrozenDictionary<int, Music> LoadMusic(Dictionary<int, string> songResourceFileNames, string songPhysicalBasePath, Dictionary<int, string> songPhysicalFileNames, NGageSoundEvent[] soundEvents)
     {
         Dictionary<int, Music> musicTable = new();
         Dictionary<int, byte[]> loadedInstruments = new();
@@ -133,7 +134,7 @@ public class NGageSoundEventsManager : SoundEventsManager
                         FileName = physicalFileName
                     };
 
-                    music.XmSound.load($"Assets/Rayman3/{physicalFileName}.xm");
+                    music.XmSound.load(Path.Combine(songPhysicalBasePath, $"{physicalFileName}.xm"));
 
                     musicTable[evt.SoundResourceId] = music;
                 }
@@ -181,7 +182,7 @@ public class NGageSoundEventsManager : SoundEventsManager
         return musicTable.ToFrozenDictionary();
     }
 
-    private static FrozenDictionary<int, SoundEffect> LoadSoundEffects(Dictionary<int, string> songResourceFileNames, Dictionary<int, string> songPhysicalFileNames, NGageSoundEvent[] soundEvents)
+    private static FrozenDictionary<int, SoundEffect> LoadSoundEffects(Dictionary<int, string> songResourceFileNames, string songPhysicalBasePath, Dictionary<int, string> songPhysicalFileNames, NGageSoundEvent[] soundEvents)
     {
         Dictionary<int, SoundEffect> soundEffectsTable = new();
         foreach (NGageSoundEvent evt in soundEvents)
@@ -200,7 +201,7 @@ public class NGageSoundEventsManager : SoundEventsManager
                         FileName = physicalFileName
                     };
 
-                    soundEffect.WavSound.load($"Assets/Rayman3/{physicalFileName}.wav");
+                    soundEffect.WavSound.load(Path.Combine(songPhysicalBasePath, $"{physicalFileName}.wav"));
 
                     soundEffectsTable[evt.SoundResourceId] = soundEffect;
                 }

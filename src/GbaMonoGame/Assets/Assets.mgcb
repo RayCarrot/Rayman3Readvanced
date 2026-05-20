@@ -17,23 +17,23 @@
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:Gfx/DefaultShader.fx
+/build:GbaMonoGame/Gfx/DefaultShader.fx
 
 #begin PaletteShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:Gfx/PaletteShader.fx
+/build:GbaMonoGame/Gfx/PaletteShader.fx
 
 #begin PaletteVertexShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:Gfx/PaletteVertexShader.fx
+/build:GbaMonoGame/Gfx/PaletteVertexShader.fx
 
 #begin VertexShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:Gfx/VertexShader.fx
+/build:GbaMonoGame/Gfx/VertexShader.fx
 

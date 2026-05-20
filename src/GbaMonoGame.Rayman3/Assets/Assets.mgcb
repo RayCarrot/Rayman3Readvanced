@@ -23,7 +23,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_CollectAllLives.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon32px_CollectAllLives.png
 
 #begin AchievementIcon32px_CollectAllWorld1.png
 /importer:TextureImporter
@@ -35,7 +35,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_CollectAllWorld1.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon32px_CollectAllWorld1.png
 
 #begin AchievementIcon32px_CollectAllWorld2.png
 /importer:TextureImporter
@@ -47,7 +47,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_CollectAllWorld2.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon32px_CollectAllWorld2.png
 
 #begin AchievementIcon32px_CollectAllWorld3.png
 /importer:TextureImporter
@@ -59,7 +59,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_CollectAllWorld3.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon32px_CollectAllWorld3.png
 
 #begin AchievementIcon32px_CollectAllWorld4.png
 /importer:TextureImporter
@@ -71,7 +71,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_CollectAllWorld4.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon32px_CollectAllWorld4.png
 
 #begin AchievementIcon32px_CompleteGCNBonus.png
 /importer:TextureImporter
@@ -83,7 +83,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_CompleteGCNBonus.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon32px_CompleteGCNBonus.png
 
 #begin AchievementIcon32px_CompleteRockAndLavaWithoutDefeatingBlackLums.png
 /importer:TextureImporter
@@ -95,7 +95,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_CompleteRockAndLavaWithoutDefeatingBlackLums.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon32px_CompleteRockAndLavaWithoutDefeatingBlackLums.png
 
 #begin AchievementIcon32px_CompleteWorld1.png
 /importer:TextureImporter
@@ -107,7 +107,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_CompleteWorld1.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon32px_CompleteWorld1.png
 
 #begin AchievementIcon32px_CompleteWorld2.png
 /importer:TextureImporter
@@ -119,7 +119,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_CompleteWorld2.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon32px_CompleteWorld2.png
 
 #begin AchievementIcon32px_CompleteWorld3.png
 /importer:TextureImporter
@@ -131,7 +131,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_CompleteWorld3.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon32px_CompleteWorld3.png
 
 #begin AchievementIcon32px_CompleteWorld4.png
 /importer:TextureImporter
@@ -143,7 +143,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_CompleteWorld4.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon32px_CompleteWorld4.png
 
 #begin AchievementIcon32px_DefeatBossBadDreams.png
 /importer:TextureImporter
@@ -155,7 +155,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_DefeatBossBadDreams.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon32px_DefeatBossBadDreams.png
 
 #begin AchievementIcon32px_DefeatBossFinal.png
 /importer:TextureImporter
@@ -167,7 +167,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_DefeatBossFinal.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon32px_DefeatBossFinal.png
 
 #begin AchievementIcon32px_DefeatBossMachine.png
 /importer:TextureImporter
@@ -179,7 +179,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_DefeatBossMachine.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon32px_DefeatBossMachine.png
 
 #begin AchievementIcon32px_DefeatBossRockAndLava.png
 /importer:TextureImporter
@@ -191,7 +191,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_DefeatBossRockAndLava.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon32px_DefeatBossRockAndLava.png
 
 #begin AchievementIcon32px_DefeatBossScaleMan.png
 /importer:TextureImporter
@@ -203,7 +203,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_DefeatBossScaleMan.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon32px_DefeatBossScaleMan.png
 
 #begin AchievementIcon32px_DefeatEveryPirateType.png
 /importer:TextureImporter
@@ -215,7 +215,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_DefeatEveryPirateType.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon32px_DefeatEveryPirateType.png
 
 #begin AchievementIcon32px_DefeatPirateWithKeg.png
 /importer:TextureImporter
@@ -227,7 +227,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_DefeatPirateWithKeg.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon32px_DefeatPirateWithKeg.png
 
 #begin AchievementIcon32px_DefeatPirateWithLava.png
 /importer:TextureImporter
@@ -239,7 +239,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_DefeatPirateWithLava.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon32px_DefeatPirateWithLava.png
 
 #begin AchievementIcon32px_Locked.png
 /importer:TextureImporter
@@ -251,7 +251,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_Locked.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon32px_Locked.png
 
 #begin AchievementIcon32px_RideKegBackwards.png
 /importer:TextureImporter
@@ -263,7 +263,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_RideKegBackwards.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon32px_RideKegBackwards.png
 
 #begin AchievementIcon32px_TimeAttackBronze.png
 /importer:TextureImporter
@@ -275,7 +275,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_TimeAttackBronze.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon32px_TimeAttackBronze.png
 
 #begin AchievementIcon32px_TimeAttackGold.png
 /importer:TextureImporter
@@ -287,7 +287,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_TimeAttackGold.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon32px_TimeAttackGold.png
 
 #begin AchievementIcon32px_TimeAttackSilver.png
 /importer:TextureImporter
@@ -299,7 +299,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon32px_TimeAttackSilver.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon32px_TimeAttackSilver.png
 
 #begin AchievementIcon48px_CollectAllLives.png
 /importer:TextureImporter
@@ -311,7 +311,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_CollectAllLives.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon48px_CollectAllLives.png
 
 #begin AchievementIcon48px_CollectAllWorld1.png
 /importer:TextureImporter
@@ -323,7 +323,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_CollectAllWorld1.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon48px_CollectAllWorld1.png
 
 #begin AchievementIcon48px_CollectAllWorld2.png
 /importer:TextureImporter
@@ -335,7 +335,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_CollectAllWorld2.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon48px_CollectAllWorld2.png
 
 #begin AchievementIcon48px_CollectAllWorld3.png
 /importer:TextureImporter
@@ -347,7 +347,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_CollectAllWorld3.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon48px_CollectAllWorld3.png
 
 #begin AchievementIcon48px_CollectAllWorld4.png
 /importer:TextureImporter
@@ -359,7 +359,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_CollectAllWorld4.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon48px_CollectAllWorld4.png
 
 #begin AchievementIcon48px_CompleteGCNBonus.png
 /importer:TextureImporter
@@ -371,7 +371,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_CompleteGCNBonus.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon48px_CompleteGCNBonus.png
 
 #begin AchievementIcon48px_CompleteRockAndLavaWithoutDefeatingBlackLums.png
 /importer:TextureImporter
@@ -383,7 +383,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_CompleteRockAndLavaWithoutDefeatingBlackLums.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon48px_CompleteRockAndLavaWithoutDefeatingBlackLums.png
 
 #begin AchievementIcon48px_CompleteWorld1.png
 /importer:TextureImporter
@@ -395,7 +395,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_CompleteWorld1.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon48px_CompleteWorld1.png
 
 #begin AchievementIcon48px_CompleteWorld2.png
 /importer:TextureImporter
@@ -407,7 +407,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_CompleteWorld2.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon48px_CompleteWorld2.png
 
 #begin AchievementIcon48px_CompleteWorld3.png
 /importer:TextureImporter
@@ -419,7 +419,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_CompleteWorld3.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon48px_CompleteWorld3.png
 
 #begin AchievementIcon48px_CompleteWorld4.png
 /importer:TextureImporter
@@ -431,7 +431,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_CompleteWorld4.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon48px_CompleteWorld4.png
 
 #begin AchievementIcon48px_DefeatBossBadDreams.png
 /importer:TextureImporter
@@ -443,7 +443,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_DefeatBossBadDreams.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon48px_DefeatBossBadDreams.png
 
 #begin AchievementIcon48px_DefeatBossFinal.png
 /importer:TextureImporter
@@ -455,7 +455,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_DefeatBossFinal.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon48px_DefeatBossFinal.png
 
 #begin AchievementIcon48px_DefeatBossMachine.png
 /importer:TextureImporter
@@ -467,7 +467,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_DefeatBossMachine.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon48px_DefeatBossMachine.png
 
 #begin AchievementIcon48px_DefeatBossRockAndLava.png
 /importer:TextureImporter
@@ -479,7 +479,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_DefeatBossRockAndLava.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon48px_DefeatBossRockAndLava.png
 
 #begin AchievementIcon48px_DefeatBossScaleMan.png
 /importer:TextureImporter
@@ -491,7 +491,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_DefeatBossScaleMan.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon48px_DefeatBossScaleMan.png
 
 #begin AchievementIcon48px_DefeatEveryPirateType.png
 /importer:TextureImporter
@@ -503,7 +503,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_DefeatEveryPirateType.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon48px_DefeatEveryPirateType.png
 
 #begin AchievementIcon48px_DefeatPirateWithKeg.png
 /importer:TextureImporter
@@ -515,7 +515,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_DefeatPirateWithKeg.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon48px_DefeatPirateWithKeg.png
 
 #begin AchievementIcon48px_DefeatPirateWithLava.png
 /importer:TextureImporter
@@ -527,7 +527,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_DefeatPirateWithLava.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon48px_DefeatPirateWithLava.png
 
 #begin AchievementIcon48px_Locked.png
 /importer:TextureImporter
@@ -539,7 +539,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_Locked.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon48px_Locked.png
 
 #begin AchievementIcon48px_RideKegBackwards.png
 /importer:TextureImporter
@@ -551,7 +551,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_RideKegBackwards.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon48px_RideKegBackwards.png
 
 #begin AchievementIcon48px_TimeAttackBronze.png
 /importer:TextureImporter
@@ -563,7 +563,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_TimeAttackBronze.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon48px_TimeAttackBronze.png
 
 #begin AchievementIcon48px_TimeAttackGold.png
 /importer:TextureImporter
@@ -575,7 +575,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_TimeAttackGold.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon48px_TimeAttackGold.png
 
 #begin AchievementIcon48px_TimeAttackSilver.png
 /importer:TextureImporter
@@ -587,7 +587,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementIcon48px_TimeAttackSilver.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementIcon48px_TimeAttackSilver.png
 
 #begin AchievementsIcon.png
 /importer:TextureImporter
@@ -599,7 +599,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/AchievementsIcon.png
+/build:GbaMonoGame.Rayman3/Achievements/AchievementsIcon.png
 
 #begin PopupBackground.png
 /importer:TextureImporter
@@ -611,7 +611,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/PopupBackground.png
+/build:GbaMonoGame.Rayman3/Achievements/PopupBackground.png
 
 #begin PopupBackgroundGold.png
 /importer:TextureImporter
@@ -623,7 +623,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Achievements/PopupBackgroundGold.png
+/build:GbaMonoGame.Rayman3/Achievements/PopupBackgroundGold.png
 
 #begin Hud_Infinity.png
 /importer:TextureImporter
@@ -635,7 +635,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Dialog/Hud_Infinity.png
+/build:GbaMonoGame.Rayman3/Dialog/Hud_Infinity.png
 
 #begin MenuFont_White.png
 /importer:TextureImporter
@@ -647,7 +647,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Font/MenuFont_White.png
+/build:GbaMonoGame.Rayman3/Font/MenuFont_White.png
 
 #begin MenuFont_Yellow.png
 /importer:TextureImporter
@@ -659,7 +659,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Font/MenuFont_Yellow.png
+/build:GbaMonoGame.Rayman3/Font/MenuFont_Yellow.png
 
 #begin IntroLogo_Part1.png
 /importer:TextureImporter
@@ -671,7 +671,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Intro/IntroLogo_Part1.png
+/build:GbaMonoGame.Rayman3/Intro/IntroLogo_Part1.png
 
 #begin IntroLogo_Part2.png
 /importer:TextureImporter
@@ -683,7 +683,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Intro/IntroLogo_Part2.png
+/build:GbaMonoGame.Rayman3/Intro/IntroLogo_Part2.png
 
 #begin IntroLogo_Part3.png
 /importer:TextureImporter
@@ -695,7 +695,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Intro/IntroLogo_Part3.png
+/build:GbaMonoGame.Rayman3/Intro/IntroLogo_Part3.png
 
 #begin IntroLogo_Part4.png
 /importer:TextureImporter
@@ -707,7 +707,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Intro/IntroLogo_Part4.png
+/build:GbaMonoGame.Rayman3/Intro/IntroLogo_Part4.png
 
 #begin IntroLogo_Part5.png
 /importer:TextureImporter
@@ -719,7 +719,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Intro/IntroLogo_Part5.png
+/build:GbaMonoGame.Rayman3/Intro/IntroLogo_Part5.png
 
 #begin IntroLogo_Part6.png
 /importer:TextureImporter
@@ -731,7 +731,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Intro/IntroLogo_Part6.png
+/build:GbaMonoGame.Rayman3/Intro/IntroLogo_Part6.png
 
 #begin IntroLogo_Part7.png
 /importer:TextureImporter
@@ -743,7 +743,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Intro/IntroLogo_Part7.png
+/build:GbaMonoGame.Rayman3/Intro/IntroLogo_Part7.png
 
 #begin IntroLogo_Part8.png
 /importer:TextureImporter
@@ -755,7 +755,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Intro/IntroLogo_Part8.png
+/build:GbaMonoGame.Rayman3/Intro/IntroLogo_Part8.png
 
 #begin BossMachine_ExtendedLayer0_GBA.png
 /importer:TextureImporter
@@ -767,7 +767,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Level/BossMachine_ExtendedLayer0_GBA.png
+/build:GbaMonoGame.Rayman3/Level/BossMachine_ExtendedLayer0_GBA.png
 
 #begin BossMachine_ExtendedLayer0_NGage.png
 /importer:TextureImporter
@@ -779,7 +779,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Level/BossMachine_ExtendedLayer0_NGage.png
+/build:GbaMonoGame.Rayman3/Level/BossMachine_ExtendedLayer0_NGage.png
 
 #begin Cloth.png
 /importer:TextureImporter
@@ -791,7 +791,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/Cloth.png
+/build:GbaMonoGame.Rayman3/Menu/Cloth.png
 
 #begin Cursor.png
 /importer:TextureImporter
@@ -803,7 +803,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/Cursor.png
+/build:GbaMonoGame.Rayman3/Menu/Cursor.png
 
 #begin MenuCurtain.png
 /importer:TextureImporter
@@ -815,7 +815,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/MenuCurtain.png
+/build:GbaMonoGame.Rayman3/Menu/MenuCurtain.png
 
 #begin MenuLogo.png
 /importer:TextureImporter
@@ -827,7 +827,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/MenuLogo.png
+/build:GbaMonoGame.Rayman3/Menu/MenuLogo.png
 
 #begin MenuTextBox.png
 /importer:TextureImporter
@@ -839,7 +839,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/MenuTextBox.png
+/build:GbaMonoGame.Rayman3/Menu/MenuTextBox.png
 
 #begin MenuWoodenFrame.png
 /importer:TextureImporter
@@ -851,7 +851,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/MenuWoodenFrame.png
+/build:GbaMonoGame.Rayman3/Menu/MenuWoodenFrame.png
 
 #begin OptionsDialogBoard.png
 /importer:TextureImporter
@@ -863,7 +863,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/OptionsDialogBoard.png
+/build:GbaMonoGame.Rayman3/Menu/OptionsDialogBoard.png
 
 #begin SaveSelectionOptions_0_English_0.png
 /importer:TextureImporter
@@ -875,7 +875,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_0_English_0.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_0_English_0.png
 
 #begin SaveSelectionOptions_0_English_1.png
 /importer:TextureImporter
@@ -887,7 +887,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_0_English_1.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_0_English_1.png
 
 #begin SaveSelectionOptions_0_English_2.png
 /importer:TextureImporter
@@ -899,7 +899,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_0_English_2.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_0_English_2.png
 
 #begin SaveSelectionOptions_1_French_0.png
 /importer:TextureImporter
@@ -911,7 +911,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_1_French_0.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_1_French_0.png
 
 #begin SaveSelectionOptions_1_French_1.png
 /importer:TextureImporter
@@ -923,7 +923,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_1_French_1.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_1_French_1.png
 
 #begin SaveSelectionOptions_1_French_2.png
 /importer:TextureImporter
@@ -935,7 +935,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_1_French_2.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_1_French_2.png
 
 #begin SaveSelectionOptions_2_Spanish_0.png
 /importer:TextureImporter
@@ -947,7 +947,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_2_Spanish_0.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_2_Spanish_0.png
 
 #begin SaveSelectionOptions_2_Spanish_1.png
 /importer:TextureImporter
@@ -959,7 +959,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_2_Spanish_1.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_2_Spanish_1.png
 
 #begin SaveSelectionOptions_2_Spanish_2.png
 /importer:TextureImporter
@@ -971,7 +971,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_2_Spanish_2.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_2_Spanish_2.png
 
 #begin SaveSelectionOptions_3_German_0.png
 /importer:TextureImporter
@@ -983,7 +983,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_3_German_0.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_3_German_0.png
 
 #begin SaveSelectionOptions_3_German_1.png
 /importer:TextureImporter
@@ -995,7 +995,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_3_German_1.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_3_German_1.png
 
 #begin SaveSelectionOptions_3_German_2.png
 /importer:TextureImporter
@@ -1007,7 +1007,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_3_German_2.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_3_German_2.png
 
 #begin SaveSelectionOptions_4_Italian_0.png
 /importer:TextureImporter
@@ -1019,7 +1019,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_4_Italian_0.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_4_Italian_0.png
 
 #begin SaveSelectionOptions_4_Italian_1.png
 /importer:TextureImporter
@@ -1031,7 +1031,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_4_Italian_1.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_4_Italian_1.png
 
 #begin SaveSelectionOptions_4_Italian_2.png
 /importer:TextureImporter
@@ -1043,7 +1043,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_4_Italian_2.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_4_Italian_2.png
 
 #begin SaveSelectionOptions_5_Dutch_0.png
 /importer:TextureImporter
@@ -1055,7 +1055,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_5_Dutch_0.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_5_Dutch_0.png
 
 #begin SaveSelectionOptions_5_Dutch_1.png
 /importer:TextureImporter
@@ -1067,7 +1067,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_5_Dutch_1.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_5_Dutch_1.png
 
 #begin SaveSelectionOptions_5_Dutch_2.png
 /importer:TextureImporter
@@ -1079,7 +1079,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_5_Dutch_2.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_5_Dutch_2.png
 
 #begin SaveSelectionOptions_6_Swedish_0.png
 /importer:TextureImporter
@@ -1091,7 +1091,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_6_Swedish_0.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_6_Swedish_0.png
 
 #begin SaveSelectionOptions_6_Swedish_1.png
 /importer:TextureImporter
@@ -1103,7 +1103,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_6_Swedish_1.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_6_Swedish_1.png
 
 #begin SaveSelectionOptions_6_Swedish_2.png
 /importer:TextureImporter
@@ -1115,7 +1115,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_6_Swedish_2.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_6_Swedish_2.png
 
 #begin SaveSelectionOptions_7_Finnish_0.png
 /importer:TextureImporter
@@ -1127,7 +1127,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_7_Finnish_0.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_7_Finnish_0.png
 
 #begin SaveSelectionOptions_7_Finnish_1.png
 /importer:TextureImporter
@@ -1139,7 +1139,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_7_Finnish_1.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_7_Finnish_1.png
 
 #begin SaveSelectionOptions_7_Finnish_2.png
 /importer:TextureImporter
@@ -1151,7 +1151,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_7_Finnish_2.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_7_Finnish_2.png
 
 #begin SaveSelectionOptions_8_Norwegian_0.png
 /importer:TextureImporter
@@ -1163,7 +1163,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_8_Norwegian_0.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_8_Norwegian_0.png
 
 #begin SaveSelectionOptions_8_Norwegian_1.png
 /importer:TextureImporter
@@ -1175,7 +1175,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_8_Norwegian_1.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_8_Norwegian_1.png
 
 #begin SaveSelectionOptions_8_Norwegian_2.png
 /importer:TextureImporter
@@ -1187,7 +1187,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_8_Norwegian_2.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_8_Norwegian_2.png
 
 #begin SaveSelectionOptions_9_Danish_0.png
 /importer:TextureImporter
@@ -1199,7 +1199,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_9_Danish_0.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_9_Danish_0.png
 
 #begin SaveSelectionOptions_9_Danish_1.png
 /importer:TextureImporter
@@ -1211,7 +1211,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_9_Danish_1.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_9_Danish_1.png
 
 #begin SaveSelectionOptions_9_Danish_2.png
 /importer:TextureImporter
@@ -1223,7 +1223,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSelectionOptions_9_Danish_2.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSelectionOptions_9_Danish_2.png
 
 #begin SaveSlotIcon_4.png
 /importer:TextureImporter
@@ -1235,7 +1235,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSlotIcon_4.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSlotIcon_4.png
 
 #begin SaveSlotIcon_5.png
 /importer:TextureImporter
@@ -1247,7 +1247,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSlotIcon_5.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSlotIcon_5.png
 
 #begin SaveSlotTime.png
 /importer:TextureImporter
@@ -1259,7 +1259,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/SaveSlotTime.png
+/build:GbaMonoGame.Rayman3/Menu/SaveSlotTime.png
 
 #begin ScrollBarBig.png
 /importer:TextureImporter
@@ -1271,7 +1271,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/ScrollBarBig.png
+/build:GbaMonoGame.Rayman3/Menu/ScrollBarBig.png
 
 #begin ScrollBarSmall.png
 /importer:TextureImporter
@@ -1283,7 +1283,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/ScrollBarSmall.png
+/build:GbaMonoGame.Rayman3/Menu/ScrollBarSmall.png
 
 #begin ScrollBarThumb.png
 /importer:TextureImporter
@@ -1295,7 +1295,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/ScrollBarThumb.png
+/build:GbaMonoGame.Rayman3/Menu/ScrollBarThumb.png
 
 #begin TabBar_5.png
 /importer:TextureImporter
@@ -1307,13 +1307,13 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Menu/TabBar_5.png
+/build:GbaMonoGame.Rayman3/Menu/TabBar_5.png
 
 #begin FogVertexShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:Rayman3/Mode7/FogVertexShader.fx
+/build:GbaMonoGame.Rayman3/Mode7/FogVertexShader.fx
 
 #begin Mode7WallSide.png
 /importer:TextureImporter
@@ -1325,7 +1325,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/Mode7/Mode7WallSide.png
+/build:GbaMonoGame.Rayman3/Mode7/Mode7WallSide.png
 
 #begin BlankStarBig.png
 /importer:TextureImporter
@@ -1337,7 +1337,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/BlankStarBig.png
+/build:GbaMonoGame.Rayman3/TimeAttack/BlankStarBig.png
 
 #begin BlankStarSmall.png
 /importer:TextureImporter
@@ -1349,7 +1349,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/BlankStarSmall.png
+/build:GbaMonoGame.Rayman3/TimeAttack/BlankStarSmall.png
 
 #begin BronzeStarBig.png
 /importer:TextureImporter
@@ -1361,7 +1361,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/BronzeStarBig.png
+/build:GbaMonoGame.Rayman3/TimeAttack/BronzeStarBig.png
 
 #begin BronzeStarSmall.png
 /importer:TextureImporter
@@ -1373,7 +1373,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/BronzeStarSmall.png
+/build:GbaMonoGame.Rayman3/TimeAttack/BronzeStarSmall.png
 
 #begin GoldStarBig.png
 /importer:TextureImporter
@@ -1385,7 +1385,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/GoldStarBig.png
+/build:GbaMonoGame.Rayman3/TimeAttack/GoldStarBig.png
 
 #begin GoldStarSmall.png
 /importer:TextureImporter
@@ -1397,7 +1397,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/GoldStarSmall.png
+/build:GbaMonoGame.Rayman3/TimeAttack/GoldStarSmall.png
 
 #begin PersonalRecordIcon.png
 /importer:TextureImporter
@@ -1409,7 +1409,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/PersonalRecordIcon.png
+/build:GbaMonoGame.Rayman3/TimeAttack/PersonalRecordIcon.png
 
 #begin SilverStarBig.png
 /importer:TextureImporter
@@ -1421,7 +1421,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/SilverStarBig.png
+/build:GbaMonoGame.Rayman3/TimeAttack/SilverStarBig.png
 
 #begin SilverStarSmall.png
 /importer:TextureImporter
@@ -1433,7 +1433,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/SilverStarSmall.png
+/build:GbaMonoGame.Rayman3/TimeAttack/SilverStarSmall.png
 
 #begin TimeDecrease3.png
 /importer:TextureImporter
@@ -1445,7 +1445,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/TimeDecrease3.png
+/build:GbaMonoGame.Rayman3/TimeAttack/TimeDecrease3.png
 
 #begin TimeDecrease5.png
 /importer:TextureImporter
@@ -1457,7 +1457,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/TimeDecrease5.png
+/build:GbaMonoGame.Rayman3/TimeAttack/TimeDecrease5.png
 
 #begin TimeDigit_0.png
 /importer:TextureImporter
@@ -1469,7 +1469,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/TimeDigit_0.png
+/build:GbaMonoGame.Rayman3/TimeAttack/TimeDigit_0.png
 
 #begin TimeDigit_1.png
 /importer:TextureImporter
@@ -1481,7 +1481,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/TimeDigit_1.png
+/build:GbaMonoGame.Rayman3/TimeAttack/TimeDigit_1.png
 
 #begin TimeDigit_2.png
 /importer:TextureImporter
@@ -1493,7 +1493,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/TimeDigit_2.png
+/build:GbaMonoGame.Rayman3/TimeAttack/TimeDigit_2.png
 
 #begin TimeDigit_3.png
 /importer:TextureImporter
@@ -1505,7 +1505,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/TimeDigit_3.png
+/build:GbaMonoGame.Rayman3/TimeAttack/TimeDigit_3.png
 
 #begin TimeDigit_4.png
 /importer:TextureImporter
@@ -1517,7 +1517,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/TimeDigit_4.png
+/build:GbaMonoGame.Rayman3/TimeAttack/TimeDigit_4.png
 
 #begin TimeDigit_5.png
 /importer:TextureImporter
@@ -1529,7 +1529,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/TimeDigit_5.png
+/build:GbaMonoGame.Rayman3/TimeAttack/TimeDigit_5.png
 
 #begin TimeDigit_6.png
 /importer:TextureImporter
@@ -1541,7 +1541,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/TimeDigit_6.png
+/build:GbaMonoGame.Rayman3/TimeAttack/TimeDigit_6.png
 
 #begin TimeDigit_7.png
 /importer:TextureImporter
@@ -1553,7 +1553,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/TimeDigit_7.png
+/build:GbaMonoGame.Rayman3/TimeAttack/TimeDigit_7.png
 
 #begin TimeDigit_8.png
 /importer:TextureImporter
@@ -1565,7 +1565,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/TimeDigit_8.png
+/build:GbaMonoGame.Rayman3/TimeAttack/TimeDigit_8.png
 
 #begin TimeDigit_9.png
 /importer:TextureImporter
@@ -1577,7 +1577,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/TimeDigit_9.png
+/build:GbaMonoGame.Rayman3/TimeAttack/TimeDigit_9.png
 
 #begin TimeDigit_Colon.png
 /importer:TextureImporter
@@ -1589,7 +1589,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/TimeDigit_Colon.png
+/build:GbaMonoGame.Rayman3/TimeAttack/TimeDigit_Colon.png
 
 #begin TimeDigit_Dot.png
 /importer:TextureImporter
@@ -1601,7 +1601,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/TimeDigit_Dot.png
+/build:GbaMonoGame.Rayman3/TimeAttack/TimeDigit_Dot.png
 
 #begin TimeFreezeItem_Blue0.png
 /importer:TextureImporter
@@ -1613,7 +1613,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/TimeFreezeItem_Blue0.png
+/build:GbaMonoGame.Rayman3/TimeAttack/TimeFreezeItem_Blue0.png
 
 #begin TimeFreezeItem_Blue1.png
 /importer:TextureImporter
@@ -1625,7 +1625,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/TimeFreezeItem_Blue1.png
+/build:GbaMonoGame.Rayman3/TimeAttack/TimeFreezeItem_Blue1.png
 
 #begin TimeFreezeItem_Blue2.png
 /importer:TextureImporter
@@ -1637,7 +1637,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/TimeFreezeItem_Blue2.png
+/build:GbaMonoGame.Rayman3/TimeAttack/TimeFreezeItem_Blue2.png
 
 #begin TimeFreezeItem_Blue3.png
 /importer:TextureImporter
@@ -1649,7 +1649,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/TimeFreezeItem_Blue3.png
+/build:GbaMonoGame.Rayman3/TimeAttack/TimeFreezeItem_Blue3.png
 
 #begin TimeFreezeItem_Blue4.png
 /importer:TextureImporter
@@ -1661,7 +1661,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/TimeFreezeItem_Blue4.png
+/build:GbaMonoGame.Rayman3/TimeAttack/TimeFreezeItem_Blue4.png
 
 #begin TimeFreezeItem_Orange0.png
 /importer:TextureImporter
@@ -1673,7 +1673,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/TimeFreezeItem_Orange0.png
+/build:GbaMonoGame.Rayman3/TimeAttack/TimeFreezeItem_Orange0.png
 
 #begin TimeFreezeItem_Orange1.png
 /importer:TextureImporter
@@ -1685,7 +1685,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/TimeFreezeItem_Orange1.png
+/build:GbaMonoGame.Rayman3/TimeAttack/TimeFreezeItem_Orange1.png
 
 #begin TimeFreezeItem_Orange2.png
 /importer:TextureImporter
@@ -1697,7 +1697,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/TimeFreezeItem_Orange2.png
+/build:GbaMonoGame.Rayman3/TimeAttack/TimeFreezeItem_Orange2.png
 
 #begin TimeFreezeItem_Orange3.png
 /importer:TextureImporter
@@ -1709,7 +1709,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/TimeFreezeItem_Orange3.png
+/build:GbaMonoGame.Rayman3/TimeAttack/TimeFreezeItem_Orange3.png
 
 #begin TimeFreezeItem_Orange4.png
 /importer:TextureImporter
@@ -1721,7 +1721,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TimeAttack/TimeFreezeItem_Orange4.png
+/build:GbaMonoGame.Rayman3/TimeAttack/TimeFreezeItem_Orange4.png
 
 #begin Background.png
 /importer:TextureImporter
@@ -1733,7 +1733,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TitleScreen/Background.png
+/build:GbaMonoGame.Rayman3/TitleScreen/Background.png
 
 #begin GBAClouds.png
 /importer:TextureImporter
@@ -1745,7 +1745,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TitleScreen/GBAClouds.png
+/build:GbaMonoGame.Rayman3/TitleScreen/GBAClouds.png
 
 #begin NGageClouds.png
 /importer:TextureImporter
@@ -1757,11 +1757,11 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rayman3/TitleScreen/NGageClouds.png
+/build:GbaMonoGame.Rayman3/TitleScreen/NGageClouds.png
 
 #begin TitleScreenCloudsShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:Rayman3/TitleScreen/TitleScreenCloudsShader.fx
+/build:GbaMonoGame.Rayman3/TitleScreen/TitleScreenCloudsShader.fx
 
