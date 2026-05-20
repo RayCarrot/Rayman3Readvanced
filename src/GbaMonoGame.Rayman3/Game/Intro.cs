@@ -446,7 +446,7 @@ public class Intro : Frame, IHasPlayfield
 
         CurrentStepAction();
 
-        if (Engine.Settings.Active.Tweaks.AllowPrototypeCheats && JoyPad.IsButtonJustPressed(GbaInput.L))
+        if (Engine.Settings.Active.Tweaks.AllowPrototypeCheats && Engine.JoyPad.IsButtonJustPressed(GbaInput.L))
         {
             Engine.FrameMngr.SetNextFrame(new LevelSelect());
             Rayman3.Loc.SetLanguage(0);
@@ -548,7 +548,7 @@ public class Intro : Frame, IHasPlayfield
         // N-Gage allows the intro to be skipped from here
         if (Rom.Platform == Platform.NGage)
         {
-            if (JoyPad.IsButtonJustPressed(Rayman3Input.IntroSkip))
+            if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.IntroSkip))
                 IsSkipping = true;
 
             if (IsSkipping)
@@ -611,7 +611,7 @@ public class Intro : Frame, IHasPlayfield
             }
         }
 
-        if (JoyPad.IsButtonJustPressed(Rayman3Input.IntroSkip))
+        if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.IntroSkip))
         {
             if (Rom.Platform == Platform.NGage || ScrollY <= 863)
                 IsSkipping = true;
@@ -654,7 +654,7 @@ public class Intro : Frame, IHasPlayfield
         BlackLumAndLogoObj.FrameChannelSprite();
         AnimationPlayer.PlayFront(BlackLumAndLogoObj);
 
-        if (JoyPad.IsButtonJustPressed(Rayman3Input.IntroSkip))
+        if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.IntroSkip))
         {
             Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
             Gfx.Fade = AlphaCoefficient.Max;

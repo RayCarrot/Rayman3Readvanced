@@ -54,7 +54,7 @@ public partial class MenuAll
     {
         int prevSelectedOption = SelectedOption;
 
-        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+        if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
         {
             SelectedOption++;
 
@@ -65,21 +65,21 @@ public partial class MenuAll
                 CurrentStepAction = Step_TransitionOutOfHelp;
             }
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
         {
             SelectedOption++;
 
             if (SelectedOption == 4)
                 SelectedOption = 3;
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
         {
             SelectedOption--;
 
             if (SelectedOption == -1)
                 SelectedOption = 0;
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             SelectedOption = 0;
             prevSelectedOption = 0;

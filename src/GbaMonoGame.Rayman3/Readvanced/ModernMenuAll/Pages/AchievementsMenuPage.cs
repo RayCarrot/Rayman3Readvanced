@@ -152,29 +152,29 @@ public class AchievementsMenuPage : MenuPage
 
     protected override void Step_Active()
     {
-        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
+        if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
         {
             SetSelectedOption(SelectedOption - 1);
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
         {
             SetSelectedOption(SelectedOption + 1);
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
         {
             AchievementMenuOption option = (AchievementMenuOption)Options[SelectedOption];
             option.SetSelectedIndex(option.SelectedIndex - 1);
             UpdateSelectedAchievement();
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
         {
             AchievementMenuOption option = (AchievementMenuOption)Options[SelectedOption];
             option.SetSelectedIndex(option.SelectedIndex + 1);
             UpdateSelectedAchievement();
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             Menu.ChangePage(new BonusMenuPage(Menu), NewPageMode.Back);
         }

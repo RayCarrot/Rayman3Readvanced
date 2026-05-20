@@ -265,7 +265,7 @@ public class GameOver : Frame
                 if (Rayman.EndOfAnimation)
                     NextRaymanIdleAnimation();
 
-                if (JoyPad.IsButtonJustPressed(Rayman3Input.GameOverContinue))
+                if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.GameOverContinue))
                 {
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
                     Mode = GameOverMode.Continue;

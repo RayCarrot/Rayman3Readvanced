@@ -8,6 +8,8 @@ public static class Engine
     public static ISettingsManager Settings { get; private set; }
     public static IApplicationManager App { get; private set; }
     public static InputManager Input { get; private set; }
+    public static BufferedJoyPad JoyPad { get; private set; }
+    public static MultiJoyPad MultiJoyPad { get; private set; }
     public static IGameWindowManager Window { get; private set; }
     public static ViewPortManager ViewPort { get; private set; }
     public static AssetManager Assets { get; private set; }
@@ -25,6 +27,8 @@ public static class Engine
         ISettingsManager settings,
         IApplicationManager app, 
         InputManager input,
+        BufferedJoyPad joyPad,
+        MultiJoyPad multiJoyPad,
         IGameWindowManager window,
         ViewPortManager viewPort,
         AssetManager assets,
@@ -41,6 +45,8 @@ public static class Engine
         Settings = settings;
         App = app;
         Input = input;
+        JoyPad = joyPad;
+        MultiJoyPad = multiJoyPad;
         Window = window;
         ViewPort = viewPort;
         Assets = assets;
@@ -85,6 +91,8 @@ public static class Engine
         Settings = null;
         App = null;
         Input = null;
+        JoyPad = null;
+        MultiJoyPad = null;
         Window = null;
         ViewPort = null;
         Assets = null;

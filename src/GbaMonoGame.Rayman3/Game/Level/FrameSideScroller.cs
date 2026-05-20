@@ -238,7 +238,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         }
 
         // Pause (auto pause code here is same as on N-Gage)
-        if ((JoyPad.IsButtonJustPressed(Rayman3Input.Pause) || PendingAutoPause) && 
+        if ((Engine.JoyPad.IsButtonJustPressed(Rayman3Input.Pause) || PendingAutoPause) && 
             CircleTransitionMode == TransitionMode.None && 
             CanPause)
         {
@@ -256,8 +256,8 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
             CurrentStepAction = Step_TimeAttackScore_Init;
 
         // Custom cheat dialog
-        if (Engine.Settings.Active.Tweaks.AllowCheatMenu && JoyPad.IsButtonJustPressed(GbaInput.Select) && 
-            JoyPad.IsButtonReleased(GbaInput.L) && JoyPad.IsButtonReleased(GbaInput.R))
+        if (Engine.Settings.Active.Tweaks.AllowCheatMenu && Engine.JoyPad.IsButtonJustPressed(GbaInput.Select) && 
+            Engine.JoyPad.IsButtonReleased(GbaInput.L) && Engine.JoyPad.IsButtonReleased(GbaInput.R))
         {
             GameTime.Pause();
             Scene.AddDialog(CheatDialog, true, false);
@@ -266,7 +266,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         // NOTE: These cheats are normally only in the game prototypes
         else if (Engine.Settings.Active.Tweaks.AllowPrototypeCheats)
         {
-            if (JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.L))
+            if (Engine.JoyPad.IsButtonJustPressed(GbaInput.Select) && Engine.JoyPad.IsButtonPressed(GbaInput.L))
             {
                 Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
 
@@ -274,7 +274,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
             }
 
-            if (JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.R))
+            if (Engine.JoyPad.IsButtonJustPressed(GbaInput.Select) && Engine.JoyPad.IsButtonPressed(GbaInput.R))
             {
                 GameInfo.EnableCheat(Scene, Cheat.Invulnerable);
 
@@ -417,7 +417,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.Step();
         Scene.AnimationPlayer.Execute();
 
-        if (CheatDialog.PendingClose || JoyPad.IsButtonJustPressed(GbaInput.Select))
+        if (CheatDialog.PendingClose || Engine.JoyPad.IsButtonJustPressed(GbaInput.Select))
         {
             GameTime.Resume();
             Scene.RemoveLastDialog();

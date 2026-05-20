@@ -89,10 +89,10 @@ public partial class Teensies
                     };
                 }
 
-                if (JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxNext))
+                if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxNext))
                     TextBox.MoveToNextText();
 
-                if (Engine.Settings.Active.Tweaks.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxSkip))
+                if (Engine.Settings.Active.Tweaks.CanSkipTextBoxes && Engine.JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxSkip))
                 {
                     World frame = (World)Frame.Current;
                     frame.BlockPause = true;
@@ -151,12 +151,12 @@ public partial class Teensies
                             frame.BlockPause = SavedBlockPause;
                         }
                     }
-                    else if (JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxNext))
+                    else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxNext))
                     {
                         TextBox.MoveToNextText();
                     }
 
-                    if (Engine.Settings.Active.Tweaks.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxSkip))
+                    if (Engine.Settings.Active.Tweaks.CanSkipTextBoxes && Engine.JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxSkip))
                     {
                         World frame = (World)Frame.Current;
                         frame.BlockPause = true;
@@ -230,12 +230,12 @@ public partial class Teensies
                         frame.BlockPause = SavedBlockPause;
                     }
                 }
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxNext))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxNext))
                 {
                     TextBox.MoveToNextText();
                 }
 
-                if (Engine.Settings.Active.Tweaks.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxSkip))
+                if (Engine.Settings.Active.Tweaks.CanSkipTextBoxes && Engine.JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxSkip))
                 {
                     World frame = (World)Frame.Current;
                     frame.BlockPause = true;

@@ -428,7 +428,7 @@ public partial class MenuAll
         }
         else
         {
-            if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp) && Anims.Cursor.CurrentAnimation == 0)
+            if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp) && Anims.Cursor.CurrentAnimation == 0)
             {
                 if (SelectedOption == 0)
                     SelectOption(OptionsOptionsCount - 1, true);
@@ -437,7 +437,7 @@ public partial class MenuAll
 
                 Anims.OptionsSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * OptionsOptionsCount + SelectedOption;
             }
-            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown) && Anims.Cursor.CurrentAnimation == 0)
+            else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown) && Anims.Cursor.CurrentAnimation == 0)
             {
                 if (SelectedOption == OptionsOptionsCount - 1)
                     SelectOption(0, true);
@@ -446,7 +446,7 @@ public partial class MenuAll
 
                 Anims.OptionsSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * OptionsOptionsCount + SelectedOption;
             }
-            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack) && Anims.Cursor.CurrentAnimation == 0)
+            else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack) && Anims.Cursor.CurrentAnimation == 0)
             {
                 // NOTE: N-Gage auto-saves the option here
 
@@ -455,7 +455,7 @@ public partial class MenuAll
                 TransitionOutCursorAndStem();
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
             }
-            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm) && Anims.Cursor.CurrentAnimation == 0)
+            else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm) && Anims.Cursor.CurrentAnimation == 0)
             {
                 Anims.Cursor.CurrentAnimation = 16;
 
@@ -504,7 +504,7 @@ public partial class MenuAll
 
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
             }
-            else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft) && Anims.Cursor.CurrentAnimation == 0)
+            else if (Rom.Platform == Platform.NGage && Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft) && Anims.Cursor.CurrentAnimation == 0)
             {
                 if (SelectedOption == 0)
                 {
@@ -521,7 +521,7 @@ public partial class MenuAll
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                 }
             }
-            else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight) && Anims.Cursor.CurrentAnimation == 0)
+            else if (Rom.Platform == Platform.NGage && Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight) && Anims.Cursor.CurrentAnimation == 0)
             {
                 if (SelectedOption == 0)
                 {

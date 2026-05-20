@@ -258,7 +258,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         {
             for (int id = 0; id < RSMultiplayer.MaxPlayersCount; id++)
             {
-                if (MultiJoyPad.IsButtonJustPressed(id, Rayman3Input.Pause))
+                if (Engine.MultiJoyPad.IsButtonJustPressed(id, Rayman3Input.Pause))
                 {
                     PausedMachineId = id;
                     CurrentStepAction = Step_Pause_Init;

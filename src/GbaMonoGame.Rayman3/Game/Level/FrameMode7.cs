@@ -245,7 +245,7 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
         if (!RSMultiplayer.IsActive)
         {
             // Pause (auto pause code here is same as on N-Gage from the side scroller levels)
-            if ((JoyPad.IsButtonJustPressed(Rayman3Input.Pause) || PendingAutoPause) 
+            if ((Engine.JoyPad.IsButtonJustPressed(Rayman3Input.Pause) || PendingAutoPause) 
                 && CanPause)
             {
                 PendingAutoPause = false;
@@ -261,8 +261,8 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
                 CurrentStepAction = Step_TimeAttackScore_Init;
 
             // Custom cheat dialog
-            if (Engine.Settings.Active.Tweaks.AllowCheatMenu && JoyPad.IsButtonJustPressed(GbaInput.Select) &&
-                JoyPad.IsButtonReleased(GbaInput.L) && JoyPad.IsButtonReleased(GbaInput.R))
+            if (Engine.Settings.Active.Tweaks.AllowCheatMenu && Engine.JoyPad.IsButtonJustPressed(GbaInput.Select) &&
+                Engine.JoyPad.IsButtonReleased(GbaInput.L) && Engine.JoyPad.IsButtonReleased(GbaInput.R))
             {
                 GameTime.Pause();
                 Scene.AddDialog(CheatDialog, true, false);
@@ -273,7 +273,7 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
         {
             for (int id = 0; id < RSMultiplayer.MaxPlayersCount; id++)
             {
-                if (MultiJoyPad.IsButtonJustPressed(id, Rayman3Input.Pause) && CanPause && !((UserInfoMultiMode7)UserInfo).IsGameOver)
+                if (Engine.MultiJoyPad.IsButtonJustPressed(id, Rayman3Input.Pause) && CanPause && !((UserInfoMultiMode7)UserInfo).IsGameOver)
                 {
                     PausedMachineId = id;
                     CurrentStepAction = Step_Pause_Init;
@@ -409,7 +409,7 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
         Scene.Step();
         Scene.AnimationPlayer.Execute();
 
-        if (CheatDialog.PendingClose || JoyPad.IsButtonJustPressed(GbaInput.Select))
+        if (CheatDialog.PendingClose || Engine.JoyPad.IsButtonJustPressed(GbaInput.Select))
         {
             GameTime.Resume();
             Scene.RemoveLastDialog();

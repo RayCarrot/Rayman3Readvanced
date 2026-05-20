@@ -135,7 +135,7 @@ public partial class WalkingShell
                 }
 
                 // Boost
-                if (IsRaymanMounted && JoyPad.IsButtonJustPressed(Rayman3Input.ActorAttack, buffered: true))
+                if (IsRaymanMounted && Engine.JoyPad.IsButtonJustPressed(Rayman3Input.ActorAttack, buffered: true))
                 {
                     Rayman.ActionId = Rayman.Action.WalkingShell_BeginBoost;
                     ActionId = Action.BeginBoost;
@@ -162,7 +162,7 @@ public partial class WalkingShell
                 }
 
                 // Jump
-                if (IsRaymanMounted && JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump, buffered: true))
+                if (IsRaymanMounted && Engine.JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump, buffered: true))
                 {
                     State.MoveTo(_Fsm_Jump);
                     return false;
@@ -248,7 +248,7 @@ public partial class WalkingShell
                     return false;
                 }
 
-                if (IsRaymanMounted && JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump, buffered: true))
+                if (IsRaymanMounted && Engine.JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump, buffered: true))
                 {
                     State.MoveTo(_Fsm_Jump);
                     return false;
@@ -402,7 +402,7 @@ public partial class WalkingShell
                     if ((LoopAngle & 2) != 0)
                         LoopAngle -= 2;
 
-                    if (JoyPad.IsButtonJustPressed(Rayman3Input.ActorAttack, buffered: true) && LoopAngle is > 20 and < 64)
+                    if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.ActorAttack, buffered: true) && LoopAngle is > 20 and < 64)
                         HasBoostedInLoop = true;
                 }
                 else
@@ -530,7 +530,7 @@ public partial class WalkingShell
                     }
                 }
 
-                if (SafetyJumpTimer != 0 && IsRaymanMounted && JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump, buffered: true))
+                if (SafetyJumpTimer != 0 && IsRaymanMounted && Engine.JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump, buffered: true))
                 {
                     State.MoveTo(_Fsm_Jump);
                     return false;

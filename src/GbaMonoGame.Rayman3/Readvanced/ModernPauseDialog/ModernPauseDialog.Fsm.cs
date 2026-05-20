@@ -52,24 +52,24 @@ public partial class ModernPauseDialog
             case FsmAction.Step:
                 bool hasSelectedOption = false;
 
-                if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
+                if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
                 {
                     SetSelectedOption(SelectedOption - 1);
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
                 {
                     SetSelectedOption(SelectedOption + 1);
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.PauseMenuBack))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.PauseMenuBack))
                 {
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
                     SetSelectedOption(0);
                     InvokeSelectedOption();
                     hasSelectedOption = true;
                 }
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
                 {
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     InvokeSelectedOption();
@@ -193,23 +193,23 @@ public partial class ModernPauseDialog
                         Engine.FrameMngr.ReloadCurrentFrame();
                     }
                 }
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
                 {
                     SetSelectedOption(SelectedOption - 1);
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
                 {
                     SetSelectedOption(SelectedOption + 1);
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
                 {
                     SetSelectedOption(1);
                     InvokeSelectedOption();
                     hasSelectedOption = true;
                 }
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
                 {
                     InvokeSelectedOption();
                     hasSelectedOption = true;
@@ -308,23 +308,23 @@ public partial class ModernPauseDialog
                         GameInfo.Save(GameInfo.CurrentSlot);
                     }
                 }
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
                 {
                     SetSelectedOption(SelectedOption - 1);
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
                 {
                     SetSelectedOption(SelectedOption + 1);
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
                 {
                     SetSelectedOption(1);
                     InvokeSelectedOption();
                     hasSelectedOption = true;
                 }
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
                 {
                     InvokeSelectedOption();
                     hasSelectedOption = true;

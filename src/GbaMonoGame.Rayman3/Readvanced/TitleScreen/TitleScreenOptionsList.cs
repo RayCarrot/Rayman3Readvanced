@@ -81,21 +81,21 @@ public class TitleScreenOptionsList
     {
         if (SelectedIndex != -1)
         {
-            if (JoyPad.IsButtonJustPressed(GbaInput.Down))
+            if (Engine.JoyPad.IsButtonJustPressed(GbaInput.Down))
             {
                 if (SelectedIndex == OptionTexts.Length - 1)
                     SelectedIndex = 0;
                 else
                     SelectedIndex++;
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.Up))
+            else if (Engine.JoyPad.IsButtonJustPressed(GbaInput.Up))
             {
                 if (SelectedIndex == 0)
                     SelectedIndex = OptionTexts.Length - 1;
                 else
                     SelectedIndex--;
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.A) || JoyPad.IsButtonJustPressed(GbaInput.Start))
+            else if (Engine.JoyPad.IsButtonJustPressed(GbaInput.A) || Engine.JoyPad.IsButtonJustPressed(GbaInput.Start))
             {
                 Options[SelectedIndex].Action();
             }

@@ -70,7 +70,7 @@ public partial class FlyingShell
                 }
                 
                 // Move down
-                if (JoyPad.IsButtonPressed(Rayman3Input.ActorDown) && Position.Y <= 150)
+                if (Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorDown) && Position.Y <= 150)
                 {
                     Position += new Vector2(0, 1.5f);
 
@@ -78,7 +78,7 @@ public partial class FlyingShell
                         ActionId = IsFacingRight ? Action.FlyDown_Right : Action.FlyDown_Left;
                 }
                 // Move up
-                else if (JoyPad.IsButtonPressed(Rayman3Input.ActorUp) && Position.Y >= 30)
+                else if (Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorUp) && Position.Y >= 30)
                 {
                     Position -= new Vector2(0, 1.5f);
 
@@ -92,9 +92,9 @@ public partial class FlyingShell
                 }
 
                 // Change direction
-                if (JoyPad.IsButtonJustPressed(Rayman3Input.ActorRight) && ActionId is Action.Fly_Left or Action.FlyUp_Left or Action.FlyDown_Left)
+                if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.ActorRight) && ActionId is Action.Fly_Left or Action.FlyUp_Left or Action.FlyDown_Left)
                     ActionId = Action.ChangeDirection_Left;
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.ActorLeft) && ActionId is Action.Fly_Right or Action.FlyUp_Right or Action.FlyDown_Right)
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.ActorLeft) && ActionId is Action.Fly_Right or Action.FlyUp_Right or Action.FlyDown_Right)
                     ActionId = Action.ChangeDirection_Right;
 
                 UpdateSoundPitch();

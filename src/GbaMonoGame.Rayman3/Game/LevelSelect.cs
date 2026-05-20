@@ -413,7 +413,7 @@ public class LevelSelect : Frame
 
     public void Step_SelectSaveSlot()
     {
-        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
+        if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
         {
             SelectedSaveSlotIndex--;
             
@@ -422,7 +422,7 @@ public class LevelSelect : Frame
             
             Rows[0].Text = $"Slot #{SelectedSaveSlotIndex + 1}";
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
         {
             SelectedSaveSlotIndex++;
             
@@ -431,7 +431,7 @@ public class LevelSelect : Frame
 
             Rows[0].Text = $"Slot #{SelectedSaveSlotIndex + 1}";
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.LevelSelectMenuConfirm))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.LevelSelectMenuConfirm))
         {
             InitSelectLanguage();
         }
@@ -444,7 +444,7 @@ public class LevelSelect : Frame
     {
         Language[] languages = Rayman3.Loc.GetLanguages();
 
-        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
+        if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
         {
             SelectedLanguageIndex--;
 
@@ -453,7 +453,7 @@ public class LevelSelect : Frame
 
             Rows[0].Text = languages[SelectedLanguageIndex].LevelSelectName;
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
         {
             SelectedLanguageIndex++;
 
@@ -462,7 +462,7 @@ public class LevelSelect : Frame
 
             Rows[0].Text = languages[SelectedLanguageIndex].LevelSelectName;
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.LevelSelectMenuConfirm))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.LevelSelectMenuConfirm))
         {
             InitSelectStartingLevel();
             Rayman3.Loc.SetLanguage(SelectedLanguageIndex);
@@ -474,14 +474,14 @@ public class LevelSelect : Frame
 
     public void Step_SelectStartingLevel()
     {
-        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
+        if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
         {
             SelectedRow--;
 
             if (SelectedRow == -1)
                 SelectedRow = SelectedWorldIndex == 4 ? 1 : 3;
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
         {
             SelectedRow++;
 
@@ -489,7 +489,7 @@ public class LevelSelect : Frame
                 (SelectedWorldIndex != 4 && SelectedRow == 4))
                 SelectedRow = 0;
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
         {
             switch (SelectedRow)
             {
@@ -517,7 +517,7 @@ public class LevelSelect : Frame
 
             SetMapText();
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
         {
             switch (SelectedRow)
             {
@@ -545,11 +545,11 @@ public class LevelSelect : Frame
 
             SetMapText();
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.LevelSelectMenuConfirm))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.LevelSelectMenuConfirm))
         {
             LoadLevel();
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.LevelSelectMenuBack))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.LevelSelectMenuBack))
         {
             InitSelectSaveSlot();
         }

@@ -92,7 +92,7 @@ public class RaceManager
 
                     // NOTE: This cheat is normally only in the game prototypes
                     if (Engine.Settings.Active.Tweaks.AllowPrototypeCheats &&
-                        JoyPad.IsButtonPressed(GbaInput.R) && JoyPad.IsButtonPressed(GbaInput.L) && JoyPad.IsButtonJustPressed(GbaInput.Select))
+                        Engine.JoyPad.IsButtonPressed(GbaInput.R) && Engine.JoyPad.IsButtonPressed(GbaInput.L) && Engine.JoyPad.IsButtonJustPressed(GbaInput.Select))
                     {
                         RemainingTime = 356400; // 99:00:00
 

@@ -1,4 +1,4 @@
-﻿namespace GbaMonoGame;
+﻿namespace GbaMonoGame.Rayman3;
 
 public enum Rayman3Input
 {

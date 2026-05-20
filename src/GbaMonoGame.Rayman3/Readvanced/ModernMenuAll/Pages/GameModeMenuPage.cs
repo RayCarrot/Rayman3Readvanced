@@ -229,15 +229,15 @@ public class GameModeMenuPage : MenuPage
 
     protected override void Step_Active()
     {
-        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
+        if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
         {
             SetSelectedOption(SelectedOption - 1);
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
         {
             SetSelectedOption(SelectedOption + 1);
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
         {
             if (Options[SelectedOption] is ActionMenuOption action)
                 action.Invoke();

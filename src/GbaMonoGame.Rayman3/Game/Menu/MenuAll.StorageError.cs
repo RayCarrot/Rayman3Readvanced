@@ -28,7 +28,7 @@ public partial class MenuAll
 
     private void Step_StorageError()
     {
-        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+        if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
             CurrentStepAction = Step_TransitionOutOfStorageError;
 
         DrawText(true);

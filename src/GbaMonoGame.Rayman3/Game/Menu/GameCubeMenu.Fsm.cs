@@ -81,7 +81,7 @@ public partial class GameCubeMenu
                 if (!UseJoyBus)
                 {
                     // Exit
-                    if (JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuBack))
+                    if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuBack))
                     {
                         IsActive = false;
                         State.MoveTo(_Fsm_Exit);
@@ -96,7 +96,7 @@ public partial class GameCubeMenu
                     }
 
                     // Select file
-                    if (JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuConfirm))
+                    if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuConfirm))
                     {
                         string isoFilePath = Engine.FileDialog.OpenFile("Select the Rayman 3 GameCube ISO", new FileDialogManager.FileFilter("iso", "GameCube Disc"));
                         if (isoFilePath != null)
@@ -137,7 +137,7 @@ public partial class GameCubeMenu
                     }
 
                     // Exit
-                    if (JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuBack))
+                    if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuBack))
                     {
                         IsActive = false;
                         State.MoveTo(_Fsm_Exit);
@@ -173,7 +173,7 @@ public partial class GameCubeMenu
                 break;
 
             case FsmAction.Step:
-                if (JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuBack))
+                if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuBack))
                 {
                     IsActive = false;
                     State.MoveTo(_Fsm_Exit);
@@ -253,7 +253,7 @@ public partial class GameCubeMenu
                 }
 
                 // Exit
-                if (JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuBack))
+                if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuBack))
                 {
                     IsActive = false;
                     State.MoveTo(_Fsm_Exit);
@@ -314,7 +314,7 @@ public partial class GameCubeMenu
                     return false;
 
                 // Exit
-                if (JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuBack))
+                if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuBack))
                 {
                     IsActive = false;
                     State.MoveTo(_Fsm_Exit);
@@ -370,7 +370,7 @@ public partial class GameCubeMenu
                     return false;
 
                 // Exit
-                if (JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuBack))
+                if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuBack))
                 {
                     IsActive = false;
                     State.MoveTo(_Fsm_Exit);
@@ -453,7 +453,7 @@ public partial class GameCubeMenu
 
                 if (IsShowingLyChallengeUnlocked)
                 {
-                    if (JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuConfirm))
+                    if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuConfirm))
                     {
                         IsShowingLyChallengeUnlocked = false;
                         Anims.StatusText.Text = "";
@@ -464,7 +464,7 @@ public partial class GameCubeMenu
                 else
                 {
                     // Select map
-                    if (JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuConfirm))
+                    if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuConfirm))
                     {
                         // Make sure map is unlocked
                         if (IsMapUnlocked(SelectedMap))
@@ -501,7 +501,7 @@ public partial class GameCubeMenu
                     }
 
                     // Move up
-                    if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp) && SelectedMap != 0)
+                    if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp) && SelectedMap != 0)
                     {
                         SelectedMap--;
                         if (MapScroll > SelectedMap)
@@ -513,7 +513,7 @@ public partial class GameCubeMenu
                     }
 
                     // Move down
-                    if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown) && SelectedMap < MapInfos.MapsCount - 1)
+                    if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown) && SelectedMap < MapInfos.MapsCount - 1)
                     {
                         SelectedMap++;
                         if (MapScroll + 2 < SelectedMap)
@@ -526,7 +526,7 @@ public partial class GameCubeMenu
                 }
 
                 // Exit
-                if (JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuBack))
+                if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuBack))
                 {
                     IsActive = false;
                     State.MoveTo(_Fsm_Exit);
@@ -589,7 +589,7 @@ public partial class GameCubeMenu
                 Anims.StatusText.Text = percentageString;
 
                 // Stop download
-                if (JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuBack))
+                if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuBack))
                 {
                     JoyBus.Disconnect();
                     JoyBus.Connect();

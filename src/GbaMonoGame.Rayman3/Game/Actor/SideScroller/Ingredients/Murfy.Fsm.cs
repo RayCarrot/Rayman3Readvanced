@@ -8,10 +8,10 @@ public partial class Murfy
 {
     private bool FsmStep_AdvanceText()
     {
-        if (JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxNext))
+        if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxNext))
             TextBox.MoveToNextText();
 
-        if (Engine.Settings.Active.Tweaks.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxSkip))
+        if (Engine.Settings.Active.Tweaks.CanSkipTextBoxes && Engine.JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxSkip))
         {
             if (Frame.Current is FrameSideScroller frameSideScroller)
                 frameSideScroller.CanPause = false;

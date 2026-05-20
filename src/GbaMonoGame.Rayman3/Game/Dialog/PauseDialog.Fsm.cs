@@ -30,7 +30,7 @@ public partial class PauseDialog
                 bool sleepMode = false;
                 bool quitGame = false;
 
-                if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
+                if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
                 {
                     PrevSelectedOption = SelectedOption;
                     if (SelectedOption == 0)
@@ -60,7 +60,7 @@ public partial class PauseDialog
 
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
                 {
                     PrevSelectedOption = SelectedOption;
                     if (SelectedOption == maxOption)
@@ -90,7 +90,7 @@ public partial class PauseDialog
 
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
-                else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
+                else if (Rom.Platform == Platform.NGage && Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
                 {
                     if (SelectedOption == 1)
                     {
@@ -103,7 +103,7 @@ public partial class PauseDialog
                         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
                 }
-                else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
+                else if (Rom.Platform == Platform.NGage && Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
                 {
                     if (SelectedOption == 1)
                     {
@@ -116,7 +116,7 @@ public partial class PauseDialog
                         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
                 }
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.PauseMenuBack))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.PauseMenuBack))
                 {
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
                     DrawStep = PauseDialogDrawStep.MoveOut;
@@ -127,7 +127,7 @@ public partial class PauseDialog
 
                     resume = true;
                 }
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
                 {
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
 
@@ -298,7 +298,7 @@ public partial class PauseDialog
                     _ => throw new UnsupportedPlatformException(),
                 };
 
-                if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp) || JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
+                if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp) || Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
                 {
                     if (Rom.Platform == Platform.GBA)
                     {
@@ -323,8 +323,8 @@ public partial class PauseDialog
                     SelectedOption = SelectedOption == 0 ? 1 : 0;
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack) || 
-                         (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm) && SelectedOption == resumeOptionIndex))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack) || 
+                         (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm) && SelectedOption == resumeOptionIndex))
                 {
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
 
@@ -351,7 +351,7 @@ public partial class PauseDialog
 
                     goBack = true;
                 }
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm) && SelectedOption == quitOptionIndex)
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm) && SelectedOption == quitOptionIndex)
                 {
                     GameTime.Resume();
 
@@ -415,7 +415,7 @@ public partial class PauseDialog
                 bool resume = false;
                 bool quitGame = false;
 
-                if (MultiJoyPad.IsButtonJustPressed(PausedMachineId, Rayman3Input.MenuUp))
+                if (Engine.MultiJoyPad.IsButtonJustPressed(PausedMachineId, Rayman3Input.MenuUp))
                 {
                     PrevSelectedOption = SelectedOption;
                     if (SelectedOption == 0)
@@ -444,7 +444,7 @@ public partial class PauseDialog
 
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
-                else if (MultiJoyPad.IsButtonJustPressed(PausedMachineId, Rayman3Input.MenuDown))
+                else if (Engine.MultiJoyPad.IsButtonJustPressed(PausedMachineId, Rayman3Input.MenuDown))
                 {
                     PrevSelectedOption = SelectedOption;
                     if (SelectedOption == maxOption)
@@ -473,7 +473,7 @@ public partial class PauseDialog
 
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
-                else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
+                else if (Rom.Platform == Platform.NGage && Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
                 {
                     if (SelectedOption == 1)
                     {
@@ -486,7 +486,7 @@ public partial class PauseDialog
                         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
                 }
-                else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
+                else if (Rom.Platform == Platform.NGage && Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
                 {
                     if (SelectedOption == 1)
                     {
@@ -499,7 +499,7 @@ public partial class PauseDialog
                         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     }
                 }
-                else if (MultiJoyPad.IsButtonJustPressed(PausedMachineId, Rayman3Input.PauseMenuBack))
+                else if (Engine.MultiJoyPad.IsButtonJustPressed(PausedMachineId, Rayman3Input.PauseMenuBack))
                 {
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
                     DrawStep = PauseDialogDrawStep.MoveOut;
@@ -510,7 +510,7 @@ public partial class PauseDialog
 
                     resume = true;
                 }
-                else if (MultiJoyPad.IsButtonJustPressed(PausedMachineId, Rayman3Input.MenuConfirm))
+                else if (Engine.MultiJoyPad.IsButtonJustPressed(PausedMachineId, Rayman3Input.MenuConfirm))
                 {
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
 
@@ -543,7 +543,7 @@ public partial class PauseDialog
                     }
                 }
 
-                if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+                if (Rom.Platform == Platform.NGage && Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
                 {
                     switch (SelectedOption)
                     {
@@ -637,8 +637,8 @@ public partial class PauseDialog
                     _ => throw new UnsupportedPlatformException(),
                 };
 
-                if (MultiJoyPad.IsButtonJustPressed(PausedMachineId, Rayman3Input.MenuUp) || 
-                    MultiJoyPad.IsButtonJustPressed(PausedMachineId, Rayman3Input.MenuDown))
+                if (Engine.MultiJoyPad.IsButtonJustPressed(PausedMachineId, Rayman3Input.MenuUp) || 
+                    Engine.MultiJoyPad.IsButtonJustPressed(PausedMachineId, Rayman3Input.MenuDown))
                 {
                     if (Rom.Platform == Platform.GBA)
                     {
@@ -663,8 +663,8 @@ public partial class PauseDialog
                     SelectedOption = SelectedOption == 0 ? 1 : 0;
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
-                else if (MultiJoyPad.IsButtonJustPressed(PausedMachineId, Rayman3Input.MenuBack) || 
-                         (MultiJoyPad.IsButtonJustPressed(PausedMachineId, Rayman3Input.MenuConfirm) && SelectedOption == resumeOptionIndex))
+                else if (Engine.MultiJoyPad.IsButtonJustPressed(PausedMachineId, Rayman3Input.MenuBack) || 
+                         (Engine.MultiJoyPad.IsButtonJustPressed(PausedMachineId, Rayman3Input.MenuConfirm) && SelectedOption == resumeOptionIndex))
                 {
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
 
@@ -691,7 +691,7 @@ public partial class PauseDialog
 
                     goBack = true;
                 }
-                else if (MultiJoyPad.IsButtonJustPressed(PausedMachineId, Rayman3Input.MenuConfirm) && SelectedOption == quitOptionIndex)
+                else if (Engine.MultiJoyPad.IsButtonJustPressed(PausedMachineId, Rayman3Input.MenuConfirm) && SelectedOption == quitOptionIndex)
                 {
                     Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                     Gfx.Fade = AlphaCoefficient.Max;

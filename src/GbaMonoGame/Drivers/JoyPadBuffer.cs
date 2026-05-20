@@ -14,8 +14,8 @@ public class JoyPadBuffer
 
     private const int BufferLength = 5;
 
-    private SimpleJoyPad[] Buffer { get; }
-    private int CurrentBufferIndex { get; set; }
+    public SimpleJoyPad[] Buffer { get; }
+    public int CurrentBufferIndex { get; set; }
 
     public void Push(SimpleJoyPad joyPad)
     {
@@ -62,50 +62,6 @@ public class JoyPadBuffer
         foreach (SimpleJoyPad joyPad in Buffer)
         {
             if (joyPad.IsButtonJustReleased(gbaInput))
-                return true;
-        }
-
-        return false;
-    }
-
-    public bool IsButtonPressed(Rayman3Input rayman3Input)
-    {
-        foreach (SimpleJoyPad joyPad in Buffer)
-        {
-            if (joyPad.IsButtonPressed(rayman3Input))
-                return true;
-        }
-
-        return false;
-    }
-
-    public bool IsButtonReleased(Rayman3Input rayman3Input)
-    {
-        foreach (SimpleJoyPad joyPad in Buffer)
-        {
-            if (joyPad.IsButtonReleased(rayman3Input))
-                return true;
-        }
-
-        return false;
-    }
-
-    public bool IsButtonJustPressed(Rayman3Input rayman3Input)
-    {
-        foreach (SimpleJoyPad joyPad in Buffer)
-        {
-            if (joyPad.IsButtonJustPressed(rayman3Input))
-                return true;
-        }
-
-        return false;
-    }
-
-    public bool IsButtonJustReleased(Rayman3Input rayman3Input)
-    {
-        foreach (SimpleJoyPad joyPad in Buffer)
-        {
-            if (joyPad.IsButtonJustReleased(rayman3Input))
                 return true;
         }
 

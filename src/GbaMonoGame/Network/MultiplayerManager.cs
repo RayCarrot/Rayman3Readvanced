@@ -42,7 +42,7 @@ public static class MultiplayerManager
 
             ClientMachineTimers = new uint[RSMultiplayer.MaxPlayersCount];
 
-            MultiJoyPad.Init();
+            Engine.MultiJoyPad.Init();
 
             CachedMachineId = RSMultiplayer.MachineId;
             CachedPlayersCount = RSMultiplayer.PlayersCount;
@@ -57,7 +57,7 @@ public static class MultiplayerManager
             PendingSystemSyncPause = false;
             DisconnectedHasReadNewInputs = true;
 
-            MultiJoyPad.Init();
+            Engine.MultiJoyPad.Init();
         }
         else
         {
@@ -103,7 +103,7 @@ public static class MultiplayerManager
                             // NOTE: Hard-code packet data
                             ushort packet = (ushort)((ClientMachineTimers[id] & 0x1f) << 10);
 
-                            MultiJoyPad.Read(id, ClientMachineTimers[id], (GbaInput)packet);
+                            Engine.MultiJoyPad.Read(id, ClientMachineTimers[id], (GbaInput)packet);
 
                             if (!IsLoading)
                             {
@@ -128,7 +128,7 @@ public static class MultiplayerManager
                 {
                     if (!SkipFrame)
                     {
-                        uint? time = MultiJoyPad.GetNextInvalidTime(MachineId, ClientMachineTimers[MachineId]);
+                        uint? time = Engine.MultiJoyPad.GetNextInvalidTime(MachineId, ClientMachineTimers[MachineId]);
 
                         if (time == null)
                         {
@@ -136,9 +136,9 @@ public static class MultiplayerManager
                         }
                         else
                         {
-                            MultiJoyPad.Read(MachineId, time.Value, Engine.Input.GetPressedGbaInputs());
+                            Engine.MultiJoyPad.Read(MachineId, time.Value, Engine.Input.GetPressedGbaInputs());
 
-                            GbaInput input = MultiJoyPad.GetInput(MachineId, time.Value);
+                            GbaInput input = Engine.MultiJoyPad.GetInput(MachineId, time.Value);
 
                             LocalMachineTime++;
 
@@ -161,7 +161,7 @@ public static class MultiplayerManager
 
             // Custom for buffered inputs
             if (HasReadJoyPads())
-                MultiJoyPad.PushBufferedJoyPads();
+                Engine.MultiJoyPad.PushBufferedJoyPads();
 
             return true;
         }
@@ -190,7 +190,7 @@ public static class MultiplayerManager
 
             // Custom for buffered inputs
             if (HasReadJoyPads())
-                MultiJoyPad.PushBufferedJoyPads();
+                Engine.MultiJoyPad.PushBufferedJoyPads();
 
             // NOTE: The game has a condition here
             return true;
@@ -208,10 +208,10 @@ public static class MultiplayerManager
             if (IsLoading)
                 return true;
 
-            if (MultiJoyPad.IsValid(0, ClientMachineTimers[MachineId]) &&
-                MultiJoyPad.IsValid(1, ClientMachineTimers[MachineId]) &&
-                (PlayersCount <= 2 || MultiJoyPad.IsValid(2, ClientMachineTimers[MachineId])) &&
-                (PlayersCount <= 3 || MultiJoyPad.IsValid(3, ClientMachineTimers[MachineId])))
+            if (Engine.MultiJoyPad.IsValid(0, ClientMachineTimers[MachineId]) &&
+                Engine.MultiJoyPad.IsValid(1, ClientMachineTimers[MachineId]) &&
+                (PlayersCount <= 2 || Engine.MultiJoyPad.IsValid(2, ClientMachineTimers[MachineId])) &&
+                (PlayersCount <= 3 || Engine.MultiJoyPad.IsValid(3, ClientMachineTimers[MachineId])))
                 return true;
 
             return false;
@@ -234,7 +234,7 @@ public static class MultiplayerManager
                 throw new Exception("Invalid machine id");
 
             HasProcessedFrame = true;
-            MultiJoyPad.ReleaseJoyPads(ClientMachineTimers[MachineId]);
+            Engine.MultiJoyPad.ReleaseJoyPads(ClientMachineTimers[MachineId]);
         }
         else if (Rom.Platform == Platform.NGage)
         {
@@ -244,14 +244,14 @@ public static class MultiplayerManager
             {
                 ElapsedFrames++;
                 for (int i = 0; i < RSMultiplayer.PlayersCount; i++)
-                    MultiJoyPad.Clear(i, ElapsedFrames);
+                    Engine.MultiJoyPad.Clear(i, ElapsedFrames);
 
-                MultiJoyPad.ReleaseJoyPads(ElapsedFrames);
+                Engine.MultiJoyPad.ReleaseJoyPads(ElapsedFrames);
             }
             else
             {
                 for (int i = 0; i < RSMultiplayer.PlayersCount; i++)
-                    MultiJoyPad.NewFrame(i, ElapsedFrames);
+                    Engine.MultiJoyPad.NewFrame(i, ElapsedFrames);
             }
 
             PendingSystemSyncPause = false;
@@ -380,7 +380,7 @@ public static class MultiplayerManager
                     // Read input
                     else
                     {
-                        MultiJoyPad.SetInput(machineId, ElapsedFrames, (GbaInput)packetBuffer[0]);
+                        Engine.MultiJoyPad.SetInput(machineId, ElapsedFrames, (GbaInput)packetBuffer[0]);
                         readPlayerPackets[machineId] = true;
                     }
                 }
@@ -395,11 +395,11 @@ public static class MultiplayerManager
             // Read our inputs
             if ((Flags & 8) == 0 || HasReadClientJoyPads(ElapsedFrames))
             {
-                MultiJoyPad.SetInput(0, ElapsedFrames, Engine.Input.GetPressedGbaInputs());
+                Engine.MultiJoyPad.SetInput(0, ElapsedFrames, Engine.Input.GetPressedGbaInputs());
                 
                 ushort[] packetBuffer = new ushort[RSMultiplayer.PlayersCount];
                 for (int i = 0; i < RSMultiplayer.PlayersCount; i++)
-                    packetBuffer[i] = (ushort)((ushort)MultiJoyPad.GetInput(i, ElapsedFrames) & 0x7ff);
+                    packetBuffer[i] = (ushort)((ushort)Engine.MultiJoyPad.GetInput(i, ElapsedFrames) & 0x7ff);
 
                 RSMultiplayer.SendPacket(packetBuffer, RSMultiplayer.PlayersCount * 2, 4);
                 JoyPadReadDelay = 4;
@@ -437,7 +437,7 @@ public static class MultiplayerManager
                 else
                 {
                     for (int i = 0; i < RSMultiplayer.PlayersCount; i++)
-                        MultiJoyPad.SetInput(i, ElapsedFrames, (GbaInput)packetBuffer[i]);
+                        Engine.MultiJoyPad.SetInput(i, ElapsedFrames, (GbaInput)packetBuffer[i]);
 
                     JoyPadReadDelay = 4;
                     sendInput = true;
@@ -490,9 +490,9 @@ public static class MultiplayerManager
 
     public static bool HasReadClientJoyPads(uint machineTimer)
     {
-        if (MultiJoyPad.IsValid(1, machineTimer) &&
-            (PlayersCount <= 2 || MultiJoyPad.IsValid(2, machineTimer)) &&
-            (PlayersCount <= 3 || MultiJoyPad.IsValid(3, machineTimer)))
+        if (Engine.MultiJoyPad.IsValid(1, machineTimer) &&
+            (PlayersCount <= 2 || Engine.MultiJoyPad.IsValid(2, machineTimer)) &&
+            (PlayersCount <= 3 || Engine.MultiJoyPad.IsValid(3, machineTimer)))
             return true;
 
         return false;

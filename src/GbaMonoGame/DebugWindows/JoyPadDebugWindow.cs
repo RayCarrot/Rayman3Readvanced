@@ -63,16 +63,16 @@ public class JoyPadDebugWindow : DebugWindow
 
         inputs.Add(GbaInput.None);
 
-        JoyPad.SetReplayData(inputs.ToArray());
+        Engine.JoyPad.SetReplayData(inputs.ToArray());
     }
 
     public override void Draw(DebugLayout debugLayout, DebugLayoutTextureManager textureManager)
     {
         ImGui.SeparatorText("General");
 
-        ImGui.Text($"KeyStatus: {JoyPad.Current.KeyStatus}");
-        ImGui.Text($"KeyTriggers: {JoyPad.Current.KeyTriggers}");
-        ImGui.Text($"Replay: {JoyPad.Current.IsInReplayMode}");
+        ImGui.Text($"KeyStatus: {Engine.JoyPad.Current.KeyStatus}");
+        ImGui.Text($"KeyTriggers: {Engine.JoyPad.Current.KeyTriggers}");
+        ImGui.Text($"Replay: {Engine.JoyPad.Current.IsInReplayMode}");
 
         if (ImGui.Button("Load BizHawk TAS (.bk2)"))
         {
@@ -83,21 +83,21 @@ public class JoyPadDebugWindow : DebugWindow
 
         ImGui.SameLine();
         if (ImGui.Button("End replay"))
-            JoyPad.Current.ReplayData = null;
+            Engine.JoyPad.Current.ReplayData = null;
 
         ImGui.Spacing();
         ImGui.SeparatorText("Record");
 
-        if (!JoyPad.Current.IsInRecordMode)
+        if (!Engine.JoyPad.Current.IsInRecordMode)
         {
             if (ImGui.Button("Start"))
-                JoyPad.Current.BeginRecording();
+                Engine.JoyPad.Current.BeginRecording();
         }
         else
         {
             if (ImGui.Button("End"))
             {
-                GbaInput[] recordedData = JoyPad.Current.EndRecording();
+                GbaInput[] recordedData = Engine.JoyPad.Current.EndRecording();
                 StringBuilder sb = new();
 
                 sb.AppendLine("[");

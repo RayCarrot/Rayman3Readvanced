@@ -402,21 +402,21 @@ public sealed partial class MissileMode7 : Mode7Actor
         Vector2 direction = Direction.ToDirectionalVector().FlipY();
         Vector2 sideDirection = (Direction + Angle256.Quarter).ToDirectionalVector().FlipY();
 
-        int speed = JoyPad.IsButtonPressed(Rayman3Input.ActorJump) ? 4 : 2;
+        int speed = Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorJump) ? 4 : 2;
 
-        if (JoyPad.IsButtonPressed(Rayman3Input.ActorUp))
+        if (Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorUp))
             Position += direction * speed;
-        if (JoyPad.IsButtonPressed(Rayman3Input.ActorDown))
+        if (Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorDown))
             Position -= direction * speed;
 
-        if (JoyPad.IsButtonPressed(Rayman3Input.ActorRight))
+        if (Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorRight))
             Position -= sideDirection * speed;
-        if (JoyPad.IsButtonPressed(Rayman3Input.ActorLeft))
+        if (Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorLeft))
             Position += sideDirection * speed;
 
-        if (JoyPad.IsButtonPressed(Rayman3Input.ActorSpecialRight))
+        if (Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorSpecialRight))
             Direction--;
-        if (JoyPad.IsButtonPressed(Rayman3Input.ActorSpecialLeft))
+        if (Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorSpecialLeft))
             Direction++;
     }
 

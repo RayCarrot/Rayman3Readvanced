@@ -172,7 +172,7 @@ public class SinglePlayerMenuPage : MenuPage
         {
             case StartEraseMode.Selection:
                 // Move left
-                if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeftExt))
+                if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeftExt))
                 {
                     int newIndex = SelectedStartEraseOption - 1;
                     if (newIndex < 0)
@@ -183,7 +183,7 @@ public class SinglePlayerMenuPage : MenuPage
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
                 // Move right
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRightExt))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuRightExt))
                 {
                     int newIndex = SelectedStartEraseOption + 1;
                     if (newIndex > 2)
@@ -194,17 +194,17 @@ public class SinglePlayerMenuPage : MenuPage
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                 }
                 // Move up
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
                 {
                     SetSelectedOption(SelectedOption - 1);
                 }
                 // Move down
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
                 {
                     SetSelectedOption(SelectedOption + 1);
                 }
                 // Select slot
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
                 {
                     switch (SelectedStartEraseOption)
                     {
@@ -298,7 +298,7 @@ public class SinglePlayerMenuPage : MenuPage
 
             case StartEraseMode.ConfirmErase:
                 // Move left
-                if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeftExt))
+                if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeftExt))
                 {
                     if (SelectedStartEraseOption != 0)
                     {
@@ -308,7 +308,7 @@ public class SinglePlayerMenuPage : MenuPage
                     }
                 }
                 // Move right
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRightExt))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuRightExt))
                 {
                     if (SelectedStartEraseOption != 1)
                     {
@@ -318,7 +318,7 @@ public class SinglePlayerMenuPage : MenuPage
                     }
                 }
                 // Erase slot
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
                 {
                     EraseSaveStage = StartEraseMode.TransitionOutConfirmErase;
                     TransitionValue = 0;
@@ -359,7 +359,7 @@ public class SinglePlayerMenuPage : MenuPage
                 break;
         }
 
-        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack) && !TransitionsFX.IsFadingOut)
+        if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack) && !TransitionsFX.IsFadingOut)
         {
             switch (EraseSaveStage)
             {

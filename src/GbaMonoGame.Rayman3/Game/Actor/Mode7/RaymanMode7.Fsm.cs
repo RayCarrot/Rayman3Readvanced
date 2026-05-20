@@ -69,13 +69,13 @@ public partial class RaymanMode7
     {
         if (ProcessJoypad)
         {
-            if (JoyPad.IsButtonPressed(Rayman3Input.ActorLeft))
+            if (Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorLeft))
             {
                 if (GameInfo.MapId == MapId.MarshAwakening1)
                     Rayman3Achievements.MarshAwakening1_HasMoved = true;
                 MoveSpeed = 1.375f;
             }
-            else if (JoyPad.IsButtonPressed(Rayman3Input.ActorRight))
+            else if (Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorRight))
             {
                 if (GameInfo.MapId == MapId.MarshAwakening1)
                     Rayman3Achievements.MarshAwakening1_HasMoved = true;
@@ -190,7 +190,7 @@ public partial class RaymanMode7
                         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__SkiLoop1, this);
                 }
 
-                if (JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump, buffered: true) && ProcessJoypad)
+                if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump, buffered: true) && ProcessJoypad)
                 {
                     State.MoveTo(_Fsm_Jump);
                     return false;

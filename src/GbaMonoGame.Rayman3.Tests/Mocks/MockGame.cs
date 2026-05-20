@@ -23,11 +23,14 @@ public sealed class MockGame : IDisposable
             settings: new SettingsManager(new LocalGameSettings()),
             app: new MockApplicationManager(),
             input: new InputManager(),
+            joyPad: new BufferedJoyPad(),
+            multiJoyPad: new MultiJoyPad(),
             window: new MockGameWindowManager(),
             viewPort: new ViewPortManager(),
             assets: new AssetManager(serviceProvider),
             config: new GameConfigManager(),
             messages: new MessageManager(),
+            fileDialog: new FileDialogManager(),
             richPresence: new MockRichPresenceManager(),
             frameMngr: new FrameManager());
         Gfx.Load();
@@ -76,7 +79,7 @@ public sealed class MockGame : IDisposable
     {
         GbaInput[] inputs = ReadRecording(fileName);
 
-        JoyPad.SetReplayData(inputs);
+        Engine.JoyPad.SetReplayData(inputs);
         for (int i = 0; i < inputs.Length; i++)
         {
             Step();

@@ -108,7 +108,7 @@ public class PresetSelectionOptionsMenuOption : OptionsMenuOption
 
     public override EditStepResult EditStep(IReadOnlyList<OptionsMenuOption> options)
     {
-        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+        if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
         {
             if (_selectedIndex != _prevSelectedIndex)
             {
@@ -123,11 +123,11 @@ public class PresetSelectionOptionsMenuOption : OptionsMenuOption
 
             return EditStepResult.Apply;
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             return EditStepResult.Cancel;
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
         {
             _selectedIndex--;
             if (_selectedIndex < 0)
@@ -136,7 +136,7 @@ public class PresetSelectionOptionsMenuOption : OptionsMenuOption
             UpdateSelection();
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
         {
             _selectedIndex++;
             if (_selectedIndex >= _displayNames.Length)

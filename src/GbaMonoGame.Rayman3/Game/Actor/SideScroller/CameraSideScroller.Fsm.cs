@@ -296,9 +296,9 @@ public partial class CameraSideScroller
                 float targetX;
                 if (Unknown is UnknownMode.Default or UnknownMode.UnusedWithInputs)
                 {
-                    if (JoyPad.IsButtonPressed(Rayman3Input.ActorLeft))
+                    if (Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorLeft))
                         targetX = Resolution.X - (RSMultiplayer.IsActive ? CameraOffset.Multiplayer : CameraOffset.Default);
-                    else if (JoyPad.IsButtonPressed(Rayman3Input.ActorRight))
+                    else if (Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorRight))
                         targetX = RSMultiplayer.IsActive ? CameraOffset.Multiplayer : CameraOffset.Default;
                     else
                         targetX = CameraOffset.Center;

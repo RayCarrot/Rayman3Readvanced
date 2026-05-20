@@ -118,7 +118,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
         LevelMusicManager.Step();
 
         // Pause (auto pause code here is same as on N-Gage)
-        if ((JoyPad.IsButtonJustPressed(Rayman3Input.Pause) || PendingAutoPause) && 
+        if ((Engine.JoyPad.IsButtonJustPressed(Rayman3Input.Pause) || PendingAutoPause) && 
             !BlockPause)
         {
             PendingAutoPause = false;
@@ -127,7 +127,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
         }
 
         // Custom cheat dialog
-        if (Engine.Settings.Active.Tweaks.AllowCheatMenu && JoyPad.IsButtonJustPressed(GbaInput.Select))
+        if (Engine.Settings.Active.Tweaks.AllowCheatMenu && Engine.JoyPad.IsButtonJustPressed(GbaInput.Select))
         {
             GameTime.Pause();
             Scene.AddDialog(CheatDialog, true, false);
@@ -234,7 +234,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.Step();
         Scene.AnimationPlayer.Execute();
 
-        if (CheatDialog.PendingClose || JoyPad.IsButtonJustPressed(GbaInput.Select))
+        if (CheatDialog.PendingClose || Engine.JoyPad.IsButtonJustPressed(GbaInput.Select))
         {
             GameTime.Resume();
             Scene.RemoveLastDialog();

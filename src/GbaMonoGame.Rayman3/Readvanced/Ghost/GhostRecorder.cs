@@ -40,7 +40,7 @@ public class GhostRecorder
         {
             Pre_IsMode7 = _isMode7,
             Actors = actorFrames.ToArray(),
-            Input = JoyPad.Current.KeyStatus
+            Input = Engine.JoyPad.Current.KeyStatus
         });
     }
 

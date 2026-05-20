@@ -415,7 +415,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             GbaInput.L
         ];
 
-        if (JoyPad.IsButtonJustPressed(input))
+        if (Engine.JoyPad.IsButtonJustPressed(input))
         {
             CheatValue++;
             return true;
@@ -424,7 +424,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         {
             foreach (GbaInput cheatInput in cheatInputs)
             {
-                if (cheatInput != input && JoyPad.IsButtonJustPressed(cheatInput))
+                if (cheatInput != input && Engine.JoyPad.IsButtonJustPressed(cheatInput))
                 {
                     CheatValue = 0;
                     break;
@@ -439,7 +439,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
     {
         // NOTE: On N-Gage it checks if numpad 1 is held down instead!
         // Make sure select is held down
-        if (JoyPad.IsButtonReleased(GbaInput.Select))
+        if (Engine.JoyPad.IsButtonReleased(GbaInput.Select))
         {
             CheatValue = 0;
             return;
@@ -449,16 +449,16 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         {
             // Start
             case 0:
-                if (JoyPad.IsButtonJustPressed(GbaInput.R))
+                if (Engine.JoyPad.IsButtonJustPressed(GbaInput.R))
                     CheatValue = 1;
 
-                if (JoyPad.IsButtonJustPressed(GbaInput.B))
+                if (Engine.JoyPad.IsButtonJustPressed(GbaInput.B))
                     CheatValue = 32;
 
-                if (JoyPad.IsButtonJustPressed(GbaInput.Up))
+                if (Engine.JoyPad.IsButtonJustPressed(GbaInput.Up))
                     CheatValue = 64;
 
-                if (JoyPad.IsButtonJustPressed(GbaInput.Down))
+                if (Engine.JoyPad.IsButtonJustPressed(GbaInput.Down))
                     CheatValue = 100;
                 break;
 
@@ -1030,10 +1030,10 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         {
             // NOTE: On N-Gage it checks if numpad 1 is release instead of select!
             // Move forward
-            if ((JoyPad.IsButtonJustPressed(Rayman3Input.ActorRight) || 
-                 (JoyPad.IsButtonJustPressed(Rayman3Input.ActorUp) && WorldId is WorldId.World1 or WorldId.World3)) && 
+            if ((Engine.JoyPad.IsButtonJustPressed(Rayman3Input.ActorRight) || 
+                 (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.ActorUp) && WorldId is WorldId.World1 or WorldId.World3)) && 
                 CurrentMovement == WorldMapMovement.None &&
-                JoyPad.IsButtonReleased(GbaInput.Select))
+                Engine.JoyPad.IsButtonReleased(GbaInput.Select))
             {
                 switch (WorldId)
                 {
@@ -1067,11 +1067,11 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             }
             // NOTE: On N-Gage it checks if numpad 1 is release instead of select!
             // Move back
-            else if ((JoyPad.IsButtonJustPressed(Rayman3Input.ActorLeft) || 
-                      (JoyPad.IsButtonJustPressed(Rayman3Input.ActorDown) && WorldId == WorldId.World2) || 
-                      (JoyPad.IsButtonJustPressed(Rayman3Input.ActorUp) && WorldId == WorldId.World4)) && 
+            else if ((Engine.JoyPad.IsButtonJustPressed(Rayman3Input.ActorLeft) || 
+                      (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.ActorDown) && WorldId == WorldId.World2) || 
+                      (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.ActorUp) && WorldId == WorldId.World4)) && 
                      CurrentMovement == WorldMapMovement.None && 
-                     JoyPad.IsButtonReleased(GbaInput.Select))
+                     Engine.JoyPad.IsButtonReleased(GbaInput.Select))
             {
                 switch (WorldId)
                 {
@@ -1106,9 +1106,9 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             }
             // NOTE: On N-Gage it checks if numpad 1 is released instead of select!
             // Select world
-            else if (JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump) &&
+            else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump) &&
                      CurrentMovement == WorldMapMovement.None &&
-                     JoyPad.IsButtonReleased(GbaInput.Select))
+                     Engine.JoyPad.IsButtonReleased(GbaInput.Select))
             {
                 SelectedWorldType = WorldType.World;
                 CircleWipeTransitionMode = TransitionMode.Out;
@@ -1122,7 +1122,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         // Optionally increase animation speed to move faster
         if (Engine.Settings.Active.Tweaks.AllowRunOnWorldmap && 
             CurrentMovement != WorldMapMovement.None && 
-            JoyPad.IsButtonPressed(Rayman3Input.ActorAttack))
+            Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorAttack))
         {
             if (!Rayman.EndOfAnimation)
                 Rayman.ComputeNextFrame();
@@ -1523,7 +1523,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         LevelMusicManager.Step();
 
         // Pause (auto pause code here is same as on N-Gage from the side scroller levels)
-        if ((JoyPad.IsButtonJustPressed(Rayman3Input.Pause) || PendingAutoPause) && 
+        if ((Engine.JoyPad.IsButtonJustPressed(Rayman3Input.Pause) || PendingAutoPause) && 
             CurrentExStepAction == StepEx_Play &&
             CircleWipeTransitionMode == TransitionMode.None)
         {

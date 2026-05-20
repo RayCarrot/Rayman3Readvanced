@@ -38,14 +38,14 @@ public class FrameNewPower : Frame, IHasScene, IHasPlayfield
     private void CheckForEndOfLevel()
     {
         // NOTE: Not sure why the N-Gage version forces the JoyPad to run an extra time when starting the replay?
-        if (Rom.Platform == Platform.NGage && !HasRunFirstScan && JoyPad.IsInReplayMode)
+        if (Rom.Platform == Platform.NGage && !HasRunFirstScan && Engine.JoyPad.IsInReplayMode)
         {
             HasRunFirstScan = true;
-            JoyPad.Scan();
+            Engine.JoyPad.Scan();
         }
 
-        if ((Rom.Platform == Platform.GBA && JoyPad.IsReplayFinished) ||
-            (Rom.Platform == Platform.NGage && HasRunFirstScan && JoyPad.IsReplayFinished))
+        if ((Rom.Platform == Platform.GBA && Engine.JoyPad.IsReplayFinished) ||
+            (Rom.Platform == Platform.NGage && HasRunFirstScan && Engine.JoyPad.IsReplayFinished))
         {
             Timer = 1;
             Scene.MainActor.ProcessMessage(this, Message.Rayman_Stop);

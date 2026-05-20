@@ -509,12 +509,12 @@ public class Credits : Frame
 
     private void StepWheel()
     {
-        if (JoyPad.IsButtonPressed(Rayman3Input.MenuUp))
+        if (Engine.JoyPad.IsButtonPressed(Rayman3Input.MenuUp))
         {
             if (Wheel.AnimSpeed < 5)
                 Wheel.AnimSpeed += MathHelpers.FromFixedPoint(0x800);
         }
-        else if (JoyPad.IsButtonPressed(Rayman3Input.MenuDown))
+        else if (Engine.JoyPad.IsButtonPressed(Rayman3Input.MenuDown))
         {
             if (Wheel.AnimSpeed > -5)
                 Wheel.AnimSpeed -= MathHelpers.FromFixedPoint(0x800);
@@ -573,7 +573,7 @@ public class Credits : Frame
     {
         if (!IsExiting)
         {
-            if (JoyPad.IsButtonJustPressed(Rayman3Input.CreditsSkip))
+            if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.CreditsSkip))
             {
                 TransitionsFX.FadeOutInit(2);
                 IsExiting = true;

@@ -224,19 +224,19 @@ public partial class MenuAll
         }
         else
         {
-            if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
+            if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
             {
                 SelectOption(SelectedOption == 0 ? GameModeOptionsCount - 1 : SelectedOption - 1, true);
 
                 Anims.GameModeList.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * GameModeOptionsCount + SelectedOption;
             }
-            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
+            else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
             {
                 SelectOption(SelectedOption == GameModeOptionsCount - 1 ? 0 : SelectedOption + 1, true);
 
                 Anims.GameModeList.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * GameModeOptionsCount + SelectedOption;
             }
-            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+            else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
             {
                 Anims.Cursor.CurrentAnimation = 16;
 
@@ -261,7 +261,7 @@ public partial class MenuAll
                 TransitionOutCursorAndStem();
             }
             // Custom to return to the modern menu
-            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
+            else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
             {
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                 IsLoadingModernMenu = true;

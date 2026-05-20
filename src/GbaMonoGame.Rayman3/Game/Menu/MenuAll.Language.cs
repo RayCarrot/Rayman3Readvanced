@@ -64,7 +64,7 @@ public partial class MenuAll
     {
         if (Rom.Platform != Platform.NGage || !TransitionsFX.IsFadingIn)
         {
-            if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
+            if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
             {
                 int selectedOption;
                 if (SelectedOption == 0)
@@ -82,7 +82,7 @@ public partial class MenuAll
                 // NOTE: The game mistakenly passes in 0 as obj here, but nothing happens since pan and roll-off aren't enabled for this event
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
             }
-            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
+            else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
             {
                 int selectedOption;
                 if (SelectedOption == LanguagesCount - 1)
@@ -100,7 +100,7 @@ public partial class MenuAll
                 // NOTE: The game mistakenly passes in 0 as obj here, but nothing happens since pan and roll-off aren't enabled for this event
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
             }
-            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+            else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
             {
                 CurrentStepAction = Step_TransitionOutOfLanguage;
 
@@ -161,7 +161,7 @@ public partial class MenuAll
                     throw new UnsupportedPlatformException();
                 }
             }
-            else if (Rom.Platform == Platform.NGage && JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
+            else if (Rom.Platform == Platform.NGage && Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
             {
                 CurrentStepAction = Step_TransitionOutOfLanguage;
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);

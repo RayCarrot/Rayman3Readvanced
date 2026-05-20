@@ -223,7 +223,7 @@ public abstract class MenuPage
                 TgxCluster curtainsCluster = Menu.Playfield.Camera.GetCluster(1);
                 
                 // Optionally skip transition
-                if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+                if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
                 {
                     // End custom page transition
                     if (TransitionValue <= curtainsCluster.RenderContext.Resolution.Y)

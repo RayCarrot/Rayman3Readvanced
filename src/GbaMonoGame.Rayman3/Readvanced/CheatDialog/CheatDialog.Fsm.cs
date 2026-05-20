@@ -11,7 +11,7 @@ public partial class CheatDialog
                 break;
 
             case FsmAction.Step:
-                if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
+                if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
                 {
                     int selectedIndex = SelectedIndex + 1;
                     if (selectedIndex >= CheatItems.Length)
@@ -19,7 +19,7 @@ public partial class CheatDialog
 
                     SetSelectedIndex(selectedIndex);
                 }
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
                 {
                     int selectedIndex = SelectedIndex - 1;
                     if (selectedIndex < 0)
@@ -27,7 +27,7 @@ public partial class CheatDialog
 
                     SetSelectedIndex(selectedIndex);
                 }
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
                 {
                     CheatItems[SelectedIndex].Invoke();
                     PendingClose = true;

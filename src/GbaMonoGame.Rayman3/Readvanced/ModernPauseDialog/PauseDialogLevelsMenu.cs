@@ -205,15 +205,15 @@ public class PauseDialogLevelsMenu
 
         if (!HasSelectedLevel)
         {
-            if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
+            if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
             {
                 SetSelectedOption(SelectedOption - 1);
             }
-            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
+            else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
             {
                 SetSelectedOption(SelectedOption + 1);
             }
-            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+            else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
             {
                 LevelsMenuOption option = Options[SelectedOption];
                 if (option.IsAvailable)
@@ -226,7 +226,7 @@ public class PauseDialogLevelsMenu
                     InvalidCursorClick();
                 }
             }
-            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
+            else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
             {
                 // Go back
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);

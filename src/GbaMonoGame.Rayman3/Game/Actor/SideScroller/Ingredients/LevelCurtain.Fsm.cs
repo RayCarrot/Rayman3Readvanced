@@ -16,9 +16,9 @@ public partial class LevelCurtain
             case FsmAction.Step:
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    if ((JoyPad.IsButtonJustPressed(Rayman3Input.ActorUp) || JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump)) && 
-                        JoyPad.IsButtonReleased(Rayman3Input.ActorLeft) &&
-                        JoyPad.IsButtonReleased(Rayman3Input.ActorRight) &&
+                    if ((Engine.JoyPad.IsButtonJustPressed(Rayman3Input.ActorUp) || Engine.JoyPad.IsButtonJustPressed(Rayman3Input.ActorJump)) && 
+                        Engine.JoyPad.IsButtonReleased(Rayman3Input.ActorLeft) &&
+                        Engine.JoyPad.IsButtonReleased(Rayman3Input.ActorRight) &&
                         !((World)Frame.Current).UserInfo.Hide)
                     {
                         MovableActor mainActor = Scene.MainActor;
@@ -64,9 +64,9 @@ public partial class LevelCurtain
                         IsRaymanInFront = true;
                     }
 
-                    if ((JoyPad.IsButtonPressed(Rayman3Input.ActorUp) || JoyPad.IsButtonPressed(Rayman3Input.ActorJump)) &&
-                        JoyPad.IsButtonReleased(Rayman3Input.ActorLeft) &&
-                        JoyPad.IsButtonReleased(Rayman3Input.ActorRight) &&
+                    if ((Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorUp) || Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorJump)) &&
+                        Engine.JoyPad.IsButtonReleased(Rayman3Input.ActorLeft) &&
+                        Engine.JoyPad.IsButtonReleased(Rayman3Input.ActorRight) &&
                         !((World)Frame.Current).UserInfo.Hide)
                     {
                         enterCurtain = true;

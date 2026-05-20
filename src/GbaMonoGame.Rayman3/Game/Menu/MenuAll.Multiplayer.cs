@@ -291,12 +291,12 @@ public partial class MenuAll
 
     private void Step_MultiplayerModeSelection()
     {
-        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp) || JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
+        if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp) || Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
         {
             SelectOption(SelectedOption == 0 ? 1 : 0, true);
             Anims.MultiplayerModeSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2 + SelectedOption;
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             NextStepAction = Step_InitializeTransitionToGameMode;
             CurrentStepAction = Step_TransitionOutOfMultiplayerModeSelection;
@@ -304,7 +304,7 @@ public partial class MenuAll
             TransitionOutCursorAndStem();
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
         {
             Anims.Cursor.CurrentAnimation = 16;
 
@@ -380,12 +380,12 @@ public partial class MenuAll
 
     private void Step_MultiplayerConnectionSelection()
     {
-        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp) || JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
+        if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp) || Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
         {
             SelectOption(SelectedOption == 0 ? 2 : 0, true);
             Anims.MultiplayerConnectionSelection.CurrentAnimation = Rayman3.Loc.LanguageUiIndex * 2 + SelectedOption / 2;
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             NextStepAction = Step_InitializeTransitionToGameMode;
             CurrentStepAction = Step_TransitionOutOfMultiplayerConnectionSelection;
@@ -393,7 +393,7 @@ public partial class MenuAll
             TransitionOutCursorAndStem();
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
         {
             // NOTE: The game initializes and verifies the RNotifier connection here
 
@@ -485,7 +485,7 @@ public partial class MenuAll
         if (selectedHost == -1 && hostsCount > 0)
             SelectedHost = 0;
 
-        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
+        if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
         {
             if (SelectedHost != -1)
             {
@@ -495,7 +495,7 @@ public partial class MenuAll
                     SelectedHost = 0;
             }
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
         {
             if (SelectedHost != -1)
             {
@@ -504,7 +504,7 @@ public partial class MenuAll
                     SelectedHost = hostsCount - 1;
             }
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
         {
             if (SelectedHost != -1)
             {
@@ -520,7 +520,7 @@ public partial class MenuAll
                 SelectOption(0, false);
             }
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             RSMultiplayer.DeInit();
 
@@ -888,7 +888,7 @@ public partial class MenuAll
             {
                 CheckForStartGame();
 
-                if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuMultiplayerStart))
+                if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuMultiplayerStart))
                 {
                     uint trimmedGameTime = GameTime.ElapsedFrames & 0x1ff;
                     
@@ -959,7 +959,7 @@ public partial class MenuAll
             MultiplayerInititialGameTime = GameTime.ElapsedFrames;
         }
 
-        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
+        if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             SelectOption(0, false);
             NextStepAction = Step_InitializeTransitionToMultiplayerModeSelection;
@@ -1181,7 +1181,7 @@ public partial class MenuAll
             {
                 NGageSetMenuText(26, false, 36, 100, RSMultiplayer.CurrentHostName); // Press 5 when ready. Host name : %s
 
-                if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+                if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
                 {
                     // NOTE: The game notifies other players that it's ready
                 }
@@ -1209,7 +1209,7 @@ public partial class MenuAll
             }
         }
 
-        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
+        if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             RSMultiplayer.DeInit();
 
@@ -1504,7 +1504,7 @@ public partial class MenuAll
         }
 
         // Go back
-        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
+        if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             RSMultiplayer.DeInit();
 
@@ -1682,7 +1682,7 @@ public partial class MenuAll
             {
                 GameTime.Resume();
 
-                if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuLeft) && MultiplayerType != 0)
+                if (Engine.MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuLeft) && MultiplayerType != 0)
                 {
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     MultiplayerType--;
@@ -1690,14 +1690,14 @@ public partial class MenuAll
                     Anims.MultiplayerTypeIcon.CurrentAnimation = MultiplayerType;
                 }
 
-                if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuRight) && MultiplayerType != 2)
+                if (Engine.MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuRight) && MultiplayerType != 2)
                 {
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                     MultiplayerType++;
                     Anims.MultiplayerTypeName.CurrentAnimation = MultiplayerType + Rayman3.Loc.LanguageUiIndex * MultiplayerTypeAnimationsCount;
                     Anims.MultiplayerTypeIcon.CurrentAnimation = MultiplayerType;
                 }
-                else if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuConfirm))
+                else if (Engine.MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuConfirm))
                 {
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
 
@@ -1709,7 +1709,7 @@ public partial class MenuAll
                     CurrentStepAction = Step_TransitionOutOfMultiplayerTypeSelection;
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                 }
-                else if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuBack))
+                else if (Engine.MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuBack))
                 {
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
 
@@ -2049,7 +2049,7 @@ public partial class MenuAll
                 }
                 else
                 {
-                    if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuUp) && (Rom.Platform == Platform.NGage || StemMode == StemMode.Active))
+                    if (Engine.MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuUp) && (Rom.Platform == Platform.NGage || StemMode == StemMode.Active))
                     {
                         if (MultiplayerMapId == 1)
                         {
@@ -2074,7 +2074,7 @@ public partial class MenuAll
                             SelectOption(0, true);
                         }
                     }
-                    else if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuDown) && (Rom.Platform == Platform.NGage || StemMode == StemMode.Active))
+                    else if (Engine.MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuDown) && (Rom.Platform == Platform.NGage || StemMode == StemMode.Active))
                     {
                         if (Rom.Platform == Platform.NGage || 
                             (MultiplayerType == 0 && FinishedLyChallenge1) ||
@@ -2105,7 +2105,7 @@ public partial class MenuAll
                             }
                         }
                     }
-                    else if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuConfirm))
+                    else if (Engine.MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuConfirm))
                     {
                         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                         Engine.Sem.ReplaceAllSongs(-1, 1);
@@ -2117,7 +2117,7 @@ public partial class MenuAll
                         Gfx.FadeControl = new FadeControl(FadeMode.None);
                         TransitionsFX.FadeOutInit(4);
                     }
-                    else if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuBack))
+                    else if (Engine.MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuBack))
                     {
                         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
 
@@ -2306,7 +2306,7 @@ public partial class MenuAll
             {
                 GameTime.Resume();
 
-                if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuUp))
+                if (Engine.MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuUp))
                 {
                     SelectOption(SelectedOption == 0 ? 4 : SelectedOption - 2, true);
 
@@ -2317,7 +2317,7 @@ public partial class MenuAll
                     // Huh?
                     Anims.OptionsSelection.CurrentAnimation = SelectedOption + Rayman3.Loc.LanguageUiIndex * 3;
                 }
-                else if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuDown))
+                else if (Engine.MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuDown))
                 {
                     SelectOption(SelectedOption == 4 ? 0 : SelectedOption + 2, true);
 
@@ -2328,7 +2328,7 @@ public partial class MenuAll
                     // Huh?
                     Anims.OptionsSelection.CurrentAnimation = SelectedOption + Rayman3.Loc.LanguageUiIndex * 3;
                 }
-                else if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuLeft))
+                else if (Engine.MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuLeft))
                 {
                     int option = SelectedOption / 2;
 
@@ -2370,7 +2370,7 @@ public partial class MenuAll
                         Anims.MultiplayerCaptureTheFlagOptionsTimeDigits[2].CurrentAnimation = 18 + CaptureTheFlagTargetTime - (CaptureTheFlagTargetTime / 10) * 10;
                     }
                 }
-                else if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuRight))
+                else if (Engine.MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuRight))
                 {
                     int option = SelectedOption / 2;
 
@@ -2406,7 +2406,7 @@ public partial class MenuAll
                         Anims.MultiplayerCaptureTheFlagOptionsTimeDigits[2].CurrentAnimation = 18 + CaptureTheFlagTargetTime - (CaptureTheFlagTargetTime / 10) * 10;
                     }
                 }
-                else if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuConfirm))
+                else if (Engine.MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuConfirm))
                 {
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     TransitionOutCursorAndStem();
@@ -2414,7 +2414,7 @@ public partial class MenuAll
                     CurrentStepAction = Step_TransitionOutOfMultiplayerFlagOptions;
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                 }
-                else if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuBack))
+                else if (Engine.MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuBack))
                 {
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
                     TransitionOutCursorAndStem();
@@ -2551,7 +2551,7 @@ public partial class MenuAll
 
     private void Step_MultiplayerLostConnection()
     {
-        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLostMultiplayerConnectionBack))
+        if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuLostMultiplayerConnectionBack))
         {
             CurrentStepAction = Step_TransitionOutOfMultiplayerLostConnection;
         }
@@ -2728,7 +2728,7 @@ public partial class MenuAll
         }
 
         // Start
-        if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuMultiplayerStart) && hasConnected)
+        if (Engine.MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuMultiplayerStart) && hasConnected)
         {
             SinglePakLoader.BeginDownloadLoader();
             SetMenuText(3, false); // Please Wait...
@@ -2741,7 +2741,7 @@ public partial class MenuAll
             SinglePakLoader.DecompressAndPlay(Rayman3.Loc.LanguageId);
 
         // Go back
-        if (MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuBack))
+        if (Engine.MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuBack))
         {
             RSMultiplayer.Init();
             MultiplayerInititialGameTime = GameTime.ElapsedFrames;

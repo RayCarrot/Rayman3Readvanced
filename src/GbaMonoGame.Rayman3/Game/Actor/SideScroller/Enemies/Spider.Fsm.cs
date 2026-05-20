@@ -308,16 +308,16 @@ public partial class Spider
                             }
 
                             // Reset attack if no buttons are pressed
-                            if (!JoyPad.IsButtonPressed(GbaInput.A) &&
-                                !JoyPad.IsButtonPressed(GbaInput.B) &&
-                                !JoyPad.IsButtonPressed(GbaInput.Select) &&
-                                !JoyPad.IsButtonPressed(GbaInput.Start) &&
-                                !JoyPad.IsButtonPressed(GbaInput.Right) &&
-                                !JoyPad.IsButtonPressed(GbaInput.Left) &&
-                                !JoyPad.IsButtonPressed(GbaInput.Up) &&
-                                !JoyPad.IsButtonPressed(GbaInput.Down) &&
-                                !JoyPad.IsButtonPressed(GbaInput.R) &&
-                                !JoyPad.IsButtonPressed(GbaInput.L))
+                            if (!Engine.JoyPad.IsButtonPressed(GbaInput.A) &&
+                                !Engine.JoyPad.IsButtonPressed(GbaInput.B) &&
+                                !Engine.JoyPad.IsButtonPressed(GbaInput.Select) &&
+                                !Engine.JoyPad.IsButtonPressed(GbaInput.Start) &&
+                                !Engine.JoyPad.IsButtonPressed(GbaInput.Right) &&
+                                !Engine.JoyPad.IsButtonPressed(GbaInput.Left) &&
+                                !Engine.JoyPad.IsButtonPressed(GbaInput.Up) &&
+                                !Engine.JoyPad.IsButtonPressed(GbaInput.Down) &&
+                                !Engine.JoyPad.IsButtonPressed(GbaInput.R) &&
+                                !Engine.JoyPad.IsButtonPressed(GbaInput.L))
                             {
                                 IsNotAttacking = false;
                                 Timer = 0;

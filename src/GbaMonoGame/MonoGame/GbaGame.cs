@@ -204,6 +204,8 @@ public abstract class GbaGame : Game
             settings: settings, 
             app: _applicationManager, 
             input: new InputManager(),
+            joyPad: new BufferedJoyPad(),
+            multiJoyPad: new MultiJoyPad(),
             window: _gameWindowManager, 
             viewPort: new ViewPortManager(), 
             assets: new AssetManager(Services),

@@ -191,7 +191,7 @@ public partial class MenuAll
                     }
                 }
                 // Move start/erase to start
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeftExt) && Anims.Cursor.CurrentAnimation != 16)
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeftExt) && Anims.Cursor.CurrentAnimation != 16)
                 {
                     if (SelectedStartEraseOption != 0)
                     {
@@ -201,7 +201,7 @@ public partial class MenuAll
                     }
                 }
                 // Move start/erase to erase
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRightExt) && Anims.Cursor.CurrentAnimation != 16)
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuRightExt) && Anims.Cursor.CurrentAnimation != 16)
                 {
                     if (SelectedStartEraseOption != 1)
                     {
@@ -211,7 +211,7 @@ public partial class MenuAll
                     }
                 }
                 // Move up
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp) && Anims.Cursor.CurrentAnimation != 16)
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp) && Anims.Cursor.CurrentAnimation != 16)
                 {
                     if (SelectedOption == 0)
                         SelectOption(2, true);
@@ -219,7 +219,7 @@ public partial class MenuAll
                         SelectOption(SelectedOption - 1, true);
                 }
                 // Move down
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown) && Anims.Cursor.CurrentAnimation != 16)
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown) && Anims.Cursor.CurrentAnimation != 16)
                 {
                     if (SelectedOption == 2)
                         SelectOption(0, true);
@@ -227,7 +227,7 @@ public partial class MenuAll
                         SelectOption(SelectedOption + 1, true);
                 }
                 // Select slot
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm) && Anims.Cursor.CurrentAnimation != 16)
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm) && Anims.Cursor.CurrentAnimation != 16)
                 {
                     Anims.Cursor.CurrentAnimation = 16;
 
@@ -284,7 +284,7 @@ public partial class MenuAll
 
             case StartEraseMode.ConfirmErase:
                 // Move left
-                if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeftExt))
+                if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeftExt))
                 {
                     if (SelectedStartEraseOption != 0)
                     {
@@ -295,7 +295,7 @@ public partial class MenuAll
                     }
                 }
                 // Move right
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRightExt))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuRightExt))
                 {
                     if (SelectedStartEraseOption != 1)
                     {
@@ -306,7 +306,7 @@ public partial class MenuAll
                     }
                 }
                 // Erase slot
-                else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+                else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
                 {
                     StartEraseMode = StartEraseMode.TransitionOutConfirmErase;
                     TransitionValue = 0;
@@ -359,7 +359,7 @@ public partial class MenuAll
                 break;
         }
 
-        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack) && !TransitionsFX.IsFadingOut && !IsStartingGame)
+        if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack) && !TransitionsFX.IsFadingOut && !IsStartingGame)
         {
             switch (StartEraseMode)
             {

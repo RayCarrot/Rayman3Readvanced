@@ -58,7 +58,7 @@ public class ControlOptionsMenuOption : OptionsMenuOption
 
         // Set as pressed key to avoid it being seen as just having pressed this input
         if (Engine.Input.TryGetGbaInput(Input, out GbaInput gbaInput))
-            JoyPad.Current.KeyStatus |= gbaInput;
+            Engine.JoyPad.Current.KeyStatus |= gbaInput;
 
         // Check if key is used elsewhere
         foreach (Input input in Enum.GetValues<Input>())
@@ -70,7 +70,7 @@ public class ControlOptionsMenuOption : OptionsMenuOption
                 Engine.Settings.Local.Controls.KeyboardControls[input] = prevKey;
 
                 if (Engine.Input.TryGetGbaInput(input, out GbaInput gbaInput2))
-                    JoyPad.Current.KeyStatus |= gbaInput2;
+                    Engine.JoyPad.Current.KeyStatus |= gbaInput2;
 
                 ControlOptionsMenuOption option = options.OfType<ControlOptionsMenuOption>().FirstOrDefault(x => x.Input == input);
                 option?.UpdateSelection();
@@ -85,7 +85,7 @@ public class ControlOptionsMenuOption : OptionsMenuOption
 
         // Set as pressed key to avoid it being seen as just having pressed this input
         if (Engine.Input.TryGetGbaInput(Input, out GbaInput gbaInput))
-            JoyPad.Current.KeyStatus |= gbaInput;
+            Engine.JoyPad.Current.KeyStatus |= gbaInput;
 
         // Check if key is used elsewhere
         foreach (Input input in Enum.GetValues<Input>())
@@ -97,7 +97,7 @@ public class ControlOptionsMenuOption : OptionsMenuOption
                 Engine.Settings.Local.Controls.GamePadControls[input] = prevButton;
 
                 if (Engine.Input.TryGetGbaInput(input, out GbaInput gbaInput2))
-                    JoyPad.Current.KeyStatus |= gbaInput2;
+                    Engine.JoyPad.Current.KeyStatus |= gbaInput2;
 
                 ControlOptionsMenuOption option = options.OfType<ControlOptionsMenuOption>().FirstOrDefault(x => x.Input == input);
                 option?.UpdateSelection();

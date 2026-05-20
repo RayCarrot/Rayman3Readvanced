@@ -311,7 +311,7 @@ public abstract class Act : Frame
         else
         {
             // Skip cutscene
-            if (!IsAutomatic && JoyPad.IsButtonJustPressed(Rayman3Input.StorySkip))
+            if (!IsAutomatic && Engine.JoyPad.IsButtonJustPressed(Rayman3Input.StorySkip))
             {
                 CurrentFrameIndex = ActResource.LastFrameIndex;
                 TransitionsFX.FadeOutInit(1);
@@ -327,7 +327,7 @@ public abstract class Act : Frame
             {
                 TransitionTextIn();
             }
-            else if (!IsAutomatic && JoyPad.IsButtonJustPressed(Rayman3Input.StoryNext))
+            else if (!IsAutomatic && Engine.JoyPad.IsButtonJustPressed(Rayman3Input.StoryNext))
             {
                 if (ActResource.Frames.Value[CurrentFrameIndex].TextId == -1 ||
                     CurrentTextLine >= CurrentText.Length)

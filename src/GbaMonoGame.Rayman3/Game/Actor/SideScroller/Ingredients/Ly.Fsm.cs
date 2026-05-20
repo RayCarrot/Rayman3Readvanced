@@ -88,10 +88,10 @@ public partial class Ly
                     ActionId = Action.IdleActive;
                 }
 
-                if (JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxNext) && !TextBox.IsFinished && ActionId != Action.BeginTalk)
+                if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxNext) && !TextBox.IsFinished && ActionId != Action.BeginTalk)
                     TextBox.MoveToNextText();
 
-                if (Engine.Settings.Active.Tweaks.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxSkip))
+                if (Engine.Settings.Active.Tweaks.CanSkipTextBoxes && Engine.JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxSkip))
                     TextBox.Skip();
 
                 if (TextBox.IsFinished)

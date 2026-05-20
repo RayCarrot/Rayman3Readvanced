@@ -136,23 +136,23 @@ public class OptionsMenuPage : MenuPage
         // Not editing
         if (!IsEditingOption)
         {
-            if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
+            if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
             {
                 SetSelectedOption(SelectedOption - 1);
             }
-            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
+            else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
             {
                 SetSelectedOption(SelectedOption + 1);
             }
-            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeftExt))
+            else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeftExt))
             {
                 SetSelectedTab(SelectedTab - 1);
             }
-            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRightExt))
+            else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuRightExt))
             {
                 SetSelectedTab(SelectedTab + 1);
             }
-            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+            else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
             {
                 OptionsMenuOption option = (OptionsMenuOption)Options[SelectedOption];
 
@@ -171,7 +171,7 @@ public class OptionsMenuPage : MenuPage
                     InvalidCursorClick();
                 }
             }
-            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
+            else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
             {
                 // Go back to the game mode menu
                 Menu.ChangePage(new GameModeMenuPage(Menu), NewPageMode.Back);

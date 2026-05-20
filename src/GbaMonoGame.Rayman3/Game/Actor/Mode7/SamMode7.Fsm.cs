@@ -90,7 +90,7 @@ public partial class SamMode7
                 }
 
                 // NOTE: This cheat is normally only in the game prototypes
-                if (Engine.Settings.Active.Tweaks.AllowPrototypeCheats && JoyPad.IsButtonJustPressed(GbaInput.Select) && JoyPad.IsButtonPressed(GbaInput.L))
+                if (Engine.Settings.Active.Tweaks.AllowPrototypeCheats && Engine.JoyPad.IsButtonJustPressed(GbaInput.Select) && Engine.JoyPad.IsButtonPressed(GbaInput.L))
                 {
                     if (Engine.Settings.Local.Tweaks.PlayCheatTriggerSound)
                         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);

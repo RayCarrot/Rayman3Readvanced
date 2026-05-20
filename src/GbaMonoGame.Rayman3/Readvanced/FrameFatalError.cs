@@ -51,10 +51,10 @@ public class FrameFatalError : Frame
 
     public override void Step()
     {
-        if (JoyPad.IsButtonJustPressed(GbaInput.A) ||
-            JoyPad.IsButtonJustPressed(GbaInput.B) ||
-            JoyPad.IsButtonJustPressed(GbaInput.Start) ||
-            JoyPad.IsButtonJustPressed(GbaInput.Select) ||
+        if (Engine.JoyPad.IsButtonJustPressed(GbaInput.A) ||
+            Engine.JoyPad.IsButtonJustPressed(GbaInput.B) ||
+            Engine.JoyPad.IsButtonJustPressed(GbaInput.Start) ||
+            Engine.JoyPad.IsButtonJustPressed(GbaInput.Select) ||
             Engine.Input.IsKeyJustPressed(Keys.Escape))
         {
             Engine.App.Exit();

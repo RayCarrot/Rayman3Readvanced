@@ -98,18 +98,18 @@ public class AnimationViewer : Frame
 
     private bool IsDirectionalButtonPressed(Rayman3Input input)
     {
-        bool left = JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft);
-        bool right = JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight);
+        bool left = Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft);
+        bool right = Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight);
         if (!left && !right)
         {
-            if (JoyPad.IsButtonPressed(Rayman3Input.MenuLeft))
+            if (Engine.JoyPad.IsButtonPressed(Rayman3Input.MenuLeft))
             {
                 if (HoldButtonTimer > 20)
                     left = GameTime.ElapsedFrames % 5 == 0;
                 else
                     HoldButtonTimer++;
             }
-            else if (JoyPad.IsButtonPressed(Rayman3Input.MenuRight))
+            else if (Engine.JoyPad.IsButtonPressed(Rayman3Input.MenuRight))
             {
                 if (HoldButtonTimer > 15)
                     right = GameTime.ElapsedFrames % 5 == 0;
@@ -215,7 +215,7 @@ public class AnimationViewer : Frame
 
             SetSelectionText($"Resource {SelectedResourceIndex}/{resourcesCount - 1} ({resourceType.Name})");
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
         {
             if (GetCurrentResourceType() == typeof(AnimatedObjectResource))
                 InitSelectAnimation();
@@ -246,11 +246,11 @@ public class AnimationViewer : Frame
 
             SetSelectionText($"Actor #{Actors[SelectedActorIndex].Type} ({(ActorType)Actors[SelectedActorIndex].Type})");
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
         {
             InitSelectAnimation();
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             InitSelectResource();
         }
@@ -280,11 +280,11 @@ public class AnimationViewer : Frame
             SetSelectionText($"Animation {SelectedAnimationIndex}/{animationsCount - 1}");
             Animation.CurrentAnimation = SelectedAnimationIndex;
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
         {
             Animation.CurrentFrame = 0;
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             if (GetCurrentResourceType() == typeof(Scene2DResource))
                 InitSelectActor();

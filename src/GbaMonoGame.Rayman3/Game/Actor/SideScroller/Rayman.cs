@@ -289,7 +289,7 @@ public sealed partial class Rayman : MovableActor
         if (RSMultiplayer.IsActive && ReverseControlsTimer != 0)
             rayman3Input = ReverseControls(rayman3Input);
 
-        return MultiJoyPad.IsButtonPressed(InstanceId, rayman3Input);
+        return Engine.MultiJoyPad.IsButtonPressed(InstanceId, rayman3Input);
     }
 
     private bool IsDirectionalButtonReleased(Rayman3Input rayman3Input)
@@ -297,7 +297,7 @@ public sealed partial class Rayman : MovableActor
         if (RSMultiplayer.IsActive && ReverseControlsTimer != 0)
             rayman3Input = ReverseControls(rayman3Input);
 
-        return MultiJoyPad.IsButtonReleased(InstanceId, rayman3Input);
+        return Engine.MultiJoyPad.IsButtonReleased(InstanceId, rayman3Input);
     }
 
     private bool IsDirectionalButtonJustPressed(Rayman3Input rayman3Input)
@@ -305,7 +305,7 @@ public sealed partial class Rayman : MovableActor
         if (RSMultiplayer.IsActive && ReverseControlsTimer != 0)
             rayman3Input = ReverseControls(rayman3Input);
 
-        return MultiJoyPad.IsButtonJustPressed(InstanceId, rayman3Input);
+        return Engine.MultiJoyPad.IsButtonJustPressed(InstanceId, rayman3Input);
     }
 
     // Unused
@@ -314,7 +314,7 @@ public sealed partial class Rayman : MovableActor
         if (RSMultiplayer.IsActive && ReverseControlsTimer != 0)
             rayman3Input = ReverseControls(rayman3Input);
 
-        return MultiJoyPad.IsButtonJustReleased(InstanceId, rayman3Input);
+        return Engine.MultiJoyPad.IsButtonJustReleased(InstanceId, rayman3Input);
     }
 
     private bool MultiplayerMoveFaster(bool hasNGageBug = false)
@@ -716,7 +716,7 @@ public sealed partial class Rayman : MovableActor
             ActionId = IsFacingRight ? Action.ThrowFistInAir_Right : Action.ThrowFistInAir_Left;
         }
 
-        if (MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorAttack))
+        if (Engine.MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorAttack))
         {
             if (CanAttackWithFist(1))
             {
@@ -1506,16 +1506,16 @@ public sealed partial class Rayman : MovableActor
 
     private void DoNoClipBehavior()
     {
-        int speed = JoyPad.IsButtonPressed(Rayman3Input.ActorJump) ? 7 : 4;
+        int speed = Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorJump) ? 7 : 4;
 
-        if (JoyPad.IsButtonPressed(Rayman3Input.ActorUp))
+        if (Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorUp))
             Position -= new Vector2(0, speed);
-        else if (JoyPad.IsButtonPressed(Rayman3Input.ActorDown))
+        else if (Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorDown))
             Position += new Vector2(0, speed);
 
-        if (JoyPad.IsButtonPressed(Rayman3Input.ActorLeft))
+        if (Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorLeft))
             Position -= new Vector2(speed, 0);
-        else if (JoyPad.IsButtonPressed(Rayman3Input.ActorRight))
+        else if (Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorRight))
             Position += new Vector2(speed, 0);
     }
 

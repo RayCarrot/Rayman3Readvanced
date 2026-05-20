@@ -360,23 +360,23 @@ public class TimeAttackMenuPage : MenuPage
     {
         if (!HasSelectedLevel)
         {
-            if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
+            if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
             {
                 SetSelectedOption(SelectedOption - 1);
             }
-            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
+            else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
             {
                 SetSelectedOption(SelectedOption + 1);
             }
-            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeftExt))
+            else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeftExt))
             {
                 SetSelectedWorld(SelectedWorld - 1);
             }
-            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuRightExt))
+            else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuRightExt))
             {
                 SetSelectedWorld(SelectedWorld + 1);
             }
-            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+            else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
             {
                 CursorClick(() =>
                 {
@@ -387,30 +387,30 @@ public class TimeAttackMenuPage : MenuPage
                     WorldNameArrows.Pause();
                 });
             }
-            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
+            else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
             {
                 Menu.ChangePage(new BonusMenuPage(Menu), NewPageMode.Back);
             }
         }
         else
         {
-            if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
+            if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
             {
                 SetSelectedLevelOption(SelectedLevelOption - 1);
             }
-            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
+            else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
             {
                 SetSelectedLevelOption(SelectedLevelOption + 1);
             }
-            else if (SelectedLevelOption == 0 && JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
+            else if (SelectedLevelOption == 0 && Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuLeft))
             {
                 SetSelectedGhostOption(SelectedGhostOption - 1);
             }
-            else if (SelectedLevelOption == 0 && JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
+            else if (SelectedLevelOption == 0 && Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
             {
                 SetSelectedGhostOption(SelectedGhostOption + 1);
             }
-            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+            else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
             {
                 if (SelectedLevelOption == 0)
                 {
@@ -433,7 +433,7 @@ public class TimeAttackMenuPage : MenuPage
                     });
                 }
             }
-            else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
+            else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
             {
                 HasSelectedLevel = false;
                 SetSelectedOption(SelectedOption, playSound: false, forceUpdate: true);

@@ -73,7 +73,7 @@ public sealed partial class Machine : MovableActor
     {
         if (!TextBox.IsFinished)
         {
-            if (JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxNext))
+            if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxNext))
                 TextBox.MoveToNextText();
         }
         else

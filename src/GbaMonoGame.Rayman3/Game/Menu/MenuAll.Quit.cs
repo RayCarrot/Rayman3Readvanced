@@ -49,17 +49,17 @@ public partial class MenuAll
 
     private void Step_Quit()
     {
-        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
+        if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
         {
             SelectOption(SelectedOption == 0 ? 1 : 0, true);
             Anims.QuitSelection.CurrentAnimation = 15 + Rayman3.Loc.LanguageUiIndex + SelectedOption * 5;
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
         {
             SelectOption(SelectedOption == 1 ? 0 : 1, true);
             Anims.QuitSelection.CurrentAnimation = 15 + Rayman3.Loc.LanguageUiIndex + SelectedOption * 5;
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
         {
             Anims.Cursor.CurrentAnimation = 16;
 
@@ -75,7 +75,7 @@ public partial class MenuAll
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
             TransitionOutCursorAndStem();
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             Anims.Cursor.CurrentAnimation = 16;
             NextStepAction = Step_InitializeTransitionToGameMode;

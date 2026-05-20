@@ -53,15 +53,15 @@ public class ExportSaveSelectionMenuPage : MenuPage
 
     protected override void Step_Active()
     {
-        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
+        if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
         {
             SetSelectedOption(SelectedOption - 1);
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
         {
             SetSelectedOption(SelectedOption + 1);
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
         {
             try
             {
@@ -120,7 +120,7 @@ public class ExportSaveSelectionMenuPage : MenuPage
 
             Menu.ChangePage(new SinglePlayerMenuPage(Menu), NewPageMode.Next);
         }
-        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
+        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             Menu.ChangePage(new NewGameMenuPage(Menu, Slot), NewPageMode.Back);
         }

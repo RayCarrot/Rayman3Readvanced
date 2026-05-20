@@ -156,17 +156,17 @@ public partial class TimeAttackScoreDialog
                     }
                     else
                     {
-                        if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
+                        if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))
                         {
                             SetSelectedOption(SelectedOption - 1);
                             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                         }
-                        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
+                        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuDown))
                         {
                             SetSelectedOption(SelectedOption + 1);
                             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MenuMove);
                         }
-                        else if (JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
+                        else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
                         {
                             // Restart
                             if (SelectedOption == 0)

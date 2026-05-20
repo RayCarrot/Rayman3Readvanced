@@ -328,7 +328,7 @@ public class TitleScreen : Frame
         else if (!Cursor.IsMoving && LoadRomTask == null)
         {
             // Change selected game
-            if (JoyPad.IsButtonJustPressed(GbaInput.Left) || JoyPad.IsButtonJustPressed(GbaInput.Right))
+            if (Engine.JoyPad.IsButtonJustPressed(GbaInput.Left) || Engine.JoyPad.IsButtonJustPressed(GbaInput.Right))
             {
                 int prevSelectedGameIndex = SelectedGameIndex;
                 SelectedGameIndex = SelectedGameIndex == 1 ? 0 : 1;
@@ -336,7 +336,7 @@ public class TitleScreen : Frame
                 Games[SelectedGameIndex].SelectedIndex = 0;
                 Games[prevSelectedGameIndex].SelectedIndex = -1;
             }
-            else if (JoyPad.IsButtonJustPressed(GbaInput.B) || JoyPad.IsButtonJustPressed(GbaInput.Select) || Engine.Input.IsKeyJustPressed(Keys.Escape))
+            else if (Engine.JoyPad.IsButtonJustPressed(GbaInput.B) || Engine.JoyPad.IsButtonJustPressed(GbaInput.Select) || Engine.Input.IsKeyJustPressed(Keys.Escape))
             {
                 SelectedGameIndex = -1;
                 QuitGameOptionsList.SelectedIndex = 0;
