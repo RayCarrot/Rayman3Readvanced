@@ -121,7 +121,7 @@ public class TitleScreen : Frame
                 {
                     if (game.Platform == Platform.GBA)
                     {
-                        string selectedFilePath = FileDialog.OpenFile("Select the game ROM", new FileDialog.FileFilter("gba", "GBA ROM files"));
+                        string selectedFilePath = Engine.FileDialog.OpenFile("Select the game ROM", new FileDialogManager.FileFilter("gba", "GBA ROM files"));
 
                         if (selectedFilePath != null)
                         {
@@ -172,7 +172,7 @@ public class TitleScreen : Frame
                     }
                     else if (game.Platform == Platform.NGage)
                     {
-                        string selectedDirectoryPath = FileDialog.OpenFolder("Select the game folder");
+                        string selectedDirectoryPath = Engine.FileDialog.OpenFolder("Select the game folder");
 
                         if (selectedDirectoryPath != null)
                         {

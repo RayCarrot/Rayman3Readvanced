@@ -13,6 +13,7 @@ public static class Engine
     public static AssetManager Assets { get; private set; }
     public static GameConfigManager Config { get; private set; }
     public static MessageManager Messages { get; private set; }
+    public static FileDialogManager FileDialog { get; private set; }
     public static IRichPresenceManager RichPresence { get; private set; }
     public static FrameManager FrameMngr { get; private set; }
 
@@ -29,6 +30,7 @@ public static class Engine
         AssetManager assets,
         GameConfigManager config,
         MessageManager messages,
+        FileDialogManager fileDialog,
         IRichPresenceManager richPresence,
         FrameManager frameMngr)
     {
@@ -44,6 +46,7 @@ public static class Engine
         Assets = assets;
         Config = config;
         Messages = messages;
+        FileDialog = fileDialog;
         RichPresence = richPresence;
         FrameMngr = frameMngr;
 
@@ -85,7 +88,9 @@ public static class Engine
         Window = null;
         ViewPort = null;
         Assets = null;
+        Config = null;
         Messages = null;
+        FileDialog = null;
         RichPresence = null;
         FrameMngr = null;
     }

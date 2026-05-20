@@ -6,9 +6,9 @@ using NativeFileDialogSharp;
 
 namespace GbaMonoGame;
 
-public static class FileDialog
+public class FileDialogManager
 {
-    public static string OpenFile(string title, FileFilter filter)
+    public string OpenFile(string title, FileFilter filter)
     {
         // Force windowed mode for this
         DisplayMode prevDisplayMode = Engine.Window.DisplayMode;
@@ -51,7 +51,7 @@ public static class FileDialog
         }
     }
 
-    public static string OpenFolder(string title)
+    public string OpenFolder(string title)
     {
         // Force windowed mode for this
         DisplayMode prevDisplayMode = Engine.Window.DisplayMode;

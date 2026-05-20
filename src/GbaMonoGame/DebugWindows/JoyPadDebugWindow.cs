@@ -76,7 +76,7 @@ public class JoyPadDebugWindow : DebugWindow
 
         if (ImGui.Button("Load BizHawk TAS (.bk2)"))
         {
-            string filePath = FileDialog.OpenFile("Select the TAS file", new FileDialog.FileFilter("bk2", "BK2 files"));
+            string filePath = Engine.FileDialog.OpenFile("Select the TAS file", new FileDialogManager.FileFilter("bk2", "BK2 files"));
             if (filePath != null)
                 LoadBizHawkTas(filePath);
         }

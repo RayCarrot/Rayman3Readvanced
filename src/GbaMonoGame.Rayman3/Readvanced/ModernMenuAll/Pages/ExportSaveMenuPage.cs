@@ -26,7 +26,7 @@ public class ExportSaveMenuPage : MenuPage
     {
         AddOption(new ActionMenuOption("EXPORT TO GBA SAVE", () =>
         {
-            string saveFilePath = FileDialog.OpenFile("Select GBA save file", new FileDialog.FileFilter("sav", "GBA Save"));
+            string saveFilePath = Engine.FileDialog.OpenFile("Select GBA save file", new FileDialogManager.FileFilter("sav", "GBA Save"));
 
             if (saveFilePath == null)
                 return;
@@ -69,7 +69,7 @@ public class ExportSaveMenuPage : MenuPage
         }));
         AddOption(new ActionMenuOption("EXPORT TO N-GAGE SAVE", () =>
         {
-            string saveFilePath = FileDialog.OpenFile("Select N-Gage save file", new FileDialog.FileFilter("dat", "N-Gage Save"));
+            string saveFilePath = Engine.FileDialog.OpenFile("Select N-Gage save file", new FileDialogManager.FileFilter("dat", "N-Gage Save"));
 
             if (saveFilePath == null)
                 return;

@@ -98,7 +98,7 @@ public partial class GameCubeMenu
                     // Select file
                     if (JoyPad.IsButtonJustPressed(Rayman3Input.GameCubeMenuConfirm))
                     {
-                        string isoFilePath = FileDialog.OpenFile("Select the Rayman 3 GameCube ISO", new FileDialog.FileFilter("iso", "GameCube Disc"));
+                        string isoFilePath = Engine.FileDialog.OpenFile("Select the Rayman 3 GameCube ISO", new FileDialogManager.FileFilter("iso", "GameCube Disc"));
                         if (isoFilePath != null)
                         {
                             try

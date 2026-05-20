@@ -209,6 +209,7 @@ public abstract class GbaGame : Game
             assets: new AssetManager(Services),
             config: new GameConfigManager(),
             messages: new MessageManager(),
+            fileDialog: new FileDialogManager(),
             richPresence: new DiscordRichPresenceManager(),
             frameMngr: new FrameManager());
 
