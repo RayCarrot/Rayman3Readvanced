@@ -4,9 +4,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GbaMonoGame;
 
-public record ControlsGameConfig : IniSectionObject
+public record ControlsGameSettings : IniSectionObject
 {
-    public ControlsGameConfig()
+    public ControlsGameSettings()
     {
         UseStandardKeyboardKeys = true;
         EnabledGamePadVibration = true;

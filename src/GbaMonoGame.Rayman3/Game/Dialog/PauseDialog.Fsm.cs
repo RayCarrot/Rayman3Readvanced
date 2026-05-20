@@ -368,7 +368,7 @@ public partial class PauseDialog
                         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                         Gfx.Fade = AlphaCoefficient.Max;
 
-                        if (Engine.Config.Active.Tweaks.UseModernMainMenu)
+                        if (Engine.Settings.Active.Tweaks.UseModernMainMenu)
                             Engine.FrameMngr.SetNextFrame(new ModernMenuAll(InitialMenuPage.GameMode));
                         else
                             Engine.FrameMngr.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));
@@ -696,7 +696,7 @@ public partial class PauseDialog
                     Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                     Gfx.Fade = AlphaCoefficient.Max;
 
-                    if (Engine.Config.Active.Tweaks.UseModernMainMenu)
+                    if (Engine.Settings.Active.Tweaks.UseModernMainMenu)
                         Engine.FrameMngr.SetNextFrame(new ModernMenuAll(InitialMenuPage.Multiplayer));
                     else
                         Engine.FrameMngr.SetNextFrame(new MenuAll(InitialMenuPage.Multiplayer));

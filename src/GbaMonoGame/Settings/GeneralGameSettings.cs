@@ -3,9 +3,9 @@ using BinarySerializer.Ubisoft.GbaEngine;
 
 namespace GbaMonoGame;
 
-public record GeneralGameConfig : IniSectionObject
+public record GeneralGameSettings : IniSectionObject
 {
-    public GeneralGameConfig()
+    public GeneralGameSettings()
     {
         LastPlayedGbaSaveSlot = null;
         LastPlayedNGageSaveSlot = null;

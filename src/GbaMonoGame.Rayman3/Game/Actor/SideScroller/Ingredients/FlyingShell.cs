@@ -122,7 +122,7 @@ public sealed partial class FlyingShell : MovableActor
 
     private void ToggleNoClip()
     {
-        if (Engine.Config.Active.Debug.DebugModeEnabled && Engine.Input.IsInputJustPressed(Input.Debug_ToggleNoClip))
+        if (Engine.Settings.Active.Debug.DebugModeEnabled && Engine.Input.IsInputJustPressed(Input.Debug_ToggleNoClip))
         {
             Debug_NoClip = !Debug_NoClip;
 
@@ -178,7 +178,7 @@ public sealed partial class FlyingShell : MovableActor
                 {
                     Frame.Current.EndOfFrame = true;
 
-                    if (Engine.Config.Active.Tweaks.FixBugs)
+                    if (Engine.Settings.Active.Tweaks.FixBugs)
                     {
                         if (GameInfo.IsFirstTimeCompletingLevel())
                             GameInfo.UpdateLastCompletedLevel();
@@ -235,7 +235,7 @@ public sealed partial class FlyingShell : MovableActor
     {
         base.Step();
 
-        if (Engine.Config.Active.Difficulty.OneHitPoint && HitPoints > 1)
+        if (Engine.Settings.Active.Difficulty.OneHitPoint && HitPoints > 1)
             HitPoints = 1;
 
         if (IsLinkedCameraObject())

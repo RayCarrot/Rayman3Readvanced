@@ -282,7 +282,7 @@ public class Intro : Frame, IHasPlayfield
         SoundEngineInterface.SetNbVoices(10);
 
         // Pre-load the menu
-        if (Engine.Config.Active.Tweaks.UseModernMainMenu)
+        if (Engine.Settings.Active.Tweaks.UseModernMainMenu)
         {
             Menu = new ModernMenuAll(Rom.Platform switch
             {
@@ -356,10 +356,10 @@ public class Intro : Frame, IHasPlayfield
         };
         
         // The wings wrap to the bottom for the first few frames. This is only noticeable on GBA, but happens on N-Gage too.
-        if (Engine.Config.Active.Tweaks.FixBugs)
+        if (Engine.Settings.Active.Tweaks.FixBugs)
             BlackLumAndLogoObj.SetAnimationWrap(0, new Box(0, 0, 0, 126));
 
-        if (Engine.Config.Active.Tweaks.FixBugs)
+        if (Engine.Settings.Active.Tweaks.FixBugs)
         {
             // The 3 of the logo wraps to the bottom when first appearing
             if (Rom.Platform == Platform.GBA)
@@ -380,7 +380,7 @@ public class Intro : Frame, IHasPlayfield
         Playfield.Camera.Position = Vector2.Zero;
         Playfield.Step();
 
-        if (Rom.Platform == Platform.GBA || Engine.Config.Active.Tweaks.UseGbaEffectsOnNGage)
+        if (Rom.Platform == Platform.GBA || Engine.Settings.Active.Tweaks.UseGbaEffectsOnNGage)
         {
             Playfield.TileLayers[SkyTileLayerId].Screen.IsEnabled = false;
             Playfield.TileLayers[MainTileLayerId].Screen.IsEnabled = false;
@@ -400,7 +400,7 @@ public class Intro : Frame, IHasPlayfield
 
         Playfield.TileLayers[CloudsTileLayerId].Screen.IsEnabled = false;
 
-        if (Rom.Platform == Platform.GBA || Engine.Config.Active.Tweaks.UseGbaEffectsOnNGage)
+        if (Rom.Platform == Platform.GBA || Engine.Settings.Active.Tweaks.UseGbaEffectsOnNGage)
         {
             TextureScreenRenderer renderer = ((TextureScreenRenderer)Playfield.TileLayers[CloudsTileLayerId].Screen.Renderer);
             Playfield.TileLayers[CloudsTileLayerId].Screen.Renderer = new IntroCloudsRenderer(renderer.Texture);
@@ -419,7 +419,7 @@ public class Intro : Frame, IHasPlayfield
         Engine.Sem.SetVolumeForType(SoundType.Music, 0);
         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__sadslide);
 
-        if (Engine.Config.Active.Tweaks.UseReadvancedLogo)
+        if (Engine.Settings.Active.Tweaks.UseReadvancedLogo)
             ReplaceLogo();
     }
 
@@ -446,13 +446,13 @@ public class Intro : Frame, IHasPlayfield
 
         CurrentStepAction();
 
-        if (Engine.Config.Active.Tweaks.AllowPrototypeCheats && JoyPad.IsButtonJustPressed(GbaInput.L))
+        if (Engine.Settings.Active.Tweaks.AllowPrototypeCheats && JoyPad.IsButtonJustPressed(GbaInput.L))
         {
             Engine.FrameMngr.SetNextFrame(new LevelSelect());
             Rayman3.Loc.SetLanguage(0);
             Random.SetSeed(GameTime.ElapsedFrames);
 
-            if (Engine.Config.Local.Tweaks.PlayCheatTriggerSound)
+            if (Engine.Settings.Local.Tweaks.PlayCheatTriggerSound)
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
         }
     }
@@ -463,7 +463,7 @@ public class Intro : Frame, IHasPlayfield
 
     private void Step_1()
     {
-        if (Rom.Platform == Platform.GBA || Engine.Config.Active.Tweaks.UseGbaEffectsOnNGage)
+        if (Rom.Platform == Platform.GBA || Engine.Settings.Active.Tweaks.UseGbaEffectsOnNGage)
         {
             Timer++;
 
@@ -492,7 +492,7 @@ public class Intro : Frame, IHasPlayfield
 
     private void Step_2()
     {
-        if (Rom.Platform == Platform.GBA || Engine.Config.Active.Tweaks.UseGbaEffectsOnNGage)
+        if (Rom.Platform == Platform.GBA || Engine.Settings.Active.Tweaks.UseGbaEffectsOnNGage)
         {
             Timer++;
 
@@ -537,7 +537,7 @@ public class Intro : Frame, IHasPlayfield
             Playfield.TileLayers[UbisoftLogoTileLayerId].Screen.IsEnabled = false;
 
             // Only show clouds on GBA
-            if (Rom.Platform == Platform.GBA || Engine.Config.Active.Tweaks.UseGbaEffectsOnNGage)
+            if (Rom.Platform == Platform.GBA || Engine.Settings.Active.Tweaks.UseGbaEffectsOnNGage)
                 Playfield.TileLayers[CloudsTileLayerId].Screen.IsEnabled = true;
         }
         else

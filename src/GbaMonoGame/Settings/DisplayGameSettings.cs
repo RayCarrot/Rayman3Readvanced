@@ -3,9 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame;
 
-public record DisplayGameConfig : IniSectionObject
+public record DisplayGameSettings : IniSectionObject
 {
-    public DisplayGameConfig()
+    public DisplayGameSettings()
     {
         Microsoft.Xna.Framework.Graphics.DisplayMode defaultDisplayMode = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode;
         Vector2 defaultResolution = Resolution.Modern;

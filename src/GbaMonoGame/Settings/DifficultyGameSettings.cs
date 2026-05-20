@@ -1,8 +1,8 @@
 namespace GbaMonoGame;
 
-public record DifficultyGameConfig : IniSectionObject
+public record DifficultyGameSettings : IniSectionObject
 {
-    public DifficultyGameConfig()
+    public DifficultyGameSettings()
     {
         InfiniteLives = false;
         NoInstaKills = false;

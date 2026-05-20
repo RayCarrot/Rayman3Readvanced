@@ -5,7 +5,7 @@ namespace GbaMonoGame;
 public static class Engine
 {
     // Engine services
-    public static IConfigManager Config { get; private set; }
+    public static ISettingsManager Settings { get; private set; }
     public static IApplicationManager App { get; private set; }
     public static InputManager Input { get; private set; }
     public static IGameWindowManager Window { get; private set; }
@@ -20,7 +20,7 @@ public static class Engine
     public static FontManager Font { get; private set; }
 
     public static void InitEngine(
-        IConfigManager config,
+        ISettingsManager settings,
         IApplicationManager app, 
         InputManager input,
         IGameWindowManager window,
@@ -34,7 +34,7 @@ public static class Engine
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
         // Set services
-        Config = config;
+        Settings = settings;
         App = app;
         Input = input;
         Window = window;
@@ -45,14 +45,14 @@ public static class Engine
         FrameMngr = frameMngr;
 
         // Initialize services
-        if (Config.Active.Tweaks.InternalGameResolution == null)
+        if (Settings.Active.Tweaks.InternalGameResolution == null)
         {
             // If the internal resolution is null then we default to the original resolution
             ViewPort.SetInternalGameResolution(Rom.IsLoaded ? Rom.OriginalResolution : Resolution.Modern);
         }
         else
         {
-            ViewPort.SetInternalGameResolution(Config.Active.Tweaks.InternalGameResolution.Value);
+            ViewPort.SetInternalGameResolution(Settings.Active.Tweaks.InternalGameResolution.Value);
         }
     }
 
@@ -76,7 +76,7 @@ public static class Engine
         FrameMngr?.Dispose();
 
         // Remove services
-        Config = null;
+        Settings = null;
         App = null;
         Input = null;
         Window = null;

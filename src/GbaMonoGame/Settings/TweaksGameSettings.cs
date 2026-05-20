@@ -1,8 +1,8 @@
 namespace GbaMonoGame;
 
-public record TweaksGameConfig : IniSectionObject
+public record TweaksGameSettings : IniSectionObject
 {
-    public TweaksGameConfig()
+    public TweaksGameSettings()
     {
         Vector2 defaultResolution = Resolution.Modern;
 

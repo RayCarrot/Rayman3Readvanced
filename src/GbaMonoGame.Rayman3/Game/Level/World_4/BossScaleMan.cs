@@ -21,7 +21,7 @@ public class BossScaleMan : FrameSideScroller
         }
 
         // Custom textbox for strafing hint
-        if (Engine.Config.Active.Tweaks.ShowAdditionalGameplayHints)
+        if (Engine.Settings.Active.Tweaks.ShowAdditionalGameplayHints)
         {
             TextBox = new(Scene);
             Scene.AddDialog(TextBox, false, false);

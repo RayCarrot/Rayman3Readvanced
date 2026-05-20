@@ -55,9 +55,9 @@ public class TimeAttackManager
     {
         // TODO: In GameOptions each option has a TimeAttackValue. If null then don't override. Otherwise we lock it.
         // TODO: Look more into which values to change, this is temporary. The visual options might affect Random seed. However Random only matters for gameplay for Grolgoth, Jano, Rocky. None of them use the visual effects.
-        // Save configs
-        Engine.Config.OverrideActive(new ActiveGameConfig(
-            tweaks: Engine.Config.Local.Tweaks with
+        // Save settings
+        Engine.Settings.OverrideActive(new ActiveGameSettings(
+            tweaks: Engine.Settings.Local.Tweaks with
             {
                 InternalGameResolution = Resolution.Modern,
                 UseExtendedBackgrounds = true,
@@ -70,7 +70,7 @@ public class TimeAttackManager
                 AllowPrototypeCheats = false,
 #endif
             },
-            difficulty: new DifficultyGameConfig
+            difficulty: new DifficultyGameSettings
             {
                 InfiniteLives = true,
                 NoInstaKills = true,
@@ -78,7 +78,7 @@ public class TimeAttackManager
                 NoCheckpoints = true,
                 OneHitPoint = false
             },
-            debug: Engine.Config.Local.Debug with
+            debug: Engine.Settings.Local.Debug with
             {
 #if RELEASE
                 DebugModeEnabled = false,
@@ -109,7 +109,7 @@ public class TimeAttackManager
 
     public void End()
     {
-        Engine.Config.RestoreActive();
+        Engine.Settings.RestoreActive();
 
         IsActive = false;
         LevelId = null;

@@ -22,7 +22,7 @@ public partial class Teensies
                 }
 
                 // This is incorrectly called twice in this state
-                if (!Engine.Config.Active.Tweaks.FixBugs)
+                if (!Engine.Settings.Active.Tweaks.FixBugs)
                     LevelMusicManager.PlaySpecialMusicIfDetected(this);
 
                 SetMasterAction();
@@ -59,7 +59,7 @@ public partial class Teensies
                 // Don't allow pausing since it uses the same button as skipping
                 World frame = (World)Frame.Current;
                 SavedBlockPause = frame.BlockPause;
-                if (Engine.Config.Active.Tweaks.CanSkipTextBoxes)
+                if (Engine.Settings.Active.Tweaks.CanSkipTextBoxes)
                     frame.BlockPause = true;
                 break;
         }
@@ -92,7 +92,7 @@ public partial class Teensies
                 if (JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxNext))
                     TextBox.MoveToNextText();
 
-                if (Engine.Config.Active.Tweaks.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxSkip))
+                if (Engine.Settings.Active.Tweaks.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxSkip))
                 {
                     World frame = (World)Frame.Current;
                     frame.BlockPause = true;
@@ -145,7 +145,7 @@ public partial class Teensies
                         IsMovingOutTextBox = true;
 
                         // Restore being able to pause
-                        if (Engine.Config.Active.Tweaks.CanSkipTextBoxes)
+                        if (Engine.Settings.Active.Tweaks.CanSkipTextBoxes)
                         {
                             World frame = (World)Frame.Current;
                             frame.BlockPause = SavedBlockPause;
@@ -156,7 +156,7 @@ public partial class Teensies
                         TextBox.MoveToNextText();
                     }
 
-                    if (Engine.Config.Active.Tweaks.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxSkip))
+                    if (Engine.Settings.Active.Tweaks.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxSkip))
                     {
                         World frame = (World)Frame.Current;
                         frame.BlockPause = true;
@@ -224,7 +224,7 @@ public partial class Teensies
                     finished = true;
 
                     // Restore being able to pause
-                    if (Engine.Config.Active.Tweaks.CanSkipTextBoxes)
+                    if (Engine.Settings.Active.Tweaks.CanSkipTextBoxes)
                     {
                         World frame = (World)Frame.Current;
                         frame.BlockPause = SavedBlockPause;
@@ -235,7 +235,7 @@ public partial class Teensies
                     TextBox.MoveToNextText();
                 }
 
-                if (Engine.Config.Active.Tweaks.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxSkip))
+                if (Engine.Settings.Active.Tweaks.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxSkip))
                 {
                     World frame = (World)Frame.Current;
                     frame.BlockPause = true;

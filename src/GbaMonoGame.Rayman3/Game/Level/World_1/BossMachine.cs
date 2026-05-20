@@ -86,7 +86,7 @@ public class BossMachine : FrameSideScroller
         textBox.SetCutsceneCharacter(TextBoxCutsceneCharacter.Murfy);
         textBox.SetText(13);
 
-        if (Engine.Config.Active.Tweaks.UseExtendedBackgrounds)
+        if (Engine.Settings.Active.Tweaks.UseExtendedBackgrounds)
             InitExtendedBackground();
     }
 
@@ -109,7 +109,7 @@ public class BossMachine : FrameSideScroller
         if (Rom.Platform == Platform.NGage)
         {
             TgxTileLayer hatchLayer = playfield.TileLayers[1];
-            hatchLayer.Origin = Engine.Config.Active.Tweaks.FixTilingErrors ? new Vector2(-8, 1) : Vector2.Zero;
+            hatchLayer.Origin = Engine.Settings.Active.Tweaks.FixTilingErrors ? new Vector2(-8, 1) : Vector2.Zero;
         }
     }
 }

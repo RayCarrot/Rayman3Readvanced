@@ -155,7 +155,7 @@ public static class MultiJoyPad
     {
         if (RSMultiplayer.IsActive)
         {
-            if (Engine.Config.Active.Tweaks.UseInputBuffering && buffered)
+            if (Engine.Settings.Active.Tweaks.UseInputBuffering && buffered)
                 return JoyPadBuffers[machineId].IsButtonPressed(gbaInput);
             else
                 return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonPressed(gbaInput);
@@ -170,7 +170,7 @@ public static class MultiJoyPad
     {
         if (RSMultiplayer.IsActive)
         {
-            if (Engine.Config.Active.Tweaks.UseInputBuffering && buffered)
+            if (Engine.Settings.Active.Tweaks.UseInputBuffering && buffered)
                 return JoyPadBuffers[machineId].IsButtonReleased(gbaInput);
             else
                 return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonReleased(gbaInput);
@@ -185,7 +185,7 @@ public static class MultiJoyPad
     {
         if (RSMultiplayer.IsActive)
         {
-            if (Engine.Config.Active.Tweaks.UseInputBuffering && buffered)
+            if (Engine.Settings.Active.Tweaks.UseInputBuffering && buffered)
                 return JoyPadBuffers[machineId].IsButtonJustPressed(gbaInput);
             else
                 return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonJustPressed(gbaInput);
@@ -200,7 +200,7 @@ public static class MultiJoyPad
     {
         if (RSMultiplayer.IsActive)
         {
-            if (Engine.Config.Active.Tweaks.UseInputBuffering && buffered)
+            if (Engine.Settings.Active.Tweaks.UseInputBuffering && buffered)
                 return JoyPadBuffers[machineId].IsButtonJustReleased(gbaInput);
             else
                 return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonJustReleased(gbaInput);
@@ -215,7 +215,7 @@ public static class MultiJoyPad
     {
         if (RSMultiplayer.IsActive)
         {
-            if (Engine.Config.Active.Tweaks.UseInputBuffering && buffered)
+            if (Engine.Settings.Active.Tweaks.UseInputBuffering && buffered)
                 return JoyPadBuffers[machineId].IsButtonPressed(rayman3Input);
             else
                 return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonPressed(rayman3Input);
@@ -230,7 +230,7 @@ public static class MultiJoyPad
     {
         if (RSMultiplayer.IsActive)
         {
-            if (Engine.Config.Active.Tweaks.UseInputBuffering && buffered)
+            if (Engine.Settings.Active.Tweaks.UseInputBuffering && buffered)
                 return JoyPadBuffers[machineId].IsButtonReleased(rayman3Input);
             else
                 return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonReleased(rayman3Input);
@@ -245,7 +245,7 @@ public static class MultiJoyPad
     {
         if (RSMultiplayer.IsActive)
         {
-            if (Engine.Config.Active.Tweaks.UseInputBuffering && buffered)
+            if (Engine.Settings.Active.Tweaks.UseInputBuffering && buffered)
                 return JoyPadBuffers[machineId].IsButtonJustPressed(rayman3Input);
             else
                 return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonJustPressed(rayman3Input);
@@ -260,7 +260,7 @@ public static class MultiJoyPad
     {
         if (RSMultiplayer.IsActive)
         {
-            if (Engine.Config.Active.Tweaks.UseInputBuffering && buffered)
+            if (Engine.Settings.Active.Tweaks.UseInputBuffering && buffered)
                 return JoyPadBuffers[machineId].IsButtonJustReleased(rayman3Input);
             else
                 return GetSimpleJoyPadForCurrentFrame(machineId).IsButtonJustReleased(rayman3Input);

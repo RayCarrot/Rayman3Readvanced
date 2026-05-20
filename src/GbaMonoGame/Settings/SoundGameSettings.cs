@@ -1,8 +1,8 @@
 namespace GbaMonoGame;
 
-public record SoundGameConfig : IniSectionObject
+public record SoundGameSettings : IniSectionObject
 {
-    public SoundGameConfig()
+    public SoundGameSettings()
     {
         SfxVolume = 1;
         MusicVolume = 1;

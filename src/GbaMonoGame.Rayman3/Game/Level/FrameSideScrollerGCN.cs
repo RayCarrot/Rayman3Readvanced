@@ -49,7 +49,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
     public void FadeOut()
     {
         // NOTE: The original code here incorrectly checks for map 3!
-        if (Engine.Config.Active.Tweaks.FixBugs)
+        if (Engine.Settings.Active.Tweaks.FixBugs)
         {
             if (GcnMapId == 2)
                 LavaFadeOutTimer = 0;
@@ -74,7 +74,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
         GameInfo.SetLevelRichPresence();
 
         // Optionally force GCN levels to show 0 lums and cages since they never have any
-        if (Engine.Config.Active.Tweaks.FixBugs)
+        if (Engine.Settings.Active.Tweaks.FixBugs)
         {
             GameInfo.YellowLumsCount = 0;
             GameInfo.CagesCount = 0;
@@ -103,7 +103,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
         UserInfo.ProcessMessage(this, Message.UserInfo_GameCubeLevel);
 
         // Create pause dialog, but don't add yet
-        PauseDialog = Engine.Config.Active.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, true) : new PauseDialog(Scene);
+        PauseDialog = Engine.Settings.Active.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, true) : new PauseDialog(Scene);
 
         Scene.AddDialog(UserInfo, false, false);
 
@@ -172,7 +172,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
                 };
 
                 // NOTE: There's a bug where the level data has alpha blending enabled, which conflicts with the code here!
-                if (Engine.Config.Active.Tweaks.FixBugs)
+                if (Engine.Settings.Active.Tweaks.FixBugs)
                     TransitionsFX.Screns.Remove(skullScreen.Id);
                 break;
 
@@ -231,7 +231,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
 
                     if (LavaFadeOutTimer == 6)
                     {
-                        if (Engine.Config.Active.Tweaks.FixBugs)
+                        if (Engine.Settings.Active.Tweaks.FixBugs)
                             ((Rayman)Scene.MainActor).Timer = 0;
 
                         InitNewCircleTransition(false);
@@ -341,7 +341,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
 
                 // NOTE: The lightning and rain code shouldn't run when paused, but they forgot to add a check for it! This causes
                 //       different bugs depending on when you pause, such as continues thunder sounds and a white screen.
-                if (Engine.Config.Active.Tweaks.FixBugs && CurrentStepAction != Step_Normal)
+                if (Engine.Settings.Active.Tweaks.FixBugs && CurrentStepAction != Step_Normal)
                 {
                     rainScreen.IsEnabled = false;
                     return;
@@ -369,15 +369,15 @@ public class FrameSideScrollerGCN : FrameSideScroller
                 // Frame 0
                 if (time == LightningTime)
                 {
-                    if (!Engine.Config.Local.Display.DisableFlashingLights)
+                    if (!Engine.Settings.Local.Display.DisableFlashingLights)
                         bgScreen.IsEnabled = false;
 
                     // NOTE: The original game turns off the rain blending during the lightning, but we don't have to
-                    if (!Engine.Config.Active.Tweaks.VisualImprovements && !Engine.Config.Local.Display.DisableFlashingLights)
+                    if (!Engine.Settings.Active.Tweaks.VisualImprovements && !Engine.Settings.Local.Display.DisableFlashingLights)
                         rainScreen.BlendMode = BlendMode.None;
 
                     Gfx.FadeControl = new FadeControl(FadeMode.BrightnessIncrease);
-                    Gfx.Fade = Engine.Config.Local.Display.DisableFlashingLights
+                    Gfx.Fade = Engine.Settings.Local.Display.DisableFlashingLights
                         ? AlphaCoefficient.None
                         : AlphaCoefficient.Max;
 
@@ -388,7 +388,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
                 // Frame 1
                 if (time == LightningTime + 1)
                 {
-                    Gfx.Fade = Engine.Config.Local.Display.DisableFlashingLights
+                    Gfx.Fade = Engine.Settings.Local.Display.DisableFlashingLights
                         ? AlphaCoefficient.None
                         : AlphaCoefficient.FromGbaValue(15);
                     Gfx.ClearColor = Color.White;
@@ -398,7 +398,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
                 // Frame 2-7
                 if (time >= LightningTime + 2 && time < LightningTime + 8)
                 {
-                    Gfx.Fade = Engine.Config.Local.Display.DisableFlashingLights
+                    Gfx.Fade = Engine.Settings.Local.Display.DisableFlashingLights
                         ? AlphaCoefficient.None
                         : AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
                     return;
@@ -408,7 +408,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
                 if (time >= LightningTime + 8 && time < LightningTime + 16)
                 {
                     bgScreen.IsEnabled = true;
-                    Gfx.Fade = Engine.Config.Local.Display.DisableFlashingLights
+                    Gfx.Fade = Engine.Settings.Local.Display.DisableFlashingLights
                         ? AlphaCoefficient.None
                         : AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
                     return;
@@ -417,7 +417,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
                 // Frame 16-30
                 if (time >= LightningTime + 16 && time < LightningTime + 31)
                 {
-                    Gfx.Fade = Engine.Config.Local.Display.DisableFlashingLights
+                    Gfx.Fade = Engine.Settings.Local.Display.DisableFlashingLights
                         ? AlphaCoefficient.None
                         : AlphaCoefficient.FromGbaValue((31 - (time - LightningTime)) / 2f);
                     return;

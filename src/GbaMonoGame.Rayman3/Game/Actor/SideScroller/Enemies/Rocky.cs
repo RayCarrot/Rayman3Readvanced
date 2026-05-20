@@ -28,7 +28,7 @@ public sealed partial class Rocky : MovableActor
         AnimatedObject.ObjPriority = 17;
 
         // The top of the fists wraps to the bottom. This is noticeable in both the GBA and N-Gage versions.
-        if (Engine.Config.Active.Tweaks.FixBugs)
+        if (Engine.Settings.Active.Tweaks.FixBugs)
         {
             AnimatedObject.SetAnimationWrap(1, new Box(0, 0, 0, 115));
             AnimatedObject.SetAnimationWrap(5, new Box(0, 0, 0, 126));
@@ -131,7 +131,7 @@ public sealed partial class Rocky : MovableActor
                 BlueLum.ProcessMessage(this, Message.Resurrect);
 
                 // It's probably an oversight to not have the sound play here
-                if (Engine.Config.Active.Tweaks.FixBugs)
+                if (Engine.Settings.Active.Tweaks.FixBugs)
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Appear_SocleFX1_Mix01, this);
             }
 

@@ -27,7 +27,7 @@ public partial class InputManager
         return inputs;
     }
 
-    public Keys GetKey(Input input) => Engine.Config.Local.Controls.KeyboardControls[input];
+    public Keys GetKey(Input input) => Engine.Settings.Local.Controls.KeyboardControls[input];
 
     public Keys GetDefaultKey(Input input)
     {
@@ -56,7 +56,7 @@ public partial class InputManager
         };
     }
 
-    public bool IsKeyMapped(Keys key) => Engine.Config.Local.Controls.KeyboardControls.ContainsValue(key);
+    public bool IsKeyMapped(Keys key) => Engine.Settings.Local.Controls.KeyboardControls.ContainsValue(key);
 
     // TODO: Improve with localized names
     public string GetKeyName(Keys key) => key.ToString();

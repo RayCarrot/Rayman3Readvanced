@@ -5,7 +5,7 @@ namespace GbaMonoGame;
 
 public static class Logger
 {
-    public static bool IsEnabled => Engine.Config?.Active?.Debug.DebugModeEnabled == true;
+    public static bool IsEnabled => Engine.Settings?.Active?.Debug.DebugModeEnabled == true;
 
     public static event EventHandler<LogEventArgs> Log;
 

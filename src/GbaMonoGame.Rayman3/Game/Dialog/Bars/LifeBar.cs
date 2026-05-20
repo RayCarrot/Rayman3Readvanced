@@ -24,7 +24,7 @@ public class LifeBar : Bar
 
     private void LoadInfiniteSymbolIfNeeded()
     {
-        if (Engine.Config.Active.Difficulty.InfiniteLives && InfiniteSymbol == null)
+        if (Engine.Settings.Active.Difficulty.InfiniteLives && InfiniteSymbol == null)
         {
             InfiniteSymbol = new SpriteTextureObject
             {
@@ -115,11 +115,11 @@ public class LifeBar : Bar
             WaitTimer = 0;
         }
         // Check if close to dead
-        else if (hp == 1 && (GameTime.ElapsedFrames & 0x3f) == 0x3f && !Engine.Config.Active.Difficulty.OneHitPoint && !Engine.Config.Local.Sound.DisableLowHealthSound)
+        else if (hp == 1 && (GameTime.ElapsedFrames & 0x3f) == 0x3f && !Engine.Settings.Active.Difficulty.OneHitPoint && !Engine.Settings.Local.Sound.DisableLowHealthSound)
         {
             // NOTE: There's a bug where if you pause on the same frame as this sound should be playing then it
             //       will keep playing every single frame! Optionally fix by checking so the time isn't paused.
-            if (!(GameTime.IsPaused && Engine.Config.Active.Tweaks.FixBugs))
+            if (!(GameTime.IsPaused && Engine.Settings.Active.Tweaks.FixBugs))
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MinHP);
         }
 
@@ -138,7 +138,7 @@ public class LifeBar : Bar
         {
             // NOTE: The game only checks if less than 16, but this includes animation 10 which is the 0 hp one and
             //       has no second variant! This originally makes it display the wrong animation.
-            if (!Engine.Config.Active.Tweaks.FixBugs)
+            if (!Engine.Settings.Active.Tweaks.FixBugs)
             {
                 if (HitPoints.CurrentAnimation < 16)
                     HitPoints.CurrentAnimation += 5;
@@ -200,7 +200,7 @@ public class LifeBar : Bar
 
         if (DrawStep != BarDrawStep.Hide)
         {
-            if (Engine.Config.Active.Difficulty.OneHitPoint)
+            if (Engine.Settings.Active.Difficulty.OneHitPoint)
             {
                 HitPoints.DeactivateChannel(2);
                 HitPoints.DeactivateChannel(3);
@@ -217,7 +217,7 @@ public class LifeBar : Bar
 
             HitPoints.ScreenPos = HitPoints.ScreenPos with { Y = 0 - OffsetY };
 
-            if (!Engine.Config.Active.Difficulty.InfiniteLives)
+            if (!Engine.Settings.Active.Difficulty.InfiniteLives)
             {
                 LifeDigit1.ScreenPos = LifeDigit1.ScreenPos with { Y = 20 - OffsetY };
                 LifeDigit2.ScreenPos = LifeDigit2.ScreenPos with { Y = 20 - OffsetY };

@@ -14,7 +14,7 @@ public partial class Grolgoth
             // Why is there a check for a non-boss map?
             if (ActionId is Action.Ground_FallDown_Right or Action.Ground_FallDown_Left || GameInfo.MapId == MapId.IronMountains_M2)
             {
-                if (!Engine.Config.Active.Difficulty.NoInstaKills)
+                if (!Engine.Settings.Active.Difficulty.NoInstaKills)
                 {
                     Scene.MainActor.ProcessMessage(this, Message.Actor_Explode);
                 }

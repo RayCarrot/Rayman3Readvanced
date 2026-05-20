@@ -20,7 +20,7 @@ public sealed class MockGame : IDisposable
 
         // Initialize the engine
         Engine.InitEngine(
-            config: new ConfigManager(new LocalGameConfig()),
+            settings: new SettingsManager(new LocalGameSettings()),
             app: new MockApplicationManager(),
             input: new InputManager(),
             window: new MockGameWindowManager(),

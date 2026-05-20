@@ -35,7 +35,7 @@ public class Scene2D
 
         // The game does this ugly hack here to disable background scrolling in Cave of Bad Dreams 1. This was added late during
         // development and the reason is unknown. We'll ignore this if set to fix bugs since this seems unnecessary.
-        if (id == 11 && !Engine.Config.Active.Tweaks.FixBugs)
+        if (id == 11 && !Engine.Settings.Active.Tweaks.FixBugs)
             ((TgxPlayfield2D)Playfield).Camera.GetCluster(1).ScrollFactor = Vector2.Zero;
 
         Camera.SetFirstPosition();
@@ -91,7 +91,7 @@ public class Scene2D
 
     public MovableActor MainActor => (MovableActor)(RSMultiplayer.IsActive ? GetGameObject(RSMultiplayer.MachineId) : GetGameObject(0));
 
-    public bool KeepAllObjectsActive => Engine.Config.Active.Tweaks.KeepAllKnotsActive ?? 
+    public bool KeepAllObjectsActive => Engine.Settings.Active.Tweaks.KeepAllKnotsActive ?? 
                                         Resolution != Rom.OriginalResolution || Playfield is TgxPlayfieldMode7;
 
     public void Init()

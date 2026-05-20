@@ -1,14 +1,14 @@
 namespace GbaMonoGame;
 
-public class LocalGameConfig
+public class LocalGameSettings
 {
-    public GeneralGameConfig General { get; set; } = new();
-    public DisplayGameConfig Display { get; set; } = new();
-    public ControlsGameConfig Controls { get; set; } = new();
-    public SoundGameConfig Sound { get; set; } = new();
-    public TweaksGameConfig Tweaks { get; set; } = new();
-    public DifficultyGameConfig Difficulty { get; set; } = new();
-    public DebugGameConfig Debug { get; set; } = new(); // Can only be manually modified
+    public GeneralGameSettings General { get; set; } = new();
+    public DisplayGameSettings Display { get; set; } = new();
+    public ControlsGameSettings Controls { get; set; } = new();
+    public SoundGameSettings Sound { get; set; } = new();
+    public TweaksGameSettings Tweaks { get; set; } = new();
+    public DifficultyGameSettings Difficulty { get; set; } = new();
+    public DebugGameSettings Debug { get; set; } = new(); // Can only be manually modified
 
     public void Serialize(BaseIniSerializer serializer)
     {

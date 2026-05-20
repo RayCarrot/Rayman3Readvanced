@@ -212,7 +212,7 @@ public class GameModeMenuPage : MenuPage
             RenderContext = RenderContext,
         };
 
-        if (Engine.Config.Active.Tweaks.UseReadvancedLogo)
+        if (Engine.Settings.Active.Tweaks.UseReadvancedLogo)
             ReplaceLogo();
 
         // Reset values

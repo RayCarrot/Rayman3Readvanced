@@ -28,30 +28,30 @@ public class EngineTests(MockGame game)
     }
 
     [Fact]
-    public void OverrideConfig_ChangeInternalResolution_ResolutionIsDifferent()
+    public void OverrideSettings_ChangeInternalResolution_ResolutionIsDifferent()
     {
         // Get the original resolution
-        Vector2? ogRes = Engine.Config.Active.Tweaks.InternalGameResolution;
+        Vector2? ogRes = Engine.Settings.Active.Tweaks.InternalGameResolution;
         Vector2 newRes = ogRes == null ? new Vector2(99, 99) : ogRes.Value * 2;
 
-        // Override the config with a new resolution
-        Engine.Config.OverrideActive(new ActiveGameConfig(
-            tweaks: Engine.Config.Local.Tweaks with
+        // Override the settings with a new resolution
+        Engine.Settings.OverrideActive(new ActiveGameSettings(
+            tweaks: Engine.Settings.Local.Tweaks with
             {
                 InternalGameResolution = newRes,
             },
-            difficulty: Engine.Config.Local.Difficulty with { },
-            debug: Engine.Config.Local.Debug with { }));
+            difficulty: Engine.Settings.Local.Difficulty with { },
+            debug: Engine.Settings.Local.Debug with { }));
 
         // Validate the resolution is updated
-        Assert.True(Engine.Config.IsOverriden);
-        Assert.Equal(newRes, Engine.Config.Active.Tweaks.InternalGameResolution);
+        Assert.True(Engine.Settings.IsOverriden);
+        Assert.Equal(newRes, Engine.Settings.Active.Tweaks.InternalGameResolution);
 
-        // Restore the config
-        Engine.Config.RestoreActive();
+        // Restore the settings
+        Engine.Settings.RestoreActive();
 
         // Validate the resolution is back to the original
-        Assert.False(Engine.Config.IsOverriden);
-        Assert.Equal(ogRes, Engine.Config.Active.Tweaks.InternalGameResolution);
+        Assert.False(Engine.Settings.IsOverriden);
+        Assert.Equal(ogRes, Engine.Settings.Active.Tweaks.InternalGameResolution);
     }
 }

@@ -80,7 +80,7 @@ public class AchievementsManager
         Rayman3.Save.SaveAchievementsSave(Save);
 
         // Show popup
-        if (Engine.Config.Local.Display.ShowAchievementPopups)
+        if (Engine.Settings.Local.Display.ShowAchievementPopups)
             AchievementsPopupQueue.Enqueue(achievementId);
     }
 

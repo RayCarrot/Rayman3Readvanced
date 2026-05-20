@@ -31,7 +31,7 @@ public partial class InputManager
         _gamePadState = GamePad.GetState(PlayerIndex.One);
 
         if (_vibrationTimer > 0 && 
-            Engine.Config.Local.Controls.EnabledGamePadVibration && 
+            Engine.Settings.Local.Controls.EnabledGamePadVibration && 
             InputMode == InputMode.GamePad && 
             IsGamePadConnected)
         {
@@ -68,7 +68,7 @@ public partial class InputManager
         return inputs;
     }
 
-    public Buttons GetButton(Input input) => Engine.Config.Local.Controls.GamePadControls[input];
+    public Buttons GetButton(Input input) => Engine.Settings.Local.Controls.GamePadControls[input];
 
     public Buttons GetDefaultButton(Input input)
     {

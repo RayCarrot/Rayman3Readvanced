@@ -1,8 +1,8 @@
 namespace GbaMonoGame;
 
-public record DebugGameConfig : IniSectionObject
+public record DebugGameSettings : IniSectionObject
 {
-    public DebugGameConfig()
+    public DebugGameSettings()
     {
         DebugModeEnabled = false;
         WriteSerializerLog = false;

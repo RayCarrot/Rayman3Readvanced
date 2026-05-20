@@ -273,7 +273,7 @@ public class NGageSoundEventsManager : SoundEventsManager
 
         // Set sound parameters
         //_soloud.setLooping(_musicVoiceHandle, _doesCurrentMusicLoop); // Doesn't work, so ignore
-        _soloud.setVolume(_musicVoiceHandle, _currentMusicVolume * (_musicFadeVolume / SoundEngineInterface.MaxVolume) * Engine.Config.Local.Sound.MusicVolume * MusicVolumeFactor);
+        _soloud.setVolume(_musicVoiceHandle, _currentMusicVolume * (_musicFadeVolume / SoundEngineInterface.MaxVolume) * Engine.Settings.Local.Sound.MusicVolume * MusicVolumeFactor);
 
         // Un-pause
         _soloud.setPause(_musicVoiceHandle, false);
@@ -312,7 +312,7 @@ public class NGageSoundEventsManager : SoundEventsManager
 
             // Set sound parameters
             _soloud.setLooping(handle, loop);
-            _soloud.setVolume(handle, volume * (SoundEffectsVolume / SoundEngineInterface.MaxVolume) * Engine.Config.Local.Sound.SfxVolume * SfxVolumeFactor);
+            _soloud.setVolume(handle, volume * (SoundEffectsVolume / SoundEngineInterface.MaxVolume) * Engine.Settings.Local.Sound.SfxVolume * SfxVolumeFactor);
 
             // Un-pause
             _soloud.setPause(handle, false);
@@ -376,7 +376,7 @@ public class NGageSoundEventsManager : SoundEventsManager
         }
 
         // Update music volume
-        _soloud.setVolume(_musicVoiceHandle, _currentMusicVolume * (_musicFadeVolume / SoundEngineInterface.MaxVolume) * Engine.Config.Local.Sound.MusicVolume * MusicVolumeFactor);
+        _soloud.setVolume(_musicVoiceHandle, _currentMusicVolume * (_musicFadeVolume / SoundEngineInterface.MaxVolume) * Engine.Settings.Local.Sound.MusicVolume * MusicVolumeFactor);
 
         // Update sound effect volumes
         foreach (SoundEffectInstance soundEffectInstance in _soundEffectInstances.Values.ToArray())
@@ -385,11 +385,11 @@ public class NGageSoundEventsManager : SoundEventsManager
             {
                 float volume = soundEffectInstance.Volume *
                                (SoundEffectsVolume / SoundEngineInterface.MaxVolume) *
-                               Engine.Config.Local.Sound.SfxVolume;
+                               Engine.Settings.Local.Sound.SfxVolume;
 
                 // Optionally use same panning and roll-off as GBA
                 object obj = soundEffectInstance.ReadvancedObj;
-                if (Engine.Config.Local.Sound.ForceSoundPanning && obj != null)
+                if (Engine.Settings.Local.Sound.ForceSoundPanning && obj != null)
                 {
                     Vector2 mikePos = _callBacks.GetMikePosition(obj);
                     GbaSoundEventsManager.CalculateRollOffAndPan(_callBacks, mikePos, out float vol, out float pan, obj);
@@ -472,7 +472,7 @@ public class NGageSoundEventsManager : SoundEventsManager
 
     public override void PauseAllSongs()
     {
-        if (Engine.Config.Local.Sound.PlayMusicWhenPaused == false)
+        if (Engine.Settings.Local.Sound.PlayMusicWhenPaused == false)
             IsMusicInGamePaused = true;
     }
 

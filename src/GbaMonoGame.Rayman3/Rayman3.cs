@@ -297,7 +297,7 @@ public static class Rayman3
         TimeAttack = new TimeAttackManager(timeAttackLevelInfos);
 
         // Initialize services
-        Loc.SetLanguage(Engine.Config.Local.Display.Language);
+        Loc.SetLanguage(Engine.Settings.Local.Display.Language);
         Engine.FrameMngr.AddStepAction(Achievements.Step);
 
         // Initialize factories

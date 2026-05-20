@@ -45,12 +45,12 @@ public class TitleScreen : Frame
     private void StartGame()
     {
         // Save last played platform
-        Engine.Config.Local.General.LastPlayedPlatform = Games[SelectedGameIndex].Platform;
+        Engine.Settings.Local.General.LastPlayedPlatform = Games[SelectedGameIndex].Platform;
 
         int? lastSaveSlot = Games[SelectedGameIndex].Platform switch
         {
-            Platform.GBA => Engine.Config.Local.General.LastPlayedGbaSaveSlot,
-            Platform.NGage => Engine.Config.Local.General.LastPlayedNGageSaveSlot,
+            Platform.GBA => Engine.Settings.Local.General.LastPlayedGbaSaveSlot,
+            Platform.NGage => Engine.Settings.Local.General.LastPlayedNGageSaveSlot,
             _ => throw new UnsupportedPlatformException()
         };
 
@@ -91,8 +91,8 @@ public class TitleScreen : Frame
         {
             int? lastSaveSlot = game.Platform switch
             {
-                Platform.GBA => Engine.Config.Local.General.LastPlayedGbaSaveSlot,
-                Platform.NGage => Engine.Config.Local.General.LastPlayedNGageSaveSlot,
+                Platform.GBA => Engine.Settings.Local.General.LastPlayedGbaSaveSlot,
+                Platform.NGage => Engine.Settings.Local.General.LastPlayedNGageSaveSlot,
                 _ => throw new UnsupportedPlatformException()
             };
 
@@ -311,7 +311,7 @@ public class TitleScreen : Frame
         foreach (TitleScreenGame game in Games)
             UpdateGameOptions(game);
 
-        SelectedGameIndex = Array.FindIndex(Games, x => x.Platform == Engine.Config.Local.General.LastPlayedPlatform);
+        SelectedGameIndex = Array.FindIndex(Games, x => x.Platform == Engine.Settings.Local.General.LastPlayedPlatform);
         Games[SelectedGameIndex].SelectedIndex = 0;
     }
 

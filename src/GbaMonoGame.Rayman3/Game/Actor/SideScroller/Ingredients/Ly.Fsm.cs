@@ -91,7 +91,7 @@ public partial class Ly
                 if (JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxNext) && !TextBox.IsFinished && ActionId != Action.BeginTalk)
                     TextBox.MoveToNextText();
 
-                if (Engine.Config.Active.Tweaks.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxSkip))
+                if (Engine.Settings.Active.Tweaks.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxSkip))
                     TextBox.Skip();
 
                 if (TextBox.IsFinished)

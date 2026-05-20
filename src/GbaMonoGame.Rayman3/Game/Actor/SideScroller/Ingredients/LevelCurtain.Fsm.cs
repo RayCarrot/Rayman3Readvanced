@@ -58,7 +58,7 @@ public partial class LevelCurtain
                     ((World)Frame.Current).UserInfo.SetLevelInfoBar((int)InitialActionId);
 
                     // Optionally fix bug where multiple curtains conflict with each other if active at once
-                    if (!Engine.Config.Active.Tweaks.FixBugs || !IsRaymanInFront)
+                    if (!Engine.Settings.Active.Tweaks.FixBugs || !IsRaymanInFront)
                     {
                         Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginInFrontOfLevelCurtain);
                         IsRaymanInFront = true;
@@ -83,7 +83,7 @@ public partial class LevelCurtain
                 else
                 {
                     // Optionally fix bug where multiple curtains conflict with each other if active at once
-                    if (!Engine.Config.Active.Tweaks.FixBugs || IsRaymanInFront)
+                    if (!Engine.Settings.Active.Tweaks.FixBugs || IsRaymanInFront)
                     {
                         Scene.MainActor.ProcessMessage(this, Message.Rayman_EndInFrontOfLevelCurtain);
                         IsRaymanInFront = false;

@@ -8,7 +8,7 @@ public sealed class ScalemanShadow : BaseActor
         : base(instanceId, scene, actorResource)
     {
         // Optionally make the shadow render behind the boss to avoid it overlapping on top of it
-        if (Engine.Config.Active.Tweaks.VisualImprovements)
+        if (Engine.Settings.Active.Tweaks.VisualImprovements)
             AnimatedObject.ObjPriority = 33;
         
         State.SetTo(null);

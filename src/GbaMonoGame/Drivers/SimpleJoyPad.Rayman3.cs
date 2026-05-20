@@ -149,7 +149,7 @@ public partial class SimpleJoyPad
 
     private static GbaInput[] GetGbaInputs(Rayman3Input rayman3Input)
     {
-        return Engine.Config.Local.Controls.UseModernButtonMapping switch
+        return Engine.Settings.Local.Controls.UseModernButtonMapping switch
         {
             true => Rayman3ModernInputs[rayman3Input],
             false when Rom.Platform is Platform.GBA => Rayman3GbaInputs[rayman3Input],
@@ -174,7 +174,7 @@ public partial class SimpleJoyPad
                 return true;
         }
 
-        if (Engine.Config.Local.Controls.UseStandardKeyboardKeys && ReceivedInputsFromUser)
+        if (Engine.Settings.Local.Controls.UseStandardKeyboardKeys && ReceivedInputsFromUser)
         {
             Keys[] keys = GetKeyboardInputs(rayman3Input);
 
@@ -199,7 +199,7 @@ public partial class SimpleJoyPad
                 return false;
         }
 
-        if (Engine.Config.Local.Controls.UseStandardKeyboardKeys && ReceivedInputsFromUser)
+        if (Engine.Settings.Local.Controls.UseStandardKeyboardKeys && ReceivedInputsFromUser)
         {
             Keys[] keys = GetKeyboardInputs(rayman3Input);
 
@@ -224,7 +224,7 @@ public partial class SimpleJoyPad
                 return true;
         }
 
-        if (Engine.Config.Local.Controls.UseStandardKeyboardKeys && ReceivedInputsFromUser)
+        if (Engine.Settings.Local.Controls.UseStandardKeyboardKeys && ReceivedInputsFromUser)
         {
             Keys[] keys = GetKeyboardInputs(rayman3Input);
 
@@ -249,7 +249,7 @@ public partial class SimpleJoyPad
                 return true;
         }
 
-        if (Engine.Config.Local.Controls.UseStandardKeyboardKeys && ReceivedInputsFromUser)
+        if (Engine.Settings.Local.Controls.UseStandardKeyboardKeys && ReceivedInputsFromUser)
         {
             Keys[] keys = GetKeyboardInputs(rayman3Input);
 

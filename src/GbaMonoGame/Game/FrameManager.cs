@@ -118,7 +118,7 @@ public class FrameManager : IDisposable
         }
 
         // Check if the game was deactivated (window losing focus) and if it should auto-pause
-        if (Engine.Config.Active.Tweaks.PauseOnDeactivation && Engine.App.IsActive != _wasActive)
+        if (Engine.Settings.Active.Tweaks.PauseOnDeactivation && Engine.App.IsActive != _wasActive)
         {
             _wasActive = Engine.App.IsActive;
             if (!Engine.App.IsActive && !RSMultiplayer.IsActive && !Frame.Current.BlockAutoPause)

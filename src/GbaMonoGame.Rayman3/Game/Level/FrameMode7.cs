@@ -57,7 +57,7 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
         Scene = new Scene2D((int)GameInfo.MapId, x => new CameraMode7(x), 3, 1);
 
         // Create pause dialog, but don't add yet
-        PauseDialog = Engine.Config.Active.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, !Rayman3.TimeAttack.IsActive) : new PauseDialog(Scene);
+        PauseDialog = Engine.Settings.Active.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, !Rayman3.TimeAttack.IsActive) : new PauseDialog(Scene);
 
         // Custom for the time attack mode
         if (Rayman3.TimeAttack.IsActive)
@@ -164,7 +164,7 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
     // TODO: Fix bumper positions so they don't overlap with walls
     protected void AddWalls(Point wallPoint, Point wallSize)
     {
-        if (!Engine.Config.Active.Tweaks.ShowMode7Walls)
+        if (!Engine.Settings.Active.Tweaks.ShowMode7Walls)
             return;
 
         // Create the renderer
@@ -261,7 +261,7 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
                 CurrentStepAction = Step_TimeAttackScore_Init;
 
             // Custom cheat dialog
-            if (Engine.Config.Active.Tweaks.AllowCheatMenu && JoyPad.IsButtonJustPressed(GbaInput.Select) &&
+            if (Engine.Settings.Active.Tweaks.AllowCheatMenu && JoyPad.IsButtonJustPressed(GbaInput.Select) &&
                 JoyPad.IsButtonReleased(GbaInput.L) && JoyPad.IsButtonReleased(GbaInput.R))
             {
                 GameTime.Pause();
@@ -338,7 +338,7 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
         }
 
         // NOTE: It's probably an oversight in the original game to still animate tiles even when paused
-        if (!Engine.Config.Active.Tweaks.FixBugs)
+        if (!Engine.Settings.Active.Tweaks.FixBugs)
             Scene.Playfield.Step();
 
         Scene.AnimationPlayer.Execute();

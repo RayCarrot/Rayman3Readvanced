@@ -17,7 +17,7 @@ public class TgxTileLayer : TgxGameLayer
         IsDynamic = Resource.IsDynamic;
 
         // Optionally replace tiles
-        if (Engine.Config.Active.Tweaks.FixTilingErrors && 
+        if (Engine.Settings.Active.Tweaks.FixTilingErrors && 
             _tileFixes.TryGetValue(sceneId, out var sceneValue) && 
             sceneValue.TryGetValue(LayerId, out var layerValue))
         {

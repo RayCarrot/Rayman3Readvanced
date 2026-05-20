@@ -60,12 +60,12 @@ public class GameWindowManager : IGameWindowManager
             if (DisplayMode == DisplayMode.Windowed)
                 return GetResolution();
             else
-                return Engine.Config.Local.Display.WindowResolution;
+                return Engine.Settings.Local.Display.WindowResolution;
         }
         set
         {
-            Engine.Config.Local.Display.WindowResolution = value;
-            Engine.Config.Local.Display.WindowIsMaximized = false;
+            Engine.Settings.Local.Display.WindowResolution = value;
+            Engine.Settings.Local.Display.WindowIsMaximized = false;
 
             if (DisplayMode == DisplayMode.Windowed)
             {
@@ -91,11 +91,11 @@ public class GameWindowManager : IGameWindowManager
             if (DisplayMode == DisplayMode.Fullscreen)
                 return GetResolution();
             else
-                return Engine.Config.Local.Display.FullscreenResolution;
+                return Engine.Settings.Local.Display.FullscreenResolution;
         }
         set
         {
-            Engine.Config.Local.Display.FullscreenResolution = value;
+            Engine.Settings.Local.Display.FullscreenResolution = value;
 
             if (DisplayMode == DisplayMode.Fullscreen)
                 ApplyState();
@@ -121,7 +121,7 @@ public class GameWindowManager : IGameWindowManager
         set
         {
             SaveState();
-            Engine.Config.Local.Display.DisplayMode = value;
+            Engine.Settings.Local.Display.DisplayMode = value;
             ApplyState();
         }
     }
@@ -214,43 +214,43 @@ public class GameWindowManager : IGameWindowManager
         {
             if (_graphics.HardwareModeSwitch)
             {
-                Engine.Config.Local.Display.DisplayMode = DisplayMode.Fullscreen;
-                Engine.Config.Local.Display.FullscreenResolution = GetResolution();
+                Engine.Settings.Local.Display.DisplayMode = DisplayMode.Fullscreen;
+                Engine.Settings.Local.Display.FullscreenResolution = GetResolution();
             }
             else
             {
-                Engine.Config.Local.Display.DisplayMode = DisplayMode.Borderless;
+                Engine.Settings.Local.Display.DisplayMode = DisplayMode.Borderless;
             }
         }
         else
         {
-            Engine.Config.Local.Display.DisplayMode = DisplayMode.Windowed;
-            Engine.Config.Local.Display.WindowPosition = _window.Position;
-            Engine.Config.Local.Display.WindowResolution = GetResolution();
+            Engine.Settings.Local.Display.DisplayMode = DisplayMode.Windowed;
+            Engine.Settings.Local.Display.WindowPosition = _window.Position;
+            Engine.Settings.Local.Display.WindowResolution = GetResolution();
 
 #if WINDOWSDX
-            Engine.Config.Local.Display.WindowIsMaximized = _form.WindowState == FormWindowState.Maximized;
+            Engine.Settings.Local.Display.WindowIsMaximized = _form.WindowState == FormWindowState.Maximized;
 #elif DESKTOPGL
             SDL_WindowFlags flags = GetWindowFlags();
-            Engine.Config.Local.Display.WindowIsMaximized = (flags & SDL_WindowFlags.SDL_WINDOW_MAXIMIZED) != 0;
+            Engine.Settings.Local.Display.WindowIsMaximized = (flags & SDL_WindowFlags.SDL_WINDOW_MAXIMIZED) != 0;
 #endif
         }
     }
 
     public void ApplyState()
     {
-        switch (Engine.Config.Local.Display.DisplayMode)
+        switch (Engine.Settings.Local.Display.DisplayMode)
         {
             case DisplayMode.Windowed:
-                SetResolution(Engine.Config.Local.Display.WindowResolution, DisplayMode.Windowed);
+                SetResolution(Engine.Settings.Local.Display.WindowResolution, DisplayMode.Windowed);
 
-                if (Engine.Config.Local.Display.WindowPosition != Point.Zero)
-                    _window.Position = Engine.Config.Local.Display.WindowPosition;
+                if (Engine.Settings.Local.Display.WindowPosition != Point.Zero)
+                    _window.Position = Engine.Settings.Local.Display.WindowPosition;
 
 #if WINDOWSDX
-                _form.WindowState = Engine.Config.Local.Display.WindowIsMaximized ? FormWindowState.Maximized : FormWindowState.Normal;
+                _form.WindowState = Engine.Settings.Local.Display.WindowIsMaximized ? FormWindowState.Maximized : FormWindowState.Normal;
 #elif DESKTOPGL
-                if (Engine.Config.Local.Display.WindowIsMaximized)
+                if (Engine.Settings.Local.Display.WindowIsMaximized)
                     SDL_MaximizeWindow(_sdlWindowHandle);
                 else
                     SDL_RestoreWindow(_sdlWindowHandle);
@@ -258,7 +258,7 @@ public class GameWindowManager : IGameWindowManager
                 break;
 
             case DisplayMode.Fullscreen:
-                SetResolution(Engine.Config.Local.Display.FullscreenResolution, DisplayMode.Fullscreen);
+                SetResolution(Engine.Settings.Local.Display.FullscreenResolution, DisplayMode.Fullscreen);
                 break;
 
             case DisplayMode.Borderless:

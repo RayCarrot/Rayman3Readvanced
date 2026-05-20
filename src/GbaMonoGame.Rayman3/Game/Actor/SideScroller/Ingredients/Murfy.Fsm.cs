@@ -11,7 +11,7 @@ public partial class Murfy
         if (JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxNext))
             TextBox.MoveToNextText();
 
-        if (Engine.Config.Active.Tweaks.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxSkip))
+        if (Engine.Settings.Active.Tweaks.CanSkipTextBoxes && JoyPad.IsButtonJustPressed(Rayman3Input.TextBoxSkip))
         {
             if (Frame.Current is FrameSideScroller frameSideScroller)
                 frameSideScroller.CanPause = false;
@@ -148,13 +148,13 @@ public partial class Murfy
                 if (Frame.Current is FrameSideScroller frameSideScroller)
                 {
                     SavedBlockPause = !frameSideScroller.CanPause;
-                    if (Engine.Config.Active.Tweaks.CanSkipTextBoxes)
+                    if (Engine.Settings.Active.Tweaks.CanSkipTextBoxes)
                         frameSideScroller.CanPause = false;
                 }
                 else if (Frame.Current is FrameWorldSideScroller frameWorldSideScroller)
                 {
                     SavedBlockPause = frameWorldSideScroller.BlockPause;
-                    if (Engine.Config.Active.Tweaks.CanSkipTextBoxes)
+                    if (Engine.Settings.Active.Tweaks.CanSkipTextBoxes)
                         frameWorldSideScroller.BlockPause = true;
                 }
                 else
@@ -422,7 +422,7 @@ public partial class Murfy
                 }
 
                 // Restore being able to pause
-                if (Engine.Config.Active.Tweaks.CanSkipTextBoxes)
+                if (Engine.Settings.Active.Tweaks.CanSkipTextBoxes)
                 {
                     if (Frame.Current is FrameSideScroller frameSideScroller)
                         frameSideScroller.CanPause = !SavedBlockPause;
