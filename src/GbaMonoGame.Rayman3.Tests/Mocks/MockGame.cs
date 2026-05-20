@@ -26,6 +26,7 @@ public sealed class MockGame : IDisposable
             window: new MockGameWindowManager(),
             viewPort: new ViewPortManager(),
             assets: new AssetManager(serviceProvider),
+            config: new GameConfigManager(),
             messages: new MessageManager(),
             richPresence: new MockRichPresenceManager(),
             frameMngr: new FrameManager());

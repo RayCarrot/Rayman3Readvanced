@@ -206,7 +206,8 @@ public abstract class GbaGame : Game
             input: new InputManager(),
             window: _gameWindowManager, 
             viewPort: new ViewPortManager(), 
-            assets: new AssetManager(Services), 
+            assets: new AssetManager(Services),
+            config: new GameConfigManager(),
             messages: new MessageManager(),
             richPresence: new DiscordRichPresenceManager(),
             frameMngr: new FrameManager());

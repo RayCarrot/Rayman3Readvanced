@@ -9,13 +9,15 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 
 public class TimeAttackManager
 {
-    public TimeAttackManager(TimeAttackLevelInfo[] levelInfos)
+    public TimeAttackManager()
     {
-        LevelInfosDictionary = levelInfos.
+        TimeAttackConfig config = Engine.Config.Get<TimeAttackConfig>();
+
+        LevelInfosDictionary = config.Levels.
             Where(x => x.ExclusivePlatform == null || x.ExclusivePlatform == Rom.Platform).
             ToFrozenDictionary(x => x.Level);
         ImmutableArray<TimeAttackLevelInfo>.Builder levelInfosArrayBuilder = ImmutableArray.CreateBuilder<TimeAttackLevelInfo>();
-        levelInfosArrayBuilder.AddRange(levelInfos);
+        levelInfosArrayBuilder.AddRange(config.Levels);
         levelInfosArrayBuilder.RemoveAll(x => x.ExclusivePlatform != null && x.ExclusivePlatform != Rom.Platform);
         LevelInfosArray = levelInfosArrayBuilder.ToImmutable();
 

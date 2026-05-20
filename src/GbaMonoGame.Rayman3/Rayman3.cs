@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.Editor;
 using GbaMonoGame.Engine2d;
@@ -10,20 +8,11 @@ namespace GbaMonoGame.Rayman3;
 
 public static class Rayman3
 {
-    private static readonly JsonSerializerOptions _configJsonOptions = new() { ReadCommentHandling = JsonCommentHandling.Skip };
-
     // Game services
     public static ISaveGameManager Save { get; private set; }
     public static LocalizationManager Loc { get; private set; }
     public static AchievementsManager Achievements { get; private set; }
     public static TimeAttackManager TimeAttack { get; private set; }
-
-    private static T DeserializeConfig<T>(string configName)
-    {
-        string filePath = Path.Combine(Paths.AssetsDirectoryName, "Rayman3", "Config", $"{configName}.jsonc");
-        string json = File.ReadAllText(filePath);
-        return JsonSerializer.Deserialize<T>(json, _configJsonOptions);
-    }
 
     private static void InitActorFactory()
     {
@@ -280,6 +269,9 @@ public static class Rayman3
 
     public static void InitEngine()
     {
+        // Load configs
+        Engine.Config.Load<TimeAttackConfig>("Rayman3/Config/TimeAttackConfig.jsonc");
+
         // Load custom fonts
         ReadvancedFonts.Load();
     }
@@ -287,14 +279,11 @@ public static class Rayman3
     public static void InitGame(
         ISaveGameManager save)
     {
-        // Load configs
-        TimeAttackLevelInfo[] timeAttackLevelInfos = DeserializeConfig<TimeAttackLevelInfo[]>("TimeAttackConfig");
-
         // Set services
         Save = save;
         Loc = new LocalizationManager();
         Achievements = new AchievementsManager(Rayman3Achievements.Achievements);
-        TimeAttack = new TimeAttackManager(timeAttackLevelInfos);
+        TimeAttack = new TimeAttackManager();
 
         // Initialize services
         Loc.SetLanguage(Engine.Settings.Local.Display.Language);

@@ -11,6 +11,7 @@ public static class Engine
     public static IGameWindowManager Window { get; private set; }
     public static ViewPortManager ViewPort { get; private set; }
     public static AssetManager Assets { get; private set; }
+    public static GameConfigManager Config { get; private set; }
     public static MessageManager Messages { get; private set; }
     public static IRichPresenceManager RichPresence { get; private set; }
     public static FrameManager FrameMngr { get; private set; }
@@ -26,6 +27,7 @@ public static class Engine
         IGameWindowManager window,
         ViewPortManager viewPort,
         AssetManager assets,
+        GameConfigManager config,
         MessageManager messages,
         IRichPresenceManager richPresence,
         FrameManager frameMngr)
@@ -40,6 +42,7 @@ public static class Engine
         Window = window;
         ViewPort = viewPort;
         Assets = assets;
+        Config = config;
         Messages = messages;
         RichPresence = richPresence;
         FrameMngr = frameMngr;
