@@ -21,6 +21,7 @@
     <Project Path="GbaMonoGame.FsmSourceGenerator/GbaMonoGame.FsmSourceGenerator.csproj" />
   </Folder>
   <Project Path="GbaMonoGame.GenerateAssets/GbaMonoGame.GenerateAssets.csproj" />
+  <Project Path="GbaMonoGame.Rayman3.Benchmarks/GbaMonoGame.Rayman3.Benchmarks.csproj" />
   <Project Path="GbaMonoGame.Rayman3.Tests/GbaMonoGame.Rayman3.Tests.csproj" />
   <Project Path="GbaMonoGame.Rayman3/GbaMonoGame.Rayman3.csproj" />
   <Project Path="GbaMonoGame.Tools/GbaMonoGame.Tools.csproj" />

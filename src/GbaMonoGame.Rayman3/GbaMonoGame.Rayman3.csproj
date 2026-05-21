@@ -33,7 +33,6 @@
     <PackageReference Include="MonoGame.Framework.WindowsDX" Condition="$(DefineConstants.Contains(WINDOWSDX))" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Condition="$(DefineConstants.Contains(DESKTOPGL))" />
     <PackageReference Include="MonoGame.Content.Builder.Task" />
-    <PackageReference Include="System.Text.Encoding.CodePages" />
   </ItemGroup>
 
   <ItemGroup>
