@@ -17,7 +17,6 @@ public static class GameOptions
         Vector2 screenRes = new(adapter.CurrentDisplayMode.Width, adapter.CurrentDisplayMode.Height);
         int windowResCount = Math.Min((int)(screenRes.X / originalRes.X), (int)(screenRes.Y / originalRes.Y));
 
-        // TODO: Finish setting up the options
         return
         [
             new GameOptionsGroup("DISPLAY",
@@ -284,7 +283,8 @@ public static class GameOptions
                     getCustomName: _ => null),
             ]),
             // TODO: Look into how these work when changed while in a level
-            // TODO: Add option to keep all objects enabled, and force it on when in a custom resolution
+            // TODO: The presets are a bit confusing since not all options use them
+            // TODO: Improve how this works when the config has been overridden
             new GameOptionsGroup("TWEAKS",
             [
                 new PresetSelectionOptionsMenuOption(
