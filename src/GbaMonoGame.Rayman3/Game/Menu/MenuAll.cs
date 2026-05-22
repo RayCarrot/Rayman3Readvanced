@@ -522,7 +522,7 @@ public partial class MenuAll : Frame, IHasPlayfield
         Anims = new MenuAllAnimations(Rom.OriginalGameRenderContext, MultiplayerPlayersOffsetY, SinglePakPlayersOffsetY);
         WheelRotation = 0;
 
-        PlayfieldResource menuPlayField = Rom.LoadResource<PlayfieldResource>(Rayman3DefinedResource.MenuPlayfield);
+        PlayfieldResource menuPlayField = Rom.Loader.ReadResource<PlayfieldResource>(Rayman3DefinedResource.MenuPlayfield);
         Playfield = TgxPlayfield.Load<TgxPlayfield2D>(menuPlayField);
         Playfield.RenderContext.SetFixedResolution(Rom.OriginalResolution);
 

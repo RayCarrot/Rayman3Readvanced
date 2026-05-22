@@ -22,7 +22,7 @@ public class Scene2D
         Dialogs = new List<Dialog>(layersCount);
         DialogModalFlags = new List<bool>(layersCount);
 
-        Resource = Rom.LoadResource<Scene2DResource>(id);
+        Resource = Rom.Loader.ReadScene(id);
 
         Playfield = TgxPlayfield.Load(Resource.Playfield, id);
         

@@ -243,7 +243,7 @@ public abstract class Act : Frame
             throw new UnsupportedPlatformException();
         }
 
-        AnimatedObjectResource nextSymbolResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.StoryNextTextAnimations);
+        AnimatedObjectResource nextSymbolResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.StoryNextTextAnimations);
         NextTextSymbol = new AnimatedObject(nextSymbolResource, false)
         {
             IsFramed = true,
@@ -259,7 +259,7 @@ public abstract class Act : Frame
 
         if (Rom.Platform == Platform.NGage)
         {
-            AnimatedObjectResource skipSymbolResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.NGageButtonSymbolAnimations);
+            AnimatedObjectResource skipSymbolResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.NGageButtonSymbolAnimations);
             SkipSymbol = new AnimatedObject(skipSymbolResource, false)
             {
                 IsFramed = true,

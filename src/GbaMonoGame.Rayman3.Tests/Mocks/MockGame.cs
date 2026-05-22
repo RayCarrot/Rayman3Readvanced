@@ -41,9 +41,10 @@ public sealed class MockGame : IDisposable
         Rom.Init(Game.Rayman3, Platform.GBA);
         Engine.InitGame(
             sem: new MockSoundEventsManager(),
-            font: new FontManager(Rom.Loader.Font8, Rom.Loader.Font16, Rom.Loader.Font32));
+            font: new FontManager());
         Rayman3.InitGame(
-            save: new MockSaveGameManager());
+            save: new MockSaveGameManager(),
+            localizationManager: new LocalizationManager(Rom.Loader.ReadTextBanks()));
 
         // Set up game info
         Random.SetSeed(0xDEADBEEF);

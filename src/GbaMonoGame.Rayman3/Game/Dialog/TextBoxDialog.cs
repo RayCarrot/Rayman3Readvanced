@@ -210,7 +210,7 @@ public partial class TextBoxDialog : Dialog
         // NOTE: Game has it set up so Load can be called multiple times. Dynamic objects don't get recreated after the first time, but instead
         //       reloaded into VRAM. We don't need to do that though due to how the graphics system works here, so just always create everything.
 
-        AnimatedObjectResource canvasResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.TextBoxCanvasAnimations);
+        AnimatedObjectResource canvasResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.TextBoxCanvasAnimations);
         Canvas = new AnimatedObject(canvasResource, false)
         {
             IsFramed = true,
@@ -220,7 +220,7 @@ public partial class TextBoxDialog : Dialog
             RenderContext = Scene.HudRenderContext,
         };
 
-        AnimatedObjectResource raymanIconResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.TextBoxRaymanIconAnimations);
+        AnimatedObjectResource raymanIconResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.TextBoxRaymanIconAnimations);
         RaymanIcon = new AnimatedObject(raymanIconResource, true)
         {
             IsFramed = true,
@@ -250,7 +250,7 @@ public partial class TextBoxDialog : Dialog
             };
         }
 
-        AnimatedObjectResource murfyIconResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.TextBoxMurfyIconAnimations);
+        AnimatedObjectResource murfyIconResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.TextBoxMurfyIconAnimations);
         MurfyIcon = new AnimatedObject(murfyIconResource, true)
         {
             IsFramed = true,
@@ -262,7 +262,7 @@ public partial class TextBoxDialog : Dialog
 
         if (GameInfo.MapId is not (MapId.FairyGlade_M2 or MapId.World3 or MapId.BossMachine or MapId.MarshAwakening1))
         {
-            AnimatedObjectResource lyIconResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.TextBoxLyIconAnimations);
+            AnimatedObjectResource lyIconResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.TextBoxLyIconAnimations);
             LyIcon = new AnimatedObject(lyIconResource, true)
             {
                 IsFramed = true,
@@ -275,7 +275,7 @@ public partial class TextBoxDialog : Dialog
 
         if (GameInfo.MapId is not (MapId.FairyGlade_M2 or MapId.BossMachine or MapId.MarshAwakening1))
         {
-            AnimatedObjectResource teensiesIconResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.TextBoxTeensiesIconAnimations);
+            AnimatedObjectResource teensiesIconResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.TextBoxTeensiesIconAnimations);
             TeensiesIcon = new AnimatedObject(teensiesIconResource, true)
             {
                 IsFramed = true,

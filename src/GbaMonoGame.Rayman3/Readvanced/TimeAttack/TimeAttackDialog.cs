@@ -86,7 +86,7 @@ public partial class TimeAttackDialog : Dialog
         TimerBar.Load();
         TimerBar.Set();
 
-        AnimatedObjectResource countdownResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.CountdownAnimations);
+        AnimatedObjectResource countdownResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.CountdownAnimations);
 
         Countdown = new AnimatedObject(countdownResource, true)
         {

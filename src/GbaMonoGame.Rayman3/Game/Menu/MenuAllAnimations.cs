@@ -10,20 +10,20 @@ public class MenuAllAnimations
     {
         if (Rom.Platform == Platform.GBA)
         {
-            AnimatedObjectResource propsAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuPropAnimations);
-            AnimatedObjectResource startEraseAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuStartEraseAnimations);
-            AnimatedObjectResource gameLogoAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuGameLogoAnimations);
-            AnimatedObjectResource gameModeAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuGameModeAnimations);
-            AnimatedObjectResource languageListAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuLanguageListAnimations);
-            AnimatedObjectResource optionsAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuOptionsAnimations);
-            AnimatedObjectResource slotEmptyAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuSlotEmptyAnimations);
-            AnimatedObjectResource multiplayerModeAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerModeAnimations);
-            AnimatedObjectResource multiplayerPlayersAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerPlayersAnimations);
-            AnimatedObjectResource multiplayerTypeAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerTypeAnimations);
-            AnimatedObjectResource multiplayerTypeFrameAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerTypeFrameAnimations);
-            AnimatedObjectResource multiplayerTypeIconAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerTypeIconAnimations);
-            AnimatedObjectResource multiplayerMapAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerMapAnimations);
-            AnimatedObjectResource steamAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuSteamAnimations);
+            AnimatedObjectResource propsAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuPropAnimations);
+            AnimatedObjectResource startEraseAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuStartEraseAnimations);
+            AnimatedObjectResource gameLogoAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuGameLogoAnimations);
+            AnimatedObjectResource gameModeAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuGameModeAnimations);
+            AnimatedObjectResource languageListAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuLanguageListAnimations);
+            AnimatedObjectResource optionsAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuOptionsAnimations);
+            AnimatedObjectResource slotEmptyAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuSlotEmptyAnimations);
+            AnimatedObjectResource multiplayerModeAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerModeAnimations);
+            AnimatedObjectResource multiplayerPlayersAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerPlayersAnimations);
+            AnimatedObjectResource multiplayerTypeAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerTypeAnimations);
+            AnimatedObjectResource multiplayerTypeFrameAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerTypeFrameAnimations);
+            AnimatedObjectResource multiplayerTypeIconAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerTypeIconAnimations);
+            AnimatedObjectResource multiplayerMapAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerMapAnimations);
+            AnimatedObjectResource steamAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuSteamAnimations);
 
             Wheel1 = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
             {
@@ -419,22 +419,22 @@ public class MenuAllAnimations
         }
         else if (Rom.Platform == Platform.NGage)
         {
-            AnimatedObjectResource propsAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuPropAnimations);
-            AnimatedObjectResource startEraseAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuStartEraseAnimations);
-            AnimatedObjectResource symbolAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.NGageButtonSymbolAnimations);
-            AnimatedObjectResource languageListAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuLanguageListAnimations);
-            AnimatedObjectResource gameModeAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuGameModeAnimations);
-            AnimatedObjectResource pauseSelectionAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.PauseSelectionAnimations);
-            AnimatedObjectResource gameLogoAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuGameLogoAnimations);
-            AnimatedObjectResource optionsAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuOptionsAnimations);
-            AnimatedObjectResource connectionAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.NGageMenuMultiplayerConnectionAnimations);
-            AnimatedObjectResource slotEmptyAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuSlotEmptyAnimations);
-            AnimatedObjectResource multiplayerPlayersAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerPlayersAnimations);
-            AnimatedObjectResource multiplayerTypeAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerTypeAnimations);
-            AnimatedObjectResource multiplayerTypeFrameAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerTypeFrameAnimations);
-            AnimatedObjectResource multiplayerTypeIconAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerTypeIconAnimations);
-            AnimatedObjectResource multiplayerMapAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerMapAnimations);
-            AnimatedObjectResource multiplayerCaptureTheFlagAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.NGageMenuMultiplayerCaptureTheFlagAnimations);
+            AnimatedObjectResource propsAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuPropAnimations);
+            AnimatedObjectResource startEraseAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuStartEraseAnimations);
+            AnimatedObjectResource symbolAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.NGageButtonSymbolAnimations);
+            AnimatedObjectResource languageListAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuLanguageListAnimations);
+            AnimatedObjectResource gameModeAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuGameModeAnimations);
+            AnimatedObjectResource pauseSelectionAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.PauseSelectionAnimations);
+            AnimatedObjectResource gameLogoAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuGameLogoAnimations);
+            AnimatedObjectResource optionsAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuOptionsAnimations);
+            AnimatedObjectResource connectionAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.NGageMenuMultiplayerConnectionAnimations);
+            AnimatedObjectResource slotEmptyAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuSlotEmptyAnimations);
+            AnimatedObjectResource multiplayerPlayersAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerPlayersAnimations);
+            AnimatedObjectResource multiplayerTypeAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerTypeAnimations);
+            AnimatedObjectResource multiplayerTypeFrameAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerTypeFrameAnimations);
+            AnimatedObjectResource multiplayerTypeIconAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerTypeIconAnimations);
+            AnimatedObjectResource multiplayerMapAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerMapAnimations);
+            AnimatedObjectResource multiplayerCaptureTheFlagAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.NGageMenuMultiplayerCaptureTheFlagAnimations);
 
             Wheel2 = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
             {

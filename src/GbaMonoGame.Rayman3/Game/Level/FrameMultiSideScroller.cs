@@ -70,7 +70,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
         if (Rom.Platform == Platform.NGage)
         {
-            AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.NGageMultiplayerPauseSignAnimations);
+            AnimatedObjectResource resource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.NGageMultiplayerPauseSignAnimations);
             PauseSign = new AnimatedObject(resource, resource.IsDynamic)
             {
                 IsFramed = true,

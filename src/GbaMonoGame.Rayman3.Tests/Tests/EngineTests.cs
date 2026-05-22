@@ -17,7 +17,7 @@ public class EngineTests(MockGame game)
         using Texture2D texture = new(Engine.Assets.GraphicsDevice, 1, 1);
 
         // Get an arbitrary pointer from the ROM to use as a key
-        Pointer pointer = Rom.Loader.GameOffsetTable.Offset;
+        Pointer pointer = Rom.Loader.RomHeader.Offset;
 
         // Add to the cache
         textureCache.RegisterObject(texture, pointer, id);

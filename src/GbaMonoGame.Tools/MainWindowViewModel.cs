@@ -309,7 +309,7 @@ public partial class MainWindowViewModel : ObservableObject
                     : new MemoryMappedStreamFile(context, fileName, Constants.Address_ROM, new MemoryStream(romData)));
 
                 OffsetTable gameOffsetTable = FileFactory.Read<OffsetTable>(context, new Pointer(offset, file));
-                settings.RootTable = gameOffsetTable;
+                settings.RootResourceTable = gameOffsetTable;
 
                 await Task.Run(() => romAction(new Rom(Path.GetFileNameWithoutExtension(romFilePath), context, gameOffsetTable)));
 

@@ -253,7 +253,7 @@ public class TimeAttackMenuPage : MenuPage
                 WorldOptions[tabIndex][mapIndex] = new TimeAttackLevelMenuOption(maps[mapIndex], 2 / 3f);
         }
 
-        AnimatedObjectResource worldNameAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.WorldDashboardAnimations);
+        AnimatedObjectResource worldNameAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.WorldDashboardAnimations);
         WorldNameCanvas = new AnimatedObject(worldNameAnimations, false)
         {
             IsFramed = true,

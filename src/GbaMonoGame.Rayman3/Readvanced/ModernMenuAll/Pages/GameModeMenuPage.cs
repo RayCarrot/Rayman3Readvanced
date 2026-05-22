@@ -200,7 +200,7 @@ public class GameModeMenuPage : MenuPage
             }));
 
         // Create animations
-        AnimatedObjectResource gameLogoAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuGameLogoAnimations);
+        AnimatedObjectResource gameLogoAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuGameLogoAnimations);
 
         GameLogo = new AnimatedObject(gameLogoAnimations, gameLogoAnimations.IsDynamic)
         {

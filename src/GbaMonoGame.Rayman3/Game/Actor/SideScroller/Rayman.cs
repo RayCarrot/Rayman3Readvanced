@@ -61,7 +61,7 @@ public sealed partial class Rayman : MovableActor
                     MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Teams)
                 {
                     // Load the palette resources
-                    Palette16 pal3 = Rom.LoadResource<Resource<Palette16>>(Rayman3DefinedResource.Player3RaymanPalette).Value;
+                    Palette16 pal3 = Rom.Loader.ReadResource<Resource<Palette16>>(Rayman3DefinedResource.Player3RaymanPalette).Value;
 
                     // In the original game there is a bug causing the flags to render using the wrong colors. This is because the sprite
                     // data does not match the palettes. The correct colors are there though, so we can fix it by re-ordering them.
@@ -134,9 +134,9 @@ public sealed partial class Rayman : MovableActor
                 else
                 {
                     // Load the palette resources
-                    Palette16 pal2 = Rom.LoadResource<Resource<Palette16>>(Rayman3DefinedResource.Player2RaymanPalette).Value;
-                    Palette16 pal3 = Rom.LoadResource<Resource<Palette16>>(Rayman3DefinedResource.Player3RaymanPalette).Value;
-                    Palette16 pal4 = Rom.LoadResource<Resource<Palette16>>(Rayman3DefinedResource.Player4RaymanPalette).Value;
+                    Palette16 pal2 = Rom.Loader.ReadResource<Resource<Palette16>>(Rayman3DefinedResource.Player2RaymanPalette).Value;
+                    Palette16 pal3 = Rom.Loader.ReadResource<Resource<Palette16>>(Rayman3DefinedResource.Player3RaymanPalette).Value;
+                    Palette16 pal4 = Rom.Loader.ReadResource<Resource<Palette16>>(Rayman3DefinedResource.Player4RaymanPalette).Value;
 
                     // Create a new sprite palette combining the multiplayer ones
                     SpritePalettes multiplayerPalettes = new(
@@ -175,7 +175,7 @@ public sealed partial class Rayman : MovableActor
                     MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag &&
                     IsLocalPlayer)
                 {
-                    AnimatedObjectResource arrowResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.NGageCaptureTheFlagArrowAnimations);
+                    AnimatedObjectResource arrowResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.NGageCaptureTheFlagArrowAnimations);
 
                     for (int i = 0; i < RSMultiplayer.PlayersCount - 1; i++)
                     {

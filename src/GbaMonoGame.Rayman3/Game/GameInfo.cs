@@ -93,7 +93,7 @@ public static class GameInfo
     public static Stopwatch PlayTimer { get; } = new(); // Custom for keeping track of slot play time
 
     public static LevelInfo Level => Levels[(int)MapId];
-    public static LevelInfo[] Levels => Rom.Loader.Rayman3_LevelInfo;
+    public static LevelInfo[] Levels { get; set; }
 
     public static void Init()
     {

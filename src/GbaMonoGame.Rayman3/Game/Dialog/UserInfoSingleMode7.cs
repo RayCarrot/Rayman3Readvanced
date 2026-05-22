@@ -109,7 +109,7 @@ public class UserInfoSingleMode7 : Dialog
         LumsBar.SetToStayVisible();
         TimerBar.SetToStayVisible();
 
-        AnimatedObjectResource countdownResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.CountdownAnimations);
+        AnimatedObjectResource countdownResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.CountdownAnimations);
 
         Countdown = new AnimatedObject(countdownResource, true)
         {
@@ -124,7 +124,7 @@ public class UserInfoSingleMode7 : Dialog
         if (IsCountdownActive)
             Countdown.CurrentAnimation = CountdownValue;
 
-        AnimatedObjectResource lapsResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.LapAndTimerAnimations);
+        AnimatedObjectResource lapsResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.LapAndTimerAnimations);
 
         Laps = new AnimatedObject(lapsResource, false)
         {

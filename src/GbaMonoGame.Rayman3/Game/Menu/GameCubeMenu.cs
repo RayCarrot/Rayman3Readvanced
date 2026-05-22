@@ -235,19 +235,21 @@ public partial class GameCubeMenu : Frame
 
         AnimationPlayer = new AnimationPlayer(false, null);
 
+        Bitmap bitmap = Rom.Loader.ReadGameCubeMenuBitmap();
         Gfx.AddScreen(new GfxScreen(2)
         {
             IsEnabled = true,
             Priority = 1,
             Offset = Vector2.Zero,
             Renderer = new TextureScreenRenderer(Engine.Assets.TextureCache.GetOrCreateObject(
-                pointer: Rom.Loader.Rayman3_GameCubeMenuBitmap.Offset,
+                pointer: bitmap.Offset,
                 id: 0,
-                createObjFunc: static () => new BitmapTexture2D(
+                data: bitmap,
+                createObjFunc: static bitmap => new BitmapTexture2D(
                     width: (int)Rom.OriginalResolution.X,
                     height: (int)Rom.OriginalResolution.Y,
-                    bitmap: Rom.Loader.Rayman3_GameCubeMenuBitmap.ImgData,
-                    palette: new Palette(Rom.Loader.Rayman3_GameCubeMenuPalette)))),
+                    bitmap: bitmap.ImgData,
+                    palette: new Palette(Rom.Loader.ReadGameCubeMenuPalette())))),
             RenderContext = Rom.OriginalGameRenderContext,
         });
 

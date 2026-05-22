@@ -665,12 +665,12 @@ public partial class UserInfoMulti2D : Dialog
 
     public override void Load()
     {
-        AnimatedObjectResource timersResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MultiplayerTimerAnimations);
-        AnimatedObjectResource iconsResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MultiplayerIconAnimations);
-        AnimatedObjectResource playerIconsResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MultiplayerPlayerIconAnimations);
-        AnimatedObjectResource countdownResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.CountdownAnimations);
-        AnimatedObjectResource gameOverSignResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MultiplayerGameOverSignAnimations);
-        AnimatedObjectResource itemsResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MultiplayerItemAnimations);
+        AnimatedObjectResource timersResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MultiplayerTimerAnimations);
+        AnimatedObjectResource iconsResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MultiplayerIconAnimations);
+        AnimatedObjectResource playerIconsResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MultiplayerPlayerIconAnimations);
+        AnimatedObjectResource countdownResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.CountdownAnimations);
+        AnimatedObjectResource gameOverSignResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MultiplayerGameOverSignAnimations);
+        AnimatedObjectResource itemsResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MultiplayerItemAnimations);
 
         TimerFrames = new AnimatedObject[RSMultiplayer.MaxPlayersCount];
         for (int i = 0; i < TimerFrames.Length; i++)
@@ -1025,7 +1025,7 @@ public partial class UserInfoMulti2D : Dialog
 
         if (Rom.Platform == Platform.NGage)
         {
-            AnimatedObjectResource suddenDeathSignResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.NGageMultiplayerSuddenDeathSignAnimations);
+            AnimatedObjectResource suddenDeathSignResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.NGageMultiplayerSuddenDeathSignAnimations);
 
             SuddenDeathSign = new AnimatedObject(suddenDeathSignResource, suddenDeathSignResource.IsDynamic)
             {

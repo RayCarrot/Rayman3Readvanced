@@ -8,7 +8,7 @@ public class MenuHorizontalArrows
     public MenuHorizontalArrows(RenderContext renderContext, int bgPriority, float scale, VerticalAlignment verticalRenderContextAlignment = VerticalAlignment.Center)
     {
         Scale = scale;
-        AnimatedObjectResource multiplayerTypeFrameAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerTypeFrameAnimations);
+        AnimatedObjectResource multiplayerTypeFrameAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerTypeFrameAnimations);
 
         // A bit hacky, but create a new render context for the arrows in order to scale them. We could do it through the
         // affine matrix, but that will misalign the animation sprites.

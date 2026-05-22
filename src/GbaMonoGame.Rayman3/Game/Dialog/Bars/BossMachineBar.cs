@@ -12,7 +12,7 @@ public class BossMachineBar : Bar
 
     public override void Load()
     {
-        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.BossMachineBarAnimations);
+        AnimatedObjectResource resource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.BossMachineBarAnimations);
 
         BossHealthBar = new AnimatedObject(resource, false)
         {

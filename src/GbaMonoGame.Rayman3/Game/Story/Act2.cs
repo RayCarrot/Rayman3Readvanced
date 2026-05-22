@@ -6,7 +6,7 @@ public class Act2 : Act
 {
     public override void Init()
     {
-        Init(Rom.Loader.Rayman3_Act2);
+        Init(Rom.Loader.ReadStoryAct(2));
     }
 
     public override void Step()

@@ -193,7 +193,7 @@ public partial class TimeAttackScoreDialog : Dialog
             Select((x, i) => new TimeAttackScoreDialogTarget(x, Scene.HudRenderContext, new Vector2(80 + i * 96, 80))).
             ToArray();
 
-        AnimatedObjectResource canvasResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.PauseCanvasAnimations);
+        AnimatedObjectResource canvasResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.PauseCanvasAnimations);
         Cursor = new AnimatedObject(canvasResource, false)
         {
             IsFramed = true,

@@ -112,27 +112,29 @@ public class GameOver : Frame
     {
         TransitionsFX.Init(true);
 
+        Bitmap bitmap = Rom.Loader.ReadGameCubeMenuBitmap();
         Gfx.AddScreen(new GfxScreen(2)
         {
             IsEnabled = true,
             Priority = 1,
             Offset = Vector2.Zero,
             Renderer = new TextureScreenRenderer(Engine.Assets.TextureCache.GetOrCreateObject(
-                pointer: Rom.Loader.Rayman3_GameOverBitmap.Offset,
+                pointer: bitmap.Offset,
                 id: 0,
-                createObjFunc: static () => new BitmapTexture2D(
+                data: bitmap,
+                createObjFunc: static bitmap => new BitmapTexture2D(
                     width: (int)Rom.OriginalResolution.X,
                     height: (int)Rom.OriginalResolution.Y,
-                    bitmap: Rom.Loader.Rayman3_GameOverBitmap.ImgData,
-                    palette: new Palette(Rom.Loader.Rayman3_GameOverPalette)))),
+                    bitmap: bitmap.ImgData,
+                    palette: new Palette(Rom.Loader.ReadGameOverPalette())))),
             RenderContext = Rom.OriginalGameRenderContext,
         });
 
         AnimationPlayer = new AnimationPlayer(false, Engine.Sem.ProcessEvent);
 
-        AnimatedObjectResource raymanAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.GameOverRaymanAnimations);
-        AnimatedObjectResource countdownAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.GameOverCountdownAnimations);
-        AnimatedObjectResource butterflyAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.GameOverButterflyAnimations);
+        AnimatedObjectResource raymanAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.GameOverRaymanAnimations);
+        AnimatedObjectResource countdownAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.GameOverCountdownAnimations);
+        AnimatedObjectResource butterflyAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.GameOverButterflyAnimations);
 
         Rayman = new AnimatedObject(raymanAnimations, raymanAnimations.IsDynamic)
         {

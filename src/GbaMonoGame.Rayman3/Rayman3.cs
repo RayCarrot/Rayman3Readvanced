@@ -277,11 +277,12 @@ public static class Rayman3
     }
 
     public static void InitGame(
-        ISaveGameManager save)
+        ISaveGameManager save,
+        LocalizationManager localizationManager)
     {
         // Set services
         Save = save;
-        Loc = new LocalizationManager();
+        Loc = localizationManager;
         Achievements = new AchievementsManager(Rayman3Achievements.Achievements);
         TimeAttack = new TimeAttackManager();
 
@@ -294,6 +295,7 @@ public static class Rayman3
         InitLevelFactory();
 
         // Initialize other data
+        GameInfo.Levels = Rom.Loader.ReadLevelInfo();
         Rayman3TileFixes.DefineTileFixes(Rom.Platform);
         InitEditorData();
     }

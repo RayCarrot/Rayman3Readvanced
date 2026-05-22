@@ -253,7 +253,7 @@ public class TimeAttackManager
 
         // TODO: Update model to have a bigger viewbox
         // Load Power1 scene to get the sparkles model from it
-        Scene2DResource sceneResource = Rom.LoadResource<Scene2DResource>((int)MapId.Power1);
+        Scene2DResource sceneResource = Rom.Loader.ReadScene((int)MapId.Power1);
         ActorModel sparklesModel = sceneResource.AlwaysActors.First(x => (ActorType)x.Type == ActorType.ChainedSparkles).Model;
 
         for (int i = 0; i < projectilesCount; i++)

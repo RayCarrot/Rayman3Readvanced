@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using BinarySerializer;
 using BinarySerializer.Nintendo.GBA;
 using BinarySerializer.Ubisoft.GbaEngine;
+using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 
 namespace GbaMonoGame;
 
@@ -21,7 +20,7 @@ public static class Rom
     private static RenderContext _originalGameRenderContext;
     private static RenderContext _originalScaledGameRenderContext;
     private static Context _context;
-    private static Loader _loader;
+    private static Rayman3Loader _loader;
 
     #endregion
 
@@ -40,7 +39,7 @@ public static class Rom
     public static RenderContext OriginalScaledGameRenderContext => IsLoaded ? _originalScaledGameRenderContext : throw new RomNotInitializedException();
 
     public static Context Context => IsLoaded ? _context : throw new RomNotInitializedException();
-    public static Loader Loader => IsLoaded ? _loader : throw new RomNotInitializedException();
+    public static Rayman3Loader Loader => IsLoaded ? _loader : throw new RomNotInitializedException();
 
     #endregion
 
@@ -53,43 +52,19 @@ public static class Rom
 
     #region Private Methods
 
-    private static Dictionary<DefinedPointer, long> GetGbaPointers(ROMHeader header, Game game, bool throwIfNotFound)
-    {
-        string gameCode = header.GameCode;
-
-        return game switch
-        {
-            Game.Rayman3 when gameCode is "AYZP" => DefinedPointers.Rayman3_GBA_EU, // Rayman 3 (Europe)
-            Game.Rayman3 when gameCode is "AYZE" => DefinedPointers.Rayman3_GBA_US, // Rayman 3 (USA)
-            Game.Rayman3 when gameCode is "BX5P" => DefinedPointers.Rayman3_GBA_10thAnniversary_EU, // Rayman 10th Anniversary (Europe)
-            Game.Rayman3 when gameCode is "BX5E" => DefinedPointers.Rayman3_GBA_10thAnniversary_US, // Rayman 10th Anniversary (USA)
-            Game.Rayman3 when gameCode is "BWZP" => DefinedPointers.Rayman3_GBA_WinnieThePoohPack_EU, // Winnie the Pooh's Rumbly Tumbly Adventure & Rayman 3 (Europe)
-            _ => throwIfNotFound ? throw new Exception($"Unsupported game {game} and/or code {gameCode}") : null
-        };
-    }
-
     private static void LoadRom()
     {
         using Context context = Context;
-        GbaEngineSettings settings = context.GetRequiredSettings<GbaEngineSettings>();
 
         if (Platform == Platform.GBA)
         {
             string romFileName = GameFileNames[0];
 
-            GbaLoader loader = new(context);
-            loader.LoadFiles(romFileName, cache: true);
-            loader.LoadRomHeader(romFileName);
-
-            context.AddPreDefinedPointers(GetGbaPointers(loader.RomHeader, Game, true));
-
-            settings.SetDefinedResources(DefinedResources.Rayman3_GBA);
-
-            Stopwatch sw = Stopwatch.StartNew();
-            loader.LoadData(romFileName);
-            sw.Stop();
-
-            Logger.Info("Loaded ROM data in {0} ms", sw.ElapsedMilliseconds);
+            Rayman3Loader loader = new(context);
+            loader.LoadRom(romFileName, cache: true);
+            loader.DefinePointers();
+            loader.DefineResources();
+            loader.LoadResourceTable();
 
             string gameCode = loader.RomHeader.GameCode;
             _region = gameCode[3] switch
@@ -105,18 +80,11 @@ public static class Rom
             string appFileName = GameFileNames[0];
             string dataFileName = GameFileNames[1];
 
-            NGageLoader loader = new(context);
-            loader.LoadFiles(appFileName, dataFileName, cache: true);
-
-            context.AddPreDefinedPointers(Game switch
-            {
-                Game.Rayman3 => DefinedPointers.Rayman3_NGage,
-                _ => throw new Exception($"Unsupported game {Game}")
-            });
-
-            settings.SetDefinedResources(DefinedResources.Rayman3_NGage);
-
-            loader.LoadData(appFileName, dataFileName);
+            Rayman3Loader loader = new(context);
+            loader.LoadNGageRom(appFileName, dataFileName, cache: true);
+            loader.DefinePointers();
+            loader.DefineResources();
+            loader.LoadResourceTable();
 
             _region = Region.Europe;
             _loader = loader;
@@ -140,7 +108,7 @@ public static class Rom
         context.AddFile(new MemoryMappedFile(context, fileName, Constants.Address_ROM));
         ROMHeader header = FileFactory.Read<ROMHeader>(context, fileName);
 
-        return GetGbaPointers(header, game, false) != null;
+        return DefinedPointers.GetPointers(header, Platform.GBA, game, false) != null;
     }
 
     public static void GetGamePaths(Game game, Platform platform, out string gameDirectory, out string[] gameFileNames)
@@ -249,39 +217,6 @@ public static class Rom
         _loader = default;
 
         Unloaded?.Invoke(null, EventArgs.Empty);
-    }
-
-    /// <summary>
-    /// Loads a resource from the given index. If the context has caching enabled then the resource
-    /// will be cached after loading, resulting in future loads returning the same data.
-    /// </summary>
-    /// <typeparam name="T">The resource type</typeparam>
-    /// <param name="index">The resource index</param>
-    /// <returns>The loaded resource</returns>
-    public static T LoadResource<T>(int index)
-        where T : Resource, new()
-    {
-        using Context context = Context;
-        return Loader.GameOffsetTable.ReadResource<T>(Context, index, name: $"Resource_{index}");
-    }
-
-    public static T LoadResource<T>(Rayman3DefinedResource definedResource)
-        where T : Resource, new()
-    {
-        using Context context = Context;
-        return Loader.GameOffsetTable.ReadResource<T>(Context, definedResource, name: definedResource.ToString());
-    }
-
-    public static Stream LoadResourceStream(int index)
-    {
-        RawResource res = LoadResource<RawResource>(index);
-        return new MemoryStream(res.RawData);
-    }
-
-    public static Stream LoadResourceStream(Rayman3DefinedResource definedResource)
-    {
-        RawResource res = LoadResource<RawResource>(definedResource);
-        return new MemoryStream(res.RawData);
     }
 
     public static T CopyResource<T>(T resource)

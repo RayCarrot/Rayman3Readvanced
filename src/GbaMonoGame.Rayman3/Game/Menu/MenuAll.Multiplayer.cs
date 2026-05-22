@@ -608,7 +608,7 @@ public partial class MenuAll
 
     private void Step_InitializeTransitionToMultiplayerPlayerSelection()
     {
-        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerPlayersAnimations);
+        AnimatedObjectResource resource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerPlayersAnimations);
 
         Anims.MultiplayerPlayerSelection = new AnimatedObject(resource, false)
         {
@@ -1022,7 +1022,7 @@ public partial class MenuAll
 
     private void Step_InitializeTransitionToMultiplayerHostedGamePlayerSelection()
     {
-        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerPlayersAnimations);
+        AnimatedObjectResource resource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerPlayersAnimations);
 
         Anims.MultiplayerPlayerSelection = new AnimatedObject(resource, false)
         {
@@ -1321,7 +1321,7 @@ public partial class MenuAll
 
     private void Step_InitializeTransitionToMultiplayerJoinedGamePlayerSelection()
     {
-        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerPlayersAnimations);
+        AnimatedObjectResource resource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuMultiplayerPlayersAnimations);
 
         Anims.MultiplayerPlayerSelection = new AnimatedObject(resource, false)
         {

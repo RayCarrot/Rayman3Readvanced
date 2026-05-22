@@ -33,7 +33,7 @@ public class LevelsMenuOption : TextMenuOption
     {
         base.Init(bgPriority, renderContext, index);
 
-        AnimatedObjectResource propsAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuPropAnimations);
+        AnimatedObjectResource propsAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuPropAnimations);
 
         // Calculate collectibles
         int collectedLums = 0;

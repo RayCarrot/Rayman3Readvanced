@@ -26,7 +26,7 @@ public class SlotMenuOption : MenuOption
 
     public override void Init(int bgPriority, RenderContext renderContext, int index)
     {
-        AnimatedObjectResource propsAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuPropAnimations);
+        AnimatedObjectResource propsAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuPropAnimations);
 
         if (index < 3)
         {

@@ -35,7 +35,7 @@ public class AnimationViewer : Frame
 
     private void InitSelectResource()
     {
-        int resourcesCount = Rom.Loader.GameOffsetTable.Count;
+        int resourcesCount = Rom.Loader.GetSettings().RootResourceTable.Count;
         SetSelectionText($"Resource {SelectedResourceIndex}/{resourcesCount - 1} ({GetCurrentResourceType().Name})");
 
         CurrentStepAction = Step_SelectResource;
@@ -43,7 +43,7 @@ public class AnimationViewer : Frame
 
     private void InitSelectActor()
     {
-        Scene2DResource resource = Rom.LoadResource<Scene2DResource>(SelectedResourceIndex);
+        Scene2DResource resource = Rom.Loader.ReadScene(SelectedResourceIndex);
 
         SelectedActorIndex = 0;
         Actors = resource.Actors.
@@ -62,7 +62,7 @@ public class AnimationViewer : Frame
         AnimatedObjectResource resource;
 
         if (GetCurrentResourceType() == typeof(AnimatedObjectResource))
-            resource = Rom.LoadResource<AnimatedObjectResource>(SelectedResourceIndex);
+            resource = Rom.Loader.ReadResource<AnimatedObjectResource>(SelectedResourceIndex);
         else if (GetCurrentResourceType() == typeof(Scene2DResource))
             resource = Actors[SelectedActorIndex].Model.AnimatedObject;
         else
@@ -183,7 +183,7 @@ public class AnimationViewer : Frame
 
     public void Step_SelectResource()
     {
-        int resourcesCount = Rom.Loader.GameOffsetTable.Count;
+        int resourcesCount = Rom.Loader.GetSettings().RootResourceTable.Count;
 
         if (IsDirectionalButtonPressed(Rayman3Input.MenuLeft))
         {

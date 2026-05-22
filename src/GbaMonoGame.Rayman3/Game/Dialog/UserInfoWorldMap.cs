@@ -145,7 +145,7 @@ public class UserInfoWorldMap : Dialog
 
         if (Rom.Platform == Platform.GBA && GameInfo.MapId != MapId.WorldMap)
         {
-            AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.WorldCurtainAnimations);
+            AnimatedObjectResource resource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.WorldCurtainAnimations);
 
             CurtainsLeft = new AnimatedObject(resource, false)
             {

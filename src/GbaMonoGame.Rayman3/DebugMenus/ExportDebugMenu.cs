@@ -22,9 +22,9 @@ public class ExportDebugMenu : DebugMenu
         Directory.CreateDirectory(exportDir);
 
         // Load resources
-        AnimActorResource animActorResource = Rom.LoadResource<AnimActorResource>(Rayman3DefinedResource.CreditsWheelAnimActor);
-        TextureTable textureTable = Rom.LoadResource<TextureTable>(Rayman3DefinedResource.CreditsWheelTextureTable);
-        PaletteTable paletteTable = Rom.LoadResource<PaletteTable>(Rayman3DefinedResource.CreditsWheelPaletteTable);
+        AnimActorResource animActorResource = Rom.Loader.ReadResource<AnimActorResource>(Rayman3DefinedResource.CreditsWheelAnimActor);
+        TextureTable textureTable = Rom.Loader.ReadResource<TextureTable>(Rayman3DefinedResource.CreditsWheelTextureTable);
+        PaletteTable paletteTable = Rom.Loader.ReadResource<PaletteTable>(Rayman3DefinedResource.CreditsWheelPaletteTable);
 
         GeometryObject geometryObject = animActorResource.GeometryTable.GeometryObjects[0];
 

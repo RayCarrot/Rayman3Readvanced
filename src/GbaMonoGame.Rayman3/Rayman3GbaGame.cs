@@ -26,50 +26,56 @@ public class Rayman3GbaGame : GbaGame
         // Load sound manager
         if (Rom.Platform == Platform.GBA)
         {
+            // Read the sound bank
+            SoundBank soundBank = Rom.Loader.ReadSoundBank();
+
             // Load song table and add custom ones
             Dictionary<int, string> songTable = Rayman3SoundTables.GbaSongTable;
             foreach (var songEntry in ReadvancedSongTables.GbaSongTable)
                 songTable.Add(songEntry.Key, songEntry.Value);
 
             // Load sound events and add custom ones
-            List<SoundEvent> soundEvents = Rom.Loader.SoundBank.Events.Select(x => x.Value).ToList();
+            List<SoundEvent> events = soundBank.Events.Select(x => x.Value).ToList();
             foreach (var readvancedSoundEvent in ReadvancedSongTables.GbaSoundEvents)
             {
-                if (readvancedSoundEvent.Key >= soundEvents.Count)
-                    CollectionsMarshal.SetCount(soundEvents, readvancedSoundEvent.Key + 1);
+                if (readvancedSoundEvent.Key >= events.Count)
+                    CollectionsMarshal.SetCount(events, readvancedSoundEvent.Key + 1);
 
-                soundEvents[readvancedSoundEvent.Key] = readvancedSoundEvent.Value;
+                events[readvancedSoundEvent.Key] = readvancedSoundEvent.Value;
             }
 
             // Load sound resources and add custom ones
-            List<SoundResource> soundResources = Rom.Loader.SoundBank.Resources.Select(x => x.Value).ToList();
+            List<SoundResource> resources = soundBank.Resources.Select(x => x.Value).ToList();
             foreach (var readvancedSoundResource in ReadvancedSongTables.GbaSoundResources)
             {
-                if (readvancedSoundResource.Key >= soundResources.Count)
-                    CollectionsMarshal.SetCount(soundResources, readvancedSoundResource.Key + 1);
+                if (readvancedSoundResource.Key >= resources.Count)
+                    CollectionsMarshal.SetCount(resources, readvancedSoundResource.Key + 1);
 
-                soundResources[readvancedSoundResource.Key] = readvancedSoundResource.Value;
+                resources[readvancedSoundResource.Key] = readvancedSoundResource.Value;
             }
 
-            sem = new GbaSoundEventsManager($"{Paths.AssetsDirectoryName}/{Assets.BaseName}", songTable, soundEvents.ToArray(), soundResources.ToArray());
+            sem = new GbaSoundEventsManager($"{Paths.AssetsDirectoryName}/{Assets.BaseName}", songTable, events.ToArray(), resources.ToArray());
         }
         else if (Rom.Platform == Platform.NGage)
         {
+            // Read the sound events
+            NGageSoundEvent[] soundEvents = Rom.Loader.ReadNGageSoundEvents();
+
             // Load song tables
             Dictionary<int, string> songTable = Rayman3SoundTables.NGageSongTable;
             Dictionary<int, string> readvancedSongTable = ReadvancedSongTables.NGageSongTable;
 
             // Load sound events and add custom ones
-            List<NGageSoundEvent> soundEvents = Rom.Loader.NGage_SoundEvents.ToList();
+            List<NGageSoundEvent> events = soundEvents.ToList();
             foreach (var readvancedSoundEvent in ReadvancedSongTables.NGageSoundEvents)
             {
-                if (readvancedSoundEvent.Key >= soundEvents.Count)
-                    soundEvents.AddRange(Enumerable.Repeat(new NGageSoundEvent() { IsValid = false }, (readvancedSoundEvent.Key - soundEvents.Count) + 1));
+                if (readvancedSoundEvent.Key >= events.Count)
+                    events.AddRange(Enumerable.Repeat(new NGageSoundEvent() { IsValid = false }, (readvancedSoundEvent.Key - events.Count) + 1));
 
-                soundEvents[readvancedSoundEvent.Key] = readvancedSoundEvent.Value;
+                events[readvancedSoundEvent.Key] = readvancedSoundEvent.Value;
             }
 
-            sem = new NGageSoundEventsManager(songTable, $"{Paths.AssetsDirectoryName}/{Assets.BaseName}", readvancedSongTable, soundEvents.ToArray());
+            sem = new NGageSoundEventsManager(songTable, $"{Paths.AssetsDirectoryName}/{Assets.BaseName}", readvancedSongTable, events.ToArray());
         }
         else
         {
@@ -98,9 +104,10 @@ public class Rayman3GbaGame : GbaGame
     {
         Engine.InitGame(
             sem: CreateSoundEventsManager(),
-            font: new FontManager(Rom.Loader.Font8, Rom.Loader.Font16, Rom.Loader.Font32));
+            font: new FontManager());
         Rayman3.InitGame(
-            save: new SaveGameManager());
+            save: new SaveGameManager(),
+            localizationManager: new LocalizationManager(Rom.Loader.ReadTextBanks()));
     }
 
     protected override void UnInitEngine()

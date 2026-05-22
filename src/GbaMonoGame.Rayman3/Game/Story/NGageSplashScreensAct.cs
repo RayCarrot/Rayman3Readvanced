@@ -16,7 +16,7 @@ public class NGageSplashScreensAct : Act
     {
         // NOTE: The original game loads the saved options here
 
-        Init(Rom.Loader.Rayman3_NGageSplashScreens);
+        Init(Rom.Loader.ReadNGageSplashScreens());
         IsAutomatic = true;
     }
 

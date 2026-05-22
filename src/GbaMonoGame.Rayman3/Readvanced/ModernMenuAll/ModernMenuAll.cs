@@ -292,8 +292,8 @@ public class ModernMenuAll : Frame, IHasPlayfield
 
         AnimationPlayer = new AnimationPlayer(false, null);
 
-        AnimatedObjectResource propsAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuPropAnimations);
-        AnimatedObjectResource steamAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuSteamAnimations);
+        AnimatedObjectResource propsAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuPropAnimations);
+        AnimatedObjectResource steamAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuSteamAnimations);
 
         Wheel1 = new AnimatedObject(propsAnimations, propsAnimations.IsDynamic)
         {
@@ -390,7 +390,7 @@ public class ModernMenuAll : Frame, IHasPlayfield
         WheelRotation = 0;
 
         // Load the playfield
-        PlayfieldResource menuPlayField = Rom.LoadResource<PlayfieldResource>(Rayman3DefinedResource.MenuPlayfield);
+        PlayfieldResource menuPlayField = Rom.Loader.ReadResource<PlayfieldResource>(Rayman3DefinedResource.MenuPlayfield);
         Playfield = TgxPlayfield.Load<TgxPlayfield2D>(menuPlayField);
         Playfield.RenderContext.SetFixedResolution(renderContext.Resolution);
 

@@ -12,8 +12,12 @@ public class FontManager : IDisposable
     private const int TextureWidth = 512;
     private const int Padding = 2;
 
-    public FontManager(Font font8, Font font16, Font font32)
+    public FontManager()
     {
+        Font font8 = Rom.Loader.ReadFont8();
+        Font font16 = Rom.Loader.ReadFont16();
+        Font font32 = Rom.Loader.ReadFont32();
+
         _font8 = new LoadedFont(font8, CreateFontTexture(font8, Color.White, Color.Transparent), GetFontCharacterRectangles(font8));
         _font16 = new LoadedFont(font16, CreateFontTexture(font16, Color.White, Color.Transparent), GetFontCharacterRectangles(font16));
         _font32 = new LoadedFont(font32, CreateFontTexture(font32, Color.White, Color.Transparent), GetFontCharacterRectangles(font32));

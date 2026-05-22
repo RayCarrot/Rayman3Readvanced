@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using BinarySerializer.Ubisoft.GbaEngine;
+using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 
 namespace GbaMonoGame.Rayman3;
 
 public class LocalizationManager
 {
+    public LocalizationManager(LocalizedTextBanks localizedTextBanks)
+    {
+        _localizedTextBanks = localizedTextBanks;
+    }
+
     // NOTE: The original level select names have a typo for Deutsch and in N-Gage it swaps Italian and Spanish - these are fixed here
     private static readonly Language[] _gbaLanguages = 
     [
@@ -30,6 +36,7 @@ public class LocalizationManager
         new(englishName: "German",    gameName: "Deutsch",    levelSelectName: "Deutsch",     locale: "de-DE", uiIndex: 3),
     ];
 
+    private readonly LocalizedTextBanks _localizedTextBanks;
     private TextBank[] _textBanks;
 
     public Language Language { get; private set; }
@@ -94,7 +101,7 @@ public class LocalizationManager
         List<TextBank> textBanks = new();
 
         // Get the text banks from the ROM
-        foreach (TextBankResource textBankResource in Rom.Loader.Rayman3_LocalizedTextBanks.TextBanks[languageId].Value!)
+        foreach (TextBankResource textBankResource in _localizedTextBanks.TextBanks[languageId].Value!)
         {
             List<Text> texts = new();
 

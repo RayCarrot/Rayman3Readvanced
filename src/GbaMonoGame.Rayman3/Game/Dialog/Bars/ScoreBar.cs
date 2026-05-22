@@ -20,8 +20,8 @@ public class ScoreBar : Bar
 
     public override void Load()
     {
-        AnimatedObjectResource playerRanksResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MultiplayerRankAnimations);
-        AnimatedObjectResource playerIconsResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MultiplayerPlayerIconAnimations);
+        AnimatedObjectResource playerRanksResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MultiplayerRankAnimations);
+        AnimatedObjectResource playerIconsResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MultiplayerPlayerIconAnimations);
 
         const int rowHeight = 24;
 

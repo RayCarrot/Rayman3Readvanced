@@ -149,13 +149,13 @@ public class NGageSoundEventsManager : SoundEventsManager
                     // Load the instruments data
                     if (!loadedInstruments.TryGetValue(evt.InstrumentsResourceId, out byte[] instruments))
                     {
-                        RawResource instrumentsResource = Rom.LoadResource<RawResource>(evt.InstrumentsResourceId);
+                        RawResource instrumentsResource = Rom.Loader.ReadResource<RawResource>(evt.InstrumentsResourceId);
                         instruments = instrumentsResource.RawData;
                         loadedInstruments[evt.InstrumentsResourceId] = instruments;
                     }
 
                     // Load the XM data
-                    RawResource xmResource = Rom.LoadResource<RawResource>(evt.SoundResourceId);
+                    RawResource xmResource = Rom.Loader.ReadResource<RawResource>(evt.SoundResourceId);
                     byte[] xm = xmResource.RawData;
 
                     IntPtr xmPtr = IntPtr.Zero;
@@ -214,7 +214,7 @@ public class NGageSoundEventsManager : SoundEventsManager
                         FileName = songResourceFileNames[evt.SoundResourceId]
                     };
 
-                    RawResource resource = Rom.LoadResource<RawResource>(evt.SoundResourceId);
+                    RawResource resource = Rom.Loader.ReadResource<RawResource>(evt.SoundResourceId);
                     byte[] rawData = resource.RawData;
 
                     IntPtr resourcePtr = IntPtr.Zero;

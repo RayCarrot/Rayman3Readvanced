@@ -1,4 +1,5 @@
 ﻿using System;
+using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.FsmSourceGenerator;
 
@@ -16,6 +17,7 @@ public sealed partial class Ly : MovableActor
 
     public TextBoxDialog TextBox { get; set; }
     public ushort Timer { get; set; }
+    public JoyPadReplayData ReplayData { get; set; }
 
     private void SetText()
     {
@@ -33,42 +35,34 @@ public sealed partial class Ly : MovableActor
 
     private void StartCutScene()
     {
+        Engine.JoyPad.SetReplayData(ReplayData.Inputs);
+        
         Rayman rayman = (Rayman)Scene.MainActor;
-
-        switch (GameInfo.MapId)
+        rayman.SetPower(GameInfo.MapId switch
         {
-            case MapId.WoodLight_M2:
-                Engine.JoyPad.SetReplayData(Rom.Loader.Rayman3_NewPower1Replay.Inputs);
-                rayman.SetPower(Power.DoubleFist);
-                break;
+            MapId.WoodLight_M2 => Power.DoubleFist,
+            MapId.BossMachine => Power.Grab,
+            MapId.EchoingCaves_M2 => Power.WallJump,
+            MapId.SanctuaryOfStoneAndFire_M3 => Power.SuperHelico,
+            MapId.BossRockAndLava => Power.BodyShot,
+            MapId.BossScaleMan => Power.SuperFist,
+            _ => throw new Exception("Ly was not set to be used in this level"),
+        });
+    }
 
-            case MapId.BossMachine:
-                Engine.JoyPad.SetReplayData(Rom.Loader.Rayman3_NewPower2Replay.Inputs);
-                rayman.SetPower(Power.Grab);
-                break;
-
-            case MapId.EchoingCaves_M2:
-                Engine.JoyPad.SetReplayData(Rom.Loader.Rayman3_NewPower3Replay.Inputs);
-                rayman.SetPower(Power.WallJump);
-                break;
-
-            case MapId.SanctuaryOfStoneAndFire_M3:
-                Engine.JoyPad.SetReplayData(Rom.Loader.Rayman3_NewPower4Replay.Inputs);
-                rayman.SetPower(Power.SuperHelico);
-                break;
-
-            case MapId.BossRockAndLava:
-                Engine.JoyPad.SetReplayData(Rom.Loader.Rayman3_NewPower5Replay.Inputs);
-                rayman.SetPower(Power.BodyShot);
-                break;
-
-            case MapId.BossScaleMan:
-                Engine.JoyPad.SetReplayData(Rom.Loader.Rayman3_NewPower6Replay.Inputs);
-                rayman.SetPower(Power.SuperFist);
-                break;
-
-            default:
-                throw new Exception("Ly was not set to be used in this level");
-        }
+    // Custom override to preload the replay data
+    public override void Init(ActorResource actorResource)
+    {
+        base.Init(actorResource);
+        ReplayData = Rom.Loader.ReadNewPowerReplayData(GameInfo.MapId switch
+        {
+            MapId.WoodLight_M2 => 1,
+            MapId.BossMachine => 2,
+            MapId.EchoingCaves_M2 => 3,
+            MapId.SanctuaryOfStoneAndFire_M3 => 4,
+            MapId.BossRockAndLava => 5,
+            MapId.BossScaleMan => 6,
+            _ => throw new Exception("Ly was not set to be used in this level"),
+        });
     }
 }

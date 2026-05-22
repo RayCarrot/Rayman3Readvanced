@@ -16,7 +16,7 @@ public class BossFinalBar : Bar
 
     public override void Load()
     {
-        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.BossFinalBarAnimations);
+        AnimatedObjectResource resource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.BossFinalBarAnimations);
 
         BossHealthBar = new AnimatedObject(resource, false)
         {

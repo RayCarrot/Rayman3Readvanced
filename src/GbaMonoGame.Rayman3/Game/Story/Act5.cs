@@ -4,7 +4,7 @@ public class Act5 : Act
 {
     public override void Init()
     {
-        Init(Rom.Loader.Rayman3_Act5);
+        Init(Rom.Loader.ReadStoryAct(5));
     }
 
     public override void Step()

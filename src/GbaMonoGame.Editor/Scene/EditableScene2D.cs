@@ -15,7 +15,7 @@ public class EditableScene2D
     {
         AnimationPlayer = new AnimationPlayer(false, null);
 
-        Scene2DResource sceneResource = Rom.LoadResource<Scene2DResource>(id);
+        Scene2DResource sceneResource = Rom.Loader.ReadScene(id);
         ClusterResource mainClusterResource = sceneResource.Playfield.Playfield2D.Clusters[0];
         MapSize = new Vector2(mainClusterResource.SizeX * Tile.Size, mainClusterResource.SizeY * Tile.Size);
         Camera = new EditorCamera(MapSize);

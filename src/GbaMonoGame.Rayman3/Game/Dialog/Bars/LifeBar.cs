@@ -45,7 +45,7 @@ public class LifeBar : Bar
 
     public override void Load()
     {
-        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.HudAnimations);
+        AnimatedObjectResource resource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.HudAnimations);
         
         HitPoints = new AnimatedObject(resource, false)
         {

@@ -9,7 +9,7 @@ public class MenuTabBar
 {
     public MenuTabBar(RenderContext renderContext, Vector2 position, int bgPriority, string[] tabNames)
     {
-        AnimatedObjectResource startEraseAnimations = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuStartEraseAnimations);
+        AnimatedObjectResource startEraseAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuStartEraseAnimations);
         Texture2D tabHeadersTexture = Engine.Assets.FixContentManager.Load<Texture2D>(tabNames.Length switch
         {
             5 => Assets.Menu.TabBar_5,

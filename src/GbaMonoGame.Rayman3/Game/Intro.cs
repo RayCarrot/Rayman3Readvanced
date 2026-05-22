@@ -305,7 +305,7 @@ public class Intro : Frame, IHasPlayfield
 
         AnimationPlayer = new AnimationPlayer(true, Engine.Sem.ProcessEvent);
 
-        AnimatedObjectResource introAnimResource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.IntroAnimations);
+        AnimatedObjectResource introAnimResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.IntroAnimations);
 
         PressStartObj = new AnimatedObject(introAnimResource, false)
         {
@@ -371,7 +371,7 @@ public class Intro : Frame, IHasPlayfield
                 throw new UnsupportedPlatformException();
         }
 
-        PlayfieldResource introPlayfield = Rom.LoadResource<PlayfieldResource>(Rayman3DefinedResource.IntroPlayfield);
+        PlayfieldResource introPlayfield = Rom.Loader.ReadResource<PlayfieldResource>(Rayman3DefinedResource.IntroPlayfield);
         Playfield = TgxPlayfield.Load<TgxPlayfield2D>(introPlayfield);
         Playfield.RenderContext.SetFixedResolution(Rom.OriginalResolution);
 

@@ -15,7 +15,7 @@ public class TimerBar : Bar
 
     public override void Load()
     {
-        AnimatedObjectResource resource = Rom.LoadResource<AnimatedObjectResource>(Rayman3DefinedResource.LapAndTimerAnimations);
+        AnimatedObjectResource resource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.LapAndTimerAnimations);
 
         TimerFrame = new AnimatedObject(resource, false)
         {
