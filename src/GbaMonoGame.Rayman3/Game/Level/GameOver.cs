@@ -112,7 +112,7 @@ public class GameOver : Frame
     {
         TransitionsFX.Init(true);
 
-        Bitmap bitmap = Rom.Loader.ReadGameCubeMenuBitmap();
+        Bitmap bitmap = Rom.Loader.ReadGameOverBitmap();
         Gfx.AddScreen(new GfxScreen(2)
         {
             IsEnabled = true,
