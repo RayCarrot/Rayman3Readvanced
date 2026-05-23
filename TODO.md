@@ -12,7 +12,7 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
 
 ## 🧑‍💻 Code
 - Move hard-coded primitive values to constant fields.
-- Optimize BinarySerializer more. Pointers should ideally be structs instead of classes in order to reduce allocations. We could also serialize animation channels as a `ushort[]` which saves on a lot of allocations. Analyze with VS profiler to see where allocations happen and check with BenchmarkDotNet. Also look into how caching is handled. Do we really need to cache everything, including levels?
+- Optimize BinarySerializer more. Pointers should ideally be structs instead of classes in order to reduce allocations. We could also serialize animation channels as a `ushort[]` which saves on a lot of allocations. Analyze with VS profiler to see where allocations happen and check with BenchmarkDotNet.
 - Use StringPool for the localized text? https://learn.microsoft.com/en-us/dotnet/communitytoolkit/high-performance/stringpool
 - Try and reduce the number of allocations per frame as much as possible.
 - Move hard-coded data to config files, such as song tables, achievements, Mode7 camera values and Rayman 3 joypad mapping 
@@ -33,7 +33,6 @@ However online multiplayer would be much more complicated. The game expects the 
 ## ⚙️ Options
 ### ⌚ Performance
 - Option to pre-load all textures in animations and tiles when initializing a new Frame instance to avoid lazy loading.
-- Option not to cache serialized data from the ROM. Currently it always does that.
 
 ### ✨ Optional improvements
 - Extend backgrounds so that they can render in the modern widescreen resolution without scaling:

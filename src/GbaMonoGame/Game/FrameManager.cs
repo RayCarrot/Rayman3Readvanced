@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime;
 using BinarySerializer.Ubisoft.GbaEngine;
 using Microsoft.Xna.Framework;
 using Action = System.Action;
@@ -73,6 +74,8 @@ public class FrameManager : IDisposable
 
         if (NextFrame != null)
         {
+            Stopwatch sw = Stopwatch.StartNew();
+
             CurrentFrame?.UnInit();
 
             // Clear all screens and effects for the new frame. The game doesn't do this, but it
@@ -88,8 +91,20 @@ public class FrameManager : IDisposable
                 // Clear cache from previous frame
                 Engine.Assets.UnloadFrameCache();
 
+                // Clear serializer cache
+                if (Rom.IsLoaded)
+                    Rom.Context.Cache.Clear();
+
                 // Dispose resources
                 DisposeResources();
+
+                // De-reference previous frame
+                CurrentFrame = null;
+
+                // Force clear garbage collection. This is a bit slow (around 15 ms in debug mode), but should help with
+                // memory usage and fragmentation for long play sessions.
+                GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                GC.Collect();
             }
 
             // Revert the rich presence to the default idle state (might get overriden when we initialize the new frame)
@@ -97,8 +112,6 @@ public class FrameManager : IDisposable
 
             // Initializing a new frame might take longer than 1/60th of a second, so we mark it as a load
             Engine.App.BeginLoad();
-
-            Stopwatch sw = Stopwatch.StartNew();
 
             CurrentFrame = NextFrame;
             NextFrame.Init();

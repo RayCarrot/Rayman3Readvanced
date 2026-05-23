@@ -128,7 +128,7 @@ public class AnimationViewer : Frame
 
     private Type GetCurrentResourceType()
     {
-        GbaEngineSettings settings = Rom.Context.GetRequiredSettings<GbaEngineSettings>();
+        GbaEngineSettings settings = Rom.Loader.GetSettings();
         return settings.GetDefinedResourceType(SelectedResourceIndex);
     }
 
