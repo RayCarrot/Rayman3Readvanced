@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/Analysis/">
+    <Project Path="BinarySerializer.GbaEngine.Benchmarks/BinarySerializer.GbaEngine.Benchmarks.csproj" Id="d80bc62f-a4d1-4334-99cc-4fc10d112b69" />
     <Project Path="GbaMonoGame.Rayman3.Tests/GbaMonoGame.Rayman3.Tests.csproj" />
   </Folder>
   <Folder Name="/Binary/">
