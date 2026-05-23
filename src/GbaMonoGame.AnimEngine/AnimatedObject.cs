@@ -139,12 +139,12 @@ public class AnimatedObject : AObject
 
     #region Public Methods
 
-    public IEnumerable<AnimationChannel> EnumerateCurrentChannels()
+    public IEnumerable<RawAnimationChannel> EnumerateCurrentChannels()
     {
         Animation anim = GetAnimation();
 
         for (int i = 0; i < anim.ChannelsPerFrame[CurrentFrame]; i++)
-            yield return anim.Channels[i + ChannelIndex];
+            yield return anim.RawChannels[i + ChannelIndex];
     }
 
     public void ReplaceSpriteTexture(int tileIndex, Texture2D texture)
@@ -153,19 +153,23 @@ public class AnimatedObject : AObject
         ReplacedSpriteTextures[tileIndex] = texture;
     }
 
-    public Texture2D GetSpriteTexture(AnimationChannel spriteChannel)
+    public Texture2D GetSpriteTexture(RawAnimationChannel spriteChannel)
     {
-        if (ReplacedSpriteTextures != null && ReplacedSpriteTextures.TryGetValue(spriteChannel.TileIndex, out Texture2D texture))
+        ushort tileIndex = spriteChannel.TileIndex;
+        byte spriteShape = spriteChannel.SpriteShape;
+        byte spriteSize = spriteChannel.SpriteSize;
+
+        if (ReplacedSpriteTextures != null && ReplacedSpriteTextures.TryGetValue(tileIndex, out Texture2D texture))
             return texture;
         else
             return Engine.Assets.TextureCache.GetOrCreateObject(
                 pointer: Resource.Offset,
-                id: spriteChannel.TileIndex,
+                id: tileIndex,
                 data: new SpriteDefine(
                     resource: Resource,
-                    spriteShape: spriteChannel.SpriteShape,
-                    spriteSize: spriteChannel.SpriteSize,
-                    tileIndex: spriteChannel.TileIndex),
+                    spriteShape: spriteShape,
+                    spriteSize: spriteSize,
+                    tileIndex: tileIndex),
                 createObjFunc: static data => new IndexedSpriteTexture2D(data.Resource, data.SpriteShape, data.SpriteSize, data.TileIndex));
     }
 
@@ -343,7 +347,7 @@ public class AnimatedObject : AObject
         Animation anim = GetAnimation();
         for (int i = 0; i < anim.ChannelsPerFrame[CurrentFrame]; i++)
         {
-            AnimationChannel channel = anim.Channels[ChannelIndex + i];
+            RawAnimationChannel channel = anim.RawChannels[ChannelIndex + i];
             switch (channel.ChannelType)
             {
                 case AnimationChannelType.AttackBox:
@@ -365,7 +369,7 @@ public class AnimatedObject : AObject
         Animation anim = GetAnimation();
         for (int i = 0; i < anim.ChannelsPerFrame[CurrentFrame]; i++)
         {
-            AnimationChannel channel = anim.Channels[ChannelIndex + i];
+            RawAnimationChannel channel = anim.RawChannels[ChannelIndex + i];
             if (channel.ChannelType == AnimationChannelType.Sound)
                 animationPlayer.SoundEventRequest(channel.SoundId);
         }
@@ -388,12 +392,14 @@ public class AnimatedObject : AObject
             Animation anim = GetAnimation();
             for (int i = 0; i < anim.ChannelsPerFrame[CurrentFrame]; i++)
             {
-                AnimationChannel channel = anim.Channels[ChannelIndex + i];
+                RawAnimationChannel channel = anim.RawChannels[ChannelIndex + i];
                 if (channel.ChannelType == AnimationChannelType.Sprite)
                 {
+                    OBJ_ATTR_ObjectMode objectMode = channel.ObjectMode;
+
                     // NOTE: The game doesn't do this, but we have to since affine sprites are rendered differently and thus
                     //       not constrained to the same dimensions, and it's not worth calculating the resulting size.
-                    if (IsDoubleAffine || channel.ObjectMode is OBJ_ATTR_ObjectMode.AFF or OBJ_ATTR_ObjectMode.AFF_DBL)
+                    if (IsDoubleAffine || objectMode is OBJ_ATTR_ObjectMode.AFF or OBJ_ATTR_ObjectMode.AFF_DBL)
                     {
                         channelIndex++;
                         continue;
@@ -416,7 +422,7 @@ public class AnimatedObject : AObject
                     else
                         xPos = position.X - xPos - width;
 
-                    if (IsDoubleAffine || channel.ObjectMode is OBJ_ATTR_ObjectMode.AFF or OBJ_ATTR_ObjectMode.AFF_DBL)
+                    if (IsDoubleAffine || objectMode is OBJ_ATTR_ObjectMode.AFF or OBJ_ATTR_ObjectMode.AFF_DBL)
                     {
                         xPos -= width / 2;
                         width *= 2;
@@ -434,7 +440,7 @@ public class AnimatedObject : AObject
                     else
                         yPos = position.Y - yPos - height;
 
-                    if (IsDoubleAffine || channel.ObjectMode is OBJ_ATTR_ObjectMode.AFF or OBJ_ATTR_ObjectMode.AFF_DBL)
+                    if (IsDoubleAffine || objectMode is OBJ_ATTR_ObjectMode.AFF or OBJ_ATTR_ObjectMode.AFF_DBL)
                     {
                         yPos -= height / 2;
                         height *= 2;
@@ -495,13 +501,14 @@ public class AnimatedObject : AObject
         // Enumerate every channel
         for (int i = 0; i < anim.ChannelsPerFrame[CurrentFrame]; i++)
         {
-            AnimationChannel channel = anim.Channels[ChannelIndex + i];
+            RawAnimationChannel channel = anim.RawChannels[ChannelIndex + i];
             // Play the channel based on the type
             switch (channel.ChannelType)
             {
                 case AnimationChannelType.Sprite:
 
-                    if (channel.ObjectMode == OBJ_ATTR_ObjectMode.HIDE || !IsChannelVisible(i))
+                    OBJ_ATTR_ObjectMode objectMode = channel.ObjectMode;
+                    if (objectMode == OBJ_ATTR_ObjectMode.HIDE || !IsChannelVisible(i))
                         break;
 
                     // On GBA the size of a sprite is determined based on
@@ -538,9 +545,9 @@ public class AnimatedObject : AObject
                     AffineMatrix? affineMatrix = null;
 
                     // Get the matrix if it's affine
-                    if (channel.ObjectMode == OBJ_ATTR_ObjectMode.REG && AffineMatrix != null && IsAffine)
+                    if (objectMode == OBJ_ATTR_ObjectMode.REG && AffineMatrix != null && IsAffine)
                         affineMatrix = AffineMatrix.Value;
-                    else if (channel.ObjectMode is OBJ_ATTR_ObjectMode.AFF or OBJ_ATTR_ObjectMode.AFF_DBL)
+                    else if (objectMode is OBJ_ATTR_ObjectMode.AFF or OBJ_ATTR_ObjectMode.AFF_DBL)
                         affineMatrix = GetAffineMatrix(channel.AffineMatrixIndex);
 
                     // Get the sprite texture

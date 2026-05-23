@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BinarySerializer.Nintendo.GBA;
 using BinarySerializer.Ubisoft.GbaEngine;
+using GbaMonoGame.AnimEngine;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
@@ -10,7 +10,7 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 /// </summary>
 public class AnimationBuilder
 {
-    private readonly List<List<AnimationChannel>> _channels = [];
+    private readonly List<List<RawAnimationChannel>> _channels = [];
     private List<AffineMatrixResource> _affineMatrices;
 
     public byte Speed { get; set; }
@@ -21,40 +21,21 @@ public class AnimationBuilder
         _channels.Add([]);
     }
 
-    public void AddChannel(AnimationChannel channel)
+    public void AddChannel(RawAnimationChannel channel)
     {
         _channels[^1].Add(channel);
     }
 
     public void AddSprite(short xPosition, short yPosition, ushort tileIndex, bool flipX = false, bool flipY = false)
     {
-        AddChannel(new AnimationChannel
-        {
-            ChannelType = AnimationChannelType.Sprite,
-            XPosition = xPosition,
-            YPosition = yPosition,
-            ObjectMode = OBJ_ATTR_ObjectMode.REG,
-            TileIndex = tileIndex,
-            FlipX = false,
-            FlipY = false,
-        });
+        AddChannel(AnimationChannelHelpers.CreateCustomSpriteTextureChannel(xPosition, yPosition, tileIndex, flipX, flipY));
     }
 
-    public void AddAffineSprite(short xPosition, short yPosition, ushort tileIndex, float rotation256, float scaleX, float scaleY, bool flipX = false, bool flipY = false)
+    public void AddAffineSprite(short xPosition, short yPosition, ushort tileIndex, float rotation256, float scaleX, float scaleY)
     {
         _affineMatrices ??= [];
 
-        AddChannel(new AnimationChannel
-        {
-            ChannelType = AnimationChannelType.Sprite,
-            XPosition = xPosition,
-            YPosition = yPosition,
-            ObjectMode = OBJ_ATTR_ObjectMode.AFF,
-            TileIndex = tileIndex,
-            FlipX = false,
-            FlipY = false,
-            AffineMatrixIndex = (ushort)_affineMatrices.Count,
-        });
+        AddChannel(AnimationChannelHelpers.CreateCustomAffineSpriteTextureChannel(xPosition, yPosition, tileIndex, (ushort)_affineMatrices.Count));
 
         _affineMatrices.Add(new AffineMatrixResource
         {
@@ -67,11 +48,10 @@ public class AnimationBuilder
 
     public void AddVulnerabilityBox(ChannelBox box)
     {
-        AddChannel(new AnimationChannel
-        {
-            ChannelType = AnimationChannelType.VulnerabilityBox,
-            Box = box,
-        });
+        AddChannel(RawAnimationChannel.CreateBoxChannel(
+            game: Rom.Game, 
+            type: AnimationChannelType.VulnerabilityBox, 
+            box: box));
     }
 
     public Animation Build()
@@ -82,7 +62,7 @@ public class AnimationBuilder
             DoNotRepeat = DoNotRepeat,
             FramesCount = (byte)_channels.Count,
             ChannelsPerFrame = _channels.Select(x => (byte)x.Count).ToArray(),
-            Channels = _channels.SelectMany(x => x).ToArray(),
+            RawChannels = _channels.SelectMany(x => x).ToArray(),
             AffineMatrices = _affineMatrices == null ? null : new AffineMatrices
             {
                 Matrices = _affineMatrices.ToArray()

@@ -1,5 +1,4 @@
-﻿using BinarySerializer.Nintendo.GBA;
-using BinarySerializer.Ubisoft.GbaEngine;
+﻿using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using Microsoft.Xna.Framework;
@@ -127,19 +126,7 @@ public class GameModeMenuPage : MenuPage
         Animation anim = GameLogo.CopyAnimation(animId);
 
         anim.ChannelsPerFrame = [1];
-        anim.Channels =
-        [
-            new AnimationChannel
-            {
-                ChannelType = AnimationChannelType.Sprite,
-                XPosition = -63,
-                YPosition = -75,
-                ObjectMode = OBJ_ATTR_ObjectMode.REG,
-                TileIndex = tileIndex,
-                FlipX = false,
-                FlipY = false,
-            }
-        ];
+        anim.RawChannels = [AnimationChannelHelpers.CreateCustomSpriteTextureChannel(-63, -75, tileIndex)];
 
         GameLogo.ReplaceAnimation(animId, anim);
         GameLogo.ReplaceSpriteTexture(tileIndex, Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.Menu.MenuLogo));
