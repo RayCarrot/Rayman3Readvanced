@@ -163,7 +163,7 @@ public class Intro : Frame, IHasPlayfield
                 // Enumerate every channel in the frame
                 for (int frameChannelIndex = 0; frameChannelIndex < anim.ChannelsPerFrame[frameIndex]; frameChannelIndex++)
                 {
-                    RawAnimationChannel channel = anim.RawChannels[channelIndex];
+                    AnimationChannel channel = anim.Channels[channelIndex];
                     if (channel.ChannelType == AnimationChannelType.Sprite)
                     {
                         for (int letterIndex = 0; letterIndex < letters.Length; letterIndex++)
@@ -175,7 +175,7 @@ public class Intro : Frame, IHasPlayfield
                             {
                                 Point offset = originalBaseOffset + (letter.NewOffset - newBaseOffset) - letter.OriginalOffset;
 
-                                anim.RawChannels[channelIndex] = AnimationChannelHelpers.CreateCustomSpriteTextureChannel(
+                                anim.Channels[channelIndex] = AnimationChannelHelpers.CreateCustomSpriteTextureChannel(
                                     xPosition: (short)(channel.XPosition + offset.X),
                                     yPosition: (short)(channel.YPosition + offset.Y),
                                     tileIndex: (ushort)(baseTileIndex + letterIndex));
@@ -183,7 +183,7 @@ public class Intro : Frame, IHasPlayfield
                             // Hide the sprite
                             else if (Array.IndexOf(letter.HideTiles, channel.TileIndex) >= 0)
                             {
-                                anim.RawChannels[channelIndex] = AnimationChannelHelpers.CreateHiddenSpriteChannel();
+                                anim.Channels[channelIndex] = AnimationChannelHelpers.CreateHiddenSpriteChannel();
                             }
                         }
                     }
@@ -209,34 +209,34 @@ public class Intro : Frame, IHasPlayfield
         {
             for (int frameChannelIndex = 0; frameChannelIndex < anim.ChannelsPerFrame[frameIndex]; frameChannelIndex++)
             {
-                RawAnimationChannel channel = anim.RawChannels[channelIndex];
+                AnimationChannel channel = anim.Channels[channelIndex];
                 if (channel.ChannelType == AnimationChannelType.Sprite && channel.TileIndex == tileIndex)
                 {
                     // Move in from bottom and bounce
                     if (frameIndex == 59)
                     {
-                        anim.RawChannels[channelIndex] = AnimationChannelHelpers.CreateCustomSpriteTextureChannel(
+                        anim.Channels[channelIndex] = AnimationChannelHelpers.CreateCustomSpriteTextureChannel(
                             xPosition: (short)offset.X,
                             yPosition: (short)(offset.Y + 50),
                             tileIndex: (ushort)(baseTileIndex + letters.Length));
                     }
                     else if (frameIndex == 60)
                     {
-                        anim.RawChannels[channelIndex] = AnimationChannelHelpers.CreateCustomSpriteTextureChannel(
+                        anim.Channels[channelIndex] = AnimationChannelHelpers.CreateCustomSpriteTextureChannel(
                             xPosition: (short)offset.X,
                             yPosition: (short)offset.Y,
                             tileIndex: (ushort)(baseTileIndex + letters.Length));
                     }
                     else if (frameIndex == 61)
                     {
-                        anim.RawChannels[channelIndex] = AnimationChannelHelpers.CreateCustomSpriteTextureChannel(
+                        anim.Channels[channelIndex] = AnimationChannelHelpers.CreateCustomSpriteTextureChannel(
                             xPosition: (short)offset.X,
                             yPosition: (short)(offset.Y + 5),
                             tileIndex: (ushort)(baseTileIndex + letters.Length));
                     }
                     else if (frameIndex == 62)
                     {
-                        anim.RawChannels[channelIndex] = AnimationChannelHelpers.CreateCustomSpriteTextureChannel(
+                        anim.Channels[channelIndex] = AnimationChannelHelpers.CreateCustomSpriteTextureChannel(
                             xPosition: (short)offset.X,
                             yPosition: (short)offset.Y,
                             tileIndex: (ushort)(baseTileIndex + letters.Length));
@@ -247,7 +247,7 @@ public class Intro : Frame, IHasPlayfield
             }
         }
 
-        RawAnimationChannel[] channels = BlackLumAndLogoObj.GetReplacedAnimation(8).RawChannels;
+        AnimationChannel[] channels = BlackLumAndLogoObj.GetReplacedAnimation(8).Channels;
         for (var i = 0; i < channels.Length; i++)
         {
             if (channels[i].TileIndex == tileIndex)

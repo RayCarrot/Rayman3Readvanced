@@ -12,7 +12,7 @@ public sealed class SceneryMode7 : Mode7Actor
         Direction = Angle256.Zero;
         ZPos = 0;
 
-        RawAnimationChannel channel = AnimatedObject.GetAnimation().RawChannels[0];
+        AnimationChannel channel = AnimatedObject.GetAnimation().Channels[0];
         Constants.Size shape = Constants.GetSpriteShape(channel.SpriteShape, channel.SpriteSize);
         RenderHeight = shape.Height;
 

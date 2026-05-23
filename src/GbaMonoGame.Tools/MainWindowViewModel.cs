@@ -653,7 +653,7 @@ public partial class MainWindowViewModel : ObservableObject
                         x.Speed,
                         x.DoNotRepeat,
                         x.ChannelsPerFrame,
-                        x.RawChannels
+                        RawChannels = x.Channels
                     }),
                 }, animatedObjectOutputDir, animatedObjectOutputFileName);
 
@@ -1090,7 +1090,7 @@ public partial class MainWindowViewModel : ObservableObject
                     int minY = 0;
                     int maxX = 0;
                     int maxY = 0;
-                    foreach (RawAnimationChannel channel in anim.RawChannels)
+                    foreach (AnimationChannel channel in anim.Channels)
                     {
                         if (channel.ChannelType == AnimationChannelType.Sprite)
                         {
@@ -1144,7 +1144,7 @@ public partial class MainWindowViewModel : ObservableObject
                         // Enumerate each channel
                         for (int channelId = anim.ChannelsPerFrame[frameId] - 1; channelId >= 0; channelId--)
                         {
-                            RawAnimationChannel channel = anim.RawChannels[channelOffset + channelId];
+                            AnimationChannel channel = anim.Channels[channelOffset + channelId];
 
                             if (channel.ChannelType == AnimationChannelType.Sprite && channel.ObjectMode != OBJ_ATTR_ObjectMode.HIDE)
                             {
@@ -1443,7 +1443,7 @@ public partial class MainWindowViewModel : ObservableObject
                         // Enumerate each channel
                         for (int channelId = 0; channelId < anim.ChannelsPerFrame[frameId]; channelId++)
                         {
-                            RawAnimationChannel channel = anim.RawChannels[channelOffset + channelId];
+                            AnimationChannel channel = anim.Channels[channelOffset + channelId];
 
                             if (channel.ChannelType == AnimationChannelType.Sprite)
                             {

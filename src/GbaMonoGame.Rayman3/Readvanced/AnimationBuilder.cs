@@ -10,7 +10,7 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 /// </summary>
 public class AnimationBuilder
 {
-    private readonly List<List<RawAnimationChannel>> _channels = [];
+    private readonly List<List<AnimationChannel>> _channels = [];
     private List<AffineMatrixResource> _affineMatrices;
 
     public byte Speed { get; set; }
@@ -21,7 +21,7 @@ public class AnimationBuilder
         _channels.Add([]);
     }
 
-    public void AddChannel(RawAnimationChannel channel)
+    public void AddChannel(AnimationChannel channel)
     {
         _channels[^1].Add(channel);
     }
@@ -48,7 +48,7 @@ public class AnimationBuilder
 
     public void AddVulnerabilityBox(ChannelBox box)
     {
-        AddChannel(RawAnimationChannel.CreateBoxChannel(
+        AddChannel(AnimationChannel.CreateBoxChannel(
             game: Rom.Game, 
             type: AnimationChannelType.VulnerabilityBox, 
             box: box));
@@ -62,7 +62,7 @@ public class AnimationBuilder
             DoNotRepeat = DoNotRepeat,
             FramesCount = (byte)_channels.Count,
             ChannelsPerFrame = _channels.Select(x => (byte)x.Count).ToArray(),
-            RawChannels = _channels.SelectMany(x => x).ToArray(),
+            Channels = _channels.SelectMany(x => x).ToArray(),
             AffineMatrices = _affineMatrices == null ? null : new AffineMatrices
             {
                 Matrices = _affineMatrices.ToArray()

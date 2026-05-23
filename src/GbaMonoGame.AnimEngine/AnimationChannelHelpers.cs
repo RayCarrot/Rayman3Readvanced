@@ -6,14 +6,14 @@ namespace GbaMonoGame.AnimEngine;
 public static class AnimationChannelHelpers
 {
     // For channels where we override the texture, meaning we don't need the original tile attributes
-    public static RawAnimationChannel CreateCustomSpriteTextureChannel(
+    public static AnimationChannel CreateCustomSpriteTextureChannel(
         short xPosition,
         short yPosition,
         ushort tileIndex,
         bool flipX = false,
         bool flipY = false)
     {
-        return RawAnimationChannel.CreateSpriteChannel(
+        return AnimationChannel.CreateSpriteChannel(
             game: Rom.Game,
             xPosition: xPosition,
             yPosition: yPosition,
@@ -27,9 +27,9 @@ public static class AnimationChannelHelpers
             flipY: flipY);
     }
 
-    public static RawAnimationChannel CreateHiddenSpriteChannel()
+    public static AnimationChannel CreateHiddenSpriteChannel()
     {
-        return RawAnimationChannel.CreateSpriteChannel(
+        return AnimationChannel.CreateSpriteChannel(
             game: Rom.Game,
             xPosition: 0,
             yPosition: 0,
@@ -43,13 +43,13 @@ public static class AnimationChannelHelpers
             flipY: false);
     }
 
-    public static RawAnimationChannel CreateCustomAffineSpriteTextureChannel(
+    public static AnimationChannel CreateCustomAffineSpriteTextureChannel(
         short xPosition,
         short yPosition,
         ushort tileIndex,
         ushort affineMatrixIndex)
     {
-        return RawAnimationChannel.CreateAffineSpriteChannel(
+        return AnimationChannel.CreateAffineSpriteChannel(
             game: Rom.Game,
             xPosition: xPosition,
             yPosition: yPosition,

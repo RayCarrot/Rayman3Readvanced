@@ -139,12 +139,12 @@ public class AnimatedObject : AObject
 
     #region Public Methods
 
-    public IEnumerable<RawAnimationChannel> EnumerateCurrentChannels()
+    public IEnumerable<AnimationChannel> EnumerateCurrentChannels()
     {
         Animation anim = GetAnimation();
 
         for (int i = 0; i < anim.ChannelsPerFrame[CurrentFrame]; i++)
-            yield return anim.RawChannels[i + ChannelIndex];
+            yield return anim.Channels[i + ChannelIndex];
     }
 
     public void ReplaceSpriteTexture(int tileIndex, Texture2D texture)
@@ -153,7 +153,7 @@ public class AnimatedObject : AObject
         ReplacedSpriteTextures[tileIndex] = texture;
     }
 
-    public Texture2D GetSpriteTexture(RawAnimationChannel spriteChannel)
+    public Texture2D GetSpriteTexture(AnimationChannel spriteChannel)
     {
         ushort tileIndex = spriteChannel.TileIndex;
         byte spriteShape = spriteChannel.SpriteShape;
@@ -347,7 +347,7 @@ public class AnimatedObject : AObject
         Animation anim = GetAnimation();
         for (int i = 0; i < anim.ChannelsPerFrame[CurrentFrame]; i++)
         {
-            RawAnimationChannel channel = anim.RawChannels[ChannelIndex + i];
+            AnimationChannel channel = anim.Channels[ChannelIndex + i];
             switch (channel.ChannelType)
             {
                 case AnimationChannelType.AttackBox:
@@ -369,7 +369,7 @@ public class AnimatedObject : AObject
         Animation anim = GetAnimation();
         for (int i = 0; i < anim.ChannelsPerFrame[CurrentFrame]; i++)
         {
-            RawAnimationChannel channel = anim.RawChannels[ChannelIndex + i];
+            AnimationChannel channel = anim.Channels[ChannelIndex + i];
             if (channel.ChannelType == AnimationChannelType.Sound)
                 animationPlayer.SoundEventRequest(channel.SoundId);
         }
@@ -392,7 +392,7 @@ public class AnimatedObject : AObject
             Animation anim = GetAnimation();
             for (int i = 0; i < anim.ChannelsPerFrame[CurrentFrame]; i++)
             {
-                RawAnimationChannel channel = anim.RawChannels[ChannelIndex + i];
+                AnimationChannel channel = anim.Channels[ChannelIndex + i];
                 if (channel.ChannelType == AnimationChannelType.Sprite)
                 {
                     OBJ_ATTR_ObjectMode objectMode = channel.ObjectMode;
@@ -501,7 +501,7 @@ public class AnimatedObject : AObject
         // Enumerate every channel
         for (int i = 0; i < anim.ChannelsPerFrame[CurrentFrame]; i++)
         {
-            RawAnimationChannel channel = anim.RawChannels[ChannelIndex + i];
+            AnimationChannel channel = anim.Channels[ChannelIndex + i];
             // Play the channel based on the type
             switch (channel.ChannelType)
             {

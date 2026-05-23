@@ -32,10 +32,8 @@ public class LoadRom
     // NOTE: Set your ROM file path here
     public static string RomFilePath => "";
 
-    private void Read(bool highPerformance, Action<Rayman3Loader> action)
+    private void Read(Action<Rayman3Loader> action)
     {
-        GbaEngineSettings settings = _loader.GetSettings();
-        settings.HighPerformanceMode = highPerformance;
         action(_loader);
         _context.Cache.Clear();
     }
@@ -75,32 +73,13 @@ public class LoadRom
     [Benchmark]
     public void ReadFirstScene()
     {
-        Read(false, static loader => loader.ReadScene(0));
-    }
-
-    [Benchmark]
-    public void ReadFirstScene_HighPerformance()
-    {
-        Read(true, static loader => loader.ReadScene(0));
+        Read(static loader => loader.ReadScene(0));
     }
 
     [Benchmark]
     public void ReadAllScenes()
     {
-        Read(false, static loader =>
-        {
-            for (int i = 0; i < 65; i++)
-            {
-                loader.ReadScene(i);
-                loader.Context.Cache.Clear();
-            }
-        });
-    }
-
-    [Benchmark]
-    public void ReadAllScenes_HighPerformance()
-    {
-        Read(true, static loader =>
+        Read(static loader =>
         {
             for (int i = 0; i < 65; i++)
             {
@@ -113,17 +92,7 @@ public class LoadRom
     [Benchmark]
     public void ReadAllScenes_Cached()
     {
-        Read(false, static loader =>
-        {
-            for (int i = 0; i < 65; i++)
-                loader.ReadScene(i);
-        });
-    }
-
-    [Benchmark]
-    public void ReadAllScenes_Cached_HighPerformance()
-    {
-        Read(true, static loader =>
+        Read(static loader =>
         {
             for (int i = 0; i < 65; i++)
                 loader.ReadScene(i);
@@ -133,13 +102,13 @@ public class LoadRom
     [Benchmark]
     public void ReadSoundBank()
     {
-        Read(false, static loader => loader.ReadSoundBank());
+        Read(static loader => loader.ReadSoundBank());
     }
 
     [Benchmark]
     public void ReadFont()
     {
-        Read(false, static loader =>
+        Read(static loader =>
         {
             loader.ReadFont8();
             loader.ReadFont16();
@@ -150,19 +119,19 @@ public class LoadRom
     [Benchmark]
     public void ReadTextBanks()
     {
-        Read(false, static loader => loader.ReadTextBanks());
+        Read(static loader => loader.ReadTextBanks());
     }
 
     [Benchmark]
     public void ReadLevelInfo()
     {
-        Read(false, static loader => loader.ReadLevelInfo());
+        Read(static loader => loader.ReadLevelInfo());
     }
 
     [Benchmark]
     public void ReadStoryActs()
     {
-        Read(false, static loader =>
+        Read(static loader =>
         {
             for (int i = 0; i < 6; i++)
                 loader.ReadStoryAct(1 + i);
@@ -172,7 +141,7 @@ public class LoadRom
     [Benchmark]
     public void ReadBitmaps()
     {
-        Read(false, static loader =>
+        Read(static loader =>
         {
             loader.ReadGameOverBitmap();
             loader.ReadGameOverPalette();
@@ -184,7 +153,7 @@ public class LoadRom
     [Benchmark]
     public void ReadNewPowerReplayData()
     {
-        Read(false, static loader =>
+        Read(static loader =>
         {
             for (int i = 0; i < 6; i++)
                 loader.ReadNewPowerReplayData(1 + i);

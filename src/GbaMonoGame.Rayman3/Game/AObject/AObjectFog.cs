@@ -18,8 +18,8 @@ public class AObjectFog : AnimatedObject
         // The sprites in the first two channels are the only unique sprites. So we can use these and tile them across.
         SpriteChannels =
         [
-            resource.Animations[0].RawChannels[0],
-            resource.Animations[0].RawChannels[1]
+            resource.Animations[0].Channels[0],
+            resource.Animations[0].Channels[1]
         ];
     }
 
@@ -34,14 +34,14 @@ public class AObjectFog : AnimatedObject
     public const int ModernSpriteWidth = 32;
     public const int ModernSpritesCount = 2;
 
-    public RawAnimationChannel[] SpriteChannels { get; }
+    public AnimationChannel[] SpriteChannels { get; }
     public bool ModernMode { get; set; }
 
     #endregion
 
     #region Private Methods
 
-    private void DrawSprite(RawAnimationChannel channel, Vector2 screenPos)
+    private void DrawSprite(AnimationChannel channel, Vector2 screenPos)
     {
         // Get or create the sprite texture
         Texture2D texture = Engine.Assets.TextureCache.GetOrCreateObject(

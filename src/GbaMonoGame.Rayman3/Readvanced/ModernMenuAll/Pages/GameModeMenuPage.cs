@@ -126,7 +126,7 @@ public class GameModeMenuPage : MenuPage
         Animation anim = GameLogo.CopyAnimation(animId);
 
         anim.ChannelsPerFrame = [1];
-        anim.RawChannels = [AnimationChannelHelpers.CreateCustomSpriteTextureChannel(-63, -75, tileIndex)];
+        anim.Channels = [AnimationChannelHelpers.CreateCustomSpriteTextureChannel(-63, -75, tileIndex)];
 
         GameLogo.ReplaceAnimation(animId, anim);
         GameLogo.ReplaceSpriteTexture(tileIndex, Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.Menu.MenuLogo));
