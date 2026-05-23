@@ -4,6 +4,7 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
 ## 📃 General
 - Use Game Jolt API for achievements and time attack leaderboards.
 - If the screen resolution is not 16:9 then there should be an additional resolution option matching that aspect ratio.
+- Add license file with licenses for all libraries used.
 
 ## 💬 Localization
 - If you change the button mapping then the in-game tutorial texts are wrong, such as when Murfy or Ly explain how to perform a move. Find a way to replace this. Perhaps instead of showing the input as text we show an icon of the key/button?
@@ -12,10 +13,18 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
 
 ## 🧑‍💻 Code
 - Move hard-coded primitive values to constant fields.
-- Optimize BinarySerializer more. Pointers should ideally be structs instead of classes in order to reduce allocations. We could also serialize animation channels as a `ushort[]` which saves on a lot of allocations. Analyze with VS profiler to see where allocations happen and check with BenchmarkDotNet.
-- Use StringPool for the localized text? https://learn.microsoft.com/en-us/dotnet/communitytoolkit/high-performance/stringpool
-- Try and reduce the number of allocations per frame as much as possible.
-- Move hard-coded data to config files, such as song tables, achievements, Mode7 camera values and Rayman 3 joypad mapping 
+- Move hard-coded data to config files, such as song tables, achievements, Mode7 camera values and Rayman 3 joypad mapping
+- Performance improvements:
+    - Change to structs:
+        - AnimationChannel ✔️
+        - Pointer
+        - Color
+        - FixedPointInt
+        - AffineMatrix
+        - CaptorEvent
+        - Action?
+    - Only load text banks for current language
+    - Profile as the game is running to check for remaining allocations, especially ones which happen each frame
 
 ## 🧪 Unit tests
 - Add tests for core engine functionality
