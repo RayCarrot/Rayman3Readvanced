@@ -21,7 +21,7 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
         - Color
         - FixedPointInt ✔️
         - AffineMatrix ✔️
-        - CaptorEvent
+        - CaptorEvent ✔️
         - Action?
     - Only load text banks for current language
     - Profile as the game is running to check for remaining allocations, especially ones which happen each frame
