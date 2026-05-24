@@ -622,7 +622,7 @@ public partial class MainWindowViewModel : ObservableObject
                                 x.AnimationIndex,
                                 x.Flags,
                                 x.MechModelType,
-                                MechModelParams = x.MechModel?.Params.Select(p => p.AsFloat)
+                                MechModelParams = x.MechModel?.Params.Select(p => p.ToFloat())
                             })
                         }, "Actors", $"{(ActorType)actor.Type}_{models.Count}.json");
                     }

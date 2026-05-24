@@ -37,13 +37,11 @@ public class AnimationBuilder
 
         AddChannel(AnimationChannelHelpers.CreateCustomAffineSpriteTextureChannel(xPosition, yPosition, tileIndex, (ushort)_affineMatrices.Count));
 
-        _affineMatrices.Add(new AffineMatrixResource
-        {
-            Pa = scaleX * MathHelpers.Cos256(rotation256),
-            Pb = scaleX * MathHelpers.Sin256(rotation256),
-            Pc = scaleY * -MathHelpers.Sin256(rotation256),
-            Pd = scaleY * MathHelpers.Cos256(rotation256)
-        });
+        _affineMatrices.Add(new AffineMatrixResource(
+            pa: scaleX * MathHelpers.Cos256(rotation256),
+            pb: scaleX * MathHelpers.Sin256(rotation256),
+            pc: scaleY * -MathHelpers.Sin256(rotation256),
+            pd: scaleY * MathHelpers.Cos256(rotation256)));
     }
 
     public void AddVulnerabilityBox(ChannelBox box)

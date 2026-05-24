@@ -19,8 +19,8 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
         - AnimationChannel ✔️
         - Pointer
         - Color
-        - FixedPointInt
-        - AffineMatrix
+        - FixedPointInt ✔️
+        - AffineMatrix ✔️
         - CaptorEvent
         - Action?
     - Only load text banks for current language
