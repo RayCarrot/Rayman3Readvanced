@@ -512,7 +512,7 @@ public class MechModel
         UpdateSpeedAction = Mode7_SetConstSpeedXY;
     }
 
-    public void Init(int type, FixedPointInt32[] mechParams)
+    public void Init(int type, Q16_16[] mechParams)
     {
         float[] floatParams = new float[mechParams?.Length ?? 0];
         for (int i = 0; i < floatParams.Length; i++)

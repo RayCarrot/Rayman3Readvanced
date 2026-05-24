@@ -36,9 +36,9 @@ public class ExportDebugMenu : DebugMenu
         // Vertices
         foreach (Vector3 vertex in geometryObject.Vertices)
             objWriter.WriteLine(String.Format("v {0} {1} {2}", 
-                vertex.X.AsFloat.ToString(CultureInfo.InvariantCulture),
-                vertex.Y.AsFloat.ToString(CultureInfo.InvariantCulture),
-                vertex.Z.AsFloat.ToString(CultureInfo.InvariantCulture)));
+                vertex.X.ToFloat().ToString(CultureInfo.InvariantCulture),
+                vertex.Y.ToFloat().ToString(CultureInfo.InvariantCulture),
+                vertex.Z.ToFloat().ToString(CultureInfo.InvariantCulture)));
 
         objWriter.WriteLine();
 

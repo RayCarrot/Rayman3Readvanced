@@ -1167,10 +1167,10 @@ public partial class MainWindowViewModel : ObservableObject
                                 if (channel.ObjectMode is OBJ_ATTR_ObjectMode.AFF or OBJ_ATTR_ObjectMode.AFF_DBL)
                                 {
                                     var matrix = anim.AffineMatrices.Matrices[channel.AffineMatrixIndex];
-                                    int pa = matrix.Pa.Value;
-                                    int pb = matrix.Pb.Value;
-                                    int pc = matrix.Pc.Value;
-                                    int pd = matrix.Pd.Value;
+                                    int pa = matrix.Pa.RawValue;
+                                    int pb = matrix.Pb.RawValue;
+                                    int pc = matrix.Pc.RawValue;
+                                    int pd = matrix.Pd.RawValue;
 
                                     bool doubleSize = channel.ObjectMode == OBJ_ATTR_ObjectMode.AFF_DBL;
 
