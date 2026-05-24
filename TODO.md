@@ -17,7 +17,6 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
 - Performance improvements:
     - Change to structs:
         - AnimationChannel ✔️
-        - Pointer
         - Color
         - FixedPointInt ✔️
         - AffineMatrix ✔️
