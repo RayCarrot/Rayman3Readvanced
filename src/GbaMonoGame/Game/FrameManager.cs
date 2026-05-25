@@ -27,6 +27,15 @@ public class FrameManager : IDisposable
         _resources.Clear();
     }
 
+    private void InvokeStepActions()
+    {
+        // NOTE: This has to be kept as a for loop since when we load the game it's done asynchronously, and we might
+        //       add an action to the list while we're iterating through it. It however doesn't matter for removing
+        //       actions since unloading the game is done synchronously.
+        for (int i = 0; i < _stepActions.Count; i++)
+            _stepActions[i]();
+    }
+
     /// <summary>
     /// Sets the next frame to be made active. This will go into effect at the start of the next game frame.
     /// </summary>
@@ -139,8 +148,7 @@ public class FrameManager : IDisposable
         CurrentFrame.Step();
 
         // Invoke custom step actions
-        foreach (Action action in _stepActions)
-            action();
+        InvokeStepActions();
 
         // Update the game time by one game frame
         GameTime.Update();
