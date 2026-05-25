@@ -239,7 +239,6 @@ public static class Gfx
         }
     }
 
-    // TODO: Show overlay icon when saving
     private static void DrawOverlays(GfxRenderer renderer)
     {
         for (int layer = 3; layer >= 0; layer--)
