@@ -4,7 +4,7 @@ using BinarySerializer.Ubisoft.GbaEngine;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
-public struct TimeAttackLevelInfo
+public class TimeAttackLevelInfo
 {
     [JsonConstructor]
     public TimeAttackLevelInfo(

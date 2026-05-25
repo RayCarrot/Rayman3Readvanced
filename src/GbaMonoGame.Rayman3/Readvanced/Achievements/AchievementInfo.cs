@@ -2,7 +2,7 @@
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
-public struct AchievementInfo
+public class AchievementInfo
 {
     public AchievementInfo(AchievementId id, bool isGold, string smallIconTexturePath, string bigIconTexturePath, string title, string description, Platform? exclusivePlatform = null)
     {
