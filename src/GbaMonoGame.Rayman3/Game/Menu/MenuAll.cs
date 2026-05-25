@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using BinarySerializer;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
@@ -293,39 +292,47 @@ public partial class MenuAll : Frame, IHasPlayfield
         }
     }
 
-    public static RGB555Color[] GetBackgroundPalette(int index)
+    public static Color[] GetBackgroundPalette(int index)
     {
-        RGB555Color[] colors = index switch
+        Color[] colors = index switch
         {
             0 =>
             [
-                new(0x25ee), new(0x8ba), new(0x1dae), new(0x1dae), new(0x2632), new(0x2211), new(0x21cf),
-                new(0x196b), new(0x154a), new(0x3695), new(0x2e54), new(0x198c), new(0x10e7), new(0x1509),
-                new(0x21f0), new(0x196c), new(0x1d8d), new(0x3f21)
+                ColorHelpers.FromRGB555(0x25ee), ColorHelpers.FromRGB555(0x8ba), ColorHelpers.FromRGB555(0x1dae), ColorHelpers.FromRGB555(0x1dae), 
+                ColorHelpers.FromRGB555(0x2632), ColorHelpers.FromRGB555(0x2211), ColorHelpers.FromRGB555(0x21cf), ColorHelpers.FromRGB555(0x196b),
+                ColorHelpers.FromRGB555(0x154a), ColorHelpers.FromRGB555(0x3695), ColorHelpers.FromRGB555(0x2e54), ColorHelpers.FromRGB555(0x198c),
+                ColorHelpers.FromRGB555(0x10e7), ColorHelpers.FromRGB555(0x1509), ColorHelpers.FromRGB555(0x21f0), ColorHelpers.FromRGB555(0x196c),
+                ColorHelpers.FromRGB555(0x1d8d), ColorHelpers.FromRGB555(0x3f21)
             ],
             1 =>
             [
-                new(0x2653), new(0x249d), new(0x1db2), new(0x1d91), new(0x2216), new(0x21f5), new(0x1dd3),
-                new(0x196f), new(0x154d), new(0x369a), new(0x2e58), new(0x1970), new(0x10e9), new(0x150b),
-                new(0x21f4), new(0x196f), new(0x1990), new(0x23a2)
+                ColorHelpers.FromRGB555(0x2653), ColorHelpers.FromRGB555(0x249d), ColorHelpers.FromRGB555(0x1db2), ColorHelpers.FromRGB555(0x1d91),
+                ColorHelpers.FromRGB555(0x2216), ColorHelpers.FromRGB555(0x21f5), ColorHelpers.FromRGB555(0x1dd3), ColorHelpers.FromRGB555(0x196f),
+                ColorHelpers.FromRGB555(0x154d), ColorHelpers.FromRGB555(0x369a), ColorHelpers.FromRGB555(0x2e58), ColorHelpers.FromRGB555(0x1970),
+                ColorHelpers.FromRGB555(0x10e9), ColorHelpers.FromRGB555(0x150b), ColorHelpers.FromRGB555(0x21f4), ColorHelpers.FromRGB555(0x196f),
+                ColorHelpers.FromRGB555(0x1990), ColorHelpers.FromRGB555(0x23a2)
             ],
             2 =>
             [
-                new(0x3f28), new(0x6568), new(0x3d4d), new(0x394c), new(0x4990), new(0x498f), new(0x416e),
-                new(0x310b), new(0x2d0a), new(0x5a34), new(0x55d2), new(0x352b), new(0x20a7), new(0x28e8),
-                new(0x456f), new(0x352b), new(0x392c), new(0x1d97)
+                ColorHelpers.FromRGB555(0x3f28), ColorHelpers.FromRGB555(0x6568), ColorHelpers.FromRGB555(0x3d4d), ColorHelpers.FromRGB555(0x394c),
+                ColorHelpers.FromRGB555(0x4990), ColorHelpers.FromRGB555(0x498f), ColorHelpers.FromRGB555(0x416e), ColorHelpers.FromRGB555(0x310b),
+                ColorHelpers.FromRGB555(0x2d0a), ColorHelpers.FromRGB555(0x5a34), ColorHelpers.FromRGB555(0x55d2), ColorHelpers.FromRGB555(0x352b),
+                ColorHelpers.FromRGB555(0x20a7), ColorHelpers.FromRGB555(0x28e8), ColorHelpers.FromRGB555(0x456f), ColorHelpers.FromRGB555(0x352b),
+                ColorHelpers.FromRGB555(0x392c), ColorHelpers.FromRGB555(0x1d97)
             ],
             3 =>
             [
-                new(0x29b2), new(0x645f), new(0x2111), new(0x2110), new(0x2955), new(0x2534), new(0x2532),
-                new(0x1cee), new(0x18cc), new(0x3df8), new(0x3197), new(0x1cef), new(0x14a9), new(0x18cb),
-                new(0x2533), new(0x1cee), new(0x1cef), new(0x7ca)
+                ColorHelpers.FromRGB555(0x29b2), ColorHelpers.FromRGB555(0x645f), ColorHelpers.FromRGB555(0x2111), ColorHelpers.FromRGB555(0x2110),
+                ColorHelpers.FromRGB555(0x2955), ColorHelpers.FromRGB555(0x2534), ColorHelpers.FromRGB555(0x2532), ColorHelpers.FromRGB555(0x1cee),
+                ColorHelpers.FromRGB555(0x18cc), ColorHelpers.FromRGB555(0x3df8), ColorHelpers.FromRGB555(0x3197), ColorHelpers.FromRGB555(0x1cef),
+                ColorHelpers.FromRGB555(0x14a9), ColorHelpers.FromRGB555(0x18cb), ColorHelpers.FromRGB555(0x2533), ColorHelpers.FromRGB555(0x1cee),
+                ColorHelpers.FromRGB555(0x1cef), ColorHelpers.FromRGB555(0x7ca)
             ],
             _ => throw new ArgumentOutOfRangeException(nameof(index), index, null)
         };
 
-        RGB555Color[] allColors = new RGB555Color[49];
-        Array.Fill(allColors, new RGB555Color(), 0, 31);
+        Color[] allColors = new Color[49];
+        Array.Fill(allColors, Color.Black, 0, 31);
         Array.Copy(colors, 0, allColors, 31, colors.Length);
         return allColors;
     }

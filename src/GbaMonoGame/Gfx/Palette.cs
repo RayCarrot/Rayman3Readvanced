@@ -7,7 +7,7 @@ public class Palette
 {
     public Palette(PaletteResource palette) : this(palette.Colors, palette.Offset) { }
 
-    public Palette(RGB555Color[] colors, Pointer cachePointer)
+    public Palette(SerializableColor[] colors, Pointer cachePointer)
     {
         CachePointer = cachePointer;
         Colors = new Color[colors.Length];

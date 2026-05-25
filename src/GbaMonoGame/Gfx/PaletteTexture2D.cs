@@ -12,7 +12,7 @@ public class PaletteTexture2D : Texture2D
 {
     public PaletteTexture2D(PaletteResource palette) : this(palette.Colors) { }
 
-    public PaletteTexture2D(IReadOnlyList<BaseColor> palette) : base(Engine.Assets.GraphicsDevice, TextureWidth, GetHeight(palette.Count))
+    public PaletteTexture2D(IReadOnlyList<SerializableColor> palette) : base(Engine.Assets.GraphicsDevice, TextureWidth, GetHeight(palette.Count))
     {
         Color[] texColors = new Color[Width * Height];
         

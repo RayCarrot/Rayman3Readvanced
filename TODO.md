@@ -14,16 +14,7 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
 ## 🧑‍💻 Code
 - Move hard-coded primitive values to constant fields.
 - Move hard-coded data to config files, such as song tables, achievements, Mode7 camera values and Rayman 3 joypad mapping
-- Performance improvements:
-    - Change to structs:
-        - AnimationChannel ✔️
-        - Color
-        - FixedPointInt ✔️
-        - AffineMatrix ✔️
-        - CaptorEvent ✔️
-        - Action?
-    - Only load text banks for current language
-    - Profile as the game is running to check for remaining allocations, especially ones which happen each frame
+- Profile as the game is running to check for remaining allocations, especially ones which happen each frame
 
 ## 🧪 Unit tests
 - Add tests for core engine functionality
@@ -41,6 +32,7 @@ However online multiplayer would be much more complicated. The game expects the 
 ## ⚙️ Options
 ### ⌚ Performance
 - Option to pre-load all textures in animations and tiles when initializing a new Frame instance to avoid lazy loading.
+- Options for if cache should be cleared when loading new frame? Or maybe not since it'd cause huge memory usage?
 
 ### ✨ Optional improvements
 - Extend backgrounds so that they can render in the modern widescreen resolution without scaling:
