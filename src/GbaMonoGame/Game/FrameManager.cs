@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime;
 using BinarySerializer.Ubisoft.GbaEngine;
 using Microsoft.Xna.Framework;
 using Action = System.Action;
@@ -97,14 +96,6 @@ public class FrameManager : IDisposable
 
                 // Dispose resources
                 DisposeResources();
-
-                // De-reference previous frame
-                CurrentFrame = null;
-
-                // Force clear garbage collection. This is a bit slow (around 15 ms in debug mode), but should help with
-                // memory usage and fragmentation for long play sessions.
-                GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                GC.Collect();
             }
 
             // Revert the rich presence to the default idle state (might get overriden when we initialize the new frame)
