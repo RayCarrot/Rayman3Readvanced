@@ -6,6 +6,12 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 
 public class SaveGameManager : ISaveGameManager
 {
+    public SaveGameManager()
+    {
+        Popup = new SavePopup();
+        Popup.Init();
+    }
+
     private const string SaveDirectoryName = "Saves";
     private const string TimeAttackGhostsDirectoryName = "Ghosts";
     
@@ -14,6 +20,8 @@ public class SaveGameManager : ISaveGameManager
     private const string AchievementsSaveFileName = "achievements";
     private const string TimeAttackSaveFileName = "timeattack";
     private const string TimeAttackGhostFileName = "ghost";
+
+    private SavePopup Popup { get; }
 
     private static PhysicalFile GetSlotFile(int index)
     {
@@ -55,6 +63,18 @@ public class SaveGameManager : ISaveGameManager
                 RecreateOnWrite = true,
             });
         }
+    }
+
+    private void ShowPopup()
+    {
+        if (Engine.Settings.Local.Display.ShowSavePopups)
+            Popup.Show();
+    }
+
+    public void Step()
+    {
+        Popup.Step();
+        Popup.Draw();
     }
 
     public bool SlotExists(int index)
@@ -102,6 +122,8 @@ public class SaveGameManager : ISaveGameManager
 
     public void SaveSlot(int index, ReadvancedSlot save)
     {
+        ShowPopup();
+
         try
         {
             PhysicalFile file = GetSlotFile(index);
@@ -122,6 +144,8 @@ public class SaveGameManager : ISaveGameManager
 
     public void DeleteSlot(int index)
     {
+        ShowPopup();
+
         try
         {
             PhysicalFile file = GetSlotFile(index);
@@ -208,6 +232,8 @@ public class SaveGameManager : ISaveGameManager
 
     public void SaveTimeAttackSave(TimeAttackSave save)
     {
+        ShowPopup();
+
         try
         {
             PhysicalFile file = GetTimeAttackFile();
@@ -253,6 +279,8 @@ public class SaveGameManager : ISaveGameManager
 
     public void SaveTimeAttackGhost(TimeAttackGhostSave save, MapId mapId)
     {
+        ShowPopup();
+
         try
         {
             PhysicalFile file = GetTimeAttackGhostFile(mapId);

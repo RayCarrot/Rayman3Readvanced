@@ -2,8 +2,8 @@
 
 using System.Text;
 
-string dir = args[0];
-string csBaseDir = args[1];
+string assetsDir = args[0];
+string baseDir = args[1];
 
 StringBuilder mgcb = new();
 mgcb.Append("""
@@ -26,11 +26,11 @@ mgcb.Append("""
             """);
 
 Dictionary<string, List<(string Name, string Path)>> assets = new();
-foreach (string filePath in Directory.GetFiles(dir, "*", SearchOption.AllDirectories))
+foreach (string filePath in Directory.GetFiles(assetsDir, "*", SearchOption.AllDirectories))
 {
     string fileName = Path.GetFileName(filePath);
     string fileDir = Path.GetDirectoryName(filePath) ?? String.Empty;
-    string relativeDir = fileDir.Length == dir.Length ? fileDir : fileDir[(dir.Length + 1)..];
+    string relativeDir = fileDir.Length == assetsDir.Length ? fileDir : fileDir[(assetsDir.Length + 1)..];
     string buildPath = Path.Combine(relativeDir, fileName).Replace('\\', '/');
 
     if (relativeDir.StartsWith("bin") || relativeDir.StartsWith("obj"))
@@ -74,33 +74,36 @@ foreach (string filePath in Directory.GetFiles(dir, "*", SearchOption.AllDirecto
 
     if (added)
     {
-        string csDir = csBaseDir.Length == 0 ? relativeDir : relativeDir[(csBaseDir.Length + 1)..];
+        string csDir = relativeDir[(baseDir.Length + 1)..];
         int separatorIndex = csDir.IndexOf('\\');
         if (separatorIndex != -1)
             csDir = csDir[..separatorIndex];
         if (!assets.ContainsKey(csDir))
             assets[csDir] = [];
-        assets[csDir].Add((Path.GetFileNameWithoutExtension(fileName), buildPath[..^fileExtension.Length]));
+        assets[csDir].Add((Path.GetFileNameWithoutExtension(fileName), buildPath[(baseDir.Length + 1)..^fileExtension.Length]));
     }
 }
 
 StringBuilder cs = new();
-cs.Append("""
+cs.Append($$"""
+          namespace {{baseDir}};
+          
           public static class Assets
           {
+              public const string BaseName = "{{baseDir}}";
           """);
 foreach (var kvp in assets)
 {
     cs.Append($$"""
-                  
+              
                   public static class {{kvp.Key}}
                   {
               """);
     foreach ((string name, string path) in kvp.Value)
     {
-        cs.Append($"""
+        cs.Append($$"""
                    
-                           public const string {name} = "{path}";
+                           public const string {{name}} = $"{BaseName}/{{path}}";
                    """);
     }
     cs.Append("""
@@ -113,5 +116,5 @@ cs.Append("""
           }
           """);
 
-File.WriteAllText("Assets.mgcb", mgcb.ToString());
-File.WriteAllText("Assets.cs", cs.ToString());
+File.WriteAllText(Path.Combine(assetsDir, "Assets.mgcb"), mgcb.ToString());
+File.WriteAllText(Path.Combine(assetsDir, "Assets.cs"), cs.ToString());

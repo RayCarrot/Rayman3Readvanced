@@ -287,6 +287,7 @@ public static class Rayman3
         TimeAttack = new TimeAttackManager();
 
         // Initialize services
+        Engine.FrameMngr.AddStepAction(Save.Step);
         Loc.SetLanguage(Engine.Settings.Local.Display.Language);
         Engine.FrameMngr.AddStepAction(Achievements.Step);
 
@@ -308,6 +309,8 @@ public static class Rayman3
     public static void UnInitGame()
     {
         // Uninitialize services
+        if (Save != null)
+            Engine.FrameMngr.RemoveStepAction(Save.Step);
         if (Achievements != null)
             Engine.FrameMngr.RemoveStepAction(Achievements.Step);
 

@@ -4,6 +4,8 @@ namespace GbaMonoGame.Rayman3.Tests;
 
 public class MockSaveGameManager : ISaveGameManager
 {
+    public void Step() { }
+
     public bool SlotExists(int index) => false;
     public ReadvancedSlot LoadSlot(int index) => null;
     public void SaveSlot(int index, ReadvancedSlot save) { }

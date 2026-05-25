@@ -2,6 +2,8 @@
 
 public interface ISaveGameManager
 {
+    void Step();
+
     bool SlotExists(int index);
     ReadvancedSlot LoadSlot(int index);
     void SaveSlot(int index, ReadvancedSlot save);

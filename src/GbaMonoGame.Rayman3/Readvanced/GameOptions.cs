@@ -125,6 +125,17 @@ public static class GameOptions
                     setData: data => Engine.Settings.Local.Display.DisableFlashingLights = data,
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
+                    text: "SHOW SAVE POPUPS",
+                    infoText: "Shows a popup in the bottom corner of the screen when the game has auto-saved.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true)
+                    ],
+                    getData: _ => Engine.Settings.Local.Display.ShowSavePopups,
+                    setData: data => Engine.Settings.Local.Display.ShowSavePopups = data,
+                    getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
                     text: "SHOW ACHIEVEMENT POPUPS",
                     infoText: "Shows a popup on the top of the screen when an achievement is unlocked.",
                     items:

@@ -134,6 +134,10 @@ public static class Assets
         public const string FogVertexShader = $"{BaseName}/Mode7/FogVertexShader";
         public const string Mode7WallSide = $"{BaseName}/Mode7/Mode7WallSide";
     }
+    public static class Overlay
+    {
+        public const string SaveIcon = $"{BaseName}/Overlay/SaveIcon";
+    }
     public static class TimeAttack
     {
         public const string BlankStarBig = $"{BaseName}/TimeAttack/BlankStarBig";
