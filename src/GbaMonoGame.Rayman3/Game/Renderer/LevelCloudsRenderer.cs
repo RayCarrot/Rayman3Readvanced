@@ -17,18 +17,21 @@ public class LevelCloudsRenderer : IScreenRenderer
         TextureHeight = texture.Height;
     }
 
+    // Cache to reduce allocations
+    private readonly float[] _scrollOffsets = new float[3];
+
     public Texture2D Texture { get; }
     private int[] Splits { get; }
     private int TextureWidth { get; }
     private int TextureHeight { get; }
 
-    // TODO: Reduce allocation! Check every level for other re-occurring allocations like these.
-    private float[] GetScrollOffsets() =>
-    [
-        -(GameTime.ElapsedFrames / 2f % 256),
-        -(GameTime.ElapsedFrames / 4f % 256),
-        -(GameTime.ElapsedFrames / 8f % 256),
-    ];
+    private float[] GetScrollOffsets()
+    {
+        _scrollOffsets[0] = -(GameTime.ElapsedFrames / 2f % 256);
+        _scrollOffsets[1] = -(GameTime.ElapsedFrames / 4f % 256);
+        _scrollOffsets[2] = -(GameTime.ElapsedFrames / 8f % 256);
+        return _scrollOffsets;
+    }
 
     public Vector2 GetSize(GfxScreen screen) => new(TextureWidth, TextureHeight);
     public Box GetRenderBox(GfxScreen screen) => new(GetScrollOffsets().Min(), 0, TextureWidth, TextureHeight);

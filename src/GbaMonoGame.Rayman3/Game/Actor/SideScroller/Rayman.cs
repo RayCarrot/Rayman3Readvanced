@@ -222,7 +222,7 @@ public sealed partial class Rayman : MovableActor
     public bool IsSliding => SlideType != null && Math.Abs(PreviousXSpeed) > 1.5f;
     public int PrevHitPoints { get; set; }
     public float PrevSpeedY { get; set; }
-    public int CameraTargetY { get; set; }
+    public object CameraTargetY { get; set; } // Always int, but keep object to avoid repeated boxing
     public ushort InvisibilityTimer { get; set; }
     public ushort ReverseControlsTimer { get; set; }
     public ushort MultiplayerBlueLumTimer { get; set; }
@@ -2370,7 +2370,7 @@ public sealed partial class Rayman : MovableActor
             if ((GameInfo.MapId == MapId.MarshAwakening2 || GameInfo.MapId == MapId.MissileRace2) && Speed.Y > 0)
             {
                 cam.SetHorizontalOffset(CameraOffset.Multiplayer);
-                CameraTargetY = 70;
+                CameraTargetY = CAM_TARGET_Y_DOWN;
                 cam.ProcessMessage(this, Message.Cam_FollowPositionY, CameraTargetY);
             }
 

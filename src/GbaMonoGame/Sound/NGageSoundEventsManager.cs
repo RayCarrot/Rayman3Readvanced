@@ -3,7 +3,6 @@ using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using BinarySerializer.Ubisoft.GbaEngine;
 using ImGuiNET;
@@ -57,6 +56,8 @@ public class NGageSoundEventsManager : SoundEventsManager
     private readonly FrozenDictionary<int, SoundEffect> _soundEffectsTable;
 
     private readonly Dictionary<int, SoundEffectInstance> _soundEffectInstances = new(); // On N-Gage this is max 64 songs, but we don't need that limit
+
+    private readonly List<SoundEffectInstance> _soundEffectInstancesToRemove = []; // Cache to reduce allocations
 
     private uint _musicVoiceHandle;
     private bool _doesCurrentMusicLoop;
@@ -380,7 +381,7 @@ public class NGageSoundEventsManager : SoundEventsManager
         _soloud.setVolume(_musicVoiceHandle, _currentMusicVolume * (_musicFadeVolume / SoundEngineInterface.MaxVolume) * Engine.Settings.Local.Sound.MusicVolume * MusicVolumeFactor);
 
         // Update sound effect volumes
-        foreach (SoundEffectInstance soundEffectInstance in _soundEffectInstances.Values.ToArray())
+        foreach (SoundEffectInstance soundEffectInstance in _soundEffectInstances.Values)
         {
             if (soundEffectInstance.IsValid)
             {
@@ -408,8 +409,16 @@ public class NGageSoundEventsManager : SoundEventsManager
             }
             else
             {
-                _soundEffectInstances.Remove(soundEffectInstance.SoundResourceId);
+                _soundEffectInstancesToRemove.Add(soundEffectInstance);
             }
+        }
+
+        // Remove stopped sound effects
+        if (_soundEffectInstancesToRemove.Count > 0)
+        {
+            foreach (SoundEffectInstance soundEffectInstance in _soundEffectInstancesToRemove)
+                _soundEffectInstances.Remove(soundEffectInstance.SoundResourceId);
+            _soundEffectInstancesToRemove.Clear();
         }
     }
 

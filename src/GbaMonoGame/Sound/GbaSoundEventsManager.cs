@@ -3,7 +3,6 @@ using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
 using BinarySerializer;
 using BinarySerializer.Ubisoft.GbaEngine;
@@ -48,6 +47,7 @@ public class GbaSoundEventsManager : SoundEventsManager
     private readonly SoundResource[] _soundResources;
     private readonly float[] _volumePerType;
     private readonly List<SongInstance> _songInstances; // On GBA this is max 4 songs, but we don't need that limit
+    private readonly List<SongInstance> _songInstancesIterationCopy = []; // Cache to reduce allocations
     private CallBackSet _callBacks;
     private bool _hasSetRandomSeed;
     private uint _randomSeed;
@@ -383,7 +383,11 @@ public class GbaSoundEventsManager : SoundEventsManager
 
     public override void RefreshEventSet()
     {
-        foreach (SongInstance song in _songInstances.ToArray())
+        // Copy to separate list so we can modify it while enumerating
+        _songInstancesIterationCopy.Clear();
+        _songInstancesIterationCopy.AddRange(_songInstances);
+
+        foreach (SongInstance song in _songInstancesIterationCopy)
         {
             // Do not refresh songs if they are paused in the engine since that's outside the game's code
             if (song.InEnginePaused)
@@ -397,7 +401,7 @@ public class GbaSoundEventsManager : SoundEventsManager
                 song.IsPlaying = false;
 
                 if (song.NextSoundEventId != -1)
-                    ProcessEvent(song.NextSoundEventId, song.ReadvancedObj, song.OriginalObj);
+                    ProcessEvent(song.NextSoundEventId, song.ReadvancedObj, song.OriginalObj); // TODO: Throws due to modifying enumeration
             }
             else if (!song.IsFadingOut)
             {
@@ -443,7 +447,11 @@ public class GbaSoundEventsManager : SoundEventsManager
 
     public override bool IsSongPlaying(short soundEventId)
     {
-        return _songInstances.Any(x => x.IsPlaying && x.EventId == soundEventId);
+        foreach (SongInstance x in _songInstances)
+            if (x.IsPlaying && x.EventId == soundEventId) 
+                return true;
+
+        return false;
     }
 
     public override void SetSoundPitch(short soundEventId, float pitch)

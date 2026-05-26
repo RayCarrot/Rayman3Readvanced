@@ -44,14 +44,35 @@ public class MechModel
             Mode7_SetSpeedY_SetAccelerationY_SetTargetSpeedY,
             Mode7_UseConstantSpeed
         ];
+
+        // Cache delegates to reduce allocations
+        _SetConstSpeedXY = SetConstSpeedXY;
+        _SetAcceleratedSpeedX = SetAcceleratedSpeedX;
+        _SetAcceleratedSpeedY = SetAcceleratedSpeedY;
+        _SetAcceleratedSpeedXY = SetAcceleratedSpeedXY;
+        _Mode7_SetConstSpeedXY = Mode7_SetConstSpeedXY;
+        _Mode7_SetAcceleratedSpeedX = Mode7_SetAcceleratedSpeedX;
+        _Mode7_SetAcceleratedSpeedY = Mode7_SetAcceleratedSpeedY;
+        _Mode7_SetAcceleratedSpeedXY = Mode7_SetAcceleratedSpeedXY;
     }
 
-    private readonly Action<float[], int>[] _initActions;
+    public delegate Vector2 UpdateSpeed(MovableActor actor);
+
+    private readonly Action<Q16_16[], int>[] _initActions;
+
+    private readonly UpdateSpeed _SetConstSpeedXY;
+    private readonly UpdateSpeed _SetAcceleratedSpeedX;
+    private readonly UpdateSpeed _SetAcceleratedSpeedY;
+    private readonly UpdateSpeed _SetAcceleratedSpeedXY;
+    private readonly UpdateSpeed _Mode7_SetConstSpeedXY;
+    private readonly UpdateSpeed _Mode7_SetAcceleratedSpeedX;
+    private readonly UpdateSpeed _Mode7_SetAcceleratedSpeedY;
+    private readonly UpdateSpeed _Mode7_SetAcceleratedSpeedXY;
 
     public Vector2 Speed { get; set; }
     public Vector2 Acceleration { get; set; }
     public Vector2 TargetSpeed { get; set; }
-    public Func<MovableActor, Vector2> UpdateSpeedAction { get; set; }
+    public UpdateSpeed UpdateSpeedAction { get; set; }
 
     private Vector2 SetConstSpeedXY(MovableActor actor)
     {
@@ -67,7 +88,7 @@ public class MechModel
             if (Speed.X <= TargetSpeed.X)
             {
                 Speed = Speed with { X = TargetSpeed.X };
-                UpdateSpeedAction = SetConstSpeedXY;
+                UpdateSpeedAction = _SetConstSpeedXY;
             }
         }
         else
@@ -75,7 +96,7 @@ public class MechModel
             if (Speed.X >= TargetSpeed.X)
             {
                 Speed = Speed with { X = TargetSpeed.X };
-                UpdateSpeedAction = SetConstSpeedXY;
+                UpdateSpeedAction = _SetConstSpeedXY;
             }
         }
 
@@ -91,7 +112,7 @@ public class MechModel
             if (Speed.Y <= TargetSpeed.Y)
             {
                 Speed = Speed with { Y = TargetSpeed.Y };
-                UpdateSpeedAction = SetConstSpeedXY;
+                UpdateSpeedAction = _SetConstSpeedXY;
             }
         }
         else
@@ -99,7 +120,7 @@ public class MechModel
             if (Speed.Y >= TargetSpeed.Y)
             {
                 Speed = Speed with { Y = TargetSpeed.Y };
-                UpdateSpeedAction = SetConstSpeedXY;
+                UpdateSpeedAction = _SetConstSpeedXY;
             }
         }
 
@@ -151,18 +172,18 @@ public class MechModel
         {
             if (stopY)
             {
-                UpdateSpeedAction = SetConstSpeedXY;
+                UpdateSpeedAction = _SetConstSpeedXY;
             }
             else
             {
-                UpdateSpeedAction = SetAcceleratedSpeedY;
+                UpdateSpeedAction = _SetAcceleratedSpeedY;
             }
         }
         else
         {
             if (stopY)
             {
-                UpdateSpeedAction = SetAcceleratedSpeedX;
+                UpdateSpeedAction = _SetAcceleratedSpeedX;
             }
         }
 
@@ -184,7 +205,7 @@ public class MechModel
             if (Speed.X <= TargetSpeed.X)
             {
                 Speed = Speed with { X = TargetSpeed.X };
-                UpdateSpeedAction = Mode7_SetConstSpeedXY;
+                UpdateSpeedAction = _Mode7_SetConstSpeedXY;
             }
         }
         else
@@ -192,7 +213,7 @@ public class MechModel
             if (Speed.X >= TargetSpeed.X)
             {
                 Speed = Speed with { X = TargetSpeed.X };
-                UpdateSpeedAction = Mode7_SetConstSpeedXY;
+                UpdateSpeedAction = _Mode7_SetConstSpeedXY;
             }
         }
 
@@ -209,7 +230,7 @@ public class MechModel
             if (Speed.Y <= TargetSpeed.Y)
             {
                 Speed = Speed with { Y = TargetSpeed.Y };
-                UpdateSpeedAction = Mode7_SetConstSpeedXY;
+                UpdateSpeedAction = _Mode7_SetConstSpeedXY;
             }
         }
         else
@@ -217,7 +238,7 @@ public class MechModel
             if (Speed.Y >= TargetSpeed.Y)
             {
                 Speed = Speed with { Y = TargetSpeed.Y };
-                UpdateSpeedAction = Mode7_SetConstSpeedXY;
+                UpdateSpeedAction = _Mode7_SetConstSpeedXY;
             }
         }
 
@@ -270,18 +291,18 @@ public class MechModel
         {
             if (stopY)
             {
-                UpdateSpeedAction = Mode7_SetConstSpeedXY;
+                UpdateSpeedAction = _Mode7_SetConstSpeedXY;
             }
             else
             {
-                UpdateSpeedAction = Mode7_SetAcceleratedSpeedY;
+                UpdateSpeedAction = _Mode7_SetAcceleratedSpeedY;
             }
         }
         else
         {
             if (stopY)
             {
-                UpdateSpeedAction = Mode7_SetAcceleratedSpeedX;
+                UpdateSpeedAction = _Mode7_SetAcceleratedSpeedX;
             }
         }
 
@@ -289,239 +310,230 @@ public class MechModel
         return MathHelpers.Rotate256(Speed, mode7Actor.Direction).FlipY();
     }
 
-    private void Reset(float[] mechParams, int offset)
+    private void Reset(Q16_16[] mechParams, int offset)
     {
         Reset();
     }
 
-    private void UseConstantSpeed(float[] mechParams, int offset)
+    private void UseConstantSpeed(Q16_16[] mechParams, int offset)
     {
-        UpdateSpeedAction = SetConstSpeedXY;
+        UpdateSpeedAction = _SetConstSpeedXY;
     }
 
-    private void None(float[] mechParams, int offset) { }
+    private void None(Q16_16[] mechParams, int offset) { }
 
-    private void SetSpeedXY(float[] mechParams, int offset)
+    private void SetSpeedXY(Q16_16[] mechParams, int offset)
     {
         SetSpeedX(mechParams, offset + 0);
         SetSpeedY(mechParams, offset + 1);
     }
 
-    private void SetSpeedX_ResetSpeedY(float[] mechParams, int offset)
+    private void SetSpeedX_ResetSpeedY(Q16_16[] mechParams, int offset)
     {
         SetSpeedX(mechParams, offset);
         Speed = Speed with { Y = 0 };
     }
 
-    private void SetSpeedY_ResetSpeedX(float[] mechParams, int offset)
+    private void SetSpeedY_ResetSpeedX(Q16_16[] mechParams, int offset)
     {
         SetSpeedY(mechParams, offset);
         Speed = Speed with { X = 0 };
     }
 
-    private void SetSpeedX(float[] mechParams, int offset)
+    private void SetSpeedX(Q16_16[] mechParams, int offset)
     {
         Speed = Speed with { X = mechParams[offset] };
-        UpdateSpeedAction = SetConstSpeedXY;
+        UpdateSpeedAction = _SetConstSpeedXY;
     }
 
-    private void SetSpeedY(float[] mechParams, int offset)
+    private void SetSpeedY(Q16_16[] mechParams, int offset)
     {
         Speed = Speed with { Y = mechParams[offset] };
-        UpdateSpeedAction = SetConstSpeedXY;
+        UpdateSpeedAction = _SetConstSpeedXY;
     }
 
-    private void SetAccelerationXY_SetTargetSpeedXY(float[] mechParams, int offset)
+    private void SetAccelerationXY_SetTargetSpeedXY(Q16_16[] mechParams, int offset)
     {
         SetAccelerationX_SetTargetSpeedX(mechParams, offset + 0);
         SetAccelerationY_SetTargetSpeedY(mechParams, offset + 2);
-        UpdateSpeedAction = SetAcceleratedSpeedXY;
+        UpdateSpeedAction = _SetAcceleratedSpeedXY;
     }
 
-    private void SetAccelerationX_SetTargetSpeedX_ResetSpeedY(float[] mechParams, int offset)
+    private void SetAccelerationX_SetTargetSpeedX_ResetSpeedY(Q16_16[] mechParams, int offset)
     {
         SetAccelerationX_SetTargetSpeedX(mechParams, offset);
         Speed = Speed with { Y = 0 };
     }
 
-    private void SetAccelerationY_SetTargetSpeedY_ResetSpeedX(float[] mechParams, int offset)
+    private void SetAccelerationY_SetTargetSpeedY_ResetSpeedX(Q16_16[] mechParams, int offset)
     {
         SetAccelerationY_SetTargetSpeedY(mechParams, offset);
         Speed = Speed with { X = 0 };
     }
 
-    private void SetAccelerationX_SetTargetSpeedX(float[] mechParams, int offset)
+    private void SetAccelerationX_SetTargetSpeedX(Q16_16[] mechParams, int offset)
     {
         Acceleration = Acceleration with { X = mechParams[offset + 0] };
         TargetSpeed = TargetSpeed with { X = mechParams[offset + 1] };
-        UpdateSpeedAction = SetAcceleratedSpeedX;
+        UpdateSpeedAction = _SetAcceleratedSpeedX;
     }
 
-    private void SetAccelerationY_SetTargetSpeedY(float[] mechParams, int offset)
+    private void SetAccelerationY_SetTargetSpeedY(Q16_16[] mechParams, int offset)
     {
         Acceleration = Acceleration with { Y = mechParams[offset + 0] };
         TargetSpeed = TargetSpeed with { Y = mechParams[offset + 1] };
-        UpdateSpeedAction = SetAcceleratedSpeedY;
+        UpdateSpeedAction = _SetAcceleratedSpeedY;
     }
 
-    private void SetSpeedXY_SetAccelerationXY_SetTargetSpeedXY(float[] mechParams, int offset)
+    private void SetSpeedXY_SetAccelerationXY_SetTargetSpeedXY(Q16_16[] mechParams, int offset)
     {
         SetSpeedX_SetAccelerationX_SetTargetSpeedX(mechParams, offset + 0);
         SetSpeedY_SetAccelerationY_SetTargetSpeedY(mechParams, offset + 3);
-        UpdateSpeedAction = SetAcceleratedSpeedXY;
+        UpdateSpeedAction = _SetAcceleratedSpeedXY;
     }
 
-    private void SetSpeedX_SetAccelerationX_SetTargetSpeedX_ResetSpeedY(float[] mechParams, int offset)
+    private void SetSpeedX_SetAccelerationX_SetTargetSpeedX_ResetSpeedY(Q16_16[] mechParams, int offset)
     {
         SetSpeedX_SetAccelerationX_SetTargetSpeedX(mechParams, offset);
         Speed = Speed with { Y = 0 };
     }
 
-    private void SetSpeedY_SetAccelerationY_SetTargetSpeedY_ResetSpeedX(float[] mechParams, int offset)
+    private void SetSpeedY_SetAccelerationY_SetTargetSpeedY_ResetSpeedX(Q16_16[] mechParams, int offset)
     {
         SetSpeedY_SetAccelerationY_SetTargetSpeedY(mechParams, offset);
         Speed = Speed with { X = 0 };
     }
 
-    private void SetSpeedX_SetAccelerationX_SetTargetSpeedX(float[] mechParams, int offset)
+    private void SetSpeedX_SetAccelerationX_SetTargetSpeedX(Q16_16[] mechParams, int offset)
     {
         Speed = Speed with { X = mechParams[offset + 0] };
         Acceleration = Acceleration with { X = mechParams[offset + 1] };
         TargetSpeed = TargetSpeed with { X = mechParams[offset + 2] };
-        UpdateSpeedAction = SetAcceleratedSpeedX;
+        UpdateSpeedAction = _SetAcceleratedSpeedX;
     }
 
-    private void SetSpeedY_SetAccelerationY_SetTargetSpeedY(float[] mechParams, int offset)
+    private void SetSpeedY_SetAccelerationY_SetTargetSpeedY(Q16_16[] mechParams, int offset)
     {
         Speed = Speed with { Y = mechParams[offset + 0] };
         Acceleration = Acceleration with { Y = mechParams[offset + 1] };
         TargetSpeed = TargetSpeed with { Y = mechParams[offset + 2] };
-        UpdateSpeedAction = SetAcceleratedSpeedY;
+        UpdateSpeedAction = _SetAcceleratedSpeedY;
     }
 
-    private void Mode7_SetSpeedXY(float[] mechParams, int offset)
+    private void Mode7_SetSpeedXY(Q16_16[] mechParams, int offset)
     {
         Speed = new Vector2(mechParams[offset + 0], mechParams[offset + 1]);
-        UpdateSpeedAction = Mode7_SetConstSpeedXY;
+        UpdateSpeedAction = _Mode7_SetConstSpeedXY;
     }
 
-    private void Mode7_SetSpeedX_ResetSpeedY(float[] mechParams, int offset)
+    private void Mode7_SetSpeedX_ResetSpeedY(Q16_16[] mechParams, int offset)
     {
         Speed = new Vector2(mechParams[offset], 0);
-        UpdateSpeedAction = Mode7_SetConstSpeedXY;
+        UpdateSpeedAction = _Mode7_SetConstSpeedXY;
     }
 
-    private void Mode7_SetSpeedY_ResetSpeedX(float[] mechParams, int offset)
+    private void Mode7_SetSpeedY_ResetSpeedX(Q16_16[] mechParams, int offset)
     {
         Speed = new Vector2(0, mechParams[offset]);
-        UpdateSpeedAction = Mode7_SetConstSpeedXY;
+        UpdateSpeedAction = _Mode7_SetConstSpeedXY;
     }
 
-    private void Mode7_SetSpeedX(float[] mechParams, int offset)
+    private void Mode7_SetSpeedX(Q16_16[] mechParams, int offset)
     {
         Speed = Speed with { X = mechParams[offset] };
-        UpdateSpeedAction = Mode7_SetConstSpeedXY;
+        UpdateSpeedAction = _Mode7_SetConstSpeedXY;
     }
 
-    private void Mode7_SetSpeedY(float[] mechParams, int offset)
+    private void Mode7_SetSpeedY(Q16_16[] mechParams, int offset)
     {
         Speed = Speed with { Y = mechParams[offset] };
-        UpdateSpeedAction = Mode7_SetConstSpeedXY;
+        UpdateSpeedAction = _Mode7_SetConstSpeedXY;
     }
 
-    private void Mode7_SetAccelerationXY_SetTargetSpeedXY(float[] mechParams, int offset)
+    private void Mode7_SetAccelerationXY_SetTargetSpeedXY(Q16_16[] mechParams, int offset)
     {
         Acceleration = new Vector2(mechParams[offset + 0], mechParams[offset + 1]);
         TargetSpeed = new Vector2(mechParams[offset + 2], mechParams[offset + 3]);
-        UpdateSpeedAction = Mode7_SetAcceleratedSpeedXY;
+        UpdateSpeedAction = _Mode7_SetAcceleratedSpeedXY;
     }
 
-    private void Mode7_SetAccelerationX_SetTargetSpeedX_ResetSpeedY(float[] mechParams, int offset)
+    private void Mode7_SetAccelerationX_SetTargetSpeedX_ResetSpeedY(Q16_16[] mechParams, int offset)
     {
         Acceleration = Acceleration with { X = mechParams[offset + 0] };
         TargetSpeed = TargetSpeed with { X = mechParams[offset + 1] };
         Speed = Speed with { Y = 0 };
-        UpdateSpeedAction = Mode7_SetAcceleratedSpeedX;
+        UpdateSpeedAction = _Mode7_SetAcceleratedSpeedX;
     }
 
-    private void Mode7_SetAccelerationY_SetTargetSpeedY_ResetSpeedX(float[] mechParams, int offset)
+    private void Mode7_SetAccelerationY_SetTargetSpeedY_ResetSpeedX(Q16_16[] mechParams, int offset)
     {
         Acceleration = Acceleration with { Y = mechParams[offset + 0] };
         TargetSpeed = TargetSpeed with { Y = mechParams[offset + 1] };
         Speed = Speed with { X = 0 };
-        UpdateSpeedAction = Mode7_SetAcceleratedSpeedY;
+        UpdateSpeedAction = _Mode7_SetAcceleratedSpeedY;
     }
 
-    private void Mode7_SetAccelerationX_SetTargetSpeedX(float[] mechParams, int offset)
+    private void Mode7_SetAccelerationX_SetTargetSpeedX(Q16_16[] mechParams, int offset)
     {
         Acceleration = Acceleration with { X = mechParams[offset + 0] };
         TargetSpeed = TargetSpeed with { X = mechParams[offset + 1] };
-        UpdateSpeedAction = Mode7_SetAcceleratedSpeedXY;
+        UpdateSpeedAction = _Mode7_SetAcceleratedSpeedXY;
     }
 
     // Unused due to bug mentioned above
-    private void Mode7_SetAccelerationY_SetTargetSpeedY(float[] mechParams, int offset)
+    private void Mode7_SetAccelerationY_SetTargetSpeedY(Q16_16[] mechParams, int offset)
     {
         Acceleration = Acceleration with { Y = mechParams[offset + 0] };
         TargetSpeed = TargetSpeed with { Y = mechParams[offset + 1] };
-        UpdateSpeedAction = Mode7_SetAcceleratedSpeedXY;
+        UpdateSpeedAction = _Mode7_SetAcceleratedSpeedXY;
     }
 
-    private void Mode7_SetSpeedXY_SetAccelerationXY_SetTargetSpeedXY(float[] mechParams, int offset)
+    private void Mode7_SetSpeedXY_SetAccelerationXY_SetTargetSpeedXY(Q16_16[] mechParams, int offset)
     {
         Speed = new Vector2(mechParams[offset + 0], mechParams[offset + 1]);
         Acceleration = new Vector2(mechParams[offset + 2], mechParams[offset + 3]);
         TargetSpeed = new Vector2(mechParams[offset + 4], mechParams[offset + 5]);
-        UpdateSpeedAction = Mode7_SetAcceleratedSpeedXY;
+        UpdateSpeedAction = _Mode7_SetAcceleratedSpeedXY;
     }
 
-    private void Mode7_SetSpeedX_SetAccelerationX_SetTargetSpeedX_ResetSpeedY(float[] mechParams, int offset)
+    private void Mode7_SetSpeedX_SetAccelerationX_SetTargetSpeedX_ResetSpeedY(Q16_16[] mechParams, int offset)
     {
         Speed = new Vector2(mechParams[offset + 0], 0);
         Acceleration = Acceleration with { X = mechParams[offset + 1] };
         TargetSpeed = TargetSpeed with { X = mechParams[offset + 2] };
-        UpdateSpeedAction = Mode7_SetAcceleratedSpeedX;
+        UpdateSpeedAction = _Mode7_SetAcceleratedSpeedX;
     }
 
-    private void Mode7_SetSpeedY_SetAccelerationY_SetTargetSpeedY_ResetSpeedX(float[] mechParams, int offset)
+    private void Mode7_SetSpeedY_SetAccelerationY_SetTargetSpeedY_ResetSpeedX(Q16_16[] mechParams, int offset)
     {
         Speed = new Vector2(0, mechParams[offset + 0]);
         Acceleration = Acceleration with { Y = mechParams[offset + 1] };
         TargetSpeed = TargetSpeed with { Y = mechParams[offset + 2] };
-        UpdateSpeedAction = Mode7_SetAcceleratedSpeedY;
+        UpdateSpeedAction = _Mode7_SetAcceleratedSpeedY;
     }
 
-    private void Mode7_SetSpeedX_SetAccelerationX_SetTargetSpeedX(float[] mechParams, int offset)
+    private void Mode7_SetSpeedX_SetAccelerationX_SetTargetSpeedX(Q16_16[] mechParams, int offset)
     {
         Speed = Speed with { X = mechParams[offset + 0] };
         Acceleration = Acceleration with { X = mechParams[offset + 1] };
         TargetSpeed = TargetSpeed with { X = mechParams[offset + 2] };
-        UpdateSpeedAction = Mode7_SetAcceleratedSpeedXY;
+        UpdateSpeedAction = _Mode7_SetAcceleratedSpeedXY;
     }
 
-    private void Mode7_SetSpeedY_SetAccelerationY_SetTargetSpeedY(float[] mechParams, int offset)
+    private void Mode7_SetSpeedY_SetAccelerationY_SetTargetSpeedY(Q16_16[] mechParams, int offset)
     {
         Speed = Speed with { Y = mechParams[offset + 0] };
         Acceleration = Acceleration with { Y = mechParams[offset + 1] };
         TargetSpeed = TargetSpeed with { Y = mechParams[offset + 2] };
-        UpdateSpeedAction = Mode7_SetAcceleratedSpeedXY;
+        UpdateSpeedAction = _Mode7_SetAcceleratedSpeedXY;
     }
 
-    private void Mode7_UseConstantSpeed(float[] mechParams, int offset)
+    private void Mode7_UseConstantSpeed(Q16_16[] mechParams, int offset)
     {
-        UpdateSpeedAction = Mode7_SetConstSpeedXY;
+        UpdateSpeedAction = _Mode7_SetConstSpeedXY;
     }
 
     public void Init(int type, Q16_16[] mechParams)
-    {
-        float[] floatParams = new float[mechParams?.Length ?? 0];
-        for (int i = 0; i < floatParams.Length; i++)
-            floatParams[i] = mechParams![i];
-
-        Init(type, floatParams);
-    }
-
-    public void Init(int type, float[] mechParams)
     {
         _initActions[type](mechParams, 0);
     }
@@ -536,6 +548,6 @@ public class MechModel
         Speed = Vector2.Zero;
         Acceleration = Vector2.Zero;
         TargetSpeed = Vector2.Zero;
-        UpdateSpeedAction = SetConstSpeedXY;
+        UpdateSpeedAction = _SetConstSpeedXY;
     }
 }

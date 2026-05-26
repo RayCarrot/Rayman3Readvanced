@@ -124,12 +124,12 @@ public partial class Rayman
                 (Speed.Y > 0 || State == _Fsm_Crouch) &&
                 State != _Fsm_Climb)
             {
-                CameraTargetY = 70;
+                CameraTargetY = CAM_TARGET_Y_DOWN;
                 cam.ProcessMessage(this, Message.Cam_FollowPositionY, CameraTargetY);
             }
             else if (IsDirectionalButtonPressed(Rayman3Input.ActorUp) && (State == _Fsm_Default || State == _Fsm_HangOnEdge))
             {
-                CameraTargetY = 160;
+                CameraTargetY = CAM_TARGET_Y_UP;
                 cam.ProcessMessage(this, Message.Cam_FollowPositionY, CameraTargetY);
             }
             else if (State == _Fsm_Helico && !IsSuperHelicoActive)
@@ -138,17 +138,17 @@ public partial class Rayman
             }
             else if (State == _Fsm_Swing)
             {
-                CameraTargetY = 65;
+                CameraTargetY = CAM_TARGET_Y_SWING;
                 cam.ProcessMessage(this, Message.Cam_FollowPositionY, CameraTargetY);
             }
             else if (State == _Fsm_Climb || State == _Fsm_SuperHelico)
             {
-                CameraTargetY = 112;
+                CameraTargetY = CAM_TARGET_Y_CENTER;
                 cam.ProcessMessage(this, Message.Cam_FollowPositionY, CameraTargetY);
             }
             else
             {
-                CameraTargetY = 120;
+                CameraTargetY = CAM_TARGET_Y_DEFAULT;
                 cam.ProcessMessage(this, Message.Cam_FollowPositionY, CameraTargetY);
             }
         }
@@ -844,7 +844,7 @@ public partial class Rayman
                 }
 
                 NextActionId = null;
-                CameraTargetY = 70;
+                CameraTargetY = CAM_TARGET_Y_DOWN;
 
                 if (IsLocalPlayer)
                     cam.ProcessMessage(this, Message.Cam_DoNotFollowPositionY, CameraTargetY);
@@ -861,7 +861,7 @@ public partial class Rayman
                 float speedY = Speed.Y;
 
                 if (IsLocalPlayer)
-                    cam.ProcessMessage(this, Message.Cam_DoNotFollowPositionY, 130);
+                    cam.ProcessMessage(this, Message.Cam_DoNotFollowPositionY, CAM_TARGET_Y_JUMP);
 
                 if (ActionId is Action.Jump_Right or Action.Jump_Left &&
                     Engine.MultiJoyPad.IsButtonReleased(InstanceId, Rayman3Input.ActorJump) && 
@@ -2288,7 +2288,7 @@ public partial class Rayman
                     return false;
 
                 if (IsLocalPlayer)
-                    Scene.Camera.ProcessMessage(this, Message.Cam_DoNotFollowPositionY, 130);
+                    Scene.Camera.ProcessMessage(this, Message.Cam_DoNotFollowPositionY, CAM_TARGET_Y_JUMP);
                 
                 if (AnimatedObject.CurrentFrame == 6 && CanAttackWithBody())
                     Attack(90, RaymanBody.RaymanBodyPartType.Torso, Vector2.Zero, false);
@@ -2324,7 +2324,7 @@ public partial class Rayman
 
             case FsmAction.Step:
                 if (IsLocalPlayer)
-                    Scene.Camera.ProcessMessage(this, Message.Cam_DoNotFollowPositionY, 130);
+                    Scene.Camera.ProcessMessage(this, Message.Cam_DoNotFollowPositionY, CAM_TARGET_Y_JUMP);
 
                 MechModel.Speed = MechModel.Speed with { Y = 4 };
 
@@ -4611,7 +4611,7 @@ public partial class Rayman
                 else if (Scene.GetPhysicalType(Position).IsSolid && ActionId is Action.Fall_Right or Action.Fall_Left)
                 {
                     ActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
-                    CameraTargetY = 120;
+                    CameraTargetY = CAM_TARGET_Y_DEFAULT;
                     Scene.Camera.ProcessMessage(this, Message.Cam_FollowPositionY, CameraTargetY);
                 }
                 else if (ActionId is Action.Land_Right or Action.Land_Left && IsActionFinished)
@@ -4667,7 +4667,7 @@ public partial class Rayman
                 else if (Scene.GetPhysicalType(Position).IsSolid && ActionId is Action.Fall_Right or Action.Fall_Left)
                 {
                     ActionId = IsFacingRight ? Action.Land_Right : Action.Land_Left;
-                    CameraTargetY = 120;
+                    CameraTargetY = CAM_TARGET_Y_DEFAULT;
                     Scene.Camera.ProcessMessage(this, Message.Cam_FollowPositionY, CameraTargetY);
                 }
                 else if (ActionId is Action.Land_Right or Action.Land_Left && IsActionFinished)

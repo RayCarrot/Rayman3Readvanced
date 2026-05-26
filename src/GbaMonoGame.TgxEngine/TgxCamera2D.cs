@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.TgxEngine;
@@ -36,7 +35,15 @@ public class TgxCamera2D : TgxCamera
                     RenderContext.Resolution != Rom.OriginalResolution)
                 {
                     // Determine if the cluster wraps horizontally. We assume that none of them wrap vertically.
-                    bool wrapX = cluster.Layers.Any(x => x.PixelWidth < cluster.Size.X);
+                    bool wrapX = false;
+                    foreach (TgxGameLayer x in cluster.Layers)
+                    {
+                        if (x.PixelWidth < cluster.Size.X)
+                        {
+                            wrapX = true;
+                            break;
+                        }
+                    }
 
                     if (wrapX)
                     {
