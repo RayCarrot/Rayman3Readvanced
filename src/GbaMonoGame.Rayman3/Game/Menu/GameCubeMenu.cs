@@ -7,7 +7,7 @@ using BinarySerializer;
 using BinarySerializer.Nintendo.GCN;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
-using GbaMonoGame.FsmSourceGenerator;
+using GbaMonoGame.SourceGenerators;
 using GbaMonoGame.Rayman3.Readvanced;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;

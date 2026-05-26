@@ -1,6 +1,6 @@
 ﻿using System;
 using GbaMonoGame.Engine2d;
-using GbaMonoGame.FsmSourceGenerator;
+using GbaMonoGame.SourceGenerators;
 using GbaMonoGame.TgxEngine;
 using ImGuiNET;
 using Microsoft.Xna.Framework.Input;

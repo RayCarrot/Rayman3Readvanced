@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
-using GbaMonoGame.FsmSourceGenerator;
+using GbaMonoGame.SourceGenerators;
 
 namespace GbaMonoGame.Rayman3;
 

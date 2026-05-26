@@ -17,8 +17,8 @@
     <Project Path="GbaMonoGame.AnimEngine/GbaMonoGame.AnimEngine.csproj" />
     <Project Path="GbaMonoGame.Editor/GbaMonoGame.Editor.csproj" />
     <Project Path="GbaMonoGame.Engine2d/GbaMonoGame.Engine2d.csproj" />
-    <Project Path="GbaMonoGame.FsmSourceGenerator/GbaMonoGame.FsmSourceGenerator.csproj" />
     <Project Path="GbaMonoGame.Native/GbaMonoGame.Native.csproj" />
+    <Project Path="GbaMonoGame.SourceGenerators/GbaMonoGame.SourceGenerators.csproj" />
     <Project Path="GbaMonoGame.TgxEngine/GbaMonoGame.TgxEngine.csproj" />
     <Project Path="GbaMonoGame/GbaMonoGame.csproj" />
   </Folder>

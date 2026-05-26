@@ -3,7 +3,7 @@ using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
-using GbaMonoGame.FsmSourceGenerator;
+using GbaMonoGame.SourceGenerators;
 using Action = System.Action;
 
 namespace GbaMonoGame.Rayman3.Readvanced;

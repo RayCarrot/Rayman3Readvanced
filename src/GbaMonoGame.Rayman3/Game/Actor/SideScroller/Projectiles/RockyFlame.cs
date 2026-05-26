@@ -1,6 +1,6 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.Engine2d;
-using GbaMonoGame.FsmSourceGenerator;
+using GbaMonoGame.SourceGenerators;
 
 namespace GbaMonoGame.Rayman3;
 

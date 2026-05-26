@@ -2,22 +2,20 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
-namespace GbaMonoGame.FsmSourceGenerator;
+namespace GbaMonoGame.SourceGenerators;
 
 [Generator]
-public class FsmFieldsGenerator : IIncrementalGenerator
+public abstract class BaseDelegateFieldsGenerator : IIncrementalGenerator
 {
-    private const string StateMethodPrefix = "Fsm_";
-    private const string AttributeNamespace = "GbaMonoGame.FsmSourceGenerator";
-    private const string AttributeName = "GenerateFsmFieldsAttribute";
-    private const string AttributeStr = $$"""
-                                        namespace {{AttributeNamespace}};
-                                        
-                                        [System.AttributeUsage(System.AttributeTargets.Class)]
-                                        public class {{AttributeName}} : System.Attribute { }
-                                        """;
 
-    private static FsmClass? GetFsmClass(SemanticModel semanticModel, SyntaxNode declarationSyntaxNode)
+    private const string AttributeNamespace = "GbaMonoGame.SourceGenerators";
+
+    protected abstract string GenerateMethodName { get; }
+    protected abstract string DelegateTypeName { get; }
+    protected abstract string AttributeName { get; }
+    protected abstract string StateMethodPrefix { get; }
+
+    private FsmClass? GetFsmClass(SemanticModel semanticModel, SyntaxNode declarationSyntaxNode)
     {
         // Get the semantic representation of the class
         if (semanticModel.GetDeclaredSymbol(declarationSyntaxNode) is not INamedTypeSymbol classSymbol)
@@ -40,7 +38,7 @@ public class FsmFieldsGenerator : IIncrementalGenerator
         return new FsmClass(classNamespace, className, stateMethodNames);
     }
 
-    private static string GenerateClassString(FsmClass fsmClass)
+    private string GenerateClassString(FsmClass fsmClass)
     {
         StringBuilder sb = new();
 
@@ -55,12 +53,12 @@ public class FsmFieldsGenerator : IIncrementalGenerator
         // Add fields for each state method
         sb.AppendLine();
         foreach (string methodName in fsmClass.StateMethodNames)
-            sb.AppendLine($"    public GbaMonoGame.FiniteStateMachine.Fsm _{methodName};");
+            sb.AppendLine($"    public {DelegateTypeName} _{methodName};");
 
         // Add the method to create the states
         sb.AppendLine();
-        sb.Append("""
-                      private void CreateGeneratedStates()
+        sb.Append($$"""
+                      private void {{GenerateMethodName}}()
                       {
                   """);
 
@@ -78,7 +76,7 @@ public class FsmFieldsGenerator : IIncrementalGenerator
         return sb.ToString();
     }
 
-    private static void Execute(FsmClass? fsmClass, SourceProductionContext context)
+    private void Execute(FsmClass? fsmClass, SourceProductionContext context)
     {
         if (fsmClass is { } fsmClassValue)
         {
@@ -90,20 +88,25 @@ public class FsmFieldsGenerator : IIncrementalGenerator
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         // Add the attribute
-        context.RegisterPostInitializationOutput(static ctx => 
-            ctx.AddSource($"{AttributeName}.g.cs", SourceText.From(AttributeStr, Encoding.UTF8)));
+        context.RegisterPostInitializationOutput(ctx => 
+            ctx.AddSource($"{AttributeName}.g.cs", SourceText.From($$"""
+                                                                     namespace {{AttributeNamespace}};
+
+                                                                     [System.AttributeUsage(System.AttributeTargets.Class)]
+                                                                     public class {{AttributeName}} : System.Attribute { }
+                                                                     """, Encoding.UTF8)));
 
         // Find the classes to generate the fields for
         IncrementalValuesProvider<FsmClass?> fsmClasses = context.SyntaxProvider.
             ForAttributeWithMetadataName(
                  $"{AttributeNamespace}.{AttributeName}",
                  predicate: static (_, _) => true,
-                 transform: static (ctx, _) => GetFsmClass(ctx.SemanticModel, ctx.TargetNode)).
+                 transform: (ctx, _) => GetFsmClass(ctx.SemanticModel, ctx.TargetNode)).
             Where(static m => m is not null);
 
         // Generate the partial class implementation for each found class
         context.RegisterSourceOutput(fsmClasses,
-            static (spc, source) => Execute(source, spc));
+            (spc, source) => Execute(source, spc));
     }
 
     private readonly record struct FsmClass(string ClassNamespace, string ClassName, List<string> StateMethodNames)
