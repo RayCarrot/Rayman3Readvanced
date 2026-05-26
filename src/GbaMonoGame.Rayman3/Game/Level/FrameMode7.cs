@@ -3,18 +3,22 @@ using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.Rayman3.Readvanced;
+using GbaMonoGame.SourceGenerators;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
 using Action = System.Action;
 
 namespace GbaMonoGame.Rayman3;
 
-public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
+[GenerateStepFields]
+public abstract partial class FrameMode7 : Frame, IHasScene, IHasPlayfield
 {
     #region Constructor
 
     protected FrameMode7(MapId mapId)
     {
+        CreateGeneratedSteps();
+
         GameInfo.SetNextMapId(mapId);
         PausedMachineId = 0;
     }
@@ -85,7 +89,7 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
             GameInfo.PlayLevelMusic();
 
         CanPause = false;
-        CurrentStepAction = Step_Normal;
+        CurrentStepAction = _Step_Normal;
     }
 
     protected void ExtendMap(MapTile[] repeatSection, int repeatSectionWidth, int repeatSectionHeight, int overrideMapWidth = -1, int overrideMapHeight = -1)
@@ -191,7 +195,7 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
 
     public bool IsPaused()
     {
-        return CurrentStepAction != Step_Normal;
+        return CurrentStepAction != _Step_Normal;
     }
 
     public override void Init()
@@ -249,7 +253,7 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
                 && CanPause)
             {
                 PendingAutoPause = false;
-                CurrentStepAction = Step_Pause_Init;
+                CurrentStepAction = _Step_Pause_Init;
                 GameTime.Pause();
 
                 if (Rayman3.TimeAttack.IsActive)
@@ -258,7 +262,7 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
 
             // Custom to transition to time attack score screen
             if (Rayman3.TimeAttack.Mode == TimeAttackMode.Score)
-                CurrentStepAction = Step_TimeAttackScore_Init;
+                CurrentStepAction = _Step_TimeAttackScore_Init;
 
             // Custom cheat dialog
             if (Engine.Settings.Active.Tweaks.AllowCheatMenu && Engine.JoyPad.IsButtonJustPressed(GbaInput.Select) &&
@@ -266,7 +270,7 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
             {
                 GameTime.Pause();
                 Scene.AddDialog(CheatDialog, true, false);
-                CurrentStepAction = Step_CheatDialog;
+                CurrentStepAction = _Step_CheatDialog;
             }
         }
         else
@@ -276,7 +280,7 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
                 if (Engine.MultiJoyPad.IsButtonJustPressed(id, Rayman3Input.Pause) && CanPause && !((UserInfoMultiMode7)UserInfo).IsGameOver)
                 {
                     PausedMachineId = id;
-                    CurrentStepAction = Step_Pause_Init;
+                    CurrentStepAction = _Step_Pause_Init;
                     break;
                 }
             }
@@ -299,7 +303,7 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
         Scene.ProcessDialogs();
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
-        CurrentStepAction = Step_Pause_AddDialog;
+        CurrentStepAction = _Step_Pause_AddDialog;
     }
 
     public void Step_Pause_AddDialog()
@@ -319,13 +323,13 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
         TimeAttackDialog?.Draw(Scene.AnimationPlayer);
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
-        CurrentStepAction = Step_Pause_Paused;
+        CurrentStepAction = _Step_Pause_Paused;
     }
 
     public void Step_Pause_Paused()
     {
         if (PauseDialog is PauseDialog { DrawStep: PauseDialogDrawStep.Hide } or ModernPauseDialog { DrawStep: PauseDialogDrawStep.Hide })
-            CurrentStepAction = Step_Pause_UnInit;
+            CurrentStepAction = _Step_Pause_UnInit;
 
         Scene.Step();
 
@@ -361,7 +365,7 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
 
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
-        CurrentStepAction = Step_Pause_Resume;
+        CurrentStepAction = _Step_Pause_Resume;
     }
 
     public void Step_Pause_Resume()
@@ -375,7 +379,7 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
         Scene.Step();
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
-        CurrentStepAction = Step_Normal;
+        CurrentStepAction = _Step_Normal;
         GameTime.Resume();
 
         if (Rayman3.TimeAttack.IsActive)
@@ -395,7 +399,7 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
         Scene.Step();
         Scene.AnimationPlayer.Execute();
 
-        CurrentStepAction = Step_TimeAttackScore_Score;
+        CurrentStepAction = _Step_TimeAttackScore_Score;
     }
 
     public void Step_TimeAttackScore_Score()
@@ -413,7 +417,7 @@ public abstract class FrameMode7 : Frame, IHasScene, IHasPlayfield
         {
             GameTime.Resume();
             Scene.RemoveLastDialog();
-            CurrentStepAction = Step_Normal;
+            CurrentStepAction = _Step_Normal;
         }
     }
 

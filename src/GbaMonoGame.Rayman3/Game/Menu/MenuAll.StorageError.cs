@@ -20,7 +20,7 @@ public partial class MenuAll
         if (TransitionValue >= 160)
         {
             TransitionValue = 0;
-            CurrentStepAction = Step_StorageError;
+            CurrentStepAction = _Step_StorageError;
         }
 
         DrawText(false);
@@ -29,7 +29,7 @@ public partial class MenuAll
     private void Step_StorageError()
     {
         if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
-            CurrentStepAction = Step_TransitionOutOfStorageError;
+            CurrentStepAction = _Step_TransitionOutOfStorageError;
 
         DrawText(true);
     }
@@ -46,7 +46,7 @@ public partial class MenuAll
         else if (TransitionValue >= Playfield.RenderContext.Resolution.Y + 60)
         {
             TransitionValue = 0;
-            CurrentStepAction = Step_InitializeTransitionToGameMode;
+            CurrentStepAction = _Step_InitializeTransitionToGameMode;
         }
 
         DrawText(false);

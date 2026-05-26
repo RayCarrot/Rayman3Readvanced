@@ -62,7 +62,7 @@ public class CavesOfBadDreams : FrameSideScroller
 
         // Don't show skull screen on GBA if transitioning or paused
         if (UseSinWaveEffect && 
-            (CircleTransitionMode != TransitionMode.None || CurrentStepAction != Step_Normal))
+            (CircleTransitionMode != TransitionMode.None || CurrentStepAction != _Step_Normal))
         {
             skullScreen.IsEnabled = false;
             return;

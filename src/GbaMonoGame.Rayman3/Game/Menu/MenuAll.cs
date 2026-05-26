@@ -5,18 +5,22 @@ using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Rayman3.Readvanced;
+using GbaMonoGame.SourceGenerators;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
 using Action = System.Action;
 
 namespace GbaMonoGame.Rayman3;
 
+[GenerateStepFields]
 public partial class MenuAll : Frame, IHasPlayfield
 {
     #region Constructor
 
     public MenuAll(InitialMenuPage initialPage)
     {
+        CreateGeneratedSteps();
+
         WheelRotation = 0;
         SelectedOption = 0;
         PrevSelectedOption = 0;
@@ -406,9 +410,9 @@ public partial class MenuAll : Frame, IHasPlayfield
         else if (StemMode == StemMode.Active)
         {
             int lineHeight;
-            if (CurrentStepAction == Step_SinglePlayer)
+            if (CurrentStepAction == _Step_SinglePlayer)
                 lineHeight = 18;
-            else if (CurrentStepAction == Step_MultiplayerMapSelection)
+            else if (CurrentStepAction == _Step_MultiplayerMapSelection)
                 lineHeight = 20;
             else
                 lineHeight = 16;
@@ -550,8 +554,8 @@ public partial class MenuAll : Frame, IHasPlayfield
 
                 CurrentStepAction = Rom.Platform switch
                 {
-                    Platform.GBA => Step_Language,
-                    Platform.NGage => Step_InitializeTransitionToLanguage,
+                    Platform.GBA => _Step_Language,
+                    Platform.NGage => _Step_InitializeTransitionToLanguage,
                     _ => throw new UnsupportedPlatformException()
                 };
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
@@ -559,12 +563,12 @@ public partial class MenuAll : Frame, IHasPlayfield
 
             case InitialMenuPage.GameMode:
                 Playfield.TileLayers[3].Screen.IsEnabled = false;
-                CurrentStepAction = Step_InitializeTransitionToGameMode;
+                CurrentStepAction = _Step_InitializeTransitionToGameMode;
                 break;
 
             case InitialMenuPage.Options:
                 Playfield.TileLayers[3].Screen.IsEnabled = false;
-                CurrentStepAction = Step_InitializeTransitionToOptions;
+                CurrentStepAction = _Step_InitializeTransitionToOptions;
                 break;
 
             case InitialMenuPage.Multiplayer:
@@ -572,8 +576,8 @@ public partial class MenuAll : Frame, IHasPlayfield
                 Playfield.TileLayers[3].Screen.IsEnabled = false;
                 CurrentStepAction = Rom.Platform switch
                 {
-                    Platform.GBA => Step_InitializeTransitionToMultiplayerPlayerSelection,
-                    Platform.NGage => Step_InitializeTransitionToMultiplayerTypeSelection,
+                    Platform.GBA => _Step_InitializeTransitionToMultiplayerPlayerSelection,
+                    Platform.NGage => _Step_InitializeTransitionToMultiplayerTypeSelection,
                     _ => throw new UnsupportedPlatformException()
                 };
                 break;
@@ -581,13 +585,13 @@ public partial class MenuAll : Frame, IHasPlayfield
             case InitialMenuPage.MultiplayerLostConnection:
                 IsLoadingMultiplayerMap = true;
                 Playfield.TileLayers[3].Screen.IsEnabled = false;
-                CurrentStepAction = Step_InitializeTransitionToMultiplayerLostConnection;
+                CurrentStepAction = _Step_InitializeTransitionToMultiplayerLostConnection;
                 break;
 
             // N-Gage exclusive
             case InitialMenuPage.NGage_FirstPage when Rom.Platform == Platform.NGage:
                 Playfield.TileLayers[3].Screen.IsEnabled = false;
-                CurrentStepAction = Step_InitializeFirstPage;
+                CurrentStepAction = _Step_InitializeFirstPage;
                 break;
 
             default:
@@ -647,7 +651,7 @@ public partial class MenuAll : Frame, IHasPlayfield
 
         CurrentStepAction();
 
-        if (Rom.Platform == Platform.NGage || CurrentStepAction != Step_Language)
+        if (Rom.Platform == Platform.NGage || CurrentStepAction != _Step_Language)
             ManageCursorAndStem();
 
         if (Rom.Platform == Platform.NGage)
@@ -669,10 +673,10 @@ public partial class MenuAll : Frame, IHasPlayfield
 
             AnimationPlayer.PlayFront(Anims.SelectSymbol);
 
-            if (CurrentStepAction != Step_GameMode &&
-                CurrentStepAction != Step_InitializeTransitionToGameMode &&
-                CurrentStepAction != Step_TransitionToGameMode &&
-                CurrentStepAction != Step_TransitionOutOfGameMode)
+            if (CurrentStepAction != _Step_GameMode &&
+                CurrentStepAction != _Step_InitializeTransitionToGameMode &&
+                CurrentStepAction != _Step_TransitionToGameMode &&
+                CurrentStepAction != _Step_TransitionOutOfGameMode)
             {
                 AnimationPlayer.PlayFront(Anims.BackSymbol);
             }
@@ -741,11 +745,11 @@ public partial class MenuAll : Frame, IHasPlayfield
         {
             NGageSetMenuText(35, true, null, 0);
             SetBackgroundPalette(2);
-            CurrentStepAction = Step_TransitionToStorageError;
+            CurrentStepAction = _Step_TransitionToStorageError;
         }
         else
         {
-            CurrentStepAction = Step_InitializeTransitionToGameMode;
+            CurrentStepAction = _Step_InitializeTransitionToGameMode;
         }
     }
 

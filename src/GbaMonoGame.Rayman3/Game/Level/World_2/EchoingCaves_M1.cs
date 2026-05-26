@@ -1,6 +1,7 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.SourceGenerators;
 using GbaMonoGame.TgxEngine;
 using Action = System.Action;
 
@@ -9,11 +10,15 @@ namespace GbaMonoGame.Rayman3;
 // NOTE: In the original game it calls message Cam_SetPosition (1062) on the camera instead of Cam_Lock (1090) like we do. The reason the
 //       camera doesn't move back to Rayman in the original game is because Rayman's screen position doesn't update when he isn't framed.
 //       However, we update the screen positions regardless, and also allow you to play in any resolution, so we need to make sure it locks.
-public class EchoingCaves_M1 : FrameSideScroller
+[GenerateStepFields]
+public partial class EchoingCaves_M1 : FrameSideScroller
 {
     #region Constructor
 
-    public EchoingCaves_M1(MapId mapId) : base(mapId) { }
+    public EchoingCaves_M1(MapId mapId) : base(mapId)
+    {
+        CreateGeneratedSteps();
+    }
 
     #endregion
 
@@ -104,13 +109,13 @@ public class EchoingCaves_M1 : FrameSideScroller
             UserInfo.SwitchBar.Switches.CurrentAnimation = 4;
             UserInfo.SwitchBar.ActivatedSwitches = 4;
 
-            CurrentCutsceneStepAction = Step_Cutscene_Init;
+            CurrentCutsceneStepAction = _Step_Cutscene_Init;
             Timer = 0;
         }
         else
         {
             UserInfo.SwitchBar.MoveIn();
-            CurrentCutsceneStepAction = Step_Cutscene_Complete;
+            CurrentCutsceneStepAction = _Step_Cutscene_Complete;
         }
 
         ShouldInitCutscene = false;
@@ -157,7 +162,7 @@ public class EchoingCaves_M1 : FrameSideScroller
         // Finished
         else
         {
-            CurrentCutsceneStepAction = Step_Cutscene_ShowObject;
+            CurrentCutsceneStepAction = _Step_Cutscene_ShowObject;
             TransitionsFX.FadeOutInit(2);
             CameraTargetIndex = 1;
             Timer = 0;
@@ -181,7 +186,7 @@ public class EchoingCaves_M1 : FrameSideScroller
 
         Scene.Camera.ProcessMessage(this, Message.Cam_Lock, pos);
 
-        CurrentCutsceneStepAction = Step_Cutscene_AnimateObject;
+        CurrentCutsceneStepAction = _Step_Cutscene_AnimateObject;
         TransitionsFX.FadeInInit(2);
     }
 
@@ -193,7 +198,7 @@ public class EchoingCaves_M1 : FrameSideScroller
         if (TransitionsFX.IsFadingIn)
             return;
 
-        CurrentCutsceneStepAction = Step_Cutscene_Finish;
+        CurrentCutsceneStepAction = _Step_Cutscene_Finish;
         Timer = 0;
 
         if (CameraTargetIndex == 0)
@@ -249,12 +254,12 @@ public class EchoingCaves_M1 : FrameSideScroller
 
             if (CameraTargetIndex <= 5)
             {
-                CurrentCutsceneStepAction = Step_Cutscene_ShowObject;
+                CurrentCutsceneStepAction = _Step_Cutscene_ShowObject;
                 TransitionsFX.FadeOutInit(2);
             }
             else
             {
-                CurrentCutsceneStepAction = Step_Cutscene_Complete;
+                CurrentCutsceneStepAction = _Step_Cutscene_Complete;
                 Scene.Camera.ProcessMessage(this, Message.Cam_MoveToLinkedObject, false);
                 CanPause = true;
             }

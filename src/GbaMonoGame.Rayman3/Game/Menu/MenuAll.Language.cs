@@ -32,7 +32,7 @@ public partial class MenuAll
     // N-Gage exclusive
     private void Step_InitializeTransitionToLanguage()
     {
-        CurrentStepAction = Step_TransitionToLanguage;
+        CurrentStepAction = _Step_TransitionToLanguage;
         SetBackgroundPalette(1);
         SelectOption(Rayman3.Loc.LanguageId, false);
         Anims.LanguageList.CurrentAnimation = LanguagesBaseAnimation + SelectedOption;
@@ -54,7 +54,7 @@ public partial class MenuAll
         if (TransitionValue >= 160)
         {
             TransitionValue = 0;
-            CurrentStepAction = Step_Language;
+            CurrentStepAction = _Step_Language;
         }
 
         AnimationPlayer.Play(Anims.LanguageList);
@@ -102,7 +102,7 @@ public partial class MenuAll
             }
             else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuConfirm))
             {
-                CurrentStepAction = Step_TransitionOutOfLanguage;
+                CurrentStepAction = _Step_TransitionOutOfLanguage;
 
                 if (Rom.Platform == Platform.GBA)
                 {
@@ -163,7 +163,7 @@ public partial class MenuAll
             }
             else if (Rom.Platform == Platform.NGage && Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
             {
-                CurrentStepAction = Step_TransitionOutOfLanguage;
+                CurrentStepAction = _Step_TransitionOutOfLanguage;
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                 TransitionValue = 0;
                 SelectedOption = 0;
@@ -205,7 +205,7 @@ public partial class MenuAll
             if (TransitionValue < -207)
             {
                 TransitionValue = 0;
-                CurrentStepAction = Step_GameMode;
+                CurrentStepAction = _Step_GameMode;
             }
             else
             {
@@ -224,8 +224,8 @@ public partial class MenuAll
             else if (TransitionValue >= Playfield.RenderContext.Resolution.Y + 60)
             {
                 TransitionValue = 0;
-                NextStepAction = Step_InitializeTransitionToOptions;
-                CurrentStepAction = Step_InitializeTransitionToOptions;
+                NextStepAction = _Step_InitializeTransitionToOptions;
+                CurrentStepAction = _Step_InitializeTransitionToOptions;
             }
 
             AnimationPlayer.Play(Anims.LanguageList);

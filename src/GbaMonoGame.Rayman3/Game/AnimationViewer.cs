@@ -3,6 +3,7 @@ using System.Linq;
 using BinarySerializer.Nintendo.GBA;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
+using GbaMonoGame.SourceGenerators;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
 using Action = System.Action;
@@ -10,8 +11,18 @@ using Action = System.Action;
 namespace GbaMonoGame.Rayman3;
 
 // Custom Frame class for viewing animations
-public class AnimationViewer : Frame
+[GenerateStepFields]
+public partial class AnimationViewer : Frame
 {
+    #region Constructor
+
+    public AnimationViewer()
+    {
+        CreateGeneratedSteps();
+    }
+
+    #endregion
+
     #region Public Properties
 
     public Action CurrentStepAction { get; set; }
@@ -38,7 +49,7 @@ public class AnimationViewer : Frame
         int resourcesCount = Rom.Loader.GetSettings().RootResourceTable.Count;
         SetSelectionText($"Resource {SelectedResourceIndex}/{resourcesCount - 1} ({GetCurrentResourceType().Name})");
 
-        CurrentStepAction = Step_SelectResource;
+        CurrentStepAction = _Step_SelectResource;
     }
 
     private void InitSelectActor()
@@ -54,7 +65,7 @@ public class AnimationViewer : Frame
 
         SetSelectionText($"Actor #{Actors[SelectedActorIndex].Type} ({(ActorType)Actors[SelectedActorIndex].Type})");
 
-        CurrentStepAction = Step_SelectActor;
+        CurrentStepAction = _Step_SelectActor;
     }
 
     private void InitSelectAnimation()
@@ -82,7 +93,7 @@ public class AnimationViewer : Frame
         int animationsCount = Animation.Resource.AnimationsCount;
         SetSelectionText($"Animation {SelectedAnimationIndex}/{animationsCount - 1}");
 
-        CurrentStepAction = Step_SelectAnimation;
+        CurrentStepAction = _Step_SelectAnimation;
     }
 
     private void SetSelectionText(string text)

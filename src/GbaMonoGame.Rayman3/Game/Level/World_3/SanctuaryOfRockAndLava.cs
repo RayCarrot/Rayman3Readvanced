@@ -48,7 +48,7 @@ public class SanctuaryOfRockAndLava : FrameSideScroller
             
             lavaLayer.Screen.Offset = lavaLayer.Screen.Offset with { Y = camPos.Y * MathHelpers.FromFixedPoint(0x7332) };
 
-            if (CircleTransitionMode == TransitionMode.None && CurrentStepAction == Step_Normal)
+            if (CircleTransitionMode == TransitionMode.None && CurrentStepAction == _Step_Normal)
                 ((SanctuaryLavaRenderer)lavaLayer.Screen.Renderer).SinValue++;
         }
 

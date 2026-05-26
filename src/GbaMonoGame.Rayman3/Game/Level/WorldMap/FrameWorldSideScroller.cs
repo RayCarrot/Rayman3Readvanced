@@ -2,17 +2,21 @@
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.Rayman3.Readvanced;
+using GbaMonoGame.SourceGenerators;
 using GbaMonoGame.TgxEngine;
 using Action = System.Action;
 
 namespace GbaMonoGame.Rayman3;
 
-public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
+[GenerateStepFields]
+public abstract partial class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
 {
     #region Constructor
 
     protected FrameWorldSideScroller(MapId mapId)
     {
+        CreateGeneratedSteps();
+
         GameInfo.SetNextMapId(mapId);
     }
 
@@ -83,7 +87,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
             GameInfo.PlayLevelMusic();
 
         BlockPause = false;
-        CurrentStepAction = Step_Normal;
+        CurrentStepAction = _Step_Normal;
     }
 
     public override void UnInit()
@@ -122,7 +126,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
             !BlockPause)
         {
             PendingAutoPause = false;
-            CurrentStepAction = Step_Pause_Init;
+            CurrentStepAction = _Step_Pause_Init;
             GameTime.Pause();
         }
 
@@ -131,7 +135,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
         {
             GameTime.Pause();
             Scene.AddDialog(CheatDialog, true, false);
-            CurrentStepAction = Step_CheatDialog;
+            CurrentStepAction = _Step_CheatDialog;
         }
     }
 
@@ -152,7 +156,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
 
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
-        CurrentStepAction = Step_Pause_AddDialog;
+        CurrentStepAction = _Step_Pause_AddDialog;
     }
 
     public void Step_Pause_AddDialog()
@@ -166,13 +170,13 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
         UserInfo.Draw(Scene.AnimationPlayer);
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
-        CurrentStepAction = Step_Pause_Paused;
+        CurrentStepAction = _Step_Pause_Paused;
     }
 
     public void Step_Pause_Paused()
     {
         if (PauseDialog is PauseDialog { DrawStep: PauseDialogDrawStep.Hide } or ModernPauseDialog { DrawStep: PauseDialogDrawStep.Hide })
-            CurrentStepAction = Step_Pause_UnInit;
+            CurrentStepAction = _Step_Pause_UnInit;
 
         Scene.Step();
 
@@ -205,7 +209,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
 
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
-        CurrentStepAction = Step_Pause_Resume;
+        CurrentStepAction = _Step_Pause_Resume;
     }
 
     public void Step_Pause_Resume()
@@ -225,7 +229,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
         // NOTE: Normally only in the N-Gage version
         BlockAutoPause = false;
 
-        CurrentStepAction = Step_Normal;
+        CurrentStepAction = _Step_Normal;
         GameTime.Resume();
     }
 
@@ -238,7 +242,7 @@ public abstract class FrameWorldSideScroller : Frame, IHasScene, IHasPlayfield
         {
             GameTime.Resume();
             Scene.RemoveLastDialog();
-            CurrentStepAction = Step_Normal;
+            CurrentStepAction = _Step_Normal;
         }
     }
 

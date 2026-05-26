@@ -1,18 +1,22 @@
 ﻿using System;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
+using GbaMonoGame.SourceGenerators;
 using GbaMonoGame.TgxEngine;
 using Action = System.Action;
 
 namespace GbaMonoGame.Rayman3;
 
 // Original name: Cheat
-public class LevelSelect : Frame
+[GenerateStepFields]
+public partial class LevelSelect : Frame
 {
     #region Constructor
 
     public LevelSelect()
     {
+        CreateGeneratedSteps();
+
         SelectedWorldIndex = 0;
         SelectedLevelIndex = 0;
         SelectedMapId = MapId.WoodLight_M1;
@@ -154,7 +158,7 @@ public class LevelSelect : Frame
         Rows[0].Text = "Slot #1";
         SelectedSaveSlotIndex = 0;
         SelectedRow = 0;
-        CurrentStepAction = Step_SelectSaveSlot;
+        CurrentStepAction = _Step_SelectSaveSlot;
     }
 
     private void InitSelectLanguage()
@@ -162,7 +166,7 @@ public class LevelSelect : Frame
         Header.Text = "Select a language:";
         Rows[0].Text = "English";
         SelectedLanguageIndex = 0;
-        CurrentStepAction = Step_SelectLanguage;
+        CurrentStepAction = _Step_SelectLanguage;
     }
 
     private void InitSelectStartingLevel()
@@ -178,7 +182,7 @@ public class LevelSelect : Frame
         Rows[2].Text = "Unlock Lums: true";
         Rows[3].Text = "Unlock Cages: true";
         SetMapText();
-        CurrentStepAction = Step_SelectStartingLevel;
+        CurrentStepAction = _Step_SelectStartingLevel;
     }
 
     private void SetMapText()

@@ -34,7 +34,7 @@ public class ThePrecipice_M2 : FrameSideScroller
         GfxScreen rainScreen = Gfx.GetScreen(3);
 
         // Don't show rain if paused
-        if (CurrentStepAction != Step_Normal)
+        if (CurrentStepAction != _Step_Normal)
         {
             rainScreen.IsEnabled = false;
             return;

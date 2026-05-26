@@ -3,6 +3,7 @@ using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Rayman3.Readvanced;
+using GbaMonoGame.SourceGenerators;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,8 +11,18 @@ using Action = System.Action;
 
 namespace GbaMonoGame.Rayman3;
 
-public class Intro : Frame, IHasPlayfield
+[GenerateStepFields]
+public partial class Intro : Frame, IHasPlayfield
 {
+    #region Constructor
+
+    public Intro()
+    {
+        CreateGeneratedSteps();
+    }
+
+    #endregion
+
     #region Constant Fields
 
     private const int SkyTileLayerId = 0;
@@ -269,7 +280,7 @@ public class Intro : Frame, IHasPlayfield
 
         if (PaletteFadeValue == 0)
         {
-            CurrentStepAction = Step_Skip_1;
+            CurrentStepAction = _Step_Skip_1;
             SkippedTimer = 0;
         }
     }
@@ -409,7 +420,7 @@ public class Intro : Frame, IHasPlayfield
 
         Gfx.FadeControl = FadeControl.None;
 
-        CurrentStepAction = Step_1;
+        CurrentStepAction = _Step_1;
 
         AlphaTimer = 0;
         Timer = 0;
@@ -472,7 +483,7 @@ public class Intro : Frame, IHasPlayfield
             if (Timer > 60 || Rom.Platform == Platform.NGage)
             {
                 Timer = 0;
-                CurrentStepAction = Step_2;
+                CurrentStepAction = _Step_2;
 
                 Playfield.TileLayers[SkyTileLayerId].Screen.BlendMode = BlendMode.AlphaBlend;
                 Playfield.TileLayers[SkyTileLayerId].Screen.Alpha = AlphaCoefficient.None;
@@ -483,7 +494,7 @@ public class Intro : Frame, IHasPlayfield
         }
         else if (Rom.Platform == Platform.NGage)
         {
-            CurrentStepAction = Step_2;
+            CurrentStepAction = _Step_2;
         }
         else
         {
@@ -500,7 +511,7 @@ public class Intro : Frame, IHasPlayfield
             if (Timer >= 68)
             {
                 Timer = 0;
-                CurrentStepAction = Step_3;
+                CurrentStepAction = _Step_3;
 
                 Playfield.TileLayers[SkyTileLayerId].Screen.BlendMode = BlendMode.None;
                 Playfield.TileLayers[UbisoftLogoTileLayerId].Screen.BlendMode = BlendMode.AlphaBlend;
@@ -513,7 +524,7 @@ public class Intro : Frame, IHasPlayfield
         }
         else if (Rom.Platform == Platform.NGage)
         {
-            CurrentStepAction = Step_3;
+            CurrentStepAction = _Step_3;
         }
         else
         {
@@ -529,7 +540,7 @@ public class Intro : Frame, IHasPlayfield
         {
             Timer = 0;
             AlphaTimer = 0;
-            CurrentStepAction = Step_4;
+            CurrentStepAction = _Step_4;
 
             Playfield.TileLayers[UbisoftLogoTileLayerId].Screen.BlendMode = BlendMode.None;
             Playfield.TileLayers[CloudsTileLayerId].Screen.BlendMode = BlendMode.AlphaBlend;
@@ -621,7 +632,7 @@ public class Intro : Frame, IHasPlayfield
         if (IsSkipping)
             Skip();
         else if (mainCluster.IsOnLimit(Edge.Bottom))
-            CurrentStepAction = Step_5;
+            CurrentStepAction = _Step_5;
     }
 
     private void Step_5()
@@ -632,7 +643,7 @@ public class Intro : Frame, IHasPlayfield
             {
                 BlackLumAndLogoObj.CurrentAnimation = 8;
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__raytheme__After__sadslide);
-                CurrentStepAction = Step_6;
+                CurrentStepAction = _Step_6;
             }
             else
             {
@@ -687,7 +698,7 @@ public class Intro : Frame, IHasPlayfield
         }
         else if (SkippedTimer == 20)
         {
-            CurrentStepAction = Step_Skip_2;
+            CurrentStepAction = _Step_Skip_2;
         }
     }
 
@@ -707,7 +718,7 @@ public class Intro : Frame, IHasPlayfield
         }
         else if (PaletteFadeValue > PaletteFadeMaxValue)
         {
-            CurrentStepAction = Step_6;
+            CurrentStepAction = _Step_6;
         }
 
         if ((GameTime.ElapsedFrames & 0x10) != 0)

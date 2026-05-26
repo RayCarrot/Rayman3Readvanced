@@ -68,7 +68,7 @@ public class EchoingCaves_M2 : FrameSideScroller
         Scene.AnimationPlayer.Execute();
 
         GameInfo.PlayLevelMusic();
-        CurrentStepAction = Step_Normal;
+        CurrentStepAction = _Step_Normal;
     }
 
     public override void Init()
@@ -100,7 +100,7 @@ public class EchoingCaves_M2 : FrameSideScroller
         GfxScreen bgScreen = Gfx.GetScreen(0);
 
         // Don't show lightning if paused
-        if (CurrentStepAction != Step_Normal)
+        if (CurrentStepAction != _Step_Normal)
         {
             bgScreen.IsEnabled = true;
             lightningScreen.IsEnabled = false;

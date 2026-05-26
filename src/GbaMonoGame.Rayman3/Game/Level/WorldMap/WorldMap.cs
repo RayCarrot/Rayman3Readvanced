@@ -5,6 +5,7 @@ using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.Rayman3.Readvanced;
+using GbaMonoGame.SourceGenerators;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
 using Action = System.Action;
@@ -12,12 +13,15 @@ using Vector3 = Microsoft.Xna.Framework.Vector3;
 
 namespace GbaMonoGame.Rayman3;
 
-public class WorldMap : Frame, IHasScene, IHasPlayfield
+[GenerateStepFields]
+public partial class WorldMap : Frame, IHasScene, IHasPlayfield
 {
     #region Constructor
 
     public WorldMap(MapId mapId)
     {
+        CreateGeneratedSteps();
+
         GameInfo.SetNextMapId(mapId);
 
         CurrentMovement = WorldMapMovement.None;
@@ -664,7 +668,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             Scene.RemoveLastDialog();
         Scene.AnimationPlayer.Clear();
 
-        CurrentExStepAction = StepEx_EnterWorld;
+        CurrentExStepAction = _Step_Ex_EnterWorld;
     }
 
     private void SelectGameCube()
@@ -683,7 +687,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         Timer = 0;
         CurrentMovement = WorldMapMovement.None;
         WorldId = WorldId.Special;
-        CurrentExStepAction = StepEx_EnterGameCubeMenu;
+        CurrentExStepAction = _Step_Ex_EnterGameCubeMenu;
     }
 
     #endregion
@@ -825,21 +829,21 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         if (GameInfo.PersistentInfo.UnlockedWorld2 && !GameInfo.PersistentInfo.PlayedWorld2Unlock)
         {
             Debug.Assert(WorldId == WorldId.World1, "World #2 cannot be unlocked here");
-            CurrentExStepAction = StepEx_UnlockWorld2;
+            CurrentExStepAction = _Step_Ex_UnlockWorld2;
         }
         else if (GameInfo.PersistentInfo.UnlockedWorld3 && !GameInfo.PersistentInfo.PlayedWorld3Unlock)
         {
             Debug.Assert(WorldId == WorldId.World2, "World #3 cannot be unlocked here");
-            CurrentExStepAction = StepEx_UnlockWorld3;
+            CurrentExStepAction = _Step_Ex_UnlockWorld3;
         }
         else if (GameInfo.PersistentInfo.UnlockedWorld4 && !GameInfo.PersistentInfo.PlayedWorld4Unlock)
         {
             Debug.Assert(WorldId == WorldId.World3, "World #4 cannot be unlocked here");
-            CurrentExStepAction = StepEx_UnlockWorld4;
+            CurrentExStepAction = _Step_Ex_UnlockWorld4;
         }
         else
         {
-            CurrentExStepAction = StepEx_Play;
+            CurrentExStepAction = _Step_Ex_Play;
         }
 
         Timer = 0;
@@ -851,7 +855,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         UserInfo.SetWorldId(WorldId);
         UserInfo.ShowWorldBar();
 
-        CurrentStepAction = Step_Normal;
+        CurrentStepAction = _Step_Normal;
 
         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Spirale_Mix01);
 
@@ -882,7 +886,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         cam.Position = cam.Position with { X = ScrollX };
         ScrollX = cam.Position.X;
 
-        if (CurrentStepAction == Step_Normal)
+        if (CurrentStepAction == _Step_Normal)
             CurrentExStepAction();
 
         CurrentStepAction();
@@ -892,7 +896,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
     #region Steps
 
-    public void StepEx_UnlockWorld2()
+    public void Step_Ex_UnlockWorld2()
     {
         float xPos = BaseObjPos.X - ScrollX;
         Rayman.ScreenPos = Rayman.ScreenPos with { X = xPos };
@@ -917,7 +921,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             if (WorldPaths[0].EndOfAnimation)
             {
                 WorldPaths[0].CurrentAnimation = 3;
-                CurrentExStepAction = StepEx_Play;
+                CurrentExStepAction = _Step_Ex_Play;
                 GameInfo.PersistentInfo.PlayedWorld2Unlock = true;
             }
 
@@ -934,7 +938,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         StepVolcanoGlow();
     }
 
-    public void StepEx_UnlockWorld3()
+    public void Step_Ex_UnlockWorld3()
     {
         float xPos = BaseObjPos.X - ScrollX;
         Rayman.ScreenPos = Rayman.ScreenPos with { X = xPos };
@@ -960,7 +964,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             if (WorldPaths[1].EndOfAnimation)
             {
                 WorldPaths[1].CurrentAnimation = 4;
-                CurrentExStepAction = StepEx_Play;
+                CurrentExStepAction = _Step_Ex_Play;
                 GameInfo.PersistentInfo.PlayedWorld3Unlock = true;
             }
 
@@ -978,7 +982,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         StepVolcanoGlow();
     }
 
-    public void StepEx_UnlockWorld4()
+    public void Step_Ex_UnlockWorld4()
     {
         float xPos = BaseObjPos.X - ScrollX;
         Rayman.ScreenPos = Rayman.ScreenPos with { X = xPos };
@@ -1005,7 +1009,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
             if (WorldPaths[2].EndOfAnimation)
             {
                 WorldPaths[2].CurrentAnimation = 5;
-                CurrentExStepAction = StepEx_Play;
+                CurrentExStepAction = _Step_Ex_Play;
                 GameInfo.PersistentInfo.PlayedWorld4Unlock = true;
             }
 
@@ -1024,7 +1028,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         StepVolcanoGlow();
     }
 
-    public void StepEx_Play()
+    public void Step_Ex_Play()
     {
         if (SelectedWorldType == WorldType.None && CircleWipeTransitionMode == TransitionMode.None)
         {
@@ -1343,7 +1347,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         ManageCheats();
     }
 
-    public void StepEx_EnterWorld()
+    public void Step_Ex_EnterWorld()
     {
         // NOTE: The game only updates this every 4 frames
         const int factor = 4;
@@ -1393,7 +1397,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         Scene.AnimationPlayer.PlayFront(FullWorldName);
     }
 
-    public void StepEx_EnterGameCubeMenu()
+    public void Step_Ex_EnterGameCubeMenu()
     {
         // Wait
         if (EnterGameCubeMenuStep == 0)
@@ -1524,11 +1528,11 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
         // Pause (auto pause code here is same as on N-Gage from the side scroller levels)
         if ((Engine.JoyPad.IsButtonJustPressed(Rayman3Input.Pause) || PendingAutoPause) && 
-            CurrentExStepAction == StepEx_Play &&
+            CurrentExStepAction == _Step_Ex_Play &&
             CircleWipeTransitionMode == TransitionMode.None)
         {
             PendingAutoPause = false;
-            CurrentStepAction = Step_Pause_Init;
+            CurrentStepAction = _Step_Pause_Init;
             GameTime.Pause();
         }
     }
@@ -1550,7 +1554,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
-        CurrentStepAction = Step_Pause_AddDialog;
+        CurrentStepAction = _Step_Pause_AddDialog;
     }
 
     public void Step_Pause_AddDialog()
@@ -1564,13 +1568,13 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         UserInfo.Draw(Scene.AnimationPlayer);
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
-        CurrentStepAction = Step_Pause_Paused;
+        CurrentStepAction = _Step_Pause_Paused;
     }
 
     public void Step_Pause_Paused()
     {
         if (PauseDialog is PauseDialog { DrawStep: PauseDialogDrawStep.Hide } or ModernPauseDialog { DrawStep: PauseDialogDrawStep.Hide })
-            CurrentStepAction = Step_Pause_UnInit;
+            CurrentStepAction = _Step_Pause_UnInit;
 
         Scene.Step();
 
@@ -1605,7 +1609,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
 
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
-        CurrentStepAction = Step_Pause_Resume;
+        CurrentStepAction = _Step_Pause_Resume;
     }
 
     public void Step_Pause_Resume()
@@ -1622,7 +1626,7 @@ public class WorldMap : Frame, IHasScene, IHasPlayfield
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
 
-        CurrentStepAction = Step_Normal;
+        CurrentStepAction = _Step_Normal;
         GameTime.Resume();
     }
 

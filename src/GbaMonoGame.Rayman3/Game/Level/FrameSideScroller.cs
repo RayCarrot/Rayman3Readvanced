@@ -2,17 +2,21 @@
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.Rayman3.Readvanced;
+using GbaMonoGame.SourceGenerators;
 using GbaMonoGame.TgxEngine;
 using Action = System.Action;
 
 namespace GbaMonoGame.Rayman3;
 
-public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
+[GenerateStepFields]
+public partial class FrameSideScroller : Frame, IHasScene, IHasPlayfield
 {
     #region Constructor
 
     public FrameSideScroller(MapId mapId)
     {
+        CreateGeneratedSteps();
+
         GameInfo.SetNextMapId(mapId);
     }
 
@@ -190,7 +194,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.AnimationPlayer.Execute();
 
         GameInfo.PlayLevelMusic();
-        CurrentStepAction = Step_Normal;
+        CurrentStepAction = _Step_Normal;
     }
     
     public override void UnInit()
@@ -248,12 +252,12 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
             if (Rayman3.TimeAttack.IsActive)
                 Rayman3.TimeAttack.Pause();
 
-            CurrentStepAction = Fog != null ? Step_Pause_DisableFog : Step_Pause_Init;
+            CurrentStepAction = Fog != null ? _Step_Pause_DisableFog : _Step_Pause_Init;
         }
 
         // Custom to transition to time attack score screen
         if (Rayman3.TimeAttack.Mode == TimeAttackMode.Score)
-            CurrentStepAction = Step_TimeAttackScore_Init;
+            CurrentStepAction = _Step_TimeAttackScore_Init;
 
         // Custom cheat dialog
         if (Engine.Settings.Active.Tweaks.AllowCheatMenu && Engine.JoyPad.IsButtonJustPressed(GbaInput.Select) && 
@@ -261,7 +265,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         {
             GameTime.Pause();
             Scene.AddDialog(CheatDialog, true, false);
-            CurrentStepAction = Step_CheatDialog;
+            CurrentStepAction = _Step_CheatDialog;
         }
         // NOTE: These cheats are normally only in the game prototypes
         else if (Engine.Settings.Active.Tweaks.AllowPrototypeCheats)
@@ -290,7 +294,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.Step();
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
-        CurrentStepAction = Step_Pause_Init;
+        CurrentStepAction = _Step_Pause_Init;
     }
 
     public void Step_Pause_Init()
@@ -309,7 +313,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.ProcessDialogs();
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
-        CurrentStepAction = Step_Pause_AddDialog;
+        CurrentStepAction = _Step_Pause_AddDialog;
     }
 
     public void Step_Pause_AddDialog()
@@ -324,13 +328,13 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         TimeAttackDialog?.Draw(Scene.AnimationPlayer);
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
-        CurrentStepAction = Step_Pause_Paused;
+        CurrentStepAction = _Step_Pause_Paused;
     }
 
     public void Step_Pause_Paused()
     {
         if (PauseDialog is PauseDialog { DrawStep: PauseDialogDrawStep.Hide } or ModernPauseDialog { DrawStep: PauseDialogDrawStep.Hide })
-            CurrentStepAction = Step_Pause_UnInit;
+            CurrentStepAction = _Step_Pause_UnInit;
 
         Scene.Step();
 
@@ -366,7 +370,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
 
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
-        CurrentStepAction = Step_Pause_Resume;
+        CurrentStepAction = _Step_Pause_Resume;
     }
 
     public void Step_Pause_Resume()
@@ -387,7 +391,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         if (Rayman3.TimeAttack.IsActive)
             Rayman3.TimeAttack.Resume();
 
-        CurrentStepAction = Step_Normal;
+        CurrentStepAction = _Step_Normal;
     }
 
     // Custom
@@ -403,7 +407,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.Step();
         Scene.AnimationPlayer.Execute();
 
-        CurrentStepAction = Step_TimeAttackScore_Score;
+        CurrentStepAction = _Step_TimeAttackScore_Score;
     }
 
     public void Step_TimeAttackScore_Score()
@@ -421,7 +425,7 @@ public class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         {
             GameTime.Resume();
             Scene.RemoveLastDialog();
-            CurrentStepAction = Step_Normal;
+            CurrentStepAction = _Step_Normal;
         }
     }
 

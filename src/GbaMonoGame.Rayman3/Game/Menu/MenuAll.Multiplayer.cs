@@ -90,8 +90,8 @@ public partial class MenuAll
                             FinishedLyChallenge2 = (packet & 0x400) != 0;
                             HasAllCages = (packet & 0x800) != 0;
 
-                            NextStepAction = Step_InitializeTransitionToMultiplayerTypeSelection;
-                            CurrentStepAction = Step_TransitionOutOfMultiplayerPlayerSelection;
+                            NextStepAction = _Step_InitializeTransitionToMultiplayerTypeSelection;
+                            CurrentStepAction = _Step_TransitionOutOfMultiplayerPlayerSelection;
                             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                             HasProcessedPackets = true;
                             SelectOption(0, false);
@@ -115,8 +115,8 @@ public partial class MenuAll
                 if ((packet & 0xf000) == 0xd000)
                 {
                     MultiplayerInfo.InitialGameTime = (uint)(packet & 0x1ff);
-                    NextStepAction = Step_InitializeTransitionToMultiplayerTypeSelection;
-                    CurrentStepAction = Step_TransitionOutOfMultiplayerJoinedGamePlayerSelection;
+                    NextStepAction = _Step_InitializeTransitionToMultiplayerTypeSelection;
+                    CurrentStepAction = _Step_TransitionOutOfMultiplayerJoinedGamePlayerSelection;
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                     SelectOption(0, false);
                 }
@@ -264,7 +264,7 @@ public partial class MenuAll
         if (Rayman3.Loc.LanguageId == 0)
             Anims.MultiplayerModeSelection.ScreenPos = Anims.MultiplayerModeSelection.ScreenPos with { X = 86 };
 
-        CurrentStepAction = Step_TransitionToMultiplayerModeSelection;
+        CurrentStepAction = _Step_TransitionToMultiplayerModeSelection;
         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
         
         IsLoadingMultiplayerMap = true;
@@ -283,7 +283,7 @@ public partial class MenuAll
         if (TransitionValue >= 160)
         {
             TransitionValue = 0;
-            CurrentStepAction = Step_MultiplayerModeSelection;
+            CurrentStepAction = _Step_MultiplayerModeSelection;
         }
 
         AnimationPlayer.Play(Anims.MultiplayerModeSelection);
@@ -298,8 +298,8 @@ public partial class MenuAll
         }
         else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
-            NextStepAction = Step_InitializeTransitionToGameMode;
-            CurrentStepAction = Step_TransitionOutOfMultiplayerModeSelection;
+            NextStepAction = _Step_InitializeTransitionToGameMode;
+            CurrentStepAction = _Step_TransitionOutOfMultiplayerModeSelection;
 
             TransitionOutCursorAndStem();
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
@@ -310,12 +310,12 @@ public partial class MenuAll
 
             NextStepAction = SelectedOption switch
             {
-                0 => Step_InitializeTransitionToMultiplayerPlayerSelection,
-                1 => Step_InitializeTransitionToMultiplayerSinglePak,
+                0 => _Step_InitializeTransitionToMultiplayerPlayerSelection,
+                1 => _Step_InitializeTransitionToMultiplayerSinglePak,
                 _ => throw new Exception("Invalid multiplayer mode")
             };
 
-            CurrentStepAction = Step_TransitionOutOfMultiplayerModeSelection;
+            CurrentStepAction = _Step_TransitionOutOfMultiplayerModeSelection;
 
             TransitionOutCursorAndStem();
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
@@ -353,7 +353,7 @@ public partial class MenuAll
         if (Rayman3.Loc.LanguageId == 0)
             Anims.MultiplayerConnectionSelection.ScreenPos = Anims.MultiplayerConnectionSelection.ScreenPos with { X = 58 };
 
-        CurrentStepAction = Step_TransitionToMultiplayerConnectionSelection;
+        CurrentStepAction = _Step_TransitionToMultiplayerConnectionSelection;
         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
 
         IsLoadingMultiplayerMap = true;
@@ -372,7 +372,7 @@ public partial class MenuAll
         if (TransitionValue >= 160)
         {
             TransitionValue = 0;
-            CurrentStepAction = Step_MultiplayerConnectionSelection;
+            CurrentStepAction = _Step_MultiplayerConnectionSelection;
         }
 
         AnimationPlayer.Play(Anims.MultiplayerConnectionSelection);
@@ -387,8 +387,8 @@ public partial class MenuAll
         }
         else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
-            NextStepAction = Step_InitializeTransitionToGameMode;
-            CurrentStepAction = Step_TransitionOutOfMultiplayerConnectionSelection;
+            NextStepAction = _Step_InitializeTransitionToGameMode;
+            CurrentStepAction = _Step_TransitionOutOfMultiplayerConnectionSelection;
 
             TransitionOutCursorAndStem();
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
@@ -401,12 +401,12 @@ public partial class MenuAll
 
             NextStepAction = SelectedOption switch
             {
-                0 => Step_InitializeTransitionToMultiplayerHostedGamePlayerSelection,
-                2 => Step_InitializeTransitionToMultiplayerJoinGame,
+                0 => _Step_InitializeTransitionToMultiplayerHostedGamePlayerSelection,
+                2 => _Step_InitializeTransitionToMultiplayerJoinGame,
                 _ => throw new Exception("Invalid multiplayer mode")
             };
 
-            CurrentStepAction = Step_TransitionOutOfMultiplayerConnectionSelection;
+            CurrentStepAction = _Step_TransitionOutOfMultiplayerConnectionSelection;
 
             TransitionOutCursorAndStem();
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
@@ -441,7 +441,7 @@ public partial class MenuAll
         Anims.ArrowLeft.CurrentAnimation = 1;
         Anims.ArrowRight.CurrentAnimation = 0;
 
-        CurrentStepAction = Step_TransitionToMultiplayerJoinGame;
+        CurrentStepAction = _Step_TransitionToMultiplayerJoinGame;
 
         // NOTE: The game sets some global value here related to handling audio
 
@@ -467,7 +467,7 @@ public partial class MenuAll
         if (TransitionValue >= 160)
         {
             TransitionValue = 0;
-            CurrentStepAction = Step_MultiplayerJoinGame;
+            CurrentStepAction = _Step_MultiplayerJoinGame;
 
             foreach (SpriteTextObject textObj in Anims.Texts)
                 textObj.BgPriority = 0;
@@ -510,8 +510,8 @@ public partial class MenuAll
             {
                 RSMultiplayer.SetHost(SelectedHost);
 
-                NextStepAction = Step_InitializeTransitionToMultiplayerJoinedGamePlayerSelection;
-                CurrentStepAction = Step_TransitionOutOfMultiplayerJoinGame;
+                NextStepAction = _Step_InitializeTransitionToMultiplayerJoinedGamePlayerSelection;
+                CurrentStepAction = _Step_TransitionOutOfMultiplayerJoinGame;
 
                 foreach (SpriteTextObject textObj in Anims.Texts)
                     textObj.BgPriority = 3;
@@ -526,8 +526,8 @@ public partial class MenuAll
 
             SelectOption(0, false);
 
-            NextStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;
-            CurrentStepAction = Step_TransitionOutOfMultiplayerJoinGame;
+            NextStepAction = _Step_InitializeTransitionToMultiplayerConnectionSelection;
+            CurrentStepAction = _Step_TransitionOutOfMultiplayerJoinGame;
 
             foreach (SpriteTextObject textObj in Anims.Texts)
                 textObj.BgPriority = 3;
@@ -659,7 +659,7 @@ public partial class MenuAll
             for (int i = 0; i < 5; i++)
                 Anims.Texts[i].Text = "";
 
-            CurrentStepAction = Step_MultiplayerPlayerSelection;
+            CurrentStepAction = _Step_MultiplayerPlayerSelection;
             InitialPage = InitialMenuPage.Language;
             MultiplayerConnectionTimer = 30;
             LastConnectionTime = GameTime.ElapsedFrames;
@@ -668,7 +668,7 @@ public partial class MenuAll
         else
         {
             SetMenuText(0, false);
-            CurrentStepAction = Step_TransitionToMultiplayerPlayerSelection;
+            CurrentStepAction = _Step_TransitionToMultiplayerPlayerSelection;
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
             ReturningFromMultiplayerGame = false;
         }
@@ -692,7 +692,7 @@ public partial class MenuAll
         if (TransitionValue >= 160)
         {
             TransitionValue = 0;
-            CurrentStepAction = Step_MultiplayerPlayerSelection;
+            CurrentStepAction = _Step_MultiplayerPlayerSelection;
         }
 
         if (RSMultiplayer.MubState == MubState.Connected)
@@ -908,8 +908,8 @@ public partial class MenuAll
                     MultiplayerInfo.InitialGameTime = trimmedGameTime;
                     MultiplayerManager.CacheData();
 
-                    NextStepAction = Step_InitializeTransitionToMultiplayerTypeSelection;
-                    CurrentStepAction = Step_TransitionOutOfMultiplayerPlayerSelection;
+                    NextStepAction = _Step_InitializeTransitionToMultiplayerTypeSelection;
+                    CurrentStepAction = _Step_TransitionOutOfMultiplayerPlayerSelection;
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                     HasProcessedPackets = true;
                     SelectOption(0, false);
@@ -962,8 +962,8 @@ public partial class MenuAll
         if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             SelectOption(0, false);
-            NextStepAction = Step_InitializeTransitionToMultiplayerModeSelection;
-            CurrentStepAction = Step_TransitionOutOfMultiplayerPlayerSelection;
+            NextStepAction = _Step_InitializeTransitionToMultiplayerModeSelection;
+            CurrentStepAction = _Step_TransitionOutOfMultiplayerPlayerSelection;
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
         }
 
@@ -1071,7 +1071,7 @@ public partial class MenuAll
         string hostName = RSMultiplayer.GetCurrentHostName();
         NGageSetMenuText(25, false, 36, 256, hostName); // Please wait for connections on %s
 
-        CurrentStepAction = Step_TransitionToMultiplayerHostedGamePlayerSelection;
+        CurrentStepAction = _Step_TransitionToMultiplayerHostedGamePlayerSelection;
 
         // NOTE: The game sets some global value here related to handling audio
 
@@ -1099,7 +1099,7 @@ public partial class MenuAll
         if (TransitionValue >= 160)
         {
             TransitionValue = 0;
-            CurrentStepAction = Step_MultiplayerHostedGamePlayerSelection;
+            CurrentStepAction = _Step_MultiplayerHostedGamePlayerSelection;
         }
 
         if (RSMultiplayer.PlayerConnectionStates[0] == RSMultiplayer.PlayerConnectionState.Ready)
@@ -1201,8 +1201,8 @@ public partial class MenuAll
 
                 MultiplayerInfo.InitialGameTime = trimmedGameTime;
 
-                NextStepAction = Step_InitializeTransitionToMultiplayerTypeSelection;
-                CurrentStepAction = Step_TransitionOutOfMultiplayerHostedGamePlayerSelection;
+                NextStepAction = _Step_InitializeTransitionToMultiplayerTypeSelection;
+                CurrentStepAction = _Step_TransitionOutOfMultiplayerHostedGamePlayerSelection;
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                 HasProcessedPackets = true;
                 SelectOption(0, false);
@@ -1214,15 +1214,15 @@ public partial class MenuAll
             RSMultiplayer.DeInit();
 
             SelectOption(0, false);
-            NextStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;
-            CurrentStepAction = Step_TransitionOutOfMultiplayerHostedGamePlayerSelection;
+            NextStepAction = _Step_InitializeTransitionToMultiplayerConnectionSelection;
+            CurrentStepAction = _Step_TransitionOutOfMultiplayerHostedGamePlayerSelection;
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
         }
         else if (RSMultiplayer.PlayerConnectionStates[0] != RSMultiplayer.PlayerConnectionState.Ready)
         {
             SelectOption(0, false);
-            NextStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;
-            CurrentStepAction = Step_TransitionOutOfMultiplayerHostedGamePlayerSelection;
+            NextStepAction = _Step_InitializeTransitionToMultiplayerConnectionSelection;
+            CurrentStepAction = _Step_TransitionOutOfMultiplayerHostedGamePlayerSelection;
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
         }
 
@@ -1368,7 +1368,7 @@ public partial class MenuAll
         };
 
         NGageSetMenuText(31, false, null, 0); // Connecting
-        CurrentStepAction = Step_TransitionToMultiplayerJoinedGamePlayerSelection;
+        CurrentStepAction = _Step_TransitionToMultiplayerJoinedGamePlayerSelection;
         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
         SetBackgroundPalette(2);
 
@@ -1393,7 +1393,7 @@ public partial class MenuAll
         if (TransitionValue >= 160)
         {
             TransitionValue = 0;
-            CurrentStepAction = Step_MultiplayerJoinedGamePlayerSelection;
+            CurrentStepAction = _Step_MultiplayerJoinedGamePlayerSelection;
         }
 
         if (RSMultiplayer.PlayerConnectionStates[0] == RSMultiplayer.PlayerConnectionState.Ready)
@@ -1510,8 +1510,8 @@ public partial class MenuAll
 
             SelectOption(0, false);
 
-            NextStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;
-            CurrentStepAction = Step_TransitionOutOfMultiplayerJoinedGamePlayerSelection;
+            NextStepAction = _Step_InitializeTransitionToMultiplayerConnectionSelection;
+            CurrentStepAction = _Step_TransitionOutOfMultiplayerJoinedGamePlayerSelection;
 
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
         }
@@ -1520,8 +1520,8 @@ public partial class MenuAll
         {
             SelectOption(0, false);
 
-            NextStepAction = Step_InitializeTransitionToMultiplayerLostConnection;
-            CurrentStepAction = Step_TransitionOutOfMultiplayerJoinedGamePlayerSelection;
+            NextStepAction = _Step_InitializeTransitionToMultiplayerLostConnection;
+            CurrentStepAction = _Step_TransitionOutOfMultiplayerJoinedGamePlayerSelection;
 
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
         }
@@ -1582,7 +1582,7 @@ public partial class MenuAll
             Anims.Texts[4].Text = text;
         }
 
-        CurrentStepAction = Step_TransitionToMultiplayerTypeSelection;
+        CurrentStepAction = _Step_TransitionToMultiplayerTypeSelection;
         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
         MultiplayerPlayersOffsetY = 112;
         SetBackgroundPalette(0);
@@ -1598,7 +1598,7 @@ public partial class MenuAll
         if (TransitionValue >= 160)
         {
             TransitionValue = 0;
-            CurrentStepAction = Step_MultiplayerTypeSelection;
+            CurrentStepAction = _Step_MultiplayerTypeSelection;
             GameTime.Resume();
         }
 
@@ -1702,11 +1702,11 @@ public partial class MenuAll
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
 
                     if (Rom.Platform == Platform.NGage && MultiplayerType == 0)
-                        NextStepAction = Step_InitializeTransitionToMultiplayerFlagOptions;
+                        NextStepAction = _Step_InitializeTransitionToMultiplayerFlagOptions;
                     else
-                        NextStepAction = Step_InitializeTransitionToMultiplayerMapSelection;
+                        NextStepAction = _Step_InitializeTransitionToMultiplayerMapSelection;
 
-                    CurrentStepAction = Step_TransitionOutOfMultiplayerTypeSelection;
+                    CurrentStepAction = _Step_TransitionOutOfMultiplayerTypeSelection;
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                 }
                 else if (Engine.MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuBack))
@@ -1716,13 +1716,13 @@ public partial class MenuAll
                     // NOTE: The N-Gage version de-inits the connection here based on a condition
 
                     if (Rom.Platform == Platform.GBA)
-                        NextStepAction = Step_InitializeTransitionToMultiplayerPlayerSelection;
+                        NextStepAction = _Step_InitializeTransitionToMultiplayerPlayerSelection;
                     else if (Rom.Platform == Platform.NGage)
-                        NextStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;
+                        NextStepAction = _Step_InitializeTransitionToMultiplayerConnectionSelection;
                     else
                         throw new UnsupportedPlatformException();
                     
-                    CurrentStepAction = Step_TransitionOutOfMultiplayerTypeSelection;
+                    CurrentStepAction = _Step_TransitionOutOfMultiplayerTypeSelection;
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                 }
 
@@ -1775,8 +1775,8 @@ public partial class MenuAll
             // NOTE: Hard-code to false. The game checks if there is a delay in the connection and the local player has pressed a back button.
             if (Rom.Platform == Platform.NGage && false)
             {
-                NextStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;
-                CurrentStepAction = Step_TransitionOutOfMultiplayerTypeSelection;
+                NextStepAction = _Step_InitializeTransitionToMultiplayerConnectionSelection;
+                CurrentStepAction = _Step_TransitionOutOfMultiplayerTypeSelection;
                 
                 RSMultiplayer.DeInit();
             }
@@ -1785,19 +1785,19 @@ public partial class MenuAll
         {
             if (Rom.Platform == Platform.GBA)
             {
-                NextStepAction = Step_InitializeTransitionToMultiplayerPlayerSelection;
+                NextStepAction = _Step_InitializeTransitionToMultiplayerPlayerSelection;
             }
             else if (Rom.Platform == Platform.NGage)
             {
                 GameTime.Resume();
-                NextStepAction = Step_InitializeTransitionToMultiplayerLostConnection;
+                NextStepAction = _Step_InitializeTransitionToMultiplayerLostConnection;
             }
             else
             {
                 throw new UnsupportedPlatformException();
             }
 
-            CurrentStepAction = Step_TransitionOutOfMultiplayerTypeSelection;
+            CurrentStepAction = _Step_TransitionOutOfMultiplayerTypeSelection;
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
         }
     }
@@ -1945,7 +1945,7 @@ public partial class MenuAll
             throw new UnsupportedPlatformException();
         }
 
-        CurrentStepAction = Step_TransitionToMultiplayerMapSelection;
+        CurrentStepAction = _Step_TransitionToMultiplayerMapSelection;
         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
         SetBackgroundPalette(2);
         MultiplayerPlayersOffsetY = 112;
@@ -2004,7 +2004,7 @@ public partial class MenuAll
                     textObj.BgPriority = 0;
             }
 
-            CurrentStepAction = Step_MultiplayerMapSelection;
+            CurrentStepAction = _Step_MultiplayerMapSelection;
             GameTime.Resume();
         }
 
@@ -2122,10 +2122,10 @@ public partial class MenuAll
                         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
 
                         if (Rom.Platform == Platform.NGage && MultiplayerType == 0)
-                            NextStepAction = Step_InitializeTransitionToMultiplayerFlagOptions;
+                            NextStepAction = _Step_InitializeTransitionToMultiplayerFlagOptions;
                         else    
-                            NextStepAction = Step_InitializeTransitionToMultiplayerTypeSelection;
-                        CurrentStepAction = Step_TransitionOutOfMultiplayerMapSelection;
+                            NextStepAction = _Step_InitializeTransitionToMultiplayerTypeSelection;
+                        CurrentStepAction = _Step_TransitionOutOfMultiplayerMapSelection;
 
                         if (Rom.Platform == Platform.NGage)
                         {
@@ -2163,26 +2163,26 @@ public partial class MenuAll
             // NOTE: Hard-code to false. The game checks if there is a delay in the connection and the local player has pressed a back button.
             if (Rom.Platform == Platform.NGage && false)
             {
-                NextStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;
+                NextStepAction = _Step_InitializeTransitionToMultiplayerConnectionSelection;
                 CurrentStepAction = Engine.Settings.Active.Tweaks.FixBugs
-                    ? Step_TransitionOutOfMultiplayerMapSelection
-                    : Step_TransitionOutOfMultiplayerTypeSelection;
+                    ? _Step_TransitionOutOfMultiplayerMapSelection
+                    : _Step_TransitionOutOfMultiplayerTypeSelection;
             }
         }
         else
         {
             if (Rom.Platform == Platform.GBA)
             {
-                NextStepAction = Step_InitializeTransitionToMultiplayerPlayerSelection;
-                CurrentStepAction = Step_TransitionOutOfMultiplayerMapSelection;
+                NextStepAction = _Step_InitializeTransitionToMultiplayerPlayerSelection;
+                CurrentStepAction = _Step_TransitionOutOfMultiplayerMapSelection;
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                 TransitionOutCursorAndStem();
             }
             else if (Rom.Platform == Platform.NGage)
             {
                 GameTime.Resume();
-                NextStepAction = Step_InitializeTransitionToMultiplayerLostConnection;
-                CurrentStepAction = Step_TransitionOutOfMultiplayerMapSelection;
+                NextStepAction = _Step_InitializeTransitionToMultiplayerLostConnection;
+                CurrentStepAction = _Step_TransitionOutOfMultiplayerMapSelection;
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
 
                 foreach (SpriteTextObject textObj in Anims.Texts)
@@ -2249,7 +2249,7 @@ public partial class MenuAll
         foreach (AnimatedObject digit in Anims.MultiplayerCaptureTheFlagOptionsTimeDigits)
             digit.CurrentAnimation = 18;
 
-        CurrentStepAction = Step_TransitionToMultiplayerFlagOptions;
+        CurrentStepAction = _Step_TransitionToMultiplayerFlagOptions;
         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
         SetBackgroundPalette(0);
         ResetStem();
@@ -2265,7 +2265,7 @@ public partial class MenuAll
         if (TransitionValue >= 160)
         {
             TransitionValue = 0;
-            CurrentStepAction = Step_MultiplayerFlagOptions;
+            CurrentStepAction = _Step_MultiplayerFlagOptions;
             Anims.MultiplayerCaptureTheFlagOptions.BgPriority = 0;
             Anims.MultiplayerCaptureTheFlagOptionsArrowRight.BgPriority = 0;
             GameTime.Resume();
@@ -2410,16 +2410,16 @@ public partial class MenuAll
                 {
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Valid01_Mix01);
                     TransitionOutCursorAndStem();
-                    NextStepAction = Step_InitializeTransitionToMultiplayerMapSelection;
-                    CurrentStepAction = Step_TransitionOutOfMultiplayerFlagOptions;
+                    NextStepAction = _Step_InitializeTransitionToMultiplayerMapSelection;
+                    CurrentStepAction = _Step_TransitionOutOfMultiplayerFlagOptions;
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                 }
                 else if (Engine.MultiJoyPad.IsButtonJustPressed(0, Rayman3Input.MenuBack))
                 {
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Back01_Mix01);
                     TransitionOutCursorAndStem();
-                    NextStepAction = Step_InitializeTransitionToMultiplayerTypeSelection;
-                    CurrentStepAction = Step_TransitionOutOfMultiplayerFlagOptions;
+                    NextStepAction = _Step_InitializeTransitionToMultiplayerTypeSelection;
+                    CurrentStepAction = _Step_TransitionOutOfMultiplayerFlagOptions;
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                 }
 
@@ -2444,10 +2444,10 @@ public partial class MenuAll
             // NOTE: Hard-code to false. The game checks if there is a delay in the connection and the local player has pressed a back button.
             if (Rom.Platform == Platform.NGage && false)
             {
-                NextStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;
+                NextStepAction = _Step_InitializeTransitionToMultiplayerConnectionSelection;
                 CurrentStepAction = Engine.Settings.Active.Tweaks.FixBugs
-                    ? Step_TransitionOutOfMultiplayerFlagOptions
-                    : Step_TransitionOutOfMultiplayerTypeSelection;
+                    ? _Step_TransitionOutOfMultiplayerFlagOptions
+                    : _Step_TransitionOutOfMultiplayerTypeSelection;
                 
                 RSMultiplayer.DeInit();
             }
@@ -2455,8 +2455,8 @@ public partial class MenuAll
         else
         {
             GameTime.Resume();
-            NextStepAction = Step_InitializeTransitionToMultiplayerLostConnection;
-            CurrentStepAction = Step_TransitionOutOfMultiplayerFlagOptions;
+            NextStepAction = _Step_InitializeTransitionToMultiplayerLostConnection;
+            CurrentStepAction = _Step_TransitionOutOfMultiplayerFlagOptions;
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
             TransitionOutCursorAndStem();
         }
@@ -2504,12 +2504,12 @@ public partial class MenuAll
             if (InitialPage == InitialMenuPage.MultiplayerLostConnection)
             {
                 InitialPage = InitialMenuPage.Language;
-                CurrentStepAction = Step_MultiplayerLostConnection;
+                CurrentStepAction = _Step_MultiplayerLostConnection;
                 SetMenuText(1, true);
             }
             else
             {
-                CurrentStepAction = Step_TransitionToMultiplayerPlayerSelection;
+                CurrentStepAction = _Step_TransitionToMultiplayerPlayerSelection;
                 SetMenuText(0, false);
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
             }
@@ -2517,7 +2517,7 @@ public partial class MenuAll
         else if (Rom.Platform == Platform.NGage)
         {
             InitialPage = InitialMenuPage.Language;
-            CurrentStepAction = Step_TransitionToMultiplayerLostConnection;
+            CurrentStepAction = _Step_TransitionToMultiplayerLostConnection;
 
             if (RSMultiplayer.PlayerIdWhoLeftGame == -1)
                 NGageSetMenuText(1, true, null, 0); // Link Error! Press Left Soft Key
@@ -2543,7 +2543,7 @@ public partial class MenuAll
         if (TransitionValue >= 160)
         {
             TransitionValue = 0;
-            CurrentStepAction = Step_MultiplayerLostConnection;
+            CurrentStepAction = _Step_MultiplayerLostConnection;
         }
 
         DrawText(false);
@@ -2553,7 +2553,7 @@ public partial class MenuAll
     {
         if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuLostMultiplayerConnectionBack))
         {
-            CurrentStepAction = Step_TransitionOutOfMultiplayerLostConnection;
+            CurrentStepAction = _Step_TransitionOutOfMultiplayerLostConnection;
         }
 
         DrawText(Rom.Platform == Platform.NGage);
@@ -2573,13 +2573,13 @@ public partial class MenuAll
 
             if (Rom.Platform == Platform.GBA)
             {
-                NextStepAction = Step_InitializeTransitionToMultiplayerPlayerSelection;
-                CurrentStepAction = Step_InitializeTransitionToMultiplayerPlayerSelection;
+                NextStepAction = _Step_InitializeTransitionToMultiplayerPlayerSelection;
+                CurrentStepAction = _Step_InitializeTransitionToMultiplayerPlayerSelection;
             }
             else if (Rom.Platform == Platform.NGage)
             {
-                NextStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;
-                CurrentStepAction = Step_InitializeTransitionToMultiplayerConnectionSelection;
+                NextStepAction = _Step_InitializeTransitionToMultiplayerConnectionSelection;
+                CurrentStepAction = _Step_InitializeTransitionToMultiplayerConnectionSelection;
             }
             else
             {
@@ -2605,7 +2605,7 @@ public partial class MenuAll
         Anims.MultiplayerSinglePakPlayers.CurrentAnimation = 11;
         SinglePakPlayersOffsetY = 0x46;
 
-        CurrentStepAction = Step_TransitionToMultiplayerSinglePak;
+        CurrentStepAction = _Step_TransitionToMultiplayerSinglePak;
         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
 
         SetBackgroundPalette(2);
@@ -2626,7 +2626,7 @@ public partial class MenuAll
             // NOTE: Game gets the pointer and position to the SinglePak loader ROM here
             RSMultiplayer.UnInit();
             SinglePakLoader = new SinglePakLoader();
-            CurrentStepAction = Step_MultiplayerSinglePak;
+            CurrentStepAction = _Step_MultiplayerSinglePak;
         }
 
         Anims.MultiplayerSinglePakPlayers.ScreenPos = Anims.MultiplayerSinglePakPlayers.ScreenPos with { Y = 40 - SinglePakPlayersOffsetY };
@@ -2745,8 +2745,8 @@ public partial class MenuAll
         {
             RSMultiplayer.Init();
             MultiplayerInititialGameTime = GameTime.ElapsedFrames;
-            NextStepAction = Step_InitializeTransitionToMultiplayerModeSelection;
-            CurrentStepAction = Step_TransitionOutOfMultiplayerSinglePak;
+            NextStepAction = _Step_InitializeTransitionToMultiplayerModeSelection;
+            CurrentStepAction = _Step_TransitionOutOfMultiplayerSinglePak;
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
         }
 

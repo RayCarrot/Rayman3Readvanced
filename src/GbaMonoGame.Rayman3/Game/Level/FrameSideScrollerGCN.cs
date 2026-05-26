@@ -120,7 +120,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
         CanPause = true;
         Fog = null;
         LyTimer = null;
-        CurrentStepAction = Step_Normal;
+        CurrentStepAction = _Step_Normal;
 
         switch (GcnMapId)
         {
@@ -212,7 +212,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
                     lavaLayer.Screen.Offset += new Vector2(0, (height - lavaLayer.Screen.RenderContext.Resolution.Y) * factor);
                 }
 
-                if (CircleTransitionMode == TransitionMode.None && CurrentStepAction == Step_Normal)
+                if (CircleTransitionMode == TransitionMode.None && CurrentStepAction == _Step_Normal)
                     ((SanctuaryLavaRenderer)lavaLayer.Screen.Renderer).SinValue++;
 
                 // Unused due to a bug
@@ -247,7 +247,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
                 GfxScreen skullScreen = Gfx.GetScreen(1);
 
                 // Don't show skull screen if transitioning or paused
-                if (CircleTransitionMode != TransitionMode.None || CurrentStepAction != Step_Normal)
+                if (CircleTransitionMode != TransitionMode.None || CurrentStepAction != _Step_Normal)
                 {
                     skullScreen.IsEnabled = false;
                     return;
@@ -341,7 +341,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
 
                 // NOTE: The lightning and rain code shouldn't run when paused, but they forgot to add a check for it! This causes
                 //       different bugs depending on when you pause, such as continues thunder sounds and a white screen.
-                if (Engine.Settings.Active.Tweaks.FixBugs && CurrentStepAction != Step_Normal)
+                if (Engine.Settings.Active.Tweaks.FixBugs && CurrentStepAction != _Step_Normal)
                 {
                     rainScreen.IsEnabled = false;
                     return;

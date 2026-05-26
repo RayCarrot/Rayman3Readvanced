@@ -330,7 +330,7 @@ public partial class MenuAll
 
         if (InitialPage == InitialMenuPage.Options)
         {
-            CurrentStepAction = Step_Options;
+            CurrentStepAction = _Step_Options;
             InitialPage = InitialMenuPage.Language;
 
             // Center sprites if English
@@ -360,7 +360,7 @@ public partial class MenuAll
         }
         else
         {
-            CurrentStepAction = Step_TransitionToOptions;
+            CurrentStepAction = _Step_TransitionToOptions;
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
         }
 
@@ -404,7 +404,7 @@ public partial class MenuAll
         if (TransitionValue >= 160)
         {
             TransitionValue = 0;
-            CurrentStepAction = Step_Options;
+            CurrentStepAction = _Step_Options;
         }
 
         if (Rom.Platform == Platform.NGage)
@@ -450,8 +450,8 @@ public partial class MenuAll
             {
                 // NOTE: N-Gage auto-saves the option here
 
-                NextStepAction = Step_InitializeTransitionToGameMode;
-                CurrentStepAction = Step_TransitionOutOfOptions;
+                NextStepAction = _Step_InitializeTransitionToGameMode;
+                CurrentStepAction = _Step_TransitionOutOfOptions;
                 TransitionOutCursorAndStem();
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
             }
@@ -550,8 +550,8 @@ public partial class MenuAll
                 }
                 else if (Rom.Platform == Platform.NGage && SelectedOption == 3)
                 {
-                    NextStepAction = Step_InitializeTransitionToLanguage;
-                    CurrentStepAction = Step_TransitionOutOfOptions;
+                    NextStepAction = _Step_InitializeTransitionToLanguage;
+                    CurrentStepAction = _Step_TransitionOutOfOptions;
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                     TransitionOutCursorAndStem();
                 }

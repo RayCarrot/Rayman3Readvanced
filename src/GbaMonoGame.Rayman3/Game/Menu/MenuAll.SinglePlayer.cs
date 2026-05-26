@@ -91,7 +91,7 @@ public partial class MenuAll
             }
         }
 
-        CurrentStepAction = Step_TransitionToSinglePlayer;
+        CurrentStepAction = _Step_TransitionToSinglePlayer;
         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
         ResetStem();
         SetBackgroundPalette(1);
@@ -131,7 +131,7 @@ public partial class MenuAll
         if (TransitionValue >= 160)
         {
             TransitionValue = 0;
-            CurrentStepAction = Step_SinglePlayer;
+            CurrentStepAction = _Step_SinglePlayer;
         }
 
         for (int i = 0; i < GameInfo.OriginalSaveSlotsCount; i++)
@@ -364,8 +364,8 @@ public partial class MenuAll
             switch (StartEraseMode)
             {
                 case StartEraseMode.Selection:
-                    NextStepAction = Step_InitializeTransitionToGameMode;
-                    CurrentStepAction = Step_TransitionOutOfSinglePlayer;
+                    NextStepAction = _Step_InitializeTransitionToGameMode;
+                    CurrentStepAction = _Step_TransitionOutOfSinglePlayer;
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                     TransitionValue = 0;
                     SelectOption(0, false);

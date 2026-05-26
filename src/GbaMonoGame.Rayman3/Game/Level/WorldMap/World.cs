@@ -185,7 +185,7 @@ public class World : FrameWorldSideScroller
     {
         base.Step();
 
-        if (CurrentStepAction == Step_Normal)
+        if (CurrentStepAction == _Step_Normal)
             CurrentExStepAction?.Invoke();
     }
 

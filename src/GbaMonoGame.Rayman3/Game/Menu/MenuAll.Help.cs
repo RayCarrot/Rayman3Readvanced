@@ -12,7 +12,7 @@ public partial class MenuAll
         Anims.ArrowLeft.CurrentAnimation = 1;
         Anims.ArrowRight.CurrentAnimation = 0;
 
-        CurrentStepAction = Step_TransitionToHelp;
+        CurrentStepAction = _Step_TransitionToHelp;
         NGageSetMenuText(36, false, null, 0);
         SetBackgroundPalette(2);
         SelectedOption = 0;
@@ -31,7 +31,7 @@ public partial class MenuAll
         if (TransitionValue >= 160)
         {
             TransitionValue = 0;
-            CurrentStepAction = Step_Help;
+            CurrentStepAction = _Step_Help;
         }
 
         DrawText(false);
@@ -62,7 +62,7 @@ public partial class MenuAll
             {
                 SelectedOption = 0;
                 prevSelectedOption = 0;
-                CurrentStepAction = Step_TransitionOutOfHelp;
+                CurrentStepAction = _Step_TransitionOutOfHelp;
             }
         }
         else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuRight))
@@ -83,7 +83,7 @@ public partial class MenuAll
         {
             SelectedOption = 0;
             prevSelectedOption = 0;
-            CurrentStepAction = Step_TransitionOutOfHelp;
+            CurrentStepAction = _Step_TransitionOutOfHelp;
         }
 
         if (prevSelectedOption != SelectedOption)
@@ -117,7 +117,7 @@ public partial class MenuAll
         else if (TransitionValue >= Playfield.RenderContext.Resolution.Y + 60)
         {
             TransitionValue = 0;
-            CurrentStepAction = Step_InitializeTransitionToGameMode;
+            CurrentStepAction = _Step_InitializeTransitionToGameMode;
         }
 
         DrawText(false);

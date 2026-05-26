@@ -16,7 +16,7 @@ public partial class MenuAll
         Anims.QuitHeader.CurrentAnimation = 34 + Rayman3.Loc.LanguageUiIndex;
         Anims.GameLogo.CurrentAnimation = 0;
 
-        CurrentStepAction = Step_TransitionToQuit;
+        CurrentStepAction = _Step_TransitionToQuit;
         ResetStem();
         SetBackgroundPalette(3);
     }
@@ -34,7 +34,7 @@ public partial class MenuAll
         if (TransitionValue >= 160)
         {
             TransitionValue = 0;
-            CurrentStepAction = Step_Quit;
+            CurrentStepAction = _Step_Quit;
         }
 
         MoveGameLogo();
@@ -64,11 +64,11 @@ public partial class MenuAll
             Anims.Cursor.CurrentAnimation = 16;
 
             if (SelectedOption == 0)
-                NextStepAction = Step_InitializeTransitionToGameMode;
+                NextStepAction = _Step_InitializeTransitionToGameMode;
             else if (SelectedOption == 1)
                 Engine.App.Exit();
 
-            CurrentStepAction = Step_TransitionOutOfQuit;
+            CurrentStepAction = _Step_TransitionOutOfQuit;
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
             SelectOption(0, false);
             TransitionValue = 0;
@@ -78,8 +78,8 @@ public partial class MenuAll
         else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuBack))
         {
             Anims.Cursor.CurrentAnimation = 16;
-            NextStepAction = Step_InitializeTransitionToGameMode;
-            CurrentStepAction = Step_TransitionOutOfQuit;
+            NextStepAction = _Step_InitializeTransitionToGameMode;
+            CurrentStepAction = _Step_TransitionOutOfQuit;
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
             SelectOption(0, false);
             TransitionValue = 0;

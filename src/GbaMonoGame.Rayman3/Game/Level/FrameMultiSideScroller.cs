@@ -3,17 +3,21 @@ using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.Rayman3.Readvanced;
+using GbaMonoGame.SourceGenerators;
 using GbaMonoGame.TgxEngine;
 using Action = System.Action;
 
 namespace GbaMonoGame.Rayman3;
 
-public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
+[GenerateStepFields]
+public partial class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 {
     #region Constructor
 
     public FrameMultiSideScroller(MapId mapId)
     {
+        CreateGeneratedSteps();
+
         GameInfo.SetNextMapId(mapId);
         PausedMachineId = 0;
 
@@ -116,7 +120,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.AnimationPlayer.Execute();
 
         GameInfo.PlayLevelMusic();
-        CurrentStepAction = Step_Normal;
+        CurrentStepAction = _Step_Normal;
     }
 
     public override void UnInit()
@@ -199,11 +203,11 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
                     {
                         GameTime.Resume();
 
-                        if (MultiplayerManager.PendingSystemSyncPause && CurrentStepAction == Step_Normal && !UserInfo.IsGameOver)
+                        if (MultiplayerManager.PendingSystemSyncPause && CurrentStepAction == _Step_Normal && !UserInfo.IsGameOver)
                         {
                             Current.PendingAutoPause = false;
                             PausedMachineId = 0;
-                            CurrentStepAction = Step_Pause_Init;
+                            CurrentStepAction = _Step_Pause_Init;
                         }
 
                         CurrentStepAction();
@@ -261,7 +265,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
                 if (Engine.MultiJoyPad.IsButtonJustPressed(id, Rayman3Input.Pause))
                 {
                     PausedMachineId = id;
-                    CurrentStepAction = Step_Pause_Init;
+                    CurrentStepAction = _Step_Pause_Init;
                     break;
                 }
             }
@@ -285,7 +289,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.ProcessDialogs();
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
-        CurrentStepAction = Step_Pause_AddDialog;
+        CurrentStepAction = _Step_Pause_AddDialog;
     }
 
     public void Step_Pause_AddDialog()
@@ -304,13 +308,13 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         UserInfo.Draw(Scene.AnimationPlayer);
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
-        CurrentStepAction = Step_Pause_Paused;
+        CurrentStepAction = _Step_Pause_Paused;
     }
 
     public void Step_Pause_Paused()
     {
         if (PauseDialog is PauseDialog { DrawStep: PauseDialogDrawStep.Hide } or ModernPauseDialog { DrawStep: PauseDialogDrawStep.Hide })
-            CurrentStepAction = Step_Pause_UnInit;
+            CurrentStepAction = _Step_Pause_UnInit;
 
         Scene.Step();
         UserInfo.Draw(Scene.AnimationPlayer);
@@ -340,7 +344,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
-        CurrentStepAction = Step_Pause_Resume;
+        CurrentStepAction = _Step_Pause_Resume;
     }
 
     public void Step_Pause_Resume()
@@ -354,7 +358,7 @@ public class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         Engine.Sem.ResumeAllSongs();
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
-        CurrentStepAction = Step_Normal;
+        CurrentStepAction = _Step_Normal;
 
         UserInfo.IsPaused = false;
 

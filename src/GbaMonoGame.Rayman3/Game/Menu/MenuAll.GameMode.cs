@@ -163,12 +163,12 @@ public partial class MenuAll
         // The game does a bit of a hack to skip the transition if we start at the game mode selection
         if (InitialPage == InitialMenuPage.GameMode)
         {
-            CurrentStepAction = Step_GameMode;
+            CurrentStepAction = _Step_GameMode;
             InitialPage = InitialMenuPage.Language;
         }
         else
         {
-            CurrentStepAction = Step_TransitionToGameMode;
+            CurrentStepAction = _Step_TransitionToGameMode;
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
         }
 
@@ -203,7 +203,7 @@ public partial class MenuAll
         if (TransitionValue >= 160)
         {
             TransitionValue = 0;
-            CurrentStepAction = Step_GameMode;
+            CurrentStepAction = _Step_GameMode;
         }
 
         MoveGameLogo();
@@ -242,18 +242,18 @@ public partial class MenuAll
 
                 NextStepAction = SelectedOption switch
                 {
-                    0 => Step_InitializeTransitionToSinglePlayer,
-                    1 when Rom.Platform == Platform.GBA => Step_InitializeTransitionToMultiplayerModeSelection,
-                    1 when Rom.Platform == Platform.NGage => Step_InitializeTransitionToMultiplayerConnectionSelection,
-                    2 => Step_InitializeTransitionToOptions,
+                    0 => _Step_InitializeTransitionToSinglePlayer,
+                    1 when Rom.Platform == Platform.GBA => _Step_InitializeTransitionToMultiplayerModeSelection,
+                    1 when Rom.Platform == Platform.NGage => _Step_InitializeTransitionToMultiplayerConnectionSelection,
+                    2 => _Step_InitializeTransitionToOptions,
 
-                    3 when Rom.Platform == Platform.NGage => Step_InitializeTransitionToHelp,
-                    4 when Rom.Platform == Platform.NGage => Step_InitializeTransitionToQuit,
+                    3 when Rom.Platform == Platform.NGage => _Step_InitializeTransitionToHelp,
+                    4 when Rom.Platform == Platform.NGage => _Step_InitializeTransitionToQuit,
 
                     _ => throw new Exception("Wrong game mode selection")
                 };
 
-                CurrentStepAction = Step_TransitionOutOfGameMode;
+                CurrentStepAction = _Step_TransitionOutOfGameMode;
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                 SelectOption(0, false);
                 TransitionValue = 0;

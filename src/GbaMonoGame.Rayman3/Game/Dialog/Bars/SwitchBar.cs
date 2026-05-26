@@ -69,7 +69,7 @@ public class SwitchBar : Bar
 
     public override void Draw(AnimationPlayer animationPlayer)
     {
-        if (((FrameSideScroller)Frame.Current).CurrentStepAction == ((FrameSideScroller)Frame.Current).Step_Normal)
+        if (((FrameSideScroller)Frame.Current).CurrentStepAction == ((FrameSideScroller)Frame.Current)._Step_Normal)
             Switches.BasePaletteIndex = PaletteShiftValue;
 
         if ((GameTime.ElapsedFrames & 3) == 3)
