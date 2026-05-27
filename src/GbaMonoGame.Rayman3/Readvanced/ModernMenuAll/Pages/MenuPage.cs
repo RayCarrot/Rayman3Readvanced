@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.TgxEngine;
@@ -38,12 +37,9 @@ public abstract class MenuPage
 
     protected void UpdateOptionPositions()
     {
-        int index = 0;
-        foreach (MenuOption option in Options.Skip(ScrollOffset).Take(GetMaxOptions(SelectedOption)))
-        {
-            option.SetPosition(GetOptionPosition(index));
-            index++;
-        }
+        int count = GetMaxOptions(SelectedOption);
+        for (int i = ScrollOffset; i < Options.Count && i < ScrollOffset + count; i++)
+            Options[i].SetPosition(GetOptionPosition(i - ScrollOffset));
     }
 
     protected virtual void Init() { }
@@ -55,8 +51,9 @@ public abstract class MenuPage
 
     protected void DrawOptions(AnimationPlayer animationPlayer)
     {
-        foreach (MenuOption option in Options.Skip(ScrollOffset).Take(GetMaxOptions(SelectedOption)))
-            option.Draw(animationPlayer);
+        int count = GetMaxOptions(SelectedOption);
+        for (int i = ScrollOffset; i < Options.Count && i < ScrollOffset + count; i++)
+            Options[i].Draw(animationPlayer);
     }
 
     protected void ClearOptions()

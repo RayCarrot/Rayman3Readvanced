@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
@@ -418,7 +417,17 @@ public static class Rayman3Achievements
             byte mapId = (byte)GameInfo.MapId;
             int instanceId = lum.InstanceId;
 
-            if (!GameInfo.SaveSlot.CollectedWhiteLums.Any(x => x.MapId == mapId && x.InstanceId == instanceId))
+            bool hasCollected = false;
+            foreach (CollectedWhiteLum x in GameInfo.SaveSlot.CollectedWhiteLums)
+            {
+                if (x.MapId == mapId && x.InstanceId == instanceId)
+                {
+                    hasCollected = true;
+                    break;
+                }
+            }
+
+            if (!hasCollected)
             {
                 CollectedWhiteLum[] collectedWhiteLums = new CollectedWhiteLum[GameInfo.SaveSlot.CollectedWhiteLums.Length + 1];
                 Array.Copy(GameInfo.SaveSlot.CollectedWhiteLums, collectedWhiteLums, GameInfo.SaveSlot.CollectedWhiteLums.Length);

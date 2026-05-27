@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using BinarySerializer;
 using BinarySerializer.Nintendo.GCN;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
-using GbaMonoGame.SourceGenerators;
 using GbaMonoGame.Rayman3.Readvanced;
+using GbaMonoGame.SourceGenerators;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
 
@@ -119,7 +118,15 @@ public partial class GameCubeMenu : Frame
         List<GCMFileEntry> fileEntries = new();
         foreach (string fileName in fileNames)
         {
-            GCMFileEntry fileEntry = gcm.FileEntries.FirstOrDefault(x => x.Name == fileName);
+            GCMFileEntry fileEntry = null;
+            foreach (GCMFileEntry x in gcm.FileEntries)
+            {
+                if (x.Name == fileName)
+                {
+                    fileEntry = x;
+                    break;
+                }
+            }
 
             if (fileEntry == null)
                 return false;

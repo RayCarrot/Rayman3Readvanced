@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.TgxEngine;
 
@@ -256,7 +255,15 @@ public class KnotManager
             // on screen at the same time. Otherwise an enemy might fire a shot which doesn't spawn.
 
             Scene2DResource sceneResource = scene.Resource;
-            ActorResource actorResource = sceneResource.AlwaysActors.FirstOrDefault(x => x.Type == actorType && x.IsProjectile);
+            ActorResource actorResource = null;
+            foreach (ActorResource x in sceneResource.AlwaysActors)
+            {
+                if (x.Type == actorType && x.IsProjectile)
+                {
+                    actorResource = x;
+                    break;
+                }
+            }
 
             if (actorResource == null)
                 return null;

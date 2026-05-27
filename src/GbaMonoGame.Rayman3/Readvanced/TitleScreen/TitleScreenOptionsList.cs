@@ -52,7 +52,7 @@ public class TitleScreenOptionsList
 
     public void SetOptions(Option[] options)
     {
-        Options = options.Where(x => x.IsAvailable).ToArray();
+        Options = options.Where(static x => x.IsAvailable).ToArray();
 
         // Center for first option
         float width = ReadvancedFonts.MenuYellow.GetWidth(Options[0].Text);

@@ -10,11 +10,11 @@ public class AchievementsManager
     public AchievementsManager(AchievementInfo[] achievements)
     {
         AchievementsDictionary = achievements.
-            Where(x => x.ExclusivePlatform == null || x.ExclusivePlatform == Rom.Platform).
+            Where(static x => x.ExclusivePlatform == null || x.ExclusivePlatform == Rom.Platform).
             ToFrozenDictionary(x => x.Id);
         ImmutableArray<AchievementInfo>.Builder achievementsArrayBuilder = ImmutableArray.CreateBuilder<AchievementInfo>();
         achievementsArrayBuilder.AddRange(achievements);
-        achievementsArrayBuilder.RemoveAll(x => x.ExclusivePlatform != null && x.ExclusivePlatform != Rom.Platform);
+        achievementsArrayBuilder.RemoveAll(static x => x.ExclusivePlatform != null && x.ExclusivePlatform != Rom.Platform);
         AchievementsArray = achievementsArrayBuilder.ToImmutable();
 
         Popup = new AchievementPopup();

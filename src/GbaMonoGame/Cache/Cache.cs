@@ -67,7 +67,7 @@ public class Cache<T>
         return locationCache;
     }
 
-    public int GetCount() => Locations.Values.Sum(x => x.GetCount());
+    public int GetCount() => Locations.Values.Sum(static x => x.GetCount());
 
     public void Clear()
     {

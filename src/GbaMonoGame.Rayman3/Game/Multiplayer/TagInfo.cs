@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -53,7 +52,11 @@ public class TagInfo
 
     public Vector2 GetLumPosition(int instanceId)
     {
-        return LumsTable.FirstOrDefault(x => x.InstanceId == instanceId)?.Position ?? Vector2.Zero;
+        foreach (LumPosition x in LumsTable)
+            if (x.InstanceId == instanceId)
+                return x.Position;
+
+        return Vector2.Zero;
     }
 
     public void RegisterItem(int instanceId)

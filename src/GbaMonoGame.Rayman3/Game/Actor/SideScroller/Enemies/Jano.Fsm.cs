@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.Rayman3.Readvanced;
@@ -728,7 +727,15 @@ public partial class Jano
                 if (ActionId is Action.Move_Right or Action.Move_Left && ScreenPosition.X > Scene.Resolution.X + 40)
                     ActionId = Action.Idle_Left;
 
-                bool hasActiveSkullPlatforms = SkullPlatforms.Any(x => x != null);
+                bool hasActiveSkullPlatforms = false;
+                foreach (JanoSkullPlatform x in SkullPlatforms)
+                {
+                    if (x != null)
+                    {
+                        hasActiveSkullPlatforms = true;
+                        break;
+                    }
+                }
 
                 if (Scene.MainActor.LinkedMovementActor != null)
                 {

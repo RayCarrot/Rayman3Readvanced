@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine;
 using BinarySerializer.Ubisoft.GbaEngine.Rayman3;
 using GbaMonoGame.AnimEngine;
@@ -169,7 +168,10 @@ public partial class MenuAll : Frame, IHasPlayfield
             string str = text[textIndex];
 
             // Get the amount of params
-            int paramsCount = str.Count(x => x == '%');
+            int paramsCount = 0;
+            foreach (var x in str)
+                if (x == '%') 
+                    paramsCount++;
 
             // Get the params
             object[] strParams = new object[paramsCount];

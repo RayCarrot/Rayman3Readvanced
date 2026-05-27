@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using GbaMonoGame.Engine2d;
+﻿using GbaMonoGame.Engine2d;
 using GbaMonoGame.SourceGenerators;
 
 namespace GbaMonoGame.Rayman3;
@@ -22,8 +21,11 @@ public sealed partial class CaptureTheFlagFlagBase : ActionActor
         if (MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Solo)
         {
             // Get the number of links
-            int linksCount = Links.Count(x => x != null);
-            
+            int linksCount = 0;
+            foreach (var x in Links)
+                if (x != null) 
+                    linksCount++;
+
             // If there are more than 1 links then it's the common base
             IsCommonBase = linksCount > 1;
 

@@ -12,9 +12,8 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
 - Make sure all menus work in all languages, so the text doesn't overflow.
 
 ## 🧑‍💻 Code
-- Move hard-coded primitive values to constant fields.
+- Move hard-coded primitive values to constant fields. For actors this should be in ActorName.Consts.cs and will also help reduce allocations when boxing objects.
 - Move hard-coded data to config files, such as song tables, achievements, Mode7 camera values and Rayman 3 joypad mapping
-- Profile as the game is running to check for remaining allocations, especially ones which happen each frame
 
 ## 🧪 Unit tests
 - Add tests for core engine functionality

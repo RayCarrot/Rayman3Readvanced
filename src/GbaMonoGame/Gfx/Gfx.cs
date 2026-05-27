@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -275,12 +274,20 @@ public static class Gfx
 
     public static void AddScreen(GfxScreen screen)
     {
-        if (Screens.Any(x => x.Id == screen.Id))
-            throw new Exception($"A screen with the id {screen.Id} has already been added");
+        foreach (GfxScreen x in Screens)
+            if (x.Id == screen.Id) 
+                throw new Exception($"A screen with the id {screen.Id} has already been added");
 
         Screens.Add(screen);
     }
-    public static GfxScreen GetScreen(int id) => Screens.FirstOrDefault(x => x.Id == id);
+    public static GfxScreen GetScreen(int id)
+    {
+        foreach (GfxScreen x in Screens)
+            if (x.Id == id) 
+                return x;
+
+        return null;
+    }
     public static void ClearScreens() => Screens.Clear();
 
     public static Sprite GetNewSprite()

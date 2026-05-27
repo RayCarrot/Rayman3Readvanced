@@ -38,8 +38,8 @@ public class ParallaxClusterRenderContext : RenderContext
         if (res == Rom.OriginalResolution)
             return res;
 
-        float maxX = Cluster.Layers.Min(x => x.PixelWidth);
-        float maxY = Cluster.Layers.Min(x => x.PixelHeight);
+        float maxX = Cluster.Layers.Min(static x => x.PixelWidth);
+        float maxY = Cluster.Layers.Min(static x => x.PixelHeight);
 
         if (res.X > res.Y)
         {
