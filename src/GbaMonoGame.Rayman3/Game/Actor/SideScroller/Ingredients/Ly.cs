@@ -54,14 +54,17 @@ public sealed partial class Ly : MovableActor
     public override void Init(ActorResource actorResource)
     {
         base.Init(actorResource);
+        // NOTE: The game checks the map id of the previous level, such as Woods of Light map 2, since the game changes it
+        //       to that after loading the scene. But since we're doing this when initializing the actor we have to use the
+        //       power map id instead.
         ReplayData = Rom.Loader.ReadNewPowerReplayData(GameInfo.MapId switch
         {
-            MapId.WoodLight_M2 => 1,
-            MapId.BossMachine => 2,
-            MapId.EchoingCaves_M2 => 3,
-            MapId.SanctuaryOfStoneAndFire_M3 => 4,
-            MapId.BossRockAndLava => 5,
-            MapId.BossScaleMan => 6,
+            MapId.Power1 => 1,
+            MapId.Power2 => 2,
+            MapId.Power3 => 3,
+            MapId.Power5 => 4, // The order swap is intentional
+            MapId.Power4 => 5,
+            MapId.Power6 => 6,
             _ => throw new Exception("Ly was not set to be used in this level"),
         });
     }
