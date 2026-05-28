@@ -12,6 +12,6 @@ public class Act1 : Act
         base.Step();
 
         if (IsFinished)
-            GameInfo.LoadLevel(MapId.WoodLight_M1);
+            Rayman3.GameInfo.LoadLevel(MapId.WoodLight_M1);
     }
 }

@@ -30,19 +30,19 @@ public static class LevelMusicManager
         if (IsPlayingSpecialMusic || IsCooldown)
             return;
 
-        if (GameInfo.MapId is MapId.TombOfTheAncients_M1 or MapId.TombOfTheAncients_M2)
+        if (Rayman3.GameInfo.MapId is MapId.TombOfTheAncients_M1 or MapId.TombOfTheAncients_M2)
         {
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__ancients);
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__spiderchase);
         }
         else
         {
-            Engine.Sem.ReplaceAllSongs(GameInfo.GetSpecialLevelMusicSoundEvent(), 3);
+            Engine.Sem.ReplaceAllSongs(Rayman3.GameInfo.GetSpecialLevelMusicSoundEvent(), 3);
         }
 
         if (Rom.Platform == Platform.NGage)
         {
-            switch (GameInfo.MapId)
+            switch (Rayman3.GameInfo.MapId)
             {
                 case MapId.WoodLight_M1:
                 case MapId.WoodLight_M2:
@@ -106,12 +106,12 @@ public static class LevelMusicManager
     {
         if (IsPlayingSpecialMusic && !IsCooldown)
         {
-            Rayman3SoundEvent soundEvent = GameInfo.GetLevelMusicSoundEvent();
+            Rayman3SoundEvent soundEvent = Rayman3.GameInfo.GetLevelMusicSoundEvent();
             Engine.Sem.ReplaceAllSongs(soundEvent, 3);
 
             if (Rom.Platform == Platform.NGage)
             {
-                switch (GameInfo.MapId)
+                switch (Rayman3.GameInfo.MapId)
                 {
                     case MapId.WoodLight_M1:
                     case MapId.WoodLight_M2:

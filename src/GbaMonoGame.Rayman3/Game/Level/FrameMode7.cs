@@ -19,7 +19,7 @@ public abstract partial class FrameMode7 : Frame, IHasScene, IHasPlayfield
     {
         CreateGeneratedSteps();
 
-        GameInfo.SetNextMapId(mapId);
+        Rayman3.GameInfo.SetNextMapId(mapId);
         PausedMachineId = 0;
     }
 
@@ -58,7 +58,7 @@ public abstract partial class FrameMode7 : Frame, IHasScene, IHasPlayfield
 
         TransitionsFX.Init(true);
         TransitionsFX.FadeInInit(1);
-        Scene = new Scene2D((int)GameInfo.MapId, x => new CameraMode7(x), 3, 1);
+        Scene = new Scene2D((int)Rayman3.GameInfo.MapId, x => new CameraMode7(x), 3, 1);
 
         // Create pause dialog, but don't add yet
         PauseDialog = Engine.Settings.Active.Tweaks.UseModernPauseDialog ? new ModernPauseDialog(Scene, !Rayman3.TimeAttack.IsActive) : new PauseDialog(Scene);
@@ -86,7 +86,7 @@ public abstract partial class FrameMode7 : Frame, IHasScene, IHasPlayfield
         Scene.AnimationPlayer.Execute();
 
         if (!RSMultiplayer.IsActive)
-            GameInfo.PlayLevelMusic();
+            Rayman3.GameInfo.PlayLevelMusic();
 
         CanPause = false;
         CurrentStepAction = _Step_Normal;
@@ -200,12 +200,12 @@ public abstract partial class FrameMode7 : Frame, IHasScene, IHasPlayfield
 
     public override void Init()
     {
-        GameInfo.InitLevel(LevelType.Normal);
-        GameInfo.SetLevelRichPresence();
+        Rayman3.GameInfo.InitLevel(LevelType.Normal);
+        Rayman3.GameInfo.SetLevelRichPresence();
 
         // Custom for the time attack mode
         if (Rayman3.TimeAttack.IsActive)
-            Rayman3.TimeAttack.InitLevel(GameInfo.MapId);
+            Rayman3.TimeAttack.InitLevel(Rayman3.GameInfo.MapId);
 
         Timer = 0;
         CommonInit();
@@ -219,7 +219,7 @@ public abstract partial class FrameMode7 : Frame, IHasScene, IHasPlayfield
         Scene.UnInit();
         Scene = null;
 
-        GameInfo.StopLevelMusic();
+        Rayman3.GameInfo.StopLevelMusic();
         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__Motor01_Mix12);
     }
 

@@ -63,7 +63,7 @@ public partial class FlyingShell
                     Position += new Vector2(16, 0);
                     ActionId = Action.ChangeDirection_Left;
                 }
-                else if (Position.X > 430 && ActionId == Action.Fly_Right && GameInfo.MapId == MapId.BossFinal_M2)
+                else if (Position.X > 430 && ActionId == Action.Fly_Right && Rayman3.GameInfo.MapId == MapId.BossFinal_M2)
                 {
                     Position -= new Vector2(16, 0);
                     ActionId = Action.ChangeDirection_Right;
@@ -143,8 +143,8 @@ public partial class FlyingShell
                 CrashTimer = 0;
                 HitPoints = 0;
 
-                if (GameInfo.LevelType != LevelType.GameCube)
-                    GameInfo.ModifyLives(-1);
+                if (Rayman3.GameInfo.LevelType != LevelType.GameCube)
+                    Rayman3.GameInfo.ModifyLives(-1);
 
                 CheckAgainstMapCollision = false;
 
@@ -174,7 +174,7 @@ public partial class FlyingShell
                 }
                 else if (CrashTimer == 120)
                 {
-                    GameInfo.LevelDeath();
+                    Rayman3.GameInfo.LevelDeath();
                 }
 
                 CrashTimer++;
@@ -208,12 +208,12 @@ public partial class FlyingShell
                     FrameSideScrollerGCN frame = (FrameSideScrollerGCN)Frame.Current;
                     frame.RestoreMapAndPowers();
 
-                    if (GameInfo.PersistentInfo.CompletedGCNBonusLevels < frame.GcnMapId + 1)
-                        GameInfo.PersistentInfo.CompletedGCNBonusLevels = (byte)(frame.GcnMapId + 1);
+                    if (Rayman3.GameInfo.PersistentInfo.CompletedGCNBonusLevels < frame.GcnMapId + 1)
+                        Rayman3.GameInfo.PersistentInfo.CompletedGCNBonusLevels = (byte)(frame.GcnMapId + 1);
 
                     Engine.FrameMngr.SetNextFrame(new GameCubeMenu());
 
-                    GameInfo.Save(GameInfo.CurrentSlot);
+                    Rayman3.GameInfo.Save(Rayman3.GameInfo.CurrentSlot);
                 }
                 break;
 

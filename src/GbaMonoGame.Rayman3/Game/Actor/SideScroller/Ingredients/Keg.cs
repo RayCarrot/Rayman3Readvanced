@@ -22,7 +22,7 @@ public sealed partial class Keg : MovableActor
             InitialPos = Position;
             Timer = 0;
         }
-        else if (GameInfo.MapId == MapId.BossMachine)
+        else if (Rayman3.GameInfo.MapId == MapId.BossMachine)
         {
             State.SetTo(_Fsm_InitBossMachine);
             InitialPos = Position;

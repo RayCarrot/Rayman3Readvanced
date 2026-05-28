@@ -46,7 +46,7 @@ public partial class Machine
                 }
 
                 // Show text box if player has died
-                if (GameInfo.LastGreenLumAlive != 0 && GameInfo.CanShowMurfyHelp)
+                if (Rayman3.GameInfo.LastGreenLumAlive != 0 && Rayman3.GameInfo.CanShowMurfyHelp)
                     InitTextBox();
 
                 // Cog wheel part
@@ -62,13 +62,13 @@ public partial class Machine
                     return false;
                 }
                 // Parent if died at least once
-                else if (BossHealth == 4 && GameInfo.LastGreenLumAlive != 0)
+                else if (BossHealth == 4 && Rayman3.GameInfo.LastGreenLumAlive != 0)
                 {
                     State.MoveTo(_Fsm_CannonFire);
                     return false;
                 }
                 // Parent first time
-                else if (BossHealth == 4 && GameInfo.LastGreenLumAlive == 0)
+                else if (BossHealth == 4 && Rayman3.GameInfo.LastGreenLumAlive == 0)
                 {
                     State.MoveTo(_Fsm_CannonIntro);
                     return false;
@@ -226,8 +226,8 @@ public partial class Machine
 
             case FsmAction.UnInit:
                 // Create a checkpoint to avoid showing the intro cutscene each time
-                if (GameInfo.LastGreenLumAlive == 0)
-                    GameInfo.GreenLumTouchedByRayman(0, new Vector2(191, 136));
+                if (Rayman3.GameInfo.LastGreenLumAlive == 0)
+                    Rayman3.GameInfo.GreenLumTouchedByRayman(0, new Vector2(191, 136));
                 break;
         }
 
@@ -274,7 +274,7 @@ public partial class Machine
 
                 if (TextBox != null)
                 {
-                    if (GameInfo.CanShowMurfyHelp)
+                    if (Rayman3.GameInfo.CanShowMurfyHelp)
                         ManageTextBox();
                     else if (Timer > 30)
                         UnInitTextBox();

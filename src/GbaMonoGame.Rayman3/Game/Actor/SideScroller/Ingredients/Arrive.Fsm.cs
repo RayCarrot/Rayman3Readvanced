@@ -44,24 +44,24 @@ public partial class Arrive
 
                 if (Scene.IsDetectedMainActor(this))
                 {
-                    if (GameInfo.MapId == MapId.ChallengeLy1 && !GameInfo.PersistentInfo.FinishedLyChallenge1)
+                    if (Rayman3.GameInfo.MapId == MapId.ChallengeLy1 && !Rayman3.GameInfo.PersistentInfo.FinishedLyChallenge1)
                     {
                         if (Rom.Platform == Platform.GBA)
                             Scene.GetGameObject(LinkedActor!.Value).ProcessMessage(this, Message.Murfy_Spawn);
 
-                        GameInfo.PersistentInfo.FinishedLyChallenge1 = true;
+                        Rayman3.GameInfo.PersistentInfo.FinishedLyChallenge1 = true;
                     }
-                    else if (GameInfo.MapId == MapId.ChallengeLy2 && !GameInfo.PersistentInfo.FinishedLyChallenge2)
+                    else if (Rayman3.GameInfo.MapId == MapId.ChallengeLy2 && !Rayman3.GameInfo.PersistentInfo.FinishedLyChallenge2)
                     {
                         if (Rom.Platform == Platform.GBA)
                             Scene.GetGameObject(LinkedActor!.Value).ProcessMessage(this, Message.Murfy_Spawn);
 
-                        GameInfo.PersistentInfo.FinishedLyChallenge2 = true;
+                        Rayman3.GameInfo.PersistentInfo.FinishedLyChallenge2 = true;
                     }
-                    else if (GameInfo.MapId == MapId.ChallengeLyGCN)
+                    else if (Rayman3.GameInfo.MapId == MapId.ChallengeLyGCN)
                     {
                         Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginCutscene);
-                        GameInfo.PersistentInfo.FinishedLyChallengeGCN = true;
+                        Rayman3.GameInfo.PersistentInfo.FinishedLyChallengeGCN = true;
                         skipCutscene = true;
                     }
 
@@ -132,12 +132,12 @@ public partial class Arrive
                 {
                     if (Rom.Platform == Platform.GBA)
                     {
-                        if (GameInfo.MapId == MapId.ChallengeLyGCN)
+                        if (Rayman3.GameInfo.MapId == MapId.ChallengeLyGCN)
                             Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
                     }
                     else if (Rom.Platform == Platform.NGage)
                     {
-                        if (GameInfo.MapId is MapId.ChallengeLy1 or MapId.ChallengeLy2 or MapId.ChallengeLyGCN)
+                        if (Rayman3.GameInfo.MapId is MapId.ChallengeLy1 or MapId.ChallengeLy2 or MapId.ChallengeLyGCN)
                             Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
                     }
                     else

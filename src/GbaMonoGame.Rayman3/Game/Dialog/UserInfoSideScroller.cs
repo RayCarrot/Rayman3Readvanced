@@ -10,7 +10,7 @@ public class UserInfoSideScroller : Dialog
     {
         LifeBar = new LifeBar(scene);
 
-        if (GameInfo.MapId == MapId._1000Lums)
+        if (Rayman3.GameInfo.MapId == MapId._1000Lums)
             Lums1000Bar = new Lums1000Bar(scene);
         else
             LumsBar = new LumsBar(scene);
@@ -20,22 +20,22 @@ public class UserInfoSideScroller : Dialog
         if (hasBlueLum)
             BlueLumBar = new BlueLumBar(scene);
 
-        if (GameInfo.MapId == MapId.EchoingCaves_M1)
+        if (Rayman3.GameInfo.MapId == MapId.EchoingCaves_M1)
             SwitchBar = new SwitchBar(scene);
 
-        if (GameInfo.MapId == MapId.BossMachine)
+        if (Rayman3.GameInfo.MapId == MapId.BossMachine)
             BossBar = new BossMachineBar(scene);
-        else if (GameInfo.MapId == MapId.BossRockAndLava)
+        else if (Rayman3.GameInfo.MapId == MapId.BossRockAndLava)
             BossBar = new BossRockAndLavaBar(scene);
-        else if (GameInfo.MapId == MapId.BossScaleMan)
+        else if (Rayman3.GameInfo.MapId == MapId.BossScaleMan)
             BossBar = new BossScalemanBar(scene);
-        else if (GameInfo.MapId == MapId.BossFinal_M1)
+        else if (Rayman3.GameInfo.MapId == MapId.BossFinal_M1)
             BossBar = new BossFinalBar(scene, 0);
-        else if (GameInfo.MapId == MapId.BossFinal_M2)
+        else if (Rayman3.GameInfo.MapId == MapId.BossFinal_M2)
             BossBar = new BossFinalBar(scene, 1);
 
         // Disable lums and cages bars in bosses
-        if (GameInfo.MapId is
+        if (Rayman3.GameInfo.MapId is
             MapId.BossMachine or
             MapId.BossBadDreams or
             MapId.BossRockAndLava or
@@ -152,7 +152,7 @@ public class UserInfoSideScroller : Dialog
         switch (message)
         {
             case Message.UserInfo_Pause:
-                if (GameInfo.MapId is not (MapId.ChallengeLy1 or MapId.ChallengeLy2 or MapId.ChallengeLyGCN))
+                if (Rayman3.GameInfo.MapId is not (MapId.ChallengeLy1 or MapId.ChallengeLy2 or MapId.ChallengeLyGCN))
                     MoveInBars();
 
                 BlueLumBar?.SetToStayHidden();
@@ -161,7 +161,7 @@ public class UserInfoSideScroller : Dialog
                 return true;
 
             case Message.UserInfo_Unpause:
-                if (GameInfo.MapId is not (MapId.ChallengeLy1 or MapId.ChallengeLy2 or MapId.ChallengeLyGCN))
+                if (Rayman3.GameInfo.MapId is not (MapId.ChallengeLy1 or MapId.ChallengeLy2 or MapId.ChallengeLyGCN))
                 {
                     LifeBar.SetToDefault();
                     GetLumsBar().SetToDefault();

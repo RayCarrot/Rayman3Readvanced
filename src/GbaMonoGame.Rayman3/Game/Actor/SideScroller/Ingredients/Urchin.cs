@@ -16,6 +16,6 @@ public sealed partial class Urchin : InteractableActor
     public override void Step()
     {
         base.Step();
-        GameInfo.ActorSoundFlags &= ~ActorSoundFlags.Urchin;
+        Rayman3.GameInfo.ActorSoundFlags &= ~ActorSoundFlags.Urchin;
     }
 }

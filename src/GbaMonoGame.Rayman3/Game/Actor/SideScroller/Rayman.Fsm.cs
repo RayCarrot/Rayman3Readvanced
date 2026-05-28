@@ -184,7 +184,7 @@ public partial class Rayman
                 Timer = 0;
 
                 CameraSideScroller cam = (CameraSideScroller)Scene.Camera;
-                if (GameInfo.MapId == MapId.TheCanopy_M2)
+                if (Rayman3.GameInfo.MapId == MapId.TheCanopy_M2)
                 {
                     cam.SetHorizontalOffset(CameraOffset.Center);
                 }
@@ -199,7 +199,7 @@ public partial class Rayman
                 if (IsLocalPlayer)
                     cam.ProcessMessage(this, Message.Cam_ResetUnknownMode);
 
-                if (GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
+                if (Rayman3.GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
                     cam.SetHorizontalOffset(CameraOffset.Center);
                 break;
 
@@ -452,7 +452,7 @@ public partial class Rayman
                 if (ActionId == NextActionId || ActionId is Action.Walk_Right or Action.Walk_Left or Action.WalkFast_Right or Action.WalkFast_Left)
                     NextActionId = null;
 
-                if (GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
+                if (Rayman3.GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
                 {
                     CameraSideScroller cam = (CameraSideScroller)Scene.Camera;
 
@@ -588,7 +588,7 @@ public partial class Rayman
                     if (!RSMultiplayer.IsActive)
                     {
                         // Randomly look around for Globox in the first level
-                        if (!Rayman3.TimeAttack.IsActive && GameInfo.MapId == MapId.WoodLight_M1 && GameInfo.LastGreenLumAlive == 0)
+                        if (!Rayman3.TimeAttack.IsActive && Rayman3.GameInfo.MapId == MapId.WoodLight_M1 && Rayman3.GameInfo.LastGreenLumAlive == 0)
                         {
                             if (Random.GetNumber(501) > 400)
                                 ActionId = IsFacingRight ? Action.Walk_LookAround_Right : Action.Walk_LookAround_Left;
@@ -630,7 +630,7 @@ public partial class Rayman
                 }
 
                 // Randomly look around for Globox in the first level
-                if (!Rayman3.TimeAttack.IsActive && GameInfo.MapId == MapId.WoodLight_M1 && GameInfo.LastGreenLumAlive == 0)
+                if (!Rayman3.TimeAttack.IsActive && Rayman3.GameInfo.MapId == MapId.WoodLight_M1 && Rayman3.GameInfo.LastGreenLumAlive == 0)
                 {
                     FirstLevelIdleTimer++;
 
@@ -709,7 +709,7 @@ public partial class Rayman
                     {
                         Attack(0, RaymanBody.RaymanBodyPartType.SecondFist, new Vector2(16, -16), false);
 
-                        if (!GameInfo.IsPowerEnabled(Power.DoubleFist))
+                        if (!Rayman3.GameInfo.IsPowerEnabled(Power.DoubleFist))
                             DisableAttackTimer = 0;
                     }
                 }
@@ -738,7 +738,7 @@ public partial class Rayman
                             Action.Walk_Right or Action.Walk_Left or
                             Action.Walk_LookAround_Right or Action.Walk_LookAround_Left))
                         {
-                            if (!Rayman3.TimeAttack.IsActive && GameInfo.MapId == MapId.WoodLight_M1 && GameInfo.LastGreenLumAlive == 0)
+                            if (!Rayman3.TimeAttack.IsActive && Rayman3.GameInfo.MapId == MapId.WoodLight_M1 && Rayman3.GameInfo.LastGreenLumAlive == 0)
                                 ActionId = IsFacingRight ? Action.Walk_LookAround_Right : Action.Walk_LookAround_Left;
                             else
                                 ActionId = IsFacingRight ? Action.Walk_Right : Action.Walk_Left;
@@ -1472,7 +1472,7 @@ public partial class Rayman
                         Action.SuperHelico_ChargeSuperFist_Right or Action.SuperHelico_ChargeSuperFist_Left or
                         Action.SuperHelico_EndChargeFist_Right or Action.SuperHelico_EndChargeFist_Left))
                 {
-                    int timer = RSMultiplayer.IsActive ? MultiplayerBlueLumTimer : GameInfo.BlueLumsTimer;
+                    int timer = RSMultiplayer.IsActive ? MultiplayerBlueLumTimer : Rayman3.GameInfo.BlueLumsTimer;
 
                     if (timer < 79 &&
                         ActionId is not (Action.HelicoTimeout_Right or Action.HelicoTimeout_Left))
@@ -2131,7 +2131,7 @@ public partial class Rayman
                         Attack(chargePower, RaymanBody.RaymanBodyPartType.Fist, new Vector2(16, -16), ActionId is Action.ChargeFist_Right or Action.ChargeFist_Left);
                         NextActionId = IsFacingRight ? Action.EndChargeFist_Right : Action.EndChargeFist_Left;
 
-                        if (!GameInfo.IsPowerEnabled(Power.DoubleFist))
+                        if (!Rayman3.GameInfo.IsPowerEnabled(Power.DoubleFist))
                             DisableAttackTimer = 0;
                         type = 1;
                     }
@@ -3133,7 +3133,7 @@ public partial class Rayman
 
                 TempFlag = false;
 
-                cam.SetHorizontalOffset(GameInfo.MapId == MapId.TheCanopy_M2 ? CameraOffset.Center : CameraOffset.Default);
+                cam.SetHorizontalOffset(Rayman3.GameInfo.MapId == MapId.TheCanopy_M2 ? CameraOffset.Center : CameraOffset.Default);
                 break;
         }
 
@@ -3941,12 +3941,12 @@ public partial class Rayman
                         ActionId = IsFacingRight ? Action.Victory_Right : Action.Victory_Left;
                         PlaySound(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02);
 
-                        if (GameInfo.MapId != MapId.BossBadDreams &&
-                            GameInfo.MapId != MapId.BossScaleMan &&
-                            GameInfo.MapId != MapId.BossFinal_M1 &&
-                            GameInfo.MapId != MapId.BossFinal_M2 &&
-                            GameInfo.MapId != MapId.BossMachine &&
-                            GameInfo.MapId != MapId.BossRockAndLava)
+                        if (Rayman3.GameInfo.MapId != MapId.BossBadDreams &&
+                            Rayman3.GameInfo.MapId != MapId.BossScaleMan &&
+                            Rayman3.GameInfo.MapId != MapId.BossFinal_M1 &&
+                            Rayman3.GameInfo.MapId != MapId.BossFinal_M2 &&
+                            Rayman3.GameInfo.MapId != MapId.BossMachine &&
+                            Rayman3.GameInfo.MapId != MapId.BossRockAndLava)
                         {
                             Engine.Sem.ReplaceAllSongs(Rayman3SoundEvent.Play__win3, 0);
                         }
@@ -3975,15 +3975,15 @@ public partial class Rayman
 
                 if (FinishedMap)
                 {
-                    if (GameInfo.MapId == MapId.CavesOfBadDreams_M1 && Rayman3Achievements.CaveBadDreamsM1_HitSkulls <= 17) 
+                    if (Rayman3.GameInfo.MapId == MapId.CavesOfBadDreams_M1 && Rayman3Achievements.CaveBadDreamsM1_HitSkulls <= 17) 
                         Rayman3.Achievements.Unlock(AchievementId.CompleteCaveBadDreamsWithMaxSkullHits);
-                    if (GameInfo.MapId == MapId.MenhirHills_M2 && !Rayman3Achievements.MenhirHills_HasDied) 
+                    if (Rayman3.GameInfo.MapId == MapId.MenhirHills_M2 && !Rayman3Achievements.MenhirHills_HasDied) 
                         Rayman3.Achievements.Unlock(AchievementId.CompleteMenhirHillsWithoutDying);
-                    if (Rom.Platform == Platform.NGage && GameInfo.MapId == MapId.MarshAwakening2 && GameInfo.LastGreenLumAlive == 0) 
+                    if (Rom.Platform == Platform.NGage && Rayman3.GameInfo.MapId == MapId.MarshAwakening2 && Rayman3.GameInfo.LastGreenLumAlive == 0) 
                         Rayman3.Achievements.Unlock(AchievementId.CompleteFreeFallingWithoutCheckpoint);
-                    if (GameInfo.MapId == MapId.BossRockAndLava && !Rayman3Achievements.BossRockAndLava_HasUsedBlueLum) 
+                    if (Rayman3.GameInfo.MapId == MapId.BossRockAndLava && !Rayman3Achievements.BossRockAndLava_HasUsedBlueLum) 
                         Rayman3.Achievements.Unlock(AchievementId.DefeatRockyWithoutBlueLum);
-                    if (GameInfo.MapId == MapId.SanctuaryOfRockAndLava_M3 && !Rayman3Achievements.SanctuaryOfRockAndLava_HasKilledBlackLum) 
+                    if (Rayman3.GameInfo.MapId == MapId.SanctuaryOfRockAndLava_M3 && !Rayman3Achievements.SanctuaryOfRockAndLava_HasKilledBlackLum) 
                         Rayman3.Achievements.Unlock(AchievementId.CompleteRockAndLavaWithoutDefeatingBlackLums);
                 }
 
@@ -4015,12 +4015,12 @@ public partial class Rayman
                         ActionId = IsFacingRight ? Action.Victory_Right : Action.Victory_Left;
                         PlaySound(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02);
 
-                        if (GameInfo.MapId != MapId.BossBadDreams &&
-                            GameInfo.MapId != MapId.BossScaleMan &&
-                            GameInfo.MapId != MapId.BossFinal_M1 &&
-                            GameInfo.MapId != MapId.BossFinal_M2 &&
-                            GameInfo.MapId != MapId.BossMachine &&
-                            GameInfo.MapId != MapId.BossRockAndLava)
+                        if (Rayman3.GameInfo.MapId != MapId.BossBadDreams &&
+                            Rayman3.GameInfo.MapId != MapId.BossScaleMan &&
+                            Rayman3.GameInfo.MapId != MapId.BossFinal_M1 &&
+                            Rayman3.GameInfo.MapId != MapId.BossFinal_M2 &&
+                            Rayman3.GameInfo.MapId != MapId.BossMachine &&
+                            Rayman3.GameInfo.MapId != MapId.BossRockAndLava)
                         {
                             Engine.Sem.ReplaceAllSongs(Rayman3SoundEvent.Play__win3, 0);
                         }
@@ -4046,7 +4046,7 @@ public partial class Rayman
                 }
 
                 // Custom to transition to time attack score screen if the last map
-                if (Rayman3.TimeAttack.IsActive && GameInfo.GetNextLevelId() is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
+                if (Rayman3.TimeAttack.IsActive && Rayman3.GameInfo.GetNextLevelId() is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
                 {
                     if (IsActionFinished && ActionId is Action.Victory_Right or Action.Victory_Left)
                         ActionId = IsFacingRight ? Action.Idle_Right : Action.Idle_Left;
@@ -4067,7 +4067,7 @@ public partial class Rayman
                         return true;
                     }
 
-                    if (GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
+                    if (Rayman3.GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
                         Engine.Sem.StopAllSongs();
 
                     if (FinishedMap)
@@ -4094,10 +4094,10 @@ public partial class Rayman
 
                     TempFlag = true;
 
-                    if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
+                    if (Rom.Platform == Platform.GBA && Rayman3.GameInfo.LevelType == LevelType.GameCube)
                         ((FrameSideScrollerGCN)Frame.Current).FadeOut();
 
-                    switch (GameInfo.MapId)
+                    switch (Rayman3.GameInfo.MapId)
                     {
                         case MapId.CavesOfBadDreams_M1:
                         case MapId.CavesOfBadDreams_M2:
@@ -4159,48 +4159,48 @@ public partial class Rayman
 
                 if (FinishedMap)
                 {
-                    if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
+                    if (Rom.Platform == Platform.GBA && Rayman3.GameInfo.LevelType == LevelType.GameCube)
                     {
                         ((FrameSideScrollerGCN)Frame.Current).RestoreMapAndPowers();
                         int gcnMapId = ((FrameSideScrollerGCN)Frame.Current).GcnMapId;
 
-                        if (GameInfo.PersistentInfo.CompletedGCNBonusLevels < gcnMapId + 1)
-                            GameInfo.PersistentInfo.CompletedGCNBonusLevels = (byte)(gcnMapId + 1);
+                        if (Rayman3.GameInfo.PersistentInfo.CompletedGCNBonusLevels < gcnMapId + 1)
+                            Rayman3.GameInfo.PersistentInfo.CompletedGCNBonusLevels = (byte)(gcnMapId + 1);
 
                         Engine.FrameMngr.SetNextFrame(new GameCubeMenu());
-                        GameInfo.Save(GameInfo.CurrentSlot);
+                        Rayman3.GameInfo.Save(Rayman3.GameInfo.CurrentSlot);
                     }
-                    else if (GameInfo.IsFirstTimeCompletingLevel())
+                    else if (Rayman3.GameInfo.IsFirstTimeCompletingLevel())
                     {
-                        switch (GameInfo.MapId)
+                        switch (Rayman3.GameInfo.MapId)
                         {
                             case MapId.WoodLight_M2:
-                                GameInfo.LoadLevel(MapId.Power1);
+                                Rayman3.GameInfo.LoadLevel(MapId.Power1);
                                 break;
 
                             case MapId.BossMachine:
-                                GameInfo.LoadLevel(MapId.Power2);
+                                Rayman3.GameInfo.LoadLevel(MapId.Power2);
                                 break;
 
                             case MapId.EchoingCaves_M2:
-                                GameInfo.LoadLevel(MapId.Power3);
+                                Rayman3.GameInfo.LoadLevel(MapId.Power3);
                                 break;
 
                             case MapId.SanctuaryOfStoneAndFire_M3:
-                                GameInfo.LoadLevel(MapId.Power5);
+                                Rayman3.GameInfo.LoadLevel(MapId.Power5);
                                 break;
 
                             case MapId.BossRockAndLava:
-                                GameInfo.LoadLevel(MapId.Power4);
+                                Rayman3.GameInfo.LoadLevel(MapId.Power4);
                                 break;
 
                             case MapId.BossScaleMan:
-                                GameInfo.LoadLevel(MapId.Power6);
+                                Rayman3.GameInfo.LoadLevel(MapId.Power6);
                                 break;
 
                             default:
                                 Frame.Current.EndOfFrame = true;
-                                GameInfo.UpdateLastCompletedLevel();
+                                Rayman3.GameInfo.UpdateLastCompletedLevel();
                                 break;
                         }
                     }
@@ -4211,19 +4211,19 @@ public partial class Rayman
                 }
                 else
                 {
-                    if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
+                    if (Rom.Platform == Platform.GBA && Rayman3.GameInfo.LevelType == LevelType.GameCube)
                     {
                         ((FrameSideScrollerGCN)Frame.Current).RestoreMapAndPowers();
                         Engine.FrameMngr.SetNextFrame(new GameCubeMenu());
                     }
-                    else if (GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
+                    else if (Rayman3.GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
                     {
                         if (((World)Frame.Current).FinishedTransitioningOut)
-                            GameInfo.LoadLevel(MapId.WorldMap);
+                            Rayman3.GameInfo.LoadLevel(MapId.WorldMap);
                     }
                     else
                     {
-                        GameInfo.LoadLevel(MapId.World1 + (int)GameInfo.WorldId);
+                        Rayman3.GameInfo.LoadLevel(MapId.World1 + (int)Rayman3.GameInfo.WorldId);
                     }
                 }
 
@@ -4437,10 +4437,10 @@ public partial class Rayman
                 if (Frame.Current is FrameSideScroller sideScroller)
                     sideScroller.CanPause = false;
 
-                if (GameInfo.MapId is not (MapId.ChallengeLy1 or MapId.ChallengeLy2 or MapId.ChallengeLyGCN) &&
-                    GameInfo.LevelType != LevelType.GameCube)
+                if (Rayman3.GameInfo.MapId is not (MapId.ChallengeLy1 or MapId.ChallengeLy2 or MapId.ChallengeLyGCN) &&
+                    Rayman3.GameInfo.LevelType != LevelType.GameCube)
                 {
-                    GameInfo.ModifyLives(-1);
+                    Rayman3.GameInfo.ModifyLives(-1);
                 }
 
                 PlaySound(Rayman3SoundEvent.Play__RaDeath_Mix03);
@@ -4452,15 +4452,15 @@ public partial class Rayman
 
                 NextActionId = null;
 
-                if (GameInfo.LevelType == LevelType.GameCube)
+                if (Rayman3.GameInfo.LevelType == LevelType.GameCube)
                     ((FrameSideScrollerGCN)Frame.Current).FadeOut();
 
-                if (GameInfo.MapId is MapId.SanctuaryOfRockAndLava_M1 or MapId.SanctuaryOfRockAndLava_M2 or MapId.SanctuaryOfRockAndLava_M3)
+                if (Rayman3.GameInfo.MapId is MapId.SanctuaryOfRockAndLava_M1 or MapId.SanctuaryOfRockAndLava_M2 or MapId.SanctuaryOfRockAndLava_M3)
                 {
                     ((SanctuaryOfRockAndLava)Frame.Current).FadeOut();
                 }
                 // NOTE: The original game doesn't do this, meaning that the transition would play twice!
-                else if (GameInfo.MapId == MapId.GameCube_Bonus3 && Engine.Settings.Active.Tweaks.FixBugs)
+                else if (Rayman3.GameInfo.MapId == MapId.GameCube_Bonus3 && Engine.Settings.Active.Tweaks.FixBugs)
                 {
                     // Do nothing - FrameSideScrollerGCN.FadeOut handles it
                 }
@@ -4475,13 +4475,13 @@ public partial class Rayman
                     AttachedObject = null;
                 }
 
-                if (GameInfo.MapId is MapId.MenhirHills_M1 or MapId.MenhirHills_M2)
+                if (Rayman3.GameInfo.MapId is MapId.MenhirHills_M1 or MapId.MenhirHills_M2)
                     Rayman3Achievements.MenhirHills_HasDied = true;
                 break;
 
             case FsmAction.Step:
                 if (IsActionFinished && GameTime.ElapsedFrames - Timer > 120)
-                    GameInfo.LevelDeath();
+                    Rayman3.GameInfo.LevelDeath();
                 break;
 
             case FsmAction.UnInit:
@@ -5192,7 +5192,7 @@ public partial class Rayman
         {
             case FsmAction.Init:
                 CameraSideScroller cam = (CameraSideScroller)Scene.Camera;
-                cam.SetHorizontalOffset(GameInfo.MapId == MapId.TheCanopy_M2 ? CameraOffset.Center : CameraOffset.Default);
+                cam.SetHorizontalOffset(Rayman3.GameInfo.MapId == MapId.TheCanopy_M2 ? CameraOffset.Center : CameraOffset.Default);
                 cam.ProcessMessage(this, Message.Cam_ResetUnknownMode);
                 break;
 

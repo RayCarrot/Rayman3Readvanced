@@ -10,10 +10,10 @@ public class BossFinal : FrameSideScroller
 
         if (EndOfFrame)
         {
-            if (GameInfo.MapId == MapId.BossFinal_M2)
+            if (Rayman3.GameInfo.MapId == MapId.BossFinal_M2)
                 Engine.FrameMngr.SetNextFrame(new Act6());
             else
-                GameInfo.LoadLevel(GameInfo.GetNextLevelId());
+                Rayman3.GameInfo.LoadLevel(Rayman3.GameInfo.GetNextLevelId());
         }
     }
 }

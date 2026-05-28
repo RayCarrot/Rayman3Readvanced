@@ -54,7 +54,7 @@ public class Cages50Bar : Bar
 
     public override void Set()
     {
-        DeadCages = GameInfo.GetTotalDeadCages();
+        DeadCages = Rayman3.GameInfo.GetTotalDeadCages();
 
         if (DeadCages == 50)
         {

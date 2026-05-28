@@ -49,11 +49,11 @@ public sealed class MockGame : IDisposable
         // Set up game info
         Random.SetSeed(0xDEADBEEF);
         GameTime.Reset();
-        GameInfo.Init();
-        GameInfo.ResetPersistentInfo();
-        GameInfo.StartPlayTime();
-        GameInfo.CurrentSlot = 0;
-        GameInfo.Init();
+        Rayman3.GameInfo.Init();
+        Rayman3.GameInfo.ResetPersistentInfo();
+        Rayman3.GameInfo.StartPlayTime();
+        Rayman3.GameInfo.CurrentSlot = 0;
+        Rayman3.GameInfo.Init();
     }
 
     private readonly MockGraphicsDeviceService _mockGraphicsDeviceService;

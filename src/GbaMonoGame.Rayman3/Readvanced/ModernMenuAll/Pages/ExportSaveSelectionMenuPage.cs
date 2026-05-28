@@ -41,11 +41,11 @@ public class ExportSaveSelectionMenuPage : MenuPage
         {
             // Load the save slot
             if (save != null)
-                GameInfo.Load(ReadvancedSlot.FromSaveGame(save));
+                Rayman3.GameInfo.Load(ReadvancedSlot.FromSaveGame(save));
 
-            ModernMenuAll.Slot slot = save == null || GameInfo.PersistentInfo.Lives == 0
+            ModernMenuAll.Slot slot = save == null || Rayman3.GameInfo.PersistentInfo.Lives == 0
                 ? null
-                : new ModernMenuAll.Slot(GameInfo.GetTotalDeadLums(), GameInfo.GetTotalDeadCages(), GameInfo.PersistentInfo.Lives, TimeSpan.Zero);
+                : new ModernMenuAll.Slot(Rayman3.GameInfo.GetTotalDeadLums(), Rayman3.GameInfo.GetTotalDeadCages(), Rayman3.GameInfo.PersistentInfo.Lives, TimeSpan.Zero);
 
             AddOption(new SlotMenuOption(slot));
         }
@@ -76,10 +76,10 @@ public class ExportSaveSelectionMenuPage : MenuPage
                             EEPROM<SaveGame> saveGame = (EEPROM<SaveGame>)SaveData;
 
                             // Load the Readvanced save which we want to export
-                            GameInfo.Load(Slot);
+                            Rayman3.GameInfo.Load(Slot);
 
                             // Replace the save slot
-                            saveGame.Obj.Slots[SelectedOption].SaveSlot = GameInfo.PersistentInfo;
+                            saveGame.Obj.Slots[SelectedOption].SaveSlot = Rayman3.GameInfo.PersistentInfo;
 
                             // Write the save file
                             Engine.App.BeginLoad();
@@ -94,10 +94,10 @@ public class ExportSaveSelectionMenuPage : MenuPage
                             NGageSaveGame saveGame = (NGageSaveGame)SaveData;
 
                             // Load the Readvanced save which we want to export
-                            GameInfo.Load(Slot);
+                            Rayman3.GameInfo.Load(Slot);
 
                             // Replace the save slot
-                            saveGame.Slots[SelectedOption] = GameInfo.PersistentInfo;
+                            saveGame.Slots[SelectedOption] = Rayman3.GameInfo.PersistentInfo;
                             saveGame.ValidSlots[SelectedOption] = true;
 
                             // Write the save file

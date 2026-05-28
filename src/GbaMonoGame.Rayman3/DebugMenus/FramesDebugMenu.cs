@@ -53,7 +53,7 @@ public class FramesDebugMenu : DebugMenu
                 MapId mapId = (MapId)i;
 
                 // New power levels have to have the previous map id set before loading
-                GameInfo.MapId = mapId switch
+                Rayman3.GameInfo.MapId = mapId switch
                 {
                     MapId.Power1 => MapId.WoodLight_M2,
                     MapId.Power2 => MapId.BossMachine,
@@ -61,14 +61,14 @@ public class FramesDebugMenu : DebugMenu
                     MapId.Power4 => MapId.BossRockAndLava,
                     MapId.Power5 => MapId.SanctuaryOfStoneAndFire_M3,
                     MapId.Power6 => MapId.BossScaleMan,
-                    _ => GameInfo.MapId
+                    _ => Rayman3.GameInfo.MapId
                 };
 
                 // Create the level frame
                 Frame frame = LevelFactory.Create(mapId);
 
                 // Set the powers
-                GameInfo.SetPowerBasedOnMap(mapId);
+                Rayman3.GameInfo.SetPowerBasedOnMap(mapId);
 
                 return frame;
             }, EndWithSeparator: (MapId)i switch
@@ -168,13 +168,13 @@ public class FramesDebugMenu : DebugMenu
                 }
 
                 // Set all powers
-                GameInfo.EnablePower(Power.All);
+                Rayman3.GameInfo.EnablePower(Power.All);
 
                 return frame;
             })).
             ToArray()),
         new("Level Editor", null, 
-            GameInfo.Levels.
+            Rayman3.GameInfo.Levels.
             Select((_, i) => new FrameMenuItem(((MapId)i).ToString(), () => new LevelEditor(i), EndWithSeparator: (MapId)i switch
             {
                 MapId.SanctuaryOfBigTree_M2 => true,

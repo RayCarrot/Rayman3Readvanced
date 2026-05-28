@@ -50,7 +50,7 @@ public class World : FrameWorldSideScroller
     {
         base.Init();
 
-        UserInfo = new UserInfoWorldMap(Scene, GameInfo.GetLevelHasBlueLum());
+        UserInfo = new UserInfoWorldMap(Scene, Rayman3.GameInfo.GetLevelHasBlueLum());
         Scene.AddDialog(UserInfo, false, false);
 
         BlockPause = true;
@@ -68,8 +68,8 @@ public class World : FrameWorldSideScroller
             _ => throw new UnsupportedPlatformException()
         };
 
-        if (GameInfo.MapId == MapId.World1 && 
-            !GameInfo.PersistentInfo.PlayedMurfyWorldHelp)
+        if (Rayman3.GameInfo.MapId == MapId.World1 && 
+            !Rayman3.GameInfo.PersistentInfo.PlayedMurfyWorldHelp)
         {
             MurfyLevelCurtainTargetId = 16;
             MurfyId = 41;
@@ -81,16 +81,16 @@ public class World : FrameWorldSideScroller
             Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginCutscene);
             NextExStepAction = StepEx_SpawnMurfy;
             
-            GameInfo.PersistentInfo.PlayedMurfyWorldHelp = true;
-            GameInfo.Save(GameInfo.CurrentSlot);
+            Rayman3.GameInfo.PersistentInfo.PlayedMurfyWorldHelp = true;
+            Rayman3.GameInfo.Save(Rayman3.GameInfo.CurrentSlot);
 
             Murfy murfy = Scene.GetGameObject<Murfy>(MurfyId);
             murfy.Position = murfy.Position with { Y = Scene.Playfield.Camera.Position.Y };
             murfy.IsForBonusInWorld1 = false;
         }
-        else if (GameInfo.MapId == MapId.World1 && 
-                 GameInfo.World1LumsCompleted() &&
-                 !GameInfo.PersistentInfo.UnlockedBonus1)
+        else if (Rayman3.GameInfo.MapId == MapId.World1 && 
+                 Rayman3.GameInfo.World1LumsCompleted() &&
+                 !Rayman3.GameInfo.PersistentInfo.UnlockedBonus1)
         {
             MurfyLevelCurtainTargetId = 20;
             MurfyId = 41;
@@ -99,14 +99,14 @@ public class World : FrameWorldSideScroller
             Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginCutscene);
             NextExStepAction = StepEx_SpawnMurfy;
 
-            GameInfo.PersistentInfo.UnlockedBonus1 = true;
-            GameInfo.Save(GameInfo.CurrentSlot);
+            Rayman3.GameInfo.PersistentInfo.UnlockedBonus1 = true;
+            Rayman3.GameInfo.Save(Rayman3.GameInfo.CurrentSlot);
 
             UserInfo.Hide = true;
         }
-        else if (GameInfo.MapId == MapId.World2 && 
-                 GameInfo.World2LumsCompleted() &&
-                 !GameInfo.PersistentInfo.UnlockedBonus2)
+        else if (Rayman3.GameInfo.MapId == MapId.World2 && 
+                 Rayman3.GameInfo.World2LumsCompleted() &&
+                 !Rayman3.GameInfo.PersistentInfo.UnlockedBonus2)
         {
             MurfyLevelCurtainTargetId = Rom.Platform switch
             {
@@ -120,14 +120,14 @@ public class World : FrameWorldSideScroller
             Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginCutscene);
             NextExStepAction = StepEx_SpawnMurfy;
 
-            GameInfo.PersistentInfo.UnlockedBonus2 = true;
-            GameInfo.Save(GameInfo.CurrentSlot);
+            Rayman3.GameInfo.PersistentInfo.UnlockedBonus2 = true;
+            Rayman3.GameInfo.Save(Rayman3.GameInfo.CurrentSlot);
 
             UserInfo.Hide = true;
         }
-        else if (GameInfo.MapId == MapId.World3 && 
-                 GameInfo.World3LumsCompleted() &&
-                 !GameInfo.PersistentInfo.UnlockedBonus3)
+        else if (Rayman3.GameInfo.MapId == MapId.World3 && 
+                 Rayman3.GameInfo.World3LumsCompleted() &&
+                 !Rayman3.GameInfo.PersistentInfo.UnlockedBonus3)
         {
             MurfyLevelCurtainTargetId = Rom.Platform switch
             {
@@ -146,14 +146,14 @@ public class World : FrameWorldSideScroller
             Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginCutscene);
             NextExStepAction = StepEx_SpawnMurfy;
 
-            GameInfo.PersistentInfo.UnlockedBonus3 = true;
-            GameInfo.Save(GameInfo.CurrentSlot);
+            Rayman3.GameInfo.PersistentInfo.UnlockedBonus3 = true;
+            Rayman3.GameInfo.Save(Rayman3.GameInfo.CurrentSlot);
 
             UserInfo.Hide = true;
         }
-        else if (GameInfo.MapId == MapId.World4 && 
-                 GameInfo.World4LumsCompleted() &&
-                 !GameInfo.PersistentInfo.UnlockedBonus4)
+        else if (Rayman3.GameInfo.MapId == MapId.World4 && 
+                 Rayman3.GameInfo.World4LumsCompleted() &&
+                 !Rayman3.GameInfo.PersistentInfo.UnlockedBonus4)
         {
             MurfyLevelCurtainTargetId = 11;
             MurfyId = Rom.Platform switch
@@ -167,8 +167,8 @@ public class World : FrameWorldSideScroller
             Scene.MainActor.ProcessMessage(this, Message.Rayman_BeginCutscene);
             NextExStepAction = StepEx_SpawnMurfy;
 
-            GameInfo.PersistentInfo.UnlockedBonus4 = true;
-            GameInfo.Save(GameInfo.CurrentSlot);
+            Rayman3.GameInfo.PersistentInfo.UnlockedBonus4 = true;
+            Rayman3.GameInfo.Save(Rayman3.GameInfo.CurrentSlot);
 
             UserInfo.Hide = true;
         }

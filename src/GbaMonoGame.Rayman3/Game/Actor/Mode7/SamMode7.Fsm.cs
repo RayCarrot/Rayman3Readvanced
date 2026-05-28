@@ -143,12 +143,12 @@ public partial class SamMode7
                 // Save and end level
                 else if (Timer == 218)
                 {
-                    if (GameInfo.IsFirstTimeCompletingLevel())
-                        GameInfo.UpdateLastCompletedLevel();
+                    if (Rayman3.GameInfo.IsFirstTimeCompletingLevel())
+                        Rayman3.GameInfo.UpdateLastCompletedLevel();
 
                     frame.EndOfFrame = true;
-                    GameInfo.PersistentInfo.LastPlayedLevel = (byte)GameInfo.MapId;
-                    GameInfo.Save(GameInfo.CurrentSlot);
+                    Rayman3.GameInfo.PersistentInfo.LastPlayedLevel = (byte)Rayman3.GameInfo.MapId;
+                    Rayman3.GameInfo.Save(Rayman3.GameInfo.CurrentSlot);
                 }
 
                 WaterSplashObj?.Position = Position;

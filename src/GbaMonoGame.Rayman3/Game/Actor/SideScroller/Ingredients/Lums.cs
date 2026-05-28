@@ -31,9 +31,9 @@ public sealed partial class Lums : BaseActor
 
                 if (ActionId == Action.YellowLum && !IsProjectile && !RSMultiplayer.IsActive)
                 {
-                    LumId = GameInfo.GetLumsId();
+                    LumId = Rayman3.GameInfo.GetLumsId();
 
-                    if (GameInfo.IsLumDead(LumId, GameInfo.MapId))
+                    if (Rayman3.GameInfo.IsLumDead(LumId, Rayman3.GameInfo.MapId))
                     {
                         if (!Engine.Settings.Active.Tweaks.ShowCollectedLums)
                         {
@@ -63,12 +63,12 @@ public sealed partial class Lums : BaseActor
                 // Optionally fix allowing multiple white lums in a level, such as The Precipice 2
                 if (Engine.Settings.Active.Tweaks.FixBugs)
                 {
-                    if (GameInfo.CollectedWhiteLums.Contains(InstanceId) && !RSMultiplayer.IsActive)
+                    if (Rayman3.GameInfo.CollectedWhiteLums.Contains(InstanceId) && !RSMultiplayer.IsActive)
                         ProcessMessage(this, Message.Destroy);
                 }
                 else
                 {
-                    if (GameInfo.HasCollectedWhiteLum && !RSMultiplayer.IsActive)
+                    if (Rayman3.GameInfo.HasCollectedWhiteLum && !RSMultiplayer.IsActive)
                         ProcessMessage(this, Message.Destroy);
                 }
 
@@ -98,9 +98,9 @@ public sealed partial class Lums : BaseActor
 
             if (ActionId == Action.GreenLum)
             {
-                LumId = GameInfo.GetGreenLumsId();
+                LumId = Rayman3.GameInfo.GetGreenLumsId();
 
-                if (GameInfo.IsGreenLumDead(LumId) || Engine.Settings.Active.Difficulty.NoCheckpoints)
+                if (Rayman3.GameInfo.IsGreenLumDead(LumId) || Engine.Settings.Active.Difficulty.NoCheckpoints)
                     ProcessMessage(this, Message.Destroy);
             }
         }
@@ -162,7 +162,7 @@ public sealed partial class Lums : BaseActor
         {
             // Don't resurrect if collected (used when triggered from captors)
             case Message.Resurrect:
-                if (ActionId == Action.YellowLum && GameInfo.IsLumDead(LumId, GameInfo.MapId))
+                if (ActionId == Action.YellowLum && Rayman3.GameInfo.IsLumDead(LumId, Rayman3.GameInfo.MapId))
                     return false;
                 break;
         }

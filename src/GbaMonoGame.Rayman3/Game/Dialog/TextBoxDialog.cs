@@ -260,7 +260,7 @@ public partial class TextBoxDialog : Dialog
             RenderContext = Scene.HudRenderContext,
         };
 
-        if (GameInfo.MapId is not (MapId.FairyGlade_M2 or MapId.World3 or MapId.BossMachine or MapId.MarshAwakening1))
+        if (Rayman3.GameInfo.MapId is not (MapId.FairyGlade_M2 or MapId.World3 or MapId.BossMachine or MapId.MarshAwakening1))
         {
             AnimatedObjectResource lyIconResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.TextBoxLyIconAnimations);
             LyIcon = new AnimatedObject(lyIconResource, true)
@@ -273,7 +273,7 @@ public partial class TextBoxDialog : Dialog
             };
         }
 
-        if (GameInfo.MapId is not (MapId.FairyGlade_M2 or MapId.BossMachine or MapId.MarshAwakening1))
+        if (Rayman3.GameInfo.MapId is not (MapId.FairyGlade_M2 or MapId.BossMachine or MapId.MarshAwakening1))
         {
             AnimatedObjectResource teensiesIconResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.TextBoxTeensiesIconAnimations);
             TeensiesIcon = new AnimatedObject(teensiesIconResource, true)

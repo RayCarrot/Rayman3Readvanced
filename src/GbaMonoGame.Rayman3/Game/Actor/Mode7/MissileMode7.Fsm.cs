@@ -37,7 +37,7 @@ public partial class MissileMode7
             JumpSoundTimer--;
         }
 
-        if (!GameInfo.IsCheatEnabled(Cheat.Invulnerable))
+        if (!Rayman3.GameInfo.IsCheatEnabled(Cheat.Invulnerable))
         {
             InvulnerabilityTimer++;
 
@@ -73,7 +73,7 @@ public partial class MissileMode7
                 InvulnerabilityTimer = 0;
                 IsInvulnerable = true;
 
-                if (GameInfo.MapId == MapId.MissileRace2)
+                if (Rayman3.GameInfo.MapId == MapId.MissileRace2)
                     Rayman3Achievements.MissileRace2_HasTakenDamage = true;
             }
 
@@ -102,7 +102,7 @@ public partial class MissileMode7
         switch (action)
         {
             case FsmAction.Init:
-                GameInfo.IsInWorldMap = false;
+                Rayman3.GameInfo.IsInWorldMap = false;
                 break;
 
             case FsmAction.Step:
@@ -306,7 +306,7 @@ public partial class MissileMode7
             case FsmAction.Init:
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__Motor01_Mix12, this);
                 InvulnerabilityTimer = 0;
-                GameInfo.ModifyLives(-1);
+                Rayman3.GameInfo.ModifyLives(-1);
                 ReceiveDamage(255);
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__RaDeath_Mix03, this);
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__LumTimer_Mix02, this);
@@ -323,7 +323,7 @@ public partial class MissileMode7
                 }
 
                 if (InvulnerabilityTimer == 120)
-                    GameInfo.LevelDeath();
+                    Rayman3.GameInfo.LevelDeath();
 
                 // NOTE: The game doesn't have this >30 check and sets ZPos=InvulnerabilityTimer*8
                 //       The problem is we calculate the ZPos in 3D while the game does it in screen
@@ -386,9 +386,9 @@ public partial class MissileMode7
                 if (Rayman3.TimeAttack.IsActive)
                     Rayman3.TimeAttack.Pause();
 
-                if (GameInfo.MapId == MapId.MissileRace1 && !Rayman3Achievements.MissileRace1_HasStrafed)
+                if (Rayman3.GameInfo.MapId == MapId.MissileRace1 && !Rayman3Achievements.MissileRace1_HasStrafed)
                     Rayman3.Achievements.Unlock(AchievementId.CompleteMissileRace1WithoutStrafing);
-                if (GameInfo.MapId == MapId.MissileRace2 && !Rayman3Achievements.MissileRace2_HasTakenDamage)
+                if (Rayman3.GameInfo.MapId == MapId.MissileRace2 && !Rayman3Achievements.MissileRace2_HasTakenDamage)
                     Rayman3.Achievements.Unlock(AchievementId.CompleteMissileRace2WithoutDamage);
                 break;
 
@@ -450,11 +450,11 @@ public partial class MissileMode7
 
                         if (!RSMultiplayer.IsActive)
                         {
-                            if (GameInfo.IsFirstTimeCompletingLevel())
-                                GameInfo.UpdateLastCompletedLevel();
+                            if (Rayman3.GameInfo.IsFirstTimeCompletingLevel())
+                                Rayman3.GameInfo.UpdateLastCompletedLevel();
 
-                            GameInfo.PersistentInfo.LastPlayedLevel = (byte)GameInfo.MapId;
-                            GameInfo.Save(GameInfo.CurrentSlot);
+                            Rayman3.GameInfo.PersistentInfo.LastPlayedLevel = (byte)Rayman3.GameInfo.MapId;
+                            Rayman3.GameInfo.Save(Rayman3.GameInfo.CurrentSlot);
                         }
                     }
                 }
@@ -499,7 +499,7 @@ public partial class MissileMode7
 
                 raceManager.SetPlayerOut(InstanceId);
 
-                if (GameInfo.MapId == MapId.GbaMulti_MissileArena)
+                if (Rayman3.GameInfo.MapId == MapId.GbaMulti_MissileArena)
                 {
                     for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
                     {

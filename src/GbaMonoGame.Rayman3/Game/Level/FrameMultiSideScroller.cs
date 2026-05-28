@@ -18,7 +18,7 @@ public partial class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
     {
         CreateGeneratedSteps();
 
-        GameInfo.SetNextMapId(mapId);
+        Rayman3.GameInfo.SetNextMapId(mapId);
         PausedMachineId = 0;
 
         // NOTE: In the original game this defaults to 0, which is a bug. It makes the fists have the blend flag set
@@ -61,8 +61,8 @@ public partial class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
     public override void Init()
     {
-        GameInfo.InitLevel(LevelType.Multiplayer);
-        GameInfo.SetLevelRichPresence();
+        Rayman3.GameInfo.InitLevel(LevelType.Multiplayer);
+        Rayman3.GameInfo.SetLevelRichPresence();
 
         TransitionsFX.Init(false);
         TransitionsFX.FadeInInit(1);
@@ -70,7 +70,7 @@ public partial class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         LevelMusicManager.Init();
         MultiplayerManager.Init();
 
-        Scene = new Scene2D((int)GameInfo.MapId, x => new CameraSideScroller(x), 3, 1);
+        Scene = new Scene2D((int)Rayman3.GameInfo.MapId, x => new CameraSideScroller(x), 3, 1);
 
         if (Rom.Platform == Platform.NGage)
         {
@@ -103,11 +103,11 @@ public partial class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.Playfield.Step();
 
         // On N-Gage it hides the island/mountains background for one of the maps
-        if (Rom.Platform == Platform.NGage && GameInfo.MapId == MapId.NGageMulti_CaptureTheFlagTeamPlayer)
+        if (Rom.Platform == Platform.NGage && Rayman3.GameInfo.MapId == MapId.NGageMulti_CaptureTheFlagTeamPlayer)
             Gfx.GetScreen(1).IsEnabled = false;
 
         // Optionally fix broken collision
-        if (Engine.Settings.Active.Tweaks.FixBugs && Rom.Platform == Platform.NGage && GameInfo.MapId == MapId.NGageMulti_CaptureTheFlagTeamPlayer)
+        if (Engine.Settings.Active.Tweaks.FixBugs && Rom.Platform == Platform.NGage && Rayman3.GameInfo.MapId == MapId.NGageMulti_CaptureTheFlagTeamPlayer)
         {
             byte[] collisionMap = new byte[Scene.Playfield.PhysicalLayer.CollisionMap.Length];
             Array.Copy(Scene.Playfield.PhysicalLayer.CollisionMap, collisionMap, Scene.Playfield.PhysicalLayer.CollisionMap.Length);
@@ -119,7 +119,7 @@ public partial class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
         Scene.AnimationPlayer.Execute();
 
-        GameInfo.PlayLevelMusic();
+        Rayman3.GameInfo.PlayLevelMusic();
         CurrentStepAction = _Step_Normal;
     }
 
@@ -131,7 +131,7 @@ public partial class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         Scene.UnInit();
         Scene = null;
 
-        GameInfo.StopLevelMusic();
+        Rayman3.GameInfo.StopLevelMusic();
         Engine.Sem.StopAllSongs();
     }
 

@@ -19,7 +19,7 @@ public sealed partial class MissileMode7 : Mode7Actor
         if (InstanceId != 0 && InstanceId >= RSMultiplayer.PlayersCount)
             ProcessMessage(this, Message.Destroy);
 
-        if (GameInfo.MapId == MapId.GbaMulti_MissileArena)
+        if (Rayman3.GameInfo.MapId == MapId.GbaMulti_MissileArena)
         {
             Direction = new Angle256(InstanceId switch
             {
@@ -525,7 +525,7 @@ public sealed partial class MissileMode7 : Mode7Actor
                         Vector2 speedDiff = actor1.Speed - actor2.Speed;
                         
                         float force;
-                        if (GameInfo.MapId == MapId.GbaMulti_MissileArena)
+                        if (Rayman3.GameInfo.MapId == MapId.GbaMulti_MissileArena)
                             force = (directionalVector.X * speedDiff.X + directionalVector.Y * speedDiff.Y) * 2;
                         else
                             force = directionalVector.X * speedDiff.X + directionalVector.Y * speedDiff.Y;
@@ -570,7 +570,7 @@ public sealed partial class MissileMode7 : Mode7Actor
             if (IsInvulnerable &&
                 HitPoints != 0 &&
                 (GameTime.ElapsedFrames & 1) == 0 &&
-                !GameInfo.IsCheatEnabled(Cheat.Invulnerable))
+                !Rayman3.GameInfo.IsCheatEnabled(Cheat.Invulnerable))
             {
                 draw = false;
             }

@@ -48,7 +48,7 @@ public sealed partial class Murfy : MovableActor
     {
         TextBox.SetCutsceneCharacter(TextBoxCutsceneCharacter.Murfy);
 
-        switch (GameInfo.MapId)
+        switch (Rayman3.GameInfo.MapId)
         {
             case MapId.WoodLight_M1:
                 TextBox.SetText(0);
@@ -122,10 +122,10 @@ public sealed partial class Murfy : MovableActor
 
     private bool ManageFirstCutscene()
     {
-        if (!HasPlayedCutscene && GameInfo.MapId == MapId.WoodLight_M1)
+        if (!HasPlayedCutscene && Rayman3.GameInfo.MapId == MapId.WoodLight_M1)
         {
-            if (GameInfo.LastGreenLumAlive == 0)
-                GameInfo.GreenLumTouchedByRayman(0, new Vector2(130, 264));
+            if (Rayman3.GameInfo.LastGreenLumAlive == 0)
+                Rayman3.GameInfo.GreenLumTouchedByRayman(0, new Vector2(130, 264));
 
             return true;
         }

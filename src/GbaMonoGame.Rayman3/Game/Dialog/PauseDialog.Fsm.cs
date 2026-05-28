@@ -355,7 +355,7 @@ public partial class PauseDialog
                 {
                     GameTime.Resume();
 
-                    if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
+                    if (Rom.Platform == Platform.GBA && Rayman3.GameInfo.LevelType == LevelType.GameCube)
                     {
                         Engine.Sem.StopAllSongs();
                         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);

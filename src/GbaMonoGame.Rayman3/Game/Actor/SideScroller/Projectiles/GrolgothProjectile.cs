@@ -70,7 +70,7 @@ public sealed partial class GrolgothProjectile : MovableActor
         {
             BombSoundTimer--;
         }
-        else if (AnimatedObject.IsFramed && (GameInfo.ActorSoundFlags & ActorSoundFlags.FlyingBomb) == 0)
+        else if (AnimatedObject.IsFramed && (Rayman3.GameInfo.ActorSoundFlags & ActorSoundFlags.FlyingBomb) == 0)
         {
             if (!Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__BombFly_Mix03))
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__BombFly_Mix03, this);
@@ -79,7 +79,7 @@ public sealed partial class GrolgothProjectile : MovableActor
         }
 
         if (AnimatedObject.IsFramed)
-            GameInfo.ActorSoundFlags |= ActorSoundFlags.FlyingBomb;
+            Rayman3.GameInfo.ActorSoundFlags |= ActorSoundFlags.FlyingBomb;
     }
 
     private void ManageHitBomb(bool requireSuperFist)
@@ -346,6 +346,6 @@ public sealed partial class GrolgothProjectile : MovableActor
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
         base.Draw(animationPlayer, forceDraw);
-        GameInfo.ActorSoundFlags &= ~ActorSoundFlags.FlyingBomb;
+        Rayman3.GameInfo.ActorSoundFlags &= ~ActorSoundFlags.FlyingBomb;
     }
 }

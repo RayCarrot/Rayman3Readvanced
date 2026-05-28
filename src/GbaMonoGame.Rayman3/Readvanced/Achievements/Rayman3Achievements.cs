@@ -297,10 +297,10 @@ public static class Rayman3Achievements
         int totalCages = 0;
         foreach (MapId mapId in maps)
         {
-            collectedLums += GameInfo.GetDeadLumsForCurrentMap(mapId);
-            totalLums += GameInfo.Levels[(int)mapId].LumsCount;
-            collectedCages += GameInfo.GetDeadCagesForCurrentMap(mapId);
-            totalCages += GameInfo.Levels[(int)mapId].CagesCount;
+            collectedLums += Rayman3.GameInfo.GetDeadLumsForCurrentMap(mapId);
+            totalLums += Rayman3.GameInfo.Levels[(int)mapId].LumsCount;
+            collectedCages += Rayman3.GameInfo.GetDeadCagesForCurrentMap(mapId);
+            totalCages += Rayman3.GameInfo.Levels[(int)mapId].CagesCount;
         }
 
         return collectedLums == totalLums && collectedCages == totalCages;
@@ -347,25 +347,25 @@ public static class Rayman3Achievements
         // Check all progression-based achievements here so that they can be retroactively unlocked if importing a save
 
         // Check for world completions
-        if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.SanctuaryOfBigTree_M2)
+        if (Rayman3.GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.SanctuaryOfBigTree_M2)
             Rayman3.Achievements.Unlock(AchievementId.CompleteWorld1);
-        if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.MarshAwakening2)
+        if (Rayman3.GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.MarshAwakening2)
             Rayman3.Achievements.Unlock(AchievementId.CompleteWorld2);
-        if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.SanctuaryOfRockAndLava_M3)
+        if (Rayman3.GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.SanctuaryOfRockAndLava_M3)
             Rayman3.Achievements.Unlock(AchievementId.CompleteWorld3);
-        if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.PirateShip_M2)
+        if (Rayman3.GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.PirateShip_M2)
             Rayman3.Achievements.Unlock(AchievementId.CompleteWorld4);
 
         // Check for boss defeats
-        if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossMachine)
+        if (Rayman3.GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossMachine)
             Rayman3.Achievements.Unlock(AchievementId.DefeatBossMachine);
-        if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossBadDreams)
+        if (Rayman3.GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossBadDreams)
             Rayman3.Achievements.Unlock(AchievementId.DefeatBossBadDreams);
-        if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossRockAndLava)
+        if (Rayman3.GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossRockAndLava)
             Rayman3.Achievements.Unlock(AchievementId.DefeatBossRockAndLava);
-        if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossScaleMan)
+        if (Rayman3.GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossScaleMan)
             Rayman3.Achievements.Unlock(AchievementId.DefeatBossScaleMan);
-        if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossFinal_M2)
+        if (Rayman3.GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossFinal_M2)
             Rayman3.Achievements.Unlock(AchievementId.DefeatBossFinal);
 
         // Check for world collection completions
@@ -377,11 +377,11 @@ public static class Rayman3Achievements
             Rayman3.Achievements.Unlock(AchievementId.CollectAllWorld3);
         if (AllLumsAndCagesInLevels(World4Maps))
             Rayman3.Achievements.Unlock(AchievementId.CollectAllWorld4);
-        if (GameInfo.GetTotalDeadLums() == 1000)
+        if (Rayman3.GameInfo.GetTotalDeadLums() == 1000)
             Rayman3.Achievements.Unlock(AchievementId.Collect1000thLum);
 
         // Check for GCN bonus completion
-        if (Rom.Platform == Platform.GBA && GameInfo.PersistentInfo.CompletedGCNBonusLevels == 10)
+        if (Rom.Platform == Platform.GBA && Rayman3.GameInfo.PersistentInfo.CompletedGCNBonusLevels == 10)
             Rayman3.Achievements.Unlock(AchievementId.CompleteGCNBonus);
     }
 
@@ -403,9 +403,9 @@ public static class Rayman3Achievements
     {
         if (!RSMultiplayer.IsActive && !Rayman3.TimeAttack.IsActive)
         {
-            GameInfo.SaveSlot.DefeatedPirateTypes |= pirateType;
+            Rayman3.GameInfo.SaveSlot.DefeatedPirateTypes |= pirateType;
 
-            if (GameInfo.SaveSlot.DefeatedPirateTypes == PirateType.All)
+            if (Rayman3.GameInfo.SaveSlot.DefeatedPirateTypes == PirateType.All)
                 Rayman3.Achievements.Unlock(AchievementId.DefeatEveryPirateType);
         }
     }
@@ -414,11 +414,11 @@ public static class Rayman3Achievements
     {
         if (!RSMultiplayer.IsActive && !Rayman3.TimeAttack.IsActive)
         {
-            byte mapId = (byte)GameInfo.MapId;
+            byte mapId = (byte)Rayman3.GameInfo.MapId;
             int instanceId = lum.InstanceId;
 
             bool hasCollected = false;
-            foreach (CollectedWhiteLum x in GameInfo.SaveSlot.CollectedWhiteLums)
+            foreach (CollectedWhiteLum x in Rayman3.GameInfo.SaveSlot.CollectedWhiteLums)
             {
                 if (x.MapId == mapId && x.InstanceId == instanceId)
                 {
@@ -429,12 +429,12 @@ public static class Rayman3Achievements
 
             if (!hasCollected)
             {
-                CollectedWhiteLum[] collectedWhiteLums = new CollectedWhiteLum[GameInfo.SaveSlot.CollectedWhiteLums.Length + 1];
-                Array.Copy(GameInfo.SaveSlot.CollectedWhiteLums, collectedWhiteLums, GameInfo.SaveSlot.CollectedWhiteLums.Length);
+                CollectedWhiteLum[] collectedWhiteLums = new CollectedWhiteLum[Rayman3.GameInfo.SaveSlot.CollectedWhiteLums.Length + 1];
+                Array.Copy(Rayman3.GameInfo.SaveSlot.CollectedWhiteLums, collectedWhiteLums, Rayman3.GameInfo.SaveSlot.CollectedWhiteLums.Length);
                 collectedWhiteLums[^1] = new CollectedWhiteLum(mapId, instanceId);
-                GameInfo.SaveSlot.CollectedWhiteLums = collectedWhiteLums;
+                Rayman3.GameInfo.SaveSlot.CollectedWhiteLums = collectedWhiteLums;
 
-                if (GameInfo.SaveSlot.CollectedWhiteLums.Length == GetTotalLivesCount())
+                if (Rayman3.GameInfo.SaveSlot.CollectedWhiteLums.Length == GetTotalLivesCount())
                     Rayman3.Achievements.Unlock(AchievementId.CollectAllLives);
             }
         }

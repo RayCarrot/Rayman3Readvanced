@@ -33,7 +33,7 @@ public class GameCubeMenuAnimations
             };
         }
 
-        int collectedYellowLums = GameInfo.GetTotalDeadLums();
+        int collectedYellowLums = Rayman3.GameInfo.GetTotalDeadLums();
         TotalLumsText = new SpriteTextObject()
         {
             Text = collectedYellowLums.ToString(),

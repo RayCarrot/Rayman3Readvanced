@@ -80,7 +80,7 @@ public sealed partial class Machine : MovableActor
         {
             TextBox.MoveInOurOut(false);
             Timer = 0;
-            GameInfo.CanShowMurfyHelp = false;
+            Rayman3.GameInfo.CanShowMurfyHelp = false;
         }
     }
 

@@ -12,7 +12,7 @@ public partial class Grolgoth
         if (Scene.IsHitMainActor(this))
         {
             // Why is there a check for a non-boss map?
-            if (ActionId is Action.Ground_FallDown_Right or Action.Ground_FallDown_Left || GameInfo.MapId == MapId.IronMountains_M2)
+            if (ActionId is Action.Ground_FallDown_Right or Action.Ground_FallDown_Left || Rayman3.GameInfo.MapId == MapId.IronMountains_M2)
             {
                 if (!Engine.Settings.Active.Difficulty.NoInstaKills)
                 {
@@ -32,7 +32,7 @@ public partial class Grolgoth
         }
 
         // Force the camera to the top-left to avoid showing empty row of tiles at the bottom (why are they even there though?)
-        if (GameInfo.MapId == MapId.BossFinal_M1)
+        if (Rayman3.GameInfo.MapId == MapId.BossFinal_M1)
             Scene.Camera.ProcessMessage(this, Message.Cam_MoveToTarget, Vector2.Zero);
 
         return true;
@@ -600,10 +600,10 @@ public partial class Grolgoth
                     ShootMissile();
                     Timer = 1;
                     
-                    if (GameInfo.LastGreenLumAlive == 0)
+                    if (Rayman3.GameInfo.LastGreenLumAlive == 0)
                     {
                         Scene.Camera.ProcessMessage(this, Message.Cam_MoveToLinkedObject);
-                        GameInfo.GreenLumTouchedByRayman(0, Vector2.Zero);
+                        Rayman3.GameInfo.GreenLumTouchedByRayman(0, Vector2.Zero);
                     }
                 }
                 if (IsActionFinished)

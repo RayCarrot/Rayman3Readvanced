@@ -136,7 +136,7 @@ public partial class FlyingBombMode7
         switch (action)
         {
             case FsmAction.Init:
-                if (!GameInfo.IsCheatEnabled(Cheat.Invulnerable))
+                if (!Rayman3.GameInfo.IsCheatEnabled(Cheat.Invulnerable))
                 {
                     // Deals 255 damage by default
                     if (!Engine.Settings.Active.Difficulty.NoInstaKills)

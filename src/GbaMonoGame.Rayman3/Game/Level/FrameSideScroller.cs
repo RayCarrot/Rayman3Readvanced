@@ -17,7 +17,7 @@ public partial class FrameSideScroller : Frame, IHasScene, IHasPlayfield
     {
         CreateGeneratedSteps();
 
-        GameInfo.SetNextMapId(mapId);
+        Rayman3.GameInfo.SetNextMapId(mapId);
     }
 
     #endregion
@@ -114,12 +114,12 @@ public partial class FrameSideScroller : Frame, IHasScene, IHasPlayfield
 
     public override void Init()
     {
-        GameInfo.InitLevel(LevelType.Normal);
-        GameInfo.SetLevelRichPresence();
+        Rayman3.GameInfo.InitLevel(LevelType.Normal);
+        Rayman3.GameInfo.SetLevelRichPresence();
 
         // Custom for the time attack mode
         if (Rayman3.TimeAttack.IsActive)
-            Rayman3.TimeAttack.InitLevel(GameInfo.MapId);
+            Rayman3.TimeAttack.InitLevel(Rayman3.GameInfo.MapId);
 
         CanPause = true;
         LevelMusicManager.Init();
@@ -128,10 +128,10 @@ public partial class FrameSideScroller : Frame, IHasScene, IHasPlayfield
             RenderContext = Engine.ViewPort.GameRenderContext,
         };
         TransitionsFX.Init(true);
-        Scene = new Scene2D((int)GameInfo.MapId, x => new CameraSideScroller(x), 4, 1);
+        Scene = new Scene2D((int)Rayman3.GameInfo.MapId, x => new CameraSideScroller(x), 4, 1);
 
         // Add fog
-        if (GameInfo.MapId is 
+        if (Rayman3.GameInfo.MapId is 
             MapId.SanctuaryOfBigTree_M1 or 
             MapId.SanctuaryOfBigTree_M2 or 
             MapId.MenhirHills_M1 or 
@@ -149,7 +149,7 @@ public partial class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         }
 
         // Add timer
-        if (GameInfo.MapId is 
+        if (Rayman3.GameInfo.MapId is 
             MapId.ChallengeLy1 or 
             MapId.ChallengeLy2 or 
             MapId.ChallengeLyGCN)
@@ -163,7 +163,7 @@ public partial class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         }
 
         // Add user info (default hud)
-        UserInfo = new UserInfoSideScroller(Scene, GameInfo.GetLevelHasBlueLum());
+        UserInfo = new UserInfoSideScroller(Scene, Rayman3.GameInfo.GetLevelHasBlueLum());
         Scene.AddDialog(UserInfo, false, false);
 
         // Create pause dialog, but don't add yet
@@ -193,7 +193,7 @@ public partial class FrameSideScroller : Frame, IHasScene, IHasPlayfield
 
         Scene.AnimationPlayer.Execute();
 
-        GameInfo.PlayLevelMusic();
+        Rayman3.GameInfo.PlayLevelMusic();
         CurrentStepAction = _Step_Normal;
     }
     
@@ -210,7 +210,7 @@ public partial class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         CircleTransitionScreenEffect = null;
         Gfx.ClearScreenEffect();
 
-        GameInfo.StopLevelMusic();
+        Rayman3.GameInfo.StopLevelMusic();
         Engine.Sem.StopAllSongs();
     }
 
@@ -219,7 +219,7 @@ public partial class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         CurrentStepAction();
 
         if (EndOfFrame)
-            GameInfo.LoadLevel(GameInfo.GetNextLevelId());
+            Rayman3.GameInfo.LoadLevel(Rayman3.GameInfo.GetNextLevelId());
     }
 
     #endregion
@@ -237,8 +237,8 @@ public partial class FrameSideScroller : Frame, IHasScene, IHasPlayfield
         
         if (IsTimed)
         {
-            if (GameInfo.RemainingTime != 0)
-                GameInfo.RemainingTime--;
+            if (Rayman3.GameInfo.RemainingTime != 0)
+                Rayman3.GameInfo.RemainingTime--;
         }
 
         // Pause (auto pause code here is same as on N-Gage)
@@ -280,7 +280,7 @@ public partial class FrameSideScroller : Frame, IHasScene, IHasPlayfield
 
             if (Engine.JoyPad.IsButtonJustPressed(GbaInput.Select) && Engine.JoyPad.IsButtonPressed(GbaInput.R))
             {
-                GameInfo.EnableCheat(Scene, Cheat.Invulnerable);
+                Rayman3.GameInfo.EnableCheat(Scene, Cheat.Invulnerable);
 
                 if (Engine.Settings.Local.Tweaks.PlayCheatTriggerSound)
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);

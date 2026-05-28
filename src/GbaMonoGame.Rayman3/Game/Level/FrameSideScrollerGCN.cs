@@ -42,8 +42,8 @@ public class FrameSideScrollerGCN : FrameSideScroller
 
     public void RestoreMapAndPowers()
     {
-        GameInfo.MapId = PreviousMapId;
-        GameInfo.Powers = PreviousPowers;
+        Rayman3.GameInfo.MapId = PreviousMapId;
+        Rayman3.GameInfo.Powers = PreviousPowers;
     }
 
     public void FadeOut()
@@ -63,26 +63,26 @@ public class FrameSideScrollerGCN : FrameSideScroller
 
     public override void Init()
     {
-        GameInfo.InitLevel(LevelType.GameCube);
+        Rayman3.GameInfo.InitLevel(LevelType.GameCube);
 
-        PreviousMapId = GameInfo.MapId;
-        GameInfo.MapId = MapId.GameCube_Bonus1 + GcnMapId;
+        PreviousMapId = Rayman3.GameInfo.MapId;
+        Rayman3.GameInfo.MapId = MapId.GameCube_Bonus1 + GcnMapId;
 
-        PreviousPowers = GameInfo.Powers;
-        GameInfo.EnablePower(Power.All);
+        PreviousPowers = Rayman3.GameInfo.Powers;
+        Rayman3.GameInfo.EnablePower(Power.All);
 
-        GameInfo.SetLevelRichPresence();
+        Rayman3.GameInfo.SetLevelRichPresence();
 
         // Optionally force GCN levels to show 0 lums and cages since they never have any
         if (Engine.Settings.Active.Tweaks.FixBugs)
         {
-            GameInfo.YellowLumsCount = 0;
-            GameInfo.CagesCount = 0;
+            Rayman3.GameInfo.YellowLumsCount = 0;
+            Rayman3.GameInfo.CagesCount = 0;
         }
         else
         {
-            GameInfo.YellowLumsCount = MapInfo.LumsCount;
-            GameInfo.CagesCount = MapInfo.CagesCount;
+            Rayman3.GameInfo.YellowLumsCount = MapInfo.LumsCount;
+            Rayman3.GameInfo.CagesCount = MapInfo.CagesCount;
         }
 
         LevelMusicManager.Init();
@@ -96,7 +96,7 @@ public class FrameSideScrollerGCN : FrameSideScroller
         };
 
         TransitionsFX.Init(true);
-        Scene = new Scene2D((int)GameInfo.MapId, Map, x => new CameraSideScroller(x), 3, 1);
+        Scene = new Scene2D((int)Rayman3.GameInfo.MapId, Map, x => new CameraSideScroller(x), 3, 1);
 
         // Add user info (default hud)
         UserInfo = new UserInfoSideScroller(Scene, MapInfo.HasBlueLum);

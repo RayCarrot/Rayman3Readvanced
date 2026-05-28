@@ -20,7 +20,7 @@ public partial class Electricity
                     if (!Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__Electric_Mix02))
                         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Electric_Mix02, this);
 
-                    GameInfo.ActorSoundFlags |= ActorSoundFlags.Electricity;
+                    Rayman3.GameInfo.ActorSoundFlags |= ActorSoundFlags.Electricity;
                 }
 
                 if (Scene.IsHitMainActor(this) ||

@@ -24,7 +24,7 @@ public class LevelsMenuOption : TextMenuOption
     {
         // TODO: Fix replacing char (same as in time attack)
         if (isAvailable)
-            return Rayman3.Loc.GetText(TextBankId.LevelNames, GameInfo.Levels[(int)GameInfo.LevelMaps[levelCurtainId][0]].NameTextId)[0].ToUpperInvariant().Replace('’', '\'');
+            return Rayman3.Loc.GetText(TextBankId.LevelNames, Rayman3.GameInfo.Levels[(int)Rayman3.GameInfo.LevelMaps[levelCurtainId][0]].NameTextId)[0].ToUpperInvariant().Replace('’', '\'');
         else
             return "??";
     }
@@ -40,12 +40,12 @@ public class LevelsMenuOption : TextMenuOption
         int totalLums = 0;
         int collectedCages = 0;
         int totalCages = 0;
-        foreach (MapId mapId in GameInfo.LevelMaps[LevelCurtainId])
+        foreach (MapId mapId in Rayman3.GameInfo.LevelMaps[LevelCurtainId])
         {
-            collectedLums += GameInfo.GetDeadLumsForCurrentMap(mapId);
-            totalLums += GameInfo.Levels[(int)mapId].LumsCount;
-            collectedCages += GameInfo.GetDeadCagesForCurrentMap(mapId);
-            totalCages += GameInfo.Levels[(int)mapId].CagesCount;
+            collectedLums += Rayman3.GameInfo.GetDeadLumsForCurrentMap(mapId);
+            totalLums += Rayman3.GameInfo.Levels[(int)mapId].LumsCount;
+            collectedCages += Rayman3.GameInfo.GetDeadCagesForCurrentMap(mapId);
+            totalCages += Rayman3.GameInfo.Levels[(int)mapId].CagesCount;
         }
 
         Color textColor = new(197, 98, 0);

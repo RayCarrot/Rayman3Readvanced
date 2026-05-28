@@ -9,6 +9,7 @@ namespace GbaMonoGame.Rayman3;
 public static class Rayman3
 {
     // Game services
+    public static GameInfo GameInfo { get; private set; }
     public static ISaveGameManager Save { get; private set; }
     public static LocalizationManager Loc { get; private set; }
     public static AchievementsManager Achievements { get; private set; }
@@ -281,6 +282,7 @@ public static class Rayman3
         LocalizationManager localizationManager)
     {
         // Set services
+        GameInfo = new GameInfo(Rom.Loader.ReadLevelInfo());
         Save = save;
         Loc = localizationManager;
         Achievements = new AchievementsManager(Rayman3Achievements.Achievements);
@@ -296,7 +298,6 @@ public static class Rayman3
         InitLevelFactory();
 
         // Initialize other data
-        GameInfo.Levels = Rom.Loader.ReadLevelInfo();
         Rayman3TileFixes.DefineTileFixes(Rom.Platform);
         InitEditorData();
     }
@@ -315,11 +316,10 @@ public static class Rayman3
             Engine.FrameMngr.RemoveStepAction(Achievements.Step);
 
         // Remove services
+        GameInfo = null;
+        Save = null;
         Loc = null;
         Achievements = null;
         TimeAttack = null;
-
-        // Unload other data
-        GameInfo.UnInit();
     }
 }

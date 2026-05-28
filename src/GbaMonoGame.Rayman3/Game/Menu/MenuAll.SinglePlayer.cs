@@ -172,21 +172,21 @@ public partial class MenuAll
                         {
                             // Create a new game
                             Engine.FrameMngr.SetNextFrame(new Act1());
-                            GameInfo.ResetPersistentInfo();
+                            Rayman3.GameInfo.ResetPersistentInfo();
                         }
                         else
                         {
                             // Load an existing game
-                            GameInfo.Load(SelectedOption);
-                            GameInfo.GotoLastSaveGame();
+                            Rayman3.GameInfo.Load(SelectedOption);
+                            Rayman3.GameInfo.GotoLastSaveGame();
                         }
 
-                        GameInfo.StartPlayTime();
+                        Rayman3.GameInfo.StartPlayTime();
 
                         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                         Gfx.Fade = AlphaCoefficient.Max;
 
-                        GameInfo.CurrentSlot = SelectedOption;
+                        Rayman3.GameInfo.CurrentSlot = SelectedOption;
                         IsStartingGame = false;
                     }
                 }

@@ -16,12 +16,12 @@ public class EchoingCaves_M2 : FrameSideScroller
 
     private void InitScene()
     {
-        GameInfo.InitLevel(LevelType.Normal);
-        GameInfo.SetLevelRichPresence();
+        Rayman3.GameInfo.InitLevel(LevelType.Normal);
+        Rayman3.GameInfo.SetLevelRichPresence();
 
         // Custom for the time attack mode
         if (Rayman3.TimeAttack.IsActive)
-            Rayman3.TimeAttack.InitLevel(GameInfo.MapId);
+            Rayman3.TimeAttack.InitLevel(Rayman3.GameInfo.MapId);
 
         CanPause = true;
         Fog = null;
@@ -34,10 +34,10 @@ public class EchoingCaves_M2 : FrameSideScroller
         TransitionsFX.Init(true);
         TransitionsFX.FadeInInit(4);
 
-        Scene = new Scene2D((int)GameInfo.MapId, x => new CameraSideScroller(x), 3, 0);
+        Scene = new Scene2D((int)Rayman3.GameInfo.MapId, x => new CameraSideScroller(x), 3, 0);
 
         // Add user info (default hud)
-        UserInfo = new UserInfoSideScroller(Scene, GameInfo.GetLevelHasBlueLum());
+        UserInfo = new UserInfoSideScroller(Scene, Rayman3.GameInfo.GetLevelHasBlueLum());
         Scene.AddDialog(UserInfo, false, false);
 
         // Create pause dialog, but don't add yet
@@ -67,7 +67,7 @@ public class EchoingCaves_M2 : FrameSideScroller
 
         Scene.AnimationPlayer.Execute();
 
-        GameInfo.PlayLevelMusic();
+        Rayman3.GameInfo.PlayLevelMusic();
         CurrentStepAction = _Step_Normal;
     }
 

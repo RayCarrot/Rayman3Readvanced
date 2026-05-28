@@ -13,11 +13,11 @@ public sealed partial class Cage : InteractableActor
         IsGrounded = actorResource.FirstActionId == 0;
         PrevHitPoints = HitPoints;
         
-        CageId = GameInfo.GetCageId();
+        CageId = Rayman3.GameInfo.GetCageId();
 
         State.SetTo(_Fsm_Idle);
 
-        if (GameInfo.IsCageDead(CageId, GameInfo.MapId))
+        if (Rayman3.GameInfo.IsCageDead(CageId, Rayman3.GameInfo.MapId))
             ProcessMessage(this, Message.Destroy);
     }
 

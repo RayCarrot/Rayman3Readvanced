@@ -10,8 +10,8 @@ public class FrameNewPower : Frame, IHasScene, IHasPlayfield
 
     public FrameNewPower(MapId mapId)
     {
-        OriginalMapId = GameInfo.MapId;
-        GameInfo.SetNextMapId(mapId);
+        OriginalMapId = Rayman3.GameInfo.MapId;
+        Rayman3.GameInfo.SetNextMapId(mapId);
     }
 
     #endregion
@@ -58,18 +58,18 @@ public class FrameNewPower : Frame, IHasScene, IHasPlayfield
 
     public override void Init()
     {
-        GameInfo.InitLevel(LevelType.Normal);
-        GameInfo.SetLevelRichPresence();
+        Rayman3.GameInfo.InitLevel(LevelType.Normal);
+        Rayman3.GameInfo.SetLevelRichPresence();
 
         LevelMusicManager.Init();
         TransitionsFX.Init(true);
         TransitionsFX.FadeInInit(1);
-        Scene = new Scene2D((int)GameInfo.MapId, x => new CameraSideScroller(x), 3, 1);
+        Scene = new Scene2D((int)Rayman3.GameInfo.MapId, x => new CameraSideScroller(x), 3, 1);
 
         Scene.Init();
         Scene.Playfield.Step();
         Scene.AnimationPlayer.Execute();
-        GameInfo.PlayLevelMusic();
+        Rayman3.GameInfo.PlayLevelMusic();
 
         Scene.MainActor.ProcessMessage(this, Message.Rayman_Stop);
         ((Rayman)Scene.MainActor).ActionId = Rayman.Action.Walk_Right;
@@ -82,7 +82,7 @@ public class FrameNewPower : Frame, IHasScene, IHasPlayfield
 
         SoundEngineInterface.SetNbVoices(10);
 
-        if (GameInfo.MapId == MapId.Power1)
+        if (Rayman3.GameInfo.MapId == MapId.Power1)
         {
             if (Rom.Platform == Platform.GBA || Engine.Settings.Active.Tweaks.UseGbaEffectsOnNGage)
             {
@@ -91,14 +91,14 @@ public class FrameNewPower : Frame, IHasScene, IHasPlayfield
                 cloudsLayer.Screen.Renderer = new LevelCloudsRenderer(renderer.Texture, [56, 120, 227]);
             }
         }
-        else if (GameInfo.MapId == MapId.Power2)
+        else if (Rayman3.GameInfo.MapId == MapId.Power2)
         {
             Scene.AddDialog(new FogDialog(Scene), false, false);
         }
 
         // Re-init with the original map id
-        GameInfo.SetNextMapId(OriginalMapId);
-        GameInfo.InitLevel(LevelType.Normal);
+        Rayman3.GameInfo.SetNextMapId(OriginalMapId);
+        Rayman3.GameInfo.InitLevel(LevelType.Normal);
     }
 
     public override void UnInit()
@@ -109,7 +109,7 @@ public class FrameNewPower : Frame, IHasScene, IHasPlayfield
         Scene.UnInit();
         Scene = null;
 
-        GameInfo.StopLevelMusic();
+        Rayman3.GameInfo.StopLevelMusic();
         Engine.Sem.StopAllSongs();
         SoundEngineInterface.SetNbVoices(7);
     }
@@ -148,9 +148,9 @@ public class FrameNewPower : Frame, IHasScene, IHasPlayfield
                     // End level
                     else
                     {
-                        GameInfo.UpdateLastCompletedLevel();
-                        GameInfo.Save(GameInfo.CurrentSlot);
-                        GameInfo.LoadLevel(GameInfo.GetNextLevelId());
+                        Rayman3.GameInfo.UpdateLastCompletedLevel();
+                        Rayman3.GameInfo.Save(Rayman3.GameInfo.CurrentSlot);
+                        Rayman3.GameInfo.LoadLevel(Rayman3.GameInfo.GetNextLevelId());
                     }
                 }
             }

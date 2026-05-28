@@ -29,7 +29,7 @@ public sealed partial class RaymanMode7 : Mode7Actor
         PrevHitPoints = HitPoints;
         ProcessJoypad = false;
         
-        GameInfo.IsInWorldMap = false;
+        Rayman3.GameInfo.IsInWorldMap = false;
     }
 
     public float ZPosSpeed { get; set; }
@@ -113,7 +113,7 @@ public sealed partial class RaymanMode7 : Mode7Actor
                 Engine.Sem.ReplaceAllSongs(Rayman3SoundEvent.Play__win3, 0);
                 LevelMusicManager.HasOverridenLevelMusic = false;
 
-                if (GameInfo.MapId == MapId.MarshAwakening1 && !Rayman3Achievements.MarshAwakening1_HasMoved)
+                if (Rayman3.GameInfo.MapId == MapId.MarshAwakening1 && !Rayman3Achievements.MarshAwakening1_HasMoved)
                     Rayman3.Achievements.Unlock(AchievementId.CompleteMarshAwakening1WithoutMoving);
                 return true;
 
@@ -156,7 +156,7 @@ public sealed partial class RaymanMode7 : Mode7Actor
             if (IsInvulnerable &&
                 HitPoints != 0 &&
                 (GameTime.ElapsedFrames & 1) == 0 &&
-                !GameInfo.IsCheatEnabled(Cheat.Invulnerable))
+                !Rayman3.GameInfo.IsCheatEnabled(Cheat.Invulnerable))
             {
                 draw = false;
             }

@@ -38,10 +38,10 @@ public partial class LumsMode7
                 {
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_CollectMode7YellowLum);
 
-                    if (GameInfo.LevelType == LevelType.Race && !Engine.Settings.Active.Difficulty.KeepLumsInRaces)
+                    if (Rayman3.GameInfo.LevelType == LevelType.Race && !Engine.Settings.Active.Difficulty.KeepLumsInRaces)
                         ((FrameSingleMode7)Frame.Current).KillLum(LumId);
                     else
-                        GameInfo.KillLum(LumId);
+                        Rayman3.GameInfo.KillLum(LumId);
 
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__LumOrag_Mix06, this);
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LumOrag_Mix06, this);

@@ -17,7 +17,7 @@ public abstract partial class FrameWorldSideScroller : Frame, IHasScene, IHasPla
     {
         CreateGeneratedSteps();
 
-        GameInfo.SetNextMapId(mapId);
+        Rayman3.GameInfo.SetNextMapId(mapId);
     }
 
     #endregion
@@ -47,21 +47,21 @@ public abstract partial class FrameWorldSideScroller : Frame, IHasScene, IHasPla
 
     public override void Init()
     {
-        MapId prevMap = GameInfo.MapId;
-        GameInfo.InitLevel(LevelType.Normal);
-        GameInfo.SetLevelRichPresence();
+        MapId prevMap = Rayman3.GameInfo.MapId;
+        Rayman3.GameInfo.InitLevel(LevelType.Normal);
+        Rayman3.GameInfo.SetLevelRichPresence();
         LevelMusicManager.Init();
 
         TransitionsFX.Init(true);
         TransitionsFX.FadeInInit(1);
 
-        Scene = new Scene2D((int)GameInfo.MapId, x => new CameraSideScroller(x), 3, 1);
+        Scene = new Scene2D((int)Rayman3.GameInfo.MapId, x => new CameraSideScroller(x), 3, 1);
 
         // Set start position
-        if (prevMap != MapId.WorldMap && GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
+        if (prevMap != MapId.WorldMap && Rayman3.GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
         {
             // Get the actor to spawn the main actor at (either default position or at a curtain)
-            int startActorId = GameInfo.GetLevelCurtainActorId();
+            int startActorId = Rayman3.GameInfo.GetLevelCurtainActorId();
 
             Vector2 startPos = Scene.GetGameObject(startActorId).Position;
             startPos -= new Vector2(32, MathHelpers.Mod(startPos.Y, Tile.Size));
@@ -83,8 +83,8 @@ public abstract partial class FrameWorldSideScroller : Frame, IHasScene, IHasPla
         // NOTE: The game calls vsync, steps the playfield and executes the animations here, but we do
         //       that in the derived classed instead since this is all to be run in one game frame.
 
-        if (Rom.Platform == Platform.NGage || !Engine.Sem.IsSongPlaying(GameInfo.GetLevelMusicSoundEvent()))
-            GameInfo.PlayLevelMusic();
+        if (Rom.Platform == Platform.NGage || !Engine.Sem.IsSongPlaying(Rayman3.GameInfo.GetLevelMusicSoundEvent()))
+            Rayman3.GameInfo.PlayLevelMusic();
 
         BlockPause = false;
         CurrentStepAction = _Step_Normal;
@@ -106,7 +106,7 @@ public abstract partial class FrameWorldSideScroller : Frame, IHasScene, IHasPla
         CurrentStepAction();
 
         if (EndOfFrame)
-            GameInfo.LoadLevel(GameInfo.GetNextLevelId());
+            Rayman3.GameInfo.LoadLevel(Rayman3.GameInfo.GetNextLevelId());
     }
 
     #endregion

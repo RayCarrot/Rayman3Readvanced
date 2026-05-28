@@ -88,12 +88,12 @@ public class TimeAttackManager
             }));
 
         // Mark all lums as collected
-        GameInfo.PersistentInfo.Lums ??= new byte[125];
-        Array.Fill(GameInfo.PersistentInfo.Lums, (byte)0);
+        Rayman3.GameInfo.PersistentInfo.Lums ??= new byte[125];
+        Array.Fill(Rayman3.GameInfo.PersistentInfo.Lums, (byte)0);
 
         // Mark all cages as collected
-        GameInfo.PersistentInfo.Cages ??= new byte[7];
-        Array.Fill(GameInfo.PersistentInfo.Cages, (byte)0);
+        Rayman3.GameInfo.PersistentInfo.Cages ??= new byte[7];
+        Array.Fill(Rayman3.GameInfo.PersistentInfo.Cages, (byte)0);
 
         // Set a constant seed so the randomization is the same
         Random.SetSeed(RandomSeed);
@@ -131,10 +131,10 @@ public class TimeAttackManager
     {
         LevelId = mapId;
 
-        GameInfo.PersistentInfo.LastPlayedLevel = (byte)mapId;
+        Rayman3.GameInfo.PersistentInfo.LastPlayedLevel = (byte)mapId;
 
         // Set last level completed in order to give the correct powers
-        GameInfo.PersistentInfo.LastCompletedLevel = (byte)(mapId switch
+        Rayman3.GameInfo.PersistentInfo.LastCompletedLevel = (byte)(mapId switch
         {
             // All powers for the bonus levels
             MapId.Bonus1 => MapId.BossFinal_M2,
@@ -208,7 +208,7 @@ public class TimeAttackManager
             Random.SetSeed(SavedRandomSeed);
 
             // Reset game info
-            GameInfo.SetNextMapId(mapId);
+            Rayman3.GameInfo.SetNextMapId(mapId);
         }
 
         IsPaused = false;

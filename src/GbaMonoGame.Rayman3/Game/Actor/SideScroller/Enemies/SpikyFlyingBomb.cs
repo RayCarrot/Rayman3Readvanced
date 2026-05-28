@@ -51,7 +51,7 @@ public sealed partial class SpikyFlyingBomb : MovableActor
         {
             SoundDelay--;
         }
-        else if (AnimatedObject.IsFramed && (GameInfo.ActorSoundFlags & ActorSoundFlags.FlyingBomb) == 0)
+        else if (AnimatedObject.IsFramed && (Rayman3.GameInfo.ActorSoundFlags & ActorSoundFlags.FlyingBomb) == 0)
         {
             if (Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__BombFly_Mix03))
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__BombFly_Mix03, this);
@@ -60,12 +60,12 @@ public sealed partial class SpikyFlyingBomb : MovableActor
         }
 
         if (AnimatedObject.IsFramed)
-            GameInfo.ActorSoundFlags |= ActorSoundFlags.FlyingBomb;
+            Rayman3.GameInfo.ActorSoundFlags |= ActorSoundFlags.FlyingBomb;
     }
 
     public override void Step()
     {
         base.Step();
-        GameInfo.ActorSoundFlags &= ~ActorSoundFlags.FlyingBomb;
+        Rayman3.GameInfo.ActorSoundFlags &= ~ActorSoundFlags.FlyingBomb;
     }
 }

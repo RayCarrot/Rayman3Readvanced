@@ -24,7 +24,7 @@ public sealed partial class LavaFall : InteractableActor
     public override void Step()
     {
         base.Step();
-        GameInfo.ActorSoundFlags &= ~ActorSoundFlags.LavaFall;
+        Rayman3.GameInfo.ActorSoundFlags &= ~ActorSoundFlags.LavaFall;
     }
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)

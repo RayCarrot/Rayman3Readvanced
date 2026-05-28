@@ -18,8 +18,8 @@ public sealed partial class BreakableGround : MovableActor
 
         // Destroy actor if it's the one in the hub world and we've defeated the boss
         if ((Action)actorResource.FirstActionId == Action.Idle_World &&
-            (GameInfo.PersistentInfo.LastCompletedLevel > (int)MapId.BossRockAndLava ||
-             GameInfo.PersistentInfo.LastPlayedLevel > (int)MapId.BossRockAndLava))
+            (Rayman3.GameInfo.PersistentInfo.LastCompletedLevel > (int)MapId.BossRockAndLava ||
+             Rayman3.GameInfo.PersistentInfo.LastPlayedLevel > (int)MapId.BossRockAndLava))
         {
             ProcessMessage(this, Message.Destroy);
         }

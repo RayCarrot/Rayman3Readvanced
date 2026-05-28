@@ -45,7 +45,7 @@ public partial class LavaFall
                 {
                     if (BubbleSoundCountdown == 0)
                     {
-                        if (AnimatedObject.IsFramed && (GameInfo.ActorSoundFlags & ActorSoundFlags.LavaFall) == 0)
+                        if (AnimatedObject.IsFramed && (Rayman3.GameInfo.ActorSoundFlags & ActorSoundFlags.LavaFall) == 0)
                         {
                             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LavaBubl_Mix02, this);
                             BubbleSoundCountdown = (byte)(Random.GetNumber(24) + 36);
@@ -57,7 +57,7 @@ public partial class LavaFall
                     }
 
                     if (AnimatedObject.IsFramed)
-                        GameInfo.ActorSoundFlags |= ActorSoundFlags.LavaFall;
+                        Rayman3.GameInfo.ActorSoundFlags |= ActorSoundFlags.LavaFall;
                 }
 
                 if (ActionId == Action.BeginFlow && IsActionFinished)

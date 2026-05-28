@@ -44,7 +44,7 @@ public partial class FlyingBomb
                     {
                         SoundDelay--;
                     }
-                    else if (AnimatedObject.IsFramed && (GameInfo.ActorSoundFlags & ActorSoundFlags.FlyingBomb) == 0)
+                    else if (AnimatedObject.IsFramed && (Rayman3.GameInfo.ActorSoundFlags & ActorSoundFlags.FlyingBomb) == 0)
                     {
                         if (Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__BombFly_Mix03))
                             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__BombFly_Mix03, this);
@@ -53,7 +53,7 @@ public partial class FlyingBomb
                     }
 
                     if (AnimatedObject.IsFramed)
-                        GameInfo.ActorSoundFlags |= ActorSoundFlags.FlyingBomb;
+                        Rayman3.GameInfo.ActorSoundFlags |= ActorSoundFlags.FlyingBomb;
                 }
 
                 // Damage main actor
@@ -176,7 +176,7 @@ public partial class FlyingBomb
                     {
                         SoundDelay--;
                     }
-                    else if (AnimatedObject.IsFramed && (GameInfo.ActorSoundFlags & ActorSoundFlags.FlyingBomb) == 0)
+                    else if (AnimatedObject.IsFramed && (Rayman3.GameInfo.ActorSoundFlags & ActorSoundFlags.FlyingBomb) == 0)
                     {
                         if (Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__BombFly_Mix03))
                             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__BombFly_Mix03, this);
@@ -185,7 +185,7 @@ public partial class FlyingBomb
                     }
 
                     if (AnimatedObject.IsFramed)
-                        GameInfo.ActorSoundFlags |= ActorSoundFlags.FlyingBomb;
+                        Rayman3.GameInfo.ActorSoundFlags |= ActorSoundFlags.FlyingBomb;
                 }
 
                 if (Scene.IsDetectedMainActor(this))
@@ -240,7 +240,7 @@ public partial class FlyingBomb
                     {
                         SoundDelay--;
                     }
-                    else if (AnimatedObject.IsFramed && (GameInfo.ActorSoundFlags & ActorSoundFlags.FlyingBomb) == 0)
+                    else if (AnimatedObject.IsFramed && (Rayman3.GameInfo.ActorSoundFlags & ActorSoundFlags.FlyingBomb) == 0)
                     {
                         if (Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__BombFly_Mix03))
                             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__BombFly_Mix03, this);
@@ -249,7 +249,7 @@ public partial class FlyingBomb
                     }
 
                     if (AnimatedObject.IsFramed)
-                        GameInfo.ActorSoundFlags |= ActorSoundFlags.FlyingBomb;
+                        Rayman3.GameInfo.ActorSoundFlags |= ActorSoundFlags.FlyingBomb;
                 }
 
                 // Damage main actor

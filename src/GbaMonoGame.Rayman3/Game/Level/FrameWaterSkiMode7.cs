@@ -123,6 +123,6 @@ public class FrameWaterSkiMode7 : FrameMode7
         Mode7FogScreenEffect.FadeDecrease = FadeDecrease;
 
         if (EndOfFrame)
-            GameInfo.LoadLevel(GameInfo.GetNextLevelId());
+            Rayman3.GameInfo.LoadLevel(Rayman3.GameInfo.GetNextLevelId());
     }
 }

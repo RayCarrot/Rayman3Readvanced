@@ -227,105 +227,105 @@ public partial class LevelSelect : Frame
 
     private void LoadLevel()
     {
-        GameInfo.Init();
+        Rayman3.GameInfo.Init();
 
         if (SelectedWorldIndex < 4)
         {
             if (SelectedMapId != MapId.WoodLight_M1)
             {
-                GameInfo.MapId = SelectedMapId - 1;
-                GameInfo.UpdateLastCompletedLevel();
-                GameInfo.PersistentInfo.LastPlayedLevel = (byte)SelectedMapId;
+                Rayman3.GameInfo.MapId = SelectedMapId - 1;
+                Rayman3.GameInfo.UpdateLastCompletedLevel();
+                Rayman3.GameInfo.PersistentInfo.LastPlayedLevel = (byte)SelectedMapId;
             }
 
             if (SelectedMapId > MapId.WoodLight_M2)
             {
-                GameInfo.EnablePower(Power.DoubleFist);
-                GameInfo.PersistentInfo.PlayedMurfyWorldHelp = true;
+                Rayman3.GameInfo.EnablePower(Power.DoubleFist);
+                Rayman3.GameInfo.PersistentInfo.PlayedMurfyWorldHelp = true;
             }
 
             if (SelectedMapId > MapId.BossMachine)
             {
-                GameInfo.EnablePower(Power.Grab);
+                Rayman3.GameInfo.EnablePower(Power.Grab);
             }
 
             if (SelectedMapId > MapId.EchoingCaves_M2)
             {
-                GameInfo.EnablePower(Power.WallJump);
+                Rayman3.GameInfo.EnablePower(Power.WallJump);
             }
 
             if (SelectedMapId > MapId.BossRockAndLava)
             {
-                GameInfo.EnablePower(Power.BodyShot);
+                Rayman3.GameInfo.EnablePower(Power.BodyShot);
             }
 
             if (SelectedMapId > MapId.BossScaleMan)
             {
-                GameInfo.EnablePower(Power.SuperFist);
+                Rayman3.GameInfo.EnablePower(Power.SuperFist);
             }
 
             if (SelectedMapId > MapId.PirateShip_M2)
             {
-                GameInfo.PersistentInfo.UnlockedFinalBoss = true;
+                Rayman3.GameInfo.PersistentInfo.UnlockedFinalBoss = true;
             }
 
             if (SelectedMapId > MapId.SanctuaryOfBigTree_M2)
             {
-                GameInfo.PersistentInfo.UnlockedWorld2 = true;
-                GameInfo.PersistentInfo.PlayedWorld2Unlock = true;
+                Rayman3.GameInfo.PersistentInfo.UnlockedWorld2 = true;
+                Rayman3.GameInfo.PersistentInfo.PlayedWorld2Unlock = true;
             }
 
             if (SelectedMapId > MapId.MarshAwakening2)
             {
-                GameInfo.PersistentInfo.UnlockedWorld3 = true;
-                GameInfo.PersistentInfo.PlayedWorld3Unlock = true;
+                Rayman3.GameInfo.PersistentInfo.UnlockedWorld3 = true;
+                Rayman3.GameInfo.PersistentInfo.PlayedWorld3Unlock = true;
             }
 
             if (SelectedMapId > MapId.SanctuaryOfRockAndLava_M3)
             {
-                GameInfo.PersistentInfo.UnlockedWorld4 = true;
-                GameInfo.PersistentInfo.PlayedWorld4Unlock = true;
-                GameInfo.PersistentInfo.PlayedAct4 = true;
+                Rayman3.GameInfo.PersistentInfo.UnlockedWorld4 = true;
+                Rayman3.GameInfo.PersistentInfo.PlayedWorld4Unlock = true;
+                Rayman3.GameInfo.PersistentInfo.PlayedAct4 = true;
             }
 
             if (UnlockLums && SelectedMapId != MapId.WoodLight_M1)
             {
-                LevelInfo levelInfo = GameInfo.Levels[(int)SelectedMapId];
+                LevelInfo levelInfo = Rayman3.GameInfo.Levels[(int)SelectedMapId];
 
                 for (int i = 0; i < levelInfo.GlobalLumsIndex; i++)
-                    GameInfo.SetLumStatus(i, true);
+                    Rayman3.GameInfo.SetLumStatus(i, true);
 
-                if (GameInfo.World1LumsCompleted())
-                    GameInfo.PersistentInfo.UnlockedBonus1 = true;
+                if (Rayman3.GameInfo.World1LumsCompleted())
+                    Rayman3.GameInfo.PersistentInfo.UnlockedBonus1 = true;
 
-                if (GameInfo.World2LumsCompleted())
-                    GameInfo.PersistentInfo.UnlockedBonus2 = true;
+                if (Rayman3.GameInfo.World2LumsCompleted())
+                    Rayman3.GameInfo.PersistentInfo.UnlockedBonus2 = true;
 
-                if (GameInfo.World3LumsCompleted())
-                    GameInfo.PersistentInfo.UnlockedBonus3 = true;
+                if (Rayman3.GameInfo.World3LumsCompleted())
+                    Rayman3.GameInfo.PersistentInfo.UnlockedBonus3 = true;
 
-                if (GameInfo.World4LumsCompleted())
-                    GameInfo.PersistentInfo.UnlockedBonus4 = true;
+                if (Rayman3.GameInfo.World4LumsCompleted())
+                    Rayman3.GameInfo.PersistentInfo.UnlockedBonus4 = true;
             }
 
             if (UnlockCages && SelectedMapId != MapId.WoodLight_M1)
             {
-                LevelInfo levelInfo = GameInfo.Levels[(int)SelectedMapId];
+                LevelInfo levelInfo = Rayman3.GameInfo.Levels[(int)SelectedMapId];
 
                 for (int i = 0; i < levelInfo.GlobalCagesIndex; i++)
-                    GameInfo.SetCageStatus(i, true);
+                    Rayman3.GameInfo.SetCageStatus(i, true);
             }
 
-            GameInfo.CurrentSlot = SelectedSaveSlotIndex;
-            GameInfo.Save(SelectedSaveSlotIndex);
+            Rayman3.GameInfo.CurrentSlot = SelectedSaveSlotIndex;
+            Rayman3.GameInfo.Save(SelectedSaveSlotIndex);
         }
         else
         {
-            GameInfo.MapId = MapId.BossFinal_M2;
-            GameInfo.UpdateLastCompletedLevel();
+            Rayman3.GameInfo.MapId = MapId.BossFinal_M2;
+            Rayman3.GameInfo.UpdateLastCompletedLevel();
 
             // New power levels have to have the previous map id set before loading
-            GameInfo.MapId = SelectedMapId switch
+            Rayman3.GameInfo.MapId = SelectedMapId switch
             {
                 MapId.Power1 => MapId.WoodLight_M2,
                 MapId.Power2 => MapId.BossMachine,
@@ -333,7 +333,7 @@ public partial class LevelSelect : Frame
                 MapId.Power4 => MapId.BossRockAndLava,
                 MapId.Power5 => MapId.SanctuaryOfStoneAndFire_M3,
                 MapId.Power6 => MapId.BossScaleMan,
-                _ => GameInfo.MapId
+                _ => Rayman3.GameInfo.MapId
             };
         }
 

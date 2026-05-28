@@ -178,7 +178,7 @@ public partial class LevelCurtain
                 Gfx.Fade = AlphaCoefficient.Max;
 
                 Engine.Sem.StopAllSongs();
-                GameInfo.LoadLevel(MapId);
+                Rayman3.GameInfo.LoadLevel(MapId);
                 break;
         }
 

@@ -12,6 +12,6 @@ public class Act3 : Act
         base.Step();
 
         if (IsFinished)
-            GameInfo.LoadLevel(GameInfo.GetNextLevelId());
+            Rayman3.GameInfo.LoadLevel(Rayman3.GameInfo.GetNextLevelId());
     }
 }

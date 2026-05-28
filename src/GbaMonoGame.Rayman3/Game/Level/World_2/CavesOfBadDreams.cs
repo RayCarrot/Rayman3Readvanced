@@ -50,7 +50,7 @@ public class CavesOfBadDreams : FrameSideScroller
             };
         }
 
-        if (GameInfo.MapId == MapId.CavesOfBadDreams_M1 && GameInfo.LastGreenLumAlive == 0)
+        if (Rayman3.GameInfo.MapId == MapId.CavesOfBadDreams_M1 && Rayman3.GameInfo.LastGreenLumAlive == 0)
             Rayman3Achievements.CaveBadDreamsM1_HitSkulls = 0;
     }
 

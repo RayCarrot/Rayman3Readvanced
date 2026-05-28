@@ -69,10 +69,10 @@ public class CagesBar : Bar
 
     public override void Set()
     {
-        int cagesCount = GameInfo.GetCagesCountForCurrentMap();
+        int cagesCount = Rayman3.GameInfo.GetCagesCountForCurrentMap();
         TotalCagesDigit.CurrentAnimation = cagesCount;
 
-        CollectedCagesDigitValue = GameInfo.GetDeadCagesForCurrentMap(GameInfo.MapId);
+        CollectedCagesDigitValue = Rayman3.GameInfo.GetDeadCagesForCurrentMap(Rayman3.GameInfo.MapId);
     }
 
     public override void Draw(AnimationPlayer animationPlayer)

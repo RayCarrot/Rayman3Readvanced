@@ -18,6 +18,6 @@ public class LyTimerDialog : Dialog
 
     public override void Draw(AnimationPlayer animationPlayer)
     {
-        TimerBar.DrawTime(animationPlayer, GameInfo.RemainingTime);
+        TimerBar.DrawTime(animationPlayer, Rayman3.GameInfo.RemainingTime);
     }
 }

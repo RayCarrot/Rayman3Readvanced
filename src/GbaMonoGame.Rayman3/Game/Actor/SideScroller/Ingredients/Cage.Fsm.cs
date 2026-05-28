@@ -157,7 +157,7 @@ public partial class Cage
         switch (action)
         {
             case FsmAction.Init:
-                GameInfo.KillCage(CageId);
+                Rayman3.GameInfo.KillCage(CageId);
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__CageTrsh_Mix05, this);
                 ActionId = IsGrounded ? Action.GroundedBreak : Action.HangingBreak;
                 Scene.MainActor.ProcessMessage(this, Message.Rayman_CollectCage);

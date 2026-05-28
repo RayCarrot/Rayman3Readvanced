@@ -11,10 +11,10 @@ public class BossBadDreams : FrameSideScroller
         if (EndOfFrame)
         {
             // Show boss ending cutscene first time
-            if (GameInfo.PersistentInfo.LastCompletedLevel == (int)MapId.BossBadDreams)
+            if (Rayman3.GameInfo.PersistentInfo.LastCompletedLevel == (int)MapId.BossBadDreams)
                 Engine.FrameMngr.SetNextFrame(new Act3());
             else
-                GameInfo.LoadLevel(GameInfo.GetNextLevelId());
+                Rayman3.GameInfo.LoadLevel(Rayman3.GameInfo.GetNextLevelId());
         }
     }
 }

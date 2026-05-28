@@ -12,7 +12,7 @@ public class MenhirHills_M1 : FrameSideScroller
 
         Scene.AddDialog(new TextBoxDialog(Scene), false, false);
 
-        if (GameInfo.LastGreenLumAlive == 0)
+        if (Rayman3.GameInfo.LastGreenLumAlive == 0)
             Rayman3Achievements.MenhirHills_HasDied = false;
     }
 }

@@ -26,11 +26,11 @@ public class ImportSaveSelectionMenuPage : MenuPage
         {
             // Load the save slot
             if (save != null)
-                GameInfo.Load(ReadvancedSlot.FromSaveGame(save));
+                Rayman3.GameInfo.Load(ReadvancedSlot.FromSaveGame(save));
 
-            ModernMenuAll.Slot slot = save == null || GameInfo.PersistentInfo.Lives == 0
+            ModernMenuAll.Slot slot = save == null || Rayman3.GameInfo.PersistentInfo.Lives == 0
                 ? null
-                : new ModernMenuAll.Slot(GameInfo.GetTotalDeadLums(), GameInfo.GetTotalDeadCages(), GameInfo.PersistentInfo.Lives, TimeSpan.Zero);
+                : new ModernMenuAll.Slot(Rayman3.GameInfo.GetTotalDeadLums(), Rayman3.GameInfo.GetTotalDeadCages(), Rayman3.GameInfo.PersistentInfo.Lives, TimeSpan.Zero);
 
             AddOption(new SlotMenuOption(slot));
         }
@@ -58,18 +58,18 @@ public class ImportSaveSelectionMenuPage : MenuPage
                         Engine.Sem.StopAllSongs();
 
                         // Load the game
-                        GameInfo.Load(ReadvancedSlot.FromSaveGame(SaveSlots[SelectedOption]));
-                        GameInfo.GotoLastSaveGame();
+                        Rayman3.GameInfo.Load(ReadvancedSlot.FromSaveGame(SaveSlots[SelectedOption]));
+                        Rayman3.GameInfo.GotoLastSaveGame();
 
-                        GameInfo.StartPlayTime();
+                        Rayman3.GameInfo.StartPlayTime();
 
                         Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                         Gfx.Fade = AlphaCoefficient.Max;
 
-                        GameInfo.CurrentSlot = Slot;
+                        Rayman3.GameInfo.CurrentSlot = Slot;
 
                         // Save so the slot gets created
-                        GameInfo.Save(Slot);
+                        Rayman3.GameInfo.Save(Slot);
                     });
                 });
             }

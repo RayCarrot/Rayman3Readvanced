@@ -33,7 +33,7 @@ public class SanctuaryOfRockAndLava : FrameSideScroller
             FadeOutTimer = 0xFF;
         }
 
-        if (GameInfo.MapId == MapId.SanctuaryOfRockAndLava_M1 && GameInfo.LastGreenLumAlive == 0)
+        if (Rayman3.GameInfo.MapId == MapId.SanctuaryOfRockAndLava_M1 && Rayman3.GameInfo.LastGreenLumAlive == 0)
             Rayman3Achievements.SanctuaryOfRockAndLava_HasKilledBlackLum = false;
     }
 

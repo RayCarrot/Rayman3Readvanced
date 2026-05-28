@@ -221,7 +221,7 @@ public partial class Keg
                     landed = true;
                 }
 
-                if (landed && GameInfo.MapId == MapId.BossMachine)
+                if (landed && Rayman3.GameInfo.MapId == MapId.BossMachine)
                 {
                     State.MoveTo(_Fsm_InitBossMachine);
                     return false;
@@ -300,7 +300,7 @@ public partial class Keg
                     return false;
                 }
 
-                if (landed && GameInfo.MapId == MapId.BossMachine)
+                if (landed && Rayman3.GameInfo.MapId == MapId.BossMachine)
                 {
                     State.MoveTo(_Fsm_InitBossMachine);
                     return false;
@@ -361,7 +361,7 @@ public partial class Keg
                 if (landed)
                     SpawnExplosion(true);
 
-                if (landed && GameInfo.MapId == MapId.BossMachine)
+                if (landed && Rayman3.GameInfo.MapId == MapId.BossMachine)
                 {
                     State.MoveTo(_Fsm_InitBossMachine);
                     return false;

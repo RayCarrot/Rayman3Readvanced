@@ -13,10 +13,10 @@ public class ChallengeLy : FrameSideScroller
         Timer = 0;
         base.Init();
 
-        if (GameInfo.MapId != MapId.ChallengeLyGCN)
+        if (Rayman3.GameInfo.MapId != MapId.ChallengeLyGCN)
             Scene.AddDialog(new TextBoxDialog(Scene), false, false);
 
-        GameInfo.RemainingTime = GameInfo.MapId != MapId.ChallengeLyGCN ? 4200 : 3900;
+        Rayman3.GameInfo.RemainingTime = Rayman3.GameInfo.MapId != MapId.ChallengeLyGCN ? 4200 : 3900;
         UserInfo.HideBars();
     }
 
@@ -32,7 +32,7 @@ public class ChallengeLy : FrameSideScroller
             IsTimed = true;
 
         // Kill Rayman if time has run out
-        if (GameInfo.RemainingTime == 0)
+        if (Rayman3.GameInfo.RemainingTime == 0)
             Scene.MainActor.ProcessMessage(this, Message.Actor_Explode);
     }
 }

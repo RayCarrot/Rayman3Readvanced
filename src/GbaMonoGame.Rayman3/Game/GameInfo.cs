@@ -7,9 +7,9 @@ using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
-public static class GameInfo
+public class GameInfo
 {
-    static GameInfo()
+    public GameInfo(LevelInfo[] levels)
     {
         LevelMaps =
         [
@@ -48,6 +48,18 @@ public static class GameInfo
             [MapId._1000Lums],
             [MapId.ChallengeLyGCN]
         ];
+
+        CollectedWhiteLums = new List<int>(2);
+        SaveSlot = new ReadvancedSlot
+        {
+            SaveGame = new SaveGameSlot
+            {
+                Lums = new byte[125],
+                Cages = new byte[7],
+            },
+        };
+        PlayTimer = new Stopwatch();
+        Levels = levels;
     }
 
     public const int LumsPerWorld = 230;
@@ -55,47 +67,40 @@ public static class GameInfo
     public const int ModernSaveSlotsCount = 5;
 
     // NOTE: In the original game this is only in LevelInfoBar, but we want to use it elsewhere too
-    public static MapId[][] LevelMaps { get; }
+    public MapId[][] LevelMaps { get; }
     
-    public static MapId? NextMapId { get; set; }
-    public static MapId MapId { get; set; }
-    public static LevelType LevelType { get; set; }
-    public static WorldId WorldId { get; set; }
-    public static int LoadedYellowLums { get; set; }
-    public static int LoadedCages { get; set; }
-    public static int YellowLumsCount { get; set; }
-    public static int CagesCount { get; set; }
-    public static int GameCubeCollectedYellowLumsCount { get; set; } // Unused since GCN levels don't have lums
-    public static int GameCubeCollectedCagesCount { get; set; } // Unused since GCN levels don't have cages
-    public static int LoadedGreenLums { get; set; }
-    public static int LastGreenLumAlive { get; set; }
-    public static Vector2 CheckpointPosition { get; set; }
-    public static int RemainingTime { get; set; }
-    public static bool CanShowMurfyHelp { get; set; }
-    public static bool IsInWorldMap { get; set; }
-    public static bool HasCollectedWhiteLum { get; set; }
-    public static List<int> CollectedWhiteLums { get; } = new(2); // Custom to allow multiple white lums in a level, such as in The Precipice 2
-    public static ushort BlueLumsTimer { get; set; }
-    public static Power Powers { get; set; }
-    public static Cheat Cheats { get; set; }
-    public static ActorSoundFlags ActorSoundFlags { get; set; } // Defines if actor type has made sound this frame to avoid repeated sounds
+    public MapId? NextMapId { get; set; }
+    public MapId MapId { get; set; }
+    public LevelType LevelType { get; set; }
+    public WorldId WorldId { get; set; }
+    public int LoadedYellowLums { get; set; }
+    public int LoadedCages { get; set; }
+    public int YellowLumsCount { get; set; }
+    public int CagesCount { get; set; }
+    public int GameCubeCollectedYellowLumsCount { get; set; } // Unused since GCN levels don't have lums
+    public int GameCubeCollectedCagesCount { get; set; } // Unused since GCN levels don't have cages
+    public int LoadedGreenLums { get; set; }
+    public int LastGreenLumAlive { get; set; }
+    public Vector2 CheckpointPosition { get; set; }
+    public int RemainingTime { get; set; }
+    public bool CanShowMurfyHelp { get; set; }
+    public bool IsInWorldMap { get; set; }
+    public bool HasCollectedWhiteLum { get; set; }
+    public List<int> CollectedWhiteLums { get; } // Custom to allow multiple white lums in a level, such as in The Precipice 2
+    public ushort BlueLumsTimer { get; set; }
+    public Power Powers { get; set; }
+    public Cheat Cheats { get; set; }
+    public ActorSoundFlags ActorSoundFlags { get; set; } // Defines if actor type has made sound this frame to avoid repeated sounds
 
-    public static int CurrentSlot { get; set; }
-    public static ReadvancedSlot SaveSlot { get; set; } = new()
-    {
-        SaveGame = new SaveGameSlot
-        {
-            Lums = new byte[125],
-            Cages = new byte[7],
-        },
-    };
-    public static SaveGameSlot PersistentInfo => SaveSlot.SaveGame;
-    public static Stopwatch PlayTimer { get; } = new(); // Custom for keeping track of slot play time
+    public int CurrentSlot { get; set; }
+    public ReadvancedSlot SaveSlot { get; set; }
+    public SaveGameSlot PersistentInfo => SaveSlot.SaveGame;
+    public Stopwatch PlayTimer { get; } // Custom for keeping track of slot play time
 
-    public static LevelInfo Level => Levels[(int)MapId];
-    public static LevelInfo[] Levels { get; set; }
+    public LevelInfo Level => Levels[(int)MapId];
+    public LevelInfo[] Levels { get; }
 
-    public static void Init()
+    public void Init()
     {
         NextMapId = null;
         MapId = MapId.WoodLight_M1;
@@ -110,19 +115,7 @@ public static class GameInfo
         ResetPersistentInfo();
     }
 
-    public static void UnInit()
-    {
-        SaveSlot = new()
-        {
-            SaveGame = new SaveGameSlot
-            {
-                Lums = new byte[125],
-                Cages = new byte[7],
-            },
-        };
-    }
-
-    public static void ResetPersistentInfo()
+    public void ResetPersistentInfo()
     {
         PersistentInfo.Lums ??= new byte[125];
         Array.Fill(PersistentInfo.Lums, (byte)0xFF);
@@ -157,7 +150,7 @@ public static class GameInfo
         SaveSlot.CollectedWhiteLums = [];
     }
 
-    public static void Load(int saveSlot)
+    public void Load(int saveSlot)
     {
         ReadvancedSlot save = Rayman3.Save.LoadSlot(saveSlot);
         if (save != null)
@@ -166,7 +159,7 @@ public static class GameInfo
             ResetPersistentInfo();
     }
 
-    public static void Load(ReadvancedSlot save)
+    public void Load(ReadvancedSlot save)
     {
         if (save != null)
             SaveSlot = save;
@@ -174,7 +167,7 @@ public static class GameInfo
             ResetPersistentInfo();
     }
 
-    public static void Save(int saveSlot)
+    public void Save(int saveSlot)
     {
         SavePlayTime();
         Rayman3.Save.SaveSlot(saveSlot, SaveSlot);
@@ -188,22 +181,22 @@ public static class GameInfo
             throw new UnsupportedPlatformException();
     }
 
-    public static void EnablePower(Power power)
+    public void EnablePower(Power power)
     {
         Powers |= power;
     }
 
-    public static void DisablePower(Power power)
+    public void DisablePower(Power power)
     {
         Powers &= ~power;
     }
 
-    public static bool IsPowerEnabled(Power power)
+    public bool IsPowerEnabled(Power power)
     {
         return (Powers & power) != 0;
     }
 
-    public static void EnableCheat(Scene2D scene, Cheat cheat)
+    public void EnableCheat(Scene2D scene, Cheat cheat)
     {
         Cheats |= cheat;
 
@@ -224,7 +217,7 @@ public static class GameInfo
     }
 
     // Custom - the original game doesn't allow them to be disabled
-    public static void DisableCheat(Scene2D scene, Cheat cheat)
+    public void DisableCheat(Scene2D scene, Cheat cheat)
     {
         Cheats &= ~cheat;
 
@@ -236,24 +229,24 @@ public static class GameInfo
         }
     }
 
-    public static bool IsCheatEnabled(Cheat cheat)
+    public bool IsCheatEnabled(Cheat cheat)
     {
         return (Cheats & cheat) != 0;
     }
 
-    public static int GetGreenLumsId()
+    public int GetGreenLumsId()
     {
         int id = LoadedGreenLums;
         LoadedGreenLums++;
         return id;
     }
 
-    public static bool IsGreenLumDead(int lumId)
+    public bool IsGreenLumDead(int lumId)
     {
         return lumId < LastGreenLumAlive;
     }
 
-    public static void GreenLumTouchedByRayman(int id, Vector2 pos)
+    public void GreenLumTouchedByRayman(int id, Vector2 pos)
     {
         Debug.Assert(id == LastGreenLumAlive, "Invalid Greens lums id. The lums ids have to be ordered.");
 
@@ -261,27 +254,27 @@ public static class GameInfo
         CheckpointPosition = pos;
     }
 
-    public static bool GetLevelHasBlueLum()
+    public bool GetLevelHasBlueLum()
     {
         return Level.HasBlueLum;
     }
 
-    public static bool IsBlueLumsNearEnd()
+    public bool IsBlueLumsNearEnd()
     {
         return BlueLumsTimer < 79;
     }
 
-    public static void ResetBlueLumsTime()
+    public void ResetBlueLumsTime()
     {
         BlueLumsTimer = 0;
     }
 
-    public static bool IsBlueLumsTimeOver()
+    public bool IsBlueLumsTimeOver()
     {
         return BlueLumsTimer == 0;
     }
 
-    public static void IncBlueLumsTime()
+    public void IncBlueLumsTime()
     {
         if (IsBlueLumsNearEnd())
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__LumTimer_Mix02);
@@ -291,17 +284,17 @@ public static class GameInfo
             BlueLumsTimer = 416;
     }
 
-    public static bool GetLumStatus(int lumId)
+    public bool GetLumStatus(int lumId)
     {
         return (PersistentInfo.Lums[lumId >> 3] & (1 << (lumId & 7))) == 0;
     }
 
-    public static bool GetCageStatus(int cageId)
+    public bool GetCageStatus(int cageId)
     {
         return (PersistentInfo.Cages[cageId >> 3] & (1 << (cageId & 7))) == 0;
     }
 
-    public static void SetLumStatus(int lumId, bool isDead)
+    public void SetLumStatus(int lumId, bool isDead)
     {
         if (isDead)
             PersistentInfo.Lums[lumId >> 3] = (byte)(PersistentInfo.Lums[lumId >> 3] & ~(1 << (lumId & 7)));
@@ -309,7 +302,7 @@ public static class GameInfo
             PersistentInfo.Lums[lumId >> 3] = (byte)(PersistentInfo.Lums[lumId >> 3] | (1 << (lumId & 7)));
     }
 
-    public static void SetCageStatus(int cageId, bool isDead)
+    public void SetCageStatus(int cageId, bool isDead)
     {
         if (isDead)
             PersistentInfo.Cages[cageId >> 3] = (byte)(PersistentInfo.Cages[cageId >> 3] & ~(1 << (cageId & 7)));
@@ -317,7 +310,7 @@ public static class GameInfo
             PersistentInfo.Cages[cageId >> 3] = (byte)(PersistentInfo.Cages[cageId >> 3] | (1 << (cageId & 7)));
     }
 
-    public static int GetLumsCountForCurrentMap()
+    public int GetLumsCountForCurrentMap()
     {
         if (LevelType != LevelType.GameCube)
             return Level.LumsCount;
@@ -325,7 +318,7 @@ public static class GameInfo
             return YellowLumsCount;
     }
 
-    public static int GetCagesCountForCurrentMap()
+    public int GetCagesCountForCurrentMap()
     {
         if (LevelType != LevelType.GameCube)
             return Level.CagesCount;
@@ -333,7 +326,7 @@ public static class GameInfo
             return CagesCount;
     }
 
-    public static int GetDeadLumsForCurrentMap(MapId mapId)
+    public int GetDeadLumsForCurrentMap(MapId mapId)
     {
         if (LevelType == LevelType.GameCube)
         {
@@ -353,7 +346,7 @@ public static class GameInfo
         }
     }
 
-    public static int GetDeadCagesForCurrentMap(MapId mapId)
+    public int GetDeadCagesForCurrentMap(MapId mapId)
     {
         if (LevelType == LevelType.GameCube)
         {
@@ -373,7 +366,7 @@ public static class GameInfo
         }
     }
 
-    public static int GetLumsId()
+    public int GetLumsId()
     {
         if (LevelType != LevelType.GameCube && LoadedYellowLums >= YellowLumsCount)
             throw new Exception("Too many Yellow lums registered");
@@ -383,14 +376,14 @@ public static class GameInfo
         return id;
     }
 
-    public static int GetCageId()
+    public int GetCageId()
     {
         int id = LoadedCages;
         LoadedCages++;
         return id;
     }
 
-    public static int GetTotalDeadLums()
+    public int GetTotalDeadLums()
     {
         int count = 0;
 
@@ -403,7 +396,7 @@ public static class GameInfo
         return count;
     }
 
-    public static int GetTotalDeadCages()
+    public int GetTotalDeadCages()
     {
         int count = 0;
 
@@ -416,17 +409,17 @@ public static class GameInfo
         return count;
     }
 
-    public static bool AreAllLumsDead()
+    public bool AreAllLumsDead()
     {
         return GetTotalDeadLums() == 1000;
     }
 
-    public static bool AreAllCagesDead()
+    public bool AreAllCagesDead()
     {
         return GetTotalDeadCages() == 50;
     }
 
-    public static bool World1LumsCompleted()
+    public bool World1LumsCompleted()
     {
         int count = 0;
         for (MapId mapId = MapId.WoodLight_M1; mapId <= MapId.SanctuaryOfBigTree_M2; mapId++)
@@ -437,7 +430,7 @@ public static class GameInfo
         return count == LumsPerWorld;
     }
 
-    public static bool World2LumsCompleted()
+    public bool World2LumsCompleted()
     {
         int count = 0;
         for (MapId mapId = MapId.MissileRace1; mapId <= MapId.MarshAwakening2; mapId++)
@@ -448,7 +441,7 @@ public static class GameInfo
         return count == LumsPerWorld;
     }
 
-    public static bool World3LumsCompleted()
+    public bool World3LumsCompleted()
     {
         int count = 0;
         for (MapId mapId = MapId.SanctuaryOfStoneAndFire_M1; mapId <= MapId.SanctuaryOfRockAndLava_M3; mapId++)
@@ -459,7 +452,7 @@ public static class GameInfo
         return count == LumsPerWorld;
     }
 
-    public static bool World4LumsCompleted()
+    public bool World4LumsCompleted()
     {
         int count = 0;
         for (MapId mapId = MapId.TombOfTheAncients_M1; mapId <= MapId.BossFinal_M2; mapId++)
@@ -470,27 +463,27 @@ public static class GameInfo
         return count == LumsPerWorld;
     }
 
-    public static bool IsLumDead(int lumId, MapId mapId)
+    public bool IsLumDead(int lumId, MapId mapId)
     {
         return GetLumStatus(Levels[(int)mapId].GlobalLumsIndex + lumId);
     }
 
-    public static bool IsCageDead(int cageId, MapId mapId)
+    public bool IsCageDead(int cageId, MapId mapId)
     {
         return GetCageStatus(Levels[(int)mapId].GlobalCagesIndex + cageId);
     }
 
-    public static bool HasCollectedAllLumsInLevel()
+    public bool HasCollectedAllLumsInLevel()
     {
         return GetDeadLumsForCurrentMap(MapId) == YellowLumsCount;
     }
 
-    public static bool HasCollectedAllCagesInLevel()
+    public bool HasCollectedAllCagesInLevel()
     {
         return GetDeadCagesForCurrentMap(MapId) == CagesCount;
     }
 
-    public static void KillLum(int lumId)
+    public void KillLum(int lumId)
     {
         if (LevelType == LevelType.GameCube)
         {
@@ -517,7 +510,7 @@ public static class GameInfo
         }
     }
 
-    public static void KillCage(int cageId)
+    public void KillCage(int cageId)
     {
         if (LevelType == LevelType.GameCube)
         {
@@ -537,17 +530,17 @@ public static class GameInfo
         }
     }
 
-    public static void KillAllLums()
+    public void KillAllLums()
     {
         Array.Clear(PersistentInfo.Lums);
     }
 
-    public static void KillAllCages()
+    public void KillAllCages()
     {
         Array.Clear(PersistentInfo.Cages);
     }
 
-    public static void SetPowerBasedOnMap(MapId mapId)
+    public void SetPowerBasedOnMap(MapId mapId)
     {
         if (mapId >= MapId.WoodLight_M2)
             EnablePower(Power.DoubleFist);
@@ -568,12 +561,12 @@ public static class GameInfo
             EnablePower(Power.SuperFist);
     }
 
-    public static MapId GetNextLevelId()
+    public MapId GetNextLevelId()
     {
         return (MapId)Level.NextLevelId;
     }
 
-    public static byte GetLevelCurtainActorId()
+    public byte GetLevelCurtainActorId()
     {
         if (PersistentInfo.LastPlayedLevel == 0xFF)
             return 0;
@@ -581,7 +574,7 @@ public static class GameInfo
             return Levels[PersistentInfo.LastPlayedLevel].LevelCurtainActorId;
     }
 
-    public static void LoadLevel(MapId mapId)
+    public void LoadLevel(MapId mapId)
     {
         if (mapId > MapId.WorldMap)
             throw new Exception("Invalid map");
@@ -600,7 +593,7 @@ public static class GameInfo
         }
     }
 
-    public static void LevelDeath()
+    public void LevelDeath()
     {
         if (PersistentInfo.Lives == 0)
         {
@@ -614,7 +607,7 @@ public static class GameInfo
         }
     }
 
-    public static void GotoLastSaveGame()
+    public void GotoLastSaveGame()
     {
         switch ((MapId)PersistentInfo.LastPlayedLevel)
         {
@@ -694,7 +687,7 @@ public static class GameInfo
         }
     }
 
-    public static void SetNextMapId(MapId mapId)
+    public void SetNextMapId(MapId mapId)
     {
         LastGreenLumAlive = 0;
         NextMapId = mapId;
@@ -808,7 +801,7 @@ public static class GameInfo
         }
     }
 
-    public static void InitLevel(LevelType type)
+    public void InitLevel(LevelType type)
     {
         LoadedYellowLums = 0;
         LoadedCages = 0;
@@ -821,7 +814,7 @@ public static class GameInfo
         LevelType = type;
     }
 
-    public static void SetLevelRichPresence()
+    public void SetLevelRichPresence()
     {
         string presence = GetLevelName(MapId);
         if (RSMultiplayer.IsActive)
@@ -832,7 +825,7 @@ public static class GameInfo
     }
 
     // Custom method so we can easily get the name of a map
-    public static string GetLevelName(MapId mapId)
+    public string GetLevelName(MapId mapId)
     {
         switch (mapId)
         {
@@ -937,12 +930,12 @@ public static class GameInfo
         }
     }
 
-    public static bool IsFirstTimeCompletingLevel()
+    public bool IsFirstTimeCompletingLevel()
     {
         return PersistentInfo.LastCompletedLevel < (int)MapId;
     }
 
-    public static void UpdateLastCompletedLevel()
+    public void UpdateLastCompletedLevel()
     {
         if (MapId < MapId.Bonus1 && PersistentInfo.LastCompletedLevel < (int)MapId)
             PersistentInfo.LastCompletedLevel = (byte)MapId;
@@ -950,7 +943,7 @@ public static class GameInfo
         Rayman3Achievements.CheckProgressionBasedAchievements();
     }
 
-    public static void ModifyLives(int change)
+    public void ModifyLives(int change)
     {
         if (IsCheatEnabled(Cheat.InfiniteLives))
         {
@@ -970,18 +963,18 @@ public static class GameInfo
             PersistentInfo.Lives = (byte)newCount;
     }
 
-    public static void PlayLevelMusic()
+    public void PlayLevelMusic()
     {
         Engine.Sem.ProcessEvent(Level.StartMusicSoundEvent);
     }
 
-    public static void StopLevelMusic()
+    public void StopLevelMusic()
     {
         if (LevelType != LevelType.GameCube)
             Engine.Sem.ProcessEvent(Level.StopMusicSoundEvent);
     }
 
-    public static Rayman3SoundEvent GetLevelMusicSoundEvent()
+    public Rayman3SoundEvent GetLevelMusicSoundEvent()
     {
         if (LevelType == LevelType.GameCube)
             return ((FrameSideScrollerGCN)Frame.Current).MapInfo.StartMusicSoundEvent;
@@ -989,7 +982,7 @@ public static class GameInfo
             return Level.StartMusicSoundEvent;
     }
 
-    public static Rayman3SoundEvent GetSpecialLevelMusicSoundEvent()
+    public Rayman3SoundEvent GetSpecialLevelMusicSoundEvent()
     {
         if (LevelType == LevelType.GameCube)
             return ((FrameSideScrollerGCN)Frame.Current).MapInfo.StartSpecialMusicSoundEvent;
@@ -998,20 +991,20 @@ public static class GameInfo
     }
 
     // Custom for slot play time
-    public static void StartPlayTime()
+    public void StartPlayTime()
     {
         PlayTimer.Restart();
     }
 
     // Custom for slot play time
-    public static void SavePlayTime()
+    public void SavePlayTime()
     {
         PlayTimer.Stop();
         SaveSlot.PlayTime += PlayTimer.ElapsedMilliseconds;
     }
 
     // Custom for slot play time
-    public static TimeSpan GetPlayTime()
+    public TimeSpan GetPlayTime()
     {
         return TimeSpan.FromMilliseconds(SaveSlot.PlayTime);
     }

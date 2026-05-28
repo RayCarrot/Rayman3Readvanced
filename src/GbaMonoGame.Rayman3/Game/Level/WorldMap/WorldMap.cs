@@ -22,10 +22,10 @@ public partial class WorldMap : Frame, IHasScene, IHasPlayfield
     {
         CreateGeneratedSteps();
 
-        GameInfo.SetNextMapId(mapId);
+        Rayman3.GameInfo.SetNextMapId(mapId);
 
         CurrentMovement = WorldMapMovement.None;
-        WorldId = GameInfo.WorldId;
+        WorldId = Rayman3.GameInfo.WorldId;
         SelectedWorldType = WorldType.None;
         ScrollX = Rom.Platform switch
         {
@@ -34,7 +34,7 @@ public partial class WorldMap : Frame, IHasScene, IHasPlayfield
             _ => throw new UnsupportedPlatformException()
         };
 
-        GameInfo.IsInWorldMap = true;
+        Rayman3.GameInfo.IsInWorldMap = true;
     }
 
     #endregion
@@ -478,11 +478,11 @@ public partial class WorldMap : Frame, IHasScene, IHasPlayfield
             case 3:
                 if (ProcessCheatInput(GbaInput.A))
                 {
-                    GameInfo.EnableCheat(Scene, Cheat.AllPowers);
+                    Rayman3.GameInfo.EnableCheat(Scene, Cheat.AllPowers);
                     
                     CheatValue = 0;
                     
-                    GameInfo.Save(GameInfo.CurrentSlot);
+                    Rayman3.GameInfo.Save(Rayman3.GameInfo.CurrentSlot);
 
                     if (Engine.Settings.Local.Tweaks.PlayCheatTriggerSound)
                         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
@@ -509,7 +509,7 @@ public partial class WorldMap : Frame, IHasScene, IHasPlayfield
             case 36:
                 if (ProcessCheatInput(GbaInput.A))
                 {
-                    GameInfo.EnableCheat(Scene, Cheat.InfiniteLives);
+                    Rayman3.GameInfo.EnableCheat(Scene, Cheat.InfiniteLives);
                     
                     CheatValue = 0;
 
@@ -546,12 +546,12 @@ public partial class WorldMap : Frame, IHasScene, IHasPlayfield
             case 70:
                 if (ProcessCheatInput(GbaInput.R))
                 {
-                    GameInfo.EnableCheat(Scene, Cheat.AllPowers);
+                    Rayman3.GameInfo.EnableCheat(Scene, Cheat.AllPowers);
                     UnlockAllLevels();
                     
                     CheatValue = 0;
                  
-                    GameInfo.Save(GameInfo.CurrentSlot);
+                    Rayman3.GameInfo.Save(Rayman3.GameInfo.CurrentSlot);
 
                     if (Engine.Settings.Local.Tweaks.PlayCheatTriggerSound)
                         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
@@ -586,24 +586,24 @@ public partial class WorldMap : Frame, IHasScene, IHasPlayfield
             case 106:
                 if (ProcessCheatInput(GbaInput.Right))
                 {
-                    GameInfo.PersistentInfo.FinishedLyChallenge1 = true;
-                    GameInfo.PersistentInfo.FinishedLyChallenge2 = true;
+                    Rayman3.GameInfo.PersistentInfo.FinishedLyChallenge1 = true;
+                    Rayman3.GameInfo.PersistentInfo.FinishedLyChallenge2 = true;
 
                     if (Rom.Platform == Platform.GBA)
-                        GameInfo.PersistentInfo.FinishedLyChallengeGCN = true;
+                        Rayman3.GameInfo.PersistentInfo.FinishedLyChallengeGCN = true;
                     
-                    GameInfo.PersistentInfo.PlayedAct4 = true;
-                    GameInfo.PersistentInfo.PlayedMurfyWorldHelp = true;
-                    GameInfo.PersistentInfo.UnlockedFinalBoss = true;
+                    Rayman3.GameInfo.PersistentInfo.PlayedAct4 = true;
+                    Rayman3.GameInfo.PersistentInfo.PlayedMurfyWorldHelp = true;
+                    Rayman3.GameInfo.PersistentInfo.UnlockedFinalBoss = true;
 
                     if (Rom.Platform == Platform.GBA)
-                        GameInfo.PersistentInfo.CompletedGCNBonusLevels = 10;
+                        Rayman3.GameInfo.PersistentInfo.CompletedGCNBonusLevels = 10;
 
-                    GameInfo.KillAllCages();
-                    GameInfo.KillAllLums();
+                    Rayman3.GameInfo.KillAllCages();
+                    Rayman3.GameInfo.KillAllLums();
 
-                    GameInfo.EnableCheat(Scene, Cheat.InfiniteLives);
-                    GameInfo.EnableCheat(Scene, Cheat.AllPowers);
+                    Rayman3.GameInfo.EnableCheat(Scene, Cheat.InfiniteLives);
+                    Rayman3.GameInfo.EnableCheat(Scene, Cheat.AllPowers);
                     UnlockAllLevels();
                     
                     CheatValue = 0;
@@ -611,7 +611,7 @@ public partial class WorldMap : Frame, IHasScene, IHasPlayfield
                     UserInfo.Lums1000Bar.Set();
                     UserInfo.Cages50Bar.Set();
 
-                    GameInfo.Save(GameInfo.CurrentSlot);
+                    Rayman3.GameInfo.Save(Rayman3.GameInfo.CurrentSlot);
 
                     if (Engine.Settings.Local.Tweaks.PlayCheatTriggerSound)
                         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Switch1_Mix03);
@@ -622,18 +622,18 @@ public partial class WorldMap : Frame, IHasScene, IHasPlayfield
 
     private void UnlockAllLevels()
     {
-        MapId mapId = GameInfo.MapId;
-        GameInfo.MapId = MapId.BossFinal_M2;
-        GameInfo.UpdateLastCompletedLevel();
-        GameInfo.MapId = mapId;
+        MapId mapId = Rayman3.GameInfo.MapId;
+        Rayman3.GameInfo.MapId = MapId.BossFinal_M2;
+        Rayman3.GameInfo.UpdateLastCompletedLevel();
+        Rayman3.GameInfo.MapId = mapId;
 
-        GameInfo.PersistentInfo.UnlockedWorld2 = true;
-        GameInfo.PersistentInfo.PlayedWorld2Unlock = true;
-        GameInfo.PersistentInfo.UnlockedWorld3 = true;
-        GameInfo.PersistentInfo.PlayedWorld3Unlock = true;
-        GameInfo.PersistentInfo.UnlockedWorld4 = true;
-        GameInfo.PersistentInfo.PlayedWorld4Unlock = true;
-        GameInfo.PersistentInfo.PlayedAct4 = true;
+        Rayman3.GameInfo.PersistentInfo.UnlockedWorld2 = true;
+        Rayman3.GameInfo.PersistentInfo.PlayedWorld2Unlock = true;
+        Rayman3.GameInfo.PersistentInfo.UnlockedWorld3 = true;
+        Rayman3.GameInfo.PersistentInfo.PlayedWorld3Unlock = true;
+        Rayman3.GameInfo.PersistentInfo.UnlockedWorld4 = true;
+        Rayman3.GameInfo.PersistentInfo.PlayedWorld4Unlock = true;
+        Rayman3.GameInfo.PersistentInfo.PlayedAct4 = true;
 
         WorldPaths[0].CurrentAnimation = 3;
     }
@@ -737,11 +737,11 @@ public partial class WorldMap : Frame, IHasScene, IHasPlayfield
         Gfx.SetScreenEffect(CircleWipeTransitionScreenEffect);
 
         TransitionsFX.Init(true);
-        GameInfo.InitLevel(LevelType.Normal);
-        GameInfo.SetLevelRichPresence();
+        Rayman3.GameInfo.InitLevel(LevelType.Normal);
+        Rayman3.GameInfo.SetLevelRichPresence();
         LevelMusicManager.Init();
         
-        Scene = new Scene2D((int)GameInfo.MapId, x => new CameraWorldMap(x), 3, 1);
+        Scene = new Scene2D((int)Rayman3.GameInfo.MapId, x => new CameraWorldMap(x), 3, 1);
 
         // For some reason this playfield has 8 pixels of blank space on the bottom, so we have to limit the vertical resolution
         Vector2 maxRes = new(((TgxPlayfield2D)Scene.Playfield).Size.X, Rom.OriginalResolution.Y);
@@ -755,10 +755,10 @@ public partial class WorldMap : Frame, IHasScene, IHasPlayfield
 
         Scene.AnimationPlayer.Execute();
 
-        if (!Engine.Sem.IsSongPlaying(GameInfo.GetLevelMusicSoundEvent()))
-            GameInfo.PlayLevelMusic();
+        if (!Engine.Sem.IsSongPlaying(Rayman3.GameInfo.GetLevelMusicSoundEvent()))
+            Rayman3.GameInfo.PlayLevelMusic();
 
-        UserInfo = new UserInfoWorldMap(Scene, GameInfo.GetLevelHasBlueLum());
+        UserInfo = new UserInfoWorldMap(Scene, Rayman3.GameInfo.GetLevelHasBlueLum());
         Scene.AddDialog(UserInfo, false, false);
 
         AnimatedObjectResource raymanResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.RaymanWorldMapAnimations);
@@ -785,7 +785,7 @@ public partial class WorldMap : Frame, IHasScene, IHasPlayfield
             };
         }
 
-        WorldPaths[0].CurrentAnimation = GameInfo.PersistentInfo.UnlockedWorld2 ? 3 : 6;
+        WorldPaths[0].CurrentAnimation = Rayman3.GameInfo.PersistentInfo.UnlockedWorld2 ? 3 : 6;
         WorldPaths[0].ScreenPos = BaseObjPos - new Vector2(ScrollX, 0);
 
         WorldPaths[1].CurrentAnimation = 4;
@@ -826,17 +826,17 @@ public partial class WorldMap : Frame, IHasScene, IHasPlayfield
             _ => throw new Exception("Invalid world id")
         };
 
-        if (GameInfo.PersistentInfo.UnlockedWorld2 && !GameInfo.PersistentInfo.PlayedWorld2Unlock)
+        if (Rayman3.GameInfo.PersistentInfo.UnlockedWorld2 && !Rayman3.GameInfo.PersistentInfo.PlayedWorld2Unlock)
         {
             Debug.Assert(WorldId == WorldId.World1, "World #2 cannot be unlocked here");
             CurrentExStepAction = _Step_Ex_UnlockWorld2;
         }
-        else if (GameInfo.PersistentInfo.UnlockedWorld3 && !GameInfo.PersistentInfo.PlayedWorld3Unlock)
+        else if (Rayman3.GameInfo.PersistentInfo.UnlockedWorld3 && !Rayman3.GameInfo.PersistentInfo.PlayedWorld3Unlock)
         {
             Debug.Assert(WorldId == WorldId.World2, "World #3 cannot be unlocked here");
             CurrentExStepAction = _Step_Ex_UnlockWorld3;
         }
-        else if (GameInfo.PersistentInfo.UnlockedWorld4 && !GameInfo.PersistentInfo.PlayedWorld4Unlock)
+        else if (Rayman3.GameInfo.PersistentInfo.UnlockedWorld4 && !Rayman3.GameInfo.PersistentInfo.PlayedWorld4Unlock)
         {
             Debug.Assert(WorldId == WorldId.World3, "World #4 cannot be unlocked here");
             CurrentExStepAction = _Step_Ex_UnlockWorld4;
@@ -922,7 +922,7 @@ public partial class WorldMap : Frame, IHasScene, IHasPlayfield
             {
                 WorldPaths[0].CurrentAnimation = 3;
                 CurrentExStepAction = _Step_Ex_Play;
-                GameInfo.PersistentInfo.PlayedWorld2Unlock = true;
+                Rayman3.GameInfo.PersistentInfo.PlayedWorld2Unlock = true;
             }
 
             Scene.AnimationPlayer.Play(WorldPaths[0]);
@@ -965,7 +965,7 @@ public partial class WorldMap : Frame, IHasScene, IHasPlayfield
             {
                 WorldPaths[1].CurrentAnimation = 4;
                 CurrentExStepAction = _Step_Ex_Play;
-                GameInfo.PersistentInfo.PlayedWorld3Unlock = true;
+                Rayman3.GameInfo.PersistentInfo.PlayedWorld3Unlock = true;
             }
 
             Scene.AnimationPlayer.Play(WorldPaths[1]);
@@ -1010,7 +1010,7 @@ public partial class WorldMap : Frame, IHasScene, IHasPlayfield
             {
                 WorldPaths[2].CurrentAnimation = 5;
                 CurrentExStepAction = _Step_Ex_Play;
-                GameInfo.PersistentInfo.PlayedWorld4Unlock = true;
+                Rayman3.GameInfo.PersistentInfo.PlayedWorld4Unlock = true;
             }
 
             Scene.AnimationPlayer.Play(WorldPaths[2]);
@@ -1042,7 +1042,7 @@ public partial class WorldMap : Frame, IHasScene, IHasPlayfield
                 switch (WorldId)
                 {
                     case WorldId.World1:
-                        if (GameInfo.PersistentInfo.UnlockedWorld2)
+                        if (Rayman3.GameInfo.PersistentInfo.UnlockedWorld2)
                         {
                             Rayman.CurrentAnimation = 0;
                             CurrentMovement = WorldMapMovement.World1To2;
@@ -1051,7 +1051,7 @@ public partial class WorldMap : Frame, IHasScene, IHasPlayfield
                         break;
 
                     case WorldId.World2:
-                        if (GameInfo.PersistentInfo.UnlockedWorld3)
+                        if (Rayman3.GameInfo.PersistentInfo.UnlockedWorld3)
                         {
                             Rayman.CurrentAnimation = 2;
                             CurrentMovement = WorldMapMovement.World2To3;
@@ -1060,7 +1060,7 @@ public partial class WorldMap : Frame, IHasScene, IHasPlayfield
                         break;
 
                     case WorldId.World3:
-                        if (GameInfo.PersistentInfo.UnlockedWorld4)
+                        if (Rayman3.GameInfo.PersistentInfo.UnlockedWorld4)
                         {
                             Rayman.CurrentAnimation = 6;
                             CurrentMovement = WorldMapMovement.World3To4;
@@ -1320,10 +1320,10 @@ public partial class WorldMap : Frame, IHasScene, IHasPlayfield
 
         Scene.AnimationPlayer.Play(WorldPaths[0]);
 
-        if (GameInfo.PersistentInfo.UnlockedWorld3)
+        if (Rayman3.GameInfo.PersistentInfo.UnlockedWorld3)
             Scene.AnimationPlayer.Play(WorldPaths[1]);
 
-        if (GameInfo.PersistentInfo.UnlockedWorld4)
+        if (Rayman3.GameInfo.PersistentInfo.UnlockedWorld4)
             Scene.AnimationPlayer.Play(WorldPaths[2]);
         
         if (Rom.Platform == Platform.GBA)
@@ -1379,16 +1379,16 @@ public partial class WorldMap : Frame, IHasScene, IHasPlayfield
         // Finish
         else if (EnterWorldStep == 3)
         {
-            if (WorldId == WorldId.World4 && !GameInfo.PersistentInfo.PlayedAct4)
+            if (WorldId == WorldId.World4 && !Rayman3.GameInfo.PersistentInfo.PlayedAct4)
             {
                 Engine.FrameMngr.SetNextFrame(new Act4());
                 Engine.Sem.StopAllSongs();
-                GameInfo.PersistentInfo.PlayedAct4 = true;
-                GameInfo.Save(GameInfo.CurrentSlot);
+                Rayman3.GameInfo.PersistentInfo.PlayedAct4 = true;
+                Rayman3.GameInfo.Save(Rayman3.GameInfo.CurrentSlot);
             }
             else
             {
-                GameInfo.LoadLevel(MapId.World1 + (int)WorldId);
+                Rayman3.GameInfo.LoadLevel(MapId.World1 + (int)WorldId);
             }
         }
 
@@ -1484,10 +1484,10 @@ public partial class WorldMap : Frame, IHasScene, IHasPlayfield
 
         Scene.AnimationPlayer.Play(WorldPaths[0]);
 
-        if (GameInfo.PersistentInfo.UnlockedWorld3)
+        if (Rayman3.GameInfo.PersistentInfo.UnlockedWorld3)
             Scene.AnimationPlayer.Play(WorldPaths[1]);
 
-        if (GameInfo.PersistentInfo.UnlockedWorld4)
+        if (Rayman3.GameInfo.PersistentInfo.UnlockedWorld4)
             Scene.AnimationPlayer.Play(WorldPaths[2]);
 
         Scene.AnimationPlayer.Play(GameCubeSparkles);

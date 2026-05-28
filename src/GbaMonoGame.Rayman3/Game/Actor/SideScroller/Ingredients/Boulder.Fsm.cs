@@ -39,7 +39,7 @@ public partial class Boulder
             }
         }
         // Lower hitbox so they're easier to jump over
-        else if (GameInfo.MapId == MapId.Bonus4)
+        else if (Rayman3.GameInfo.MapId == MapId.Bonus4)
         {
             Box attackBox = GetAttackBox();
             attackBox.Top += 16;
@@ -162,7 +162,7 @@ public partial class Boulder
                         }
 
                         if (!activeBoulder && 
-                            GameInfo.MapId != MapId.Bonus4 &&
+                            Rayman3.GameInfo.MapId != MapId.Bonus4 &&
                             !Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__win3) && 
                             !LevelMusicManager.HasOverridenLevelMusic)
                         {

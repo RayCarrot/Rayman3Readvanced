@@ -23,12 +23,12 @@ public partial class ModernPauseDialog
                 AddOption("OPTIONS", _Fsm_Options);
 
                 // World
-                if (GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
+                if (Rayman3.GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
                 {
                     AddOption("LEVELS", _Fsm_Levels);
                 }
                 // Worldmap
-                else if (GameInfo.MapId == MapId.WorldMap)
+                else if (Rayman3.GameInfo.MapId == MapId.WorldMap)
                 {
                     // No extra option
                 }
@@ -187,7 +187,7 @@ public partial class ModernPauseDialog
                         Engine.Sem.StopAllSongs();
 
                         // Reset checkpoint
-                        GameInfo.LastGreenLumAlive = 0;
+                        Rayman3.GameInfo.LastGreenLumAlive = 0;
 
                         // Reload map
                         Engine.FrameMngr.ReloadCurrentFrame();
@@ -260,7 +260,7 @@ public partial class ModernPauseDialog
                             else
                                 Engine.FrameMngr.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));
                         }
-                        else if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
+                        else if (Rom.Platform == Platform.GBA && Rayman3.GameInfo.LevelType == LevelType.GameCube)
                         {
                             Engine.FrameMngr.SetNextFrame(new GameCubeMenu());
                         }
@@ -294,18 +294,18 @@ public partial class ModernPauseDialog
                         GameTime.Resume();
                         Engine.Sem.StopAllSongs();
 
-                        if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
+                        if (Rom.Platform == Platform.GBA && Rayman3.GameInfo.LevelType == LevelType.GameCube)
                         {
                             ((FrameSideScrollerGCN)Frame.Current).RestoreMapAndPowers();
                             Engine.FrameMngr.SetNextFrame(new GameCubeMenu());
                         }
                         else
                         {
-                            GameInfo.LoadLevel(MapId.World1 + (int)GameInfo.WorldId);
+                            Rayman3.GameInfo.LoadLevel(MapId.World1 + (int)Rayman3.GameInfo.WorldId);
                         }
 
-                        GameInfo.PersistentInfo.LastPlayedLevel = (byte)GameInfo.MapId;
-                        GameInfo.Save(GameInfo.CurrentSlot);
+                        Rayman3.GameInfo.PersistentInfo.LastPlayedLevel = (byte)Rayman3.GameInfo.MapId;
+                        Rayman3.GameInfo.Save(Rayman3.GameInfo.CurrentSlot);
                     }
                 }
                 else if (Engine.JoyPad.IsButtonJustPressed(Rayman3Input.MenuUp))

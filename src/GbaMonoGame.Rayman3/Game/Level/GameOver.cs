@@ -338,9 +338,9 @@ public class GameOver : Frame
             case GameOverMode.ReloadLevel:
                 if (!TransitionsFX.IsFadingOut)
                 {
-                    GameInfo.PersistentInfo.Lives = 3;
-                    GameInfo.PersistentInfo.LastPlayedLevel = (byte)GameInfo.MapId;
-                    GameInfo.LoadLevel(GameInfo.MapId);
+                    Rayman3.GameInfo.PersistentInfo.Lives = 3;
+                    Rayman3.GameInfo.PersistentInfo.LastPlayedLevel = (byte)Rayman3.GameInfo.MapId;
+                    Rayman3.GameInfo.LoadLevel(Rayman3.GameInfo.MapId);
                 }
                 break;
 

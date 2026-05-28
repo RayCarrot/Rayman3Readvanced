@@ -26,14 +26,14 @@ public partial class Urchin
                     Scene.MainActor.ReceiveDamage(AttackPoints);
                 }
                 else if (AnimatedObject.IsFramed &&
-                         (GameInfo.ActorSoundFlags & ActorSoundFlags.Urchin) == 0 &&
+                         (Rayman3.GameInfo.ActorSoundFlags & ActorSoundFlags.Urchin) == 0 &&
                          IsActionFinished)
                 {
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__BlobFX02_Mix02, this);
                 }
 
                 if (AnimatedObject.IsFramed)
-                    GameInfo.ActorSoundFlags |= ActorSoundFlags.Urchin;
+                    Rayman3.GameInfo.ActorSoundFlags |= ActorSoundFlags.Urchin;
 
                 if (IsActionFinished)
                 {

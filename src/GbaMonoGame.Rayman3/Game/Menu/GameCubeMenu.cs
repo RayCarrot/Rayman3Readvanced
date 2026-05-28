@@ -149,14 +149,14 @@ public partial class GameCubeMenu : Frame
 
     private bool IsMapUnlocked(int mapId)
     {
-        int lums = GameInfo.GetTotalDeadLums();
+        int lums = Rayman3.GameInfo.GetTotalDeadLums();
         return lums >= (mapId + 1) * 100 &&
-               GameInfo.PersistentInfo.CompletedGCNBonusLevels >= mapId;
+               Rayman3.GameInfo.PersistentInfo.CompletedGCNBonusLevels >= mapId;
     }
 
     private bool IsMapCompleted(int mapId)
     {
-        return GameInfo.PersistentInfo.CompletedGCNBonusLevels > mapId;
+        return Rayman3.GameInfo.PersistentInfo.CompletedGCNBonusLevels > mapId;
     }
 
     private void ShowPleaseConnectText()
@@ -279,25 +279,25 @@ public partial class GameCubeMenu : Frame
         GcnUnlockFlags = 0;
         IsShowingLyChallengeUnlocked = false;
 
-        if (GameInfo.AreAllLumsDead())
+        if (Rayman3.GameInfo.AreAllLumsDead())
             GcnUnlockFlags |= 1;
 
-        if (GameInfo.AreAllCagesDead())
+        if (Rayman3.GameInfo.AreAllCagesDead())
             GcnUnlockFlags |= 2;
 
-        if (GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossFinal_M2)
+        if (Rayman3.GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossFinal_M2)
             GcnUnlockFlags |= 4;
 
-        if (GameInfo.PersistentInfo.FinishedLyChallenge1 &&
-            GameInfo.PersistentInfo.FinishedLyChallenge2 &&
-            GameInfo.PersistentInfo.UnlockedBonus1 &&
-            GameInfo.PersistentInfo.UnlockedBonus2 &&
-            GameInfo.PersistentInfo.UnlockedBonus3 &&
-            GameInfo.PersistentInfo.UnlockedBonus4 &&
-            GameInfo.PersistentInfo.UnlockedWorld2 &&
-            GameInfo.PersistentInfo.UnlockedWorld3 &&
-            GameInfo.PersistentInfo.UnlockedWorld4 &&
-            GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossFinal_M2)
+        if (Rayman3.GameInfo.PersistentInfo.FinishedLyChallenge1 &&
+            Rayman3.GameInfo.PersistentInfo.FinishedLyChallenge2 &&
+            Rayman3.GameInfo.PersistentInfo.UnlockedBonus1 &&
+            Rayman3.GameInfo.PersistentInfo.UnlockedBonus2 &&
+            Rayman3.GameInfo.PersistentInfo.UnlockedBonus3 &&
+            Rayman3.GameInfo.PersistentInfo.UnlockedBonus4 &&
+            Rayman3.GameInfo.PersistentInfo.UnlockedWorld2 &&
+            Rayman3.GameInfo.PersistentInfo.UnlockedWorld3 &&
+            Rayman3.GameInfo.PersistentInfo.UnlockedWorld4 &&
+            Rayman3.GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossFinal_M2)
         {
             GcnUnlockFlags |= 8;
         }
@@ -315,7 +315,7 @@ public partial class GameCubeMenu : Frame
         IsActive = true;
         State.MoveTo(_Fsm_PreInit);
 
-        if (GameInfo.PersistentInfo.CompletedGCNBonusLevels == 10)
+        if (Rayman3.GameInfo.PersistentInfo.CompletedGCNBonusLevels == 10)
             Rayman3.Achievements.Unlock(AchievementId.CompleteGCNBonus);
     }
 

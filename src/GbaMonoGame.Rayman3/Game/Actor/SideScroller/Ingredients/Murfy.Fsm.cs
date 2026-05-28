@@ -141,7 +141,7 @@ public partial class Murfy
 
                 TextBox.MoveInOurOut(MoveTextBoxIn);
 
-                if (GameInfo.MapId is not (MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4))
+                if (Rayman3.GameInfo.MapId is not (MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4))
                     ((FrameSideScroller)Frame.Current).UserInfo.MoveOutBars();
 
                 // Don't allow pausing since it uses the same button as skipping
@@ -411,7 +411,7 @@ public partial class Murfy
 
             case FsmAction.UnInit:
                 Position = InitialPosition;
-                if (GameInfo.MapId is MapId.ChallengeLy1 or MapId.ChallengeLy2)
+                if (Rayman3.GameInfo.MapId is MapId.ChallengeLy1 or MapId.ChallengeLy2)
                 {
                     Debug.Assert(TargetActor == Scene.MainActor, "Murfy incoherent behavior");
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);

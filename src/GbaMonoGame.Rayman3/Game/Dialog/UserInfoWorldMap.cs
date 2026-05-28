@@ -16,7 +16,7 @@ public class UserInfoWorldMap : Dialog
         if (hasBlueLum)
             BlueLumBar = new BlueLumBar(scene);
 
-        if (GameInfo.MapId == MapId.WorldMap)
+        if (Rayman3.GameInfo.MapId == MapId.WorldMap)
             WorldNameBar = new WorldNameBar(scene);
 
         LifeBar.SetToStayVisible();
@@ -143,7 +143,7 @@ public class UserInfoWorldMap : Dialog
         Cages50Bar.Set();
         BlueLumBar?.Set();
 
-        if (Rom.Platform == Platform.GBA && GameInfo.MapId != MapId.WorldMap)
+        if (Rom.Platform == Platform.GBA && Rayman3.GameInfo.MapId != MapId.WorldMap)
         {
             AnimatedObjectResource resource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.WorldCurtainAnimations);
 
@@ -178,7 +178,7 @@ public class UserInfoWorldMap : Dialog
 
     public override void Draw(AnimationPlayer animationPlayer)
     {
-        if (Rom.Platform == Platform.GBA && GameInfo.MapId != MapId.WorldMap)
+        if (Rom.Platform == Platform.GBA && Rayman3.GameInfo.MapId != MapId.WorldMap)
         {
             animationPlayer.PlayFront(CurtainsLeft);
             animationPlayer.PlayFront(CurtainsRight);

@@ -170,7 +170,7 @@ public sealed partial class FlyingShell : MovableActor
                     Rayman3.TimeAttack.Pause();
                     Rayman3.TimeAttack.SetMode(TimeAttackMode.Score);
                 }
-                else if (Rom.Platform == Platform.GBA && GameInfo.LevelType == LevelType.GameCube)
+                else if (Rom.Platform == Platform.GBA && Rayman3.GameInfo.LevelType == LevelType.GameCube)
                 {
                     State.MoveTo(_Fsm_GameCubeEndMap);
                 }
@@ -180,11 +180,11 @@ public sealed partial class FlyingShell : MovableActor
 
                     if (Engine.Settings.Active.Tweaks.FixBugs)
                     {
-                        if (GameInfo.IsFirstTimeCompletingLevel())
-                            GameInfo.UpdateLastCompletedLevel();
+                        if (Rayman3.GameInfo.IsFirstTimeCompletingLevel())
+                            Rayman3.GameInfo.UpdateLastCompletedLevel();
 
-                        GameInfo.PersistentInfo.LastPlayedLevel = (byte)GameInfo.MapId;
-                        GameInfo.Save(GameInfo.CurrentSlot);
+                        Rayman3.GameInfo.PersistentInfo.LastPlayedLevel = (byte)Rayman3.GameInfo.MapId;
+                        Rayman3.GameInfo.Save(Rayman3.GameInfo.CurrentSlot);
                     }
                     else
                     {

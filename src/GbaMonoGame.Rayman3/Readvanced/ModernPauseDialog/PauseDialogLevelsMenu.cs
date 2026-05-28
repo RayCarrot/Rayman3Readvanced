@@ -168,25 +168,25 @@ public class PauseDialogLevelsMenu
                 int levelCurtainId = (int)((LevelCurtain)actor).InitialActionId;
 
                 // Determine if any lums or cages have been collected
-                bool hasCollectedLumsOrCages = GameInfo.LevelMaps[levelCurtainId].
-                    Any(x => GameInfo.GetDeadLumsForCurrentMap(x) > 0 || GameInfo.GetDeadCagesForCurrentMap(x) > 0);
+                bool hasCollectedLumsOrCages = Rayman3.GameInfo.LevelMaps[levelCurtainId].
+                    Any(x => Rayman3.GameInfo.GetDeadLumsForCurrentMap(x) > 0 || Rayman3.GameInfo.GetDeadCagesForCurrentMap(x) > 0);
 
                 // Determine if the level is available in the menu
-                MapId mapId = GameInfo.LevelMaps[levelCurtainId][0];
+                MapId mapId = Rayman3.GameInfo.LevelMaps[levelCurtainId][0];
                 bool isAvailable = mapId switch
                 {
                     MapId.Bonus1 or MapId.Bonus2 or MapId.Bonus3 or MapId.Bonus4 => hasCollectedLumsOrCages,
-                    MapId._1000Lums => GameInfo.AreAllLumsDead(),
-                    MapId.ChallengeLy1 => GameInfo.PersistentInfo.FinishedLyChallenge1,
-                    MapId.ChallengeLy2 => GameInfo.PersistentInfo.FinishedLyChallenge2,
-                    MapId.ChallengeLyGCN => GameInfo.PersistentInfo.FinishedLyChallengeGCN,
-                    _ => GameInfo.PersistentInfo.LastCompletedLevel >= (int)mapId || hasCollectedLumsOrCages
+                    MapId._1000Lums => Rayman3.GameInfo.AreAllLumsDead(),
+                    MapId.ChallengeLy1 => Rayman3.GameInfo.PersistentInfo.FinishedLyChallenge1,
+                    MapId.ChallengeLy2 => Rayman3.GameInfo.PersistentInfo.FinishedLyChallenge2,
+                    MapId.ChallengeLyGCN => Rayman3.GameInfo.PersistentInfo.FinishedLyChallengeGCN,
+                    _ => Rayman3.GameInfo.PersistentInfo.LastCompletedLevel >= (int)mapId || hasCollectedLumsOrCages
                 };
 
                 options.Add(new LevelsMenuOption(levelCurtainId, isAvailable, TextScale));
             }
         }
-        Options = options.OrderBy(x => GameInfo.LevelMaps[x.LevelCurtainId][0]).ToArray();
+        Options = options.OrderBy(x => Rayman3.GameInfo.LevelMaps[x.LevelCurtainId][0]).ToArray();
 
         for (int i = 0; i < Options.Length; i++)
         {
@@ -243,7 +243,7 @@ public class PauseDialogLevelsMenu
             if (HasSelectedLevel)
             {
                 LevelsMenuOption option = Options[SelectedOption];
-                GameInfo.PersistentInfo.LastPlayedLevel = (byte)GameInfo.LevelMaps[option.LevelCurtainId][0];
+                Rayman3.GameInfo.PersistentInfo.LastPlayedLevel = (byte)Rayman3.GameInfo.LevelMaps[option.LevelCurtainId][0];
                 GameTime.Resume();
                 Engine.Sem.StopAllSongs();
                 Engine.FrameMngr.ReloadCurrentFrame();

@@ -121,7 +121,7 @@ public partial class Skull
 
                 if (isHit)
                 {
-                    if (GameInfo.MapId == MapId.CavesOfBadDreams_M1)
+                    if (Rayman3.GameInfo.MapId == MapId.CavesOfBadDreams_M1)
                         Rayman3Achievements.CaveBadDreamsM1_HitSkulls++;
 
                     if (AnimatedObject.IsFramed)

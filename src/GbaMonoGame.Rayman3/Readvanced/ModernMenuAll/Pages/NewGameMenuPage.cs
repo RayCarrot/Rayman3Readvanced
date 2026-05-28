@@ -35,14 +35,14 @@ public class NewGameMenuPage : MenuPage
 
                     // Create a new game
                     Engine.FrameMngr.SetNextFrame(new Act1());
-                    GameInfo.ResetPersistentInfo();
+                    Rayman3.GameInfo.ResetPersistentInfo();
 
-                    GameInfo.StartPlayTime();
+                    Rayman3.GameInfo.StartPlayTime();
 
                     Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);
                     Gfx.Fade = AlphaCoefficient.Max;
 
-                    GameInfo.CurrentSlot = Slot;
+                    Rayman3.GameInfo.CurrentSlot = Slot;
                 });
             });
         }));

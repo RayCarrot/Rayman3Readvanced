@@ -21,7 +21,7 @@ public sealed partial class Ly : MovableActor
 
     private void SetText()
     {
-        TextBox.SetText(GameInfo.MapId switch
+        TextBox.SetText(Rayman3.GameInfo.MapId switch
         {
             MapId.WoodLight_M2 => 0,
             MapId.BossMachine => 1,
@@ -38,7 +38,7 @@ public sealed partial class Ly : MovableActor
         Engine.JoyPad.SetReplayData(ReplayData.Inputs);
         
         Rayman rayman = (Rayman)Scene.MainActor;
-        rayman.SetPower(GameInfo.MapId switch
+        rayman.SetPower(Rayman3.GameInfo.MapId switch
         {
             MapId.WoodLight_M2 => Power.DoubleFist,
             MapId.BossMachine => Power.Grab,
@@ -57,7 +57,7 @@ public sealed partial class Ly : MovableActor
         // NOTE: The game checks the map id of the previous level, such as Woods of Light map 2, since the game changes it
         //       to that after loading the scene. But since we're doing this when initializing the actor we have to use the
         //       power map id instead.
-        ReplayData = Rom.Loader.ReadNewPowerReplayData(GameInfo.MapId switch
+        ReplayData = Rom.Loader.ReadNewPowerReplayData(Rayman3.GameInfo.MapId switch
         {
             MapId.Power1 => 1,
             MapId.Power2 => 2,

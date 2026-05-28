@@ -53,11 +53,11 @@ public sealed partial class LevelCurtain : ActionActor
 
         if (MapId == MapId.Bonus1)
         {
-            if (GameInfo.World1LumsCompleted())
+            if (Rayman3.GameInfo.World1LumsCompleted())
             {
                 State.SetTo(_Fsm_Unlocked);
 
-                if (!GameInfo.PersistentInfo.UnlockedBonus1)
+                if (!Rayman3.GameInfo.PersistentInfo.UnlockedBonus1)
                     IsLocked = true;
             }
             else
@@ -68,11 +68,11 @@ public sealed partial class LevelCurtain : ActionActor
         }
         else if (MapId == MapId.Bonus2)
         {
-            if (GameInfo.World2LumsCompleted())
+            if (Rayman3.GameInfo.World2LumsCompleted())
             {
                 State.SetTo(_Fsm_Unlocked);
 
-                if (!GameInfo.PersistentInfo.UnlockedBonus2)
+                if (!Rayman3.GameInfo.PersistentInfo.UnlockedBonus2)
                     IsLocked = true;
             }
             else
@@ -83,11 +83,11 @@ public sealed partial class LevelCurtain : ActionActor
         }
         else if (MapId == MapId.Bonus3)
         {
-            if (GameInfo.World3LumsCompleted())
+            if (Rayman3.GameInfo.World3LumsCompleted())
             {
                 State.SetTo(_Fsm_Unlocked);
 
-                if (!GameInfo.PersistentInfo.UnlockedBonus3)
+                if (!Rayman3.GameInfo.PersistentInfo.UnlockedBonus3)
                     IsLocked = true;
             }
             else
@@ -98,11 +98,11 @@ public sealed partial class LevelCurtain : ActionActor
         }
         else if (MapId == MapId.Bonus4)
         {
-            if (GameInfo.World4LumsCompleted())
+            if (Rayman3.GameInfo.World4LumsCompleted())
             {
                 State.SetTo(_Fsm_Unlocked);
 
-                if (!GameInfo.PersistentInfo.UnlockedBonus4)
+                if (!Rayman3.GameInfo.PersistentInfo.UnlockedBonus4)
                     IsLocked = true;
             }
             else
@@ -113,9 +113,9 @@ public sealed partial class LevelCurtain : ActionActor
         }
         else
         {
-            if (MapId <= (MapId)(GameInfo.PersistentInfo.LastCompletedLevel + 1) ||
+            if (MapId <= (MapId)(Rayman3.GameInfo.PersistentInfo.LastCompletedLevel + 1) ||
                 MapId is MapId.ChallengeLy1 or MapId.ChallengeLy2 or MapId.ChallengeLyGCN ||
-                (MapId == MapId._1000Lums && GameInfo.GetTotalDeadLums() >= 999))
+                (MapId == MapId._1000Lums && Rayman3.GameInfo.GetTotalDeadLums() >= 999))
             {
                 State.SetTo(_Fsm_Unlocked);
             }
@@ -126,7 +126,7 @@ public sealed partial class LevelCurtain : ActionActor
             }
         }
 
-        if (MapId == MapId.ChallengeLyGCN && !GameInfo.PersistentInfo.UnlockedLyChallengeGCN)
+        if (MapId == MapId.ChallengeLyGCN && !Rayman3.GameInfo.PersistentInfo.UnlockedLyChallengeGCN)
             ProcessMessage(this, Message.Destroy);
 
         AnimatedObject.BasePaletteIndex = IsLocked ? 1 : 0;

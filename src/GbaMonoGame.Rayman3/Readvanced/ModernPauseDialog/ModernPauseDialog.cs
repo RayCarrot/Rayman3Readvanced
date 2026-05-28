@@ -228,7 +228,7 @@ public partial class ModernPauseDialog : Dialog
         {
             case FrameSideScroller frameSideScroller:
                 // Only move in the life, lums and cages bars if we're not in a Ly challenge level
-                if (GameInfo.MapId is not (MapId.ChallengeLy1 or MapId.ChallengeLy2 or MapId.ChallengeLyGCN))
+                if (Rayman3.GameInfo.MapId is not (MapId.ChallengeLy1 or MapId.ChallengeLy2 or MapId.ChallengeLyGCN))
                     frameSideScroller.UserInfo.MoveInBars();
 
                 frameSideScroller.TimeAttackDialog?.MoveInBars();
@@ -328,7 +328,7 @@ public partial class ModernPauseDialog : Dialog
         OptionsMenu = new PauseDialogOptionsMenu();
         OptionsMenu.Load();
 
-        if (GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
+        if (Rayman3.GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
         {
             LevelsMenu = new PauseDialogLevelsMenu(Scene);
             LevelsMenu.Load();

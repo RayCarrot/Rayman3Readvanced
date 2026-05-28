@@ -12,7 +12,7 @@ public partial class RaymanMode7
 {
     private bool FsmStep_CheckDeath()
     {
-        if (!GameInfo.IsCheatEnabled(Cheat.Invulnerable) && !Scene.GetGameObject<SamMode7>(SamActorId).Debug_NoClip)
+        if (!Rayman3.GameInfo.IsCheatEnabled(Cheat.Invulnerable) && !Scene.GetGameObject<SamMode7>(SamActorId).Debug_NoClip)
         {
             InvulnerabilityTimer++;
 
@@ -34,7 +34,7 @@ public partial class RaymanMode7
 
                 if ((type3 == PhysicalTypeValue.Damage || type2 == PhysicalTypeValue.Damage || type1 == PhysicalTypeValue.Damage) && State != _Fsm_Jump) 
                 {
-                    if (GameInfo.MapId == MapId.MarshAwakening1)
+                    if (Rayman3.GameInfo.MapId == MapId.MarshAwakening1)
                         ((MarshAwakening1)Frame.Current).CanShowTextBox = true;
 
                     ReceiveDamage(1);
@@ -71,13 +71,13 @@ public partial class RaymanMode7
         {
             if (Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorLeft))
             {
-                if (GameInfo.MapId == MapId.MarshAwakening1)
+                if (Rayman3.GameInfo.MapId == MapId.MarshAwakening1)
                     Rayman3Achievements.MarshAwakening1_HasMoved = true;
                 MoveSpeed = 1.375f;
             }
             else if (Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorRight))
             {
-                if (GameInfo.MapId == MapId.MarshAwakening1)
+                if (Rayman3.GameInfo.MapId == MapId.MarshAwakening1)
                     Rayman3Achievements.MarshAwakening1_HasMoved = true;
                 MoveSpeed = -1.375f;
             }
@@ -295,7 +295,7 @@ public partial class RaymanMode7
         {
             case FsmAction.Init:
                 InvulnerabilityTimer = 0;
-                GameInfo.ModifyLives(-1);
+                Rayman3.GameInfo.ModifyLives(-1);
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__RaDeath_Mix03, this);
                 ReceiveDamage(255);
                 Scene.GetGameObject(SamActorId).ProcessMessage(this, Message.Actor_End);
@@ -319,7 +319,7 @@ public partial class RaymanMode7
                 }
                 else if (InvulnerabilityTimer == 167)
                 {
-                    GameInfo.LevelDeath();
+                    Rayman3.GameInfo.LevelDeath();
                 }
 
                 if (InvulnerabilityTimer > 80)

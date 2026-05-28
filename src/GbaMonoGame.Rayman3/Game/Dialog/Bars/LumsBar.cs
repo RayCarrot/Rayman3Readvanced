@@ -99,12 +99,12 @@ public class LumsBar : Bar
 
     public override void Set()
     {
-        int lumsCount = GameInfo.GetLumsCountForCurrentMap();
+        int lumsCount = Rayman3.GameInfo.GetLumsCountForCurrentMap();
 
         TotalLumsDigit1.CurrentAnimation = lumsCount / 10;
         TotalLumsDigit2.CurrentAnimation = lumsCount % 10;
 
-        int collectedLums = GameInfo.GetDeadLumsForCurrentMap(GameInfo.MapId);
+        int collectedLums = Rayman3.GameInfo.GetDeadLumsForCurrentMap(Rayman3.GameInfo.MapId);
 
         CollectedLumsDigitValue1 = collectedLums / 10;
         CollectedLumsDigitValue2 = collectedLums % 10;
@@ -114,7 +114,7 @@ public class LumsBar : Bar
 
     public void SetWithoutUpdating()
     {
-        int lumsCount = GameInfo.GetLumsCountForCurrentMap();
+        int lumsCount = Rayman3.GameInfo.GetLumsCountForCurrentMap();
 
         TotalLumsDigit1.CurrentAnimation = lumsCount / 10;
         TotalLumsDigit2.CurrentAnimation = lumsCount % 10;

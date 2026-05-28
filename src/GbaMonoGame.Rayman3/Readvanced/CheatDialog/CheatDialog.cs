@@ -80,7 +80,7 @@ public partial class CheatDialog : Dialog
                 text: "99 LIVES",
                 action: _ =>
                 {
-                    GameInfo.ModifyLives(99 - GameInfo.PersistentInfo.Lives);
+                    Rayman3.GameInfo.ModifyLives(99 - Rayman3.GameInfo.PersistentInfo.Lives);
                 },
                 isEnabled: null),
             new CheatItem(
@@ -110,11 +110,11 @@ public partial class CheatDialog : Dialog
                     item.ToggleIsEnabled();
 
                     if (item.IsEnabled == true)
-                        GameInfo.EnableCheat(Scene, Cheat.Invulnerable);
+                        Rayman3.GameInfo.EnableCheat(Scene, Cheat.Invulnerable);
                     else
-                        GameInfo.DisableCheat(Scene, Cheat.Invulnerable);
+                        Rayman3.GameInfo.DisableCheat(Scene, Cheat.Invulnerable);
                 },
-                isEnabled: GameInfo.IsCheatEnabled(Cheat.Invulnerable)),
+                isEnabled: Rayman3.GameInfo.IsCheatEnabled(Cheat.Invulnerable)),
         ];
 
         Vector2 pos = new(30, 30);

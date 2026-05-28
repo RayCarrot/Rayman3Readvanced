@@ -21,10 +21,10 @@ public sealed partial class Teensies : ActionActor
         {
             InitialActionId = ActionId;
 
-            if ((ActionId is Action.Init_World1_Right or Action.Init_World1_Left && GameInfo.PersistentInfo.UnlockedWorld2) ||
-                (ActionId is Action.Init_World2_Right or Action.Init_World2_Left && GameInfo.PersistentInfo.UnlockedWorld3) ||
-                (ActionId is Action.Init_World3_Right or Action.Init_World3_Left && GameInfo.PersistentInfo.UnlockedWorld4) ||
-                (ActionId is Action.Init_World4_Right or Action.Init_World4_Left && GameInfo.PersistentInfo.UnlockedFinalBoss))
+            if ((ActionId is Action.Init_World1_Right or Action.Init_World1_Left && Rayman3.GameInfo.PersistentInfo.UnlockedWorld2) ||
+                (ActionId is Action.Init_World2_Right or Action.Init_World2_Left && Rayman3.GameInfo.PersistentInfo.UnlockedWorld3) ||
+                (ActionId is Action.Init_World3_Right or Action.Init_World3_Left && Rayman3.GameInfo.PersistentInfo.UnlockedWorld4) ||
+                (ActionId is Action.Init_World4_Right or Action.Init_World4_Left && Rayman3.GameInfo.PersistentInfo.UnlockedFinalBoss))
             {
                 ProcessMessage(this, Message.Destroy);
             }
@@ -71,13 +71,13 @@ public sealed partial class Teensies : ActionActor
     private bool IsMapRequirementFulfilled()
     {
         if (InitialActionId is Action.Init_World1_Right or Action.Init_World1_Left)
-            return GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.SanctuaryOfBigTree_M2;
+            return Rayman3.GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.SanctuaryOfBigTree_M2;
         else if (InitialActionId is Action.Init_World2_Right or Action.Init_World2_Left)
-            return GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.MarshAwakening2;
+            return Rayman3.GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.MarshAwakening2;
         else if (InitialActionId is Action.Init_World3_Right or Action.Init_World3_Left)
-            return GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.SanctuaryOfRockAndLava_M3;
+            return Rayman3.GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.SanctuaryOfRockAndLava_M3;
         else if (InitialActionId is Action.Init_World4_Right or Action.Init_World4_Left)
-            return GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.PirateShip_M2;
+            return Rayman3.GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.PirateShip_M2;
         else
             throw new Exception("Invalid initial action id for teensies");
     }
@@ -86,9 +86,9 @@ public sealed partial class Teensies : ActionActor
     {
         if (InitialActionId is Action.Init_World1_Right or Action.Init_World1_Left)
         {
-            if (GameInfo.GetTotalDeadCages() >= 5)
+            if (Rayman3.GameInfo.GetTotalDeadCages() >= 5)
             {
-                GameInfo.PersistentInfo.UnlockedWorld2 = true;
+                Rayman3.GameInfo.PersistentInfo.UnlockedWorld2 = true;
                 return true;
             }
             else
@@ -98,9 +98,9 @@ public sealed partial class Teensies : ActionActor
         }
         else if (InitialActionId is Action.Init_World2_Right or Action.Init_World2_Left)
         {
-            if (GameInfo.GetTotalDeadCages() >= 10)
+            if (Rayman3.GameInfo.GetTotalDeadCages() >= 10)
             {
-                GameInfo.PersistentInfo.UnlockedWorld3 = true;
+                Rayman3.GameInfo.PersistentInfo.UnlockedWorld3 = true;
                 return true;
             }
             else
@@ -110,9 +110,9 @@ public sealed partial class Teensies : ActionActor
         }
         else if (InitialActionId is Action.Init_World3_Right or Action.Init_World3_Left)
         {
-            if (GameInfo.GetTotalDeadCages() >= 15)
+            if (Rayman3.GameInfo.GetTotalDeadCages() >= 15)
             {
-                GameInfo.PersistentInfo.UnlockedWorld4 = true;
+                Rayman3.GameInfo.PersistentInfo.UnlockedWorld4 = true;
                 return true;
             }
             else
@@ -122,9 +122,9 @@ public sealed partial class Teensies : ActionActor
         }
         else if (InitialActionId is Action.Init_World4_Right or Action.Init_World4_Left)
         {
-            if (GameInfo.GetTotalDeadCages() >= 20)
+            if (Rayman3.GameInfo.GetTotalDeadCages() >= 20)
             {
-                GameInfo.PersistentInfo.UnlockedFinalBoss = true;
+                Rayman3.GameInfo.PersistentInfo.UnlockedFinalBoss = true;
                 return true;
             }
             else

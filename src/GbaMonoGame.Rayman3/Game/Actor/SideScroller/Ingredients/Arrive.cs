@@ -13,13 +13,13 @@ public sealed partial class Arrive : ActionActor
 
         LinkedActor = null;
 
-        if ((GameInfo.MapId == MapId.ChallengeLy1 && !GameInfo.PersistentInfo.FinishedLyChallenge1) ||
-            (GameInfo.MapId == MapId.ChallengeLy2 && !GameInfo.PersistentInfo.FinishedLyChallenge2))
+        if ((Rayman3.GameInfo.MapId == MapId.ChallengeLy1 && !Rayman3.GameInfo.PersistentInfo.FinishedLyChallenge1) ||
+            (Rayman3.GameInfo.MapId == MapId.ChallengeLy2 && !Rayman3.GameInfo.PersistentInfo.FinishedLyChallenge2))
         {
             LinkedActor = actorResource.Links[0];
             State.SetTo(_Fsm_IdleWithLink);
         }
-        else if (GameInfo.MapId == MapId.ChallengeLyGCN)
+        else if (Rayman3.GameInfo.MapId == MapId.ChallengeLyGCN)
         {
             State.SetTo(_Fsm_IdleWithLink);
         }

@@ -50,7 +50,7 @@ public partial class Barrel
                 }
 
                 // Fall into water
-                if (GameInfo.IsPowerEnabled(Power.DoubleFist) && HitPoints != InitialHitPoints && MoveOnWater)
+                if (Rayman3.GameInfo.IsPowerEnabled(Power.DoubleFist) && HitPoints != InitialHitPoints && MoveOnWater)
                 {
                     InitialHitPoints = HitPoints;
                     State.MoveTo(_Fsm_FallIntoWater);
@@ -58,7 +58,7 @@ public partial class Barrel
                 }
 
                 // Fall to break
-                if (GameInfo.IsPowerEnabled(Power.DoubleFist) && HitPoints != InitialHitPoints && !MoveOnWater)
+                if (Rayman3.GameInfo.IsPowerEnabled(Power.DoubleFist) && HitPoints != InitialHitPoints && !MoveOnWater)
                 {
                     InitialHitPoints = HitPoints;
                     State.MoveTo(_Fsm_FallToBreak);

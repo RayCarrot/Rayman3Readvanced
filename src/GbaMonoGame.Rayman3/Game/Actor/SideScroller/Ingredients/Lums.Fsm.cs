@@ -12,7 +12,7 @@ public partial class Lums
         switch (action)
         {
             case FsmAction.Init:
-                if (GameInfo.MapId == MapId.BossRockAndLava)
+                if (Rayman3.GameInfo.MapId == MapId.BossRockAndLava)
                     Timer = 0;
                 break;
 
@@ -27,7 +27,7 @@ public partial class Lums
                         collected = CheckCollisionAndAttract(Scene.MainActor.GetDetectionBox());
                 }
 
-                if (GameInfo.MapId == MapId.BossRockAndLava && !collected)
+                if (Rayman3.GameInfo.MapId == MapId.BossRockAndLava && !collected)
                 {
                     Timer++;
                     
@@ -75,7 +75,7 @@ public partial class Lums
         switch (action)
         {
             case FsmAction.Init:
-                if (GameInfo.MapId == MapId.BossRockAndLava)
+                if (Rayman3.GameInfo.MapId == MapId.BossRockAndLava)
                 {
                     // Check if the timer finished and the lum should just despawn
                     if (Timer == 1)
@@ -90,7 +90,7 @@ public partial class Lums
                     {
                         case Action.YellowLum:
                             if (!IsGhost)
-                                GameInfo.KillLum(LumId);
+                                Rayman3.GameInfo.KillLum(LumId);
                             
                             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__LumOrag_Mix06, this);
                             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LumOrag_Mix06, this);
@@ -114,7 +114,7 @@ public partial class Lums
                             while (Scene.GetPhysicalType(pos) == PhysicalTypeValue.None)
                                 pos += new Vector2(0, Tile.Size);
 
-                            GameInfo.GreenLumTouchedByRayman(LumId, pos);
+                            Rayman3.GameInfo.GreenLumTouchedByRayman(LumId, pos);
                             break;
 
                         case Action.BlueLum:
@@ -122,8 +122,8 @@ public partial class Lums
                             break;
 
                         case Action.WhiteLum:
-                            GameInfo.HasCollectedWhiteLum = true;
-                            GameInfo.CollectedWhiteLums.Add(InstanceId);
+                            Rayman3.GameInfo.HasCollectedWhiteLum = true;
+                            Rayman3.GameInfo.CollectedWhiteLums.Add(InstanceId);
                             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__LumSlvr_Mix02, this);
                             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LumSlvr_Mix02, this);
                             break;
@@ -154,7 +154,7 @@ public partial class Lums
                 break;
 
             case FsmAction.Step:
-                if (IsActionFinished && ActionId == Action.BlueLum && GameInfo.MapId != MapId.BossRockAndLava)
+                if (IsActionFinished && ActionId == Action.BlueLum && Rayman3.GameInfo.MapId != MapId.BossRockAndLava)
                 {
                     State.MoveTo(_Fsm_Delay);
                     return false;
@@ -168,7 +168,7 @@ public partial class Lums
                 break;
 
             case FsmAction.UnInit:
-                if (ActionId != Action.BlueLum || GameInfo.MapId == MapId.BossRockAndLava)
+                if (ActionId != Action.BlueLum || Rayman3.GameInfo.MapId == MapId.BossRockAndLava)
                     ProcessMessage(this, Message.Destroy);
                 break;
         }

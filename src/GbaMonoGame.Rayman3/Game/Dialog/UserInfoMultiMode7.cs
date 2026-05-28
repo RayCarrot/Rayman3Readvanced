@@ -137,13 +137,13 @@ public class UserInfoMultiMode7 : Dialog
             RenderContext = Scene.HudRenderContext,
         };
 
-        MapOffset = GameInfo.MapId == MapId.GbaMulti_MissileArena ? 12 : 0;
+        MapOffset = Rayman3.GameInfo.MapId == MapId.GbaMulti_MissileArena ? 12 : 0;
 
         Map = new AnimatedObject(mapsResource, false)
         {
             BgPriority = 0,
             ObjPriority = 2,
-            CurrentAnimation = GameInfo.MapId == MapId.GbaMulti_MissileArena ? 1 : 0,
+            CurrentAnimation = Rayman3.GameInfo.MapId == MapId.GbaMulti_MissileArena ? 1 : 0,
             ScreenPos = new Vector2(-64 + MapOffset, -64 + MapOffset),
             HorizontalAnchor = HorizontalAnchorMode.Right,
             VerticalAnchor = VerticalAnchorMode.Bottom,
@@ -151,7 +151,7 @@ public class UserInfoMultiMode7 : Dialog
             RenderContext = Scene.HudRenderContext,
         };
 
-        if (GameInfo.MapId == MapId.GbaMulti_MissileArena)
+        if (Rayman3.GameInfo.MapId == MapId.GbaMulti_MissileArena)
             MapOffset = 15;
 
         HitPoints = new AnimatedObject(hudResource, false)
@@ -252,7 +252,7 @@ public class UserInfoMultiMode7 : Dialog
     {
         RaceManagerMulti raceManager = ((FrameMissileMultiMode7)Frame.Current).RaceManager;
 
-        if (GameInfo.MapId != MapId.GbaMulti_MissileArena)
+        if (Rayman3.GameInfo.MapId != MapId.GbaMulti_MissileArena)
         {
             if (MainActor.CollectedBlueLums == 3 && (MainActor.BoostTimer & 0x10) != 0)
                 Laps.CurrentAnimation = 10;
@@ -269,7 +269,7 @@ public class UserInfoMultiMode7 : Dialog
 
         Rank.CurrentAnimation = raceManager.GetGridPos(MainActor.InstanceId);
 
-        float mapScale = GameInfo.MapId == MapId.GbaMulti_MissileArena ? 16 : 32;
+        float mapScale = Rayman3.GameInfo.MapId == MapId.GbaMulti_MissileArena ? 16 : 32;
         for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
         {
             PlayerMapIcons[id].ScreenPos = new Vector2(
@@ -279,13 +279,13 @@ public class UserInfoMultiMode7 : Dialog
             animationPlayer.Play(PlayerMapIcons[id]);
         }
 
-        if (GameInfo.MapId != MapId.GbaMulti_MissileArena)
+        if (Rayman3.GameInfo.MapId != MapId.GbaMulti_MissileArena)
             animationPlayer.PlayFront(Rank);
 
         if (!raceManager.DrivingTheRightWay &&
             (GameTime.ElapsedFrames & 0x20) != 0 &&
             raceManager.IsRacing &&
-            GameInfo.MapId != MapId.GbaMulti_MissileArena &&
+            Rayman3.GameInfo.MapId != MapId.GbaMulti_MissileArena &&
             !((FrameMode7)Frame.Current).IsPaused())
         {
             animationPlayer.PlayFront(WrongWayText);

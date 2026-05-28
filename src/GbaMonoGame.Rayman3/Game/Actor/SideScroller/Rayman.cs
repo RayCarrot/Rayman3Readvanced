@@ -267,8 +267,8 @@ public sealed partial class Rayman : MovableActor
         {
             Cheat cheat = (Cheat)(1 << i);
 
-            if (GameInfo.IsCheatEnabled(cheat))
-                GameInfo.EnableCheat(Scene, cheat);
+            if (Rayman3.GameInfo.IsCheatEnabled(cheat))
+                Rayman3.GameInfo.EnableCheat(Scene, cheat);
         }
     }
 
@@ -348,7 +348,7 @@ public sealed partial class Rayman : MovableActor
         if (Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__lyfree))
             return false;
 
-        return GameInfo.MapId is MapId.BossMachine or MapId.BossBadDreams or MapId.BossRockAndLava or MapId.BossScaleMan or MapId.BossFinal_M1;
+        return Rayman3.GameInfo.MapId is MapId.BossMachine or MapId.BossBadDreams or MapId.BossRockAndLava or MapId.BossScaleMan or MapId.BossFinal_M1;
     }
 
     private bool CanAttackWithFist(int punchCount)
@@ -408,7 +408,7 @@ public sealed partial class Rayman : MovableActor
         if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             return (FlagData.Powers & power) != 0;
         else
-            return GameInfo.IsPowerEnabled(power);
+            return Rayman3.GameInfo.IsPowerEnabled(power);
     }
 
     private void Attack(uint chargePower, RaymanBody.RaymanBodyPartType type, Vector2 offset, bool hasCharged)
@@ -763,7 +763,7 @@ public sealed partial class Rayman : MovableActor
 
     private bool ManageHit()
     {
-        if (RSMultiplayer.IsActive || GameInfo.IsCheatEnabled(Cheat.Invulnerable))
+        if (RSMultiplayer.IsActive || Rayman3.GameInfo.IsCheatEnabled(Cheat.Invulnerable))
             return false;
 
         CheckForTileDamage();
@@ -1277,8 +1277,8 @@ public sealed partial class Rayman : MovableActor
             NextActionId = IsFacingRight ? Action.Idle_Determined_Right : Action.Idle_Determined_Left;
         }
         else if (rand < 5 ||
-                 (GameInfo.MapId == MapId.WoodLight_M1 && rand < 20 && GameInfo.LastGreenLumAlive != 0) ||
-                 (GameInfo.MapId == MapId.WoodLight_M1 && GameInfo.LastGreenLumAlive == 0))
+                 (Rayman3.GameInfo.MapId == MapId.WoodLight_M1 && rand < 20 && Rayman3.GameInfo.LastGreenLumAlive != 0) ||
+                 (Rayman3.GameInfo.MapId == MapId.WoodLight_M1 && Rayman3.GameInfo.LastGreenLumAlive == 0))
         {
             NextActionId = IsFacingRight ? Action.Idle_LookAround_Right : Action.Idle_LookAround_Left;
         }
@@ -1315,7 +1315,7 @@ public sealed partial class Rayman : MovableActor
 
     private void AutoSave()
     {
-        if ((!FinishedMap || GameInfo.MapId is not (
+        if ((!FinishedMap || Rayman3.GameInfo.MapId is not (
                 MapId.WoodLight_M1 or
                 MapId.FairyGlade_M1 or
                 MapId.SanctuaryOfBigTree_M1 or
@@ -1333,15 +1333,15 @@ public sealed partial class Rayman : MovableActor
                 MapId.IronMountains_M1 or
                 MapId.PirateShip_M1 or
                 MapId.BossFinal_M1)) && 
-            GameInfo.MapId is not (
+            Rayman3.GameInfo.MapId is not (
                 MapId.World1 or 
                 MapId.World2 or 
                 MapId.World3 or 
                 MapId.World4 or 
                 MapId.WorldMap))
         {
-            GameInfo.PersistentInfo.LastPlayedLevel = (byte)GameInfo.MapId;
-            GameInfo.Save(GameInfo.CurrentSlot);
+            Rayman3.GameInfo.PersistentInfo.LastPlayedLevel = (byte)Rayman3.GameInfo.MapId;
+            Rayman3.GameInfo.Save(Rayman3.GameInfo.CurrentSlot);
         }
     }
 
@@ -1536,8 +1536,8 @@ public sealed partial class Rayman : MovableActor
         // If there is no safe position then fall back to the checkpoint position
         if (safePosition.Position == Vector2.Zero)
         {
-            if (GameInfo.LastGreenLumAlive != 0)
-                safePosition = new SafePosition(GameInfo.CheckpointPosition, false, true);
+            if (Rayman3.GameInfo.LastGreenLumAlive != 0)
+                safePosition = new SafePosition(Rayman3.GameInfo.CheckpointPosition, false, true);
             else
                 safePosition = new SafePosition(Resource.Pos.ToVector2(), false, true);
         }
@@ -1680,19 +1680,19 @@ public sealed partial class Rayman : MovableActor
                     return false;
                 
                 if (!RSMultiplayer.IsActive)
-                    GameInfo.IncBlueLumsTime();
+                    Rayman3.GameInfo.IncBlueLumsTime();
 
                 IsSuperHelicoActive = true;
                 MultiplayerBlueLumTimer = 300;
 
-                if (GameInfo.MapId == MapId.BossRockAndLava)
+                if (Rayman3.GameInfo.MapId == MapId.BossRockAndLava)
                     Rayman3Achievements.BossRockAndLava_HasUsedBlueLum = true;
                 return false;
 
             case Message.Rayman_CollectWhiteLum:
                 if (!RSMultiplayer.IsActive)
                 {
-                    GameInfo.ModifyLives(1);
+                    Rayman3.GameInfo.ModifyLives(1);
 
                     // Restore hp instead if playing with infinite lives
                     if (Engine.Settings.Active.Difficulty.InfiniteLives && !Engine.Settings.Active.Difficulty.OneHitPoint)
@@ -2032,7 +2032,7 @@ public sealed partial class Rayman : MovableActor
                 return false;
 
             case Message.Rayman_EndSuperHelico:
-                GameInfo.ResetBlueLumsTime();
+                Rayman3.GameInfo.ResetBlueLumsTime();
                 return false;
 
             case Message.Rayman_EnterLevel:
@@ -2138,11 +2138,11 @@ public sealed partial class Rayman : MovableActor
         // The game forgets to check for this level, making it not spawn the lava splash!
         if (Engine.Settings.Active.Tweaks.FixBugs)
         {
-            if (GameInfo.MapId is MapId.GameCube_Bonus3)
+            if (Rayman3.GameInfo.MapId is MapId.GameCube_Bonus3)
                 return true;
         }
 
-        return GameInfo.MapId is
+        return Rayman3.GameInfo.MapId is
             MapId.SanctuaryOfStoneAndFire_M1 or
             MapId.SanctuaryOfStoneAndFire_M2 or
             MapId.SanctuaryOfStoneAndFire_M3 or
@@ -2168,7 +2168,7 @@ public sealed partial class Rayman : MovableActor
         if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             FlagData.Powers |= power;
         else
-            GameInfo.EnablePower(power);
+            Rayman3.GameInfo.EnablePower(power);
     }
 
     public void RemovePower(Power power)
@@ -2176,7 +2176,7 @@ public sealed partial class Rayman : MovableActor
         if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             FlagData.Powers &= ~power;
         else
-            GameInfo.DisablePower(power);
+            Rayman3.GameInfo.DisablePower(power);
     }
 
     // Disable collision when debug mode is on
@@ -2248,16 +2248,16 @@ public sealed partial class Rayman : MovableActor
         ChangeAction();
 
         // Respawn at last green lum
-        if (GameInfo.LastGreenLumAlive != 0)
+        if (Rayman3.GameInfo.LastGreenLumAlive != 0)
         {
-            Position = GameInfo.CheckpointPosition;
+            Position = Rayman3.GameInfo.CheckpointPosition;
             ActionId = Action.Idle_Right;
             ChangeAction();
         }
         // Start facing left when returning from certain levels
-        else if (GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4 &&
-                 !GameInfo.IsInWorldMap &&
-                 (MapId)GameInfo.PersistentInfo.LastPlayedLevel is 
+        else if (Rayman3.GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4 &&
+                 !Rayman3.GameInfo.IsInWorldMap &&
+                 (MapId)Rayman3.GameInfo.PersistentInfo.LastPlayedLevel is 
                  MapId.MarshAwakening1 or
                  MapId.BossMachine or
                  MapId.MissileRace1 or
@@ -2277,7 +2277,7 @@ public sealed partial class Rayman : MovableActor
 
         UpdateSafePosition();
 
-        GameInfo.IsInWorldMap = false;
+        Rayman3.GameInfo.IsInWorldMap = false;
 
         EnableCheats();
     }
@@ -2322,7 +2322,7 @@ public sealed partial class Rayman : MovableActor
             }
             else
             {
-                if (GameInfo.IsBlueLumsTimeOver())
+                if (Rayman3.GameInfo.IsBlueLumsTimeOver())
                     IsSuperHelicoActive = false;
             }
         }
@@ -2367,7 +2367,7 @@ public sealed partial class Rayman : MovableActor
             }
 
             // Special camera code for the exclusive N-Gage falling levels
-            if ((GameInfo.MapId == MapId.MarshAwakening2 || GameInfo.MapId == MapId.MissileRace2) && Speed.Y > 0)
+            if ((Rayman3.GameInfo.MapId == MapId.MarshAwakening2 || Rayman3.GameInfo.MapId == MapId.MissileRace2) && Speed.Y > 0)
             {
                 cam.SetHorizontalOffset(CameraOffset.Multiplayer);
                 CameraTargetY = CAM_TARGET_Y_DOWN;
@@ -2430,7 +2430,7 @@ public sealed partial class Rayman : MovableActor
         if (draw)
         {
             if (IsInvulnerable &&
-                !GameInfo.IsCheatEnabled(Cheat.Invulnerable) && 
+                !Rayman3.GameInfo.IsCheatEnabled(Cheat.Invulnerable) && 
                 !RSMultiplayer.IsActive && 
                 HitPoints != 0 && 
                 (GameTime.ElapsedFrames & 1) == 0)

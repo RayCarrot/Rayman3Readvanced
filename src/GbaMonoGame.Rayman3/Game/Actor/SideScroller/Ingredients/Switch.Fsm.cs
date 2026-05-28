@@ -53,11 +53,11 @@ public partial class Switch
                     }
                 }
 
-                if (GameInfo.MapId == MapId.EchoingCaves_M1)
+                if (Rayman3.GameInfo.MapId == MapId.EchoingCaves_M1)
                 {
                     ((FrameSideScroller)Frame.Current).UserInfo.SwitchActivated();
                 }
-                else if (GameInfo.MapId == MapId.BeneathTheSanctuary_M1)
+                else if (Rayman3.GameInfo.MapId == MapId.BeneathTheSanctuary_M1)
                 {
                     // Trigger captor when switch is hit
                     if (Rom.Platform == Platform.NGage && Engine.Settings.Active.Tweaks.FixBugs)

@@ -30,7 +30,7 @@ public class LevelInfoBar : Bar
 
     private string GetLevelName()
     {
-        int textId = GameInfo.Levels[(int)GameInfo.LevelMaps[LevelCurtainId][0]].NameTextId;
+        int textId = Rayman3.GameInfo.Levels[(int)Rayman3.GameInfo.LevelMaps[LevelCurtainId][0]].NameTextId;
         return Rayman3.Loc.GetText(TextBankId.LevelNames, textId)[0];
     }
 
@@ -181,12 +181,12 @@ public class LevelInfoBar : Bar
         int collectedCages = 0;
         int totalCages = 0;
 
-        foreach (MapId mapId in GameInfo.LevelMaps[LevelCurtainId])
+        foreach (MapId mapId in Rayman3.GameInfo.LevelMaps[LevelCurtainId])
         {
-            collectedLums += GameInfo.GetDeadLumsForCurrentMap(mapId);
-            totalLums += GameInfo.Levels[(int)mapId].LumsCount;
-            collectedCages += GameInfo.GetDeadCagesForCurrentMap(mapId);
-            totalCages += GameInfo.Levels[(int)mapId].CagesCount;
+            collectedLums += Rayman3.GameInfo.GetDeadLumsForCurrentMap(mapId);
+            totalLums += Rayman3.GameInfo.Levels[(int)mapId].LumsCount;
+            collectedCages += Rayman3.GameInfo.GetDeadCagesForCurrentMap(mapId);
+            totalCages += Rayman3.GameInfo.Levels[(int)mapId].CagesCount;
         }
 
         // Set animations
@@ -202,42 +202,42 @@ public class LevelInfoBar : Bar
         switch (LevelCurtainId)
         {
             case 4:
-                complete = GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossMachine;
+                complete = Rayman3.GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossMachine;
                 noCollectibles = true;
                 break;
 
             case 11:
-                complete = GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossBadDreams;
+                complete = Rayman3.GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossBadDreams;
                 noCollectibles = true;
                 break;
 
             case 13:
-                complete = GameInfo.PersistentInfo.FinishedLyChallenge1;
+                complete = Rayman3.GameInfo.PersistentInfo.FinishedLyChallenge1;
                 noCollectibles = true;
                 break;
 
             case 19:
-                complete = GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossRockAndLava;
+                complete = Rayman3.GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossRockAndLava;
                 noCollectibles = true;
                 break;
 
             case 25:
-                complete = GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossScaleMan;
+                complete = Rayman3.GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossScaleMan;
                 noCollectibles = true;
                 break;
 
             case 26:
-                complete = GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossFinal_M2;
+                complete = Rayman3.GameInfo.PersistentInfo.LastCompletedLevel >= (int)MapId.BossFinal_M2;
                 noCollectibles = true;
                 break;
 
             case 28:
-                complete = GameInfo.PersistentInfo.FinishedLyChallenge2;
+                complete = Rayman3.GameInfo.PersistentInfo.FinishedLyChallenge2;
                 noCollectibles = true;
                 break;
 
             case 30:
-                complete = GameInfo.PersistentInfo.FinishedLyChallengeGCN;
+                complete = Rayman3.GameInfo.PersistentInfo.FinishedLyChallengeGCN;
                 noCollectibles = true;
                 break;
 

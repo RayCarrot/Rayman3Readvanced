@@ -72,7 +72,7 @@ public partial class EchoingCaves_M1 : FrameSideScroller
     {
         base.Init();
 
-        if (GameInfo.PersistentInfo.LastCompletedLevel < (int)MapId.EchoingCaves_M1 && ShouldInitCutscene)
+        if (Rayman3.GameInfo.PersistentInfo.LastCompletedLevel < (int)MapId.EchoingCaves_M1 && ShouldInitCutscene)
         {
             // Move camera to the gate
             Gate gate = Scene.GetGameObject<Gate>(GateActorId);

@@ -18,12 +18,12 @@ public sealed partial class FlyingBomb : MovableActor
         Action firstActionId = (Action)actorResource.FirstActionId;
 
         // Hard-code an object to be removed. Odd that it's not a level change - maybe a last minute decision?
-        if (GameInfo.MapId == MapId.SanctuaryOfStoneAndFire_M1)
+        if (Rayman3.GameInfo.MapId == MapId.SanctuaryOfStoneAndFire_M1)
         {
             if (InstanceId == 63)
                 ProcessMessage(this, Message.Destroy);
         }
-        else if (GameInfo.MapId == MapId.BeneathTheSanctuary_M1)
+        else if (Rayman3.GameInfo.MapId == MapId.BeneathTheSanctuary_M1)
         {
             if (InstanceId == 68)
             {
@@ -120,6 +120,6 @@ public sealed partial class FlyingBomb : MovableActor
     public override void Step()
     {
         base.Step();
-        GameInfo.ActorSoundFlags &= ~ActorSoundFlags.FlyingBomb;
+        Rayman3.GameInfo.ActorSoundFlags &= ~ActorSoundFlags.FlyingBomb;
     }
 }

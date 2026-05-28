@@ -492,7 +492,7 @@ public partial class MenuAll : Frame, IHasPlayfield
         if (HasLoadedGameInfo)
             return;
 
-        GameInfo.Init();
+        Rayman3.GameInfo.Init();
         HasLoadedGameInfo = true;
 
         for (int i = 0; i < GameInfo.OriginalSaveSlotsCount; i++)
@@ -500,17 +500,17 @@ public partial class MenuAll : Frame, IHasPlayfield
             if (Rayman3.Save.SlotExists(i))
             {
                 // Load the slot
-                GameInfo.Load(i);
+                Rayman3.GameInfo.Load(i);
 
                 // Get the info from the slot
-                Slots[i] = new Slot(GameInfo.GetTotalDeadLums(), GameInfo.GetTotalDeadCages(), GameInfo.PersistentInfo.Lives);
+                Slots[i] = new Slot(Rayman3.GameInfo.GetTotalDeadLums(), Rayman3.GameInfo.GetTotalDeadCages(), Rayman3.GameInfo.PersistentInfo.Lives);
 
                 if (Rom.Platform == Platform.GBA)
                 {
-                    if (GameInfo.PersistentInfo.FinishedLyChallenge1)
+                    if (Rayman3.GameInfo.PersistentInfo.FinishedLyChallenge1)
                         FinishedLyChallenge1 = true;
 
-                    if (GameInfo.PersistentInfo.FinishedLyChallenge2)
+                    if (Rayman3.GameInfo.PersistentInfo.FinishedLyChallenge2)
                         FinishedLyChallenge2 = true;
 
                     if (Slots[i]?.CagesCount == 50)

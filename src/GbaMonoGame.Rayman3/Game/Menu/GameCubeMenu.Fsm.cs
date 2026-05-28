@@ -212,8 +212,8 @@ public partial class GameCubeMenu
 
                 if (Timer >= 80)
                 {
-                    GameInfo.WorldId = 0;
-                    GameInfo.LoadLevel(MapId.WorldMap);
+                    Rayman3.GameInfo.WorldId = 0;
+                    Rayman3.GameInfo.LoadLevel(MapId.WorldMap);
                     return false;
                 }
                 break;
@@ -421,11 +421,11 @@ public partial class GameCubeMenu
                 if (UseJoyBus)
                     unlockedLyChallenge = (GbaUnlockFlags & 1) != 0;
                 else
-                    unlockedLyChallenge = GameInfo.PersistentInfo.CompletedGCNBonusLevels == 10;
+                    unlockedLyChallenge = Rayman3.GameInfo.PersistentInfo.CompletedGCNBonusLevels == 10;
 
-                if (unlockedLyChallenge && !GameInfo.PersistentInfo.UnlockedLyChallengeGCN)
+                if (unlockedLyChallenge && !Rayman3.GameInfo.PersistentInfo.UnlockedLyChallengeGCN)
                 {
-                    GameInfo.PersistentInfo.UnlockedLyChallengeGCN = true;
+                    Rayman3.GameInfo.PersistentInfo.UnlockedLyChallengeGCN = true;
 
                     string[] text = Rayman3.Loc.GetText(TextBankId.Connectivity, 8);
 

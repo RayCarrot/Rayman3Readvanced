@@ -21,9 +21,9 @@ public class Rayman3DebugWindow : DebugWindow
             {
                 ImGui.SeparatorText("General");
 
-                ImGui.Text($"MapId: {GameInfo.MapId}");
-                ImGui.Text($"LevelType: {GameInfo.LevelType}");
-                ImGui.Text($"World: {GameInfo.WorldId}");
+                ImGui.Text($"MapId: {Rayman3.GameInfo.MapId}");
+                ImGui.Text($"LevelType: {Rayman3.GameInfo.LevelType}");
+                ImGui.Text($"World: {Rayman3.GameInfo.WorldId}");
 
                 ImGui.Spacing();
                 ImGui.SeparatorText("Powers");
@@ -34,13 +34,13 @@ public class Rayman3DebugWindow : DebugWindow
                         ImGui.SameLine();
 
                     Power power = (Power)(1 << i);
-                    bool hasPower = GameInfo.IsPowerEnabled(power);
+                    bool hasPower = Rayman3.GameInfo.IsPowerEnabled(power);
                     if (ImGui.Checkbox(power.ToString(), ref hasPower))
                     {
                         if (hasPower)
-                            GameInfo.EnablePower(power);
+                            Rayman3.GameInfo.EnablePower(power);
                         else
-                            GameInfo.DisablePower(power);
+                            Rayman3.GameInfo.DisablePower(power);
                     }
                 }
 
@@ -53,13 +53,13 @@ public class Rayman3DebugWindow : DebugWindow
                         ImGui.SameLine();
 
                     Cheat cheat = (Cheat)(1 << i);
-                    bool cheatEnabled = GameInfo.IsCheatEnabled(cheat);
+                    bool cheatEnabled = Rayman3.GameInfo.IsCheatEnabled(cheat);
                     if (ImGui.Checkbox(cheat.ToString(), ref cheatEnabled))
                     {
                         if (cheatEnabled)
-                            GameInfo.Cheats |= cheat;
+                            Rayman3.GameInfo.Cheats |= cheat;
                         else
-                            GameInfo.Cheats &= ~cheat;
+                            Rayman3.GameInfo.Cheats &= ~cheat;
                     }
                 }
 
@@ -68,15 +68,15 @@ public class Rayman3DebugWindow : DebugWindow
 
                 if (ImGui.Button("Load"))
                 {
-                    GameInfo.GotoLastSaveGame();
-                    GameInfo.StartPlayTime();
+                    Rayman3.GameInfo.GotoLastSaveGame();
+                    Rayman3.GameInfo.StartPlayTime();
                 }
 
                 ImGui.SameLine();
                 if (ImGui.Button("New game"))
                 {
                     Engine.FrameMngr.SetNextFrame(new Act1());
-                    GameInfo.ResetPersistentInfo();
+                    Rayman3.GameInfo.ResetPersistentInfo();
                 }
 
                 for (int i = 0; i < GameInfo.ModernSaveSlotsCount; i++)
@@ -84,74 +84,74 @@ public class Rayman3DebugWindow : DebugWindow
                     if (i != 0)
                         ImGui.SameLine();
 
-                    if (ImGui.RadioButton($"Slot {i}", GameInfo.CurrentSlot == i))
+                    if (ImGui.RadioButton($"Slot {i}", Rayman3.GameInfo.CurrentSlot == i))
                     {
-                        GameInfo.Init();
-                        GameInfo.CurrentSlot = i;
+                        Rayman3.GameInfo.Init();
+                        Rayman3.GameInfo.CurrentSlot = i;
 
                         if (Rayman3.Save.SlotExists(i))
-                            GameInfo.Load(i);
+                            Rayman3.GameInfo.Load(i);
                     }
                 }
 
-                ImGui.Text($"Lums: {GameInfo.GetTotalDeadLums()} / 1000");
-                ImGui.Text($"Cages: {GameInfo.GetTotalDeadCages()} / 50");
-                ImGui.Text($"Last played level: {(MapId)GameInfo.PersistentInfo.LastPlayedLevel}");
-                ImGui.Text($"Last completed level: {(MapId)GameInfo.PersistentInfo.LastCompletedLevel}");
-                ImGui.Text($"Lives: {GameInfo.PersistentInfo.Lives}");
+                ImGui.Text($"Lums: {Rayman3.GameInfo.GetTotalDeadLums()} / 1000");
+                ImGui.Text($"Cages: {Rayman3.GameInfo.GetTotalDeadCages()} / 50");
+                ImGui.Text($"Last played level: {(MapId)Rayman3.GameInfo.PersistentInfo.LastPlayedLevel}");
+                ImGui.Text($"Last completed level: {(MapId)Rayman3.GameInfo.PersistentInfo.LastCompletedLevel}");
+                ImGui.Text($"Lives: {Rayman3.GameInfo.PersistentInfo.Lives}");
 
-                GameInfo.PersistentInfo.FinishedLyChallenge1 = ImGuiExt.Checkbox("Finished Ly Challenge 1", GameInfo.PersistentInfo.FinishedLyChallenge1);
+                Rayman3.GameInfo.PersistentInfo.FinishedLyChallenge1 = ImGuiExt.Checkbox("Finished Ly Challenge 1", Rayman3.GameInfo.PersistentInfo.FinishedLyChallenge1);
                 ImGui.SameLine();
-                GameInfo.PersistentInfo.FinishedLyChallenge2 = ImGuiExt.Checkbox("Finished Ly Challenge 2", GameInfo.PersistentInfo.FinishedLyChallenge2);
+                Rayman3.GameInfo.PersistentInfo.FinishedLyChallenge2 = ImGuiExt.Checkbox("Finished Ly Challenge 2", Rayman3.GameInfo.PersistentInfo.FinishedLyChallenge2);
                 ImGui.SameLine();
-                GameInfo.PersistentInfo.FinishedLyChallengeGCN = ImGuiExt.Checkbox("Finished Ly Challenge GCN", GameInfo.PersistentInfo.FinishedLyChallengeGCN);
+                Rayman3.GameInfo.PersistentInfo.FinishedLyChallengeGCN = ImGuiExt.Checkbox("Finished Ly Challenge GCN", Rayman3.GameInfo.PersistentInfo.FinishedLyChallengeGCN);
 
-                GameInfo.PersistentInfo.UnlockedBonus1 = ImGuiExt.Checkbox("Unlocked bonus 1", GameInfo.PersistentInfo.UnlockedBonus1);
+                Rayman3.GameInfo.PersistentInfo.UnlockedBonus1 = ImGuiExt.Checkbox("Unlocked bonus 1", Rayman3.GameInfo.PersistentInfo.UnlockedBonus1);
                 ImGui.SameLine();
-                GameInfo.PersistentInfo.UnlockedBonus2 = ImGuiExt.Checkbox("Unlocked bonus 2", GameInfo.PersistentInfo.UnlockedBonus2);
+                Rayman3.GameInfo.PersistentInfo.UnlockedBonus2 = ImGuiExt.Checkbox("Unlocked bonus 2", Rayman3.GameInfo.PersistentInfo.UnlockedBonus2);
                 ImGui.SameLine();
-                GameInfo.PersistentInfo.UnlockedBonus3 = ImGuiExt.Checkbox("Unlocked bonus 3", GameInfo.PersistentInfo.UnlockedBonus3);
+                Rayman3.GameInfo.PersistentInfo.UnlockedBonus3 = ImGuiExt.Checkbox("Unlocked bonus 3", Rayman3.GameInfo.PersistentInfo.UnlockedBonus3);
                 ImGui.SameLine();
-                GameInfo.PersistentInfo.UnlockedBonus4 = ImGuiExt.Checkbox("Unlocked bonus 4", GameInfo.PersistentInfo.UnlockedBonus4);
+                Rayman3.GameInfo.PersistentInfo.UnlockedBonus4 = ImGuiExt.Checkbox("Unlocked bonus 4", Rayman3.GameInfo.PersistentInfo.UnlockedBonus4);
 
-                GameInfo.PersistentInfo.UnlockedWorld2 = ImGuiExt.Checkbox("Unlocked world 2", GameInfo.PersistentInfo.UnlockedWorld2);
+                Rayman3.GameInfo.PersistentInfo.UnlockedWorld2 = ImGuiExt.Checkbox("Unlocked world 2", Rayman3.GameInfo.PersistentInfo.UnlockedWorld2);
                 ImGui.SameLine();
-                GameInfo.PersistentInfo.UnlockedWorld3 = ImGuiExt.Checkbox("Unlocked world 3", GameInfo.PersistentInfo.UnlockedWorld3);
+                Rayman3.GameInfo.PersistentInfo.UnlockedWorld3 = ImGuiExt.Checkbox("Unlocked world 3", Rayman3.GameInfo.PersistentInfo.UnlockedWorld3);
                 ImGui.SameLine();
-                GameInfo.PersistentInfo.UnlockedWorld4 = ImGuiExt.Checkbox("Unlocked world 4", GameInfo.PersistentInfo.UnlockedWorld4);
+                Rayman3.GameInfo.PersistentInfo.UnlockedWorld4 = ImGuiExt.Checkbox("Unlocked world 4", Rayman3.GameInfo.PersistentInfo.UnlockedWorld4);
                 ImGui.SameLine();
-                GameInfo.PersistentInfo.UnlockedFinalBoss = ImGuiExt.Checkbox("Unlocked final boss", GameInfo.PersistentInfo.UnlockedFinalBoss);
+                Rayman3.GameInfo.PersistentInfo.UnlockedFinalBoss = ImGuiExt.Checkbox("Unlocked final boss", Rayman3.GameInfo.PersistentInfo.UnlockedFinalBoss);
 
-                GameInfo.PersistentInfo.PlayedWorld2Unlock = ImGuiExt.Checkbox("Played world 2 unlock", GameInfo.PersistentInfo.PlayedWorld2Unlock);
+                Rayman3.GameInfo.PersistentInfo.PlayedWorld2Unlock = ImGuiExt.Checkbox("Played world 2 unlock", Rayman3.GameInfo.PersistentInfo.PlayedWorld2Unlock);
                 ImGui.SameLine();
-                GameInfo.PersistentInfo.PlayedWorld3Unlock = ImGuiExt.Checkbox("Played world 3 unlock", GameInfo.PersistentInfo.PlayedWorld3Unlock);
+                Rayman3.GameInfo.PersistentInfo.PlayedWorld3Unlock = ImGuiExt.Checkbox("Played world 3 unlock", Rayman3.GameInfo.PersistentInfo.PlayedWorld3Unlock);
                 ImGui.SameLine();
-                GameInfo.PersistentInfo.PlayedWorld4Unlock = ImGuiExt.Checkbox("Played world 4 unlock", GameInfo.PersistentInfo.PlayedWorld4Unlock);
+                Rayman3.GameInfo.PersistentInfo.PlayedWorld4Unlock = ImGuiExt.Checkbox("Played world 4 unlock", Rayman3.GameInfo.PersistentInfo.PlayedWorld4Unlock);
 
-                GameInfo.PersistentInfo.PlayedAct4 = ImGuiExt.Checkbox("Played act 4", GameInfo.PersistentInfo.PlayedAct4);
+                Rayman3.GameInfo.PersistentInfo.PlayedAct4 = ImGuiExt.Checkbox("Played act 4", Rayman3.GameInfo.PersistentInfo.PlayedAct4);
                 ImGui.SameLine();
-                GameInfo.PersistentInfo.PlayedMurfyWorldHelp = ImGuiExt.Checkbox("Played Murfy world help", GameInfo.PersistentInfo.PlayedMurfyWorldHelp);
+                Rayman3.GameInfo.PersistentInfo.PlayedMurfyWorldHelp = ImGuiExt.Checkbox("Played Murfy world help", Rayman3.GameInfo.PersistentInfo.PlayedMurfyWorldHelp);
                 ImGui.SameLine();
-                GameInfo.PersistentInfo.UnlockedLyChallengeGCN = ImGuiExt.Checkbox("Unlocked Ly Challenge GCN", GameInfo.PersistentInfo.UnlockedLyChallengeGCN);
+                Rayman3.GameInfo.PersistentInfo.UnlockedLyChallengeGCN = ImGuiExt.Checkbox("Unlocked Ly Challenge GCN", Rayman3.GameInfo.PersistentInfo.UnlockedLyChallengeGCN);
 
-                ImGui.Text($"Completed GCN bonus levels: {GameInfo.PersistentInfo.CompletedGCNBonusLevels}");
+                ImGui.Text($"Completed GCN bonus levels: {Rayman3.GameInfo.PersistentInfo.CompletedGCNBonusLevels}");
 
                 if (ImGui.Button("Reset"))
-                    GameInfo.ResetPersistentInfo();
+                    Rayman3.GameInfo.ResetPersistentInfo();
 
                 ImGui.SameLine();
                 if (ImGui.Button("Unlock all levels"))
-                    GameInfo.PersistentInfo.LastCompletedLevel = (byte)MapId.BossFinal_M2;
+                    Rayman3.GameInfo.PersistentInfo.LastCompletedLevel = (byte)MapId.BossFinal_M2;
 
                 ImGui.SameLine();
                 if (ImGui.Button("Unlock all GCN levels"))
-                    GameInfo.PersistentInfo.CompletedGCNBonusLevels = 10;
+                    Rayman3.GameInfo.PersistentInfo.CompletedGCNBonusLevels = 10;
 
                 ImGui.SameLine();
                 if (ImGui.Button("All lums and cages"))
                 {
-                    Array.Clear(GameInfo.PersistentInfo.Lums);
-                    Array.Clear(GameInfo.PersistentInfo.Cages);
+                    Array.Clear(Rayman3.GameInfo.PersistentInfo.Lums);
+                    Array.Clear(Rayman3.GameInfo.PersistentInfo.Cages);
                 }
 
                 ImGui.EndTabItem();
@@ -161,8 +161,8 @@ public class Rayman3DebugWindow : DebugWindow
             {
                 ImGui.SeparatorText("Tracking");
 
-                ImGui.Text($"{nameof(ReadvancedSlot.DefeatedPirateTypes)}: {GameInfo.SaveSlot.DefeatedPirateTypes}");
-                ImGui.Text($"{nameof(ReadvancedSlot.CollectedWhiteLums)}: {GameInfo.SaveSlot.CollectedWhiteLums.Length}");
+                ImGui.Text($"{nameof(ReadvancedSlot.DefeatedPirateTypes)}: {Rayman3.GameInfo.SaveSlot.DefeatedPirateTypes}");
+                ImGui.Text($"{nameof(ReadvancedSlot.CollectedWhiteLums)}: {Rayman3.GameInfo.SaveSlot.CollectedWhiteLums.Length}");
                 ImGui.Text($"{nameof(Rayman3Achievements.MarshAwakening1_HasMoved)}: {Rayman3Achievements.MarshAwakening1_HasMoved}");
                 ImGui.Text($"{nameof(Rayman3Achievements.MissileRace1_HasStrafed)}: {Rayman3Achievements.MissileRace1_HasStrafed}");
                 ImGui.Text($"{nameof(Rayman3Achievements.CaveBadDreamsM1_HitSkulls)}: {Rayman3Achievements.CaveBadDreamsM1_HitSkulls}");

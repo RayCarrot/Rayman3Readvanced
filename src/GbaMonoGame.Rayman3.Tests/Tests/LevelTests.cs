@@ -6,10 +6,10 @@ public class LevelTests(MockGame game)
 {
     private Frame LoadMap(MapId mapId)
     {
-        GameInfo.MapId = mapId;
+        Rayman3.GameInfo.MapId = mapId;
         Frame frame = LevelFactory.Create(mapId);
         Engine.FrameMngr.SetNextFrame(frame);
-        GameInfo.SetPowerBasedOnMap(mapId);
+        Rayman3.GameInfo.SetPowerBasedOnMap(mapId);
         game.Step();
         return frame;
     }
@@ -17,7 +17,7 @@ public class LevelTests(MockGame game)
     [Fact]
     public void AllMaps_Run10Steps()
     {
-        foreach (MapId[] levelMaps in GameInfo.LevelMaps)
+        foreach (MapId[] levelMaps in Rayman3.GameInfo.LevelMaps)
         {
             foreach (MapId mapId in levelMaps)
             {

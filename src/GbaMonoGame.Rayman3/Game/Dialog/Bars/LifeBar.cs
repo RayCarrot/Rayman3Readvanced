@@ -82,8 +82,8 @@ public class LifeBar : Bar
 
     public override void Set()
     {
-        LifeDigit1.CurrentAnimation = GameInfo.PersistentInfo.Lives / 10;
-        LifeDigit2.CurrentAnimation = GameInfo.PersistentInfo.Lives % 10;
+        LifeDigit1.CurrentAnimation = Rayman3.GameInfo.PersistentInfo.Lives / 10;
+        LifeDigit2.CurrentAnimation = Rayman3.GameInfo.PersistentInfo.Lives % 10;
         HitPoints.CurrentAnimation = 15 + Scene.MainActor.HitPoints;
     }
 
@@ -95,12 +95,12 @@ public class LifeBar : Bar
         int hp = Scene.MainActor.HitPoints;
 
         // Check if lives count has changed
-        if (PreviousLivesCount != GameInfo.PersistentInfo.Lives)
+        if (PreviousLivesCount != Rayman3.GameInfo.PersistentInfo.Lives)
         {
-            PreviousLivesCount = GameInfo.PersistentInfo.Lives;
+            PreviousLivesCount = Rayman3.GameInfo.PersistentInfo.Lives;
 
-            LifeDigit1.CurrentAnimation = GameInfo.PersistentInfo.Lives / 10;
-            LifeDigit2.CurrentAnimation = GameInfo.PersistentInfo.Lives % 10;
+            LifeDigit1.CurrentAnimation = Rayman3.GameInfo.PersistentInfo.Lives / 10;
+            LifeDigit2.CurrentAnimation = Rayman3.GameInfo.PersistentInfo.Lives % 10;
 
             DrawStep = BarDrawStep.MoveIn;
             WaitTimer = 0;

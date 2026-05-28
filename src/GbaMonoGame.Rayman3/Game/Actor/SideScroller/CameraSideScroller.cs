@@ -351,7 +351,7 @@ public sealed partial class CameraSideScroller : CameraActor2D
         else
         {
             float xOffset;
-            if (GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
+            if (Rayman3.GameInfo.MapId is MapId.World1 or MapId.World2 or MapId.World3 or MapId.World4)
             {
                 HorizontalOffset = CameraOffset.Center;
                 xOffset = -ScaledHorizontalOffset;

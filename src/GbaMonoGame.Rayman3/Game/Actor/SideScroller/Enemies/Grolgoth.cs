@@ -17,7 +17,7 @@ public sealed partial class Grolgoth : MovableActor
         InitialYPosition = Position.Y;
         SavedAttackCount = 0;
 
-        if (GameInfo.MapId == MapId.BossFinal_M1)
+        if (Rayman3.GameInfo.MapId == MapId.BossFinal_M1)
         {
             Position = Rom.Platform switch
             {
@@ -32,9 +32,9 @@ public sealed partial class Grolgoth : MovableActor
             State.SetTo(_Fsm_GroundFallDown);
             Position = Position with { Y = -30 };
         }
-        else if (GameInfo.MapId == MapId.BossFinal_M2)
+        else if (Rayman3.GameInfo.MapId == MapId.BossFinal_M2)
         {
-            if (GameInfo.LastGreenLumAlive == 0 && !Rayman3.TimeAttack.IsActive)
+            if (Rayman3.GameInfo.LastGreenLumAlive == 0 && !Rayman3.TimeAttack.IsActive)
             {
                 State.SetTo(_Fsm_AirInit);
                 Timer = 0;
@@ -202,7 +202,7 @@ public sealed partial class Grolgoth : MovableActor
         bool[] availableBombPositions = new bool[6];
         Array.Fill(availableBombPositions, true);
 
-        if (GameInfo.MapId == MapId.BossFinal_M1 && AttackCount == Rom.Platform switch 
+        if (Rayman3.GameInfo.MapId == MapId.BossFinal_M1 && AttackCount == Rom.Platform switch 
             {
                 Platform.GBA => 6,
                 Platform.NGage => 5,
@@ -220,7 +220,7 @@ public sealed partial class Grolgoth : MovableActor
                 projectile.ActionId = GrolgothProjectile.Action.FallingBomb;
                 projectile.ChangeAction();
                 
-                if (GameInfo.MapId == MapId.BossFinal_M1)
+                if (Rayman3.GameInfo.MapId == MapId.BossFinal_M1)
                 {
                     float yPos = -(10 + Random.GetNumber(51));
                     

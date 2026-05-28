@@ -60,11 +60,11 @@ public class TitleScreen : Frame
             Random.SetSeed(GameTime.ElapsedFrames);
 
             // Load the save slot
-            GameInfo.Init();
-            GameInfo.Load(lastSaveSlot.Value);
-            GameInfo.GotoLastSaveGame();
-            GameInfo.StartPlayTime();
-            GameInfo.CurrentSlot = lastSaveSlot.Value;
+            Rayman3.GameInfo.Init();
+            Rayman3.GameInfo.Load(lastSaveSlot.Value);
+            Rayman3.GameInfo.GotoLastSaveGame();
+            Rayman3.GameInfo.StartPlayTime();
+            Rayman3.GameInfo.CurrentSlot = lastSaveSlot.Value;
         }
         else
         {
