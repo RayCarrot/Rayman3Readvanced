@@ -83,7 +83,7 @@ public partial class MenuAll
                         // Slave - start game
                         else if ((packet & 0xf000) == 0xd000)
                         {
-                            MultiplayerInfo.InitialGameTime = (uint)(packet & 0x1ff);
+                            Rayman3.MultiplayerInfo.InitialGameTime = (uint)(packet & 0x1ff);
                             MultiplayerManager.CacheData();
 
                             FinishedLyChallenge1 = (packet & 0x200) != 0;
@@ -114,7 +114,7 @@ public partial class MenuAll
 
                 if ((packet & 0xf000) == 0xd000)
                 {
-                    MultiplayerInfo.InitialGameTime = (uint)(packet & 0x1ff);
+                    Rayman3.MultiplayerInfo.InitialGameTime = (uint)(packet & 0x1ff);
                     NextStepAction = _Step_InitializeTransitionToMultiplayerTypeSelection;
                     CurrentStepAction = _Step_TransitionOutOfMultiplayerJoinedGamePlayerSelection;
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
@@ -186,14 +186,14 @@ public partial class MenuAll
 
     private void StartMultiplayerGame()
     {
-        MultiplayerInfo.MapId = MultiplayerMapId;
-        Random.SetSeed(MultiplayerInfo.InitialGameTime);
+        Rayman3.MultiplayerInfo.MapId = MultiplayerMapId;
+        Random.SetSeed(Rayman3.MultiplayerInfo.InitialGameTime);
 
         switch (MultiplayerType)
         {
             case 0 when Rom.Platform == Platform.GBA:
             case 1 when Rom.Platform == Platform.NGage:
-                MultiplayerInfo.SetGameType(MultiplayerGameType.RayTag);
+                Rayman3.MultiplayerInfo.SetGameType(MultiplayerGameType.RayTag);
 
                 if (MultiplayerMapId == 0)
                     Engine.FrameMngr.SetNextFrame(new FrameMultiTag(Rom.Platform switch
@@ -213,7 +213,7 @@ public partial class MenuAll
 
             case 1 when Rom.Platform == Platform.GBA:
             case 2 when Rom.Platform == Platform.NGage:
-                MultiplayerInfo.SetGameType(MultiplayerGameType.CatAndMouse);
+                Rayman3.MultiplayerInfo.SetGameType(MultiplayerGameType.CatAndMouse);
 
                 if (MultiplayerMapId == 0)
                     Engine.FrameMngr.SetNextFrame(new FrameMultiCatAndMouse(Rom.Platform switch
@@ -232,7 +232,7 @@ public partial class MenuAll
                 break;
 
             case 2 when Rom.Platform == Platform.GBA:
-                MultiplayerInfo.SetGameType(MultiplayerGameType.Missile);
+                Rayman3.MultiplayerInfo.SetGameType(MultiplayerGameType.Missile);
 
                 if (MultiplayerMapId == 0)
                     Engine.FrameMngr.SetNextFrame(new FrameMultiMissileRace());
@@ -241,8 +241,8 @@ public partial class MenuAll
                 break;
 
             case 0 when Rom.Platform == Platform.NGage:
-                MultiplayerInfo.SetGameType(MultiplayerGameType.CaptureTheFlag);
-                MultiplayerInfo.CaptureTheFlagMode = CaptureTheFlagMode;
+                Rayman3.MultiplayerInfo.SetGameType(MultiplayerGameType.CaptureTheFlag);
+                Rayman3.MultiplayerInfo.CaptureTheFlagMode = CaptureTheFlagMode;
 
                 MapId mapId = MapId.NGageMulti_CaptureTheFlagMiddleGround + CaptureTheFlagSoloMode * 2 + (int)CaptureTheFlagMode * 4 + MultiplayerMapId;
                 FrameMultiCaptureTheFlag frame = new(mapId);
@@ -905,7 +905,7 @@ public partial class MenuAll
                         packet |= 0x800;
 
                     RSMultiplayer.SendPacket([packet]);
-                    MultiplayerInfo.InitialGameTime = trimmedGameTime;
+                    Rayman3.MultiplayerInfo.InitialGameTime = trimmedGameTime;
                     MultiplayerManager.CacheData();
 
                     NextStepAction = _Step_InitializeTransitionToMultiplayerTypeSelection;
@@ -1199,7 +1199,7 @@ public partial class MenuAll
 
                 RSMultiplayer.SendPacket([packet], 2, 4);
 
-                MultiplayerInfo.InitialGameTime = trimmedGameTime;
+                Rayman3.MultiplayerInfo.InitialGameTime = trimmedGameTime;
 
                 NextStepAction = _Step_InitializeTransitionToMultiplayerTypeSelection;
                 CurrentStepAction = _Step_TransitionOutOfMultiplayerHostedGamePlayerSelection;

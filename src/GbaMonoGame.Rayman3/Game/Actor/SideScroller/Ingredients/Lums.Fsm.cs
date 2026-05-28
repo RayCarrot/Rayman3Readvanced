@@ -339,7 +339,7 @@ public partial class Lums
                 break;
 
             case FsmAction.UnInit:
-                Vector2 pos = MultiplayerInfo.TagInfo.GetLumPosition(LumId);
+                Vector2 pos = Rayman3.MultiplayerInfo.TagInfo.GetLumPosition(LumId);
 
                 Debug.Assert(pos != Vector2.Zero);
 

@@ -109,7 +109,7 @@ public sealed partial class Lums : BaseActor
             State.SetTo(_Fsm_MultiplayerIdle);
             Timer = 0xFF;
             LumId = instanceId;
-            MultiplayerInfo.TagInfo.SaveLumPosition(instanceId, actorResource);
+            Rayman3.MultiplayerInfo.TagInfo.SaveLumPosition(instanceId, actorResource);
         }
     }
 

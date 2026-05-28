@@ -28,7 +28,7 @@ public sealed partial class ItemsMulti : BaseActor
 
         if (ActionId is Action.Globox or Action.Reverse or Action.Invisibility)
         {
-            MultiplayerInfo.TagInfo.RegisterItem(instanceId);
+            Rayman3.MultiplayerInfo.TagInfo.RegisterItem(instanceId);
             SpawnCountdown = 0xFF;
         }
         else
@@ -57,7 +57,7 @@ public sealed partial class ItemsMulti : BaseActor
 
         if (IsRandomized)
         {
-            ActionId = MultiplayerInfo.TagInfo.GetRandomActionId();
+            ActionId = Rayman3.MultiplayerInfo.TagInfo.GetRandomActionId();
             AnimatedObject.CurrentAnimation = (int)ActionId;
         }
 

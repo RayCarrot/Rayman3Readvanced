@@ -3,15 +3,15 @@ using System.Diagnostics;
 
 namespace GbaMonoGame.Rayman3;
 
-public static class MultiplayerInfo
+public class MultiplayerInfo
 {
-    public static MultiplayerGameType GameType { get; set; }
-    public static CaptureTheFlagMode CaptureTheFlagMode { get; set; }
-    public static int? MapId { get; set; }
-    public static uint InitialGameTime { get; set; }
-    public static TagInfo TagInfo { get; set; }
+    public MultiplayerGameType GameType { get; set; }
+    public CaptureTheFlagMode CaptureTheFlagMode { get; set; }
+    public int? MapId { get; set; }
+    public uint InitialGameTime { get; set; }
+    public TagInfo TagInfo { get; set; }
 
-    public static void Init()
+    public void Init()
     {
         GameType = default;
         MapId = null;
@@ -19,7 +19,7 @@ public static class MultiplayerInfo
         TagInfo = null;
     }
 
-    public static void SetGameType(MultiplayerGameType gameType)
+    public void SetGameType(MultiplayerGameType gameType)
     {
         if (MapId == null)
             throw new Exception("Can't set game type before setting map");

@@ -615,7 +615,7 @@ public partial class MenuAll : Frame, IHasPlayfield
         if (Rom.Platform == Platform.GBA)
             MultiplayerInititialGameTime = GameTime.ElapsedFrames;
         
-        MultiplayerInfo.Init();
+        Rayman3.MultiplayerInfo.Init();
         MultiplayerManager.Init();
 
         GameTime.Resume();

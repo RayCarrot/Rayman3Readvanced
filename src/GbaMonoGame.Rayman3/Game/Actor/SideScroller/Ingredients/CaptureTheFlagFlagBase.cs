@@ -18,7 +18,7 @@ public sealed partial class CaptureTheFlagFlagBase : ActionActor
         TeamPlayer1 = null;
         TeamPlayer2 = null;
 
-        if (MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Solo)
+        if (Rayman3.MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Solo)
         {
             // Get the number of links
             int linksCount = 0;

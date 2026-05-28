@@ -25,7 +25,7 @@ public partial class UserInfoMulti2D
                     {
                         if (!IsGameOver)
                         {
-                            switch (MultiplayerInfo.GameType)
+                            switch (Rayman3.MultiplayerInfo.GameType)
                             {
                                 case MultiplayerGameType.RayTag:
                                     if (Times[TagId] != 0)
@@ -128,8 +128,8 @@ public partial class UserInfoMulti2D
                 // Blink energy shots digits if trying to attack without shots
                 if (Engine.MultiJoyPad.IsButtonJustPressed(MultiplayerManager.MachineId, Rayman3Input.ActorAttack))
                 {
-                    if ((TagId == MultiplayerManager.MachineId && MultiplayerInfo.GameType == MultiplayerGameType.RayTag) ||
-                        (TagId != MultiplayerManager.MachineId && MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse))
+                    if ((TagId == MultiplayerManager.MachineId && Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.RayTag) ||
+                        (TagId != MultiplayerManager.MachineId && Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse))
                     {
                         if (EnergyShots[MultiplayerManager.MachineId] == 0)
                             EnergyShotsBlinkCountdown = 60;
@@ -139,8 +139,8 @@ public partial class UserInfoMulti2D
                 // Update energy shots digits blinking
                 if (EnergyShotsBlinkCountdown != 0)
                 {
-                    if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && EnergyShots[MultiplayerManager.MachineId] != 0) ||
-                        (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && EnergyShots[MultiplayerManager.MachineId] != 0))
+                    if ((Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.RayTag && EnergyShots[MultiplayerManager.MachineId] != 0) ||
+                        (Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && EnergyShots[MultiplayerManager.MachineId] != 0))
                     {
                         EnergyShotsBlinkCountdown = 0;
                     }
@@ -166,7 +166,7 @@ public partial class UserInfoMulti2D
             case FsmAction.Init:
                 GloboxCountdown = 0;
                 
-                if (Rom.Platform != Platform.NGage || MultiplayerInfo.GameType != MultiplayerGameType.CaptureTheFlag)
+                if (Rom.Platform != Platform.NGage || Rayman3.MultiplayerInfo.GameType != MultiplayerGameType.CaptureTheFlag)
                     SetArrow();
                 break;
 

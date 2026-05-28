@@ -42,7 +42,7 @@ public partial class CaptureTheFlagFlag
                 SavedPaletteIndex = AnimatedObject.BasePaletteIndex;
                 if (Engine.Settings.Active.Tweaks.FixBugs)
                 {
-                    if (MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Solo)
+                    if (Rayman3.MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Solo)
                     {
                         AnimatedObject.BasePaletteIndex = 0;
                     }

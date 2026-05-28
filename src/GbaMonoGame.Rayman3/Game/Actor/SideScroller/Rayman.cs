@@ -57,8 +57,8 @@ public sealed partial class Rayman : MovableActor
                 // manually allocates them to vram here. The easiest solution for us is to override the palettes, appending
                 // the multiplayer palettes and then just changing the base palette index based on the player.
                 if (Rom.Platform == Platform.NGage &&
-                    MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag &&
-                    MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Teams)
+                    Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag &&
+                    Rayman3.MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Teams)
                 {
                     // Load the palette resources
                     Palette16 pal3 = Rom.Loader.ReadResource<Resource<Palette16>>(Rayman3DefinedResource.Player3RaymanPalette).Value;
@@ -172,7 +172,7 @@ public sealed partial class Rayman : MovableActor
                 }
 
                 if (Rom.Platform == Platform.NGage &&
-                    MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag &&
+                    Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag &&
                     IsLocalPlayer)
                 {
                     AnimatedObjectResource arrowResource = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.NGageCaptureTheFlagArrowAnimations);
@@ -324,7 +324,7 @@ public sealed partial class Rayman : MovableActor
         int tagId = userInfo.GetTagId();
 
         // If you move faster depends on the game type
-        return MultiplayerInfo.GameType switch
+        return Rayman3.MultiplayerInfo.GameType switch
         {
             MultiplayerGameType.RayTag => InstanceId == tagId,
             MultiplayerGameType.CatAndMouse => InstanceId != tagId,
@@ -386,14 +386,14 @@ public sealed partial class Rayman : MovableActor
         UserInfoMulti2D userInfo = ((FrameMultiSideScroller)Frame.Current).UserInfo;
 
         if (Rom.Platform == Platform.NGage &&
-            MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+            Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             return true;
 
         int tagId = userInfo.GetTagId();
 
         if (userInfo.EnergyShots[InstanceId] == 0 || 
-            (MultiplayerInfo.GameType == MultiplayerGameType.RayTag && tagId != InstanceId) ||
-            (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && tagId == InstanceId))
+            (Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.RayTag && tagId != InstanceId) ||
+            (Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && tagId == InstanceId))
         {
             return false;
         }
@@ -405,7 +405,7 @@ public sealed partial class Rayman : MovableActor
 
     private bool HasPower(Power power)
     {
-        if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             return (FlagData.Powers & power) != 0;
         else
             return Rayman3.GameInfo.IsPowerEnabled(power);
@@ -1460,7 +1460,7 @@ public sealed partial class Rayman : MovableActor
                         screenEdgePos.Y = 38;
                     }
                     else if (screenEdgePos.Y > 170 && 
-                             MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Solo && 
+                             Rayman3.MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Solo && 
                              MultiplayerManager.PlayersCount > 2)
                     {
                         screenEdgePos.Y = 170;
@@ -1842,7 +1842,7 @@ public sealed partial class Rayman : MovableActor
                     RaymanBody raymanBody = (RaymanBody)param;
                     Rayman attacker = ((RaymanBody)param).Rayman;
 
-                    switch (MultiplayerInfo.GameType)
+                    switch (Rayman3.MultiplayerInfo.GameType)
                     {
                         case MultiplayerGameType.RayTag:
                             if (InstanceId != tagId)
@@ -1863,7 +1863,7 @@ public sealed partial class Rayman : MovableActor
                             break;
 
                         case MultiplayerGameType.CaptureTheFlag when Rom.Platform == Platform.NGage:
-                            if (MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Solo)
+                            if (Rayman3.MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Solo)
                             {
                                 if (FlagData.InvincibilityTimer == 0 && State != _Fsm_MultiplayerCapturedFlag)
                                 {
@@ -2165,7 +2165,7 @@ public sealed partial class Rayman : MovableActor
 
     public void SetPower(Power power)
     {
-        if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             FlagData.Powers |= power;
         else
             Rayman3.GameInfo.EnablePower(power);
@@ -2173,7 +2173,7 @@ public sealed partial class Rayman : MovableActor
 
     public void RemovePower(Power power)
     {
-        if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             FlagData.Powers &= ~power;
         else
             Rayman3.GameInfo.DisablePower(power);
@@ -2374,7 +2374,7 @@ public sealed partial class Rayman : MovableActor
                 cam.ProcessMessage(this, Message.Cam_FollowPositionY, CameraTargetY);
             }
 
-            if (RSMultiplayer.IsActive && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+            if (RSMultiplayer.IsActive && Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             {
                 if (FlagData.InvincibilityTimer != 0)
                     FlagData.InvincibilityTimer--;
@@ -2405,7 +2405,7 @@ public sealed partial class Rayman : MovableActor
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
-        if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform == Platform.NGage && RSMultiplayer.IsActive && Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
         {
             // Determine if the flag should be visible in the animation
             if (FlagData.PickedUpFlag == null)
@@ -2440,7 +2440,7 @@ public sealed partial class Rayman : MovableActor
 
             if (Rom.Platform == Platform.NGage &&
                 RSMultiplayer.IsActive &&
-                MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag &&
+                Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag &&
                 FlagData.InvincibilityTimer != 0 &&
                 (GameTime.ElapsedFrames & 1) != 0)
             {

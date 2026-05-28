@@ -10,6 +10,7 @@ public static class Rayman3
 {
     // Game services
     public static GameInfo GameInfo { get; private set; }
+    public static MultiplayerInfo MultiplayerInfo { get; private set; }
     public static ISaveGameManager Save { get; private set; }
     public static LocalizationManager Loc { get; private set; }
     public static AchievementsManager Achievements { get; private set; }
@@ -283,6 +284,7 @@ public static class Rayman3
     {
         // Set services
         GameInfo = new GameInfo(Rom.Loader.ReadLevelInfo());
+        MultiplayerInfo = new MultiplayerInfo();
         Save = save;
         Loc = localizationManager;
         Achievements = new AchievementsManager(Rayman3Achievements.Achievements);
@@ -317,6 +319,7 @@ public static class Rayman3
 
         // Remove services
         GameInfo = null;
+        MultiplayerInfo = null;
         Save = null;
         Loc = null;
         Achievements = null;

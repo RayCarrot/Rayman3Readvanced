@@ -609,7 +609,7 @@ public partial class Rayman
                         else
                             ActionId = IsFacingRight ? Action.Walk_Right : Action.Walk_Left;
 
-                        if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+                        if (Rom.Platform == Platform.NGage && Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
                             FlagData.NewState = true;
                     }
                 }
@@ -755,7 +755,7 @@ public partial class Rayman
                             else
                                 ActionId = IsFacingRight ? Action.Walk_Right : Action.Walk_Left;
 
-                            if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+                            if (Rom.Platform == Platform.NGage && Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
                                 FlagData!.NewState = true;
                         }
                     }
@@ -4791,9 +4791,9 @@ public partial class Rayman
 
                 if (IsActionFinished)
                 {
-                    if ((MultiplayerInfo.GameType == MultiplayerGameType.RayTag && userInfo.GetTime(InstanceId) != 0) ||
-                        MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse ||
-                        (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && userInfo.CaptureTheFlagTime != 0))
+                    if ((Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.RayTag && userInfo.GetTime(InstanceId) != 0) ||
+                        Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse ||
+                        (Rom.Platform == Platform.NGage && Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && userInfo.CaptureTheFlagTime != 0))
                     {
                         // Re-init Rayman
                         Position = Resource.Pos.ToVector2();
@@ -4808,7 +4808,7 @@ public partial class Rayman
                         // Spectate
                         if (IsLocalPlayer)
                         {
-                            int id = Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag 
+                            int id = Rom.Platform == Platform.NGage && Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag 
                                 ? FlagData.SpectatePlayerId
                                 : userInfo.TagId;
                             Scene.Camera.LinkedObject = Scene.GetGameObject<MovableActor>(id);
@@ -4884,8 +4884,8 @@ public partial class Rayman
                 }
                 else if (Rom.Platform == Platform.NGage)
                 {
-                    bool isCaptureTheFlag = MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag;
-                    bool isTeams = MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Teams;
+                    bool isCaptureTheFlag = Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag;
+                    bool isTeams = Rayman3.MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Teams;
 
                     isWinner = (winnerId == InstanceId && (!isCaptureTheFlag || !isTeams)) ||
                                (isCaptureTheFlag && isTeams && winnerId / 2 == InstanceId / 2);
@@ -4931,7 +4931,7 @@ public partial class Rayman
 
                 uint targetTime = 420; // 7 seconds
 
-                if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+                if (Rom.Platform == Platform.NGage && Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
                 {
                     if (!((FrameMultiCaptureTheFlag)Frame.Current).IsMatchOver)
                     {

@@ -37,7 +37,7 @@ public class FrameMultiCaptureTheFlag : FrameMultiSideScroller
     {
         IsFirstRound = false;
 
-        if (MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Solo)
+        if (Rayman3.MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Solo)
         {
             if (TargetFlagsCount == 0)
             {
@@ -117,7 +117,7 @@ public class FrameMultiCaptureTheFlag : FrameMultiSideScroller
         if (isTie)
         {
             // If it's a tie and a solo match, then the players with a loosing score will spectate the tied players
-            if (MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Solo)
+            if (Rayman3.MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Solo)
             {
                 for (int i = 0; i < MultiplayerManager.PlayersCount; i++)
                 {
@@ -144,7 +144,7 @@ public class FrameMultiCaptureTheFlag : FrameMultiSideScroller
 
     public void SetPlayerRanks(int[] playerRanks)
     {
-        if (MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Solo)
+        if (Rayman3.MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Solo)
         {
             int[] playerFlagCountsCopy = new int[PlayerFlagCounts.Length];
             Array.Copy(PlayerFlagCounts, playerFlagCountsCopy, PlayerFlagCounts.Length);

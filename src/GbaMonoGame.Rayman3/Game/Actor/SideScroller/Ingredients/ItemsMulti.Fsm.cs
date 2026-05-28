@@ -16,7 +16,7 @@ public partial class ItemsMulti
             Timer = 0;
 
             // Spawn a new item
-            MultiplayerInfo.TagInfo.SpawnNewItem(Scene, false);
+            Rayman3.MultiplayerInfo.TagInfo.SpawnNewItem(Scene, false);
         }
         // Spawn
         else if (SpawnCountdown == 0)
@@ -36,8 +36,8 @@ public partial class ItemsMulti
             {
                 // The fist can only be collected by the player with the tag in tag mode or without the tag in burglar mode
                 if (ActionId != Action.Fist || 
-                    (MultiplayerInfo.GameType == MultiplayerGameType.RayTag && tagId == currentFramePlayerId) || 
-                    (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && tagId != currentFramePlayerId))
+                    (Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.RayTag && tagId == currentFramePlayerId) || 
+                    (Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse && tagId != currentFramePlayerId))
                 {
                     MovableActor player = Scene.GetGameObject<MovableActor>(currentFramePlayerId);
 
@@ -60,7 +60,7 @@ public partial class ItemsMulti
                             Timer = 0;
 
                             // Spawn a new item
-                            MultiplayerInfo.TagInfo.SpawnNewItem(Scene, ActionId == Action.Invisibility);
+                            Rayman3.MultiplayerInfo.TagInfo.SpawnNewItem(Scene, ActionId == Action.Invisibility);
                         }
                         else
                         {

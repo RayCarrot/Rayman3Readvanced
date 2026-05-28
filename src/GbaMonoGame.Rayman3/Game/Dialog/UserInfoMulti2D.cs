@@ -19,26 +19,26 @@ public partial class UserInfoMulti2D : Dialog
         Times = new int[RSMultiplayer.MaxPlayersCount];
         EnergyShots = new int[RSMultiplayer.MaxPlayersCount];
 
-        if (MultiplayerInfo.GameType == MultiplayerGameType.RayTag)
+        if (Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.RayTag)
         {
             for (int i = 0; i < RSMultiplayer.MaxPlayersCount; i++)
                 Times[i] = 60;
         }
-        else if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        else if (Rom.Platform == Platform.NGage && Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
         {
             CaptureTheFlagTime = (ushort)((FrameMultiCaptureTheFlag)Frame.Current).RemainingTime;
             SuddenDeathDisplayCountdown = 100;
             FlagBar = new FlagBar(Scene);
         }
 
-        if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform == Platform.NGage && Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
         {
             TagId = -1;
             TagIdHudIndex = -1;
         }
         else
         {
-            TagId = (int)(MultiplayerInfo.InitialGameTime % RSMultiplayer.PlayersCount);
+            TagId = (int)(Rayman3.MultiplayerInfo.InitialGameTime % RSMultiplayer.PlayersCount);
             TagIdHudIndex = MultiplayerHelpers.MachineIdToHudIndex(TagId);
         }
 
@@ -130,7 +130,7 @@ public partial class UserInfoMulti2D : Dialog
 
     public int GetTagId()
     {
-        if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform == Platform.NGage && Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             return -1;
         else
             return TagId;
@@ -138,7 +138,7 @@ public partial class UserInfoMulti2D : Dialog
 
     public void SetTagId(int machineId)
     {
-        if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform == Platform.NGage && Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             return;
 
         if (machineId == TagId || IsGameOver)
@@ -147,12 +147,12 @@ public partial class UserInfoMulti2D : Dialog
         EnergyShots[TagId] = 0;
         EnergyShots[machineId] = 0;
 
-        if (MultiplayerInfo.GameType == MultiplayerGameType.RayTag)
+        if (Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.RayTag)
         {
             if (machineId == MultiplayerManager.MachineId)
                 PrintEnergyShots(machineId);
         }
-        else if (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse)
+        else if (Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse)
         {
             if (TagId == MultiplayerManager.MachineId)
                 PrintEnergyShots(TagId);
@@ -217,7 +217,7 @@ public partial class UserInfoMulti2D : Dialog
         Times[machineId] += time;
         LastTimeChangeTime = Timer;
 
-        switch (MultiplayerInfo.GameType)
+        switch (Rayman3.MultiplayerInfo.GameType)
         {
             case MultiplayerGameType.RayTag:
                 if (Times[machineId] > 60)
@@ -255,7 +255,7 @@ public partial class UserInfoMulti2D : Dialog
         {
             Times[machineId] = 0;
 
-            if (MultiplayerInfo.GameType == MultiplayerGameType.RayTag)
+            if (Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.RayTag)
                 GameOver(machineId);
         }
 
@@ -398,7 +398,7 @@ public partial class UserInfoMulti2D : Dialog
     {
         FrameMultiCaptureTheFlag frame = (FrameMultiCaptureTheFlag)Frame.Current;
 
-        if (MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Teams)
+        if (Rayman3.MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Teams)
             FlagBar.BlinkPlayerId = frame.LastPlayerToGetFlag / 2;
         else
             FlagBar.BlinkPlayerId = frame.LastPlayerToGetFlag;
@@ -439,7 +439,7 @@ public partial class UserInfoMulti2D : Dialog
 
     public void PrintTime()
     {
-        if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform == Platform.NGage && Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
         {
             int v1 = CaptureTheFlagTime / 60;
             int v2 = CaptureTheFlagTime + v1 * -60;
@@ -462,8 +462,8 @@ public partial class UserInfoMulti2D : Dialog
         {
             for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
             {
-                if ((MultiplayerInfo.GameType != MultiplayerGameType.RayTag || Times[id] != 0) &&
-                    (MultiplayerInfo.GameType != MultiplayerGameType.CatAndMouse || !IsGameOver || Times[id] == 60))
+                if ((Rayman3.MultiplayerInfo.GameType != MultiplayerGameType.RayTag || Times[id] != 0) &&
+                    (Rayman3.MultiplayerInfo.GameType != MultiplayerGameType.CatAndMouse || !IsGameOver || Times[id] == 60))
                 {
                     int v1 = Times[id] / 60;
                     int v2 = Times[id] + v1 * -60;
@@ -528,7 +528,7 @@ public partial class UserInfoMulti2D : Dialog
 
         }
 
-        if (MultiplayerInfo.GameType == MultiplayerGameType.RayTag)
+        if (Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.RayTag)
         {
             if (TagId == MultiplayerManager.MachineId)
             {
@@ -553,7 +553,7 @@ public partial class UserInfoMulti2D : Dialog
                 }
             }
         }
-        else if (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse)
+        else if (Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse)
         {
             if (TagId != MultiplayerManager.MachineId)
             {
@@ -685,7 +685,7 @@ public partial class UserInfoMulti2D : Dialog
         }
 
         TimerFrames[0].CurrentAnimation = 10;
-        if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform == Platform.NGage && Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
         {
             TimerFrames[0].ScreenPos = new Vector2(-22, 18);
             TimerFrames[0].HorizontalAnchor = HorizontalAnchorMode.Center;
@@ -764,7 +764,7 @@ public partial class UserInfoMulti2D : Dialog
             TimerDigits[i][2].HorizontalAnchor = anchor;
         }
 
-        if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform == Platform.NGage && Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             setTimerDigitPositions(0, -10, HorizontalAnchorMode.Center);
         else
             setTimerDigitPositions(0, 25, HorizontalAnchorMode.Left);
@@ -810,7 +810,7 @@ public partial class UserInfoMulti2D : Dialog
             }
         }
 
-        if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform == Platform.NGage && Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
         {
             TimerColons[0].ScreenPos = TimerColons[0].ScreenPos with { X = -2 };
             TimerColons[0].HorizontalAnchor = HorizontalAnchorMode.Center;
@@ -843,7 +843,7 @@ public partial class UserInfoMulti2D : Dialog
             throw new UnsupportedPlatformException();
         }
 
-        if (Rom.Platform != Platform.NGage || MultiplayerInfo.GameType != MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform != Platform.NGage || Rayman3.MultiplayerInfo.GameType != MultiplayerGameType.CaptureTheFlag)
         {
             EnergyShotsCounterFrame = new AnimatedObject(timersResource, timersResource.IsDynamic)
             {
@@ -854,9 +854,9 @@ public partial class UserInfoMulti2D : Dialog
                 RenderContext = Scene.HudRenderContext,
             };
 
-            if (MultiplayerInfo.GameType == MultiplayerGameType.RayTag)
+            if (Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.RayTag)
                 EnergyShotsCounterFrame.ScreenPos = new Vector2(26, TagId == MultiplayerManager.MachineId ? 38 : 0);
-            else if (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse)
+            else if (Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse)
                 EnergyShotsCounterFrame.ScreenPos = new Vector2(26, TagId == MultiplayerManager.MachineId ? 0 : 38);
         }
 
@@ -871,9 +871,9 @@ public partial class UserInfoMulti2D : Dialog
                 RenderContext = Scene.HudRenderContext,
             };
 
-            if (MultiplayerInfo.GameType == MultiplayerGameType.RayTag)
+            if (Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.RayTag)
                 EnergyShotsCounterDigits[i].ScreenPos = new Vector2(0, TagId == MultiplayerManager.MachineId ? 37 : -1);
-            else if (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse)
+            else if (Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse)
                 EnergyShotsCounterDigits[i].ScreenPos = new Vector2(0, TagId == MultiplayerManager.MachineId ? -1 : 37);
         }
 
@@ -890,14 +890,14 @@ public partial class UserInfoMulti2D : Dialog
             RenderContext = Scene.HudRenderContext,
         };
 
-        if (MultiplayerInfo.GameType == MultiplayerGameType.RayTag)
+        if (Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.RayTag)
             EnergyShotsIcon.ScreenPos = new Vector2(10, TagId == MultiplayerManager.MachineId ? 38 : 0);
-        else if (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse)
+        else if (Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse)
             EnergyShotsIcon.ScreenPos = new Vector2(10, TagId == MultiplayerManager.MachineId ? 0 : 38);
 
         EnergyShotsIcon.BasePaletteIndex = MultiplayerManager.MachineId * 2 + 1;
 
-        if (Rom.Platform != Platform.NGage || MultiplayerInfo.GameType != MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform != Platform.NGage || Rayman3.MultiplayerInfo.GameType != MultiplayerGameType.CaptureTheFlag)
         {
             PlayerArrow = new AnimatedObject(iconsResource, iconsResource.IsDynamic)
             {
@@ -923,8 +923,8 @@ public partial class UserInfoMulti2D : Dialog
         }
 
         if (Rom.Platform == Platform.NGage && 
-            MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && 
-            MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Teams)
+            Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && 
+            Rayman3.MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Teams)
         {
             if (MultiplayerManager.MachineId is 0 or 1)
             {
@@ -1040,7 +1040,7 @@ public partial class UserInfoMulti2D : Dialog
             };
         }
 
-        if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform == Platform.NGage && Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
         {
             FlagBar.Load();
             FlagBar.Set();
@@ -1090,7 +1090,7 @@ public partial class UserInfoMulti2D : Dialog
         ScoreBar.Load();
         ScoreBar.SetToStayVisible();
 
-        if (Rom.Platform != Platform.NGage || MultiplayerInfo.GameType != MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform != Platform.NGage || Rayman3.MultiplayerInfo.GameType != MultiplayerGameType.CaptureTheFlag)
             PrintEnergyShots(TagId);
 
         PrintTime();
@@ -1109,7 +1109,7 @@ public partial class UserInfoMulti2D : Dialog
                 animationPlayer.Play(obj);
         }
 
-        if (Rom.Platform != Platform.NGage || MultiplayerInfo.GameType != MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform != Platform.NGage || Rayman3.MultiplayerInfo.GameType != MultiplayerGameType.CaptureTheFlag)
         {
             if (EnergyShotsCounterFrame.ScreenPos.Y != 0 && !IsPlayerDead && !IsGameOver)
             {
@@ -1126,7 +1126,7 @@ public partial class UserInfoMulti2D : Dialog
             play(PlayerArrow, Rom.Platform == Platform.GBA);
         }
 
-        int timersCount = Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag
+        int timersCount = Rom.Platform == Platform.NGage && Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag
             ? 1
             : MultiplayerManager.PlayersCount;
         for (int id = 0; id < timersCount; id++)
@@ -1152,16 +1152,16 @@ public partial class UserInfoMulti2D : Dialog
         if (GameOverSign.ScreenPos.Y != 180 && !IsPaused)
             animationPlayer.PlayFront(GameOverSign);
 
-        if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform == Platform.NGage && Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
         {
             if (SuddenDeathSign.ScreenPos.Y != 180 && !IsPaused)
                 animationPlayer.PlayFront(SuddenDeathSign);
         }
 
-        if (!IsPaused && (MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse || Times[MultiplayerManager.MachineId] != 0))
+        if (!IsPaused && (Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CatAndMouse || Times[MultiplayerManager.MachineId] != 0))
             DrawItemEffect(animationPlayer);
 
-        if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+        if (Rom.Platform == Platform.NGage && Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             FlagBar.Draw(animationPlayer);
 
         if (IsGameOver)
@@ -1169,11 +1169,11 @@ public partial class UserInfoMulti2D : Dialog
             if (ScoreBar.DrawStep == BarDrawStep.Hide)
                 ScoreBar.DrawStep = BarDrawStep.MoveIn;
 
-            if (Rom.Platform == Platform.NGage && MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+            if (Rom.Platform == Platform.NGage && Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
             {
                 if (((FrameMultiCaptureTheFlag)Frame.Current).IsMatchOver)
                 {
-                    if (MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Teams)
+                    if (Rayman3.MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Teams)
                         ScoreBar.DrawTeamsScore(animationPlayer, PlayerRanks);
                     else
                         ScoreBar.DrawScore(animationPlayer, PlayerRanks);

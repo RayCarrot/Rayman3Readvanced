@@ -98,7 +98,7 @@ public partial class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
         // NOTE: The game saves palette information here, but we don't need to do that
 
-        MultiplayerInfo.TagInfo.SpawnNewItem(Scene, false);
+        Rayman3.MultiplayerInfo.TagInfo.SpawnNewItem(Scene, false);
 
         Scene.Playfield.Step();
 
@@ -184,7 +184,7 @@ public partial class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
                 {
                     if (EndOfFrame)
                     {
-                        if (MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && !((FrameMultiCaptureTheFlag)Current).IsMatchOver)
+                        if (Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag && !((FrameMultiCaptureTheFlag)Current).IsMatchOver)
                         {
                             Engine.FrameMngr.ReloadCurrentFrame();
                         }

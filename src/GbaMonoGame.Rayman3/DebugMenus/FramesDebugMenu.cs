@@ -123,12 +123,12 @@ public class FramesDebugMenu : DebugMenu
                     RSMultiplayer.PlayersCount = 4;
 
                 RSMultiplayer.MubState = MubState.Connected;
-                MultiplayerInfo.Init();
+                Rayman3.MultiplayerInfo.Init();
 
-                MultiplayerInfo.MapId = (i - 1) % 2; // Hack
+                Rayman3.MultiplayerInfo.MapId = (i - 1) % 2; // Hack
 
                 // Set the game type
-                MultiplayerInfo.SetGameType(mapId switch
+                Rayman3.MultiplayerInfo.SetGameType(mapId switch
                 {
                     // GBA
                     MapId.GbaMulti_MissileRace when Rom.Platform == Platform.GBA => MultiplayerGameType.Missile,
@@ -156,15 +156,15 @@ public class FramesDebugMenu : DebugMenu
                 // Create the level frame
                 Frame frame = LevelFactory.Create(mapId);
 
-                if (MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
+                if (Rayman3.MultiplayerInfo.GameType == MultiplayerGameType.CaptureTheFlag)
                 {
-                    MultiplayerInfo.CaptureTheFlagMode = mapId is MapId.NGageMulti_CaptureTheFlagTeamWork or MapId.NGageMulti_CaptureTheFlagTeamPlayer
+                    Rayman3.MultiplayerInfo.CaptureTheFlagMode = mapId is MapId.NGageMulti_CaptureTheFlagTeamWork or MapId.NGageMulti_CaptureTheFlagTeamPlayer
                         ? CaptureTheFlagMode.Teams
                         : CaptureTheFlagMode.Solo;
                     ((FrameMultiCaptureTheFlag)frame).InitNewGame(
                         remainingTime: 300, 
                         targetFlagsCount: 5, 
-                        mode: MultiplayerInfo.CaptureTheFlagMode);
+                        mode: Rayman3.MultiplayerInfo.CaptureTheFlagMode);
                 }
 
                 // Set all powers

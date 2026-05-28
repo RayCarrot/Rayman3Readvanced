@@ -10,7 +10,7 @@ public class FlagBar : Bar
         Players = new FlagBarPlayer[RSMultiplayer.MaxPlayersCount];
         BlinkPlayerId = -1;
         Timer = 0;
-        CaptureTheFlagMode = MultiplayerInfo.CaptureTheFlagMode;
+        CaptureTheFlagMode = Rayman3.MultiplayerInfo.CaptureTheFlagMode;
         DrawStep = BarDrawStep.Wait;
     }
 
