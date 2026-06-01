@@ -21,14 +21,14 @@ public class GameMidlet : Frame
     {
         [GbaInput.A] = JAVA_KEY_CODE.SOFTKEY3,
         [GbaInput.B] = JAVA_KEY_CODE.SOFTKEY3,
-        [GbaInput.Select] = JAVA_KEY_CODE.SOFTKEY1,
-        [GbaInput.Start] = JAVA_KEY_CODE.SOFTKEY2,
+        [GbaInput.Select] = JAVA_KEY_CODE.SOFTKEY2,
+        [GbaInput.Start] = JAVA_KEY_CODE.SOFTKEY1,
         [GbaInput.Right] = JAVA_KEY_CODE.RIGHT_ARROW,
         [GbaInput.Left] = JAVA_KEY_CODE.LEFT_ARROW,
         [GbaInput.Up] = JAVA_KEY_CODE.UP_ARROW,
         [GbaInput.Down] = JAVA_KEY_CODE.DOWN_ARROW,
-        [GbaInput.R] = JAVA_KEY_CODE.SOFTKEY1,
-        [GbaInput.L] = JAVA_KEY_CODE.SOFTKEY2,
+        [GbaInput.R] = JAVA_KEY_CODE.SOFTKEY2,
+        [GbaInput.L] = JAVA_KEY_CODE.SOFTKEY1,
     }.ToFrozenDictionary();
 
     private float _oldFramerate;
