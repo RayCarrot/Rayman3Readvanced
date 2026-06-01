@@ -135,7 +135,7 @@ public partial class Game
                         m_bBackgroundUsed = false;
                         pRayman.x = 0x7800;
                         pRayman.y = 0xAA00;
-                        pRayman.stateFlag = (short)(pRayman.stateFlag & 0xFFFFFFF7);
+                        pRayman.stateFlag &= ~ACTOR_STATE.DEAD;
                     }
                     if (m_iPrevLevel > 0 && pRayman.anim.curAction != 37)
                         PlaySound(34, true, 1);
@@ -212,6 +212,7 @@ public partial class Game
                 g_graBackBuffer.setColor(0);
                 g_graBackBuffer.fillRect(0, 0, Resolution.X, Resolution.Y);
                 Actor.drawModule(Actor.aniData[26], 23, Resolution.X - Actor.aniData[26].modules[23][2], Resolution.Y - Actor.aniData[26].modules[23][3], 0, g_graBackBuffer);
+                
                 if (pressedKey != GAME_KEY.None)
                 {
                     m_bBackgroundUsed = true;
@@ -220,15 +221,21 @@ public partial class Game
                     curState = 7;
                     break;
                 }
+
                 if (pRayman.Ani_CheckEnd())
-                    if ((pRayman.stateFlag & 0x1) == 0)
+                {
+                    if ((pRayman.stateFlag & ACTOR_STATE.FLIP_X) == 0)
                     {
-                        pRayman.stateFlag = (sbyte)(0x1 | (pRayman.stateFlag & 0xFFFFFFFA));
+                        pRayman.stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        pRayman.stateFlag |= ACTOR_STATE.FLIP_X;
                     }
                     else
                     {
-                        pRayman.stateFlag = (sbyte)(0x0 | (pRayman.stateFlag & 0xFFFFFFFA));
+                        pRayman.stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        pRayman.stateFlag &= ~ACTOR_STATE.FLIP_X;
                     }
+                }
+
                 pRayman.step();
                 pRayman.draw();
                 Menu_DrawString(RM.GetString(2949288), (Resolution.X - Menu_GetStringWidth(RM.GetString(2949288))) >> 1, 170, 0);

@@ -41,23 +41,25 @@ public partial class Game
                 break;
 
             case OBJECT_TYPE.PIRATE:
-                if (obj.V[5] == 0 || obj.V[5] == 22)
-                    break;
-                for (int i = 1; i < 4; i++)
+                if (obj.V[5] != 0 && obj.V[5] != 22)
                 {
-                    flagActorType(obj.V[5], i);
-                    RM.Synchronize();
+                    for (int i = 1; i < 4; i++)
+                    {
+                        flagActorType(obj.V[5], i);
+                        RM.Synchronize();
+                    }
+
+                    sbyte[] morphData = new sbyte[11];
+                    morphData[0] = 0;
+                    morphData[1] = (sbyte)obj.V[5];
+                    morphData[2] = data[2];
+                    morphData[3] = data[3];
+                    morphData[4] = data[4];
+                    morphData[5] = data[5];
+                    obj.actorReference = new Actor(morphData);
+                    obj.stateFlag |= ACTOR_STATE.OVERRIDE_ON_DEATH;
+                    obj.m_sInitStateFlag |= ACTOR_STATE.OVERRIDE_ON_DEATH;
                 }
-                sbyte[] morphData = new sbyte[11];
-                morphData[0] = 0;
-                morphData[1] = (sbyte)obj.V[5];
-                morphData[2] = data[2];
-                morphData[3] = data[3];
-                morphData[4] = data[4];
-                morphData[5] = data[5];
-                obj.actorReference = new Actor(morphData);
-                obj.stateFlag = (short)(obj.stateFlag | 0x20);
-                obj.m_sInitStateFlag = (short)(obj.m_sInitStateFlag | 0x20);
                 break;
 
             case OBJECT_TYPE.CAGE:
@@ -144,9 +146,9 @@ public partial class Game
                 for (int k = m_sectors_actorIds[sector].Length - 1; k >= 0; k--)
                 {
                     Actor actor = actors[m_sectors_actorIds[sector][k]];
-                    if ((actor.stateFlag & 0x40) != 0)
+                    if ((actor.stateFlag & ACTOR_STATE.OVERRIDEN) != 0)
                         actor = actor.actorReference;
-                    if (actor != null && (actor.stateFlag & 0x8) == 0)
+                    if (actor != null && (actor.stateFlag & ACTOR_STATE.DEAD) == 0)
                     {
                         if (!m_gameFrame_paused)
                         {
@@ -166,9 +168,9 @@ public partial class Game
         for (int i = m_actors_1stAlwaysActive; i < actors.Length; i++)
         {
             Actor actor = actors[i];
-            if ((actor.stateFlag & 0x40) != 0)
+            if ((actor.stateFlag & ACTOR_STATE.OVERRIDEN) != 0)
                 actor = actor.actorReference;
-            if (actor != null && (actor.stateFlag & 0x8) == 0)
+            if (actor != null && (actor.stateFlag & ACTOR_STATE.DEAD) == 0)
             {
                 if (!m_gameFrame_paused)
                 {

@@ -24,7 +24,7 @@ public partial class Game
             case 10:
             case 11:
                 if (pRayman.y > pRayman.V[16] << 8)
-                    ty = (int)(pActor.y >> 8) + pActor.colBox.Right;
+                    ty = (int)(pActor.y >> 8) + pActor.colBox.Top;
                 else
                     ty = pActor.V[16] + -213;
                 break;
@@ -49,7 +49,7 @@ public partial class Game
             case 3:
             case 4:
             case 5:
-                ty = (int)(pActor.y >> 8) + pActor.colBox.Right - 80;
+                ty = (int)(pActor.y >> 8) + pActor.colBox.Top - 80;
                 break;
             
             case 9:
@@ -72,19 +72,19 @@ public partial class Game
                 else
                 {
                     if (pRayman.y > (pRayman.V[16] << 8))
-                        ty = (int)(pActor.y >> 8) + pActor.colBox.Right;
+                        ty = (int)(pActor.y >> 8) + pActor.colBox.Top;
                     else if (pActor.yDirectionConfirmed == 0)
                         ty = pActor.V[16] + -213;
                     else if (pActor.yDirectionConfirmed == 1)
-                        ty = pActor.V[16] + pActor.colBox.Right - 16;
+                        ty = pActor.V[16] + pActor.colBox.Top - 16;
                     else if (pActor.yDirectionConfirmed == -1)
                         ty = pActor.V[16] - Resolution.Y;
                 }
                 break;
 
             case 27:
-                tx = pActor.V[13] + ((pActor.colBox.Left + pActor.colBox.Up) >> 1) + -(Resolution.X * (pRayman.xDirectionConfirmed ? 1 : 2)) / 3;
-                ty = pActor.V[14] + ((pActor.colBox.Right + pActor.colBox.Down) >> 1) + -213;
+                tx = pActor.V[13] + ((pActor.colBox.Left + pActor.colBox.Right) >> 1) + -(Resolution.X * (pRayman.xDirectionConfirmed ? 1 : 2)) / 3;
+                ty = pActor.V[14] + ((pActor.colBox.Top + pActor.colBox.Bottom) >> 1) + -213;
                 break;
         }
 
@@ -121,11 +121,11 @@ public partial class Game
         
             if (sx > posX + actor.colBox.Left)
                 sx = posX + actor.colBox.Left;
-            else if (sx + Resolution.X < posX + actor.colBox.Up)
-                sx = posX + actor.colBox.Up - Resolution.X;
+            else if (sx + Resolution.X < posX + actor.colBox.Right)
+                sx = posX + actor.colBox.Right - Resolution.X;
 
-            if (sy + Resolution.Y < posY + actor.colBox.Down)
-                sy = posY + actor.colBox.Down - Resolution.X;
+            if (sy + Resolution.Y < posY + actor.colBox.Bottom)
+                sy = posY + actor.colBox.Bottom - Resolution.X;
 
             sx = Math.Min(sx, (m_sBackgroundWidth << 4) - Resolution.X - 1);
             sy = Math.Min(sy, (m_sBackgroundHeight << 4) - Resolution.Y - 1);

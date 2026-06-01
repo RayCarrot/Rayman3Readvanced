@@ -26,9 +26,9 @@ public class Anim
         aniEvent_pColBoxData = new CollisionBox()
         {
             Left = frameData[2],
-            Right = frameData[3],
-            Up = frameData[4],
-            Down = frameData[5],
+            Top = frameData[3],
+            Right = frameData[4],
+            Bottom = frameData[5],
         };
         frameId = frame;
     }
@@ -89,7 +89,7 @@ public class Anim
         }
     }
     
-    public void draw(int nx, int ny, int nflag)
+    public void draw(int nx, int ny, ACTOR_STATE nflag)
     {
         if (frameId < 0)
             return;
@@ -116,7 +116,7 @@ public class Anim
             
             int nsx;
             int geflag;
-            if ((nflag & 0x1) != 0)
+            if ((nflag & ACTOR_STATE.FLIP_X) != 0)
             {
                 nsx = nx - frameData[6 + frameOffset + 1] - (pModule[2] & 0xFF);
                 geflag = frameData[6 + frameOffset + 0] < 0 ? 0 : 0x4000;
@@ -142,7 +142,7 @@ public class Anim
                     iImageIndex: data.resID, 
                     sx: pModule[0] & 0xFF, 
                     sy: pModule[1] & 0xFF, 
-                    flag: (int)((uint)geflag | (nflag & 0xFFFF0000)));
+                    flag: geflag);
             }
 
             frameOffset += 3;

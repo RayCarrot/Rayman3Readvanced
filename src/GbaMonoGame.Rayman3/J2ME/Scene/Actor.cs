@@ -29,7 +29,7 @@ public class Actor
                 break;
 
             case OBJECT_TYPE.FIST:
-                stateFlag = (short)(stateFlag | 0x8);
+                stateFlag |= ACTOR_STATE.DEAD;
                 anim.newAction = 0;
                 actorReference = null;
                 break;
@@ -55,7 +55,7 @@ public class Actor
                 break;
 
             case OBJECT_TYPE.BULLET:
-                stateFlag = (short)(stateFlag | 0x8);
+                stateFlag |= ACTOR_STATE.DEAD;
                 break;
             
             case OBJECT_TYPE.PLATFORM_1:
@@ -75,7 +75,7 @@ public class Actor
                 break;
             
             case OBJECT_TYPE.LEVEL_POST:
-                stateFlag = (short)(stateFlag | 0x2);
+                stateFlag |= ACTOR_STATE.LEFT_TO_DIE;
                 break;
             
             case OBJECT_TYPE.LEVEL_SIGN:
@@ -84,7 +84,7 @@ public class Actor
                 break;
         }
 
-        if ((stateFlag & 0x2) != 0)
+        if ((stateFlag & ACTOR_STATE.LEFT_TO_DIE) != 0)
             Game.s_iLeftToDie++;
 
         m_lInitX = x;
@@ -120,11 +120,11 @@ public class Actor
     public short mmodel_aY { get; set; }
     public short mmodel_fX { get; set; }
     public short mmodel_fY { get; set; }
-    public short stateFlag { get; set; } // TODO: Flags enum
+    public ACTOR_STATE stateFlag { get; set; }
     public long m_lInitX { get; set; }
     public long m_lInitY { get; set; }
     public int m_iInitAction { get; set; }
-    public short m_sInitStateFlag { get; set; } // TODO: Flags enum
+    public ACTOR_STATE m_sInitStateFlag { get; set; }
     public PHB_TYPE[,] m_bPHBTable { get; set; }
     public short m_sPHBTableReferenceTileX { get; set; }
     public short m_sPHBTableReferenceTileY { get; set; }
@@ -146,14 +146,14 @@ public class Actor
 
         return GameObj_isCollideBox(
             (int)((that.x >> 8) + that.colBox.Left), 
-            (int)((that.y >> 8) + that.colBox.Right),
-            that.colBox.Up - that.colBox.Left, 
-            that.colBox.Down - that.colBox.Right);
+            (int)((that.y >> 8) + that.colBox.Top),
+            that.colBox.Right - that.colBox.Left, 
+            that.colBox.Bottom - that.colBox.Top);
     }
 
     public bool GameObj_isCollideBox(int l, int t, int w, int h)
     {
-        int me = (int)(x >> 8) + colBox.Up;
+        int me = (int)(x >> 8) + colBox.Right;
         int it = l;
         if (me < it)
             return false;
@@ -163,12 +163,12 @@ public class Actor
         if (it < me)
             return false;
         
-        me = (int)(y >> 8) + colBox.Right;
+        me = (int)(y >> 8) + colBox.Top;
         it = t + h;
         if (it < me)
             return false;
         
-        me = (int)(y >> 8) + colBox.Down;
+        me = (int)(y >> 8) + colBox.Bottom;
         it = t;
         if (me < it)
             return false;
@@ -369,17 +369,17 @@ public class Actor
         if ((Anim.aniEvent_flag & 0x1) != 0)
         {
             MModel_Init(Anim.aniEvent_mmtype, Anim.aniEvent_mmpar);
-            stateFlag = (short)(stateFlag | 0x10);
+            stateFlag |= ACTOR_STATE.USE_MECH_MODEL;
         }
 
         if ((Anim.aniEvent_flag & 0x2) != 0)
         {
-            if ((stateFlag & 0x1) != 0)
+            if ((stateFlag & ACTOR_STATE.FLIP_X) != 0)
             {
                 colBox = colBox with
                 {
-                    Left = (sbyte)-Anim.aniEvent_pColBoxData.Up,
-                    Up = (sbyte)-Anim.aniEvent_pColBoxData.Left
+                    Left = (sbyte)-Anim.aniEvent_pColBoxData.Right,
+                    Right = (sbyte)-Anim.aniEvent_pColBoxData.Left
                 };
             }
             else
@@ -387,39 +387,39 @@ public class Actor
                 colBox = colBox with
                 {
                     Left = Anim.aniEvent_pColBoxData.Left,
-                    Up = Anim.aniEvent_pColBoxData.Up
+                    Right = Anim.aniEvent_pColBoxData.Right
                 };
             }
 
-            if ((stateFlag & 0x4) != 0)
+            if ((stateFlag & ACTOR_STATE.FLIP_Y) != 0)
             {
                 colBox = colBox with
                 {
-                    Right = (sbyte)-Anim.aniEvent_pColBoxData.Down,
-                    Down = (sbyte)-Anim.aniEvent_pColBoxData.Right
+                    Top = (sbyte)-Anim.aniEvent_pColBoxData.Bottom,
+                    Bottom = (sbyte)-Anim.aniEvent_pColBoxData.Top
                 };
             }
             else
             {
                 colBox = colBox with
                 {
-                    Right = Anim.aniEvent_pColBoxData.Right,
-                    Down = Anim.aniEvent_pColBoxData.Down
+                    Top = Anim.aniEvent_pColBoxData.Top,
+                    Bottom = Anim.aniEvent_pColBoxData.Bottom
                 };
             }
         }
 
-        if ((stateFlag & 0x10) != 0 && (stateFlag & 0x1) != 0)
+        if ((stateFlag & ACTOR_STATE.USE_MECH_MODEL) != 0 && (stateFlag & ACTOR_STATE.FLIP_X) != 0)
             dx = (short)-mmodel_vX;
         else
             dx = mmodel_vX;
 
-        if ((stateFlag & 0x10) != 0 && (stateFlag & 0x4) != 0)
+        if ((stateFlag & ACTOR_STATE.USE_MECH_MODEL) != 0 && (stateFlag & ACTOR_STATE.FLIP_Y) != 0)
             dy = (short)-mmodel_vY;
         else
             dy = mmodel_vY;
 
-        if ((stateFlag & 0x10) != 0)
+        if ((stateFlag & ACTOR_STATE.USE_MECH_MODEL) != 0)
             MModel_Tick();
     }
 
@@ -434,7 +434,7 @@ public class Actor
         if (objType == OBJECT_TYPE.RAYMAN)
             Game.raymanNull = anim.frameId;
 
-        anim.draw((int)(x >> 8), (int)(y >> 8), stateFlag & 0x5);
+        anim.draw((int)(x >> 8), (int)(y >> 8), stateFlag & (ACTOR_STATE.FLIP_X | ACTOR_STATE.FLIP_Y));
 
         if (objType == OBJECT_TYPE.RAYMAN)
             Game.raymanDraw = (int)(y >> 8);
@@ -453,7 +453,7 @@ public class Actor
         y <<= 8;
 
         short firstAction = (short)(data[0] & 0xF);
-        stateFlag = (short)((data[0] & 0xF0) >> 4);
+        stateFlag = (ACTOR_STATE)((data[0] & 0xF0) >> 4);
         mmodel_vX = mmodel_vY = 0;
         mmodel_aX = mmodel_aY = 0;
         mmodel_fX = mmodel_fY = 0;
@@ -463,17 +463,17 @@ public class Actor
         if ((Anim.aniEvent_flag & 0x1) != 0)
         {
             MModel_Init(Anim.aniEvent_mmtype, Anim.aniEvent_mmpar);
-            stateFlag = (short)(stateFlag | 0x10);
+            stateFlag |= ACTOR_STATE.USE_MECH_MODEL;
         }
 
         if ((Anim.aniEvent_flag & 0x2) != 0)
         {
-            if ((stateFlag & 0x1) != 0)
+            if ((stateFlag & ACTOR_STATE.FLIP_X) != 0)
             {
                 colBox = colBox with
                 {
-                    Left = (sbyte)-Anim.aniEvent_pColBoxData.Up,
-                    Up = (sbyte)-Anim.aniEvent_pColBoxData.Left
+                    Left = (sbyte)-Anim.aniEvent_pColBoxData.Right,
+                    Right = (sbyte)-Anim.aniEvent_pColBoxData.Left
                 };
             }
             else
@@ -481,24 +481,24 @@ public class Actor
                 colBox = colBox with
                 {
                     Left = Anim.aniEvent_pColBoxData.Left,
-                    Up = Anim.aniEvent_pColBoxData.Up
+                    Right = Anim.aniEvent_pColBoxData.Right
                 };
             }
 
-            if ((stateFlag & 0x4) != 0)
+            if ((stateFlag & ACTOR_STATE.FLIP_Y) != 0)
             {
                 colBox = colBox with
                 {
-                    Right = (sbyte)-Anim.aniEvent_pColBoxData.Down,
-                    Down = (sbyte)-Anim.aniEvent_pColBoxData.Right
+                    Top = (sbyte)-Anim.aniEvent_pColBoxData.Bottom,
+                    Bottom = (sbyte)-Anim.aniEvent_pColBoxData.Top
                 };
             }
             else
             {
                 colBox = colBox with
                 {
-                    Right = Anim.aniEvent_pColBoxData.Right,
-                    Down = Anim.aniEvent_pColBoxData.Down
+                    Top = Anim.aniEvent_pColBoxData.Top,
+                    Bottom = Anim.aniEvent_pColBoxData.Bottom
                 };
             }
         }
@@ -554,10 +554,10 @@ public class Actor
 
     public bool checkWall()
     {
-        int j = dx <= 0 ? colBox.Left : colBox.Up;
+        int j = dx <= 0 ? colBox.Left : colBox.Right;
         int tilePosX = ((int)((x + dx) >> 8) + j) >> 4;
-        int tileLowerPosY = ((int)((y + dy) >> 8) + colBox.Down - 1) >> 4;
-        int tileUpperPosY = ((int)((y + dy) >> 8) + colBox.Right + 1) >> 4;
+        int tileLowerPosY = ((int)((y + dy) >> 8) + colBox.Bottom - 1) >> 4;
+        int tileUpperPosY = ((int)((y + dy) >> 8) + colBox.Top + 1) >> 4;
         for (int i = tileUpperPosY; i <= tileLowerPosY; i++)
         {
             PHB_TYPE phb = Actor_GetPHB(tilePosX, i);
@@ -567,7 +567,7 @@ public class Actor
 
                 if (dx < 0)
                 {
-                    int otherSideTilePosX = ((int)((x + dx) >> 8) + colBox.Up) >> 4;
+                    int otherSideTilePosX = ((int)((x + dx) >> 8) + colBox.Right) >> 4;
                     for (int k = tilePosX; k < otherSideTilePosX; k++)
                     {
                         phb = Actor_GetPHB(k + 1, i);
@@ -628,7 +628,7 @@ public class Actor
                 break;
             
             case 1:
-                if (Ani_CheckEnd() && (Game.pFist[0].stateFlag & 0x8) != 0 && (Game.pFist[1].stateFlag & 0x8) != 0)
+                if (Ani_CheckEnd() && (Game.pFist[0].stateFlag & ACTOR_STATE.DEAD) != 0 && (Game.pFist[1].stateFlag & ACTOR_STATE.DEAD) != 0)
                     anim.newAction = 0;
 
                 if (GameObj_checkCollsion(Game.pRayman))
@@ -662,7 +662,7 @@ public class Actor
 
             case 1:
                 if (Ani_CheckEnd())
-                    stateFlag = (short)(stateFlag | 0x8);
+                    stateFlag |= ACTOR_STATE.DEAD;
                 break;
         }
     }
@@ -800,7 +800,7 @@ public class Actor
 
             case 2:
                 if (Ani_CheckEnd())
-                    stateFlag = (short)(stateFlag | 0x8);
+                    stateFlag |= ACTOR_STATE.DEAD;
                 break;
         }
     }
@@ -812,10 +812,10 @@ public class Actor
             for (int f = 0; f < FISTS_COUNT; f++)
             {
                 Actor pFist = Game.pFist[f];
-                if ((pFist.stateFlag & 0x8) == 0 && GameObj_checkCollsion(pFist))
+                if ((pFist.stateFlag & ACTOR_STATE.DEAD) == 0 && GameObj_checkCollsion(pFist))
                 {
-                    Game.pFist[0].stateFlag = (short)(Game.pFist[0].stateFlag | 0x8);
-                    Game.pFist[1].stateFlag = (short)(Game.pFist[1].stateFlag | 0x8);
+                    Game.pFist[0].stateFlag |= ACTOR_STATE.DEAD;
+                    Game.pFist[1].stateFlag |= ACTOR_STATE.DEAD;
                     fist_top = 0;
                     Game.pFist[0].anim.curAction = 0;
                     Game.pFist[1].anim.curAction = 0;
@@ -831,7 +831,7 @@ public class Actor
         }
         else if (GameObj_checkCollsion(Game.pRayman))
         {
-            stateFlag |= 0x8;
+            stateFlag |= ACTOR_STATE.DEAD;
             switch (objType)
             {
                 case OBJECT_TYPE.LUM:
@@ -902,7 +902,7 @@ public class Actor
 
             case 4:
                 if (Ani_CheckEnd() || !GameMidlet.Instance_Game.Camera_IsVisible(this))
-                    stateFlag = (short)(stateFlag | 0x8);
+                    stateFlag |= ACTOR_STATE.DEAD;
                 break;
             
             case 5:
@@ -936,7 +936,7 @@ public class Actor
 
             case 9:
                 if (Ani_CheckEnd() || !GameMidlet.Instance_Game.Camera_IsVisible(this))
-                    stateFlag = (short)(stateFlag | 0x8);
+                    stateFlag |= ACTOR_STATE.DEAD;
                 break;
         }
     }
@@ -1046,10 +1046,10 @@ public class Actor
             int ndx = (int)(x - pRayman.x);
             if (ndx < 0)
                 ndx *= -1;
-            if (ndx < 0xC00 || ((stateFlag & 0x1) == 0 && x > pRayman.x) ||
-                ((stateFlag & 0x1) != 0 && x < pRayman.x) || ndx > 0x1E000)
+            if (ndx < 0xC00 || ((stateFlag & ACTOR_STATE.FLIP_X) == 0 && x > pRayman.x) ||
+                ((stateFlag & ACTOR_STATE.FLIP_X) != 0 && x < pRayman.x) || ndx > 0x1E000)
             {
-                stateFlag = (short)(stateFlag | 0x8);
+                stateFlag |= ACTOR_STATE.DEAD;
                 anim.curAction = 0;
             }
             else
@@ -1076,7 +1076,7 @@ public class Actor
                 {
                     anim.newAction = 4;
                 }
-                else if (Actor_GetPHB((int)(x >> 8 >> 4), (int)(((y >> 8) + colBox.Right) >> 4)) == PHB_TYPE.SOLID)
+                else if (Actor_GetPHB((int)(x >> 8 >> 4), (int)(((y >> 8) + colBox.Top) >> 4)) == PHB_TYPE.SOLID)
                 {
                     anim.newAction = 3;
                 }
@@ -1106,22 +1106,23 @@ public class Actor
         actorReference = null;
     }
 
-    public void Fist_launch(int ndir, int energy)
+    public void Fist_launch(ACTOR_STATE ndir, int energy)
     {
         int offsetX;
         Actor pRayman = Game.pRayman;
-        stateFlag = (sbyte)((uint)ndir | (stateFlag & 0xFFFFFFFA));
-        if ((pRayman.stateFlag & 0x1) == 0)
-        {
-            pRayman.xDirectionConfirmed = false;
-            pRayman.xDirectionConfirmationCounter = -2;
-            offsetX = -0x400;
-        }
-        else
+        stateFlag &= ~(ACTOR_STATE.FLIP_X | ACTOR_STATE.FLIP_Y);
+        stateFlag |= ndir;
+        if ((pRayman.stateFlag & ACTOR_STATE.FLIP_X) != 0)
         {
             pRayman.xDirectionConfirmed = true;
             pRayman.xDirectionConfirmationCounter = 2;
             offsetX = 0x400;
+        }
+        else
+        {
+            pRayman.xDirectionConfirmed = false;
+            pRayman.xDirectionConfirmationCounter = -2;
+            offsetX = -0x400;
         }
 
         if (energy > 0x2D00)
@@ -1134,13 +1135,13 @@ public class Actor
         dx = dy = 0;
         x = pRayman.x + pRayman.dx + offsetX;
         y = pRayman.y - pRayman.dy;
-        stateFlag = (short)(stateFlag & 0xFFFFFFF7);
+        stateFlag &= ~ACTOR_STATE.DEAD;
         anim.newAction = 1;
     }
 
     public bool Fist_CheckCollision(Actor des)
     {
-        if ((stateFlag & 0x8) != 0)
+        if ((stateFlag & ACTOR_STATE.DEAD) != 0)
             return false;
 
         if (!GameObj_checkCollsion(des)) 
@@ -1152,9 +1153,9 @@ public class Actor
 
     public int getAvailableFist()
     {
-        if ((Game.pFist[0].stateFlag & 0x8) != 0)
+        if ((Game.pFist[0].stateFlag & ACTOR_STATE.DEAD) != 0)
             return 0;
-        if ((Game.pFist[1].stateFlag & 0x8) != 0)
+        if ((Game.pFist[1].stateFlag & ACTOR_STATE.DEAD) != 0)
             return 1;
         return -1;
     }
@@ -1216,12 +1217,12 @@ public class Actor
     public void Bullet_ai()
     {
         if (!GameMidlet.Instance_Game.Camera_IsVisible(this))
-            stateFlag = (short)(stateFlag | 0x8);
+            stateFlag |= ACTOR_STATE.DEAD;
 
         if (GameObj_checkCollsion(Game.pRayman))
         {
             Game.pRayman.doDamage();
-            stateFlag = (short)(stateFlag | 0x8);
+            stateFlag |= ACTOR_STATE.DEAD;
         }
     }
 
@@ -1241,7 +1242,7 @@ public class Actor
         switch (anim.curAction)
         {
             case 0:
-                if ((Game.pRayman.stateFlag & 0x8) == 0)
+                if ((Game.pRayman.stateFlag & ACTOR_STATE.DEAD) == 0)
                 {
                     if (V[3] % 15 == 0)
                     {
@@ -1279,12 +1280,12 @@ public class Actor
                 if (Ani_CheckEnd())
                 {
                     Actor bullet = GameMidlet.Instance_Game.actors[V[0]];
-                    if (((stateFlag & 0x1) == 0 && bullet.mmodel_vX > 0) ||
-                        ((stateFlag & 0x1) != 0 && bullet.mmodel_vX < 0))
+                    if (((stateFlag & ACTOR_STATE.FLIP_X) == 0 && bullet.mmodel_vX > 0) ||
+                        ((stateFlag & ACTOR_STATE.FLIP_X) != 0 && bullet.mmodel_vX < 0))
                         bullet.mmodel_vX = (short)-bullet.mmodel_vX;
-                    bullet.x = x - (0x2800 * ((stateFlag & 0x1) == 0 ? 1 : -1)) + dx;
-                    bullet.y = y - 0x2E00L + dy;
-                    bullet.stateFlag = (short)(bullet.stateFlag & 0xFFFFFFF7);
+                    bullet.x = x - 0x2800 * ((stateFlag & ACTOR_STATE.FLIP_X) == 0 ? 1 : -1) + dx;
+                    bullet.y = y - 0x2E00 + dy;
+                    bullet.stateFlag &= ~ACTOR_STATE.DEAD;
                     V[4] = 0;
                     anim.newAction = 2;
                 }
@@ -1299,12 +1300,12 @@ public class Actor
                 if (Ani_CheckEnd())
                 {
                     Actor bullet = GameMidlet.Instance_Game.actors[V[0]];
-                    if (((stateFlag & 0x1) == 0 && bullet.mmodel_vX > 0) ||
-                        ((stateFlag & 0x1) != 0 && bullet.mmodel_vX < 0))
+                    if (((stateFlag & ACTOR_STATE.FLIP_X) == 0 && bullet.mmodel_vX > 0) ||
+                        ((stateFlag & ACTOR_STATE.FLIP_X) != 0 && bullet.mmodel_vX < 0))
                         bullet.mmodel_vX = (short)-bullet.mmodel_vX;
-                    bullet.x = x - (10240 * ((stateFlag & 0x1) == 0 ? 1 : -1)) + dx;
-                    bullet.y = y - 5120L + dy;
-                    bullet.stateFlag = (short)(bullet.stateFlag & 0xFFFFFFF7);
+                    bullet.x = x - 0x2800 * ((stateFlag & ACTOR_STATE.FLIP_X) == 0 ? 1 : -1) + dx;
+                    bullet.y = y - 0x1400 + dy;
+                    bullet.stateFlag &= ~ACTOR_STATE.DEAD;
                     V[4] = 0;
                     anim.newAction = 4;
                 }
@@ -1340,8 +1341,8 @@ public class Actor
             case 6:
                 if (Ani_CheckEnd())
                 {
-                    if ((stateFlag & 0x20) != 0)
-                        stateFlag = (short)(stateFlag | 0x40);
+                    if ((stateFlag & ACTOR_STATE.OVERRIDE_ON_DEATH) != 0)
+                        stateFlag |= ACTOR_STATE.OVERRIDEN;
                     else
                         Actor_Death();
                 }
@@ -1381,8 +1382,8 @@ public class Actor
         else if (GameObj_checkCollsion(Game.pRayman))
         {
             Game.pRayman.doDamage();
-            if (((stateFlag & 0x1) == 0 && (Game.pRayman.stateFlag & 0x1) != 0) ||
-                ((stateFlag & 0x1) != 0 && (Game.pRayman.stateFlag & 0x1) == 0))
+            if (((stateFlag & ACTOR_STATE.FLIP_X) == 0 && (Game.pRayman.stateFlag & ACTOR_STATE.FLIP_X) != 0) ||
+                ((stateFlag & ACTOR_STATE.FLIP_X) != 0 && (Game.pRayman.stateFlag & ACTOR_STATE.FLIP_X) == 0))
             {
                 Game.pRayman.mmodel_vX = 0;
                 Game.pRayman.dx = 0;
@@ -1423,7 +1424,8 @@ public class Actor
             else
                 mmodel_vX = (short)(mmodel_vX - vX - deltaX);
 
-            stateFlag = (sbyte)(0x1 | (stateFlag & 0xFFFFFFFA));
+            stateFlag &= ~ACTOR_STATE.FLIP_Y;
+            stateFlag |= ACTOR_STATE.FLIP_X;
         }
         else if (vX < 0)
         {
@@ -1432,11 +1434,12 @@ public class Actor
             else
                 mmodel_vX = (short)(mmodel_vX + vX + deltaX);
 
-            stateFlag = (sbyte)(0x0 | (stateFlag & 0xFFFFFFFA));
+            stateFlag &= ~ACTOR_STATE.FLIP_Y;
+            stateFlag &= ~ACTOR_STATE.FLIP_X;
         }
         else
         {
-            mmodel_vX = (short)((stateFlag & 0x5) != 0 ? -deltaX : deltaX);
+            mmodel_vX = (short)((stateFlag & (ACTOR_STATE.FLIP_X | ACTOR_STATE.FLIP_Y)) != 0 ? -deltaX : deltaX);
         }
 
         anim.newAction = 7;
@@ -1460,12 +1463,14 @@ public class Actor
         if (vX > 0)
         {
             mmodel_vX = (short)-vX;
-            stateFlag = (sbyte)(0x1 | (stateFlag & 0xFFFFFFFA));
+            stateFlag &= ~ACTOR_STATE.FLIP_Y;
+            stateFlag |= ACTOR_STATE.FLIP_X;
         }
         else if (vX < 0)
         {
             mmodel_vX = (short)vX;
-            stateFlag = (sbyte)(0x0 | (stateFlag & 0xFFFFFFFA));
+            stateFlag &= ~ACTOR_STATE.FLIP_Y;
+            stateFlag &= ~ACTOR_STATE.FLIP_X;
         }
 
         V[6] = 0;
@@ -1489,7 +1494,7 @@ public class Actor
 
                     if (((GAME_KEY)V[4] & GAME_KEY.Middle) != 0 && 
                         (fist_top = getAvailableFist()) != -1 &&
-                        (Game.pFist[0].stateFlag & 0x8) != 0)
+                        (Game.pFist[0].stateFlag & ACTOR_STATE.DEAD) != 0)
                     {
                         anim.newAction = 25;
                         fist_time[fist_top] = 0;
@@ -1533,7 +1538,8 @@ public class Actor
 
                     if (((GAME_KEY)V[3] & GAME_KEY.Left) != 0)
                     {
-                        stateFlag = (sbyte)(0x0 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag &= ~ACTOR_STATE.FLIP_X;
                         bool canJump = checkClimbJump(1);
                         if (((GAME_KEY)V[4] & GAME_KEY.Left) != 0)
                         {
@@ -1548,7 +1554,8 @@ public class Actor
 
                     if (((GAME_KEY)V[3] & GAME_KEY.Right) != 0)
                     {
-                        stateFlag = (sbyte)(0x1 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag |= ACTOR_STATE.FLIP_X;
                         bool canJump = checkClimbJump(2);
                         if (((GAME_KEY)V[4] & GAME_KEY.Right) != 0)
                         {
@@ -1563,7 +1570,8 @@ public class Actor
 
                     if (((GAME_KEY)V[3] & GAME_KEY.UpRight) != 0)
                     {
-                        stateFlag = (sbyte)(0x1 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag |= ACTOR_STATE.FLIP_X;
                         bool canJump = checkClimbJump(6);
                         if (((GAME_KEY)V[4] & GAME_KEY.UpRight) != 0)
                         {
@@ -1571,9 +1579,9 @@ public class Actor
                             {
                                 y -= 0x1000L;
                                 x += 0x1000L;
-                                if (x + (colBox.Up << 8) > GameMidlet.Instance_Game.m_sBackgroundWidth << 4 << 8)
+                                if (x + (colBox.Right << 8) > GameMidlet.Instance_Game.m_sBackgroundWidth << 4 << 8)
                                 {
-                                    x = ((GameMidlet.Instance_Game.m_sBackgroundWidth << 4) - colBox.Up + 2) << 8;
+                                    x = ((GameMidlet.Instance_Game.m_sBackgroundWidth << 4) - colBox.Right + 2) << 8;
                                     jumpUp(0, 0);
                                 }
                                 else
@@ -1590,7 +1598,8 @@ public class Actor
 
                     if (((GAME_KEY)V[3] & GAME_KEY.UpLeft) != 0)
                     {
-                        stateFlag = (sbyte)(0x0 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag &= ~ACTOR_STATE.FLIP_X;
                         bool canJump = checkClimbJump(5);
                         if (((GAME_KEY)V[4] & GAME_KEY.UpLeft) != 0)
                         {
@@ -1617,7 +1626,8 @@ public class Actor
 
                     if (((GAME_KEY)V[3] & GAME_KEY.DownRight) != 0)
                     {
-                        stateFlag = (sbyte)(0x1 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag |= ACTOR_STATE.FLIP_X;
                         bool canFall = checkClimbJump(8);
                         bool canMoveSide = checkClimbJump(2);
                         if (((GAME_KEY)V[4] & GAME_KEY.DownRight) != 0)
@@ -1637,7 +1647,8 @@ public class Actor
 
                     if (((GAME_KEY)V[3] & GAME_KEY.DownLeft) != 0)
                     {
-                        stateFlag = (sbyte)(0x0 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag &= ~ACTOR_STATE.FLIP_X;
                         bool canFall = checkClimbJump(8);
                         bool canMoveSide = checkClimbJump(1);
                         if (((GAME_KEY)V[4] & GAME_KEY.DownLeft) != 0)
@@ -1696,7 +1707,8 @@ public class Actor
                 case 19:
                     if (((GAME_KEY)V[3] & GAME_KEY.UpLeft) != 0)
                     {
-                        stateFlag = (sbyte)(0x0 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag &= ~ACTOR_STATE.FLIP_X;
                         bool canJumpUp = checkClimbJump(4);
                         bool canJumpLeft = checkClimbJump(1);
                         if (canJumpUp && !canJumpLeft)
@@ -1709,7 +1721,8 @@ public class Actor
 
                     if (((GAME_KEY)V[3] & GAME_KEY.UpRight) != 0)
                     {
-                        stateFlag = (sbyte)(0x1 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag |= ACTOR_STATE.FLIP_X;
                         bool canJumpUp = checkClimbJump(4);
                         bool canJumpRight = checkClimbJump(2);
                         if (canJumpUp && !canJumpRight)
@@ -1720,14 +1733,15 @@ public class Actor
                             anim.newAction = 17;
                     }
 
-                    if (((GAME_KEY)V[3] & ((stateFlag & 1) == 0 ? GAME_KEY.UpLeft : GAME_KEY.UpRight)) == 0)
+                    if (((GAME_KEY)V[3] & ((stateFlag & ACTOR_STATE.FLIP_X) == 0 ? GAME_KEY.UpLeft : GAME_KEY.UpRight)) == 0)
                         anim.newAction = 17;
                     break;
 
                 case 21:
                     if (((GAME_KEY)V[3] & GAME_KEY.DownLeft) != 0)
                     {
-                        stateFlag = (sbyte)(0x0 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag &= ~ACTOR_STATE.FLIP_X;
                         bool canJumpDown = checkClimbJump(8);
                         bool canJumpLeft = checkClimbJump(1);
                         
@@ -1741,7 +1755,8 @@ public class Actor
 
                     if (((GAME_KEY)V[3] & GAME_KEY.DownRight) != 0)
                     {
-                        stateFlag = (sbyte)(0x1 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag |= ACTOR_STATE.FLIP_X;
                         bool canJumpDown = checkClimbJump(8);
                         bool canJumpRight = checkClimbJump(2);
                         if (canJumpDown && !canJumpRight)
@@ -1752,7 +1767,7 @@ public class Actor
                             anim.newAction = 17;
                     }
 
-                    if (((GAME_KEY)V[3] & ((stateFlag & 1) == 0 ? GAME_KEY.DownLeft : GAME_KEY.DownRight)) == 0)
+                    if (((GAME_KEY)V[3] & ((stateFlag & ACTOR_STATE.FLIP_X) == 0 ? GAME_KEY.DownLeft : GAME_KEY.DownRight)) == 0)
                         anim.newAction = 17;
                     break;
 
@@ -1760,7 +1775,8 @@ public class Actor
                     if (((GAME_KEY)V[3] & GAME_KEY.Left) != 0)
                     {
                         bool canJump = checkClimbJump(1);
-                        stateFlag = (sbyte)(0x0 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag &= ~ACTOR_STATE.FLIP_X;
                         if (canJump)
                             anim.newAction = 17;
                     }
@@ -1768,12 +1784,13 @@ public class Actor
                     if (((GAME_KEY)V[3] & GAME_KEY.Right) != 0)
                     {
                         bool canJump = checkClimbJump(2);
-                        stateFlag = (sbyte)(0x1 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag |= ACTOR_STATE.FLIP_X;
                         if (canJump)
                             anim.newAction = 17;
                     }
 
-                    if (((GAME_KEY)V[3] & ((stateFlag & 1) == 0 ? GAME_KEY.Left : GAME_KEY.Right)) == 0)
+                    if (((GAME_KEY)V[3] & ((stateFlag & ACTOR_STATE.FLIP_X) == 0 ? GAME_KEY.Left : GAME_KEY.Right)) == 0)
                         anim.newAction = 17;
                     break;
                 
@@ -1787,8 +1804,8 @@ public class Actor
                     else
                         return;
 
-                    x = V[13] + ((colBox.Left + colBox.Up) >> 1);
-                    y = V[14] + ((colBox.Right + colBox.Down) >> 1);
+                    x = V[13] + ((colBox.Left + colBox.Right) >> 1);
+                    y = V[14] + ((colBox.Top + colBox.Bottom) >> 1);
                     x <<= 8;
                     y <<= 8;
                     step();
@@ -1817,13 +1834,14 @@ public class Actor
                     
                     if (((GAME_KEY)V[3] & GAME_KEY.Left) != 0)
                     {
-                        if ((stateFlag & 0x1) == 0 && xDirectionConfirmationCounter < -1)
+                        if ((stateFlag & ACTOR_STATE.FLIP_X) == 0 && xDirectionConfirmationCounter < -1)
                         {
                             anim.newAction = 2;
                         }
                         else
                         {
-                            stateFlag = (sbyte)(0x0 | (stateFlag & 0xFFFFFFFA));
+                            stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                            stateFlag &= ~ACTOR_STATE.FLIP_X;
                             if (actorReference is { objType: OBJECT_TYPE.PLATFORM_2 or OBJECT_TYPE.PLATFORM_1 } &&
                                 actorReference.dy != 0 && actorReference.dx == 0)
                             {
@@ -1839,13 +1857,14 @@ public class Actor
 
                     if (((GAME_KEY)V[3] & GAME_KEY.Right) != 0)
                     {
-                        if ((stateFlag & 0x1) != 0 && xDirectionConfirmationCounter > 1)
+                        if ((stateFlag & ACTOR_STATE.FLIP_X) != 0 && xDirectionConfirmationCounter > 1)
                         {
                             anim.newAction = 2;
                         }
                         else
                         {
-                            stateFlag = (sbyte)(0x1 | (stateFlag & 0xFFFFFFFA));
+                            stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                            stateFlag |= ACTOR_STATE.FLIP_X;
                             if (actorReference is { objType: OBJECT_TYPE.PLATFORM_2 or OBJECT_TYPE.PLATFORM_1 } &&
                                 actorReference.dy != 0 && actorReference.dx == 0)
                             {
@@ -1861,13 +1880,15 @@ public class Actor
 
                     if (((GAME_KEY)V[3] & GAME_KEY.DownLeft) != 0)
                     {
-                        stateFlag = (sbyte)(0x0 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag &= ~ACTOR_STATE.FLIP_X;
                         anim.newAction = 3;
                     }
 
                     if (((GAME_KEY)V[3] & GAME_KEY.DownRight) != 0)
                     {
-                        stateFlag = (sbyte)(0x1 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag |= ACTOR_STATE.FLIP_X;
                         anim.newAction = 3;
                     }
 
@@ -1895,9 +1916,15 @@ public class Actor
 
                 case 2:
                     if (((GAME_KEY)V[3] & GAME_KEY.Left) != 0)
-                        stateFlag = (sbyte)(0x0 | (stateFlag & 0xFFFFFFFA));
+                    {
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag &= ~ACTOR_STATE.FLIP_X;
+                    }
                     else if (((GAME_KEY)V[3] & GAME_KEY.Right) != 0)
-                        stateFlag = (sbyte)(0x1 | (stateFlag & 0xFFFFFFFA));
+                    {
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag |= ACTOR_STATE.FLIP_X;
+                    }
 
                     if (((GAME_KEY)V[4] & GAME_KEY.Up) != 0)
                     {
@@ -1917,12 +1944,14 @@ public class Actor
                     }
                     else if (((GAME_KEY)V[4] & GAME_KEY.DownLeft) != 0)
                     {
-                        stateFlag = (sbyte)(0x0 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag &= ~ACTOR_STATE.FLIP_X;
                         anim.newAction = 3;
                     }
                     else if (((GAME_KEY)V[4] & GAME_KEY.DownRight) != 0)
                     {
-                        stateFlag = (sbyte)(0x1 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag |= ACTOR_STATE.FLIP_X;
                         anim.newAction = 3;
                     }
                     else if (((GAME_KEY)V[3] & GAME_KEY.Right) == 0 && ((GAME_KEY)V[3] & GAME_KEY.Left) == 0)
@@ -1956,7 +1985,8 @@ public class Actor
 
                     if (((GAME_KEY)V[3] & GAME_KEY.Left) != 0 || ((GAME_KEY)V[3] & GAME_KEY.UpLeft) != 0 || ((GAME_KEY)V[3] & GAME_KEY.DownLeft) != 0)
                     {
-                        stateFlag = (sbyte)(0x0 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag &= ~ACTOR_STATE.FLIP_X;
                         if (mmodel_vX > -0x380)
                         {
                             mmodel_vX = (short)(mmodel_vX - 0x100);
@@ -1966,7 +1996,8 @@ public class Actor
                     }
                     else if (((GAME_KEY)V[3] & GAME_KEY.Right) != 0 || ((GAME_KEY)V[3] & GAME_KEY.UpRight) != 0 || ((GAME_KEY)V[3] & GAME_KEY.DownRight) != 0)
                     {
-                        stateFlag = (sbyte)(0x1 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag |= ACTOR_STATE.FLIP_X;
                         if (mmodel_vX > -0x380)
                         {
                             mmodel_vX = (short)(mmodel_vX - 0x100);
@@ -2005,7 +2036,7 @@ public class Actor
                         else
                         {
                             anim.newAction = 10;
-                            Game.pFist[fist_top].Fist_launch(stateFlag & 0x1, 0x21C0);
+                            Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, 0x21C0);
                         }
                     }
                     break;
@@ -2017,19 +2048,21 @@ public class Actor
                         anim.newAction = 36;
                         fist_top = getAvailableFist();
                         if (fist_top != -1)
-                            Game.pFist[fist_top].Fist_launch(stateFlag & 0x1, 8640);
+                            Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, 8640);
                     }
                     break;
 
                 case 30:
                     if (((GAME_KEY)V[3] & GAME_KEY.Left) != 0 || ((GAME_KEY)V[3] & GAME_KEY.UpLeft) != 0)
                     {
-                        stateFlag = (sbyte)(0x0 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag &= ~ACTOR_STATE.FLIP_X;
                         anim.newAction = 31;
                     }
                     else if (((GAME_KEY)V[3] & GAME_KEY.Right) != 0 || ((GAME_KEY)V[3] & GAME_KEY.UpRight) != 0)
                     {
-                        stateFlag = (sbyte)(0x1 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag |= ACTOR_STATE.FLIP_X;
                         anim.newAction = 31;
                     }
 
@@ -2044,9 +2077,15 @@ public class Actor
 
                 case 31:
                     if (((GAME_KEY)V[3] & GAME_KEY.Left) != 0 || ((GAME_KEY)V[3] & GAME_KEY.UpLeft) != 0)
-                        stateFlag = (sbyte)(0x0 | (stateFlag & 0xFFFFFFFA));
+                    {
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag &= ~ACTOR_STATE.FLIP_X;
+                    }
                     else if (((GAME_KEY)V[3] & GAME_KEY.Right) != 0 || ((GAME_KEY)V[3] & GAME_KEY.UpRight) != 0)
-                        stateFlag = (sbyte)(0x1 | (stateFlag & 0xFFFFFFFA));
+                    {
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag |= ACTOR_STATE.FLIP_X;
+                    }
 
                     if (((GAME_KEY)V[5] & GAME_KEY.Down) != 0 || ((GAME_KEY)V[5] & GAME_KEY.DownLeft) != 0 || ((GAME_KEY)V[5] & GAME_KEY.DownRight) != 0)
                     {
@@ -2072,7 +2111,8 @@ public class Actor
 
                     if (((GAME_KEY)V[3] & GAME_KEY.Left) != 0 || ((GAME_KEY)V[3] & GAME_KEY.UpLeft) != 0 || ((GAME_KEY)V[3] & GAME_KEY.DownLeft) != 0)
                     {
-                        stateFlag = (sbyte)(0x0 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag &= ~ACTOR_STATE.FLIP_X;
                         if (mmodel_vX > -0x700)
                         {
                             mmodel_vX = (short)(mmodel_vX - 0x100);
@@ -2082,7 +2122,8 @@ public class Actor
                     }
                     else if (((GAME_KEY)V[3] & GAME_KEY.Right) != 0 || ((GAME_KEY)V[3] & GAME_KEY.UpRight) != 0 || ((GAME_KEY)V[3] & GAME_KEY.DownRight) != 0)
                     {
-                        stateFlag = (sbyte)(0x1 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag |= ACTOR_STATE.FLIP_X;
                         if (mmodel_vX > -0x700)
                         {
                             mmodel_vX = (short)(mmodel_vX - 0x100);
@@ -2099,7 +2140,7 @@ public class Actor
                     if (((GAME_KEY)V[4] & GAME_KEY.Middle) != 0 && (fist_top = getAvailableFist()) != -1)
                     {
                         anim.newAction = 10;
-                        Game.pFist[fist_top].Fist_launch(stateFlag & 0x1, 0x21C0);
+                        Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, 0x21C0);
                     }
                     break;
                 
@@ -2146,7 +2187,8 @@ public class Actor
 
                     if (((GAME_KEY)V[3] & GAME_KEY.Left) != 0 || ((GAME_KEY)V[3] & GAME_KEY.UpLeft) != 0 || ((GAME_KEY)V[3] & GAME_KEY.DownLeft) != 0)
                     {
-                        stateFlag = (sbyte)(0x0 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag &= ~ACTOR_STATE.FLIP_X;
                         if (mmodel_vX > -0x700)
                         {
                             mmodel_vX = (short)(mmodel_vX - 0x100);
@@ -2156,7 +2198,8 @@ public class Actor
                     }
                     else if (((GAME_KEY)V[3] & GAME_KEY.Right) != 0 || ((GAME_KEY)V[3] & GAME_KEY.UpRight) != 0 || ((GAME_KEY)V[3] & GAME_KEY.DownRight) != 0)
                     {
-                        stateFlag = (sbyte)(0x1 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag |= ACTOR_STATE.FLIP_X;
                         if (mmodel_vX > -0x700)
                         {
                             mmodel_vX = (short)(mmodel_vX - 0x100);
@@ -2173,19 +2216,21 @@ public class Actor
                     if (((GAME_KEY)V[4] & GAME_KEY.Middle) != 0 && (fist_top = getAvailableFist()) != -1)
                     {
                         anim.newAction = 10;
-                        Game.pFist[fist_top].Fist_launch(stateFlag & 0x1, 0x21C0);
+                        Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, 0x21C0);
                     }
                     break;
 
                 case 4:
                     if (((GAME_KEY)V[3] & GAME_KEY.Left) != 0 || ((GAME_KEY)V[3] & GAME_KEY.DownLeft) != 0)
                     {
-                        stateFlag = (sbyte)(0x0 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag &= ~ACTOR_STATE.FLIP_X;
                         anim.newAction = 5;
                     }
                     else if (((GAME_KEY)V[3] & GAME_KEY.Right) != 0 || ((GAME_KEY)V[3] & GAME_KEY.DownRight) != 0)
                     {
-                        stateFlag = (sbyte)(0x1 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag |= ACTOR_STATE.FLIP_X;
                         anim.newAction = 5;
                     }
 
@@ -2195,11 +2240,19 @@ public class Actor
                     break;
                 case 5:
                     if (((GAME_KEY)V[3] & GAME_KEY.DownLeft) != 0)
-                        stateFlag = (sbyte)(0x0 | (stateFlag & 0xFFFFFFFA));
+                    {
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag &= ~ACTOR_STATE.FLIP_X;
+                    }
                     else if (((GAME_KEY)V[3] & GAME_KEY.DownRight) != 0)
-                        stateFlag = (sbyte)(0x1 | (stateFlag & 0xFFFFFFFA));
+                    {
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag |= ACTOR_STATE.FLIP_X;
+                    }
                     else if (((GAME_KEY)V[3] & GAME_KEY.Down) != 0)
+                    {
                         anim.newAction = 4;
+                    }
 
                     if (((GAME_KEY)V[3] & GAME_KEY.Down) == 0 && ((GAME_KEY)V[3] & GAME_KEY.DownLeft) == 0 && ((GAME_KEY)V[3] & GAME_KEY.DownRight) == 0)
                     {
@@ -2230,13 +2283,15 @@ public class Actor
                     }
                     else if (((GAME_KEY)V[4] & GAME_KEY.Left) != 0)
                     {
-                        stateFlag = (sbyte)(0x0 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag &= ~ACTOR_STATE.FLIP_X;
                         anim.newAction = 2;
                     }
                     else if (((GAME_KEY)V[4] & GAME_KEY.Right) != 0)
                     {
                         anim.newAction = 2;
-                        stateFlag = (sbyte)(0x1 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag |= ACTOR_STATE.FLIP_X;
                     }
                     else if (((GAME_KEY)V[4] & GAME_KEY.UpRight) != 0)
                     {
@@ -2248,13 +2303,15 @@ public class Actor
                     }
                     else if (((GAME_KEY)V[4] & GAME_KEY.DownLeft) != 0)
                     {
-                        stateFlag = (sbyte)(0x0 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag &= ~ACTOR_STATE.FLIP_X;
                         anim.newAction = 3;
                     }
                     // NOTE: Bug! Should be DownRight
                     else if (((GAME_KEY)V[4] & GAME_KEY.DownLeft) != 0)
                     {
-                        stateFlag = (sbyte)(0x1 | (stateFlag & 0xFFFFFFFA));
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag |= ACTOR_STATE.FLIP_X;
                         anim.newAction = 3;
                     }
                     break;
@@ -2265,7 +2322,7 @@ public class Actor
                         anim.newAction = 13;
                         fist_top = getAvailableFist();
                         if (fist_top != -1)
-                            Game.pFist[fist_top].Fist_launch(stateFlag & 0x1, fist_time[fist_top] * 0xF0 + 0x1A40);
+                            Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, fist_time[fist_top] * 0xF0 + 0x1A40);
                     }
                     break;
 
@@ -2275,7 +2332,7 @@ public class Actor
                         anim.newAction = 13;
                         fist_top = getAvailableFist();
                         if (fist_top != -1)
-                            Game.pFist[fist_top].Fist_launch(stateFlag & 0x1, fist_time[fist_top] * 0xF0 + 0x1A40);
+                            Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, fist_time[fist_top] * 0xF0 + 0x1A40);
                     }
                     bug = 8;
                     break;
@@ -2286,7 +2343,7 @@ public class Actor
                         anim.newAction = 23;
                         fist_top = getAvailableFist();
                         if (fist_top != -1)
-                            Game.pFist[fist_top].Fist_launch(stateFlag & 0x1, fist_time[fist_top] * 0xF0 + 0x1A40);
+                            Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, fist_time[fist_top] * 0xF0 + 0x1A40);
                     }
                     break;
                 
@@ -2295,7 +2352,7 @@ public class Actor
                     yDirectionConfirmationCounter = 0;
                     if (((GAME_KEY)V[4] & GAME_KEY.Up) != 0)
                     {
-                        if ((stateFlag & 0x1) == 0)
+                        if ((stateFlag & ACTOR_STATE.FLIP_X) == 0)
                             jumpUp(-0x100, 0);
                         else
                             jumpUp(0x100, 0);
@@ -2303,7 +2360,7 @@ public class Actor
                     else if (((GAME_KEY)V[4] & GAME_KEY.Down) != 0)
                     {
                         y += 0x1000L;
-                        if ((stateFlag & 0x1) == 0)
+                        if ((stateFlag & ACTOR_STATE.FLIP_X) == 0)
                             x += 0x200L;
                         else
                             x -= 0x200L;
@@ -2323,7 +2380,7 @@ public class Actor
                 case 29:
                     if (((GAME_KEY)V[4] & GAME_KEY.Up) != 0)
                     {
-                        if ((stateFlag & 0x1) == 0)
+                        if ((stateFlag & ACTOR_STATE.FLIP_X) == 0)
                             jumpUp(-0x100, 0);
                         else
                             jumpUp(0x100, 0);
@@ -2331,7 +2388,7 @@ public class Actor
                     else if (((GAME_KEY)V[4] & GAME_KEY.Down) != 0)
                     {
                         y += 0x1000L;
-                        if ((stateFlag & 0x1) == 0)
+                        if ((stateFlag & ACTOR_STATE.FLIP_X) == 0)
                             x += 0x200L;
                         else
                             x -= 0x200L;
@@ -2369,13 +2426,13 @@ public class Actor
     public bool checkCeilingAir()
     {
         int nx = (int)(x >> 8 >> 4);
-        int ny = (int)((((y + dy) >> 8) + colBox.Right) >> 4);
+        int ny = (int)((((y + dy) >> 8) + colBox.Top) >> 4);
         PHB_TYPE phb = Actor_GetPHB(nx, ny);
         if (phb == PHB_TYPE.SOLID)
         {
             while (phb == PHB_TYPE.SOLID)
                 phb = Actor_GetPHB(nx, ++ny);
-            y = ((ny << 4) - colBox.Right + 2) << 8;
+            y = ((ny << 4) - colBox.Top + 2) << 8;
             dy = 0;
             return true;
         }
@@ -2401,19 +2458,19 @@ public class Actor
     public bool checkClimb()
     {
         int tileX = (int)((x + dx) >> 8 >> 4);
-        int topTileY = (int)((((y + dy) >> 8) + colBox.Right) >> 4);
-        int bottomTileY = (int)((((y + dy) >> 8) + colBox.Down) >> 4);
+        int topTileY = (int)((((y + dy) >> 8) + colBox.Top) >> 4);
+        int bottomTileY = (int)((((y + dy) >> 8) + colBox.Bottom) >> 4);
         if (Actor_GetPHB(tileX, topTileY) == PHB_TYPE.CLIMB && Actor_GetPHB(tileX, topTileY + 1) == PHB_TYPE.CLIMB)
         {
             if (Actor_GetPHB(tileX + 1, topTileY) != PHB_TYPE.CLIMB)
-                x = (((tileX << 4) + 16 - colBox.Up) << 8);
+                x = (((tileX << 4) + 16 - colBox.Right) << 8);
             else if (Actor_GetPHB(tileX - 1, topTileY) != PHB_TYPE.CLIMB)
                 x = (((tileX << 4) - colBox.Left) << 8);
 
             if (dy > 0 && Actor_GetPHB(tileX, topTileY - 1) != PHB_TYPE.CLIMB)
-                y = (((topTileY << 4) - colBox.Right) << 8);
+                y = (((topTileY << 4) - colBox.Top) << 8);
             else if (dy < 0 && Actor_GetPHB(tileX, topTileY + 2) != PHB_TYPE.CLIMB)
-                y = (((topTileY << 4) - colBox.Right) << 8);
+                y = (((topTileY << 4) - colBox.Top) << 8);
 
             dx = dy = 0;
             V[15] = 1;
@@ -2431,17 +2488,17 @@ public class Actor
         int tileX = -100;
         int tileY = -100;
         if ((sides & 0x1) != 0)
-            tileX = (int)((((x + dx) >> 8) + colBox.Up) >> 4);
+            tileX = (int)((((x + dx) >> 8) + colBox.Right) >> 4);
         if ((sides & 0x2) != 0)
             tileX = (int)((((x + dx) >> 8) + colBox.Left - 1L) >> 4);
         if ((sides & 0x4) != 0)
-            tileY = (int)((((y + dy) >> 8) + colBox.Right + 8L) >> 4);
+            tileY = (int)((((y + dy) >> 8) + colBox.Top + 8L) >> 4);
         if ((sides & 0x8) != 0)
-            tileY = (int)((((y + dy) >> 8) + colBox.Right) >> 4);
+            tileY = (int)((((y + dy) >> 8) + colBox.Top) >> 4);
         if (tileX == -100)
             tileX = (int)((x + dx) >> 8 >> 4);
         if (tileY == -100)
-            tileY = (int)((((y + dy) >> 8) + colBox.Right) >> 4);
+            tileY = (int)((((y + dy) >> 8) + colBox.Top) >> 4);
         if ((sides & 0x1) != 0)
             tileX--;
         if ((sides & 0x2) != 0)
@@ -2457,7 +2514,7 @@ public class Actor
 
     public bool canHangOnLedge()
     {
-        bool bFaceLeft = (stateFlag & 0x1) == 0;
+        bool bFaceLeft = (stateFlag & ACTOR_STATE.FLIP_X) == 0;
         int posX = (int)(x + dx) >> 8;
         int posY = (int)(y + dy) >> 8;
         if (bFaceLeft)
@@ -2466,11 +2523,11 @@ public class Actor
         }
         else
         {
-            posX += colBox.Up + 8;
+            posX += colBox.Right + 8;
         }
 
         int tileX = posX >> 4;
-        int tileY = (int)(((y + dy) >> 8) + colBox.Right + 16L) >> 4;
+        int tileY = (int)(((y + dy) >> 8) + colBox.Top + 16L) >> 4;
         PHB_TYPE phb = Actor_GetPHB(tileX, tileY);
         int behindtileX = tileX;
         if (bFaceLeft)
@@ -2487,11 +2544,11 @@ public class Actor
             else
                 x = tileX << 4;
 
-            y = (tileY << 4) - colBox.Right - 8;
+            y = (tileY << 4) - colBox.Top - 8;
             if (bFaceLeft)
                 x -= colBox.Left - 16 + 4;
             else
-                x -= colBox.Up - 4;
+                x -= colBox.Right - 4;
 
             dx = dy = 0;
             x <<= 8;
@@ -2504,7 +2561,7 @@ public class Actor
 
     public void doDamage()
     {
-        if (V[12] > 0 || (stateFlag & 0x8) != 0)
+        if (V[12] > 0 || (stateFlag & ACTOR_STATE.DEAD) != 0)
             return;
 
         GameMidlet.Instance_Game.m_gameFrame_nEnergy = (sbyte)(GameMidlet.Instance_Game.m_gameFrame_nEnergy - (GameMidlet.Instance_Game.m_gameFrame_nEnergy > 0 ? 1 : 0));
@@ -2526,7 +2583,7 @@ public class Actor
 
     public bool checkDamage()
     {
-        for (int i = (int)(y + (colBox.Right << 8)); i <= y + (colBox.Down << 8); i += 0x1000)
+        for (int i = (int)(y + (colBox.Top << 8)); i <= y + (colBox.Bottom << 8); i += 0x1000)
         {
             PHB_TYPE phb = Actor_GetPHB((int)(x >> 8 >> 4), i >> 8 >> 4);
             if (phb == PHB_TYPE.TYPE_18)
@@ -2569,15 +2626,15 @@ public class Actor
         int nx = (int)(x >> 8);
         int ny = (int)(y >> 8) + 5;
         int l = (int)(rpAttach.colBox.Left + (rpAttach.x >> 8));
-        int t = (int)(rpAttach.colBox.Right + (rpAttach.y >> 8));
-        int r = (int)(rpAttach.colBox.Up + (rpAttach.x >> 8));
-        int b = (int)(rpAttach.colBox.Down + (rpAttach.y >> 8));
+        int t = (int)(rpAttach.colBox.Top + (rpAttach.y >> 8));
+        int r = (int)(rpAttach.colBox.Right + (rpAttach.x >> 8));
+        int b = (int)(rpAttach.colBox.Bottom + (rpAttach.y >> 8));
         if (nx >= l && nx < r && ny >= t && ny < b)
         {
             actorReference = rpAttach;
             dx = dy = 0;
             mmodel_aX = mmodel_aY = mmodel_vX = mmodel_vY = 0;
-            y = rpAttach.y + (rpAttach.colBox.Right << 8) + rpAttach.dy;
+            y = rpAttach.y + (rpAttach.colBox.Top << 8) + rpAttach.dy;
             anim.newAction = 12;
             return true;
         }
@@ -2589,14 +2646,14 @@ public class Actor
     {
         int nx = (int)(x >> 8);
         int l = (int)(actorReference.colBox.Left + (actorReference.x >> 8));
-        int r = (int)(actorReference.colBox.Up + (actorReference.x >> 8));
+        int r = (int)(actorReference.colBox.Right + (actorReference.x >> 8));
         if (nx < l || nx >= r)
         {
             anim.newAction = 11;
             if (actorReference.dy == 0 && actorReference.dx != 0)
             {
-                y += (actorReference.colBox.Down - actorReference.colBox.Right + 2) << 8;
-                if ((stateFlag & 0x1) == 0)
+                y += (actorReference.colBox.Bottom - actorReference.colBox.Top + 2) << 8;
+                if ((stateFlag & ACTOR_STATE.FLIP_X) == 0)
                     x -= 0x800L;
                 else
                     x += 0x800L;
@@ -2606,7 +2663,7 @@ public class Actor
         }
         else
         {
-            y = actorReference.y + (actorReference.colBox.Right << 8);
+            y = actorReference.y + (actorReference.colBox.Top << 8);
             dy = actorReference.dy;
             dx = (short)(dx + actorReference.dx);
         }
@@ -2654,10 +2711,16 @@ public class Actor
                     break;
           
                 case 27:
-                    if ((stateFlag & 0x1) == 0)
-                        stateFlag = (sbyte)(0x1 | (stateFlag & 0xFFFFFFFA));
+                    if ((stateFlag & ACTOR_STATE.FLIP_X) == 0)
+                    {
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag |= ACTOR_STATE.FLIP_X;
+                    }
                     else
-                        stateFlag = (sbyte)(0x0 | (stateFlag & 0xFFFFFFFA));
+                    {
+                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                        stateFlag &= ~ACTOR_STATE.FLIP_X;
+                    }
 
                     step();
                     anim.newAction = 27;
@@ -2714,14 +2777,14 @@ public class Actor
                     m_lInitX = actorReference.x;
                     m_lInitY = actorReference.y;
                     anim.newAction = 0;
-                    stateFlag = (short)(stateFlag | 0x8);
+                    stateFlag |= ACTOR_STATE.DEAD;
                     Game.m_gameStateStep = 0;
                     Game.GameFrame_PostMessage(2, actorReference.V[0]);
                     break;
                 
                 case 32:
                 case 33:
-                    stateFlag = (short)(stateFlag | 0x8);
+                    stateFlag |= ACTOR_STATE.DEAD;
                     Game.GameFrame_PostMessage(1, 0);
                     if (Game.s_iLeftToDie == 0)
                         Game.s_iLeftToDie = 1;
@@ -3054,11 +3117,12 @@ public class Actor
             {
                 x = GameMidlet.Instance_Game.s_actorCheckpoint.x;
                 y = GameMidlet.Instance_Game.s_actorCheckpoint.y;
-                stateFlag = (sbyte)(0x1 | (stateFlag & 0xFFFFFFFA));
+                stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                stateFlag |= ACTOR_STATE.FLIP_X;
                 xDirectionConfirmed = true;
             }
 
-            xDirectionConfirmed = ((stateFlag & 0x1) != 0);
+            xDirectionConfirmed = ((stateFlag & ACTOR_STATE.FLIP_X) != 0);
             Game.pFist[0].anim.curAction = 0;
             Game.pFist[1].anim.curAction = 0;
             xDirectionConfirmationCounter = xDirectionConfirmed ? 2 : -2;
@@ -3162,11 +3226,11 @@ public class Actor
     public bool Actor_Death()
     {
         if (objType != OBJECT_TYPE.LEVEL_POST)
-            stateFlag = (short)(stateFlag | 0x8);
+            stateFlag |= ACTOR_STATE.DEAD;
         else if (Game.s_iLeftToDie != 1)
             return false;
 
-        if ((stateFlag & 0x2) != 0)
+        if ((stateFlag & ACTOR_STATE.LEFT_TO_DIE) != 0)
             Game.s_iLeftToDie--;
 
         return true;
@@ -3233,7 +3297,7 @@ public class Actor
 
         if (anim.curAction is 16 or 35 or 34 or 10 or 25 or 24 or 23)
         {
-            xDirectionConfirmed = (stateFlag & 0x1) != 0;
+            xDirectionConfirmed = (stateFlag & ACTOR_STATE.FLIP_X) != 0;
             if (xDirectionConfirmed)
                 xDirectionConfirmationCounter = 4;
             else

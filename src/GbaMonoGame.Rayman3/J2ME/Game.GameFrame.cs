@@ -740,7 +740,7 @@ public partial class Game
                     int mask = 1;
                     do
                     {
-                        if ((actors[i].stateFlag & 0x8) == 0)
+                        if ((actors[i].stateFlag & ACTOR_STATE.DEAD) == 0)
                             continue;
                         buffer = (byte)(buffer | mask);
                     } while (++i < actors.Length && (mask <<= 1) < 256);
@@ -776,7 +776,7 @@ public partial class Game
                 for (int i = 0; i < actors.Length; i++)
                 {
                     byte buffer = 0;
-                    if ((actors[i].stateFlag & 0x8) != 0)
+                    if ((actors[i].stateFlag & ACTOR_STATE.DEAD) != 0)
                         buffer = (byte)(buffer | mask);
                     data[offset++] = buffer;
                 }
@@ -808,7 +808,7 @@ public partial class Game
                         {
                             if ((buffer & mask) == 0)
                                 continue;
-                            actors[i].stateFlag = (short)(actors[i].stateFlag | 0x8);
+                            actors[i].stateFlag |= ACTOR_STATE.DEAD;
                         } while (++i < actors.Length && (mask <<= 1) < 256);
                     }
                     data = null;
@@ -842,7 +842,7 @@ public partial class Game
                     {
                         byte buffer = data[offset++];
                         if ((buffer & mask) != 0)
-                            actors[i].stateFlag = (short)(actors[i].stateFlag | 0x8);
+                            actors[i].stateFlag |= ACTOR_STATE.DEAD;
                     }
                 }
             }

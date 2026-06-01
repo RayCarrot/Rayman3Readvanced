@@ -653,7 +653,7 @@ public partial class Game
                                 iIcon = 6;
                                 break;
                         }
-                        m_gameMenu_pAnims[iIcon].draw(120, iBoxY + (iIndex + 1) * 21 + iAdjust, 0);
+                        m_gameMenu_pAnims[iIcon].draw(120, iBoxY + (iIndex + 1) * 21 + iAdjust, ACTOR_STATE.NONE);
                         g_graBackBuffer.setClip(0, iBoxY, 240, 252);
                     }
                     else
