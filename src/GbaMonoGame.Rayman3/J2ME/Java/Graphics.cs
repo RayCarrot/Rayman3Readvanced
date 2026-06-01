@@ -9,16 +9,15 @@ namespace GbaMonoGame.Rayman3.J2ME;
 // Replaces javax.microedition.lcdui.Graphics
 public class Graphics
 {
-    public Graphics(Point resolution)
+    public Graphics()
     {
-        Resolution = resolution;
-        RenderContext = new FixedResolutionRenderContext(resolution.ToVector2());
+        RenderContext = Engine.ViewPort.GameRenderContext;
         RenderOptions = new RenderOptions() { RenderContext = RenderContext };
         Sprites = [];
     }
 
-    public Point Resolution { get; }
-    public FixedResolutionRenderContext RenderContext { get; }
+    public Point Resolution => Engine.ViewPort.InternalGameResolution.ToRoundedPoint();
+    public RenderContext RenderContext { get; } // TODO: Probably use Playfield2DRenderContext so we can fit to the current level
     public RenderOptions RenderOptions { get; }
     public List<Sprite> Sprites { get; }
     public Rectangle Clip { get; set; }

@@ -143,7 +143,7 @@ public partial class Game
                         break;
                     
                     case 2:
-                        iX = 237 - Actor.aniData[26].modules[16][2];
+                        iX = Resolution.X - 3 - Actor.aniData[26].modules[16][2];
                         iY = 3 + iPosY;
                         Actor.drawModule(GameMidlet.Instance_Game.m_gameMenu_pData, 16, iX, iY, 0, GameMidlet.Instance_Game.g_graBackBuffer);
                         iX -= 3;
@@ -166,7 +166,7 @@ public partial class Game
                                 iY += Actor.aniData[26].modules[16][3];
                                 break;
                         }
-                        iX = 237 - Actor.aniData[26].modules[12][2];
+                        iX = Resolution.X - 3 - Actor.aniData[26].modules[12][2];
                         Actor.drawModule(GameMidlet.Instance_Game.m_gameMenu_pData, 12, iX, iY, 0, GameMidlet.Instance_Game.g_graBackBuffer);
                         iX -= 3;
                         iX = Status_DrawNumber(GameMidlet.Instance_Game.s_iCageTotal, iX, iY, true) - Actor.aniData[26].modules[10][2];

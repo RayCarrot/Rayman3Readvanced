@@ -8,7 +8,8 @@ public partial class Game
     {
         // Custom
         RM = new ResourceManager();
-        Graphics = new Graphics(new Point(240, 320));
+
+        Graphics = new Graphics();
 
         bSoundBegin = false;
         bEnableSound = false;

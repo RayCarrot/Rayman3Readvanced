@@ -32,6 +32,7 @@ public class GameMidlet : Frame
     }.ToFrozenDictionary();
 
     private float _oldFramerate;
+    private Vector2 _oldResolution;
 
     public static Game Instance_Game { get; set; } // TODO: Remove need for this
     public static bool bSuspended { get; set; }
@@ -46,7 +47,11 @@ public class GameMidlet : Frame
         Gfx.Fade = AlphaCoefficient.None;
         Engine.Sem.StopAllSongs();
 
-        // Override framerate
+        // Override the resolution
+        _oldResolution = Engine.ViewPort.InternalGameResolution;
+        Engine.ViewPort.SetInternalGameResolution(new Vector2(240, 320));
+
+        // Override the framerate
         _oldFramerate = Engine.App.Framerate;
         Engine.App.Framerate = Framerate;
 
@@ -59,6 +64,11 @@ public class GameMidlet : Frame
     {
         Instance_Game.StopSound();
         Instance_Game = null;
+
+        // Restore the resolution
+        Engine.ViewPort.SetInternalGameResolution(_oldResolution);
+
+        // Restore the framerate
         Engine.App.Framerate = _oldFramerate;
     }
 
