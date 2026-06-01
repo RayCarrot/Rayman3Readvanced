@@ -30,9 +30,7 @@ public partial class Game
 
     public int Menu_GetStringWidth(string pStr)
     {
-        // TODO: Implement
-        // return this.m_fontGeneral.stringWidth(pStr);
-        return 20;
+        return m_fontGeneral.stringWidth(pStr);
     }
 
     public void Menu_DrawString(string pStr, int x, int y, int nColor)
@@ -584,8 +582,7 @@ public partial class Game
                 iStart = -(m_iAboutTicker % 21);
                 if (strArray[iIndex] != null)
                 {
-                    // TODO: Implement
-                    //this.g_graBackBuffer.drawString(strArray[iIndex], 240 - this.m_fontGeneral.stringWidth(strArray[iIndex]) >> 1, iBoxY + iStart + iIndex * 21, 20);
+                    g_graBackBuffer.drawString(strArray[iIndex], (Resolution.X - m_fontGeneral.stringWidth(strArray[iIndex])) >> 1, iBoxY + iStart + iIndex * 21, ANCHOR.LEFT | ANCHOR.TOP);
                     strArray[iIndex] = null;
                 }
             }
@@ -665,8 +662,7 @@ public partial class Game
                         iAdjust = -6;
                         if (iID == 0x3000B7)
                             iAdjust = -12;
-                        // TODO: Implement
-                        //this.g_graBackBuffer.drawString(strArray[iIndex], 240 - this.m_fontGeneral.stringWidth(strArray[iIndex]) >> 1, iBoxY + iIndex * 21 + iAdjust, 20);
+                        g_graBackBuffer.drawString(strArray[iIndex], (Resolution.X - m_fontGeneral.stringWidth(strArray[iIndex])) >> 1, iBoxY + iIndex * 21 + iAdjust, ANCHOR.LEFT | ANCHOR.TOP);
                     }
                     strArray[iIndex] = null;
                 }
@@ -718,8 +714,7 @@ public partial class Game
             iStart = -(m_iAboutTicker % 21);
             if (strArray[iIndex] != null)
             {
-                // TODO: Implement
-                // this.g_graBackBuffer.drawString(strArray[iIndex], 240 - this.m_fontGeneral.stringWidth(strArray[iIndex]) >> 1, iBoxY + iStart + iIndex * 21, 20);
+                g_graBackBuffer.drawString(strArray[iIndex], (Resolution.X - m_fontGeneral.stringWidth(strArray[iIndex])) >> 1, iBoxY + iStart + iIndex * 21, ANCHOR.LEFT | ANCHOR.TOP);
                 strArray[iIndex] = null;
             }
         }

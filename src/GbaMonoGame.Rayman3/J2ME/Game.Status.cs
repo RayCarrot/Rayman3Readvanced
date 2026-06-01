@@ -215,6 +215,7 @@ public partial class Game
                 g_graBackBuffer.setColor(0x330099);
                 int iPosX = 120;
                 int iPosY = iY - 2;
+                // TODO: Implement clipping text to fit box
                 g_graBackBuffer.setClip(iX, iY, iW, iH);
                 string sSignTip = RM.GetString(0x2D0074);
                 if ((sbyte)levelID == m_gameFrame_unlockedLevel)

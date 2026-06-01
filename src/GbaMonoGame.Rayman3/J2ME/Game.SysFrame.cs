@@ -25,7 +25,7 @@ public partial class Game
     public int SysFrame_doLoop()
     {
         long lCurMill;
-        // this.g_graBackBuffer.setFont(this.m_fontGeneral); // TODO: Font
+        g_graBackBuffer.setFont(m_fontGeneral);
         switch (curState)
         {
             // Load

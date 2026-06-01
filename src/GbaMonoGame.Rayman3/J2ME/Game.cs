@@ -18,7 +18,7 @@ public partial class Game
         // setFullScreenMode(true); // Irrelevant here
         RM.Initialize();
         SysFrame_PhysicalInitI();
-        // this.m_fontGeneral = Font.getFont(32, 1, 0); // TODO: Create font
+        m_fontGeneral = Font.getFont(32, 1, 0);
         m_iPrevLevel = -2;
         m_bBackgroundUsed = false;
         InitSound();
@@ -36,7 +36,7 @@ public partial class Game
     public bool painting { get; set; } // Irrelevant in Readvanced since we're not multi-threading
     public static int m_iGlobalTicker { get; set; }
     public sbyte m_chGameState { get; set; } // TODO: Enum/constants
-    // Font m_fontGeneral; // TODO: Font
+    public Font m_fontGeneral { get; set; }
     public bool showDebug { get; set; }
     public static long _nUpdateTimer { get; set; }
 

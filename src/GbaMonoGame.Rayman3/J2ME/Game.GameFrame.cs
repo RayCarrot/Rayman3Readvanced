@@ -261,7 +261,7 @@ public partial class Game
                 fastDraw(g_graBackBuffer, Resolution.X, Resolution.Y);
                 m_bClearBackMenu = false;
             }
-            // this.g_graBackBuffer.setFont(this.m_fontGeneral); // TODO: Font
+            g_graBackBuffer.setFont(m_fontGeneral);
             if (m_iPrevLevel == -1)
             {
                 if (m_gameMenu_idCurPage == MENU_PAGE.PAUSE)

@@ -23,6 +23,7 @@ public class Graphics
     public List<Sprite> Sprites { get; }
     public Rectangle Clip { get; set; }
     public Color Color { get; set; }
+    public Font Font { get; set; }
 
     private static int AnchorX(int x, int width, ANCHOR anchor)
     {
@@ -70,6 +71,11 @@ public class Graphics
         Color = new Color(r, g, b);
     }
 
+    public void setFont(Font font)
+    {
+        Font = font;
+    }
+
     public void fillRect(int x, int y, int width, int height)
     {
         Sprite sprite = Gfx.GetNewSprite();
@@ -79,6 +85,12 @@ public class Graphics
         sprite.AffineMatrix = new AffineMatrix(0, new Vector2(width, height));
         sprite.RenderOptions = RenderOptions;
         Sprites.Add(sprite);
+    }
+
+    public void fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight)
+    {
+        // TODO: Implement arc
+        fillRect(x, y, width, height);
     }
 
     public void drawImage(Texture2D img, int x, int y, ANCHOR anchor)
@@ -124,7 +136,35 @@ public class Graphics
 
     public void drawString(string str, int x, int y, ANCHOR anchor)
     {
-        // TODO: Implement
+        // Get the text size
+        int width = Font.stringWidth(str);
+        int height = Font.getHeight();
+
+        // Get the original position
+        Vector2 originalPos = new(
+            x: AnchorX(x, width, anchor), 
+            y: AnchorY(y, height, anchor));
+
+        // Create the transformation of the position
+        Vector2 origin = new(0, 0);
+        Matrix transformation = FontManager.CreateTextTransformation(originalPos, Vector2.One, origin);
+
+        // TODO: Avoid allocating every frame - same with reading the string as well as getting the width
+        // Draw each character
+        Vector2 pos = Vector2.Zero;
+        foreach (byte c in Engine.Font.GetTextBytes(str))
+        {
+            Sprites.Add(Engine.Font.GetCharacterSprite(
+                c: c,
+                fontSize: Font.Size,
+                transformation: transformation,
+                position: ref pos,
+                priority: 0,
+                affineMatrix: AffineMatrix.Identity,
+                alpha: AlphaCoefficient.Max,
+                color: Color,
+                renderOptions: RenderOptions));
+        }
     }
 
     // Custom
@@ -144,11 +184,5 @@ public class Graphics
             Gfx.AddSprite(Sprites[i], SpriteType.Default);    
 
         Sprites.Clear();
-    }
-
-    public void fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight)
-    {
-        // TODO: Implement arc
-        fillRect(x, y, width, height);
     }
 }
