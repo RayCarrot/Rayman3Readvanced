@@ -2,6 +2,7 @@
 using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.Editor;
+using GbaMonoGame.Rayman3.J2ME;
 using GbaMonoGame.Rayman3.Readvanced;
 using ImGuiNET;
 
@@ -187,7 +188,8 @@ public class FramesDebugMenu : DebugMenu
                 MapId.WorldMap => true,
                 _ => false
             })).
-            ToArray())
+            ToArray()),
+        new("J2ME", () => new GameMidlet()),
     ];
 
     public override string Name => "Frames";
