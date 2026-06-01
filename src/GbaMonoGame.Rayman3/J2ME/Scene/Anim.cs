@@ -112,13 +112,13 @@ public class Anim
                 break;
 
             bool flag = !(i == 0 && type == OBJECT_TYPE.RAYMAN && GameMidlet.Instance_Game.pFist[1].anim.curAction != 0);
-            sbyte[] pModule = data.modules[frameData[6 + frameOffset] & SByte.MaxValue];
+            AnimModule pModule = data.modules[frameData[6 + frameOffset] & SByte.MaxValue];
             
             int nsx;
             int geflag;
             if ((nflag & ACTOR_STATE.FLIP_X) != 0)
             {
-                nsx = nx - frameData[6 + frameOffset + 1] - (pModule[2] & 0xFF);
+                nsx = nx - frameData[6 + frameOffset + 1] - (pModule.Width & 0xFF);
                 geflag = frameData[6 + frameOffset + 0] < 0 ? 0 : 0x4000;
             }
             else
@@ -137,11 +137,11 @@ public class Anim
                 GameMidlet.Instance_Game.drawImageEx(
                     dstx: nsx, 
                     dsty: nsy, 
-                    w: pModule[2] & 0xFF, 
-                    h: pModule[3] & 0xFF, 
+                    w: pModule.Width & 0xFF, 
+                    h: pModule.Height & 0xFF, 
                     iImageIndex: data.resID, 
-                    sx: pModule[0] & 0xFF, 
-                    sy: pModule[1] & 0xFF, 
+                    sx: pModule.X & 0xFF, 
+                    sy: pModule.Y & 0xFF, 
                     flag: geflag);
             }
 

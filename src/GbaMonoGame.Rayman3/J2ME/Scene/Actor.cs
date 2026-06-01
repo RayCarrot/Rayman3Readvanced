@@ -302,12 +302,17 @@ public class Actor
         data.nbAction = (sbyte)buffer[3];
         data.flag |= ANIM_DATA_FLAGS.LOADED;
         int count = data.nbModule & 0xFF;
-        data.modules = new sbyte[count][];
+        data.modules = new AnimModule[count];
         int offset = 4;
         for (int i = 0; i < count; i++)
         {
-            data.modules[i] = new sbyte[4];
-            System.arraycopy(buffer, offset, data.modules[i], 0, 4);
+            data.modules[i] = new AnimModule
+            {
+                X = (sbyte)buffer[offset + 0],
+                Y = (sbyte)buffer[offset + 1],
+                Width = (sbyte)buffer[offset + 2],
+                Height = (sbyte)buffer[offset + 3]
+            };
             offset += 4;
         }
 
@@ -348,15 +353,15 @@ public class Actor
 
     public static void drawModule(AnimData pData, int idMod, int nx, int ny, int nflag, Graphics g)
     {
-        sbyte[] modules = pData.modules[idMod];
+        AnimModule module = pData.modules[idMod];
         GameMidlet.Instance_Game.drawImageEx(
             dstx: nx, 
             dsty: ny, 
-            w: modules[2] & 0xFF, 
-            h: modules[3] & 0xFF, 
+            w: module.Width & 0xFF, 
+            h: module.Height & 0xFF, 
             iImageIndex: pData.resID,
-            sx: modules[0] & 0xFF, 
-            sy: modules[1] & 0xFF, 
+            sx: module.X & 0xFF, 
+            sy: module.Y & 0xFF, 
             flag: nflag);
     }
 

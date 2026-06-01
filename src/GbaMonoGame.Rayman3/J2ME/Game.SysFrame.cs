@@ -93,7 +93,7 @@ public partial class Game
                 {
                     g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
                     g_graBackBuffer.drawImage(RM.GetImage(18), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
-                    Actor.drawModule(Actor.aniData[26], 23, Resolution.X - Actor.aniData[26].modules[23][2], Resolution.Y - Actor.aniData[26].modules[23][3] - Menu_GetVArrowPos(), 0, g_graBackBuffer);
+                    Actor.drawModule(Actor.aniData[26], 23, Resolution.X - Actor.aniData[26].modules[23].Width, Resolution.Y - Actor.aniData[26].modules[23].Height - Menu_GetVArrowPos(), 0, g_graBackBuffer);
                     if (pressedKey != GAME_KEY.None)
                     {
                         m_gameFrame_curState = GAME_FRAME_STATE.DEFAULT;
@@ -211,7 +211,7 @@ public partial class Game
                 g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
                 g_graBackBuffer.setColor(0);
                 g_graBackBuffer.fillRect(0, 0, Resolution.X, Resolution.Y);
-                Actor.drawModule(Actor.aniData[26], 23, Resolution.X - Actor.aniData[26].modules[23][2], Resolution.Y - Actor.aniData[26].modules[23][3], 0, g_graBackBuffer);
+                Actor.drawModule(Actor.aniData[26], 23, Resolution.X - Actor.aniData[26].modules[23].Width, Resolution.Y - Actor.aniData[26].modules[23].Height, 0, g_graBackBuffer);
                 
                 if (pressedKey != GAME_KEY.None)
                 {

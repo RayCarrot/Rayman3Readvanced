@@ -58,7 +58,7 @@ public partial class Game
             do
             {
                 int iToken = iNumber % 10;
-                iCurrentX -= Actor.aniData[26].modules[0 + iToken][2];
+                iCurrentX -= Actor.aniData[26].modules[0 + iToken].Width;
                 Actor.drawModule(GameMidlet.Instance_Game.m_gameMenu_pData, 0 + iToken, iCurrentX, iY, 0, GameMidlet.Instance_Game.g_graBackBuffer);
                 iNumber /= 10;
             } while (iNumber != 0);
@@ -74,7 +74,7 @@ public partial class Game
                 {
                     bStarted = true;
                     Actor.drawModule(GameMidlet.Instance_Game.m_gameMenu_pData, 0 + i, iCurrentX, iY, 0, GameMidlet.Instance_Game.g_graBackBuffer);
-                    iCurrentX += Actor.aniData[26].modules[0 + i][2];
+                    iCurrentX += Actor.aniData[26].modules[0 + i].Width;
                     iNumber -= i * iDivisor;
                 }
                 if (iDivisor == 1)
@@ -100,7 +100,7 @@ public partial class Game
                 switch (m_byStatusDisplay[statusType])
                 {
                     case 1:
-                        iPosY = -((10 - m_byStatusDisplayCounter[statusType]) * Actor.aniData[26].modules[15][3]) / 10;
+                        iPosY = -((10 - m_byStatusDisplayCounter[statusType]) * Actor.aniData[26].modules[15].Height) / 10;
                         if (m_byStatusDisplayCounter[statusType] > 10)
                         {
                             m_byStatusDisplayCounter[statusType] = 0;
@@ -109,7 +109,7 @@ public partial class Game
                         break;
 
                     case 3:
-                        iPosY = -(m_byStatusDisplayCounter[statusType] * Actor.aniData[26].modules[15][3]) / 10;
+                        iPosY = -(m_byStatusDisplayCounter[statusType] * Actor.aniData[26].modules[15].Height) / 10;
                         if (m_byStatusDisplayCounter[statusType] > 10)
                         {
                             m_byStatusDisplayCounter[statusType] = 0;
@@ -133,21 +133,21 @@ public partial class Game
                         iX = 3;
                         iY = 3 + iPosY;
                         Actor.drawModule(GameMidlet.Instance_Game.m_gameMenu_pData, 15, iX, iY, 0, GameMidlet.Instance_Game.g_graBackBuffer);
-                        iX += Actor.aniData[26].modules[15][2] + 3;
+                        iX += Actor.aniData[26].modules[15].Width + 3;
                         Actor.drawModule(GameMidlet.Instance_Game.m_gameMenu_pData, 17 + GameMidlet.Instance_Game.m_gameFrame_nEnergy, iX, iY, 0, GameMidlet.Instance_Game.g_graBackBuffer);
-                        iY += Actor.aniData[26].modules[17][3] + 3 + Actor.aniData[26].modules[0][3] - Actor.aniData[26].modules[11][3];
+                        iY += Actor.aniData[26].modules[17].Height + 3 + Actor.aniData[26].modules[0].Height - Actor.aniData[26].modules[11].Height;
                         Actor.drawModule(GameMidlet.Instance_Game.m_gameMenu_pData, 11, iX, iY, 0, GameMidlet.Instance_Game.g_graBackBuffer);
-                        iX += Actor.aniData[26].modules[11][2] + 3;
-                        iY += Actor.aniData[26].modules[11][3] - Actor.aniData[26].modules[0][3];
+                        iX += Actor.aniData[26].modules[11].Width + 3;
+                        iY += Actor.aniData[26].modules[11].Height - Actor.aniData[26].modules[0].Height;
                         Status_DrawNumber(GameMidlet.Instance_Game.m_gameFrame_nLife, iX, iY, false);
                         break;
                     
                     case 2:
-                        iX = Resolution.X - 3 - Actor.aniData[26].modules[16][2];
+                        iX = Resolution.X - 3 - Actor.aniData[26].modules[16].Width;
                         iY = 3 + iPosY;
                         Actor.drawModule(GameMidlet.Instance_Game.m_gameMenu_pData, 16, iX, iY, 0, GameMidlet.Instance_Game.g_graBackBuffer);
                         iX -= 3;
-                        iX = Status_DrawNumber(GameMidlet.Instance_Game.s_iLumsTotal & 0xFF, iX, iY, true) - Actor.aniData[26].modules[10][2];
+                        iX = Status_DrawNumber(GameMidlet.Instance_Game.s_iLumsTotal & 0xFF, iX, iY, true) - Actor.aniData[26].modules[10].Width;
                         Actor.drawModule(GameMidlet.Instance_Game.m_gameMenu_pData, 10, iX, iY, 0, GameMidlet.Instance_Game.g_graBackBuffer);
                         Status_DrawNumber(GameMidlet.Instance_Game.s_iLumsTaken & 0xFF, iX, 3 + iPosY, true);
                         break;
@@ -157,19 +157,19 @@ public partial class Game
                         switch (m_byStatusDisplay[2])
                         {
                             case 1:
-                                iY += m_byStatusDisplayCounter[2] * Actor.aniData[26].modules[16][3] / 10;
+                                iY += m_byStatusDisplayCounter[2] * Actor.aniData[26].modules[16].Height / 10;
                                 break;
                             case 3:
-                                iY += (10 - m_byStatusDisplayCounter[2]) * Actor.aniData[26].modules[16][3] / 10;
+                                iY += (10 - m_byStatusDisplayCounter[2]) * Actor.aniData[26].modules[16].Height / 10;
                                 break;
                             case 2:
-                                iY += Actor.aniData[26].modules[16][3];
+                                iY += Actor.aniData[26].modules[16].Height;
                                 break;
                         }
-                        iX = Resolution.X - 3 - Actor.aniData[26].modules[12][2];
+                        iX = Resolution.X - 3 - Actor.aniData[26].modules[12].Width;
                         Actor.drawModule(GameMidlet.Instance_Game.m_gameMenu_pData, 12, iX, iY, 0, GameMidlet.Instance_Game.g_graBackBuffer);
                         iX -= 3;
-                        iX = Status_DrawNumber(GameMidlet.Instance_Game.s_iCageTotal, iX, iY, true) - Actor.aniData[26].modules[10][2];
+                        iX = Status_DrawNumber(GameMidlet.Instance_Game.s_iCageTotal, iX, iY, true) - Actor.aniData[26].modules[10].Width;
                         Actor.drawModule(GameMidlet.Instance_Game.m_gameMenu_pData, 10, iX, iY, 0, GameMidlet.Instance_Game.g_graBackBuffer);
                         Status_DrawNumber(GameMidlet.Instance_Game.s_iCageOpened, iX, iY, true);
                         break;
@@ -202,7 +202,7 @@ public partial class Game
                     str2 = RM.GetString(0x2D0086);
                 
                 int iW = 230;
-                int iH = 23 + Actor.aniData[26].modules[12][3] + 2 - 5;
+                int iH = 23 + Actor.aniData[26].modules[12].Height + 2 - 5;
                 int iX = 5;
                 int iY = 320 - iH - 240;
 
@@ -230,16 +230,16 @@ public partial class Game
                     g_graBackBuffer.drawString(sTitle, iPosX, iPosY, ANCHOR.HCENTER | ANCHOR.TOP);
                 }
                 iPosX = iX + 5;
-                iPosY = iY + iH - Actor.aniData[26].modules[16][3];
+                iPosY = iY + iH - Actor.aniData[26].modules[16].Height;
                 Actor.drawModule(m_gameMenu_pData, 16, iPosX, iPosY, 0, g_graBackBuffer);
-                iPosX += Actor.aniData[26].modules[16][2];
+                iPosX += Actor.aniData[26].modules[16].Width;
                 iPosY = iY + iH;
                 g_graBackBuffer.setClip(iX, iY, iW, iH);
                 g_graBackBuffer.drawString(str1, iPosX, iPosY, ANCHOR.LEFT | ANCHOR.BOTTOM);
                 iPosX = 130;
-                iPosY = iY + iH - Actor.aniData[26].modules[12][3];
+                iPosY = iY + iH - Actor.aniData[26].modules[12].Height;
                 Actor.drawModule(m_gameMenu_pData, 12, iPosX, iPosY, 0, g_graBackBuffer);
-                iPosX += Actor.aniData[26].modules[12][2];
+                iPosX += Actor.aniData[26].modules[12].Width;
                 iPosY = iY + iH;
                 g_graBackBuffer.setClip(iX, iY, iW, iH);
                 g_graBackBuffer.drawString(str2, iPosX, iPosY, ANCHOR.LEFT | ANCHOR.BOTTOM);

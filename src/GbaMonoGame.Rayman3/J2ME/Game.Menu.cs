@@ -113,7 +113,7 @@ public partial class Game
             // TODO: Original game bug or decompiler bug?
             bool bBackgroundState = m_bBackgroundUsed;
             bBackgroundState = false;
-            Actor.drawModule(m_gameMenu_pData, 13, x - Actor.aniData[26].modules[13][2] - 4 - Menu_GetRArrowPos(), y, 0, g_graBackBuffer);
+            Actor.drawModule(m_gameMenu_pData, 13, x - Actor.aniData[26].modules[13].Width - 4 - Menu_GetRArrowPos(), y, 0, g_graBackBuffer);
             Actor.drawModule(m_gameMenu_pData, 14, x + w + 4 + Menu_GetLArrowPos(), y, 0, g_graBackBuffer);
             m_bBackgroundUsed = bBackgroundState;
         }
@@ -670,7 +670,7 @@ public partial class Game
             if (m_gameMenu_idCurSel != 0)
                 Actor.drawModule(m_gameMenu_pData, 14, 0 + Menu_GetLArrowPos(), 8, 0, g_graBackBuffer);
             if (!bLast)
-                Actor.drawModule(m_gameMenu_pData, 13, 240 - (Actor.aniData[26]).modules[13][2] - Menu_GetRArrowPos(), 8, 0, g_graBackBuffer);
+                Actor.drawModule(m_gameMenu_pData, 13, 240 - (Actor.aniData[26]).modules[13].Width - Menu_GetRArrowPos(), 8, 0, g_graBackBuffer);
         }
     }
 
@@ -720,7 +720,7 @@ public partial class Game
         }
         bool bBackgroundState = m_bBackgroundUsed;
         m_bBackgroundUsed = false;
-        Actor.drawModule(Actor.aniData[26], 23, 240 - (Actor.aniData[26]).modules[23][2], 320 - (Actor.aniData[26]).modules[23][3], 0, g_graBackBuffer);
+        Actor.drawModule(Actor.aniData[26], 23, 240 - (Actor.aniData[26]).modules[23].Width, 320 - (Actor.aniData[26]).modules[23].Height, 0, g_graBackBuffer);
         m_bBackgroundUsed = bBackgroundState;
     }
 

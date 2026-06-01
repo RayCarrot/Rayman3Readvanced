@@ -172,7 +172,7 @@ public partial class Game
         {
             bool bBackgroundState = m_bBackgroundUsed;
             m_bBackgroundUsed = false;
-            Actor.drawModule(Actor.aniData[26], 23, Resolution.X - Actor.aniData[26].modules[23][2], Resolution.Y - Actor.aniData[26].modules[23][3], 0, g_graBackBuffer);
+            Actor.drawModule(Actor.aniData[26], 23, Resolution.X - Actor.aniData[26].modules[23].Width, Resolution.Y - Actor.aniData[26].modules[23].Height, 0, g_graBackBuffer);
             m_bBackgroundUsed = bBackgroundState;
         }
     }
@@ -193,7 +193,7 @@ public partial class Game
                 PlaySound(SOUND_INDEX.music_splash, false, 255);
 
             // Draw soft key pause indicator
-            Actor.drawModule(Actor.aniData[26], 23, Resolution.X - Actor.aniData[26].modules[23][2], Resolution.Y - Actor.aniData[26].modules[23][3] - Menu_GetVArrowPos(), 0, g_graBackBuffer);
+            Actor.drawModule(Actor.aniData[26], 23, Resolution.X - Actor.aniData[26].modules[23].Width, Resolution.Y - Actor.aniData[26].modules[23].Height - Menu_GetVArrowPos(), 0, g_graBackBuffer);
         }
         // In-game
         else
