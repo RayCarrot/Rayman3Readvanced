@@ -1,6 +1,6 @@
 ﻿namespace GbaMonoGame.Rayman3.J2ME;
 
-public readonly struct CollisionBox
+public readonly struct Box
 {
     public sbyte Left { get; init; }
     public sbyte Top { get; init; }

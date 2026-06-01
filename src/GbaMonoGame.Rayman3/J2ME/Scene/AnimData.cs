@@ -8,7 +8,7 @@ public class AnimData
     public sbyte nbAction { get; set; }
     public ANIM_DATA_FLAGS flag { get; set; }
     public AnimModule[] modules { get; set; }
-    public sbyte[][] frames { get; set; } // TODO: Structs
-    public sbyte[][] actions { get; set; } // TODO: Structs
-    public sbyte[][] mmParam { get; set; }
+    public AnimFrame[] frames { get; set; }
+    public Action[] actions { get; set; }
+    public MechModelParams[] mmParam { get; set; }
 }

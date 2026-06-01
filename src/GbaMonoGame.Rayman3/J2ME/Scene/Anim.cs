@@ -15,21 +15,15 @@ public class Anim
     public static ANIM_EVENT_FLAGS aniEvent_flag { get; set; }
     public static MM_TYPE aniEvent_mmtype { get; set; }
     public static short[] aniEvent_mmpar { get; } = new short[6];
-    public static CollisionBox aniEvent_pColBoxData { get; set; }
+    public static Box aniEvent_pColBoxData { get; set; }
 
     public void setFrame(int frame)
     {
-        sbyte[] frameData = Actor.aniData[(sbyte)type].frames[frame];
-        frameDuration = frameData[1] & 0xFF;
+        AnimFrame frameData = Actor.aniData[(sbyte)type].frames[frame];
+        frameDuration = frameData.FrameDuration;
         frameTick = 0;
         aniEvent_flag |= ANIM_EVENT_FLAGS.LOADED_COLLISION_BOX;
-        aniEvent_pColBoxData = new CollisionBox()
-        {
-            Left = frameData[2],
-            Top = frameData[3],
-            Right = frameData[4],
-            Bottom = frameData[5],
-        };
+        aniEvent_pColBoxData = frameData.Box;
         frameId = frame;
     }
 
@@ -43,18 +37,18 @@ public class Anim
     public void initNewAction(bool bInitMModel)
     {
         AnimData data = Actor.aniData[(sbyte)type];
-        sbyte[] mmParam = data.mmParam[newAction];
-        int nbFrames = data.actions[newAction][0] & 0xFF;
+        MechModelParams mmParam = data.mmParam[newAction];
+        int nbFrames = data.actions[newAction].FramesCount;
         aniEvent_flag = ANIM_EVENT_FLAGS.NONE;
         if (bInitMModel && (data.flag & ANIM_DATA_FLAGS.HAS_MECH_MODEL) != 0)
         {
             aniEvent_flag |= ANIM_EVENT_FLAGS.LOADED_MECH_MODEL;
-            aniEvent_mmtype = (MM_TYPE)((mmParam[0] & 0xF0) >> 4);
+            aniEvent_mmtype = mmParam.Type;
             for (int i = 0; i < 6; i++)
             {
-                if (i < mmParam.Length - 1)
+                if (i < mmParam.ParamsCount)
                 {
-                    int param = mmParam[1 + i];
+                    int param = mmParam.Params[i];
                     if (param < 0)
                         aniEvent_mmpar[i] = (short)-(-param << 5);
                     else
@@ -66,7 +60,7 @@ public class Anim
         curAction = newAction;
 
         if (nbFrames > 0)
-            setFrame(data.actions[newAction][1] & 0xFF);
+            setFrame(data.actions[newAction].Frames[0] & 0xFF);
         else
             frameId = -1;
     }
@@ -80,12 +74,12 @@ public class Anim
         }
         else if (frameTick == frameDuration)
         {
-            sbyte[] actionData = Actor.aniData[(sbyte)type].actions[newAction];
+            Action actionData = Actor.aniData[(sbyte)type].actions[newAction];
             actionFrame++;
-            if (actionFrame == (actionData[0] & 0xFF))
+            if (actionFrame == (actionData.FramesCount & 0xFF))
                 actionFrame = 0;
-            if ((actionData[0] & 0xFF) > 0)
-                setFrame(actionData[actionFrame + 1] & 0xFF);
+            if ((actionData.FramesCount & 0xFF) > 0)
+                setFrame(actionData.Frames[actionFrame] & 0xFF);
         }
     }
     
@@ -95,9 +89,9 @@ public class Anim
             return;
 
         AnimData data = Actor.aniData[(sbyte)type];
-        sbyte[] frameData = data.frames[frameId];
+        AnimFrame frameData = data.frames[frameId];
         int frameOffset = 0;
-        int nbSprite = frameData[0] & 0xFF;
+        int nbSprite = frameData.SpritesCount;
         
         if (type == OBJECT_TYPE.RAYMAN)
             GameMidlet.Instance_Game.raymanAnim = 0;
@@ -112,22 +106,22 @@ public class Anim
                 break;
 
             bool flag = !(i == 0 && type == OBJECT_TYPE.RAYMAN && GameMidlet.Instance_Game.pFist[1].anim.curAction != 0);
-            AnimModule pModule = data.modules[frameData[6 + frameOffset] & SByte.MaxValue];
+            AnimModule pModule = data.modules[frameData.Frames[frameOffset].Module & SByte.MaxValue];
             
             int nsx;
             int geflag;
             if ((nflag & ACTOR_STATE.FLIP_X) != 0)
             {
-                nsx = nx - frameData[6 + frameOffset + 1] - (pModule.Width & 0xFF);
-                geflag = frameData[6 + frameOffset + 0] < 0 ? 0 : 0x4000;
+                nsx = nx - frameData.Frames[frameOffset].X - (pModule.Width & 0xFF);
+                geflag = frameData.Frames[frameOffset].Module < 0 ? 0 : 0x4000;
             }
             else
             {
-                nsx = nx + frameData[6 + frameOffset + 1];
-                geflag = frameData[6 + frameOffset + 0] < 0 ? 0x4000 : 0;
+                nsx = nx + frameData.Frames[frameOffset].X;
+                geflag = frameData.Frames[frameOffset].Module < 0 ? 0x4000 : 0;
             }
             
-            int nsy = ny + frameData[6 + frameOffset + 2];
+            int nsy = ny + frameData.Frames[frameOffset].Y;
             
             if (type == OBJECT_TYPE.RAYMAN)
                 GameMidlet.Instance_Game.raymanAnim = nsx;
@@ -145,7 +139,7 @@ public class Anim
                     flag: geflag);
             }
 
-            frameOffset += 3;
+            frameOffset++;
         }
     }
 }

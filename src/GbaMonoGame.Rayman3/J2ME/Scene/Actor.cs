@@ -106,7 +106,7 @@ public class Actor
     public Actor actorReference { get; set; }
     public Anim anim { get; } = new();
     public OBJECT_TYPE objType { get; set; }
-    public CollisionBox colBox { get; set; }
+    public Box colBox { get; set; }
     public int[] V { get; set; } // TODO: Custom class per object type?
     public int[] m_iInitV { get; set; }
     public long x { get; set; }
@@ -317,28 +317,59 @@ public class Actor
         }
 
         count = data.nbFrame & 0xFF;
-        data.frames = new sbyte[count][];
+        data.frames = new AnimFrame[count];
         for (int j = 0; j < count; j++)
         {
-            int size = 6 + 3 * (buffer[offset + 0] & 0xFF);
-            data.frames[j] = new sbyte[size];
-            System.arraycopy(buffer, offset, data.frames[j], 0, size);
-            offset += size;
+            data.frames[j] = new AnimFrame
+            {
+                SpritesCount = (sbyte)buffer[offset + 0],
+                FrameDuration = (sbyte)buffer[offset + 1],
+                Box = new Box()
+                {
+                    Left = (sbyte)buffer[offset + 2],
+                    Top = (sbyte)buffer[offset + 3],
+                    Right = (sbyte)buffer[offset + 4],
+                    Bottom = (sbyte)buffer[offset + 5],
+                },
+                Frames = new AnimFrameSprite[buffer[offset + 0]]
+            };
+            offset += 6;
+
+            for (int frameIndex = 0; frameIndex < data.frames[j].SpritesCount; frameIndex++)
+            {
+                data.frames[j].Frames[frameIndex] = new AnimFrameSprite
+                {
+                    Module = (sbyte)buffer[offset + 0],
+                    X = (sbyte)buffer[offset + 1],
+                    Y = (sbyte)buffer[offset + 2]
+                };
+                offset += 3;
+            }
         }
 
         count = data.nbAction & 0xFF;
-        data.actions = new sbyte[count][];
-        data.mmParam = new sbyte[count][];
+        data.actions = new Action[count];
+        data.mmParam = new MechModelParams[count];
         for (int k = 0; k < count; k++)
         {
-            int m = 1 + (buffer[offset + 0] & 0xFF);
-            data.actions[k] = new sbyte[m];
-            System.arraycopy(buffer, offset, data.actions[k], 0, m);
-            offset += m;
-            m = 1 + (buffer[offset + 0] & 0xF);
-            data.mmParam[k] = new sbyte[m];
-            System.arraycopy(buffer, offset, data.mmParam[k], 0, m);
-            offset += m;
+            data.actions[k] = new Action
+            {
+                FramesCount = (sbyte)buffer[offset + 0],
+                Frames = new sbyte[buffer[offset + 0]]
+            };
+            offset++;
+            System.arraycopy(buffer, offset, data.actions[k].Frames, 0, data.actions[k].FramesCount);
+            offset += data.actions[k].FramesCount;
+
+            data.mmParam[k] = new MechModelParams()
+            {
+                ParamsCount = (byte)(buffer[offset + 0] & 0xF),
+                Type = (MM_TYPE)((buffer[offset + 0] & 0xF0) >> 4),
+                Params = new sbyte[buffer[offset + 0]]
+            };
+            offset++;
+            System.arraycopy(buffer, offset, data.mmParam[k].Params, 0, data.mmParam[k].ParamsCount);
+            offset += data.mmParam[k].ParamsCount;
         }
     }
 
@@ -348,7 +379,7 @@ public class Actor
             return false;
 
         return anim.frameTick + 1 >= anim.frameDuration &&
-               anim.actionFrame + 1 >= aniData[(sbyte)anim.type].actions[anim.newAction][0];
+               anim.actionFrame + 1 >= aniData[(sbyte)anim.type].actions[anim.newAction].FramesCount;
     }
 
     public static void drawModule(AnimData pData, int idMod, int nx, int ny, int nflag, Graphics g)
@@ -1400,7 +1431,7 @@ public class Actor
     {
         int nx = (int)(x >> 8 >> 4);
         int ny = (int)(y >> 8 >> 4);
-        int height = aniData[0].frames[aniData[0].actions[0][1]][3];
+        int height = aniData[0].frames[aniData[0].actions[0].Frames[0]].Box.Top;
         int heightInTiles = Math.Abs(height / 16);
         if (height % 16 != 0)
             heightInTiles++;
