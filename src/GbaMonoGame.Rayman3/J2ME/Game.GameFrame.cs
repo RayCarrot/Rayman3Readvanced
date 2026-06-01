@@ -19,10 +19,10 @@ public partial class Game
     public Actor s_actorCheckpoint { get; set; }
     public static sbyte[,] s_synopsis { get; set; } // TODO: Structs
     public static sbyte[] m_RecordUsedFlag { get; } = new sbyte[11]; // TODO: Bools?
-    public static int m_gameFrame_prevState { get; set; } // TODO: Enum
-    public static int m_gameFrame_curState { get; set; } // TODO: Enum
+    public static GAME_FRAME_STATE m_gameFrame_prevState { get; set; }
+    public static GAME_FRAME_STATE m_gameFrame_curState { get; set; }
     public static bool m_gameFrame_paused { get; set; }
-    public static int m_gameFrame_msgId { get; set; } // TODO: Enum
+    public static MESSAGE_ID m_gameFrame_msgId { get; set; }
     public static int m_gameFrame_msgPar { get; set; }
     public static sbyte m_gameFrame_curLevel { get; set; } // TODO: Consts for -1 and 0
     public static sbyte m_gameFrame_unlockedLevel { get; set; }
@@ -36,7 +36,7 @@ public partial class Game
     {
         m_gameStateStep = 0;
         lStartMillForKeyDelay = System.currentTimeMillis();
-        m_gameFrame_curState = 0;
+        m_gameFrame_curState = GAME_FRAME_STATE.LOADING;
         GameFrame_InitNewGame();
         return true;
     }
@@ -168,7 +168,7 @@ public partial class Game
         }
 
         // Draw soft key pause indicator
-        if (m_gameStateStep != 0 && (m_gameFrame_curState == 1 || curState == 4))
+        if (m_gameStateStep != 0 && (m_gameFrame_curState == GAME_FRAME_STATE.DEFAULT || curState == 4))
         {
             bool bBackgroundState = m_bBackgroundUsed;
             m_bBackgroundUsed = false;
@@ -205,44 +205,44 @@ public partial class Game
         // Process message
         switch (m_gameFrame_msgId)
         {
-            case 1:
+            case MESSAGE_ID.RAYMAN_DEATH:
                 if (m_gameFrame_nLife > 0)
                 {
                     m_gameFrame_nLife = (sbyte)(m_gameFrame_nLife - 1);
                     m_gameFrame_nEnergy = 5;
                     m_gameStateStep = 0;
-                    m_gameFrame_prevState = 1;
-                    m_gameFrame_curState = 0;
+                    m_gameFrame_prevState = GAME_FRAME_STATE.DEFAULT;
+                    m_gameFrame_curState = GAME_FRAME_STATE.LOADING;
                 }
                 else
                 {
-                    m_gameFrame_prevState = 1;
-                    m_gameFrame_curState = 2;
+                    m_gameFrame_prevState = GAME_FRAME_STATE.DEFAULT;
+                    m_gameFrame_curState = GAME_FRAME_STATE.GAME_OVER;
                 }
                 break;
 
-            case 2:
+            case MESSAGE_ID.CHANGE_LEVEL:
                 if (m_gameFrame_msgPar != m_gameFrame_curLevel)
                 {
-                    m_gameFrame_prevState = 1;
-                    m_gameFrame_curState = 7;
+                    m_gameFrame_prevState = GAME_FRAME_STATE.DEFAULT;
+                    m_gameFrame_curState = GAME_FRAME_STATE.EXITING_LEVEL;
                 }
                 break;
 
-            case 4:
-                m_gameFrame_prevState = 1;
-                m_gameFrame_curState = 4;
+            case MESSAGE_ID.EXIT:
+                m_gameFrame_prevState = GAME_FRAME_STATE.DEFAULT;
+                m_gameFrame_curState = GAME_FRAME_STATE.CONFIRM_EXIT;
                 break;
 
-            case 5:
+            case MESSAGE_ID.EXIT_TO_MENU:
                 m_gameFrame_curLevel = -1;
                 m_gameStateStep = 0;
-                m_gameFrame_prevState = 1;
-                m_gameFrame_curState = 0;
+                m_gameFrame_prevState = GAME_FRAME_STATE.DEFAULT;
+                m_gameFrame_curState = GAME_FRAME_STATE.LOADING;
                 break;
         }
 
-        m_gameFrame_msgId = 0;
+        m_gameFrame_msgId = MESSAGE_ID.NONE;
     }
 
     public void GameFrame_StateInit()
@@ -293,8 +293,8 @@ public partial class Game
                 pRayman.V[4] = (ushort)GAME_KEY.None;
                 pRayman.V[3] = (ushort)GAME_KEY.None;
                 lStartMillForKeyDelay = System.currentTimeMillis();
-                m_gameFrame_prevState = 0;
-                m_gameFrame_curState = 1;
+                m_gameFrame_prevState = GAME_FRAME_STATE.LOADING;
+                m_gameFrame_curState = GAME_FRAME_STATE.DEFAULT;
             }
         }
 
@@ -335,18 +335,18 @@ public partial class Game
             GameFrame_Save(iLeftLevel);
             GameFrame_SaveRecordFlag();
             m_gameStateStep = 0;
-            m_gameFrame_prevState = 1;
-            m_gameFrame_curState = 0;
+            m_gameFrame_prevState = GAME_FRAME_STATE.DEFAULT;
+            m_gameFrame_curState = GAME_FRAME_STATE.LOADING;
         }
 
         m_gameStateStep++;
     }
 
-    public int GameFrame_doLoop()
+    public GAME_FRAME_STATE GameFrame_doLoop()
     {
         switch (m_gameFrame_curState)
         {
-            case 0:
+            case GAME_FRAME_STATE.LOADING:
                 // TODO: Why does the game sleep here?
                 //try
                 //{
@@ -356,11 +356,11 @@ public partial class Game
                 GameFrame_StateInit();
                 return m_gameFrame_curState;
 
-            case 6:
+            case GAME_FRAME_STATE.NEW_GAME:
                 GameFrame_StateNewGame();
                 return m_gameFrame_curState;
 
-            case 8:
+            case GAME_FRAME_STATE.LOAD_GAME:
                 if (m_gameStateStep == 0)
                 {
                     g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
@@ -373,13 +373,13 @@ public partial class Game
                     m_iPrevLevel = -1;
                     GameFrame_LoadSynopsis(true);
                     m_gameStateStep = 0;
-                    m_gameFrame_prevState = 8;
-                    m_gameFrame_curState = 0;
+                    m_gameFrame_prevState = GAME_FRAME_STATE.LOAD_GAME;
+                    m_gameFrame_curState = GAME_FRAME_STATE.LOADING;
                 }
                 m_gameStateStep++;
                 return m_gameFrame_curState;
 
-            case 9:
+            case GAME_FRAME_STATE.CONFIRM_RESTART:
                 if (bConfirmExit)
                 {
                     if (m_gameStateStep == 0)
@@ -393,14 +393,14 @@ public partial class Game
                         m_iPrevLevel = -1;
                         GameFrame_LoadSynopsis(true);
                         m_gameStateStep = 0;
-                        m_gameFrame_prevState = 9;
-                        m_gameFrame_curState = 0;
+                        m_gameFrame_prevState = GAME_FRAME_STATE.CONFIRM_RESTART;
+                        m_gameFrame_curState = GAME_FRAME_STATE.LOADING;
                     }
                     m_gameStateStep++;
                 }
                 return m_gameFrame_curState;
 
-            case 7:
+            case GAME_FRAME_STATE.EXITING_LEVEL:
                 if (m_gameStateStep == 0)
                 {
                     if (pRayman.anim.curAction == 37)
@@ -420,8 +420,8 @@ public partial class Game
                     m_gameFrame_curLevel = (sbyte)m_gameFrame_msgPar;
                     GameFrame_Save(iLeftLevel);
                     GameFrame_SaveRecordFlag();
-                    m_gameFrame_prevState = 7;
-                    m_gameFrame_curState = 3;
+                    m_gameFrame_prevState = GAME_FRAME_STATE.EXITING_LEVEL;
+                    m_gameFrame_curState = GAME_FRAME_STATE.EXITED_LEVEL;
                 }
                 m_gameStateStep++;
                 return m_gameFrame_curState;
@@ -431,7 +431,7 @@ public partial class Game
         return m_gameFrame_curState;
     }
 
-    public static void GameFrame_PostMessage(int id, int par)
+    public static void GameFrame_PostMessage(MESSAGE_ID id, int par)
     {
         m_gameFrame_msgId = id;
         m_gameFrame_msgPar = par;

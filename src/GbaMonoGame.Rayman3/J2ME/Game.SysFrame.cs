@@ -96,7 +96,7 @@ public partial class Game
                     Actor.drawModule(Actor.aniData[26], 23, Resolution.X - Actor.aniData[26].modules[23][2], Resolution.Y - Actor.aniData[26].modules[23][3] - Menu_GetVArrowPos(), 0, g_graBackBuffer);
                     if (pressedKey != GAME_KEY.None)
                     {
-                        m_gameFrame_curState = 1;
+                        m_gameFrame_curState = GAME_FRAME_STATE.DEFAULT;
                         curState = 3;
                         StopSound();
                         m_byMainLoadingState = (sbyte)(m_byMainLoadingState + 1);
@@ -108,8 +108,8 @@ public partial class Game
                 break;
 
             case 3:
-                int ret = GameFrame_doLoop();
-                if (ret == 2)
+                GAME_FRAME_STATE ret = GameFrame_doLoop();
+                if (ret == GAME_FRAME_STATE.GAME_OVER)
                 {
                     // TODO: Why sleep here?
                     //try
@@ -121,7 +121,7 @@ public partial class Game
                     PlaySound(SOUND_INDEX.music_gameover, true);
                     break;
                 }
-                if (ret == 3)
+                if (ret == GAME_FRAME_STATE.EXITED_LEVEL)
                 {
                     if (m_iPrevLevel != 8)
                     {
@@ -141,7 +141,7 @@ public partial class Game
                         PlaySound(SOUND_INDEX.music_leveldone, true, 1);
                     break;
                 }
-                if (ret == 4)
+                if (ret == GAME_FRAME_STATE.CONFIRM_EXIT)
                 {
                     bConfirmExit = false;
                     g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
@@ -185,7 +185,7 @@ public partial class Game
                         if ((pressedKey & GAME_KEY.Softkey1) != 0)
                             m_gameFrame_curState = m_gameFrame_prevState;
                         else if (bConfirmToMainMenu)
-                            GameFrame_PostMessage(5, 0);
+                            GameFrame_PostMessage(MESSAGE_ID.EXIT_TO_MENU, 0);
 
                         bConfirmExit = true;
                         bConfirmToMainMenu = false;
@@ -198,7 +198,7 @@ public partial class Game
                 if (pressedKey != GAME_KEY.None)
                 {
                     m_gameStateStep = 0;
-                    m_gameFrame_curState = 0;
+                    m_gameFrame_curState = GAME_FRAME_STATE.LOADING;
                     curState = 3;
                     StopSound();
                     GameFrame_InitNewGame();
@@ -251,7 +251,7 @@ public partial class Game
                     StopSound();
                     m_bBackgroundUsed = true;
                     m_gameStateStep = 0;
-                    m_gameFrame_curState = 0;
+                    m_gameFrame_curState = GAME_FRAME_STATE.LOADING;
                     curState = 3;
                     GameFrame_InitNewGame();
                 }
@@ -267,7 +267,7 @@ public partial class Game
                         GameCore();
                         StopSound();
                         m_gameStateStep = 0;
-                        m_gameFrame_curState = 0;
+                        m_gameFrame_curState = GAME_FRAME_STATE.LOADING;
                         curState = 3;
                         break;
                     }
@@ -275,7 +275,7 @@ public partial class Game
                     break;
                 }
                 m_gameStateStep = 0;
-                m_gameFrame_curState = 0;
+                m_gameFrame_curState = GAME_FRAME_STATE.LOADING;
                 curState = 3;
                 break;
         }

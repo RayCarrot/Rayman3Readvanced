@@ -12,7 +12,7 @@ public class Anim
     public int oldAction { get; set; }
     public int curAction { get; set; }
     public int newAction { get; set; }
-    public static int aniEvent_flag { get; set; } // TODO: Flags enum
+    public static ANIM_EVENT_FLAGS aniEvent_flag { get; set; }
     public static MM_TYPE aniEvent_mmtype { get; set; }
     public static short[] aniEvent_mmpar { get; } = new short[6];
     public static CollisionBox aniEvent_pColBoxData { get; set; }
@@ -22,7 +22,7 @@ public class Anim
         sbyte[] frameData = Actor.aniData[(sbyte)type].frames[frame];
         frameDuration = frameData[1] & 0xFF;
         frameTick = 0;
-        aniEvent_flag |= 0x2;
+        aniEvent_flag |= ANIM_EVENT_FLAGS.LOADED_COLLISION_BOX;
         aniEvent_pColBoxData = new CollisionBox()
         {
             Left = frameData[2],
@@ -45,10 +45,10 @@ public class Anim
         AnimData data = Actor.aniData[(sbyte)type];
         sbyte[] mmParam = data.mmParam[newAction];
         int nbFrames = data.actions[newAction][0] & 0xFF;
-        aniEvent_flag = 0;
-        if (bInitMModel && (data.flag & 0x1) != 0)
+        aniEvent_flag = ANIM_EVENT_FLAGS.NONE;
+        if (bInitMModel && (data.flag & ANIM_DATA_FLAGS.HAS_MECH_MODEL) != 0)
         {
-            aniEvent_flag |= 0x1;
+            aniEvent_flag |= ANIM_EVENT_FLAGS.LOADED_MECH_MODEL;
             aniEvent_mmtype = (MM_TYPE)((mmParam[0] & 0xF0) >> 4);
             for (int i = 0; i < 6; i++)
             {

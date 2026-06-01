@@ -36,7 +36,7 @@ public partial class Game
     public Graphics g_graBackBuffer { get; set; }
     public bool painting { get; set; } // Irrelevant in Readvanced since we're not multi-threading
     public static int m_iGlobalTicker { get; set; }
-    public sbyte m_chGameState { get; set; } // TODO: Enum/constants
+    public GAME_STATE m_chGameState { get; set; } = GAME_STATE.ACTIVE;
     public Font m_fontGeneral { get; set; }
     public bool showDebug { get; set; }
     public static long _nUpdateTimer { get; set; }
@@ -111,7 +111,7 @@ public partial class Game
         g_graBackBuffer = graFrontBuffer;
         
         if (SysFrame_doLoop() != 0)
-            m_chGameState = 1;
+            m_chGameState = GAME_STATE.EXITING;
 
         if ((pressedKey & GAME_KEY.Star) != 0)
             showDebug = !showDebug;
@@ -137,7 +137,7 @@ public partial class Game
     {
         while (true)
         {
-            if (m_chGameState == 1)
+            if (m_chGameState == GAME_STATE.EXITING)
             {
                 GameFrame_SaveSound();
                 break;

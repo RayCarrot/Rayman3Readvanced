@@ -389,15 +389,15 @@ public partial class Game
                         case 0:
                             StopSound();
                             m_gameStateStep = 0;
-                            m_gameFrame_prevState = 1;
-                            m_gameFrame_curState = 6;
+                            m_gameFrame_prevState = GAME_FRAME_STATE.DEFAULT;
+                            m_gameFrame_curState = GAME_FRAME_STATE.NEW_GAME;
                             GameFrame_InitNewGame();
                             break;
 
                         case 1:
                             m_gameStateStep = 0;
-                            m_gameFrame_prevState = 1;
-                            m_gameFrame_curState = 8;
+                            m_gameFrame_prevState = GAME_FRAME_STATE.DEFAULT;
+                            m_gameFrame_curState = GAME_FRAME_STATE.LOAD_GAME;
                             break;
                     
                         case 2:
@@ -430,8 +430,8 @@ public partial class Game
                     
                         case 5:
                             StopSound();
-                            GameFrame_PostMessage(4, 0);
-                            m_gameFrame_prevState = 1;
+                            GameFrame_PostMessage(MESSAGE_ID.EXIT, 0);
+                            m_gameFrame_prevState = GAME_FRAME_STATE.DEFAULT;
                             bConfirm = false;
                             break;
                     }
@@ -458,8 +458,8 @@ public partial class Game
 
                         case 1:
                             m_gameStateStep = 0;
-                            m_gameFrame_prevState = 1;
-                            m_gameFrame_curState = 9;
+                            m_gameFrame_prevState = GAME_FRAME_STATE.DEFAULT;
+                            m_gameFrame_curState = GAME_FRAME_STATE.CONFIRM_RESTART;
                             bConfirmExit = false;
                             break;
                     
@@ -483,15 +483,15 @@ public partial class Game
                             break;
 
                         case 3:
-                            m_gameFrame_prevState = 1;
+                            m_gameFrame_prevState = GAME_FRAME_STATE.DEFAULT;
                             bConfirmExit = false;
                             bConfirmToMainMenu = true;
                             break;
                     
                         case 4:
                             StopSound();
-                            GameFrame_PostMessage(4, 0);
-                            m_gameFrame_prevState = 1;
+                            GameFrame_PostMessage(MESSAGE_ID.EXIT, 0);
+                            m_gameFrame_prevState = GAME_FRAME_STATE.DEFAULT;
                             bConfirm = false;
                             break;
                     }

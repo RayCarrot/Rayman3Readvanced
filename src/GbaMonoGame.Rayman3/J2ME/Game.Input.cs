@@ -129,7 +129,9 @@ public partial class Game
 
     public void keyPressed(JAVA_KEY_CODE keyCode)
     {
-        if (m_gameFrame_prevState == 0 && m_gameFrame_curState == 1 && System.currentTimeMillis() - lStartMillForKeyDelay < 200) 
+        if (m_gameFrame_prevState == GAME_FRAME_STATE.LOADING && 
+            m_gameFrame_curState == GAME_FRAME_STATE.DEFAULT && 
+            System.currentTimeMillis() - lStartMillForKeyDelay < 200) 
             return;
         
         realKeyCode = keyCode;

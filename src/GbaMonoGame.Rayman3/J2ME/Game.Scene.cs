@@ -226,7 +226,7 @@ public partial class Game
         }
         for (b = 0; b < 28; b++)
         {
-            if (Actor.aniData[b] != null && (Actor.aniData[b].flag & 0x2) == 0)
+            if (Actor.aniData[b] != null && (Actor.aniData[b].flag & ANIM_DATA_FLAGS.LOADED) == 0)
                 Actor.aniData[b] = null;
         }
         System.gc();
@@ -295,7 +295,7 @@ public partial class Game
                 RM.Free(kImage_ResourceID);
                 RM.Free(kData_ResourceID);
                 if (Actor.aniData[iActorType] != null)
-                    (Actor.aniData[iActorType]).flag = (sbyte)((Actor.aniData[iActorType]).flag & 0xFFFFFFFD);
+                    Actor.aniData[iActorType].flag &= ~ANIM_DATA_FLAGS.LOADED;
                 break;
             case 1:
                 RM.Load(kImage_ResourceID);

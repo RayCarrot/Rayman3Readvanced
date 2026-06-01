@@ -289,18 +289,18 @@ public class Actor
         int type = buffer[0] & SByte.MaxValue;
         if (aniData[type] != null)
         {
-            aniData[type].flag = (sbyte)(aniData[type].flag | 0x2);
+            aniData[type].flag |= ANIM_DATA_FLAGS.LOADED;
             return;
         }
 
         AnimData data = new();
         aniData[type] = data;
         data.resID = (sbyte)resID;
-        data.flag = (sbyte)((buffer[0] & 0x80) != 0 ? 1 : 0);
+        data.flag = (buffer[0] & 0x80) != 0 ? ANIM_DATA_FLAGS.HAS_MECH_MODEL : ANIM_DATA_FLAGS.NONE;
         data.nbModule = (sbyte)buffer[1];
         data.nbFrame = (sbyte)buffer[2];
         data.nbAction = (sbyte)buffer[3];
-        data.flag = (sbyte)(data.flag | 0x2);
+        data.flag |= ANIM_DATA_FLAGS.LOADED;
         int count = data.nbModule & 0xFF;
         data.modules = new sbyte[count][];
         int offset = 4;
@@ -364,15 +364,15 @@ public class Actor
     {
         x += dx;
         y += dy;
-        Anim.aniEvent_flag = 0;
+        Anim.aniEvent_flag = ANIM_EVENT_FLAGS.NONE;
         anim.step(true);
-        if ((Anim.aniEvent_flag & 0x1) != 0)
+        if ((Anim.aniEvent_flag & ANIM_EVENT_FLAGS.LOADED_MECH_MODEL) != 0)
         {
             MModel_Init(Anim.aniEvent_mmtype, Anim.aniEvent_mmpar);
             stateFlag |= ACTOR_STATE.USE_MECH_MODEL;
         }
 
-        if ((Anim.aniEvent_flag & 0x2) != 0)
+        if ((Anim.aniEvent_flag & ANIM_EVENT_FLAGS.LOADED_COLLISION_BOX) != 0)
         {
             if ((stateFlag & ACTOR_STATE.FLIP_X) != 0)
             {
@@ -457,16 +457,16 @@ public class Actor
         mmodel_vX = mmodel_vY = 0;
         mmodel_aX = mmodel_aY = 0;
         mmodel_fX = mmodel_fY = 0;
-        Anim.aniEvent_flag = 0;
+        Anim.aniEvent_flag = ANIM_EVENT_FLAGS.NONE;
         anim.build(objType, firstAction);
 
-        if ((Anim.aniEvent_flag & 0x1) != 0)
+        if ((Anim.aniEvent_flag & ANIM_EVENT_FLAGS.LOADED_MECH_MODEL) != 0)
         {
             MModel_Init(Anim.aniEvent_mmtype, Anim.aniEvent_mmpar);
             stateFlag |= ACTOR_STATE.USE_MECH_MODEL;
         }
 
-        if ((Anim.aniEvent_flag & 0x2) != 0)
+        if ((Anim.aniEvent_flag & ANIM_EVENT_FLAGS.LOADED_COLLISION_BOX) != 0)
         {
             if ((stateFlag & ACTOR_STATE.FLIP_X) != 0)
             {
@@ -2770,7 +2770,7 @@ public class Actor
                         Game.m_gameFrame_unlockedLevel = (sbyte)(Game.m_gameFrame_curLevel + 1);
                     anim.newAction = 0;
                     Game.m_gameStateStep = 0;
-                    Game.GameFrame_PostMessage(2, 0);
+                    Game.GameFrame_PostMessage(MESSAGE_ID.CHANGE_LEVEL, 0);
                     break;
                 
                 case 37:
@@ -2779,13 +2779,13 @@ public class Actor
                     anim.newAction = 0;
                     stateFlag |= ACTOR_STATE.DEAD;
                     Game.m_gameStateStep = 0;
-                    Game.GameFrame_PostMessage(2, actorReference.V[0]);
+                    Game.GameFrame_PostMessage(MESSAGE_ID.CHANGE_LEVEL, actorReference.V[0]);
                     break;
                 
                 case 32:
                 case 33:
                     stateFlag |= ACTOR_STATE.DEAD;
-                    Game.GameFrame_PostMessage(1, 0);
+                    Game.GameFrame_PostMessage(MESSAGE_ID.RAYMAN_DEATH, 0);
                     if (Game.s_iLeftToDie == 0)
                         Game.s_iLeftToDie = 1;
                     return;
