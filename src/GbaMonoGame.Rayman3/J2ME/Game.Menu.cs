@@ -363,7 +363,7 @@ public partial class Game
         // Left
         if ((m_keys & (KEY.NUM_1 | KEY.NUM_2 | KEY.NUM_3 | KEY.NUM_4)) != 0)
         {
-            PlaySound(31, true);
+            PlaySound(SOUND_INDEX.menu_move, true);
             if (m_gameMenu_idCurPage == MENU_PAGE.HELP)
                 m_gameMenu_idCurSel--;
             else if (--m_gameMenu_idCurSel < 0)
@@ -372,7 +372,7 @@ public partial class Game
         // Right
         else if ((m_keys & (KEY.NUM_0 | KEY.NUM_6 | KEY.NUM_7 | KEY.NUM_8 | KEY.NUM_9)) != 0)
         {
-            PlaySound(31, true);
+            PlaySound(SOUND_INDEX.menu_move, true);
             if (m_gameMenu_idCurPage == MENU_PAGE.HELP)
                 m_gameMenu_idCurSel++;
             else if (++m_gameMenu_idCurSel >= m_gameMenu_nItem)
@@ -451,7 +451,7 @@ public partial class Game
                             }
                             if (m_gameFrame_curLevel == 0)
                             {
-                                PlaySound(35, true, 255);
+                                PlaySound(SOUND_INDEX.music_map, true, 255);
                                 bStillPlay = true;
                             }
                             break;
@@ -517,7 +517,7 @@ public partial class Game
             }
 
             if (!bStillPlay)
-                PlaySound(32, true);
+                PlaySound(SOUND_INDEX.menu_select, true);
         }
     }
 

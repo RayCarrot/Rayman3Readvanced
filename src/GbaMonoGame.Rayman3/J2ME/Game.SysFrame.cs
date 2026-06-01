@@ -86,7 +86,7 @@ public partial class Game
                     RM.Load(0x60000913);
                     RM.Synchronize();
                     GameFrame_loadLevel(-1);
-                    PlaySound(36, true, 255);
+                    PlaySound(SOUND_INDEX.music_splash, true, 255);
                     m_byMainLoadingState = (sbyte)(m_byMainLoadingState + 1);
                 }
                 else
@@ -118,7 +118,7 @@ public partial class Game
                     //}
                     //catch (Exception e) { }
                     curState = 4;
-                    PlaySound(33, true);
+                    PlaySound(SOUND_INDEX.music_gameover, true);
                     break;
                 }
                 if (ret == 3)
@@ -138,7 +138,7 @@ public partial class Game
                         pRayman.stateFlag &= ~ACTOR_STATE.DEAD;
                     }
                     if (m_iPrevLevel > 0 && pRayman.anim.curAction != 37)
-                        PlaySound(34, true, 1);
+                        PlaySound(SOUND_INDEX.music_leveldone, true, 1);
                     break;
                 }
                 if (ret == 4)

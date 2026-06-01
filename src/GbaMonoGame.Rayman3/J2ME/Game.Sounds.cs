@@ -78,8 +78,7 @@ public partial class Game
         RM.Synchronize();
     }
 
-    // TODO: Sound enum
-    public void PlaySound(int iSoundIndex, bool bStopCurrent)
+    public void PlaySound(SOUND_INDEX iSoundIndex, bool bStopCurrent)
     {
         PlaySound(iSoundIndex, bStopCurrent, 1);
     }
@@ -109,12 +108,12 @@ public partial class Game
         }
     }
 
-    public void PlaySound(int iSoundIndex, bool bStopCurrent, int iLoop)
+    public void PlaySound(SOUND_INDEX iSoundIndex, bool bStopCurrent, int iLoop)
     {
-        if (SoundVolume == 0 || iSoundIndex == -1)
+        if (SoundVolume == 0 || (int)iSoundIndex == -1)
             return;
 
-        int iID = iSoundIndex - 23;
+        int iID = (int)(iSoundIndex - 23);
         if (m_gameFrame_curLevel <= 0)
             bStopCurrent = false;
 

@@ -654,7 +654,7 @@ public class Actor
                     if (Game.pFist[f].Fist_CheckCollision(this))
                     {
                         anim.newAction = 1;
-                        GameMidlet.Instance_Game.PlaySound(26, true);
+                        GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.enemy_hit, true);
                         break;
                     }
                 }
@@ -744,7 +744,7 @@ public class Actor
                     {
                         V[1] = 0;
                         anim.newAction = action == 6 ? 7 : 4;
-                        GameMidlet.Instance_Game.PlaySound(26, true);
+                        GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.enemy_hit, true);
                         break;
                     }
                 }
@@ -771,7 +771,7 @@ public class Actor
                     if (Game.pFist[f].Fist_CheckCollision(this))
                     {
                         anim.newAction = 2;
-                        GameMidlet.Instance_Game.PlaySound(26, true);
+                        GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.enemy_hit, true);
                         break;
                     }
                 }
@@ -792,7 +792,7 @@ public class Actor
                     if (Game.pFist[f].Fist_CheckCollision(this))
                     {
                         anim.newAction = 2;
-                        GameMidlet.Instance_Game.PlaySound(26, true);
+                        GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.enemy_hit, true);
                         break;
                     }
                 }
@@ -837,30 +837,30 @@ public class Actor
                 case OBJECT_TYPE.LUM:
                     GameMidlet.Instance_Game.s_iLumsTaken++;
                     GameMidlet.Instance_Game.Status_Show(2);
-                    GameMidlet.Instance_Game.PlaySound(28, true);
+                    GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.lums, true);
                     break;
                 
                 case OBJECT_TYPE.LIFE:
                     GameMidlet.Instance_Game.m_gameFrame_nLife = (sbyte)(GameMidlet.Instance_Game.m_gameFrame_nLife + (GameMidlet.Instance_Game.m_gameFrame_nLife < 99 ? 1 : 0));
                     GameMidlet.Instance_Game.Status_Show(0);
-                    GameMidlet.Instance_Game.PlaySound(30, true);
+                    GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.lums_white, true);
                     break;
                 
                 case OBJECT_TYPE.ENERGY:
                     GameMidlet.Instance_Game.m_gameFrame_nEnergy = (sbyte)(GameMidlet.Instance_Game.m_gameFrame_nEnergy + (GameMidlet.Instance_Game.m_gameFrame_nEnergy < 5 ? 1 : 0));
                     GameMidlet.Instance_Game.Status_Show(0);
-                    GameMidlet.Instance_Game.PlaySound(29, true);
+                    GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.lums_red, true);
                     break;
                 
                 case OBJECT_TYPE.BLUE_LUM:
                     Game.pRayman.V[7] = -1;
                     Game.pRayman.anim.newAction = 9;
-                    GameMidlet.Instance_Game.PlaySound(28, true);
+                    GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.lums, true);
                     break;
 
                 case OBJECT_TYPE.CHECKPOINT:
                     GameMidlet.Instance_Game.s_actorCheckpoint = this;
-                    GameMidlet.Instance_Game.PlaySound(28, true);
+                    GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.lums, true);
                     break;
             }
         }
@@ -876,7 +876,7 @@ public class Actor
                 {
                     if (Game.pFist[f].anim.curAction == 1 && Game.pFist[f].Fist_CheckCollision(this))
                     {
-                        GameMidlet.Instance_Game.PlaySound(24, true);
+                        GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.cage_hit, true);
                         anim.newAction = 2;
                         break;
                     }
@@ -893,7 +893,7 @@ public class Actor
                         break;
                     }
 
-                    GameMidlet.Instance_Game.PlaySound(23, true);
+                    GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.cage_break, true);
                     GameMidlet.Instance_Game.s_iCageOpened++;
                     anim.newAction = 4;
                     GameMidlet.Instance_Game.Status_Show(1);
@@ -910,7 +910,7 @@ public class Actor
                 {
                     if (Game.pFist[i].anim.curAction == 1 && Game.pFist[i].Fist_CheckCollision(this))
                     {
-                        GameMidlet.Instance_Game.PlaySound(24, true);
+                        GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.cage_hit, true);
                         anim.newAction = 7;
                         break;
                     }
@@ -927,7 +927,7 @@ public class Actor
                         break;
                     }
 
-                    GameMidlet.Instance_Game.PlaySound(23, true);
+                    GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.cage_break, true);
                     GameMidlet.Instance_Game.s_iCageOpened++;
                     anim.newAction = 9;
                     GameMidlet.Instance_Game.Status_Show(1);
@@ -1371,12 +1371,12 @@ public class Actor
             {
                 anim.newAction = 5;
                 V[4] = 50;
-                GameMidlet.Instance_Game.PlaySound(26, true);
+                GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.enemy_hit, true);
             }
             else
             {
                 anim.newAction = 6;
-                GameMidlet.Instance_Game.PlaySound(25, true);
+                GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.enemy_death, true);
             }
         }
         else if (GameObj_checkCollsion(Game.pRayman))
@@ -1898,7 +1898,7 @@ public class Actor
                             actorReference.anim.curAction is 2 or 0)
                         {
                             if (actorReference.anim.curAction is 2 or 0)
-                                GameMidlet.Instance_Game.PlaySound(29, true);
+                                GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.lums_red, true);
                             anim.newAction = 37;
                         }
                         else if ((fist_top = getAvailableFist()) != -1)
@@ -2569,13 +2569,13 @@ public class Actor
         if (GameMidlet.Instance_Game.m_gameFrame_nEnergy == 0)
         {
             anim.newAction = 33;
-            GameMidlet.Instance_Game.PlaySound(40, true);
+            GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.rayman_death, true);
         }
         else
         {
             V[1] = 1;
             V[12] = 1;
-            GameMidlet.Instance_Game.PlaySound(42, true);
+            GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.rayman_hit, true);
         }
 
         GameMidlet.Instance_Game.Status_Show(0);
@@ -2589,7 +2589,7 @@ public class Actor
             if (phb == PHB_TYPE.TYPE_18)
             {
                 anim.newAction = 33;
-                GameMidlet.Instance_Game.PlaySound(40, true);
+                GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.rayman_death, true);
                 return true;
             }
 
@@ -2597,7 +2597,7 @@ public class Actor
             {
                 anim.newAction = 32;
                 bWasPHBStop = false;
-                GameMidlet.Instance_Game.PlaySound(44, true);
+                GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.rayman_water, true);
                 return true;
             }
 
@@ -2611,7 +2611,7 @@ public class Actor
         if (GameMidlet.Instance_Game.m_gameFrame_nEnergy <= 0)
         {
             anim.newAction = 33;
-            GameMidlet.Instance_Game.PlaySound(40, true);
+            GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.rayman_death, true);
             return true;
         }
 
@@ -2961,11 +2961,11 @@ public class Actor
                 case 16:
                 case 25:
                 case 35:
-                    GameMidlet.Instance_Game.PlaySound(37, true, 255);
+                    GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.punch_charge, true, 255);
                     break;
 
                 case 9:
-                    GameMidlet.Instance_Game.PlaySound(41, true);
+                    GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.rayman_helico, true);
                     break;
 
                 case 11:
@@ -2984,17 +2984,17 @@ public class Actor
                     break;
 
                 case 7:
-                    GameMidlet.Instance_Game.PlaySound(43, true);
+                    GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.rayman_jump, true);
                     break;
 
                 case 10:
                 case 13:
                 case 23:
-                    GameMidlet.Instance_Game.PlaySound(38, true);
+                    GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.punch_released, true);
                     break;
 
                 case 3:
-                    GameMidlet.Instance_Game.PlaySound(39, true);
+                    GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.rayman_crouch, true);
                     break;
             }
         }

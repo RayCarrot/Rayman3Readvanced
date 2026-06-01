@@ -190,7 +190,7 @@ public partial class Game
             Menu_Draw();
 
             if (!m_gameFrame_paused)
-                PlaySound(36, false, 255);
+                PlaySound(SOUND_INDEX.music_splash, false, 255);
 
             // Draw soft key pause indicator
             Actor.drawModule(Actor.aniData[26], 23, Resolution.X - Actor.aniData[26].modules[23][2], Resolution.Y - Actor.aniData[26].modules[23][3] - Menu_GetVArrowPos(), 0, g_graBackBuffer);
@@ -280,9 +280,9 @@ public partial class Game
             if (isLoadSuccess)
             {
                 if (m_gameFrame_curLevel == 0)
-                    PlaySound(35, false, 255);
+                    PlaySound(SOUND_INDEX.music_map, false, 255);
                 else
-                    PlaySound(27, true);
+                    PlaySound(SOUND_INDEX.enter_level, true);
 
                 Status_ShowAll();
                 currentKey = GAME_KEY.None;
