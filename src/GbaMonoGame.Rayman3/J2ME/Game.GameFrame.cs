@@ -11,26 +11,26 @@ public partial class Game
     public const string RECORD_FLAG_SAVE_NAME = "RECORDFLAG";
     public const string SOUND_SAVE_NAME = "SOUND";
 
-    public static int[] actorsLen { get; } = [32, 64, 71, 5, 55, 69, 74, 5, 58, 40, 35];
+    public int[] actorsLen { get; } = [32, 64, 71, 5, 55, 69, 74, 5, 58, 40, 35];
     public int s_iCageTotal { get; set; }
     public int s_iCageOpened { get; set; }
     public int s_iLumsTotal { get; set; }
     public int s_iLumsTaken { get; set; }
     public Actor s_actorCheckpoint { get; set; }
-    public static sbyte[,] s_synopsis { get; set; } // TODO: Structs
-    public static sbyte[] m_RecordUsedFlag { get; } = new sbyte[11]; // TODO: Bools?
-    public static GAME_FRAME_STATE m_gameFrame_prevState { get; set; }
-    public static GAME_FRAME_STATE m_gameFrame_curState { get; set; }
-    public static bool m_gameFrame_paused { get; set; }
-    public static MESSAGE_ID m_gameFrame_msgId { get; set; }
-    public static int m_gameFrame_msgPar { get; set; }
-    public static sbyte m_gameFrame_curLevel { get; set; } // TODO: Consts for -1 and 0
-    public static sbyte m_gameFrame_unlockedLevel { get; set; }
-    public static sbyte m_gameFrame_nbLevels { get; set; }
+    public sbyte[,] s_synopsis { get; set; } // TODO: Structs
+    public sbyte[] m_RecordUsedFlag { get; } = new sbyte[11]; // TODO: Bools?
+    public GAME_FRAME_STATE m_gameFrame_prevState { get; set; }
+    public GAME_FRAME_STATE m_gameFrame_curState { get; set; }
+    public bool m_gameFrame_paused { get; set; }
+    public MESSAGE_ID m_gameFrame_msgId { get; set; }
+    public int m_gameFrame_msgPar { get; set; }
+    public sbyte m_gameFrame_curLevel { get; set; } // TODO: Consts for -1 and 0
+    public sbyte m_gameFrame_unlockedLevel { get; set; }
+    public sbyte m_gameFrame_nbLevels { get; set; }
     public sbyte m_gameFrame_nLife { get; set; }
     public sbyte m_gameFrame_nEnergy { get; set; }
-    public static int m_iPrevLevel { get; set; }
-    public static int m_gameStateStep { get; set; }
+    public int m_iPrevLevel { get; set; }
+    public int m_gameStateStep { get; set; }
 
     public bool GameFrame_PhysicalInitI()
     {
@@ -431,7 +431,7 @@ public partial class Game
         return m_gameFrame_curState;
     }
 
-    public static void GameFrame_PostMessage(MESSAGE_ID id, int par)
+    public void GameFrame_PostMessage(MESSAGE_ID id, int par)
     {
         m_gameFrame_msgId = id;
         m_gameFrame_msgPar = par;

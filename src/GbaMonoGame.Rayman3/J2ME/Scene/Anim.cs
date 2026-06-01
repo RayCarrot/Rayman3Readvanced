@@ -100,18 +100,18 @@ public class Anim
         int nbSprite = frameData[0] & 0xFF;
         
         if (type == OBJECT_TYPE.RAYMAN)
-            Game.raymanAnim = 0;
+            GameMidlet.Instance_Game.raymanAnim = 0;
 
         for (int i = 0; i < nbSprite; i++)
         {
             if (i == nbSprite - 1 && 
-                type == OBJECT_TYPE.RAYMAN && 
-                Game.pFist[0].anim.curAction != 0 && 
-                Game.pRayman.anim.curAction != 10 && 
-                Game.pRayman.anim.curAction != 36)
+                type == OBJECT_TYPE.RAYMAN &&
+                GameMidlet.Instance_Game.pFist[0].anim.curAction != 0 &&
+                GameMidlet.Instance_Game.pRayman.anim.curAction != 10 &&
+                GameMidlet.Instance_Game.pRayman.anim.curAction != 36)
                 break;
 
-            bool flag = !(i == 0 && type == OBJECT_TYPE.RAYMAN && Game.pFist[1].anim.curAction != 0);
+            bool flag = !(i == 0 && type == OBJECT_TYPE.RAYMAN && GameMidlet.Instance_Game.pFist[1].anim.curAction != 0);
             sbyte[] pModule = data.modules[frameData[6 + frameOffset] & SByte.MaxValue];
             
             int nsx;
@@ -130,7 +130,7 @@ public class Anim
             int nsy = ny + frameData[6 + frameOffset + 2];
             
             if (type == OBJECT_TYPE.RAYMAN)
-                Game.raymanAnim = nsx;
+                GameMidlet.Instance_Game.raymanAnim = nsx;
 
             if (flag)
             {

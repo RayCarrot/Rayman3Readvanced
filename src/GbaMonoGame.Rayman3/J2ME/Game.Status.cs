@@ -7,7 +7,7 @@ public partial class Game
     public sbyte[] m_byStatusDisplay { get; } = new sbyte[3];
     public sbyte[] m_byStatusDisplayCounter { get; } = new sbyte[3];
     public bool m_bUpdateStatus { get; set; }
-    public static int[][] s_iTutorialArray { get; } = new int[][]
+    public int[][] s_iTutorialArray { get; } = new int[][]
     {
         [0x3001DE, 3],
         [0x300016, 3],

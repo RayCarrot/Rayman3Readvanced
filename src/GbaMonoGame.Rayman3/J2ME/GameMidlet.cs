@@ -1,11 +1,10 @@
-﻿using System.Collections.Frozen;
+﻿using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using BinarySerializer.Ubisoft.GbaEngine;
 
 namespace GbaMonoGame.Rayman3.J2ME;
 
-// TODO: Override internal resolution
-// TODO: Remove statics
 // TODO: Remove magic values
 // TODO: Add debug layout for it
 // TODO: Widescreen
@@ -17,7 +16,7 @@ public class GameMidlet : Frame
     private const float Framerate = 1 / 0.045f;
 
     // Map GBA inputs to J2ME key codes
-    private static readonly FrozenDictionary<GbaInput, JAVA_KEY_CODE> InputMapping = new Dictionary<GbaInput, JAVA_KEY_CODE>()
+    private FrozenDictionary<GbaInput, JAVA_KEY_CODE> InputMapping { get; } = new Dictionary<GbaInput, JAVA_KEY_CODE>()
     {
         [GbaInput.A] = JAVA_KEY_CODE.SOFTKEY3,
         [GbaInput.B] = JAVA_KEY_CODE.SOFTKEY3,
@@ -34,7 +33,7 @@ public class GameMidlet : Frame
     private float _oldFramerate;
     private Vector2 _oldResolution;
 
-    public static Game Instance_Game { get; set; } // TODO: Remove need for this
+    public static Game Instance_Game { get; set; }
     public static bool bSuspended { get; set; }
 
     public override void Init()
@@ -62,8 +61,13 @@ public class GameMidlet : Frame
 
     public override void UnInit()
     {
+        // Stop the game
         Instance_Game.StopSound();
         Instance_Game = null;
+
+        // Clear static values
+        Array.Clear(Actor.aniData);
+        Array.Clear(Actor.fist_energy);
 
         // Restore the resolution
         Engine.ViewPort.SetInternalGameResolution(_oldResolution);

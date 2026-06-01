@@ -2,10 +2,10 @@
 
 public partial class Game
 {
-    public static Actor pRayman { get; set; }
-    public static Actor[] pFist { get; } = new Actor[2];
-    public static int Fist_num { get; set; }
-    public static int s_iLeftToDie { get; set; }
+    public Actor pRayman { get; set; }
+    public Actor[] pFist { get; } = new Actor[2];
+    public int Fist_num { get; set; }
+    public int s_iLeftToDie { get; set; }
     public short m_sectors_width { get; set; }
     public short m_sectors_height { get; set; }
     public sbyte m_sectors_nbrWidth { get; set; }
@@ -14,11 +14,11 @@ public partial class Game
     public sbyte[][] m_sectors_actorIds { get; set; }
     public Actor[] actors { get; set; }
     public int m_actors_1stAlwaysActive { get; set; }
-    public static int raymanNull { get; set; }
-    public static int raymanAnim { get; set; }
-    public static int raymanDraw { get; set; }
+    public int raymanNull { get; set; }
+    public int raymanAnim { get; set; }
+    public int raymanDraw { get; set; }
 
-    public static short ReadUnsignedShort(sbyte[] buf, int nOff)
+    public short ReadUnsignedShort(sbyte[] buf, int nOff)
     {
         return (short)((buf[nOff] & 0xFF) | ((buf[nOff + 1] & 0xFF) << 8));
     }

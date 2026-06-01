@@ -85,7 +85,7 @@ public class Actor
         }
 
         if ((stateFlag & ACTOR_STATE.LEFT_TO_DIE) != 0)
-            Game.s_iLeftToDie++;
+            GameMidlet.Instance_Game.s_iLeftToDie++;
 
         m_lInitX = x;
         m_lInitY = y;
@@ -427,28 +427,28 @@ public class Actor
     {
         if ((objType == OBJECT_TYPE.RAYMAN && (V[1] & 0x1) == 1) || (objType == OBJECT_TYPE.PIRATE && (V[4] & 0x1) == 1))
         {
-            Game.raymanDraw = 2;
+            GameMidlet.Instance_Game.raymanDraw = 2;
             return;
         }
 
         if (objType == OBJECT_TYPE.RAYMAN)
-            Game.raymanNull = anim.frameId;
+            GameMidlet.Instance_Game.raymanNull = anim.frameId;
 
         anim.draw((int)(x >> 8), (int)(y >> 8), stateFlag & (ACTOR_STATE.FLIP_X | ACTOR_STATE.FLIP_Y));
 
         if (objType == OBJECT_TYPE.RAYMAN)
-            Game.raymanDraw = (int)(y >> 8);
+            GameMidlet.Instance_Game.raymanDraw = (int)(y >> 8);
     }
 
     public void Actor_ctor(sbyte[] data)
     {
         objType = (OBJECT_TYPE)data[1];
 
-        x = Game.ReadUnsignedShort(data, 2);
+        x = GameMidlet.Instance_Game.ReadUnsignedShort(data, 2);
         x *= 2L;
         x <<= 8;
 
-        y = Game.ReadUnsignedShort(data, 4);
+        y = GameMidlet.Instance_Game.ReadUnsignedShort(data, 4);
         y *= 2L;
         y <<= 8;
 
@@ -616,23 +616,23 @@ public class Actor
             case 0:
                 for (int f = 0; f < FISTS_COUNT; f++)
                 {
-                    if (Game.pFist[f].Fist_CheckCollision(this))
+                    if (GameMidlet.Instance_Game.pFist[f].Fist_CheckCollision(this))
                     {
                         anim.newAction = 1;
                         break;
                     }
                 }
 
-                if (GameObj_checkCollsion(Game.pRayman))
-                    Game.pRayman.doDamage();
+                if (GameObj_checkCollsion(GameMidlet.Instance_Game.pRayman))
+                    GameMidlet.Instance_Game.pRayman.doDamage();
                 break;
             
             case 1:
-                if (Ani_CheckEnd() && (Game.pFist[0].stateFlag & ACTOR_STATE.DEAD) != 0 && (Game.pFist[1].stateFlag & ACTOR_STATE.DEAD) != 0)
+                if (Ani_CheckEnd() && (GameMidlet.Instance_Game.pFist[0].stateFlag & ACTOR_STATE.DEAD) != 0 && (GameMidlet.Instance_Game.pFist[1].stateFlag & ACTOR_STATE.DEAD) != 0)
                     anim.newAction = 0;
 
-                if (GameObj_checkCollsion(Game.pRayman))
-                    Game.pRayman.doDamage();
+                if (GameObj_checkCollsion(GameMidlet.Instance_Game.pRayman))
+                    GameMidlet.Instance_Game.pRayman.doDamage();
                 break;
         }
     }
@@ -643,15 +643,15 @@ public class Actor
         switch (action)
         {
             case 0:
-                if (GameObj_checkCollsion(Game.pRayman))
+                if (GameObj_checkCollsion(GameMidlet.Instance_Game.pRayman))
                 {
-                    Game.pRayman.doDamage();
+                    GameMidlet.Instance_Game.pRayman.doDamage();
                     anim.newAction = 1;
                 }
 
                 for (int f = 0; f < FISTS_COUNT; f++)
                 {
-                    if (Game.pFist[f].Fist_CheckCollision(this))
+                    if (GameMidlet.Instance_Game.pFist[f].Fist_CheckCollision(this))
                     {
                         anim.newAction = 1;
                         GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.enemy_hit, true);
@@ -675,23 +675,23 @@ public class Actor
             case 0:
                 for (int f = 0; f < FISTS_COUNT; f++)
                 {
-                    if (Game.pFist[f].Fist_CheckCollision(this))
+                    if (GameMidlet.Instance_Game.pFist[f].Fist_CheckCollision(this))
                     {
                         anim.newAction = 1;
                         break;
                     }
                 }
 
-                if (GameObj_checkCollsion(Game.pRayman))
-                    Game.pRayman.doDamage();
+                if (GameObj_checkCollsion(GameMidlet.Instance_Game.pRayman))
+                    GameMidlet.Instance_Game.pRayman.doDamage();
                 break;
 
             case 1:
                 if (Ani_CheckEnd())
                     anim.newAction = 0;
 
-                if (GameObj_checkCollsion(Game.pRayman))
-                    Game.pRayman.doDamage();
+                if (GameObj_checkCollsion(GameMidlet.Instance_Game.pRayman))
+                    GameMidlet.Instance_Game.pRayman.doDamage();
                 break;
         }
     }
@@ -704,7 +704,7 @@ public class Actor
             case 0:
             case 1:
                 V[1] += 1;
-                if (V[1] + 1 > V[0] && Math.Abs(Game.pRayman.x - x) < 0x7800 && Math.Abs(Game.pRayman.y - y) < 0xA000)
+                if (V[1] + 1 > V[0] && Math.Abs(GameMidlet.Instance_Game.pRayman.x - x) < 0x7800 && Math.Abs(GameMidlet.Instance_Game.pRayman.y - y) < 0xA000)
                 {
                     if (action == 1)
                     {
@@ -718,11 +718,11 @@ public class Actor
 
             case 2:
             case 5:
-                if (GameObj_checkCollsion(Game.pRayman))
-                    Game.pRayman.doDamage();
+                if (GameObj_checkCollsion(GameMidlet.Instance_Game.pRayman))
+                    GameMidlet.Instance_Game.pRayman.doDamage();
                 for (int f = 0; f < FISTS_COUNT; f++)
                 {
-                    if (Game.pFist[f].Fist_CheckCollision(this))
+                    if (GameMidlet.Instance_Game.pFist[f].Fist_CheckCollision(this))
                     {
                         anim.newAction = action == 5 ? 7 : 4;
                         V[1] = 0;
@@ -736,11 +736,11 @@ public class Actor
 
             case 3:
             case 6:
-                if (GameObj_checkCollsion(Game.pRayman))
-                    Game.pRayman.doDamage();
+                if (GameObj_checkCollsion(GameMidlet.Instance_Game.pRayman))
+                    GameMidlet.Instance_Game.pRayman.doDamage();
                 for (int f = 0; f < FISTS_COUNT; f++)
                 {
-                    if (Game.pFist[f].Fist_CheckCollision(this))
+                    if (GameMidlet.Instance_Game.pFist[f].Fist_CheckCollision(this))
                     {
                         V[1] = 0;
                         anim.newAction = action == 6 ? 7 : 4;
@@ -764,11 +764,11 @@ public class Actor
         switch (action)
         {
             case 0:
-                if (GameObj_checkCollsion(Game.pRayman))
-                    Game.pRayman.doDamage();
+                if (GameObj_checkCollsion(GameMidlet.Instance_Game.pRayman))
+                    GameMidlet.Instance_Game.pRayman.doDamage();
                 for (int f = 0; f < FISTS_COUNT; f++)
                 {
-                    if (Game.pFist[f].Fist_CheckCollision(this))
+                    if (GameMidlet.Instance_Game.pFist[f].Fist_CheckCollision(this))
                     {
                         anim.newAction = 2;
                         GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.enemy_hit, true);
@@ -776,20 +776,20 @@ public class Actor
                     }
                 }
 
-                if (Math.Abs(Game.pRayman.x - x) < 30720L && Math.Abs(Game.pRayman.y - y) < 0x5000)
+                if (Math.Abs(GameMidlet.Instance_Game.pRayman.x - x) < 30720L && Math.Abs(GameMidlet.Instance_Game.pRayman.y - y) < 0x5000)
                 {
                     anim.newAction = 1;
-                    mmodel_vX = (short)(int)((Game.pRayman.x - x) / 0x20);
-                    mmodel_vY = (short)(int)((Game.pRayman.y - y) / 0x20);
+                    mmodel_vX = (short)(int)((GameMidlet.Instance_Game.pRayman.x - x) / 0x20);
+                    mmodel_vY = (short)(int)((GameMidlet.Instance_Game.pRayman.y - y) / 0x20);
                 }
                 break;
 
             case 1:
-                if (GameObj_checkCollsion(Game.pRayman))
-                    Game.pRayman.doDamage();
+                if (GameObj_checkCollsion(GameMidlet.Instance_Game.pRayman))
+                    GameMidlet.Instance_Game.pRayman.doDamage();
                 for (int f = 0; f < FISTS_COUNT; f++)
                 {
-                    if (Game.pFist[f].Fist_CheckCollision(this))
+                    if (GameMidlet.Instance_Game.pFist[f].Fist_CheckCollision(this))
                     {
                         anim.newAction = 2;
                         GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.enemy_hit, true);
@@ -811,25 +811,25 @@ public class Actor
         {
             for (int f = 0; f < FISTS_COUNT; f++)
             {
-                Actor pFist = Game.pFist[f];
+                Actor pFist = GameMidlet.Instance_Game.pFist[f];
                 if ((pFist.stateFlag & ACTOR_STATE.DEAD) == 0 && GameObj_checkCollsion(pFist))
                 {
-                    Game.pFist[0].stateFlag |= ACTOR_STATE.DEAD;
-                    Game.pFist[1].stateFlag |= ACTOR_STATE.DEAD;
+                    GameMidlet.Instance_Game.pFist[0].stateFlag |= ACTOR_STATE.DEAD;
+                    GameMidlet.Instance_Game.pFist[1].stateFlag |= ACTOR_STATE.DEAD;
                     fist_top = 0;
-                    Game.pFist[0].anim.curAction = 0;
-                    Game.pFist[1].anim.curAction = 0;
-                    Game.pRayman.actorReference = null;
-                    Game.pRayman.anim.newAction = 27;
-                    Game.pRayman.step();
-                    Game.pRayman.x = x;
-                    Game.pRayman.y = y;
-                    Game.pRayman.V[13] = (int)x >> 8;
-                    Game.pRayman.V[14] = (int)y >> 8;
+                    GameMidlet.Instance_Game.pFist[0].anim.curAction = 0;
+                    GameMidlet.Instance_Game.pFist[1].anim.curAction = 0;
+                    GameMidlet.Instance_Game.pRayman.actorReference = null;
+                    GameMidlet.Instance_Game.pRayman.anim.newAction = 27;
+                    GameMidlet.Instance_Game.pRayman.step();
+                    GameMidlet.Instance_Game.pRayman.x = x;
+                    GameMidlet.Instance_Game.pRayman.y = y;
+                    GameMidlet.Instance_Game.pRayman.V[13] = (int)x >> 8;
+                    GameMidlet.Instance_Game.pRayman.V[14] = (int)y >> 8;
                 }
             }
         }
-        else if (GameObj_checkCollsion(Game.pRayman))
+        else if (GameObj_checkCollsion(GameMidlet.Instance_Game.pRayman))
         {
             stateFlag |= ACTOR_STATE.DEAD;
             switch (objType)
@@ -853,8 +853,8 @@ public class Actor
                     break;
                 
                 case OBJECT_TYPE.BLUE_LUM:
-                    Game.pRayman.V[7] = -1;
-                    Game.pRayman.anim.newAction = 9;
+                    GameMidlet.Instance_Game.pRayman.V[7] = -1;
+                    GameMidlet.Instance_Game.pRayman.anim.newAction = 9;
                     GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.lums, true);
                     break;
 
@@ -874,7 +874,7 @@ public class Actor
             case 0:
                 for (int f = 0; f < FISTS_COUNT; f++)
                 {
-                    if (Game.pFist[f].anim.curAction == 1 && Game.pFist[f].Fist_CheckCollision(this))
+                    if (GameMidlet.Instance_Game.pFist[f].anim.curAction == 1 && GameMidlet.Instance_Game.pFist[f].Fist_CheckCollision(this))
                     {
                         GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.cage_hit, true);
                         anim.newAction = 2;
@@ -908,7 +908,7 @@ public class Actor
             case 5:
                 for (int i = 0; i < FISTS_COUNT; i++)
                 {
-                    if (Game.pFist[i].anim.curAction == 1 && Game.pFist[i].Fist_CheckCollision(this))
+                    if (GameMidlet.Instance_Game.pFist[i].anim.curAction == 1 && GameMidlet.Instance_Game.pFist[i].Fist_CheckCollision(this))
                     {
                         GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.cage_hit, true);
                         anim.newAction = 7;
@@ -944,7 +944,7 @@ public class Actor
     public void Platform_ai()
     {
         int action = anim.curAction;
-        bool attached = Game.pRayman.anim.curAction != 27 && Game.pRayman.Rayman_checkAttachPlatform(this);
+        bool attached = GameMidlet.Instance_Game.pRayman.anim.curAction != 27 && GameMidlet.Instance_Game.pRayman.Rayman_checkAttachPlatform(this);
         switch (action)
         {
             case 0:
@@ -1027,15 +1027,15 @@ public class Actor
 
         for (int f = 0; f < FISTS_COUNT; f++)
         {
-            if (Game.pFist[f].anim.curAction == 1 &&
-                Game.pFist[f].Fist_CheckCollision(this))
-                Game.pFist[f].anim.newAction = 3;
+            if (GameMidlet.Instance_Game.pFist[f].anim.curAction == 1 &&
+                GameMidlet.Instance_Game.pFist[f].Fist_CheckCollision(this))
+                GameMidlet.Instance_Game.pFist[f].anim.newAction = 3;
         }
     }
 
     public void Fist_checkHitBackEnd()
     {
-        Actor pRayman = Game.pRayman;
+        Actor pRayman = GameMidlet.Instance_Game.pRayman;
         if (actorReference != null)
         {
             dx = 0;
@@ -1109,7 +1109,7 @@ public class Actor
     public void Fist_launch(ACTOR_STATE ndir, int energy)
     {
         int offsetX;
-        Actor pRayman = Game.pRayman;
+        Actor pRayman = GameMidlet.Instance_Game.pRayman;
         stateFlag &= ~(ACTOR_STATE.FLIP_X | ACTOR_STATE.FLIP_Y);
         stateFlag |= ndir;
         if ((pRayman.stateFlag & ACTOR_STATE.FLIP_X) != 0)
@@ -1153,9 +1153,9 @@ public class Actor
 
     public int getAvailableFist()
     {
-        if ((Game.pFist[0].stateFlag & ACTOR_STATE.DEAD) != 0)
+        if ((GameMidlet.Instance_Game.pFist[0].stateFlag & ACTOR_STATE.DEAD) != 0)
             return 0;
-        if ((Game.pFist[1].stateFlag & ACTOR_STATE.DEAD) != 0)
+        if ((GameMidlet.Instance_Game.pFist[1].stateFlag & ACTOR_STATE.DEAD) != 0)
             return 1;
         return -1;
     }
@@ -1167,14 +1167,14 @@ public class Actor
         {
             case 0:
             case 2:
-                if (GameObj_checkCollsion(Game.pRayman))
-                    Game.pRayman.actorReference = this;
-                else if (Game.pRayman.actorReference == this)
-                    Game.pRayman.actorReference = null;
+                if (GameObj_checkCollsion(GameMidlet.Instance_Game.pRayman))
+                    GameMidlet.Instance_Game.pRayman.actorReference = this;
+                else if (GameMidlet.Instance_Game.pRayman.actorReference == this)
+                    GameMidlet.Instance_Game.pRayman.actorReference = null;
                 break;
            
             case 1:
-                if ((V[0] <= 8 && V[0] <= Game.m_gameFrame_unlockedLevel) ||
+                if ((V[0] <= 8 && V[0] <= GameMidlet.Instance_Game.m_gameFrame_unlockedLevel) ||
                     ((GameMidlet.Instance_Game.s_iLumsTaken & 0xFF) >= 140 && GameMidlet.Instance_Game.s_iCageOpened >= 12))
                     anim.newAction = 4;
                 break;
@@ -1185,18 +1185,18 @@ public class Actor
                 break;
             
             case 3:
-                int raymanAction = Game.pRayman.anim.curAction;
-                if (GameObj_checkCollsion(Game.pRayman) && raymanAction is 0 or 2 or 4 or 3 or 5 or 6 or 15 or 16 or 13 or 39 or 40)
+                int raymanAction = GameMidlet.Instance_Game.pRayman.anim.curAction;
+                if (GameObj_checkCollsion(GameMidlet.Instance_Game.pRayman) && raymanAction is 0 or 2 or 4 or 3 or 5 or 6 or 15 or 16 or 13 or 39 or 40)
                 {
-                    if (Game.pRayman.actorReference != this)
+                    if (GameMidlet.Instance_Game.pRayman.actorReference != this)
                     {
-                        Game.pRayman.actorReference = this;
-                        Game.m_iGlobalTicker = 21;
+                        GameMidlet.Instance_Game.pRayman.actorReference = this;
+                        GameMidlet.Instance_Game.m_iGlobalTicker = 21;
                     }
                 }
-                else if (Game.pRayman.actorReference == this)
+                else if (GameMidlet.Instance_Game.pRayman.actorReference == this)
                 {
-                    Game.pRayman.actorReference = null;
+                    GameMidlet.Instance_Game.pRayman.actorReference = null;
                 }
                 break;
         }
@@ -1208,7 +1208,7 @@ public class Actor
         switch (action)
         {
             case 0:
-                if (GameObj_checkCollsion(Game.pRayman) && (Game.pRayman.anim.curAction == 0 || Game.pRayman.anim.curAction == 2))
+                if (GameObj_checkCollsion(GameMidlet.Instance_Game.pRayman) && (GameMidlet.Instance_Game.pRayman.anim.curAction == 0 || GameMidlet.Instance_Game.pRayman.anim.curAction == 2))
                     Actor_Death();
                 break;
         }
@@ -1219,9 +1219,9 @@ public class Actor
         if (!GameMidlet.Instance_Game.Camera_IsVisible(this))
             stateFlag |= ACTOR_STATE.DEAD;
 
-        if (GameObj_checkCollsion(Game.pRayman))
+        if (GameObj_checkCollsion(GameMidlet.Instance_Game.pRayman))
         {
-            Game.pRayman.doDamage();
+            GameMidlet.Instance_Game.pRayman.doDamage();
             stateFlag |= ACTOR_STATE.DEAD;
         }
     }
@@ -1242,7 +1242,7 @@ public class Actor
         switch (anim.curAction)
         {
             case 0:
-                if ((Game.pRayman.stateFlag & ACTOR_STATE.DEAD) == 0)
+                if ((GameMidlet.Instance_Game.pRayman.stateFlag & ACTOR_STATE.DEAD) == 0)
                 {
                     if (V[3] % 15 == 0)
                     {
@@ -1354,7 +1354,7 @@ public class Actor
         {
             for (int f = 0; f < 2; f++)
             {
-                pirateHit = Game.pFist[f].Fist_CheckCollision(this);
+                pirateHit = GameMidlet.Instance_Game.pFist[f].Fist_CheckCollision(this);
                 if (pirateHit)
                     break;
             }
@@ -1379,14 +1379,14 @@ public class Actor
                 GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.enemy_death, true);
             }
         }
-        else if (GameObj_checkCollsion(Game.pRayman))
+        else if (GameObj_checkCollsion(GameMidlet.Instance_Game.pRayman))
         {
-            Game.pRayman.doDamage();
-            if (((stateFlag & ACTOR_STATE.FLIP_X) == 0 && (Game.pRayman.stateFlag & ACTOR_STATE.FLIP_X) != 0) ||
-                ((stateFlag & ACTOR_STATE.FLIP_X) != 0 && (Game.pRayman.stateFlag & ACTOR_STATE.FLIP_X) == 0))
+            GameMidlet.Instance_Game.pRayman.doDamage();
+            if (((stateFlag & ACTOR_STATE.FLIP_X) == 0 && (GameMidlet.Instance_Game.pRayman.stateFlag & ACTOR_STATE.FLIP_X) != 0) ||
+                ((stateFlag & ACTOR_STATE.FLIP_X) != 0 && (GameMidlet.Instance_Game.pRayman.stateFlag & ACTOR_STATE.FLIP_X) == 0))
             {
-                Game.pRayman.mmodel_vX = 0;
-                Game.pRayman.dx = 0;
+                GameMidlet.Instance_Game.pRayman.mmodel_vX = 0;
+                GameMidlet.Instance_Game.pRayman.dx = 0;
             }
         }
     }
@@ -1494,7 +1494,7 @@ public class Actor
 
                     if (((GAME_KEY)V[4] & GAME_KEY.Middle) != 0 && 
                         (fist_top = getAvailableFist()) != -1 &&
-                        (Game.pFist[0].stateFlag & ACTOR_STATE.DEAD) != 0)
+                        (GameMidlet.Instance_Game.pFist[0].stateFlag & ACTOR_STATE.DEAD) != 0)
                     {
                         anim.newAction = 25;
                         fist_time[fist_top] = 0;
@@ -2036,7 +2036,7 @@ public class Actor
                         else
                         {
                             anim.newAction = 10;
-                            Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, 0x21C0);
+                            GameMidlet.Instance_Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, 0x21C0);
                         }
                     }
                     break;
@@ -2048,7 +2048,7 @@ public class Actor
                         anim.newAction = 36;
                         fist_top = getAvailableFist();
                         if (fist_top != -1)
-                            Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, 8640);
+                            GameMidlet.Instance_Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, 8640);
                     }
                     break;
 
@@ -2140,7 +2140,7 @@ public class Actor
                     if (((GAME_KEY)V[4] & GAME_KEY.Middle) != 0 && (fist_top = getAvailableFist()) != -1)
                     {
                         anim.newAction = 10;
-                        Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, 0x21C0);
+                        GameMidlet.Instance_Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, 0x21C0);
                     }
                     break;
                 
@@ -2216,7 +2216,7 @@ public class Actor
                     if (((GAME_KEY)V[4] & GAME_KEY.Middle) != 0 && (fist_top = getAvailableFist()) != -1)
                     {
                         anim.newAction = 10;
-                        Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, 0x21C0);
+                        GameMidlet.Instance_Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, 0x21C0);
                     }
                     break;
 
@@ -2322,7 +2322,7 @@ public class Actor
                         anim.newAction = 13;
                         fist_top = getAvailableFist();
                         if (fist_top != -1)
-                            Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, fist_time[fist_top] * 0xF0 + 0x1A40);
+                            GameMidlet.Instance_Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, fist_time[fist_top] * 0xF0 + 0x1A40);
                     }
                     break;
 
@@ -2332,7 +2332,7 @@ public class Actor
                         anim.newAction = 13;
                         fist_top = getAvailableFist();
                         if (fist_top != -1)
-                            Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, fist_time[fist_top] * 0xF0 + 0x1A40);
+                            GameMidlet.Instance_Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, fist_time[fist_top] * 0xF0 + 0x1A40);
                     }
                     bug = 8;
                     break;
@@ -2343,7 +2343,7 @@ public class Actor
                         anim.newAction = 23;
                         fist_top = getAvailableFist();
                         if (fist_top != -1)
-                            Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, fist_time[fist_top] * 0xF0 + 0x1A40);
+                            GameMidlet.Instance_Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, fist_time[fist_top] * 0xF0 + 0x1A40);
                     }
                     break;
                 
@@ -2416,9 +2416,9 @@ public class Actor
         catch (Exception e)
         {
             System.println($" action {action}  exception {e} bug {bug}");
-            System.println($"Game.pFist {Game.pFist} fist_time {fist_time}");
+            System.println($"Game.pFist {GameMidlet.Instance_Game.pFist} fist_time {fist_time}");
             System.println($"fist_top {fist_top} fist_top {fist_top}");
-            System.println($"Game.pFist[fist_top] {Game.pFist[fist_top]}");
+            System.println($"Game.pFist[fist_top] {GameMidlet.Instance_Game.pFist[fist_top]}");
             System.println($" fist_time[fist_top] {fist_time[fist_top]}");
         }
     }
@@ -2676,7 +2676,7 @@ public class Actor
         V[4] = (short)GameMidlet.Instance_Game.pressedKey;
         V[5] = (short)GameMidlet.Instance_Game.releasedKey;
         V[3] = (short)GameMidlet.Instance_Game.currentKey;
-        if (Game.m_gameFrame_curLevel > 0 && Game.s_iLeftToDie == 0 && (action is 0 or 2 or 5 or 4 || Game.pRayman.anim.curAction == 12))
+        if (GameMidlet.Instance_Game.m_gameFrame_curLevel > 0 && GameMidlet.Instance_Game.s_iLeftToDie == 0 && (action is 0 or 2 or 5 or 4 || GameMidlet.Instance_Game.pRayman.anim.curAction == 12))
         {
             V[3] = (short)GAME_KEY.None;
             V[4] = (short)GAME_KEY.None;
@@ -2766,11 +2766,11 @@ public class Actor
                     break;
                 
                 case 38:
-                    if (Game.m_gameFrame_unlockedLevel <= Game.m_gameFrame_curLevel)
-                        Game.m_gameFrame_unlockedLevel = (sbyte)(Game.m_gameFrame_curLevel + 1);
+                    if (GameMidlet.Instance_Game.m_gameFrame_unlockedLevel <= GameMidlet.Instance_Game.m_gameFrame_curLevel)
+                        GameMidlet.Instance_Game.m_gameFrame_unlockedLevel = (sbyte)(GameMidlet.Instance_Game.m_gameFrame_curLevel + 1);
                     anim.newAction = 0;
-                    Game.m_gameStateStep = 0;
-                    Game.GameFrame_PostMessage(MESSAGE_ID.CHANGE_LEVEL, 0);
+                    GameMidlet.Instance_Game.m_gameStateStep = 0;
+                    GameMidlet.Instance_Game.GameFrame_PostMessage(MESSAGE_ID.CHANGE_LEVEL, 0);
                     break;
                 
                 case 37:
@@ -2778,16 +2778,16 @@ public class Actor
                     m_lInitY = actorReference.y;
                     anim.newAction = 0;
                     stateFlag |= ACTOR_STATE.DEAD;
-                    Game.m_gameStateStep = 0;
-                    Game.GameFrame_PostMessage(MESSAGE_ID.CHANGE_LEVEL, actorReference.V[0]);
+                    GameMidlet.Instance_Game.m_gameStateStep = 0;
+                    GameMidlet.Instance_Game.GameFrame_PostMessage(MESSAGE_ID.CHANGE_LEVEL, actorReference.V[0]);
                     break;
                 
                 case 32:
                 case 33:
                     stateFlag |= ACTOR_STATE.DEAD;
-                    Game.GameFrame_PostMessage(MESSAGE_ID.RAYMAN_DEATH, 0);
-                    if (Game.s_iLeftToDie == 0)
-                        Game.s_iLeftToDie = 1;
+                    GameMidlet.Instance_Game.GameFrame_PostMessage(MESSAGE_ID.RAYMAN_DEATH, 0);
+                    if (GameMidlet.Instance_Game.s_iLeftToDie == 0)
+                        GameMidlet.Instance_Game.s_iLeftToDie = 1;
                     return;
                 
                 case 15:
@@ -3123,8 +3123,8 @@ public class Actor
             }
 
             xDirectionConfirmed = ((stateFlag & ACTOR_STATE.FLIP_X) != 0);
-            Game.pFist[0].anim.curAction = 0;
-            Game.pFist[1].anim.curAction = 0;
+            GameMidlet.Instance_Game.pFist[0].anim.curAction = 0;
+            GameMidlet.Instance_Game.pFist[1].anim.curAction = 0;
             xDirectionConfirmationCounter = xDirectionConfirmed ? 2 : -2;
         }
     }
@@ -3227,11 +3227,11 @@ public class Actor
     {
         if (objType != OBJECT_TYPE.LEVEL_POST)
             stateFlag |= ACTOR_STATE.DEAD;
-        else if (Game.s_iLeftToDie != 1)
+        else if (GameMidlet.Instance_Game.s_iLeftToDie != 1)
             return false;
 
         if ((stateFlag & ACTOR_STATE.LEFT_TO_DIE) != 0)
-            Game.s_iLeftToDie--;
+            GameMidlet.Instance_Game.s_iLeftToDie--;
 
         return true;
     }
@@ -3306,14 +3306,14 @@ public class Actor
 
         for (int f = 0; f < FISTS_COUNT; f++)
         {
-            if (Game.pFist[f].anim.curAction != 0)
+            if (GameMidlet.Instance_Game.pFist[f].anim.curAction != 0)
             {
-                if (Game.pFist[f].x < x)
+                if (GameMidlet.Instance_Game.pFist[f].x < x)
                 {
                     xDirectionConfirmed = false;
                     xDirectionConfirmationCounter = -4;
                 }
-                else if (Game.pFist[f].x > x)
+                else if (GameMidlet.Instance_Game.pFist[f].x > x)
                 {
                     xDirectionConfirmed = true;
                     xDirectionConfirmationCounter = 4;

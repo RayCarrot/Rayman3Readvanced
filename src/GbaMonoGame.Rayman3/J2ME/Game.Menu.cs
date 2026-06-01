@@ -13,11 +13,11 @@ public partial class Game
     public const int MAX_MENU_ITEMS = 8;
     public const int MENU_ITEM_HEIGHT = 21;
 
-    public static int SoundVolume { get; set; } = VOL_MEDIUM;
+    public int SoundVolume { get; set; } = VOL_MEDIUM;
     public sbyte m_byMenuRArrowDirection { get; set; } = 1;
     public sbyte m_byMenuLArrowDirection { get; set; } = 1;
     public sbyte m_byMenuVArrowDirection { get; set; } = 1;
-    public static int m_iAboutTicker { get; set; }
+    public int m_iAboutTicker { get; set; }
     public string[] m_gameMenu_items_pStr { get; } = new string[MAX_MENU_ITEMS];
     public short[] m_gameMenu_items_id { get; } = new short[MAX_MENU_ITEMS];
     public AnimData m_gameMenu_pData { get; set; }
