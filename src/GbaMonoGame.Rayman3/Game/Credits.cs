@@ -520,7 +520,7 @@ public class Credits : Frame
                 Wheel.AnimSpeed -= MathHelpers.FromFixedPoint(0x800);
         }
 
-        Wheel.Animate(1 / GbaGame.Framerate / LagFrames);
+        Wheel.Animate(1 / Engine.App.Framerate / LagFrames);
     }
 
     public override void Init()

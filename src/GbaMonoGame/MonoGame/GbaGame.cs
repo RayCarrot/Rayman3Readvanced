@@ -21,7 +21,7 @@ public abstract class GbaGame : Game
     #region Private Fields
 
     // The GBA framerate is actually 59.727500569606, but we do 60
-    public const float Framerate = 60;
+    public const float GbaFramerate = 60f;
 
     private readonly GraphicsDeviceManager _graphics;
     private readonly Stopwatch _updateTimeStopWatch;
@@ -53,6 +53,7 @@ public abstract class GbaGame : Game
     public bool RunSingleFrame { get; set; }
     public bool IsPaused { get; set; }
     public bool DebugMode { get; set; }
+    public float Framerate { get; private set; }
 
     #endregion
 
@@ -108,12 +109,6 @@ public abstract class GbaGame : Game
     #endregion
 
     #region Private Methods
-
-    private void SetFramerate(float fps)
-    {
-        IsFixedTimeStep = true;
-        TargetElapsedTime = TimeSpan.FromSeconds(1 / fps);
-    }
 
     private void StepEngine()
     {
@@ -175,7 +170,7 @@ public abstract class GbaGame : Game
         base.Initialize();
 
         // Set the game's framerate
-        SetFramerate(Framerate);
+        SetFramerate(GbaFramerate);
 
         // Initialize the window
         _gameWindowManager = new GameWindowManager(Window, _graphics);
@@ -399,6 +394,13 @@ public abstract class GbaGame : Game
     #endregion
 
     #region Public Methods
+
+    public void SetFramerate(float fps)
+    {
+        Framerate = fps;
+        IsFixedTimeStep = true;
+        TargetElapsedTime = TimeSpan.FromSeconds(1 / fps);
+    }
 
     public void Pause()
     {

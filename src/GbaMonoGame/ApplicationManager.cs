@@ -1,18 +1,22 @@
-﻿using Microsoft.Xna.Framework;
-
-namespace GbaMonoGame;
+﻿namespace GbaMonoGame;
 
 public class ApplicationManager : IApplicationManager
 {
-    public ApplicationManager(Game game)
+    public ApplicationManager(GbaGame game)
     {
         _game = game;
     }
 
-    private readonly Game _game;
+    private readonly GbaGame _game;
 
     public bool IsActive => _game.IsActive;
     public bool IsLoading { get; set; }
+    
+    public float Framerate
+    {
+        get => _game.Framerate;
+        set => _game.SetFramerate(value);
+    }
 
     public void BeginLoad()
     {
