@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+// ReSharper disable RedundantAssignment
+// ReSharper disable UselessBinaryOperation
 
 namespace GbaMonoGame.Rayman3.J2ME;
 
@@ -79,7 +81,7 @@ public partial class Game
                 byte[] sceneMapData = RM.Array_Data[68];
                 m_gameFrame_nbLevels = (sbyte)(sceneMapData.Length / 15 - 1);
 
-                // TODO: Why load every level?
+                // Unload previous levels
                 int offset = 0;
                 for (int i = 0; i < sceneMapData.Length / 15; i++)
                 {
@@ -90,9 +92,8 @@ public partial class Game
                 }
                 RM.Synchronize();
 
-                offset = 15 * iLevel;
-
                 // Load current level
+                offset = 15 * iLevel;
                 if (iLevel != LEVEL_MENU)
                 {
                     StopSound();
@@ -611,7 +612,7 @@ public partial class Game
             {
                 rs = RecordStore.openRecordStore(SOUND_SAVE_NAME, true);
                 if (rs.getNumRecords() == 0)
-                    rs.addRecord(data, 0, 0);
+                    rs.addRecord(null, 0, 0);
             }
 
             if (data != null)
