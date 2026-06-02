@@ -41,9 +41,7 @@ public partial class Game
 
             // Show Gameloft logo
             case 1:
-                g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
-                g_graBackBuffer.setColor(0);
-                g_graBackBuffer.fillRect(0, 0, Resolution.X, Resolution.Y);
+                g_graBackBuffer.ClearScreen(0);
                 g_graBackBuffer.drawImage(RM.GetImage(17), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
                 lCurMill = System.currentTimeMillis();
                 if (pressedKey != GAME_KEY.NONE || lCurMill - lStartMill > 5000)
@@ -56,9 +54,7 @@ public partial class Game
                     Menu_LoadMain();
                     if (!bSoundBegin)
                     {
-                        g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
-                        g_graBackBuffer.setColor(0);
-                        g_graBackBuffer.fillRect(0, 0, Resolution.X, Resolution.Y);
+                        g_graBackBuffer.ClearScreen(0);
                         Menu_DrawString(RM.GetString(STRING_ID_ENABLE_SOUND), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_ENABLE_SOUND))) >> 1, 128, 0);
                         Menu_DrawString(RM.GetString(STRING_ID_EMPTY), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_EMPTY))) >> 1, 144, 0);
                         Menu_DrawString(RM.GetString(STRING_ID_NO), 0, 299, 0);
@@ -144,9 +140,7 @@ public partial class Game
                 if (ret == GAME_FRAME_STATE.CONFIRM_EXIT)
                 {
                     bConfirmExit = false;
-                    g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
-                    g_graBackBuffer.setColor(0);
-                    g_graBackBuffer.fillRect(0, 0, Resolution.X, Resolution.Y);
+                    g_graBackBuffer.ClearScreen(0);
                     Menu_DrawString(RM.GetString(STRING_ID_EXIT_QUESTION), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_EXIT_QUESTION))) >> 1, 128, 0);
                     Menu_DrawString(RM.GetString(STRING_ID_NO), 0, 299, 0);
                     Menu_DrawString(RM.GetString(STRING_ID_YES), Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_YES)), 299, 0);
@@ -167,9 +161,7 @@ public partial class Game
                 }
                 if (!bConfirmExit)
                 {
-                    g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
-                    g_graBackBuffer.setColor(0);
-                    g_graBackBuffer.fillRect(0, 0, Resolution.X, Resolution.Y);
+                    g_graBackBuffer.ClearScreen(0);
                     if (!bConfirmToMainMenu)
                     {
                         Menu_DrawString(RM.GetString(STRING_ID_RESTART_QUESTION), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_RESTART_QUESTION))) >> 1, 128, 0);
@@ -208,9 +200,7 @@ public partial class Game
                 break;
 
             case 6:
-                g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
-                g_graBackBuffer.setColor(0);
-                g_graBackBuffer.fillRect(0, 0, Resolution.X, Resolution.Y);
+                g_graBackBuffer.ClearScreen(0);
                 Actor.drawModule(Actor.aniData[26], 23, Resolution.X - Actor.aniData[26].modules[23].Width, Resolution.Y - Actor.aniData[26].modules[23].Height, 0, g_graBackBuffer);
                 
                 if (pressedKey != GAME_KEY.NONE)
@@ -242,9 +232,7 @@ public partial class Game
                 break;
 
             case 7:
-                g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
-                g_graBackBuffer.setColor(0);
-                g_graBackBuffer.fillRect(0, 0, Resolution.X, Resolution.Y);
+                g_graBackBuffer.ClearScreen(0);
                 DrawCreditsPage();
                 if (pressedKey != GAME_KEY.NONE)
                 {

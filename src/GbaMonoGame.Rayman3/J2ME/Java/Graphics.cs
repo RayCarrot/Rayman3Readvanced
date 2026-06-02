@@ -159,7 +159,7 @@ public class Graphics
                 transformation: transformation,
                 position: ref pos,
                 priority: 0,
-                affineMatrix: AffineMatrix.Identity,
+                affineMatrix: null,
                 alpha: AlphaCoefficient.Max,
                 color: Color,
                 renderOptions: RenderOptions));
@@ -167,6 +167,13 @@ public class Graphics
     }
 
     // Custom
+    public void ClearScreen(int color)
+    {
+        setClip(0, 0, Resolution.X, Resolution.Y);
+        setColor(color);
+        fillRect(0, 0, Resolution.X, Resolution.Y);
+    }
+
     public void DrawTexture(Texture2D texture, int x, int y)
     {
         Sprite sprite = Gfx.GetNewSprite();

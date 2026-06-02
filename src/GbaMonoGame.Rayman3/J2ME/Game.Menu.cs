@@ -143,9 +143,7 @@ public partial class Game
                 else
                 {
                     strTitle = RM.GetString(STRING_ID_ABOUT);
-                    g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
-                    g_graBackBuffer.setColor(0x5209E3);
-                    g_graBackBuffer.fillRect(0, 0, Resolution.X, Resolution.Y);
+                    g_graBackBuffer.ClearScreen(0x5209E3);
                     Menu_DrawString(strTitle, (Resolution.X - Menu_GetStringWidth(strTitle)) >> 1, 6, iColor);
                     Menu_DrawPageText();
                 }
@@ -165,9 +163,7 @@ public partial class Game
                 {
                     iColor = 0xFFFFFF;
                     strTitle = RM.GetString(STRING_ID_HELP_TITLE);
-                    g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
-                    g_graBackBuffer.setColor(0x5209E3);
-                    g_graBackBuffer.fillRect(0, 0, Resolution.X, Resolution.Y);
+                    g_graBackBuffer.ClearScreen(0x5209E3);
                     Menu_DrawString(strTitle, (Resolution.X - Menu_GetStringWidth(strTitle)) >> 1, 6, iColor);
                     Menu_DrawPageText();
                 }
