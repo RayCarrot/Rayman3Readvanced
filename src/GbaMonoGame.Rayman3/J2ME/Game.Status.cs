@@ -191,13 +191,13 @@ public partial class Game
                 int levelID = pRayman.actorReference.V[0];
                 string sTitle = RM.GetString(0x2D007F) + levelID;
                 
-                if (s_synopsis[levelID, 1] != -1)
-                    str1 = $" {s_synopsis[levelID, 0]}/{s_synopsis[levelID, 1]}";
+                if (s_synopsis[levelID].LumsTotal != -1)
+                    str1 = $" {s_synopsis[levelID].LumsTaken}/{s_synopsis[levelID].LumsTotal}";
                 else
                     str1 = RM.GetString(0x2D0086);
 
-                if (s_synopsis[levelID, 3] != -1)
-                    str2 = $" {s_synopsis[levelID, 2]}/{s_synopsis[levelID, 3]}";
+                if (s_synopsis[levelID].CageTotal != -1)
+                    str2 = $" {s_synopsis[levelID].CageOpened}/{s_synopsis[levelID].CageTotal}";
                 else
                     str2 = RM.GetString(0x2D0086);
                 

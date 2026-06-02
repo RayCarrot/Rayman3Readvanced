@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace GbaMonoGame.Rayman3.J2ME;
 
@@ -17,7 +18,7 @@ public partial class Game
     public int s_iLumsTotal { get; set; }
     public int s_iLumsTaken { get; set; }
     public Actor s_actorCheckpoint { get; set; }
-    public sbyte[,] s_synopsis { get; set; } // TODO: Structs
+    public Synopsis[] s_synopsis { get; set; }
     public sbyte[] m_RecordUsedFlag { get; } = new sbyte[11]; // TODO: Bools?
     public GAME_FRAME_STATE m_gameFrame_prevState { get; set; }
     public GAME_FRAME_STATE m_gameFrame_curState { get; set; }
@@ -625,28 +626,55 @@ public partial class Game
             if (s_synopsis == null)
                 GameFrame_LoadSynopsis(false);
             
+            // Level
             if (p_iLeftLevel is > 0 and <= 9)
             {
-                s_synopsis[p_iLeftLevel, 0] = (sbyte)s_iLumsTaken;
-                s_iLumsTaken = s_synopsis[0, 0] = (sbyte)(s_synopsis[0, 0] + (sbyte)s_iLumsTaken);
-                s_synopsis[p_iLeftLevel, 1] = (sbyte)s_iLumsTotal;
-                s_iLumsTotal = s_synopsis[0, 1] = (sbyte)(s_synopsis[0, 1] + (sbyte)s_iLumsTotal);
-                s_synopsis[p_iLeftLevel, 2] = (sbyte)s_iCageOpened;
-                s_iCageOpened = s_synopsis[0, 2] = (sbyte)(s_synopsis[0, 2] + (sbyte)s_iCageOpened);
-                s_synopsis[p_iLeftLevel, 3] = (sbyte)s_iCageTotal;
-                s_iCageTotal = s_synopsis[0, 3] = (sbyte)(s_synopsis[0, 3] + (sbyte)s_iCageTotal);
+                // Save for level
+                s_synopsis[p_iLeftLevel] = new Synopsis
+                {
+                    LumsTaken = (sbyte)s_iLumsTaken,
+                    LumsTotal = (sbyte)s_iLumsTotal,
+                    CageOpened = (sbyte)s_iCageOpened,
+                    CageTotal = (sbyte)s_iCageTotal
+                };
+
+                // Update total
+                s_synopsis[0] = new Synopsis
+                {
+                    LumsTaken = (sbyte)(s_synopsis[0].LumsTaken + (sbyte)s_iLumsTaken),
+                    LumsTotal = (sbyte)(s_synopsis[0].LumsTotal + (sbyte)s_iLumsTotal),
+                    CageOpened = (sbyte)(s_synopsis[0].CageOpened + (sbyte)s_iCageOpened),
+                    CageTotal = (sbyte)(s_synopsis[0].CageTotal + (sbyte)s_iCageTotal)
+                };
+                s_iLumsTaken = s_synopsis[0].LumsTaken;
+                s_iLumsTotal = s_synopsis[0].LumsTotal;
+                s_iCageOpened = s_synopsis[0].CageOpened;
+                s_iCageTotal = s_synopsis[0].CageTotal;
             }
+            // Hub
             else if (p_iLeftLevel == 0)
             {
-                if (s_synopsis[m_gameFrame_curLevel, 1] == -1 || s_synopsis[m_gameFrame_curLevel, 3] == -1)
+                if (s_synopsis[m_gameFrame_curLevel].LumsTotal == -1 || s_synopsis[m_gameFrame_curLevel].CageTotal == -1)
                 {
-                    s_synopsis[m_gameFrame_curLevel, 1] = 0;
-                    s_synopsis[m_gameFrame_curLevel, 3] = 0;
+                    s_synopsis[m_gameFrame_curLevel] = s_synopsis[m_gameFrame_curLevel] with
+                    {
+                        LumsTotal = 0,
+                        CageTotal = 0
+                    };
                 }
-                s_synopsis[0, 0] = (sbyte)(s_synopsis[0, 0] - (s_iLumsTaken = s_synopsis[m_gameFrame_curLevel, 0]));
-                s_synopsis[0, 1] = (sbyte)(s_synopsis[0, 1] - (s_iLumsTotal = s_synopsis[m_gameFrame_curLevel, 1]));
-                s_synopsis[0, 2] = (sbyte)(s_synopsis[0, 2] - (s_iCageOpened = s_synopsis[m_gameFrame_curLevel, 2]));
-                s_synopsis[0, 3] = (sbyte)(s_synopsis[0, 3] - (s_iCageTotal = s_synopsis[m_gameFrame_curLevel, 3]));
+
+                s_iLumsTaken = s_synopsis[m_gameFrame_curLevel].LumsTaken;
+                s_iLumsTotal = s_synopsis[m_gameFrame_curLevel].LumsTotal;
+                s_iCageOpened = s_synopsis[m_gameFrame_curLevel].CageOpened;
+                s_iCageTotal = s_synopsis[m_gameFrame_curLevel].CageTotal;
+
+                s_synopsis[0] = new Synopsis
+                {
+                    LumsTaken = (sbyte)(s_synopsis[0].LumsTaken - (sbyte)s_iLumsTaken),
+                    LumsTotal = (sbyte)(s_synopsis[0].LumsTotal - (sbyte)s_iLumsTotal),
+                    CageOpened = (sbyte)(s_synopsis[0].CageOpened - (sbyte)s_iCageOpened),
+                    CageTotal = (sbyte)(s_synopsis[0].CageTotal - (sbyte)s_iCageTotal)
+                };
             }
             GameFrame_SaveSynopsis();
         }
@@ -658,14 +686,14 @@ public partial class Game
         try
         {
             RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, false);
-            byte[] data = new byte[s_synopsis.GetLength(0) * 4 + 3];
+            byte[] data = new byte[s_synopsis.Length * 4 + 3];
             int offset = 0;
-            for (int i = 0; i < s_synopsis.GetLength(0); i++)
+            for (int i = 0; i < s_synopsis.Length; i++)
             {
-                data[offset++] = (byte)s_synopsis[i, 0];
-                data[offset++] = (byte)s_synopsis[i, 1];
-                data[offset++] = (byte)s_synopsis[i, 2];
-                data[offset++] = (byte)s_synopsis[i, 3];
+                data[offset++] = (byte)s_synopsis[i].LumsTaken;
+                data[offset++] = (byte)s_synopsis[i].LumsTotal;
+                data[offset++] = (byte)s_synopsis[i].CageOpened;
+                data[offset++] = (byte)s_synopsis[i].CageTotal;
             }
             data[offset++] = (byte)m_gameFrame_curLevel;
             data[offset++] = (byte)m_gameFrame_unlockedLevel;
@@ -677,47 +705,57 @@ public partial class Game
         catch (Exception e) { }
     }
 
+    [MemberNotNull(nameof(s_synopsis))]
     public void GameFrame_LoadSynopsis(bool bGetGameInfo)
     {
         try
         {
             int offset = 0;
-            s_synopsis = new sbyte[10, 4];
+            s_synopsis = new Synopsis[10];
             RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, false);
             byte[] data = rs.getRecord(10);
             if (data != null && m_RecordUsedFlag[9] == 1)
             {
-                for (int i = 0; i < s_synopsis.GetLength(0); i++)
+                for (int i = 0; i < s_synopsis.Length; i++)
                 {
-                    s_synopsis[i, 0] = (sbyte)data[offset++];
-                    s_synopsis[i, 1] = (sbyte)data[offset++];
-                    s_synopsis[i, 2] = (sbyte)data[offset++];
-                    s_synopsis[i, 3] = (sbyte)data[offset++];
+                    s_synopsis[i] = new Synopsis
+                    {
+                        LumsTaken = (sbyte)data[offset++],
+                        LumsTotal = (sbyte)data[offset++],
+                        CageOpened = (sbyte)data[offset++],
+                        CageTotal = (sbyte)data[offset++]
+                    };
                 }
                 if (bGetGameInfo)
                 {
                     m_gameFrame_curLevel = (sbyte)data[offset++];
                     m_gameFrame_unlockedLevel = (sbyte)data[offset++];
                     m_gameFrame_nLife = (sbyte)data[offset++];
-                    s_iLumsTaken = s_synopsis[m_gameFrame_curLevel, 0];
-                    s_iLumsTotal = s_synopsis[m_gameFrame_curLevel, 1];
-                    s_iCageOpened = s_synopsis[m_gameFrame_curLevel, 2];
-                    s_iCageTotal = s_synopsis[m_gameFrame_curLevel, 3];
+                    s_iLumsTaken = s_synopsis[m_gameFrame_curLevel].LumsTaken;
+                    s_iLumsTotal = s_synopsis[m_gameFrame_curLevel].LumsTotal;
+                    s_iCageOpened = s_synopsis[m_gameFrame_curLevel].CageOpened;
+                    s_iCageTotal = s_synopsis[m_gameFrame_curLevel].CageTotal;
                 }
                 data = null;
             }
             else
             {
-                s_synopsis[0, 3] = 0;
-                s_synopsis[0, 2] = 0;
-                s_synopsis[0, 1] = 0;
-                s_synopsis[0, 0] = 0;
-                for (sbyte b = 1; b < s_synopsis.GetLength(0); b++)
+                s_synopsis[0] = new Synopsis
                 {
-                    s_synopsis[b, 2] = 0;
-                    s_synopsis[b, 0] = 0;
-                    s_synopsis[b, 3] = -1;
-                    s_synopsis[b, 1] = -1;
+                    CageTotal = 0,
+                    CageOpened = 0,
+                    LumsTotal = 0,
+                    LumsTaken = 0,
+                };
+                for (sbyte b = 1; b < s_synopsis.Length; b++)
+                {
+                    s_synopsis[b] = new Synopsis
+                    {
+                        CageOpened = 0,
+                        LumsTaken = 0,
+                        CageTotal = -1,
+                        LumsTotal = -1,
+                    };
                 }
             }
             rs.closeRecordStore();
@@ -848,13 +886,13 @@ public partial class Game
         }
         catch (Exception e) { }
 
-        s_iLumsTaken = s_synopsis[pLevel, 0];
-        s_iCageOpened = s_synopsis[pLevel, 2];
+        s_iLumsTaken = s_synopsis[pLevel].LumsTaken;
+        s_iCageOpened = s_synopsis[pLevel].CageOpened;
 
         if (pLevel == 0)
         {
-            s_iLumsTotal = s_synopsis[0, 1];
-            s_iCageTotal = s_synopsis[0, 3];
+            s_iLumsTotal = s_synopsis[0].LumsTotal;
+            s_iCageTotal = s_synopsis[0].CageTotal;
         }
         else
         {
