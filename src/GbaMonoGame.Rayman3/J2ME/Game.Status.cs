@@ -9,12 +9,12 @@ public partial class Game
     public bool m_bUpdateStatus { get; set; }
     public int[][] s_iTutorialArray { get; } = new int[][]
     {
-        [0x3001DE, 3],
-        [0x300016, 3],
-        [0x300047, 5],
-        [0x30019C, 3],
-        [0x300127, 4],
-        [0x30020B, 4]
+        [StringId.Create(0x1DE, TEXT_BANK_INDEX_HELP), 3],
+        [StringId.Create(0x016, TEXT_BANK_INDEX_HELP), 3],
+        [StringId.Create(0x047, TEXT_BANK_INDEX_HELP), 5],
+        [StringId.Create(0x19C, TEXT_BANK_INDEX_HELP), 3],
+        [StringId.Create(0x127, TEXT_BANK_INDEX_HELP), 4],
+        [StringId.Create(0x20B, TEXT_BANK_INDEX_HELP), 4]
     };
 
     public void Status_ShowLock()
@@ -189,17 +189,17 @@ public partial class Game
             {
                 string str1, str2;
                 int levelID = pRayman.actorReference.V[0];
-                string sTitle = RM.GetString(0x2D007F) + levelID;
+                string sTitle = RM.GetString(STRING_ID_LEVEL) + levelID;
                 
                 if (s_synopsis[levelID].LumsTotal != -1)
                     str1 = $" {s_synopsis[levelID].LumsTaken}/{s_synopsis[levelID].LumsTotal}";
                 else
-                    str1 = RM.GetString(0x2D0086);
+                    str1 = RM.GetString(STRING_ID_UNKNOWN_STATUS);
 
                 if (s_synopsis[levelID].CageTotal != -1)
                     str2 = $" {s_synopsis[levelID].CageOpened}/{s_synopsis[levelID].CageTotal}";
                 else
-                    str2 = RM.GetString(0x2D0086);
+                    str2 = RM.GetString(STRING_ID_UNKNOWN_STATUS);
                 
                 int iW = 230;
                 int iH = 23 + Actor.aniData[26].modules[12].Height + 2 - 5;
@@ -217,7 +217,7 @@ public partial class Game
                 int iPosY = iY - 2;
                 // TODO: Implement clipping text to fit box
                 g_graBackBuffer.setClip(iX, iY, iW, iH);
-                string sSignTip = RM.GetString(0x2D0074);
+                string sSignTip = RM.GetString(STRING_ID_ENTER_NOW);
                 if ((sbyte)levelID == m_gameFrame_unlockedLevel)
                 {
                     if (m_iGlobalTicker % 20 < 10)

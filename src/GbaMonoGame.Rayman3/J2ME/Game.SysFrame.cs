@@ -59,10 +59,10 @@ public partial class Game
                         g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
                         g_graBackBuffer.setColor(0);
                         g_graBackBuffer.fillRect(0, 0, Resolution.X, Resolution.Y);
-                        Menu_DrawString(RM.GetString(2949300), (Resolution.X - Menu_GetStringWidth(RM.GetString(2949300))) >> 1, 128, 0);
-                        Menu_DrawString(RM.GetString(2949314), (Resolution.X - Menu_GetStringWidth(RM.GetString(2949314))) >> 1, 144, 0);
-                        Menu_DrawString(RM.GetString(2949319), 0, 299, 0);
-                        Menu_DrawString(RM.GetString(2949315), Resolution.X - Menu_GetStringWidth(RM.GetString(2949315)), 299, 0);
+                        Menu_DrawString(RM.GetString(STRING_ID_ENABLE_SOUND), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_ENABLE_SOUND))) >> 1, 128, 0);
+                        Menu_DrawString(RM.GetString(STRING_ID_EMPTY), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_EMPTY))) >> 1, 144, 0);
+                        Menu_DrawString(RM.GetString(STRING_ID_NO), 0, 299, 0);
+                        Menu_DrawString(RM.GetString(STRING_ID_YES), Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_YES)), 299, 0);
                         if ((pressedKey & (GAME_KEY.SOFTKEY_1 | GAME_KEY.SOFTKEY_2)) != 0)
                         {
                             bEnableSound = (pressedKey & GAME_KEY.SOFTKEY_1) == 0;
@@ -147,9 +147,9 @@ public partial class Game
                     g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
                     g_graBackBuffer.setColor(0);
                     g_graBackBuffer.fillRect(0, 0, Resolution.X, Resolution.Y);
-                    Menu_DrawString(RM.GetString(0x2D00CA), (Resolution.X - Menu_GetStringWidth(RM.GetString(0x2D00CA))) >> 1, 128, 0);
-                    Menu_DrawString(RM.GetString(0x2D00C7), 0, 299, 0);
-                    Menu_DrawString(RM.GetString(0x2D00C3), Resolution.X - Menu_GetStringWidth(RM.GetString(0x2D00C3)), 299, 0);
+                    Menu_DrawString(RM.GetString(STRING_ID_EXIT_QUESTION), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_EXIT_QUESTION))) >> 1, 128, 0);
+                    Menu_DrawString(RM.GetString(STRING_ID_NO), 0, 299, 0);
+                    Menu_DrawString(RM.GetString(STRING_ID_YES), Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_YES)), 299, 0);
                     if ((pressedKey & (GAME_KEY.SOFTKEY_1 | GAME_KEY.SOFTKEY_2)) != 0 && bConfirm)
                     {
                         if ((pressedKey & GAME_KEY.SOFTKEY_1) != 0)
@@ -172,14 +172,14 @@ public partial class Game
                     g_graBackBuffer.fillRect(0, 0, Resolution.X, Resolution.Y);
                     if (!bConfirmToMainMenu)
                     {
-                        Menu_DrawString(RM.GetString(0x2D00D0), (Resolution.X - Menu_GetStringWidth(RM.GetString(0x2D00D0))) >> 1, 128, 0);
+                        Menu_DrawString(RM.GetString(STRING_ID_RESTART_QUESTION), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_RESTART_QUESTION))) >> 1, 128, 0);
                     }
                     else
                     {
-                        Menu_DrawString(RM.GetString(0x2D00D9), (Resolution.X - Menu_GetStringWidth(RM.GetString(0x2D00D9))) >> 1, 128, 0);
+                        Menu_DrawString(RM.GetString(STRING_ID_TO_MAIN_MENU_QUESTION), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_TO_MAIN_MENU_QUESTION))) >> 1, 128, 0);
                     }
-                    Menu_DrawString(RM.GetString(0x2D00C7), 0, 299, 0);
-                    Menu_DrawString(RM.GetString(0x2D00C3), Resolution.X - Menu_GetStringWidth(RM.GetString(0x2D00C3)), 299, 0);
+                    Menu_DrawString(RM.GetString(STRING_ID_NO), 0, 299, 0);
+                    Menu_DrawString(RM.GetString(STRING_ID_YES), Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_YES)), 299, 0);
                     if ((pressedKey & (GAME_KEY.SOFTKEY_1 | GAME_KEY.SOFTKEY_2)) != 0)
                     {
                         if ((pressedKey & GAME_KEY.SOFTKEY_1) != 0)
@@ -204,7 +204,7 @@ public partial class Game
                     GameFrame_InitNewGame();
                     break;
                 }
-                Menu_DrawString(RM.GetString(0x2D009E), (Resolution.X - Menu_GetStringWidth(RM.GetString(0x2D009E))) >> 1, 110, 0);
+                Menu_DrawString(RM.GetString(STRING_ID_GAME_OVER), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_GAME_OVER))) >> 1, 110, 0);
                 break;
 
             case 6:
@@ -238,7 +238,7 @@ public partial class Game
 
                 pRayman.step();
                 pRayman.draw();
-                Menu_DrawString(RM.GetString(2949288), (Resolution.X - Menu_GetStringWidth(RM.GetString(2949288))) >> 1, 170, 0);
+                Menu_DrawString(RM.GetString(STRING_ID_VICTORY), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_VICTORY))) >> 1, 170, 0);
                 break;
 
             case 7:
@@ -271,7 +271,7 @@ public partial class Game
                         curState = 3;
                         break;
                     }
-                    Menu_DrawString(RM.GetString(0x2D0093), (Resolution.X - Menu_GetStringWidth(RM.GetString(0x2D0093))) >> 1, 110, 0);
+                    Menu_DrawString(RM.GetString(STRING_ID_LEVEL_DONE), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LEVEL_DONE))) >> 1, 110, 0);
                     break;
                 }
                 m_gameStateStep = 0;

@@ -274,13 +274,13 @@ public partial class Game
             if (m_iPrevLevel == LEVEL_MENU)
             {
                 if (m_gameMenu_idCurPage == MENU_PAGE.PAUSE)
-                    Menu_DrawString(RM.GetString(2949259), (Resolution.X - Menu_GetStringWidth(RM.GetString(2949259))) >> 1, 110, 0);
+                    Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) >> 1, 110, 0);
                 else
-                    Menu_DrawString(RM.GetString(2949259), (Resolution.X - Menu_GetStringWidth(RM.GetString(2949259))) >> 1, 263, 0);
+                    Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) >> 1, 263, 0);
             }
             else
             {
-                Menu_DrawString(RM.GetString(2949259), (Resolution.X - Menu_GetStringWidth(RM.GetString(2949259))) >> 1, 110, 0);
+                Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) >> 1, 110, 0);
             }
         }
         else
@@ -316,7 +316,7 @@ public partial class Game
         {
             g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
             g_graBackBuffer.drawImage(RM.GetImage(18), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
-            Menu_DrawString(RM.GetString(2949259), (Resolution.X - Menu_GetStringWidth(RM.GetString(2949259))) >> 1, 263, 0);
+            Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) >> 1, 263, 0);
         }
         else if (m_gameStateStep == 1)
         {
@@ -374,7 +374,7 @@ public partial class Game
                 {
                     g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
                     g_graBackBuffer.drawImage(RM.GetImage(18), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
-                    Menu_DrawString(RM.GetString(2949259), (Resolution.X - Menu_GetStringWidth(RM.GetString(2949259))) >> 1, 263, 0);
+                    Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) >> 1, 263, 0);
                 }
                 else if (m_gameStateStep == 1)
                 {
@@ -394,7 +394,7 @@ public partial class Game
                     if (m_gameStateStep == 0)
                     {
                         fastDraw(g_graBackBuffer, Resolution.X, Resolution.Y);
-                        Menu_DrawString(RM.GetString(2949259), (Resolution.X - Menu_GetStringWidth(RM.GetString(2949259))) >> 1, 110, 0);
+                        Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) >> 1, 110, 0);
                     }
                     else if (m_gameStateStep == 1)
                     {
@@ -414,7 +414,7 @@ public partial class Game
                 {
                     if (pRayman.anim.curAction == 37)
                     {
-                        Menu_DrawString(RM.GetString(2949259), (Resolution.X - Menu_GetStringWidth(RM.GetString(2949259))) >> 1, 110, 0);
+                        Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) >> 1, 110, 0);
                     }
                     else
                     {

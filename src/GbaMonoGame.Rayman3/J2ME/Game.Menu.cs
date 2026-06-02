@@ -555,7 +555,7 @@ public partial class Game
             const int total_credits_lines = 91;
             m_iAboutTicker += 2;
             int iStart = m_iAboutTicker / 21 % total_credits_lines;
-            int iID = 3080192;
+            int iID = StringId.Create(0, TEXT_BANK_INDEX_CREDITS);
             for (int iLoop = 0; iLoop < iStart; iLoop++)
             {
                 iID = RM.NextStringID(iID);
@@ -569,10 +569,10 @@ public partial class Game
                 if (iID == -1)
                     break;
                 strArray[i] = RM.GetString(iID);
-                int supportmail_iID = 0x2F0046;
+                int supportmail_iID = STRING_ID_SUPPORT_MAIL;
                 if (iID == supportmail_iID)
                     strArray[i] = "support@gameloft.com";
-                int version_iID = 0x2F009B;
+                int version_iID = STRING_ID_VERSION_NUMBER;
                 if (iID == version_iID)
                     strArray[i] = "Version " + ReadVersionFromManifest();
                 iID = RM.NextStringID(iID);
@@ -601,7 +601,7 @@ public partial class Game
                 bLast = true;
             }
             int iStart = m_gameMenu_idCurSel * 12;
-            int iID = 0x300000;
+            int iID = StringId.Create(0, TEXT_BANK_INDEX_HELP);
             for (int iLoop = 0; iLoop < iStart; iLoop++)
             {
                 iID = RM.NextStringID(iID);
@@ -687,7 +687,7 @@ public partial class Game
         int total_credits_lines = 91;
         m_iAboutTicker += 2;
         int iStart = m_iAboutTicker / 21 % total_credits_lines;
-        int iID = 0x2F0000;
+        int iID = StringId.Create(0, TEXT_BANK_INDEX_CREDITS);
         for (int iLoop = 0; iLoop < iStart; iLoop++)
         {
             iID = RM.NextStringID(iID);
@@ -701,10 +701,10 @@ public partial class Game
             if (iID == -1)
                 break;
             strArray[i] = RM.GetString(iID);
-            int supportmail_iID = 0x2F0046;
+            int supportmail_iID = STRING_ID_SUPPORT_MAIL;
             if (iID == supportmail_iID)
                 strArray[i] = "support@gameloft.com";
-            int version_iID = 0x2F009B;
+            int version_iID = STRING_ID_VERSION_NUMBER;
             if (iID == version_iID)
                 strArray[i] = "Version " + ReadVersionFromManifest();
             iID = RM.NextStringID(iID);
