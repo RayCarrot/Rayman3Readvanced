@@ -15,9 +15,9 @@ public partial class Game
     {
         lStartMill = System.currentTimeMillis();
         curState = 0;
-        currentKey = GAME_KEY.None;
-        pressedKey = GAME_KEY.None;
-        releasedKey = GAME_KEY.None;
+        currentKey = GAME_KEY.NONE;
+        pressedKey = GAME_KEY.NONE;
+        releasedKey = GAME_KEY.NONE;
         GameFrame_PhysicalInitI();
         return true;
     }
@@ -46,7 +46,7 @@ public partial class Game
                 g_graBackBuffer.fillRect(0, 0, Resolution.X, Resolution.Y);
                 g_graBackBuffer.drawImage(RM.GetImage(17), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
                 lCurMill = System.currentTimeMillis();
-                if (pressedKey != GAME_KEY.None || lCurMill - lStartMill > 5000)
+                if (pressedKey != GAME_KEY.NONE || lCurMill - lStartMill > 5000)
                     curState = 2;
                 break;
 
@@ -63,9 +63,9 @@ public partial class Game
                         Menu_DrawString(RM.GetString(2949314), (Resolution.X - Menu_GetStringWidth(RM.GetString(2949314))) >> 1, 144, 0);
                         Menu_DrawString(RM.GetString(2949319), 0, 299, 0);
                         Menu_DrawString(RM.GetString(2949315), Resolution.X - Menu_GetStringWidth(RM.GetString(2949315)), 299, 0);
-                        if ((pressedKey & (GAME_KEY.Softkey1 | GAME_KEY.Softkey2)) != 0)
+                        if ((pressedKey & (GAME_KEY.SOFTKEY_1 | GAME_KEY.SOFTKEY_2)) != 0)
                         {
-                            bEnableSound = (pressedKey & GAME_KEY.Softkey1) == 0;
+                            bEnableSound = (pressedKey & GAME_KEY.SOFTKEY_1) == 0;
                             if (bEnableSound && SoundVolume == 0)
                             {
                                 SoundVolume = VOL_MEDIUM;
@@ -94,7 +94,7 @@ public partial class Game
                     g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
                     g_graBackBuffer.drawImage(RM.GetImage(18), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
                     Actor.drawModule(Actor.aniData[26], 23, Resolution.X - Actor.aniData[26].modules[23].Width, Resolution.Y - Actor.aniData[26].modules[23].Height - Menu_GetVArrowPos(), 0, g_graBackBuffer);
-                    if (pressedKey != GAME_KEY.None)
+                    if (pressedKey != GAME_KEY.NONE)
                     {
                         m_gameFrame_curState = GAME_FRAME_STATE.DEFAULT;
                         curState = 3;
@@ -150,9 +150,9 @@ public partial class Game
                     Menu_DrawString(RM.GetString(0x2D00CA), (Resolution.X - Menu_GetStringWidth(RM.GetString(0x2D00CA))) >> 1, 128, 0);
                     Menu_DrawString(RM.GetString(0x2D00C7), 0, 299, 0);
                     Menu_DrawString(RM.GetString(0x2D00C3), Resolution.X - Menu_GetStringWidth(RM.GetString(0x2D00C3)), 299, 0);
-                    if ((pressedKey & (GAME_KEY.Softkey1 | GAME_KEY.Softkey2)) != 0 && bConfirm)
+                    if ((pressedKey & (GAME_KEY.SOFTKEY_1 | GAME_KEY.SOFTKEY_2)) != 0 && bConfirm)
                     {
-                        if ((pressedKey & GAME_KEY.Softkey1) != 0)
+                        if ((pressedKey & GAME_KEY.SOFTKEY_1) != 0)
                         {
                             m_gameFrame_curState = m_gameFrame_prevState;
                         }
@@ -180,9 +180,9 @@ public partial class Game
                     }
                     Menu_DrawString(RM.GetString(0x2D00C7), 0, 299, 0);
                     Menu_DrawString(RM.GetString(0x2D00C3), Resolution.X - Menu_GetStringWidth(RM.GetString(0x2D00C3)), 299, 0);
-                    if ((pressedKey & (GAME_KEY.Softkey1 | GAME_KEY.Softkey2)) != 0)
+                    if ((pressedKey & (GAME_KEY.SOFTKEY_1 | GAME_KEY.SOFTKEY_2)) != 0)
                     {
-                        if ((pressedKey & GAME_KEY.Softkey1) != 0)
+                        if ((pressedKey & GAME_KEY.SOFTKEY_1) != 0)
                             m_gameFrame_curState = m_gameFrame_prevState;
                         else if (bConfirmToMainMenu)
                             GameFrame_PostMessage(MESSAGE_ID.EXIT_TO_MENU, 0);
@@ -195,7 +195,7 @@ public partial class Game
 
             case 4:
                 GameFrame_doLoop();
-                if (pressedKey != GAME_KEY.None)
+                if (pressedKey != GAME_KEY.NONE)
                 {
                     m_gameStateStep = 0;
                     m_gameFrame_curState = GAME_FRAME_STATE.LOADING;
@@ -213,7 +213,7 @@ public partial class Game
                 g_graBackBuffer.fillRect(0, 0, Resolution.X, Resolution.Y);
                 Actor.drawModule(Actor.aniData[26], 23, Resolution.X - Actor.aniData[26].modules[23].Width, Resolution.Y - Actor.aniData[26].modules[23].Height, 0, g_graBackBuffer);
                 
-                if (pressedKey != GAME_KEY.None)
+                if (pressedKey != GAME_KEY.NONE)
                 {
                     m_bBackgroundUsed = true;
                     m_iAboutTicker = 0;
@@ -246,7 +246,7 @@ public partial class Game
                 g_graBackBuffer.setColor(0);
                 g_graBackBuffer.fillRect(0, 0, Resolution.X, Resolution.Y);
                 DrawCreditsPage();
-                if (pressedKey != GAME_KEY.None)
+                if (pressedKey != GAME_KEY.NONE)
                 {
                     StopSound();
                     m_bBackgroundUsed = true;
@@ -261,7 +261,7 @@ public partial class Game
                 if (m_iPrevLevel > 0 && pRayman.anim.curAction != 37)
                 {
                     lCurMill = System.currentTimeMillis();
-                    if (pressedKey != GAME_KEY.None || lCurMill - lStartMill > 3000)
+                    if (pressedKey != GAME_KEY.NONE || lCurMill - lStartMill > 3000)
                     {
                         m_gameFrame_paused = true;
                         GameCore();

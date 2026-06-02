@@ -446,7 +446,7 @@ public partial class Game
                             m_gameFrame_paused = false;
                             if (pRayman != null && pRayman.V[3] == 32)
                             {
-                                releasedKey = GAME_KEY.Middle;
+                                releasedKey = GAME_KEY.MIDDLE;
                                 GameCore();
                             }
                             if (m_gameFrame_curLevel == 0)

@@ -5,21 +5,21 @@ namespace GbaMonoGame.Rayman3.J2ME;
 [Flags]
 public enum GAME_KEY : ushort
 {
-    None = 0,
-    Zero = 1 << 0,
-    UpLeft = 1 << 1,
-    Up = 1 << 2,
-    UpRight = 1 << 3,
-    Left = 1 << 4,
-    Middle = 1 << 5,
-    Right = 1 << 6,
-    DownLeft = 1 << 7,
-    Down = 1 << 8,
-    DownRight = 1 << 9,
-    Star = 1 << 10, // Unused
-    Pound = 1 << 11, // Unused
-    Softkey1 = 1 << 12,
-    Softkey2 = 1 << 13,
+    NONE = 0,
+    ZERO = 1 << 0,
+    UP_LEFT = 1 << 1,
+    UP = 1 << 2,
+    UP_RIGHT = 1 << 3,
+    LEFT = 1 << 4,
+    MIDDLE = 1 << 5,
+    RIGHT = 1 << 6,
+    DOWN_LEFT = 1 << 7,
+    DOWN = 1 << 8,
+    DOWN_RIGHT = 1 << 9,
+    STAR = 1 << 10, // Unused
+    POUND = 1 << 11, // Unused
+    SOFTKEY_1 = 1 << 12,
+    SOFTKEY_2 = 1 << 13,
 
-    End = 1 << 15, // Unused
+    END = 1 << 15, // Unused
 }

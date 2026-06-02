@@ -28,87 +28,87 @@ public partial class Game
         switch (keys)
         {
             case KEY.NUM_1:
-                nKeyCode = GAME_KEY.UpLeft;
+                nKeyCode = GAME_KEY.UP_LEFT;
                 break;
 
             case KEY.NUM_2:
                 if ((m_keys & (KEY.NUM_1 | KEY.NUM_4)) != 0)
-                    nKeyCode = GAME_KEY.UpLeft;
+                    nKeyCode = GAME_KEY.UP_LEFT;
                 else if ((m_keys & (KEY.NUM_3 | KEY.NUM_6)) != 0)
-                    nKeyCode = GAME_KEY.UpRight;
+                    nKeyCode = GAME_KEY.UP_RIGHT;
                 else
-                    nKeyCode = GAME_KEY.Up;
+                    nKeyCode = GAME_KEY.UP;
                 break;
             
             case KEY.NUM_3:
-                nKeyCode = GAME_KEY.UpRight;
+                nKeyCode = GAME_KEY.UP_RIGHT;
                 break;
 
             case KEY.NUM_4:
                 if ((m_keys & (KEY.NUM_1 | KEY.NUM_2)) != 0)
-                    nKeyCode = GAME_KEY.UpLeft;
+                    nKeyCode = GAME_KEY.UP_LEFT;
                 else if ((m_keys & (KEY.NUM_7 | KEY.NUM_8)) != 0)
-                    nKeyCode = GAME_KEY.DownLeft;
+                    nKeyCode = GAME_KEY.DOWN_LEFT;
                 else
-                    nKeyCode = GAME_KEY.Left;
+                    nKeyCode = GAME_KEY.LEFT;
                 break;
             
             case KEY.NUM_5:
-                nKeyCode = GAME_KEY.Middle;
+                nKeyCode = GAME_KEY.MIDDLE;
                 break;
             
             case KEY.NUM_6:
                 if ((m_keys & (KEY.NUM_2 | KEY.NUM_3)) != 0)
-                    nKeyCode = GAME_KEY.UpRight;
+                    nKeyCode = GAME_KEY.UP_RIGHT;
                 else if ((m_keys & (KEY.NUM_8 | KEY.NUM_9)) != 0)
-                    nKeyCode = GAME_KEY.DownRight;
+                    nKeyCode = GAME_KEY.DOWN_RIGHT;
                 else
-                    nKeyCode = GAME_KEY.Right;
+                    nKeyCode = GAME_KEY.RIGHT;
                 break;
             
             case KEY.NUM_7:
-                nKeyCode = GAME_KEY.DownLeft;
+                nKeyCode = GAME_KEY.DOWN_LEFT;
                 break;
             
             case KEY.NUM_8:
                 if ((m_keys & (KEY.NUM_4 | KEY.NUM_7)) != 0)
-                    nKeyCode = GAME_KEY.DownLeft;
+                    nKeyCode = GAME_KEY.DOWN_LEFT;
                 else if ((m_keys & (KEY.NUM_6 | KEY.NUM_9)) != 0)
-                    nKeyCode = GAME_KEY.DownRight;
+                    nKeyCode = GAME_KEY.DOWN_RIGHT;
                 else
-                    nKeyCode = GAME_KEY.Down;
+                    nKeyCode = GAME_KEY.DOWN;
                 break;
             
             case KEY.NUM_9:
-                nKeyCode = GAME_KEY.DownRight;
+                nKeyCode = GAME_KEY.DOWN_RIGHT;
                 break;
             
             case KEY.SOFTKEY1:
-                nKeyCode = GAME_KEY.Softkey1;
+                nKeyCode = GAME_KEY.SOFTKEY_1;
                 break;
             
             case KEY.SOFTKEY2:
-                nKeyCode = GAME_KEY.Softkey2;
+                nKeyCode = GAME_KEY.SOFTKEY_2;
                 break;
             
             case KEY.POUND:
-                nKeyCode = GAME_KEY.Pound;
+                nKeyCode = GAME_KEY.POUND;
                 break;
             
             case KEY.STAR:
-                nKeyCode = GAME_KEY.Star;
+                nKeyCode = GAME_KEY.STAR;
                 break;
             
             case KEY.NUM_0:
-                nKeyCode = GAME_KEY.Zero;
+                nKeyCode = GAME_KEY.ZERO;
                 break;
             
             case KEY.END:
-                nKeyCode = GAME_KEY.End;
+                nKeyCode = GAME_KEY.END;
                 break;
             
             default:
-                nKeyCode = GAME_KEY.None;
+                nKeyCode = GAME_KEY.NONE;
                 break;
         }
 
@@ -118,7 +118,7 @@ public partial class Game
         m_iKeyCheckCounter--;
         
         // Pause
-        if (m_gameFrame_curLevel >= 0 && (pressedKey & (GAME_KEY.Softkey1 | GAME_KEY.Softkey2)) != 0 && !m_gameFrame_paused && curState == 3)
+        if (m_gameFrame_curLevel >= 0 && (pressedKey & (GAME_KEY.SOFTKEY_1 | GAME_KEY.SOFTKEY_2)) != 0 && !m_gameFrame_paused && curState == 3)
         {
             m_gameFrame_paused = true;
             Menu_SetCurrentPage(MENU_PAGE.PAUSE);

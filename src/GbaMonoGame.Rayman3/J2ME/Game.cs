@@ -65,9 +65,9 @@ public partial class Game
         // Suspend game
         GameMidlet.bSuspended = true;
         StopSound();
-        currentKey = GAME_KEY.None;
-        pressedKey = GAME_KEY.None;
-        releasedKey = GAME_KEY.None;
+        currentKey = GAME_KEY.NONE;
+        pressedKey = GAME_KEY.NONE;
+        releasedKey = GAME_KEY.NONE;
         m_keys = KEY.NONE;
     }
 
@@ -76,9 +76,9 @@ public partial class Game
     {
         // Resume game
         GameMidlet.bSuspended = false;
-        currentKey = GAME_KEY.None;
-        pressedKey = GAME_KEY.None;
-        releasedKey = GAME_KEY.None;
+        currentKey = GAME_KEY.NONE;
+        pressedKey = GAME_KEY.NONE;
+        releasedKey = GAME_KEY.NONE;
         m_keys = KEY.NONE;
         
         // Pause if in a level
@@ -86,7 +86,7 @@ public partial class Game
         {
             m_gameFrame_paused = true;
             Menu_SetCurrentPage(MENU_PAGE.PAUSE);
-            pressedKey = GAME_KEY.None;
+            pressedKey = GAME_KEY.NONE;
         }
     }
 
@@ -113,7 +113,7 @@ public partial class Game
         if (SysFrame_doLoop() != 0)
             m_chGameState = GAME_STATE.EXITING;
 
-        if ((pressedKey & GAME_KEY.Star) != 0)
+        if ((pressedKey & GAME_KEY.STAR) != 0)
             showDebug = !showDebug;
 
         if (showDebug)

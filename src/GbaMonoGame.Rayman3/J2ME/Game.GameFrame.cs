@@ -285,13 +285,13 @@ public partial class Game
                     PlaySound(SOUND_INDEX.enter_level, true);
 
                 Status_ShowAll();
-                currentKey = GAME_KEY.None;
-                pressedKey = GAME_KEY.None;
-                releasedKey = GAME_KEY.None;
+                currentKey = GAME_KEY.NONE;
+                pressedKey = GAME_KEY.NONE;
+                releasedKey = GAME_KEY.NONE;
                 m_keys = 0;
-                pRayman.V[5] = (ushort)GAME_KEY.None;
-                pRayman.V[4] = (ushort)GAME_KEY.None;
-                pRayman.V[3] = (ushort)GAME_KEY.None;
+                pRayman.V[5] = (ushort)GAME_KEY.NONE;
+                pRayman.V[4] = (ushort)GAME_KEY.NONE;
+                pRayman.V[3] = (ushort)GAME_KEY.NONE;
                 lStartMillForKeyDelay = System.currentTimeMillis();
                 m_gameFrame_prevState = GAME_FRAME_STATE.LOADING;
                 m_gameFrame_curState = GAME_FRAME_STATE.DEFAULT;
