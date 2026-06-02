@@ -177,7 +177,7 @@ public partial class Game
         }
 
         // Draw soft key pause indicator
-        if (m_gameStateStep != 0 && (m_gameFrame_curState == GAME_FRAME_STATE.DEFAULT || curState == 4))
+        if (m_gameStateStep != 0 && (m_gameFrame_curState == GAME_FRAME_STATE.DEFAULT || curState == SYS_FRAME_STATE.GAME_OVER))
         {
             bool bBackgroundState = m_bBackgroundUsed;
             m_bBackgroundUsed = false;

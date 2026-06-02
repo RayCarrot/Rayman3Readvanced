@@ -121,7 +121,7 @@ public partial class Game
         if (m_gameFrame_curLevel >= LEVEL_WORLD_MAP && 
             (pressedKey & (GAME_KEY.SOFTKEY_1 | GAME_KEY.SOFTKEY_2)) != 0 && 
             !m_gameFrame_paused && 
-            curState == 3)
+            curState == SYS_FRAME_STATE.GAME)
         {
             m_gameFrame_paused = true;
             Menu_SetCurrentPage(MENU_PAGE.PAUSE);

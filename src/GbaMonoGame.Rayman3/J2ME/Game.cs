@@ -82,7 +82,7 @@ public partial class Game
         m_keys = KEY.NONE;
         
         // Pause if in a level
-        if (m_gameFrame_curLevel >= LEVEL_WORLD_MAP && curState == 3)
+        if (m_gameFrame_curLevel >= LEVEL_WORLD_MAP && curState == SYS_FRAME_STATE.GAME)
         {
             m_gameFrame_paused = true;
             Menu_SetCurrentPage(MENU_PAGE.PAUSE);

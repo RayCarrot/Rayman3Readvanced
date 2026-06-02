@@ -2,7 +2,7 @@
 
 public partial class Game
 {
-    public int curState { get; set; }
+    public SYS_FRAME_STATE curState { get; set; }
     public long lStartMill { get; set; }
     public sbyte m_byMainLoadingState { get; set; }
     public bool bSoundBegin { get; set; }
@@ -14,7 +14,7 @@ public partial class Game
     public bool SysFrame_PhysicalInitI()
     {
         lStartMill = System.currentTimeMillis();
-        curState = 0;
+        curState = SYS_FRAME_STATE.LOADING;
         currentKey = GAME_KEY.NONE;
         pressedKey = GAME_KEY.NONE;
         releasedKey = GAME_KEY.NONE;
@@ -29,26 +29,26 @@ public partial class Game
         switch (curState)
         {
             // Load
-            case 0:
+            case SYS_FRAME_STATE.LOADING:
                 GameFrame_LoadSound();
                 RM.Load(0x60000411);
                 RM.Load(0x6000012D);
                 LoadSound(0);
                 InitSounds();
                 setSoundVolume(SoundVolume);
-                curState = 1;
+                curState = SYS_FRAME_STATE.SPLASH_SCREEN;
                 break;
 
             // Show Gameloft logo
-            case 1:
+            case SYS_FRAME_STATE.SPLASH_SCREEN:
                 g_graBackBuffer.ClearScreen(0);
                 g_graBackBuffer.drawImage(RM.GetImage(17), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
                 lCurMill = System.currentTimeMillis();
                 if (pressedKey != GAME_KEY.NONE || lCurMill - lStartMill > 5000)
-                    curState = 2;
+                    curState = SYS_FRAME_STATE.TITLE_SCREEN;
                 break;
 
-            case 2:
+            case SYS_FRAME_STATE.TITLE_SCREEN:
                 if (m_byMainLoadingState == 0)
                 {
                     Menu_LoadMain();
@@ -93,7 +93,7 @@ public partial class Game
                     if (pressedKey != GAME_KEY.NONE)
                     {
                         m_gameFrame_curState = GAME_FRAME_STATE.DEFAULT;
-                        curState = 3;
+                        curState = SYS_FRAME_STATE.GAME;
                         StopSound();
                         m_byMainLoadingState = (sbyte)(m_byMainLoadingState + 1);
                         m_keys = 0;
@@ -103,7 +103,7 @@ public partial class Game
                 RM.Synchronize();
                 break;
 
-            case 3:
+            case SYS_FRAME_STATE.GAME:
                 GAME_FRAME_STATE ret = GameFrame_doLoop();
                 if (ret == GAME_FRAME_STATE.GAME_OVER)
                 {
@@ -113,20 +113,19 @@ public partial class Game
                     //    Thread.sleep(300L);
                     //}
                     //catch (Exception e) { }
-                    curState = 4;
+                    curState = SYS_FRAME_STATE.GAME_OVER;
                     PlaySound(SOUND_INDEX.music_gameover, true);
-                    break;
                 }
-                if (ret == GAME_FRAME_STATE.EXITED_LEVEL)
+                else if (ret == GAME_FRAME_STATE.EXITED_LEVEL)
                 {
                     if (m_iPrevLevel != LEVEL_FINAL)
                     {
                         lStartMill = System.currentTimeMillis();
-                        curState = 5;
+                        curState = SYS_FRAME_STATE.LEVEL_COMPLETE;
                     }
                     else
                     {
-                        curState = 6;
+                        curState = SYS_FRAME_STATE.GAME_COMPLETE;
                         pRayman.anim.newAction = 38;
                         m_bBackgroundUsed = false;
                         pRayman.x = 0x7800;
@@ -135,9 +134,8 @@ public partial class Game
                     }
                     if (m_iPrevLevel > LEVEL_WORLD_MAP && pRayman.anim.curAction != 37)
                         PlaySound(SOUND_INDEX.music_leveldone, true, 1);
-                    break;
                 }
-                if (ret == GAME_FRAME_STATE.CONFIRM_EXIT)
+                else if (ret == GAME_FRAME_STATE.CONFIRM_EXIT)
                 {
                     bConfirmExit = false;
                     g_graBackBuffer.ClearScreen(0);
@@ -157,9 +155,8 @@ public partial class Game
                         bConfirmExit = true;
                     }
                     bConfirm = true;
-                    break;
                 }
-                if (!bConfirmExit)
+                else if (!bConfirmExit)
                 {
                     g_graBackBuffer.ClearScreen(0);
                     if (!bConfirmToMainMenu)
@@ -185,21 +182,23 @@ public partial class Game
                 }
                 break;
 
-            case 4:
+            case SYS_FRAME_STATE.GAME_OVER:
                 GameFrame_doLoop();
                 if (pressedKey != GAME_KEY.NONE)
                 {
                     m_gameStateStep = 0;
                     m_gameFrame_curState = GAME_FRAME_STATE.LOADING;
-                    curState = 3;
+                    curState = SYS_FRAME_STATE.GAME;
                     StopSound();
                     GameFrame_InitNewGame();
-                    break;
                 }
-                Menu_DrawString(RM.GetString(STRING_ID_GAME_OVER), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_GAME_OVER))) >> 1, 110, 0);
+                else
+                {
+                    Menu_DrawString(RM.GetString(STRING_ID_GAME_OVER), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_GAME_OVER))) >> 1, 110, 0);
+                }
                 break;
 
-            case 6:
+            case SYS_FRAME_STATE.GAME_COMPLETE:
                 g_graBackBuffer.ClearScreen(0);
                 Actor.drawModule(Actor.aniData[26], 23, Resolution.X - Actor.aniData[26].modules[23].Width, Resolution.Y - Actor.aniData[26].modules[23].Height, 0, g_graBackBuffer);
                 
@@ -208,30 +207,31 @@ public partial class Game
                     m_bBackgroundUsed = true;
                     m_iAboutTicker = 0;
                     Menu_LoadCredits();
-                    curState = 7;
-                    break;
+                    curState = SYS_FRAME_STATE.CREDITS;
                 }
-
-                if (pRayman.Ani_CheckEnd())
+                else
                 {
-                    if ((pRayman.stateFlag & ACTOR_STATE.FLIP_X) == 0)
+                    if (pRayman.Ani_CheckEnd())
                     {
-                        pRayman.stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        pRayman.stateFlag |= ACTOR_STATE.FLIP_X;
+                        if ((pRayman.stateFlag & ACTOR_STATE.FLIP_X) == 0)
+                        {
+                            pRayman.stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                            pRayman.stateFlag |= ACTOR_STATE.FLIP_X;
+                        }
+                        else
+                        {
+                            pRayman.stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                            pRayman.stateFlag &= ~ACTOR_STATE.FLIP_X;
+                        }
                     }
-                    else
-                    {
-                        pRayman.stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        pRayman.stateFlag &= ~ACTOR_STATE.FLIP_X;
-                    }
-                }
 
-                pRayman.step();
-                pRayman.draw();
-                Menu_DrawString(RM.GetString(STRING_ID_VICTORY), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_VICTORY))) >> 1, 170, 0);
+                    pRayman.step();
+                    pRayman.draw();
+                    Menu_DrawString(RM.GetString(STRING_ID_VICTORY), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_VICTORY))) >> 1, 170, 0);
+                }
                 break;
 
-            case 7:
+            case SYS_FRAME_STATE.CREDITS:
                 g_graBackBuffer.ClearScreen(0);
                 DrawCreditsPage();
                 if (pressedKey != GAME_KEY.NONE)
@@ -240,12 +240,12 @@ public partial class Game
                     m_bBackgroundUsed = true;
                     m_gameStateStep = 0;
                     m_gameFrame_curState = GAME_FRAME_STATE.LOADING;
-                    curState = 3;
+                    curState = SYS_FRAME_STATE.GAME;
                     GameFrame_InitNewGame();
                 }
                 break;
 
-            case 5:
+            case SYS_FRAME_STATE.LEVEL_COMPLETE:
                 if (m_iPrevLevel > LEVEL_WORLD_MAP && pRayman.anim.curAction != 37)
                 {
                     lCurMill = System.currentTimeMillis();
@@ -256,15 +256,19 @@ public partial class Game
                         StopSound();
                         m_gameStateStep = 0;
                         m_gameFrame_curState = GAME_FRAME_STATE.LOADING;
-                        curState = 3;
-                        break;
+                        curState = SYS_FRAME_STATE.GAME;
                     }
-                    Menu_DrawString(RM.GetString(STRING_ID_LEVEL_DONE), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LEVEL_DONE))) >> 1, 110, 0);
-                    break;
+                    else
+                    {
+                        Menu_DrawString(RM.GetString(STRING_ID_LEVEL_DONE), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LEVEL_DONE))) >> 1, 110, 0);
+                    }
                 }
-                m_gameStateStep = 0;
-                m_gameFrame_curState = GAME_FRAME_STATE.LOADING;
-                curState = 3;
+                else
+                {
+                    m_gameStateStep = 0;
+                    m_gameFrame_curState = GAME_FRAME_STATE.LOADING;
+                    curState = SYS_FRAME_STATE.GAME;
+                }
                 break;
         }
 
