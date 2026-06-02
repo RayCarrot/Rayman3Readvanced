@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using BinarySerializer;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3.J2ME;
@@ -285,9 +286,9 @@ public class ResourceManager
         Array_Data = new byte[MAX_DATA_RESOURCES_COUNT][];
 
         Archive_Information = new ArchiveInformation[ARCHIVES_COUNT];
-        Archive_Information[0] = new ArchiveInformation { ImageResourcesCount = 0, DataResourcesCount = 49 };
-        Archive_Information[1] = new ArchiveInformation { ImageResourcesCount = 21, DataResourcesCount = 0 };
-        Archive_Information[2] = new ArchiveInformation { ImageResourcesCount = 0, DataResourcesCount = 21 };
+        Archive_Information[0] = new ArchiveInformation { ImageResourcesCount = 0, DataResourcesCount = 49 }; // Data
+        Archive_Information[1] = new ArchiveInformation { ImageResourcesCount = 21, DataResourcesCount = 0 }; // Images
+        Archive_Information[2] = new ArchiveInformation { ImageResourcesCount = 0, DataResourcesCount = 21 }; // Sounds
 
         Resource_Status = new RESOURCE_STATUS[ARCHIVES_COUNT][];
         for (int i = 0; i < ARCHIVES_COUNT; i++)
@@ -595,6 +596,55 @@ public class ResourceManager
     }
 
     // Custom
+    public void DumpAllData(string outputPath)
+    {
+        for (int archiveIndex = 0; archiveIndex < ARCHIVES_COUNT; archiveIndex++)
+        {
+            for (int dataIndex = 0; dataIndex < Archive_Information[archiveIndex].DataResourcesCount; dataIndex++)
+                Load(ResourceId.Create(Archive_Information[archiveIndex].ImageResourcesCount + dataIndex, RESOURCE_TYPE.DATA, archiveIndex));
+
+            Synchronize();
+
+            for (int dataIndex = 0; dataIndex < Archive_Information[archiveIndex].DataResourcesCount; dataIndex++)
+            {
+                byte[] data = Array_Data[ResourceID_To_Index(ResourceId.Create(Archive_Information[archiveIndex].ImageResourcesCount + dataIndex, RESOURCE_TYPE.IMAGE, archiveIndex))];
+                File.WriteAllBytes(Path.Combine(outputPath, $"{archiveIndex}_{dataIndex}.dat"), data);
+            }
+        }
+    }
+    public void DumpAllText(string outputPath)
+    {
+        int[] textBankResourceIds =
+        [
+            ResourceId.Create(Game.TEXT_BANK_INDEX_GAME, RESOURCE_TYPE.DATA, 0),
+            ResourceId.Create(Game.TEXT_BANK_INDEX_CREDITS_UNUSED, RESOURCE_TYPE.DATA, 0),
+            ResourceId.Create(Game.TEXT_BANK_INDEX_CREDITS, RESOURCE_TYPE.DATA, 0),
+            ResourceId.Create(Game.TEXT_BANK_INDEX_HELP, RESOURCE_TYPE.DATA, 0),
+        ];
+
+        foreach (int textBankResourceId in textBankResourceIds)
+            Load(textBankResourceId);
+
+        Synchronize();
+
+        foreach (int textBankResourceId in textBankResourceIds)
+        {
+            int index = ResourceID_To_Index(textBankResourceId);
+            byte[] data = Array_Data[index];
+
+            StringBuilder sb = new();
+            using MemoryStream stream = new(data);
+            using Reader reader = new(stream);
+            while (stream.Position < stream.Length)
+            {
+                int length = reader.ReadByte();
+                string str = reader.ReadString(length, Encoding.UTF8);
+                sb.AppendLine(str);
+            }
+
+            File.WriteAllText(Path.Combine(outputPath, $"{index}.txt"), sb.ToString());
+        }
+    }
     public void DumpAllImages(string outputPath)
     {
         for (int archiveIndex = 0; archiveIndex < ARCHIVES_COUNT; archiveIndex++)
