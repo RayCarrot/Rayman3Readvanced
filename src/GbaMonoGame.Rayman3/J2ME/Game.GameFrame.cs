@@ -19,7 +19,7 @@ public partial class Game
     public int s_iLumsTaken { get; set; }
     public Actor s_actorCheckpoint { get; set; }
     public Synopsis[] s_synopsis { get; set; }
-    public sbyte[] m_RecordUsedFlag { get; } = new sbyte[11]; // TODO: Bools?
+    public bool[] m_RecordUsedFlag { get; } = new bool[11];
     public GAME_FRAME_STATE m_gameFrame_prevState { get; set; }
     public GAME_FRAME_STATE m_gameFrame_curState { get; set; }
     public bool m_gameFrame_paused { get; set; }
@@ -316,7 +316,7 @@ public partial class Game
             {
                 s_synopsis = null;
                 for (int i = 0; i < 11; i++)
-                    m_RecordUsedFlag[i] = 0;
+                    m_RecordUsedFlag[i] = false;
                 GameFrame_SaveRecordFlag();
             }
             else
@@ -324,7 +324,7 @@ public partial class Game
                 GameFrame_CreateSaveGame();
                 GameFrame_LoadRecordFlag();
                 for (int i = 0; i < 11; i++)
-                    m_RecordUsedFlag[i] = 0;
+                    m_RecordUsedFlag[i] = false;
                 GameFrame_SaveRecordFlag();
             }
         }
@@ -474,7 +474,7 @@ public partial class Game
             {
                 byte[] data = new byte[actorsLen[i]];
                 rs.addRecord(data, 0, data.Length);
-                m_RecordUsedFlag[i] = 0;
+                m_RecordUsedFlag[i] = false;
             }
             rs.closeRecordStore();
         }
@@ -516,7 +516,7 @@ public partial class Game
             if (data != null)
             {
                 for (int i = 0; i < 11; i++)
-                    m_RecordUsedFlag[i] = (sbyte)data[i];
+                    m_RecordUsedFlag[i] = data[i] != 0;
             }
             rs.closeRecordStore();
         }
@@ -530,7 +530,7 @@ public partial class Game
             RecordStore rs = RecordStore.openRecordStore(RECORD_FLAG_SAVE_NAME, false);
             byte[] data = new byte[m_RecordUsedFlag.Length];
             for (int i = 0; i < m_RecordUsedFlag.Length; i++)
-                data[i] = (byte)m_RecordUsedFlag[i];
+                data[i] = (byte)(m_RecordUsedFlag[i] ? 1 : 0);
             rs.setRecord(1, data, 0, data.Length);
             rs.closeRecordStore();
         }
@@ -548,7 +548,7 @@ public partial class Game
             {
                 byte[] data = rs.getRecord(iRecordId);
                 if (data != null)
-                    m_RecordUsedFlag[iRecordId - 1] = 0;
+                    m_RecordUsedFlag[iRecordId - 1] = false;
                 iRecordId++;
             }
             rs.closeRecordStore();
@@ -699,7 +699,7 @@ public partial class Game
             data[offset++] = (byte)m_gameFrame_unlockedLevel;
             data[offset++] = (byte)m_gameFrame_nLife;
             rs.setRecord(10, data, 0, data.Length);
-            m_RecordUsedFlag[9] = 1;
+            m_RecordUsedFlag[9] = true;
             rs.closeRecordStore();
         }
         catch (Exception e) { }
@@ -714,7 +714,7 @@ public partial class Game
             s_synopsis = new Synopsis[10];
             RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, false);
             byte[] data = rs.getRecord(10);
-            if (data != null && m_RecordUsedFlag[9] == 1)
+            if (data != null && m_RecordUsedFlag[9])
             {
                 for (int i = 0; i < s_synopsis.Length; i++)
                 {
@@ -785,7 +785,7 @@ public partial class Game
                     data[offset++] = buffer;
                 }
                 rs.setRecord(pLevel, data, 0, data.Length);
-                m_RecordUsedFlag[pLevel - 1] = 1;
+                m_RecordUsedFlag[pLevel - 1] = true;
             }
             else if (pLevel == 0)
             {
@@ -819,7 +819,7 @@ public partial class Game
                     data[offset++] = buffer;
                 }
                 rs.setRecord(11, data, 0, data.Length);
-                m_RecordUsedFlag[10] = 1;
+                m_RecordUsedFlag[10] = true;
             }
             rs.closeRecordStore();
         }
@@ -835,7 +835,7 @@ public partial class Game
             if (0 < pLevel && pLevel <= m_gameFrame_nbLevels)
             {
                 byte[] data = rs.getRecord(pLevel);
-                if (data != null && m_RecordUsedFlag[pLevel - 1] == 1)
+                if (data != null && m_RecordUsedFlag[pLevel - 1])
                 {
                     for (int i = 0; i < actors.Length;)
                     {
@@ -853,7 +853,7 @@ public partial class Game
             else if (pLevel == 0)
             {
                 byte[] data = rs.getRecord(11);
-                if (data != null && m_RecordUsedFlag[10] == 1)
+                if (data != null && m_RecordUsedFlag[10])
                 {
                     byte a = data[offset++];
                     byte b = data[offset++];
