@@ -147,9 +147,9 @@ public partial class Game
                         iY = 3 + iPosY;
                         Actor.drawModule(GameMidlet.Instance_Game.m_gameMenu_pData, 16, iX, iY, 0, GameMidlet.Instance_Game.g_graBackBuffer);
                         iX -= 3;
-                        iX = Status_DrawNumber(GameMidlet.Instance_Game.s_iLumsTotal & 0xFF, iX, iY, true) - Actor.aniData[26].modules[10].Width;
+                        iX = Status_DrawNumber(GameMidlet.Instance_Game.s_iLumsTotal, iX, iY, true) - Actor.aniData[26].modules[10].Width;
                         Actor.drawModule(GameMidlet.Instance_Game.m_gameMenu_pData, 10, iX, iY, 0, GameMidlet.Instance_Game.g_graBackBuffer);
-                        Status_DrawNumber(GameMidlet.Instance_Game.s_iLumsTaken & 0xFF, iX, 3 + iPosY, true);
+                        Status_DrawNumber(GameMidlet.Instance_Game.s_iLumsTaken, iX, 3 + iPosY, true);
                         break;
                     
                     case 1:

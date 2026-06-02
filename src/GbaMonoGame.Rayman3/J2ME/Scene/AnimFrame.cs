@@ -2,8 +2,8 @@
 
 public readonly struct AnimFrame
 {
-    public sbyte SpritesCount { get; init; }
-    public sbyte FrameDuration { get; init; }
+    public byte SpritesCount { get; init; }
+    public byte FrameDuration { get; init; }
     public Box Box { get; init; }
     public AnimFrameSprite[] Frames { get; init; }
 }

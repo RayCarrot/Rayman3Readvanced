@@ -60,7 +60,7 @@ public class Anim
         curAction = newAction;
 
         if (nbFrames > 0)
-            setFrame(data.actions[newAction].Frames[0] & 0xFF);
+            setFrame(data.actions[newAction].Frames[0]);
         else
             frameId = -1;
     }
@@ -76,10 +76,10 @@ public class Anim
         {
             Action actionData = Actor.aniData[(sbyte)type].actions[newAction];
             actionFrame++;
-            if (actionFrame == (actionData.FramesCount & 0xFF))
+            if (actionFrame == actionData.FramesCount)
                 actionFrame = 0;
-            if ((actionData.FramesCount & 0xFF) > 0)
-                setFrame(actionData.Frames[actionFrame] & 0xFF);
+            if (actionData.FramesCount > 0)
+                setFrame(actionData.Frames[actionFrame]);
         }
     }
     
@@ -112,7 +112,7 @@ public class Anim
             int geflag;
             if ((nflag & ACTOR_STATE.FLIP_X) != 0)
             {
-                nsx = nx - frameData.Frames[frameOffset].X - (pModule.Width & 0xFF);
+                nsx = nx - frameData.Frames[frameOffset].X - pModule.Width;
                 geflag = frameData.Frames[frameOffset].Module < 0 ? 0 : 0x4000;
             }
             else
@@ -131,11 +131,11 @@ public class Anim
                 GameMidlet.Instance_Game.drawImageEx(
                     dstx: nsx, 
                     dsty: nsy, 
-                    w: pModule.Width & 0xFF, 
-                    h: pModule.Height & 0xFF, 
+                    w: pModule.Width, 
+                    h: pModule.Height, 
                     iImageIndex: data.resID, 
-                    sx: pModule.X & 0xFF, 
-                    sy: pModule.Y & 0xFF, 
+                    sx: pModule.X, 
+                    sy: pModule.Y, 
                     flag: geflag);
             }
 

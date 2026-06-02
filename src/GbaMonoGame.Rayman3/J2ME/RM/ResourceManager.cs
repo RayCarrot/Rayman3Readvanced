@@ -209,7 +209,7 @@ public class ResourceManager
             return String.Empty;
 
         // First byte is the length followed by the string
-        return Encoding.UTF8.GetString(Array_Data[DataArray_Index], Offset + 1, Array_Data[DataArray_Index][Offset] & 0xFF);
+        return Encoding.UTF8.GetString(Array_Data[DataArray_Index], Offset + 1, Array_Data[DataArray_Index][Offset]);
     }
 
     public int NextStringID(int Param_StringID)
@@ -224,7 +224,7 @@ public class ResourceManager
             Offset >= Array_Data[DataArray_Index].Length)
             return -1;
         
-        int StringLength = (Array_Data[DataArray_Index][Offset] & 0xFF) + 1;
+        int StringLength = Array_Data[DataArray_Index][Offset] + 1;
         if (Offset + StringLength >= Array_Data[DataArray_Index].Length)
             return -1;
         
@@ -238,10 +238,10 @@ public class ResourceManager
             Param_ArrayIndex >= Array_Data.Length || 
             Array_Data[Param_ArrayIndex] == null || 
             Array_Data[Param_ArrayIndex].Length <= 6 || 
-            (Array_Data[Param_ArrayIndex][3] & 0xFF) != (Array_Data[Param_ArrayIndex][0] & 0xFF) * (Array_Data[Param_ArrayIndex][1] & 0xFF))
+            Array_Data[Param_ArrayIndex][3] != Array_Data[Param_ArrayIndex][0] * Array_Data[Param_ArrayIndex][1])
             return 0;
 
-        return (Array_Data[Param_ArrayIndex][4] & 0xFF) * (Array_Data[Param_ArrayIndex][0] & 0xFF);
+        return Array_Data[Param_ArrayIndex][4] * Array_Data[Param_ArrayIndex][0];
     }
 
     public int DirectVQ_GetHeight(int Param_ArrayIndex)
@@ -251,10 +251,10 @@ public class ResourceManager
             || Param_ArrayIndex >= Array_Data.Length || 
             Array_Data[Param_ArrayIndex] == null || 
             Array_Data[Param_ArrayIndex].Length <= 6 
-            || (Array_Data[Param_ArrayIndex][3] & 0xFF) != (Array_Data[Param_ArrayIndex][0] & 0xFF) * (Array_Data[Param_ArrayIndex][1] & 0xFF))
+            || Array_Data[Param_ArrayIndex][3] != Array_Data[Param_ArrayIndex][0] * Array_Data[Param_ArrayIndex][1])
             return 0;
         
-        return (Array_Data[Param_ArrayIndex][5] & 0xFF) * (Array_Data[Param_ArrayIndex][1] & 0xFF);
+        return Array_Data[Param_ArrayIndex][5] * Array_Data[Param_ArrayIndex][1];
     }
 
     public int DirectTwinVQ_Read(int Param_ArrayIndex, int Param_Position_X, int Param_Position_Y, int Param_DoubletOffset)
@@ -264,14 +264,14 @@ public class ResourceManager
             Param_ArrayIndex >= Array_Data.Length || 
             Array_Data[Param_ArrayIndex] == null || 
             Array_Data[Param_ArrayIndex].Length <= 7 || 
-            (Array_Data[Param_ArrayIndex][3] & 0xFF) != (Array_Data[Param_ArrayIndex][0] & 0xFF) * (Array_Data[Param_ArrayIndex][1] & 0xFF) || 
+            Array_Data[Param_ArrayIndex][3] != Array_Data[Param_ArrayIndex][0] * Array_Data[Param_ArrayIndex][1] || 
             Param_Position_X < 0 || 
-            Param_Position_X >= (Array_Data[Param_ArrayIndex][4] & 0xFF) * (Array_Data[Param_ArrayIndex][0] & 0xFF) || 
+            Param_Position_X >= Array_Data[Param_ArrayIndex][4] * Array_Data[Param_ArrayIndex][0] || 
             Param_Position_Y < 0 || 
-            Param_Position_Y >= (Array_Data[Param_ArrayIndex][5] & 0xFF) * (Array_Data[Param_ArrayIndex][1] & 0xFF))
+            Param_Position_Y >= Array_Data[Param_ArrayIndex][5] * Array_Data[Param_ArrayIndex][1])
             return 0;
 
-        return Array_Data[Param_ArrayIndex][7 + (Array_Data[Param_ArrayIndex][7 + ((Array_Data[Param_ArrayIndex][6] & 0xFF) << 1) + (Array_Data[Param_ArrayIndex][7 + ((Array_Data[Param_ArrayIndex][6] & 0xFF) << 1) + (Array_Data[Param_ArrayIndex][2] & 0xFF) * (Array_Data[Param_ArrayIndex][3] & 0xFF) + Param_Position_X / (Array_Data[Param_ArrayIndex][0] & 0xFF) + Param_Position_Y / (Array_Data[Param_ArrayIndex][1] & 0xFF) * (Array_Data[Param_ArrayIndex][4] & 0xFF)] & 0xFF) * (Array_Data[Param_ArrayIndex][3] & 0xFF) + Param_Position_X % (Array_Data[Param_ArrayIndex][0] & 0xFF) + Param_Position_Y % (Array_Data[Param_ArrayIndex][1] & 0xFF) * (Array_Data[Param_ArrayIndex][0] & 0xFF)] & 0xFF) + Param_DoubletOffset * (Array_Data[Param_ArrayIndex][6] & 0xFF)] & 0xFF;
+        return Array_Data[Param_ArrayIndex][7 + Array_Data[Param_ArrayIndex][7 + (Array_Data[Param_ArrayIndex][6] << 1) + Array_Data[Param_ArrayIndex][7 + (Array_Data[Param_ArrayIndex][6] << 1) + Array_Data[Param_ArrayIndex][2] * Array_Data[Param_ArrayIndex][3] + Param_Position_X / Array_Data[Param_ArrayIndex][0] + Param_Position_Y / Array_Data[Param_ArrayIndex][1] * Array_Data[Param_ArrayIndex][4]] * Array_Data[Param_ArrayIndex][3] + Param_Position_X % Array_Data[Param_ArrayIndex][0] + Param_Position_Y % Array_Data[Param_ArrayIndex][1] * Array_Data[Param_ArrayIndex][0]] + Param_DoubletOffset * Array_Data[Param_ArrayIndex][6]];
     }
 
     public int Initialize()
@@ -478,8 +478,8 @@ public class ResourceManager
                     
                     for (sbyte b = 0; b < Resource_Status[Archive_Index].Length; b++)
                     {
-                        int Data_Size_Archived = ((HeaderTable[File_TableOffset++] & 0xFF) << 8) + (HeaderTable[File_TableOffset++] & 0xFF);
-                        short Data_Size_CompressionDelta = (short)(((HeaderTable[File_TableOffset++] & 0xFF) << 8) + (HeaderTable[File_TableOffset++] & 0xFF));
+                        int Data_Size_Archived = (HeaderTable[File_TableOffset++] << 8) + HeaderTable[File_TableOffset++];
+                        short Data_Size_CompressionDelta = (short)((HeaderTable[File_TableOffset++] << 8) + HeaderTable[File_TableOffset++]);
 
                         if ((Resource_Status[Archive_Index][b] & (RESOURCE_STATUS.REQUESTED | RESOURCE_STATUS.LOADED)) == RESOURCE_STATUS.REQUESTED)
                         {
@@ -501,31 +501,31 @@ public class ResourceManager
                                 WriteDWORD(0xD0A1A0A);
                                 WriteDWORD(0xD);
                                 WriteDWORD(0x49484452);
-                                int DeChunk_Header = ((Data_Archived[Data_Index_Archived++] & 0xFF) << 24) | ((Data_Archived[Data_Index_Archived++] & 0xFF) << 16) | ((Data_Archived[Data_Index_Archived++] & 0xFF) << 8) | (Data_Archived[Data_Index_Archived++] & 0xFF);
+                                int DeChunk_Header = (Data_Archived[Data_Index_Archived++] << 24) | (Data_Archived[Data_Index_Archived++] << 16) | (Data_Archived[Data_Index_Archived++] << 8) | Data_Archived[Data_Index_Archived++];
                                 WriteDWORD(DeChunk_Header & 0x3FF);
                                 WriteDWORD((DeChunk_Header >> 10) & 0x3FF);
                                 Data_Decompressed[Data_Index_Decompressed++] = (byte)(1 << ((DeChunk_Header >> 20) & 0x3));
                                 int Temp_Value = (DeChunk_Header >> 22) & 0x3;
                                 Data_Decompressed[Data_Index_Decompressed++] = (byte)(Temp_Value == 0 ? 0 : 3);
                                 Data_Index_Decompressed += 3;
-                                WriteDWORD(((Data_Archived[Data_Index_Archived++] & 0xFF) << 24) | ((Data_Archived[Data_Index_Archived++] & 0xFF) << 16) | ((Data_Archived[Data_Index_Archived++] & 0xFF) << 8) | (Data_Archived[Data_Index_Archived++] & 0xFF));
+                                WriteDWORD(((Data_Archived[Data_Index_Archived++] << 24) | (Data_Archived[Data_Index_Archived++] << 16) | (Data_Archived[Data_Index_Archived++] << 8) | Data_Archived[Data_Index_Archived++]));
 
                                 if (Temp_Value == 2)
                                 {
-                                    Temp_Value = (Data_Archived[Data_Index_Archived++] & 0xFF) * 3;
+                                    Temp_Value = Data_Archived[Data_Index_Archived++] * 3;
                                     if (Temp_Value == 0)
                                         Temp_Value = 768;
                                     WriteDWORD(Temp_Value);
                                     WriteDWORD(0x504C5445);
                                     while (Temp_Value > 0)
                                     {
-                                        int CompactColor = ((Data_Archived[Data_Index_Archived++] & 0xFF) << 8) + (Data_Archived[Data_Index_Archived++] & 0xFF);
+                                        int CompactColor = (Data_Archived[Data_Index_Archived++] << 8) + Data_Archived[Data_Index_Archived++];
                                         Data_Decompressed[Data_Index_Decompressed++] = (byte)((CompactColor >> 8) * 255 / 15);
                                         Data_Decompressed[Data_Index_Decompressed++] = (byte)(((CompactColor >> 4) & 0xF) * 255 / 15);
                                         Data_Decompressed[Data_Index_Decompressed++] = (byte)((CompactColor & 0xF) * 255 / 15);
                                         Temp_Value -= 3;
                                     }
-                                    WriteDWORD(((Data_Archived[Data_Index_Archived++] & 0xFF) << 24) | ((Data_Archived[Data_Index_Archived++] & 0xFF) << 16) | ((Data_Archived[Data_Index_Archived++] & 0xFF) << 8) | (Data_Archived[Data_Index_Archived++] & 0xFF));
+                                    WriteDWORD(((Data_Archived[Data_Index_Archived++] << 24) | (Data_Archived[Data_Index_Archived++] << 16) | (Data_Archived[Data_Index_Archived++] << 8) | Data_Archived[Data_Index_Archived++]));
                                 }
 
                                 if ((DeChunk_Header & 0x1000000) > 0)
@@ -545,7 +545,7 @@ public class ResourceManager
                                     System.arraycopy(Data_Archived, Data_Index_Archived, Data_Decompressed, Data_Index_Decompressed, Temp_Value);
                                     Data_Index_Decompressed += Temp_Value;
                                     Data_Index_Archived += Temp_Value;
-                                    WriteDWORD(((Data_Archived[Data_Index_Archived++] & 0xFF) << 24) | ((Data_Archived[Data_Index_Archived++] & 0xFF) << 16) | ((Data_Archived[Data_Index_Archived++] & 0xFF) << 8) | (Data_Archived[Data_Index_Archived++] & 0xFF));
+                                    WriteDWORD(((Data_Archived[Data_Index_Archived++] << 24) | (Data_Archived[Data_Index_Archived++] << 16) | (Data_Archived[Data_Index_Archived++] << 8) | Data_Archived[Data_Index_Archived++]));
                                 } while (Temp_Value == 0x2000);
                                 WriteDWORD(0x0);
                                 WriteDWORD(0x49454E44);

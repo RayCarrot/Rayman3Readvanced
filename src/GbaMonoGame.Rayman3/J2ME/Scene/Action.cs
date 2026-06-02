@@ -2,6 +2,6 @@
 
 public readonly struct Action
 {
-    public sbyte FramesCount { get; init; }
-    public sbyte[] Frames { get; init; }
+    public byte FramesCount { get; init; }
+    public byte[] Frames { get; init; }
 }

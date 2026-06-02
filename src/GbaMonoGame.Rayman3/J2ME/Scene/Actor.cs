@@ -43,13 +43,13 @@ public class Actor
             
             case OBJECT_TYPE.PIRATE:
                 V = new int[6];
-                V[0] = data[nOff++] & 0xFF;
-                V[1] = data[nOff++] & 0xFF;
-                V[2] = data[nOff++] & 0xFF;
+                V[0] = (byte)data[nOff++];
+                V[1] = (byte)data[nOff++];
+                V[2] = (byte)data[nOff++];
                 V[2] <<= 16;
-                V[2] |= data[nOff++] & 0xFF;
+                V[2] |= (byte)data[nOff++];
                 V[2] |= V[2] << 8;
-                V[5] = data[nOff++] & 0xFF;
+                V[5] = (byte)data[nOff++];
                 V[3] = 240;
                 V[4] = 0;
                 break;
@@ -80,7 +80,7 @@ public class Actor
             
             case OBJECT_TYPE.LEVEL_SIGN:
                 V = new int[1];
-                V[0] = data[nOff++] & 0xFF;
+                V[0] = (byte)data[nOff++];
                 break;
         }
 
@@ -297,33 +297,33 @@ public class Actor
         aniData[type] = data;
         data.resID = (sbyte)resID;
         data.flag = (buffer[0] & 0x80) != 0 ? ANIM_DATA_FLAGS.HAS_MECH_MODEL : ANIM_DATA_FLAGS.NONE;
-        data.nbModule = (sbyte)buffer[1];
-        data.nbFrame = (sbyte)buffer[2];
-        data.nbAction = (sbyte)buffer[3];
+        data.nbModule = buffer[1];
+        data.nbFrame = buffer[2];
+        data.nbAction = buffer[3];
         data.flag |= ANIM_DATA_FLAGS.LOADED;
-        int count = data.nbModule & 0xFF;
+        int count = data.nbModule;
         data.modules = new AnimModule[count];
         int offset = 4;
         for (int i = 0; i < count; i++)
         {
             data.modules[i] = new AnimModule
             {
-                X = (sbyte)buffer[offset + 0],
-                Y = (sbyte)buffer[offset + 1],
-                Width = (sbyte)buffer[offset + 2],
-                Height = (sbyte)buffer[offset + 3]
+                X = buffer[offset + 0],
+                Y = buffer[offset + 1],
+                Width = buffer[offset + 2],
+                Height = buffer[offset + 3]
             };
             offset += 4;
         }
 
-        count = data.nbFrame & 0xFF;
+        count = data.nbFrame;
         data.frames = new AnimFrame[count];
         for (int j = 0; j < count; j++)
         {
             data.frames[j] = new AnimFrame
             {
-                SpritesCount = (sbyte)buffer[offset + 0],
-                FrameDuration = (sbyte)buffer[offset + 1],
+                SpritesCount = buffer[offset + 0],
+                FrameDuration = buffer[offset + 1],
                 Box = new Box()
                 {
                     Left = (sbyte)buffer[offset + 2],
@@ -347,15 +347,15 @@ public class Actor
             }
         }
 
-        count = data.nbAction & 0xFF;
+        count = data.nbAction;
         data.actions = new Action[count];
         data.mmParam = new MechModelParams[count];
         for (int k = 0; k < count; k++)
         {
             data.actions[k] = new Action
             {
-                FramesCount = (sbyte)buffer[offset + 0],
-                Frames = new sbyte[buffer[offset + 0]]
+                FramesCount = buffer[offset + 0],
+                Frames = new byte[buffer[offset + 0]]
             };
             offset++;
             System.arraycopy(buffer, offset, data.actions[k].Frames, 0, data.actions[k].FramesCount);
@@ -388,11 +388,11 @@ public class Actor
         GameMidlet.Instance_Game.drawImageEx(
             dstx: nx, 
             dsty: ny, 
-            w: module.Width & 0xFF, 
-            h: module.Height & 0xFF, 
+            w: (byte)module.Width, 
+            h: (byte)module.Height, 
             iImageIndex: pData.resID,
-            sx: module.X & 0xFF, 
-            sy: module.Y & 0xFF, 
+            sx: (byte)module.X, 
+            sy: (byte)module.Y, 
             flag: nflag);
     }
 
@@ -1211,7 +1211,7 @@ public class Actor
            
             case 1:
                 if ((V[0] <= 8 && V[0] <= GameMidlet.Instance_Game.m_gameFrame_unlockedLevel) ||
-                    ((GameMidlet.Instance_Game.s_iLumsTaken & 0xFF) >= 140 && GameMidlet.Instance_Game.s_iCageOpened >= 12))
+                    (GameMidlet.Instance_Game.s_iLumsTaken >= 140 && GameMidlet.Instance_Game.s_iCageOpened >= 12))
                     anim.newAction = 4;
                 break;
             

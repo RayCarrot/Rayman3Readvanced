@@ -51,7 +51,7 @@ public partial class Game
 
     public int ReadInt(byte[] data, int offset)
     {
-        return ((data[offset++] & 0xFF) << 24) | ((data[offset++] & 0xFF) << 16) | ((data[offset++] & 0xFF) << 8) | (data[offset++] & 0xFF);
+        return (data[offset++] << 24) | (data[offset++] << 16) | (data[offset++] << 8) | data[offset++];
     }
 
     public bool GameFrame_loadLevel(int iLevel)
@@ -796,8 +796,7 @@ public partial class Game
             int offset = 0;
             if (0 < pLevel && pLevel <= m_gameFrame_nbLevels)
             {
-                byte[] data = new byte[actors.Length];
-                data = rs.getRecord(pLevel);
+                byte[] data = rs.getRecord(pLevel);
                 if (data != null && m_RecordUsedFlag[pLevel - 1] == 1)
                 {
                     for (int i = 0; i < actors.Length;)
@@ -811,7 +810,6 @@ public partial class Game
                             actors[i].stateFlag |= ACTOR_STATE.DEAD;
                         } while (++i < actors.Length && (mask <<= 1) < 256);
                     }
-                    data = null;
                 }
             }
             else if (pLevel == 0)
@@ -827,7 +825,7 @@ public partial class Game
                     byte f = data[offset++];
                     byte g = data[offset++];
                     byte h = data[offset++];
-                    pRayman.m_lInitX = ((long)(a & 0xFF) << 56) | ((long)(b & 0xFF) << 48) | ((long)(c & 0xFF) << 40) | ((long)(d & 0xFF) << 32) | ((long)(e & 0xFF) << 24) | ((long)(f & 0xFF) << 16) | ((long)(g & 0xFF) << 8) | (long)(h & 0xFF);
+                    pRayman.m_lInitX = ((long)a << 56) | ((long)b << 48) | ((long)c << 40) | ((long)d << 32) | ((long)e << 24) | ((long)f << 16) | ((long)g << 8) | (long)h;
                     a = data[offset++];
                     b = data[offset++];
                     c = data[offset++];
@@ -836,7 +834,7 @@ public partial class Game
                     f = data[offset++];
                     g = data[offset++];
                     h = data[offset++];
-                    pRayman.m_lInitY = ((long)(a & 0xFF) << 56) | ((long)(b & 0xFF) << 48) | ((long)(c & 0xFF) << 40) | ((long)(d & 0xFF) << 32) | ((long)(e & 0xFF) << 24) | ((long)(f & 0xFF) << 16) | ((long)(g & 0xFF) << 8) | (long)(h & 0xFF);
+                    pRayman.m_lInitY = ((long)a << 56) | ((long)b << 48) | ((long)c << 40) | ((long)d << 32) | ((long)e << 24) | ((long)f << 16) | ((long)g << 8) | (long)h;
                     const sbyte mask = 1;
                     for (int i = 0; i < actors.Length; i++)
                     {

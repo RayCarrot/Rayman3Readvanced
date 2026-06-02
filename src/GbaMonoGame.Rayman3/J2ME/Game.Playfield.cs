@@ -124,7 +124,7 @@ public partial class Game
             int _x = alignedX0 % bufW;
             for (int x = alignedX0; x <= alignedX1; x += TILE_SIZE)
             {
-                int id = RM.DirectTwinVQ_Read(m_iBackgroundDataIndex, x >> 4, y >> 4, 0) & 0xFF;
+                int id = RM.DirectTwinVQ_Read(m_iBackgroundDataIndex, x >> 4, y >> 4, 0);
                 m_graBackground.setClip(_x, _y, TILE_SIZE, TILE_SIZE);
                 m_graBackground.drawImage(RM.GetImage(m_iImageResID), _x - ((id % m_iBackgroundTileCountX) << 4), _y - ((id / m_iBackgroundTileCountX) << 4), ANCHOR.LEFT | ANCHOR.TOP);
                 _x += TILE_SIZE;

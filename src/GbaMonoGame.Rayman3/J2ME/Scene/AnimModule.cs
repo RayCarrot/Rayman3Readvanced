@@ -2,8 +2,8 @@
 
 public readonly struct AnimModule
 {
-    public sbyte X { get; init; }
-    public sbyte Y { get; init; }
-    public sbyte Width { get; init; }
-    public sbyte Height { get; init; }
+    public byte X { get; init; }
+    public byte Y { get; init; }
+    public byte Width { get; init; }
+    public byte Height { get; init; }
 }

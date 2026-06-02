@@ -20,7 +20,7 @@ public partial class Game
 
     public short ReadUnsignedShort(sbyte[] buf, int nOff)
     {
-        return (short)((buf[nOff] & 0xFF) | ((buf[nOff + 1] & 0xFF) << 8));
+        return (short)((byte)buf[nOff] | ((byte)buf[nOff + 1] << 8));
     }
 
     public Actor Actor_create(sbyte[] data)
@@ -196,14 +196,14 @@ public partial class Game
             for (int i = 0; i < actors.Length; i++)
                 actors[i] = null;
         actors = null;
-        int actorCount = (sbyte)pBuf[nStartOffset++] & 0xFF;
+        int actorCount = pBuf[nStartOffset++];
         actors = new Actor[actorCount];
         sbyte[][] tempData = new sbyte[actorCount][];
         int Offset_Parameters = nStartOffset + actorCount * 7;
         sbyte b;
         for (b = 0; b < actorCount; b++)
         {
-            int NbParameters = (sbyte)pBuf[nStartOffset] & 0xFF;
+            int NbParameters = pBuf[nStartOffset];
             tempData[b] = new sbyte[6 + NbParameters];
             tempData[b][0] = (sbyte)pBuf[nStartOffset + actorCount * 1];
             tempData[b][1] = (sbyte)pBuf[nStartOffset + actorCount * 2];
