@@ -118,7 +118,10 @@ public partial class Game
         m_iKeyCheckCounter--;
         
         // Pause
-        if (m_gameFrame_curLevel >= 0 && (pressedKey & (GAME_KEY.SOFTKEY_1 | GAME_KEY.SOFTKEY_2)) != 0 && !m_gameFrame_paused && curState == 3)
+        if (m_gameFrame_curLevel >= LEVEL_WORLD_MAP && 
+            (pressedKey & (GAME_KEY.SOFTKEY_1 | GAME_KEY.SOFTKEY_2)) != 0 && 
+            !m_gameFrame_paused && 
+            curState == 3)
         {
             m_gameFrame_paused = true;
             Menu_SetCurrentPage(MENU_PAGE.PAUSE);
@@ -217,7 +220,7 @@ public partial class Game
                 m_keys |= KEY.NUM_9;
                 break;
         }
-        if (m_gameFrame_paused || m_gameFrame_curLevel < 0)
+        if (m_gameFrame_paused || m_gameFrame_curLevel < LEVEL_WORLD_MAP)
             Menu_DoAI();
         m_iKeyCheckCounter = 2;
         m_bUpdateStatus = false;

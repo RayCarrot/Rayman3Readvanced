@@ -123,7 +123,7 @@ public partial class Game
                 }
                 if (ret == GAME_FRAME_STATE.EXITED_LEVEL)
                 {
-                    if (m_iPrevLevel != 8)
+                    if (m_iPrevLevel != LEVEL_FINAL)
                     {
                         lStartMill = System.currentTimeMillis();
                         curState = 5;
@@ -137,7 +137,7 @@ public partial class Game
                         pRayman.y = 0xAA00;
                         pRayman.stateFlag &= ~ACTOR_STATE.DEAD;
                     }
-                    if (m_iPrevLevel > 0 && pRayman.anim.curAction != 37)
+                    if (m_iPrevLevel > LEVEL_WORLD_MAP && pRayman.anim.curAction != 37)
                         PlaySound(SOUND_INDEX.music_leveldone, true, 1);
                     break;
                 }
@@ -258,7 +258,7 @@ public partial class Game
                 break;
 
             case 5:
-                if (m_iPrevLevel > 0 && pRayman.anim.curAction != 37)
+                if (m_iPrevLevel > LEVEL_WORLD_MAP && pRayman.anim.curAction != 37)
                 {
                     lCurMill = System.currentTimeMillis();
                     if (pressedKey != GAME_KEY.NONE || lCurMill - lStartMill > 3000)

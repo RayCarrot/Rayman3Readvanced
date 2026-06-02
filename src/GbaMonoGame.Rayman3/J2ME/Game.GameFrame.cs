@@ -8,6 +8,13 @@ public partial class Game
     public const int DEFAULT_LIVES = 3;
     public const int DEFAULT_ENERGY = 5;
 
+    public const int LEVEL_INVALID = -2;
+    public const int LEVEL_MENU = -1;
+    public const int LEVEL_WORLD_MAP = 0;
+    public const int LEVEL_FIRST = 1;
+    public const int LEVEL_FINAL = 8;
+    public const int LEVELS_COUNT = 10;
+
     public const string GAME_SAVE_NAME = "RaymanSave";
     public const string RECORD_FLAG_SAVE_NAME = "RECORDFLAG";
     public const string SOUND_SAVE_NAME = "SOUND";
@@ -25,7 +32,7 @@ public partial class Game
     public bool m_gameFrame_paused { get; set; }
     public MESSAGE_ID m_gameFrame_msgId { get; set; }
     public int m_gameFrame_msgPar { get; set; }
-    public sbyte m_gameFrame_curLevel { get; set; } // TODO: Consts for -1 and 0
+    public sbyte m_gameFrame_curLevel { get; set; }
     public sbyte m_gameFrame_unlockedLevel { get; set; }
     public sbyte m_gameFrame_nbLevels { get; set; }
     public sbyte m_gameFrame_nLife { get; set; }
@@ -44,8 +51,8 @@ public partial class Game
 
     public void GameFrame_InitNewGame()
     {
-        m_gameFrame_curLevel = -1;
-        m_gameFrame_unlockedLevel = 1;
+        m_gameFrame_curLevel = LEVEL_MENU;
+        m_gameFrame_unlockedLevel = LEVEL_FIRST;
         m_gameFrame_nLife = DEFAULT_LIVES;
         m_gameFrame_nEnergy = DEFAULT_ENERGY;
     }
@@ -86,7 +93,7 @@ public partial class Game
                 offset = 15 * iLevel;
 
                 // Load current level
-                if (iLevel != -1)
+                if (iLevel != LEVEL_MENU)
                 {
                     StopSound();
                     Menu_Free(true);
@@ -124,7 +131,7 @@ public partial class Game
                 m_iPrevLevel = iLevel;
             }
 
-            if (iLevel >= 0 && actors != null)
+            if (iLevel >= LEVEL_WORLD_MAP && actors != null)
             {
                 // Reset actors
                 for (int iActorLoop = 0; iActorLoop < actors.Length; iActorLoop++)
@@ -154,7 +161,7 @@ public partial class Game
     public void GameCore()
     {
         // Draw background
-        if (m_gameFrame_curLevel >= 0)
+        if (m_gameFrame_curLevel >= LEVEL_WORLD_MAP)
             fastDraw(g_graBackBuffer, Resolution.X, Resolution.Y);
         
         // Step and draw actors
@@ -181,10 +188,10 @@ public partial class Game
     public void GameFrame_StateRun()
     {
         // Paused
-        if (m_gameFrame_paused || m_gameFrame_curLevel < 0)
+        if (m_gameFrame_paused || m_gameFrame_curLevel < LEVEL_WORLD_MAP)
         {
             // Draw background
-            if (m_gameFrame_curLevel >= 0)
+            if (m_gameFrame_curLevel >= LEVEL_WORLD_MAP)
                 fastDraw(g_graBackBuffer, Resolution.X, Resolution.Y);
 
             // Draw menu
@@ -236,7 +243,7 @@ public partial class Game
                 break;
 
             case MESSAGE_ID.EXIT_TO_MENU:
-                m_gameFrame_curLevel = -1;
+                m_gameFrame_curLevel = LEVEL_MENU;
                 m_gameStateStep = 0;
                 m_gameFrame_prevState = GAME_FRAME_STATE.DEFAULT;
                 m_gameFrame_curState = GAME_FRAME_STATE.LOADING;
@@ -252,7 +259,7 @@ public partial class Game
         if (m_gameStateStep == 0)
         {
             StopSound();
-            if (m_iPrevLevel == -1 && RM.GetImage(18) != null)
+            if (m_iPrevLevel == LEVEL_MENU && RM.GetImage(18) != null)
             {
                 g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
                 g_graBackBuffer.drawImage(RM.GetImage(18), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
@@ -263,7 +270,7 @@ public partial class Game
                 m_bClearBackMenu = false;
             }
             g_graBackBuffer.setFont(m_fontGeneral);
-            if (m_iPrevLevel == -1)
+            if (m_iPrevLevel == LEVEL_MENU)
             {
                 if (m_gameMenu_idCurPage == MENU_PAGE.PAUSE)
                     Menu_DrawString(RM.GetString(2949259), (Resolution.X - Menu_GetStringWidth(RM.GetString(2949259))) >> 1, 110, 0);
@@ -280,7 +287,7 @@ public partial class Game
             bool isLoadSuccess = GameFrame_loadLevel(m_gameFrame_curLevel);
             if (isLoadSuccess)
             {
-                if (m_gameFrame_curLevel == 0)
+                if (m_gameFrame_curLevel == LEVEL_WORLD_MAP)
                     PlaySound(SOUND_INDEX.music_map, false, 255);
                 else
                     PlaySound(SOUND_INDEX.enter_level, true);
@@ -332,7 +339,7 @@ public partial class Game
         {
             Status_ShowAll();
             const int iLeftLevel = -1;
-            m_gameFrame_curLevel = 0;
+            m_gameFrame_curLevel = LEVEL_WORLD_MAP;
             GameFrame_Save(iLeftLevel);
             GameFrame_SaveRecordFlag();
             m_gameStateStep = 0;
@@ -371,7 +378,7 @@ public partial class Game
                 else if (m_gameStateStep == 1)
                 {
                     GameFrame_LoadRecordFlag();
-                    m_iPrevLevel = -1;
+                    m_iPrevLevel = LEVEL_MENU;
                     GameFrame_LoadSynopsis(true);
                     m_gameStateStep = 0;
                     m_gameFrame_prevState = GAME_FRAME_STATE.LOAD_GAME;
@@ -391,7 +398,7 @@ public partial class Game
                     else if (m_gameStateStep == 1)
                     {
                         s_actorCheckpoint = null;
-                        m_iPrevLevel = -1;
+                        m_iPrevLevel = LEVEL_MENU;
                         GameFrame_LoadSynopsis(true);
                         m_gameStateStep = 0;
                         m_gameFrame_prevState = GAME_FRAME_STATE.CONFIRM_RESTART;
@@ -627,7 +634,7 @@ public partial class Game
                 GameFrame_LoadSynopsis(false);
             
             // Level
-            if (p_iLeftLevel is > 0 and <= 9)
+            if (p_iLeftLevel is > LEVEL_WORLD_MAP and < LEVELS_COUNT)
             {
                 // Save for level
                 s_synopsis[p_iLeftLevel] = new Synopsis
@@ -639,20 +646,20 @@ public partial class Game
                 };
 
                 // Update total
-                s_synopsis[0] = new Synopsis
+                s_synopsis[LEVEL_WORLD_MAP] = new Synopsis
                 {
-                    LumsTaken = (sbyte)(s_synopsis[0].LumsTaken + (sbyte)s_iLumsTaken),
-                    LumsTotal = (sbyte)(s_synopsis[0].LumsTotal + (sbyte)s_iLumsTotal),
-                    CageOpened = (sbyte)(s_synopsis[0].CageOpened + (sbyte)s_iCageOpened),
-                    CageTotal = (sbyte)(s_synopsis[0].CageTotal + (sbyte)s_iCageTotal)
+                    LumsTaken = (sbyte)(s_synopsis[LEVEL_WORLD_MAP].LumsTaken + (sbyte)s_iLumsTaken),
+                    LumsTotal = (sbyte)(s_synopsis[LEVEL_WORLD_MAP].LumsTotal + (sbyte)s_iLumsTotal),
+                    CageOpened = (sbyte)(s_synopsis[LEVEL_WORLD_MAP].CageOpened + (sbyte)s_iCageOpened),
+                    CageTotal = (sbyte)(s_synopsis[LEVEL_WORLD_MAP].CageTotal + (sbyte)s_iCageTotal)
                 };
-                s_iLumsTaken = s_synopsis[0].LumsTaken;
-                s_iLumsTotal = s_synopsis[0].LumsTotal;
-                s_iCageOpened = s_synopsis[0].CageOpened;
-                s_iCageTotal = s_synopsis[0].CageTotal;
+                s_iLumsTaken = s_synopsis[LEVEL_WORLD_MAP].LumsTaken;
+                s_iLumsTotal = s_synopsis[LEVEL_WORLD_MAP].LumsTotal;
+                s_iCageOpened = s_synopsis[LEVEL_WORLD_MAP].CageOpened;
+                s_iCageTotal = s_synopsis[LEVEL_WORLD_MAP].CageTotal;
             }
-            // Hub
-            else if (p_iLeftLevel == 0)
+            // Worldmap
+            else if (p_iLeftLevel == LEVEL_WORLD_MAP)
             {
                 if (s_synopsis[m_gameFrame_curLevel].LumsTotal == -1 || s_synopsis[m_gameFrame_curLevel].CageTotal == -1)
                 {
@@ -668,12 +675,12 @@ public partial class Game
                 s_iCageOpened = s_synopsis[m_gameFrame_curLevel].CageOpened;
                 s_iCageTotal = s_synopsis[m_gameFrame_curLevel].CageTotal;
 
-                s_synopsis[0] = new Synopsis
+                s_synopsis[LEVEL_WORLD_MAP] = new Synopsis
                 {
-                    LumsTaken = (sbyte)(s_synopsis[0].LumsTaken - (sbyte)s_iLumsTaken),
-                    LumsTotal = (sbyte)(s_synopsis[0].LumsTotal - (sbyte)s_iLumsTotal),
-                    CageOpened = (sbyte)(s_synopsis[0].CageOpened - (sbyte)s_iCageOpened),
-                    CageTotal = (sbyte)(s_synopsis[0].CageTotal - (sbyte)s_iCageTotal)
+                    LumsTaken = (sbyte)(s_synopsis[LEVEL_WORLD_MAP].LumsTaken - (sbyte)s_iLumsTaken),
+                    LumsTotal = (sbyte)(s_synopsis[LEVEL_WORLD_MAP].LumsTotal - (sbyte)s_iLumsTotal),
+                    CageOpened = (sbyte)(s_synopsis[LEVEL_WORLD_MAP].CageOpened - (sbyte)s_iCageOpened),
+                    CageTotal = (sbyte)(s_synopsis[LEVEL_WORLD_MAP].CageTotal - (sbyte)s_iCageTotal)
                 };
             }
             GameFrame_SaveSynopsis();
@@ -740,7 +747,7 @@ public partial class Game
             }
             else
             {
-                s_synopsis[0] = new Synopsis
+                s_synopsis[LEVEL_WORLD_MAP] = new Synopsis
                 {
                     CageTotal = 0,
                     CageOpened = 0,
@@ -787,7 +794,7 @@ public partial class Game
                 rs.setRecord(pLevel, data, 0, data.Length);
                 m_RecordUsedFlag[pLevel - 1] = true;
             }
-            else if (pLevel == 0)
+            else if (pLevel == LEVEL_WORLD_MAP)
             {
                 byte[] data = new byte[16 + actors.Length];
                 long tempV = pRayman.m_lInitX;
@@ -832,7 +839,7 @@ public partial class Game
         {
             RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, false);
             int offset = 0;
-            if (0 < pLevel && pLevel <= m_gameFrame_nbLevels)
+            if (pLevel > LEVEL_WORLD_MAP && pLevel <= m_gameFrame_nbLevels)
             {
                 byte[] data = rs.getRecord(pLevel);
                 if (data != null && m_RecordUsedFlag[pLevel - 1])
@@ -850,7 +857,7 @@ public partial class Game
                     }
                 }
             }
-            else if (pLevel == 0)
+            else if (pLevel == LEVEL_WORLD_MAP)
             {
                 byte[] data = rs.getRecord(11);
                 if (data != null && m_RecordUsedFlag[10])
@@ -891,8 +898,8 @@ public partial class Game
 
         if (pLevel == 0)
         {
-            s_iLumsTotal = s_synopsis[0].LumsTotal;
-            s_iCageTotal = s_synopsis[0].CageTotal;
+            s_iLumsTotal = s_synopsis[LEVEL_WORLD_MAP].LumsTotal;
+            s_iCageTotal = s_synopsis[LEVEL_WORLD_MAP].CageTotal;
         }
         else
         {

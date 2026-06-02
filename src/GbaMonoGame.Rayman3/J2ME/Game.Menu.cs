@@ -449,7 +449,7 @@ public partial class Game
                                 releasedKey = GAME_KEY.MIDDLE;
                                 GameCore();
                             }
-                            if (m_gameFrame_curLevel == 0)
+                            if (m_gameFrame_curLevel == LEVEL_WORLD_MAP)
                             {
                                 PlaySound(SOUND_INDEX.music_map, true, 255);
                                 bStillPlay = true;

@@ -20,7 +20,7 @@ public partial class Game
         RM.Initialize();
         SysFrame_PhysicalInitI();
         m_fontGeneral = Font.getFont(32, 1, 0);
-        m_iPrevLevel = -2;
+        m_iPrevLevel = LEVEL_INVALID;
         m_bBackgroundUsed = false;
         InitSound();
         // NOTE: Here the game sets up the display and starts a new thread for the game loop, but we don't need to re-implement that here
@@ -82,7 +82,7 @@ public partial class Game
         m_keys = KEY.NONE;
         
         // Pause if in a level
-        if (m_gameFrame_curLevel >= 0 && curState == 3)
+        if (m_gameFrame_curLevel >= LEVEL_WORLD_MAP && curState == 3)
         {
             m_gameFrame_paused = true;
             Menu_SetCurrentPage(MENU_PAGE.PAUSE);

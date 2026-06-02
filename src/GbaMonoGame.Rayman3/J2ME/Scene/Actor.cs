@@ -2711,7 +2711,9 @@ public class Actor
         V[4] = (short)GameMidlet.Instance_Game.pressedKey;
         V[5] = (short)GameMidlet.Instance_Game.releasedKey;
         V[3] = (short)GameMidlet.Instance_Game.currentKey;
-        if (GameMidlet.Instance_Game.m_gameFrame_curLevel > 0 && GameMidlet.Instance_Game.s_iLeftToDie == 0 && (action is 0 or 2 or 5 or 4 || GameMidlet.Instance_Game.pRayman.anim.curAction == 12))
+        if (GameMidlet.Instance_Game.m_gameFrame_curLevel > Game.LEVEL_WORLD_MAP && 
+            GameMidlet.Instance_Game.s_iLeftToDie == 0 && 
+            (action is 0 or 2 or 5 or 4 || GameMidlet.Instance_Game.pRayman.anim.curAction == 12))
         {
             V[3] = (short)GAME_KEY.NONE;
             V[4] = (short)GAME_KEY.NONE;

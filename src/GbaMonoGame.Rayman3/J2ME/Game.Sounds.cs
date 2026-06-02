@@ -114,7 +114,7 @@ public partial class Game
             return;
 
         int iID = (int)(iSoundIndex - 23);
-        if (m_gameFrame_curLevel <= 0)
+        if (m_gameFrame_curLevel <= LEVEL_WORLD_MAP)
             bStopCurrent = false;
 
         // TODO: Implement
