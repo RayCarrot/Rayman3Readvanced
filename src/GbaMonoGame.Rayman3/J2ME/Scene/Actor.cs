@@ -2342,8 +2342,10 @@ public class Actor
                         stateFlag &= ~ACTOR_STATE.FLIP_X;
                         anim.newAction = 3;
                     }
-                    // NOTE: Bug! Should be DownRight
-                    else if (Rayman_KeyPressed(GAME_KEY.DOWN_LEFT))
+                    // Optionally fix bug from the original game where it doesn't check for the correct keys. Not noticeable
+                    // in-game however since this action only happens for a few frames after punching.
+                    else if ((!Engine.Settings.Active.Tweaks.FixBugs && Rayman_KeyPressed(GAME_KEY.DOWN_LEFT)) ||
+                             (Engine.Settings.Active.Tweaks.FixBugs && Rayman_KeyPressed(GAME_KEY.DOWN_RIGHT)))
                     {
                         stateFlag &= ~ACTOR_STATE.FLIP_Y;
                         stateFlag |= ACTOR_STATE.FLIP_X;

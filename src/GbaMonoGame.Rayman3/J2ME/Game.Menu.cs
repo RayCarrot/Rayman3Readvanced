@@ -110,11 +110,19 @@ public partial class Game
             int w = Menu_GetStringWidth(pStr);
             int x = (Resolution.X - w) / 2;
             Menu_DrawString(pStr, x, y - 5 + 2, 0);
-            // TODO: Original game bug or decompiler bug?
+            
+            // ReSharper disable once RedundantAssignment
             bool bBackgroundState = m_bBackgroundUsed;
+            // Bug in the original game - setting the wrong variable, forcing it to be false after this rendered frame. This however
+            // makes the first frame render the arrows with background scrolling, making the positions wrong. This only appears in
+            // some versions however, but we optionally fix it here.
             bBackgroundState = false;
+            if (Engine.Settings.Active.Tweaks.FixBugs)
+                m_bBackgroundUsed = false;
+
             Actor.drawModule(m_gameMenu_pData, 13, x - Actor.aniData[26].modules[13].Width - 4 - Menu_GetRArrowPos(), y, 0, g_graBackBuffer);
             Actor.drawModule(m_gameMenu_pData, 14, x + w + 4 + Menu_GetLArrowPos(), y, 0, g_graBackBuffer);
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             m_bBackgroundUsed = bBackgroundState;
         }
         else
@@ -313,6 +321,8 @@ public partial class Game
         RM.Load(0x60000104);
         RM.Load(0x60000113);
         RM.Synchronize();
+
+        // NOTE: Blue lum animations are loaded twice for some reason?
         Actor.AniLoad(17, 11);
         Actor.AniLoad(22, 11);
         Actor.AniLoad(21, 11);
@@ -331,9 +341,9 @@ public partial class Game
         m_gameMenu_pAnims[6].build(OBJECT_TYPE.BLUE_LUM, 0);
         m_gameMenu_pAnims[4].build(OBJECT_TYPE.CAGE, 0);
         m_gameMenu_pAnims[5].build(OBJECT_TYPE.SWING_LUM, 0);
-        m_gameMenu_pAnims[6].build(OBJECT_TYPE.BLUE_LUM, 0); // TODO: Why load again?
+        m_gameMenu_pAnims[6].build(OBJECT_TYPE.BLUE_LUM, 0);
         m_byHelpLength = 0;
-        int iID = 0x300000;
+        int iID = StringId.Create(0, TEXT_BANK_INDEX_HELP);
         while (iID != -1)
         {
             m_byHelpLength = (sbyte)(m_byHelpLength + 1);
@@ -654,8 +664,7 @@ public partial class Game
                     }
                     else
                     {
-                        int iAdjust = 0;
-                        iAdjust = -6;
+                        int iAdjust = -6;
                         if (iID == 0x3000B7)
                             iAdjust = -12;
                         g_graBackBuffer.drawString(strArray[iIndex], (Resolution.X - m_fontGeneral.stringWidth(strArray[iIndex])) >> 1, iBoxY + iIndex * 21 + iAdjust, ANCHOR.LEFT | ANCHOR.TOP);
@@ -667,6 +676,15 @@ public partial class Game
                 Actor.drawModule(m_gameMenu_pData, 14, 0 + Menu_GetLArrowPos(), 8, 0, g_graBackBuffer);
             if (!bLast)
                 Actor.drawModule(m_gameMenu_pData, 13, 240 - (Actor.aniData[26]).modules[13].Width - Menu_GetRArrowPos(), 8, 0, g_graBackBuffer);
+
+            // Optionally fix bug with arrows de-syncing when only rendering one by updating positions even when not drawing
+            if (Engine.Settings.Active.Tweaks.FixBugs)
+            {
+                if (m_gameMenu_idCurSel == 0)
+                    Menu_GetLArrowPos();
+                if (bLast)
+                    Menu_GetRArrowPos();
+            }
         }
     }
 
