@@ -71,7 +71,7 @@ public class ResourceManager
         return false;
     }
 
-    // Unused debug function
+    // Unused debug function, but we use it in Readvanced to make the code more readable
     public int ResourceID_To_Index(int Param_ResourceID)
     {
         ResourceId.GetValues(Param_ResourceID, out int Array_Index_General, out RESOURCE_TYPE Type, out int Archive_Index, out int Validation);
@@ -286,9 +286,9 @@ public class ResourceManager
         Array_Data = new byte[MAX_DATA_RESOURCES_COUNT][];
 
         Archive_Information = new ArchiveInformation[ARCHIVES_COUNT];
-        Archive_Information[0] = new ArchiveInformation { ImageResourcesCount = 0, DataResourcesCount = 49 }; // Data
-        Archive_Information[1] = new ArchiveInformation { ImageResourcesCount = 21, DataResourcesCount = 0 }; // Images
-        Archive_Information[2] = new ArchiveInformation { ImageResourcesCount = 0, DataResourcesCount = 21 }; // Sounds
+        Archive_Information[0] = new ArchiveInformation { ImageResourcesCount = 0, DataResourcesCount = 49 }; // Resource_Archive_animation
+        Archive_Information[1] = new ArchiveInformation { ImageResourcesCount = 21, DataResourcesCount = 0 }; // Resource_Archive_image
+        Archive_Information[2] = new ArchiveInformation { ImageResourcesCount = 0, DataResourcesCount = 21 }; // Resource_Archive_map
 
         Resource_Status = new RESOURCE_STATUS[ARCHIVES_COUNT][];
         for (int i = 0; i < ARCHIVES_COUNT; i++)
@@ -596,6 +596,16 @@ public class ResourceManager
     }
 
     // Custom
+    public Texture2D GetImageResource(int Param_ResourceID)
+    {
+        int index = ResourceID_To_Index(Param_ResourceID);
+        return GetImage(index);
+    }
+    public byte[] GetDataResource(int Param_ResourceID)
+    {
+        int index = ResourceID_To_Index(Param_ResourceID);
+        return Array_Data[index];   
+    }
     public void DumpAllData(string outputPath)
     {
         for (int archiveIndex = 0; archiveIndex < ARCHIVES_COUNT; archiveIndex++)
@@ -607,7 +617,7 @@ public class ResourceManager
 
             for (int dataIndex = 0; dataIndex < Archive_Information[archiveIndex].DataResourcesCount; dataIndex++)
             {
-                byte[] data = Array_Data[ResourceID_To_Index(ResourceId.Create(Archive_Information[archiveIndex].ImageResourcesCount + dataIndex, RESOURCE_TYPE.IMAGE, archiveIndex))];
+                byte[] data = Array_Data[ResourceID_To_Index(ResourceId.Create(Archive_Information[archiveIndex].ImageResourcesCount + dataIndex, RESOURCE_TYPE.DATA, archiveIndex))];
                 File.WriteAllBytes(Path.Combine(outputPath, $"{archiveIndex}_{dataIndex}.dat"), data);
             }
         }
@@ -616,10 +626,10 @@ public class ResourceManager
     {
         int[] textBankResourceIds =
         [
-            ResourceId.Create(Game.TEXT_BANK_INDEX_GAME, RESOURCE_TYPE.DATA, 0),
-            ResourceId.Create(Game.TEXT_BANK_INDEX_CREDITS_UNUSED, RESOURCE_TYPE.DATA, 0),
-            ResourceId.Create(Game.TEXT_BANK_INDEX_CREDITS, RESOURCE_TYPE.DATA, 0),
-            ResourceId.Create(Game.TEXT_BANK_INDEX_HELP, RESOURCE_TYPE.DATA, 0),
+            ResourceId.Create(Game.TEXTBANK_INDEX_GAME, RESOURCE_TYPE.DATA, Game.ARCHIVE_INDEX_ANIM),
+            ResourceId.Create(Game.TEXTBANK_INDEX_CREDITS_UNUSED, RESOURCE_TYPE.DATA, Game.ARCHIVE_INDEX_ANIM),
+            ResourceId.Create(Game.TEXTBANK_INDEX_CREDITS, RESOURCE_TYPE.DATA, Game.ARCHIVE_INDEX_ANIM),
+            ResourceId.Create(Game.TEXTBANK_INDEX_HELP, RESOURCE_TYPE.DATA, Game.ARCHIVE_INDEX_ANIM),
         ];
 
         foreach (int textBankResourceId in textBankResourceIds)

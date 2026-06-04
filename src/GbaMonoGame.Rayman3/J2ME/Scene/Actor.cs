@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 // ReSharper disable RedundantAssignment
 // ReSharper disable UnusedVariable
 
@@ -57,8 +57,8 @@ public class Actor
                 stateFlag |= ACTOR_STATE.DEAD;
                 break;
             
-            case OBJECT_TYPE.PLATFORM_1:
-            case OBJECT_TYPE.PLATFORM_2:
+            case OBJECT_TYPE.LAVA_PLATFORM:
+            case OBJECT_TYPE.JUNGLE_PLATFORM:
                 V = new int[2];
                 V[0] = data[nOff++];
                 m_bPHBTable = new PHB_TYPE[1, 1];
@@ -842,7 +842,7 @@ public class Actor
 
     public void Bonus_ai()
     {
-        if (objType == OBJECT_TYPE.SWING_LUM)
+        if (objType == OBJECT_TYPE.SWING)
         {
             for (int f = 0; f < FISTS_COUNT; f++)
             {
@@ -869,19 +869,19 @@ public class Actor
             stateFlag |= ACTOR_STATE.DEAD;
             switch (objType)
             {
-                case OBJECT_TYPE.LUM:
+                case OBJECT_TYPE.YELLOW_LUM:
                     GameMidlet.Instance_Game.s_iLumsTaken++;
                     GameMidlet.Instance_Game.Status_Show(2);
                     GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.lums, true);
                     break;
                 
-                case OBJECT_TYPE.LIFE:
+                case OBJECT_TYPE.WHITE_LUM:
                     GameMidlet.Instance_Game.m_gameFrame_nLife = (sbyte)(GameMidlet.Instance_Game.m_gameFrame_nLife + (GameMidlet.Instance_Game.m_gameFrame_nLife < 99 ? 1 : 0));
                     GameMidlet.Instance_Game.Status_Show(0);
                     GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.lums_white, true);
                     break;
                 
-                case OBJECT_TYPE.ENERGY:
+                case OBJECT_TYPE.RED_LUM:
                     GameMidlet.Instance_Game.m_gameFrame_nEnergy = (sbyte)(GameMidlet.Instance_Game.m_gameFrame_nEnergy + (GameMidlet.Instance_Game.m_gameFrame_nEnergy < 5 ? 1 : 0));
                     GameMidlet.Instance_Game.Status_Show(0);
                     GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.lums_red, true);
@@ -893,7 +893,7 @@ public class Actor
                     GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.lums, true);
                     break;
 
-                case OBJECT_TYPE.CHECKPOINT:
+                case OBJECT_TYPE.GREEN_LUM:
                     GameMidlet.Instance_Game.s_actorCheckpoint = this;
                     GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.lums, true);
                     break;
@@ -1446,7 +1446,7 @@ public class Actor
 
     public void jumpUp(int vX, int deltaX)
     {
-        if (actorReference is { objType: OBJECT_TYPE.PLATFORM_2 or OBJECT_TYPE.PLATFORM_1 })
+        if (actorReference is { objType: OBJECT_TYPE.JUNGLE_PLATFORM or OBJECT_TYPE.LAVA_PLATFORM })
         {
             actorReference = null;
             dy = (short)(dy - 0x200);
@@ -1877,7 +1877,7 @@ public class Actor
                         {
                             stateFlag &= ~ACTOR_STATE.FLIP_Y;
                             stateFlag &= ~ACTOR_STATE.FLIP_X;
-                            if (actorReference is { objType: OBJECT_TYPE.PLATFORM_2 or OBJECT_TYPE.PLATFORM_1 } &&
+                            if (actorReference is { objType: OBJECT_TYPE.JUNGLE_PLATFORM or OBJECT_TYPE.LAVA_PLATFORM } &&
                                 actorReference.dy != 0 && actorReference.dx == 0)
                             {
                                 xDirectionConfirmed = false;
@@ -1900,7 +1900,7 @@ public class Actor
                         {
                             stateFlag &= ~ACTOR_STATE.FLIP_Y;
                             stateFlag |= ACTOR_STATE.FLIP_X;
-                            if (actorReference is { objType: OBJECT_TYPE.PLATFORM_2 or OBJECT_TYPE.PLATFORM_1 } &&
+                            if (actorReference is { objType: OBJECT_TYPE.JUNGLE_PLATFORM or OBJECT_TYPE.LAVA_PLATFORM } &&
                                 actorReference.dy != 0 && actorReference.dx == 0)
                             {
                                 xDirectionConfirmed = true;
@@ -2862,7 +2862,7 @@ public class Actor
             V[10] = 0;
         }
 
-        if (actorReference is { objType: OBJECT_TYPE.PLATFORM_2 or OBJECT_TYPE.PLATFORM_1 })
+        if (actorReference is { objType: OBJECT_TYPE.JUNGLE_PLATFORM or OBJECT_TYPE.LAVA_PLATFORM })
             Rayman_doPlatform();
 
         if (action is 9 or 8 or 7 or 10)
@@ -2929,7 +2929,7 @@ public class Actor
                         break;
                 }
             }
-            else if (actorReference is { objType: OBJECT_TYPE.PLATFORM_2 or OBJECT_TYPE.PLATFORM_1 })
+            else if (actorReference is { objType: OBJECT_TYPE.JUNGLE_PLATFORM or OBJECT_TYPE.LAVA_PLATFORM })
             {
                 switch (action)
                 {
@@ -3063,12 +3063,12 @@ public class Actor
                 Fist_ai();
                 break;
 
-            case OBJECT_TYPE.LUM:
-            case OBJECT_TYPE.LIFE:
+            case OBJECT_TYPE.YELLOW_LUM:
+            case OBJECT_TYPE.WHITE_LUM:
             case OBJECT_TYPE.BLUE_LUM:
-            case OBJECT_TYPE.ENERGY:
-            case OBJECT_TYPE.SWING_LUM:
-            case OBJECT_TYPE.CHECKPOINT:
+            case OBJECT_TYPE.RED_LUM:
+            case OBJECT_TYPE.SWING:
+            case OBJECT_TYPE.GREEN_LUM:
                 Bonus_ai();
                 break;
 
@@ -3100,8 +3100,8 @@ public class Actor
                 LevelPost_ai();
                 break;
 
-            case OBJECT_TYPE.PLATFORM_1:
-            case OBJECT_TYPE.PLATFORM_2:
+            case OBJECT_TYPE.LAVA_PLATFORM:
+            case OBJECT_TYPE.JUNGLE_PLATFORM:
                 Platform_ai();
                 break;
         }
@@ -3114,18 +3114,18 @@ public class Actor
             case OBJECT_TYPE.RAYMAN:
             case OBJECT_TYPE.FIST:
             case OBJECT_TYPE.BLUE_LUM:
-            case OBJECT_TYPE.ENERGY:
+            case OBJECT_TYPE.RED_LUM:
             case OBJECT_TYPE.LEVEL_SIGN:
             case OBJECT_TYPE.LEVEL_POST:
-            case OBJECT_TYPE.PLATFORM_1:
-            case OBJECT_TYPE.PLATFORM_2:
+            case OBJECT_TYPE.LAVA_PLATFORM:
+            case OBJECT_TYPE.JUNGLE_PLATFORM:
             case OBJECT_TYPE.SEA_URCHIN:
             case OBJECT_TYPE.SPIKE:
             case OBJECT_TYPE.BOMB:
             case OBJECT_TYPE.FLY:
             case OBJECT_TYPE.TENTACLE:
             case OBJECT_TYPE.PIRATE:
-            case OBJECT_TYPE.CHECKPOINT:
+            case OBJECT_TYPE.GREEN_LUM:
                 x = m_lInitX;
                 y = m_lInitY;
                 anim.newAction = m_iInitAction;
@@ -3319,7 +3319,7 @@ public class Actor
 
         if (xDirectionConfirmed)
         {
-            if (dx < 0 || actorReference is { objType: OBJECT_TYPE.PLATFORM_2 or OBJECT_TYPE.PLATFORM_1, dx: < 0 })
+            if (dx < 0 || actorReference is { objType: OBJECT_TYPE.JUNGLE_PLATFORM or OBJECT_TYPE.LAVA_PLATFORM, dx: < 0 })
                 xDirectionConfirmationCounter--;
 
             if (xDirectionConfirmationCounter < -1)
@@ -3327,7 +3327,7 @@ public class Actor
         }
         else
         {
-            if (dx > 0 || actorReference is { objType: OBJECT_TYPE.PLATFORM_2 or OBJECT_TYPE.PLATFORM_1, dx: > 0 })
+            if (dx > 0 || actorReference is { objType: OBJECT_TYPE.JUNGLE_PLATFORM or OBJECT_TYPE.LAVA_PLATFORM, dx: > 0 })
                 xDirectionConfirmationCounter++;
 
             if (xDirectionConfirmationCounter > 1)

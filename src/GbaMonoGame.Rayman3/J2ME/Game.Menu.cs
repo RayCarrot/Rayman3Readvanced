@@ -120,7 +120,7 @@ public partial class Game
             if (Engine.Settings.Active.Tweaks.FixBugs)
                 m_bBackgroundUsed = false;
 
-            Actor.drawModule(m_gameMenu_pData, 13, x - Actor.aniData[26].modules[13].Width - 4 - Menu_GetRArrowPos(), y, 0, g_graBackBuffer);
+            Actor.drawModule(m_gameMenu_pData, 13, x - Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[13].Width - 4 - Menu_GetRArrowPos(), y, 0, g_graBackBuffer);
             Actor.drawModule(m_gameMenu_pData, 14, x + w + 4 + Menu_GetLArrowPos(), y, 0, g_graBackBuffer);
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             m_bBackgroundUsed = bBackgroundState;
@@ -261,12 +261,12 @@ public partial class Game
 
     public void Menu_LoadMain()
     {
-        RM.Free(0x60000411);
-        RM.Load(0x60000412);
-        RM.Load(0x60000405);
-        RM.Load(0x60000107);
+        RM.Free(RESOURCE_ID_IMG_GAMELOFT_LOGO);
+        RM.Load(RESOURCE_ID_IMG_SPLASH_SCREEN);
+        RM.Load(RESOURCE_ID_IMG_FONT);
+        RM.Load(RESOURCE_ID_DATA_ANIM_FONT);
         RM.Synchronize();
-        Actor.AniLoad(7, 5);
+        Actor.AniLoad(RM.ResourceID_To_Index(RESOURCE_ID_DATA_ANIM_FONT), RM.ResourceID_To_Index(RESOURCE_ID_IMG_FONT));
     }
 
     public void Menu_Free(bool bFreeMainMenu)
@@ -278,23 +278,23 @@ public partial class Game
             m_gameMenu_pAnims = null;
         }
 
-        RM.Free(0x6000040B);
-        RM.Free(0x60000409);
-        RM.Free(0x60000403);
-        RM.Free(0x60000116);
-        RM.Free(0x60000115);
-        RM.Free(0x60000111);
-        RM.Free(0x60000101);
-        RM.Free(0x6000010C);
-        RM.Free(0x60000104);
-        RM.Free(0x6000012F);
-        RM.Free(0x60000130);
+        RM.Free(RESOURCE_ID_IMG_LUMS);
+        RM.Free(RESOURCE_ID_IMG_LEVEL_POST); // Never loaded though...?
+        RM.Free(RESOURCE_ID_IMG_CAGE);
+        RM.Free(RESOURCE_ID_DATA_ANIM_YELLOW_LUM);
+        RM.Free(RESOURCE_ID_DATA_ANIM_WHITE_LUM);
+        RM.Free(RESOURCE_ID_DATA_ANIM_RED_LUM);
+        RM.Free(RESOURCE_ID_DATA_ANIM_BLUE_LUM);
+        RM.Free(RESOURCE_ID_DATA_ANIM_LEVEL_POST); // Never loaded though...?
+        RM.Free(RESOURCE_ID_DATA_ANIM_CAGE);
+        RM.Free(RESOURCE_ID_DATA_TEXTBANK_CREDITS);
+        RM.Free(RESOURCE_ID_DATA_TEXTBANK_HELP);
 
         if (bFreeMainMenu)
         {
-            RM.Free(0x60000412);
-            RM.Free(0x60000405);
-            RM.Free(0x60000107);
+            RM.Free(RESOURCE_ID_IMG_SPLASH_SCREEN);
+            RM.Free(RESOURCE_ID_IMG_FONT);
+            RM.Free(RESOURCE_ID_DATA_ANIM_FONT);
         }
         
         RM.Synchronize();
@@ -303,47 +303,49 @@ public partial class Game
     public void Menu_LoadCredits()
     {
         Menu_Free(false);
-        RM.Load(0x6000012F);
+        RM.Load(RESOURCE_ID_DATA_TEXTBANK_CREDITS);
         RM.Synchronize();
     }
 
     public void Menu_LoadHelp()
     {
         Menu_Free(false);
-        RM.Load(0x60000130);
-        RM.Load(0x6000040B);
-        RM.Load(0x60000403);
-        RM.Load(0x60000116);
-        RM.Load(0x60000115);
-        RM.Load(0x60000111);
-        RM.Load(0x60000108);
-        RM.Load(0x60000101);
-        RM.Load(0x60000104);
-        RM.Load(0x60000113);
+        RM.Load(RESOURCE_ID_DATA_TEXTBANK_HELP);
+        RM.Load(RESOURCE_ID_IMG_LUMS);
+        RM.Load(RESOURCE_ID_IMG_CAGE);
+        RM.Load(RESOURCE_ID_DATA_ANIM_YELLOW_LUM);
+        RM.Load(RESOURCE_ID_DATA_ANIM_WHITE_LUM);
+        RM.Load(RESOURCE_ID_DATA_ANIM_RED_LUM);
+        RM.Load(RESOURCE_ID_DATA_ANIM_GREEN_LUM);
+        RM.Load(RESOURCE_ID_DATA_ANIM_BLUE_LUM);
+        RM.Load(RESOURCE_ID_DATA_ANIM_CAGE);
+        RM.Load(RESOURCE_ID_DATA_ANIM_SWING);
         RM.Synchronize();
 
         // NOTE: Blue lum animations are loaded twice for some reason?
-        Actor.AniLoad(17, 11);
-        Actor.AniLoad(22, 11);
-        Actor.AniLoad(21, 11);
-        Actor.AniLoad(8, 11);
-        Actor.AniLoad(1, 11);
-        Actor.AniLoad(19, 11);
-        Actor.AniLoad(4, 3);
-        Actor.AniLoad(1, 11);
+        Actor.AniLoad(RM.ResourceID_To_Index(RESOURCE_ID_DATA_ANIM_RED_LUM),    RM.ResourceID_To_Index(RESOURCE_ID_IMG_LUMS));
+        Actor.AniLoad(RM.ResourceID_To_Index(RESOURCE_ID_DATA_ANIM_YELLOW_LUM), RM.ResourceID_To_Index(RESOURCE_ID_IMG_LUMS));
+        Actor.AniLoad(RM.ResourceID_To_Index(RESOURCE_ID_DATA_ANIM_WHITE_LUM),  RM.ResourceID_To_Index(RESOURCE_ID_IMG_LUMS));
+        Actor.AniLoad(RM.ResourceID_To_Index(RESOURCE_ID_DATA_ANIM_GREEN_LUM),  RM.ResourceID_To_Index(RESOURCE_ID_IMG_LUMS));
+        Actor.AniLoad(RM.ResourceID_To_Index(RESOURCE_ID_DATA_ANIM_BLUE_LUM),   RM.ResourceID_To_Index(RESOURCE_ID_IMG_LUMS));
+        Actor.AniLoad(RM.ResourceID_To_Index(RESOURCE_ID_DATA_ANIM_SWING),      RM.ResourceID_To_Index(RESOURCE_ID_IMG_LUMS));
+        Actor.AniLoad(RM.ResourceID_To_Index(RESOURCE_ID_DATA_ANIM_CAGE),       RM.ResourceID_To_Index(RESOURCE_ID_IMG_CAGE));
+        Actor.AniLoad(RM.ResourceID_To_Index(RESOURCE_ID_DATA_ANIM_BLUE_LUM),   RM.ResourceID_To_Index(RESOURCE_ID_IMG_LUMS));
+
         m_gameMenu_pAnims = new Anim[7];
         for (int i = 0; i < m_gameMenu_pAnims.Length; i++)
             m_gameMenu_pAnims[i] = new Anim();
-        m_gameMenu_pAnims[0].build(OBJECT_TYPE.LUM, 0);
-        m_gameMenu_pAnims[1].build(OBJECT_TYPE.ENERGY, 0);
-        m_gameMenu_pAnims[2].build(OBJECT_TYPE.CHECKPOINT, 0);
-        m_gameMenu_pAnims[3].build(OBJECT_TYPE.LIFE, 0);
+        m_gameMenu_pAnims[0].build(OBJECT_TYPE.YELLOW_LUM, 0);
+        m_gameMenu_pAnims[1].build(OBJECT_TYPE.RED_LUM, 0);
+        m_gameMenu_pAnims[2].build(OBJECT_TYPE.GREEN_LUM, 0);
+        m_gameMenu_pAnims[3].build(OBJECT_TYPE.WHITE_LUM, 0);
         m_gameMenu_pAnims[6].build(OBJECT_TYPE.BLUE_LUM, 0);
         m_gameMenu_pAnims[4].build(OBJECT_TYPE.CAGE, 0);
-        m_gameMenu_pAnims[5].build(OBJECT_TYPE.SWING_LUM, 0);
+        m_gameMenu_pAnims[5].build(OBJECT_TYPE.SWING, 0);
         m_gameMenu_pAnims[6].build(OBJECT_TYPE.BLUE_LUM, 0);
+
         m_byHelpLength = 0;
-        int iID = StringId.Create(0, TEXT_BANK_INDEX_HELP);
+        int iID = StringId.Create(0, TEXTBANK_INDEX_HELP);
         while (iID != -1)
         {
             m_byHelpLength = (sbyte)(m_byHelpLength + 1);
@@ -532,7 +534,7 @@ public partial class Game
         g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
         if (m_gameMenu_idCurPage != MENU_PAGE.PAUSE)
         {
-            g_graBackBuffer.drawImage(RM.GetImage(18), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
+            g_graBackBuffer.drawImage(RM.GetImageResource(RESOURCE_ID_IMG_SPLASH_SCREEN), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
             if (m_gameMenu_pAnims != null)
             {
                 for (int i = 0; i < m_gameMenu_pAnims.Length; i++)
@@ -561,7 +563,7 @@ public partial class Game
             const int total_credits_lines = 91;
             m_iAboutTicker += 2;
             int iStart = m_iAboutTicker / 21 % total_credits_lines;
-            int iID = StringId.Create(0, TEXT_BANK_INDEX_CREDITS);
+            int iID = StringId.Create(0, TEXTBANK_INDEX_CREDITS);
             for (int iLoop = 0; iLoop < iStart; iLoop++)
             {
                 iID = RM.NextStringID(iID);
@@ -607,7 +609,7 @@ public partial class Game
                 bLast = true;
             }
             int iStart = m_gameMenu_idCurSel * 12;
-            int iID = StringId.Create(0, TEXT_BANK_INDEX_HELP);
+            int iID = StringId.Create(0, TEXTBANK_INDEX_HELP);
             for (int iLoop = 0; iLoop < iStart; iLoop++)
             {
                 iID = RM.NextStringID(iID);
@@ -675,7 +677,7 @@ public partial class Game
             if (m_gameMenu_idCurSel != 0)
                 Actor.drawModule(m_gameMenu_pData, 14, 0 + Menu_GetLArrowPos(), 8, 0, g_graBackBuffer);
             if (!bLast)
-                Actor.drawModule(m_gameMenu_pData, 13, 240 - (Actor.aniData[26]).modules[13].Width - Menu_GetRArrowPos(), 8, 0, g_graBackBuffer);
+                Actor.drawModule(m_gameMenu_pData, 13, 240 - (Actor.aniData[(sbyte)OBJECT_TYPE.FONT]).modules[13].Width - Menu_GetRArrowPos(), 8, 0, g_graBackBuffer);
 
             // Optionally fix bug with arrows de-syncing when only rendering one by updating positions even when not drawing
             if (Engine.Settings.Active.Tweaks.FixBugs)
@@ -701,7 +703,7 @@ public partial class Game
         int total_credits_lines = 91;
         m_iAboutTicker += 2;
         int iStart = m_iAboutTicker / 21 % total_credits_lines;
-        int iID = StringId.Create(0, TEXT_BANK_INDEX_CREDITS);
+        int iID = StringId.Create(0, TEXTBANK_INDEX_CREDITS);
         for (int iLoop = 0; iLoop < iStart; iLoop++)
         {
             iID = RM.NextStringID(iID);
@@ -734,7 +736,7 @@ public partial class Game
         }
         bool bBackgroundState = m_bBackgroundUsed;
         m_bBackgroundUsed = false;
-        Actor.drawModule(Actor.aniData[26], 23, 240 - (Actor.aniData[26]).modules[23].Width, 320 - (Actor.aniData[26]).modules[23].Height, 0, g_graBackBuffer);
+        Actor.drawModule(Actor.aniData[(sbyte)OBJECT_TYPE.FONT], 23, 240 - (Actor.aniData[(sbyte)OBJECT_TYPE.FONT]).modules[23].Width, 320 - (Actor.aniData[(sbyte)OBJECT_TYPE.FONT]).modules[23].Height, 0, g_graBackBuffer);
         m_bBackgroundUsed = bBackgroundState;
     }
 

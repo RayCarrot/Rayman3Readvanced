@@ -83,9 +83,14 @@ public partial class Game
     public int PF_getSlopeDisp(PHB_TYPE phb, int off)
     {
         if (phb == PHB_TYPE.TYPE_2)
-            return RM.Array_Data[69][48 + off] << 4;
-        int whichIndex = ((sbyte)phb - 4) % 6;
-        return RM.Array_Data[69][8 * whichIndex + off] << 4;
+        {
+            return RM.GetDataResource(RESOURCE_ID_DATA_SLOPE_DISPLACEMENTS)[48 + off] << 4;
+        }
+        else
+        {
+            int whichIndex = ((sbyte)phb - 4) % 6;
+            return RM.GetDataResource(RESOURCE_ID_DATA_SLOPE_DISPLACEMENTS)[8 * whichIndex + off] << 4;
+        }
     }
 
     public void Fast_Init()

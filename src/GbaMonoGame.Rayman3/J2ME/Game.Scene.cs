@@ -45,7 +45,7 @@ public partial class Game
                 {
                     for (int i = 1; i < 4; i++)
                     {
-                        flagActorType(obj.V[5], i);
+                        flagActorType((OBJECT_TYPE)obj.V[5], i);
                         RM.Synchronize();
                     }
 
@@ -66,7 +66,7 @@ public partial class Game
                 s_iCageTotal++;
                 break;
 
-            case OBJECT_TYPE.LUM:
+            case OBJECT_TYPE.YELLOW_LUM:
                 s_iLumsTotal++;
                 break;
         }
@@ -186,7 +186,7 @@ public partial class Game
 
     void AM_actorFactory(byte[] pBuf, int nStartOffset)
     {
-        RM.Load(ResourceId.Create(0, RESOURCE_TYPE.DATA, 0));
+        RM.Load(RESOURCE_ID_DATA_ACTOR_TYPES);
         RM.Synchronize();
         s_actorCheckpoint = null;
         pRayman = null;
@@ -216,12 +216,12 @@ public partial class Game
             nStartOffset++;
         }
         for (b = 0; b < 28; b++)
-            flagActorType(b, 0);
+            flagActorType((OBJECT_TYPE)b, 0);
         for (b = 1; b < 4; b++)
         {
             for (sbyte b1 = 0; b1 < actorCount; b1++)
-                flagActorType(tempData[b1][1], b);
-            flagActorType(26, b);
+                flagActorType((OBJECT_TYPE)tempData[b1][1], b);
+            flagActorType(OBJECT_TYPE.FONT, b);
             RM.Synchronize();
         }
         for (b = 0; b < 28; b++)
@@ -240,8 +240,8 @@ public partial class Game
             {
                 case OBJECT_TYPE.RAYMAN:
                 case OBJECT_TYPE.FIST:
-                case OBJECT_TYPE.PLATFORM_1:
-                case OBJECT_TYPE.PLATFORM_2:
+                case OBJECT_TYPE.LAVA_PLATFORM:
+                case OBJECT_TYPE.JUNGLE_PLATFORM:
                 case OBJECT_TYPE.BULLET:
                     actors[lastFree--] = actor;
                     break;
@@ -273,13 +273,13 @@ public partial class Game
             }
         }
 
-        RM.Free(0x60000100);
+        RM.Free(RESOURCE_ID_DATA_ACTOR_TYPES);
     }
 
-    void flagActorType(int iActorType, int iLoadState)
+    void flagActorType(OBJECT_TYPE iActorType, int iLoadState)
     {
-        byte[] actorArray = RM.Array_Data[0];
-        int offset = 11 * iActorType;
+        byte[] actorArray = RM.GetDataResource(RESOURCE_ID_DATA_ACTOR_TYPES);
+        int offset = 11 * (int)iActorType;
         int kImage_ResourceID = ReadInt(actorArray, offset + 0);
         int kImage_Index = (sbyte)actorArray[offset + 4];
         int kData_ResourceID = ReadInt(actorArray, offset + 5);
@@ -294,8 +294,8 @@ public partial class Game
             case 0:
                 RM.Free(kImage_ResourceID);
                 RM.Free(kData_ResourceID);
-                if (Actor.aniData[iActorType] != null)
-                    Actor.aniData[iActorType].flag &= ~ANIM_DATA_FLAGS.LOADED;
+                if (Actor.aniData[(int)iActorType] != null)
+                    Actor.aniData[(int)iActorType].flag &= ~ANIM_DATA_FLAGS.LOADED;
                 break;
             case 1:
                 RM.Load(kImage_ResourceID);

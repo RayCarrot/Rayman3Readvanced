@@ -74,11 +74,11 @@ public partial class Game
             if (iLevel != m_iPrevLevel)
             {
                 // Load scene map data
-                RM.Load(ResourceId.Create(19, RESOURCE_TYPE.DATA, 2));
+                RM.Load(RESOURCE_ID_DATA_SCENE_MAP);
                 RM.Synchronize();
 
                 m_bBackgroundUsed = false;
-                byte[] sceneMapData = RM.Array_Data[68];
+                byte[] sceneMapData = RM.GetDataResource(RESOURCE_ID_DATA_SCENE_MAP);
                 m_gameFrame_nbLevels = (sbyte)(sceneMapData.Length / 15 - 1);
 
                 // Unload previous levels
@@ -108,26 +108,21 @@ public partial class Game
                     Scene_Load(sceneMapData[offset + 9]);
                     RM.Free(ReadInt(sceneMapData, offset + 5));
                     
-                    if (iLevel is 0 or 1)
-                    {
-                        RM.Load(ResourceId.Create(48, RESOURCE_TYPE.DATA, 0));
-                        RM.Load(0x60000130);
-                    }
+                    if (iLevel is LEVEL_WORLD_MAP or LEVEL_FIRST)
+                        RM.Load(RESOURCE_ID_DATA_TEXTBANK_HELP);
                     else
-                    {
-                        RM.Free(0x60000130);
-                    }
+                        RM.Free(RESOURCE_ID_DATA_TEXTBANK_HELP);
                 }
                 // Load menu
                 else
                 {
-                    Actor.AniLoad(7, 5);
-                    m_gameMenu_pData = Actor.aniData[26];
-                    if (RM.Array_Image[18] == null)
+                    Actor.AniLoad(RM.ResourceID_To_Index(RESOURCE_ID_DATA_ANIM_FONT), RM.ResourceID_To_Index(RESOURCE_ID_IMG_FONT));
+                    m_gameMenu_pData = Actor.aniData[(sbyte)OBJECT_TYPE.FONT];
+                    if (RM.Array_Image[RM.ResourceID_To_Index(RESOURCE_ID_IMG_SPLASH_SCREEN)] == null)
                         Menu_LoadMain();
                     Menu_SetCurrentPage(MENU_PAGE.MAIN);
                 }
-                RM.Free(0x60000913);
+                RM.Free(RESOURCE_ID_DATA_SCENE_MAP);
                 RM.Synchronize();
                 m_iPrevLevel = iLevel;
             }
@@ -181,7 +176,7 @@ public partial class Game
         {
             bool bBackgroundState = m_bBackgroundUsed;
             m_bBackgroundUsed = false;
-            Actor.drawModule(Actor.aniData[26], 23, Resolution.X - Actor.aniData[26].modules[23].Width, Resolution.Y - Actor.aniData[26].modules[23].Height, 0, g_graBackBuffer);
+            Actor.drawModule(Actor.aniData[(sbyte)OBJECT_TYPE.FONT], 23, Resolution.X - Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[23].Width, Resolution.Y - Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[23].Height, 0, g_graBackBuffer);
             m_bBackgroundUsed = bBackgroundState;
         }
     }
@@ -202,7 +197,7 @@ public partial class Game
                 PlaySound(SOUND_INDEX.music_splash, false, 255);
 
             // Draw soft key pause indicator
-            Actor.drawModule(Actor.aniData[26], 23, Resolution.X - Actor.aniData[26].modules[23].Width, Resolution.Y - Actor.aniData[26].modules[23].Height - Menu_GetVArrowPos(), 0, g_graBackBuffer);
+            Actor.drawModule(Actor.aniData[(sbyte)OBJECT_TYPE.FONT], 23, Resolution.X - Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[23].Width, Resolution.Y - Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[23].Height - Menu_GetVArrowPos(), 0, g_graBackBuffer);
         }
         // In-game
         else
@@ -260,10 +255,10 @@ public partial class Game
         if (m_gameStateStep == 0)
         {
             StopSound();
-            if (m_iPrevLevel == LEVEL_MENU && RM.GetImage(18) != null)
+            if (m_iPrevLevel == LEVEL_MENU && RM.GetImageResource(RESOURCE_ID_IMG_SPLASH_SCREEN) != null)
             {
                 g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
-                g_graBackBuffer.drawImage(RM.GetImage(18), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
+                g_graBackBuffer.drawImage(RM.GetImageResource(RESOURCE_ID_IMG_SPLASH_SCREEN), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
             }
             else if (m_bClearBackMenu)
             {
@@ -315,7 +310,7 @@ public partial class Game
         if (m_gameStateStep == 0)
         {
             g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
-            g_graBackBuffer.drawImage(RM.GetImage(18), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
+            g_graBackBuffer.drawImage(RM.GetImageResource(RESOURCE_ID_IMG_SPLASH_SCREEN), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
             Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) >> 1, 263, 0);
         }
         else if (m_gameStateStep == 1)
@@ -373,7 +368,7 @@ public partial class Game
                 if (m_gameStateStep == 0)
                 {
                     g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
-                    g_graBackBuffer.drawImage(RM.GetImage(18), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
+                    g_graBackBuffer.drawImage(RM.GetImageResource(RESOURCE_ID_IMG_SPLASH_SCREEN), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
                     Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) >> 1, 263, 0);
                 }
                 else if (m_gameStateStep == 1)

@@ -17,28 +17,28 @@ public partial class Game
 
     public void LoadSound(int iPackage)
     {
-        RM.Load(0x6000011F);
-        RM.Load(0x60000120);
-        RM.Load(0x60000124);
-        RM.Load(0x60000117);
-        RM.Load(0x60000118);
-        RM.Load(0x60000119);
-        RM.Load(0x6000011A);
-        RM.Load(0x6000011B);
-        RM.Load(0x6000011C);
-        RM.Load(0x6000011D);
-        RM.Load(0x6000011E);
-        RM.Load(0x60000121);
-        RM.Load(0x60000122);
-        RM.Load(0x60000123);
-        RM.Load(0x60000125);
-        RM.Load(0x60000126);
-        RM.Load(0x60000127);
-        RM.Load(0x60000128);
-        RM.Load(0x60000129);
-        RM.Load(0x6000012A);
-        RM.Load(0x6000012B);
-        RM.Load(0x6000012C);
+        RM.Load(RESOURCE_ID_DATA_SOUND_MENU_MOVE);
+        RM.Load(RESOURCE_ID_DATA_SOUND_MENU_SELECT);
+        RM.Load(RESOURCE_ID_DATA_SOUND_MUSIC_SPLASH);
+        RM.Load(RESOURCE_ID_DATA_SOUND_CAGE_BREAK);
+        RM.Load(RESOURCE_ID_DATA_SOUND_CAGE_HIT);
+        RM.Load(RESOURCE_ID_DATA_SOUND_ENEMY_DEATH);
+        RM.Load(RESOURCE_ID_DATA_SOUND_ENEMY_HIT);
+        RM.Load(RESOURCE_ID_DATA_SOUND_ENTER_LEVEL);
+        RM.Load(RESOURCE_ID_DATA_SOUND_LUMS);
+        RM.Load(RESOURCE_ID_DATA_SOUND_LUMS_RED);
+        RM.Load(RESOURCE_ID_DATA_SOUND_LUMS_WHITE);
+        RM.Load(RESOURCE_ID_DATA_SOUND_MUSIC_GAMEOVER);
+        RM.Load(RESOURCE_ID_DATA_SOUND_MUSIC_LEVELDONE);
+        RM.Load(RESOURCE_ID_DATA_SOUND_MUSIC_MAP);
+        RM.Load(RESOURCE_ID_DATA_SOUND_PUNCH_CHARGE);
+        RM.Load(RESOURCE_ID_DATA_SOUND_PUNCH_RELEASED);
+        RM.Load(RESOURCE_ID_DATA_SOUND_RAYMAN_CROUCH);
+        RM.Load(RESOURCE_ID_DATA_SOUND_RAYMAN_DEATH);
+        RM.Load(RESOURCE_ID_DATA_SOUND_RAYMAN_HELICO);
+        RM.Load(RESOURCE_ID_DATA_SOUND_RAYMAN_HIT);
+        RM.Load(RESOURCE_ID_DATA_SOUND_RAYMAN_JUMP);
+        RM.Load(RESOURCE_ID_DATA_SOUND_RAYMAN_WATER);
         RM.Synchronize();
     }
 
@@ -53,28 +53,28 @@ public partial class Game
         //        this.m_SoundPlayer[i] = null;
         //    }
         //}
-        RM.Free(0x6000011F);
-        RM.Free(0x60000120);
-        RM.Free(0x60000124);
-        RM.Free(0x60000117);
-        RM.Free(0x60000118);
-        RM.Free(0x60000119);
-        RM.Free(0x6000011A);
-        RM.Free(0x6000011B);
-        RM.Free(0x6000011C);
-        RM.Free(0x6000011D);
-        RM.Free(0x6000011E);
-        RM.Free(0x60000121);
-        RM.Free(0x60000122);
-        RM.Free(0x60000123);
-        RM.Free(0x60000125);
-        RM.Free(0x60000126);
-        RM.Free(0x60000127);
-        RM.Free(0x60000128);
-        RM.Free(0x60000129);
-        RM.Free(0x6000012A);
-        RM.Free(0x6000012B);
-        RM.Free(0x6000012C);
+        RM.Free(RESOURCE_ID_DATA_SOUND_MENU_MOVE);
+        RM.Free(RESOURCE_ID_DATA_SOUND_MENU_SELECT);
+        RM.Free(RESOURCE_ID_DATA_SOUND_MUSIC_SPLASH);
+        RM.Free(RESOURCE_ID_DATA_SOUND_CAGE_BREAK);
+        RM.Free(RESOURCE_ID_DATA_SOUND_CAGE_HIT);
+        RM.Free(RESOURCE_ID_DATA_SOUND_ENEMY_DEATH);
+        RM.Free(RESOURCE_ID_DATA_SOUND_ENEMY_HIT);
+        RM.Free(RESOURCE_ID_DATA_SOUND_ENTER_LEVEL);
+        RM.Free(RESOURCE_ID_DATA_SOUND_LUMS);
+        RM.Free(RESOURCE_ID_DATA_SOUND_LUMS_RED);
+        RM.Free(RESOURCE_ID_DATA_SOUND_LUMS_WHITE);
+        RM.Free(RESOURCE_ID_DATA_SOUND_MUSIC_GAMEOVER);
+        RM.Free(RESOURCE_ID_DATA_SOUND_MUSIC_LEVELDONE);
+        RM.Free(RESOURCE_ID_DATA_SOUND_MUSIC_MAP);
+        RM.Free(RESOURCE_ID_DATA_SOUND_PUNCH_CHARGE);
+        RM.Free(RESOURCE_ID_DATA_SOUND_PUNCH_RELEASED);
+        RM.Free(RESOURCE_ID_DATA_SOUND_RAYMAN_CROUCH);
+        RM.Free(RESOURCE_ID_DATA_SOUND_RAYMAN_DEATH);
+        RM.Free(RESOURCE_ID_DATA_SOUND_RAYMAN_HELICO);
+        RM.Free(RESOURCE_ID_DATA_SOUND_RAYMAN_HIT);
+        RM.Free(RESOURCE_ID_DATA_SOUND_RAYMAN_JUMP);
+        RM.Free(RESOURCE_ID_DATA_SOUND_RAYMAN_WATER);
         RM.Synchronize();
     }
 
