@@ -18,6 +18,10 @@ public partial class Game
     public int raymanAnim { get; set; }
     public int raymanDraw { get; set; }
 
+    // Custom for high resolution
+    public sbyte[] ActiveSector { get; set; }
+    public sbyte[] AllSectors { get; set; }
+
     public short ReadUnsignedShort(sbyte[] buf, int nOff)
     {
         return (short)((byte)buf[nOff] | ((byte)buf[nOff + 1] << 8));
@@ -116,6 +120,12 @@ public partial class Game
             m_sectors_actorIds[m][sectorLength[m]] = actorIndex;
             sectorLength[m] = (sbyte)(sectorLength[m] + 1);
         }
+
+        // Custom for high resolution
+        ActiveSector = new sbyte[m_sectors_activeSector.Length];
+        AllSectors = new sbyte[m_sectors_actorIds.Length];
+        for (int i = 0; i < AllSectors.Length; i++)
+            AllSectors[i] = (sbyte)i;
     }
 
     int AM_getSector(int x, int y)
@@ -128,10 +138,19 @@ public partial class Game
 
     void AM_setCurrentSector(int camX, int camY)
     {
-        m_sectors_activeSector[0] = (sbyte)AM_getSector(camX, camY);
-        m_sectors_activeSector[1] = (sbyte)(m_sectors_activeSector[0] + 1);
-        m_sectors_activeSector[2] = (sbyte)(m_sectors_activeSector[0] + m_sectors_nbrWidth);
-        m_sectors_activeSector[3] = (sbyte)(m_sectors_activeSector[2] + 1);
+        // Custom for high resolution
+        if (Graphics.IsResolutionModified)
+        {
+            m_sectors_activeSector = AllSectors;
+        }
+        else
+        {
+            m_sectors_activeSector = ActiveSector;
+            m_sectors_activeSector[0] = (sbyte)AM_getSector(camX, camY); // Current
+            m_sectors_activeSector[1] = (sbyte)(m_sectors_activeSector[0] + 1); // Right
+            m_sectors_activeSector[2] = (sbyte)(m_sectors_activeSector[0] + m_sectors_nbrWidth); // Below
+            m_sectors_activeSector[3] = (sbyte)(m_sectors_activeSector[2] + 1); // Below right
+        }
     }
 
     void AM_step(int camX, int camY, int camW, int camH)

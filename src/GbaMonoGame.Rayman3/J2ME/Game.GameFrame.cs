@@ -31,16 +31,16 @@ public partial class Game
     public bool[] m_RecordUsedFlag { get; } = new bool[11];
     public GAME_FRAME_STATE m_gameFrame_prevState { get; set; }
     public GAME_FRAME_STATE m_gameFrame_curState { get; set; }
+    public int m_gameStateStep { get; set; }
     public bool m_gameFrame_paused { get; set; }
     public MESSAGE_ID m_gameFrame_msgId { get; set; }
     public int m_gameFrame_msgPar { get; set; }
+    public int m_iPrevLevel { get; set; }
     public sbyte m_gameFrame_curLevel { get; set; }
     public sbyte m_gameFrame_unlockedLevel { get; set; }
     public sbyte m_gameFrame_nbLevels { get; set; }
     public sbyte m_gameFrame_nLife { get; set; }
     public sbyte m_gameFrame_nEnergy { get; set; }
-    public int m_iPrevLevel { get; set; }
-    public int m_gameStateStep { get; set; }
 
     public bool GameFrame_PhysicalInitI()
     {
@@ -112,6 +112,8 @@ public partial class Game
                         RM.Load(RESOURCE_ID_DATA_TEXTBANK_HELP);
                     else
                         RM.Free(RESOURCE_ID_DATA_TEXTBANK_HELP);
+
+                    Graphics.SetMaxResolution(m_sBackgroundWidth * TILE_SIZE, m_sBackgroundHeight * TILE_SIZE);
                 }
                 // Load menu
                 else
@@ -121,6 +123,7 @@ public partial class Game
                     if (RM.Array_Image[RM.ResourceID_To_Index(RESOURCE_ID_IMG_SPLASH_SCREEN)] == null)
                         Menu_LoadMain();
                     Menu_SetCurrentPage(MENU_PAGE.MAIN);
+                    Graphics.ForceOriginalResolution();
                 }
                 RM.Free(RESOURCE_ID_DATA_SCENE_MAP);
                 RM.Synchronize();

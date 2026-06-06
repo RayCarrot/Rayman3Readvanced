@@ -2,6 +2,7 @@
 
 namespace GbaMonoGame.Rayman3.J2ME;
 
+// TODO: Adjust for widescreen
 public partial class Game
 {
     public Actor pFocusActor { get; set; }
@@ -125,7 +126,7 @@ public partial class Game
                 sx = posX + actor.colBox.Right - Resolution.X;
 
             if (sy + Resolution.Y < posY + actor.colBox.Bottom)
-                sy = posY + actor.colBox.Bottom - Resolution.X;
+                sy = posY + actor.colBox.Bottom - Resolution.Y;
 
             sx = Math.Min(sx, (m_sBackgroundWidth << 4) - Resolution.X - 1);
             sy = Math.Min(sy, (m_sBackgroundHeight << 4) - Resolution.Y - 1);

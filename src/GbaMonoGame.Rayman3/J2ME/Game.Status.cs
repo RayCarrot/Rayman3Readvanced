@@ -203,8 +203,8 @@ public partial class Game
                 
                 int iW = 230;
                 int iH = 23 + Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[12].Height + 2 - 5;
-                int iX = 5;
-                int iY = 320 - iH - 240;
+                int iX = (Resolution.X - iW) / 2;
+                int iY = Resolution.Y - iH - (Resolution.Y - 80);
 
                 g_graBackBuffer.setClip(iX, iY, iW + 1, iH + 1);
                 DrawParchment(iX, iY, iW, iH, true);
@@ -213,7 +213,7 @@ public partial class Game
                 iW -= 4;
                 iH -= 4;
                 g_graBackBuffer.setColor(0x330099);
-                int iPosX = 120;
+                int iPosX = Resolution.X / 2;
                 int iPosY = iY - 2;
                 // TODO: Implement clipping text to fit box
                 g_graBackBuffer.setClip(iX, iY, iW, iH);
@@ -236,7 +236,7 @@ public partial class Game
                 iPosY = iY + iH;
                 g_graBackBuffer.setClip(iX, iY, iW, iH);
                 g_graBackBuffer.drawString(str1, iPosX, iPosY, ANCHOR.LEFT | ANCHOR.BOTTOM);
-                iPosX = 130;
+                iPosX = 125 + (Resolution.X - 230) / 2;
                 iPosY = iY + iH - Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[12].Height;
                 Actor.drawModule(m_gameMenu_pData, 12, iPosX, iPosY, 0, g_graBackBuffer);
                 iPosX += Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[12].Width;
@@ -269,17 +269,18 @@ public partial class Game
                     }
                 }
 
-                int c = 230;
-                sbyte b2 = 41;
-                sbyte b1 = 5;
-                int k = 320 - b2 - 240;
-                g_graBackBuffer.setClip(b1, k, c, b2);
-                DrawParchment(b1, k, c, b2, true);
-                int m = k + (iNbrStrings <= 2 ? 2 : -(m_iGlobalTicker % 21));
+                int iW = 230;
+                sbyte iH = 41;
+                int iX = (Resolution.X - iW) / 2;
+                int iY = Resolution.Y - iH - (Resolution.Y - 80);
+
+                g_graBackBuffer.setClip(iX, iY, iW, iH);
+                DrawParchment(iX, iY, iW, iH, true);
+                int m = iY + (iNbrStrings <= 2 ? 2 : -(m_iGlobalTicker % 21));
                 g_graBackBuffer.setColor(3342489);
                 for (int j = 0; j < 3; j++)
                 {
-                    g_graBackBuffer.drawString(sTutorial[j], 120, m, ANCHOR.HCENTER | ANCHOR.TOP);
+                    g_graBackBuffer.drawString(sTutorial[j], Resolution.X / 2, m, ANCHOR.HCENTER | ANCHOR.TOP);
                     m += 21;
                 }
             }

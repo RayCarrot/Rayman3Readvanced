@@ -34,6 +34,8 @@ public class GameMidlet : Frame
     private float _oldFramerate;
     private Vector2 _oldResolution;
 
+    public static Vector2 OriginalResolution => new(240, 320);
+
     public static Game Instance_Game { get; set; }
     public static bool bSuspended { get; set; }
 
@@ -49,7 +51,7 @@ public class GameMidlet : Frame
 
         // Override the resolution
         _oldResolution = Engine.ViewPort.InternalGameResolution;
-        Engine.ViewPort.SetInternalGameResolution(new Vector2(240, 320));
+        Engine.ViewPort.SetInternalGameResolution(OriginalResolution);
 
         // Override the framerate
         _oldFramerate = Engine.App.Framerate;

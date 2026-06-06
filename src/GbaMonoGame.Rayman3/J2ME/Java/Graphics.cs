@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using BinarySerializer;
+using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -11,13 +12,14 @@ public class Graphics
 {
     public Graphics()
     {
-        RenderContext = Engine.ViewPort.GameRenderContext;
+        RenderContext = new Playfield2DRenderContext(null, null);
         RenderOptions = new RenderOptions() { RenderContext = RenderContext };
         Sprites = [];
     }
 
-    public Point Resolution => Engine.ViewPort.InternalGameResolution.ToRoundedPoint();
-    public RenderContext RenderContext { get; } // TODO: Probably use Playfield2DRenderContext so we can fit to the current level
+    public Point Resolution => RenderContext.Resolution.ToFloorPoint();
+    public bool IsResolutionModified => RenderContext.Resolution != GameMidlet.OriginalResolution;
+    public Playfield2DRenderContext RenderContext { get; }
     public RenderOptions RenderOptions { get; }
     public List<Sprite> Sprites { get; }
     public Rectangle Clip { get; set; }
@@ -167,6 +169,17 @@ public class Graphics
     }
 
     // Custom
+    public void ForceOriginalResolution()
+    {
+        RenderContext.SetFixedResolution(GameMidlet.OriginalResolution);
+    }
+
+    public void SetMaxResolution(float width, float height)
+    {
+        RenderContext.MinResolution = null;
+        RenderContext.MaxResolution = new Vector2(width, height);
+    }
+
     public void ClearScreen(int color)
     {
         setClip(0, 0, Resolution.X, Resolution.Y);

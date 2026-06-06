@@ -34,12 +34,12 @@ public partial class Game
     public Point Resolution => Graphics.Resolution;
 
     public Graphics g_graBackBuffer { get; set; }
-    public bool painting { get; set; } // Irrelevant in Readvanced since we're not multi-threading
+    public bool painting { get; set; } // Unused in Readvanced since we're not multi-threading
     public int m_iGlobalTicker { get; set; }
     public GAME_STATE m_chGameState { get; set; } = GAME_STATE.ACTIVE;
     public Font m_fontGeneral { get; set; }
     public bool showDebug { get; set; }
-    public long _nUpdateTimer { get; set; }
+    public long _nUpdateTimer { get; set; } // Unused in Readvanced
 
     public void drawImageEx(int dstx, int dsty, int w, int h, int iImageIndex, int sx, int sy, int flag)
     {

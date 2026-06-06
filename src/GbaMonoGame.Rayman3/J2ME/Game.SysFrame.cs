@@ -37,6 +37,7 @@ public partial class Game
                 InitSounds();
                 setSoundVolume(SoundVolume);
                 curState = SYS_FRAME_STATE.SPLASH_SCREEN;
+                Graphics.ForceOriginalResolution();
                 break;
 
             // Show Gameloft logo
@@ -81,7 +82,7 @@ public partial class Game
                 {
                     RM.Load(RESOURCE_ID_DATA_SCENE_MAP);
                     RM.Synchronize();
-                    GameFrame_loadLevel(-1);
+                    GameFrame_loadLevel(LEVEL_MENU);
                     PlaySound(SOUND_INDEX.music_splash, true, LOOP_INFINITE);
                     m_byMainLoadingState++;
                 }
