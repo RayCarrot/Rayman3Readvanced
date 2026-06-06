@@ -11,6 +11,7 @@ namespace GbaMonoGame.Rayman3.J2ME;
 // TODO: Remove game's exception handling?
 // TODO: Fix sprite rendering by using separate textures for each sprite
 // TODO: Look into other versions of the game to see differences, check code etc.
+// TODO: Implement auto-pause on lost focus
 public class GameMidlet : Frame
 {
     private const float Framerate = 1 / 0.045f;
@@ -89,5 +90,8 @@ public class GameMidlet : Frame
 
         // Update game
         Instance_Game.repaint();
+
+        // Update sounds
+        Instance_Game.UpdateSounds();
     }
 }

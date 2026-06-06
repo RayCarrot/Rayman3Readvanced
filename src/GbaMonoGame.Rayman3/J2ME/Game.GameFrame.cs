@@ -194,7 +194,7 @@ public partial class Game
             Menu_Draw();
 
             if (!m_gameFrame_paused)
-                PlaySound(SOUND_INDEX.music_splash, false, 255);
+                PlaySound(SOUND_INDEX.music_splash, false, LOOP_INFINITE);
 
             // Draw soft key pause indicator
             Actor.drawModule(Actor.aniData[(sbyte)OBJECT_TYPE.FONT], 23, Resolution.X - Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[23].Width, Resolution.Y - Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[23].Height - Menu_GetVArrowPos(), 0, g_graBackBuffer);
@@ -284,7 +284,7 @@ public partial class Game
             if (isLoadSuccess)
             {
                 if (m_gameFrame_curLevel == LEVEL_WORLD_MAP)
-                    PlaySound(SOUND_INDEX.music_map, false, 255);
+                    PlaySound(SOUND_INDEX.music_map, false, LOOP_INFINITE);
                 else
                     PlaySound(SOUND_INDEX.enter_level, true);
 

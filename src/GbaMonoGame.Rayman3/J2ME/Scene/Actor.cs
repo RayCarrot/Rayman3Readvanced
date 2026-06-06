@@ -3000,7 +3000,7 @@ public class Actor
                 case 16:
                 case 25:
                 case 35:
-                    GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.punch_charge, true, 255);
+                    GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.punch_charge, true, Game.LOOP_INFINITE);
                     break;
 
                 case 9:
@@ -3029,6 +3029,7 @@ public class Actor
                 case 10:
                 case 13:
                 case 23:
+                    GameMidlet.Instance_Game.StopSound(SOUND_INDEX.punch_charge); // Custom for Readvanced since we allow sounds to overlap
                     GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.punch_released, true);
                     break;
 

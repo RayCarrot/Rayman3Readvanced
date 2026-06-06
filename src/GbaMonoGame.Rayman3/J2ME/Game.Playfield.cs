@@ -151,15 +151,15 @@ public partial class Game
 
     public void fastDraw(Graphics g, int cw, int ch)
     {
-        // Custom Readvanced rendering
-        if (BackgroundTexture != null)
+        // Readvanced code
+        if (true)
         {
             int cx = m_iBackgroundX;
             int cy = m_iBackgroundY;
             g.DrawTexture(BackgroundTexture, -cx, -cy);
         }
-        // Unused in Readvanced since we don't draw the background in the fast mode
-        else
+        // Original game code
+        else if (false)
         {
             int cx = m_iBackgroundX;
             int cy = m_iBackgroundY;

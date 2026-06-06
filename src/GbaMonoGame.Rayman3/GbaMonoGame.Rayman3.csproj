@@ -33,6 +33,7 @@
     <PackageReference Include="MonoGame.Framework.WindowsDX" Condition="$(DefineConstants.Contains(WINDOWSDX))" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Condition="$(DefineConstants.Contains(DESKTOPGL))" />
     <PackageReference Include="MonoGame.Content.Builder.Task" />
+    <PackageReference Include="MeltySynth" />
   </ItemGroup>
 
   <ItemGroup>
@@ -55,6 +56,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="**\*.jsonc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="**\*.sf2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

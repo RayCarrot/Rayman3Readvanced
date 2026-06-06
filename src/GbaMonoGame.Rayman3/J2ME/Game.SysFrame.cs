@@ -82,7 +82,7 @@ public partial class Game
                     RM.Load(RESOURCE_ID_DATA_SCENE_MAP);
                     RM.Synchronize();
                     GameFrame_loadLevel(-1);
-                    PlaySound(SOUND_INDEX.music_splash, true, 255);
+                    PlaySound(SOUND_INDEX.music_splash, true, LOOP_INFINITE);
                     m_byMainLoadingState++;
                 }
                 else
@@ -133,7 +133,7 @@ public partial class Game
                         pRayman.stateFlag &= ~ACTOR_STATE.DEAD;
                     }
                     if (m_iPrevLevel > LEVEL_WORLD_MAP && pRayman.anim.curAction != 37)
-                        PlaySound(SOUND_INDEX.music_leveldone, true, 1);
+                        PlaySound(SOUND_INDEX.music_leveldone, true, LOOP_NONE);
                 }
                 else if (ret == GAME_FRAME_STATE.CONFIRM_EXIT)
                 {

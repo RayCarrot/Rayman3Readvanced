@@ -459,7 +459,7 @@ public partial class Game
                             }
                             if (m_gameFrame_curLevel == LEVEL_WORLD_MAP)
                             {
-                                PlaySound(SOUND_INDEX.music_map, true, 255);
+                                PlaySound(SOUND_INDEX.music_map, true, LOOP_INFINITE);
                                 bStillPlay = true;
                             }
                             break;
@@ -481,9 +481,8 @@ public partial class Game
                                 _ => SoundVolume
                             };
                             Menu_UpdatePage();
-                            // TODO: Play sound
-                            // if (m_gameFrame_curLevel == 0 && m_SoundPlayer == null) 
-                            //     PlaySound(35, true, 255);
+                            if (m_gameFrame_curLevel == 0 && m_SoundPlayer == null) // m_SoundPlayer is never null though...
+                                PlaySound(SOUND_INDEX.music_map, true, LOOP_INFINITE);
                             if (SoundVolume == VOL_OFF)
                                 StopSound();
                             setSoundVolume(SoundVolume);

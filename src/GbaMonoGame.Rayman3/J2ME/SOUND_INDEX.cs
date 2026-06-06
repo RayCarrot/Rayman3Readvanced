@@ -3,6 +3,8 @@
 // From MIDI file names
 public enum SOUND_INDEX
 {
+    INVALID = -1,
+
     cage_break = 23 + 0,
     cage_hit = 23 + 1,
     enemy_death = 23 + 2,
