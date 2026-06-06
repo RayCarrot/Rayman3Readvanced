@@ -32,6 +32,7 @@ public sealed class MidiSoundInstance : IDisposable
     public SoundFont SoundFont { get; }
     public MidiFile MidiFile { get; }
     public SOUND_INDEX SoundIndex { get; }
+    public bool EndOfSequence => _sequencer.EndOfSequence;
     public SoundState State => _dynamicSound.State;
     public bool IsDisposed => _dynamicSound.IsDisposed;
 

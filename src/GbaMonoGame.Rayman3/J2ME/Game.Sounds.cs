@@ -318,7 +318,7 @@ public partial class Game
     {
         // Dispose stopped sounds and remove from list
         foreach (MidiSoundInstance soundInstance in SoundInstances)
-            if (soundInstance.State == SoundState.Stopped)
+            if (soundInstance.EndOfSequence)
                 soundInstance.Dispose();
         SoundInstances.RemoveAll(static soundInstance => soundInstance.IsDisposed);
     }
