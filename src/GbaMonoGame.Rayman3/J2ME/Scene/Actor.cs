@@ -137,6 +137,7 @@ public class Actor
     public int fist_top { get; set; }
     public static int[] fist_energy { get; } = new int[FISTS_COUNT];
     public bool bWasPHBStop { get; set; }
+    public bool Debug_NoClip { get; set; } // Custom no-clip mode
 
     public bool GameObj_checkCollsion(Actor that)
     {
@@ -407,7 +408,7 @@ public class Actor
             stateFlag |= ACTOR_STATE.USE_MECH_MODEL;
         }
 
-        if ((Anim.aniEvent_flag & ANIM_EVENT_FLAGS.LOADED_COLLISION_BOX) != 0)
+        if ((Anim.aniEvent_flag & ANIM_EVENT_FLAGS.LOADED_COLLISION_BOX) != 0 && !Debug_NoClip)
         {
             if ((stateFlag & ACTOR_STATE.FLIP_X) != 0)
             {
@@ -2708,6 +2709,43 @@ public class Actor
 
     public void Rayman_ai()
     {
+        // Custom no-clip debug mode
+        if (Engine.Settings.Active.Debug.DebugModeEnabled && Engine.Input.IsInputJustPressed(Input.Debug_ToggleNoClip))
+        {
+            Debug_NoClip = !Debug_NoClip;
+
+            anim.newAction = 0;
+            anim.initNewAction(true);
+
+            dx = 0;
+            dy = 0;
+            mmodel_vX = 0;
+            mmodel_vY = 0;
+            mmodel_aX = 0;
+            mmodel_aY = 0;
+            mmodel_fX = 0;
+            mmodel_fY = 0;
+            colBox = new Box();
+        }
+
+        if (Debug_NoClip)
+        {
+            int speed = Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorJump) ? 8 : 6;
+            speed <<= 8;
+
+            if (Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorUp))
+                y -= speed;
+            else if (Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorDown))
+                y += speed;
+
+            if (Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorLeft))
+                x -= speed;
+            else if (Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorRight))
+                x += speed;
+
+            return;
+        }
+
         int action = anim.curAction;
         Actor_SetReferencePoint((int)(x >> 8 >> 4), (int)(y >> 8 >> 4));
         V[4] = (short)GameMidlet.Instance_Game.pressedKey;
