@@ -2,10 +2,17 @@
 
 namespace GbaMonoGame.Rayman3.J2ME;
 
-// TODO: Adjust for widescreen
 public partial class Game
 {
+    public const int CAMERA_MAX_SPEED = 8;
+
     public Actor pFocusActor { get; set; }
+
+    // Custom helpers
+    private int ScaleXValue(int value) => value +
+                                          (IntegerResolution.X - GameMidlet.OriginalIntegerResolution.X) / 2;
+    private int ScaleYValue(int value) => value +
+                                          (IntegerResolution.Y - GameMidlet.OriginalIntegerResolution.Y) / 2;
 
     public void Camera_Tick()
     {
@@ -17,8 +24,10 @@ public partial class Game
             return;
         }
 
+        int cameraYOffset = ScaleYValue(213);
+
         int tx = (int)((pActor.x >> 8) + -(IntegerResolution.X * (pRayman.xDirectionConfirmed ? 1 : 2)) / 3);
-        int ty = (int)((pActor.y >> 8) + -213);
+        int ty = (int)((pActor.y >> 8) + -cameraYOffset);
 
         switch (pRayman.anim.curAction)
         {
@@ -27,12 +36,12 @@ public partial class Game
                 if (pRayman.y > pRayman.V[16] << 8)
                     ty = (int)(pActor.y >> 8) + pActor.colBox.Top;
                 else
-                    ty = pActor.V[16] + -213;
+                    ty = pActor.V[16] + -cameraYOffset;
                 break;
             
             case 7:
             case 8:
-                ty = pActor.V[16] + -213;
+                ty = pActor.V[16] + -cameraYOffset;
                 break;
             
             case 17:
@@ -44,13 +53,13 @@ public partial class Game
             case 23:
             case 24:
             case 25:
-                ty = (int)((pActor.y >> 8) + -213L);
+                ty = (int)((pActor.y >> 8) + -cameraYOffset);
                 break;
             
             case 3:
             case 4:
             case 5:
-                ty = (int)(pActor.y >> 8) + pActor.colBox.Top - 80;
+                ty = (int)(pActor.y >> 8) + pActor.colBox.Top - ScaleYValue(80);
                 break;
             
             case 9:
@@ -60,11 +69,11 @@ public partial class Game
                 if (pRayman.V[7] == -1)
                 {
                     if (pActor.dy <= 0)
-                        ty = (int)((pActor.y >> 8) + -213L - 16L);
+                        ty = (int)((pActor.y >> 8) + -cameraYOffset - 16L);
                     else if (pActor.dy > 0)
-                        ty = (int)((pActor.y >> 8) + -213L + 16L);
+                        ty = (int)((pActor.y >> 8) + -cameraYOffset + 16L);
 
-                    tx = (int)((pActor.x >> 8) - 120L);
+                    tx = (int)((pActor.x >> 8) - IntegerResolution.X / 2);
                     if (pActor.xDirectionConfirmed)
                         tx += 16;
                     else
@@ -75,7 +84,7 @@ public partial class Game
                     if (pRayman.y > (pRayman.V[16] << 8))
                         ty = (int)(pActor.y >> 8) + pActor.colBox.Top;
                     else if (pActor.yDirectionConfirmed == 0)
-                        ty = pActor.V[16] + -213;
+                        ty = pActor.V[16] + -cameraYOffset;
                     else if (pActor.yDirectionConfirmed == 1)
                         ty = pActor.V[16] + pActor.colBox.Top - 16;
                     else if (pActor.yDirectionConfirmed == -1)
@@ -85,7 +94,7 @@ public partial class Game
 
             case 27:
                 tx = pActor.V[13] + ((pActor.colBox.Left + pActor.colBox.Right) >> 1) + -(IntegerResolution.X * (pRayman.xDirectionConfirmed ? 1 : 2)) / 3;
-                ty = pActor.V[14] + ((pActor.colBox.Top + pActor.colBox.Bottom) >> 1) + -213;
+                ty = pActor.V[14] + ((pActor.colBox.Top + pActor.colBox.Bottom) >> 1) + -cameraYOffset;
                 break;
         }
 
@@ -97,15 +106,15 @@ public partial class Game
         if (pRayman.anim.curAction == 9)
             dy >>= 1;
         
-        if (dx < -8 && pRayman.anim.curAction != 27)
-            dx = -8;
-        else if (dx > 8 && pRayman.anim.curAction != 27)
-            dx = 8;
+        if (dx < -CAMERA_MAX_SPEED && pRayman.anim.curAction != 27)
+            dx = -CAMERA_MAX_SPEED;
+        else if (dx > CAMERA_MAX_SPEED && pRayman.anim.curAction != 27)
+            dx = CAMERA_MAX_SPEED;
 
-        if (dy < -8)
-            dy = -8;
-        else if (dy > 8)
-            dy = 8;
+        if (dy < -CAMERA_MAX_SPEED)
+            dy = -CAMERA_MAX_SPEED;
+        else if (dy > CAMERA_MAX_SPEED)
+            dy = CAMERA_MAX_SPEED;
 
         setCameraPos(m_iBackgroundX + dx, m_iBackgroundY + dy, pRayman);
     }

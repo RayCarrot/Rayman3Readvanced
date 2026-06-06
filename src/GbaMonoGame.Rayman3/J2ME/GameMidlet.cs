@@ -2,6 +2,7 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using BinarySerializer.Ubisoft.GbaEngine;
+using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.Rayman3.J2ME;
 
@@ -35,6 +36,7 @@ public class GameMidlet : Frame
     private Vector2 _oldResolution;
 
     public static Vector2 OriginalResolution => new(240, 320);
+    public static Point OriginalIntegerResolution => new(240, 320);
 
     public static Game Instance_Game { get; set; }
     public static bool bSuspended { get; set; }
