@@ -17,7 +17,7 @@ public partial class Game
             return;
         }
 
-        int tx = (int)((pActor.x >> 8) + -(Resolution.X * (pRayman.xDirectionConfirmed ? 1 : 2)) / 3);
+        int tx = (int)((pActor.x >> 8) + -(IntegerResolution.X * (pRayman.xDirectionConfirmed ? 1 : 2)) / 3);
         int ty = (int)((pActor.y >> 8) + -213);
 
         switch (pRayman.anim.curAction)
@@ -79,12 +79,12 @@ public partial class Game
                     else if (pActor.yDirectionConfirmed == 1)
                         ty = pActor.V[16] + pActor.colBox.Top - 16;
                     else if (pActor.yDirectionConfirmed == -1)
-                        ty = pActor.V[16] - Resolution.Y;
+                        ty = pActor.V[16] - IntegerResolution.Y;
                 }
                 break;
 
             case 27:
-                tx = pActor.V[13] + ((pActor.colBox.Left + pActor.colBox.Right) >> 1) + -(Resolution.X * (pRayman.xDirectionConfirmed ? 1 : 2)) / 3;
+                tx = pActor.V[13] + ((pActor.colBox.Left + pActor.colBox.Right) >> 1) + -(IntegerResolution.X * (pRayman.xDirectionConfirmed ? 1 : 2)) / 3;
                 ty = pActor.V[14] + ((pActor.colBox.Top + pActor.colBox.Bottom) >> 1) + -213;
                 break;
         }
@@ -112,8 +112,8 @@ public partial class Game
 
     public void setCameraPos(int sx, int sy, Actor actor)
     {
-        sx = Math.Min(sx, (m_sBackgroundWidth << 4) - Resolution.X - 1);
-        sy = Math.Min(sy, (m_sBackgroundHeight << 4) - Resolution.Y - 1);
+        sx = Math.Min(sx, (m_sBackgroundWidth << 4) - IntegerResolution.X - 1);
+        sy = Math.Min(sy, (m_sBackgroundHeight << 4) - IntegerResolution.Y - 1);
 
         if (actor != null && actor.anim.curAction != 27)
         {
@@ -122,14 +122,14 @@ public partial class Game
         
             if (sx > posX + actor.colBox.Left)
                 sx = posX + actor.colBox.Left;
-            else if (sx + Resolution.X < posX + actor.colBox.Right)
-                sx = posX + actor.colBox.Right - Resolution.X;
+            else if (sx + IntegerResolution.X < posX + actor.colBox.Right)
+                sx = posX + actor.colBox.Right - IntegerResolution.X;
 
-            if (sy + Resolution.Y < posY + actor.colBox.Bottom)
-                sy = posY + actor.colBox.Bottom - Resolution.Y;
+            if (sy + IntegerResolution.Y < posY + actor.colBox.Bottom)
+                sy = posY + actor.colBox.Bottom - IntegerResolution.Y;
 
-            sx = Math.Min(sx, (m_sBackgroundWidth << 4) - Resolution.X - 1);
-            sy = Math.Min(sy, (m_sBackgroundHeight << 4) - Resolution.Y - 1);
+            sx = Math.Min(sx, (m_sBackgroundWidth << 4) - IntegerResolution.X - 1);
+            sy = Math.Min(sy, (m_sBackgroundHeight << 4) - IntegerResolution.Y - 1);
         }
 
         if (sx < 0)
@@ -143,6 +143,6 @@ public partial class Game
 
     public bool Camera_IsVisible(Actor pActor)
     {
-        return pActor.GameObj_isCollideBox(m_iBackgroundX, m_iBackgroundY, Resolution.X, Resolution.Y);
+        return pActor.GameObj_isCollideBox(m_iBackgroundX, m_iBackgroundY, IntegerResolution.X, IntegerResolution.Y);
     }
 }

@@ -17,18 +17,18 @@ public class Graphics
         Sprites = [];
     }
 
-    public Point Resolution => RenderContext.Resolution.ToFloorPoint();
+    public Vector2 Resolution => RenderContext.Resolution;
     public bool IsResolutionModified => RenderContext.Resolution != GameMidlet.OriginalResolution;
     public Playfield2DRenderContext RenderContext { get; }
     public RenderOptions RenderOptions { get; }
     public List<Sprite> Sprites { get; }
-    public Rectangle Clip { get; set; }
+    public Rectangle Clip { get; set; } // TODO: Remove this
     public Color Color { get; set; }
     public Font Font { get; set; }
 
-    private static int AnchorX(int x, int width, ANCHOR anchor)
+    private static float AnchorX(float x, float width, ANCHOR anchor)
     {
-        int anchoredX = x;
+        float anchoredX = x;
         if ((anchor & ANCHOR.HCENTER) != 0)
             anchoredX = x - width / 2;
 
@@ -41,9 +41,9 @@ public class Graphics
         return anchoredX;
     }
 
-    private static int AnchorY(int y, int height, ANCHOR anchor)
+    private static float AnchorY(float y, float height, ANCHOR anchor)
     {
-        int anchoredY = y;
+        float anchoredY = y;
         if ((anchor & ANCHOR.VCENTER) != 0)
             anchoredY = y - height / 2;
 
@@ -59,9 +59,9 @@ public class Graphics
         return anchoredY;
     }
 
-    public void setClip(int x, int y, int width, int height)
+    public void setClip(float x, float y, float width, float height)
     {
-        Clip = new Rectangle(x, y, width, height);
+        Clip = new Rectangle((int)x, (int)y, (int)width, (int)height);
     }
 
     public void setColor(int RGB)
@@ -77,7 +77,7 @@ public class Graphics
         Font = font;
     }
 
-    public void fillRect(int x, int y, int width, int height)
+    public void fillRect(float x, float y, float width, float height)
     {
         Sprite sprite = Gfx.GetNewSprite();
         sprite.Texture = Gfx.Pixel;
@@ -88,20 +88,20 @@ public class Graphics
         Sprites.Add(sprite);
     }
 
-    public void fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight)
+    public void fillRoundRect(float x, float y, float width, float height, float arcWidth, float arcHeight)
     {
         // TODO: Implement arc
         fillRect(x, y, width, height);
     }
 
-    public void drawImage(Texture2D img, int x, int y, ANCHOR anchor)
+    public void drawImage(Texture2D img, float x, float y, ANCHOR anchor)
     {
         x = AnchorX(x, img.Width, anchor);
         y = AnchorY(y, img.Height, anchor);
 
         Rectangle clip = Clip;
-        clip.X = Math.Clamp(clip.X - x, 0, img.Width);
-        clip.Y = Math.Clamp(clip.Y - y, 0, img.Height);
+        clip.X = (int)Math.Clamp(clip.X - x, 0, img.Width);
+        clip.Y = (int)Math.Clamp(clip.Y - y, 0, img.Height);
         clip.Width = Math.Min(clip.Width, clip.X + img.Width);
         clip.Height = Math.Min(clip.Height, clip.Y + img.Height);
 
@@ -116,7 +116,7 @@ public class Graphics
         Sprites.Add(sprite);
     }
 
-    public void drawRegion(Texture2D src, int x_src, int y_src, int width, int height, TRANS transform, int x_dest, int y_dest, ANCHOR anchor)
+    public void drawRegion(Texture2D src, float x_src, float y_src, float width, float height, TRANS transform, float x_dest, float y_dest, ANCHOR anchor)
     {
         if (transform != TRANS.MIRROR && transform != TRANS.NONE)
             throw new InvalidOperationException("Only mirror and none transforms are supported");
@@ -124,7 +124,7 @@ public class Graphics
         x_dest = AnchorX(x_dest, src.Width, anchor);
         y_dest = AnchorY(y_dest, src.Height, anchor);
 
-        Rectangle clip = new(x_src, y_src, width, height);
+        Rectangle clip = new((int)x_src, (int)y_src, (int)width, (int)height);
 
         Sprite sprite = Gfx.GetNewSprite();
         sprite.Texture = src;
@@ -135,7 +135,7 @@ public class Graphics
         Sprites.Add(sprite);
     }
 
-    public void drawString(string str, int x, int y, ANCHOR anchor)
+    public void drawString(string str, float x, float y, ANCHOR anchor)
     {
         // Get the text size
         int width = Font.stringWidth(str);
@@ -187,7 +187,7 @@ public class Graphics
         fillRect(0, 0, Resolution.X, Resolution.Y);
     }
 
-    public void DrawTexture(Texture2D texture, int x, int y)
+    public void DrawTexture(Texture2D texture, float x, float y)
     {
         Sprite sprite = Gfx.GetNewSprite();
         sprite.Texture = texture;

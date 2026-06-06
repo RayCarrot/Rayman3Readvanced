@@ -165,7 +165,7 @@ public partial class Game
         
         // Step and draw actors
         if (m_bBackgroundUsed)
-            AM_step(m_iBackgroundX, m_iBackgroundY, Resolution.X, Resolution.Y);
+            AM_step(m_iBackgroundX, m_iBackgroundY, IntegerResolution.X, IntegerResolution.Y);
         
         // Draw status
         if (!m_gameFrame_paused)
@@ -272,13 +272,13 @@ public partial class Game
             if (m_iPrevLevel == LEVEL_MENU)
             {
                 if (m_gameMenu_idCurPage == MENU_PAGE.PAUSE)
-                    Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) >> 1, 110, 0);
+                    Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) / 2, 110, 0);
                 else
-                    Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) >> 1, 263, 0);
+                    Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) / 2, 263, 0);
             }
             else
             {
-                Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) >> 1, 110, 0);
+                Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) / 2, 110, 0);
             }
         }
         else
@@ -314,7 +314,7 @@ public partial class Game
         {
             g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
             g_graBackBuffer.drawImage(RM.GetImageResource(RESOURCE_ID_IMG_SPLASH_SCREEN), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
-            Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) >> 1, 263, 0);
+            Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) / 2, 263, 0);
         }
         else if (m_gameStateStep == 1)
         {
@@ -372,7 +372,7 @@ public partial class Game
                 {
                     g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
                     g_graBackBuffer.drawImage(RM.GetImageResource(RESOURCE_ID_IMG_SPLASH_SCREEN), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
-                    Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) >> 1, 263, 0);
+                    Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) / 2, 263, 0);
                 }
                 else if (m_gameStateStep == 1)
                 {
@@ -392,7 +392,7 @@ public partial class Game
                     if (m_gameStateStep == 0)
                     {
                         fastDraw(g_graBackBuffer, Resolution.X, Resolution.Y);
-                        Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) >> 1, 110, 0);
+                        Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) / 2, 110, 0);
                     }
                     else if (m_gameStateStep == 1)
                     {
@@ -412,7 +412,7 @@ public partial class Game
                 {
                     if (pRayman.anim.curAction == 37)
                     {
-                        Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) >> 1, 110, 0);
+                        Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) / 2, 110, 0);
                     }
                     else
                     {

@@ -56,8 +56,8 @@ public partial class Game
                     if (!bSoundBegin)
                     {
                         g_graBackBuffer.ClearScreen(0);
-                        Menu_DrawString(RM.GetString(STRING_ID_ENABLE_SOUND), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_ENABLE_SOUND))) >> 1, 128, 0);
-                        Menu_DrawString(RM.GetString(STRING_ID_EMPTY), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_EMPTY))) >> 1, 144, 0);
+                        Menu_DrawString(RM.GetString(STRING_ID_ENABLE_SOUND), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_ENABLE_SOUND))) / 2, 128, 0);
+                        Menu_DrawString(RM.GetString(STRING_ID_EMPTY), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_EMPTY))) / 2, 144, 0);
                         Menu_DrawString(RM.GetString(STRING_ID_NO), 0, 299, 0);
                         Menu_DrawString(RM.GetString(STRING_ID_YES), Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_YES)), 299, 0);
                         if ((pressedKey & (GAME_KEY.SOFTKEY_1 | GAME_KEY.SOFTKEY_2)) != 0)
@@ -140,7 +140,7 @@ public partial class Game
                 {
                     bConfirmExit = false;
                     g_graBackBuffer.ClearScreen(0);
-                    Menu_DrawString(RM.GetString(STRING_ID_EXIT_QUESTION), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_EXIT_QUESTION))) >> 1, 128, 0);
+                    Menu_DrawString(RM.GetString(STRING_ID_EXIT_QUESTION), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_EXIT_QUESTION))) / 2, 128, 0);
                     Menu_DrawString(RM.GetString(STRING_ID_NO), 0, 299, 0);
                     Menu_DrawString(RM.GetString(STRING_ID_YES), Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_YES)), 299, 0);
                     if ((pressedKey & (GAME_KEY.SOFTKEY_1 | GAME_KEY.SOFTKEY_2)) != 0 && bConfirm)
@@ -162,11 +162,11 @@ public partial class Game
                     g_graBackBuffer.ClearScreen(0);
                     if (!bConfirmToMainMenu)
                     {
-                        Menu_DrawString(RM.GetString(STRING_ID_RESTART_QUESTION), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_RESTART_QUESTION))) >> 1, 128, 0);
+                        Menu_DrawString(RM.GetString(STRING_ID_RESTART_QUESTION), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_RESTART_QUESTION))) / 2, 128, 0);
                     }
                     else
                     {
-                        Menu_DrawString(RM.GetString(STRING_ID_TO_MAIN_MENU_QUESTION), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_TO_MAIN_MENU_QUESTION))) >> 1, 128, 0);
+                        Menu_DrawString(RM.GetString(STRING_ID_TO_MAIN_MENU_QUESTION), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_TO_MAIN_MENU_QUESTION))) / 2, 128, 0);
                     }
                     Menu_DrawString(RM.GetString(STRING_ID_NO), 0, 299, 0);
                     Menu_DrawString(RM.GetString(STRING_ID_YES), Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_YES)), 299, 0);
@@ -195,7 +195,7 @@ public partial class Game
                 }
                 else
                 {
-                    Menu_DrawString(RM.GetString(STRING_ID_GAME_OVER), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_GAME_OVER))) >> 1, 110, 0);
+                    Menu_DrawString(RM.GetString(STRING_ID_GAME_OVER), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_GAME_OVER))) / 2, 110, 0);
                 }
                 break;
 
@@ -228,7 +228,7 @@ public partial class Game
 
                     pRayman.step();
                     pRayman.draw();
-                    Menu_DrawString(RM.GetString(STRING_ID_VICTORY), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_VICTORY))) >> 1, 170, 0);
+                    Menu_DrawString(RM.GetString(STRING_ID_VICTORY), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_VICTORY))) / 2, 170, 0);
                 }
                 break;
 
@@ -261,7 +261,7 @@ public partial class Game
                     }
                     else
                     {
-                        Menu_DrawString(RM.GetString(STRING_ID_LEVEL_DONE), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LEVEL_DONE))) >> 1, 110, 0);
+                        Menu_DrawString(RM.GetString(STRING_ID_LEVEL_DONE), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LEVEL_DONE))) / 2, 110, 0);
                     }
                 }
                 else

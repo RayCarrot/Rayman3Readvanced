@@ -31,7 +31,8 @@ public partial class Game
     // Custom
     public ResourceManager RM { get; }
     public Graphics Graphics { get; set; }
-    public Point Resolution => Graphics.Resolution;
+    public Vector2 Resolution => Graphics.Resolution; // Use for rendering
+    public Point IntegerResolution => Graphics.Resolution.ToFloorPoint(); // Use for game logic
 
     public Graphics g_graBackBuffer { get; set; }
     public bool painting { get; set; } // Unused in Readvanced since we're not multi-threading
@@ -41,7 +42,7 @@ public partial class Game
     public bool showDebug { get; set; }
     public long _nUpdateTimer { get; set; } // Unused in Readvanced
 
-    public void drawImageEx(int dstx, int dsty, int w, int h, int iImageIndex, int sx, int sy, int flag)
+    public void drawImageEx(float dstx, float dsty, float w, float h, int iImageIndex, float sx, float sy, int flag)
     {
         if (m_bBackgroundUsed)
         {

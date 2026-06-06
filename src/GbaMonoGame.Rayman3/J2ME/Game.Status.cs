@@ -50,9 +50,9 @@ public partial class Game
         m_byStatusDisplay[statusType] = 1;
     }
 
-    public int Status_DrawNumber(int iNumber, int iX, int iY, bool bRightAlign)
+    public float Status_DrawNumber(int iNumber, float iX, float iY, bool bRightAlign)
     {
-        int iCurrentX = iX;
+        float iCurrentX = iX;
         if (bRightAlign)
         {
             do
@@ -95,12 +95,12 @@ public partial class Game
                     m_byStatusDisplay[statusType] = 2;
             if (m_byStatusDisplay[statusType] != 0)
             {
-                int iX, iY, iPosY = 0;
+                float iX, iY, iPosY = 0;
                 m_byStatusDisplayCounter[statusType] = (sbyte)(m_byStatusDisplayCounter[statusType] + 1);
                 switch (m_byStatusDisplay[statusType])
                 {
                     case 1:
-                        iPosY = -((10 - m_byStatusDisplayCounter[statusType]) * Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[15].Height) / 10;
+                        iPosY = -((10 - m_byStatusDisplayCounter[statusType]) * Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[15].Height) / 10f;
                         if (m_byStatusDisplayCounter[statusType] > 10)
                         {
                             m_byStatusDisplayCounter[statusType] = 0;
@@ -109,7 +109,7 @@ public partial class Game
                         break;
 
                     case 3:
-                        iPosY = -(m_byStatusDisplayCounter[statusType] * Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[15].Height) / 10;
+                        iPosY = -(m_byStatusDisplayCounter[statusType] * Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[15].Height) / 10f;
                         if (m_byStatusDisplayCounter[statusType] > 10)
                         {
                             m_byStatusDisplayCounter[statusType] = 0;
@@ -157,10 +157,10 @@ public partial class Game
                         switch (m_byStatusDisplay[2])
                         {
                             case 1:
-                                iY += m_byStatusDisplayCounter[2] * Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[16].Height / 10;
+                                iY += m_byStatusDisplayCounter[2] * Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[16].Height / 10f;
                                 break;
                             case 3:
-                                iY += (10 - m_byStatusDisplayCounter[2]) * Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[16].Height / 10;
+                                iY += (10 - m_byStatusDisplayCounter[2]) * Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[16].Height / 10f;
                                 break;
                             case 2:
                                 iY += Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[16].Height;
@@ -203,8 +203,8 @@ public partial class Game
                 
                 int iW = 230;
                 int iH = 23 + Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[12].Height + 2 - 5;
-                int iX = (Resolution.X - iW) / 2;
-                int iY = Resolution.Y - iH - (Resolution.Y - 80);
+                float iX = (Resolution.X - iW) / 2;
+                float iY = Resolution.Y - iH - (Resolution.Y - 80);
 
                 g_graBackBuffer.setClip(iX, iY, iW + 1, iH + 1);
                 DrawParchment(iX, iY, iW, iH, true);
@@ -213,8 +213,8 @@ public partial class Game
                 iW -= 4;
                 iH -= 4;
                 g_graBackBuffer.setColor(0x330099);
-                int iPosX = Resolution.X / 2;
-                int iPosY = iY - 2;
+                float iPosX = Resolution.X / 2;
+                float iPosY = iY - 2;
                 // TODO: Implement clipping text to fit box
                 g_graBackBuffer.setClip(iX, iY, iW, iH);
                 string sSignTip = RM.GetString(STRING_ID_ENTER_NOW);
@@ -271,12 +271,12 @@ public partial class Game
 
                 int iW = 230;
                 sbyte iH = 41;
-                int iX = (Resolution.X - iW) / 2;
-                int iY = Resolution.Y - iH - (Resolution.Y - 80);
+                float iX = (Resolution.X - iW) / 2;
+                float iY = Resolution.Y - iH - (Resolution.Y - 80);
 
                 g_graBackBuffer.setClip(iX, iY, iW, iH);
                 DrawParchment(iX, iY, iW, iH, true);
-                int m = iY + (iNbrStrings <= 2 ? 2 : -(m_iGlobalTicker % 21));
+                float m = iY + (iNbrStrings <= 2 ? 2 : -(m_iGlobalTicker % 21));
                 g_graBackBuffer.setColor(3342489);
                 for (int j = 0; j < 3; j++)
                 {

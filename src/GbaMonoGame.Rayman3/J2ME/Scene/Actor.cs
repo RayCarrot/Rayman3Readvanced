@@ -381,7 +381,7 @@ public class Actor
                anim.actionFrame + 1 >= aniData[(sbyte)anim.type].actions[anim.newAction].FramesCount;
     }
 
-    public static void drawModule(AnimData pData, int idMod, int nx, int ny, int nflag, Graphics g)
+    public static void drawModule(AnimData pData, int idMod, float nx, float ny, int nflag, Graphics g)
     {
         AnimModule module = pData.modules[idMod];
         GameMidlet.Instance_Game.drawImageEx(

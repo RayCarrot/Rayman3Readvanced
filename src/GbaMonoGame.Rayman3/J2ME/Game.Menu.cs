@@ -33,7 +33,7 @@ public partial class Game
         return m_fontGeneral.stringWidth(pStr);
     }
 
-    public void Menu_DrawString(string pStr, int x, int y, int nColor)
+    public void Menu_DrawString(string pStr, float x, float y, int nColor)
     {
         g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
 
@@ -103,12 +103,12 @@ public partial class Game
         return b;
     }
 
-    public void Menu_DrawItem(string pStr, int y, int id)
+    public void Menu_DrawItem(string pStr, float y, float id)
     {
         if (id == m_gameMenu_idCurSel)
         {
             int w = Menu_GetStringWidth(pStr);
-            int x = (Resolution.X - w) / 2;
+            float x = (Resolution.X - w) / 2;
             Menu_DrawString(pStr, x, y - 5 + 2, 0);
             
             // ReSharper disable once RedundantAssignment
@@ -128,7 +128,7 @@ public partial class Game
         else
         {
             int w = Menu_GetStringWidth(pStr);
-            int x = (Resolution.X - w) / 2;
+            float x = (Resolution.X - w) / 2;
             Menu_DrawString(pStr, x, y - 5 + 2, 0);
         }
     }
@@ -142,7 +142,7 @@ public partial class Game
             case MENU_PAGE.ABOUT:
                 if (m_gameStateStep == 0)
                 {
-                    Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) >> 1, 263, 0);
+                    Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) / 2, 263, 0);
                 }
                 else if (m_gameStateStep == 1)
                 {
@@ -152,7 +152,7 @@ public partial class Game
                 {
                     strTitle = RM.GetString(STRING_ID_ABOUT);
                     g_graBackBuffer.ClearScreen(0x5209E3);
-                    Menu_DrawString(strTitle, (Resolution.X - Menu_GetStringWidth(strTitle)) >> 1, 6, iColor);
+                    Menu_DrawString(strTitle, (Resolution.X - Menu_GetStringWidth(strTitle)) / 2, 6, iColor);
                     Menu_DrawPageText();
                 }
                 m_gameStateStep++;
@@ -161,7 +161,7 @@ public partial class Game
             case MENU_PAGE.HELP:
                 if (m_iGlobalTicker is >= 0 and < 3)
                 {
-                    Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) >> 1, 263, 0);
+                    Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) / 2, 263, 0);
                 }
                 else if (m_iGlobalTicker == 3)
                 {
@@ -172,7 +172,7 @@ public partial class Game
                     iColor = 0xFFFFFF;
                     strTitle = RM.GetString(STRING_ID_HELP_TITLE);
                     g_graBackBuffer.ClearScreen(0x5209E3);
-                    Menu_DrawString(strTitle, (Resolution.X - Menu_GetStringWidth(strTitle)) >> 1, 6, iColor);
+                    Menu_DrawString(strTitle, (Resolution.X - Menu_GetStringWidth(strTitle)) / 2, 6, iColor);
                     Menu_DrawPageText();
                 }
                 return;
@@ -182,7 +182,7 @@ public partial class Game
                 return;
         }
 
-        int iStartMenuY = (Resolution.Y - m_gameMenu_nItem * MENU_ITEM_HEIGHT) >> 1;
+        float iStartMenuY = (Resolution.Y - m_gameMenu_nItem * MENU_ITEM_HEIGHT) / 2;
         if (iStartMenuY < 0)
             iStartMenuY = 0;
         for (int i = 0; i < m_gameMenu_nItem; i++)
@@ -589,7 +589,7 @@ public partial class Game
                 iStart = -(m_iAboutTicker % 21);
                 if (strArray[iIndex] != null)
                 {
-                    g_graBackBuffer.drawString(strArray[iIndex], (Resolution.X - m_fontGeneral.stringWidth(strArray[iIndex])) >> 1, iBoxY + iStart + iIndex * 21, ANCHOR.LEFT | ANCHOR.TOP);
+                    g_graBackBuffer.drawString(strArray[iIndex], (Resolution.X - m_fontGeneral.stringWidth(strArray[iIndex])) / 2, iBoxY + iStart + iIndex * 21, ANCHOR.LEFT | ANCHOR.TOP);
                     strArray[iIndex] = null;
                 }
             }
@@ -668,7 +668,7 @@ public partial class Game
                         int iAdjust = -6;
                         if (iID == 0x3000B7)
                             iAdjust = -12;
-                        g_graBackBuffer.drawString(strArray[iIndex], (Resolution.X - m_fontGeneral.stringWidth(strArray[iIndex])) >> 1, iBoxY + iIndex * 21 + iAdjust, ANCHOR.LEFT | ANCHOR.TOP);
+                        g_graBackBuffer.drawString(strArray[iIndex], (Resolution.X - m_fontGeneral.stringWidth(strArray[iIndex])) / 2, iBoxY + iIndex * 21 + iAdjust, ANCHOR.LEFT | ANCHOR.TOP);
                     }
                     strArray[iIndex] = null;
                 }
@@ -729,7 +729,7 @@ public partial class Game
             iStart = -(m_iAboutTicker % 21);
             if (strArray[iIndex] != null)
             {
-                g_graBackBuffer.drawString(strArray[iIndex], (Resolution.X - m_fontGeneral.stringWidth(strArray[iIndex])) >> 1, iBoxY + iStart + iIndex * 21, ANCHOR.LEFT | ANCHOR.TOP);
+                g_graBackBuffer.drawString(strArray[iIndex], (Resolution.X - m_fontGeneral.stringWidth(strArray[iIndex])) / 2, iBoxY + iStart + iIndex * 21, ANCHOR.LEFT | ANCHOR.TOP);
                 strArray[iIndex] = null;
             }
         }
@@ -767,7 +767,7 @@ public partial class Game
         return line;
     }
 
-    public void DrawParchment(int iX, int iY, int iW, int iH, bool bInGame)
+    public void DrawParchment(float iX, float iY, float iW, float iH, bool bInGame)
     {
         // Border
         if (bInGame)

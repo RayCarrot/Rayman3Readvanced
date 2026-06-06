@@ -144,12 +144,12 @@ public partial class Game
         }
     }
 
-    public void copyFromBackImage(Graphics g, int modX, int modY, int screenX, int screenY)
+    public void copyFromBackImage(Graphics g, float modX, float modY, float screenX, float screenY)
     {
         g.drawImage(m_imgBackground, screenX - modX, screenY - modY, ANCHOR.LEFT | ANCHOR.TOP);
     }
 
-    public void fastDraw(Graphics g, int cw, int ch)
+    public void fastDraw(Graphics g, float cw, float ch)
     {
         // Readvanced code
         if (true)
@@ -216,8 +216,8 @@ public partial class Game
             }
             int modX0 = cx % bufW;
             int modY0 = cy % bufH;
-            int modX1 = (cx + cw) % bufW;
-            int modY1 = (cy + ch) % bufH;
+            float modX1 = (cx + cw) % bufW;
+            float modY1 = (cy + ch) % bufH;
             copyFromBackImage(g, modX0, modY0, 0, 0);
             if (modX1 > modX0)
             {
