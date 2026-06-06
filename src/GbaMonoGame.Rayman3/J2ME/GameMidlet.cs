@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework;
 namespace GbaMonoGame.Rayman3.J2ME;
 
 // TODO: Remove magic values
-// TODO: Add debug layout for it
 // TODO: Widescreen
 // TODO: Remove game's exception handling?
 // TODO: Fix sprite rendering by using separate textures for each sprite

@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.J2ME;
 using GbaMonoGame.Rayman3.Readvanced;
 using ImGuiNET;
+using Game = GbaMonoGame.Rayman3.J2ME.Game;
 
 namespace GbaMonoGame.Rayman3;
 
@@ -270,6 +273,230 @@ public class Rayman3DebugWindow : DebugWindow
 
                         ImGui.SetClipboardText(sb.ToString());
                     }
+                }
+
+                ImGui.EndTabItem();
+            }
+
+            if (Frame.Current is GameMidlet &&
+                ImGui.BeginTabItem("J2ME"))
+            {
+                Game game = GameMidlet.Instance_Game;
+
+                if (ImGui.CollapsingHeader("Resource manager"))
+                {
+                    if (ImGui.Button("Dump all data"))
+                    {
+                        if (Engine.FileDialog.OpenFolder("Select output path") is { } outputPath)
+                            game.RM.DumpAllData(outputPath);
+                    }
+
+                    ImGui.SameLine();
+                    if (ImGui.Button("Dump all text"))
+                    {
+                        if (Engine.FileDialog.OpenFolder("Select output path") is { } outputPath)
+                            game.RM.DumpAllText(outputPath);
+                    }
+
+                    ImGui.SameLine();
+                    if (ImGui.Button("Dump all images"))
+                    {
+                        if (Engine.FileDialog.OpenFolder("Select output path") is { } outputPath)
+                            game.RM.DumpAllImages(outputPath);
+                    }
+
+                    if (ImGui.BeginTable("_rm", 4))
+                    {
+                        ImGui.TableSetupColumn("Index", ImGuiTableColumnFlags.WidthFixed);
+                        ImGui.TableSetupColumn("Archive", ImGuiTableColumnFlags.WidthFixed);
+                        ImGui.TableSetupColumn("Type", ImGuiTableColumnFlags.WidthFixed);
+                        ImGui.TableSetupColumn("Id", ImGuiTableColumnFlags.WidthFixed);
+                        ImGui.TableHeadersRow();
+
+                        int globalIndex = 0;
+                        for (int archiveIndex = 0; archiveIndex < ResourceManager.ARCHIVES_COUNT; archiveIndex++)
+                        {
+                            string name = game.RM.kArchive_Names[archiveIndex];
+                            ArchiveInformation info = game.RM.Archive_Information[archiveIndex];
+
+                            for (int i = 0; i < info.ImageResourcesCount + info.DataResourcesCount; i++)
+                            {
+                                bool isImage = i < info.ImageResourcesCount;
+
+                                ImGui.TableNextRow();
+
+                                uint color;
+                                if ((game.RM.Resource_Status[archiveIndex][i] & RESOURCE_STATUS.LOADED) != 0)
+                                    color = 0xff00ff40; // Green
+                                else
+                                    color = 0xffffffff; // White
+
+                                ImGui.PushStyleColor(ImGuiCol.Text, color);
+
+                                ImGui.TableNextColumn();
+                                ImGui.Text($"{globalIndex}");
+
+                                ImGui.TableNextColumn();
+                                ImGui.Text($"{name}");
+
+                                ImGui.TableNextColumn();
+                                ImGui.Text(isImage ? "Image" : "Data");
+
+                                ImGui.TableNextColumn();
+                                ImGui.Text($"0x{ResourceId.Create(i, isImage ? RESOURCE_TYPE.IMAGE : RESOURCE_TYPE.DATA, archiveIndex):X8}");
+                                
+                                ImGui.PopStyleColor();
+
+                                globalIndex++;
+                            }
+                        }
+
+                        ImGui.EndTable();
+                    }
+                }
+
+                if (ImGui.CollapsingHeader("General"))
+                {
+                    game.m_chGameState = ImGuiExt.EnumCombo("Game state", game.m_chGameState);
+                }
+
+                if (ImGui.CollapsingHeader("Camera"))
+                {
+                    ImGui.Text($"Focus actor: {game.pFocusActor?.objType.ToString() ?? "NULL"}");
+                }
+
+                if (ImGui.CollapsingHeader("GameFrame"))
+                {
+                    ImGui.Text($"Cages: {game.s_iCageOpened}/{game.s_iCageTotal}");
+                    ImGui.Text($"Lums: {game.s_iLumsTaken}/{game.s_iLumsTotal}");
+                    ImGui.Text($"Actor checkpoint: {game.pFocusActor?.objType.ToString() ?? "NULL"}");
+                    game.m_gameFrame_prevState = ImGuiExt.EnumCombo("Previous state", game.m_gameFrame_prevState);
+                    game.m_gameFrame_curState = ImGuiExt.EnumCombo("Current state", game.m_gameFrame_curState);
+                    ImGui.Text($"State step: {game.m_gameStateStep}");
+                    game.m_gameFrame_paused = ImGuiExt.Checkbox("Paused", game.m_gameFrame_paused);
+                    ImGui.Text($"Previous level: {game.m_iPrevLevel}");
+                    ImGui.Text($"Level: {game.m_gameFrame_curLevel}");
+                    ImGui.Text($"Unlocked level: {game.m_gameFrame_unlockedLevel}");
+                    ImGui.Text($"Levels count: {game.m_gameFrame_nbLevels}");
+                    ImGui.Text($"Lives: {game.m_gameFrame_nLife}");
+                    ImGui.Text($"Energy: {game.m_gameFrame_nEnergy}");
+                }
+
+                if (ImGui.CollapsingHeader("Input"))
+                {
+                    ImGui.Text($"Key delay: {game.lStartMillForKeyDelay}");
+                    ImGui.Text($"Current key: {game.currentKey}");
+                    ImGui.Text($"Pressed key: {game.pressedKey}");
+                    ImGui.Text($"Released key: {game.releasedKey}");
+                    ImGui.Text($"Check counter: {game.m_iKeyCheckCounter}");
+                    ImGui.Text($"Real keycode: {game.realKeyCode}");
+                    ImGui.Text($"Keys: {game.m_keys}");
+                }
+
+                if (ImGui.CollapsingHeader("Menu"))
+                {
+                    int volume = game.SoundVolume;
+                    if (ImGui.SliderInt("Volume", ref volume, 0, 100))
+                    {
+                        game.SoundVolume = volume;
+                        game.setSoundVolume(volume);
+                    }
+                    ImGui.Text($"Page: {game.m_gameMenu_idCurPage}");
+                    ImGui.Text($"Selected item: {game.m_gameMenu_idCurSel}");
+                    ImGui.Text($"Items count: {game.m_gameMenu_nItem}");
+                }
+
+                if (ImGui.CollapsingHeader("Playfield"))
+                {
+                    ImGui.Text($"Background size: {game.m_sBackgroundWidth}x{game.m_sBackgroundHeight}");
+                    ImGui.Text($"Background position: {game.m_iBackgroundX}x{game.m_iBackgroundY}");
+                    game.m_bBackgroundUsed = ImGuiExt.Checkbox("Background used", game.m_bBackgroundUsed);
+                }
+
+                if (ImGui.CollapsingHeader("Scene"))
+                {
+                    ImGui.Text($"Left to die: {game.s_iLeftToDie}");
+                    ImGui.Text($"Active sectors: {String.Join(" ", game.m_sectors_activeSector)}");
+
+                    if (ImGui.BeginTable("_actors", 6))
+                    {
+                        ImGui.TableSetupColumn("Index", ImGuiTableColumnFlags.WidthFixed);
+                        ImGui.TableSetupColumn("Type", ImGuiTableColumnFlags.WidthFixed);
+                        ImGui.TableSetupColumn("Position", ImGuiTableColumnFlags.WidthFixed);
+                        ImGui.TableSetupColumn("Speed", ImGuiTableColumnFlags.WidthFixed);
+                        ImGui.TableSetupColumn("Action", ImGuiTableColumnFlags.WidthFixed);
+                        ImGui.TableSetupColumn("Mech model");
+                        ImGui.TableHeadersRow();
+
+                        for (int i = 0; i < game.actors.Length; i++)
+                        {
+                            Actor actor = game.actors[i];
+                            ImGui.TableNextRow();
+
+                            uint color;
+                            if ((actor.stateFlag & ACTOR_STATE.DEAD) != 0)
+                                color = 0xff0000ff; // Red
+                            else if (game.m_sectors_activeSector.SelectMany(x => game.m_sectors_actorIds[x]).Contains((sbyte)i))
+                                color = 0xff00ff40; // Green
+                            else
+                                color = 0xffffffff; // White
+
+                            ImGui.PushStyleColor(ImGuiCol.Text, color);
+
+                            ImGui.TableNextColumn();
+                            ImGui.Text($"{i}");
+
+                            ImGui.TableNextColumn();
+                            ImGui.Text($"{actor.objType}");
+
+                            ImGui.TableNextColumn();
+                            ImGui.Text($"{actor.x / 256f:0.00} x {actor.y / 256f:0.00}");
+
+                            ImGui.TableNextColumn();
+                            ImGui.Text($"{actor.dx / 256f:0.00} x {actor.dy / 256f:0.00}");
+
+                            ImGui.TableNextColumn();
+                            ImGui.Text($"{actor.anim.curAction}");
+
+                            ImGui.TableNextColumn();
+                            ImGui.Text((actor.stateFlag & ACTOR_STATE.USE_MECH_MODEL) != 0 ? $"{actor.mmodel_type}" : String.Empty);
+
+                            ImGui.PopStyleColor();
+                        }
+
+                        ImGui.EndTable();
+                    }
+
+                    ImGui.Text($"Always active: {game.m_actors_1stAlwaysActive}");
+                }
+
+                if (ImGui.CollapsingHeader("Sound"))
+                {
+                    if (ImGui.BeginTable("_songs", 2))
+                    {
+                        ImGui.TableSetupColumn("Sound");
+                        ImGui.TableSetupColumn("State");
+                        ImGui.TableHeadersRow();
+
+                        foreach (MidiSoundInstance songInstance in game.SoundInstances)
+                        {
+                            ImGui.TableNextRow();
+
+                            ImGui.TableNextColumn();
+                            ImGui.Text($"{songInstance.SoundIndex}");
+
+                            ImGui.TableNextColumn();
+                            ImGui.Text($"{songInstance.State}");
+                        }
+
+                        ImGui.EndTable();
+                    }
+                }
+
+                if (ImGui.CollapsingHeader("SysFrame"))
+                {
+                    game.curState = ImGuiExt.EnumCombo("State", game.curState);
+                    ImGui.Text($"Loading state: {game.m_byMainLoadingState}");
                 }
 
                 ImGui.EndTabItem();
