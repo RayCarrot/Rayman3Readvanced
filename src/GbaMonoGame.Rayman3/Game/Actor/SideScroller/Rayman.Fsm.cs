@@ -1575,6 +1575,13 @@ public partial class Rayman
                     return false;
                 }
 
+                if (IsOnHangable())
+                {
+                    BeginHang();
+                    State.MoveTo(_Fsm_Hang);
+                    return false;
+                }
+
                 if (Engine.MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && IsSuperHelicoActive)
                 {
                     State.MoveTo(_Fsm_SuperHelico);
