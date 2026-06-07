@@ -1,4 +1,6 @@
-﻿namespace GbaMonoGame.Rayman3.J2ME;
+﻿using GbaMonoGame.Engine2d;
+
+namespace GbaMonoGame.Rayman3.J2ME;
 
 public partial class Game
 {
@@ -199,6 +201,25 @@ public partial class Game
 
                 if (Camera_IsVisible(actor))
                     actor.draw();
+            }
+        }
+
+        // TODO: Debug only
+        // Custom - draw collision boxes
+        foreach (Actor actor in actors)
+        {
+            if ((actor.stateFlag & ACTOR_STATE.DEAD) == 0 && Camera_IsVisible(actor))
+            {
+                int x = (int)((actor.x >> 8) + actor.colBox.Left) - m_iBackgroundX;
+                int y = (int)((actor.y >> 8) + actor.colBox.Top) - m_iBackgroundY;
+                int w = actor.colBox.Right - actor.colBox.Left;
+                int h = actor.colBox.Bottom - actor.colBox.Top;
+
+                Graphics.setColor(DebugBoxColor.ActionBox);
+                Graphics.fillRect(x, y, w, 1); // Top
+                Graphics.fillRect(x, y, 1, h); // Left
+                Graphics.fillRect(x + w, y + h, -1, -h); // Bottom
+                Graphics.fillRect(x + w, y + h, -w, -1); // Right
             }
         }
     }

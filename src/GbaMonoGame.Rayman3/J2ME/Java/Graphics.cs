@@ -64,6 +64,11 @@ public class Graphics
         Clip = new Rectangle((int)x, (int)y, (int)width, (int)height);
     }
 
+    public void setColor(Color color)
+    {
+        Color = color;
+    }
+
     public void setColor(int RGB)
     {
         byte b = (byte)BitHelpers.ExtractBits(RGB, 8, 0);
