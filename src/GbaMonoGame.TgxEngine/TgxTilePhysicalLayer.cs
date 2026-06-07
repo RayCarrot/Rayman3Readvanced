@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.TgxEngine;
 
@@ -25,7 +26,12 @@ public class TgxTilePhysicalLayer : TgxGameLayer
                 Priority = 0,
                 Wrap = false,
                 Is8Bit = null,
-                Renderer = new CollisionMapScreenRenderer(Width, Height, CollisionMap),
+                Renderer = new CollisionMapScreenRenderer(
+                    collisionTileSet: Engine.Assets.FixContentManager.Load<Texture2D>(Assets.Playfield.CollisionTileSet), 
+                    tileSize: Tile.Size, 
+                    width: Width, 
+                    height: Height, 
+                    collisionMap: CollisionMap),
                 RenderContext = RenderContext,
             };
             Gfx.AddScreen(DebugScreen);

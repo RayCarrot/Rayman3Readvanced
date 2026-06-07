@@ -757,6 +757,18 @@
 /processorParam:TextureFormat=Color
 /build:GbaMonoGame.Rayman3/Intro/IntroLogo_Part8.png
 
+#begin CollisionTileSet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:GbaMonoGame.Rayman3/J2ME/CollisionTileSet.png
+
 #begin BossMachine_ExtendedLayer0_GBA.png
 /importer:TextureImporter
 /processor:TextureProcessor

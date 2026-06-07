@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GbaMonoGame.TgxEngine;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3.J2ME;
@@ -8,7 +9,8 @@ public partial class Game
     public const int TILE_SIZE = 16;
 
     // Custom
-    public Texture2D BackgroundTexture { get; set; }
+    public GfxScreen BackgroundScreen { get; set; }
+    public GfxScreen CollisionScreen { get; set; }
 
     // A lot of these are unused in Readvanced since we don't draw the background in the fast mode
     public short m_sBackgroundHeight { get; set; }
@@ -47,11 +49,11 @@ public partial class Game
         Color[] tileSetPixels = new Color[tileSet.Width * tileSet.Height];
         tileSet.GetData(tileSetPixels);
         
-        BackgroundTexture = new Texture2D(Engine.Assets.GraphicsDevice, m_sBackgroundWidth * TILE_SIZE, m_sBackgroundHeight * TILE_SIZE); // TODO: Dispose
-        Color[] pixels = new Color[BackgroundTexture.Width * BackgroundTexture.Height];
-        for (int y = 0; y < BackgroundTexture.Height; y += TILE_SIZE)
+        Texture2D bgTexture = new(Engine.Assets.GraphicsDevice, m_sBackgroundWidth * TILE_SIZE, m_sBackgroundHeight * TILE_SIZE); // TODO: Dispose
+        Color[] pixels = new Color[bgTexture.Width * bgTexture.Height];
+        for (int y = 0; y < bgTexture.Height; y += TILE_SIZE)
         {
-            for (int x = 0; x < BackgroundTexture.Width; x += TILE_SIZE)
+            for (int x = 0; x < bgTexture.Width; x += TILE_SIZE)
             {
                 int id = RM.DirectTwinVQ_Read(m_iBackgroundDataIndex, x / TILE_SIZE, y / TILE_SIZE, 0) & 0xFF;
                 int tileSetX = (id % m_iBackgroundTileCountX) * TILE_SIZE;
@@ -61,12 +63,46 @@ public partial class Game
                 {
                     for (int xx = 0; xx < TILE_SIZE; xx++)
                     {
-                        pixels[(y + yy) * BackgroundTexture.Width + (x + xx)] = tileSetPixels[(tileSetY + yy) * tileSet.Width + (tileSetX + xx)];
+                        pixels[(y + yy) * bgTexture.Width + (x + xx)] = tileSetPixels[(tileSetY + yy) * tileSet.Width + (tileSetX + xx)];
                     }
                 }
             }
         }
-        BackgroundTexture.SetData(pixels);
+        bgTexture.SetData(pixels);
+
+        BackgroundScreen = new GfxScreen(0)
+        {
+            Priority = 0,
+            RenderOptions = Graphics.RenderOptions,
+            IsEnabled = true,
+            Renderer = new TextureScreenRenderer(bgTexture)
+        };
+        Gfx.AddScreen(BackgroundScreen);
+
+        // TODO: Debug only
+        byte[] collisionMap = new byte[m_sBackgroundWidth * m_sBackgroundHeight];
+        for (int y = 0; y < m_sBackgroundHeight; y++)
+        {
+            for (int x = 0; x < m_sBackgroundWidth; x++)
+            {
+                PHB_TYPE physicalType = PF_getPHBI(x, y);
+                collisionMap[y * m_sBackgroundWidth + x] = (byte)physicalType;
+            }
+        }
+
+        CollisionScreen = new GfxScreen(-1)
+        {
+            Priority = 0,
+            RenderOptions = Graphics.RenderOptions,
+            IsEnabled = true,
+            Renderer = new CollisionMapScreenRenderer(
+                collisionTileSet: Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.J2ME.CollisionTileSet),
+                tileSize: TILE_SIZE,
+                width: m_sBackgroundWidth, 
+                height: m_sBackgroundHeight, 
+                collisionMap: collisionMap)
+        };
+        Gfx.AddScreen(CollisionScreen);
     }
 
     public PHB_TYPE PF_getPHBI(int x, int y)
@@ -82,7 +118,7 @@ public partial class Game
 
     public int PF_getSlopeDisp(PHB_TYPE phb, int off)
     {
-        if (phb == PHB_TYPE.TYPE_2)
+        if (phb == PHB_TYPE.SOLID_HALF)
         {
             return RM.GetDataResource(RESOURCE_ID_DATA_SLOPE_DISPLACEMENTS)[48 + off] << 4;
         }
@@ -156,7 +192,8 @@ public partial class Game
         {
             int cx = m_iBackgroundX;
             int cy = m_iBackgroundY;
-            g.DrawTexture(BackgroundTexture, -cx, -cy);
+            BackgroundScreen.Offset = new Vector2(cx, cy);
+            CollisionScreen.Offset = new Vector2(cx, cy);
         }
         // Original game code
         else if (false)

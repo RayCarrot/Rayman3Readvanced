@@ -92,6 +92,9 @@ public partial class Game
                 }
                 RM.Synchronize();
 
+                // Custom - clear screens
+                Gfx.ClearScreens();
+
                 // Load current level
                 offset = 15 * iLevel;
                 if (iLevel != LEVEL_MENU)

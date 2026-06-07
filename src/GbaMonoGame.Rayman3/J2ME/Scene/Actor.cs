@@ -567,18 +567,18 @@ public class Actor
             dy = (short)(int)((tilePosY << 8 << 4) - y);
             tilePosY--;
             phb = Actor_GetPHB(tilePosX, tilePosY);
-            if (phb == PHB_TYPE.TYPE_28)
+            if (phb == PHB_TYPE.MOVING_PLATFORM_STOP)
                 bWasPHBStop = true;
         }
 
         if (phb is 
-            PHB_TYPE.TYPE_2 or 
-            PHB_TYPE.TYPE_4 or 
-            PHB_TYPE.TYPE_5 or 
-            PHB_TYPE.TYPE_6 or 
-            PHB_TYPE.TYPE_7 or 
-            PHB_TYPE.TYPE_8 or 
-            PHB_TYPE.TYPE_9)
+            PHB_TYPE.SOLID_HALF or 
+            PHB_TYPE.SOLID_ANGLE_90_LEFT or 
+            PHB_TYPE.SOLID_ANGLE_90_RIGHT or 
+            PHB_TYPE.SOLID_ANGLE_30_LEFT_1 or 
+            PHB_TYPE.SOLID_ANGLE_30_LEFT_2 or 
+            PHB_TYPE.SOLID_ANGLE_30_RIGHT_1 or 
+            PHB_TYPE.SOLID_ANGLE_30_RIGHT_2)
         {
             int displacement = GameMidlet.Instance_Game.PF_getSlopeDisp(phb, (int)((((x + dx) >> 8) & 0xFL) / 2L));
             dy = (short)(int)((tilePosY << 8 << 4) + displacement * 2 - y);
@@ -608,13 +608,13 @@ public class Actor
                     {
                         phb = Actor_GetPHB(k + 1, i);
                         if (phb is
-                            PHB_TYPE.TYPE_2 or
-                            PHB_TYPE.TYPE_4 or
-                            PHB_TYPE.TYPE_5 or
-                            PHB_TYPE.TYPE_6 or
-                            PHB_TYPE.TYPE_7 or
-                            PHB_TYPE.TYPE_8 or
-                            PHB_TYPE.TYPE_9)
+                            PHB_TYPE.SOLID_HALF or
+                            PHB_TYPE.SOLID_ANGLE_90_LEFT or
+                            PHB_TYPE.SOLID_ANGLE_90_RIGHT or
+                            PHB_TYPE.SOLID_ANGLE_30_LEFT_1 or
+                            PHB_TYPE.SOLID_ANGLE_30_LEFT_2 or
+                            PHB_TYPE.SOLID_ANGLE_30_RIGHT_1 or
+                            PHB_TYPE.SOLID_ANGLE_30_RIGHT_2)
                             return false;
                     }
                 }
@@ -625,13 +625,13 @@ public class Actor
                     {
                         phb = Actor_GetPHB(m - 1, i);
                         if (phb is
-                            PHB_TYPE.TYPE_2 or
-                            PHB_TYPE.TYPE_4 or
-                            PHB_TYPE.TYPE_5 or
-                            PHB_TYPE.TYPE_6 or
-                            PHB_TYPE.TYPE_7 or
-                            PHB_TYPE.TYPE_8 or
-                            PHB_TYPE.TYPE_9)
+                            PHB_TYPE.SOLID_HALF or
+                            PHB_TYPE.SOLID_ANGLE_90_LEFT or
+                            PHB_TYPE.SOLID_ANGLE_90_RIGHT or
+                            PHB_TYPE.SOLID_ANGLE_30_LEFT_1 or
+                            PHB_TYPE.SOLID_ANGLE_30_LEFT_2 or
+                            PHB_TYPE.SOLID_ANGLE_30_RIGHT_1 or
+                            PHB_TYPE.SOLID_ANGLE_30_RIGHT_2)
                             return false;
                     }
                 }
@@ -1006,11 +1006,11 @@ public class Actor
                 PHB_TYPE phb = Actor_GetPHB(nx, ny);
                 switch (phb)
                 {
-                    case PHB_TYPE.TYPE_28:
+                    case PHB_TYPE.MOVING_PLATFORM_STOP:
                         anim.newAction = 5;
                         break;
 
-                    case PHB_TYPE.TYPE_20:
+                    case PHB_TYPE.MOVING_PLATFORM_RIGHT:
                         if (action == 4)
                         {
                             V[1] = 20;
@@ -1022,7 +1022,7 @@ public class Actor
                         }
                         break;
                     
-                    case PHB_TYPE.TYPE_21:
+                    case PHB_TYPE.MOVING_PLATFORM_LEFT:
                         if (action == 6)
                         {
                             V[1] = 20;
@@ -1034,27 +1034,27 @@ public class Actor
                         }
                         break;
                     
-                    case PHB_TYPE.TYPE_22:
+                    case PHB_TYPE.MOVING_PLATFORM_UP:
                         anim.newAction = 8;
                         break;
                     
-                    case PHB_TYPE.TYPE_23:
+                    case PHB_TYPE.MOVING_PLATFORM_DOWN:
                         anim.newAction = 2;
                         break;
                     
-                    case PHB_TYPE.TYPE_24:
+                    case PHB_TYPE.MOVING_PLATFORM_UP_RIGHT:
                         anim.newAction = 9;
                         break;
                     
-                    case PHB_TYPE.TYPE_25:
+                    case PHB_TYPE.MOVING_PLATFORM_UP_LEFT:
                         anim.newAction = 7;
                         break;
                     
-                    case PHB_TYPE.TYPE_26:
+                    case PHB_TYPE.MOVING_PLATFORM_DOWN_RIGHT:
                         anim.newAction = 3;
                         break;
                     
-                    case PHB_TYPE.TYPE_27:
+                    case PHB_TYPE.MOVING_PLATFORM_DOWN_LEFT:
                         anim.newAction = 1;
                         break;
                 }
@@ -2624,14 +2624,14 @@ public class Actor
         for (int i = (int)(y + (colBox.Top << 8)); i <= y + (colBox.Bottom << 8); i += 0x1000)
         {
             PHB_TYPE phb = Actor_GetPHB((int)(x >> 8 >> 4), i >> 8 >> 4);
-            if (phb == PHB_TYPE.TYPE_18)
+            if (phb == PHB_TYPE.INSTA_KILL)
             {
                 anim.newAction = 33;
                 GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.rayman_death, true);
                 return true;
             }
 
-            if (phb == PHB_TYPE.TYPE_29 || bWasPHBStop)
+            if (phb == PHB_TYPE.WATER || bWasPHBStop)
             {
                 anim.newAction = 32;
                 bWasPHBStop = false;
@@ -2639,7 +2639,7 @@ public class Actor
                 return true;
             }
 
-            if (phb == PHB_TYPE.TYPE_17)
+            if (phb == PHB_TYPE.DAMAGE)
             {
                 doDamage();
                 return true;
@@ -2742,6 +2742,11 @@ public class Actor
                 x -= speed;
             else if (Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorRight))
                 x += speed;
+
+            x = Math.Clamp(x, 0, (GameMidlet.Instance_Game.m_sBackgroundWidth * Game.TILE_SIZE - 1) << 8);
+            y = Math.Clamp(y, 0, (GameMidlet.Instance_Game.m_sBackgroundHeight * Game.TILE_SIZE - 1) << 8);
+
+            V[1] = 0;
 
             return;
         }
