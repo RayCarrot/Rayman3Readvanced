@@ -25,6 +25,7 @@ public class Graphics
     public Rectangle Clip { get; set; } // TODO: Remove this
     public Color Color { get; set; }
     public Font Font { get; set; }
+    public int Priority { get; set; } = 1;
 
     private static float AnchorX(float x, float width, ANCHOR anchor)
     {
@@ -90,6 +91,7 @@ public class Graphics
         sprite.Position = new Vector2(x, y);
         sprite.AffineMatrix = new AffineMatrix(0, new Vector2(width, height));
         sprite.RenderOptions = RenderOptions;
+        sprite.Priority = Priority;
         Sprites.Add(sprite);
     }
 
@@ -117,6 +119,7 @@ public class Graphics
         sprite.Texture = img;
         sprite.Position = new Vector2(x, y);
         sprite.RenderOptions = RenderOptions;
+        sprite.Priority = Priority;
         sprite.TextureRectangle = clip;
         Sprites.Add(sprite);
     }
@@ -135,6 +138,7 @@ public class Graphics
         sprite.Texture = src;
         sprite.Position = new Vector2(x_dest, y_dest);
         sprite.RenderOptions = RenderOptions;
+        sprite.Priority = Priority;
         sprite.TextureRectangle = clip;
         sprite.FlipX = transform == TRANS.MIRROR;
         Sprites.Add(sprite);
@@ -165,7 +169,7 @@ public class Graphics
                 fontSize: Font.Size,
                 transformation: transformation,
                 position: ref pos,
-                priority: 0,
+                priority: Priority,
                 affineMatrix: null,
                 alpha: AlphaCoefficient.Max,
                 color: Color,

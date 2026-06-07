@@ -72,7 +72,7 @@ public partial class Game
 
         BackgroundScreen = new GfxScreen(0)
         {
-            Priority = 0,
+            Priority = 1,
             RenderOptions = Graphics.RenderOptions,
             IsEnabled = true,
             Renderer = new TextureScreenRenderer(bgTexture)
