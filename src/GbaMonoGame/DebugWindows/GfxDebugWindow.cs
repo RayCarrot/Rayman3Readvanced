@@ -79,18 +79,12 @@ public class GfxDebugWindow : DebugWindow
                 ImGui.Text($"Original scaled game resolution: {Rom.OriginalScaledGameRenderContext.Resolution.X} x {Rom.OriginalScaledGameRenderContext.Resolution.Y}");
                 ImGui.Text($"Internal game resolution: {Engine.ViewPort.InternalGameResolution.X} x {Engine.ViewPort.InternalGameResolution.Y}");
 
-                float resX = Engine.ViewPort.InternalGameResolution.X;
-                float resY = Engine.ViewPort.InternalGameResolution.Y;
-                if (ImGui.SliderFloat("Internal resolution X", ref resX, Single.Epsilon, 1000))
-                {
+                int resX = (int)Engine.ViewPort.InternalGameResolution.X;
+                int resY = (int)Engine.ViewPort.InternalGameResolution.Y;
+                if (ImGui.SliderInt("Internal resolution X", ref resX, 1, 1000))
                     Engine.ViewPort.SetInternalGameResolution(new Vector2(resX, resY));
-                    Engine.Settings.Local.Tweaks.InternalGameResolution = new Vector2(resX, resY);
-                }
-                if (ImGui.SliderFloat("Internal resolution Y", ref resY, Single.Epsilon, 1000))
-                {
+                if (ImGui.SliderInt("Internal resolution Y", ref resY, 1, 1000))
                     Engine.ViewPort.SetInternalGameResolution(new Vector2(resX, resY));
-                    Engine.Settings.Local.Tweaks.InternalGameResolution = new Vector2(resX, resY);
-                }
 
                 ImGui.Spacing();
                 ImGui.SeparatorText("Fade");

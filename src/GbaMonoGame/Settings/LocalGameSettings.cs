@@ -8,6 +8,7 @@ public class LocalGameSettings
     public SoundGameSettings Sound { get; set; } = new();
     public TweaksGameSettings Tweaks { get; set; } = new();
     public DifficultyGameSettings Difficulty { get; set; } = new();
+    public J2MEGameSettings J2ME { get; set; } = new();
     public DebugGameSettings Debug { get; set; } = new(); // Can only be manually modified
 
     public void Serialize(BaseIniSerializer serializer)
@@ -18,6 +19,7 @@ public class LocalGameSettings
         Sound = serializer.SerializeSectionObject(Sound);
         Tweaks = serializer.SerializeSectionObject(Tweaks);
         Difficulty = serializer.SerializeSectionObject(Difficulty);
+        J2ME = serializer.SerializeSectionObject(J2ME);
         Debug = serializer.SerializeSectionObject(Debug);
     }
 }

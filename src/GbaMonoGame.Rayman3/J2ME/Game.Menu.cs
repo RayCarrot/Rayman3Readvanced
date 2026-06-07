@@ -234,6 +234,14 @@ public partial class Game
                 Menu_InsertOption(RM.GetString(STRING_ID_RESUME), 0);
                 Menu_InsertOption(RM.GetString(STRING_ID_RESTART), 1);
 
+                // Custom for changing the resolution
+                if (Engine.ViewPort.InternalGameResolution == GameMidlet.OriginalResolution)
+                    Menu_InsertOption($"Resolution : Original ({Resolution.X}x{Resolution.Y})", 5);
+                else if (Engine.ViewPort.InternalGameResolution == GameMidlet.ModernResolution)
+                    Menu_InsertOption($"Resolution : Widescreen ({Resolution.X}x{Resolution.Y})", 5);
+                else
+                    Menu_InsertOption($"Resolution : {Resolution.X}x{Resolution.Y}", 5);
+
                 switch (SoundVolume)
                 {
                     case VOL_HIGH:
@@ -500,6 +508,15 @@ public partial class Game
                             GameFrame_PostMessage(MESSAGE_ID.EXIT, 0);
                             m_gameFrame_prevState = GAME_FRAME_STATE.DEFAULT;
                             bConfirm = false;
+                            break;
+
+                        // Custom for changing the resolution
+                        case 5:
+                            Vector2 res = Resolution == GameMidlet.ModernResolution ? GameMidlet.OriginalResolution : GameMidlet.ModernResolution;
+                            Engine.Settings.Local.J2ME.InternalGameResolution = res;
+                            Engine.ViewPort.SetInternalGameResolution(res);
+                            Menu_UpdatePage();
+                            Camera_Tick();
                             break;
                     }
 

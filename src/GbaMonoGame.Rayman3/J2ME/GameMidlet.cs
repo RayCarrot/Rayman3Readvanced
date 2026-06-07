@@ -34,8 +34,10 @@ public class GameMidlet : Frame
     private float _oldFramerate;
     private Vector2 _oldResolution;
 
-    public static Vector2 OriginalResolution => new(240, 320);
-    public static Point OriginalIntegerResolution => new(240, 320);
+    public static Vector2 OriginalResolution { get; } = Resolution.J2ME;
+    public static Point OriginalIntegerResolution { get; } = Resolution.J2ME.ToPoint();
+    public static Vector2 ModernResolution { get; } = Resolution.J2MEModern;
+    public static Point ModernIntegerResolution { get; } = Resolution.J2MEModern.ToPoint();
 
     public static Game Instance_Game { get; set; }
     public static bool bSuspended { get; set; }
@@ -52,7 +54,7 @@ public class GameMidlet : Frame
 
         // Override the resolution
         _oldResolution = Engine.ViewPort.InternalGameResolution;
-        Engine.ViewPort.SetInternalGameResolution(OriginalResolution);
+        Engine.ViewPort.SetInternalGameResolution(Engine.Settings.Local.J2ME.InternalGameResolution);
 
         // Override the framerate
         _oldFramerate = Engine.App.Framerate;

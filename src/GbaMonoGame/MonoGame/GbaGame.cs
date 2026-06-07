@@ -337,8 +337,8 @@ public abstract class GbaGame : Game
             _debugGameRenderTarget.BeginRender();
 
         if (!DebugMode && 
-            (Engine.Window.GetResolution() != _prevWindowResolution || 
-             Engine.Settings.Active.Tweaks.InternalGameResolution != _prevInternalResolution || 
+            (Engine.Window.GetResolution() != _prevWindowResolution ||
+             Engine.ViewPort.InternalGameResolution != _prevInternalResolution || 
              Engine.Settings.Local.Display.LockWindowAspectRatio != _prevLockWindowAspectRatio))
         {
             Point newRes = Engine.Window.GetResolution();
