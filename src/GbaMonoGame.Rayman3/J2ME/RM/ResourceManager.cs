@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.IO.Compression;
 using System.Text;
 using BinarySerializer;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,6 +10,19 @@ namespace GbaMonoGame.Rayman3.J2ME;
 // NOTE: In the original game this is part of the Game class and all members are prefixed with 'RM_'
 public class ResourceManager
 {
+    public ResourceManager(JavaArchive javaArchive)
+    {
+        // Read and cache the archives
+        Archives = new byte[ARCHIVES_COUNT][];
+        for (int i = 0; i < Archives.Length; i++)
+        {
+            ZipArchiveEntry archiveEntry = javaArchive.GetFile(kArchive_Names[i]);
+            using Stream archiveStream = archiveEntry.Open();
+            Archives[i] = new byte[archiveEntry.Length];
+            archiveStream.ReadExactly(Archives[i]);
+        }
+    }
+
     public const int ERRORCODE_OK = 0;
     public const int ERRORCODE_WARNING_SYNC_UP_TO_DATE = -1;
     public const int ERRORCODE_WARNING_RESOURCE_ALREADY_REQUESTED = -2;
@@ -27,6 +41,9 @@ public class ResourceManager
     public const int ARCHIVES_COUNT = 3;
     public const int MAX_IMAGE_RESOURCES_COUNT = 21;
     public const int MAX_DATA_RESOURCES_COUNT = 70;
+
+    // Custom to cache the archives
+    public byte[][] Archives { get; }
 
     public MANAGER_STATUS Manager_Status { get; set; }
     public byte[][] Array_Data { get; set; }
@@ -468,8 +485,7 @@ public class ResourceManager
             {
                 try
                 {
-                    // TODO: Don't hard-code path. Also read from and cache entire .jar file.
-                    using FileStream Archive_InputStream = File.OpenRead(Path.Combine(Engine.UserData.GetDirectory("J2me"), kArchive_Names[Archive_Index]));
+                    using MemoryStream Archive_InputStream = new(Archives[Archive_Index]);
                     
                     int File_CurrentOffset = Resource_Status[Archive_Index].Length * 4;
                     int File_DestOffset = File_CurrentOffset;

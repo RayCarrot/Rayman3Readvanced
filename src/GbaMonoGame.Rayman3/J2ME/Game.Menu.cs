@@ -780,9 +780,7 @@ public partial class Game
 
     public string ReadVersionFromManifest()
     {
-        // TODO: Implement
-        return String.Empty;
-        // return GameMidlet.Instance_Midlet.getAppProperty("MIDlet-Version");
+        return JavaArchive.GetManifestValue("MIDlet-Version");
     }
 
     // Unused

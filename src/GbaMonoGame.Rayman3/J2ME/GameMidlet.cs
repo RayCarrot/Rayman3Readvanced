@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.IO;
 using BinarySerializer.Ubisoft.GbaEngine;
 using Microsoft.Xna.Framework;
 
@@ -11,6 +12,7 @@ namespace GbaMonoGame.Rayman3.J2ME;
 // TODO: Implement auto-pause on lost focus
 // TODO: Add cheat menu for debug collision and other cheats
 // TODO: Show save icon when saving
+// TODO: Change J2ME to J2me?
 public class GameMidlet : Frame
 {
     private const float Framerate = 1 / 0.045f;
@@ -41,6 +43,8 @@ public class GameMidlet : Frame
     public static Game Instance_Game { get; set; }
     public static bool bSuspended { get; set; }
 
+    public JavaArchive JavaArchive { get; set; }
+
     public override void Init()
     {
         // Set rich presence
@@ -59,13 +63,22 @@ public class GameMidlet : Frame
         _oldFramerate = Engine.App.Framerate;
         Engine.App.Framerate = Framerate;
 
+        // Read the game file
+        JavaArchive = new JavaArchive(Path.Combine(Engine.UserData.GetDirectory("J2me"), "rayman3.jar"), cache: true);
+
+        // TODO: Validate the manifest values (version etc.)
+
         // Start the game
-        Instance_Game = new Game();
+        Instance_Game = new Game(JavaArchive);
         Instance_Game.start();
     }
 
     public override void UnInit()
     {
+        // Dispose the Java archive
+        JavaArchive.Dispose();
+        JavaArchive = null;
+
         // Stop the game
         Instance_Game.StopSound();
         Instance_Game = null;

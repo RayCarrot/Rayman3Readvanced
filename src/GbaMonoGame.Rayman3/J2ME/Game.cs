@@ -4,10 +4,11 @@ namespace GbaMonoGame.Rayman3.J2ME;
 
 public partial class Game
 {
-    public Game()
+    public Game(JavaArchive javaArchive)
     {
         // Custom
-        RM = new ResourceManager();
+        JavaArchive = javaArchive;
+        RM = new ResourceManager(javaArchive);
 
         Graphics = new Graphics();
 
@@ -29,6 +30,7 @@ public partial class Game
     }
 
     // Custom
+    public JavaArchive JavaArchive { get; }
     public ResourceManager RM { get; }
     public Graphics Graphics { get; set; }
     public Vector2 Resolution => Graphics.Resolution; // Use for rendering
