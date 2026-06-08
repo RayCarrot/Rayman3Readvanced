@@ -194,6 +194,7 @@ public partial class Game
             int cy = m_iBackgroundY;
             BackgroundScreen.Offset = new Vector2(cx, cy);
             CollisionScreen.Offset = new Vector2(cx, cy);
+            CollisionScreen.IsEnabled = !m_gameFrame_paused;
         }
         // Original game code
         else if (false)
