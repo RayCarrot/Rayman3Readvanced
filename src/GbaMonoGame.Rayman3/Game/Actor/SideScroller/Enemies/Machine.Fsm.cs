@@ -352,7 +352,8 @@ public partial class Machine
                     Rayman rayman = (Rayman)Scene.MainActor;
                     if (rayman.State != rayman._Fsm_Dying && rayman.State != rayman._Fsm_RespawnDeath && rayman.State != rayman._Fsm_EndMap)
                     {
-                        Rayman3.Achievements.Unlock(AchievementId.DefeatBossMachine);
+                        if (!Rayman3.TimeAttack.IsActive)
+                            Rayman3.Achievements.Unlock(AchievementId.DefeatBossMachine);
                         rayman.ProcessMessage(this, Message.Rayman_FinishLevel);
                     }
                 }

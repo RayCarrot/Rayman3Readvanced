@@ -672,7 +672,8 @@ public partial class Scaleman
                 if (IsActionFinished)
                 {
                     ProcessMessage(this, Message.Destroy);
-                    Rayman3.Achievements.Unlock(AchievementId.DefeatBossScaleMan);
+                    if (!Rayman3.TimeAttack.IsActive)
+                        Rayman3.Achievements.Unlock(AchievementId.DefeatBossScaleMan);
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
                 }
                 break;

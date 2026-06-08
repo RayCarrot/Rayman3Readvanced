@@ -3980,7 +3980,7 @@ public partial class Rayman
                     ActionId = IsFacingRight ? Action.Fall_Right : Action.Fall_Left;
                 }
 
-                if (FinishedMap)
+                if (FinishedMap && !Rayman3.TimeAttack.IsActive)
                 {
                     if (Rayman3.GameInfo.MapId == MapId.CavesOfBadDreams_M1 && Rayman3Achievements.CaveBadDreamsM1_HitSkulls <= 17) 
                         Rayman3.Achievements.Unlock(AchievementId.CompleteCaveBadDreamsWithMaxSkullHits);

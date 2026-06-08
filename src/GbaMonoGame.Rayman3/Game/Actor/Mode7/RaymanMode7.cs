@@ -113,7 +113,7 @@ public sealed partial class RaymanMode7 : Mode7Actor
                 Engine.Sem.ReplaceAllSongs(Rayman3SoundEvent.Play__win3, 0);
                 LevelMusicManager.HasOverridenLevelMusic = false;
 
-                if (Rayman3.GameInfo.MapId == MapId.MarshAwakening1 && !Rayman3Achievements.MarshAwakening1_HasMoved)
+                if (!Rayman3.TimeAttack.IsActive && Rayman3.GameInfo.MapId == MapId.MarshAwakening1 && !Rayman3Achievements.MarshAwakening1_HasMoved)
                     Rayman3.Achievements.Unlock(AchievementId.CompleteMarshAwakening1WithoutMoving);
                 return true;
 

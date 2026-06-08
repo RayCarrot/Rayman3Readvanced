@@ -386,9 +386,9 @@ public partial class MissileMode7
                 if (Rayman3.TimeAttack.IsActive)
                     Rayman3.TimeAttack.Pause();
 
-                if (Rayman3.GameInfo.MapId == MapId.MissileRace1 && !Rayman3Achievements.MissileRace1_HasStrafed)
+                if (!Rayman3.TimeAttack.IsActive && Rayman3.GameInfo.MapId == MapId.MissileRace1 && !Rayman3Achievements.MissileRace1_HasStrafed)
                     Rayman3.Achievements.Unlock(AchievementId.CompleteMissileRace1WithoutStrafing);
-                if (Rayman3.GameInfo.MapId == MapId.MissileRace2 && !Rayman3Achievements.MissileRace2_HasTakenDamage)
+                if (!Rayman3.TimeAttack.IsActive && Rayman3.GameInfo.MapId == MapId.MissileRace2 && !Rayman3Achievements.MissileRace2_HasTakenDamage)
                     Rayman3.Achievements.Unlock(AchievementId.CompleteMissileRace2WithoutDamage);
                 break;
 

@@ -806,7 +806,8 @@ public partial class Jano
             case FsmAction.Init:
                 ActionId = Action.Complete;
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__ScalDead_Mix02, this);
-                Rayman3.Achievements.Unlock(AchievementId.DefeatBossBadDreams);
+                if (!Rayman3.TimeAttack.IsActive)
+                    Rayman3.Achievements.Unlock(AchievementId.DefeatBossBadDreams);
                 Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
                 Timer = 0;
                 Position = Position with { Y = OffsetY + 150 };

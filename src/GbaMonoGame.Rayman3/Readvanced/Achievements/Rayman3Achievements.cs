@@ -344,6 +344,9 @@ public static class Rayman3Achievements
 
     public static void CheckProgressionBasedAchievements()
     {
+        if (RSMultiplayer.IsActive || Rayman3.TimeAttack.IsActive)
+            return;
+
         // Check all progression-based achievements here so that they can be retroactively unlocked if importing a save
 
         // Check for world completions
@@ -401,42 +404,42 @@ public static class Rayman3Achievements
 
     public static void DefeatPirateType(PirateType pirateType)
     {
-        if (!RSMultiplayer.IsActive && !Rayman3.TimeAttack.IsActive)
-        {
-            Rayman3.GameInfo.SaveSlot.DefeatedPirateTypes |= pirateType;
+        if (RSMultiplayer.IsActive || Rayman3.TimeAttack.IsActive) 
+            return;
+        
+        Rayman3.GameInfo.SaveSlot.DefeatedPirateTypes |= pirateType;
 
-            if (Rayman3.GameInfo.SaveSlot.DefeatedPirateTypes == PirateType.All)
-                Rayman3.Achievements.Unlock(AchievementId.DefeatEveryPirateType);
-        }
+        if (Rayman3.GameInfo.SaveSlot.DefeatedPirateTypes == PirateType.All)
+            Rayman3.Achievements.Unlock(AchievementId.DefeatEveryPirateType);
     }
 
     public static void CollectWhiteLum(Lums lum)
     {
-        if (!RSMultiplayer.IsActive && !Rayman3.TimeAttack.IsActive)
+        if (RSMultiplayer.IsActive || Rayman3.TimeAttack.IsActive) 
+            return;
+        
+        byte mapId = (byte)Rayman3.GameInfo.MapId;
+        int instanceId = lum.InstanceId;
+
+        bool hasCollected = false;
+        foreach (CollectedWhiteLum x in Rayman3.GameInfo.SaveSlot.CollectedWhiteLums)
         {
-            byte mapId = (byte)Rayman3.GameInfo.MapId;
-            int instanceId = lum.InstanceId;
-
-            bool hasCollected = false;
-            foreach (CollectedWhiteLum x in Rayman3.GameInfo.SaveSlot.CollectedWhiteLums)
+            if (x.MapId == mapId && x.InstanceId == instanceId)
             {
-                if (x.MapId == mapId && x.InstanceId == instanceId)
-                {
-                    hasCollected = true;
-                    break;
-                }
+                hasCollected = true;
+                break;
             }
+        }
 
-            if (!hasCollected)
-            {
-                CollectedWhiteLum[] collectedWhiteLums = new CollectedWhiteLum[Rayman3.GameInfo.SaveSlot.CollectedWhiteLums.Length + 1];
-                Array.Copy(Rayman3.GameInfo.SaveSlot.CollectedWhiteLums, collectedWhiteLums, Rayman3.GameInfo.SaveSlot.CollectedWhiteLums.Length);
-                collectedWhiteLums[^1] = new CollectedWhiteLum(mapId, instanceId);
-                Rayman3.GameInfo.SaveSlot.CollectedWhiteLums = collectedWhiteLums;
+        if (!hasCollected)
+        {
+            CollectedWhiteLum[] collectedWhiteLums = new CollectedWhiteLum[Rayman3.GameInfo.SaveSlot.CollectedWhiteLums.Length + 1];
+            Array.Copy(Rayman3.GameInfo.SaveSlot.CollectedWhiteLums, collectedWhiteLums, Rayman3.GameInfo.SaveSlot.CollectedWhiteLums.Length);
+            collectedWhiteLums[^1] = new CollectedWhiteLum(mapId, instanceId);
+            Rayman3.GameInfo.SaveSlot.CollectedWhiteLums = collectedWhiteLums;
 
-                if (Rayman3.GameInfo.SaveSlot.CollectedWhiteLums.Length == GetTotalLivesCount())
-                    Rayman3.Achievements.Unlock(AchievementId.CollectAllLives);
-            }
+            if (Rayman3.GameInfo.SaveSlot.CollectedWhiteLums.Length == GetTotalLivesCount())
+                Rayman3.Achievements.Unlock(AchievementId.CollectAllLives);
         }
     }
 }
