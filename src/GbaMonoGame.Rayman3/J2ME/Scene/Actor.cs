@@ -145,30 +145,31 @@ public class Actor
             return false;
 
         return GameObj_isCollideBox(
+            colBox,
             (int)((that.x >> 8) + that.colBox.Left), 
             (int)((that.y >> 8) + that.colBox.Top),
             that.colBox.Right - that.colBox.Left, 
             that.colBox.Bottom - that.colBox.Top);
     }
 
-    public bool GameObj_isCollideBox(int l, int t, int w, int h)
+    public bool GameObj_isCollideBox(Box box, int l, int t, int w, int h)
     {
-        int me = (int)(x >> 8) + colBox.Right;
+        int me = (int)(x >> 8) + box.Right;
         int it = l;
         if (me < it)
             return false;
 
-        me = (int)(x >> 8) + colBox.Left;
+        me = (int)(x >> 8) + box.Left;
         it = l + w;
         if (it < me)
             return false;
         
-        me = (int)(y >> 8) + colBox.Top;
+        me = (int)(y >> 8) + box.Top;
         it = t + h;
         if (it < me)
             return false;
         
-        me = (int)(y >> 8) + colBox.Bottom;
+        me = (int)(y >> 8) + box.Bottom;
         it = t;
         if (me < it)
             return false;

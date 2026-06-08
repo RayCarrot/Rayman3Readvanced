@@ -1,4 +1,5 @@
 ﻿using GbaMonoGame.Engine2d;
+using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.Rayman3.J2ME;
 
@@ -210,16 +211,23 @@ public partial class Game
         {
             if ((actor.stateFlag & ACTOR_STATE.DEAD) == 0 && Camera_IsVisible(actor))
             {
-                int x = (int)((actor.x >> 8) + actor.colBox.Left) - m_iBackgroundX;
-                int y = (int)((actor.y >> 8) + actor.colBox.Top) - m_iBackgroundY;
-                int w = actor.colBox.Right - actor.colBox.Left;
-                int h = actor.colBox.Bottom - actor.colBox.Top;
+                drawBox(actor.colBox, DebugBoxColor.ActionBox);
+                drawBox(actor.anim.GetRenderBox(actor.stateFlag & (ACTOR_STATE.FLIP_X | ACTOR_STATE.FLIP_Y)), DebugBoxColor.DetectionBox);
 
-                Graphics.setColor(DebugBoxColor.ActionBox);
-                Graphics.fillRect(x, y, w, 1); // Top
-                Graphics.fillRect(x, y, 1, h); // Left
-                Graphics.fillRect(x + w, y + h, -1, -h); // Bottom
-                Graphics.fillRect(x + w, y + h, -w, -1); // Right
+                // Helper
+                void drawBox(Box box, Color color)
+                {
+                    int x = (int)((actor.x >> 8) + box.Left) - m_iBackgroundX;
+                    int y = (int)((actor.y >> 8) + box.Top) - m_iBackgroundY;
+                    int w = box.Right - box.Left;
+                    int h = box.Bottom - box.Top;
+
+                    Graphics.setColor(color);
+                    Graphics.fillRect(x, y, w, 1); // Top
+                    Graphics.fillRect(x, y, 1, h); // Left
+                    Graphics.fillRect(x + w, y + h, -1, -h); // Bottom
+                    Graphics.fillRect(x + w, y + h, -w, -1); // Right
+                }
             }
         }
     }

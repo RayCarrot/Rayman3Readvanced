@@ -152,6 +152,10 @@ public partial class Game
 
     public bool Camera_IsVisible(Actor pActor)
     {
-        return pActor.GameObj_isCollideBox(m_iBackgroundX, m_iBackgroundY, IntegerResolution.X, IntegerResolution.Y);
+        // Optionally fix determining if an actor is visible by checking the render box rather than collision box
+        if (Engine.Settings.Local.J2ME.FixBugs)
+            return pActor.GameObj_isCollideBox(pActor.anim.GetRenderBox(pActor.stateFlag & (ACTOR_STATE.FLIP_X | ACTOR_STATE.FLIP_Y)), m_iBackgroundX, m_iBackgroundY, IntegerResolution.X, IntegerResolution.Y);
+        else
+            return pActor.GameObj_isCollideBox(pActor.colBox, m_iBackgroundX, m_iBackgroundY, IntegerResolution.X, IntegerResolution.Y);
     }
 }

@@ -142,4 +142,64 @@ public class Anim
             frameOffset++;
         }
     }
+
+    // Custom helper
+    public Box GetRenderBox(ACTOR_STATE nflag)
+    {
+        if (frameId < 0)
+            return new Box();
+
+        AnimData data = Actor.aniData[(sbyte)type];
+        AnimFrame frameData = data.frames[frameId];
+        int frameOffset = 0;
+        int nbSprite = frameData.SpritesCount;
+
+        int? minX = null;
+        int? minY = null;
+        int? maxX = null;
+        int? maxY = null;
+
+        for (int i = 0; i < nbSprite; i++)
+        {
+            if (i == nbSprite - 1 &&
+                type == OBJECT_TYPE.RAYMAN &&
+                GameMidlet.Instance_Game.pFist[0].anim.curAction != 0 &&
+                GameMidlet.Instance_Game.pRayman.anim.curAction != 10 &&
+                GameMidlet.Instance_Game.pRayman.anim.curAction != 36)
+                break;
+
+            bool flag = !(i == 0 && type == OBJECT_TYPE.RAYMAN && GameMidlet.Instance_Game.pFist[1].anim.curAction != 0);
+            AnimModule pModule = data.modules[frameData.Frames[frameOffset].Module & SByte.MaxValue];
+
+            int nsx;
+            if ((nflag & ACTOR_STATE.FLIP_X) != 0)
+                nsx = -frameData.Frames[frameOffset].X - pModule.Width;
+            else
+                nsx = frameData.Frames[frameOffset].X;
+
+            int nsy = frameData.Frames[frameOffset].Y;
+
+            if (flag)
+            {
+                if (minX == null || nsx < minX)
+                    minX = nsx;
+                if (minY == null || nsy < minY)
+                    minY = nsy;
+                if (maxX == null || nsx + pModule.Width > maxX)
+                    maxX = nsx + pModule.Width;
+                if (maxY == null || nsy + pModule.Height > maxY)
+                    maxY = nsy + pModule.Height;
+            }
+
+            frameOffset++;
+        }
+
+        return new Box
+        {
+            Left = minX ?? 0,
+            Top = minY ?? 0,
+            Right = maxX ?? 0,
+            Bottom = maxY ?? 0
+        };
+    }
 }
