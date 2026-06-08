@@ -117,7 +117,7 @@ public partial class Game
             // makes the first frame render the arrows with background scrolling, making the positions wrong. This only appears in
             // some versions however, but we optionally fix it here.
             bBackgroundState = false;
-            if (Engine.Settings.Active.Tweaks.FixBugs)
+            if (Engine.Settings.Local.J2ME.FixBugs)
                 m_bBackgroundUsed = false;
 
             Actor.drawModule(m_gameMenu_pData, 13, x - Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[13].Width - 4 - Menu_GetRArrowPos(), y, 0, g_graBackBuffer);
@@ -242,6 +242,12 @@ public partial class Game
                 else
                     Menu_InsertOption($"Resolution : {Resolution.X}x{Resolution.Y}", 5);
 
+                // Custom for bug fixes option
+                if (Engine.Settings.Local.J2ME.FixBugs)
+                    Menu_InsertOption("Fix bugs : On", 6);
+                else
+                    Menu_InsertOption("Fix bugs : Off", 6);
+                
                 switch (SoundVolume)
                 {
                     case VOL_HIGH:
@@ -518,6 +524,12 @@ public partial class Game
                             Menu_UpdatePage();
                             Camera_Tick();
                             break;
+
+                        // Custom for bug fixes option
+                        case 6:
+                            Engine.Settings.Local.J2ME.FixBugs = !Engine.Settings.Local.J2ME.FixBugs;
+                            Menu_UpdatePage();
+                            break;
                     }
 
                     switch (m_gameMenu_items_id[m_gameMenu_idCurSel])
@@ -696,7 +708,7 @@ public partial class Game
                 Actor.drawModule(m_gameMenu_pData, 13, 240 - (Actor.aniData[(sbyte)OBJECT_TYPE.FONT]).modules[13].Width - Menu_GetRArrowPos(), 8, 0, g_graBackBuffer);
 
             // Optionally fix bug with arrows de-syncing when only rendering one by updating positions even when not drawing
-            if (Engine.Settings.Active.Tweaks.FixBugs)
+            if (Engine.Settings.Local.J2ME.FixBugs)
             {
                 if (m_gameMenu_idCurSel == 0)
                     Menu_GetLArrowPos();

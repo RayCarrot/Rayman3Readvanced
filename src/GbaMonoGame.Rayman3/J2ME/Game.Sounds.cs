@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using MeltySynth;
-using Microsoft.Xna.Framework.Audio;
 
 namespace GbaMonoGame.Rayman3.J2ME;
 
@@ -165,14 +164,8 @@ public partial class Game
                         return; 
             }
 
-            float masterVolume;
-            if (iSoundIndex is SOUND_INDEX.music_gameover or SOUND_INDEX.music_leveldone or SOUND_INDEX.music_map or SOUND_INDEX.music_splash)
-                masterVolume = Engine.Settings.Local.Sound.MusicVolume;
-            else
-                masterVolume = Engine.Settings.Local.Sound.SfxVolume;
-
             MidiSoundInstance sndInstance = new(SoundFont, MidiFiles[iID], iSoundIndex);
-            sndInstance.SetVolume(SoundVolume / 100f * masterVolume);
+            sndInstance.SetVolume(SoundVolume / 100f);
             sndInstance.Play(loop);
             SoundInstances.Add(sndInstance);
         }
@@ -285,15 +278,7 @@ public partial class Game
         if (true)
         {
             foreach (MidiSoundInstance soundInstance in SoundInstances)
-            {
-                float masterVolume;
-                if (soundInstance.SoundIndex is SOUND_INDEX.music_gameover or SOUND_INDEX.music_leveldone or SOUND_INDEX.music_map or SOUND_INDEX.music_splash)
-                    masterVolume = Engine.Settings.Local.Sound.MusicVolume;
-                else
-                    masterVolume = Engine.Settings.Local.Sound.SfxVolume;
-
-                soundInstance.SetVolume(SoundVolume / 100f * masterVolume);
-            }
+                soundInstance.SetVolume(SoundVolume / 100f);
         }
         // Original game code
         else
