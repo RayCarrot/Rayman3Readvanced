@@ -575,7 +575,6 @@ public partial class Game
         Menu_DrawPage();
     }
 
-    // TODO: Clean up this method
     public void Menu_DrawPageText()
     {
         string[] strArray = new string[13];
@@ -584,7 +583,7 @@ public partial class Game
             iBoxY = 23;
         DrawParchment(10, iBoxY - 2, 220, 272, false);
         g_graBackBuffer.setClip(10, iBoxY, 220, 268);
-        g_graBackBuffer.setColor(3342489);
+        g_graBackBuffer.setColor(0x330099);
 
         if (m_gameMenu_idCurPage == MENU_PAGE.ABOUT)
         {
@@ -598,8 +597,10 @@ public partial class Game
                 if (iID == -1)
                     break;
             }
+
             if (iID == -1)
                 return;
+
             for (int i = 0; i < 13; i++)
             {
                 if (iID == -1)
@@ -613,6 +614,7 @@ public partial class Game
                     strArray[i] = "Version " + ReadVersionFromManifest();
                 iID = RM.NextStringID(iID);
             }
+
             for (int iIndex = 0; iIndex < 13; iIndex++)
             {
                 iStart = -(m_iAboutTicker % 21);
@@ -644,8 +646,10 @@ public partial class Game
                 if (iID == -1)
                     break;
             }
+
             if (iID == -1)
                 return;
+
             for (int i = 0; i < 12; i++)
             {
                 if (iID == -1)
@@ -656,6 +660,7 @@ public partial class Game
                 strArray[i] = RM.GetString(iID);
                 iID = RM.NextStringID(iID);
             }
+
             for (int iIndex = 0; iIndex < 12; iIndex++)
             {
                 if (strArray[iIndex] != null)
@@ -695,17 +700,18 @@ public partial class Game
                     else
                     {
                         int iAdjust = -6;
-                        if (iID == 0x3000B7)
+                        if (iID == STRING_ID_5_LAUNCH_THE_FIST) // NOTE: This condition is always false
                             iAdjust = -12;
                         g_graBackBuffer.drawString(strArray[iIndex], (Resolution.X - m_fontGeneral.stringWidth(strArray[iIndex])) / 2, iBoxY + iIndex * 21 + iAdjust, ANCHOR.LEFT | ANCHOR.TOP);
                     }
                     strArray[iIndex] = null;
                 }
             }
+
             if (m_gameMenu_idCurSel != 0)
                 Actor.drawModule(m_gameMenu_pData, 14, 0 + Menu_GetLArrowPos(), 8, 0, g_graBackBuffer);
             if (!bLast)
-                Actor.drawModule(m_gameMenu_pData, 13, 240 - (Actor.aniData[(sbyte)OBJECT_TYPE.FONT]).modules[13].Width - Menu_GetRArrowPos(), 8, 0, g_graBackBuffer);
+                Actor.drawModule(m_gameMenu_pData, 13, Resolution.X - Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[13].Width - Menu_GetRArrowPos(), 8, 0, g_graBackBuffer);
 
             // Optionally fix bug with arrows de-syncing when only rendering one by updating positions even when not drawing
             if (Engine.Settings.Local.J2ME.FixBugs)
@@ -718,7 +724,6 @@ public partial class Game
         }
     }
 
-    // TODO: Clean up this method
     public void DrawCreditsPage()
     {
         string[] strArray = new string[13];
@@ -732,14 +737,17 @@ public partial class Game
         m_iAboutTicker += 2;
         int iStart = m_iAboutTicker / 21 % total_credits_lines;
         int iID = StringId.Create(0, TEXTBANK_INDEX_CREDITS);
+
         for (int iLoop = 0; iLoop < iStart; iLoop++)
         {
             iID = RM.NextStringID(iID);
             if (iID == -1)
                 break;
         }
+        
         if (iID == -1)
             return;
+        
         for (int i = 0; i < 13; i++)
         {
             if (iID == -1)
@@ -753,6 +761,7 @@ public partial class Game
                 strArray[i] = "Version " + ReadVersionFromManifest();
             iID = RM.NextStringID(iID);
         }
+
         for (int iIndex = 0; iIndex < 13; iIndex++)
         {
             iStart = -(m_iAboutTicker % 21);
@@ -762,9 +771,10 @@ public partial class Game
                 strArray[iIndex] = null;
             }
         }
+
         bool bBackgroundState = m_bBackgroundUsed;
         m_bBackgroundUsed = false;
-        Actor.drawModule(Actor.aniData[(sbyte)OBJECT_TYPE.FONT], 23, 240 - (Actor.aniData[(sbyte)OBJECT_TYPE.FONT]).modules[23].Width, 320 - (Actor.aniData[(sbyte)OBJECT_TYPE.FONT]).modules[23].Height, 0, g_graBackBuffer);
+        Actor.drawModule(Actor.aniData[(sbyte)OBJECT_TYPE.FONT], 23, Resolution.X - Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[23].Width, 320 - (Actor.aniData[(sbyte)OBJECT_TYPE.FONT]).modules[23].Height, 0, g_graBackBuffer);
         m_bBackgroundUsed = bBackgroundState;
     }
 

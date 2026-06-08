@@ -2,7 +2,6 @@
 
 namespace GbaMonoGame.Rayman3.J2ME;
 
-// TODO: Use this everywhere it's needed
 // Custom helpers
 public static class StringId
 {

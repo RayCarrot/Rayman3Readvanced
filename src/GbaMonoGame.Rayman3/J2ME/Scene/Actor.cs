@@ -106,7 +106,7 @@ public class Actor
     public Anim anim { get; } = new();
     public OBJECT_TYPE objType { get; set; }
     public Box colBox { get; set; }
-    public int[] V { get; set; } // TODO: Custom class per object type?
+    public int[] V { get; set; } // NOTE: It would be cleaner to use a custom class per actor type here, but a bit annoying to deal with when copying
     public int[] m_iInitV { get; set; }
     public long x { get; set; }
     public long y { get; set; }

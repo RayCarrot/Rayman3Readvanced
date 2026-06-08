@@ -136,4 +136,6 @@ public partial class Game
 
     public readonly int STRING_ID_SUPPORT_MAIL          = StringId.Create(0x46, TEXTBANK_INDEX_CREDITS); // support mail
     public readonly int STRING_ID_VERSION_NUMBER        = StringId.Create(0x9B, TEXTBANK_INDEX_CREDITS); // Version Number
+
+    public readonly int STRING_ID_5_LAUNCH_THE_FIST     = StringId.Create(0xB7, TEXTBANK_INDEX_HELP); // 5 : launch the fist
 }
