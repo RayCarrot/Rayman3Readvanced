@@ -6,12 +6,11 @@ using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.Rayman3.J2ME;
 
-// TODO: Remove magic values
-// TODO: Widescreen
 // TODO: Remove game's exception handling?
 // TODO: Fix sprite rendering by using separate textures for each sprite
-// TODO: Look into other versions of the game to see differences, check code etc.
 // TODO: Implement auto-pause on lost focus
+// TODO: Add cheat menu for debug collision and other cheats
+// TODO: Show save icon when saving
 public class GameMidlet : Frame
 {
     private const float Framerate = 1 / 0.045f;
@@ -45,7 +44,7 @@ public class GameMidlet : Frame
     public override void Init()
     {
         // Set rich presence
-        Engine.RichPresence.SetPresence("J2ME");
+        Engine.RichPresence.SetPresence("Rayman 3 J2ME");
 
         // Reset previous game state
         Gfx.FadeControl = FadeControl.None;
