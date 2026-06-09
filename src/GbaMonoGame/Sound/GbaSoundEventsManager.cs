@@ -11,6 +11,7 @@ using SoLoud;
 
 namespace GbaMonoGame;
 
+// TODO: Maybe we can re-implement MP2K playback by rewriting the open-source C code to C# and rendering as wave data in real-time? Same way we render MIDI for J2ME.
 public class GbaSoundEventsManager : SoundEventsManager
 {
     #region Constructor

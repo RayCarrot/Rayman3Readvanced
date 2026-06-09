@@ -21,7 +21,7 @@ public enum MapId
     MarshAwakening2 = 16, // Free Falling on N-Gage
     SanctuaryOfStoneAndFire_M1 = 17,
     SanctuaryOfStoneAndFire_M2 = 18,
-    SanctuaryOfStoneAndFire_M3 = 19,
+    SanctuaryOfStoneAndFire_M3 = 19, // TODO: Fix background scrolling here - lava not visible at the bottom of level
     BeneathTheSanctuary_M1 = 20,
     BeneathTheSanctuary_M2 = 21,
     ThePrecipice_M1 = 22,

@@ -82,6 +82,7 @@ public class TimeAttackManager
             },
             debug: Engine.Settings.Local.Debug with
             {
+                // TODO: Close debug layout if currently open
 #if RELEASE
                 DebugModeEnabled = false,
 #endif

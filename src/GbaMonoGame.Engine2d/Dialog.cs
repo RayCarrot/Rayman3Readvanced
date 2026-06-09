@@ -2,7 +2,6 @@
 
 namespace GbaMonoGame.Engine2d;
 
-// TODO: Don't call load/init each time we show/hide modal dialogs
 public abstract class Dialog : Object
 {
     protected Dialog(Scene2D scene)

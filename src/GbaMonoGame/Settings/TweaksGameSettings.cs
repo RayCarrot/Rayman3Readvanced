@@ -48,8 +48,8 @@ public record TweaksGameSettings : IniSectionObject
     public bool VisualImprovements { get; set; }
     public bool ShowMode7Walls { get; set; }
     public bool ShowCollectedLums { get; set; }
-    public bool AllowCheatMenu { get; set; }
-    public bool AllowPrototypeCheats { get; set; }
+    public bool AllowCheatMenu { get; set; } // TODO: Change this to a debug setting?
+    public bool AllowPrototypeCheats { get; set; } // TODO: Change this to a debug setting?
     public bool PlayCheatTriggerSound { get; set; }
     public bool VersatileWalljumps { get; set; }
     public bool UseInputBuffering { get; set; }

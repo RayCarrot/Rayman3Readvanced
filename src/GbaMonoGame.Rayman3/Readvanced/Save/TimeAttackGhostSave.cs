@@ -2,6 +2,7 @@
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
+// TODO: Maybe compress the data? Files get quite big otherwise.
 public class TimeAttackGhostSave : BaseReadvancedSave
 {
     public GhostMapData[] MapGhosts { get; set; }
