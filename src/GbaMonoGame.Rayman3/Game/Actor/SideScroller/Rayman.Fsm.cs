@@ -3797,7 +3797,7 @@ public partial class Rayman
                 // Jump
                 if (Engine.MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump, buffered: true))
                 {
-                    Position = Position with { Y = GetActionBox().Top - 16 };
+                    Position = Position with { Y = ((MovableActor)AttachedObject).GetActionBox().Top - 16 };
 
                     if (Rom.Platform == Platform.NGage)
                         PlumCameraTimer = 0x3c;
