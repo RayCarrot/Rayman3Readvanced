@@ -148,6 +148,22 @@ public class JoyPadDebugWindow : DebugWindow
                 using Writer writer = new(outputStream);
                 foreach (GbaInput input in recordedData.Append(GbaInput.None))
                     writer.Write((ushort)input);
+
+                // Save as mGBA LUA script
+                File.WriteAllText("JoyPadRecording.lua",
+                    $$"""
+                      keys = {{{String.Join(",", recordedData.Select(x => (int)(x & ~GbaInput.Valid)))}}}
+                      function onFrame()
+                      	if not keys[i] then
+                      		callbacks:remove(id)
+                      	else
+                      		emu:setKeys(keys[i])
+                      		i = i + 1
+                      	end
+                      end
+                      i = 1
+                      id = callbacks:add("frame", onFrame)
+                      """);
             }
         }
     }
