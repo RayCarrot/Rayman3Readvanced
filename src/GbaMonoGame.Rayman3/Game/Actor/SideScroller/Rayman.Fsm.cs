@@ -4518,6 +4518,9 @@ public partial class Rayman
                     AttachedObject.ProcessMessage(this, Message.Actor_Drop);
                     AttachedObject = null;
                 }
+
+                // Force invulnerable to avoid taking damage while respawning
+                IsInvulnerable = true;
                 break;
 
             case FsmAction.Step:

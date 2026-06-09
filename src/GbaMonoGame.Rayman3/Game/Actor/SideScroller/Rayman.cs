@@ -2430,6 +2430,7 @@ public sealed partial class Rayman : MovableActor
         if (draw)
         {
             if (IsInvulnerable &&
+                State != _Fsm_RespawnDeath &&
                 !Rayman3.GameInfo.IsCheatEnabled(Cheat.Invulnerable) && 
                 !RSMultiplayer.IsActive && 
                 HitPoints != 0 && 
