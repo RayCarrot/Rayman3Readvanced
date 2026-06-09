@@ -269,7 +269,8 @@ public class Rayman3DebugWindow : DebugWindow
                         }
 
                         // Remove last comma
-                        sb.Remove(sb.Length - 1, 1);
+                        if (sb.Length > 0)
+                            sb.Remove(sb.Length - 1, 1);
 
                         ImGui.SetClipboardText(sb.ToString());
                     }
