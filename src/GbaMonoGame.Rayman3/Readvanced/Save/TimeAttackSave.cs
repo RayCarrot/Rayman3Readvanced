@@ -9,16 +9,16 @@ public class TimeAttackSave : BaseReadvancedSave
         Times = new int[TimesCount];
     }
 
+    public override int Version => 0;
+    public override string Id => "TIME";
+
     // NOTE: Increase this as needed
     private const int TimesCount = 48;
 
     public int[] Times { get; set; }
 
-    public override void SerializeImpl(SerializerObject s)
+    protected override void SerializeSave(SerializerObject s, int version)
     {
-        base.SerializeImpl(s);
-        s.SerializeMagicString("TIME", 4);
-
         Times = s.SerializeArray<int>(Times, TimesCount, name: nameof(Times));
     }
 }

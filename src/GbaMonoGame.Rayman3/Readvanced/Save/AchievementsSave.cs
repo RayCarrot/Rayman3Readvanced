@@ -9,13 +9,13 @@ public class AchievementsSave : BaseReadvancedSave
         UnlockedAchievements = new bool[(int)AchievementId.Count];
     }
 
+    public override int Version => 0;
+    public override string Id => "ACHV";
+
     public bool[] UnlockedAchievements { get; set; }
 
-    public override void SerializeImpl(SerializerObject s)
+    protected override void SerializeSave(SerializerObject s, int version)
     {
-        base.SerializeImpl(s);
-        s.SerializeMagicString("ACHV", 4);
-
         UnlockedAchievements = s.SerializeArray<bool>(UnlockedAchievements, (int)AchievementId.Count, name: nameof(UnlockedAchievements));
     }
 }

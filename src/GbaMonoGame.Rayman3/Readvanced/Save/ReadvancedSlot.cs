@@ -13,7 +13,8 @@ public class ReadvancedSlot : BaseReadvancedSave
         CollectedWhiteLums = [];
     }
 
-    public const int Version = 1;
+    public override int Version => 1;
+    public override string Id => "SAVE";
 
     // Original save
     public SaveGameSlot SaveGame { get; set; }
@@ -33,12 +34,8 @@ public class ReadvancedSlot : BaseReadvancedSave
         };
     }
 
-    public override void SerializeImpl(SerializerObject s)
+    protected override void SerializeSave(SerializerObject s, int version)
     {
-        base.SerializeImpl(s);
-        s.SerializeMagicString("SAVE", 4);
-
-        int version = s.Serialize<int>(Version, name: nameof(Version));
         SaveGame = s.SerializeObject<SaveGameSlot>(SaveGame, name: nameof(SaveGame));
         PlayTime = s.Serialize<long>(PlayTime, name: nameof(PlayTime));
         DefeatedPirateTypes = s.Serialize<PirateType>(DefeatedPirateTypes, name: nameof(DefeatedPirateTypes));
