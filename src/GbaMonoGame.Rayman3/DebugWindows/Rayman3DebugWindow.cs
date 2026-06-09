@@ -20,7 +20,7 @@ public class Rayman3DebugWindow : DebugWindow
     {
         if (ImGui.BeginTabBar("Rayman3Tabs"))
         {
-            if (ImGui.BeginTabItem("Game Info"))
+            if (ImGui.BeginTabItem("Game"))
             {
                 ImGui.SeparatorText("General");
 
@@ -157,10 +157,13 @@ public class Rayman3DebugWindow : DebugWindow
                     Array.Clear(Rayman3.GameInfo.PersistentInfo.Cages);
                 }
 
+                if (ImGui.Button("Reload configs"))
+                    Rayman3.LoadConfigs();
+
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem("Achievements Info"))
+            if (ImGui.BeginTabItem("Achievements"))
             {
                 ImGui.SeparatorText("Tracking");
 
@@ -191,7 +194,7 @@ public class Rayman3DebugWindow : DebugWindow
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem("Time Attack Info"))
+            if (ImGui.BeginTabItem("Time Attack"))
             {
                 ImGui.SeparatorText("General");
 

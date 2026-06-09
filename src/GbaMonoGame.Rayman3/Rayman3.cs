@@ -269,10 +269,15 @@ public static class Rayman3
         ]);
     }
 
+    public static void LoadConfigs()
+    {
+        Engine.Config.Load<TimeAttackConfig>($"{Assets.BaseName}/Config/TimeAttackConfig.jsonc");
+    }
+
     public static void InitEngine()
     {
         // Load configs
-        Engine.Config.Load<TimeAttackConfig>($"{Assets.BaseName}/Config/TimeAttackConfig.jsonc");
+        LoadConfigs();
 
         // Load custom fonts
         ReadvancedFonts.Load();
