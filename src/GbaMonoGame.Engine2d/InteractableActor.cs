@@ -13,20 +13,13 @@ public abstract class InteractableActor : ActionActor
         AnimationBoxTable = new BoxTable();
         AnimatedObject.BoxTable = AnimationBoxTable;
 
-        _debugAttackBoxAObject = new DebugBoxAObject()
+        _debugBoxTableAObject = new DebugBoxTableAObject(this)
         {
-            Color = DebugBoxColor.AttackBox,
-            RenderContext = Scene.RenderContext
-        };
-        _debugVulnerabilityBoxAObject = new DebugBoxAObject()
-        {
-            Color = DebugBoxColor.VulnerabilityBox,
             RenderContext = Scene.RenderContext
         };
     }
 
-    private readonly DebugBoxAObject _debugAttackBoxAObject;
-    private readonly DebugBoxAObject _debugVulnerabilityBoxAObject;
+    private readonly DebugBoxTableAObject _debugBoxTableAObject;
     
     public BoxTable AnimationBoxTable { get; }
 
@@ -60,18 +53,10 @@ public abstract class InteractableActor : ActionActor
     {
         base.DrawDebugBoxes(animationPlayer);
 
-        Box attackBox = GetAttackBox();
-        if (Scene.Camera.IsDebugBoxFramed(_debugAttackBoxAObject, attackBox.Position))
-        {
-            _debugAttackBoxAObject.Size = attackBox.Size;
-            animationPlayer.PlayFront(_debugAttackBoxAObject);
-        }
-
-        Box vulnerabilityBox = GetVulnerabilityBox();
-        if (Scene.Camera.IsDebugBoxFramed(_debugVulnerabilityBoxAObject, vulnerabilityBox.Position))
-        {
-            _debugVulnerabilityBoxAObject.Size = vulnerabilityBox.Size;
-            animationPlayer.PlayFront(_debugVulnerabilityBoxAObject);
-        }
+        // NOTE: Not checking if is framed, but not needed since it's just for debugging.
+        //       Also force bg priority to 3 and to not use PlayFront so this gets processed
+        //       last, after the box table has updated!
+        _debugBoxTableAObject.BgPriority = 3;
+        animationPlayer.Play(_debugBoxTableAObject);
     }
 }
