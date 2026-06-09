@@ -82,6 +82,23 @@ public class JoyPadDebugWindow : DebugWindow
         }
 
         ImGui.SameLine();
+        if (ImGui.Button("Load recording (.rec)"))
+        {
+            string filePath = Engine.FileDialog.OpenFile("Select the JoyPad recording file", new FileDialogManager.FileFilter("rec", "REC files"));
+
+            if (filePath != null)
+            {
+                using Stream fileStream = File.OpenRead(filePath);
+                using Reader reader = new(fileStream);
+
+                List<GbaInput> inputs = [];
+                while (reader.BaseStream.Position < reader.BaseStream.Length)
+                    inputs.Add((GbaInput)reader.ReadUInt16());
+                Engine.JoyPad.SetReplayData(inputs.ToArray());
+            }
+        }
+
+        ImGui.SameLine();
         if (ImGui.Button("End replay"))
             Engine.JoyPad.Current.ReplayData = null;
 
