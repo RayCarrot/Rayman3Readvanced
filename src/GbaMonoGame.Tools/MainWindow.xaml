@@ -18,44 +18,55 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <WrapPanel Grid.Row="0">
-            <Button Content="Export root resources (DAT)"
-                    Command="{Binding Path=ExportRootResourcesCommand, Mode=OneTime}"
-                    Margin="0 0 8 8" />
-            <Button Content="Export resource types (TXT)*"
-                    Command="{Binding Path=ExportResourceTypesCommand, Mode=OneTime}"
-                    Margin="0 0 8 8" />
-            <Button Content="Export actors (CSV)"
-                    Command="{Binding Path=ExportActorsCsvCommand, Mode=OneTime}"
-                    Margin="0 0 8 8" />
-            <Button Content="Export actor instances (CSV)"
-                    Command="{Binding Path=ExportActorInstancesCsvCommand, Mode=OneTime}"
-                    Margin="0 0 8 8" />
-            <Button Content="Export serialized data (JSON)"
-                    Command="{Binding Path=ExportSerializedDataCommand, Mode=OneTime}"
-                    Margin="0 0 8 8" />
-            <Button Content="Export used actor types (TXT)"
-                    Command="{Binding Path=ExportUsedActorTypesCommand, Mode=OneTime}"
-                    Margin="0 0 8 8" />
-            <Button Content="Export tile layer images (PNG)*"
-                    Command="{Binding Path=ExportTileLayerImagesCommand, Mode=OneTime}"
-                    Margin="0 0 8 8" />
-            <Button Content="Export anim actor textures (PNG)"
-                    Command="{Binding Path=ExportAnimActorTexturesCommand, Mode=OneTime}"
-                    Margin="0 0 8 8" />
-            <Button Content="Export sound banks (TXT)*"
-                    Command="{Binding Path=ExportSoundBanksCommand, Mode=OneTime}"
-                    Margin="0 0 8 8" />
-            <Button Content="Export sprite animations (GIF)*"
-                    Command="{Binding Path=ExportSpriteAnimationsCommand, Mode=OneTime}"
-                    Margin="0 0 8 8" />
-            <Button Content="Export sprite animations sprites (PNG)*"
-                    Command="{Binding Path=ExportSpriteAnimationSpritesCommand, Mode=OneTime}"
-                    Margin="0 0 8 8" />
-            <Button Content="Export sprite animations info (TXT)"
-                    Command="{Binding Path=ExportSpriteAnimationInfoCommand, Mode=OneTime}"
-                    Margin="0 0 8 8" />
-        </WrapPanel>
+        <TabControl Grid.Row="0" Padding="4">
+            <TabItem Header="GBA/N-Gage">
+                <WrapPanel>
+                    <Button Content="Export root resources (DAT)"
+                            Command="{Binding Path=ExportRootResourcesCommand, Mode=OneTime}"
+                            Margin="0 0 8 8" />
+                    <Button Content="Export resource types (TXT)*"
+                            Command="{Binding Path=ExportResourceTypesCommand, Mode=OneTime}"
+                            Margin="0 0 8 8" />
+                    <Button Content="Export actors (CSV)"
+                            Command="{Binding Path=ExportActorsCsvCommand, Mode=OneTime}"
+                            Margin="0 0 8 8" />
+                    <Button Content="Export actor instances (CSV)"
+                            Command="{Binding Path=ExportActorInstancesCsvCommand, Mode=OneTime}"
+                            Margin="0 0 8 8" />
+                    <Button Content="Export serialized data (JSON)"
+                            Command="{Binding Path=ExportSerializedDataCommand, Mode=OneTime}"
+                            Margin="0 0 8 8" />
+                    <Button Content="Export used actor types (TXT)"
+                            Command="{Binding Path=ExportUsedActorTypesCommand, Mode=OneTime}"
+                            Margin="0 0 8 8" />
+                    <Button Content="Export tile layer images (PNG)*"
+                            Command="{Binding Path=ExportTileLayerImagesCommand, Mode=OneTime}"
+                            Margin="0 0 8 8" />
+                    <Button Content="Export anim actor textures (PNG)"
+                            Command="{Binding Path=ExportAnimActorTexturesCommand, Mode=OneTime}"
+                            Margin="0 0 8 8" />
+                    <Button Content="Export sound banks (TXT)*"
+                            Command="{Binding Path=ExportSoundBanksCommand, Mode=OneTime}"
+                            Margin="0 0 8 8" />
+                    <Button Content="Export sprite animations (GIF)*"
+                            Command="{Binding Path=ExportSpriteAnimationsCommand, Mode=OneTime}"
+                            Margin="0 0 8 8" />
+                    <Button Content="Export sprite animations sprites (PNG)*"
+                            Command="{Binding Path=ExportSpriteAnimationSpritesCommand, Mode=OneTime}"
+                            Margin="0 0 8 8" />
+                    <Button Content="Export sprite animations info (TXT)"
+                            Command="{Binding Path=ExportSpriteAnimationInfoCommand, Mode=OneTime}"
+                            Margin="0 0 8 8" />
+                </WrapPanel>
+            </TabItem>
+            <TabItem Header="J2ME">
+                <WrapPanel>
+                    <Button Content="Export resources (DAT)"
+                            Command="{Binding Path=ExportJ2meCommand, Mode=OneTime}"
+                            Margin="0 0 8 8" />
+                </WrapPanel>
+            </TabItem>
+        </TabControl>
 
         <CheckBox Grid.Row="1"
                   Margin="0 4"

@@ -55,6 +55,11 @@ public sealed class JavaArchive : IDisposable
                throw new FileNotFoundException($"File '{filePath}' not found in archive");
     }
 
+    public IReadOnlyCollection<ZipArchiveEntry> GetEntries()
+    {
+        return ZipArchive.Entries;
+    }
+
     public void Dispose()
     {
         ZipArchive.Dispose();
