@@ -16,6 +16,8 @@ public abstract class BaseReadvancedSave : BinarySerializable
         s.SerializeMagicString(PrimaryId, PrimaryId.Length);
         s.SerializeMagicString(Id, Id.Length);
         int version = s.Serialize<int>(Version, name: nameof(Version));
+        if (version > Version)
+            throw new BinarySerializableException(this, $"Save file version {version} is higher than the latest supported version {Version}");
         SerializeSave(s, version);
     }
 }
