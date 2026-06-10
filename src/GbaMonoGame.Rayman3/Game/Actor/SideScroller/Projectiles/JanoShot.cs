@@ -3,6 +3,7 @@ using GbaMonoGame.SourceGenerators;
 
 namespace GbaMonoGame.Rayman3;
 
+// TODO: Despawn on Rayman respawn death
 [GenerateFsmFields]
 public sealed partial class JanoShot : MovableActor
 {

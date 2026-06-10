@@ -13,6 +13,7 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 // - Don't allow selecting level if not finished in single player.
 // - Should Ly's Punch Challenge be included?
 // - Show screenshot for each level.
+// - Allow exporting ghost save file, and then in ghost selection allow using ghost from file, so friends can share ghosts to compete against.
 public class TimeAttackMenuPage : MenuPage
 {
     public TimeAttackMenuPage(ModernMenuAll menu) : base(menu)
