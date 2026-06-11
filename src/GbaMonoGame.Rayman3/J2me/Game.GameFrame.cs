@@ -68,93 +68,85 @@ public partial class Game
     {
         System.gc();
 
-        try
+        // If loading a new level...
+        if (iLevel != m_iPrevLevel)
         {
-            // If loading a new level...
-            if (iLevel != m_iPrevLevel)
+            // Load scene map data
+            RM.Load(RESOURCE_ID_DATA_SCENE_MAP);
+            RM.Synchronize();
+
+            m_bBackgroundUsed = false;
+            byte[] sceneMapData = RM.GetDataResource(RESOURCE_ID_DATA_SCENE_MAP);
+            m_gameFrame_nbLevels = (sbyte)(sceneMapData.Length / 15 - 1);
+
+            // Unload previous levels
+            int offset = 0;
+            for (int i = 0; i < sceneMapData.Length / 15; i++)
             {
-                // Load scene map data
-                RM.Load(RESOURCE_ID_DATA_SCENE_MAP);
+                RM.Free(ReadInt(sceneMapData, offset + 0));
+                RM.Free(ReadInt(sceneMapData, offset + 5));
+                RM.Free(ReadInt(sceneMapData, offset + 10));
+                offset += 15;
+            }
+            RM.Synchronize();
+
+            // Custom - clear screens
+            Gfx.ClearScreens();
+
+            // Load current level
+            offset = 15 * iLevel;
+            if (iLevel != LEVEL_MENU)
+            {
+                StopSound();
+                Menu_Free(true);
+                RM.Load(ReadInt(sceneMapData, offset + 0));
+                RM.Load(ReadInt(sceneMapData, offset + 5));
+                RM.Load(ReadInt(sceneMapData, offset + 10));
+                Status_ShowAll();
                 RM.Synchronize();
+                CreateTiledBackground(sceneMapData[offset + 14], sceneMapData[offset + 4]);
+                setFastMode(true, 240, 320);
+                Scene_Load(sceneMapData[offset + 9]);
+                RM.Free(ReadInt(sceneMapData, offset + 5));
 
-                m_bBackgroundUsed = false;
-                byte[] sceneMapData = RM.GetDataResource(RESOURCE_ID_DATA_SCENE_MAP);
-                m_gameFrame_nbLevels = (sbyte)(sceneMapData.Length / 15 - 1);
-
-                // Unload previous levels
-                int offset = 0;
-                for (int i = 0; i < sceneMapData.Length / 15; i++)
-                {
-                    RM.Free(ReadInt(sceneMapData, offset + 0));
-                    RM.Free(ReadInt(sceneMapData, offset + 5));
-                    RM.Free(ReadInt(sceneMapData, offset + 10));
-                    offset += 15;
-                }
-                RM.Synchronize();
-
-                // Custom - clear screens
-                Gfx.ClearScreens();
-
-                // Load current level
-                offset = 15 * iLevel;
-                if (iLevel != LEVEL_MENU)
-                {
-                    StopSound();
-                    Menu_Free(true);
-                    RM.Load(ReadInt(sceneMapData, offset + 0));
-                    RM.Load(ReadInt(sceneMapData, offset + 5));
-                    RM.Load(ReadInt(sceneMapData, offset + 10));
-                    Status_ShowAll();
-                    RM.Synchronize();
-                    CreateTiledBackground(sceneMapData[offset + 14], sceneMapData[offset + 4]);
-                    setFastMode(true, 240, 320);
-                    Scene_Load(sceneMapData[offset + 9]);
-                    RM.Free(ReadInt(sceneMapData, offset + 5));
-                    
-                    if (iLevel is LEVEL_WORLD_MAP or LEVEL_FIRST)
-                        RM.Load(RESOURCE_ID_DATA_TEXTBANK_HELP);
-                    else
-                        RM.Free(RESOURCE_ID_DATA_TEXTBANK_HELP);
-
-                    Graphics.SetMaxResolution(m_sBackgroundWidth * TILE_SIZE, m_sBackgroundHeight * TILE_SIZE);
-                }
-                // Load menu
+                if (iLevel is LEVEL_WORLD_MAP or LEVEL_FIRST)
+                    RM.Load(RESOURCE_ID_DATA_TEXTBANK_HELP);
                 else
-                {
-                    Actor.AniLoad(RM.ResourceID_To_Index(RESOURCE_ID_DATA_ANIM_FONT), RM.ResourceID_To_Index(RESOURCE_ID_IMG_FONT));
-                    m_gameMenu_pData = Actor.aniData[(sbyte)OBJECT_TYPE.FONT];
-                    if (RM.Array_Image[RM.ResourceID_To_Index(RESOURCE_ID_IMG_SPLASH_SCREEN)] == null)
-                        Menu_LoadMain();
-                    Menu_SetCurrentPage(MENU_PAGE.MAIN);
-                    Graphics.ForceOriginalResolution();
-                }
-                RM.Free(RESOURCE_ID_DATA_SCENE_MAP);
-                RM.Synchronize();
-                m_iPrevLevel = iLevel;
-            }
+                    RM.Free(RESOURCE_ID_DATA_TEXTBANK_HELP);
 
-            if (iLevel >= LEVEL_WORLD_MAP && actors != null)
+                Graphics.SetMaxResolution(m_sBackgroundWidth * TILE_SIZE, m_sBackgroundHeight * TILE_SIZE);
+            }
+            // Load menu
+            else
             {
-                // Reset actors
-                for (int iActorLoop = 0; iActorLoop < actors.Length; iActorLoop++)
-                {
-                    actors[iActorLoop].Actor_Reset();
-                    if (actors[iActorLoop].actorReference != null)
-                        actors[iActorLoop].actorReference.Actor_Reset();
-                }
-
-                // Reset camera
-                pFocusActor = pRayman;
-                setCameraPos((int)((pRayman.x >> 8) - 40L), (int)((pRayman.y >> 8) - 80L), pFocusActor);
-                
-                // Initialize background drawing
-                Fast_Init();
+                Actor.AniLoad(RM.ResourceID_To_Index(RESOURCE_ID_DATA_ANIM_FONT), RM.ResourceID_To_Index(RESOURCE_ID_IMG_FONT));
+                m_gameMenu_pData = Actor.aniData[(sbyte)OBJECT_TYPE.FONT];
+                if (RM.Array_Image[RM.ResourceID_To_Index(RESOURCE_ID_IMG_SPLASH_SCREEN)] == null)
+                    Menu_LoadMain();
+                Menu_SetCurrentPage(MENU_PAGE.MAIN);
+                Graphics.ForceOriginalResolution();
             }
+            RM.Free(RESOURCE_ID_DATA_SCENE_MAP);
+            RM.Synchronize();
+            m_iPrevLevel = iLevel;
         }
-        catch (Exception e)
+
+        if (iLevel >= LEVEL_WORLD_MAP && actors != null)
         {
-            System.println($"GameFrame_loadLevel Exception : {e}");
-            // e.printStackTrace();
+            // Reset actors
+            for (int iActorLoop = 0; iActorLoop < actors.Length; iActorLoop++)
+            {
+                actors[iActorLoop].Actor_Reset();
+                if (actors[iActorLoop].actorReference != null)
+                    actors[iActorLoop].actorReference.Actor_Reset();
+            }
+
+            // Reset camera
+            pFocusActor = pRayman;
+            setCameraPos((int)((pRayman.x >> 8) - 40L), (int)((pRayman.y >> 8) - 80L), pFocusActor);
+
+            // Initialize background drawing
+            Fast_Init();
         }
 
         return true;
@@ -452,448 +444,397 @@ public partial class Game
         bool bRes = false;
         bool bRes1 = false;
         bool bRes2 = false;
-        
-        try
+
+        string[] sRecordList = RecordStore.listRecordStores();
+        if (sRecordList != null)
         {
-            string[] sRecordList = RecordStore.listRecordStores();
-            if (sRecordList != null)
+            for (int i = 0; i < sRecordList.Length; i++)
             {
-                for (int i = 0; i < sRecordList.Length; i++)
-                {
-                    if (sRecordList[i] == GAME_SAVE_NAME)
-                        bRes = true;
-                    if (sRecordList[i] == RECORD_FLAG_SAVE_NAME)
-                        bRes1 = true;
-                    if (sRecordList[i] == SOUND_SAVE_NAME)
-                        bRes2 = true;
-                }
+                if (sRecordList[i] == GAME_SAVE_NAME)
+                    bRes = true;
+                if (sRecordList[i] == RECORD_FLAG_SAVE_NAME)
+                    bRes1 = true;
+                if (sRecordList[i] == SOUND_SAVE_NAME)
+                    bRes2 = true;
             }
         }
-        catch (Exception e) { }
 
         return bRes && bRes1 && bRes2;
     }
 
     public void GameFrame_CreateSaveGame()
     {
-        try
+        RecordStore rs = RecordStore.openRecordStore("RaymanSave", true);
+        for (int i = 0; i < actorsLen.Length; i++)
         {
-            RecordStore rs = RecordStore.openRecordStore("RaymanSave", true);
-            for (int i = 0; i < actorsLen.Length; i++)
-            {
-                byte[] data = new byte[actorsLen[i]];
-                rs.addRecord(data, 0, data.Length);
-                m_RecordUsedFlag[i] = false;
-            }
-            rs.closeRecordStore();
+            byte[] data = new byte[actorsLen[i]];
+            rs.addRecord(data, 0, data.Length);
+            m_RecordUsedFlag[i] = false;
         }
-        catch (Exception e) { }
+        rs.closeRecordStore();
     }
 
     public void GameFrame_LoadRecordFlag()
     {
-        try
+        RecordStore rs;
+        bool isFileExists = false;
+        string[] sRecordList = RecordStore.listRecordStores();
+        if (sRecordList != null)
         {
-            RecordStore rs;
-            bool isFileExists = false;
-            string[] sRecordList = RecordStore.listRecordStores();
-            if (sRecordList != null)
+            for (int i = 0; i < sRecordList.Length; i++)
             {
-                for (int i = 0; i < sRecordList.Length; i++)
+                if (sRecordList[i] == RECORD_FLAG_SAVE_NAME)
                 {
-                    if (sRecordList[i] == RECORD_FLAG_SAVE_NAME)
-                    {
-                        isFileExists = true;
-                        break;
-                    }
+                    isFileExists = true;
+                    break;
                 }
             }
-
-            byte[] data = null;
-            if (isFileExists)
-            {
-                rs = RecordStore.openRecordStore(RECORD_FLAG_SAVE_NAME, false);
-                data = rs.getRecord(1);
-            }
-            else
-            {
-                rs = RecordStore.openRecordStore(RECORD_FLAG_SAVE_NAME, true);
-                if (rs.getNumRecords() == 0)
-                    rs.addRecord(data, 0, 0);
-            }
-
-            if (data != null)
-            {
-                for (int i = 0; i < 11; i++)
-                    m_RecordUsedFlag[i] = data[i] != 0;
-            }
-            rs.closeRecordStore();
         }
-        catch (Exception e) { }
+
+        byte[] data = null;
+        if (isFileExists)
+        {
+            rs = RecordStore.openRecordStore(RECORD_FLAG_SAVE_NAME, false);
+            data = rs.getRecord(1);
+        }
+        else
+        {
+            rs = RecordStore.openRecordStore(RECORD_FLAG_SAVE_NAME, true);
+            if (rs.getNumRecords() == 0)
+                rs.addRecord(data, 0, 0);
+        }
+
+        if (data != null)
+        {
+            for (int i = 0; i < 11; i++)
+                m_RecordUsedFlag[i] = data[i] != 0;
+        }
+        rs.closeRecordStore();
     }
 
     public void GameFrame_SaveRecordFlag()
     {
-        try
-        {
-            RecordStore rs = RecordStore.openRecordStore(RECORD_FLAG_SAVE_NAME, false);
-            byte[] data = new byte[m_RecordUsedFlag.Length];
-            for (int i = 0; i < m_RecordUsedFlag.Length; i++)
-                data[i] = (byte)(m_RecordUsedFlag[i] ? 1 : 0);
-            rs.setRecord(1, data, 0, data.Length);
-            rs.closeRecordStore();
-        }
-        catch (Exception e) { }
+        RecordStore rs = RecordStore.openRecordStore(RECORD_FLAG_SAVE_NAME, false);
+        byte[] data = new byte[m_RecordUsedFlag.Length];
+        for (int i = 0; i < m_RecordUsedFlag.Length; i++)
+            data[i] = (byte)(m_RecordUsedFlag[i] ? 1 : 0);
+        rs.setRecord(1, data, 0, data.Length);
+        rs.closeRecordStore();
     }
 
     public void GameFrame_ClearSaveGame()
     {
-        try
+        s_synopsis = null;
+        RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, false);
+        int iRecordId = 1;
+        while (iRecordId <= m_RecordUsedFlag.Length)
         {
-            s_synopsis = null;
-            RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, false);
-            int iRecordId = 1;
-            while (iRecordId <= m_RecordUsedFlag.Length)
-            {
-                byte[] data = rs.getRecord(iRecordId);
-                if (data != null)
-                    m_RecordUsedFlag[iRecordId - 1] = false;
-                iRecordId++;
-            }
-            rs.closeRecordStore();
+            byte[] data = rs.getRecord(iRecordId);
+            if (data != null)
+                m_RecordUsedFlag[iRecordId - 1] = false;
+            iRecordId++;
         }
-        catch (Exception e) { }
+        rs.closeRecordStore();
     }
 
+    // Unused
     void GameFrame_DeleteSaveGame()
     {
         s_synopsis = null;
-        try
-        {
-            RecordStore.deleteRecordStore(GAME_SAVE_NAME);
-        }
-        catch (Exception e) { }
+        RecordStore.deleteRecordStore(GAME_SAVE_NAME);
     }
 
     public void GameFrame_SaveSound()
     {
-        try
-        {
-            RecordStore rs = RecordStore.openRecordStore(SOUND_SAVE_NAME, false);
-            byte[] data = BitConverter.GetBytes(SoundVolume);
-            rs.setRecord(1, data, 0, data.Length);
-            rs.closeRecordStore();
-        }
-        catch (Exception e) { }
+        RecordStore rs = RecordStore.openRecordStore(SOUND_SAVE_NAME, false);
+        byte[] data = BitConverter.GetBytes(SoundVolume);
+        rs.setRecord(1, data, 0, data.Length);
+        rs.closeRecordStore();
     }
 
     public void GameFrame_LoadSound()
     {
-        try
+        RecordStore rs;
+        bool isSaveSoundFileExists = false;
+        string[] sRecordList = RecordStore.listRecordStores();
+        if (sRecordList != null)
         {
-            RecordStore rs;
-            bool isSaveSoundFileExists = false;
-            string[] sRecordList = RecordStore.listRecordStores();
-            if (sRecordList != null)
+            for (int i = 0; i < sRecordList.Length; i++)
             {
-                for (int i = 0; i < sRecordList.Length; i++)
-                {
-                    if (sRecordList[i] == SOUND_SAVE_NAME)
-                        isSaveSoundFileExists = true;
-                }
+                if (sRecordList[i] == SOUND_SAVE_NAME)
+                    isSaveSoundFileExists = true;
             }
-
-            byte[] data = null;
-            if (isSaveSoundFileExists)
-            {
-                rs = RecordStore.openRecordStore(SOUND_SAVE_NAME, false);
-                data = rs.getRecord(1);
-            }
-            else
-            {
-                rs = RecordStore.openRecordStore(SOUND_SAVE_NAME, true);
-                if (rs.getNumRecords() == 0)
-                    rs.addRecord(null, 0, 0);
-            }
-
-            if (data != null)
-            {
-                // TODO: Implement loading sound?
-                // Do nothing
-            }
-            rs.closeRecordStore();
         }
-        catch (Exception e) { }
+
+        byte[] data = null;
+        if (isSaveSoundFileExists)
+        {
+            rs = RecordStore.openRecordStore(SOUND_SAVE_NAME, false);
+            data = rs.getRecord(1);
+        }
+        else
+        {
+            rs = RecordStore.openRecordStore(SOUND_SAVE_NAME, true);
+            if (rs.getNumRecords() == 0)
+                rs.addRecord(null, 0, 0);
+        }
+
+        if (data != null)
+        {
+            // TODO: Implement loading sound?
+            // Do nothing
+        }
+        rs.closeRecordStore();
     }
 
     public void GameFrame_Save(int p_iLeftLevel)
     {
-        try
+        GameFrame_SaveLevelInfo(p_iLeftLevel);
+
+        if (s_synopsis == null)
+            GameFrame_LoadSynopsis(false);
+
+        // Level
+        if (p_iLeftLevel is > LEVEL_WORLD_MAP and < LEVELS_COUNT)
         {
-            GameFrame_SaveLevelInfo(p_iLeftLevel);
-
-            if (s_synopsis == null)
-                GameFrame_LoadSynopsis(false);
-            
-            // Level
-            if (p_iLeftLevel is > LEVEL_WORLD_MAP and < LEVELS_COUNT)
+            // Save for level
+            s_synopsis[p_iLeftLevel] = new Synopsis
             {
-                // Save for level
-                s_synopsis[p_iLeftLevel] = new Synopsis
-                {
-                    LumsTaken = (sbyte)s_iLumsTaken,
-                    LumsTotal = (sbyte)s_iLumsTotal,
-                    CageOpened = (sbyte)s_iCageOpened,
-                    CageTotal = (sbyte)s_iCageTotal
-                };
+                LumsTaken = (sbyte)s_iLumsTaken,
+                LumsTotal = (sbyte)s_iLumsTotal,
+                CageOpened = (sbyte)s_iCageOpened,
+                CageTotal = (sbyte)s_iCageTotal
+            };
 
-                // Update total
-                s_synopsis[LEVEL_WORLD_MAP] = new Synopsis
-                {
-                    LumsTaken = (sbyte)(s_synopsis[LEVEL_WORLD_MAP].LumsTaken + (sbyte)s_iLumsTaken),
-                    LumsTotal = (sbyte)(s_synopsis[LEVEL_WORLD_MAP].LumsTotal + (sbyte)s_iLumsTotal),
-                    CageOpened = (sbyte)(s_synopsis[LEVEL_WORLD_MAP].CageOpened + (sbyte)s_iCageOpened),
-                    CageTotal = (sbyte)(s_synopsis[LEVEL_WORLD_MAP].CageTotal + (sbyte)s_iCageTotal)
-                };
-                s_iLumsTaken = s_synopsis[LEVEL_WORLD_MAP].LumsTaken;
-                s_iLumsTotal = s_synopsis[LEVEL_WORLD_MAP].LumsTotal;
-                s_iCageOpened = s_synopsis[LEVEL_WORLD_MAP].CageOpened;
-                s_iCageTotal = s_synopsis[LEVEL_WORLD_MAP].CageTotal;
-            }
-            // Worldmap
-            else if (p_iLeftLevel == LEVEL_WORLD_MAP)
+            // Update total
+            s_synopsis[LEVEL_WORLD_MAP] = new Synopsis
             {
-                if (s_synopsis[m_gameFrame_curLevel].LumsTotal == -1 || s_synopsis[m_gameFrame_curLevel].CageTotal == -1)
-                {
-                    s_synopsis[m_gameFrame_curLevel] = s_synopsis[m_gameFrame_curLevel] with
-                    {
-                        LumsTotal = 0,
-                        CageTotal = 0
-                    };
-                }
-
-                s_iLumsTaken = s_synopsis[m_gameFrame_curLevel].LumsTaken;
-                s_iLumsTotal = s_synopsis[m_gameFrame_curLevel].LumsTotal;
-                s_iCageOpened = s_synopsis[m_gameFrame_curLevel].CageOpened;
-                s_iCageTotal = s_synopsis[m_gameFrame_curLevel].CageTotal;
-
-                s_synopsis[LEVEL_WORLD_MAP] = new Synopsis
-                {
-                    LumsTaken = (sbyte)(s_synopsis[LEVEL_WORLD_MAP].LumsTaken - (sbyte)s_iLumsTaken),
-                    LumsTotal = (sbyte)(s_synopsis[LEVEL_WORLD_MAP].LumsTotal - (sbyte)s_iLumsTotal),
-                    CageOpened = (sbyte)(s_synopsis[LEVEL_WORLD_MAP].CageOpened - (sbyte)s_iCageOpened),
-                    CageTotal = (sbyte)(s_synopsis[LEVEL_WORLD_MAP].CageTotal - (sbyte)s_iCageTotal)
-                };
-            }
-            GameFrame_SaveSynopsis();
+                LumsTaken = (sbyte)(s_synopsis[LEVEL_WORLD_MAP].LumsTaken + (sbyte)s_iLumsTaken),
+                LumsTotal = (sbyte)(s_synopsis[LEVEL_WORLD_MAP].LumsTotal + (sbyte)s_iLumsTotal),
+                CageOpened = (sbyte)(s_synopsis[LEVEL_WORLD_MAP].CageOpened + (sbyte)s_iCageOpened),
+                CageTotal = (sbyte)(s_synopsis[LEVEL_WORLD_MAP].CageTotal + (sbyte)s_iCageTotal)
+            };
+            s_iLumsTaken = s_synopsis[LEVEL_WORLD_MAP].LumsTaken;
+            s_iLumsTotal = s_synopsis[LEVEL_WORLD_MAP].LumsTotal;
+            s_iCageOpened = s_synopsis[LEVEL_WORLD_MAP].CageOpened;
+            s_iCageTotal = s_synopsis[LEVEL_WORLD_MAP].CageTotal;
         }
-        catch (Exception e) { }
+        // Worldmap
+        else if (p_iLeftLevel == LEVEL_WORLD_MAP)
+        {
+            if (s_synopsis[m_gameFrame_curLevel].LumsTotal == -1 || s_synopsis[m_gameFrame_curLevel].CageTotal == -1)
+            {
+                s_synopsis[m_gameFrame_curLevel] = s_synopsis[m_gameFrame_curLevel] with
+                {
+                    LumsTotal = 0,
+                    CageTotal = 0
+                };
+            }
+
+            s_iLumsTaken = s_synopsis[m_gameFrame_curLevel].LumsTaken;
+            s_iLumsTotal = s_synopsis[m_gameFrame_curLevel].LumsTotal;
+            s_iCageOpened = s_synopsis[m_gameFrame_curLevel].CageOpened;
+            s_iCageTotal = s_synopsis[m_gameFrame_curLevel].CageTotal;
+
+            s_synopsis[LEVEL_WORLD_MAP] = new Synopsis
+            {
+                LumsTaken = (sbyte)(s_synopsis[LEVEL_WORLD_MAP].LumsTaken - (sbyte)s_iLumsTaken),
+                LumsTotal = (sbyte)(s_synopsis[LEVEL_WORLD_MAP].LumsTotal - (sbyte)s_iLumsTotal),
+                CageOpened = (sbyte)(s_synopsis[LEVEL_WORLD_MAP].CageOpened - (sbyte)s_iCageOpened),
+                CageTotal = (sbyte)(s_synopsis[LEVEL_WORLD_MAP].CageTotal - (sbyte)s_iCageTotal)
+            };
+        }
+        GameFrame_SaveSynopsis();
     }
 
     public void GameFrame_SaveSynopsis()
     {
-        try
+        RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, false);
+        byte[] data = new byte[s_synopsis.Length * 4 + 3];
+        int offset = 0;
+        for (int i = 0; i < s_synopsis.Length; i++)
         {
-            RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, false);
-            byte[] data = new byte[s_synopsis.Length * 4 + 3];
-            int offset = 0;
-            for (int i = 0; i < s_synopsis.Length; i++)
-            {
-                data[offset++] = (byte)s_synopsis[i].LumsTaken;
-                data[offset++] = (byte)s_synopsis[i].LumsTotal;
-                data[offset++] = (byte)s_synopsis[i].CageOpened;
-                data[offset++] = (byte)s_synopsis[i].CageTotal;
-            }
-            data[offset++] = (byte)m_gameFrame_curLevel;
-            data[offset++] = (byte)m_gameFrame_unlockedLevel;
-            data[offset++] = (byte)m_gameFrame_nLife;
-            rs.setRecord(10, data, 0, data.Length);
-            m_RecordUsedFlag[9] = true;
-            rs.closeRecordStore();
+            data[offset++] = (byte)s_synopsis[i].LumsTaken;
+            data[offset++] = (byte)s_synopsis[i].LumsTotal;
+            data[offset++] = (byte)s_synopsis[i].CageOpened;
+            data[offset++] = (byte)s_synopsis[i].CageTotal;
         }
-        catch (Exception e) { }
+        data[offset++] = (byte)m_gameFrame_curLevel;
+        data[offset++] = (byte)m_gameFrame_unlockedLevel;
+        data[offset++] = (byte)m_gameFrame_nLife;
+        rs.setRecord(10, data, 0, data.Length);
+        m_RecordUsedFlag[9] = true;
+        rs.closeRecordStore();
     }
 
     [MemberNotNull(nameof(s_synopsis))]
     public void GameFrame_LoadSynopsis(bool bGetGameInfo)
     {
-        try
+        int offset = 0;
+        s_synopsis = new Synopsis[10];
+        RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, false);
+        byte[] data = rs.getRecord(10);
+        if (data != null && m_RecordUsedFlag[9])
         {
-            int offset = 0;
-            s_synopsis = new Synopsis[10];
-            RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, false);
-            byte[] data = rs.getRecord(10);
-            if (data != null && m_RecordUsedFlag[9])
+            for (int i = 0; i < s_synopsis.Length; i++)
             {
-                for (int i = 0; i < s_synopsis.Length; i++)
+                s_synopsis[i] = new Synopsis
                 {
-                    s_synopsis[i] = new Synopsis
-                    {
-                        LumsTaken = (sbyte)data[offset++],
-                        LumsTotal = (sbyte)data[offset++],
-                        CageOpened = (sbyte)data[offset++],
-                        CageTotal = (sbyte)data[offset++]
-                    };
-                }
-                if (bGetGameInfo)
-                {
-                    m_gameFrame_curLevel = (sbyte)data[offset++];
-                    m_gameFrame_unlockedLevel = (sbyte)data[offset++];
-                    m_gameFrame_nLife = (sbyte)data[offset++];
-                    s_iLumsTaken = s_synopsis[m_gameFrame_curLevel].LumsTaken;
-                    s_iLumsTotal = s_synopsis[m_gameFrame_curLevel].LumsTotal;
-                    s_iCageOpened = s_synopsis[m_gameFrame_curLevel].CageOpened;
-                    s_iCageTotal = s_synopsis[m_gameFrame_curLevel].CageTotal;
-                }
-                data = null;
-            }
-            else
-            {
-                s_synopsis[LEVEL_WORLD_MAP] = new Synopsis
-                {
-                    CageTotal = 0,
-                    CageOpened = 0,
-                    LumsTotal = 0,
-                    LumsTaken = 0,
+                    LumsTaken = (sbyte)data[offset++],
+                    LumsTotal = (sbyte)data[offset++],
+                    CageOpened = (sbyte)data[offset++],
+                    CageTotal = (sbyte)data[offset++]
                 };
-                for (sbyte b = 1; b < s_synopsis.Length; b++)
-                {
-                    s_synopsis[b] = new Synopsis
-                    {
-                        CageOpened = 0,
-                        LumsTaken = 0,
-                        CageTotal = -1,
-                        LumsTotal = -1,
-                    };
-                }
             }
-            rs.closeRecordStore();
+            if (bGetGameInfo)
+            {
+                m_gameFrame_curLevel = (sbyte)data[offset++];
+                m_gameFrame_unlockedLevel = (sbyte)data[offset++];
+                m_gameFrame_nLife = (sbyte)data[offset++];
+                s_iLumsTaken = s_synopsis[m_gameFrame_curLevel].LumsTaken;
+                s_iLumsTotal = s_synopsis[m_gameFrame_curLevel].LumsTotal;
+                s_iCageOpened = s_synopsis[m_gameFrame_curLevel].CageOpened;
+                s_iCageTotal = s_synopsis[m_gameFrame_curLevel].CageTotal;
+            }
+            data = null;
         }
-        catch (Exception e) { }
+        else
+        {
+            s_synopsis[LEVEL_WORLD_MAP] = new Synopsis
+            {
+                CageTotal = 0,
+                CageOpened = 0,
+                LumsTotal = 0,
+                LumsTaken = 0,
+            };
+            for (sbyte b = 1; b < s_synopsis.Length; b++)
+            {
+                s_synopsis[b] = new Synopsis
+                {
+                    CageOpened = 0,
+                    LumsTaken = 0,
+                    CageTotal = -1,
+                    LumsTotal = -1,
+                };
+            }
+        }
+        rs.closeRecordStore();
     }
 
     public void GameFrame_SaveLevelInfo(int pLevel)
     {
-        try
+        RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, false);
+        int offset = 0;
+        if (0 < pLevel && pLevel <= m_gameFrame_nbLevels)
         {
-            RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, false);
-            int offset = 0;
-            if (0 < pLevel && pLevel <= m_gameFrame_nbLevels)
+            byte[] data = new byte[actors.Length];
+            for (int i = 0; i < actors.Length;)
             {
-                byte[] data = new byte[actors.Length];
-                for (int i = 0; i < actors.Length;)
+                byte buffer = 0;
+                int mask = 1;
+                do
                 {
-                    byte buffer = 0;
-                    int mask = 1;
-                    do
-                    {
-                        if ((actors[i].stateFlag & ACTOR_STATE.DEAD) == 0)
-                            continue;
-                        buffer = (byte)(buffer | mask);
-                    } while (++i < actors.Length && (mask <<= 1) < 256);
-                    data[offset++] = buffer;
-                }
-                rs.setRecord(pLevel, data, 0, data.Length);
-                m_RecordUsedFlag[pLevel - 1] = true;
+                    if ((actors[i].stateFlag & ACTOR_STATE.DEAD) == 0)
+                        continue;
+                    buffer = (byte)(buffer | mask);
+                } while (++i < actors.Length && (mask <<= 1) < 256);
+                data[offset++] = buffer;
             }
-            else if (pLevel == LEVEL_WORLD_MAP)
-            {
-                byte[] data = new byte[16 + actors.Length];
-                long tempV = pRayman.m_lInitX;
-                data[offset] = (byte)(0xFFL & (tempV >> 56));
-                data[offset + 1] = (byte)(0xFFL & (tempV >> 48));
-                data[offset + 2] = (byte)(0xFFL & (tempV >> 40));
-                data[offset + 3] = (byte)(0xFFL & (tempV >> 32));
-                data[offset + 4] = (byte)(0xFFL & (tempV >> 24));
-                data[offset + 5] = (byte)(0xFFL & (tempV >> 16));
-                data[offset + 6] = (byte)(0xFFL & (tempV >> 8));
-                data[offset + 7] = (byte)(0xFFL & tempV);
-                offset += 8;
-                tempV = pRayman.m_lInitY;
-                data[offset] = (byte)(0xFFL & (tempV >> 56));
-                data[offset + 1] = (byte)(0xFFL & (tempV >> 48));
-                data[offset + 2] = (byte)(0xFFL & (tempV >> 40));
-                data[offset + 3] = (byte)(0xFFL & (tempV >> 32));
-                data[offset + 4] = (byte)(0xFFL & (tempV >> 24));
-                data[offset + 5] = (byte)(0xFFL & (tempV >> 16));
-                data[offset + 6] = (byte)(0xFFL & (tempV >> 8));
-                data[offset + 7] = (byte)(0xFFL & tempV);
-                offset += 8;
-                byte mask = 1;
-                for (int i = 0; i < actors.Length; i++)
-                {
-                    byte buffer = 0;
-                    if ((actors[i].stateFlag & ACTOR_STATE.DEAD) != 0)
-                        buffer = (byte)(buffer | mask);
-                    data[offset++] = buffer;
-                }
-                rs.setRecord(11, data, 0, data.Length);
-                m_RecordUsedFlag[10] = true;
-            }
-            rs.closeRecordStore();
+            rs.setRecord(pLevel, data, 0, data.Length);
+            m_RecordUsedFlag[pLevel - 1] = true;
         }
-        catch (Exception e) { }
+        else if (pLevel == LEVEL_WORLD_MAP)
+        {
+            byte[] data = new byte[16 + actors.Length];
+            long tempV = pRayman.m_lInitX;
+            data[offset] = (byte)(0xFFL & (tempV >> 56));
+            data[offset + 1] = (byte)(0xFFL & (tempV >> 48));
+            data[offset + 2] = (byte)(0xFFL & (tempV >> 40));
+            data[offset + 3] = (byte)(0xFFL & (tempV >> 32));
+            data[offset + 4] = (byte)(0xFFL & (tempV >> 24));
+            data[offset + 5] = (byte)(0xFFL & (tempV >> 16));
+            data[offset + 6] = (byte)(0xFFL & (tempV >> 8));
+            data[offset + 7] = (byte)(0xFFL & tempV);
+            offset += 8;
+            tempV = pRayman.m_lInitY;
+            data[offset] = (byte)(0xFFL & (tempV >> 56));
+            data[offset + 1] = (byte)(0xFFL & (tempV >> 48));
+            data[offset + 2] = (byte)(0xFFL & (tempV >> 40));
+            data[offset + 3] = (byte)(0xFFL & (tempV >> 32));
+            data[offset + 4] = (byte)(0xFFL & (tempV >> 24));
+            data[offset + 5] = (byte)(0xFFL & (tempV >> 16));
+            data[offset + 6] = (byte)(0xFFL & (tempV >> 8));
+            data[offset + 7] = (byte)(0xFFL & tempV);
+            offset += 8;
+            byte mask = 1;
+            for (int i = 0; i < actors.Length; i++)
+            {
+                byte buffer = 0;
+                if ((actors[i].stateFlag & ACTOR_STATE.DEAD) != 0)
+                    buffer = (byte)(buffer | mask);
+                data[offset++] = buffer;
+            }
+            rs.setRecord(11, data, 0, data.Length);
+            m_RecordUsedFlag[10] = true;
+        }
+        rs.closeRecordStore();
     }
 
     public void GameFrame_LoadLevelInfo(int pLevel)
     {
-        try
+        RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, false);
+        int offset = 0;
+        if (pLevel > LEVEL_WORLD_MAP && pLevel <= m_gameFrame_nbLevels)
         {
-            RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, false);
-            int offset = 0;
-            if (pLevel > LEVEL_WORLD_MAP && pLevel <= m_gameFrame_nbLevels)
+            byte[] data = rs.getRecord(pLevel);
+            if (data != null && m_RecordUsedFlag[pLevel - 1])
             {
-                byte[] data = rs.getRecord(pLevel);
-                if (data != null && m_RecordUsedFlag[pLevel - 1])
+                for (int i = 0; i < actors.Length;)
                 {
-                    for (int i = 0; i < actors.Length;)
+                    byte buffer = data[offset++];
+                    int mask = 1;
+                    do
                     {
-                        byte buffer = data[offset++];
-                        int mask = 1;
-                        do
-                        {
-                            if ((buffer & mask) == 0)
-                                continue;
-                            actors[i].stateFlag |= ACTOR_STATE.DEAD;
-                        } while (++i < actors.Length && (mask <<= 1) < 256);
-                    }
+                        if ((buffer & mask) == 0)
+                            continue;
+                        actors[i].stateFlag |= ACTOR_STATE.DEAD;
+                    } while (++i < actors.Length && (mask <<= 1) < 256);
                 }
             }
-            else if (pLevel == LEVEL_WORLD_MAP)
-            {
-                byte[] data = rs.getRecord(11);
-                if (data != null && m_RecordUsedFlag[10])
-                {
-                    byte a = data[offset++];
-                    byte b = data[offset++];
-                    byte c = data[offset++];
-                    byte d = data[offset++];
-                    byte e = data[offset++];
-                    byte f = data[offset++];
-                    byte g = data[offset++];
-                    byte h = data[offset++];
-                    pRayman.m_lInitX = ((long)a << 56) | ((long)b << 48) | ((long)c << 40) | ((long)d << 32) | ((long)e << 24) | ((long)f << 16) | ((long)g << 8) | (long)h;
-                    a = data[offset++];
-                    b = data[offset++];
-                    c = data[offset++];
-                    d = data[offset++];
-                    e = data[offset++];
-                    f = data[offset++];
-                    g = data[offset++];
-                    h = data[offset++];
-                    pRayman.m_lInitY = ((long)a << 56) | ((long)b << 48) | ((long)c << 40) | ((long)d << 32) | ((long)e << 24) | ((long)f << 16) | ((long)g << 8) | (long)h;
-                    const sbyte mask = 1;
-                    for (int i = 0; i < actors.Length; i++)
-                    {
-                        byte buffer = data[offset++];
-                        if ((buffer & mask) != 0)
-                            actors[i].stateFlag |= ACTOR_STATE.DEAD;
-                    }
-                }
-            }
-            rs.closeRecordStore();
         }
-        catch (Exception e) { }
+        else if (pLevel == LEVEL_WORLD_MAP)
+        {
+            byte[] data = rs.getRecord(11);
+            if (data != null && m_RecordUsedFlag[10])
+            {
+                byte a = data[offset++];
+                byte b = data[offset++];
+                byte c = data[offset++];
+                byte d = data[offset++];
+                byte e = data[offset++];
+                byte f = data[offset++];
+                byte g = data[offset++];
+                byte h = data[offset++];
+                pRayman.m_lInitX = ((long)a << 56) | ((long)b << 48) | ((long)c << 40) | ((long)d << 32) | ((long)e << 24) | ((long)f << 16) | ((long)g << 8) | (long)h;
+                a = data[offset++];
+                b = data[offset++];
+                c = data[offset++];
+                d = data[offset++];
+                e = data[offset++];
+                f = data[offset++];
+                g = data[offset++];
+                h = data[offset++];
+                pRayman.m_lInitY = ((long)a << 56) | ((long)b << 48) | ((long)c << 40) | ((long)d << 32) | ((long)e << 24) | ((long)f << 16) | ((long)g << 8) | (long)h;
+                const sbyte mask = 1;
+                for (int i = 0; i < actors.Length; i++)
+                {
+                    byte buffer = data[offset++];
+                    if ((buffer & mask) != 0)
+                        actors[i].stateFlag |= ACTOR_STATE.DEAD;
+                }
+            }
+        }
+        rs.closeRecordStore();
 
         s_iLumsTaken = s_synopsis[pLevel].LumsTaken;
         s_iCageOpened = s_synopsis[pLevel].CageOpened;

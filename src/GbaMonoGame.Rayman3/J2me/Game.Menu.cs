@@ -787,20 +787,13 @@ public partial class Game
     public string ReadLine(Stream s)
     {
         string line = String.Empty;
-        try
-        {
-            int next;
-            while ((next = s.ReadByte()) != 10 && next != -1)
-                line += (char)next;
-            if (line == String.Empty && next == -1)
-                return null;
-            if (line[0] == '\r')
-                line = line[1..];
-        }
-        catch (Exception e)
-        {
-            // e.printStackTrace();
-        }
+        int next;
+        while ((next = s.ReadByte()) != 10 && next != -1)
+            line += (char)next;
+        if (line == String.Empty && next == -1)
+            return null;
+        if (line[0] == '\r')
+            line = line[1..];
         return line;
     }
 

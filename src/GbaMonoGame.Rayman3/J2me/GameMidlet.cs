@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.Rayman3.J2me;
 
-// TODO: Remove game's exception handling?
 // TODO: Fix sprite rendering by using separate textures for each sprite
 // TODO: Implement auto-pause on lost focus
 // TODO: Add cheat menu for debug collision and other cheats

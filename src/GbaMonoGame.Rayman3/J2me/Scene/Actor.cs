@@ -1518,948 +1518,937 @@ public class Actor
     {
         int action = anim.curAction;
         int bug = -1;
-        try
+        switch (action)
         {
-            switch (action)
-            {
-                case 17:
-                    if (anim.oldAction is 11 or 9 or 7 or 8 or 10)
-                    {
-                        yDirectionConfirmed = 0;
-                        yDirectionConfirmationCounter = 0;
-                    }
+            case 17:
+                if (anim.oldAction is 11 or 9 or 7 or 8 or 10)
+                {
+                    yDirectionConfirmed = 0;
+                    yDirectionConfirmationCounter = 0;
+                }
 
-                    if (Rayman_KeyPressed(GAME_KEY.MIDDLE) && 
-                        (fist_top = getAvailableFist()) != -1 &&
-                        (GameMidlet.Instance_Game.pFist[0].stateFlag & ACTOR_STATE.DEAD) != 0)
-                    {
-                        anim.newAction = 25;
-                        fist_time[fist_top] = 0;
-                        return;
-                    }
+                if (Rayman_KeyPressed(GAME_KEY.MIDDLE) &&
+                    (fist_top = getAvailableFist()) != -1 &&
+                    (GameMidlet.Instance_Game.pFist[0].stateFlag & ACTOR_STATE.DEAD) != 0)
+                {
+                    anim.newAction = 25;
+                    fist_time[fist_top] = 0;
+                    return;
+                }
 
-                    if (Rayman_KeyCurrent(GAME_KEY.UP))
+                if (Rayman_KeyCurrent(GAME_KEY.UP))
+                {
+                    bool canJump = checkClimbJump(4);
+                    if (Rayman_KeyPressed(GAME_KEY.UP))
                     {
-                        bool canJump = checkClimbJump(4);
-                        if (Rayman_KeyPressed(GAME_KEY.UP))
+                        if (canJump)
                         {
-                            if (canJump)
-                            {
-                                y -= 0x1000L;
-                                jumpUp(0, 0);
-                            }
-                        }
-                        else if (!canJump)
-                        {
-                            anim.newAction = 18;
-                        }
-                    }
-
-                    if (Rayman_KeyCurrent(GAME_KEY.DOWN))
-                    {
-                        bool canJump = checkClimbJump(8);
-                        if (Rayman_KeyPressed(GAME_KEY.DOWN))
-                        {
-                            if (canJump)
-                            {
-                                anim.newAction = 11;
-                                V[15] = 0;
-                                y += 0x1800L;
-                            }
-                        }
-                        else if (!canJump)
-                        {
-                            anim.newAction = 20;
-                        }
-                    }
-
-                    if (Rayman_KeyCurrent(GAME_KEY.LEFT))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag &= ~ACTOR_STATE.FLIP_X;
-                        bool canJump = checkClimbJump(1);
-                        if (Rayman_KeyPressed(GAME_KEY.LEFT))
-                        {
-                            if (canJump)
-                                xDirectionConfirmationCounter -= 2;
-                        }
-                        else if (!canJump)
-                        {
-                            anim.newAction = 22;
-                        }
-                    }
-
-                    if (Rayman_KeyCurrent(GAME_KEY.RIGHT))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag |= ACTOR_STATE.FLIP_X;
-                        bool canJump = checkClimbJump(2);
-                        if (Rayman_KeyPressed(GAME_KEY.RIGHT))
-                        {
-                            if (canJump)
-                                xDirectionConfirmationCounter += 2;
-                        }
-                        else if (!canJump)
-                        {
-                            anim.newAction = 22;
-                        }
-                    }
-
-                    if (Rayman_KeyCurrent(GAME_KEY.UP_RIGHT))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag |= ACTOR_STATE.FLIP_X;
-                        bool canJump = checkClimbJump(6);
-                        if (Rayman_KeyPressed(GAME_KEY.UP_RIGHT))
-                        {
-                            if (canJump)
-                            {
-                                y -= 0x1000L;
-                                x += 0x1000L;
-                                if (x + (colBox.Right << 8) > GameMidlet.Instance_Game.m_sBackgroundWidth << 4 << 8)
-                                {
-                                    x = ((GameMidlet.Instance_Game.m_sBackgroundWidth << 4) - colBox.Right + 2) << 8;
-                                    jumpUp(0, 0);
-                                }
-                                else
-                                {
-                                    jumpUp(1792, 0);
-                                }
-                            }
-                        }
-                        else if (!canJump)
-                        {
-                            anim.newAction = 19;
-                        }
-                    }
-
-                    if (Rayman_KeyCurrent(GAME_KEY.UP_LEFT))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag &= ~ACTOR_STATE.FLIP_X;
-                        bool canJump = checkClimbJump(5);
-                        if (Rayman_KeyPressed(GAME_KEY.UP_LEFT))
-                        {
-                            if (canJump)
-                            {
-                                x -= 0x1000L;
-                                y -= 0x1000L;
-                                if (x + (colBox.Left << 8) < 0L)
-                                {
-                                    x = -colBox.Left << 8;
-                                    jumpUp(0, 0);
-                                }
-                                else
-                                {
-                                    jumpUp(-0x700, 0);
-                                }
-                            }
-                        }
-                        else if (!canJump)
-                        {
-                            anim.newAction = 19;
-                        }
-                    }
-
-                    if (Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag |= ACTOR_STATE.FLIP_X;
-                        bool canFall = checkClimbJump(8);
-                        bool canMoveSide = checkClimbJump(2);
-                        if (Rayman_KeyPressed(GAME_KEY.DOWN_RIGHT))
-                        {
-                            if (canFall)
-                            {
-                                anim.newAction = 11;
-                                V[15] = 0;
-                                y += 0x1800L;
-                            }
-                        }
-                        else if (!(canFall | canMoveSide))
-                        {
-                            anim.newAction = 21;
-                        }
-                    }
-
-                    if (Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag &= ~ACTOR_STATE.FLIP_X;
-                        bool canFall = checkClimbJump(8);
-                        bool canMoveSide = checkClimbJump(1);
-                        if (Rayman_KeyPressed(GAME_KEY.DOWN_LEFT))
-                        {
-                            if (canFall)
-                            {
-                                anim.newAction = 11;
-                                V[15] = 0;
-                                y += 0x1800L;
-                            }
-                        }
-                        else if (!(canFall | canMoveSide))
-                        {
-                            anim.newAction = 21;
-                        }
-                    }
-                    break;
-
-                case 18:
-                    if (Rayman_KeyCurrent(GAME_KEY.UP | GAME_KEY.UP_LEFT | GAME_KEY.UP_RIGHT) && checkClimbJump(4))
-                    {
-                        if (Rayman_KeyPressed(GAME_KEY.UP))
+                            y -= 0x1000L;
                             jumpUp(0, 0);
-                        else if (Rayman_KeyPressed(GAME_KEY.UP_LEFT))
-                            jumpUp(-0x700, 0);
-                        else if (Rayman_KeyPressed(GAME_KEY.UP_RIGHT))
-                            jumpUp(0x700, 0);
-                        else
-                            anim.newAction = 17;
+                        }
                     }
-
-                    if (!Rayman_KeyCurrent(GAME_KEY.UP))
-                        anim.newAction = 17;
-                    break;
-
-                case 20:
-                    const GAME_KEY allDownKeys = GAME_KEY.DOWN_LEFT | GAME_KEY.DOWN | GAME_KEY.DOWN_RIGHT;
-                    if (Rayman_KeyCurrent(allDownKeys) && checkClimbJump(8))
+                    else if (!canJump)
                     {
-                        if (Rayman_KeyPressed(allDownKeys))
+                        anim.newAction = 18;
+                    }
+                }
+
+                if (Rayman_KeyCurrent(GAME_KEY.DOWN))
+                {
+                    bool canJump = checkClimbJump(8);
+                    if (Rayman_KeyPressed(GAME_KEY.DOWN))
+                    {
+                        if (canJump)
                         {
                             anim.newAction = 11;
                             V[15] = 0;
-                            y += 0x1000L;
+                            y += 0x1800L;
                         }
-                        else
+                    }
+                    else if (!canJump)
+                    {
+                        anim.newAction = 20;
+                    }
+                }
+
+                if (Rayman_KeyCurrent(GAME_KEY.LEFT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag &= ~ACTOR_STATE.FLIP_X;
+                    bool canJump = checkClimbJump(1);
+                    if (Rayman_KeyPressed(GAME_KEY.LEFT))
+                    {
+                        if (canJump)
+                            xDirectionConfirmationCounter -= 2;
+                    }
+                    else if (!canJump)
+                    {
+                        anim.newAction = 22;
+                    }
+                }
+
+                if (Rayman_KeyCurrent(GAME_KEY.RIGHT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag |= ACTOR_STATE.FLIP_X;
+                    bool canJump = checkClimbJump(2);
+                    if (Rayman_KeyPressed(GAME_KEY.RIGHT))
+                    {
+                        if (canJump)
+                            xDirectionConfirmationCounter += 2;
+                    }
+                    else if (!canJump)
+                    {
+                        anim.newAction = 22;
+                    }
+                }
+
+                if (Rayman_KeyCurrent(GAME_KEY.UP_RIGHT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag |= ACTOR_STATE.FLIP_X;
+                    bool canJump = checkClimbJump(6);
+                    if (Rayman_KeyPressed(GAME_KEY.UP_RIGHT))
+                    {
+                        if (canJump)
                         {
-                            anim.newAction = 17;
+                            y -= 0x1000L;
+                            x += 0x1000L;
+                            if (x + (colBox.Right << 8) > GameMidlet.Instance_Game.m_sBackgroundWidth << 4 << 8)
+                            {
+                                x = ((GameMidlet.Instance_Game.m_sBackgroundWidth << 4) - colBox.Right + 2) << 8;
+                                jumpUp(0, 0);
+                            }
+                            else
+                            {
+                                jumpUp(1792, 0);
+                            }
                         }
                     }
-
-                    if (!Rayman_KeyCurrent(GAME_KEY.DOWN))
-                        anim.newAction = 17;
-                    break;
-
-                case 19:
-                    if (Rayman_KeyCurrent(GAME_KEY.UP_LEFT))
+                    else if (!canJump)
                     {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag &= ~ACTOR_STATE.FLIP_X;
-                        bool canJumpUp = checkClimbJump(4);
-                        bool canJumpLeft = checkClimbJump(1);
-                        if (canJumpUp && !canJumpLeft)
-                            mmodel_vY = 0;
-                        else if (!canJumpUp && canJumpLeft)
-                            mmodel_vX = 0;
-                        else if (canJumpUp && canJumpLeft)
-                            anim.newAction = 17;
+                        anim.newAction = 19;
                     }
+                }
 
-                    if (Rayman_KeyCurrent(GAME_KEY.UP_RIGHT))
+                if (Rayman_KeyCurrent(GAME_KEY.UP_LEFT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag &= ~ACTOR_STATE.FLIP_X;
+                    bool canJump = checkClimbJump(5);
+                    if (Rayman_KeyPressed(GAME_KEY.UP_LEFT))
                     {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag |= ACTOR_STATE.FLIP_X;
-                        bool canJumpUp = checkClimbJump(4);
-                        bool canJumpRight = checkClimbJump(2);
-                        if (canJumpUp && !canJumpRight)
-                            mmodel_vY = 0;
-                        else if (!canJumpUp && canJumpRight)
-                            mmodel_vX = 0;
-                        else if (canJumpUp && canJumpRight)
-                            anim.newAction = 17;
-                    }
-
-                    if (!Rayman_KeyCurrent((stateFlag & ACTOR_STATE.FLIP_X) == 0 ? GAME_KEY.UP_LEFT : GAME_KEY.UP_RIGHT))
-                        anim.newAction = 17;
-                    break;
-
-                case 21:
-                    if (Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag &= ~ACTOR_STATE.FLIP_X;
-                        bool canJumpDown = checkClimbJump(8);
-                        bool canJumpLeft = checkClimbJump(1);
-                        
-                        if (canJumpDown && !canJumpLeft)
-                            mmodel_vY = 0;
-                        else if (!canJumpDown && canJumpLeft)
-                            mmodel_vX = 0;
-                        else if (canJumpDown && canJumpLeft)
-                            anim.newAction = 17;
-                    }
-
-                    if (Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag |= ACTOR_STATE.FLIP_X;
-                        bool canJumpDown = checkClimbJump(8);
-                        bool canJumpRight = checkClimbJump(2);
-                        if (canJumpDown && !canJumpRight)
-                            mmodel_vY = 0;
-                        else if (!canJumpDown && canJumpRight)
-                            mmodel_vX = 0;
-                        else if (canJumpDown && canJumpRight)
-                            anim.newAction = 17;
-                    }
-
-                    if (!Rayman_KeyCurrent((stateFlag & ACTOR_STATE.FLIP_X) == 0 ? GAME_KEY.DOWN_LEFT : GAME_KEY.DOWN_RIGHT))
-                        anim.newAction = 17;
-                    break;
-
-                case 22:
-                    if (Rayman_KeyCurrent(GAME_KEY.LEFT))
-                    {
-                        bool canJump = checkClimbJump(1);
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag &= ~ACTOR_STATE.FLIP_X;
                         if (canJump)
-                            anim.newAction = 17;
+                        {
+                            x -= 0x1000L;
+                            y -= 0x1000L;
+                            if (x + (colBox.Left << 8) < 0L)
+                            {
+                                x = -colBox.Left << 8;
+                                jumpUp(0, 0);
+                            }
+                            else
+                            {
+                                jumpUp(-0x700, 0);
+                            }
+                        }
                     }
-
-                    if (Rayman_KeyCurrent(GAME_KEY.RIGHT))
+                    else if (!canJump)
                     {
-                        bool canJump = checkClimbJump(2);
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag |= ACTOR_STATE.FLIP_X;
-                        if (canJump)
-                            anim.newAction = 17;
+                        anim.newAction = 19;
                     }
+                }
 
-                    if (!Rayman_KeyCurrent((stateFlag & ACTOR_STATE.FLIP_X) == 0 ? GAME_KEY.LEFT : GAME_KEY.RIGHT))
-                        anim.newAction = 17;
-                    break;
-                
-                case 27:
+                if (Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag |= ACTOR_STATE.FLIP_X;
+                    bool canFall = checkClimbJump(8);
+                    bool canMoveSide = checkClimbJump(2);
+                    if (Rayman_KeyPressed(GAME_KEY.DOWN_RIGHT))
+                    {
+                        if (canFall)
+                        {
+                            anim.newAction = 11;
+                            V[15] = 0;
+                            y += 0x1800L;
+                        }
+                    }
+                    else if (!(canFall | canMoveSide))
+                    {
+                        anim.newAction = 21;
+                    }
+                }
+
+                if (Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag &= ~ACTOR_STATE.FLIP_X;
+                    bool canFall = checkClimbJump(8);
+                    bool canMoveSide = checkClimbJump(1);
+                    if (Rayman_KeyPressed(GAME_KEY.DOWN_LEFT))
+                    {
+                        if (canFall)
+                        {
+                            anim.newAction = 11;
+                            V[15] = 0;
+                            y += 0x1800L;
+                        }
+                    }
+                    else if (!(canFall | canMoveSide))
+                    {
+                        anim.newAction = 21;
+                    }
+                }
+                break;
+
+            case 18:
+                if (Rayman_KeyCurrent(GAME_KEY.UP | GAME_KEY.UP_LEFT | GAME_KEY.UP_RIGHT) && checkClimbJump(4))
+                {
                     if (Rayman_KeyPressed(GAME_KEY.UP))
                         jumpUp(0, 0);
-                    else if (Rayman_KeyPressed(GAME_KEY.UP_RIGHT))
-                        jumpUp(0x700, 0);
                     else if (Rayman_KeyPressed(GAME_KEY.UP_LEFT))
                         jumpUp(-0x700, 0);
-                    else
-                        return;
-
-                    x = V[13] + ((colBox.Left + colBox.Right) >> 1);
-                    y = V[14] + ((colBox.Top + colBox.Bottom) >> 1);
-                    x <<= 8;
-                    y <<= 8;
-                    step();
-                    actorReference = null;
-                    break;
-
-                case 0:
-                case 12:
-                case 39:
-                case 40:
-                    if ((GAME_KEY)V[3] == GAME_KEY.NONE && (GAME_KEY)V[4] == GAME_KEY.NONE)
-                        yDirectionConfirmationCounter = yDirectionConfirmed = 0;
-                    const GAME_KEY allUpKeys = GAME_KEY.UP_LEFT | GAME_KEY.UP | GAME_KEY.UP_RIGHT;
-                    if (Rayman_KeyCurrent(allUpKeys) && Rayman_KeyPressed(allUpKeys))
-                    {
-                        if (Rayman_KeyPressed(GAME_KEY.UP))
-                            jumpUp(0, 0);
-                        else if (Rayman_KeyPressed(GAME_KEY.UP_LEFT))
-                            jumpUp(-0x700, 0);
-                        else if (Rayman_KeyPressed(GAME_KEY.UP_RIGHT))
-                            jumpUp(0x700, 0);
-                    }
-
-                    if (Rayman_KeyCurrent(GAME_KEY.DOWN))
-                        anim.newAction = 3;
-                    
-                    if (Rayman_KeyCurrent(GAME_KEY.LEFT))
-                    {
-                        if ((stateFlag & ACTOR_STATE.FLIP_X) == 0 && xDirectionConfirmationCounter < -1)
-                        {
-                            anim.newAction = 2;
-                        }
-                        else
-                        {
-                            stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                            stateFlag &= ~ACTOR_STATE.FLIP_X;
-                            if (actorReference is { objType: OBJECT_TYPE.JUNGLE_PLATFORM or OBJECT_TYPE.LAVA_PLATFORM } &&
-                                actorReference.dy != 0 && actorReference.dx == 0)
-                            {
-                                xDirectionConfirmed = false;
-                                xDirectionConfirmationCounter = -2;
-                            }
-                            else
-                            {
-                                xDirectionConfirmationCounter--;
-                            }
-                        }
-                    }
-
-                    if (Rayman_KeyCurrent(GAME_KEY.RIGHT))
-                    {
-                        if ((stateFlag & ACTOR_STATE.FLIP_X) != 0 && xDirectionConfirmationCounter > 1)
-                        {
-                            anim.newAction = 2;
-                        }
-                        else
-                        {
-                            stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                            stateFlag |= ACTOR_STATE.FLIP_X;
-                            if (actorReference is { objType: OBJECT_TYPE.JUNGLE_PLATFORM or OBJECT_TYPE.LAVA_PLATFORM } &&
-                                actorReference.dy != 0 && actorReference.dx == 0)
-                            {
-                                xDirectionConfirmed = true;
-                                xDirectionConfirmationCounter = 2;
-                            }
-                            else
-                            {
-                                xDirectionConfirmationCounter++;
-                            }
-                        }
-                    }
-
-                    if (Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag &= ~ACTOR_STATE.FLIP_X;
-                        anim.newAction = 3;
-                    }
-
-                    if (Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag |= ACTOR_STATE.FLIP_X;
-                        anim.newAction = 3;
-                    }
-
-                    if (Rayman_KeyPressed(GAME_KEY.MIDDLE))
-                    {
-                        if (actorReference is { objType: OBJECT_TYPE.LEVEL_SIGN } &&
-                            actorReference.anim.curAction is 2 or 0)
-                        {
-                            if (actorReference.anim.curAction is 2 or 0)
-                                GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.lums_red, true);
-                            anim.newAction = 37;
-                        }
-                        else if ((fist_top = getAvailableFist()) != -1)
-                        {
-                            anim.newAction = 15;
-                            fist_time[fist_top] = 0;
-                        }
-                    }
-
-                    if ((GAME_KEY)V[4] == GAME_KEY.NONE)
-                        V[10]++;
-                    else
-                        V[10] = 0;
-                    break;
-
-                case 2:
-                    if (Rayman_KeyCurrent(GAME_KEY.LEFT))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag &= ~ACTOR_STATE.FLIP_X;
-                    }
-                    else if (Rayman_KeyCurrent(GAME_KEY.RIGHT))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag |= ACTOR_STATE.FLIP_X;
-                    }
-
-                    if (Rayman_KeyPressed(GAME_KEY.UP))
-                    {
-                        jumpUp(0, 0);
-                    }
-                    else if (Rayman_KeyPressed(GAME_KEY.DOWN))
-                    {
-                        anim.newAction = 3;
-                    }
                     else if (Rayman_KeyPressed(GAME_KEY.UP_RIGHT))
+                        jumpUp(0x700, 0);
+                    else
+                        anim.newAction = 17;
+                }
+
+                if (!Rayman_KeyCurrent(GAME_KEY.UP))
+                    anim.newAction = 17;
+                break;
+
+            case 20:
+                const GAME_KEY allDownKeys = GAME_KEY.DOWN_LEFT | GAME_KEY.DOWN | GAME_KEY.DOWN_RIGHT;
+                if (Rayman_KeyCurrent(allDownKeys) && checkClimbJump(8))
+                {
+                    if (Rayman_KeyPressed(allDownKeys))
                     {
-                        jumpUp(0x700, -mmodel_vX);
+                        anim.newAction = 11;
+                        V[15] = 0;
+                        y += 0x1000L;
                     }
+                    else
+                    {
+                        anim.newAction = 17;
+                    }
+                }
+
+                if (!Rayman_KeyCurrent(GAME_KEY.DOWN))
+                    anim.newAction = 17;
+                break;
+
+            case 19:
+                if (Rayman_KeyCurrent(GAME_KEY.UP_LEFT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag &= ~ACTOR_STATE.FLIP_X;
+                    bool canJumpUp = checkClimbJump(4);
+                    bool canJumpLeft = checkClimbJump(1);
+                    if (canJumpUp && !canJumpLeft)
+                        mmodel_vY = 0;
+                    else if (!canJumpUp && canJumpLeft)
+                        mmodel_vX = 0;
+                    else if (canJumpUp && canJumpLeft)
+                        anim.newAction = 17;
+                }
+
+                if (Rayman_KeyCurrent(GAME_KEY.UP_RIGHT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag |= ACTOR_STATE.FLIP_X;
+                    bool canJumpUp = checkClimbJump(4);
+                    bool canJumpRight = checkClimbJump(2);
+                    if (canJumpUp && !canJumpRight)
+                        mmodel_vY = 0;
+                    else if (!canJumpUp && canJumpRight)
+                        mmodel_vX = 0;
+                    else if (canJumpUp && canJumpRight)
+                        anim.newAction = 17;
+                }
+
+                if (!Rayman_KeyCurrent((stateFlag & ACTOR_STATE.FLIP_X) == 0 ? GAME_KEY.UP_LEFT : GAME_KEY.UP_RIGHT))
+                    anim.newAction = 17;
+                break;
+
+            case 21:
+                if (Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag &= ~ACTOR_STATE.FLIP_X;
+                    bool canJumpDown = checkClimbJump(8);
+                    bool canJumpLeft = checkClimbJump(1);
+
+                    if (canJumpDown && !canJumpLeft)
+                        mmodel_vY = 0;
+                    else if (!canJumpDown && canJumpLeft)
+                        mmodel_vX = 0;
+                    else if (canJumpDown && canJumpLeft)
+                        anim.newAction = 17;
+                }
+
+                if (Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag |= ACTOR_STATE.FLIP_X;
+                    bool canJumpDown = checkClimbJump(8);
+                    bool canJumpRight = checkClimbJump(2);
+                    if (canJumpDown && !canJumpRight)
+                        mmodel_vY = 0;
+                    else if (!canJumpDown && canJumpRight)
+                        mmodel_vX = 0;
+                    else if (canJumpDown && canJumpRight)
+                        anim.newAction = 17;
+                }
+
+                if (!Rayman_KeyCurrent((stateFlag & ACTOR_STATE.FLIP_X) == 0 ? GAME_KEY.DOWN_LEFT : GAME_KEY.DOWN_RIGHT))
+                    anim.newAction = 17;
+                break;
+
+            case 22:
+                if (Rayman_KeyCurrent(GAME_KEY.LEFT))
+                {
+                    bool canJump = checkClimbJump(1);
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag &= ~ACTOR_STATE.FLIP_X;
+                    if (canJump)
+                        anim.newAction = 17;
+                }
+
+                if (Rayman_KeyCurrent(GAME_KEY.RIGHT))
+                {
+                    bool canJump = checkClimbJump(2);
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag |= ACTOR_STATE.FLIP_X;
+                    if (canJump)
+                        anim.newAction = 17;
+                }
+
+                if (!Rayman_KeyCurrent((stateFlag & ACTOR_STATE.FLIP_X) == 0 ? GAME_KEY.LEFT : GAME_KEY.RIGHT))
+                    anim.newAction = 17;
+                break;
+
+            case 27:
+                if (Rayman_KeyPressed(GAME_KEY.UP))
+                    jumpUp(0, 0);
+                else if (Rayman_KeyPressed(GAME_KEY.UP_RIGHT))
+                    jumpUp(0x700, 0);
+                else if (Rayman_KeyPressed(GAME_KEY.UP_LEFT))
+                    jumpUp(-0x700, 0);
+                else
+                    return;
+
+                x = V[13] + ((colBox.Left + colBox.Right) >> 1);
+                y = V[14] + ((colBox.Top + colBox.Bottom) >> 1);
+                x <<= 8;
+                y <<= 8;
+                step();
+                actorReference = null;
+                break;
+
+            case 0:
+            case 12:
+            case 39:
+            case 40:
+                if ((GAME_KEY)V[3] == GAME_KEY.NONE && (GAME_KEY)V[4] == GAME_KEY.NONE)
+                    yDirectionConfirmationCounter = yDirectionConfirmed = 0;
+                const GAME_KEY allUpKeys = GAME_KEY.UP_LEFT | GAME_KEY.UP | GAME_KEY.UP_RIGHT;
+                if (Rayman_KeyCurrent(allUpKeys) && Rayman_KeyPressed(allUpKeys))
+                {
+                    if (Rayman_KeyPressed(GAME_KEY.UP))
+                        jumpUp(0, 0);
                     else if (Rayman_KeyPressed(GAME_KEY.UP_LEFT))
+                        jumpUp(-0x700, 0);
+                    else if (Rayman_KeyPressed(GAME_KEY.UP_RIGHT))
+                        jumpUp(0x700, 0);
+                }
+
+                if (Rayman_KeyCurrent(GAME_KEY.DOWN))
+                    anim.newAction = 3;
+
+                if (Rayman_KeyCurrent(GAME_KEY.LEFT))
+                {
+                    if ((stateFlag & ACTOR_STATE.FLIP_X) == 0 && xDirectionConfirmationCounter < -1)
                     {
-                        jumpUp(-0x700, -mmodel_vX);
+                        anim.newAction = 2;
                     }
-                    else if (Rayman_KeyPressed(GAME_KEY.DOWN_LEFT))
+                    else
                     {
                         stateFlag &= ~ACTOR_STATE.FLIP_Y;
                         stateFlag &= ~ACTOR_STATE.FLIP_X;
-                        anim.newAction = 3;
+                        if (actorReference is { objType: OBJECT_TYPE.JUNGLE_PLATFORM or OBJECT_TYPE.LAVA_PLATFORM } &&
+                            actorReference.dy != 0 && actorReference.dx == 0)
+                        {
+                            xDirectionConfirmed = false;
+                            xDirectionConfirmationCounter = -2;
+                        }
+                        else
+                        {
+                            xDirectionConfirmationCounter--;
+                        }
                     }
-                    else if (Rayman_KeyPressed(GAME_KEY.DOWN_RIGHT))
+                }
+
+                if (Rayman_KeyCurrent(GAME_KEY.RIGHT))
+                {
+                    if ((stateFlag & ACTOR_STATE.FLIP_X) != 0 && xDirectionConfirmationCounter > 1)
+                    {
+                        anim.newAction = 2;
+                    }
+                    else
                     {
                         stateFlag &= ~ACTOR_STATE.FLIP_Y;
                         stateFlag |= ACTOR_STATE.FLIP_X;
-                        anim.newAction = 3;
+                        if (actorReference is { objType: OBJECT_TYPE.JUNGLE_PLATFORM or OBJECT_TYPE.LAVA_PLATFORM } &&
+                            actorReference.dy != 0 && actorReference.dx == 0)
+                        {
+                            xDirectionConfirmed = true;
+                            xDirectionConfirmationCounter = 2;
+                        }
+                        else
+                        {
+                            xDirectionConfirmationCounter++;
+                        }
                     }
-                    else if (!Rayman_KeyCurrent(GAME_KEY.RIGHT) && !Rayman_KeyCurrent(GAME_KEY.LEFT))
-                    {
-                        anim.newAction = 0;
-                    }
+                }
 
-                    if (Rayman_KeyPressed(GAME_KEY.MIDDLE) && (fist_top = getAvailableFist()) != -1)
+                if (Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag &= ~ACTOR_STATE.FLIP_X;
+                    anim.newAction = 3;
+                }
+
+                if (Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag |= ACTOR_STATE.FLIP_X;
+                    anim.newAction = 3;
+                }
+
+                if (Rayman_KeyPressed(GAME_KEY.MIDDLE))
+                {
+                    if (actorReference is { objType: OBJECT_TYPE.LEVEL_SIGN } &&
+                        actorReference.anim.curAction is 2 or 0)
+                    {
+                        if (actorReference.anim.curAction is 2 or 0)
+                            GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.lums_red, true);
+                        anim.newAction = 37;
+                    }
+                    else if ((fist_top = getAvailableFist()) != -1)
                     {
                         anim.newAction = 15;
                         fist_time[fist_top] = 0;
                     }
-                    break;
+                }
 
-                case 9:
-                    if (V[7] != 0)
-                    {
-                        if (Rayman_KeyCurrent(GAME_KEY.UP) || Rayman_KeyCurrent(GAME_KEY.UP_LEFT) || Rayman_KeyCurrent(GAME_KEY.UP_RIGHT))
-                        {
-                            mmodel_vY = -0x200;
-                        }
-                        else
-                        {
-                            if (mmodel_vY < 0)
-                                mmodel_vY = 0;
-                            mmodel_vY = (short)(mmodel_vY + 0x100);
-                            if (mmodel_vY > 0x200)
-                                mmodel_vY = 0x200;
-                        }
-                    }
+                if ((GAME_KEY)V[4] == GAME_KEY.NONE)
+                    V[10]++;
+                else
+                    V[10] = 0;
+                break;
 
-                    if (Rayman_KeyCurrent(GAME_KEY.LEFT) || Rayman_KeyCurrent(GAME_KEY.UP_LEFT) || Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag &= ~ACTOR_STATE.FLIP_X;
-                        if (mmodel_vX > -0x380)
-                        {
-                            mmodel_vX = (short)(mmodel_vX - 0x100);
-                            if (mmodel_vX < -0x380)
-                                mmodel_vX = -0x380;
-                        }
-                    }
-                    else if (Rayman_KeyCurrent(GAME_KEY.RIGHT) || Rayman_KeyCurrent(GAME_KEY.UP_RIGHT) || Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag |= ACTOR_STATE.FLIP_X;
-                        if (mmodel_vX > -0x380)
-                        {
-                            mmodel_vX = (short)(mmodel_vX - 0x100);
-                            if (mmodel_vX < -0x380)
-                                mmodel_vX = -0x380;
-                        }
-                    }
+            case 2:
+                if (Rayman_KeyCurrent(GAME_KEY.LEFT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag &= ~ACTOR_STATE.FLIP_X;
+                }
+                else if (Rayman_KeyCurrent(GAME_KEY.RIGHT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag |= ACTOR_STATE.FLIP_X;
+                }
 
-                    if (!Rayman_KeyCurrent(GAME_KEY.LEFT) && !Rayman_KeyCurrent(GAME_KEY.UP_LEFT) && !Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT) &&
-                        !Rayman_KeyCurrent(GAME_KEY.RIGHT) && !Rayman_KeyCurrent(GAME_KEY.UP_RIGHT) && !Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
-                        mmodel_vX = 0;
+                if (Rayman_KeyPressed(GAME_KEY.UP))
+                {
+                    jumpUp(0, 0);
+                }
+                else if (Rayman_KeyPressed(GAME_KEY.DOWN))
+                {
+                    anim.newAction = 3;
+                }
+                else if (Rayman_KeyPressed(GAME_KEY.UP_RIGHT))
+                {
+                    jumpUp(0x700, -mmodel_vX);
+                }
+                else if (Rayman_KeyPressed(GAME_KEY.UP_LEFT))
+                {
+                    jumpUp(-0x700, -mmodel_vX);
+                }
+                else if (Rayman_KeyPressed(GAME_KEY.DOWN_LEFT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag &= ~ACTOR_STATE.FLIP_X;
+                    anim.newAction = 3;
+                }
+                else if (Rayman_KeyPressed(GAME_KEY.DOWN_RIGHT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag |= ACTOR_STATE.FLIP_X;
+                    anim.newAction = 3;
+                }
+                else if (!Rayman_KeyCurrent(GAME_KEY.RIGHT) && !Rayman_KeyCurrent(GAME_KEY.LEFT))
+                {
+                    anim.newAction = 0;
+                }
 
-                    if (!Rayman_KeyCurrent(GAME_KEY.UP) && !Rayman_KeyCurrent(GAME_KEY.UP_LEFT) && !Rayman_KeyCurrent(GAME_KEY.UP_RIGHT))
-                    {
-                        if (V[7] != 0)
-                        {
-                            V[8]++;
-                            if (V[8] < 5)
-                            {
-                                mmodel_vY = 0;
-                                dy = 0;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        V[8] = 0;
-                    }
+                if (Rayman_KeyPressed(GAME_KEY.MIDDLE) && (fist_top = getAvailableFist()) != -1)
+                {
+                    anim.newAction = 15;
+                    fist_time[fist_top] = 0;
+                }
+                break;
 
-                    if (Rayman_KeyPressed(GAME_KEY.MIDDLE) && (fist_top = getAvailableFist()) != -1)
-                    {
-                        if (V[7] != 0)
-                        {
-                            anim.newAction = 34;
-                        }
-                        else
-                        {
-                            anim.newAction = 10;
-                            GameMidlet.Instance_Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, 0x21C0);
-                        }
-                    }
-                    break;
-
-                case 34:
-                case 35:
-                    if (Rayman_KeyReleased(GAME_KEY.MIDDLE))
-                    {
-                        anim.newAction = 36;
-                        fist_top = getAvailableFist();
-                        if (fist_top != -1)
-                            GameMidlet.Instance_Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, 8640);
-                    }
-                    break;
-
-                case 30:
-                    if (Rayman_KeyCurrent(GAME_KEY.LEFT) || Rayman_KeyCurrent(GAME_KEY.UP_LEFT))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag &= ~ACTOR_STATE.FLIP_X;
-                        anim.newAction = 31;
-                    }
-                    else if (Rayman_KeyCurrent(GAME_KEY.RIGHT) || Rayman_KeyCurrent(GAME_KEY.UP_RIGHT))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag |= ACTOR_STATE.FLIP_X;
-                        anim.newAction = 31;
-                    }
-
-                    if (Rayman_KeyCurrent(GAME_KEY.DOWN) || Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT) || Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
-                    {
-                        yDirectionConfirmed = 1;
-                        yDirectionConfirmationCounter = 5;
-                        anim.newAction = 11;
-                        y += 0x1000;
-                    }
-                    break;
-
-                case 31:
-                    if (Rayman_KeyCurrent(GAME_KEY.LEFT) || Rayman_KeyCurrent(GAME_KEY.UP_LEFT))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag &= ~ACTOR_STATE.FLIP_X;
-                    }
-                    else if (Rayman_KeyCurrent(GAME_KEY.RIGHT) || Rayman_KeyCurrent(GAME_KEY.UP_RIGHT))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag |= ACTOR_STATE.FLIP_X;
-                    }
-
-                    if (Rayman_KeyReleased(GAME_KEY.DOWN) || Rayman_KeyReleased(GAME_KEY.DOWN_LEFT) || Rayman_KeyReleased(GAME_KEY.DOWN_RIGHT))
-                    {
-                        yDirectionConfirmed = 1;
-                        yDirectionConfirmationCounter = 5;
-                        anim.newAction = 11;
-                        y += 4096L;
-                        break;
-                    }
-
-                    if (!Rayman_KeyCurrent(GAME_KEY.LEFT) && !Rayman_KeyCurrent(GAME_KEY.UP_LEFT) && 
-                        !Rayman_KeyCurrent(GAME_KEY.RIGHT) && !Rayman_KeyCurrent(GAME_KEY.UP_RIGHT))
-                        anim.newAction = 30;
-                    break;
-
-                case 11:
-                    if (Rayman_KeyPressed(GAME_KEY.UP) || Rayman_KeyPressed(GAME_KEY.UP_RIGHT) || Rayman_KeyPressed(GAME_KEY.UP_LEFT))
-                        startFly(0);
-                    else if (Rayman_KeyPressed(GAME_KEY.UP_RIGHT))
-                        startFly(0x700);
-                    else if (Rayman_KeyPressed(GAME_KEY.UP_LEFT))
-                        startFly(-0x700);
-
-                    if (Rayman_KeyCurrent(GAME_KEY.LEFT) || Rayman_KeyCurrent(GAME_KEY.UP_LEFT) || Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag &= ~ACTOR_STATE.FLIP_X;
-                        if (mmodel_vX > -0x700)
-                        {
-                            mmodel_vX = (short)(mmodel_vX - 0x100);
-                            if (mmodel_vX < -0x700)
-                                mmodel_vX = -0x700;
-                        }
-                    }
-                    else if (Rayman_KeyCurrent(GAME_KEY.RIGHT) || Rayman_KeyCurrent(GAME_KEY.UP_RIGHT) || Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag |= ACTOR_STATE.FLIP_X;
-                        if (mmodel_vX > -0x700)
-                        {
-                            mmodel_vX = (short)(mmodel_vX - 0x100);
-                            if (mmodel_vX < -0x700)
-                                mmodel_vX = -0x700;
-                        }
-                    }
-
-                    if (Rayman_KeyCurrent(GAME_KEY.LEFT) || Rayman_KeyCurrent(GAME_KEY.UP_LEFT) || Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT) ||
-                        Rayman_KeyCurrent(GAME_KEY.RIGHT) || Rayman_KeyCurrent(GAME_KEY.UP_RIGHT) || !Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
-                    {
-
-                    }
-                    if (Rayman_KeyPressed(GAME_KEY.MIDDLE) && (fist_top = getAvailableFist()) != -1)
-                    {
-                        anim.newAction = 10;
-                        GameMidlet.Instance_Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, 0x21C0);
-                    }
-                    break;
-                
-                case 7:
-                    if (anim.oldAction is 28 or 29)
-                    {
-                        mmodel_vY = (short)(mmodel_vY - 0x100);
-                        V[9] = 0x7FFFFFF;
-                    }
-                    else
-                    {
-                        V[9] = 0;
-                    }
-                    break;
-
-                case 8:
-                    if (Rayman_KeyPressed(GAME_KEY.UP))
-                    {
-                        if (mmodel_vX < 0)
-                            mmodel_vX = 0;
-                        mmodel_vY = 0;
-                        mmodel_aY = 0;
-                        startFly(0);
-                    }
-                    else if (Rayman_KeyPressed(GAME_KEY.UP_RIGHT))
-                    {
-                        mmodel_vY = 0;
-                        mmodel_aY = 0;
-                        startFly(0x700);
-                    }
-                    else if (Rayman_KeyPressed(GAME_KEY.UP_LEFT))
-                    {
-                        mmodel_vY = 0;
-                        mmodel_aY = 0;
-                        startFly(-0x700);
-                    }
-
+            case 9:
+                if (V[7] != 0)
+                {
                     if (Rayman_KeyCurrent(GAME_KEY.UP) || Rayman_KeyCurrent(GAME_KEY.UP_LEFT) || Rayman_KeyCurrent(GAME_KEY.UP_RIGHT))
                     {
-                        V[9] += 1;
-                        if (V[9] < 8)
-                            mmodel_vY = (short)(mmodel_vY - 0x99);
+                        mmodel_vY = -0x200;
                     }
-
-                    if (Rayman_KeyCurrent(GAME_KEY.LEFT) || Rayman_KeyCurrent(GAME_KEY.UP_LEFT) || Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT))
+                    else
                     {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag &= ~ACTOR_STATE.FLIP_X;
-                        if (mmodel_vX > -0x700)
+                        if (mmodel_vY < 0)
+                            mmodel_vY = 0;
+                        mmodel_vY = (short)(mmodel_vY + 0x100);
+                        if (mmodel_vY > 0x200)
+                            mmodel_vY = 0x200;
+                    }
+                }
+
+                if (Rayman_KeyCurrent(GAME_KEY.LEFT) || Rayman_KeyCurrent(GAME_KEY.UP_LEFT) || Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag &= ~ACTOR_STATE.FLIP_X;
+                    if (mmodel_vX > -0x380)
+                    {
+                        mmodel_vX = (short)(mmodel_vX - 0x100);
+                        if (mmodel_vX < -0x380)
+                            mmodel_vX = -0x380;
+                    }
+                }
+                else if (Rayman_KeyCurrent(GAME_KEY.RIGHT) || Rayman_KeyCurrent(GAME_KEY.UP_RIGHT) || Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag |= ACTOR_STATE.FLIP_X;
+                    if (mmodel_vX > -0x380)
+                    {
+                        mmodel_vX = (short)(mmodel_vX - 0x100);
+                        if (mmodel_vX < -0x380)
+                            mmodel_vX = -0x380;
+                    }
+                }
+
+                if (!Rayman_KeyCurrent(GAME_KEY.LEFT) && !Rayman_KeyCurrent(GAME_KEY.UP_LEFT) && !Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT) &&
+                    !Rayman_KeyCurrent(GAME_KEY.RIGHT) && !Rayman_KeyCurrent(GAME_KEY.UP_RIGHT) && !Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
+                    mmodel_vX = 0;
+
+                if (!Rayman_KeyCurrent(GAME_KEY.UP) && !Rayman_KeyCurrent(GAME_KEY.UP_LEFT) && !Rayman_KeyCurrent(GAME_KEY.UP_RIGHT))
+                {
+                    if (V[7] != 0)
+                    {
+                        V[8]++;
+                        if (V[8] < 5)
                         {
-                            mmodel_vX = (short)(mmodel_vX - 0x100);
-                            if (mmodel_vX < -0x700)
-                                mmodel_vX = -0x700;
+                            mmodel_vY = 0;
+                            dy = 0;
                         }
                     }
-                    else if (Rayman_KeyCurrent(GAME_KEY.RIGHT) || Rayman_KeyCurrent(GAME_KEY.UP_RIGHT) || Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag |= ACTOR_STATE.FLIP_X;
-                        if (mmodel_vX > -0x700)
-                        {
-                            mmodel_vX = (short)(mmodel_vX - 0x100);
-                            if (mmodel_vX < -0x700)
-                                mmodel_vX = -0x700;
-                        }
-                    }
+                }
+                else
+                {
+                    V[8] = 0;
+                }
 
-                    if (Rayman_KeyCurrent(GAME_KEY.LEFT) || Rayman_KeyCurrent(GAME_KEY.UP_LEFT) || Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT) ||
-                        Rayman_KeyCurrent(GAME_KEY.RIGHT) || Rayman_KeyCurrent(GAME_KEY.UP_RIGHT) || !Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
+                if (Rayman_KeyPressed(GAME_KEY.MIDDLE) && (fist_top = getAvailableFist()) != -1)
+                {
+                    if (V[7] != 0)
                     {
-
+                        anim.newAction = 34;
                     }
-                    if (Rayman_KeyPressed(GAME_KEY.MIDDLE) && (fist_top = getAvailableFist()) != -1)
+                    else
                     {
                         anim.newAction = 10;
                         GameMidlet.Instance_Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, 0x21C0);
                     }
-                    break;
+                }
+                break;
 
-                case 4:
-                    if (Rayman_KeyCurrent(GAME_KEY.LEFT) || Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag &= ~ACTOR_STATE.FLIP_X;
-                        anim.newAction = 5;
-                    }
-                    else if (Rayman_KeyCurrent(GAME_KEY.RIGHT) || Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag |= ACTOR_STATE.FLIP_X;
-                        anim.newAction = 5;
-                    }
+            case 34:
+            case 35:
+                if (Rayman_KeyReleased(GAME_KEY.MIDDLE))
+                {
+                    anim.newAction = 36;
+                    fist_top = getAvailableFist();
+                    if (fist_top != -1)
+                        GameMidlet.Instance_Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, 8640);
+                }
+                break;
 
-                    if (!Rayman_KeyCurrent(GAME_KEY.DOWN) && !Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT) && !Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
-                        if (!checkCeilingStandUp())
-                            anim.newAction = 6;
+            case 30:
+                if (Rayman_KeyCurrent(GAME_KEY.LEFT) || Rayman_KeyCurrent(GAME_KEY.UP_LEFT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag &= ~ACTOR_STATE.FLIP_X;
+                    anim.newAction = 31;
+                }
+                else if (Rayman_KeyCurrent(GAME_KEY.RIGHT) || Rayman_KeyCurrent(GAME_KEY.UP_RIGHT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag |= ACTOR_STATE.FLIP_X;
+                    anim.newAction = 31;
+                }
+
+                if (Rayman_KeyCurrent(GAME_KEY.DOWN) || Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT) || Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
+                {
+                    yDirectionConfirmed = 1;
+                    yDirectionConfirmationCounter = 5;
+                    anim.newAction = 11;
+                    y += 0x1000;
+                }
+                break;
+
+            case 31:
+                if (Rayman_KeyCurrent(GAME_KEY.LEFT) || Rayman_KeyCurrent(GAME_KEY.UP_LEFT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag &= ~ACTOR_STATE.FLIP_X;
+                }
+                else if (Rayman_KeyCurrent(GAME_KEY.RIGHT) || Rayman_KeyCurrent(GAME_KEY.UP_RIGHT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag |= ACTOR_STATE.FLIP_X;
+                }
+
+                if (Rayman_KeyReleased(GAME_KEY.DOWN) || Rayman_KeyReleased(GAME_KEY.DOWN_LEFT) || Rayman_KeyReleased(GAME_KEY.DOWN_RIGHT))
+                {
+                    yDirectionConfirmed = 1;
+                    yDirectionConfirmationCounter = 5;
+                    anim.newAction = 11;
+                    y += 4096L;
                     break;
-                case 5:
-                    if (Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT))
+                }
+
+                if (!Rayman_KeyCurrent(GAME_KEY.LEFT) && !Rayman_KeyCurrent(GAME_KEY.UP_LEFT) &&
+                    !Rayman_KeyCurrent(GAME_KEY.RIGHT) && !Rayman_KeyCurrent(GAME_KEY.UP_RIGHT))
+                    anim.newAction = 30;
+                break;
+
+            case 11:
+                if (Rayman_KeyPressed(GAME_KEY.UP) || Rayman_KeyPressed(GAME_KEY.UP_RIGHT) || Rayman_KeyPressed(GAME_KEY.UP_LEFT))
+                    startFly(0);
+                else if (Rayman_KeyPressed(GAME_KEY.UP_RIGHT))
+                    startFly(0x700);
+                else if (Rayman_KeyPressed(GAME_KEY.UP_LEFT))
+                    startFly(-0x700);
+
+                if (Rayman_KeyCurrent(GAME_KEY.LEFT) || Rayman_KeyCurrent(GAME_KEY.UP_LEFT) || Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag &= ~ACTOR_STATE.FLIP_X;
+                    if (mmodel_vX > -0x700)
                     {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag &= ~ACTOR_STATE.FLIP_X;
+                        mmodel_vX = (short)(mmodel_vX - 0x100);
+                        if (mmodel_vX < -0x700)
+                            mmodel_vX = -0x700;
                     }
-                    else if (Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
+                }
+                else if (Rayman_KeyCurrent(GAME_KEY.RIGHT) || Rayman_KeyCurrent(GAME_KEY.UP_RIGHT) || Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag |= ACTOR_STATE.FLIP_X;
+                    if (mmodel_vX > -0x700)
                     {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag |= ACTOR_STATE.FLIP_X;
+                        mmodel_vX = (short)(mmodel_vX - 0x100);
+                        if (mmodel_vX < -0x700)
+                            mmodel_vX = -0x700;
                     }
-                    else if (Rayman_KeyCurrent(GAME_KEY.DOWN))
+                }
+
+                if (Rayman_KeyCurrent(GAME_KEY.LEFT) || Rayman_KeyCurrent(GAME_KEY.UP_LEFT) || Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT) ||
+                    Rayman_KeyCurrent(GAME_KEY.RIGHT) || Rayman_KeyCurrent(GAME_KEY.UP_RIGHT) || !Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
+                {
+
+                }
+                if (Rayman_KeyPressed(GAME_KEY.MIDDLE) && (fist_top = getAvailableFist()) != -1)
+                {
+                    anim.newAction = 10;
+                    GameMidlet.Instance_Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, 0x21C0);
+                }
+                break;
+
+            case 7:
+                if (anim.oldAction is 28 or 29)
+                {
+                    mmodel_vY = (short)(mmodel_vY - 0x100);
+                    V[9] = 0x7FFFFFF;
+                }
+                else
+                {
+                    V[9] = 0;
+                }
+                break;
+
+            case 8:
+                if (Rayman_KeyPressed(GAME_KEY.UP))
+                {
+                    if (mmodel_vX < 0)
+                        mmodel_vX = 0;
+                    mmodel_vY = 0;
+                    mmodel_aY = 0;
+                    startFly(0);
+                }
+                else if (Rayman_KeyPressed(GAME_KEY.UP_RIGHT))
+                {
+                    mmodel_vY = 0;
+                    mmodel_aY = 0;
+                    startFly(0x700);
+                }
+                else if (Rayman_KeyPressed(GAME_KEY.UP_LEFT))
+                {
+                    mmodel_vY = 0;
+                    mmodel_aY = 0;
+                    startFly(-0x700);
+                }
+
+                if (Rayman_KeyCurrent(GAME_KEY.UP) || Rayman_KeyCurrent(GAME_KEY.UP_LEFT) || Rayman_KeyCurrent(GAME_KEY.UP_RIGHT))
+                {
+                    V[9] += 1;
+                    if (V[9] < 8)
+                        mmodel_vY = (short)(mmodel_vY - 0x99);
+                }
+
+                if (Rayman_KeyCurrent(GAME_KEY.LEFT) || Rayman_KeyCurrent(GAME_KEY.UP_LEFT) || Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag &= ~ACTOR_STATE.FLIP_X;
+                    if (mmodel_vX > -0x700)
                     {
+                        mmodel_vX = (short)(mmodel_vX - 0x100);
+                        if (mmodel_vX < -0x700)
+                            mmodel_vX = -0x700;
+                    }
+                }
+                else if (Rayman_KeyCurrent(GAME_KEY.RIGHT) || Rayman_KeyCurrent(GAME_KEY.UP_RIGHT) || Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag |= ACTOR_STATE.FLIP_X;
+                    if (mmodel_vX > -0x700)
+                    {
+                        mmodel_vX = (short)(mmodel_vX - 0x100);
+                        if (mmodel_vX < -0x700)
+                            mmodel_vX = -0x700;
+                    }
+                }
+
+                if (Rayman_KeyCurrent(GAME_KEY.LEFT) || Rayman_KeyCurrent(GAME_KEY.UP_LEFT) || Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT) ||
+                    Rayman_KeyCurrent(GAME_KEY.RIGHT) || Rayman_KeyCurrent(GAME_KEY.UP_RIGHT) || !Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
+                {
+
+                }
+                if (Rayman_KeyPressed(GAME_KEY.MIDDLE) && (fist_top = getAvailableFist()) != -1)
+                {
+                    anim.newAction = 10;
+                    GameMidlet.Instance_Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, 0x21C0);
+                }
+                break;
+
+            case 4:
+                if (Rayman_KeyCurrent(GAME_KEY.LEFT) || Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag &= ~ACTOR_STATE.FLIP_X;
+                    anim.newAction = 5;
+                }
+                else if (Rayman_KeyCurrent(GAME_KEY.RIGHT) || Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag |= ACTOR_STATE.FLIP_X;
+                    anim.newAction = 5;
+                }
+
+                if (!Rayman_KeyCurrent(GAME_KEY.DOWN) && !Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT) && !Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
+                    if (!checkCeilingStandUp())
+                        anim.newAction = 6;
+                break;
+            case 5:
+                if (Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag &= ~ACTOR_STATE.FLIP_X;
+                }
+                else if (Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag |= ACTOR_STATE.FLIP_X;
+                }
+                else if (Rayman_KeyCurrent(GAME_KEY.DOWN))
+                {
+                    anim.newAction = 4;
+                }
+
+                if (!Rayman_KeyCurrent(GAME_KEY.DOWN) && !Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT) && !Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
+                {
+                    if (!checkCeilingStandUp())
+                        anim.newAction = 6;
+                    else
                         anim.newAction = 4;
-                    }
+                }
+                break;
 
-                    if (!Rayman_KeyCurrent(GAME_KEY.DOWN) && !Rayman_KeyCurrent(GAME_KEY.DOWN_LEFT) && !Rayman_KeyCurrent(GAME_KEY.DOWN_RIGHT))
-                    {
-                        if (!checkCeilingStandUp())
-                            anim.newAction = 6;
-                        else
-                            anim.newAction = 4;
-                    }
-                    break;
+            case 6:
+                if (Rayman_KeyPressed(GAME_KEY.MIDDLE) && !checkCeilingStandUp())
+                {
+                    anim.newAction = 15;
+                    if (fist_top != -1)
+                        fist_time[fist_top] = 0;
+                }
+                break;
 
-                case 6:
-                    if (Rayman_KeyPressed(GAME_KEY.MIDDLE) && !checkCeilingStandUp())
-                    {
-                        anim.newAction = 15;
-                        if (fist_top != -1)
-                            fist_time[fist_top] = 0;
-                    }
-                    break;
-                
-                case 13:
-                    if (Rayman_KeyPressed(GAME_KEY.UP))
-                    {
-                        jumpUp(0, 0);
-                    }
-                    else if (Rayman_KeyCurrent(GAME_KEY.DOWN))
-                    {
-                        anim.newAction = 3;
-                    }
-                    else if (Rayman_KeyPressed(GAME_KEY.LEFT))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag &= ~ACTOR_STATE.FLIP_X;
-                        anim.newAction = 2;
-                    }
-                    else if (Rayman_KeyPressed(GAME_KEY.RIGHT))
-                    {
-                        anim.newAction = 2;
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag |= ACTOR_STATE.FLIP_X;
-                    }
-                    else if (Rayman_KeyPressed(GAME_KEY.UP_RIGHT))
-                    {
-                        jumpUp(1792, 0);
-                    }
-                    else if (Rayman_KeyPressed(GAME_KEY.UP_LEFT))
-                    {
-                        jumpUp(-1792, 0);
-                    }
-                    else if (Rayman_KeyPressed(GAME_KEY.DOWN_LEFT))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag &= ~ACTOR_STATE.FLIP_X;
-                        anim.newAction = 3;
-                    }
-                    // Optionally fix bug from the original game where it doesn't check for the correct keys. Not noticeable
-                    // in-game however since this action only happens for a few frames after punching.
-                    else if ((!Engine.Settings.Local.J2me.FixBugs && Rayman_KeyPressed(GAME_KEY.DOWN_LEFT)) ||
-                             (Engine.Settings.Local.J2me.FixBugs && Rayman_KeyPressed(GAME_KEY.DOWN_RIGHT)))
-                    {
-                        stateFlag &= ~ACTOR_STATE.FLIP_Y;
-                        stateFlag |= ACTOR_STATE.FLIP_X;
-                        anim.newAction = 3;
-                    }
-                    break;
+            case 13:
+                if (Rayman_KeyPressed(GAME_KEY.UP))
+                {
+                    jumpUp(0, 0);
+                }
+                else if (Rayman_KeyCurrent(GAME_KEY.DOWN))
+                {
+                    anim.newAction = 3;
+                }
+                else if (Rayman_KeyPressed(GAME_KEY.LEFT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag &= ~ACTOR_STATE.FLIP_X;
+                    anim.newAction = 2;
+                }
+                else if (Rayman_KeyPressed(GAME_KEY.RIGHT))
+                {
+                    anim.newAction = 2;
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag |= ACTOR_STATE.FLIP_X;
+                }
+                else if (Rayman_KeyPressed(GAME_KEY.UP_RIGHT))
+                {
+                    jumpUp(1792, 0);
+                }
+                else if (Rayman_KeyPressed(GAME_KEY.UP_LEFT))
+                {
+                    jumpUp(-1792, 0);
+                }
+                else if (Rayman_KeyPressed(GAME_KEY.DOWN_LEFT))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag &= ~ACTOR_STATE.FLIP_X;
+                    anim.newAction = 3;
+                }
+                // Optionally fix bug from the original game where it doesn't check for the correct keys. Not noticeable
+                // in-game however since this action only happens for a few frames after punching.
+                else if ((!Engine.Settings.Local.J2me.FixBugs && Rayman_KeyPressed(GAME_KEY.DOWN_LEFT)) ||
+                         (Engine.Settings.Local.J2me.FixBugs && Rayman_KeyPressed(GAME_KEY.DOWN_RIGHT)))
+                {
+                    stateFlag &= ~ACTOR_STATE.FLIP_Y;
+                    stateFlag |= ACTOR_STATE.FLIP_X;
+                    anim.newAction = 3;
+                }
+                break;
 
-                case 15:
-                    if (Rayman_KeyReleased(GAME_KEY.MIDDLE))
-                    {
-                        anim.newAction = 13;
-                        fist_top = getAvailableFist();
-                        if (fist_top != -1)
-                            GameMidlet.Instance_Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, fist_time[fist_top] * 0xF0 + 0x1A40);
-                    }
-                    break;
+            case 15:
+                if (Rayman_KeyReleased(GAME_KEY.MIDDLE))
+                {
+                    anim.newAction = 13;
+                    fist_top = getAvailableFist();
+                    if (fist_top != -1)
+                        GameMidlet.Instance_Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, fist_time[fist_top] * 0xF0 + 0x1A40);
+                }
+                break;
 
-                case 16:
-                    if (Rayman_KeyReleased(GAME_KEY.MIDDLE))
-                    {
-                        anim.newAction = 13;
-                        fist_top = getAvailableFist();
-                        if (fist_top != -1)
-                            GameMidlet.Instance_Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, fist_time[fist_top] * 0xF0 + 0x1A40);
-                    }
-                    bug = 8;
-                    break;
+            case 16:
+                if (Rayman_KeyReleased(GAME_KEY.MIDDLE))
+                {
+                    anim.newAction = 13;
+                    fist_top = getAvailableFist();
+                    if (fist_top != -1)
+                        GameMidlet.Instance_Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, fist_time[fist_top] * 0xF0 + 0x1A40);
+                }
+                bug = 8;
+                break;
 
-                case 25:
-                    if (Rayman_KeyReleased(GAME_KEY.MIDDLE))
-                    {
-                        anim.newAction = 23;
-                        fist_top = getAvailableFist();
-                        if (fist_top != -1)
-                            GameMidlet.Instance_Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, fist_time[fist_top] * 0xF0 + 0x1A40);
-                    }
-                    break;
-                
-                case 28:
-                    yDirectionConfirmed = 0;
-                    yDirectionConfirmationCounter = 0;
-                    if (Rayman_KeyPressed(GAME_KEY.UP))
-                    {
-                        if ((stateFlag & ACTOR_STATE.FLIP_X) == 0)
-                            jumpUp(-0x100, 0);
-                        else
-                            jumpUp(0x100, 0);
-                    }
-                    else if (Rayman_KeyPressed(GAME_KEY.DOWN))
-                    {
-                        y += 0x1000L;
-                        if ((stateFlag & ACTOR_STATE.FLIP_X) == 0)
-                            x += 0x200L;
-                        else
-                            x -= 0x200L;
+            case 25:
+                if (Rayman_KeyReleased(GAME_KEY.MIDDLE))
+                {
+                    anim.newAction = 23;
+                    fist_top = getAvailableFist();
+                    if (fist_top != -1)
+                        GameMidlet.Instance_Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, fist_time[fist_top] * 0xF0 + 0x1A40);
+                }
+                break;
 
-                        anim.newAction = 11;
-                    }
-                    else if (Rayman_KeyPressed(GAME_KEY.UP_RIGHT))
-                    {
-                        jumpUp(0x100, 0);
-                    }
-                    else if (Rayman_KeyPressed(GAME_KEY.UP_LEFT))
-                    {
+            case 28:
+                yDirectionConfirmed = 0;
+                yDirectionConfirmationCounter = 0;
+                if (Rayman_KeyPressed(GAME_KEY.UP))
+                {
+                    if ((stateFlag & ACTOR_STATE.FLIP_X) == 0)
                         jumpUp(-0x100, 0);
-                    }
-                    break;
-
-                case 29:
-                    if (Rayman_KeyPressed(GAME_KEY.UP))
-                    {
-                        if ((stateFlag & ACTOR_STATE.FLIP_X) == 0)
-                            jumpUp(-0x100, 0);
-                        else
-                            jumpUp(0x100, 0);
-                    }
-                    else if (Rayman_KeyPressed(GAME_KEY.DOWN))
-                    {
-                        y += 0x1000L;
-                        if ((stateFlag & ACTOR_STATE.FLIP_X) == 0)
-                            x += 0x200L;
-                        else
-                            x -= 0x200L;
-
-                        anim.newAction = 11;
-                    }
-                    else if (Rayman_KeyPressed(GAME_KEY.UP_RIGHT))
-                    {
+                    else
                         jumpUp(0x100, 0);
-                    }
-                    else if (Rayman_KeyPressed(GAME_KEY.UP_LEFT))
-                    {
-                        jumpUp(-0x100, 0);
-                    }
-                    break;
-            }
+                }
+                else if (Rayman_KeyPressed(GAME_KEY.DOWN))
+                {
+                    y += 0x1000L;
+                    if ((stateFlag & ACTOR_STATE.FLIP_X) == 0)
+                        x += 0x200L;
+                    else
+                        x -= 0x200L;
 
-            GAME_KEY allKeys = GAME_KEY.UP_LEFT | GAME_KEY.LEFT | GAME_KEY.DOWN_LEFT;
-            if (Rayman_KeyPressed(allKeys))
-                xDirectionConfirmationCounter--;
-            allKeys = GAME_KEY.UP_RIGHT | GAME_KEY.RIGHT | GAME_KEY.DOWN_RIGHT;
-            if (Rayman_KeyPressed(allKeys))
-                xDirectionConfirmationCounter++;
+                    anim.newAction = 11;
+                }
+                else if (Rayman_KeyPressed(GAME_KEY.UP_RIGHT))
+                {
+                    jumpUp(0x100, 0);
+                }
+                else if (Rayman_KeyPressed(GAME_KEY.UP_LEFT))
+                {
+                    jumpUp(-0x100, 0);
+                }
+                break;
+
+            case 29:
+                if (Rayman_KeyPressed(GAME_KEY.UP))
+                {
+                    if ((stateFlag & ACTOR_STATE.FLIP_X) == 0)
+                        jumpUp(-0x100, 0);
+                    else
+                        jumpUp(0x100, 0);
+                }
+                else if (Rayman_KeyPressed(GAME_KEY.DOWN))
+                {
+                    y += 0x1000L;
+                    if ((stateFlag & ACTOR_STATE.FLIP_X) == 0)
+                        x += 0x200L;
+                    else
+                        x -= 0x200L;
+
+                    anim.newAction = 11;
+                }
+                else if (Rayman_KeyPressed(GAME_KEY.UP_RIGHT))
+                {
+                    jumpUp(0x100, 0);
+                }
+                else if (Rayman_KeyPressed(GAME_KEY.UP_LEFT))
+                {
+                    jumpUp(-0x100, 0);
+                }
+                break;
         }
-        catch (Exception e)
-        {
-            System.println($" action {action}  exception {e} bug {bug}");
-            System.println($"Game.pFist {GameMidlet.Instance_Game.pFist} fist_time {fist_time}");
-            System.println($"fist_top {fist_top} fist_top {fist_top}");
-            System.println($"Game.pFist[fist_top] {GameMidlet.Instance_Game.pFist[fist_top]}");
-            System.println($" fist_time[fist_top] {fist_time[fist_top]}");
-        }
+
+        GAME_KEY allKeys = GAME_KEY.UP_LEFT | GAME_KEY.LEFT | GAME_KEY.DOWN_LEFT;
+        if (Rayman_KeyPressed(allKeys))
+            xDirectionConfirmationCounter--;
+        allKeys = GAME_KEY.UP_RIGHT | GAME_KEY.RIGHT | GAME_KEY.DOWN_RIGHT;
+        if (Rayman_KeyPressed(allKeys))
+            xDirectionConfirmationCounter++;
     }
 
     public bool checkCeilingAir()

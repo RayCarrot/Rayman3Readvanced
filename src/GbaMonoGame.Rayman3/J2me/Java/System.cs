@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 
 namespace GbaMonoGame.Rayman3.J2me;
 
@@ -25,7 +24,6 @@ public static class System
 
     public static void println(string s)
     {
-        Logger.Debug(s);
-        Debug.WriteLine(s);
+        // Do nothing - this only gets called from unused functions
     }
 }

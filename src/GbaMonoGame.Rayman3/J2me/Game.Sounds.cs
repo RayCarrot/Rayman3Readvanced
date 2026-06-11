@@ -102,33 +102,26 @@ public partial class Game
         // Custom for Readvanced MIDI playback
         SoundFont = new SoundFont($"{Paths.AssetsDirectoryName}/{Assets.BaseName}/J2me/GeneralUser-GS.sf2");
 
-        try
+        for (int i = 0; i < SOUNDS_COUNT; i++)
         {
-            for (int i = 0; i < SOUNDS_COUNT; i++)
+            if (RM.Array_Data[SOUNDS_START_INDEX + i] != null)
             {
-                if (RM.Array_Data[SOUNDS_START_INDEX + i] != null)
+                // Readvanced code
+                if (true)
                 {
-                    // Readvanced code
-                    if (true)
-                    {
-                        MidiFiles[i] = new MidiFile(new MemoryStream(RM.Array_Data[SOUNDS_START_INDEX + i]));
-                    }
-                    // Original game code
-                    else
-                    {
-                        using MemoryStream soundIStream = new(RM.Array_Data[SOUNDS_START_INDEX + i]);
-                        m_SoundPlayer[i] = new Player(soundIStream, "audio/midi");
-                        m_SoundPlayer[i].addPlayerListener(this);
-                        m_SoundPlayer[i].prefetch();
-                        m_SoundPlayer[i].realize();
-                        System.gc();
-                    }
+                    MidiFiles[i] = new MidiFile(new MemoryStream(RM.Array_Data[SOUNDS_START_INDEX + i]));
+                }
+                // Original game code
+                else
+                {
+                    using MemoryStream soundIStream = new(RM.Array_Data[SOUNDS_START_INDEX + i]);
+                    m_SoundPlayer[i] = new Player(soundIStream, "audio/midi");
+                    m_SoundPlayer[i].addPlayerListener(this);
+                    m_SoundPlayer[i].prefetch();
+                    m_SoundPlayer[i].realize();
+                    System.gc();
                 }
             }
-        }
-        catch (Exception e)
-        {
-            System.println($"InitSounds error {e}");
         }
     }
 
@@ -195,18 +188,11 @@ public partial class Game
             // Stop sounds
             StopSound();
 
-            try
-            {
-                m_SoundPlayer[iID].setLoopCount(iLoop);
-                m_SoundPlayer[iID].start();
-                m_iCurrentSound = iSoundIndex;
-                m_bSoundPlaying = true;
-                m_lLastSoundTime = System.currentTimeMillis();
-            }
-            catch (Exception e)
-            {
-                System.println($"playsound() Exception: {e}");
-            }
+            m_SoundPlayer[iID].setLoopCount(iLoop);
+            m_SoundPlayer[iID].start();
+            m_iCurrentSound = iSoundIndex;
+            m_bSoundPlaying = true;
+            m_lLastSoundTime = System.currentTimeMillis();
         }
     }
 
@@ -256,19 +242,12 @@ public partial class Game
         // Original game code
         else
         {
-            try
+            for (int i = 0; i < SOUNDS_COUNT; i++)
             {
-                for (int i = 0; i < SOUNDS_COUNT; i++)
-                {
-                    if (m_SoundPlayer[i] != null)
-                        m_SoundPlayer[i].stop();
-                }
-                m_bSoundPlaying = false;
+                if (m_SoundPlayer[i] != null)
+                    m_SoundPlayer[i].stop();
             }
-            catch (Exception e)
-            {
-                System.println($"stopsound exception: {e}");
-            }
+            m_bSoundPlaying = false;
         }
     }
 
@@ -283,17 +262,10 @@ public partial class Game
         // Original game code
         else
         {
-            try
+            for (int i = 0; i < SOUNDS_COUNT; i++)
             {
-                for (int i = 0; i < SOUNDS_COUNT; i++)
-                {
-                    if (m_SoundPlayer[i] != null && m_SoundPlayer[i].getState() != PLAYER_STATE.UNREALIZED)
-                        m_SoundPlayer[i].setVolumeLevel(soundlevel);
-                }
-            }
-            catch (Exception e)
-            {
-                System.println(e.ToString());
+                if (m_SoundPlayer[i] != null && m_SoundPlayer[i].getState() != PLAYER_STATE.UNREALIZED)
+                    m_SoundPlayer[i].setVolumeLevel(soundlevel);
             }
         }
     }

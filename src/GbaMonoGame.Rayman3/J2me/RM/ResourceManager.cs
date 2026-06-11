@@ -483,118 +483,111 @@ public class ResourceManager
         {
             if (Archive_Information[Archive_Index].PendingLoad > 0)
             {
-                try
+                using MemoryStream Archive_InputStream = new(Archives[Archive_Index]);
+
+                int File_CurrentOffset = Resource_Status[Archive_Index].Length * 4;
+                int File_DestOffset = File_CurrentOffset;
+                int File_TableOffset = 0;
+                byte[] HeaderTable = new byte[File_CurrentOffset];
+                Archive_InputStream.ReadExactly(HeaderTable, 0, File_CurrentOffset);
+
+                for (sbyte b = 0; b < Resource_Status[Archive_Index].Length; b++)
                 {
-                    using MemoryStream Archive_InputStream = new(Archives[Archive_Index]);
-                    
-                    int File_CurrentOffset = Resource_Status[Archive_Index].Length * 4;
-                    int File_DestOffset = File_CurrentOffset;
-                    int File_TableOffset = 0;
-                    byte[] HeaderTable = new byte[File_CurrentOffset];
-                    Archive_InputStream.ReadExactly(HeaderTable, 0, File_CurrentOffset);
-                    
-                    for (sbyte b = 0; b < Resource_Status[Archive_Index].Length; b++)
+                    int Data_Size_Archived = (HeaderTable[File_TableOffset++] << 8) + HeaderTable[File_TableOffset++];
+                    short Data_Size_CompressionDelta = (short)((HeaderTable[File_TableOffset++] << 8) + HeaderTable[File_TableOffset++]);
+
+                    if ((Resource_Status[Archive_Index][b] & (RESOURCE_STATUS.REQUESTED | RESOURCE_STATUS.LOADED)) == RESOURCE_STATUS.REQUESTED)
                     {
-                        int Data_Size_Archived = (HeaderTable[File_TableOffset++] << 8) + HeaderTable[File_TableOffset++];
-                        short Data_Size_CompressionDelta = (short)((HeaderTable[File_TableOffset++] << 8) + HeaderTable[File_TableOffset++]);
-
-                        if ((Resource_Status[Archive_Index][b] & (RESOURCE_STATUS.REQUESTED | RESOURCE_STATUS.LOADED)) == RESOURCE_STATUS.REQUESTED)
+                        if (File_DestOffset > File_CurrentOffset)
                         {
-                            if (File_DestOffset > File_CurrentOffset)
-                            {
-                                Archive_InputStream.Seek(File_DestOffset - File_CurrentOffset, SeekOrigin.Current);
-                                File_CurrentOffset = File_DestOffset;
-                            }
-
-                            // Decompress image to a PNG file
-                            if (b < Archive_Information[Archive_Index].ImageResourcesCount)
-                            {
-                                byte[] Data_Archived = new byte[Data_Size_Archived];
-                                Data_Decompressed = new byte[Data_Size_Archived + Data_Size_CompressionDelta];
-                                Archive_InputStream.ReadExactly(Data_Archived, 0, Data_Size_Archived);
-                                Data_Index_Decompressed = 0;
-                                int Data_Index_Archived = 0;
-                                WriteDWORD(0x89504E47);
-                                WriteDWORD(0xD0A1A0A);
-                                WriteDWORD(0xD);
-                                WriteDWORD(0x49484452);
-                                int DeChunk_Header = (Data_Archived[Data_Index_Archived++] << 24) | (Data_Archived[Data_Index_Archived++] << 16) | (Data_Archived[Data_Index_Archived++] << 8) | Data_Archived[Data_Index_Archived++];
-                                WriteDWORD(DeChunk_Header & 0x3FF);
-                                WriteDWORD((DeChunk_Header >> 10) & 0x3FF);
-                                Data_Decompressed[Data_Index_Decompressed++] = (byte)(1 << ((DeChunk_Header >> 20) & 0x3));
-                                int Temp_Value = (DeChunk_Header >> 22) & 0x3;
-                                Data_Decompressed[Data_Index_Decompressed++] = (byte)(Temp_Value == 0 ? 0 : 3);
-                                Data_Index_Decompressed += 3;
-                                WriteDWORD(((Data_Archived[Data_Index_Archived++] << 24) | (Data_Archived[Data_Index_Archived++] << 16) | (Data_Archived[Data_Index_Archived++] << 8) | Data_Archived[Data_Index_Archived++]));
-
-                                if (Temp_Value == 2)
-                                {
-                                    Temp_Value = Data_Archived[Data_Index_Archived++] * 3;
-                                    if (Temp_Value == 0)
-                                        Temp_Value = 768;
-                                    WriteDWORD(Temp_Value);
-                                    WriteDWORD(0x504C5445);
-                                    while (Temp_Value > 0)
-                                    {
-                                        int CompactColor = (Data_Archived[Data_Index_Archived++] << 8) + Data_Archived[Data_Index_Archived++];
-                                        Data_Decompressed[Data_Index_Decompressed++] = (byte)((CompactColor >> 8) * 255 / 15);
-                                        Data_Decompressed[Data_Index_Decompressed++] = (byte)(((CompactColor >> 4) & 0xF) * 255 / 15);
-                                        Data_Decompressed[Data_Index_Decompressed++] = (byte)((CompactColor & 0xF) * 255 / 15);
-                                        Temp_Value -= 3;
-                                    }
-                                    WriteDWORD(((Data_Archived[Data_Index_Archived++] << 24) | (Data_Archived[Data_Index_Archived++] << 16) | (Data_Archived[Data_Index_Archived++] << 8) | Data_Archived[Data_Index_Archived++]));
-                                }
-
-                                if ((DeChunk_Header & 0x1000000) > 0)
-                                {
-                                    WriteDWORD(0x1);
-                                    WriteDWORD(0x74524E53);
-                                    Data_Index_Decompressed++;
-                                    WriteDWORD(0x40E6D866);
-                                }
-                                do
-                                {
-                                    Temp_Value = Data_Size_Archived - Data_Index_Archived - 4;
-                                    if (Temp_Value > 0x2000 && (DeChunk_Header & 0x2000000) > 0)
-                                        Temp_Value = 0x2000;
-                                    WriteDWORD(Temp_Value);
-                                    WriteDWORD(0x49444154);
-                                    System.arraycopy(Data_Archived, Data_Index_Archived, Data_Decompressed, Data_Index_Decompressed, Temp_Value);
-                                    Data_Index_Decompressed += Temp_Value;
-                                    Data_Index_Archived += Temp_Value;
-                                    WriteDWORD(((Data_Archived[Data_Index_Archived++] << 24) | (Data_Archived[Data_Index_Archived++] << 16) | (Data_Archived[Data_Index_Archived++] << 8) | Data_Archived[Data_Index_Archived++]));
-                                } while (Temp_Value == 0x2000);
-                                WriteDWORD(0x0);
-                                WriteDWORD(0x49454E44);
-                                WriteDWORD(0xAE426082);
-
-                                using MemoryStream ms = new(Data_Decompressed, 0, Data_Index_Decompressed);
-                                Array_Image[Index_Image] = Texture2D.FromStream(Engine.Assets.GraphicsDevice, ms); // TODO: Dispose when freeing? And then free all when uninit midlet.
-
-                                Data_Decompressed = null;
-                            }
-                            else if (Data_Size_CompressionDelta == 0)
-                            {
-                                Array_Data[Index_Data] = new byte[Data_Size_Archived];
-                                Archive_InputStream.ReadExactly(Array_Data[Index_Data], 0, Data_Size_Archived);
-                            }
-
-                            Resource_Status[Archive_Index][b] |= RESOURCE_STATUS.LOADED | RESOURCE_STATUS.USED;
-                            File_CurrentOffset += Data_Size_Archived;
-                            System.gc();
+                            Archive_InputStream.Seek(File_DestOffset - File_CurrentOffset, SeekOrigin.Current);
+                            File_CurrentOffset = File_DestOffset;
                         }
-                        
-                        File_DestOffset += Data_Size_Archived;
-                        
+
+                        // Decompress image to a PNG file
                         if (b < Archive_Information[Archive_Index].ImageResourcesCount)
-                            Index_Image++;
-                        else
-                            Index_Data++;
+                        {
+                            byte[] Data_Archived = new byte[Data_Size_Archived];
+                            Data_Decompressed = new byte[Data_Size_Archived + Data_Size_CompressionDelta];
+                            Archive_InputStream.ReadExactly(Data_Archived, 0, Data_Size_Archived);
+                            Data_Index_Decompressed = 0;
+                            int Data_Index_Archived = 0;
+                            WriteDWORD(0x89504E47);
+                            WriteDWORD(0xD0A1A0A);
+                            WriteDWORD(0xD);
+                            WriteDWORD(0x49484452);
+                            int DeChunk_Header = (Data_Archived[Data_Index_Archived++] << 24) | (Data_Archived[Data_Index_Archived++] << 16) | (Data_Archived[Data_Index_Archived++] << 8) | Data_Archived[Data_Index_Archived++];
+                            WriteDWORD(DeChunk_Header & 0x3FF);
+                            WriteDWORD((DeChunk_Header >> 10) & 0x3FF);
+                            Data_Decompressed[Data_Index_Decompressed++] = (byte)(1 << ((DeChunk_Header >> 20) & 0x3));
+                            int Temp_Value = (DeChunk_Header >> 22) & 0x3;
+                            Data_Decompressed[Data_Index_Decompressed++] = (byte)(Temp_Value == 0 ? 0 : 3);
+                            Data_Index_Decompressed += 3;
+                            WriteDWORD(((Data_Archived[Data_Index_Archived++] << 24) | (Data_Archived[Data_Index_Archived++] << 16) | (Data_Archived[Data_Index_Archived++] << 8) | Data_Archived[Data_Index_Archived++]));
+
+                            if (Temp_Value == 2)
+                            {
+                                Temp_Value = Data_Archived[Data_Index_Archived++] * 3;
+                                if (Temp_Value == 0)
+                                    Temp_Value = 768;
+                                WriteDWORD(Temp_Value);
+                                WriteDWORD(0x504C5445);
+                                while (Temp_Value > 0)
+                                {
+                                    int CompactColor = (Data_Archived[Data_Index_Archived++] << 8) + Data_Archived[Data_Index_Archived++];
+                                    Data_Decompressed[Data_Index_Decompressed++] = (byte)((CompactColor >> 8) * 255 / 15);
+                                    Data_Decompressed[Data_Index_Decompressed++] = (byte)(((CompactColor >> 4) & 0xF) * 255 / 15);
+                                    Data_Decompressed[Data_Index_Decompressed++] = (byte)((CompactColor & 0xF) * 255 / 15);
+                                    Temp_Value -= 3;
+                                }
+                                WriteDWORD(((Data_Archived[Data_Index_Archived++] << 24) | (Data_Archived[Data_Index_Archived++] << 16) | (Data_Archived[Data_Index_Archived++] << 8) | Data_Archived[Data_Index_Archived++]));
+                            }
+
+                            if ((DeChunk_Header & 0x1000000) > 0)
+                            {
+                                WriteDWORD(0x1);
+                                WriteDWORD(0x74524E53);
+                                Data_Index_Decompressed++;
+                                WriteDWORD(0x40E6D866);
+                            }
+                            do
+                            {
+                                Temp_Value = Data_Size_Archived - Data_Index_Archived - 4;
+                                if (Temp_Value > 0x2000 && (DeChunk_Header & 0x2000000) > 0)
+                                    Temp_Value = 0x2000;
+                                WriteDWORD(Temp_Value);
+                                WriteDWORD(0x49444154);
+                                System.arraycopy(Data_Archived, Data_Index_Archived, Data_Decompressed, Data_Index_Decompressed, Temp_Value);
+                                Data_Index_Decompressed += Temp_Value;
+                                Data_Index_Archived += Temp_Value;
+                                WriteDWORD(((Data_Archived[Data_Index_Archived++] << 24) | (Data_Archived[Data_Index_Archived++] << 16) | (Data_Archived[Data_Index_Archived++] << 8) | Data_Archived[Data_Index_Archived++]));
+                            } while (Temp_Value == 0x2000);
+                            WriteDWORD(0x0);
+                            WriteDWORD(0x49454E44);
+                            WriteDWORD(0xAE426082);
+
+                            using MemoryStream ms = new(Data_Decompressed, 0, Data_Index_Decompressed);
+                            Array_Image[Index_Image] = Texture2D.FromStream(Engine.Assets.GraphicsDevice, ms); // TODO: Dispose when freeing? And then free all when uninit midlet.
+
+                            Data_Decompressed = null;
+                        }
+                        else if (Data_Size_CompressionDelta == 0)
+                        {
+                            Array_Data[Index_Data] = new byte[Data_Size_Archived];
+                            Archive_InputStream.ReadExactly(Array_Data[Index_Data], 0, Data_Size_Archived);
+                        }
+
+                        Resource_Status[Archive_Index][b] |= RESOURCE_STATUS.LOADED | RESOURCE_STATUS.USED;
+                        File_CurrentOffset += Data_Size_Archived;
+                        System.gc();
                     }
-                }
-                catch (Exception insException)
-                {
-                    System.println("Resource Manager Sync Exception >" + insException);
+
+                    File_DestOffset += Data_Size_Archived;
+
+                    if (b < Archive_Information[Archive_Index].ImageResourcesCount)
+                        Index_Image++;
+                    else
+                        Index_Data++;
                 }
 
                 Archive_Information[Archive_Index].PendingLoad = 0;
