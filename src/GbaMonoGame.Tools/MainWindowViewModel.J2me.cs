@@ -5,7 +5,7 @@ using System.Text;
 using BinarySerializer;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using GbaMonoGame.Rayman3.J2ME;
+using GbaMonoGame.Rayman3.J2me;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;

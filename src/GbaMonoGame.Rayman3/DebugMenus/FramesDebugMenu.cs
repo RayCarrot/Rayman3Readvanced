@@ -2,7 +2,7 @@
 using System.Linq;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.Editor;
-using GbaMonoGame.Rayman3.J2ME;
+using GbaMonoGame.Rayman3.J2me;
 using GbaMonoGame.Rayman3.Readvanced;
 using ImGuiNET;
 

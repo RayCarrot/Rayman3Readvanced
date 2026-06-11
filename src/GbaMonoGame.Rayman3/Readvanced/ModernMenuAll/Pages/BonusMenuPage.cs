@@ -1,6 +1,6 @@
 ﻿using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
-using GbaMonoGame.Rayman3.J2ME;
+using GbaMonoGame.Rayman3.J2me;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 

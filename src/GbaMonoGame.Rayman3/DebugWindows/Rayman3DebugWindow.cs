@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Text;
 using GbaMonoGame.Engine2d;
-using GbaMonoGame.Rayman3.J2ME;
+using GbaMonoGame.Rayman3.J2me;
 using GbaMonoGame.Rayman3.Readvanced;
 using ImGuiNET;
-using Game = GbaMonoGame.Rayman3.J2ME.Game;
+using Game = GbaMonoGame.Rayman3.J2me.Game;
 
 namespace GbaMonoGame.Rayman3;
 

@@ -77,9 +77,9 @@ public static class Assets
         public const string IntroLogo_Part7 = $"{BaseName}/Intro/IntroLogo_Part7";
         public const string IntroLogo_Part8 = $"{BaseName}/Intro/IntroLogo_Part8";
     }
-    public static class J2ME
+    public static class J2me
     {
-        public const string CollisionTileSet = $"{BaseName}/J2ME/CollisionTileSet";
+        public const string CollisionTileSet = $"{BaseName}/J2me/CollisionTileSet";
     }
     public static class Level
     {

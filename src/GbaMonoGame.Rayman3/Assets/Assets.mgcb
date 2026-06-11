@@ -767,7 +767,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:GbaMonoGame.Rayman3/J2ME/CollisionTileSet.png
+/build:GbaMonoGame.Rayman3/J2me/CollisionTileSet.png
 
 #begin BossMachine_ExtendedLayer0_GBA.png
 /importer:TextureImporter
