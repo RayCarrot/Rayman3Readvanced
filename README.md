@@ -114,4 +114,5 @@ See [assets](docs/assets.md) for a comprehensive list of where each asset comes 
 - [Luseu](https://x.com/Luseu4)
 - [muffet](https://youtube.com/@muffet1536)
 - [Pixel](https://www.youtube.com/@PixelTheRetro)
+- [TwoSpacesSG](https://www.youtube.com/@twospaces)
 - [Warper](https://youtube.com/@warper74)

@@ -70,6 +70,7 @@ public class Credits : Frame
         "Luseu",
         "muffet",
         "Pixel",
+        "TwoSpacesSG",
         "Warper",
         "-"
     ];
