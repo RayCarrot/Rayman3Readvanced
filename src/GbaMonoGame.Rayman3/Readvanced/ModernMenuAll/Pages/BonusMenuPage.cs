@@ -1,4 +1,6 @@
-﻿using GbaMonoGame.AnimEngine;
+﻿using BinarySerializer.Ubisoft.GbaEngine;
+using GbaMonoGame.AnimEngine;
+using GbaMonoGame.Rayman3.J2ME;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
@@ -19,6 +21,23 @@ public class BonusMenuPage : MenuPage
         Rayman3.TimeAttack.GetTotalEarnedMedals(
             out int earnedBronze, out int earnedSilver, out int earnedGold, 
             out int totalBronze, out int totalSilver, out int totalGold);
+
+        // Create icons for J2ME collections
+        AnimatedObjectResource propsAnimations = Rom.Loader.ReadResource<AnimatedObjectResource>(Rayman3DefinedResource.MenuPropAnimations);
+        AnimatedObject lumIcon = new(propsAnimations, propsAnimations.IsDynamic)
+        {
+            IsFramed = true,
+            CurrentAnimation = 13,
+        };
+        AnimatedObject cageIcon = new(propsAnimations, propsAnimations.IsDynamic)
+        {
+            IsFramed = true,
+            CurrentAnimation = 11,
+        };
+
+        // Hide the "x" part of the animations
+        lumIcon.DeactivateChannel(0);
+        cageIcon.DeactivateChannel(0);
 
         // Add menu options
         AddOption(new BonusActionMenuOption(
@@ -42,6 +61,24 @@ public class BonusMenuPage : MenuPage
             action: () =>
             {
                 Menu.ChangePage(new TimeAttackMenuPage(Menu), NewPageMode.Next);
+            }));
+        AddOption(new BonusActionMenuOption(
+            text: "MOBILE (J2ME)", 
+            collections:
+            [
+                // TODO: Implement showing progress
+                new BonusActionMenuOption.Collection(lumIcon, new Vector2(1, 1), "0/175"),
+                new BonusActionMenuOption.Collection(cageIcon, new Vector2(0, -1), "0/12"),
+            ],
+            action: () =>
+            {
+                CursorClick(() =>
+                {
+                    FadeOut(2, () =>
+                    {
+                        Engine.FrameMngr.SetNextFrame(new GameMidlet());
+                    });
+                });
             }));
         AddOption(new ActionMenuOption("ORIGINAL MENU", () =>
         {

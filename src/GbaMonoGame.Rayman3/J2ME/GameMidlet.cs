@@ -3,6 +3,7 @@ using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.IO;
 using BinarySerializer.Ubisoft.GbaEngine;
+using GbaMonoGame.Rayman3.Readvanced;
 using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.Rayman3.J2ME;
@@ -65,6 +66,7 @@ public class GameMidlet : Frame
 
         // Read the game file
         JavaArchive = new JavaArchive(Path.Combine(Engine.UserData.GetDirectory("J2me"), "rayman3.jar"), cache: true);
+        Engine.FrameMngr.RegisterDisposableResource(JavaArchive);
 
         // TODO: Validate the manifest values (version etc.)
 
@@ -75,10 +77,6 @@ public class GameMidlet : Frame
 
     public override void UnInit()
     {
-        // Dispose the Java archive
-        JavaArchive.Dispose();
-        JavaArchive = null;
-
         // Stop the game
         Instance_Game.StopSound();
         Instance_Game = null;
@@ -110,5 +108,9 @@ public class GameMidlet : Frame
 
         // Update sounds
         Instance_Game.UpdateSounds();
+
+        // Check if exiting
+        if (Instance_Game.m_chGameState == GAME_STATE.EXITING)
+            Engine.FrameMngr.SetNextFrame(new ModernMenuAll(InitialMenuPage.Bonus));
     }
 }

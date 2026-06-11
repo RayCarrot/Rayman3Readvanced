@@ -475,7 +475,11 @@ public class ModernMenuAll : Frame, IHasPlayfield
                 ChangePage(new GameModeMenuPage(this), NewPageMode.Initial);
                 break;
 
-            // TODO: Implement multiplayer page
+            case InitialMenuPage.Bonus:
+                languageCurtainScreen.IsEnabled = false;
+                ChangePage(new BonusMenuPage(this), NewPageMode.Initial);
+                break;
+
             case InitialMenuPage.TimeAttack:
                 languageCurtainScreen.IsEnabled = false;
                 ChangePage(new TimeAttackMenuPage(this), NewPageMode.Initial);

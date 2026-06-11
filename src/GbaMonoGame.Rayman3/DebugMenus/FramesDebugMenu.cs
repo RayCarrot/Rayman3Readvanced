@@ -26,6 +26,7 @@ public class FramesDebugMenu : DebugMenu
             new("Multiplayer", () => new ModernMenuAll(InitialMenuPage.Multiplayer)),
             new("Multiplayer Lost Connection", () => new ModernMenuAll(InitialMenuPage.MultiplayerLostConnection)),
             new("N-Gage First Page", () => new ModernMenuAll(InitialMenuPage.NGage_FirstPage)),
+            new("Bonus", () => new ModernMenuAll(InitialMenuPage.Bonus)),
             new("Time Attack", () => new ModernMenuAll(InitialMenuPage.TimeAttack)),
         ]),
         new("Menu", null, 

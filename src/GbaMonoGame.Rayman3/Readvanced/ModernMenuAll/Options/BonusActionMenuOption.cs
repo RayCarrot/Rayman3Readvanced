@@ -12,23 +12,31 @@ public class BonusActionMenuOption : ActionMenuOption
     }
 
     public Collection[] Collections { get; }
-    public SpriteTextureObject[] CollectionIcons { get; set; }
+    public AObject[] CollectionIcons { get; set; }
     public SpriteTextObject[] CollectionTextObjects { get; set; }
 
     public override void Init(int bgPriority, RenderContext renderContext, int index)
     {
         base.Init(bgPriority, renderContext, index);
 
-        CollectionIcons = new SpriteTextureObject[Collections.Length];
+        CollectionIcons = new AObject[Collections.Length];
         for (int i = 0; i < CollectionIcons.Length; i++)
         {
-            CollectionIcons[i] = new SpriteTextureObject()
+            if (Collections[i].IconTexture != null)
             {
-                BgPriority = bgPriority,
-                ObjPriority = 0,
-                Texture = Engine.Assets.FrameContentManager.Load<Texture2D>(Collections[i].IconTexture),
-                RenderContext = renderContext,
-            };
+                CollectionIcons[i] = new SpriteTextureObject()
+                {
+                    Texture = Engine.Assets.FrameContentManager.Load<Texture2D>(Collections[i].IconTexture),
+                };
+            }
+            else
+            {
+                CollectionIcons[i] = Collections[i].IconAnimatedObject;
+            }
+
+            CollectionIcons[i].BgPriority = bgPriority;
+            CollectionIcons[i].ObjPriority = 0;
+            CollectionIcons[i].RenderContext = renderContext;
         }
 
         CollectionTextObjects = new SpriteTextObject[Collections.Length];
@@ -53,7 +61,7 @@ public class BonusActionMenuOption : ActionMenuOption
         const int width = 65;
 
         for (int i = 0; i < CollectionIcons.Length; i++)
-            CollectionIcons[i].ScreenPos = position + new Vector2(startX + i * width, 0);
+            CollectionIcons[i].ScreenPos = position + new Vector2(startX + i * width, 0) + Collections[i].Offset;
 
         for (int i = 0; i < CollectionTextObjects.Length; i++)
             CollectionTextObjects[i].ScreenPos = position + new Vector2(startX + 19 + i * width, 1);
@@ -63,7 +71,7 @@ public class BonusActionMenuOption : ActionMenuOption
     {
         base.Draw(animationPlayer);
 
-        foreach (SpriteTextureObject icon in CollectionIcons)
+        foreach (AObject icon in CollectionIcons)
             animationPlayer.Play(icon);
 
         foreach (SpriteTextObject textObject in CollectionTextObjects)
@@ -77,8 +85,16 @@ public class BonusActionMenuOption : ActionMenuOption
             IconTexture = iconTexture;
             Text = text;
         }
+        public Collection(AnimatedObject iconAnimatedObject, Vector2 offset, string text)
+        {
+            IconAnimatedObject = iconAnimatedObject;
+            Offset = offset;
+            Text = text;
+        }
 
         public string IconTexture { get; }
+        public AnimatedObject IconAnimatedObject { get; }
+        public Vector2 Offset { get; }
         public string Text { get; }
     }
 }

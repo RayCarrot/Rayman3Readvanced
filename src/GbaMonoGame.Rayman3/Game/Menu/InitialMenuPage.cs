@@ -10,5 +10,6 @@ public enum InitialMenuPage
     NGage_FirstPage,
 
     // Readvanced
+    Bonus,
     TimeAttack,
 }
