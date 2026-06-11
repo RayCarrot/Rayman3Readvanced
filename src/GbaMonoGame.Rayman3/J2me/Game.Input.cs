@@ -125,7 +125,7 @@ public partial class Game
         {
             m_gameFrame_paused = true;
             Menu_SetCurrentPage(MENU_PAGE.PAUSE);
-            pressedKey = 0;
+            pressedKey = GAME_KEY.NONE;
             StopSound();
         }
     }

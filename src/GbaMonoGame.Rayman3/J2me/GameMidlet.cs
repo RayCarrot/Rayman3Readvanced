@@ -9,7 +9,6 @@ using Microsoft.Xna.Framework;
 namespace GbaMonoGame.Rayman3.J2me;
 
 // TODO: Fix sprite rendering by using separate textures for each sprite
-// TODO: Implement auto-pause on lost focus
 // TODO: Add cheat menu for debug collision and other cheats
 // TODO: Show save icon when saving
 // TODO: Add achievements (complete all levels, 100% all levels and a third one?)
@@ -100,6 +99,22 @@ public class GameMidlet : Frame
                 Instance_Game.keyPressed(keyValuePair.Value);
             else if (Engine.JoyPad.IsButtonJustReleased(keyValuePair.Key))
                 Instance_Game.keyReleased(keyValuePair.Value);
+        }
+
+        // Auto-pause if requested
+        if (PendingAutoPause)
+        {
+            PendingAutoPause = false;
+
+            if (Instance_Game.m_gameFrame_curLevel >= Game.LEVEL_WORLD_MAP && 
+                Instance_Game.curState == SYS_FRAME_STATE.GAME && 
+                !Instance_Game.m_gameFrame_paused)
+            {
+                Instance_Game.m_gameFrame_paused = true;
+                Instance_Game.Menu_SetCurrentPage(MENU_PAGE.PAUSE);
+                Instance_Game.pressedKey = GAME_KEY.NONE;
+                Instance_Game.StopSound();
+            }
         }
 
         // Update game
