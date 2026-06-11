@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.IO.Compression;
+using System.Security.Cryptography;
 using System.Text;
 using BinarySerializer;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -179,6 +180,8 @@ public partial class MainWindowViewModel : ObservableObject
 
         Log($"Exporting from {fileDialog.FileNames.Length} roms");
 
+        HashSet<string> hashes = new();
+
         foreach (string romFilePath in fileDialog.FileNames)
         {
             string romFileName = Path.GetFileName(romFilePath);
@@ -246,36 +249,58 @@ public partial class MainWindowViewModel : ObservableObject
                             for (int i = 0; i < dataCount; i++)
                             {
                                 byte[] data = reader.ReadBytes(dataSizes[i]);
-                                string name = i.ToString();
-                                string ext = ".dat";
 
+                                // Check for duplicates
+                                if (RemoveDuplicates)
+                                {
+                                    string hash = Convert.ToBase64String(SHA512.HashData(data));
+                                    if (!hashes.Add(hash))
+                                        continue;
+                                }
+
+                                string rawExportFilePath = GetExportFilePath(Path.Combine("J2ME", "Raw", romFileName, archiveFile), $"{i}.dat");
+                                File.WriteAllBytes(rawExportFilePath, data);
+                                
                                 // Check for PNG header
                                 if (data[0] == 0x89 && data[1] == 0x50 && data[2] == 0x4E && data[3] == 0x47)
                                 {
-                                    ext = ".png";
+                                    exportConvertedData(data, $"{i}_Image.png");
+                                }
+                                // Check for MIDI header
+                                else if (data[0] == 0x4D && data[1] == 0x54 && data[2] == 0x68 && data[3] == 0x64)
+                                {
+                                    exportConvertedData(data, $"{i}_Sound.mid");
+                                }
+                                // Check for WAV header
+                                else if (data[0] == 0x52 && data[1] == 0x49 && data[2] == 0x46 && data[3] == 0x46)
+                                {
+                                    exportConvertedData(data, $"{i}_Sound.wav");
                                 }
                                 // Check if compressed, in which case we assume it's an image
                                 else if (dataSizeCompressionDeltas[i] != 0)
                                 {
-                                    data = DecompressJ2meImage(data, dataSizes[i], dataSizeCompressionDeltas[i]);
-                                    ext = ".png";
+                                    exportConvertedData(DecompressJ2meImage(data, dataSizes[i], dataSizeCompressionDeltas[i]), $"{i}_Image.png");
                                 }
                                 // Check if text bank
                                 else if (IsTextBank(data))
                                 {
-                                    data = Encoding.UTF8.GetBytes(ConvertTextBank(data));
-                                    ext = ".txt";
+                                    exportConvertedData(Encoding.UTF8.GetBytes(ConvertTextBank(data)), $"{i}_Text.txt");
                                 }
                                 // Check if actor types
                                 else if (i == 0 && dataSizes[i] == 308)
                                 {
-                                    data = SerializeToJson(ConvertActorTypes(data));
-                                    name += "_ActorTypes";
-                                    ext = ".json";
+                                    exportConvertedData(SerializeToJson(ConvertActorTypes(data)), $"{i}_ActorTypes.json");
+                                }
+                                else
+                                {
+                                    exportConvertedData(data, $"{i}.dat");
                                 }
 
-                                string exportFilePath = GetExportFilePath(Path.Combine("J2ME", romFileName, archiveFile), $"{name}{ext}");
-                                File.WriteAllBytes(exportFilePath, data);
+                                void exportConvertedData(byte[] convertedData, string fileName)
+                                {
+                                    string exportFilePath = GetExportFilePath(Path.Combine("J2ME", "Converted", romFileName, archiveFile), fileName);
+                                    File.WriteAllBytes(exportFilePath, convertedData);
+                                }
                             }
 
                             Log($"Exported {dataCount} data blocks from {archiveFile}");

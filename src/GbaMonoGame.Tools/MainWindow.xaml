@@ -61,7 +61,7 @@
             </TabItem>
             <TabItem Header="J2ME">
                 <WrapPanel>
-                    <Button Content="Export resources (DAT)"
+                    <Button Content="Export resources (DAT)*"
                             Command="{Binding Path=ExportJ2meCommand, Mode=OneTime}"
                             Margin="0 0 8 8" />
                 </WrapPanel>
