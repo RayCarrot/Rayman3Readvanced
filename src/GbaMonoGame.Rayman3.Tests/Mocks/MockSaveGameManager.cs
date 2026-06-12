@@ -6,6 +6,8 @@ public class MockSaveGameManager : ISaveGameManager
 {
     public void Step() { }
 
+    public void ShowPopup() { }
+
     public bool SlotExists(int index) => false;
     public ReadvancedSlot LoadSlot(int index) => null;
     public void SaveSlot(int index, ReadvancedSlot save) { }

@@ -65,16 +65,16 @@ public class SaveGameManager : ISaveGameManager
         }
     }
 
-    private void ShowPopup()
-    {
-        if (Engine.Settings.Local.Display.ShowSavePopups)
-            Popup.Show();
-    }
-
     public void Step()
     {
         Popup.Step();
         Popup.Draw();
+    }
+
+    public void ShowPopup()
+    {
+        if (Engine.Settings.Local.Display.ShowSavePopups)
+            Popup.Show();
     }
 
     public bool SlotExists(int index)

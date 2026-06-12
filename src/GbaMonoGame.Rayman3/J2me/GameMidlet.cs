@@ -10,7 +10,6 @@ namespace GbaMonoGame.Rayman3.J2me;
 
 // TODO: Fix sprite rendering by using separate textures for each sprite
 // TODO: Add cheat menu for debug collision and other cheats
-// TODO: Show save icon when saving
 // TODO: Add achievements (complete all levels, 100% all levels and a third one?)
 public class GameMidlet : Frame
 {
@@ -39,6 +38,8 @@ public class GameMidlet : Frame
     public static Vector2 ModernResolution { get; } = Resolution.J2meModern;
     public static Point ModernIntegerResolution { get; } = Resolution.J2meModern.ToPoint();
 
+    public static string UserDataDirectoryName => "J2me";
+
     public static Game Instance_Game { get; set; }
     public static bool bSuspended { get; set; }
 
@@ -63,7 +64,7 @@ public class GameMidlet : Frame
         Engine.App.Framerate = Framerate;
 
         // Read the game file
-        JavaArchive = new JavaArchive(Path.Combine(Engine.UserData.GetDirectory("J2me"), "rayman3.jar"), cache: true);
+        JavaArchive = new JavaArchive(Path.Combine(Engine.UserData.GetDirectory(UserDataDirectoryName), "rayman3.jar"), cache: true);
         Engine.FrameMngr.RegisterDisposableResource(JavaArchive);
 
         // TODO: Validate the manifest values (version etc.)

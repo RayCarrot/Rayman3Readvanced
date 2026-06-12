@@ -20,7 +20,7 @@ public class SavePopup
     public float MinX { get; set; }
     public float MaxX { get; set; }
     public float OffsetX { get; set; }
-    public int WaitTimer { get; set; }
+    public float WaitTimer { get; set; }
 
     public void Show()
     {
@@ -78,17 +78,17 @@ public class SavePopup
 
     public void Step()
     {
-        // Manage transition
+        // Manage transition and multiply by GbaDeltaTime since this will also be used in the J2ME version which has a lower framerate
         switch (DrawStep)
         {
             case BarDrawStep.MoveIn:
                 if (WaitTimer < MoveInDelayTime)
                 {
-                    WaitTimer++;
+                    WaitTimer += 1 * Engine.App.GbaDeltaTime;
                 }
                 else
                 {
-                    OffsetX += MoveSpeed;
+                    OffsetX += MoveSpeed * Engine.App.GbaDeltaTime;
                     if (OffsetX >= MaxX)
                     {
                         OffsetX = MaxX;
@@ -99,7 +99,7 @@ public class SavePopup
                 break;
 
             case BarDrawStep.MoveOut:
-                OffsetX -= MoveSpeed;
+                OffsetX -= MoveSpeed * Engine.App.GbaDeltaTime;
                 if (OffsetX <= MinX)
                 {
                     OffsetX = MinX;
@@ -111,7 +111,7 @@ public class SavePopup
                 if (WaitTimer >= WaitTime)
                     DrawStep = BarDrawStep.MoveOut;
                 else
-                    WaitTimer++;
+                    WaitTimer += 1 * Engine.App.GbaDeltaTime;
                 break;
         }
 
