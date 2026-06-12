@@ -69,7 +69,7 @@ public partial class Game
                             }
                             else if (!bEnableSound)
                             {
-                                SoundVolume = 0;
+                                SoundVolume = VOL_OFF;
                                 bEnableSound = true;
                             }
                             bSoundBegin = true;

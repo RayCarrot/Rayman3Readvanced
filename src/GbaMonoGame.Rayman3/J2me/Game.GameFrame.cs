@@ -323,7 +323,7 @@ public partial class Game
             else
             {
                 GameFrame_CreateSaveGame();
-                GameFrame_LoadRecordFlag();
+                GameFrame_LoadRecordFlag(); // Why is this called here?
                 for (int i = 0; i < 11; i++)
                     m_RecordUsedFlag[i] = false;
                 GameFrame_SaveRecordFlag();
@@ -441,146 +441,196 @@ public partial class Game
 
     public bool GameFrame_IsSavedFileExists()
     {
-        bool bRes = false;
-        bool bRes1 = false;
-        bool bRes2 = false;
-
-        string[] sRecordList = RecordStore.listRecordStores();
-        if (sRecordList != null)
+        try
         {
-            for (int i = 0; i < sRecordList.Length; i++)
-            {
-                if (sRecordList[i] == GAME_SAVE_NAME)
-                    bRes = true;
-                if (sRecordList[i] == RECORD_FLAG_SAVE_NAME)
-                    bRes1 = true;
-                if (sRecordList[i] == SOUND_SAVE_NAME)
-                    bRes2 = true;
-            }
-        }
+            bool bRes = RecordStore.recordStoreExists(GAME_SAVE_NAME);
+            bool bRes1 = RecordStore.recordStoreExists(RECORD_FLAG_SAVE_NAME);
+            bool bRes2 = RecordStore.recordStoreExists(SOUND_SAVE_NAME);
 
-        return bRes && bRes1 && bRes2;
+            return bRes && bRes1 && bRes2;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     public void GameFrame_CreateSaveGame()
     {
-        Rayman3.Save.ShowPopup();
-
-        using RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, true);
-        for (int i = 0; i < actorsLen.Length; i++)
+        try
         {
-            byte[] data = new byte[actorsLen[i]];
-            rs.addRecord(data, 0, data.Length);
-            m_RecordUsedFlag[i] = false;
+            using (RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, true))
+            {
+                for (int i = 0; i < actorsLen.Length; i++)
+                {
+                    byte[] data = new byte[actorsLen[i]];
+                    rs.addRecord(data, 0, data.Length);
+                    m_RecordUsedFlag[i] = false;
+                }
+            }
+
+            Rayman3.Save.ShowPopup();
+        }
+        catch (Exception ex)
+        {
+            Engine.Messages.EnqueueExceptionMessage(
+                ex: ex,
+                text: "An error occurred when saving the game.",
+                header: "Error saving game");
         }
     }
 
     public void GameFrame_LoadRecordFlag()
     {
-        bool isFileExists = false;
-        string[] sRecordList = RecordStore.listRecordStores();
-        if (sRecordList != null)
+        try
         {
-            for (int i = 0; i < sRecordList.Length; i++)
+            bool isFileExists = RecordStore.recordStoreExists(RECORD_FLAG_SAVE_NAME);
+
+            byte[] data = null;
+            using RecordStore rs = RecordStore.openRecordStore(RECORD_FLAG_SAVE_NAME, !isFileExists);
+            if (isFileExists)
             {
-                if (sRecordList[i] == RECORD_FLAG_SAVE_NAME)
-                {
-                    isFileExists = true;
-                    break;
-                }
+                data = rs.getRecord(1);
+            }
+            else
+            {
+                if (rs.getNumRecords() == 0)
+                    rs.addRecord(null, 0, 0);
+            }
+
+            if (data != null)
+            {
+                for (int i = 0; i < 11; i++)
+                    m_RecordUsedFlag[i] = data[i] != 0;
             }
         }
+        catch (Exception ex)
+        {
+            Array.Clear(m_RecordUsedFlag);
 
-        byte[] data = null;
-        using RecordStore rs = RecordStore.openRecordStore(RECORD_FLAG_SAVE_NAME, !isFileExists);
-        if (isFileExists)
-        {
-            data = rs.getRecord(1);
-        }
-        else
-        {
-            if (rs.getNumRecords() == 0)
-                rs.addRecord(null, 0, 0);
-        }
-
-        if (data != null)
-        {
-            for (int i = 0; i < 11; i++)
-                m_RecordUsedFlag[i] = data[i] != 0;
+            Engine.Messages.EnqueueExceptionMessage(
+                ex: ex,
+                text: "An error occurred when reading the save.",
+                header: "Error reading game save");
         }
     }
 
     public void GameFrame_SaveRecordFlag()
     {
-        using RecordStore rs = RecordStore.openRecordStore(RECORD_FLAG_SAVE_NAME, false);
-        byte[] data = new byte[m_RecordUsedFlag.Length];
-        for (int i = 0; i < m_RecordUsedFlag.Length; i++)
-            data[i] = (byte)(m_RecordUsedFlag[i] ? 1 : 0);
-        rs.setRecord(1, data, 0, data.Length);
+        try
+        {
+            using (RecordStore rs = RecordStore.openRecordStore(RECORD_FLAG_SAVE_NAME, false))
+            {
+                byte[] data = new byte[m_RecordUsedFlag.Length];
+                for (int i = 0; i < m_RecordUsedFlag.Length; i++)
+                    data[i] = (byte)(m_RecordUsedFlag[i] ? 1 : 0);
+                rs.setRecord(1, data, 0, data.Length);
+            }
+
+            Rayman3.Save.ShowPopup();
+        }
+        catch (Exception ex)
+        {
+            Engine.Messages.EnqueueExceptionMessage(
+                ex: ex,
+                text: "An error occurred when saving the game.",
+                header: "Error saving game");
+        }
     }
 
     // Unused
     public void GameFrame_ClearSaveGame()
     {
-        Rayman3.Save.ShowPopup();
-
-        s_synopsis = null;
-        using RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, false);
-        int iRecordId = 1;
-        while (iRecordId <= m_RecordUsedFlag.Length)
+        try
         {
-            byte[] data = rs.getRecord(iRecordId);
-            if (data != null)
-                m_RecordUsedFlag[iRecordId - 1] = false;
-            iRecordId++;
+            s_synopsis = null;
+            using (RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, false))
+            {
+                int iRecordId = 1;
+                while (iRecordId <= m_RecordUsedFlag.Length)
+                {
+                    byte[] data = rs.getRecord(iRecordId);
+                    if (data != null)
+                        m_RecordUsedFlag[iRecordId - 1] = false;
+                    iRecordId++;
+                }
+            }
+            
+            Rayman3.Save.ShowPopup();
+        }
+        catch (Exception ex)
+        {
+            Engine.Messages.EnqueueExceptionMessage(
+                ex: ex,
+                text: "An error occurred when clearing the save.",
+                header: "Error clearing game save");
         }
     }
 
     // Unused
     void GameFrame_DeleteSaveGame()
     {
-        Rayman3.Save.ShowPopup();
+        try
+        {
+            s_synopsis = null;
+            RecordStore.deleteRecordStore(GAME_SAVE_NAME);
 
-        s_synopsis = null;
-        RecordStore.deleteRecordStore(GAME_SAVE_NAME);
+            Rayman3.Save.ShowPopup();
+        }
+        catch (Exception ex)
+        {
+            Engine.Messages.EnqueueExceptionMessage(
+                ex: ex,
+                text: "An error occurred when deleting the save.",
+                header: "Error deleting game save");
+        }
     }
 
     public void GameFrame_SaveSound()
     {
-        using RecordStore rs = RecordStore.openRecordStore(SOUND_SAVE_NAME, false);
-        byte[] data = BitConverter.GetBytes(SoundVolume);
-        rs.setRecord(1, data, 0, data.Length);
+        try
+        {
+            using RecordStore rs = RecordStore.openRecordStore(SOUND_SAVE_NAME, false);
+            byte[] data = BitConverter.GetBytes(SoundVolume);
+            rs.setRecord(1, data, 0, data.Length);
+        }
+        catch (Exception ex)
+        {
+            Engine.Messages.EnqueueExceptionMessage(
+                ex: ex,
+                text: "An error occurred when saving the game.",
+                header: "Error saving game");
+        }
     }
 
     public void GameFrame_LoadSound()
     {
-        bool isSaveSoundFileExists = false;
-        string[] sRecordList = RecordStore.listRecordStores();
-        if (sRecordList != null)
+        try
         {
-            for (int i = 0; i < sRecordList.Length; i++)
+            bool isSaveSoundFileExists = RecordStore.recordStoreExists(SOUND_SAVE_NAME);
+            byte[] data = null;
+            using RecordStore rs = RecordStore.openRecordStore(SOUND_SAVE_NAME, !isSaveSoundFileExists);
+            if (isSaveSoundFileExists)
             {
-                if (sRecordList[i] == SOUND_SAVE_NAME)
-                    isSaveSoundFileExists = true;
+                data = rs.getRecord(1);
+            }
+            else
+            {
+                if (rs.getNumRecords() == 0)
+                    rs.addRecord(null, 0, 0);
+            }
+
+            if (data != null)
+            {
+                // Do nothing
             }
         }
-
-        byte[] data = null;
-        using RecordStore rs = RecordStore.openRecordStore(SOUND_SAVE_NAME, !isSaveSoundFileExists);
-        if (isSaveSoundFileExists)
+        catch (Exception ex)
         {
-            data = rs.getRecord(1);
-        }
-        else
-        {
-            if (rs.getNumRecords() == 0)
-                rs.addRecord(null, 0, 0);
-        }
-
-        if (data != null)
-        {
-            // TODO: Implement loading sound?
-            // Do nothing
+            Engine.Messages.EnqueueExceptionMessage(
+                ex: ex,
+                text: "An error occurred when reading the save.",
+                header: "Error reading game save");
         }
     }
 
@@ -646,57 +696,93 @@ public partial class Game
 
     public void GameFrame_SaveSynopsis()
     {
-        Rayman3.Save.ShowPopup();
-
-        using RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, false);
-        byte[] data = new byte[s_synopsis.Length * 4 + 3];
-        int offset = 0;
-        for (int i = 0; i < s_synopsis.Length; i++)
+        try
         {
-            data[offset++] = (byte)s_synopsis[i].LumsTaken;
-            data[offset++] = (byte)s_synopsis[i].LumsTotal;
-            data[offset++] = (byte)s_synopsis[i].CageOpened;
-            data[offset++] = (byte)s_synopsis[i].CageTotal;
+            using (RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, false))
+            {
+                byte[] data = new byte[s_synopsis.Length * 4 + 3];
+                int offset = 0;
+                for (int i = 0; i < s_synopsis.Length; i++)
+                {
+                    data[offset++] = (byte)s_synopsis[i].LumsTaken;
+                    data[offset++] = (byte)s_synopsis[i].LumsTotal;
+                    data[offset++] = (byte)s_synopsis[i].CageOpened;
+                    data[offset++] = (byte)s_synopsis[i].CageTotal;
+                }
+
+                data[offset++] = (byte)m_gameFrame_curLevel;
+                data[offset++] = (byte)m_gameFrame_unlockedLevel;
+                data[offset++] = (byte)m_gameFrame_nLife;
+                rs.setRecord(10, data, 0, data.Length);
+                m_RecordUsedFlag[9] = true;
+            }
+
+            Rayman3.Save.ShowPopup();
         }
-        data[offset++] = (byte)m_gameFrame_curLevel;
-        data[offset++] = (byte)m_gameFrame_unlockedLevel;
-        data[offset++] = (byte)m_gameFrame_nLife;
-        rs.setRecord(10, data, 0, data.Length);
-        m_RecordUsedFlag[9] = true;
+        catch (Exception ex)
+        {
+            Engine.Messages.EnqueueExceptionMessage(
+                ex: ex,
+                text: "An error occurred when saving the game.",
+                header: "Error saving game");
+        }
     }
 
     [MemberNotNull(nameof(s_synopsis))]
     public void GameFrame_LoadSynopsis(bool bGetGameInfo)
     {
-        int offset = 0;
-        s_synopsis = new Synopsis[10];
-        using RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, false);
-        byte[] data = rs.getRecord(10);
-        if (data != null && m_RecordUsedFlag[9])
+        try
         {
-            for (int i = 0; i < s_synopsis.Length; i++)
+            int offset = 0;
+            s_synopsis = new Synopsis[10];
+            using RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, false);
+            byte[] data = rs.getRecord(10);
+            if (data != null && m_RecordUsedFlag[9])
             {
-                s_synopsis[i] = new Synopsis
+                for (int i = 0; i < s_synopsis.Length; i++)
                 {
-                    LumsTaken = (sbyte)data[offset++],
-                    LumsTotal = (sbyte)data[offset++],
-                    CageOpened = (sbyte)data[offset++],
-                    CageTotal = (sbyte)data[offset++]
-                };
+                    s_synopsis[i] = new Synopsis
+                    {
+                        LumsTaken = (sbyte)data[offset++],
+                        LumsTotal = (sbyte)data[offset++],
+                        CageOpened = (sbyte)data[offset++],
+                        CageTotal = (sbyte)data[offset++]
+                    };
+                }
+                if (bGetGameInfo)
+                {
+                    m_gameFrame_curLevel = (sbyte)data[offset++];
+                    m_gameFrame_unlockedLevel = (sbyte)data[offset++];
+                    m_gameFrame_nLife = (sbyte)data[offset++];
+                    s_iLumsTaken = s_synopsis[m_gameFrame_curLevel].LumsTaken;
+                    s_iLumsTotal = s_synopsis[m_gameFrame_curLevel].LumsTotal;
+                    s_iCageOpened = s_synopsis[m_gameFrame_curLevel].CageOpened;
+                    s_iCageTotal = s_synopsis[m_gameFrame_curLevel].CageTotal;
+                }
+                data = null;
             }
-            if (bGetGameInfo)
+            else
             {
-                m_gameFrame_curLevel = (sbyte)data[offset++];
-                m_gameFrame_unlockedLevel = (sbyte)data[offset++];
-                m_gameFrame_nLife = (sbyte)data[offset++];
-                s_iLumsTaken = s_synopsis[m_gameFrame_curLevel].LumsTaken;
-                s_iLumsTotal = s_synopsis[m_gameFrame_curLevel].LumsTotal;
-                s_iCageOpened = s_synopsis[m_gameFrame_curLevel].CageOpened;
-                s_iCageTotal = s_synopsis[m_gameFrame_curLevel].CageTotal;
+                s_synopsis[LEVEL_WORLD_MAP] = new Synopsis
+                {
+                    CageTotal = 0,
+                    CageOpened = 0,
+                    LumsTotal = 0,
+                    LumsTaken = 0,
+                };
+                for (sbyte b = 1; b < s_synopsis.Length; b++)
+                {
+                    s_synopsis[b] = new Synopsis
+                    {
+                        CageOpened = 0,
+                        LumsTaken = 0,
+                        CageTotal = -1,
+                        LumsTotal = -1,
+                    };
+                }
             }
-            data = null;
         }
-        else
+        catch (Exception ex)
         {
             s_synopsis[LEVEL_WORLD_MAP] = new Synopsis
             {
@@ -715,73 +801,94 @@ public partial class Game
                     LumsTotal = -1,
                 };
             }
+
+            Engine.Messages.EnqueueExceptionMessage(
+                ex: ex,
+                text: "An error occurred when reading the save.",
+                header: "Error reading game save");
         }
     }
 
     public void GameFrame_SaveLevelInfo(int pLevel)
     {
-        Rayman3.Save.ShowPopup();
-
-        using RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, false);
-        int offset = 0;
-        if (0 < pLevel && pLevel <= m_gameFrame_nbLevels)
+        try
         {
-            byte[] data = new byte[actors.Length];
-            for (int i = 0; i < actors.Length;)
+            using (RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, false))
             {
-                byte buffer = 0;
-                int mask = 1;
-                do
+                int offset = 0;
+                if (0 < pLevel && pLevel <= m_gameFrame_nbLevels)
                 {
-                    if ((actors[i].stateFlag & ACTOR_STATE.DEAD) == 0)
-                        continue;
-                    buffer = (byte)(buffer | mask);
-                } while (++i < actors.Length && (mask <<= 1) < 256);
-                data[offset++] = buffer;
+                    byte[] data = new byte[actors.Length];
+                    for (int i = 0; i < actors.Length;)
+                    {
+                        byte buffer = 0;
+                        int mask = 1;
+                        do
+                        {
+                            if ((actors[i].stateFlag & ACTOR_STATE.DEAD) == 0)
+                                continue;
+                            buffer = (byte)(buffer | mask);
+                        } while (++i < actors.Length && (mask <<= 1) < 256);
+
+                        data[offset++] = buffer;
+                    }
+
+                    rs.setRecord(pLevel, data, 0, data.Length);
+                    m_RecordUsedFlag[pLevel - 1] = true;
+                }
+                else if (pLevel == LEVEL_WORLD_MAP)
+                {
+                    byte[] data = new byte[16 + actors.Length];
+                    long tempV = pRayman.m_lInitX;
+                    data[offset] = (byte)(0xFFL & (tempV >> 56));
+                    data[offset + 1] = (byte)(0xFFL & (tempV >> 48));
+                    data[offset + 2] = (byte)(0xFFL & (tempV >> 40));
+                    data[offset + 3] = (byte)(0xFFL & (tempV >> 32));
+                    data[offset + 4] = (byte)(0xFFL & (tempV >> 24));
+                    data[offset + 5] = (byte)(0xFFL & (tempV >> 16));
+                    data[offset + 6] = (byte)(0xFFL & (tempV >> 8));
+                    data[offset + 7] = (byte)(0xFFL & tempV);
+                    offset += 8;
+                    tempV = pRayman.m_lInitY;
+                    data[offset] = (byte)(0xFFL & (tempV >> 56));
+                    data[offset + 1] = (byte)(0xFFL & (tempV >> 48));
+                    data[offset + 2] = (byte)(0xFFL & (tempV >> 40));
+                    data[offset + 3] = (byte)(0xFFL & (tempV >> 32));
+                    data[offset + 4] = (byte)(0xFFL & (tempV >> 24));
+                    data[offset + 5] = (byte)(0xFFL & (tempV >> 16));
+                    data[offset + 6] = (byte)(0xFFL & (tempV >> 8));
+                    data[offset + 7] = (byte)(0xFFL & tempV);
+                    offset += 8;
+                    byte mask = 1;
+                    for (int i = 0; i < actors.Length; i++)
+                    {
+                        byte buffer = 0;
+                        if ((actors[i].stateFlag & ACTOR_STATE.DEAD) != 0)
+                            buffer = (byte)(buffer | mask);
+                        data[offset++] = buffer;
+                    }
+
+                    rs.setRecord(11, data, 0, data.Length);
+                    m_RecordUsedFlag[10] = true;
+                }
             }
-            rs.setRecord(pLevel, data, 0, data.Length);
-            m_RecordUsedFlag[pLevel - 1] = true;
+
+            Rayman3.Save.ShowPopup();
         }
-        else if (pLevel == LEVEL_WORLD_MAP)
+        catch (Exception ex)
         {
-            byte[] data = new byte[16 + actors.Length];
-            long tempV = pRayman.m_lInitX;
-            data[offset] = (byte)(0xFFL & (tempV >> 56));
-            data[offset + 1] = (byte)(0xFFL & (tempV >> 48));
-            data[offset + 2] = (byte)(0xFFL & (tempV >> 40));
-            data[offset + 3] = (byte)(0xFFL & (tempV >> 32));
-            data[offset + 4] = (byte)(0xFFL & (tempV >> 24));
-            data[offset + 5] = (byte)(0xFFL & (tempV >> 16));
-            data[offset + 6] = (byte)(0xFFL & (tempV >> 8));
-            data[offset + 7] = (byte)(0xFFL & tempV);
-            offset += 8;
-            tempV = pRayman.m_lInitY;
-            data[offset] = (byte)(0xFFL & (tempV >> 56));
-            data[offset + 1] = (byte)(0xFFL & (tempV >> 48));
-            data[offset + 2] = (byte)(0xFFL & (tempV >> 40));
-            data[offset + 3] = (byte)(0xFFL & (tempV >> 32));
-            data[offset + 4] = (byte)(0xFFL & (tempV >> 24));
-            data[offset + 5] = (byte)(0xFFL & (tempV >> 16));
-            data[offset + 6] = (byte)(0xFFL & (tempV >> 8));
-            data[offset + 7] = (byte)(0xFFL & tempV);
-            offset += 8;
-            byte mask = 1;
-            for (int i = 0; i < actors.Length; i++)
-            {
-                byte buffer = 0;
-                if ((actors[i].stateFlag & ACTOR_STATE.DEAD) != 0)
-                    buffer = (byte)(buffer | mask);
-                data[offset++] = buffer;
-            }
-            rs.setRecord(11, data, 0, data.Length);
-            m_RecordUsedFlag[10] = true;
+            Engine.Messages.EnqueueExceptionMessage(
+                ex: ex,
+                text: "An error occurred when saving the game.",
+                header: "Error saving game");
         }
     }
 
     public void GameFrame_LoadLevelInfo(int pLevel)
     {
-        using (RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, false))
+        try
         {
+            using RecordStore rs = RecordStore.openRecordStore(GAME_SAVE_NAME, false);
             int offset = 0;
             if (pLevel > LEVEL_WORLD_MAP && pLevel <= m_gameFrame_nbLevels)
             {
@@ -835,6 +942,13 @@ public partial class Game
                     }
                 }
             }
+        }
+        catch (Exception ex)
+        {
+            Engine.Messages.EnqueueExceptionMessage(
+                ex: ex,
+                text: "An error occurred when reading the save.",
+                header: "Error reading game save");
         }
 
         s_iLumsTaken = s_synopsis[pLevel].LumsTaken;

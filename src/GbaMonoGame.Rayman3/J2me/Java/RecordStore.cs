@@ -5,7 +5,6 @@ using BinarySerializer;
 
 namespace GbaMonoGame.Rayman3.J2me;
 
-// TODO: Try/catch everything
 // Replaces javax.microedition.rms.RecordStore
 public class RecordStore : IDisposable
 {
@@ -99,6 +98,13 @@ public class RecordStore : IDisposable
             recordStores[i] = Path.GetFileNameWithoutExtension(recordStores[i]);
 
         return recordStores;
+    }
+
+    // Custom method to avoid looping over every file when checking for a single one
+    public static bool recordStoreExists(string recordStoreName)
+    {
+        string filePath = GetFilePath(recordStoreName);
+        return File.Exists(filePath);
     }
 
     public static void deleteRecordStore(string recordStoreName)
