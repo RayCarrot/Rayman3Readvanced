@@ -48,7 +48,7 @@ public class GameMidlet : Frame
     public override void Init()
     {
         // Set rich presence
-        Engine.RichPresence.SetPresence("Rayman 3 J2ME");
+        Engine.RichPresence.SetPresence("Mobile (J2ME)");
 
         // Reset previous game state
         Gfx.FadeControl = FadeControl.None;
