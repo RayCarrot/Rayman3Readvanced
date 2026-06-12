@@ -122,8 +122,6 @@ public class SaveGameManager : ISaveGameManager
 
     public void SaveSlot(int index, ReadvancedSlot save)
     {
-        ShowPopup();
-
         try
         {
             PhysicalFile file = GetSlotFile(index);
@@ -132,6 +130,8 @@ public class SaveGameManager : ISaveGameManager
 
             using (context)
                 FileFactory.Write<ReadvancedSlot>(context, file.FilePath, save);
+
+            ShowPopup();
         }
         catch (Exception ex)
         {
@@ -144,12 +144,12 @@ public class SaveGameManager : ISaveGameManager
 
     public void DeleteSlot(int index)
     {
-        ShowPopup();
-
         try
         {
             PhysicalFile file = GetSlotFile(index);
             File.Delete(file.AbsolutePath);
+
+            ShowPopup();
         }
         catch (Exception ex)
         {
@@ -232,8 +232,6 @@ public class SaveGameManager : ISaveGameManager
 
     public void SaveTimeAttackSave(TimeAttackSave save)
     {
-        ShowPopup();
-
         try
         {
             PhysicalFile file = GetTimeAttackFile();
@@ -242,6 +240,8 @@ public class SaveGameManager : ISaveGameManager
 
             using (context)
                 FileFactory.Write<TimeAttackSave>(context, file.FilePath, save);
+
+            ShowPopup();
         }
         catch (Exception ex)
         {
@@ -279,8 +279,6 @@ public class SaveGameManager : ISaveGameManager
 
     public void SaveTimeAttackGhost(TimeAttackGhostSave save, MapId mapId)
     {
-        ShowPopup();
-
         try
         {
             PhysicalFile file = GetTimeAttackGhostFile(mapId);
@@ -289,6 +287,8 @@ public class SaveGameManager : ISaveGameManager
 
             using (context)
                 FileFactory.Write<TimeAttackGhostSave>(context, file.FilePath, save);
+            
+            ShowPopup();
         }
         catch (Exception ex)
         {
