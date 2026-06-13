@@ -22,7 +22,7 @@ public class Graphics
     public Playfield2DRenderContext RenderContext { get; }
     public RenderOptions RenderOptions { get; }
     public List<Sprite> Sprites { get; }
-    public Rectangle Clip { get; set; } // TODO: Remove this
+    public GbaMonoGame.Box Clip { get; set; } // TODO: Remove this
     public Color Color { get; set; }
     public Font Font { get; set; }
     public int Priority { get; set; } = 1;
@@ -62,7 +62,7 @@ public class Graphics
 
     public void setClip(float x, float y, float width, float height)
     {
-        Clip = new Rectangle((int)x, (int)y, (int)width, (int)height);
+        Clip = new GbaMonoGame.Box(new Vector2(x, y), new Vector2(width, height));
     }
 
     public void setColor(Color color)
@@ -106,11 +106,10 @@ public class Graphics
         x = AnchorX(x, img.Width, anchor);
         y = AnchorY(y, img.Height, anchor);
 
-        Rectangle clip = Clip;
-        clip.X = (int)Math.Clamp(clip.X - x, 0, img.Width);
-        clip.Y = (int)Math.Clamp(clip.Y - y, 0, img.Height);
-        clip.Width = Math.Min(clip.Width, clip.X + img.Width);
-        clip.Height = Math.Min(clip.Height, clip.Y + img.Height);
+        Vector2 imgSize = new(img.Width, img.Height);
+        GbaMonoGame.Box clip = new(
+            position: Vector2.Clamp(Clip.Position - new Vector2(x, y), Vector2.Zero, imgSize),
+            size: Vector2.Min(Clip.Size, Clip.Position + imgSize));
 
         x += clip.X;
         y += clip.Y;
@@ -120,7 +119,7 @@ public class Graphics
         sprite.Position = new Vector2(x, y);
         sprite.RenderOptions = RenderOptions;
         sprite.Priority = Priority;
-        sprite.TextureRectangle = clip;
+        sprite.TextureRectangle = clip.ToRectangle();
         Sprites.Add(sprite);
     }
 

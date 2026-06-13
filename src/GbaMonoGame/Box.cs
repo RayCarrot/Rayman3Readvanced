@@ -79,6 +79,10 @@ public struct Box
     [JsonIgnore]
     public Vector2 Position => new(Left, Top);
     [JsonIgnore]
+    public float X => Left;
+    [JsonIgnore]
+    public float Y => Top;
+    [JsonIgnore]
     public Vector2 Size => new(Width, Height);
 
     public static Box Offset(Box box, Vector2 offset)
