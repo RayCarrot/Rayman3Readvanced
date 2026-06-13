@@ -158,7 +158,7 @@ public partial class Game
             }
 
             MidiSoundInstance sndInstance = new(SoundFont, MidiFiles[iID], iSoundIndex);
-            sndInstance.SetVolume(SoundVolume / 100f);
+            sndInstance.SetVolume(SoundVolume / 100f * GetMasterVolume(iSoundIndex));
             sndInstance.Play(loop);
             SoundInstances.Add(sndInstance);
         }
@@ -257,7 +257,7 @@ public partial class Game
         if (true)
         {
             foreach (MidiSoundInstance soundInstance in SoundInstances)
-                soundInstance.SetVolume(SoundVolume / 100f);
+                soundInstance.SetVolume(SoundVolume / 100f * GetMasterVolume(soundInstance.SoundIndex));
         }
         // Original game code
         else
@@ -271,6 +271,13 @@ public partial class Game
     }
 
     // Custom in Readvanced
+    public float GetMasterVolume(SOUND_INDEX iSoundIndex)
+    {
+        if (iSoundIndex is SOUND_INDEX.music_gameover or SOUND_INDEX.music_leveldone or SOUND_INDEX.music_map or SOUND_INDEX.music_splash)
+            return Engine.Settings.Local.Sound.MusicVolume;
+        else
+            return Engine.Settings.Local.Sound.SfxVolume;
+    }
     public void UpdateSounds()
     {
         // Dispose stopped sounds and remove from list
