@@ -401,7 +401,7 @@ public partial class Rayman
                 }
 
                 // Punch
-                if (DisableAttackTimer == 0 && Engine.MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorAttack) && CanAttackWithFist(2))
+                if (DisableAttackTimer == 0 && Engine.MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorAttack) && CanAttackWithFist(2))
                 {
                     PlaySound(Rayman3SoundEvent.Stop__Grimace1_Mix04);
                     State.MoveTo(_Fsm_Attack);
