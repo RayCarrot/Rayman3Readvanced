@@ -49,8 +49,6 @@ public class ResourceManager
     public byte[][] Array_Data { get; set; }
     public Texture2D[] Array_Image { get; set; }
     public Texture2D Image_Default { get; } = Gfx.Pixel;
-    public byte[] Data_Decompressed { get; set; }
-    public int Data_Index_Decompressed { get; set; }
     public RESOURCE_STATUS[][] Resource_Status { get; set; }
     public ArchiveInformation[] Archive_Information { get; set; }
     public string[] kArchive_Names { get; } = ["wbw", "mdg", "04d"];
@@ -421,15 +419,6 @@ public class ResourceManager
         return ERRORCODE_OK;
     }
 
-    private void WriteDWORD(int Value) => WriteDWORD((uint)Value);
-    private void WriteDWORD(uint Value)
-    {
-        Data_Decompressed[Data_Index_Decompressed++] = (byte)(Value >> 24);
-        Data_Decompressed[Data_Index_Decompressed++] = (byte)(Value >> 16);
-        Data_Decompressed[Data_Index_Decompressed++] = (byte)(Value >> 8);
-        Data_Decompressed[Data_Index_Decompressed++] = (byte)Value;
-    }
-
     public int Synchronize()
     {
         if (Manager_Status == MANAGER_STATUS.UNINITIALIZED)
@@ -508,68 +497,10 @@ public class ResourceManager
                         if (b < Archive_Information[Archive_Index].ImageResourcesCount)
                         {
                             byte[] Data_Archived = new byte[Data_Size_Archived];
-                            Data_Decompressed = new byte[Data_Size_Archived + Data_Size_CompressionDelta];
                             Archive_InputStream.ReadExactly(Data_Archived, 0, Data_Size_Archived);
-                            Data_Index_Decompressed = 0;
-                            int Data_Index_Archived = 0;
-                            WriteDWORD(0x89504E47);
-                            WriteDWORD(0xD0A1A0A);
-                            WriteDWORD(0xD);
-                            WriteDWORD(0x49484452);
-                            int DeChunk_Header = (Data_Archived[Data_Index_Archived++] << 24) | (Data_Archived[Data_Index_Archived++] << 16) | (Data_Archived[Data_Index_Archived++] << 8) | Data_Archived[Data_Index_Archived++];
-                            WriteDWORD(DeChunk_Header & 0x3FF);
-                            WriteDWORD((DeChunk_Header >> 10) & 0x3FF);
-                            Data_Decompressed[Data_Index_Decompressed++] = (byte)(1 << ((DeChunk_Header >> 20) & 0x3));
-                            int Temp_Value = (DeChunk_Header >> 22) & 0x3;
-                            Data_Decompressed[Data_Index_Decompressed++] = (byte)(Temp_Value == 0 ? 0 : 3);
-                            Data_Index_Decompressed += 3;
-                            WriteDWORD(((Data_Archived[Data_Index_Archived++] << 24) | (Data_Archived[Data_Index_Archived++] << 16) | (Data_Archived[Data_Index_Archived++] << 8) | Data_Archived[Data_Index_Archived++]));
 
-                            if (Temp_Value == 2)
-                            {
-                                Temp_Value = Data_Archived[Data_Index_Archived++] * 3;
-                                if (Temp_Value == 0)
-                                    Temp_Value = 768;
-                                WriteDWORD(Temp_Value);
-                                WriteDWORD(0x504C5445);
-                                while (Temp_Value > 0)
-                                {
-                                    int CompactColor = (Data_Archived[Data_Index_Archived++] << 8) + Data_Archived[Data_Index_Archived++];
-                                    Data_Decompressed[Data_Index_Decompressed++] = (byte)((CompactColor >> 8) * 255 / 15);
-                                    Data_Decompressed[Data_Index_Decompressed++] = (byte)(((CompactColor >> 4) & 0xF) * 255 / 15);
-                                    Data_Decompressed[Data_Index_Decompressed++] = (byte)((CompactColor & 0xF) * 255 / 15);
-                                    Temp_Value -= 3;
-                                }
-                                WriteDWORD(((Data_Archived[Data_Index_Archived++] << 24) | (Data_Archived[Data_Index_Archived++] << 16) | (Data_Archived[Data_Index_Archived++] << 8) | Data_Archived[Data_Index_Archived++]));
-                            }
-
-                            if ((DeChunk_Header & 0x1000000) > 0)
-                            {
-                                WriteDWORD(0x1);
-                                WriteDWORD(0x74524E53);
-                                Data_Index_Decompressed++;
-                                WriteDWORD(0x40E6D866);
-                            }
-                            do
-                            {
-                                Temp_Value = Data_Size_Archived - Data_Index_Archived - 4;
-                                if (Temp_Value > 0x2000 && (DeChunk_Header & 0x2000000) > 0)
-                                    Temp_Value = 0x2000;
-                                WriteDWORD(Temp_Value);
-                                WriteDWORD(0x49444154);
-                                System.arraycopy(Data_Archived, Data_Index_Archived, Data_Decompressed, Data_Index_Decompressed, Temp_Value);
-                                Data_Index_Decompressed += Temp_Value;
-                                Data_Index_Archived += Temp_Value;
-                                WriteDWORD(((Data_Archived[Data_Index_Archived++] << 24) | (Data_Archived[Data_Index_Archived++] << 16) | (Data_Archived[Data_Index_Archived++] << 8) | Data_Archived[Data_Index_Archived++]));
-                            } while (Temp_Value == 0x2000);
-                            WriteDWORD(0x0);
-                            WriteDWORD(0x49454E44);
-                            WriteDWORD(0xAE426082);
-
-                            using MemoryStream ms = new(Data_Decompressed, 0, Data_Index_Decompressed);
-                            Array_Image[Index_Image] = Texture2D.FromStream(Engine.Assets.GraphicsDevice, ms); // TODO: Dispose when freeing? And then free all when uninit midlet.
-
-                            Data_Decompressed = null;
+                            byte[] Data_Decompressed = DecompressImage(Data_Archived, Data_Size_Archived, Data_Size_CompressionDelta);
+                            Array_Image[Index_Image] = Texture2D.FromStream(Engine.Assets.GraphicsDevice, new MemoryStream(Data_Decompressed)); // TODO: Dispose when freeing? And then free all when uninit midlet.
                         }
                         else if (Data_Size_CompressionDelta == 0)
                         {
@@ -605,6 +536,87 @@ public class ResourceManager
     }
 
     // Custom
+    public static byte[] DecompressImage(byte[] Data_Archived, int Data_Size_Archived, int Data_Size_CompressionDelta)
+    {
+        byte[] Data_Decompressed = new byte[Data_Size_Archived + Data_Size_CompressionDelta];
+
+        using MemoryStream decompressedStream = new(Data_Decompressed);
+        using MemoryStream archivedStream = new(Data_Archived);
+        using Writer writer = new(decompressedStream, isLittleEndian: false);
+        using Reader reader = new(archivedStream, isLittleEndian: false);
+
+        // Write PNG file signature
+        writer.Write((uint)0x89504E47);
+        writer.Write((uint)0xD0A1A0A);
+
+        // Write the IHDR chunk
+        writer.Write((int)0xD);
+        writer.Write((uint)0x49484452);
+        int DeChunk_Header = reader.ReadInt32();
+        writer.Write((int)(DeChunk_Header & 0x3FF)); // Width
+        writer.Write((int)((DeChunk_Header >> 10) & 0x3FF)); // Height
+        writer.Write((byte)(1 << ((DeChunk_Header >> 20) & 0x3))); // Bit depth
+        int Temp_Value = (DeChunk_Header >> 22) & 0x3;
+        writer.Write((byte)(Temp_Value == 0 ? 0 : 3)); // Color type
+        writer.Write((byte)0x00); // Compression method
+        writer.Write((byte)0x00); // Filter method
+        writer.Write((byte)0x00); // Interlace method
+        writer.Write(reader.ReadUInt32()); // CRC
+
+        // Write palette
+        if (Temp_Value == 2)
+        {
+            // Get the palette size
+            Temp_Value = reader.ReadByte() * 3;
+            if (Temp_Value == 0)
+                Temp_Value = 768;
+
+            // Write the PLTE chunk
+            writer.Write((uint)Temp_Value);
+            writer.Write((uint)0x504C5445);
+            while (Temp_Value > 0)
+            {
+                int CompactColor = reader.ReadInt16();
+                writer.Write((byte)((CompactColor >> 8) * 255 / 15));
+                writer.Write((byte)(((CompactColor >> 4) & 0xF) * 255 / 15));
+                writer.Write((byte)((CompactColor & 0xF) * 255 / 15));
+                Temp_Value -= 3;
+            }
+            writer.Write(reader.ReadUInt32()); // CRC
+        }
+
+        // Write transparency data
+        if ((DeChunk_Header & 0x1000000) > 0)
+        {
+            // Write the tRNS chunk
+            writer.Write((int)0x1);
+            writer.Write((uint)0x74524E53);
+            writer.Write((byte)0x00);
+            writer.Write((uint)0x40E6D866); // CRC
+        }
+
+        // Write the image data
+        do
+        {
+            // Write a IDAT chunk
+            Temp_Value = Data_Size_Archived - (int)archivedStream.Position - 4;
+            if (Temp_Value > 0x2000 && (DeChunk_Header & 0x2000000) > 0)
+                Temp_Value = 0x2000;
+            writer.Write((int)Temp_Value);
+            writer.Write((uint)0x49444154);
+            System.arraycopy(Data_Archived, (int)archivedStream.Position, Data_Decompressed, (int)decompressedStream.Position, Temp_Value);
+            archivedStream.Position += Temp_Value;
+            decompressedStream.Position += Temp_Value;
+            writer.Write(reader.ReadUInt32()); // CRC
+        } while (Temp_Value == 0x2000);
+
+        // Write the IEND chunk
+        writer.Write((int)0x0);
+        writer.Write((uint)0x49454E44);
+        writer.Write((uint)0xAE426082); // CRC
+
+        return Data_Decompressed;
+    }
     public Texture2D GetImageResource(int Param_ResourceID)
     {
         int index = ResourceID_To_Index(Param_ResourceID);

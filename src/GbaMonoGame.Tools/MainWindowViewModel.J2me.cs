@@ -16,80 +16,9 @@ public partial class MainWindowViewModel : ObservableObject
 {
     #region Helper Methods
 
-    private static void WriteDWORD(byte[] data, ref int dataIndex, int Value) => WriteDWORD(data, ref dataIndex, (uint)Value);
-    private static void WriteDWORD(byte[] data, ref int dataIndex, uint Value)
-    {
-        data[dataIndex++] = (byte)(Value >> 24);
-        data[dataIndex++] = (byte)(Value >> 16);
-        data[dataIndex++] = (byte)(Value >> 8);
-        data[dataIndex++] = (byte)Value;
-    }
-
     private static int ReadInt(byte[] data, int offset)
     {
         return (data[offset++] << 24) | (data[offset++] << 16) | (data[offset++] << 8) | data[offset++];
-    }
-
-    private static byte[] DecompressJ2meImage(byte[] data, int dataSize, int dataSizeCompressionDelta)
-    {
-        byte[] Data_Decompressed = new byte[dataSize + dataSizeCompressionDelta];
-        int Data_Index_Decompressed = 0;
-        int Data_Index_Archived = 0;
-        WriteDWORD(Data_Decompressed, ref Data_Index_Decompressed, 0x89504E47);
-        WriteDWORD(Data_Decompressed, ref Data_Index_Decompressed, 0xD0A1A0A);
-        WriteDWORD(Data_Decompressed, ref Data_Index_Decompressed, 0xD);
-        WriteDWORD(Data_Decompressed, ref Data_Index_Decompressed, 0x49484452);
-        int DeChunk_Header = (data[Data_Index_Archived++] << 24) | (data[Data_Index_Archived++] << 16) | (data[Data_Index_Archived++] << 8) | data[Data_Index_Archived++];
-        WriteDWORD(Data_Decompressed, ref Data_Index_Decompressed, DeChunk_Header & 0x3FF);
-        WriteDWORD(Data_Decompressed, ref Data_Index_Decompressed, (DeChunk_Header >> 10) & 0x3FF);
-        Data_Decompressed[Data_Index_Decompressed++] = (byte)(1 << ((DeChunk_Header >> 20) & 0x3));
-        int Temp_Value = (DeChunk_Header >> 22) & 0x3;
-        Data_Decompressed[Data_Index_Decompressed++] = (byte)(Temp_Value == 0 ? 0 : 3);
-        Data_Index_Decompressed += 3;
-        WriteDWORD(Data_Decompressed, ref Data_Index_Decompressed, ((data[Data_Index_Archived++] << 24) | (data[Data_Index_Archived++] << 16) | (data[Data_Index_Archived++] << 8) | data[Data_Index_Archived++]));
-
-        if (Temp_Value == 2)
-        {
-            Temp_Value = data[Data_Index_Archived++] * 3;
-            if (Temp_Value == 0)
-                Temp_Value = 768;
-            WriteDWORD(Data_Decompressed, ref Data_Index_Decompressed, Temp_Value);
-            WriteDWORD(Data_Decompressed, ref Data_Index_Decompressed, 0x504C5445);
-            while (Temp_Value > 0)
-            {
-                int CompactColor = (data[Data_Index_Archived++] << 8) + data[Data_Index_Archived++];
-                Data_Decompressed[Data_Index_Decompressed++] = (byte)((CompactColor >> 8) * 255 / 15);
-                Data_Decompressed[Data_Index_Decompressed++] = (byte)(((CompactColor >> 4) & 0xF) * 255 / 15);
-                Data_Decompressed[Data_Index_Decompressed++] = (byte)((CompactColor & 0xF) * 255 / 15);
-                Temp_Value -= 3;
-            }
-            WriteDWORD(Data_Decompressed, ref Data_Index_Decompressed, ((data[Data_Index_Archived++] << 24) | (data[Data_Index_Archived++] << 16) | (data[Data_Index_Archived++] << 8) | data[Data_Index_Archived++]));
-        }
-
-        if ((DeChunk_Header & 0x1000000) > 0)
-        {
-            WriteDWORD(Data_Decompressed, ref Data_Index_Decompressed, 0x1);
-            WriteDWORD(Data_Decompressed, ref Data_Index_Decompressed, 0x74524E53);
-            Data_Index_Decompressed++;
-            WriteDWORD(Data_Decompressed, ref Data_Index_Decompressed, 0x40E6D866);
-        }
-        do
-        {
-            Temp_Value = dataSize - Data_Index_Archived - 4;
-            if (Temp_Value > 0x2000 && (DeChunk_Header & 0x2000000) > 0)
-                Temp_Value = 0x2000;
-            WriteDWORD(Data_Decompressed, ref Data_Index_Decompressed, Temp_Value);
-            WriteDWORD(Data_Decompressed, ref Data_Index_Decompressed, 0x49444154);
-            Array.Copy(data, Data_Index_Archived, Data_Decompressed, Data_Index_Decompressed, Temp_Value);
-            Data_Index_Decompressed += Temp_Value;
-            Data_Index_Archived += Temp_Value;
-            WriteDWORD(Data_Decompressed, ref Data_Index_Decompressed, ((data[Data_Index_Archived++] << 24) | (data[Data_Index_Archived++] << 16) | (data[Data_Index_Archived++] << 8) | data[Data_Index_Archived++]));
-        } while (Temp_Value == 0x2000);
-        WriteDWORD(Data_Decompressed, ref Data_Index_Decompressed, 0x0);
-        WriteDWORD(Data_Decompressed, ref Data_Index_Decompressed, 0x49454E44);
-        WriteDWORD(Data_Decompressed, ref Data_Index_Decompressed, 0xAE426082);
-
-        return Data_Decompressed;
     }
 
     private static bool IsTextBank(byte[] data)
@@ -279,7 +208,7 @@ public partial class MainWindowViewModel : ObservableObject
                                 // Check if compressed, in which case we assume it's an image
                                 else if (dataSizeCompressionDeltas[i] != 0)
                                 {
-                                    exportConvertedData(DecompressJ2meImage(data, dataSizes[i], dataSizeCompressionDeltas[i]), $"{i}_Image.png");
+                                    exportConvertedData(ResourceManager.DecompressImage(data, dataSizes[i], dataSizeCompressionDeltas[i]), $"{i}_Image.png");
                                 }
                                 // Check if text bank
                                 else if (IsTextBank(data))
