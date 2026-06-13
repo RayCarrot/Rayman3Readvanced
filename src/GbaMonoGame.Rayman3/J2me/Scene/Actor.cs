@@ -1,4 +1,7 @@
 using System;
+using System.Linq;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 // ReSharper disable RedundantAssignment
 // ReSharper disable UnusedVariable
 
@@ -287,7 +290,7 @@ public class Actor
         if (buffer == null)
             return;
 
-        int type = buffer[0] & SByte.MaxValue;
+        int type = buffer[0] & 0x7F;
         if (aniData[type] != null)
         {
             aniData[type].flag |= ANIM_DATA_FLAGS.LOADED;
@@ -372,6 +375,36 @@ public class Actor
             System.arraycopy(buffer, offset, data.mmParam[k].Params, 0, data.mmParam[k].ParamsCount);
             offset += data.mmParam[k].ParamsCount;
         }
+
+        // TODO: Cache between levels?
+        // Custom - create separate texture for each sprite to avoid UV scaling issues
+        data.ModuleTextures = new Texture2D[data.modules.Length];
+        Texture2D img = GameMidlet.Instance_Game.RM.GetImage(resID);
+        Color[] imgBuffer = new Color[img.Width * img.Height];
+        img.GetData(imgBuffer);
+        Color[] copyBuffer = new Color[data.modules.Max(x => x.Width * x.Height)];
+        for (int i = 0; i < data.modules.Length; i++)
+        {
+            AnimModule module = data.modules[i];
+            Texture2D moduleTexture = new(Engine.Assets.GraphicsDevice, module.Width, module.Height, false, SurfaceFormat.Color); // TODO: Dispose
+
+            int imgBufferOffset = module.Y * img.Width + module.X;
+            int copyBufferOffset = 0;
+            for (int y = 0; y < module.Height; y++)
+            {
+                for (int x = 0; x < module.Width; x++)
+                {
+                    copyBuffer[copyBufferOffset] = imgBuffer[imgBufferOffset];
+                    imgBufferOffset++;
+                    copyBufferOffset++;
+                }
+
+                imgBufferOffset += img.Width - module.Width;
+            }
+
+            moduleTexture.SetData(copyBuffer, 0, module.Width * module.Height);
+            data.ModuleTextures[i] = moduleTexture;
+        }
     }
 
     public bool Ani_CheckEnd()
@@ -387,13 +420,14 @@ public class Actor
     {
         AnimModule module = pData.modules[idMod];
         GameMidlet.Instance_Game.drawImageEx(
-            dstx: nx, 
-            dsty: ny, 
-            w: (byte)module.Width, 
-            h: (byte)module.Height, 
+            dstx: nx,
+            dsty: ny,
+            w: module.Width,
+            h: module.Height,
+            img: pData.ModuleTextures[idMod],
             iImageIndex: pData.resID,
-            sx: (byte)module.X, 
-            sy: (byte)module.Y, 
+            sx: module.X,
+            sy: module.Y,
             flag: nflag);
     }
 

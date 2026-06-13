@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GbaMonoGame.Rayman3.J2me;
+﻿namespace GbaMonoGame.Rayman3.J2me;
 
 public class Anim
 {
@@ -106,7 +104,8 @@ public class Anim
                 break;
 
             bool flag = !(i == 0 && type == OBJECT_TYPE.RAYMAN && GameMidlet.Instance_Game.pFist[1].anim.curAction != 0);
-            AnimModule pModule = data.modules[frameData.Frames[frameOffset].Module & SByte.MaxValue];
+            int modId = frameData.Frames[frameOffset].Module & 0x7F;
+            AnimModule pModule = data.modules[modId];
             
             int nsx;
             int geflag;
@@ -129,13 +128,14 @@ public class Anim
             if (flag)
             {
                 GameMidlet.Instance_Game.drawImageEx(
-                    dstx: nsx, 
-                    dsty: nsy, 
-                    w: pModule.Width, 
-                    h: pModule.Height, 
-                    iImageIndex: data.resID, 
-                    sx: pModule.X, 
-                    sy: pModule.Y, 
+                    dstx: nsx,
+                    dsty: nsy,
+                    w: pModule.Width,
+                    h: pModule.Height,
+                    img: data.ModuleTextures[modId],
+                    iImageIndex: data.resID,
+                    sx: pModule.X,
+                    sy: pModule.Y,
                     flag: geflag);
             }
 
@@ -169,7 +169,7 @@ public class Anim
                 break;
 
             bool flag = !(i == 0 && type == OBJECT_TYPE.RAYMAN && GameMidlet.Instance_Game.pFist[1].anim.curAction != 0);
-            AnimModule pModule = data.modules[frameData.Frames[frameOffset].Module & SByte.MaxValue];
+            AnimModule pModule = data.modules[frameData.Frames[frameOffset].Module & 0x7F];
 
             int nsx;
             if ((nflag & ACTOR_STATE.FLIP_X) != 0)

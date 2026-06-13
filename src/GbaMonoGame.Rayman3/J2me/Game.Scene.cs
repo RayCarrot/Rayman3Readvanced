@@ -339,23 +339,29 @@ public partial class Game
 
         switch (iLoadState)
         {
+            // Init
             case 0:
                 RM.Free(kImage_ResourceID);
                 RM.Free(kData_ResourceID);
                 if (Actor.aniData[(int)iActorType] != null)
                     Actor.aniData[(int)iActorType].flag &= ~ANIM_DATA_FLAGS.LOADED;
                 break;
+            
+            // Load image
             case 1:
                 RM.Load(kImage_ResourceID);
                 break;
+            
+            // Load data
             case 2:
                 RM.Load(kData_ResourceID);
                 break;
+            
+            // Load animation
             case 3:
                 RM.Free(kData_ResourceID);
                 Actor.AniLoad(kData_Index, kImage_Index);
                 break;
         }
     }
-
 }

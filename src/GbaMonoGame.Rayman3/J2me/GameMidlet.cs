@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.Rayman3.J2me;
 
-// TODO: Fix sprite rendering by using separate textures for each sprite
 // TODO: Add cheat menu for debug collision and other cheats
 // TODO: Add achievements (complete all levels, 100% all levels and a third one?)
 public class GameMidlet : Frame

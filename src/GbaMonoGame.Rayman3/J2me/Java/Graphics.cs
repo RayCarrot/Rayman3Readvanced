@@ -196,12 +196,14 @@ public class Graphics
         fillRect(0, 0, Resolution.X, Resolution.Y);
     }
 
-    public void DrawTexture(Texture2D texture, float x, float y)
+    public void DrawTexture(Texture2D texture, float x, float y, bool flipX)
     {
         Sprite sprite = Gfx.GetNewSprite();
         sprite.Texture = texture;
         sprite.Position = new Vector2(x, y);
         sprite.RenderOptions = RenderOptions;
+        sprite.Priority = Priority;
+        sprite.FlipX = flipX;
         Sprites.Add(sprite);
     }
 

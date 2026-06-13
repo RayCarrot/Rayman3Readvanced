@@ -1,4 +1,6 @@
-﻿namespace GbaMonoGame.Rayman3.J2me;
+﻿using Microsoft.Xna.Framework.Graphics;
+
+namespace GbaMonoGame.Rayman3.J2me;
 
 public class AnimData
 {
@@ -11,4 +13,7 @@ public class AnimData
     public AnimFrame[] frames { get; set; }
     public Action[] actions { get; set; }
     public MechModelParams[] mmParam { get; set; }
+
+    // Custom
+    public Texture2D[] ModuleTextures { get; set; }
 }
