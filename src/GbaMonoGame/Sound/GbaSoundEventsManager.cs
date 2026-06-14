@@ -605,6 +605,12 @@ public class GbaSoundEventsManager : SoundEventsManager
 
             ImGui.EndTable();
         }
+
+        if (ImGui.Button("Restart"))
+        {
+            _soloud.deinit();
+            _soloud.init();
+        }
     }
 
     protected override void Dispose(bool disposing)
