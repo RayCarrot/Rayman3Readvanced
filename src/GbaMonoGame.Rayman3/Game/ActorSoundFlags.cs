@@ -2,6 +2,7 @@
 
 namespace GbaMonoGame.Rayman3;
 
+// TODO: These don't work well with audio panning since only one plays at a time
 [Flags]
 public enum ActorSoundFlags
 {

@@ -10,6 +10,7 @@ namespace GbaMonoGame.Rayman3.J2me;
 
 // TODO: Add cheat menu for debug collision and other cheats
 // TODO: Add achievements (complete all levels, 100% all levels and a third one?)
+// TODO: Option to use normal controls since Up sucks on analog stick for jump
 public class GameMidlet : Frame
 {
     private const float Framerate = 1 / 0.045f;

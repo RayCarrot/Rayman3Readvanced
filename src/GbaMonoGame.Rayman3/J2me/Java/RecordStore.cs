@@ -5,6 +5,7 @@ using BinarySerializer;
 
 namespace GbaMonoGame.Rayman3.J2me;
 
+// TODO: Make sure this doesn't lag - check time it takes (BinarySerializer probably allocates a lot too...)
 // Replaces javax.microedition.rms.RecordStore
 public class RecordStore : IDisposable
 {
