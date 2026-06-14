@@ -162,7 +162,7 @@ public class AnimatedObject : AObject
         if (ReplacedSpriteTextures != null && ReplacedSpriteTextures.TryGetValue(tileIndex, out Texture2D texture))
             return texture;
         else
-            return Engine.Assets.TextureCache.GetOrCreateObject(
+            return Engine.Assets.BinaryTextureCache.GetOrCreateObject(
                 pointer: Resource.Offset,
                 id: tileIndex,
                 data: new SpriteDefine(
@@ -567,7 +567,7 @@ public class AnimatedObject : AObject
                     else if (PaletteCycleIndex == 0 || anim.PaletteCycleAnimation?.PaletteIndex != paletteIndex)
                     {
                         paletteTexture = new PaletteTexture(
-                            Texture: Engine.Assets.TextureCache.GetOrCreateObject(
+                            Texture: Engine.Assets.BinaryTextureCache.GetOrCreateObject(
                                 pointer: Palettes.CachePointer,
                                 id: 0,
                                 data: Palettes,
@@ -577,7 +577,7 @@ public class AnimatedObject : AObject
                     else
                     {
                         paletteTexture = new PaletteTexture(
-                            Texture: Engine.Assets.TextureCache.GetOrCreateObject(
+                            Texture: Engine.Assets.BinaryTextureCache.GetOrCreateObject(
                                 pointer: anim.PaletteCycleAnimation.Offset,
                                 id: PaletteCycleIndex,
                                 data: new PaletteAnimationDefine(Palettes, anim.PaletteCycleAnimation, PaletteCycleIndex),

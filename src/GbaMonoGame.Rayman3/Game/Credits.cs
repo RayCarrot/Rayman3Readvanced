@@ -410,13 +410,13 @@ public class Credits : Frame
         for (int i = 0; i < textures.Length; i++)
         {
             Texture tex = textureTable.Textures[i].Value;
-            textures[i] = Engine.Assets.TextureCache.GetOrCreateObject(
+            textures[i] = Engine.Assets.BinaryTextureCache.GetOrCreateObject(
                 pointer: textureTable.Offset,
                 id: i,
                 data: (Texture: tex, Palette: paletteTable.Palettes[0].Value),
                 createObjFunc: static data =>
                 {
-                    Palette palette = Engine.Assets.PaletteCache.GetOrCreateObject(
+                    Palette palette = Engine.Assets.BinaryPaletteCache.GetOrCreateObject(
                         pointer: data.Palette.Offset,
                         id: 0,
                         data: data.Palette,

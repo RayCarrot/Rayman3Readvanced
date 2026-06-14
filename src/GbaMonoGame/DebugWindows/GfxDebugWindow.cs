@@ -222,7 +222,8 @@ public class GfxDebugWindow : DebugWindow
                 ImGui.SeparatorText("Cache");
 
                 ImGui.Text($"Cached textures: {Engine.Assets.TextureCache.GetCount()}");
-                ImGui.Text($"Cached palettes: {Engine.Assets.PaletteCache.GetCount()}");
+                ImGui.Text($"Cached binary textures: {Engine.Assets.BinaryTextureCache.GetCount()}");
+                ImGui.Text($"Cached binary palettes: {Engine.Assets.BinaryPaletteCache.GetCount()}");
 
                 ImGui.EndTabItem();
             }

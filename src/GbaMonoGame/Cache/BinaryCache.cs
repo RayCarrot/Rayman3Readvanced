@@ -1,0 +1,79 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using BinarySerializer;
+
+namespace GbaMonoGame;
+
+public class BinaryCache<T>
+    where T : class
+{
+    private Dictionary<Pointer, Cache<long, T>> Locations { get; } = new();
+
+    public void RegisterObject(T cachableObject, Pointer pointer, long id)
+    {
+        if (!Locations.TryGetValue(pointer, out Cache<long, T> locationCache))
+        {
+            locationCache = new Cache<long, T>();
+            Locations.Add(pointer, locationCache);
+        }
+
+        locationCache.RegisterObject(cachableObject, id);
+    }
+
+    public bool TryGetObject(Pointer pointer, long id, out T cachableObject)
+    {
+        if (!Locations.TryGetValue(pointer, out Cache<long, T> locationCache))
+        {
+            cachableObject = null;
+            return false;
+        }
+
+        return locationCache.TryGetObject(id, out cachableObject);
+    }
+
+    public void SetObject(Pointer pointer, long id, T obj)
+    {
+        RegisterObject(obj, pointer, id);
+    }
+
+    public T GetOrCreateObject(Pointer pointer, long id, Func<T> createObjFunc)
+    {
+        if (TryGetObject(pointer, id, out T cachableObject))
+            return cachableObject;
+
+        cachableObject = createObjFunc();
+        RegisterObject(cachableObject, pointer, id);
+        return cachableObject;
+    }
+
+    public T GetOrCreateObject<U>(Pointer pointer, long id, U data, Func<U, T> createObjFunc)
+    {
+        if (TryGetObject(pointer, id, out T cachableObject))
+            return cachableObject;
+
+        cachableObject = createObjFunc(data);
+        RegisterObject(cachableObject, pointer, id);
+        return cachableObject;
+    }
+
+    public Cache<long, T> GetOrCreateLocationCache(Pointer pointer)
+    {
+        if (Locations.TryGetValue(pointer, out Cache<long, T> locationCache))
+            return locationCache;
+
+        locationCache = new Cache<long, T>();
+        Locations.Add(pointer, locationCache);
+        return locationCache;
+    }
+
+    public int GetCount() => Locations.Values.Sum(static x => x.GetCount());
+
+    public void Clear()
+    {
+        foreach (Cache<long, T> locationCache in Locations.Values)
+            locationCache.Clear();
+
+        Locations.Clear();
+    }
+}

@@ -11,7 +11,7 @@ public class EngineTests(MockGame game)
         const int id = 99;
 
         // Create the cache
-        Cache<Texture2D> textureCache = new();
+        BinaryCache<Texture2D> textureCache = new();
 
         // Create a texture
         using Texture2D texture = new(Engine.Assets.GraphicsDevice, 1, 1);

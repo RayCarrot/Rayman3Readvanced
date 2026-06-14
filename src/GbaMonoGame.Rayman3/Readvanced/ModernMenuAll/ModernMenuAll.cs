@@ -131,7 +131,7 @@ public class ModernMenuAll : Frame, IHasPlayfield
         GfxScreen screen = Playfield.TileLayers[0].Screen;
 
         screen.RenderOptions = screen.RenderOptions with { PaletteTexture = new PaletteTexture(
-            Texture: Engine.Assets.TextureCache.GetOrCreateObject(
+            Texture: Engine.Assets.BinaryTextureCache.GetOrCreateObject(
                 pointer: tileKitManager.SelectedPalette.CachePointer,
                 id: index + 1, // +1 since 0 is the default
                 data: index,

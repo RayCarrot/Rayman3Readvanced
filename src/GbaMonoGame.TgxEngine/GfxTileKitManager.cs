@@ -52,7 +52,7 @@ public class GfxTileKitManager
                     int sectionWidth = Math.Min(MaxTextureWidth, width - x);
                     int sectionHeight = Math.Min(MaxTextureHeight, height - y);
 
-                    Texture2D layerSectionTexture = Engine.Assets.TextureCache.GetOrCreateObject(
+                    Texture2D layerSectionTexture = Engine.Assets.BinaryTextureCache.GetOrCreateObject(
                         pointer: layerCachePointer,
                         id: (y * width + x) * maxCacheId + cacheId,
                         data: (
@@ -88,7 +88,7 @@ public class GfxTileKitManager
         }
         else
         {
-            Texture2D layerTexture = Engine.Assets.TextureCache.GetOrCreateObject(
+            Texture2D layerTexture = Engine.Assets.BinaryTextureCache.GetOrCreateObject(
                 pointer: layerCachePointer,
                 id: cacheId,
                 data: (
@@ -113,7 +113,7 @@ public class GfxTileKitManager
     public PaletteTexture CreateTileMapPalette()
     {
         return new PaletteTexture(
-            Texture: Engine.Assets.TextureCache.GetOrCreateObject(
+            Texture: Engine.Assets.BinaryTextureCache.GetOrCreateObject(
                 pointer: SelectedPalette.CachePointer,
                 id: 0,
                 data: SelectedPalette,
@@ -193,7 +193,7 @@ public class GfxTileKitManager
                         {
                             int tile = baseTile + i * anim.TileKit.TilesStep;
 
-                            animatedTileTextures[tile] = Engine.Assets.TextureCache.GetOrCreateObject(
+                            animatedTileTextures[tile] = Engine.Assets.BinaryTextureCache.GetOrCreateObject(
                                 // Use the tilekit as the cache pointer since multiple layers can share the same tilekit and we're
                                 // caching per tile, but make the pointer differ depending on if it's 4-bit or 8-bit.
                                 pointer: TileKit.Offset + (is8Bit ? 1 : 0),
@@ -361,7 +361,7 @@ public class GfxTileKitManager
         for (int i = 0; i < palettes.Length; i++)
         {
             PaletteResource paletteResource = tileKit.Palettes[i].Palette;
-            palettes[i] = Engine.Assets.PaletteCache.GetOrCreateObject(
+            palettes[i] = Engine.Assets.BinaryPaletteCache.GetOrCreateObject(
                 pointer: paletteResource.Offset,
                 id: 0,
                 data: paletteResource,

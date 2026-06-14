@@ -248,7 +248,7 @@ public partial class GameCubeMenu : Frame
             IsEnabled = true,
             Priority = 1,
             Offset = Vector2.Zero,
-            Renderer = new TextureScreenRenderer(Engine.Assets.TextureCache.GetOrCreateObject(
+            Renderer = new TextureScreenRenderer(Engine.Assets.BinaryTextureCache.GetOrCreateObject(
                 pointer: bitmap.Offset,
                 id: 0,
                 data: bitmap,

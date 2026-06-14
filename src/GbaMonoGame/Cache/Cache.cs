@@ -1,79 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using BinarySerializer;
 
 namespace GbaMonoGame;
 
-public class Cache<T>
-    where T : class
+public class Cache<TKey, TValue>
 {
-    private Dictionary<Pointer, LocationCache<T>> Locations { get; } = new();
+    private Dictionary<TKey, TValue> Objects { get; } = new();
 
-    public void RegisterObject(T cachableObject, Pointer pointer, long id)
+    public void RegisterObject(TValue cachableObject, TKey id)
     {
-        if (!Locations.TryGetValue(pointer, out LocationCache<T> locationCache))
-        {
-            locationCache = new LocationCache<T>(pointer);
-            Locations.Add(pointer, locationCache);
-        }
-
-        locationCache.RegisterObject(cachableObject, id);
+        Objects[id] = cachableObject;
     }
 
-    public bool TryGetObject(Pointer pointer, long id, out T cachableObject)
+    public bool TryGetObject(TKey id, out TValue cachableObject)
     {
-        if (!Locations.TryGetValue(pointer, out LocationCache<T> locationCache))
-        {
-            cachableObject = null;
-            return false;
-        }
-
-        return locationCache.TryGetObject(id, out cachableObject);
+        return Objects.TryGetValue(id, out cachableObject);
     }
 
-    public void SetObject(Pointer pointer, long id, T obj)
+    public TValue GetOrCreateObject(TKey id, Func<TValue> createObjFunc)
     {
-        RegisterObject(obj, pointer, id);
-    }
-
-    public T GetOrCreateObject(Pointer pointer, long id, Func<T> createObjFunc)
-    {
-        if (TryGetObject(pointer, id, out T cachableObject))
+        if (TryGetObject(id, out TValue cachableObject))
             return cachableObject;
 
         cachableObject = createObjFunc();
-        RegisterObject(cachableObject, pointer, id);
+        RegisterObject(cachableObject, id);
         return cachableObject;
     }
 
-    public T GetOrCreateObject<U>(Pointer pointer, long id, U data, Func<U, T> createObjFunc)
+    public TValue GetOrCreateObject<U>(TKey id, U data, Func<U, TValue> createObjFunc)
     {
-        if (TryGetObject(pointer, id, out T cachableObject))
+        if (TryGetObject(id, out TValue cachableObject))
             return cachableObject;
 
         cachableObject = createObjFunc(data);
-        RegisterObject(cachableObject, pointer, id);
+        RegisterObject(cachableObject, id);
         return cachableObject;
     }
 
-    public LocationCache<T> GetOrCreateLocationCache(Pointer pointer)
-    {
-        if (Locations.TryGetValue(pointer, out LocationCache<T> locationCache))
-            return locationCache;
-
-        locationCache = new LocationCache<T>(pointer);
-        Locations.Add(pointer, locationCache);
-        return locationCache;
-    }
-
-    public int GetCount() => Locations.Values.Sum(static x => x.GetCount());
+    public int GetCount() => Objects.Count;
 
     public void Clear()
     {
-        foreach (LocationCache<T> locationCache in Locations.Values)
-            locationCache.Clear();
+        foreach (TValue cachableObject in Objects.Values)
+        {
+            if (cachableObject is IDisposable disposable)
+                disposable.Dispose();
+        }
 
-        Locations.Clear();
+        Objects.Clear();
     }
 }
