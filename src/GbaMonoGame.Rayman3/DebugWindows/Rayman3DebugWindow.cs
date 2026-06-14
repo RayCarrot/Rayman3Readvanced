@@ -198,6 +198,9 @@ public class Rayman3DebugWindow : DebugWindow
             {
                 ImGui.SeparatorText("General");
 
+                if (ImGui.Button("Reload config"))
+                    Rayman3.TimeAttack.LoadConfig();
+
                 Rayman3.TimeAttack.IsActive = ImGuiExt.Checkbox("Active", Rayman3.TimeAttack.IsActive);
                 Rayman3.TimeAttack.IsPaused = ImGuiExt.Checkbox("Paused", Rayman3.TimeAttack.IsPaused);
                 ImGui.Text($"Mode: {Rayman3.TimeAttack.Mode}");

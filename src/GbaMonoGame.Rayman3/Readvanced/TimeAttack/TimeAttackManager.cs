@@ -11,16 +11,7 @@ public class TimeAttackManager
 {
     public TimeAttackManager()
     {
-        TimeAttackConfig config = Engine.Config.Get<TimeAttackConfig>();
-
-        LevelInfosDictionary = config.Levels.
-            Where(x => x.ExclusivePlatform == null || x.ExclusivePlatform == Rom.Platform).
-            ToFrozenDictionary(x => x.Level);
-        ImmutableArray<TimeAttackLevelInfo>.Builder levelInfosArrayBuilder = ImmutableArray.CreateBuilder<TimeAttackLevelInfo>();
-        levelInfosArrayBuilder.AddRange(config.Levels);
-        levelInfosArrayBuilder.RemoveAll(x => x.ExclusivePlatform != null && x.ExclusivePlatform != Rom.Platform);
-        LevelInfosArray = levelInfosArrayBuilder.ToImmutable();
-
+        LoadConfig();
         Save = Rayman3.Save.LoadTimeAttackSave() ?? new TimeAttackSave();
     }
 
@@ -28,8 +19,8 @@ public class TimeAttackManager
     private const int MinTime = 0;
     private const int MaxTime = 356400; // 99:00:00
 
-    private FrozenDictionary<MapId, TimeAttackLevelInfo> LevelInfosDictionary { get; }
-    private ImmutableArray<TimeAttackLevelInfo> LevelInfosArray { get; }
+    private FrozenDictionary<MapId, TimeAttackLevelInfo> LevelInfosDictionary { get; set; }
+    private ImmutableArray<TimeAttackLevelInfo> LevelInfosArray { get; set; }
 
     private TimeAttackSave Save { get; }
 
@@ -52,6 +43,19 @@ public class TimeAttackManager
 
     public TimeAttackLevelInfo GetLevelInfo(MapId mapId) => LevelInfosDictionary[mapId];
     public ImmutableArray<TimeAttackLevelInfo> GetLevelInfos() => LevelInfosArray;
+
+    public void LoadConfig()
+    {
+        TimeAttackConfig config = Engine.Config.Get<TimeAttackConfig>();
+
+        LevelInfosDictionary = config.Levels.
+            Where(x => x.ExclusivePlatform == null || x.ExclusivePlatform == Rom.Platform).
+            ToFrozenDictionary(x => x.Level);
+        ImmutableArray<TimeAttackLevelInfo>.Builder levelInfosArrayBuilder = ImmutableArray.CreateBuilder<TimeAttackLevelInfo>();
+        levelInfosArrayBuilder.AddRange(config.Levels);
+        levelInfosArrayBuilder.RemoveAll(x => x.ExclusivePlatform != null && x.ExclusivePlatform != Rom.Platform);
+        LevelInfosArray = levelInfosArrayBuilder.ToImmutable();
+    }
 
     public void Start()
     {
