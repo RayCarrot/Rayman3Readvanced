@@ -321,12 +321,12 @@ public class Rayman3DebugWindow : DebugWindow
                         ImGui.TableHeadersRow();
 
                         int globalIndex = 0;
-                        for (int archiveIndex = 0; archiveIndex < J2meRom.ArchiveDefines.Length; archiveIndex++)
+                        for (byte archiveIndex = 0; archiveIndex < J2meRom.ArchiveDefines.Length; archiveIndex++)
                         {
                             string name = J2meRom.ArchiveDefines[archiveIndex].FileName;
                             ArchiveInformation info = game.RM.Archive_Information[archiveIndex];
 
-                            for (int i = 0; i < info.ImageResourcesCount + info.DataResourcesCount; i++)
+                            for (byte i = 0; i < info.ImageResourcesCount + info.DataResourcesCount; i++)
                             {
                                 bool isImage = i < info.ImageResourcesCount;
 
@@ -350,7 +350,7 @@ public class Rayman3DebugWindow : DebugWindow
                                 ImGui.Text(isImage ? "Image" : "Data");
 
                                 ImGui.TableNextColumn();
-                                ImGui.Text($"0x{ResourceId.Create(i, isImage ? RESOURCE_TYPE.IMAGE : RESOURCE_TYPE.DATA, archiveIndex):X8}");
+                                ImGui.Text($"0x{new ResourceId(i, isImage ? RESOURCE_TYPE.IMAGE : RESOURCE_TYPE.DATA, archiveIndex).GetValue():X8}");
                                 
                                 ImGui.PopStyleColor();
 

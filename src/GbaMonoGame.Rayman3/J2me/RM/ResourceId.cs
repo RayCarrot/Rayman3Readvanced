@@ -2,30 +2,41 @@
 
 namespace GbaMonoGame.Rayman3.J2me;
 
-// Custom helpers
-public static class ResourceId
+// 00_08: Array index
+// 08_02: Type
+// 10_04: Archive index
+// 14-29: Empty
+// 29_03: Validation
+public readonly struct ResourceId
 {
-    // 00_08: Array index
-    // 08_02: Type
-    // 10_04: Archive index
-    // 14-29: Empty
-    // 29_03: Validation
-
-    public static int Create(int arrayIndexGeneral, RESOURCE_TYPE type, int archiveIndex)
+    public ResourceId(int value)
     {
-        int ResourceID = 0;
-        ResourceID = BitHelpers.SetBits(ResourceID, arrayIndexGeneral, 8, 0);
-        ResourceID = BitHelpers.SetBits(ResourceID, (int)type, 2, 8);
-        ResourceID = BitHelpers.SetBits(ResourceID, archiveIndex, 4, 10);
-        ResourceID = BitHelpers.SetBits(ResourceID, 3, 3, 29);
-        return ResourceID;
+        ResourceIndex = (byte)BitHelpers.ExtractBits(value, 8, 0);
+        ResourceType = (RESOURCE_TYPE)BitHelpers.ExtractBits(value, 2, 8);
+        ArchiveIndex = (byte)BitHelpers.ExtractBits(value, 4, 10);
+        Validation = (byte)BitHelpers.ExtractBits(value, 3, 29);
     }
 
-    public static void GetValues(int Param_ResourceID, out int Array_Index_General, out RESOURCE_TYPE Type, out int Archive_Index, out int Validation)
+    public ResourceId(byte resourceIndex, RESOURCE_TYPE resourceType, byte archiveIndex)
     {
-        Array_Index_General = BitHelpers.ExtractBits(Param_ResourceID, 8, 0);
-        Type = (RESOURCE_TYPE)BitHelpers.ExtractBits(Param_ResourceID, 2, 8);
-        Archive_Index = BitHelpers.ExtractBits(Param_ResourceID, 4, 10);
-        Validation = BitHelpers.ExtractBits(Param_ResourceID, 3, 29);
+        ResourceIndex = resourceIndex;
+        ResourceType = resourceType;
+        ArchiveIndex = archiveIndex;
+        Validation = 3;
+    }
+
+    public byte ArchiveIndex { get; } // Archive_Index
+    public byte ResourceIndex { get; } // Array_Index_General
+    public RESOURCE_TYPE ResourceType { get; } // Type
+    public byte Validation { get; }
+
+    public int GetValue()
+    {
+        int value = 0;
+        value = BitHelpers.SetBits(value, ResourceIndex, 8, 0);
+        value = BitHelpers.SetBits(value, (int)ResourceType, 2, 8);
+        value = BitHelpers.SetBits(value, ArchiveIndex, 4, 10);
+        value = BitHelpers.SetBits(value, Validation, 3, 29);
+        return value;
     }
 }

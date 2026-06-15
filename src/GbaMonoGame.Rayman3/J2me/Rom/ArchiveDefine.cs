@@ -2,7 +2,7 @@
 
 public readonly struct ArchiveDefine
 {
-    public ArchiveDefine(string fileName, sbyte imageResourcesCount, sbyte dataResourcesCount)
+    public ArchiveDefine(string fileName, byte imageResourcesCount, byte dataResourcesCount)
     {
         FileName = fileName;
         ImageResourcesCount = imageResourcesCount;
@@ -10,6 +10,6 @@ public readonly struct ArchiveDefine
     }
 
     public string FileName { get; }
-    public sbyte ImageResourcesCount { get; }
-    public sbyte DataResourcesCount { get; }
+    public byte ImageResourcesCount { get; }
+    public byte DataResourcesCount { get; }
 }

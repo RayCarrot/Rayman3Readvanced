@@ -83,9 +83,9 @@ public partial class Game
             int offset = 0;
             for (int i = 0; i < sceneMapData.Length / 15; i++)
             {
-                RM.Free(ReadInt(sceneMapData, offset + 0));
-                RM.Free(ReadInt(sceneMapData, offset + 5));
-                RM.Free(ReadInt(sceneMapData, offset + 10));
+                RM.Free(new ResourceId(ReadInt(sceneMapData, offset + 0)));
+                RM.Free(new ResourceId(ReadInt(sceneMapData, offset + 5)));
+                RM.Free(new ResourceId(ReadInt(sceneMapData, offset + 10)));
                 offset += 15;
             }
             RM.Synchronize();
@@ -99,15 +99,15 @@ public partial class Game
             {
                 StopSound();
                 Menu_Free(true);
-                RM.Load(ReadInt(sceneMapData, offset + 0));
-                RM.Load(ReadInt(sceneMapData, offset + 5));
-                RM.Load(ReadInt(sceneMapData, offset + 10));
+                RM.Load(new ResourceId(ReadInt(sceneMapData, offset + 0)));
+                RM.Load(new ResourceId(ReadInt(sceneMapData, offset + 5)));
+                RM.Load(new ResourceId(ReadInt(sceneMapData, offset + 10)));
                 Status_ShowAll();
                 RM.Synchronize();
                 CreateTiledBackground(sceneMapData[offset + 14], sceneMapData[offset + 4]);
                 setFastMode(true, 240, 320);
                 Scene_Load(sceneMapData[offset + 9]);
-                RM.Free(ReadInt(sceneMapData, offset + 5));
+                RM.Free(new ResourceId(ReadInt(sceneMapData, offset + 5)));
 
                 if (iLevel is LEVEL_WORLD_MAP or LEVEL_FIRST)
                     RM.Load(RESOURCE_ID_DATA_TEXTBANK_HELP);

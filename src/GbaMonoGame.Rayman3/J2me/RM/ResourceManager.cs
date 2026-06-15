@@ -69,9 +69,12 @@ public class ResourceManager
     }
 
     // Unused debug function, but we use it in Readvanced to make the code more readable
-    public int ResourceID_To_Index(int Param_ResourceID)
+    public int ResourceID_To_Index(ResourceId Param_ResourceID)
     {
-        ResourceId.GetValues(Param_ResourceID, out int Array_Index_General, out RESOURCE_TYPE Type, out int Archive_Index, out int Validation);
+        int Array_Index_General = Param_ResourceID.ResourceIndex;
+        RESOURCE_TYPE Type = Param_ResourceID.ResourceType;
+        int Archive_Index = Param_ResourceID.ArchiveIndex;
+        int Validation = Param_ResourceID.Validation;
 
         if (Manager_Status == MANAGER_STATUS.UNINITIALIZED)
             return -1;
@@ -106,9 +109,11 @@ public class ResourceManager
     }
 
     // Unused debug function
-    public int GetResourceStatus(int Param_ResourceID)
+    public int GetResourceStatus(ResourceId Param_ResourceID)
     {
-        ResourceId.GetValues(Param_ResourceID, out int Array_Index_General, out _, out int Archive_Index, out int Validation);
+        int Array_Index_General = Param_ResourceID.ResourceIndex;
+        int Archive_Index = Param_ResourceID.ArchiveIndex;
+        int Validation = Param_ResourceID.Validation;
 
         if (Manager_Status == MANAGER_STATUS.UNINITIALIZED)
             return ERRORCODE_ERROR_MANAGER_NOT_INITIALIZED;
@@ -303,9 +308,11 @@ public class ResourceManager
         return ERRORCODE_OK;
     }
 
-    public int Load(int Param_ResourceID)
+    public int Load(ResourceId Param_ResourceID)
     {
-        ResourceId.GetValues(Param_ResourceID, out int Array_Index_General, out _, out int Archive_Index, out int Validation);
+        int Array_Index_General = Param_ResourceID.ResourceIndex;
+        int Archive_Index = Param_ResourceID.ArchiveIndex;
+        int Validation = Param_ResourceID.Validation;
 
         if (Manager_Status == MANAGER_STATUS.UNINITIALIZED)
             return ERRORCODE_ERROR_MANAGER_NOT_INITIALIZED;
@@ -332,15 +339,14 @@ public class ResourceManager
         return ERRORCODE_OK;
     }
 
-    public int Load<T>(int Param_ResourceID)
+    public int Load<T>(ResourceId Param_ResourceID)
         where T : ArchiveResource, new()
     {
         int result = Load(Param_ResourceID);
 
         if (result == ERRORCODE_OK)
         {
-            ResourceId.GetValues(Param_ResourceID, out int Array_Index_General, out _, out int Archive_Index, out _);
-            SerializableResources[Archive_Index][Array_Index_General] = new T();
+            SerializableResources[Param_ResourceID.ArchiveIndex][Param_ResourceID.ResourceIndex] = new T();
         }
 
         return result;
@@ -370,9 +376,11 @@ public class ResourceManager
         return ERRORCODE_OK;
     }
 
-    public int Free(int Param_ResourceID)
+    public int Free(ResourceId Param_ResourceID)
     {
-        ResourceId.GetValues(Param_ResourceID, out int Array_Index_General, out _, out int Archive_Index, out int Validation);
+        int Array_Index_General = Param_ResourceID.ResourceIndex;
+        int Archive_Index = Param_ResourceID.ArchiveIndex;
+        int Validation = Param_ResourceID.Validation;
 
         if (Manager_Status == MANAGER_STATUS.UNINITIALIZED)
             return ERRORCODE_ERROR_MANAGER_NOT_INITIALIZED;
@@ -616,55 +624,53 @@ public class ResourceManager
 
         return Data_Decompressed;
     }
-    public Texture2D GetImageResource(int Param_ResourceID)
+    public Texture2D GetImageResource(ResourceId Param_ResourceID)
     {
         int index = ResourceID_To_Index(Param_ResourceID);
         return GetImage(index);
     }
-    public byte[] GetDataResource(int Param_ResourceID)
+    public byte[] GetDataResource(ResourceId Param_ResourceID)
     {
         int index = ResourceID_To_Index(Param_ResourceID);
         return Array_Data[index];   
     }
-    public T GetDataResource<T>(int Param_ResourceID)
+    public T GetDataResource<T>(ResourceId Param_ResourceID)
         where T : ArchiveResource, new()
     {
-        ResourceId.GetValues(Param_ResourceID, out int Array_Index_General, out _, out int Archive_Index, out _);
-
-        return (T)SerializableResources[Archive_Index][Array_Index_General];
+        return (T)SerializableResources[Param_ResourceID.ArchiveIndex][Param_ResourceID.ResourceIndex];
     }
     public void DumpAllData(string outputPath)
     {
-        for (int archiveIndex = 0; archiveIndex < J2meRom.ArchiveDefines.Length; archiveIndex++)
+        for (byte archiveIndex = 0; archiveIndex < J2meRom.ArchiveDefines.Length; archiveIndex++)
         {
             for (int dataIndex = 0; dataIndex < Archive_Information[archiveIndex].DataResourcesCount; dataIndex++)
-                Load(ResourceId.Create(Archive_Information[archiveIndex].ImageResourcesCount + dataIndex, RESOURCE_TYPE.DATA, archiveIndex));
+                Load(new ResourceId((byte)(Archive_Information[archiveIndex].ImageResourcesCount + dataIndex), RESOURCE_TYPE.DATA, archiveIndex));
 
             Synchronize();
 
             for (int dataIndex = 0; dataIndex < Archive_Information[archiveIndex].DataResourcesCount; dataIndex++)
             {
-                byte[] data = Array_Data[ResourceID_To_Index(ResourceId.Create(Archive_Information[archiveIndex].ImageResourcesCount + dataIndex, RESOURCE_TYPE.DATA, archiveIndex))];
+                byte[] data = Array_Data[ResourceID_To_Index(new ResourceId((byte)(Archive_Information[archiveIndex].ImageResourcesCount + dataIndex), RESOURCE_TYPE.DATA, archiveIndex))];
                 File.WriteAllBytes(Path.Combine(outputPath, $"{archiveIndex}_{dataIndex}.dat"), data);
             }
         }
     }
     public void DumpAllText(string outputPath)
     {
-        int[] textBankResourceIds =
+        ResourceId[] textBankResourceIds =
         [
-            ResourceId.Create(Game.TEXTBANK_INDEX_GAME, RESOURCE_TYPE.DATA, Game.ARCHIVE_INDEX_ANIM),
-            ResourceId.Create(Game.TEXTBANK_INDEX_CREDITS_UNUSED, RESOURCE_TYPE.DATA, Game.ARCHIVE_INDEX_ANIM),
-            ResourceId.Create(Game.TEXTBANK_INDEX_CREDITS, RESOURCE_TYPE.DATA, Game.ARCHIVE_INDEX_ANIM),
-            ResourceId.Create(Game.TEXTBANK_INDEX_HELP, RESOURCE_TYPE.DATA, Game.ARCHIVE_INDEX_ANIM),
+            new(Game.TEXTBANK_INDEX_GAME, RESOURCE_TYPE.DATA, Game.ARCHIVE_INDEX_ANIM),
+            new(Game.TEXTBANK_INDEX_CREDITS_UNUSED, RESOURCE_TYPE.DATA, Game.ARCHIVE_INDEX_ANIM),
+            new(Game.TEXTBANK_INDEX_CREDITS, RESOURCE_TYPE.DATA, Game.ARCHIVE_INDEX_ANIM),
+            new(Game.TEXTBANK_INDEX_HELP, RESOURCE_TYPE.DATA, Game.ARCHIVE_INDEX_ANIM),
         ];
 
-        foreach (int textBankResourceId in textBankResourceIds)
+        foreach (ResourceId textBankResourceId in textBankResourceIds)
             Load(textBankResourceId);
 
         Synchronize();
 
-        foreach (int textBankResourceId in textBankResourceIds)
+        foreach (ResourceId textBankResourceId in textBankResourceIds)
         {
             int index = ResourceID_To_Index(textBankResourceId);
             byte[] data = Array_Data[index];
@@ -684,16 +690,16 @@ public class ResourceManager
     }
     public void DumpAllImages(string outputPath)
     {
-        for (int archiveIndex = 0; archiveIndex < J2meRom.ArchiveDefines.Length; archiveIndex++)
+        for (byte archiveIndex = 0; archiveIndex < J2meRom.ArchiveDefines.Length; archiveIndex++)
         {
-            for (int imgIndex = 0; imgIndex < Archive_Information[archiveIndex].ImageResourcesCount; imgIndex++)
-                Load(ResourceId.Create(imgIndex, RESOURCE_TYPE.IMAGE, archiveIndex));
+            for (byte imgIndex = 0; imgIndex < Archive_Information[archiveIndex].ImageResourcesCount; imgIndex++)
+                Load(new ResourceId(imgIndex, RESOURCE_TYPE.IMAGE, archiveIndex));
 
             Synchronize();
 
-            for (int imgIndex = 0; imgIndex < Archive_Information[archiveIndex].ImageResourcesCount; imgIndex++)
+            for (byte imgIndex = 0; imgIndex < Archive_Information[archiveIndex].ImageResourcesCount; imgIndex++)
             {
-                Texture2D img = GetImage(ResourceID_To_Index(ResourceId.Create(imgIndex, RESOURCE_TYPE.IMAGE, archiveIndex)));
+                Texture2D img = GetImage(ResourceID_To_Index(new ResourceId(imgIndex, RESOURCE_TYPE.IMAGE, archiveIndex)));
                 using FileStream stream = File.Create(Path.Combine(outputPath, $"{archiveIndex}_{imgIndex}.png"));
                 img.SaveAsPng(stream, img.Width, img.Height);
             }
