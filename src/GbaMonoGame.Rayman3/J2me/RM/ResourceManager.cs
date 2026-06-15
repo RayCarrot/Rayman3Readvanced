@@ -126,7 +126,7 @@ public class ResourceManager
 
         return (Resource_Status[Archive_Index][Array_Index_General] & (RESOURCE_STATUS.REQUESTED | RESOURCE_STATUS.LOADED)) switch
         {
-            // No idea what the return values here are§
+            // No idea what the return values here are
             RESOURCE_STATUS.REQUESTED | RESOURCE_STATUS.LOADED => 1,
             RESOURCE_STATUS.REQUESTED => 2,
             RESOURCE_STATUS.LOADED => 3,
@@ -199,9 +199,10 @@ public class ResourceManager
         return Array_Image[Param_ArrayIndex];
     }
 
-    public string GetString(int Param_StringID)
+    public string GetString(StringId Param_StringID)
     {
-        StringId.GetValues(Param_StringID, out int Offset, out int DataArray_Index);
+        short Offset = Param_StringID.Offset;
+        short DataArray_Index = Param_StringID.DataIndex;
 
         if (Manager_Status == MANAGER_STATUS.UNINITIALIZED || 
             DataArray_Index < 0 || 
@@ -215,9 +216,10 @@ public class ResourceManager
         return Encoding.UTF8.GetString(Array_Data[DataArray_Index], Offset + 1, Array_Data[DataArray_Index][Offset]);
     }
 
-    public int NextStringID(int Param_StringID)
+    public StringId NextStringID(StringId Param_StringID)
     {
-        StringId.GetValues(Param_StringID, out int Offset, out int DataArray_Index);
+        short Offset = Param_StringID.Offset;
+        short DataArray_Index = Param_StringID.DataIndex;
 
         if (Manager_Status == MANAGER_STATUS.UNINITIALIZED || 
             DataArray_Index < 0 || 
@@ -225,13 +227,13 @@ public class ResourceManager
             Array_Data[DataArray_Index] == null || 
             Offset < 0 || 
             Offset >= Array_Data[DataArray_Index].Length)
-            return -1;
+            return StringId.Null;
         
         int StringLength = Array_Data[DataArray_Index][Offset] + 1;
         if (Offset + StringLength >= Array_Data[DataArray_Index].Length)
-            return -1;
-        
-        return Param_StringID + StringLength;
+            return StringId.Null;
+
+        return new StringId(DataArray_Index, (short)(Offset + StringLength));
     }
 
     public int DirectVQ_GetWidth(int Param_ArrayIndex)

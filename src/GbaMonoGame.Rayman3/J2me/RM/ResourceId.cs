@@ -1,4 +1,5 @@
-﻿using BinarySerializer;
+﻿using System;
+using BinarySerializer;
 
 namespace GbaMonoGame.Rayman3.J2me;
 
@@ -7,7 +8,7 @@ namespace GbaMonoGame.Rayman3.J2me;
 // 10_04: Archive index
 // 14-29: Empty
 // 29_03: Validation
-public readonly struct ResourceId
+public readonly struct ResourceId : IEquatable<ResourceId>
 {
     public ResourceId(int value)
     {
@@ -38,5 +39,30 @@ public readonly struct ResourceId
         value = BitHelpers.SetBits(value, ArchiveIndex, 4, 10);
         value = BitHelpers.SetBits(value, Validation, 3, 29);
         return value;
+    }
+
+    public bool Equals(ResourceId other)
+    {
+        return ArchiveIndex == other.ArchiveIndex && ResourceIndex == other.ResourceIndex && ResourceType == other.ResourceType && Validation == other.Validation;
+    }
+
+    public override bool Equals(object obj)
+    {
+        return obj is ResourceId other && Equals(other);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(ArchiveIndex, ResourceIndex, (int)ResourceType, Validation);
+    }
+
+    public static bool operator ==(ResourceId left, ResourceId right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(ResourceId left, ResourceId right)
+    {
+        return !left.Equals(right);
     }
 }

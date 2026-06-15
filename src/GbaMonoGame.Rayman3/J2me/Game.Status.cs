@@ -7,15 +7,15 @@ public partial class Game
     public sbyte[] m_byStatusDisplay { get; } = new sbyte[3];
     public sbyte[] m_byStatusDisplayCounter { get; } = new sbyte[3];
     public bool m_bUpdateStatus { get; set; }
-    public int[][] s_iTutorialArray { get; } = new int[][]
-    {
-        [StringId.Create(0x1DE, TEXTBANK_INDEX_HELP), 3],
-        [StringId.Create(0x016, TEXTBANK_INDEX_HELP), 3],
-        [StringId.Create(0x047, TEXTBANK_INDEX_HELP), 5],
-        [StringId.Create(0x19C, TEXTBANK_INDEX_HELP), 3],
-        [StringId.Create(0x127, TEXTBANK_INDEX_HELP), 4],
-        [StringId.Create(0x20B, TEXTBANK_INDEX_HELP), 4]
-    };
+    public TutorialEntry[] s_iTutorialArray { get; } =
+    [
+        new(new StringId(0x1DE, TEXTBANK_INDEX_HELP), 3),
+        new(new StringId(0x016, TEXTBANK_INDEX_HELP), 3),
+        new(new StringId(0x047, TEXTBANK_INDEX_HELP), 5),
+        new(new StringId(0x19C, TEXTBANK_INDEX_HELP), 3),
+        new(new StringId(0x127, TEXTBANK_INDEX_HELP), 4),
+        new(new StringId(0x20B, TEXTBANK_INDEX_HELP), 4)
+    ];
 
     public void Status_ShowLock()
     {
@@ -247,8 +247,8 @@ public partial class Game
             else if (pRayman.actorReference.anim.curAction == 3)
             {
                 int tutorialID = pRayman.actorReference.V[0];
-                int iID = s_iTutorialArray[tutorialID][0];
-                int iNbrStrings = s_iTutorialArray[tutorialID][1];
+                StringId iID = s_iTutorialArray[tutorialID].FirstStringId;
+                int iNbrStrings = s_iTutorialArray[tutorialID].StringsCount;
                 if (m_iGlobalTicker >= (iNbrStrings + 3 - 1) * 21)
                     m_iGlobalTicker = 0;
                 int iSkipLines = iNbrStrings <= 2 ? 0 : m_iGlobalTicker / 21 - 2;
@@ -258,7 +258,7 @@ public partial class Game
                 string[] sTutorial = new string[3];
                 for (i = 0; i < 3; i++)
                 {
-                    if (0 <= iSkipLines + i && iSkipLines + i < iNbrStrings && iID != -1)
+                    if (0 <= iSkipLines + i && iSkipLines + i < iNbrStrings && !iID.IsNull)
                     {
                         sTutorial[i] = RM.GetString(iID);
                         iID = RM.NextStringID(iID);

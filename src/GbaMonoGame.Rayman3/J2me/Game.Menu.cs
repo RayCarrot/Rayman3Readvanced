@@ -359,8 +359,8 @@ public partial class Game
         m_gameMenu_pAnims[6].build(OBJECT_TYPE.BLUE_LUM, 0);
 
         m_byHelpLength = 0;
-        int iID = StringId.Create(0, TEXTBANK_INDEX_HELP);
-        while (iID != -1)
+        StringId iID = new(0, TEXTBANK_INDEX_HELP);
+        while (!iID.IsNull)
         {
             m_byHelpLength = (sbyte)(m_byHelpLength + 1);
             iID = RM.NextStringID(iID);
@@ -590,26 +590,26 @@ public partial class Game
             const int total_credits_lines = 91;
             m_iAboutTicker += 2;
             int iStart = m_iAboutTicker / 21 % total_credits_lines;
-            int iID = StringId.Create(0, TEXTBANK_INDEX_CREDITS);
+            StringId iID = new(0, TEXTBANK_INDEX_CREDITS);
             for (int iLoop = 0; iLoop < iStart; iLoop++)
             {
                 iID = RM.NextStringID(iID);
-                if (iID == -1)
+                if (iID.IsNull)
                     break;
             }
 
-            if (iID == -1)
+            if (iID.IsNull)
                 return;
 
             for (int i = 0; i < 13; i++)
             {
-                if (iID == -1)
+                if (iID.IsNull)
                     break;
                 strArray[i] = RM.GetString(iID);
-                int supportmail_iID = STRING_ID_SUPPORT_MAIL;
+                StringId supportmail_iID = STRING_ID_SUPPORT_MAIL;
                 if (iID == supportmail_iID)
                     strArray[i] = "support@gameloft.com";
-                int version_iID = STRING_ID_VERSION_NUMBER;
+                StringId version_iID = STRING_ID_VERSION_NUMBER;
                 if (iID == version_iID)
                     strArray[i] = "Version " + ReadVersionFromManifest();
                 iID = RM.NextStringID(iID);
@@ -639,20 +639,20 @@ public partial class Game
                 bLast = true;
             }
             int iStart = m_gameMenu_idCurSel * 12;
-            int iID = StringId.Create(0, TEXTBANK_INDEX_HELP);
+            StringId iID = new(0, TEXTBANK_INDEX_HELP);
             for (int iLoop = 0; iLoop < iStart; iLoop++)
             {
                 iID = RM.NextStringID(iID);
-                if (iID == -1)
+                if (iID.IsNull)
                     break;
             }
 
-            if (iID == -1)
+            if (iID.IsNull)
                 return;
 
             for (int i = 0; i < 12; i++)
             {
-                if (iID == -1)
+                if (iID.IsNull)
                 {
                     bLast = true;
                     break;
@@ -736,27 +736,27 @@ public partial class Game
         int total_credits_lines = 91;
         m_iAboutTicker += 2;
         int iStart = m_iAboutTicker / 21 % total_credits_lines;
-        int iID = StringId.Create(0, TEXTBANK_INDEX_CREDITS);
+        StringId iID = new(0, TEXTBANK_INDEX_CREDITS);
 
         for (int iLoop = 0; iLoop < iStart; iLoop++)
         {
             iID = RM.NextStringID(iID);
-            if (iID == -1)
+            if (iID.IsNull)
                 break;
         }
         
-        if (iID == -1)
+        if (iID.IsNull)
             return;
         
         for (int i = 0; i < 13; i++)
         {
-            if (iID == -1)
+            if (iID.IsNull)
                 break;
             strArray[i] = RM.GetString(iID);
-            int supportmail_iID = STRING_ID_SUPPORT_MAIL;
+            StringId supportmail_iID = STRING_ID_SUPPORT_MAIL;
             if (iID == supportmail_iID)
                 strArray[i] = "support@gameloft.com";
-            int version_iID = STRING_ID_VERSION_NUMBER;
+            StringId version_iID = STRING_ID_VERSION_NUMBER;
             if (iID == version_iID)
                 strArray[i] = "Version " + ReadVersionFromManifest();
             iID = RM.NextStringID(iID);
