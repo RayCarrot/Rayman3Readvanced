@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
-using System.IO;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.Rayman3.Readvanced;
-using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.Rayman3.J2me;
 
@@ -33,17 +31,8 @@ public class GameMidlet : Frame
     private float _oldFramerate;
     private Vector2 _oldResolution;
 
-    public static Vector2 OriginalResolution { get; } = Resolution.J2me;
-    public static Point OriginalIntegerResolution { get; } = Resolution.J2me.ToPoint();
-    public static Vector2 ModernResolution { get; } = Resolution.J2meModern;
-    public static Point ModernIntegerResolution { get; } = Resolution.J2meModern.ToPoint();
-
-    public static string UserDataDirectoryName => "J2me";
-
     public static Game Instance_Game { get; set; }
     public static bool bSuspended { get; set; }
-
-    public JavaArchive JavaArchive { get; set; }
 
     public override void Init()
     {
@@ -63,14 +52,11 @@ public class GameMidlet : Frame
         _oldFramerate = Engine.App.Framerate;
         Engine.App.Framerate = Framerate;
 
-        // Read the game file
-        JavaArchive = new JavaArchive(Path.Combine(Engine.UserData.GetDirectory(UserDataDirectoryName), "rayman3.jar"), cache: true);
-        Engine.FrameMngr.RegisterDisposableResource(JavaArchive);
-
-        // TODO: Validate the manifest values (version etc.)
+        // Initialize the rom
+        J2meRom.Init(Rayman3J2meVersion.Rayman3_1_0_3_SonyEricssonS700_240x320);
 
         // Start the game
-        Instance_Game = new Game(JavaArchive);
+        Instance_Game = new Game();
         Instance_Game.start();
     }
 
@@ -89,6 +75,9 @@ public class GameMidlet : Frame
 
         // Restore the framerate
         Engine.App.Framerate = _oldFramerate;
+
+        // Uninitialize the rom
+        J2meRom.UnInit();
     }
 
     public override void Step()

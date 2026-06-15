@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.IO.Compression;
+using System.Linq;
 using System.Text;
 using BinarySerializer;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,19 +10,6 @@ namespace GbaMonoGame.Rayman3.J2me;
 // NOTE: In the original game this is part of the Game class and all members are prefixed with 'RM_'
 public class ResourceManager
 {
-    public ResourceManager(JavaArchive javaArchive)
-    {
-        // Read and cache the archives
-        Archives = new byte[ARCHIVES_COUNT][];
-        for (int i = 0; i < Archives.Length; i++)
-        {
-            ZipArchiveEntry archiveEntry = javaArchive.GetFile(kArchive_Names[i]);
-            using Stream archiveStream = archiveEntry.Open();
-            Archives[i] = new byte[archiveEntry.Length];
-            archiveStream.ReadExactly(Archives[i]);
-        }
-    }
-
     public const int ERRORCODE_OK = 0;
     public const int ERRORCODE_WARNING_SYNC_UP_TO_DATE = -1;
     public const int ERRORCODE_WARNING_RESOURCE_ALREADY_REQUESTED = -2;
@@ -38,20 +25,12 @@ public class ResourceManager
     public const int ERRORCODE_ERROR_OUT_OF_MEMORY = -12;
     public const int ERRORCODE_ERROR_INVALID_PARAMETER = -13;
 
-    public const int ARCHIVES_COUNT = 3;
-    public const int MAX_IMAGE_RESOURCES_COUNT = 21;
-    public const int MAX_DATA_RESOURCES_COUNT = 70;
-
-    // Custom to cache the archives
-    public byte[][] Archives { get; }
-
     public MANAGER_STATUS Manager_Status { get; set; }
     public byte[][] Array_Data { get; set; }
     public Texture2D[] Array_Image { get; set; }
     public Texture2D Image_Default { get; } = Gfx.Pixel;
     public RESOURCE_STATUS[][] Resource_Status { get; set; }
     public ArchiveInformation[] Archive_Information { get; set; }
-    public string[] kArchive_Names { get; } = ["wbw", "mdg", "04d"];
     public string[] kErrorMessages { get; } =
     [
         "OK", 
@@ -153,14 +132,14 @@ public class ResourceManager
         if (Manager_Status == MANAGER_STATUS.UNINITIALIZED)
             return ERRORCODE_ERROR_MANAGER_NOT_INITIALIZED;
 
-        for (int Archive_Index = 0; Archive_Index < ARCHIVES_COUNT; Archive_Index++)
+        for (int Archive_Index = 0; Archive_Index < J2meRom.ArchiveDefines.Length; Archive_Index++)
         {
             for (int Loop_Resource = 0; Loop_Resource < Resource_Status[Archive_Index].Length; Loop_Resource++)
             {
                 if ((Resource_Status[Archive_Index][Loop_Resource] & RESOURCE_STATUS.USED) == 0)
                 {
                     string ReportString = "Unused Resource : ";
-                    ReportString += $"Archive = {Archive_Index} ({kArchive_Names[Archive_Index]}), ";
+                    ReportString += $"Archive = {Archive_Index} ({J2meRom.ArchiveDefines[Archive_Index].FileName}), ";
                     ReportString += $"ID = xxx{Loop_Resource}, Type = ";
                     if (Loop_Resource < Archive_Information[Archive_Index].ImageResourcesCount)
                         ReportString += "Image";
@@ -180,14 +159,14 @@ public class ResourceManager
         if (Manager_Status == MANAGER_STATUS.UNINITIALIZED)
             return ERRORCODE_ERROR_MANAGER_NOT_INITIALIZED;
 
-        for (int Archive_Index = 0; Archive_Index < ARCHIVES_COUNT; Archive_Index++)
+        for (int Archive_Index = 0; Archive_Index < J2meRom.ArchiveDefines.Length; Archive_Index++)
         {
             for (int Loop_Resource = 0; Loop_Resource < Resource_Status[Archive_Index].Length; Loop_Resource++)
             {
                 if ((Resource_Status[Archive_Index][Loop_Resource] & RESOURCE_STATUS.LOADED) > 0)
                 {
                     string ReportString = "Loaded Resource : ";
-                    ReportString += $"Archive = {Archive_Index} ({kArchive_Names[Archive_Index]}), ";
+                    ReportString += $"Archive = {Archive_Index} ({J2meRom.ArchiveDefines[Archive_Index].FileName}), ";
                     ReportString += $"ID = xxx{Loop_Resource}, Type = ";
                     if (Loop_Resource < Archive_Information[Archive_Index].ImageResourcesCount)
                         ReportString += "Image";
@@ -297,16 +276,21 @@ public class ResourceManager
 
         Manager_Status = MANAGER_STATUS.INITIALIZED;
 
-        Array_Image = new Texture2D[MAX_IMAGE_RESOURCES_COUNT];
-        Array_Data = new byte[MAX_DATA_RESOURCES_COUNT][];
+        Array_Image = new Texture2D[J2meRom.ArchiveDefines.Sum(x => x.ImageResourcesCount)];
+        Array_Data = new byte[J2meRom.ArchiveDefines.Sum(x => x.DataResourcesCount)][];
 
-        Archive_Information = new ArchiveInformation[ARCHIVES_COUNT];
-        Archive_Information[0] = new ArchiveInformation { ImageResourcesCount = 0, DataResourcesCount = 49 }; // Resource_Archive_animation
-        Archive_Information[1] = new ArchiveInformation { ImageResourcesCount = 21, DataResourcesCount = 0 }; // Resource_Archive_image
-        Archive_Information[2] = new ArchiveInformation { ImageResourcesCount = 0, DataResourcesCount = 21 }; // Resource_Archive_map
+        Archive_Information = new ArchiveInformation[J2meRom.ArchiveDefines.Length];
+        for (int i = 0; i < Archive_Information.Length; i++)
+        {
+            Archive_Information[i] = new ArchiveInformation()
+            {
+                ImageResourcesCount = J2meRom.ArchiveDefines[i].ImageResourcesCount,
+                DataResourcesCount = J2meRom.ArchiveDefines[i].DataResourcesCount,
+            };
+        }
 
-        Resource_Status = new RESOURCE_STATUS[ARCHIVES_COUNT][];
-        for (int i = 0; i < ARCHIVES_COUNT; i++)
+        Resource_Status = new RESOURCE_STATUS[J2meRom.ArchiveDefines.Length][];
+        for (int i = 0; i < Resource_Status.Length; i++)
             Resource_Status[i] = new RESOURCE_STATUS[Archive_Information[i].ImageResourcesCount + Archive_Information[i].DataResourcesCount];
         
         return ERRORCODE_OK;
@@ -347,7 +331,7 @@ public class ResourceManager
         if (Manager_Status == MANAGER_STATUS.UNINITIALIZED)
             return ERRORCODE_ERROR_MANAGER_NOT_INITIALIZED;
 
-        for (int Archive_Index = 0; Archive_Index < ARCHIVES_COUNT; Archive_Index++)
+        for (int Archive_Index = 0; Archive_Index < J2meRom.ArchiveDefines.Length; Archive_Index++)
         {
             for (int Loop_Resource = 0; Loop_Resource < Resource_Status[Archive_Index].Length; Loop_Resource++)
             {
@@ -400,7 +384,7 @@ public class ResourceManager
         if (Manager_Status == MANAGER_STATUS.UNINITIALIZED)
             return ERRORCODE_ERROR_MANAGER_NOT_INITIALIZED;
 
-        for (int Archive_Index = 0; Archive_Index < ARCHIVES_COUNT; Archive_Index++)
+        for (int Archive_Index = 0; Archive_Index < J2meRom.ArchiveDefines.Length; Archive_Index++)
         {
             for (int Loop_Resource = 0; Loop_Resource < Resource_Status[Archive_Index].Length; Loop_Resource++)
             {
@@ -433,7 +417,7 @@ public class ResourceManager
         int Index_Image = 0;
         int Index_Data = 0;
         int Archive_Index;
-        for (Archive_Index = 0; Archive_Index < ARCHIVES_COUNT; Archive_Index++)
+        for (Archive_Index = 0; Archive_Index < J2meRom.ArchiveDefines.Length; Archive_Index++)
         {
             if (Archive_Information[Archive_Index].PendingFree > 0)
             {
@@ -468,52 +452,34 @@ public class ResourceManager
         Manager_Status = MANAGER_STATUS.LOADING;
         Index_Image = 0;
         Index_Data = 0;
-        for (Archive_Index = 0; Archive_Index < ARCHIVES_COUNT; Archive_Index++)
+        for (Archive_Index = 0; Archive_Index < J2meRom.ArchiveDefines.Length; Archive_Index++)
         {
             if (Archive_Information[Archive_Index].PendingLoad > 0)
             {
-                using MemoryStream Archive_InputStream = new(Archives[Archive_Index]);
-
-                int File_CurrentOffset = Resource_Status[Archive_Index].Length * 4;
-                int File_DestOffset = File_CurrentOffset;
-                int File_TableOffset = 0;
-                byte[] HeaderTable = new byte[File_CurrentOffset];
-                Archive_InputStream.ReadExactly(HeaderTable, 0, File_CurrentOffset);
-
                 for (sbyte b = 0; b < Resource_Status[Archive_Index].Length; b++)
                 {
-                    int Data_Size_Archived = (HeaderTable[File_TableOffset++] << 8) + HeaderTable[File_TableOffset++];
-                    short Data_Size_CompressionDelta = (short)((HeaderTable[File_TableOffset++] << 8) + HeaderTable[File_TableOffset++]);
-
                     if ((Resource_Status[Archive_Index][b] & (RESOURCE_STATUS.REQUESTED | RESOURCE_STATUS.LOADED)) == RESOURCE_STATUS.REQUESTED)
                     {
-                        if (File_DestOffset > File_CurrentOffset)
-                        {
-                            Archive_InputStream.Seek(File_DestOffset - File_CurrentOffset, SeekOrigin.Current);
-                            File_CurrentOffset = File_DestOffset;
-                        }
+                        // Read the data
+                        RawArchiveResource rawResource = J2meRom.ReadResource<RawArchiveResource>(Archive_Index, b);
+                        byte[] Data_Archived = rawResource.Data;
+                        int Data_Size_Archived = rawResource.Pre_HeaderEntry.DataSize;
+                        short Data_Size_CompressionDelta = rawResource.Pre_HeaderEntry.DataSizeCompressionDelta;
 
                         // Decompress image to a PNG file
                         if (b < Archive_Information[Archive_Index].ImageResourcesCount)
                         {
-                            byte[] Data_Archived = new byte[Data_Size_Archived];
-                            Archive_InputStream.ReadExactly(Data_Archived, 0, Data_Size_Archived);
-
                             byte[] Data_Decompressed = DecompressImage(Data_Archived, Data_Size_Archived, Data_Size_CompressionDelta);
                             Array_Image[Index_Image] = Texture2D.FromStream(Engine.Assets.GraphicsDevice, new MemoryStream(Data_Decompressed)); // TODO: Dispose when freeing? And then free all when uninit midlet.
                         }
                         else if (Data_Size_CompressionDelta == 0)
                         {
-                            Array_Data[Index_Data] = new byte[Data_Size_Archived];
-                            Archive_InputStream.ReadExactly(Array_Data[Index_Data], 0, Data_Size_Archived);
+                            Array_Data[Index_Data] = Data_Archived;
                         }
 
                         Resource_Status[Archive_Index][b] |= RESOURCE_STATUS.LOADED | RESOURCE_STATUS.USED;
-                        File_CurrentOffset += Data_Size_Archived;
                         System.gc();
                     }
-
-                    File_DestOffset += Data_Size_Archived;
 
                     if (b < Archive_Information[Archive_Index].ImageResourcesCount)
                         Index_Image++;
@@ -629,7 +595,7 @@ public class ResourceManager
     }
     public void DumpAllData(string outputPath)
     {
-        for (int archiveIndex = 0; archiveIndex < ARCHIVES_COUNT; archiveIndex++)
+        for (int archiveIndex = 0; archiveIndex < J2meRom.ArchiveDefines.Length; archiveIndex++)
         {
             for (int dataIndex = 0; dataIndex < Archive_Information[archiveIndex].DataResourcesCount; dataIndex++)
                 Load(ResourceId.Create(Archive_Information[archiveIndex].ImageResourcesCount + dataIndex, RESOURCE_TYPE.DATA, archiveIndex));
@@ -678,7 +644,7 @@ public class ResourceManager
     }
     public void DumpAllImages(string outputPath)
     {
-        for (int archiveIndex = 0; archiveIndex < ARCHIVES_COUNT; archiveIndex++)
+        for (int archiveIndex = 0; archiveIndex < J2meRom.ArchiveDefines.Length; archiveIndex++)
         {
             for (int imgIndex = 0; imgIndex < Archive_Information[archiveIndex].ImageResourcesCount; imgIndex++)
                 Load(ResourceId.Create(imgIndex, RESOURCE_TYPE.IMAGE, archiveIndex));

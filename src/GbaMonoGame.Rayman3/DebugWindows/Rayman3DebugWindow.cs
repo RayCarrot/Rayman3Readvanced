@@ -321,9 +321,9 @@ public class Rayman3DebugWindow : DebugWindow
                         ImGui.TableHeadersRow();
 
                         int globalIndex = 0;
-                        for (int archiveIndex = 0; archiveIndex < ResourceManager.ARCHIVES_COUNT; archiveIndex++)
+                        for (int archiveIndex = 0; archiveIndex < J2meRom.ArchiveDefines.Length; archiveIndex++)
                         {
-                            string name = game.RM.kArchive_Names[archiveIndex];
+                            string name = J2meRom.ArchiveDefines[archiveIndex].FileName;
                             ArchiveInformation info = game.RM.Archive_Information[archiveIndex];
 
                             for (int i = 0; i < info.ImageResourcesCount + info.DataResourcesCount; i++)

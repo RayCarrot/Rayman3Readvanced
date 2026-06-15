@@ -64,7 +64,7 @@ public class RecordStore : IDisposable
 
     private static string GetDirectory()
     {
-        return Path.Combine(Engine.UserData.GetDirectory(GameMidlet.UserDataDirectoryName), "RecordStore");
+        return Path.Combine(J2meRom.GameDirectory, "RecordStore");
     }
 
     private static string GetFileName(string recordStoreName)

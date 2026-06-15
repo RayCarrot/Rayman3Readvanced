@@ -10,9 +10,9 @@ public partial class Game
 
     // Custom helpers
     private int ScaleXValue(int value) => value +
-                                          (IntegerResolution.X - GameMidlet.OriginalIntegerResolution.X) / 2;
+                                          (IntegerResolution.X - J2meRom.OriginalIntegerResolution.X) / 2;
     private int ScaleYValue(int value) => value +
-                                          (IntegerResolution.Y - GameMidlet.OriginalIntegerResolution.Y) / 2;
+                                          (IntegerResolution.Y - J2meRom.OriginalIntegerResolution.Y) / 2;
 
     public void Camera_Tick()
     {

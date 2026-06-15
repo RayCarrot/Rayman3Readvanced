@@ -18,7 +18,7 @@ public class Graphics
     }
 
     public Vector2 Resolution => RenderContext.Resolution;
-    public bool IsResolutionModified => RenderContext.Resolution != GameMidlet.OriginalResolution;
+    public bool IsResolutionModified => RenderContext.Resolution != J2meRom.OriginalResolution;
     public Playfield2DRenderContext RenderContext { get; }
     public RenderOptions RenderOptions { get; }
     public List<Sprite> Sprites { get; }
@@ -179,7 +179,7 @@ public class Graphics
     // Custom
     public void ForceOriginalResolution()
     {
-        RenderContext.SetFixedResolution(GameMidlet.OriginalResolution);
+        RenderContext.SetFixedResolution(J2meRom.OriginalResolution);
     }
 
     public void SetMaxResolution(float width, float height)

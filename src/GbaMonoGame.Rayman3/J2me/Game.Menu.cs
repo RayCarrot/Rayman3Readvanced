@@ -235,9 +235,9 @@ public partial class Game
                 Menu_InsertOption(RM.GetString(STRING_ID_RESTART), 1);
 
                 // Custom for changing the resolution
-                if (Engine.ViewPort.InternalGameResolution == GameMidlet.OriginalResolution)
+                if (Engine.ViewPort.InternalGameResolution == J2meRom.OriginalResolution)
                     Menu_InsertOption($"Resolution : Original ({Resolution.X}x{Resolution.Y})", 5);
-                else if (Engine.ViewPort.InternalGameResolution == GameMidlet.ModernResolution)
+                else if (Engine.ViewPort.InternalGameResolution == GbaMonoGame.Resolution.J2meModern)
                     Menu_InsertOption($"Resolution : Widescreen ({Resolution.X}x{Resolution.Y})", 5);
                 else
                     Menu_InsertOption($"Resolution : {Resolution.X}x{Resolution.Y}", 5);
@@ -518,7 +518,7 @@ public partial class Game
 
                         // Custom for changing the resolution
                         case 5:
-                            Vector2 res = Resolution == GameMidlet.ModernResolution ? GameMidlet.OriginalResolution : GameMidlet.ModernResolution;
+                            Vector2 res = Resolution == GbaMonoGame.Resolution.J2meModern ? J2meRom.OriginalResolution : GbaMonoGame.Resolution.J2meModern;
                             Engine.Settings.Local.J2me.InternalGameResolution = res;
                             Engine.ViewPort.SetInternalGameResolution(res);
                             Menu_UpdatePage();
@@ -780,7 +780,7 @@ public partial class Game
 
     public string ReadVersionFromManifest()
     {
-        return JavaArchive.GetManifestValue("MIDlet-Version");
+        return J2meRom.Manifest.GetValue("MIDlet-Version");
     }
 
     // Unused

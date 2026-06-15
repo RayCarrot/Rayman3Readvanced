@@ -2,6 +2,7 @@
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.Editor;
 using GbaMonoGame.Engine2d;
+using GbaMonoGame.Rayman3.J2me;
 using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
@@ -329,5 +330,8 @@ public static class Rayman3
         Loc = null;
         Achievements = null;
         TimeAttack = null;
+
+        // Uninitialize J2ME
+        J2meRom.UnInit();
     }
 }
