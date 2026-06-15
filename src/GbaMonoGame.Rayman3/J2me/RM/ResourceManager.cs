@@ -49,6 +49,9 @@ public class ResourceManager
         "Error : Invalid Parameter"
     ];
 
+    // Custom
+    public ArchiveResource[][] SerializableResources { get; set; }
+
     // Unused debug function
     public string GetErrorMessage(int ErrorValue)
     {
@@ -290,9 +293,13 @@ public class ResourceManager
         }
 
         Resource_Status = new RESOURCE_STATUS[J2meRom.ArchiveDefines.Length][];
-        for (int i = 0; i < Resource_Status.Length; i++)
+        SerializableResources = new ArchiveResource[J2meRom.ArchiveDefines.Length][];
+        for (int i = 0; i < J2meRom.ArchiveDefines.Length; i++)
+        {
             Resource_Status[i] = new RESOURCE_STATUS[Archive_Information[i].ImageResourcesCount + Archive_Information[i].DataResourcesCount];
-        
+            SerializableResources[i] = new ArchiveResource[Archive_Information[i].ImageResourcesCount + Archive_Information[i].DataResourcesCount];
+        }
+
         return ERRORCODE_OK;
     }
 
@@ -323,6 +330,20 @@ public class ResourceManager
             Manager_Status = MANAGER_STATUS.PENDING_SYNC;
 
         return ERRORCODE_OK;
+    }
+
+    public int Load<T>(int Param_ResourceID)
+        where T : ArchiveResource, new()
+    {
+        int result = Load(Param_ResourceID);
+
+        if (result == ERRORCODE_OK)
+        {
+            ResourceId.GetValues(Param_ResourceID, out int Array_Index_General, out _, out int Archive_Index, out _);
+            SerializableResources[Archive_Index][Array_Index_General] = new T();
+        }
+
+        return result;
     }
 
     // Unused
@@ -430,6 +451,8 @@ public class ResourceManager
                         else
                             Array_Data[Index_Data] = null;
 
+                        SerializableResources[Archive_Index][Loop_Resource] = null;
+
                         Resource_Status[Archive_Index][Loop_Resource] &= ~RESOURCE_STATUS.LOADED;
                     }
 
@@ -460,21 +483,31 @@ public class ResourceManager
                 {
                     if ((Resource_Status[Archive_Index][b] & (RESOURCE_STATUS.REQUESTED | RESOURCE_STATUS.LOADED)) == RESOURCE_STATUS.REQUESTED)
                     {
-                        // Read the data
-                        RawArchiveResource rawResource = J2meRom.ReadResource<RawArchiveResource>(Archive_Index, b);
-                        byte[] Data_Archived = rawResource.Data;
-                        int Data_Size_Archived = rawResource.Pre_HeaderEntry.DataSize;
-                        short Data_Size_CompressionDelta = rawResource.Pre_HeaderEntry.DataSizeCompressionDelta;
-
-                        // Decompress image to a PNG file
-                        if (b < Archive_Information[Archive_Index].ImageResourcesCount)
+                        // Read as a serializable resource
+                        if (SerializableResources[Archive_Index][b] != null)
                         {
-                            byte[] Data_Decompressed = DecompressImage(Data_Archived, Data_Size_Archived, Data_Size_CompressionDelta);
-                            Array_Image[Index_Image] = Texture2D.FromStream(Engine.Assets.GraphicsDevice, new MemoryStream(Data_Decompressed)); // TODO: Dispose when freeing? And then free all when uninit midlet.
+                            // Deserialize the resource
+                            SerializableResources[Archive_Index][b] = J2meRom.ReadResource(Archive_Index, b, SerializableResources[Archive_Index][b]);
                         }
-                        else if (Data_Size_CompressionDelta == 0)
+                        // Read as a raw resource
+                        else
                         {
-                            Array_Data[Index_Data] = Data_Archived;
+                            // Read the data
+                            RawArchiveResource rawResource = J2meRom.ReadResource<RawArchiveResource>(Archive_Index, b);
+                            byte[] Data_Archived = rawResource.Data;
+                            int Data_Size_Archived = rawResource.Pre_HeaderEntry.DataSize;
+                            short Data_Size_CompressionDelta = rawResource.Pre_HeaderEntry.DataSizeCompressionDelta;
+
+                            // Decompress image to a PNG file
+                            if (b < Archive_Information[Archive_Index].ImageResourcesCount)
+                            {
+                                byte[] Data_Decompressed = DecompressImage(Data_Archived, Data_Size_Archived, Data_Size_CompressionDelta);
+                                Array_Image[Index_Image] = Texture2D.FromStream(Engine.Assets.GraphicsDevice, new MemoryStream(Data_Decompressed)); // TODO: Dispose when freeing? And then free all when uninit midlet.
+                            }
+                            else if (Data_Size_CompressionDelta == 0)
+                            {
+                                Array_Data[Index_Data] = Data_Archived;
+                            }
                         }
 
                         Resource_Status[Archive_Index][b] |= RESOURCE_STATUS.LOADED | RESOURCE_STATUS.USED;
@@ -592,6 +625,13 @@ public class ResourceManager
     {
         int index = ResourceID_To_Index(Param_ResourceID);
         return Array_Data[index];   
+    }
+    public T GetDataResource<T>(int Param_ResourceID)
+        where T : ArchiveResource, new()
+    {
+        ResourceId.GetValues(Param_ResourceID, out int Array_Index_General, out _, out int Archive_Index, out _);
+
+        return (T)SerializableResources[Archive_Index][Array_Index_General];
     }
     public void DumpAllData(string outputPath)
     {

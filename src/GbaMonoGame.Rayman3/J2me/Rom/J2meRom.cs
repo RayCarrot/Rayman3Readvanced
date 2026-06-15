@@ -177,6 +177,13 @@ public static class J2meRom
         _archiveHeaders = default;
     }
 
+    public static ArchiveResource ReadResource(int archiveIndex, int entryIndex, ArchiveResource resource)
+    {
+        ArchiveHeader header = ArchiveHeaders[archiveIndex];
+        resource.Pre_HeaderEntry = header.Entries[entryIndex];
+        return (ArchiveResource)FileFactory.Read(Context, resource, header.EntryPointers[entryIndex], name: $"{archiveIndex}_{entryIndex}");
+    }
+
     public static T ReadResource<T>(int archiveIndex, int entryIndex)
         where T : ArchiveResource, new()
     {
