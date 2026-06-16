@@ -7,3 +7,6 @@
 [submodule "sub-modules/BinarySerializer.Ubisoft.GbaEngine"]
 	path = sub-modules/BinarySerializer.Ubisoft.GbaEngine
 	url = https://github.com/BinarySerializer/BinarySerializer.Ubisoft.GbaEngine
+[submodule "sub-modules/BinarySerializer.Gameloft.J2me"]
+	path = sub-modules/BinarySerializer.Gameloft.J2me
+	url = https://github.com/BinarySerializer/BinarySerializer.Gameloft.J2me

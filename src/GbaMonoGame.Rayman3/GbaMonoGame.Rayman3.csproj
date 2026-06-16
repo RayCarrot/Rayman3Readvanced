@@ -39,6 +39,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\sub-modules\BinarySerializer.Nintendo\src\BinarySerializer.Nintendo.csproj" />
     <ProjectReference Include="..\..\sub-modules\BinarySerializer.Ubisoft.GbaEngine\src\BinarySerializer.Ubisoft.GbaEngine.csproj" />
+    <ProjectReference Include="..\..\sub-modules\BinarySerializer.Gameloft.J2me\src\BinarySerializer.Gameloft.J2me.csproj" />
     <ProjectReference Include="..\..\sub-modules\BinarySerializer\src\BinarySerializer.csproj" />
     <ProjectReference Include="..\GbaMonoGame.AnimEngine\GbaMonoGame.AnimEngine.csproj" />
     <ProjectReference Include="..\GbaMonoGame.Engine2d\GbaMonoGame.Engine2d.csproj" />

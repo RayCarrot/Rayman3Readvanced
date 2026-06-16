@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using BinarySerializer;
+using BinarySerializer.Gameloft.J2me;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3.J2me;
@@ -69,7 +70,7 @@ public class ResourceManager
     public int ResourceID_To_Index(ResourceId Param_ResourceID)
     {
         int Array_Index_General = Param_ResourceID.ResourceIndex;
-        RESOURCE_TYPE Type = Param_ResourceID.ResourceType;
+        ResourceType Type = Param_ResourceID.ResourceType;
         int Archive_Index = Param_ResourceID.ArchiveIndex;
         int Validation = Param_ResourceID.Validation;
 
@@ -83,7 +84,7 @@ public class ResourceManager
             return -1;
 
         sbyte InformationField;
-        if (Type == RESOURCE_TYPE.DATA)
+        if (Type == ResourceType.Data)
         {
             InformationField = 1;
             Array_Index_General -= Archive_Information[Archive_Index].ImageResourcesCount;
@@ -204,7 +205,7 @@ public class ResourceManager
         if (Manager_Status == MANAGER_STATUS.UNINITIALIZED || 
             DataArray_Index < 0 || 
             DataArray_Index >= Array_Data.Length || 
-            GetData<TextBankResource>(DataArray_Index) is not { } textBank ||
+            GetData<BinarySerializer.Gameloft.J2me.TextBankResource>(DataArray_Index) is not { } textBank ||
             Offset < 0)
             return String.Empty;
 
@@ -224,7 +225,7 @@ public class ResourceManager
         if (Manager_Status == MANAGER_STATUS.UNINITIALIZED || 
             DataArray_Index < 0 || 
             DataArray_Index >= Array_Data.Length || 
-            GetData<TextBankResource>(DataArray_Index) is not { } textBank || 
+            GetData<BinarySerializer.Gameloft.J2me.TextBankResource>(DataArray_Index) is not { } textBank || 
             Offset < 0)
             return StringId.Null;
 
@@ -343,7 +344,7 @@ public class ResourceManager
 
     public int LoadImage(ResourceId Param_ResourceID)
     {
-        if (Param_ResourceID.ResourceType != RESOURCE_TYPE.IMAGE)
+        if (Param_ResourceID.ResourceType != ResourceType.Image)
             throw new Exception($"Resource type {Param_ResourceID.ResourceType} is not a valid image type");
 
         return Load(Param_ResourceID);
@@ -352,7 +353,7 @@ public class ResourceManager
     public int LoadData<T>(ResourceId Param_ResourceID)
         where T : ArchiveResource, new()
     {
-        if (Param_ResourceID.ResourceType != RESOURCE_TYPE.DATA)
+        if (Param_ResourceID.ResourceType != ResourceType.Data)
             throw new Exception($"Resource type {Param_ResourceID.ResourceType} is not a valid data type");
 
         int result = Load(Param_ResourceID);
@@ -649,13 +650,13 @@ public class ResourceManager
         for (byte archiveIndex = 0; archiveIndex < J2meRom.ArchiveDefines.Length; archiveIndex++)
         {
             for (int dataIndex = 0; dataIndex < Archive_Information[archiveIndex].DataResourcesCount; dataIndex++)
-                LoadData<RawResource>(new ResourceId((byte)(Archive_Information[archiveIndex].ImageResourcesCount + dataIndex), RESOURCE_TYPE.DATA, archiveIndex));
+                LoadData<RawResource>(new ResourceId((byte)(Archive_Information[archiveIndex].ImageResourcesCount + dataIndex), ResourceType.Data, archiveIndex));
 
             Synchronize();
 
             for (int dataIndex = 0; dataIndex < Archive_Information[archiveIndex].DataResourcesCount; dataIndex++)
             {
-                RawResource res = GetData<RawResource>(new ResourceId((byte)(Archive_Information[archiveIndex].ImageResourcesCount + dataIndex), RESOURCE_TYPE.DATA, archiveIndex));
+                RawResource res = GetData<RawResource>(new ResourceId((byte)(Archive_Information[archiveIndex].ImageResourcesCount + dataIndex), ResourceType.Data, archiveIndex));
                 File.WriteAllBytes(Path.Combine(outputPath, $"{archiveIndex}_{dataIndex}.dat"), res.Data);
             }
         }
@@ -664,20 +665,20 @@ public class ResourceManager
     {
         ResourceId[] textBankResourceIds =
         [
-            new(Game.TEXTBANK_INDEX_GAME, RESOURCE_TYPE.DATA, Game.ARCHIVE_INDEX_ANIM),
-            new(Game.TEXTBANK_INDEX_CREDITS_UNUSED, RESOURCE_TYPE.DATA, Game.ARCHIVE_INDEX_ANIM),
-            new(Game.TEXTBANK_INDEX_CREDITS, RESOURCE_TYPE.DATA, Game.ARCHIVE_INDEX_ANIM),
-            new(Game.TEXTBANK_INDEX_HELP, RESOURCE_TYPE.DATA, Game.ARCHIVE_INDEX_ANIM),
+            new(Game.TEXTBANK_INDEX_GAME, ResourceType.Data, Game.ARCHIVE_INDEX_ANIM),
+            new(Game.TEXTBANK_INDEX_CREDITS_UNUSED, ResourceType.Data, Game.ARCHIVE_INDEX_ANIM),
+            new(Game.TEXTBANK_INDEX_CREDITS, ResourceType.Data, Game.ARCHIVE_INDEX_ANIM),
+            new(Game.TEXTBANK_INDEX_HELP, ResourceType.Data, Game.ARCHIVE_INDEX_ANIM),
         ];
 
         foreach (ResourceId textBankResourceId in textBankResourceIds)
-            LoadData<TextBankResource>(textBankResourceId);
+            LoadData<BinarySerializer.Gameloft.J2me.TextBankResource>(textBankResourceId);
 
         Synchronize();
 
         foreach (ResourceId textBankResourceId in textBankResourceIds)
         {
-            TextBankResource textBank = GetData<TextBankResource>(textBankResourceId);
+            BinarySerializer.Gameloft.J2me.TextBankResource textBank = GetData<BinarySerializer.Gameloft.J2me.TextBankResource>(textBankResourceId);
 
             StringBuilder sb = new();
             foreach (TextBankEntry entry in textBank.Entries)
@@ -691,13 +692,13 @@ public class ResourceManager
         for (byte archiveIndex = 0; archiveIndex < J2meRom.ArchiveDefines.Length; archiveIndex++)
         {
             for (byte imgIndex = 0; imgIndex < Archive_Information[archiveIndex].ImageResourcesCount; imgIndex++)
-                LoadImage(new ResourceId(imgIndex, RESOURCE_TYPE.IMAGE, archiveIndex));
+                LoadImage(new ResourceId(imgIndex, ResourceType.Image, archiveIndex));
 
             Synchronize();
 
             for (byte imgIndex = 0; imgIndex < Archive_Information[archiveIndex].ImageResourcesCount; imgIndex++)
             {
-                Texture2D img = GetImage(ResourceID_To_Index(new ResourceId(imgIndex, RESOURCE_TYPE.IMAGE, archiveIndex)));
+                Texture2D img = GetImage(ResourceID_To_Index(new ResourceId(imgIndex, ResourceType.Image, archiveIndex)));
                 using FileStream stream = File.Create(Path.Combine(outputPath, $"{archiveIndex}_{imgIndex}.png"));
                 img.SaveAsPng(stream, img.Width, img.Height);
             }

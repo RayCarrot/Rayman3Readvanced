@@ -1,4 +1,6 @@
-﻿namespace GbaMonoGame.Rayman3.J2me;
+﻿using BinarySerializer.Gameloft.J2me;
+
+namespace GbaMonoGame.Rayman3.J2me;
 
 public partial class Game
 {
@@ -32,7 +34,7 @@ public partial class Game
             case SYS_FRAME_STATE.LOADING:
                 GameFrame_LoadSound();
                 RM.LoadImage(RESOURCE_ID_IMG_GAMELOFT_LOGO);
-                RM.LoadData<TextBankResource>(RESOURCE_ID_DATA_TEXTBANK_GAME);
+                RM.LoadData<BinarySerializer.Gameloft.J2me.TextBankResource>(RESOURCE_ID_DATA_TEXTBANK_GAME);
                 LoadSound(0);
                 InitSounds();
                 setSoundVolume(SoundVolume);

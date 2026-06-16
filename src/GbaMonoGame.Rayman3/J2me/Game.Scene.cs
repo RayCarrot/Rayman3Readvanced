@@ -1,4 +1,5 @@
-﻿using GbaMonoGame.Engine2d;
+﻿using BinarySerializer.Gameloft.J2me;
+using GbaMonoGame.Engine2d;
 using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.Rayman3.J2me;

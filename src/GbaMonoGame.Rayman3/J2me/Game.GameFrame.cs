@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using BinarySerializer.Gameloft.J2me;
+
 // ReSharper disable RedundantAssignment
 // ReSharper disable UselessBinaryOperation
 
@@ -108,7 +110,7 @@ public partial class Game
                 RM.Free(entry.SceneResourceId);
 
                 if (iLevel is LEVEL_WORLD_MAP or LEVEL_FIRST)
-                    RM.LoadData<TextBankResource>(RESOURCE_ID_DATA_TEXTBANK_HELP);
+                    RM.LoadData<BinarySerializer.Gameloft.J2me.TextBankResource>(RESOURCE_ID_DATA_TEXTBANK_HELP);
                 else
                     RM.Free(RESOURCE_ID_DATA_TEXTBANK_HELP);
 

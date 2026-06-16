@@ -1,7 +1,9 @@
 using System;
 using System.Linq;
+using BinarySerializer.Gameloft.J2me;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
 // ReSharper disable RedundantAssignment
 // ReSharper disable UnusedVariable
 
@@ -305,7 +307,7 @@ public class Actor
         data.flag |= ANIM_DATA_FLAGS.LOADED;
         data.modules = res.Modules;
         data.frames = res.Frames;
-        data.actions = new Action[res.ActionsCount];
+        data.actions = new BinarySerializer.Gameloft.J2me.Action[res.ActionsCount];
         data.mmParam = new MechModelParams[res.ActionsCount];
         for (int i = 0; i < res.ActionsCount; i++)
         {

@@ -4,6 +4,7 @@
     <Project Path="GbaMonoGame.Rayman3.Tests/GbaMonoGame.Rayman3.Tests.csproj" />
   </Folder>
   <Folder Name="/Binary/">
+    <Project Path="../sub-modules/BinarySerializer.Gameloft.J2me/src/BinarySerializer.Gameloft.J2me.csproj" />
     <Project Path="../sub-modules/BinarySerializer.Nintendo/src/BinarySerializer.Nintendo.csproj" />
     <Project Path="../sub-modules/BinarySerializer.Ubisoft.GbaEngine/src/BinarySerializer.Ubisoft.GbaEngine.csproj" />
     <Project Path="../sub-modules/BinarySerializer/src/BinarySerializer.csproj" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using BinarySerializer.Gameloft.J2me;
 using GbaMonoGame.Engine2d;
 using GbaMonoGame.Rayman3.J2me;
 using GbaMonoGame.Rayman3.Readvanced;
@@ -330,7 +331,7 @@ public class Rayman3DebugWindow : DebugWindow
                             for (byte i = 0; i < info.ImageResourcesCount + info.DataResourcesCount; i++)
                             {
                                 bool isImage = i < info.ImageResourcesCount;
-                                ResourceId id = new(i, isImage ? RESOURCE_TYPE.IMAGE : RESOURCE_TYPE.DATA, archiveIndex);
+                                ResourceId id = new(i, isImage ? ResourceType.Image : ResourceType.Data, archiveIndex);
                                 int index = game.RM.ResourceID_To_Index(id);
 
                                 ImGui.TableNextRow();

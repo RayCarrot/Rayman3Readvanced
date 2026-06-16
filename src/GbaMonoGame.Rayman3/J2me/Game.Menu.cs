@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using BinarySerializer.Gameloft.J2me;
 
 namespace GbaMonoGame.Rayman3.J2me;
 
@@ -317,14 +318,14 @@ public partial class Game
     public void Menu_LoadCredits()
     {
         Menu_Free(false);
-        RM.LoadData<TextBankResource>(RESOURCE_ID_DATA_TEXTBANK_CREDITS);
+        RM.LoadData<BinarySerializer.Gameloft.J2me.TextBankResource>(RESOURCE_ID_DATA_TEXTBANK_CREDITS);
         RM.Synchronize();
     }
 
     public void Menu_LoadHelp()
     {
         Menu_Free(false);
-        RM.LoadData<TextBankResource>(RESOURCE_ID_DATA_TEXTBANK_HELP);
+        RM.LoadData<BinarySerializer.Gameloft.J2me.TextBankResource>(RESOURCE_ID_DATA_TEXTBANK_HELP);
         RM.LoadImage(RESOURCE_ID_IMG_LUMS);
         RM.LoadImage(RESOURCE_ID_IMG_CAGE);
         RM.LoadData<AnimationDataResource>(RESOURCE_ID_DATA_ANIM_YELLOW_LUM);

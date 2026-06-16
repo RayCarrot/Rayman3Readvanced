@@ -2,6 +2,7 @@
 using System.IO;
 using System.IO.Compression;
 using BinarySerializer;
+using BinarySerializer.Gameloft.J2me;
 using Microsoft.Xna.Framework;
 
 namespace GbaMonoGame.Rayman3.J2me;

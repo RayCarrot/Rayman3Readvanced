@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using BinarySerializer.Gameloft.J2me;
 using MeltySynth;
 
 namespace GbaMonoGame.Rayman3.J2me;

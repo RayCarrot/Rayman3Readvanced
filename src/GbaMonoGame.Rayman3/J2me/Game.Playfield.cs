@@ -1,4 +1,5 @@
-﻿using GbaMonoGame.TgxEngine;
+﻿using BinarySerializer.Gameloft.J2me;
+using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 

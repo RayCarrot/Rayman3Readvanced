@@ -1,4 +1,6 @@
-﻿namespace GbaMonoGame.Rayman3.J2me;
+﻿using BinarySerializer.Gameloft.J2me;
+
+namespace GbaMonoGame.Rayman3.J2me;
 
 public class Anim
 {
