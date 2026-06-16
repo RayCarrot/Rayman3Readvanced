@@ -39,9 +39,15 @@ public class ExportSaveMenuPage : MenuPage
                 // Create serializer settings for the save file
                 SerializerSettings serializerSettings = new() { IgnoreCacheOnRead = true };
 
+                // Create a serializer logger
+                ISerializerLogger serializerLogger = Engine.Settings.Active.Debug.WriteSerializerLog
+                    ? new FileSerializerLogger(Engine.UserData.GetFile(Paths.GetSerializeLogFileName(null)))
+                    : null;
+
                 // Create a new context for reading the save
                 using Context context = new(saveDirPath,
                     settings: serializerSettings,
+                    serializerLogger: serializerLogger,
                     systemLogger: BinarySerializerSystemLogger.Create());
 
                 context.AddSettings(new GbaEngineSettings
@@ -82,9 +88,15 @@ public class ExportSaveMenuPage : MenuPage
                 // Create serializer settings for the save file
                 SerializerSettings serializerSettings = new() { IgnoreCacheOnRead = true };
 
+                // Create a serializer logger
+                ISerializerLogger serializerLogger = Engine.Settings.Active.Debug.WriteSerializerLog
+                    ? new FileSerializerLogger(Engine.UserData.GetFile(Paths.GetSerializeLogFileName(null)))
+                    : null;
+
                 // Create a new context for reading the save
                 using Context context = new(saveDirPath,
                     settings: serializerSettings,
+                    serializerLogger: serializerLogger,
                     systemLogger: BinarySerializerSystemLogger.Create());
 
                 context.AddSettings(new GbaEngineSettings

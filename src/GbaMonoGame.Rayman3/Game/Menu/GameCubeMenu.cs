@@ -90,9 +90,15 @@ public partial class GameCubeMenu : Frame
             IgnoreCacheOnRead = true,
         };
 
+        // Create a serializer logger
+        ISerializerLogger serializerLogger = Engine.Settings.Active.Debug.WriteSerializerLog
+            ? new FileSerializerLogger(Engine.UserData.GetFile(Paths.GetSerializeLogFileName(null)))
+            : null;
+
         // Create a new context for reading the disc.
         using Context context = new(isoDirPath,
             settings: serializerSettings,
+            serializerLogger: serializerLogger,
             systemLogger: BinarySerializerSystemLogger.Create());
 
         context.AddFile(new LinearFile(context, isoFileName));

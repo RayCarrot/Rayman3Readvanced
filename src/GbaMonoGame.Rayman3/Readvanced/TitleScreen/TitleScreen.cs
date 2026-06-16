@@ -84,7 +84,7 @@ public class TitleScreen : Frame
     private void UpdateGameOptions(TitleScreenGame game)
     {
         // Get the game paths
-        Rom.GetGamePaths(Game.Rayman3, game.Platform, out string gameDirectory, out string[] gameFileNames);
+        Rom.GetGamePaths(Game.Rayman3, game.Platform, out string gameDirectory, out string[] gameFileNames, out _);
 
         // The rom exists!
         if (gameFileNames.All(x => File.Exists(Path.Combine(gameDirectory, x))))

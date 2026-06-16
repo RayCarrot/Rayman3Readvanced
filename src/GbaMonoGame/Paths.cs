@@ -7,5 +7,10 @@ public static class Paths
     public const string CrashlogFileName = "crashlog.txt";
     public const string SettingsFileName = "settings.ini";
     public const string ImgGuiConfigFileName = "imgui.ini";
-    public const string SerializerLogFileName = "serializerLog.txt";
+
+    public static string GetSerializeLogFileName(string baseName)
+    {
+        baseName ??= "temp";
+        return $"log_{baseName}.txt";
+    }
 }

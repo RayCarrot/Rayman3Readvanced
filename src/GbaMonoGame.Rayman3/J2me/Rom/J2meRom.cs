@@ -82,7 +82,7 @@ public static class J2meRom
 
     #region Public Methods
 
-    public static void GetGamePaths(Rayman3J2meVersion version, out string gameDirectory, out string gameFileName)
+    public static void GetGamePaths(Rayman3J2meVersion version, out string gameDirectory, out string gameFileName, out string logName)
     {
         string versionName = version switch
         {
@@ -92,6 +92,7 @@ public static class J2meRom
 
         gameDirectory = Engine.UserData.GetDirectory(Path.Combine("J2me", versionName));
         gameFileName = "rayman3.jar";
+        logName = "j2me";
     }
 
     public static ArchiveDefine[] GetArchiveDefines(Rayman3J2meVersion version)
@@ -118,7 +119,7 @@ public static class J2meRom
             IsLoaded = true;
 
             // Get the paths
-            GetGamePaths(version, out string gameDirectory, out string gameFileName);
+            GetGamePaths(version, out string gameDirectory, out string gameFileName, out string logName);
 
             // Set properties
             _gameDirectory = gameDirectory;
@@ -132,10 +133,9 @@ public static class J2meRom
                 IgnoreCacheOnRead = true,
             };
 
-            // TODO: Use a different path
             // Create a serializer logger
             ISerializerLogger serializerLogger = Engine.Settings.Active.Debug.WriteSerializerLog
-                ? new FileSerializerLogger(Engine.UserData.GetFile(Paths.SerializerLogFileName))
+                ? new FileSerializerLogger(Engine.UserData.GetFile(Paths.GetSerializeLogFileName(logName)))
                 : null;
 
             // Create the binary context

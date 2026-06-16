@@ -104,14 +104,19 @@ public static class Rom
         string dir = Path.GetDirectoryName(filePath) ?? String.Empty;
         string fileName = Path.GetFileName(filePath);
 
-        using Context context = new(dir, systemLogger: BinarySerializerSystemLogger.Create());
+        // Create a serializer logger
+        ISerializerLogger serializerLogger = Engine.Settings.Active.Debug.WriteSerializerLog
+            ? new FileSerializerLogger(Engine.UserData.GetFile(Paths.GetSerializeLogFileName(null)))
+            : null;
+
+        using Context context = new(dir, serializerLogger: serializerLogger, systemLogger: BinarySerializerSystemLogger.Create());
         context.AddFile(new MemoryMappedFile(context, fileName, Constants.Address_ROM));
         ROMHeader header = FileFactory.Read<ROMHeader>(context, fileName);
 
         return DefinedPointers.GetPointers(header, Platform.GBA, game, false) != null;
     }
 
-    public static void GetGamePaths(Game game, Platform platform, out string gameDirectory, out string[] gameFileNames)
+    public static void GetGamePaths(Game game, Platform platform, out string gameDirectory, out string[] gameFileNames, out string logName)
     {
         string gameName = game switch
         {
@@ -126,6 +131,7 @@ public static class Rom
             [
                 $"{gameName}.gba"
             ];
+            logName = "gba";
         }
         else if (platform == Platform.NGage)
         {
@@ -135,6 +141,7 @@ public static class Rom
                 $"{gameName}.app",
                 $"{gameName}.dat",
             ];
+            logName = "ngage";
         }
         else
         {
@@ -152,7 +159,7 @@ public static class Rom
             IsLoaded = true;
 
             // Get the paths
-            GetGamePaths(game, platform, out string gameDirectory, out string[] gameFileNames);
+            GetGamePaths(game, platform, out string gameDirectory, out string[] gameFileNames, out string logName);
             
             // Set properties
             _gameDirectory = gameDirectory;
@@ -162,7 +169,7 @@ public static class Rom
 
             // Create a serializer logger
             ISerializerLogger serializerLogger = Engine.Settings.Active.Debug.WriteSerializerLog
-                ? new FileSerializerLogger(Engine.UserData.GetFile(Paths.SerializerLogFileName))
+                ? new FileSerializerLogger(Engine.UserData.GetFile(Paths.GetSerializeLogFileName(logName)))
                 : null;
 
             // Create the binary context
