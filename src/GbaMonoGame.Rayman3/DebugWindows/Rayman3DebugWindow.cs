@@ -430,8 +430,14 @@ public class Rayman3DebugWindow : DebugWindow
 
                 if (ImGui.CollapsingHeader("Scene"))
                 {
+                    if (ImGui.Button("Dump all modules"))
+                    {
+                        if (Engine.FileDialog.OpenFolder("Select output path") is { } outputPath)
+                            game.DumpAllModules(outputPath);
+                    }
+
                     ImGui.Text($"Left to die: {game.s_iLeftToDie}");
-                    ImGui.Text($"Active sectors: {String.Join(" ", game.m_sectors_activeSector)}");
+                    ImGui.Text($"Active sectors: {String.Join(" ", game.m_sectors_activeSector ?? [])}");
 
                     if (ImGui.BeginTable("_actors", 6))
                     {
@@ -443,7 +449,7 @@ public class Rayman3DebugWindow : DebugWindow
                         ImGui.TableSetupColumn("Mech model");
                         ImGui.TableHeadersRow();
 
-                        for (int i = 0; i < game.actors.Length; i++)
+                        for (int i = 0; i < game.actors?.Length; i++)
                         {
                             Actor actor = game.actors[i];
                             ImGui.TableNextRow();

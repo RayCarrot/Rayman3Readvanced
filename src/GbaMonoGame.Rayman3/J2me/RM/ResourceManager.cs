@@ -457,7 +457,7 @@ public class ResourceManager
         Manager_Status = MANAGER_STATUS.FREEING;
         int Index_Image = 0;
         int Index_Data = 0;
-        int Archive_Index;
+        byte Archive_Index;
         for (Archive_Index = 0; Archive_Index < J2meRom.ArchiveDefines.Length; Archive_Index++)
         {
             if (Archive_Information[Archive_Index].PendingFree > 0)
@@ -499,25 +499,32 @@ public class ResourceManager
             {
                 if (Archive_Information[Archive_Index].PendingLoad > 0)
                 {
-                    for (sbyte b = 0; b < Resource_Status[Archive_Index].Length; b++)
+                    for (byte b = 0; b < Resource_Status[Archive_Index].Length; b++)
                     {
                         if ((Resource_Status[Archive_Index][b] & (RESOURCE_STATUS.REQUESTED | RESOURCE_STATUS.LOADED)) == RESOURCE_STATUS.REQUESTED)
                         {
-                            int Data_Size_Archived = J2meRom.ArchiveHeaders[Archive_Index].Entries[b].DataSize;
-                            short Data_Size_CompressionDelta = J2meRom.ArchiveHeaders[Archive_Index].Entries[b].DataSizeCompressionDelta;
-
                             // Decompress image to a PNG file
                             if (b < Archive_Information[Archive_Index].ImageResourcesCount)
                             {
-                                // Read the data
-                                RawResource rawResource = J2meRom.ReadResource<RawResource>(Archive_Index, b);
-                                byte[] Data_Archived = rawResource.Data;
+                                Array_Image[Index_Image] = Engine.Assets.BinaryTextureCache.GetOrCreateObject(
+                                    pointer: J2meRom.ArchiveHeaders[Archive_Index].EntryPointers[b], 
+                                    id: 0,
+                                    data: new ResourceId(b, ResourceType.Image, Archive_Index),
+                                    createObjFunc: static data =>
+                                    {
+                                        // Read the data
+                                        RawResource rawResource = J2meRom.ReadResource<RawResource>(data.ArchiveIndex, data.ResourceIndex);
+                                        byte[] Data_Archived = rawResource.Data;
 
-                                // Decompress the image
-                                byte[] Data_Decompressed = DecompressImage(Data_Archived, Data_Size_Archived, Data_Size_CompressionDelta);
-                                Array_Image[Index_Image] = Texture2D.FromStream(Engine.Assets.GraphicsDevice, new MemoryStream(Data_Decompressed)); // TODO: Dispose when freeing? And then free all when uninit midlet.
+                                        int Data_Size_Archived = rawResource.Pre_HeaderEntry.DataSize;
+                                        short Data_Size_CompressionDelta = rawResource.Pre_HeaderEntry.DataSizeCompressionDelta;
+
+                                        // Decompress the image
+                                        byte[] Data_Decompressed = DecompressImage(Data_Archived, Data_Size_Archived, Data_Size_CompressionDelta);
+                                        return Texture2D.FromStream(Engine.Assets.GraphicsDevice, new MemoryStream(Data_Decompressed));
+                                    });
                             }
-                            else if (Data_Size_CompressionDelta == 0)
+                            else if (J2meRom.ArchiveHeaders[Archive_Index].Entries[b].DataSizeCompressionDelta == 0)
                             {
                                 // Deserialize the resource
                                 Array_Data[Index_Data] = J2meRom.ReadResource(Archive_Index, b, Array_Data[Index_Data]);
@@ -629,6 +636,22 @@ public class ResourceManager
         writer.Write((uint)0xAE426082); // CRC
 
         return Data_Decompressed;
+    }
+    public void LoadAllImages()
+    {
+        for (byte archiveIndex = 0; archiveIndex < J2meRom.ArchiveDefines.Length; archiveIndex++)
+        {
+            for (byte imgIndex = 0; imgIndex < Archive_Information[archiveIndex].ImageResourcesCount; imgIndex++)
+                LoadImage(new ResourceId(imgIndex, ResourceType.Image, archiveIndex));
+        }
+    }
+    public void FreeAllImages()
+    {
+        for (byte archiveIndex = 0; archiveIndex < J2meRom.ArchiveDefines.Length; archiveIndex++)
+        {
+            for (byte imgIndex = 0; imgIndex < Archive_Information[archiveIndex].ImageResourcesCount; imgIndex++)
+                Free(new ResourceId(imgIndex, ResourceType.Image, archiveIndex));
+        }
     }
     public Texture2D GetImage(ResourceId Param_ResourceID)
     {

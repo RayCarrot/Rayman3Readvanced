@@ -46,30 +46,47 @@ public partial class Game
         Fast_Init();
 
         // Custom - create a single texture for the entire map
-        Texture2D tileSet = RM.GetImage(m_iImageResID);
-        Color[] tileSetPixels = new Color[tileSet.Width * tileSet.Height];
-        tileSet.GetData(tileSetPixels);
-        
-        Texture2D bgTexture = new(Engine.Assets.GraphicsDevice, m_sBackgroundWidth * TILE_SIZE, m_sBackgroundHeight * TILE_SIZE); // TODO: Dispose
-        Color[] pixels = new Color[bgTexture.Width * bgTexture.Height];
-        for (int y = 0; y < bgTexture.Height; y += TILE_SIZE)
-        {
-            for (int x = 0; x < bgTexture.Width; x += TILE_SIZE)
+        Texture2D bgTexture = Engine.Assets.BinaryTextureCache.GetOrCreateObject(
+            pointer: RM.GetData<DirectTwinVQResource>(iBackgroundDataIndex).Offset,
+            id: 0,
+            createObjFunc: static () =>
             {
-                int id = RM.DirectTwinVQ_Read(m_iBackgroundDataIndex, x / TILE_SIZE, y / TILE_SIZE, 0) & 0xFF;
-                int tileSetX = (id % m_iBackgroundTileCountX) * TILE_SIZE;
-                int tileSetY = (id / m_iBackgroundTileCountX) * TILE_SIZE;
+                // Get the tileset image data
+                Texture2D tileSet = GameMidlet.Instance_Game.RM.GetImage(GameMidlet.Instance_Game.m_iImageResID);
+                Color[] tileSetPixels = new Color[tileSet.Width * tileSet.Height];
+                tileSet.GetData(tileSetPixels);
 
-                for (int yy = 0; yy < TILE_SIZE; yy++)
+                // Get the background size
+                int bgPixelsWidth = GameMidlet.Instance_Game.m_sBackgroundWidth * TILE_SIZE;
+                int bgPixelsHeight = GameMidlet.Instance_Game.m_sBackgroundHeight * TILE_SIZE;
+
+                // Get data
+                int iBackgroundDataIndex = GameMidlet.Instance_Game.m_iBackgroundDataIndex;
+                int iBackgroundTileCountX = GameMidlet.Instance_Game.m_iBackgroundTileCountX;
+
+                // Create the background texture
+                Texture2D bgTexture = new(Engine.Assets.GraphicsDevice, bgPixelsWidth, bgPixelsHeight);
+                Color[] bgPixels = new Color[bgTexture.Width * bgTexture.Height];
+                for (int y = 0; y < bgTexture.Height; y += TILE_SIZE)
                 {
-                    for (int xx = 0; xx < TILE_SIZE; xx++)
+                    for (int x = 0; x < bgTexture.Width; x += TILE_SIZE)
                     {
-                        pixels[(y + yy) * bgTexture.Width + (x + xx)] = tileSetPixels[(tileSetY + yy) * tileSet.Width + (tileSetX + xx)];
+                        int id = GameMidlet.Instance_Game.RM.DirectTwinVQ_Read(iBackgroundDataIndex, x / TILE_SIZE, y / TILE_SIZE, 0) & 0xFF;
+                        int tileSetX = (id % iBackgroundTileCountX) * TILE_SIZE;
+                        int tileSetY = (id / iBackgroundTileCountX) * TILE_SIZE;
+
+                        for (int yy = 0; yy < TILE_SIZE; yy++)
+                        {
+                            for (int xx = 0; xx < TILE_SIZE; xx++)
+                            {
+                                bgPixels[(y + yy) * bgTexture.Width + (x + xx)] = tileSetPixels[(tileSetY + yy) * tileSet.Width + (tileSetX + xx)];
+                            }
+                        }
                     }
                 }
-            }
-        }
-        bgTexture.SetData(pixels);
+                bgTexture.SetData(bgPixels);
+                return bgTexture;
+            });
 
         BackgroundScreen = new GfxScreen(0)
         {

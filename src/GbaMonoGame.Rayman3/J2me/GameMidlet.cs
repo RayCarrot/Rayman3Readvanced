@@ -55,8 +55,15 @@ public class GameMidlet : Frame
         // Initialize the rom
         J2meRom.Init(Rayman3J2meVersion.Rayman3_1_0_3_SonyEricssonS700_240x320);
 
-        // Start the game
+        // Create the game
         Instance_Game = new Game();
+        
+        // Preload all images (they get cached after loaded once)
+        Instance_Game.RM.LoadAllImages();
+        Instance_Game.RM.Synchronize();
+        Instance_Game.RM.FreeAllImages();
+
+        // Start the game
         Instance_Game.start();
     }
 

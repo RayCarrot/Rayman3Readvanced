@@ -1,11 +1,16 @@
-﻿using BinarySerializer.Gameloft.J2me;
+﻿using System.Collections.Generic;
+using System.IO;
+using BinarySerializer.Gameloft.J2me;
 using GbaMonoGame.Engine2d;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3.J2me;
 
 public partial class Game
 {
+    public const int ACTOR_TYPES_COUNT = 28;
+
     public Actor pRayman { get; set; }
     public Actor[] pFist { get; } = new Actor[2];
     public int Fist_num { get; set; }
@@ -243,7 +248,7 @@ public partial class Game
         actors = null;
         int actorCount = res.ActorsCount;
         actors = new Actor[actorCount];
-        for (int i = 0; i < 28; i++)
+        for (int i = 0; i < ACTOR_TYPES_COUNT; i++)
             flagActorType((ACTOR_TYPE)i, 0);
         for (int i = 1; i < 4; i++)
         {
@@ -252,7 +257,7 @@ public partial class Game
             flagActorType(ACTOR_TYPE.FONT, i);
             RM.Synchronize();
         }
-        for (int i = 0; i < 28; i++)
+        for (int i = 0; i < ACTOR_TYPES_COUNT; i++)
         {
             if (Actor.aniData[i] != null && (Actor.aniData[i].flag & ANIM_DATA_FLAGS.LOADED) == 0)
                 Actor.aniData[i] = null;
@@ -337,5 +342,43 @@ public partial class Game
                 Actor.AniLoad(actorEntry.AnimationDataIndex, actorEntry.ImageDataIndex);
                 break;
         }
+    }
+
+    // Custom
+    public void DumpAllModules(string outputPath)
+    {
+        RM.LoadData<ActorTypesResource>(RESOURCE_ID_DATA_ACTOR_TYPES);
+        RM.Synchronize();
+
+        // Load all actor animations
+        for (int i = 0; i < ACTOR_TYPES_COUNT; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                flagActorType((ACTOR_TYPE)i, j);
+                RM.Synchronize();
+            }
+        }
+
+        // Dump modules for all animations
+        for (int actorIndex = 0; actorIndex < Actor.aniData.Length; actorIndex++)
+        {
+            if (Actor.aniData[actorIndex] == null)
+                continue;
+
+            for (int moduleIndex = 0; moduleIndex < Actor.aniData[actorIndex].nbModule; moduleIndex++)
+            {
+                Texture2D img = Actor.aniData[actorIndex].ModuleTextures[moduleIndex];
+
+                if (img == null)
+                    continue;
+
+                using FileStream stream = File.Create(Path.Combine(outputPath, $"{actorIndex}_{moduleIndex}.png"));
+                img.SaveAsPng(stream, img.Width, img.Height);
+            }
+        }
+
+        RM.Free(RESOURCE_ID_DATA_ACTOR_TYPES);
+        RM.Synchronize();
     }
 }

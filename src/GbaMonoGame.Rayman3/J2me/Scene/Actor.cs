@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using BinarySerializer.Gameloft.J2me;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -103,7 +102,7 @@ public class Actor
     }
 
     public const int FISTS_COUNT = 2;
-    public const int ANIM_DATAS_COUNT = 28;
+    public const int ANIM_DATAS_COUNT = Game.ACTOR_TYPES_COUNT;
 
     public static AnimData[] aniData { get; } = new AnimData[ANIM_DATAS_COUNT];
     public Actor actorReference { get; set; }
@@ -315,34 +314,40 @@ public class Actor
             data.mmParam[i] = res.Actions[i].MechModelParams;
         }
 
-        // TODO: Cache between levels?
         // Custom - create separate texture for each sprite to avoid UV scaling issues
         data.ModuleTextures = new Texture2D[data.modules.Length];
-        Texture2D img = GameMidlet.Instance_Game.RM.GetImage(resID);
-        Color[] imgBuffer = new Color[img.Width * img.Height];
-        img.GetData(imgBuffer);
-        Color[] copyBuffer = new Color[data.modules.Max(x => x.Width * x.Height)];
         for (int i = 0; i < data.modules.Length; i++)
         {
             AnimationModule module = data.modules[i];
-            Texture2D moduleTexture = new(Engine.Assets.GraphicsDevice, module.Width, module.Height, false, SurfaceFormat.Color); // TODO: Dispose
 
-            int imgBufferOffset = module.YPosition * img.Width + module.XPosition;
-            int copyBufferOffset = 0;
-            for (int y = 0; y < module.Height; y++)
-            {
-                for (int x = 0; x < module.Width; x++)
+            data.ModuleTextures[i] = Engine.Assets.BinaryTextureCache.GetOrCreateObject(
+                pointer: res.Offset,
+                id: i,
+                data: new ModuleDefine(module, resID),
+                createObjFunc: static data =>
                 {
-                    copyBuffer[copyBufferOffset] = imgBuffer[imgBufferOffset];
-                    imgBufferOffset++;
-                    copyBufferOffset++;
-                }
+                    AnimationModule module = data.Module;
 
-                imgBufferOffset += img.Width - module.Width;
-            }
+                    // Get the image
+                    Texture2D img = GameMidlet.Instance_Game.RM.GetImage(data.ImageIndex);
 
-            moduleTexture.SetData(copyBuffer, 0, module.Width * module.Height);
-            data.ModuleTextures[i] = moduleTexture;
+                    // Some modules flow beyond the image dimensions
+                    int width = Math.Min(module.Width, img.Width - module.XPosition);
+                    int height = Math.Min(module.Height, img.Height - module.YPosition);
+
+                    // Some modules are fully beyond the image dimensions
+                    if (width <= 0 || height <= 0)
+                        return null;
+
+                    // Get the image data
+                    Color[] imgBuffer = new Color[width * height];
+                    img.GetData(0, new Rectangle(module.XPosition, module.YPosition, width, height), imgBuffer, 0, width * height);
+
+                    // Create the texture for the module
+                    Texture2D moduleTexture = new(Engine.Assets.GraphicsDevice, width, height, false, SurfaceFormat.Color);
+                    moduleTexture.SetData(imgBuffer);
+                    return moduleTexture;
+                });
         }
     }
 
@@ -3372,4 +3377,12 @@ public class Actor
     public bool Rayman_KeyCurrent(GAME_KEY key) => ((GAME_KEY)V[3] & key) != 0;
     public bool Rayman_KeyPressed(GAME_KEY key) => ((GAME_KEY)V[4] & key) != 0;
     public bool Rayman_KeyReleased(GAME_KEY key) => ((GAME_KEY)V[5] & key) != 0;
+
+    private readonly struct ModuleDefine(
+        AnimationModule module,
+        int imageIndex)
+    {
+        public AnimationModule Module { get; } = module;
+        public int ImageIndex { get; } = imageIndex;
+    }
 }
