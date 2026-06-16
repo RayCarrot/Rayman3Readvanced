@@ -11,7 +11,6 @@ public class AssetManager : IDisposable
         GraphicsDevice = ((IGraphicsDeviceService)serviceProvider.GetService(typeof(IGraphicsDeviceService)))!.GraphicsDevice;
         FixContentManager = new ContentManager(serviceProvider, Paths.AssetsDirectoryName);
         FrameContentManager = new ContentManager(serviceProvider, Paths.AssetsDirectoryName);
-        TextureCache = new Cache<long, Texture2D>();
         BinaryTextureCache = new BinaryCache<Texture2D>();
         BinaryPaletteCache = new BinaryCache<Palette>();
     }
@@ -31,14 +30,12 @@ public class AssetManager : IDisposable
     /// </summary>
     public ContentManager FrameContentManager { get; }
 
-    public Cache<long, Texture2D> TextureCache { get; }
     public BinaryCache<Texture2D> BinaryTextureCache { get; }
     public BinaryCache<Palette> BinaryPaletteCache { get; }
 
     public void UnloadFrameCache()
     {
         FrameContentManager.Unload();
-        TextureCache.Clear();
         BinaryTextureCache.Clear();
         BinaryPaletteCache.Clear();
     }
@@ -47,7 +44,6 @@ public class AssetManager : IDisposable
     {
         FixContentManager.Unload();
         FrameContentManager.Unload();
-        TextureCache.Clear();
         BinaryTextureCache.Clear();
         BinaryPaletteCache.Clear();
     }
