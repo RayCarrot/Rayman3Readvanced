@@ -11,6 +11,6 @@ public enum ACTOR_STATE : short
     FLIP_Y = 1 << 2,
     DEAD = 1 << 3,
     USE_MECH_MODEL = 1 << 4,
-    OVERRIDE_ON_DEATH = 1 << 5,
-    OVERRIDEN = 1 << 6,
+    MORPH_ON_DEATH = 1 << 5,
+    MORPHED = 1 << 6,
 }

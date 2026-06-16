@@ -11,17 +11,23 @@ public class Anim
     public int curAction { get; set; }
     public int newAction { get; set; }
     public static ANIM_EVENT_FLAGS aniEvent_flag { get; set; }
-    public static MM_TYPE aniEvent_mmtype { get; set; }
+    public static MechModelType aniEvent_mmtype { get; set; }
     public static short[] aniEvent_mmpar { get; } = new short[6];
     public static Box aniEvent_pColBoxData { get; set; }
 
     public void setFrame(int frame)
     {
-        AnimFrame frameData = Actor.aniData[(sbyte)type].frames[frame];
+        AnimationFrame frameData = Actor.aniData[(sbyte)type].frames[frame];
         frameDuration = frameData.FrameDuration;
         frameTick = 0;
         aniEvent_flag |= ANIM_EVENT_FLAGS.LOADED_COLLISION_BOX;
-        aniEvent_pColBoxData = frameData.Box;
+        aniEvent_pColBoxData = new Box
+        {
+            Left = frameData.Box.Left,
+            Top = frameData.Box.Top,
+            Right = frameData.Box.Right,
+            Bottom = frameData.Box.Bottom
+        };
         frameId = frame;
     }
 
@@ -87,7 +93,7 @@ public class Anim
             return;
 
         AnimData data = Actor.aniData[(sbyte)type];
-        AnimFrame frameData = data.frames[frameId];
+        AnimationFrame frameData = data.frames[frameId];
         int frameOffset = 0;
         int nbSprite = frameData.SpritesCount;
         
@@ -104,23 +110,23 @@ public class Anim
                 break;
 
             bool flag = !(i == 0 && type == OBJECT_TYPE.RAYMAN && GameMidlet.Instance_Game.pFist[1].anim.curAction != 0);
-            int modId = frameData.Frames[frameOffset].Module & 0x7F;
-            AnimModule pModule = data.modules[modId];
+            int modId = frameData.Sprites[frameOffset].Module;
+            AnimationModule pModule = data.modules[modId];
             
             int nsx;
             int geflag;
             if ((nflag & ACTOR_STATE.FLIP_X) != 0)
             {
-                nsx = nx - frameData.Frames[frameOffset].X - pModule.Width;
-                geflag = frameData.Frames[frameOffset].Module < 0 ? 0 : 0x4000;
+                nsx = nx - frameData.Sprites[frameOffset].XPosition - pModule.Width;
+                geflag = frameData.Sprites[frameOffset].FlipX ? 0 : 0x4000;
             }
             else
             {
-                nsx = nx + frameData.Frames[frameOffset].X;
-                geflag = frameData.Frames[frameOffset].Module < 0 ? 0x4000 : 0;
+                nsx = nx + frameData.Sprites[frameOffset].XPosition;
+                geflag = frameData.Sprites[frameOffset].FlipX ? 0x4000 : 0;
             }
             
-            int nsy = ny + frameData.Frames[frameOffset].Y;
+            int nsy = ny + frameData.Sprites[frameOffset].YPosition;
             
             if (type == OBJECT_TYPE.RAYMAN)
                 GameMidlet.Instance_Game.raymanAnim = nsx;
@@ -134,8 +140,8 @@ public class Anim
                     h: pModule.Height,
                     img: data.ModuleTextures[modId],
                     iImageIndex: data.resID,
-                    sx: pModule.X,
-                    sy: pModule.Y,
+                    sx: pModule.XPosition,
+                    sy: pModule.YPosition,
                     flag: geflag);
             }
 
@@ -150,7 +156,7 @@ public class Anim
             return new Box();
 
         AnimData data = Actor.aniData[(sbyte)type];
-        AnimFrame frameData = data.frames[frameId];
+        AnimationFrame frameData = data.frames[frameId];
         int frameOffset = 0;
         int nbSprite = frameData.SpritesCount;
 
@@ -169,15 +175,15 @@ public class Anim
                 break;
 
             bool flag = !(i == 0 && type == OBJECT_TYPE.RAYMAN && GameMidlet.Instance_Game.pFist[1].anim.curAction != 0);
-            AnimModule pModule = data.modules[frameData.Frames[frameOffset].Module & 0x7F];
+            AnimationModule pModule = data.modules[frameData.Sprites[frameOffset].Module];
 
             int nsx;
             if ((nflag & ACTOR_STATE.FLIP_X) != 0)
-                nsx = -frameData.Frames[frameOffset].X - pModule.Width;
+                nsx = -frameData.Sprites[frameOffset].XPosition - pModule.Width;
             else
-                nsx = frameData.Frames[frameOffset].X;
+                nsx = frameData.Sprites[frameOffset].XPosition;
 
-            int nsy = frameData.Frames[frameOffset].Y;
+            int nsy = frameData.Sprites[frameOffset].YPosition;
 
             if (flag)
             {

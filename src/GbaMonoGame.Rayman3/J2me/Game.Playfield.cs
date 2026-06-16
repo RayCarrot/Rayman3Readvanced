@@ -120,12 +120,12 @@ public partial class Game
     {
         if (phb == PHB_TYPE.SOLID_HALF)
         {
-            return RM.GetDataResource(RESOURCE_ID_DATA_SLOPE_DISPLACEMENTS)[48 + off] << 4;
+            return RM.GetData<SlopeDisplacementsResource>(RESOURCE_ID_DATA_SLOPE_DISPLACEMENTS).Displacements[6][off] << 4;
         }
         else
         {
             int whichIndex = ((sbyte)phb - 4) % 6;
-            return RM.GetDataResource(RESOURCE_ID_DATA_SLOPE_DISPLACEMENTS)[8 * whichIndex + off] << 4;
+            return RM.GetData<SlopeDisplacementsResource>(RESOURCE_ID_DATA_SLOPE_DISPLACEMENTS).Displacements[whichIndex][off] << 4;
         }
     }
 
@@ -135,16 +135,16 @@ public partial class Game
         m_iBackgroundPrevMapY0 = -1;
     }
 
-    public void setFastMode(bool mode, int w, int h)
+    public void setFastMode(bool mode, float w, float h)
     {
         if (mode)
         {
             m_bBackgroundFastMode = true;
             if (m_imgBackground == null)
             {
-                int bw = (w & 0xF) != 0 ? (int)(w & 0xFFFFFFF0) + TILE_SIZE : w + TILE_SIZE;
-                int bh = (h & 0xF) != 0 ? (int)(h & 0xFFFFFFF0) + TILE_SIZE : h + TILE_SIZE;
                 // Unused in Readvanced since we don't draw the background in the fast mode
+                // int bw = (w & 0xF) != 0 ? (int)(w & 0xFFFFFFF0) + TILE_SIZE : w + TILE_SIZE;
+                // int bh = (h & 0xF) != 0 ? (int)(h & 0xFFFFFFF0) + TILE_SIZE : h + TILE_SIZE;
                 // m_imgBackground = Image.createImage(bw, bh);
                 // m_graBackground = m_imgBackground.getGraphics();
             }

@@ -9,11 +9,10 @@ namespace GbaMonoGame.Rayman3.J2me;
 
 public class Actor
 {
-    public Actor(sbyte[] data)
+    public Actor(ActorInstance data)
     {
         Actor_ctor(data);
 
-        int nOff = 6;
         switch (objType)
         {
             case OBJECT_TYPE.RAYMAN:
@@ -39,19 +38,19 @@ public class Actor
             case OBJECT_TYPE.CAGE:
                 V = new int[1];
                 V[0] = 2;
-                if (data[nOff++] != 0)
+                if (data.Params[0] != 0)
                     anim.newAction = 5;
                 break;
             
             case OBJECT_TYPE.PIRATE:
                 V = new int[6];
-                V[0] = (byte)data[nOff++];
-                V[1] = (byte)data[nOff++];
-                V[2] = (byte)data[nOff++];
+                V[0] = data.Params[0];
+                V[1] = data.Params[1];
+                V[2] = data.Params[2];
                 V[2] <<= 16;
-                V[2] |= (byte)data[nOff++];
+                V[2] |= data.Params[3];
                 V[2] |= V[2] << 8;
-                V[5] = (byte)data[nOff++];
+                V[5] = data.Params[4];
                 V[3] = 240;
                 V[4] = 0;
                 break;
@@ -63,7 +62,7 @@ public class Actor
             case OBJECT_TYPE.LAVA_PLATFORM:
             case OBJECT_TYPE.JUNGLE_PLATFORM:
                 V = new int[2];
-                V[0] = data[nOff++];
+                V[0] = data.Params[0];
                 m_bPHBTable = new PHB_TYPE[1, 1];
                 m_sPHBTableReferenceTileX = -10;
                 m_sPHBTableReferenceTileY = -10;
@@ -82,7 +81,7 @@ public class Actor
             
             case OBJECT_TYPE.LEVEL_SIGN:
                 V = new int[1];
-                V[0] = (byte)data[nOff++];
+                V[0] = data.Params[0];
                 break;
         }
 
@@ -115,7 +114,7 @@ public class Actor
     public long y { get; set; }
     public short dx { get; set; }
     public short dy { get; set; }
-    public MM_TYPE mmodel_type { get; set; }
+    public MechModelType mmodel_type { get; set; }
     public short mmodel_vX { get; set; }
     public short mmodel_vY { get; set; }
     public short mmodel_aX { get; set; }
@@ -180,88 +179,88 @@ public class Actor
         return true;
     }
 
-    public void MModel_Init(MM_TYPE mmtype, short[] mmpar)
+    public void MModel_Init(MechModelType mmtype, short[] mmpar)
     {
-        if (mmtype == MM_TYPE.NONE)
+        if (mmtype == MechModelType.None)
             return;
 
         mmodel_type = mmtype;
         switch (mmodel_type)
         {
-            case MM_TYPE.RESET:
+            case MechModelType.Reset:
                 mmodel_vX = mmodel_vY = 0;
                 mmodel_aX = mmodel_aY = 0;
                 break;
 
-            case MM_TYPE.SET_SPEED_XY:
+            case MechModelType.SetSpeedXY:
                 mmodel_vX = mmpar[0];
                 mmodel_vY = mmpar[1];
                 break;
             
-            case MM_TYPE.SET_SPEED_X_RESET_SPEED_Y:
+            case MechModelType.SetSpeedX_ResetSpeedY:
                 mmodel_vX = mmpar[0];
                 mmodel_vY = 0;
                 break;
             
-            case MM_TYPE.SET_SPEED_Y_RESET_SPEED_X:
+            case MechModelType.SetSpeedY_ResetSpeedX:
                 mmodel_vY = mmpar[0];
                 mmodel_vX = 0;
                 break;
             
-            case MM_TYPE.SET_SPEED_X:
+            case MechModelType.SetSpeedX:
                 mmodel_vX = mmpar[0];
                 break;
             
-            case MM_TYPE.SET_SPEED_Y:
+            case MechModelType.SetSpeedY:
                 mmodel_vY = mmpar[0];
                 break;
             
-            case MM_TYPE.SET_ACCELERATION_XY_SET_TARGET_SPEED_XY:
+            case MechModelType.SetAccelerationXY_SetTargetSpeedXY:
                 mmodel_fX = mmpar[0];
                 mmodel_aX = mmpar[1];
                 mmodel_fY = mmpar[2];
                 mmodel_aY = mmpar[3];
                 break;
             
-            case MM_TYPE.SET_ACCELERATION_X_SET_TARGET_SPEED_X:
+            case MechModelType.SetAccelerationX_SetTargetSpeedX:
                 mmodel_fX = mmpar[0];
                 mmodel_aX = mmpar[1];
                 break;
             
-            case MM_TYPE.SET_ACCELERATION_Y_SET_TARGET_SPEED_Y:
+            case MechModelType.SetAccelerationY_SetTargetSpeedY:
                 mmodel_fY = mmpar[0];
                 mmodel_aY = mmpar[1];
                 break;
 
-            case MM_TYPE.SET_SPEED_XY_SET_ACCELERATION_XY_SET_TARGET_SPEED_XY:
+            case MechModelType.SetSpeedXY_SetAccelerationXY_SetTargetSpeedXY:
                 mmodel_vX = mmpar[0];
                 mmodel_vY = mmpar[1];
                 mmodel_fX = mmpar[2];
                 mmodel_aX = mmpar[3];
                 mmodel_fY = mmpar[4];
                 mmodel_aY = mmpar[5];
-                mmodel_type = MM_TYPE.SET_ACCELERATION_XY_SET_TARGET_SPEED_XY;
+                mmodel_type = MechModelType.SetAccelerationXY_SetTargetSpeedXY;
                 break;
 
-            case MM_TYPE.SET_SPEED_X_SET_ACCELERATION_X_SET_TARGET_SPEED_X:
+            case MechModelType.SetSpeedX_SetAccelerationX_SetTargetSpeedX:
                 mmodel_vX = mmpar[0];
                 mmodel_fX = mmpar[1];
                 mmodel_aX = mmpar[2];
-                mmodel_type = MM_TYPE.SET_ACCELERATION_X_SET_TARGET_SPEED_X;
+                mmodel_type = MechModelType.SetAccelerationX_SetTargetSpeedX;
                 break;
 
-            case MM_TYPE.SET_SPEED_Y_SET_ACCELERATION_Y_SET_TARGET_SPEED_Y:
+            case MechModelType.SetSpeedY_SetAccelerationY_SetTargetSpeedY:
                 mmodel_vY = mmpar[0];
                 mmodel_fY = mmpar[1];
                 mmodel_aY = mmpar[2];
-                mmodel_type = MM_TYPE.SET_ACCELERATION_Y_SET_TARGET_SPEED_Y;
+                mmodel_type = MechModelType.SetAccelerationY_SetTargetSpeedY;
                 break;
         }
     }
 
     public void MModel_Tick()
     {
-        if (mmodel_type is MM_TYPE.SET_ACCELERATION_XY_SET_TARGET_SPEED_XY or MM_TYPE.SET_ACCELERATION_X_SET_TARGET_SPEED_X && mmodel_aX != 0)
+        if (mmodel_type is MechModelType.SetAccelerationXY_SetTargetSpeedXY or MechModelType.SetAccelerationX_SetTargetSpeedX && mmodel_aX != 0)
         {
             mmodel_vX = (short)(mmodel_vX + mmodel_aX);
             if ((mmodel_fX > 0 && mmodel_vX > mmodel_fX) ||
@@ -272,7 +271,7 @@ public class Actor
             }
         }
 
-        if (mmodel_type is MM_TYPE.SET_ACCELERATION_XY_SET_TARGET_SPEED_XY or MM_TYPE.SET_ACCELERATION_Y_SET_TARGET_SPEED_Y && mmodel_aY != 0)
+        if (mmodel_type is MechModelType.SetAccelerationXY_SetTargetSpeedXY or MechModelType.SetAccelerationY_SetTargetSpeedY && mmodel_aY != 0)
         {
             mmodel_vY = (short)(mmodel_vY + mmodel_aY);
             if ((mmodel_fY > 0 && mmodel_vY > mmodel_fY) ||
@@ -286,94 +285,32 @@ public class Actor
 
     public static void AniLoad(int aniResIndex, int resID)
     {
-        byte[] buffer = GameMidlet.Instance_Game.RM.Array_Data[aniResIndex];
-        if (buffer == null)
+        AnimationDataResource res = GameMidlet.Instance_Game.RM.GetData<AnimationDataResource>(aniResIndex);
+        if (res == null)
             return;
 
-        int type = buffer[0] & 0x7F;
-        if (aniData[type] != null)
+        if (aniData[res.Type] != null)
         {
-            aniData[type].flag |= ANIM_DATA_FLAGS.LOADED;
+            aniData[res.Type].flag |= ANIM_DATA_FLAGS.LOADED;
             return;
         }
 
         AnimData data = new();
-        aniData[type] = data;
+        aniData[res.Type] = data;
         data.resID = (sbyte)resID;
-        data.flag = (buffer[0] & 0x80) != 0 ? ANIM_DATA_FLAGS.HAS_MECH_MODEL : ANIM_DATA_FLAGS.NONE;
-        data.nbModule = buffer[1];
-        data.nbFrame = buffer[2];
-        data.nbAction = buffer[3];
+        data.flag = res.HasMechModel ? ANIM_DATA_FLAGS.HAS_MECH_MODEL : ANIM_DATA_FLAGS.NONE;
+        data.nbModule = res.ModulesCount;
+        data.nbFrame = res.FramesCount;
+        data.nbAction = res.ActionsCount;
         data.flag |= ANIM_DATA_FLAGS.LOADED;
-        int count = data.nbModule;
-        data.modules = new AnimModule[count];
-        int offset = 4;
-        for (int i = 0; i < count; i++)
+        data.modules = res.Modules;
+        data.frames = res.Frames;
+        data.actions = new Action[res.ActionsCount];
+        data.mmParam = new MechModelParams[res.ActionsCount];
+        for (int i = 0; i < res.ActionsCount; i++)
         {
-            data.modules[i] = new AnimModule
-            {
-                X = buffer[offset + 0],
-                Y = buffer[offset + 1],
-                Width = buffer[offset + 2],
-                Height = buffer[offset + 3]
-            };
-            offset += 4;
-        }
-
-        count = data.nbFrame;
-        data.frames = new AnimFrame[count];
-        for (int j = 0; j < count; j++)
-        {
-            data.frames[j] = new AnimFrame
-            {
-                SpritesCount = buffer[offset + 0],
-                FrameDuration = buffer[offset + 1],
-                Box = new Box()
-                {
-                    Left = (sbyte)buffer[offset + 2],
-                    Top = (sbyte)buffer[offset + 3],
-                    Right = (sbyte)buffer[offset + 4],
-                    Bottom = (sbyte)buffer[offset + 5],
-                },
-                Frames = new AnimFrameSprite[buffer[offset + 0]]
-            };
-            offset += 6;
-
-            for (int frameIndex = 0; frameIndex < data.frames[j].SpritesCount; frameIndex++)
-            {
-                data.frames[j].Frames[frameIndex] = new AnimFrameSprite
-                {
-                    Module = (sbyte)buffer[offset + 0],
-                    X = (sbyte)buffer[offset + 1],
-                    Y = (sbyte)buffer[offset + 2]
-                };
-                offset += 3;
-            }
-        }
-
-        count = data.nbAction;
-        data.actions = new Action[count];
-        data.mmParam = new MechModelParams[count];
-        for (int k = 0; k < count; k++)
-        {
-            data.actions[k] = new Action
-            {
-                FramesCount = buffer[offset + 0],
-                Frames = new byte[buffer[offset + 0]]
-            };
-            offset++;
-            System.arraycopy(buffer, offset, data.actions[k].Frames, 0, data.actions[k].FramesCount);
-            offset += data.actions[k].FramesCount;
-
-            data.mmParam[k] = new MechModelParams()
-            {
-                ParamsCount = (byte)(buffer[offset + 0] & 0xF),
-                Type = (MM_TYPE)((buffer[offset + 0] & 0xF0) >> 4),
-                Params = new sbyte[buffer[offset + 0]]
-            };
-            offset++;
-            System.arraycopy(buffer, offset, data.mmParam[k].Params, 0, data.mmParam[k].ParamsCount);
-            offset += data.mmParam[k].ParamsCount;
+            data.actions[i] = res.Actions[i].Action;
+            data.mmParam[i] = res.Actions[i].MechModelParams;
         }
 
         // TODO: Cache between levels?
@@ -385,10 +322,10 @@ public class Actor
         Color[] copyBuffer = new Color[data.modules.Max(x => x.Width * x.Height)];
         for (int i = 0; i < data.modules.Length; i++)
         {
-            AnimModule module = data.modules[i];
+            AnimationModule module = data.modules[i];
             Texture2D moduleTexture = new(Engine.Assets.GraphicsDevice, module.Width, module.Height, false, SurfaceFormat.Color); // TODO: Dispose
 
-            int imgBufferOffset = module.Y * img.Width + module.X;
+            int imgBufferOffset = module.YPosition * img.Width + module.XPosition;
             int copyBufferOffset = 0;
             for (int y = 0; y < module.Height; y++)
             {
@@ -418,7 +355,7 @@ public class Actor
 
     public static void drawModule(AnimData pData, int idMod, float nx, float ny, int nflag, Graphics g)
     {
-        AnimModule module = pData.modules[idMod];
+        AnimationModule module = pData.modules[idMod];
         GameMidlet.Instance_Game.drawImageEx(
             dstx: nx,
             dsty: ny,
@@ -426,8 +363,8 @@ public class Actor
             h: module.Height,
             img: pData.ModuleTextures[idMod],
             iImageIndex: pData.resID,
-            sx: module.X,
-            sy: module.Y,
+            sx: module.XPosition,
+            sy: module.YPosition,
             flag: nflag);
     }
 
@@ -511,20 +448,20 @@ public class Actor
             GameMidlet.Instance_Game.raymanDraw = (int)(y >> 8);
     }
 
-    public void Actor_ctor(sbyte[] data)
+    public void Actor_ctor(ActorInstance data)
     {
-        objType = (OBJECT_TYPE)data[1];
+        objType = (OBJECT_TYPE)data.Type;
 
-        x = GameMidlet.Instance_Game.ReadUnsignedShort(data, 2);
+        x = data.XPosition;
         x *= 2L;
         x <<= 8;
 
-        y = GameMidlet.Instance_Game.ReadUnsignedShort(data, 4);
+        y = data.YPosition;
         y *= 2L;
         y <<= 8;
 
-        short firstAction = (short)(data[0] & 0xF);
-        stateFlag = (ACTOR_STATE)((data[0] & 0xF0) >> 4);
+        short firstAction = data.FirstAction;
+        stateFlag = (ACTOR_STATE)data.Flags;
         mmodel_vX = mmodel_vY = 0;
         mmodel_aX = mmodel_aY = 0;
         mmodel_fX = mmodel_fY = 0;
@@ -1307,7 +1244,7 @@ public class Actor
         {
             mmodel_fY = 0x700;
             mmodel_aY = 0x100;
-            mmodel_type = MM_TYPE.SET_ACCELERATION_Y_SET_TARGET_SPEED_Y;
+            mmodel_type = MechModelType.SetAccelerationY_SetTargetSpeedY;
         }
 
         switch (anim.curAction)
@@ -1412,8 +1349,8 @@ public class Actor
             case 6:
                 if (Ani_CheckEnd())
                 {
-                    if ((stateFlag & ACTOR_STATE.OVERRIDE_ON_DEATH) != 0)
-                        stateFlag |= ACTOR_STATE.OVERRIDEN;
+                    if ((stateFlag & ACTOR_STATE.MORPH_ON_DEATH) != 0)
+                        stateFlag |= ACTOR_STATE.MORPHED;
                     else
                         Actor_Death();
                 }

@@ -8,7 +8,7 @@ namespace GbaMonoGame.Rayman3.J2me;
 // 10_04: Archive index
 // 14-29: Empty
 // 29_03: Validation
-public readonly struct ResourceId : IEquatable<ResourceId>
+public readonly struct ResourceId : IEquatable<ResourceId>, ISerializerShortLog
 {
     public ResourceId(int value)
     {
@@ -30,6 +30,16 @@ public readonly struct ResourceId : IEquatable<ResourceId>
     public byte ResourceIndex { get; } // Array_Index_General
     public RESOURCE_TYPE ResourceType { get; } // Type
     public byte Validation { get; }
+
+    public bool IsNull => ArchiveIndex == 0xF && ResourceIndex == 0xFF && ResourceType == RESOURCE_TYPE.INVALID && Validation == 0x7; // 0xFFFFFFFF
+
+    public static SerializeInto<ResourceId> SerializeInto = (s, x) =>
+    {
+        int value = s.Serialize<int>(x.GetValue(), name: "Value");
+        return new ResourceId(value);
+    };
+
+    public string ShortLog => ToString();
 
     public int GetValue()
     {
@@ -65,4 +75,8 @@ public readonly struct ResourceId : IEquatable<ResourceId>
     {
         return !left.Equals(right);
     }
+
+    public override string ToString() => IsNull 
+        ? "ResourceId(NULL)"
+        : $"ResourceId(Archive: {ArchiveIndex}, Resource: {ResourceIndex}, Type: {ResourceType})";
 }

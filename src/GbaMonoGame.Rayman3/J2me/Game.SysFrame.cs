@@ -31,8 +31,8 @@ public partial class Game
             // Load
             case SYS_FRAME_STATE.LOADING:
                 GameFrame_LoadSound();
-                RM.Load(RESOURCE_ID_IMG_GAMELOFT_LOGO);
-                RM.Load(RESOURCE_ID_DATA_TEXTBANK_GAME);
+                RM.LoadImage(RESOURCE_ID_IMG_GAMELOFT_LOGO);
+                RM.LoadData<TextBankResource>(RESOURCE_ID_DATA_TEXTBANK_GAME);
                 LoadSound(0);
                 InitSounds();
                 setSoundVolume(SoundVolume);
@@ -43,7 +43,7 @@ public partial class Game
             // Show Gameloft logo
             case SYS_FRAME_STATE.SPLASH_SCREEN:
                 g_graBackBuffer.ClearScreen(0);
-                g_graBackBuffer.drawImage(RM.GetImageResource(RESOURCE_ID_IMG_GAMELOFT_LOGO), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
+                g_graBackBuffer.drawImage(RM.GetImage(RESOURCE_ID_IMG_GAMELOFT_LOGO), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
                 lCurMill = System.currentTimeMillis();
                 if (pressedKey != GAME_KEY.NONE || lCurMill - lStartMill > 5000)
                     curState = SYS_FRAME_STATE.TITLE_SCREEN;
@@ -80,7 +80,7 @@ public partial class Game
                 }
                 else if (m_byMainLoadingState == 1)
                 {
-                    RM.Load(RESOURCE_ID_DATA_SCENE_MAP);
+                    RM.LoadData<SceneMapResource>(RESOURCE_ID_DATA_SCENE_MAP);
                     RM.Synchronize();
                     GameFrame_loadLevel(LEVEL_MENU);
                     PlaySound(SOUND_INDEX.music_splash, true, LOOP_INFINITE);
@@ -89,7 +89,7 @@ public partial class Game
                 else
                 {
                     g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
-                    g_graBackBuffer.drawImage(RM.GetImageResource(RESOURCE_ID_IMG_SPLASH_SCREEN), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
+                    g_graBackBuffer.drawImage(RM.GetImage(RESOURCE_ID_IMG_SPLASH_SCREEN), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
                     Actor.drawModule(Actor.aniData[(sbyte)OBJECT_TYPE.FONT], 23, Resolution.X - Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[23].Width, Resolution.Y - Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[23].Height - Menu_GetVArrowPos(), 0, g_graBackBuffer);
                     if (pressedKey != GAME_KEY.NONE)
                     {
@@ -100,7 +100,7 @@ public partial class Game
                         m_keys = 0;
                     }
                 }
-                RM.Load(RESOURCE_ID_DATA_SLOPE_DISPLACEMENTS);
+                RM.LoadData<SlopeDisplacementsResource>(RESOURCE_ID_DATA_SLOPE_DISPLACEMENTS);
                 RM.Synchronize();
                 break;
 

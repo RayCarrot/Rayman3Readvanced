@@ -2,7 +2,7 @@
 
 namespace GbaMonoGame.Rayman3.J2me;
 
-public class RawArchiveResource : ArchiveResource
+public class RawResource : ArchiveResource
 {
     public byte[] Data { get; set; }
 

@@ -26,7 +26,7 @@ public class ResourceManager
     public const int ERRORCODE_ERROR_INVALID_PARAMETER = -13;
 
     public MANAGER_STATUS Manager_Status { get; set; }
-    public byte[][] Array_Data { get; set; }
+    public ArchiveResource[] Array_Data { get; set; }
     public Texture2D[] Array_Image { get; set; }
     public Texture2D Image_Default { get; } = Gfx.Pixel;
     public RESOURCE_STATUS[][] Resource_Status { get; set; }
@@ -48,9 +48,6 @@ public class ResourceManager
         "Error : Out Of Memory", 
         "Error : Invalid Parameter"
     ];
-
-    // Custom
-    public ArchiveResource[][] SerializableResources { get; set; }
 
     // Unused debug function
     public string GetErrorMessage(int ErrorValue)
@@ -207,13 +204,16 @@ public class ResourceManager
         if (Manager_Status == MANAGER_STATUS.UNINITIALIZED || 
             DataArray_Index < 0 || 
             DataArray_Index >= Array_Data.Length || 
-            Array_Data[DataArray_Index] == null || 
-            Offset < 0 || 
-            Offset >= Array_Data[DataArray_Index].Length)
+            GetData<TextBankResource>(DataArray_Index) is not { } textBank ||
+            Offset < 0)
             return String.Empty;
 
-        // First byte is the length followed by the string
-        return Encoding.UTF8.GetString(Array_Data[DataArray_Index], Offset + 1, Array_Data[DataArray_Index][Offset]);
+        long fileOffset = textBank.Offset.FileOffset + Offset;
+        foreach (TextBankEntry entry in textBank.Entries)
+            if (entry.Offset.FileOffset == fileOffset)
+                return entry.Value;
+
+        return String.Empty;
     }
 
     public StringId NextStringID(StringId Param_StringID)
@@ -224,59 +224,63 @@ public class ResourceManager
         if (Manager_Status == MANAGER_STATUS.UNINITIALIZED || 
             DataArray_Index < 0 || 
             DataArray_Index >= Array_Data.Length || 
-            Array_Data[DataArray_Index] == null || 
-            Offset < 0 || 
-            Offset >= Array_Data[DataArray_Index].Length)
-            return StringId.Null;
-        
-        int StringLength = Array_Data[DataArray_Index][Offset] + 1;
-        if (Offset + StringLength >= Array_Data[DataArray_Index].Length)
+            GetData<TextBankResource>(DataArray_Index) is not { } textBank || 
+            Offset < 0)
             return StringId.Null;
 
-        return new StringId(DataArray_Index, (short)(Offset + StringLength));
+        long fileOffset = textBank.Offset.FileOffset + Offset;
+        for (int i = 0; i < textBank.Entries.Length - 1; i++)
+            if (textBank.Entries[i].Offset.FileOffset == fileOffset)
+                return new StringId((short)(textBank.Entries[i + 1].Offset.FileOffset - textBank.Offset.FileOffset), DataArray_Index);
+        
+        return StringId.Null;
     }
 
     public int DirectVQ_GetWidth(int Param_ArrayIndex)
     {
         if (Manager_Status == MANAGER_STATUS.UNINITIALIZED || 
             Param_ArrayIndex < 0 || 
-            Param_ArrayIndex >= Array_Data.Length || 
-            Array_Data[Param_ArrayIndex] == null || 
-            Array_Data[Param_ArrayIndex].Length <= 6 || 
-            Array_Data[Param_ArrayIndex][3] != Array_Data[Param_ArrayIndex][0] * Array_Data[Param_ArrayIndex][1])
+            Param_ArrayIndex >= Array_Data.Length ||
+            GetData<DirectTwinVQResource>(Param_ArrayIndex) is not { } res ||
+            res.Data.Length == 0 ||
+            res.BlockSize != res.BlockWidth * res.BlockHeight)
             return 0;
 
-        return Array_Data[Param_ArrayIndex][4] * Array_Data[Param_ArrayIndex][0];
+        return res.Width * res.BlockWidth;
     }
 
     public int DirectVQ_GetHeight(int Param_ArrayIndex)
     {
         if (Manager_Status == MANAGER_STATUS.UNINITIALIZED || 
-            Param_ArrayIndex < 0 
-            || Param_ArrayIndex >= Array_Data.Length || 
-            Array_Data[Param_ArrayIndex] == null || 
-            Array_Data[Param_ArrayIndex].Length <= 6 
-            || Array_Data[Param_ArrayIndex][3] != Array_Data[Param_ArrayIndex][0] * Array_Data[Param_ArrayIndex][1])
+            Param_ArrayIndex < 0 || 
+            Param_ArrayIndex >= Array_Data.Length ||
+            GetData<DirectTwinVQResource>(Param_ArrayIndex) is not { } res ||
+            res.Data.Length == 0 ||
+            res.BlockSize != res.BlockWidth * res.BlockHeight)
             return 0;
         
-        return Array_Data[Param_ArrayIndex][5] * Array_Data[Param_ArrayIndex][1];
+        return res.Height * res.BlockHeight;
     }
 
     public int DirectTwinVQ_Read(int Param_ArrayIndex, int Param_Position_X, int Param_Position_Y, int Param_DoubletOffset)
     {
         if (Manager_Status == MANAGER_STATUS.UNINITIALIZED || 
             Param_ArrayIndex < 0 || 
-            Param_ArrayIndex >= Array_Data.Length || 
-            Array_Data[Param_ArrayIndex] == null || 
-            Array_Data[Param_ArrayIndex].Length <= 7 || 
-            Array_Data[Param_ArrayIndex][3] != Array_Data[Param_ArrayIndex][0] * Array_Data[Param_ArrayIndex][1] || 
+            Param_ArrayIndex >= Array_Data.Length ||
+            GetData<DirectTwinVQResource>(Param_ArrayIndex) is not { } res ||
+            res.Data.Length == 0 ||
+            res.BlockSize != res.BlockWidth * res.BlockHeight || 
             Param_Position_X < 0 || 
-            Param_Position_X >= Array_Data[Param_ArrayIndex][4] * Array_Data[Param_ArrayIndex][0] || 
+            Param_Position_X >= res.Width * res.BlockWidth || 
             Param_Position_Y < 0 || 
-            Param_Position_Y >= Array_Data[Param_ArrayIndex][5] * Array_Data[Param_ArrayIndex][1])
+            Param_Position_Y >= res.Height * res.BlockHeight)
             return 0;
 
-        return Array_Data[Param_ArrayIndex][7 + Array_Data[Param_ArrayIndex][7 + (Array_Data[Param_ArrayIndex][6] << 1) + Array_Data[Param_ArrayIndex][7 + (Array_Data[Param_ArrayIndex][6] << 1) + Array_Data[Param_ArrayIndex][2] * Array_Data[Param_ArrayIndex][3] + Param_Position_X / Array_Data[Param_ArrayIndex][0] + Param_Position_Y / Array_Data[Param_ArrayIndex][1] * Array_Data[Param_ArrayIndex][4]] * Array_Data[Param_ArrayIndex][3] + Param_Position_X % Array_Data[Param_ArrayIndex][0] + Param_Position_Y % Array_Data[Param_ArrayIndex][1] * Array_Data[Param_ArrayIndex][0]] + Param_DoubletOffset * Array_Data[Param_ArrayIndex][6]];
+        // NOTE: Can probably be cleaned up more...
+        int off = res.ValuesCount * 2;
+        int v1 = res.Data[off + res.BlocksCount * res.BlockSize + Param_Position_X / res.BlockWidth + Param_Position_Y / res.BlockHeight * res.Width];
+        int v2 = res.Data[off + v1 * res.BlockSize + Param_Position_X % res.BlockWidth + Param_Position_Y % res.BlockHeight * res.BlockWidth];
+        return res.Data[v2 + Param_DoubletOffset * res.ValuesCount];
     }
 
     public int Initialize()
@@ -287,7 +291,7 @@ public class ResourceManager
         Manager_Status = MANAGER_STATUS.INITIALIZED;
 
         Array_Image = new Texture2D[J2meRom.ArchiveDefines.Sum(x => x.ImageResourcesCount)];
-        Array_Data = new byte[J2meRom.ArchiveDefines.Sum(x => x.DataResourcesCount)][];
+        Array_Data = new ArchiveResource[J2meRom.ArchiveDefines.Sum(x => x.DataResourcesCount)];
 
         Archive_Information = new ArchiveInformation[J2meRom.ArchiveDefines.Length];
         for (int i = 0; i < Archive_Information.Length; i++)
@@ -300,12 +304,8 @@ public class ResourceManager
         }
 
         Resource_Status = new RESOURCE_STATUS[J2meRom.ArchiveDefines.Length][];
-        SerializableResources = new ArchiveResource[J2meRom.ArchiveDefines.Length][];
         for (int i = 0; i < J2meRom.ArchiveDefines.Length; i++)
-        {
             Resource_Status[i] = new RESOURCE_STATUS[Archive_Information[i].ImageResourcesCount + Archive_Information[i].DataResourcesCount];
-            SerializableResources[i] = new ArchiveResource[Archive_Information[i].ImageResourcesCount + Archive_Information[i].DataResourcesCount];
-        }
 
         return ERRORCODE_OK;
     }
@@ -341,15 +341,24 @@ public class ResourceManager
         return ERRORCODE_OK;
     }
 
-    public int Load<T>(ResourceId Param_ResourceID)
+    public int LoadImage(ResourceId Param_ResourceID)
+    {
+        if (Param_ResourceID.ResourceType != RESOURCE_TYPE.IMAGE)
+            throw new Exception($"Resource type {Param_ResourceID.ResourceType} is not a valid image type");
+
+        return Load(Param_ResourceID);
+    }
+
+    public int LoadData<T>(ResourceId Param_ResourceID)
         where T : ArchiveResource, new()
     {
+        if (Param_ResourceID.ResourceType != RESOURCE_TYPE.DATA)
+            throw new Exception($"Resource type {Param_ResourceID.ResourceType} is not a valid data type");
+
         int result = Load(Param_ResourceID);
 
         if (result == ERRORCODE_OK)
-        {
-            SerializableResources[Param_ResourceID.ArchiveIndex][Param_ResourceID.ResourceIndex] = new T();
-        }
+            Array_Data[ResourceID_To_Index(Param_ResourceID)] = new T();
 
         return result;
     }
@@ -461,8 +470,6 @@ public class ResourceManager
                         else
                             Array_Data[Index_Data] = null;
 
-                        SerializableResources[Archive_Index][Loop_Resource] = null;
-
                         Resource_Status[Archive_Index][Loop_Resource] &= ~RESOURCE_STATUS.LOADED;
                     }
 
@@ -481,67 +488,63 @@ public class ResourceManager
         }
         System.gc();
 
-        // Load resources
-        Manager_Status = MANAGER_STATUS.LOADING;
-        Index_Image = 0;
-        Index_Data = 0;
-        for (Archive_Index = 0; Archive_Index < J2meRom.ArchiveDefines.Length; Archive_Index++)
+        using (J2meRom.Context)
         {
-            if (Archive_Information[Archive_Index].PendingLoad > 0)
+            // Load resources
+            Manager_Status = MANAGER_STATUS.LOADING;
+            Index_Image = 0;
+            Index_Data = 0;
+            for (Archive_Index = 0; Archive_Index < J2meRom.ArchiveDefines.Length; Archive_Index++)
             {
-                for (sbyte b = 0; b < Resource_Status[Archive_Index].Length; b++)
+                if (Archive_Information[Archive_Index].PendingLoad > 0)
                 {
-                    if ((Resource_Status[Archive_Index][b] & (RESOURCE_STATUS.REQUESTED | RESOURCE_STATUS.LOADED)) == RESOURCE_STATUS.REQUESTED)
+                    for (sbyte b = 0; b < Resource_Status[Archive_Index].Length; b++)
                     {
-                        // Read as a serializable resource
-                        if (SerializableResources[Archive_Index][b] != null)
+                        if ((Resource_Status[Archive_Index][b] & (RESOURCE_STATUS.REQUESTED | RESOURCE_STATUS.LOADED)) == RESOURCE_STATUS.REQUESTED)
                         {
-                            // Deserialize the resource
-                            SerializableResources[Archive_Index][b] = J2meRom.ReadResource(Archive_Index, b, SerializableResources[Archive_Index][b]);
-                        }
-                        // Read as a raw resource
-                        else
-                        {
-                            // Read the data
-                            RawArchiveResource rawResource = J2meRom.ReadResource<RawArchiveResource>(Archive_Index, b);
-                            byte[] Data_Archived = rawResource.Data;
-                            int Data_Size_Archived = rawResource.Pre_HeaderEntry.DataSize;
-                            short Data_Size_CompressionDelta = rawResource.Pre_HeaderEntry.DataSizeCompressionDelta;
+                            int Data_Size_Archived = J2meRom.ArchiveHeaders[Archive_Index].Entries[b].DataSize;
+                            short Data_Size_CompressionDelta = J2meRom.ArchiveHeaders[Archive_Index].Entries[b].DataSizeCompressionDelta;
 
                             // Decompress image to a PNG file
                             if (b < Archive_Information[Archive_Index].ImageResourcesCount)
                             {
+                                // Read the data
+                                RawResource rawResource = J2meRom.ReadResource<RawResource>(Archive_Index, b);
+                                byte[] Data_Archived = rawResource.Data;
+
+                                // Decompress the image
                                 byte[] Data_Decompressed = DecompressImage(Data_Archived, Data_Size_Archived, Data_Size_CompressionDelta);
                                 Array_Image[Index_Image] = Texture2D.FromStream(Engine.Assets.GraphicsDevice, new MemoryStream(Data_Decompressed)); // TODO: Dispose when freeing? And then free all when uninit midlet.
                             }
                             else if (Data_Size_CompressionDelta == 0)
                             {
-                                Array_Data[Index_Data] = Data_Archived;
+                                // Deserialize the resource
+                                Array_Data[Index_Data] = J2meRom.ReadResource(Archive_Index, b, Array_Data[Index_Data]);
                             }
+
+                            Resource_Status[Archive_Index][b] |= RESOURCE_STATUS.LOADED | RESOURCE_STATUS.USED;
+                            System.gc();
                         }
 
-                        Resource_Status[Archive_Index][b] |= RESOURCE_STATUS.LOADED | RESOURCE_STATUS.USED;
-                        System.gc();
+                        if (b < Archive_Information[Archive_Index].ImageResourcesCount)
+                            Index_Image++;
+                        else
+                            Index_Data++;
                     }
 
-                    if (b < Archive_Information[Archive_Index].ImageResourcesCount)
-                        Index_Image++;
-                    else
-                        Index_Data++;
+                    Archive_Information[Archive_Index].PendingLoad = 0;
+                    System.gc();
                 }
+                else
+                {
+                    Index_Image += Archive_Information[Archive_Index].ImageResourcesCount;
+                    Index_Data += Archive_Information[Archive_Index].DataResourcesCount;
+                }
+            }
 
-                Archive_Information[Archive_Index].PendingLoad = 0;
-                System.gc();
-            }
-            else
-            {
-                Index_Image += Archive_Information[Archive_Index].ImageResourcesCount;
-                Index_Data += Archive_Information[Archive_Index].DataResourcesCount;
-            }
+            Manager_Status = MANAGER_STATUS.INITIALIZED;
+            return ERRORCODE_OK;
         }
-
-        Manager_Status = MANAGER_STATUS.INITIALIZED;
-        return ERRORCODE_OK;
     }
 
     // Custom
@@ -626,34 +629,34 @@ public class ResourceManager
 
         return Data_Decompressed;
     }
-    public Texture2D GetImageResource(ResourceId Param_ResourceID)
+    public Texture2D GetImage(ResourceId Param_ResourceID)
     {
         int index = ResourceID_To_Index(Param_ResourceID);
         return GetImage(index);
     }
-    public byte[] GetDataResource(ResourceId Param_ResourceID)
-    {
-        int index = ResourceID_To_Index(Param_ResourceID);
-        return Array_Data[index];   
-    }
-    public T GetDataResource<T>(ResourceId Param_ResourceID)
+    public T GetData<T>(int Param_ArrayIndex)
         where T : ArchiveResource, new()
     {
-        return (T)SerializableResources[Param_ResourceID.ArchiveIndex][Param_ResourceID.ResourceIndex];
+        return (T)Array_Data[Param_ArrayIndex];
+    }
+    public T GetData<T>(ResourceId Param_ResourceID)
+        where T : ArchiveResource, new()
+    {
+        return (T)Array_Data[ResourceID_To_Index(Param_ResourceID)];
     }
     public void DumpAllData(string outputPath)
     {
         for (byte archiveIndex = 0; archiveIndex < J2meRom.ArchiveDefines.Length; archiveIndex++)
         {
             for (int dataIndex = 0; dataIndex < Archive_Information[archiveIndex].DataResourcesCount; dataIndex++)
-                Load(new ResourceId((byte)(Archive_Information[archiveIndex].ImageResourcesCount + dataIndex), RESOURCE_TYPE.DATA, archiveIndex));
+                LoadData<RawResource>(new ResourceId((byte)(Archive_Information[archiveIndex].ImageResourcesCount + dataIndex), RESOURCE_TYPE.DATA, archiveIndex));
 
             Synchronize();
 
             for (int dataIndex = 0; dataIndex < Archive_Information[archiveIndex].DataResourcesCount; dataIndex++)
             {
-                byte[] data = Array_Data[ResourceID_To_Index(new ResourceId((byte)(Archive_Information[archiveIndex].ImageResourcesCount + dataIndex), RESOURCE_TYPE.DATA, archiveIndex))];
-                File.WriteAllBytes(Path.Combine(outputPath, $"{archiveIndex}_{dataIndex}.dat"), data);
+                RawResource res = GetData<RawResource>(new ResourceId((byte)(Archive_Information[archiveIndex].ImageResourcesCount + dataIndex), RESOURCE_TYPE.DATA, archiveIndex));
+                File.WriteAllBytes(Path.Combine(outputPath, $"{archiveIndex}_{dataIndex}.dat"), res.Data);
             }
         }
     }
@@ -668,26 +671,19 @@ public class ResourceManager
         ];
 
         foreach (ResourceId textBankResourceId in textBankResourceIds)
-            Load(textBankResourceId);
+            LoadData<TextBankResource>(textBankResourceId);
 
         Synchronize();
 
         foreach (ResourceId textBankResourceId in textBankResourceIds)
         {
-            int index = ResourceID_To_Index(textBankResourceId);
-            byte[] data = Array_Data[index];
+            TextBankResource textBank = GetData<TextBankResource>(textBankResourceId);
 
             StringBuilder sb = new();
-            using MemoryStream stream = new(data);
-            using Reader reader = new(stream);
-            while (stream.Position < stream.Length)
-            {
-                int length = reader.ReadByte();
-                string str = reader.ReadString(length, Encoding.UTF8);
-                sb.AppendLine(str);
-            }
+            foreach (TextBankEntry entry in textBank.Entries)
+                sb.AppendLine(entry.Value);
 
-            File.WriteAllText(Path.Combine(outputPath, $"{index}.txt"), sb.ToString());
+            File.WriteAllText(Path.Combine(outputPath, $"{textBankResourceId.ArchiveIndex}_{textBankResourceId.ResourceIndex}.txt"), sb.ToString());
         }
     }
     public void DumpAllImages(string outputPath)
@@ -695,7 +691,7 @@ public class ResourceManager
         for (byte archiveIndex = 0; archiveIndex < J2meRom.ArchiveDefines.Length; archiveIndex++)
         {
             for (byte imgIndex = 0; imgIndex < Archive_Information[archiveIndex].ImageResourcesCount; imgIndex++)
-                Load(new ResourceId(imgIndex, RESOURCE_TYPE.IMAGE, archiveIndex));
+                LoadImage(new ResourceId(imgIndex, RESOURCE_TYPE.IMAGE, archiveIndex));
 
             Synchronize();
 

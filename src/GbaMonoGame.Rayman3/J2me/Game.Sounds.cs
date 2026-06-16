@@ -31,28 +31,28 @@ public partial class Game
 
     public void LoadSound(int iPackage)
     {
-        RM.Load(RESOURCE_ID_DATA_SOUND_MENU_MOVE);
-        RM.Load(RESOURCE_ID_DATA_SOUND_MENU_SELECT);
-        RM.Load(RESOURCE_ID_DATA_SOUND_MUSIC_SPLASH);
-        RM.Load(RESOURCE_ID_DATA_SOUND_CAGE_BREAK);
-        RM.Load(RESOURCE_ID_DATA_SOUND_CAGE_HIT);
-        RM.Load(RESOURCE_ID_DATA_SOUND_ENEMY_DEATH);
-        RM.Load(RESOURCE_ID_DATA_SOUND_ENEMY_HIT);
-        RM.Load(RESOURCE_ID_DATA_SOUND_ENTER_LEVEL);
-        RM.Load(RESOURCE_ID_DATA_SOUND_LUMS);
-        RM.Load(RESOURCE_ID_DATA_SOUND_LUMS_RED);
-        RM.Load(RESOURCE_ID_DATA_SOUND_LUMS_WHITE);
-        RM.Load(RESOURCE_ID_DATA_SOUND_MUSIC_GAMEOVER);
-        RM.Load(RESOURCE_ID_DATA_SOUND_MUSIC_LEVELDONE);
-        RM.Load(RESOURCE_ID_DATA_SOUND_MUSIC_MAP);
-        RM.Load(RESOURCE_ID_DATA_SOUND_PUNCH_CHARGE);
-        RM.Load(RESOURCE_ID_DATA_SOUND_PUNCH_RELEASED);
-        RM.Load(RESOURCE_ID_DATA_SOUND_RAYMAN_CROUCH);
-        RM.Load(RESOURCE_ID_DATA_SOUND_RAYMAN_DEATH);
-        RM.Load(RESOURCE_ID_DATA_SOUND_RAYMAN_HELICO);
-        RM.Load(RESOURCE_ID_DATA_SOUND_RAYMAN_HIT);
-        RM.Load(RESOURCE_ID_DATA_SOUND_RAYMAN_JUMP);
-        RM.Load(RESOURCE_ID_DATA_SOUND_RAYMAN_WATER);
+        RM.LoadData<MidiResource>(RESOURCE_ID_DATA_SOUND_MENU_MOVE);
+        RM.LoadData<MidiResource>(RESOURCE_ID_DATA_SOUND_MENU_SELECT);
+        RM.LoadData<MidiResource>(RESOURCE_ID_DATA_SOUND_MUSIC_SPLASH);
+        RM.LoadData<MidiResource>(RESOURCE_ID_DATA_SOUND_CAGE_BREAK);
+        RM.LoadData<MidiResource>(RESOURCE_ID_DATA_SOUND_CAGE_HIT);
+        RM.LoadData<MidiResource>(RESOURCE_ID_DATA_SOUND_ENEMY_DEATH);
+        RM.LoadData<MidiResource>(RESOURCE_ID_DATA_SOUND_ENEMY_HIT);
+        RM.LoadData<MidiResource>(RESOURCE_ID_DATA_SOUND_ENTER_LEVEL);
+        RM.LoadData<MidiResource>(RESOURCE_ID_DATA_SOUND_LUMS);
+        RM.LoadData<MidiResource>(RESOURCE_ID_DATA_SOUND_LUMS_RED);
+        RM.LoadData<MidiResource>(RESOURCE_ID_DATA_SOUND_LUMS_WHITE);
+        RM.LoadData<MidiResource>(RESOURCE_ID_DATA_SOUND_MUSIC_GAMEOVER);
+        RM.LoadData<MidiResource>(RESOURCE_ID_DATA_SOUND_MUSIC_LEVELDONE);
+        RM.LoadData<MidiResource>(RESOURCE_ID_DATA_SOUND_MUSIC_MAP);
+        RM.LoadData<MidiResource>(RESOURCE_ID_DATA_SOUND_PUNCH_CHARGE);
+        RM.LoadData<MidiResource>(RESOURCE_ID_DATA_SOUND_PUNCH_RELEASED);
+        RM.LoadData<MidiResource>(RESOURCE_ID_DATA_SOUND_RAYMAN_CROUCH);
+        RM.LoadData<MidiResource>(RESOURCE_ID_DATA_SOUND_RAYMAN_DEATH);
+        RM.LoadData<MidiResource>(RESOURCE_ID_DATA_SOUND_RAYMAN_HELICO);
+        RM.LoadData<MidiResource>(RESOURCE_ID_DATA_SOUND_RAYMAN_HIT);
+        RM.LoadData<MidiResource>(RESOURCE_ID_DATA_SOUND_RAYMAN_JUMP);
+        RM.LoadData<MidiResource>(RESOURCE_ID_DATA_SOUND_RAYMAN_WATER);
         RM.Synchronize();
     }
 
@@ -104,17 +104,17 @@ public partial class Game
 
         for (int i = 0; i < SOUNDS_COUNT; i++)
         {
-            if (RM.Array_Data[SOUNDS_START_INDEX + i] != null)
+            if (RM.GetData<MidiResource>(SOUNDS_START_INDEX + i) is { Data: { } midi })
             {
                 // Readvanced code
                 if (true)
                 {
-                    MidiFiles[i] = new MidiFile(new MemoryStream(RM.Array_Data[SOUNDS_START_INDEX + i]));
+                    MidiFiles[i] = new MidiFile(new MemoryStream(midi));
                 }
                 // Original game code
                 else
                 {
-                    using MemoryStream soundIStream = new(RM.Array_Data[SOUNDS_START_INDEX + i]);
+                    using MemoryStream soundIStream = new(midi);
                     m_SoundPlayer[i] = new Player(soundIStream, "audio/midi");
                     m_SoundPlayer[i].addPlayerListener(this);
                     m_SoundPlayer[i].prefetch();

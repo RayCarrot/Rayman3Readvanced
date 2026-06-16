@@ -276,9 +276,9 @@ public partial class Game
     public void Menu_LoadMain()
     {
         RM.Free(RESOURCE_ID_IMG_GAMELOFT_LOGO);
-        RM.Load(RESOURCE_ID_IMG_SPLASH_SCREEN);
-        RM.Load(RESOURCE_ID_IMG_FONT);
-        RM.Load(RESOURCE_ID_DATA_ANIM_FONT);
+        RM.LoadImage(RESOURCE_ID_IMG_SPLASH_SCREEN);
+        RM.LoadImage(RESOURCE_ID_IMG_FONT);
+        RM.LoadData<AnimationDataResource>(RESOURCE_ID_DATA_ANIM_FONT);
         RM.Synchronize();
         Actor.AniLoad(RM.ResourceID_To_Index(RESOURCE_ID_DATA_ANIM_FONT), RM.ResourceID_To_Index(RESOURCE_ID_IMG_FONT));
     }
@@ -317,23 +317,23 @@ public partial class Game
     public void Menu_LoadCredits()
     {
         Menu_Free(false);
-        RM.Load(RESOURCE_ID_DATA_TEXTBANK_CREDITS);
+        RM.LoadData<TextBankResource>(RESOURCE_ID_DATA_TEXTBANK_CREDITS);
         RM.Synchronize();
     }
 
     public void Menu_LoadHelp()
     {
         Menu_Free(false);
-        RM.Load(RESOURCE_ID_DATA_TEXTBANK_HELP);
-        RM.Load(RESOURCE_ID_IMG_LUMS);
-        RM.Load(RESOURCE_ID_IMG_CAGE);
-        RM.Load(RESOURCE_ID_DATA_ANIM_YELLOW_LUM);
-        RM.Load(RESOURCE_ID_DATA_ANIM_WHITE_LUM);
-        RM.Load(RESOURCE_ID_DATA_ANIM_RED_LUM);
-        RM.Load(RESOURCE_ID_DATA_ANIM_GREEN_LUM);
-        RM.Load(RESOURCE_ID_DATA_ANIM_BLUE_LUM);
-        RM.Load(RESOURCE_ID_DATA_ANIM_CAGE);
-        RM.Load(RESOURCE_ID_DATA_ANIM_SWING);
+        RM.LoadData<TextBankResource>(RESOURCE_ID_DATA_TEXTBANK_HELP);
+        RM.LoadImage(RESOURCE_ID_IMG_LUMS);
+        RM.LoadImage(RESOURCE_ID_IMG_CAGE);
+        RM.LoadData<AnimationDataResource>(RESOURCE_ID_DATA_ANIM_YELLOW_LUM);
+        RM.LoadData<AnimationDataResource>(RESOURCE_ID_DATA_ANIM_WHITE_LUM);
+        RM.LoadData<AnimationDataResource>(RESOURCE_ID_DATA_ANIM_RED_LUM);
+        RM.LoadData<AnimationDataResource>(RESOURCE_ID_DATA_ANIM_GREEN_LUM);
+        RM.LoadData<AnimationDataResource>(RESOURCE_ID_DATA_ANIM_BLUE_LUM);
+        RM.LoadData<AnimationDataResource>(RESOURCE_ID_DATA_ANIM_CAGE);
+        RM.LoadData<AnimationDataResource>(RESOURCE_ID_DATA_ANIM_SWING);
         RM.Synchronize();
 
         // NOTE: Blue lum animations are loaded twice for some reason?
@@ -562,7 +562,7 @@ public partial class Game
         g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
         if (m_gameMenu_idCurPage != MENU_PAGE.PAUSE)
         {
-            g_graBackBuffer.drawImage(RM.GetImageResource(RESOURCE_ID_IMG_SPLASH_SCREEN), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
+            g_graBackBuffer.drawImage(RM.GetImage(RESOURCE_ID_IMG_SPLASH_SCREEN), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
             if (m_gameMenu_pAnims != null)
             {
                 for (int i = 0; i < m_gameMenu_pAnims.Length; i++)

@@ -9,8 +9,8 @@ public class AnimData
     public byte nbFrame { get; set; }
     public byte nbAction { get; set; }
     public ANIM_DATA_FLAGS flag { get; set; }
-    public AnimModule[] modules { get; set; }
-    public AnimFrame[] frames { get; set; }
+    public AnimationModule[] modules { get; set; }
+    public AnimationFrame[] frames { get; set; }
     public Action[] actions { get; set; }
     public MechModelParams[] mmParam { get; set; }
 

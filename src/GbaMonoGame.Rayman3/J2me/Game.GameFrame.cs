@@ -72,21 +72,19 @@ public partial class Game
         if (iLevel != m_iPrevLevel)
         {
             // Load scene map data
-            RM.Load(RESOURCE_ID_DATA_SCENE_MAP);
+            RM.LoadData<SceneMapResource>(RESOURCE_ID_DATA_SCENE_MAP);
             RM.Synchronize();
 
             m_bBackgroundUsed = false;
-            byte[] sceneMapData = RM.GetDataResource(RESOURCE_ID_DATA_SCENE_MAP);
-            m_gameFrame_nbLevels = (sbyte)(sceneMapData.Length / 15 - 1);
+            SceneMapResource sceneMapData = RM.GetData<SceneMapResource>(RESOURCE_ID_DATA_SCENE_MAP);
+            m_gameFrame_nbLevels = (sbyte)(sceneMapData.Entries.Length - 1);
 
             // Unload previous levels
-            int offset = 0;
-            for (int i = 0; i < sceneMapData.Length / 15; i++)
+            foreach (SceneMapEntry entry in sceneMapData.Entries)
             {
-                RM.Free(new ResourceId(ReadInt(sceneMapData, offset + 0)));
-                RM.Free(new ResourceId(ReadInt(sceneMapData, offset + 5)));
-                RM.Free(new ResourceId(ReadInt(sceneMapData, offset + 10)));
-                offset += 15;
+                RM.Free(entry.BackgroundResourceId);
+                RM.Free(entry.SceneResourceId);
+                RM.Free(entry.ImageResourceId);
             }
             RM.Synchronize();
 
@@ -94,23 +92,23 @@ public partial class Game
             Gfx.ClearScreens();
 
             // Load current level
-            offset = 15 * iLevel;
             if (iLevel != LEVEL_MENU)
             {
+                SceneMapEntry entry = sceneMapData.Entries[iLevel];
                 StopSound();
                 Menu_Free(true);
-                RM.Load(new ResourceId(ReadInt(sceneMapData, offset + 0)));
-                RM.Load(new ResourceId(ReadInt(sceneMapData, offset + 5)));
-                RM.Load(new ResourceId(ReadInt(sceneMapData, offset + 10)));
+                RM.LoadData<DirectTwinVQResource>(entry.BackgroundResourceId);
+                RM.LoadData<SceneResource>(entry.SceneResourceId);
+                RM.LoadImage(entry.ImageResourceId);
                 Status_ShowAll();
                 RM.Synchronize();
-                CreateTiledBackground(sceneMapData[offset + 14], sceneMapData[offset + 4]);
-                setFastMode(true, 240, 320);
-                Scene_Load(sceneMapData[offset + 9]);
-                RM.Free(new ResourceId(ReadInt(sceneMapData, offset + 5)));
+                CreateTiledBackground(entry.ImageDataIndex, entry.BackgroundDataIndex);
+                setFastMode(true, Resolution.X, Resolution.Y);
+                Scene_Load(entry.SceneDataIndex);
+                RM.Free(entry.SceneResourceId);
 
                 if (iLevel is LEVEL_WORLD_MAP or LEVEL_FIRST)
-                    RM.Load(RESOURCE_ID_DATA_TEXTBANK_HELP);
+                    RM.LoadData<TextBankResource>(RESOURCE_ID_DATA_TEXTBANK_HELP);
                 else
                     RM.Free(RESOURCE_ID_DATA_TEXTBANK_HELP);
 
@@ -253,10 +251,10 @@ public partial class Game
         if (m_gameStateStep == 0)
         {
             StopSound();
-            if (m_iPrevLevel == LEVEL_MENU && RM.GetImageResource(RESOURCE_ID_IMG_SPLASH_SCREEN) != null)
+            if (m_iPrevLevel == LEVEL_MENU && RM.GetImage(RESOURCE_ID_IMG_SPLASH_SCREEN) != null)
             {
                 g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
-                g_graBackBuffer.drawImage(RM.GetImageResource(RESOURCE_ID_IMG_SPLASH_SCREEN), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
+                g_graBackBuffer.drawImage(RM.GetImage(RESOURCE_ID_IMG_SPLASH_SCREEN), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
             }
             else if (m_bClearBackMenu)
             {
@@ -308,7 +306,7 @@ public partial class Game
         if (m_gameStateStep == 0)
         {
             g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
-            g_graBackBuffer.drawImage(RM.GetImageResource(RESOURCE_ID_IMG_SPLASH_SCREEN), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
+            g_graBackBuffer.drawImage(RM.GetImage(RESOURCE_ID_IMG_SPLASH_SCREEN), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
             Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) / 2, 263, 0);
         }
         else if (m_gameStateStep == 1)
@@ -366,7 +364,7 @@ public partial class Game
                 if (m_gameStateStep == 0)
                 {
                     g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
-                    g_graBackBuffer.drawImage(RM.GetImageResource(RESOURCE_ID_IMG_SPLASH_SCREEN), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
+                    g_graBackBuffer.drawImage(RM.GetImage(RESOURCE_ID_IMG_SPLASH_SCREEN), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
                     Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) / 2, 263, 0);
                 }
                 else if (m_gameStateStep == 1)

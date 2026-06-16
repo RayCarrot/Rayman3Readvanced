@@ -25,12 +25,7 @@ public partial class Game
     public sbyte[] ActiveSector { get; set; }
     public sbyte[] AllSectors { get; set; }
 
-    public short ReadUnsignedShort(sbyte[] buf, int nOff)
-    {
-        return (short)((byte)buf[nOff] | ((byte)buf[nOff + 1] << 8));
-    }
-
-    public Actor Actor_create(sbyte[] data)
+    public Actor Actor_create(ActorInstance data)
     {
         Actor obj = new(data);
 
@@ -56,16 +51,17 @@ public partial class Game
                         RM.Synchronize();
                     }
 
-                    sbyte[] morphData = new sbyte[11];
-                    morphData[0] = 0;
-                    morphData[1] = (sbyte)obj.V[5];
-                    morphData[2] = data[2];
-                    morphData[3] = data[3];
-                    morphData[4] = data[4];
-                    morphData[5] = data[5];
+                    ActorInstance morphData = new()
+                    {
+                        FirstAction = 0,
+                        Flags = 0,
+                        Type = (byte)obj.V[5],
+                        XPosition = data.XPosition,
+                        YPosition = data.YPosition
+                    };
                     obj.actorReference = new Actor(morphData);
-                    obj.stateFlag |= ACTOR_STATE.OVERRIDE_ON_DEATH;
-                    obj.m_sInitStateFlag |= ACTOR_STATE.OVERRIDE_ON_DEATH;
+                    obj.stateFlag |= ACTOR_STATE.MORPH_ON_DEATH;
+                    obj.m_sInitStateFlag |= ACTOR_STATE.MORPH_ON_DEATH;
                 }
                 break;
 
@@ -86,7 +82,7 @@ public partial class Game
         s_iLumsTotal = 0;
         s_iLeftToDie = 0;
         m_gameFrame_nEnergy = 5;
-        AM_actorFactory(RM.Array_Data[iSceneIndex], 0);
+        AM_actorFactory(RM.GetData<SceneResource>(iSceneIndex));
         AM_initSectors();
         GameFrame_LoadLevelInfo(m_gameFrame_curLevel);
     }
@@ -168,7 +164,7 @@ public partial class Game
                 for (int k = m_sectors_actorIds[sector].Length - 1; k >= 0; k--)
                 {
                     Actor actor = actors[m_sectors_actorIds[sector][k]];
-                    if ((actor.stateFlag & ACTOR_STATE.OVERRIDEN) != 0)
+                    if ((actor.stateFlag & ACTOR_STATE.MORPHED) != 0)
                         actor = actor.actorReference;
                     if (actor != null && (actor.stateFlag & ACTOR_STATE.DEAD) == 0)
                     {
@@ -190,7 +186,7 @@ public partial class Game
         for (int i = m_actors_1stAlwaysActive; i < actors.Length; i++)
         {
             Actor actor = actors[i];
-            if ((actor.stateFlag & ACTOR_STATE.OVERRIDEN) != 0)
+            if ((actor.stateFlag & ACTOR_STATE.MORPHED) != 0)
                 actor = actor.actorReference;
             if (actor != null && (actor.stateFlag & ACTOR_STATE.DEAD) == 0)
             {
@@ -232,9 +228,9 @@ public partial class Game
         }
     }
 
-    void AM_actorFactory(byte[] pBuf, int nStartOffset)
+    void AM_actorFactory(SceneResource res)
     {
-        RM.Load(RESOURCE_ID_DATA_ACTOR_TYPES);
+        RM.LoadData<ActorTypesResource>(RESOURCE_ID_DATA_ACTOR_TYPES);
         RM.Synchronize();
         s_actorCheckpoint = null;
         pRayman = null;
@@ -244,47 +240,30 @@ public partial class Game
             for (int i = 0; i < actors.Length; i++)
                 actors[i] = null;
         actors = null;
-        int actorCount = pBuf[nStartOffset++];
+        int actorCount = res.ActorsCount;
         actors = new Actor[actorCount];
-        sbyte[][] tempData = new sbyte[actorCount][];
-        int Offset_Parameters = nStartOffset + actorCount * 7;
-        sbyte b;
-        for (b = 0; b < actorCount; b++)
-        {
-            int NbParameters = pBuf[nStartOffset];
-            tempData[b] = new sbyte[6 + NbParameters];
-            tempData[b][0] = (sbyte)pBuf[nStartOffset + actorCount * 1];
-            tempData[b][1] = (sbyte)pBuf[nStartOffset + actorCount * 2];
-            tempData[b][2] = (sbyte)pBuf[nStartOffset + actorCount * 3];
-            tempData[b][3] = (sbyte)pBuf[nStartOffset + actorCount * 4];
-            tempData[b][4] = (sbyte)pBuf[nStartOffset + actorCount * 5];
-            tempData[b][5] = (sbyte)pBuf[nStartOffset + actorCount * 6];
-            for (int j = 0; j < NbParameters; j++)
-                tempData[b][6 + j] = (sbyte)pBuf[Offset_Parameters++];
-            nStartOffset++;
-        }
-        for (b = 0; b < 28; b++)
-            flagActorType((OBJECT_TYPE)b, 0);
-        for (b = 1; b < 4; b++)
+        for (int i = 0; i < 28; i++)
+            flagActorType((OBJECT_TYPE)i, 0);
+        for (int i = 1; i < 4; i++)
         {
             for (sbyte b1 = 0; b1 < actorCount; b1++)
-                flagActorType((OBJECT_TYPE)tempData[b1][1], b);
-            flagActorType(OBJECT_TYPE.FONT, b);
+                flagActorType((OBJECT_TYPE)res.Actors[b1].Type, i);
+            flagActorType(OBJECT_TYPE.FONT, i);
             RM.Synchronize();
         }
-        for (b = 0; b < 28; b++)
+        for (int i = 0; i < 28; i++)
         {
-            if (Actor.aniData[b] != null && (Actor.aniData[b].flag & ANIM_DATA_FLAGS.LOADED) == 0)
-                Actor.aniData[b] = null;
+            if (Actor.aniData[i] != null && (Actor.aniData[i].flag & ANIM_DATA_FLAGS.LOADED) == 0)
+                Actor.aniData[i] = null;
         }
         System.gc();
 
         int firstFree = 0;
         int lastFree = actorCount - 1;
-        for (b = 0; b < actorCount; b++)
+        for (int i = 0; i < actorCount; i++)
         {
-            Actor actor = Actor_create(tempData[b]);
-            switch ((OBJECT_TYPE)tempData[b][1])
+            Actor actor = Actor_create(res.Actors[i]);
+            switch ((OBJECT_TYPE)res.Actors[i].Type)
             {
                 case OBJECT_TYPE.RAYMAN:
                 case OBJECT_TYPE.FIST:
@@ -298,22 +277,21 @@ public partial class Game
                     actors[firstFree++] = actor;
                     break;
             }
-            tempData[b] = null;
         }
 
         m_actors_1stAlwaysActive = lastFree + 1;
-        for (b = 0; b < actors.Length; b++)
+        foreach (Actor actor in actors)
         {
-            switch (actors[b].objType)
+            switch (actor.objType)
             {
                 case OBJECT_TYPE.PIRATE:
-                    int actorRef = actors[b].V[0];
+                    int actorRef = actor.V[0];
                     for (short b1 = 0; b1 < actors.Length; b1++)
                     {
                         if (actors[b1].objType == OBJECT_TYPE.BULLET && --actorRef < 0)
                         {
-                            actors[b].V[0] = b1;
-                            actors[b].m_iInitV[0] = b1;
+                            actor.V[0] = b1;
+                            actor.m_iInitV[0] = b1;
                             break;
                         }
                     }
@@ -326,41 +304,36 @@ public partial class Game
 
     void flagActorType(OBJECT_TYPE iActorType, int iLoadState)
     {
-        byte[] actorArray = RM.GetDataResource(RESOURCE_ID_DATA_ACTOR_TYPES);
-        int offset = 11 * (int)iActorType;
-        int kImage_ResourceID = ReadInt(actorArray, offset + 0);
-        int kImage_Index = (sbyte)actorArray[offset + 4];
-        int kData_ResourceID = ReadInt(actorArray, offset + 5);
-        int kData_Index = (sbyte)actorArray[offset + 9];
-        bool bCreateDataImage = ((sbyte)actorArray[offset + 10] == 1);
+        ActorTypesResource res = RM.GetData<ActorTypesResource>(RESOURCE_ID_DATA_ACTOR_TYPES);
+        ActorTypeEntry actorEntry = res.Entries[(int)iActorType];
         
-        if (kImage_ResourceID == -1 || kData_ResourceID == -1 || kImage_Index == -1 || kData_Index == -1)
+        if (actorEntry.ImageResourceId.IsNull || actorEntry.AnimationResourceId.IsNull || actorEntry.ImageDataIndex == -1 || actorEntry.AnimationDataIndex == -1)
             return;
 
         switch (iLoadState)
         {
             // Init
             case 0:
-                RM.Free(new ResourceId(kImage_ResourceID));
-                RM.Free(new ResourceId(kData_ResourceID));
+                RM.Free(actorEntry.ImageResourceId);
+                RM.Free(actorEntry.AnimationResourceId);
                 if (Actor.aniData[(int)iActorType] != null)
                     Actor.aniData[(int)iActorType].flag &= ~ANIM_DATA_FLAGS.LOADED;
                 break;
             
             // Load image
             case 1:
-                RM.Load(new ResourceId(kImage_ResourceID));
+                RM.LoadImage(actorEntry.ImageResourceId);
                 break;
             
             // Load data
             case 2:
-                RM.Load(new ResourceId(kData_ResourceID));
+                RM.LoadData<AnimationDataResource>(actorEntry.AnimationResourceId);
                 break;
             
             // Load animation
             case 3:
-                RM.Free(new ResourceId(kData_ResourceID));
-                Actor.AniLoad(kData_Index, kImage_Index);
+                RM.Free(actorEntry.AnimationResourceId);
+                Actor.AniLoad(actorEntry.AnimationDataIndex, actorEntry.ImageDataIndex);
                 break;
         }
     }

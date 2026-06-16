@@ -24,7 +24,7 @@ public readonly struct StringId : IEquatable<StringId>
     public short DataIndex { get; } // DataArray_Index
     public short Offset { get; } // Offset
 
-    public bool IsNull => DataIndex == -1 && Offset == -1;
+    public bool IsNull => DataIndex == -1 && Offset == -1; // 0xFFFFFFFF
 
     public int GetValue()
     {

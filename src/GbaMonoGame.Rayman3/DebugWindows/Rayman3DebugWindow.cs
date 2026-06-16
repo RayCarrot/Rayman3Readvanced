@@ -312,15 +312,16 @@ public class Rayman3DebugWindow : DebugWindow
                             game.RM.DumpAllImages(outputPath);
                     }
 
-                    if (ImGui.BeginTable("_rm", 4))
+                    if (ImGui.BeginTable("_rm", 6))
                     {
-                        ImGui.TableSetupColumn("Index", ImGuiTableColumnFlags.WidthFixed);
+                        ImGui.TableSetupColumn("Array Index", ImGuiTableColumnFlags.WidthFixed);
                         ImGui.TableSetupColumn("Archive", ImGuiTableColumnFlags.WidthFixed);
+                        ImGui.TableSetupColumn("Resource Index", ImGuiTableColumnFlags.WidthFixed);
                         ImGui.TableSetupColumn("Type", ImGuiTableColumnFlags.WidthFixed);
                         ImGui.TableSetupColumn("Id", ImGuiTableColumnFlags.WidthFixed);
+                        ImGui.TableSetupColumn("Data Type", ImGuiTableColumnFlags.WidthFixed);
                         ImGui.TableHeadersRow();
 
-                        int globalIndex = 0;
                         for (byte archiveIndex = 0; archiveIndex < J2meRom.ArchiveDefines.Length; archiveIndex++)
                         {
                             string name = J2meRom.ArchiveDefines[archiveIndex].FileName;
@@ -329,6 +330,8 @@ public class Rayman3DebugWindow : DebugWindow
                             for (byte i = 0; i < info.ImageResourcesCount + info.DataResourcesCount; i++)
                             {
                                 bool isImage = i < info.ImageResourcesCount;
+                                ResourceId id = new(i, isImage ? RESOURCE_TYPE.IMAGE : RESOURCE_TYPE.DATA, archiveIndex);
+                                int index = game.RM.ResourceID_To_Index(id);
 
                                 ImGui.TableNextRow();
 
@@ -341,20 +344,24 @@ public class Rayman3DebugWindow : DebugWindow
                                 ImGui.PushStyleColor(ImGuiCol.Text, color);
 
                                 ImGui.TableNextColumn();
-                                ImGui.Text($"{globalIndex}");
+                                ImGui.Text($"{index}");
 
                                 ImGui.TableNextColumn();
-                                ImGui.Text($"{name}");
+                                ImGui.Text($"{archiveIndex} ({name})");
+
+                                ImGui.TableNextColumn();
+                                ImGui.Text($"{i}");
 
                                 ImGui.TableNextColumn();
                                 ImGui.Text(isImage ? "Image" : "Data");
 
                                 ImGui.TableNextColumn();
-                                ImGui.Text($"0x{new ResourceId(i, isImage ? RESOURCE_TYPE.IMAGE : RESOURCE_TYPE.DATA, archiveIndex).GetValue():X8}");
+                                ImGui.Text($"0x{id.GetValue():X8}");
+                                
+                                ImGui.TableNextColumn();
+                                ImGui.Text((isImage ? game.RM.Array_Image[index]?.GetType().Name : game.RM.Array_Data[index]?.GetType().Name) ?? String.Empty);
                                 
                                 ImGui.PopStyleColor();
-
-                                globalIndex++;
                             }
                         }
 
