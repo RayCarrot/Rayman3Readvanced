@@ -56,9 +56,9 @@ public partial class MainWindowViewModel : ObservableObject
         return sb.ToString();
     }
 
-    private static SortedDictionary<OBJECT_TYPE, J2meActorType> ConvertActorTypes(byte[] data)
+    private static SortedDictionary<ACTOR_TYPE, J2meActorType> ConvertActorTypes(byte[] data)
     {
-        SortedDictionary<OBJECT_TYPE, J2meActorType> actorTypes = new();
+        SortedDictionary<ACTOR_TYPE, J2meActorType> actorTypes = new();
         int offset = 0;
         for (int i = 0; i < data.Length / 11; i++)
         {
@@ -69,11 +69,11 @@ public partial class MainWindowViewModel : ObservableObject
                 int kData_ResourceID = ReadInt(data, offset + 5);
                 int kData_Index = (sbyte)data[offset + 9];
                 bool bCreateDataImage = (sbyte)data[offset + 10] == 1;
-                actorTypes.Add((OBJECT_TYPE)i, new J2meActorType(new J2meResourceId(kImage_ResourceID), kImage_Index, new J2meResourceId(kData_ResourceID), kData_Index, bCreateDataImage));
+                actorTypes.Add((ACTOR_TYPE)i, new J2meActorType(new J2meResourceId(kImage_ResourceID), kImage_Index, new J2meResourceId(kData_ResourceID), kData_Index, bCreateDataImage));
             }
             else
             {
-                actorTypes.Add((OBJECT_TYPE)i, null);
+                actorTypes.Add((ACTOR_TYPE)i, null);
             }
             offset += 11;
         }

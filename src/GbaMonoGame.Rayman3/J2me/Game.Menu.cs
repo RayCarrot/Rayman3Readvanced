@@ -120,7 +120,7 @@ public partial class Game
             if (Engine.Settings.Local.J2me.FixBugs)
                 m_bBackgroundUsed = false;
 
-            Actor.drawModule(m_gameMenu_pData, 13, x - Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[13].Width - 4 - Menu_GetRArrowPos(), y, 0, g_graBackBuffer);
+            Actor.drawModule(m_gameMenu_pData, 13, x - Actor.aniData[(sbyte)ACTOR_TYPE.FONT].modules[13].Width - 4 - Menu_GetRArrowPos(), y, 0, g_graBackBuffer);
             Actor.drawModule(m_gameMenu_pData, 14, x + w + 4 + Menu_GetLArrowPos(), y, 0, g_graBackBuffer);
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             m_bBackgroundUsed = bBackgroundState;
@@ -349,14 +349,14 @@ public partial class Game
         m_gameMenu_pAnims = new Anim[7];
         for (int i = 0; i < m_gameMenu_pAnims.Length; i++)
             m_gameMenu_pAnims[i] = new Anim();
-        m_gameMenu_pAnims[0].build(OBJECT_TYPE.YELLOW_LUM, 0);
-        m_gameMenu_pAnims[1].build(OBJECT_TYPE.RED_LUM, 0);
-        m_gameMenu_pAnims[2].build(OBJECT_TYPE.GREEN_LUM, 0);
-        m_gameMenu_pAnims[3].build(OBJECT_TYPE.WHITE_LUM, 0);
-        m_gameMenu_pAnims[6].build(OBJECT_TYPE.BLUE_LUM, 0);
-        m_gameMenu_pAnims[4].build(OBJECT_TYPE.CAGE, 0);
-        m_gameMenu_pAnims[5].build(OBJECT_TYPE.SWING, 0);
-        m_gameMenu_pAnims[6].build(OBJECT_TYPE.BLUE_LUM, 0);
+        m_gameMenu_pAnims[0].build(ACTOR_TYPE.YELLOW_LUM, 0);
+        m_gameMenu_pAnims[1].build(ACTOR_TYPE.RED_LUM, 0);
+        m_gameMenu_pAnims[2].build(ACTOR_TYPE.GREEN_LUM, 0);
+        m_gameMenu_pAnims[3].build(ACTOR_TYPE.WHITE_LUM, 0);
+        m_gameMenu_pAnims[6].build(ACTOR_TYPE.BLUE_LUM, 0);
+        m_gameMenu_pAnims[4].build(ACTOR_TYPE.CAGE, 0);
+        m_gameMenu_pAnims[5].build(ACTOR_TYPE.SWING, 0);
+        m_gameMenu_pAnims[6].build(ACTOR_TYPE.BLUE_LUM, 0);
 
         m_byHelpLength = 0;
         StringId iID = new(0, TEXTBANK_INDEX_HELP);
@@ -711,7 +711,7 @@ public partial class Game
             if (m_gameMenu_idCurSel != 0)
                 Actor.drawModule(m_gameMenu_pData, 14, 0 + Menu_GetLArrowPos(), 8, 0, g_graBackBuffer);
             if (!bLast)
-                Actor.drawModule(m_gameMenu_pData, 13, Resolution.X - Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[13].Width - Menu_GetRArrowPos(), 8, 0, g_graBackBuffer);
+                Actor.drawModule(m_gameMenu_pData, 13, Resolution.X - Actor.aniData[(sbyte)ACTOR_TYPE.FONT].modules[13].Width - Menu_GetRArrowPos(), 8, 0, g_graBackBuffer);
 
             // Optionally fix bug with arrows de-syncing when only rendering one by updating positions even when not drawing
             if (Engine.Settings.Local.J2me.FixBugs)
@@ -774,7 +774,7 @@ public partial class Game
 
         bool bBackgroundState = m_bBackgroundUsed;
         m_bBackgroundUsed = false;
-        Actor.drawModule(Actor.aniData[(sbyte)OBJECT_TYPE.FONT], 23, Resolution.X - Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[23].Width, 320 - (Actor.aniData[(sbyte)OBJECT_TYPE.FONT]).modules[23].Height, 0, g_graBackBuffer);
+        Actor.drawModule(Actor.aniData[(sbyte)ACTOR_TYPE.FONT], 23, Resolution.X - Actor.aniData[(sbyte)ACTOR_TYPE.FONT].modules[23].Width, 320 - (Actor.aniData[(sbyte)ACTOR_TYPE.FONT]).modules[23].Height, 0, g_graBackBuffer);
         m_bBackgroundUsed = bBackgroundState;
     }
 

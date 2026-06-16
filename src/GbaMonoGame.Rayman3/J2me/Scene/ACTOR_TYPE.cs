@@ -30,7 +30,7 @@
 // Font
 // Lava bubble
 
-public enum OBJECT_TYPE : sbyte
+public enum ACTOR_TYPE : sbyte
 {
     RAYMAN = 0,
     FIST = 1,

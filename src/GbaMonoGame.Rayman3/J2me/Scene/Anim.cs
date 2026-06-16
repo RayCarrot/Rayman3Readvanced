@@ -2,7 +2,7 @@
 
 public class Anim
 {
-    public OBJECT_TYPE type { get; set; }
+    public ACTOR_TYPE type { get; set; }
     public int actionFrame { get; set; }
     public int frameId { get; set; }
     public int frameTick { get; set; }
@@ -31,7 +31,7 @@ public class Anim
         frameId = frame;
     }
 
-    public void build(OBJECT_TYPE t, int newAct)
+    public void build(ACTOR_TYPE t, int newAct)
     {
         type = t;
         newAction = newAct;
@@ -97,19 +97,19 @@ public class Anim
         int frameOffset = 0;
         int nbSprite = frameData.SpritesCount;
         
-        if (type == OBJECT_TYPE.RAYMAN)
+        if (type == ACTOR_TYPE.RAYMAN)
             GameMidlet.Instance_Game.raymanAnim = 0;
 
         for (int i = 0; i < nbSprite; i++)
         {
             if (i == nbSprite - 1 && 
-                type == OBJECT_TYPE.RAYMAN &&
+                type == ACTOR_TYPE.RAYMAN &&
                 GameMidlet.Instance_Game.pFist[0].anim.curAction != 0 &&
                 GameMidlet.Instance_Game.pRayman.anim.curAction != 10 &&
                 GameMidlet.Instance_Game.pRayman.anim.curAction != 36)
                 break;
 
-            bool flag = !(i == 0 && type == OBJECT_TYPE.RAYMAN && GameMidlet.Instance_Game.pFist[1].anim.curAction != 0);
+            bool flag = !(i == 0 && type == ACTOR_TYPE.RAYMAN && GameMidlet.Instance_Game.pFist[1].anim.curAction != 0);
             int modId = frameData.Sprites[frameOffset].Module;
             AnimationModule pModule = data.modules[modId];
             
@@ -128,7 +128,7 @@ public class Anim
             
             int nsy = ny + frameData.Sprites[frameOffset].YPosition;
             
-            if (type == OBJECT_TYPE.RAYMAN)
+            if (type == ACTOR_TYPE.RAYMAN)
                 GameMidlet.Instance_Game.raymanAnim = nsx;
 
             if (flag)
@@ -168,13 +168,13 @@ public class Anim
         for (int i = 0; i < nbSprite; i++)
         {
             if (i == nbSprite - 1 &&
-                type == OBJECT_TYPE.RAYMAN &&
+                type == ACTOR_TYPE.RAYMAN &&
                 GameMidlet.Instance_Game.pFist[0].anim.curAction != 0 &&
                 GameMidlet.Instance_Game.pRayman.anim.curAction != 10 &&
                 GameMidlet.Instance_Game.pRayman.anim.curAction != 36)
                 break;
 
-            bool flag = !(i == 0 && type == OBJECT_TYPE.RAYMAN && GameMidlet.Instance_Game.pFist[1].anim.curAction != 0);
+            bool flag = !(i == 0 && type == ACTOR_TYPE.RAYMAN && GameMidlet.Instance_Game.pFist[1].anim.curAction != 0);
             AnimationModule pModule = data.modules[frameData.Sprites[frameOffset].Module];
 
             int nsx;

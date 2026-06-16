@@ -118,7 +118,7 @@ public partial class Game
             else
             {
                 Actor.AniLoad(RM.ResourceID_To_Index(RESOURCE_ID_DATA_ANIM_FONT), RM.ResourceID_To_Index(RESOURCE_ID_IMG_FONT));
-                m_gameMenu_pData = Actor.aniData[(sbyte)OBJECT_TYPE.FONT];
+                m_gameMenu_pData = Actor.aniData[(sbyte)ACTOR_TYPE.FONT];
                 if (RM.Array_Image[RM.ResourceID_To_Index(RESOURCE_ID_IMG_SPLASH_SCREEN)] == null)
                     Menu_LoadMain();
                 Menu_SetCurrentPage(MENU_PAGE.MAIN);
@@ -172,7 +172,7 @@ public partial class Game
         {
             bool bBackgroundState = m_bBackgroundUsed;
             m_bBackgroundUsed = false;
-            Actor.drawModule(Actor.aniData[(sbyte)OBJECT_TYPE.FONT], 23, Resolution.X - Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[23].Width, Resolution.Y - Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[23].Height, 0, g_graBackBuffer);
+            Actor.drawModule(Actor.aniData[(sbyte)ACTOR_TYPE.FONT], 23, Resolution.X - Actor.aniData[(sbyte)ACTOR_TYPE.FONT].modules[23].Width, Resolution.Y - Actor.aniData[(sbyte)ACTOR_TYPE.FONT].modules[23].Height, 0, g_graBackBuffer);
             m_bBackgroundUsed = bBackgroundState;
         }
     }
@@ -193,7 +193,7 @@ public partial class Game
                 PlaySound(SOUND_INDEX.music_splash, false, LOOP_INFINITE);
 
             // Draw soft key pause indicator
-            Actor.drawModule(Actor.aniData[(sbyte)OBJECT_TYPE.FONT], 23, Resolution.X - Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[23].Width, Resolution.Y - Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[23].Height - Menu_GetVArrowPos(), 0, g_graBackBuffer);
+            Actor.drawModule(Actor.aniData[(sbyte)ACTOR_TYPE.FONT], 23, Resolution.X - Actor.aniData[(sbyte)ACTOR_TYPE.FONT].modules[23].Width, Resolution.Y - Actor.aniData[(sbyte)ACTOR_TYPE.FONT].modules[23].Height - Menu_GetVArrowPos(), 0, g_graBackBuffer);
         }
         // In-game
         else

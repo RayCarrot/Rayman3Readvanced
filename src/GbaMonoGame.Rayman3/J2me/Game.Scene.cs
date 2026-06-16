@@ -31,23 +31,23 @@ public partial class Game
 
         switch (obj.objType)
         {
-            case OBJECT_TYPE.RAYMAN:
+            case ACTOR_TYPE.RAYMAN:
                 pRayman = obj;
                 break;
 
-            case OBJECT_TYPE.FIST:
+            case ACTOR_TYPE.FIST:
                 pFist[Fist_num] = obj;
                 Fist_num++;
                 if (Fist_num == Actor.FISTS_COUNT)
                     Fist_num = 0;
                 break;
 
-            case OBJECT_TYPE.PIRATE:
+            case ACTOR_TYPE.PIRATE:
                 if (obj.V[5] != 0 && obj.V[5] != 22)
                 {
                     for (int i = 1; i < 4; i++)
                     {
-                        flagActorType((OBJECT_TYPE)obj.V[5], i);
+                        flagActorType((ACTOR_TYPE)obj.V[5], i);
                         RM.Synchronize();
                     }
 
@@ -65,11 +65,11 @@ public partial class Game
                 }
                 break;
 
-            case OBJECT_TYPE.CAGE:
+            case ACTOR_TYPE.CAGE:
                 s_iCageTotal++;
                 break;
 
-            case OBJECT_TYPE.YELLOW_LUM:
+            case ACTOR_TYPE.YELLOW_LUM:
                 s_iLumsTotal++;
                 break;
         }
@@ -243,12 +243,12 @@ public partial class Game
         int actorCount = res.ActorsCount;
         actors = new Actor[actorCount];
         for (int i = 0; i < 28; i++)
-            flagActorType((OBJECT_TYPE)i, 0);
+            flagActorType((ACTOR_TYPE)i, 0);
         for (int i = 1; i < 4; i++)
         {
             for (sbyte b1 = 0; b1 < actorCount; b1++)
-                flagActorType((OBJECT_TYPE)res.Actors[b1].Type, i);
-            flagActorType(OBJECT_TYPE.FONT, i);
+                flagActorType((ACTOR_TYPE)res.Actors[b1].Type, i);
+            flagActorType(ACTOR_TYPE.FONT, i);
             RM.Synchronize();
         }
         for (int i = 0; i < 28; i++)
@@ -263,13 +263,13 @@ public partial class Game
         for (int i = 0; i < actorCount; i++)
         {
             Actor actor = Actor_create(res.Actors[i]);
-            switch ((OBJECT_TYPE)res.Actors[i].Type)
+            switch ((ACTOR_TYPE)res.Actors[i].Type)
             {
-                case OBJECT_TYPE.RAYMAN:
-                case OBJECT_TYPE.FIST:
-                case OBJECT_TYPE.LAVA_PLATFORM:
-                case OBJECT_TYPE.JUNGLE_PLATFORM:
-                case OBJECT_TYPE.BULLET:
+                case ACTOR_TYPE.RAYMAN:
+                case ACTOR_TYPE.FIST:
+                case ACTOR_TYPE.LAVA_PLATFORM:
+                case ACTOR_TYPE.JUNGLE_PLATFORM:
+                case ACTOR_TYPE.BULLET:
                     actors[lastFree--] = actor;
                     break;
 
@@ -284,11 +284,11 @@ public partial class Game
         {
             switch (actor.objType)
             {
-                case OBJECT_TYPE.PIRATE:
+                case ACTOR_TYPE.PIRATE:
                     int actorRef = actor.V[0];
                     for (short b1 = 0; b1 < actors.Length; b1++)
                     {
-                        if (actors[b1].objType == OBJECT_TYPE.BULLET && --actorRef < 0)
+                        if (actors[b1].objType == ACTOR_TYPE.BULLET && --actorRef < 0)
                         {
                             actor.V[0] = b1;
                             actor.m_iInitV[0] = b1;
@@ -302,7 +302,7 @@ public partial class Game
         RM.Free(RESOURCE_ID_DATA_ACTOR_TYPES);
     }
 
-    void flagActorType(OBJECT_TYPE iActorType, int iLoadState)
+    void flagActorType(ACTOR_TYPE iActorType, int iLoadState)
     {
         ActorTypesResource res = RM.GetData<ActorTypesResource>(RESOURCE_ID_DATA_ACTOR_TYPES);
         ActorTypeEntry actorEntry = res.Entries[(int)iActorType];

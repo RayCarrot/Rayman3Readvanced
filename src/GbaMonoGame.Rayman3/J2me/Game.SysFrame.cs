@@ -90,7 +90,7 @@ public partial class Game
                 {
                     g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
                     g_graBackBuffer.drawImage(RM.GetImage(RESOURCE_ID_IMG_SPLASH_SCREEN), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
-                    Actor.drawModule(Actor.aniData[(sbyte)OBJECT_TYPE.FONT], 23, Resolution.X - Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[23].Width, Resolution.Y - Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[23].Height - Menu_GetVArrowPos(), 0, g_graBackBuffer);
+                    Actor.drawModule(Actor.aniData[(sbyte)ACTOR_TYPE.FONT], 23, Resolution.X - Actor.aniData[(sbyte)ACTOR_TYPE.FONT].modules[23].Width, Resolution.Y - Actor.aniData[(sbyte)ACTOR_TYPE.FONT].modules[23].Height - Menu_GetVArrowPos(), 0, g_graBackBuffer);
                     if (pressedKey != GAME_KEY.NONE)
                     {
                         m_gameFrame_curState = GAME_FRAME_STATE.DEFAULT;
@@ -201,7 +201,7 @@ public partial class Game
 
             case SYS_FRAME_STATE.GAME_COMPLETE:
                 g_graBackBuffer.ClearScreen(0);
-                Actor.drawModule(Actor.aniData[(sbyte)OBJECT_TYPE.FONT], 23, Resolution.X - Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[23].Width, Resolution.Y - Actor.aniData[(sbyte)OBJECT_TYPE.FONT].modules[23].Height, 0, g_graBackBuffer);
+                Actor.drawModule(Actor.aniData[(sbyte)ACTOR_TYPE.FONT], 23, Resolution.X - Actor.aniData[(sbyte)ACTOR_TYPE.FONT].modules[23].Width, Resolution.Y - Actor.aniData[(sbyte)ACTOR_TYPE.FONT].modules[23].Height, 0, g_graBackBuffer);
                 
                 if (pressedKey != GAME_KEY.NONE)
                 {
