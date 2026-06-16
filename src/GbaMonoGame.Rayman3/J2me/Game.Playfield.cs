@@ -12,6 +12,7 @@ public partial class Game
     // Custom
     public GfxScreen BackgroundScreen { get; set; }
     public GfxScreen CollisionScreen { get; set; }
+    public bool ShowPhysicalCollision { get; set; }
 
     // A lot of these are unused in Readvanced since we don't draw the background in the fast mode
     public short m_sBackgroundHeight { get; set; }
@@ -97,30 +98,8 @@ public partial class Game
         };
         Gfx.AddScreen(BackgroundScreen);
 
-        // TODO: Debug only
-        byte[] collisionMap = new byte[m_sBackgroundWidth * m_sBackgroundHeight];
-        for (int y = 0; y < m_sBackgroundHeight; y++)
-        {
-            for (int x = 0; x < m_sBackgroundWidth; x++)
-            {
-                PHB_TYPE physicalType = PF_getPHBI(x, y);
-                collisionMap[y * m_sBackgroundWidth + x] = (byte)physicalType;
-            }
-        }
-
-        CollisionScreen = new GfxScreen(-1)
-        {
-            Priority = 0,
-            RenderOptions = Graphics.RenderOptions,
-            IsEnabled = true,
-            Renderer = new CollisionMapScreenRenderer(
-                collisionTileSet: Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.J2me.CollisionTileSet),
-                tileSize: TILE_SIZE,
-                width: m_sBackgroundWidth, 
-                height: m_sBackgroundHeight, 
-                collisionMap: collisionMap)
-        };
-        Gfx.AddScreen(CollisionScreen);
+        CollisionScreen = null;
+        ShowPhysicalCollision = false;
     }
 
     public PHB_TYPE PF_getPHBI(int x, int y)
@@ -211,8 +190,43 @@ public partial class Game
             int cx = m_iBackgroundX;
             int cy = m_iBackgroundY;
             BackgroundScreen.Offset = new Vector2(cx, cy);
-            CollisionScreen.Offset = new Vector2(cx, cy);
-            CollisionScreen.IsEnabled = !m_gameFrame_paused;
+
+            if (ShowPhysicalCollision)
+            {
+                if (CollisionScreen == null)
+                {
+                    byte[] collisionMap = new byte[m_sBackgroundWidth * m_sBackgroundHeight];
+                    for (int y = 0; y < m_sBackgroundHeight; y++)
+                    {
+                        for (int x = 0; x < m_sBackgroundWidth; x++)
+                        {
+                            PHB_TYPE physicalType = PF_getPHBI(x, y);
+                            collisionMap[y * m_sBackgroundWidth + x] = (byte)physicalType;
+                        }
+                    }
+
+                    CollisionScreen = new GfxScreen(-1)
+                    {
+                        Priority = 0,
+                        RenderOptions = Graphics.RenderOptions,
+                        IsEnabled = true,
+                        Renderer = new CollisionMapScreenRenderer(
+                            collisionTileSet: Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.J2me.CollisionTileSet),
+                            tileSize: TILE_SIZE,
+                            width: m_sBackgroundWidth,
+                            height: m_sBackgroundHeight,
+                            collisionMap: collisionMap)
+                    };
+                    Gfx.AddScreen(CollisionScreen);
+                }
+
+                CollisionScreen.Offset = new Vector2(cx, cy);
+                CollisionScreen.IsEnabled = !m_gameFrame_paused;
+            }
+            else
+            {
+                CollisionScreen?.IsEnabled = false;
+            }
         }
         // Original game code
         else if (false)

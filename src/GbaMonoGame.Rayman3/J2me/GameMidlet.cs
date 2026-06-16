@@ -6,7 +6,6 @@ using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3.J2me;
 
-// TODO: Add cheat menu for debug collision and other cheats
 // TODO: Add achievements (complete all levels, 100% all levels and a third one?)
 // TODO: Option to use normal controls since Up sucks on analog stick for jump
 public class GameMidlet : Frame
@@ -18,8 +17,8 @@ public class GameMidlet : Frame
     {
         [GbaInput.A] = JAVA_KEY_CODE.SOFTKEY3,
         [GbaInput.B] = JAVA_KEY_CODE.SOFTKEY3,
-        [GbaInput.Select] = JAVA_KEY_CODE.SOFTKEY2,
-        [GbaInput.Start] = JAVA_KEY_CODE.SOFTKEY1,
+        [GbaInput.Select] = JAVA_KEY_CODE.STAR,
+        [GbaInput.Start] = JAVA_KEY_CODE.SOFTKEY2,
         [GbaInput.Right] = JAVA_KEY_CODE.RIGHT_ARROW,
         [GbaInput.Left] = JAVA_KEY_CODE.LEFT_ARROW,
         [GbaInput.Up] = JAVA_KEY_CODE.UP_ARROW,

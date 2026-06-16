@@ -14,6 +14,29 @@ public partial class Game
     public const int MAX_MENU_ITEMS = 8;
     public const int MENU_ITEM_HEIGHT = 21;
 
+    public const int MENU_MAIN_OPTION_ID_NEW_GAME = 0;
+    public const int MENU_MAIN_OPTION_ID_CONTINUE = 1;
+    public const int MENU_MAIN_OPTION_ID_MUSIC = 2;
+    public const int MENU_MAIN_OPTION_ID_ABOUT = 3;
+    public const int MENU_MAIN_OPTION_ID_HELP = 4;
+    public const int MENU_MAIN_OPTION_ID_EXIT = 5;
+
+    public const int MENU_PAUSE_OPTION_ID_RESUME = 0;
+    public const int MENU_PAUSE_OPTION_ID_RESTART = 1;
+    public const int MENU_PAUSE_OPTION_ID_MUSIC = 2;
+    public const int MENU_PAUSE_OPTION_ID_MAIN_MENU = 3;
+    public const int MENU_PAUSE_OPTION_ID_EXIT = 4;
+    public const int MENU_PAUSE_OPTION_ID_RESOLUTION = 5; // Custom
+    public const int MENU_PAUSE_OPTION_ID_FIX_BUGS = 6; // Custom
+
+    // Custom
+    public const int MENU_CHEAT_OPTION_ID_RESUME = 0;
+    public const int MENU_CHEAT_OPTION_ID_COMPLETE_LEVEL = 1;
+    public const int MENU_CHEAT_OPTION_ID_RESTORE_HEALTH = 2;
+    public const int MENU_CHEAT_OPTION_ID_99_LIVES = 3;
+    public const int MENU_CHEAT_OPTION_ID_SHOW_PHYSICAL_COLLISION = 4;
+    public const int MENU_CHEAT_OPTION_ID_SHOW_ACTOR_BOXES = 5;
+
     public int SoundVolume { get; set; } = VOL_MEDIUM;
     public sbyte m_byMenuRArrowDirection { get; set; } = 1;
     public sbyte m_byMenuLArrowDirection { get; set; } = 1;
@@ -204,72 +227,89 @@ public partial class Game
         {
             case MENU_PAGE.MAIN:
                 if (GameFrame_IsSavedFileExists())
-                    Menu_InsertOption(RM.GetString(STRING_ID_CONTINUE), 1);
-                Menu_InsertOption(RM.GetString(STRING_ID_NEW_GAME), 0);
+                    Menu_InsertOption(RM.GetString(STRING_ID_CONTINUE), MENU_MAIN_OPTION_ID_CONTINUE);
+                Menu_InsertOption(RM.GetString(STRING_ID_NEW_GAME), MENU_MAIN_OPTION_ID_NEW_GAME);
                 
                 switch (SoundVolume)
                 {
                     case VOL_HIGH:
-                        Menu_InsertOption(RM.GetString(STRING_ID_MUSIC_HIGH), 2);
+                        Menu_InsertOption(RM.GetString(STRING_ID_MUSIC_HIGH), MENU_MAIN_OPTION_ID_MUSIC);
                         break;
                     
                     case VOL_MEDIUM:
-                        Menu_InsertOption(RM.GetString(STRING_ID_MUSIC_MEDIUM), 2);
+                        Menu_InsertOption(RM.GetString(STRING_ID_MUSIC_MEDIUM), MENU_MAIN_OPTION_ID_MUSIC);
                         break;
                     
                     case VOL_LOW:
-                        Menu_InsertOption(RM.GetString(STRING_ID_MUSIC_LOW), 2);
+                        Menu_InsertOption(RM.GetString(STRING_ID_MUSIC_LOW), MENU_MAIN_OPTION_ID_MUSIC);
                         break;
                     
                     case VOL_OFF:
-                        Menu_InsertOption(RM.GetString(STRING_ID_MUSIC_OFF), 2);
+                        Menu_InsertOption(RM.GetString(STRING_ID_MUSIC_OFF), MENU_MAIN_OPTION_ID_MUSIC);
                         break;
                 }
 
-                Menu_InsertOption(RM.GetString(STRING_ID_ABOUT), 3);
-                Menu_InsertOption(RM.GetString(STRING_ID_HELP), 4);
-                Menu_InsertOption(RM.GetString(STRING_ID_EXIT), 5);
+                Menu_InsertOption(RM.GetString(STRING_ID_ABOUT), MENU_MAIN_OPTION_ID_ABOUT);
+                Menu_InsertOption(RM.GetString(STRING_ID_HELP), MENU_MAIN_OPTION_ID_HELP);
+                Menu_InsertOption(RM.GetString(STRING_ID_EXIT), MENU_MAIN_OPTION_ID_EXIT);
                 break;
 
             case MENU_PAGE.PAUSE:
-                Menu_InsertOption(RM.GetString(STRING_ID_RESUME), 0);
-                Menu_InsertOption(RM.GetString(STRING_ID_RESTART), 1);
+                Menu_InsertOption(RM.GetString(STRING_ID_RESUME), MENU_PAUSE_OPTION_ID_RESUME);
+                Menu_InsertOption(RM.GetString(STRING_ID_RESTART), MENU_PAUSE_OPTION_ID_RESTART);
 
                 // Custom for changing the resolution
                 if (Engine.ViewPort.InternalGameResolution == J2meRom.OriginalResolution)
-                    Menu_InsertOption($"Resolution : Original ({Resolution.X}x{Resolution.Y})", 5);
+                    Menu_InsertOption($"Resolution : Original ({Resolution.X}x{Resolution.Y})", MENU_PAUSE_OPTION_ID_RESOLUTION);
                 else if (Engine.ViewPort.InternalGameResolution == GbaMonoGame.Resolution.J2meModern)
-                    Menu_InsertOption($"Resolution : Widescreen ({Resolution.X}x{Resolution.Y})", 5);
+                    Menu_InsertOption($"Resolution : Widescreen ({Resolution.X}x{Resolution.Y})", MENU_PAUSE_OPTION_ID_RESOLUTION);
                 else
-                    Menu_InsertOption($"Resolution : {Resolution.X}x{Resolution.Y}", 5);
+                    Menu_InsertOption($"Resolution : {Resolution.X}x{Resolution.Y}", MENU_PAUSE_OPTION_ID_RESOLUTION);
 
                 // Custom for bug fixes option
                 if (Engine.Settings.Local.J2me.FixBugs)
-                    Menu_InsertOption("Fix bugs : On", 6);
+                    Menu_InsertOption("Fix bugs : On", MENU_PAUSE_OPTION_ID_FIX_BUGS);
                 else
-                    Menu_InsertOption("Fix bugs : Off", 6);
+                    Menu_InsertOption("Fix bugs : Off", MENU_PAUSE_OPTION_ID_FIX_BUGS);
                 
                 switch (SoundVolume)
                 {
                     case VOL_HIGH:
-                        Menu_InsertOption(RM.GetString(STRING_ID_MUSIC_HIGH), 2);
+                        Menu_InsertOption(RM.GetString(STRING_ID_MUSIC_HIGH), MENU_PAUSE_OPTION_ID_MUSIC);
                         break;
 
                     case VOL_MEDIUM:
-                        Menu_InsertOption(RM.GetString(STRING_ID_MUSIC_MEDIUM), 2);
+                        Menu_InsertOption(RM.GetString(STRING_ID_MUSIC_MEDIUM), MENU_PAUSE_OPTION_ID_MUSIC);
                         break;
 
                     case VOL_LOW:
-                        Menu_InsertOption(RM.GetString(STRING_ID_MUSIC_LOW), 2);
+                        Menu_InsertOption(RM.GetString(STRING_ID_MUSIC_LOW), MENU_PAUSE_OPTION_ID_MUSIC);
                         break;
 
                     case VOL_OFF:
-                        Menu_InsertOption(RM.GetString(STRING_ID_MUSIC_OFF), 2);
+                        Menu_InsertOption(RM.GetString(STRING_ID_MUSIC_OFF), MENU_PAUSE_OPTION_ID_MUSIC);
                         break;
                 }
 
-                Menu_InsertOption(RM.GetString(STRING_ID_MAIN_MENU), 3);
-                Menu_InsertOption(RM.GetString(STRING_ID_EXIT), 4);
+                Menu_InsertOption(RM.GetString(STRING_ID_MAIN_MENU), MENU_PAUSE_OPTION_ID_MAIN_MENU);
+                Menu_InsertOption(RM.GetString(STRING_ID_EXIT), MENU_PAUSE_OPTION_ID_EXIT);
+                break;
+
+            // Custom
+            case MENU_PAGE.CHEAT:
+                Menu_InsertOption(RM.GetString(STRING_ID_RESUME), MENU_CHEAT_OPTION_ID_RESUME);
+                if (m_gameFrame_curLevel > LEVEL_WORLD_MAP)
+                    Menu_InsertOption("Complete level", MENU_CHEAT_OPTION_ID_COMPLETE_LEVEL);
+                Menu_InsertOption("Restore health", MENU_CHEAT_OPTION_ID_RESTORE_HEALTH);
+                Menu_InsertOption("99 lives", MENU_CHEAT_OPTION_ID_99_LIVES);
+                if (ShowPhysicalCollision)
+                    Menu_InsertOption("Show physical collision : On", MENU_CHEAT_OPTION_ID_SHOW_PHYSICAL_COLLISION);
+                else
+                    Menu_InsertOption("Show physical collision : Off", MENU_CHEAT_OPTION_ID_SHOW_PHYSICAL_COLLISION);
+                if (ShowActorBoxes)
+                    Menu_InsertOption("Show actor boxes : On", MENU_CHEAT_OPTION_ID_SHOW_ACTOR_BOXES);
+                else
+                    Menu_InsertOption("Show actor boxes : Off", MENU_CHEAT_OPTION_ID_SHOW_ACTOR_BOXES);
                 break;
         }
     }
@@ -409,7 +449,7 @@ public partial class Game
                 case MENU_PAGE.MAIN:
                     switch (m_gameMenu_items_id[m_gameMenu_idCurSel])
                     {
-                        case 0:
+                        case MENU_MAIN_OPTION_ID_NEW_GAME:
                             StopSound();
                             m_gameStateStep = 0;
                             m_gameFrame_prevState = GAME_FRAME_STATE.DEFAULT;
@@ -417,13 +457,13 @@ public partial class Game
                             GameFrame_InitNewGame();
                             break;
 
-                        case 1:
+                        case MENU_MAIN_OPTION_ID_CONTINUE:
                             m_gameStateStep = 0;
                             m_gameFrame_prevState = GAME_FRAME_STATE.DEFAULT;
                             m_gameFrame_curState = GAME_FRAME_STATE.LOAD_GAME;
                             break;
                     
-                        case 2:
+                        case MENU_MAIN_OPTION_ID_MUSIC:
                             SoundVolume = SoundVolume switch
                             {
                                 VOL_HIGH => VOL_MEDIUM,
@@ -440,18 +480,18 @@ public partial class Game
                             GameFrame_SaveSound();
                             break;
 
-                        case 3:
+                        case MENU_MAIN_OPTION_ID_ABOUT:
                             m_iAboutTicker = 0;
                             m_gameStateStep = 0;
                             Menu_SetCurrentPage(MENU_PAGE.ABOUT);
                             break;
 
-                        case 4:
+                        case MENU_MAIN_OPTION_ID_HELP:
                             m_iGlobalTicker = 0;
                             Menu_SetCurrentPage(MENU_PAGE.HELP);
                             break;
                     
-                        case 5:
+                        case MENU_MAIN_OPTION_ID_EXIT:
                             StopSound();
                             GameFrame_PostMessage(MESSAGE_ID.EXIT, 0);
                             m_gameFrame_prevState = GAME_FRAME_STATE.DEFAULT;
@@ -464,10 +504,10 @@ public partial class Game
                     StopSound();
                     switch (m_gameMenu_items_id[m_gameMenu_idCurSel])
                     {
-                        case 0:
+                        case MENU_PAUSE_OPTION_ID_RESUME:
                             m_bBackgroundUsed = true;
                             m_gameFrame_paused = false;
-                            if (pRayman != null && pRayman.V[3] == 32)
+                            if (pRayman != null && (GAME_KEY)pRayman.V[3] == GAME_KEY.MIDDLE)
                             {
                                 releasedKey = GAME_KEY.MIDDLE;
                                 GameCore();
@@ -479,14 +519,14 @@ public partial class Game
                             }
                             break;
 
-                        case 1:
+                        case MENU_PAUSE_OPTION_ID_RESTART:
                             m_gameStateStep = 0;
                             m_gameFrame_prevState = GAME_FRAME_STATE.DEFAULT;
                             m_gameFrame_curState = GAME_FRAME_STATE.CONFIRM_RESTART;
                             bConfirmExit = false;
                             break;
                     
-                        case 2:
+                        case MENU_PAUSE_OPTION_ID_MUSIC:
                             SoundVolume = SoundVolume switch
                             {
                                 VOL_HIGH => VOL_MEDIUM,
@@ -504,13 +544,13 @@ public partial class Game
                             GameFrame_SaveSound();
                             break;
 
-                        case 3:
+                        case MENU_PAUSE_OPTION_ID_MAIN_MENU:
                             m_gameFrame_prevState = GAME_FRAME_STATE.DEFAULT;
                             bConfirmExit = false;
                             bConfirmToMainMenu = true;
                             break;
                     
-                        case 4:
+                        case MENU_PAUSE_OPTION_ID_EXIT:
                             StopSound();
                             GameFrame_PostMessage(MESSAGE_ID.EXIT, 0);
                             m_gameFrame_prevState = GAME_FRAME_STATE.DEFAULT;
@@ -518,7 +558,7 @@ public partial class Game
                             break;
 
                         // Custom for changing the resolution
-                        case 5:
+                        case MENU_PAUSE_OPTION_ID_RESOLUTION:
                             Vector2 res = Resolution == GbaMonoGame.Resolution.J2meModern ? J2meRom.OriginalResolution : GbaMonoGame.Resolution.J2meModern;
                             Engine.Settings.Local.J2me.InternalGameResolution = res;
                             Engine.ViewPort.SetInternalGameResolution(res);
@@ -527,7 +567,7 @@ public partial class Game
                             break;
 
                         // Custom for bug fixes option
-                        case 6:
+                        case MENU_PAUSE_OPTION_ID_FIX_BUGS:
                             Engine.Settings.Local.J2me.FixBugs = !Engine.Settings.Local.J2me.FixBugs;
                             Menu_UpdatePage();
                             break;
@@ -535,12 +575,12 @@ public partial class Game
 
                     switch (m_gameMenu_items_id[m_gameMenu_idCurSel])
                     {
-                        case 0:
+                        case MENU_PAUSE_OPTION_ID_RESUME:
                             m_keys = KEY.NONE;
                             break;
 
-                        case 1:
-                        case 3:
+                        case MENU_PAUSE_OPTION_ID_RESTART:
+                        case MENU_PAUSE_OPTION_ID_MAIN_MENU:
                             m_keys = KEY.NONE;
                             m_bClearBackMenu = true;
                             break;
@@ -550,6 +590,54 @@ public partial class Game
                 case MENU_PAGE.HELP:
                 case MENU_PAGE.ABOUT:
                     Menu_SetCurrentPage(MENU_PAGE.MAIN);
+                    break;
+
+                // Custom
+                case MENU_PAGE.CHEAT:
+                    StopSound();
+                    switch (m_gameMenu_items_id[m_gameMenu_idCurSel])
+                    {
+                        case MENU_CHEAT_OPTION_ID_RESUME:
+                            m_bBackgroundUsed = true;
+                            m_gameFrame_paused = false;
+                            if (pRayman != null && (GAME_KEY)pRayman.V[3] == GAME_KEY.MIDDLE)
+                            {
+                                releasedKey = GAME_KEY.MIDDLE;
+                                GameCore();
+                            }
+                            if (m_gameFrame_curLevel == LEVEL_WORLD_MAP)
+                            {
+                                PlaySound(SOUND_INDEX.music_map, true, LOOP_INFINITE);
+                                bStillPlay = true;
+                            }
+
+                            m_keys = KEY.NONE;
+                            break;
+
+                        case MENU_CHEAT_OPTION_ID_COMPLETE_LEVEL:
+                            s_iLeftToDie = 0;
+                            goto case MENU_CHEAT_OPTION_ID_RESUME;
+
+                        case MENU_CHEAT_OPTION_ID_RESTORE_HEALTH:
+                            m_gameFrame_nEnergy = 5;
+                            Status_Show(0);
+                            goto case MENU_CHEAT_OPTION_ID_RESUME;
+
+                        case MENU_CHEAT_OPTION_ID_99_LIVES:
+                            GameMidlet.Instance_Game.m_gameFrame_nLife = 99;
+                            Status_Show(0);
+                            goto case MENU_CHEAT_OPTION_ID_RESUME;
+
+                        case MENU_CHEAT_OPTION_ID_SHOW_PHYSICAL_COLLISION:
+                            ShowPhysicalCollision = !ShowPhysicalCollision;
+                            Menu_UpdatePage();
+                            goto case MENU_CHEAT_OPTION_ID_RESUME;
+
+                        case MENU_CHEAT_OPTION_ID_SHOW_ACTOR_BOXES:
+                            ShowActorBoxes = !ShowActorBoxes;
+                            Menu_UpdatePage();
+                            goto case MENU_CHEAT_OPTION_ID_RESUME;
+                    }
                     break;
             }
 
@@ -561,7 +649,7 @@ public partial class Game
     public void Menu_Draw()
     {
         g_graBackBuffer.setClip(0, 0, Resolution.X, Resolution.Y);
-        if (m_gameMenu_idCurPage != MENU_PAGE.PAUSE)
+        if (m_gameMenu_idCurPage is not (MENU_PAGE.PAUSE or MENU_PAGE.CHEAT))
         {
             g_graBackBuffer.drawImage(RM.GetImage(RESOURCE_ID_IMG_SPLASH_SCREEN), Resolution.X / 2, Resolution.Y / 2, ANCHOR.HCENTER | ANCHOR.VCENTER);
             if (m_gameMenu_pAnims != null)

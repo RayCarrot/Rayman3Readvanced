@@ -7,4 +7,6 @@ public enum MENU_PAGE
 
     ABOUT = 3,
     HELP = 4,
+
+    CHEAT = 5, // Custom in Readvanced
 }

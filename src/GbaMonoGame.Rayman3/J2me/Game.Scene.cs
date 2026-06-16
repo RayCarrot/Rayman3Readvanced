@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using BinarySerializer.Gameloft.J2me;
 using GbaMonoGame.Engine2d;
 using Microsoft.Xna.Framework;
@@ -14,7 +13,7 @@ public partial class Game
     public Actor pRayman { get; set; }
     public Actor[] pFist { get; } = new Actor[2];
     public int Fist_num { get; set; }
-    public int s_iLeftToDie { get; set; }
+    public int s_iLeftToDie { get; set; } // The remaining actors to trigger before the level is completed
     public short m_sectors_width { get; set; }
     public short m_sectors_height { get; set; }
     public sbyte m_sectors_nbrWidth { get; set; }
@@ -30,6 +29,9 @@ public partial class Game
     // Custom for high resolution
     public sbyte[] ActiveSector { get; set; }
     public sbyte[] AllSectors { get; set; }
+
+    // Custom
+    public bool ShowActorBoxes { get; set; }
 
     public Actor Actor_create(ActorInstance data)
     {
@@ -207,28 +209,30 @@ public partial class Game
             }
         }
 
-        // TODO: Debug only
         // Custom - draw collision boxes
-        foreach (Actor actor in actors)
+        if (ShowActorBoxes)
         {
-            if ((actor.stateFlag & ACTOR_STATE.DEAD) == 0 && Camera_IsVisible(actor))
+            foreach (Actor actor in actors)
             {
-                drawBox(actor.colBox, DebugBoxColor.ActionBox);
-                drawBox(actor.anim.GetRenderBox(actor.stateFlag & (ACTOR_STATE.FLIP_X | ACTOR_STATE.FLIP_Y)), DebugBoxColor.DetectionBox);
-
-                // Helper
-                void drawBox(Box box, Color color)
+                if ((actor.stateFlag & ACTOR_STATE.DEAD) == 0 && Camera_IsVisible(actor))
                 {
-                    int x = (int)((actor.x >> 8) + box.Left) - m_iBackgroundX;
-                    int y = (int)((actor.y >> 8) + box.Top) - m_iBackgroundY;
-                    int w = box.Right - box.Left;
-                    int h = box.Bottom - box.Top;
+                    drawBox(actor.colBox, DebugBoxColor.ActionBox);
+                    drawBox(actor.anim.GetRenderBox(actor.stateFlag & (ACTOR_STATE.FLIP_X | ACTOR_STATE.FLIP_Y)), DebugBoxColor.DetectionBox);
 
-                    Graphics.setColor(color);
-                    Graphics.fillRect(x, y, w, 1); // Top
-                    Graphics.fillRect(x, y, 1, h); // Left
-                    Graphics.fillRect(x + w, y + h, -1, -h); // Bottom
-                    Graphics.fillRect(x + w, y + h, -w, -1); // Right
+                    // Helper
+                    void drawBox(Box box, Color color)
+                    {
+                        int x = (int)((actor.x >> 8) + box.Left) - m_iBackgroundX;
+                        int y = (int)((actor.y >> 8) + box.Top) - m_iBackgroundY;
+                        int w = box.Right - box.Left;
+                        int h = box.Bottom - box.Top;
+
+                        Graphics.setColor(color);
+                        Graphics.fillRect(x, y, w, 1); // Top
+                        Graphics.fillRect(x, y, 1, h); // Left
+                        Graphics.fillRect(x + w, y + h, -1, -h); // Bottom
+                        Graphics.fillRect(x + w, y + h, -w, -1); // Right
+                    }
                 }
             }
         }
@@ -306,6 +310,8 @@ public partial class Game
         }
 
         RM.Free(RESOURCE_ID_DATA_ACTOR_TYPES);
+
+        ShowActorBoxes = false;
     }
 
     void flagActorType(ACTOR_TYPE iActorType, int iLoadState)

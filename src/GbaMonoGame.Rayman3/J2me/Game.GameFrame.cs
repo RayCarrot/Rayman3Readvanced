@@ -266,7 +266,7 @@ public partial class Game
             g_graBackBuffer.setFont(m_fontGeneral);
             if (m_iPrevLevel == LEVEL_MENU)
             {
-                if (m_gameMenu_idCurPage == MENU_PAGE.PAUSE)
+                if (m_gameMenu_idCurPage is MENU_PAGE.PAUSE or MENU_PAGE.CHEAT)
                     Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) / 2, 110, 0);
                 else
                     Menu_DrawString(RM.GetString(STRING_ID_LOADING), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_LOADING))) / 2, 263, 0);

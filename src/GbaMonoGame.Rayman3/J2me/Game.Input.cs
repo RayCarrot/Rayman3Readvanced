@@ -128,6 +128,19 @@ public partial class Game
             pressedKey = GAME_KEY.NONE;
             StopSound();
         }
+
+        // Custom cheat menu
+        if (Engine.Settings.Active.Tweaks.AllowCheatMenu &&
+            m_gameFrame_curLevel >= LEVEL_WORLD_MAP && 
+            (pressedKey & GAME_KEY.STAR) != 0 && 
+            !m_gameFrame_paused && 
+            curState == SYS_FRAME_STATE.GAME)
+        {
+            m_gameFrame_paused = true;
+            Menu_SetCurrentPage(MENU_PAGE.CHEAT);
+            pressedKey = GAME_KEY.NONE;
+            StopSound();
+        }
     }
 
     public void keyPressed(JAVA_KEY_CODE keyCode)
