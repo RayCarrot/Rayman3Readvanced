@@ -5,7 +5,6 @@ using BinarySerializer;
 
 namespace GbaMonoGame.Rayman3.J2me;
 
-// TODO: Make sure this doesn't lag - check time it takes (BinarySerializer probably allocates a lot too...)
 // Replaces javax.microedition.rms.RecordStore
 public class RecordStore : IDisposable
 {
@@ -15,20 +14,25 @@ public class RecordStore : IDisposable
     {
         Name = recordStoreName;
 
-        // Create the context for serializing the files
-        Context = new Context(GetDirectory(),
-            settings: new SerializerSettings() { IgnoreCacheOnRead = true },
-            systemLogger: BinarySerializerSystemLogger.Create());
+        Context context = J2meRom.Context;
 
         // Add the file
-        LinearFile file = Context.AddFile(new LinearFile(Context, GetFileName(recordStoreName)));
+        string filePath = GetBinaryFilePath(Name);
+        if (!context.FileExists(filePath))
+        {
+            context.AddFile(new LinearFile(context, filePath)
+            {
+                IgnoreCacheOnRead = true,
+                RecreateOnWrite = true,
+            });
+        }
 
         // Read the file
-        using (Context)
+        using (context)
         {
-            if (file.SourceFileExists)
+            if (recordStoreExists(recordStoreName))
             {
-                RecordStoreFile recordStoreFile = FileFactory.Read<RecordStoreFile>(Context, file.FilePath);
+                RecordStoreFile recordStoreFile = FileFactory.Read<RecordStoreFile>(context, filePath);
                 Records = new List<byte[]>(recordStoreFile.Records);
             }
             else if (createIfNecessary)
@@ -46,13 +50,13 @@ public class RecordStore : IDisposable
 
     #region Private Fields
 
+    private const string DirectoryName = "RecordStore";
     private const string FileExtension = ".sav";
 
     #endregion
 
     #region Public Properties
 
-    public Context Context { get; }
     public string Name { get; }
     public List<byte[]> Records { get; }
     public bool IsClosed { get; set; }
@@ -62,19 +66,19 @@ public class RecordStore : IDisposable
 
     #region Private Static Methods
 
-    private static string GetDirectory()
+    private static string GetBinaryFilePath(string recordStoreName)
     {
-        return Path.Combine(J2meRom.GameDirectory, "RecordStore");
+        return Path.Combine(DirectoryName, $"{recordStoreName}{FileExtension}");
     }
 
-    private static string GetFileName(string recordStoreName)
+    private static string GetPhysicalDirectory()
     {
-        return $"{recordStoreName}{FileExtension}";
+        return Path.Combine(J2meRom.GameDirectory, DirectoryName);
     }
 
-    private static string GetFilePath(string recordStoreName)
+    private static string GetPhysicalFilePath(string recordStoreName)
     {
-        return Path.Combine(GetDirectory(), GetFileName(recordStoreName));
+        return Path.Combine(J2meRom.GameDirectory, DirectoryName, $"{recordStoreName}{FileExtension}");
     }
 
     #endregion
@@ -88,7 +92,7 @@ public class RecordStore : IDisposable
 
     public static string[] listRecordStores()
     {
-        string directory = GetDirectory();
+        string directory = GetPhysicalDirectory();
 
         if (!Directory.Exists(directory))
             return [];
@@ -104,13 +108,13 @@ public class RecordStore : IDisposable
     // Custom method to avoid looping over every file when checking for a single one
     public static bool recordStoreExists(string recordStoreName)
     {
-        string filePath = GetFilePath(recordStoreName);
+        string filePath = GetPhysicalFilePath(recordStoreName);
         return File.Exists(filePath);
     }
 
     public static void deleteRecordStore(string recordStoreName)
     {
-        string filePath = GetFilePath(recordStoreName);
+        string filePath = GetPhysicalFilePath(recordStoreName);
         File.Delete(filePath);
     }
 
@@ -186,8 +190,8 @@ public class RecordStore : IDisposable
             RecordStoreFile recordStoreFile = new() { Records = records };
 
             // Save the file
-            using (Context)
-                FileFactory.Write<RecordStoreFile>(Context, GetFileName(Name), recordStoreFile);
+            using Context context = J2meRom.Context;
+            FileFactory.Write<RecordStoreFile>(context, GetBinaryFilePath(Name), recordStoreFile);
         }
     }
 
@@ -195,8 +199,6 @@ public class RecordStore : IDisposable
     {
         if (!IsClosed)
             closeRecordStore();
-
-        Context.Dispose();
     }
 
     #endregion
