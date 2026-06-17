@@ -207,15 +207,16 @@ public partial class CameraSideScroller
         {
             case FsmAction.Init:
                 {
-                    Vector2 pos = Position;
-                    float dist = Vector2.Distance(MoveTargetPos, pos);
+                    Vector2 pos = Position.Truncate();
+                    Vector2 target = MoveTargetPos.Truncate();
+
+                    float dist = MathF.Truncate(Vector2.Distance(target, pos));
 
                     if (dist != 0)
-                        Speed = (MoveTargetPos - pos) / dist;
-                    else
-                        Speed = Vector2.Zero;
-                    
-                    Speed *= 4;
+                    {
+                        Speed = (target - pos) / dist;
+                        Speed *= 4;
+                    }
                 }
                 break;
 

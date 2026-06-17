@@ -155,7 +155,7 @@ public sealed partial class CameraSideScroller : CameraActor2D
             if (ShakeTimer == (ShakeFrame + 1) * shakeSpeed)
             {
                 ShakeFrame++;
-                shakeTableIndex = ShakeFrame % 128 * 2;
+                shakeTableIndex = ShakeFrame * 2;
             }
             else if (ShakeTimer > ShakeFrame * shakeSpeed)
             {
@@ -164,21 +164,21 @@ public sealed partial class CameraSideScroller : CameraActor2D
             
             shakeTableIndex %= 256;
 
-            // Check to stop the shake
-            if (ShakeTimer >= ShakeLength - 1)
-                ShakeLength = 0;
-
             if (HasStartedShake || (ShakeTimer & 7) == 4)
             {
                 HasStartedShake = true;
 
                 // Down
                 if ((ShakeTimer & 7) == 0)
-                    return speed + new Vector2(0, _shakeTable[shakeTableIndex]);
+                    speed += new Vector2(0, _shakeTable[shakeTableIndex]);
                 // Up
                 else if ((ShakeTimer & 7) == 4)
-                    return speed + new Vector2(0, -_shakeTable[shakeTableIndex]);
+                    speed += new Vector2(0, -_shakeTable[shakeTableIndex]);
             }
+
+            // Check to stop the shake
+            if (ShakeTimer >= ShakeLength - 1)
+                ShakeLength = 0;
         }
 
         return speed;
@@ -394,6 +394,12 @@ public sealed partial class CameraSideScroller : CameraActor2D
         ImGui.Text($"Target: {TargetX} x {ScaledTargetY}");
         ImGui.Text($"HorizontalOffset: {HorizontalOffset}");
         ImGui.Text($"ScaledHorizontalOffset: {ScaledHorizontalOffset}");
+
+        ImGui.Spacing();
+
+        ImGui.Text($"ShakeLength: {ShakeLength}");
+        ImGui.Text($"ShakeTimer: {ShakeTimer}");
+        ImGui.Text($"ShakeFrame: {ShakeFrame}");
     }
 
     public enum FollowMode
