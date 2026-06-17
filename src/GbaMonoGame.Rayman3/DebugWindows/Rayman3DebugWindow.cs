@@ -30,6 +30,11 @@ public class Rayman3DebugWindow : DebugWindow
                 ImGui.Text($"World: {Rayman3.GameInfo.WorldId}");
 
                 ImGui.Spacing();
+                ImGui.SeparatorText("Other");
+
+                ImGui.Text($"Random: {Random.GetSeed():X8}");
+
+                ImGui.Spacing();
                 ImGui.SeparatorText("Powers");
 
                 for (int i = 0; i < 6; i++)
