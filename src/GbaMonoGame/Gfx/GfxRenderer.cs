@@ -15,7 +15,16 @@ public class GfxRenderer
     {
         _graphicsDevice = graphicsDevice;
         _spriteBatch = new SpriteBatch(graphicsDevice);
-        _spriteRasterizerState = RasterizerState.CullNone;
+        _defaultSpriteRasterizerState = new RasterizerState()
+        {
+            CullMode = CullMode.None,
+            ScissorTestEnable = false,
+        };
+        _scissorSpriteRasterizerState = new RasterizerState()
+        {
+            CullMode = CullMode.None,
+            ScissorTestEnable = true,
+        };
 
         _defaultShader = Engine.Assets.FixContentManager.Load<Effect>(Assets.Gfx.DefaultShader);
 
@@ -66,8 +75,10 @@ public class GfxRenderer
 
     private readonly GraphicsDevice _graphicsDevice;
     private readonly SpriteBatch _spriteBatch;
-    private readonly RasterizerState _spriteRasterizerState;
+    private readonly RasterizerState _defaultSpriteRasterizerState;
+    private readonly RasterizerState _scissorSpriteRasterizerState;
     private RenderOptions? _spriteBatchRenderOptions;
+    private Rectangle? _scissorRectangle;
 
     private readonly Effect _defaultShader;
 
@@ -106,10 +117,21 @@ public class GfxRenderer
 
     #region Standard
 
-    public void BeginSpriteRender(RenderOptions options)
+    public void BeginSpriteRender(RenderOptions options, Box? scissorBox = null)
     {
+        // Calculate the scissor rectangle
+        Rectangle? scissorRectangle = null;
+        if (scissorBox != null)
+        {
+            float scale = options.RenderContext.Scale;
+            Vector2 viewportPos = new(options.RenderContext.Viewport.X, options.RenderContext.Viewport.Y);
+            scissorRectangle = new Rectangle(
+                location: (viewportPos + scissorBox.Value.Position * scale).ToCeilingPoint(),
+                size: (scissorBox.Value.Size * scale).ToFloorPoint());
+        }
+
         // If we have new render options then we need to begin a new batch
-        if (_spriteBatchRenderOptions != options)
+        if (_spriteBatchRenderOptions != options || _scissorRectangle != scissorRectangle)
         {
             // End previous batch
             if (_spriteBatchRenderOptions != null)
@@ -176,6 +198,14 @@ public class GfxRenderer
             _graphicsDevice.Textures[1] = null;
 #endif
 
+            // Set the scissor rectangle
+            if (_scissorRectangle != scissorRectangle)
+            {
+                if (scissorRectangle != null)
+                    _graphicsDevice.ScissorRectangle = scissorRectangle.Value;
+                _scissorRectangle = scissorRectangle;
+            }
+
             // Begin a new batch
             _spriteBatch.Begin(
                 samplerState: SamplerState.PointClamp,
@@ -183,7 +213,7 @@ public class GfxRenderer
                 blendState: GetBlendState(options.BlendMode),
                 depthStencilState: options.UseDepthStencil ? DepthStencilState.Default : DepthStencilState.None,
                 transformMatrix: view,
-                rasterizerState: _spriteRasterizerState);
+                rasterizerState: _scissorRectangle != null ? _scissorSpriteRasterizerState : _defaultSpriteRasterizerState);
         }
     }
 

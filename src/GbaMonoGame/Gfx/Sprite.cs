@@ -20,6 +20,7 @@ public class Sprite
     public AlphaCoefficient Alpha { get; set; }
 
     public RenderOptions RenderOptions { get; set; }
+    public Box? ScissorBox { get; set; }
 
     public void Reset()
     {
@@ -35,11 +36,12 @@ public class Sprite
         OverrideGfxColor = false;
         Alpha = default;
         RenderOptions = default;
+        ScissorBox = null;
     }
 
     public void Draw(GfxRenderer renderer, Color color)
     {
-        renderer.BeginSpriteRender(RenderOptions);
+        renderer.BeginSpriteRender(RenderOptions, ScissorBox);
 
         if (OverrideGfxColor)
             color = Color;
