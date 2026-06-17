@@ -43,7 +43,7 @@ public partial class Game
     public bool showDebug { get; set; }
     public long _nUpdateTimer { get; set; } // Unused in Readvanced
 
-    public void drawImageEx(float dstx, float dsty, float w, float h, Texture2D img, int iImageIndex, float sx, float sy, int flag)
+    public void drawImageEx(float dstx, float dsty, float w, float h, int iImageIndex, float sx, float sy, int flag)
     {
         if (m_bBackgroundUsed)
         {
@@ -51,23 +51,14 @@ public partial class Game
             dsty -= m_iBackgroundY;
         }
 
-        // Readvanced code
-        if (true)
-        {
-            g_graBackBuffer.DrawTexture(img, dstx, dsty, (flag & 0x4000) != 0);
-        }
-        // Original game code
-        else
-        {
-            g_graBackBuffer.setClip(dstx, dsty, w, h);
+        g_graBackBuffer.setClip(dstx, dsty, w, h);
 
-            // Normal
-            if ((flag & 0x4000) == 0)
-                g_graBackBuffer.drawImage(RM.GetImage(iImageIndex), dstx - sx, dsty - sy, ANCHOR.TOP | ANCHOR.LEFT);
-            // Flip X
-            else
-                g_graBackBuffer.drawRegion(RM.GetImage(iImageIndex), sx, sy, w, h, TRANS.MIRROR, dstx, dsty, ANCHOR.TOP | ANCHOR.LEFT);
-        }
+        // Normal
+        if ((flag & 0x4000) == 0)
+            g_graBackBuffer.drawImage(RM.GetImage(iImageIndex), dstx - sx, dsty - sy, ANCHOR.TOP | ANCHOR.LEFT);
+        // Flip X
+        else
+            g_graBackBuffer.drawRegion(RM.GetImage(iImageIndex), sx, sy, w, h, TRANS.MIRROR, dstx, dsty, ANCHOR.TOP | ANCHOR.LEFT);
     }
 
     // Unused in Readvanced

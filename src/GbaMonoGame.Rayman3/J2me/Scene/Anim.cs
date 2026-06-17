@@ -140,7 +140,6 @@ public class Anim
                     dsty: nsy,
                     w: pModule.Width,
                     h: pModule.Height,
-                    img: data.ModuleTextures[modId],
                     iImageIndex: data.resID,
                     sx: pModule.XPosition,
                     sy: pModule.YPosition,

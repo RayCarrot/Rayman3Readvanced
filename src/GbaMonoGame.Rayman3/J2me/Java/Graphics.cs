@@ -22,7 +22,7 @@ public class Graphics
     public Playfield2DRenderContext RenderContext { get; }
     public RenderOptions RenderOptions { get; }
     public List<Sprite> Sprites { get; }
-    public GbaMonoGame.Box Clip { get; set; } // TODO: Remove this
+    public GbaMonoGame.Box Clip { get; set; }
     public Color Color { get; set; }
     public Font Font { get; set; }
     public int Priority { get; set; } = 1;
@@ -106,20 +106,12 @@ public class Graphics
         x = AnchorX(x, img.Width, anchor);
         y = AnchorY(y, img.Height, anchor);
 
-        Vector2 imgSize = new(img.Width, img.Height);
-        GbaMonoGame.Box clip = new(
-            position: Vector2.Clamp(Clip.Position - new Vector2(x, y), Vector2.Zero, imgSize),
-            size: Vector2.Min(Clip.Size, Clip.Position + imgSize));
-
-        x += clip.X;
-        y += clip.Y;
-
         Sprite sprite = Gfx.GetNewSprite();
         sprite.Texture = img;
         sprite.Position = new Vector2(x, y);
         sprite.RenderOptions = RenderOptions;
         sprite.Priority = Priority;
-        sprite.TextureRectangle = clip.ToRectangle();
+        sprite.ScissorBox = Clip;
         Sprites.Add(sprite);
     }
 
@@ -131,13 +123,18 @@ public class Graphics
         x_dest = AnchorX(x_dest, src.Width, anchor);
         y_dest = AnchorY(y_dest, src.Height, anchor);
 
-        Rectangle clip = new((int)x_src, (int)y_src, (int)width, (int)height);
+        Rectangle clip = new(
+            x: (int)MathF.Ceiling(x_src), 
+            y: (int)MathF.Ceiling(y_src), 
+            width: (int)MathF.Floor(width), 
+            height: (int)MathF.Floor(height));
 
         Sprite sprite = Gfx.GetNewSprite();
         sprite.Texture = src;
         sprite.Position = new Vector2(x_dest, y_dest);
         sprite.RenderOptions = RenderOptions;
         sprite.Priority = Priority;
+        sprite.ScissorBox = Clip;
         sprite.TextureRectangle = clip;
         sprite.FlipX = transform == TRANS.MIRROR;
         Sprites.Add(sprite);
@@ -163,7 +160,7 @@ public class Graphics
         Vector2 pos = Vector2.Zero;
         foreach (byte c in Engine.Font.GetTextBytes(str))
         {
-            Sprites.Add(Engine.Font.GetCharacterSprite(
+            Sprite sprite = Engine.Font.GetCharacterSprite(
                 c: c,
                 fontSize: Font.Size,
                 transformation: transformation,
@@ -172,7 +169,11 @@ public class Graphics
                 affineMatrix: null,
                 alpha: AlphaCoefficient.Max,
                 color: Color,
-                renderOptions: RenderOptions));
+                renderOptions: RenderOptions);
+
+            sprite.ScissorBox = Clip;
+
+            Sprites.Add(sprite);
         }
     }
 
@@ -193,17 +194,6 @@ public class Graphics
         setClip(0, 0, Resolution.X, Resolution.Y);
         setColor(color);
         fillRect(0, 0, Resolution.X, Resolution.Y);
-    }
-
-    public void DrawTexture(Texture2D texture, float x, float y, bool flipX)
-    {
-        Sprite sprite = Gfx.GetNewSprite();
-        sprite.Texture = texture;
-        sprite.Position = new Vector2(x, y);
-        sprite.RenderOptions = RenderOptions;
-        sprite.Priority = Priority;
-        sprite.FlipX = flipX;
-        Sprites.Add(sprite);
     }
 
     public void DrawGfx()

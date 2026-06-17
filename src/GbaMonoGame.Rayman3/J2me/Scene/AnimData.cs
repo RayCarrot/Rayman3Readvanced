@@ -1,5 +1,4 @@
 ﻿using BinarySerializer.Gameloft.J2me;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3.J2me;
 
@@ -14,7 +13,4 @@ public class AnimData
     public AnimationFrame[] frames { get; set; }
     public Action[] actions { get; set; }
     public MechModelParams[] mmParam { get; set; }
-
-    // Custom
-    public Texture2D[] ModuleTextures { get; set; }
 }
