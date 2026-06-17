@@ -413,10 +413,20 @@ public sealed partial class Grolgoth : MovableActor
 
             // Projectile attack finished
             case Message.Actor_End:
-                if (State == _Fsm_GroundDeployBomb) 
-                    State.MoveTo(_Fsm_GroundDefault);
+                if (State == _Fsm_GroundDeployBomb)
+                {
+                    // NOTE: The original game does not have this check, but we need it since otherwise there can be a timing issue in
+                    //       widescreen where the projectiles stay alive long enough for the Grolgoth to just enter the state to deploy
+                    //       a bomb, meaning that sending the message here incorrectly cancels the bomb deployment.
+                    if (((GrolgothProjectile)sender).ActionId is not (
+                        GrolgothProjectile.Action.EnergyBall_Right or GrolgothProjectile.Action.EnergyBall_Left or 
+                        GrolgothProjectile.Action.Laser_Right or GrolgothProjectile.Action.Laser_Left))
+                        State.MoveTo(_Fsm_GroundDefault);
+                }
                 else if ((State == _Fsm_GroundFallDown || State == _Fsm_AirAttack) && AttackCount != 0)
+                {
                     AttackCount--;
+                }
                 return false;
 
             default:
