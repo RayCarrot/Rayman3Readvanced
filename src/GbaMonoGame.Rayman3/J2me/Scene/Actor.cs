@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using BinarySerializer.Gameloft.J2me;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -340,12 +341,15 @@ public class Actor
                         return null;
 
                     // Get the image data
-                    Color[] imgBuffer = new Color[width * height];
+                    Color[] imgBuffer = ArrayPool<Color>.Shared.Rent(width * height);
                     img.GetData(0, new Rectangle(module.XPosition, module.YPosition, width, height), imgBuffer, 0, width * height);
 
                     // Create the texture for the module
                     Texture2D moduleTexture = new(Engine.Assets.GraphicsDevice, width, height, false, SurfaceFormat.Color);
-                    moduleTexture.SetData(imgBuffer);
+                    moduleTexture.SetData(imgBuffer, 0, width * height);
+
+                    ArrayPool<Color>.Shared.Return(imgBuffer);
+
                     return moduleTexture;
                 });
         }

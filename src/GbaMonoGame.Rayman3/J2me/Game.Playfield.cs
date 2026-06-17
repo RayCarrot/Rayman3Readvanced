@@ -1,4 +1,5 @@
-﻿using BinarySerializer.Gameloft.J2me;
+﻿using System.Buffers;
+using BinarySerializer.Gameloft.J2me;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -54,8 +55,8 @@ public partial class Game
             {
                 // Get the tileset image data
                 Texture2D tileSet = GameMidlet.Instance_Game.RM.GetImage(GameMidlet.Instance_Game.m_iImageResID);
-                Color[] tileSetPixels = new Color[tileSet.Width * tileSet.Height];
-                tileSet.GetData(tileSetPixels);
+                Color[] tileSetPixels = ArrayPool<Color>.Shared.Rent(tileSet.Width * tileSet.Height);
+                tileSet.GetData(tileSetPixels, 0, tileSet.Width * tileSet.Height);
 
                 // Get the background size
                 int bgPixelsWidth = GameMidlet.Instance_Game.m_sBackgroundWidth * TILE_SIZE;
@@ -67,7 +68,7 @@ public partial class Game
 
                 // Create the background texture
                 Texture2D bgTexture = new(Engine.Assets.GraphicsDevice, bgPixelsWidth, bgPixelsHeight);
-                Color[] bgPixels = new Color[bgTexture.Width * bgTexture.Height];
+                Color[] bgPixels = ArrayPool<Color>.Shared.Rent(bgTexture.Width * bgTexture.Height);
                 for (int y = 0; y < bgTexture.Height; y += TILE_SIZE)
                 {
                     for (int x = 0; x < bgTexture.Width; x += TILE_SIZE)
@@ -85,7 +86,11 @@ public partial class Game
                         }
                     }
                 }
-                bgTexture.SetData(bgPixels);
+                bgTexture.SetData(bgPixels, 0, bgTexture.Width * bgTexture.Height);
+
+                ArrayPool<Color>.Shared.Return(tileSetPixels);
+                ArrayPool<Color>.Shared.Return(bgPixels);
+
                 return bgTexture;
             });
 

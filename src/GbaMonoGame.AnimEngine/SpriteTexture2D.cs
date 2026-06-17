@@ -1,4 +1,6 @@
-﻿using BinarySerializer.Nintendo.GBA;
+﻿using System;
+using System.Buffers;
+using BinarySerializer.Nintendo.GBA;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -12,7 +14,9 @@ public class SpriteTexture2D : Texture2D
     public SpriteTexture2D(AnimatedObjectResource resource, Constants.Size shape, Palette palette, int tileIndex) :
         base(Engine.Assets.GraphicsDevice, shape.Width, shape.Height)
     {
-        Color[] texColors = new Color[Width * Height];
+        Color[] texColors = ArrayPool<Color>.Shared.Rent(Width * Height);
+        Array.Clear(texColors);
+
         byte[] tileSet = resource.SpriteTable.Data;
         int tileSetIndex = tileIndex * 0x20;
 
@@ -53,6 +57,7 @@ public class SpriteTexture2D : Texture2D
             }
         }
 
-        SetData(texColors);
+        SetData(texColors, 0, Width * Height);
+        ArrayPool<Color>.Shared.Return(texColors);
     }
 }

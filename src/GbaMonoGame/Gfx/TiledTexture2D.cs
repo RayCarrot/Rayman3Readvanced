@@ -1,4 +1,6 @@
-﻿using BinarySerializer.Nintendo.GBA;
+﻿using System;
+using System.Buffers;
+using BinarySerializer.Nintendo.GBA;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -9,7 +11,8 @@ public class TiledTexture2D : Texture2D
     public TiledTexture2D(byte[] tileSet, int tileIndex, int paletteIndex, Palette palette, bool is8Bit) :
         base(Engine.Assets.GraphicsDevice, Tile.Size, Tile.Size)
     {
-        Color[] texColors = new Color[Width * Height];
+        Color[] texColors = ArrayPool<Color>.Shared.Rent(Width * Height);
+        Array.Clear(texColors);
 
         if (is8Bit)
         {
@@ -22,7 +25,9 @@ public class TiledTexture2D : Texture2D
             DrawHelpers.DrawTile_4bpp(texColors, 0, 0, Width, tileSet, ref tilePixelIndex, palette, paletteIndex * 16);
         }
 
-        SetData(texColors);
+        SetData(texColors, 0, Width * Height);
+
+        ArrayPool<Color>.Shared.Return(texColors);
     }
 
     public TiledTexture2D(int width, int height, byte[] tileSet, MapTile[] tileMap, Palette palette, bool is8Bit) :
@@ -31,7 +36,8 @@ public class TiledTexture2D : Texture2D
     public TiledTexture2D(int width, int height, byte[] tileSet, MapTile[] tileMap, int baseTileIndex, Palette palette, bool is8Bit) :
         base(Engine.Assets.GraphicsDevice, width * Tile.Size, height * Tile.Size)
     {
-        Color[] texColors = new Color[Width * Height];
+        Color[] texColors = ArrayPool<Color>.Shared.Rent(Width * Height);
+        Array.Clear(texColors);
 
         if (is8Bit)
         {
@@ -93,6 +99,8 @@ public class TiledTexture2D : Texture2D
             }
         }
 
-        SetData(texColors);
+        SetData(texColors, 0, Width * Height);
+
+        ArrayPool<Color>.Shared.Return(texColors);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -14,32 +15,39 @@ public class PaletteTexture2D : Texture2D
 
     public PaletteTexture2D(IReadOnlyList<SerializableColor> palette) : base(Engine.Assets.GraphicsDevice, TextureWidth, GetHeight(palette.Count))
     {
-        Color[] texColors = new Color[Width * Height];
+        Color[] texColors = ArrayPool<Color>.Shared.Rent(Width * Height);
+        Array.Clear(texColors);
         
         // Set the palette colors, skipping the first color since it's the transparent color
         for (int colorIndex = 1; colorIndex < palette.Count; colorIndex++)
             texColors[colorIndex] = palette[colorIndex].ToColor();
 
-        SetData(texColors);
+        SetData(texColors, 0, Width * Height);
+
+        ArrayPool<Color>.Shared.Return(texColors);
     }
 
     public PaletteTexture2D(Palette palette) : this(palette.Colors) { }
 
     public PaletteTexture2D(Color[] palette) : base(Engine.Assets.GraphicsDevice, TextureWidth, GetHeight(palette.Length))
     {
-        Color[] texColors = new Color[Width * Height];
-        
+        Color[] texColors = ArrayPool<Color>.Shared.Rent(Width * Height);
+        Array.Clear(texColors);
+
         // Set the palette colors, skipping the first color since it's the transparent color
         for (int colorIndex = 1; colorIndex < palette.Length; colorIndex++)
             texColors[colorIndex] = palette[colorIndex];
 
-        SetData(texColors);
+        SetData(texColors, 0, Width * Height);
+
+        ArrayPool<Color>.Shared.Return(texColors);
     }
 
     public PaletteTexture2D(PaletteResource[] palettes) : base(Engine.Assets.GraphicsDevice, TextureWidth, GetHeight(palettes.Sum(static x => x.Colors.Length)))
     {
-        Color[] texColors = new Color[Width * Height];
-        
+        Color[] texColors = ArrayPool<Color>.Shared.Rent(Width * Height);
+        Array.Clear(texColors);
+
         // Enumerate each palette
         int texColorIndex = 0;
         foreach (PaletteResource pal in palettes)
@@ -58,13 +66,16 @@ public class PaletteTexture2D : Texture2D
                 throw new Exception("Invalid palette size");
         }
 
-        SetData(texColors);
+        SetData(texColors, 0, Width * Height);
+
+        ArrayPool<Color>.Shared.Return(texColors);
     }
 
     public PaletteTexture2D(Palette[] palettes) : base(Engine.Assets.GraphicsDevice, TextureWidth, GetHeight(palettes.Sum(static x => x.Colors.Length)))
     {
-        Color[] texColors = new Color[Width * Height];
-        
+        Color[] texColors = ArrayPool<Color>.Shared.Rent(Width * Height);
+        Array.Clear(texColors);
+
         // Enumerate each palette
         int texColorIndex = 0;
         foreach (Palette pal in palettes)
@@ -83,7 +94,9 @@ public class PaletteTexture2D : Texture2D
                 throw new Exception("Invalid palette size");
         }
 
-        SetData(texColors);
+        SetData(texColors, 0, Width * Height);
+
+        ArrayPool<Color>.Shared.Return(texColors);
     }
 
     private const int TextureWidth = 16;

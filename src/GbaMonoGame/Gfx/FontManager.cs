@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.Numerics;
 using System.Text;
 using BinarySerializer.Ubisoft.GbaEngine;
@@ -50,14 +51,13 @@ public class FontManager : IDisposable
         int charsPerRow = TextureWidth / charSize.X;
         int textureHeight = (int)BitOperations.RoundUpToPowerOf2((uint)(charSize.Y * (Font.CharactersCount / charsPerRow)));
         Texture2D tex = new(Engine.Assets.GraphicsDevice, TextureWidth, textureHeight);
-        Color[] texColors = new Color[tex.Width * tex.Height];
+        Color[] texColors = ArrayPool<Color>.Shared.Rent(tex.Width * tex.Height);
 
         // Pad out end of array
         byte[] expandedImgData = new byte[font.ImgData.Length + 3];
         Array.Copy(font.ImgData, expandedImgData, font.ImgData.Length);
 
-        if (background != Color.Transparent)
-            Array.Fill(texColors, background);
+        Array.Fill(texColors, background);
 
         // Draw every character to the texture
         for (int charIndex = 0; charIndex < Font.CharactersCount; charIndex++)
@@ -103,7 +103,9 @@ public class FontManager : IDisposable
             }
         }
 
-        tex.SetData(texColors);
+        tex.SetData(texColors, 0, tex.Width * tex.Height);
+
+        ArrayPool<Color>.Shared.Return(texColors);
 
         return tex;
     }
