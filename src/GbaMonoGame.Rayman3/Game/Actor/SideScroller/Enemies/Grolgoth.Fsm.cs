@@ -79,34 +79,46 @@ public partial class Grolgoth
 
                 int rand = Random.GetNumber(101);
 
-                // Deploy bomb
-                if (IsActionFinished && Timer > 5 && AttackCount == 0)
+                // If no more pending attacks...
+                if (AttackCount == 0)
                 {
-                    State.MoveTo(_Fsm_GroundDeployBomb);
-                    return false;
+                    // Deploy bomb if the action finished and waited at least 5 frames
+                    if (IsActionFinished && Timer > 5)
+                    {
+                        State.MoveTo(_Fsm_GroundDeployBomb);
+                        return false;
+                    }
                 }
-
-                // Shoot energy shots
-                if ((AttackCount != 0 && BossHealth < 3 && rand > 25) || 
-                    (BossHealth > 2 && AttackCount > 1))
+                // If there are pending attacks...
+                else
                 {
-                    State.MoveTo(_Fsm_GroundShootEnergyShots);
-                    return false;
-                }
+                    // Shoot energy shots if:
+                    // - Boss health is 1-2 and 75% random chance
+                    // - Boss health is 3-5 and it's not the last attack
+                    if ((BossHealth <= 2 && rand > 25) ||
+                        (BossHealth >= 3 && AttackCount > 1))
+                    {
+                        State.MoveTo(_Fsm_GroundShootEnergyShots);
+                        return false;
+                    }
 
-                // Shoot lasers
-                if ((AttackCount != 0 && BossHealth < 3 && rand <= 25) ||
-                    (AttackCount == 1 && BossHealth >= 3 && BossHealth != 5))
-                {
-                    State.MoveTo(_Fsm_GroundShootLasers);
-                    return false;
-                }
+                    // Shoot lasers if:
+                    // - Boss health is 1-2 and 25% chance
+                    // - Boss health is 3-4 and it's the last attack
+                    if ((BossHealth <= 2 && rand <= 25) ||
+                        (BossHealth >= 3 && BossHealth != 5 && AttackCount == 1))
+                    {
+                        State.MoveTo(_Fsm_GroundShootLasers);
+                        return false;
+                    }
 
-                // Deploy bomb
-                if (IsActionFinished && Timer > 5 && AttackCount == 1 && BossHealth == 5)
-                {
-                    State.MoveTo(_Fsm_GroundDeployBomb);
-                    return false;
+                    // Deploy bomb if the action finished, waited at least 5 frames and:
+                    // - Boss health is 5 and it's the last attack
+                    if (IsActionFinished && BossHealth == 5 && Timer > 5 && AttackCount == 1)
+                    {
+                        State.MoveTo(_Fsm_GroundDeployBomb);
+                        return false;
+                    }
                 }
                 break;
 
