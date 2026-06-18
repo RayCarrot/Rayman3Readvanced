@@ -230,7 +230,7 @@ public static class Rayman3Achievements
             description: "Defeat a pirate of every rank"),
         new AchievementInfo(
             id: AchievementId.MultiplayerWin, // TODO: Trigger
-            isGold: true,
+            isGold: false,
             smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
             bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "Top of the World",
