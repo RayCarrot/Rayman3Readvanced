@@ -123,6 +123,7 @@ public partial class Game
                     }
                     else
                     {
+                        Graphics.ForceOriginalResolution();
                         curState = SYS_FRAME_STATE.GAME_COMPLETE;
                         pRayman.anim.newAction = 38;
                         m_bBackgroundUsed = false;
