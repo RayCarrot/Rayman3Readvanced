@@ -142,9 +142,9 @@ public partial class Game
                 {
                     bConfirmExit = false;
                     g_graBackBuffer.ClearScreen(0);
-                    Menu_DrawString(RM.GetString(STRING_ID_EXIT_QUESTION), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_EXIT_QUESTION))) / 2, 128, 0);
-                    Menu_DrawString(RM.GetString(STRING_ID_NO), 0, 299, 0);
-                    Menu_DrawString(RM.GetString(STRING_ID_YES), Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_YES)), 299, 0);
+                    Menu_DrawString(RM.GetString(STRING_ID_EXIT_QUESTION), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_EXIT_QUESTION))) / 2, Resolution.Y / 2 - 32, 0);
+                    Menu_DrawString(RM.GetString(STRING_ID_NO), 0, Resolution.Y - 21, 0);
+                    Menu_DrawString(RM.GetString(STRING_ID_YES), Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_YES)), Resolution.Y - 21, 0);
                     if ((pressedKey & (GAME_KEY.SOFTKEY_1 | GAME_KEY.SOFTKEY_2)) != 0 && bConfirm)
                     {
                         if ((pressedKey & GAME_KEY.SOFTKEY_1) != 0)
@@ -164,14 +164,14 @@ public partial class Game
                     g_graBackBuffer.ClearScreen(0);
                     if (!bConfirmToMainMenu)
                     {
-                        Menu_DrawString(RM.GetString(STRING_ID_RESTART_QUESTION), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_RESTART_QUESTION))) / 2, 128, 0);
+                        Menu_DrawString(RM.GetString(STRING_ID_RESTART_QUESTION), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_RESTART_QUESTION))) / 2, Resolution.Y / 2 - 32, 0);
                     }
                     else
                     {
-                        Menu_DrawString(RM.GetString(STRING_ID_TO_MAIN_MENU_QUESTION), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_TO_MAIN_MENU_QUESTION))) / 2, 128, 0);
+                        Menu_DrawString(RM.GetString(STRING_ID_TO_MAIN_MENU_QUESTION), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_TO_MAIN_MENU_QUESTION))) / 2, Resolution.Y / 2 - 32, 0);
                     }
-                    Menu_DrawString(RM.GetString(STRING_ID_NO), 0, 299, 0);
-                    Menu_DrawString(RM.GetString(STRING_ID_YES), Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_YES)), 299, 0);
+                    Menu_DrawString(RM.GetString(STRING_ID_NO), 0, Resolution.Y - 21, 0);
+                    Menu_DrawString(RM.GetString(STRING_ID_YES), Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_YES)), Resolution.Y - 21, 0);
                     if ((pressedKey & (GAME_KEY.SOFTKEY_1 | GAME_KEY.SOFTKEY_2)) != 0)
                     {
                         if ((pressedKey & GAME_KEY.SOFTKEY_1) != 0)
