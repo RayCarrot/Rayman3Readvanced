@@ -1,6 +1,4 @@
-﻿using System;
-using System.Buffers;
-using System.IO;
+﻿using System.IO;
 using BinarySerializer.Gameloft.J2me;
 using GbaMonoGame.Engine2d;
 using Microsoft.Xna.Framework;
@@ -371,37 +369,18 @@ public partial class Game
         // Dump modules for all animations
         for (int actorIndex = 0; actorIndex < Actor.aniData.Length; actorIndex++)
         {
-            AnimData animData = Actor.aniData[actorIndex];
-            if (animData == null)
+            if (Actor.aniData[actorIndex] == null)
                 continue;
 
             for (int moduleIndex = 0; moduleIndex < Actor.aniData[actorIndex].nbModule; moduleIndex++)
             {
-                AnimationModule module = animData.modules[moduleIndex];
+                Texture2D img = Actor.aniData[actorIndex].ModuleTextures[moduleIndex];
 
-                // Get the image
-                Texture2D img = GameMidlet.Instance_Game.RM.GetImage(animData.resID);
-
-                // Some modules flow beyond the image dimensions
-                int width = Math.Min(module.Width, img.Width - module.XPosition);
-                int height = Math.Min(module.Height, img.Height - module.YPosition);
-
-                // Some modules are fully beyond the image dimensions
-                if (width <= 0 || height <= 0)
+                if (img == null)
                     continue;
 
-                // Get the image data
-                Color[] imgBuffer = ArrayPool<Color>.Shared.Rent(width * height);
-                img.GetData(0, new Rectangle(module.XPosition, module.YPosition, width, height), imgBuffer, 0, width * height);
-
-                // Create the texture for the module
-                using Texture2D moduleTexture = new(Engine.Assets.GraphicsDevice, width, height, false, SurfaceFormat.Color);
-                moduleTexture.SetData(imgBuffer, 0, width * height);
-
-                ArrayPool<Color>.Shared.Return(imgBuffer);
-
                 using FileStream stream = File.Create(Path.Combine(outputPath, $"{actorIndex}_{moduleIndex}.png"));
-                moduleTexture.SaveAsPng(stream, moduleTexture.Width, moduleTexture.Height);
+                img.SaveAsPng(stream, img.Width, img.Height);
             }
         }
 

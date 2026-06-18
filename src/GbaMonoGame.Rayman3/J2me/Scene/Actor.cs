@@ -1,5 +1,8 @@
 using System;
+using System.Buffers;
 using BinarySerializer.Gameloft.J2me;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 // ReSharper disable RedundantAssignment
 // ReSharper disable UnusedVariable
@@ -311,6 +314,45 @@ public class Actor
             data.actions[i] = res.Actions[i].Action;
             data.mmParam[i] = res.Actions[i].MechModelParams;
         }
+
+        // Custom - create separate texture for each sprite to avoid UV scaling issues
+        data.ModuleTextures = new Texture2D[data.modules.Length];
+        for (int i = 0; i < data.modules.Length; i++)
+        {
+            AnimationModule module = data.modules[i];
+
+            data.ModuleTextures[i] = Engine.Assets.BinaryTextureCache.GetOrCreateObject(
+                pointer: res.Offset,
+                id: i,
+                data: new ModuleDefine(module, resID),
+                createObjFunc: static data =>
+                {
+                    AnimationModule module = data.Module;
+
+                    // Get the image
+                    Texture2D img = GameMidlet.Instance_Game.RM.GetImage(data.ImageIndex);
+
+                    // Some modules flow beyond the image dimensions
+                    int width = Math.Min(module.Width, img.Width - module.XPosition);
+                    int height = Math.Min(module.Height, img.Height - module.YPosition);
+
+                    // Some modules are fully beyond the image dimensions
+                    if (width <= 0 || height <= 0)
+                        return null;
+
+                    // Get the image data
+                    Color[] imgBuffer = ArrayPool<Color>.Shared.Rent(width * height);
+                    img.GetData(0, new Rectangle(module.XPosition, module.YPosition, width, height), imgBuffer, 0, width * height);
+
+                    // Create the texture for the module
+                    Texture2D moduleTexture = new(Engine.Assets.GraphicsDevice, width, height, false, SurfaceFormat.Color);
+                    moduleTexture.SetData(imgBuffer, 0, width * height);
+
+                    ArrayPool<Color>.Shared.Return(imgBuffer);
+
+                    return moduleTexture;
+                });
+        }
     }
 
     public bool Ani_CheckEnd()
@@ -330,6 +372,7 @@ public class Actor
             dsty: ny,
             w: module.Width,
             h: module.Height,
+            img: pData.ModuleTextures[idMod],
             iImageIndex: pData.resID,
             sx: module.XPosition,
             sy: module.YPosition,
@@ -3338,4 +3381,12 @@ public class Actor
     public bool Rayman_KeyCurrent(GAME_KEY key) => ((GAME_KEY)V[3] & key) != 0;
     public bool Rayman_KeyPressed(GAME_KEY key) => ((GAME_KEY)V[4] & key) != 0;
     public bool Rayman_KeyReleased(GAME_KEY key) => ((GAME_KEY)V[5] & key) != 0;
+
+    private readonly struct ModuleDefine(
+        AnimationModule module,
+        int imageIndex)
+    {
+        public AnimationModule Module { get; } = module;
+        public int ImageIndex { get; } = imageIndex;
+    }
 }

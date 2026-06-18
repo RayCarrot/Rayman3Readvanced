@@ -23,7 +23,7 @@ public class Graphics
     public Playfield2DRenderContext RenderContext { get; }
     public RenderOptions RenderOptions { get; }
     public List<Sprite> Sprites { get; }
-    public GbaMonoGame.Box Clip { get; set; }
+    public GbaMonoGame.Box Clip { get; set; } // NOTE: We only use clipping for drawing text right now
     public Color Color { get; set; }
     public Font Font { get; set; }
     public int Priority { get; set; } = 1;
@@ -167,7 +167,6 @@ public class Graphics
         sprite.Position = new Vector2(x, y);
         sprite.RenderOptions = RenderOptions;
         sprite.Priority = Priority;
-        sprite.ScissorBox = Clip;
         Sprites.Add(sprite);
     }
 
@@ -190,7 +189,6 @@ public class Graphics
         sprite.Position = new Vector2(x_dest, y_dest);
         sprite.RenderOptions = RenderOptions;
         sprite.Priority = Priority;
-        sprite.ScissorBox = Clip;
         sprite.TextureRectangle = clip;
         sprite.FlipX = transform == TRANS.MIRROR;
         Sprites.Add(sprite);
@@ -234,6 +232,17 @@ public class Graphics
     }
 
     // Custom
+    public void DrawTexture(Texture2D texture, float x, float y, bool flipX)
+    {
+        Sprite sprite = Gfx.GetNewSprite();
+        sprite.Texture = texture;
+        sprite.Position = new Vector2(x, y);
+        sprite.RenderOptions = RenderOptions;
+        sprite.Priority = Priority;
+        sprite.FlipX = flipX;
+        Sprites.Add(sprite);
+    }
+
     public void ForceOriginalResolution()
     {
         RenderContext.SetFixedResolution(J2meRom.OriginalResolution);
