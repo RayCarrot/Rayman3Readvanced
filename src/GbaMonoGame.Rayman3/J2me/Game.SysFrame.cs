@@ -110,12 +110,7 @@ public partial class Game
                 GAME_FRAME_STATE ret = GameFrame_doLoop();
                 if (ret == GAME_FRAME_STATE.GAME_OVER)
                 {
-                    // TODO: Why sleep here?
-                    //try
-                    //{
-                    //    Thread.sleep(300L);
-                    //}
-                    //catch (Exception e) { }
+                    // Thread.Sleep(300); // Don't implement the game sleeping here as we want instant loads
                     curState = SYS_FRAME_STATE.GAME_OVER;
                     PlaySound(SOUND_INDEX.music_gameover, true);
                 }

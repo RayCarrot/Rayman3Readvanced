@@ -349,12 +349,7 @@ public partial class Game
         switch (m_gameFrame_curState)
         {
             case GAME_FRAME_STATE.LOADING:
-                // TODO: Why does the game sleep here?
-                //try
-                //{
-                //    Thread.sleep(300L);
-                //}
-                //catch (Exception e) { }
+                // Thread.Sleep(300); // Don't implement the game sleeping here as we want instant loads
                 GameFrame_StateInit();
                 return m_gameFrame_curState;
 
