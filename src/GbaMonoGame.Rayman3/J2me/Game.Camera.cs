@@ -86,7 +86,7 @@ public partial class Game
                     else if (pActor.yDirectionConfirmed == 0)
                         ty = pActor.V[16] + -cameraYOffset;
                     else if (pActor.yDirectionConfirmed == 1)
-                        ty = pActor.V[16] + pActor.colBox.Top - 16;
+                        ty = pActor.V[16] + pActor.colBox.Top - ScaleYValue(16);
                     else if (pActor.yDirectionConfirmed == -1)
                         ty = pActor.V[16] - IntegerResolution.Y;
                 }
