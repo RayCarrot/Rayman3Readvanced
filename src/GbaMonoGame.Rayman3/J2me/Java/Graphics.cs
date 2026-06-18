@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections.Generic;
 using BinarySerializer;
 using GbaMonoGame.TgxEngine;
@@ -97,8 +98,63 @@ public class Graphics
 
     public void fillRoundRect(float x, float y, float width, float height, float arcWidth, float arcHeight)
     {
-        // TODO: Implement arc
-        fillRect(x, y, width, height);
+        if (arcWidth == 0 && arcHeight == 0)
+        {
+            fillRect(x, y, arcWidth, arcHeight);
+            return;
+        }
+
+        // Draw the rectangle parts
+        fillRect(x + arcWidth / 2 + 1, y, width - arcWidth - 2, height); // Middle
+        fillRect(x, y + arcHeight / 2 + 1, arcWidth / 2 + 1, height - arcHeight - 2); // Left
+        fillRect(x + (width - arcWidth / 2) - 1, y + arcHeight / 2 + 1, arcWidth / 2 + 1, height - arcHeight - 2); // Right
+
+        // Fill rounded corners
+        fillArc(x, y, arcWidth, arcHeight, 90, 90); // Top left
+        fillArc(x + width - arcWidth - 1, y, arcWidth, arcHeight, 0, 90); // Top right
+        fillArc(x, y + height - arcHeight - 1, arcWidth, arcHeight, 180, 90); // Bottom left
+        fillArc(x + width - arcWidth - 1, y + height - arcHeight - 1, arcWidth, arcHeight, 270, 90); // Bottom right
+    }
+
+    public void fillArc(float x, float y, float width, float height, int startAngle, int arcAngle)
+    {
+        arcAngle = -arcAngle;
+        startAngle = -startAngle;
+
+        float centerX = x + width / 2;
+        float centerY = y + height / 2;
+        float radiusX = width / 2;
+        float radiusY = height / 2;
+        float startAngleRad = MathHelper.ToRadians(startAngle);
+        float endAngleRad = MathHelper.ToRadians(startAngle + arcAngle) - MathHelper.ToRadians(startAngle);
+        float maxRadius = Math.Max(radiusX, radiusY);
+
+        int steps = (int)Math.Abs(arcAngle * ((width + height) / 2) / 50);
+
+        int widthInt = (int)MathF.Ceiling(width);
+        int heightInt = (int)MathF.Ceiling(height);
+
+        // Draw-map to avoid duplicated draws
+        bool[] drawMap = ArrayPool<bool>.Shared.Rent(widthInt * heightInt);
+        Array.Clear(drawMap);
+        for (int i = 0; i < steps; i++)
+        {
+            float angle = startAngleRad + i * endAngleRad / steps;
+
+            for (float r = 0; r < maxRadius; r++)
+            {
+                int innerX = (int)Math.Round(radiusX * Math.Cos(angle) * (r / maxRadius));
+                int innerY = (int)Math.Round(radiusY * Math.Sin(angle) * (r / maxRadius));
+
+                int drawMapIndex = (innerY + heightInt / 2) * widthInt + (innerX + widthInt / 2);
+                if (!drawMap[drawMapIndex])
+                {
+                    drawMap[drawMapIndex] = true;
+                    fillRect(centerX + innerX, centerY + innerY, 1, 1);
+                }
+            }
+        }
+        ArrayPool<bool>.Shared.Return(drawMap);
     }
 
     public void drawImage(Texture2D img, float x, float y, ANCHOR anchor)
