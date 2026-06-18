@@ -124,10 +124,17 @@ public class GfxRenderer
         if (scissorBox != null)
         {
             float scale = options.RenderContext.Scale;
-            Vector2 viewportPos = new(options.RenderContext.Viewport.X, options.RenderContext.Viewport.Y);
+            Point viewportPos = new(options.RenderContext.Viewport.X, options.RenderContext.Viewport.Y);
+
+            Vector2 topLeft = scissorBox.Value.Position;
+            Vector2 bottomRight = topLeft + scissorBox.Value.Size;
+
+            Point topLeftPoint = (topLeft * scale).ToRoundedPoint();
+            Point bottomRightPoint = (bottomRight * scale).ToRoundedPoint();
+
             scissorRectangle = new Rectangle(
-                location: (viewportPos + scissorBox.Value.Position * scale).ToCeilingPoint(),
-                size: (scissorBox.Value.Size * scale).ToFloorPoint());
+                location: viewportPos + topLeftPoint,
+                size: bottomRightPoint - topLeftPoint);
         }
 
         // If we have new render options then we need to begin a new batch
