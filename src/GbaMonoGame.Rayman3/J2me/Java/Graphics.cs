@@ -252,6 +252,11 @@ public class Graphics
         fillRect(0, 0, Resolution.X, Resolution.Y);
     }
 
+    public void ClearSprites()
+    {
+        Sprites.Clear();
+    }
+
     public void DrawGfx()
     {
         // Reverse order

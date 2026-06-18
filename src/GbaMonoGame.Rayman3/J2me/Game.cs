@@ -94,6 +94,22 @@ public partial class Game
     public void repaint()
     {
         paint(Graphics);
+
+        // Keep running the game loop until we're done loading since the game loads in several steps
+        if (m_gameFrame_curState is GAME_FRAME_STATE.EXITING_LEVEL or GAME_FRAME_STATE.EXITED_LEVEL
+                or GAME_FRAME_STATE.LOADING && curState == SYS_FRAME_STATE.GAME)
+        {
+            while (m_gameFrame_curState is GAME_FRAME_STATE.EXITING_LEVEL or GAME_FRAME_STATE.EXITED_LEVEL
+                   or GAME_FRAME_STATE.LOADING && curState == SYS_FRAME_STATE.GAME)
+            {
+                Graphics.ClearSprites();
+                paint(Graphics);
+            }
+
+            Graphics.ClearSprites();
+            paint(Graphics);
+        }
+
         Graphics.DrawGfx();
     }
 
