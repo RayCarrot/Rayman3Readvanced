@@ -1194,7 +1194,7 @@ public class Actor
            
             case 1:
                 if ((V[0] <= 8 && V[0] <= GameMidlet.Instance_Game.m_gameFrame_unlockedLevel) ||
-                    (GameMidlet.Instance_Game.s_iLumsTaken >= 140 && GameMidlet.Instance_Game.s_iCageOpened >= 12))
+                    ((byte)GameMidlet.Instance_Game.s_iLumsTaken >= 140 && GameMidlet.Instance_Game.s_iCageOpened >= 12))
                     anim.newAction = 4;
                 break;
             
