@@ -6,7 +6,6 @@ using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3.J2me;
 
-// TODO: Add achievements (complete all levels, 100% all levels and a third one?)
 // TODO: Option to use normal controls since Up sucks on analog stick for jump
 public class GameMidlet : Frame
 {

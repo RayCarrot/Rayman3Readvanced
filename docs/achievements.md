@@ -20,6 +20,9 @@
 - 🥉 **Gotta Go Fast**: Earn bronze in every time attack level
 - 🥉 **Speedster**: Earn silver in every time attack level
 - 🏅 **Champion**: Earn gold in every time attack level
+- 🥉 **Smooth Operator**: Complete the mobile version
+- 🥉 **Booty Call**: Unlock the bonus level in the mobile version
+- 🏅 **Full Bars**: Collect all lums and cages in the mobile version
 
 ### Other
 - 🥉 **Return to Sender**: Defeat a pirate with a keg
@@ -35,4 +38,5 @@
 - 🏅 **Burning Rubber**: Complete Magma Mayhem 2 without taking any damage
 - 🥉 **Scrapped Metal**: Defeat a pirate of every rank
 - 🥉 **Top of the World**: Win a Multiplayer Game
+- 🥉 **No Service**: Collect the hidden life in the mobile version
 - 🥉 **Retro**: View the original main menu

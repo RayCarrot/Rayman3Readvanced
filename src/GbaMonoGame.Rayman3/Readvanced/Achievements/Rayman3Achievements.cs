@@ -142,6 +142,27 @@ public static class Rayman3Achievements
             title: "Champion",
             description: "Earn gold in every time attack level"),
         new AchievementInfo(
+            id: AchievementId.CompleteJ2me, // TODO: Unlock
+            isGold: false,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
+            title: "Smooth Operator",
+            description: "Complete the mobile version"),
+        new AchievementInfo(
+            id: AchievementId.UnlockBonusLevelJ2me, // TODO: Unlock
+            isGold: false,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
+            title: "Booty Call",
+            description: "Unlock the bonus level in the mobile version"),
+        new AchievementInfo(
+            id: AchievementId.CollectAllJ2me, // TODO: Unlock
+            isGold: true,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
+            title: "Full Bars",
+            description: "Collect all lums and cages in the mobile version"),
+        new AchievementInfo(
             id: AchievementId.DefeatPirateWithKeg,
             isGold: false,
             smallIconTexturePath: Assets.Achievements.AchievementIcon32px_DefeatPirateWithKeg,
@@ -235,6 +256,13 @@ public static class Rayman3Achievements
             bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "Top of the World",
             description: "Win a Multiplayer Game"),
+        new AchievementInfo(
+            id: AchievementId.CollectSecretLifeJ2me, // TODO: Unlock
+            isGold: false,
+            smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
+            bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
+            title: "No Service",
+            description: "Collect the hidden life in the mobile version"),
         new AchievementInfo(
             id: AchievementId.ViewOriginalMenu,
             isGold: false,

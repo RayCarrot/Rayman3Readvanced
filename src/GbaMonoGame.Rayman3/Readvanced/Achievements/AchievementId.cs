@@ -35,5 +35,8 @@ public enum AchievementId
     DefeatEveryPirateType = 30,
     MultiplayerWin = 31,
     ViewOriginalMenu = 32,
-    Count = 33,
+    CompleteJ2me = 33,
+    UnlockBonusLevelJ2me = 34,
+    CollectAllJ2me = 35,
+    CollectSecretLifeJ2me = 36,
 }
