@@ -626,3 +626,21 @@ Most actors have the first animation be unused and just single frame, most likel
 - When selecting the multiplayer mode on GBA there's a typo where "Burglar Mode" is spelt as "Buglar Mode". This was fixed in the N-Gage version.
 - When selecting the multiplayer map the game animates the palette for the outline of the selected map to produce a glow effect. The code is however written in an odd way where it loops through the palette code 13 times, doing the exact same thing each time.
 - The N-Gage uses the wrong state to transition out of certain multiplayer menu pages when a connection error occurs. This appears to be a copy-paste bug, where they copied code from another page without updating it. Other similar copy-paste errors occur where some states have leftover code from other states.
+
+### J2ME
+The content described here is specifically from the "Sony Ericsson S700 - 240x320 (1.0.3)" version unless otherwise stated.
+- The game uses the actor hitboxes to determine if they're currently visible on screen, which determines if they get rendered or not. Since the hitbox for the level signs are smaller than the graphics this causes them to noticeably clip out of view before being fully off-screen.
+- When drawing the selection arrows for the pause menu the game uses the wrong variables when attempting to disable background scrolling, making the arrows render relative to the level camera for the very first frame.
+- Entering the help menu can cause the selection arrows to desync when returning to the main menu. This is because the arrows only update their positions when being drawn on screen, and the help menu only draws one of the arrows for the first and last pages.
+- Rayman's state right after punching incorrectly checks the down-left keys rather than the down-right keys for crouching to the right. This is however not noticeable as the state only lasts a few frames.
+- Sounds which should infinitely loop incorrectly have the loop value set to 255, meaning they stop looping after 255 times. The correct value for infinitely looping is -1, which 255 would be if it was a byte, but in this case it's an int instead. 
+- There exists two unused background tilesets, which are variations of the normally used ones.
+- There's an unused text bank containing alternative credits for the game.
+- Some versions contain the names for the actors, showcasing the following unused ones:
+    - Plum
+    - Trampoline
+    - Small barrel
+    - Lava shower
+    - Fish
+    - Foot
+- Some versions contain unused graphics for the unused small barrel actor.
