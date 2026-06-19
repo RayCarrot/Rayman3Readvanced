@@ -38,7 +38,7 @@ public class AchievementPopup
     public float MinY { get; set; }
     public float MaxY { get; set; }
     public float OffsetY { get; set; }
-    public int WaitTimer { get; set; }
+    public float WaitTimer { get; set; }
     public bool IsShowingPopup => DrawStep != BarDrawStep.Hide;
 
     public void SetText(string text)
@@ -145,11 +145,11 @@ public class AchievementPopup
 
     public void Step()
     {
-        // Manage transition
+        // Manage transition and multiply by GbaDeltaTime since this will also be used in the J2ME version which has a lower framerate
         switch (DrawStep)
         {
             case BarDrawStep.MoveIn:
-                OffsetY += MoveSpeed;
+                OffsetY += MoveSpeed * Engine.App.GbaDeltaTime;
                 if (OffsetY >= MaxY)
                 {
                     OffsetY = MaxY;
@@ -159,7 +159,7 @@ public class AchievementPopup
                 break;
 
             case BarDrawStep.MoveOut:
-                OffsetY -= MoveSpeed;
+                OffsetY -= MoveSpeed * Engine.App.GbaDeltaTime;
                 if (OffsetY <= MinY)
                 {
                     OffsetY = MinY;
@@ -171,7 +171,7 @@ public class AchievementPopup
                 if (WaitTimer >= WaitTime)
                     DrawStep = BarDrawStep.MoveOut;
                 else
-                    WaitTimer++;
+                    WaitTimer += 1 * Engine.App.GbaDeltaTime;
                 break;
         }
 
