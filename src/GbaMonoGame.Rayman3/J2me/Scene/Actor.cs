@@ -1,6 +1,7 @@
 using System;
 using System.Buffers;
 using BinarySerializer.Gameloft.J2me;
+using GbaMonoGame.Rayman3.Readvanced;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -857,12 +858,16 @@ public class Actor
                     GameMidlet.Instance_Game.s_iLumsTaken++;
                     GameMidlet.Instance_Game.Status_Show(2);
                     GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.lums, true);
+                    GameMidlet.Instance_Game.CheckProgressionAchievements();
                     break;
                 
                 case ACTOR_TYPE.WHITE_LUM:
                     GameMidlet.Instance_Game.m_gameFrame_nLife = (sbyte)(GameMidlet.Instance_Game.m_gameFrame_nLife + (GameMidlet.Instance_Game.m_gameFrame_nLife < 99 ? 1 : 0));
                     GameMidlet.Instance_Game.Status_Show(0);
                     GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.lums_white, true);
+
+                    if (GameMidlet.Instance_Game.m_gameFrame_curLevel == Game.LEVEL_WORLD_MAP)
+                        Rayman3.Achievements.Unlock(AchievementId.CollectSecretLifeJ2me);
                     break;
                 
                 case ACTOR_TYPE.RED_LUM:
@@ -916,6 +921,7 @@ public class Actor
                     GameMidlet.Instance_Game.s_iCageOpened++;
                     anim.newAction = 4;
                     GameMidlet.Instance_Game.Status_Show(1);
+                    GameMidlet.Instance_Game.CheckProgressionAchievements();
                 }
                 break;
 
@@ -950,6 +956,7 @@ public class Actor
                     GameMidlet.Instance_Game.s_iCageOpened++;
                     anim.newAction = 9;
                     GameMidlet.Instance_Game.Status_Show(1);
+                    GameMidlet.Instance_Game.CheckProgressionAchievements();
                 }
                 break;
 
@@ -1193,8 +1200,8 @@ public class Actor
                 break;
            
             case 1:
-                if ((V[0] <= 8 && V[0] <= GameMidlet.Instance_Game.m_gameFrame_unlockedLevel) ||
-                    ((byte)GameMidlet.Instance_Game.s_iLumsTaken >= 140 && GameMidlet.Instance_Game.s_iCageOpened >= 12))
+                if ((V[0] < Game.LEVEL_BONUS && V[0] <= GameMidlet.Instance_Game.m_gameFrame_unlockedLevel) ||
+                    ((byte)GameMidlet.Instance_Game.s_iLumsTaken >= Game.BONUS_REQUIRED_LUMS && GameMidlet.Instance_Game.s_iCageOpened >= Game.BONUS_REQUIRED_CAGES))
                     anim.newAction = 4;
                 break;
             

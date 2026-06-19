@@ -1,4 +1,5 @@
 ﻿using BinarySerializer.Gameloft.J2me;
+using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3.J2me;
 
@@ -123,6 +124,7 @@ public partial class Game
                     }
                     else
                     {
+                        Rayman3.Achievements.Unlock(AchievementId.CompleteJ2me);
                         Graphics.ForceOriginalResolution();
                         curState = SYS_FRAME_STATE.GAME_COMPLETE;
                         pRayman.anim.newAction = 38;

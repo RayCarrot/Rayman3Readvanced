@@ -142,21 +142,21 @@ public static class Rayman3Achievements
             title: "Champion",
             description: "Earn gold in every time attack level"),
         new AchievementInfo(
-            id: AchievementId.CompleteJ2me, // TODO: Unlock
+            id: AchievementId.CompleteJ2me,
             isGold: false,
             smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
             bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "Smooth Operator",
             description: "Complete the mobile version"),
         new AchievementInfo(
-            id: AchievementId.UnlockBonusLevelJ2me, // TODO: Unlock
+            id: AchievementId.UnlockBonusLevelJ2me,
             isGold: false,
             smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
             bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
             title: "Booty Call",
             description: "Unlock the bonus level in the mobile version"),
         new AchievementInfo(
-            id: AchievementId.CollectAllJ2me, // TODO: Unlock
+            id: AchievementId.CollectAllJ2me,
             isGold: true,
             smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
             bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,
@@ -257,7 +257,7 @@ public static class Rayman3Achievements
             title: "Top of the World",
             description: "Win a Multiplayer Game"),
         new AchievementInfo(
-            id: AchievementId.CollectSecretLifeJ2me, // TODO: Unlock
+            id: AchievementId.CollectSecretLifeJ2me,
             isGold: false,
             smallIconTexturePath: Assets.Achievements.AchievementIcon32px_Locked, // TODO: Texture
             bigIconTexturePath: Assets.Achievements.AchievementIcon48px_Locked,

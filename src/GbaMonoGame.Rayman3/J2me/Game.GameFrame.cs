@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using BinarySerializer.Gameloft.J2me;
+using GbaMonoGame.Rayman3.Readvanced;
 
 // ReSharper disable RedundantAssignment
 // ReSharper disable UselessBinaryOperation
@@ -17,7 +18,14 @@ public partial class Game
     public const int LEVEL_WORLD_MAP = 0;
     public const int LEVEL_FIRST = 1;
     public const int LEVEL_FINAL = 8;
+    public const int LEVEL_BONUS = 9;
     public const int LEVELS_COUNT = 10;
+
+    public const int BONUS_REQUIRED_LUMS = 140;
+    public const int BONUS_REQUIRED_CAGES = 12;
+
+    public const int TOTAL_LUMS = 175;
+    public const int TOTAL_CAGES = 12;
 
     public const string GAME_SAVE_NAME = "RaymanSave";
     public const string RECORD_FLAG_SAVE_NAME = "RECORDFLAG";
@@ -372,6 +380,9 @@ public partial class Game
                     m_gameStateStep = 0;
                     m_gameFrame_prevState = GAME_FRAME_STATE.LOAD_GAME;
                     m_gameFrame_curState = GAME_FRAME_STATE.LOADING;
+
+                    // Retroactively unlock achievements when loading the save
+                    CheckProgressionAchievements();
                 }
                 m_gameStateStep++;
                 return m_gameFrame_curState;
@@ -958,5 +969,16 @@ public partial class Game
         {
             s_synopsis = null;
         }
+    }
+
+    // Custom
+    public void CheckProgressionAchievements()
+    {
+        if (m_gameFrame_unlockedLevel >= LEVEL_BONUS)
+            Rayman3.Achievements.Unlock(AchievementId.CompleteJ2me);
+        if ((byte)s_iLumsTaken >= BONUS_REQUIRED_LUMS && s_iCageOpened >= BONUS_REQUIRED_CAGES)
+            Rayman3.Achievements.Unlock(AchievementId.UnlockBonusLevelJ2me);
+        if ((byte)s_iLumsTaken >= TOTAL_LUMS && s_iCageOpened >= TOTAL_CAGES)
+            Rayman3.Achievements.Unlock(AchievementId.CollectAllJ2me);
     }
 }
