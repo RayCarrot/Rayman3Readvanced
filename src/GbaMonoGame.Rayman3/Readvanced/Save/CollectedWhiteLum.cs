@@ -13,7 +13,7 @@ public struct CollectedWhiteLum
     public byte MapId { get; }
     public int InstanceId { get; }
 
-    public static SerializeInto<CollectedWhiteLum> SerializeInto = (s, x) =>
+    public static readonly SerializeInto<CollectedWhiteLum> SerializeInto = (s, x) =>
     {
         byte mapId = s.Serialize<byte>(x.MapId, name: nameof(MapId));
         int instanceId = s.Serialize<int>(x.InstanceId, name: nameof(InstanceId));
