@@ -2,7 +2,7 @@
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
-public partial class TimeDecrease
+public partial class TimeDecreaseProjectile
 {
     public bool Fsm_Default(FsmAction action)
     {

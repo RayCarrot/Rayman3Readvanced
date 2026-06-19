@@ -2,10 +2,10 @@
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
-public readonly struct TimeFreezeItemInstance
+public readonly struct TimeDecreaseItemInstance
 {
     [JsonConstructor]
-    public TimeFreezeItemInstance(int time, short x, short y)
+    public TimeDecreaseItemInstance(int time, short x, short y)
     {
         Time = time;
         X = x;

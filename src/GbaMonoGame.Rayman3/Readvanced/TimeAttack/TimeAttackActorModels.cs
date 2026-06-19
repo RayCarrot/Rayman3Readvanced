@@ -4,10 +4,10 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 
 public static class TimeAttackActorModels
 {
-    public static ActorModel TimeFreezeItemActorModel { get; } = CreateTimeFreezeItemActorModel();
+    public static ActorModel TimeDecreaseItemActorModel { get; } = CreateTimeDecreaseItemActorModel();
     public static ActorModel TimeDecreaseActorModel { get; } = CreateTimeDecreaseActorModel();
 
-    private static ActorModel CreateTimeFreezeItemActorModel()
+    private static ActorModel CreateTimeDecreaseItemActorModel()
     {
         const int AnimWidth = 32;
         const int AnimHeight = 32;

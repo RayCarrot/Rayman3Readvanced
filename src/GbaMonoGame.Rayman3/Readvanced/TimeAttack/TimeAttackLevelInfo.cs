@@ -11,7 +11,7 @@ public class TimeAttackLevelInfo
         MapId level, 
         int world, 
         TimeAttackTime[] targetTimes, 
-        Dictionary<MapId, TimeFreezeItemInstance[]> actors, 
+        Dictionary<MapId, TimeDecreaseItemInstance[]> actors, 
         Platform? exclusivePlatform = null)
     {
         Level = level;
@@ -31,7 +31,7 @@ public class TimeAttackLevelInfo
     public TimeAttackTime[] TargetTimes { get; }
     
     [JsonPropertyName("actors")] 
-    public Dictionary<MapId, TimeFreezeItemInstance[]> Actors { get; }
+    public Dictionary<MapId, TimeDecreaseItemInstance[]> Actors { get; }
 
     [JsonPropertyName("exclusive_platform")]
     [JsonConverter(typeof(JsonStringEnumConverter<Platform>))]

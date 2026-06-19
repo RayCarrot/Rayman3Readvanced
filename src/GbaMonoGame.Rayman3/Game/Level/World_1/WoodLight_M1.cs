@@ -14,11 +14,11 @@ public class WoodLight_M1 : FrameSideScroller
     public uint TimeAttackTextBoxTimer { get; set; }
     public bool IsShowingTimeAttackTextBox { get; set; }
 
-    private bool HasDestroyedAnyTimeFreezeItems()
+    private bool HasDestroyedAnyTimeDecreaseItems()
     {
         foreach (GameObject obj in Scene.KnotManager.GameObjects)
         {
-            if (!obj.IsEnabled && obj is BaseActor { Type: (int)ReadvancedActorType.TimeFreezeItem })
+            if (!obj.IsEnabled && obj is BaseActor { Type: (int)ReadvancedActorType.TimeDecreaseItem })
             {
                 return true;
             }
@@ -61,7 +61,7 @@ public class WoodLight_M1 : FrameSideScroller
 
         base.Step();
 
-        if (TimeAttackTextBoxTimer == 200 && !HasDestroyedAnyTimeFreezeItems())
+        if (TimeAttackTextBoxTimer == 200 && !HasDestroyedAnyTimeDecreaseItems())
         {
             TextBox.SetCutsceneCharacter(TextBoxCutsceneCharacter.Murfy);
             TextBox.TextBankId = TextBankId.Readvanced;
@@ -70,7 +70,7 @@ public class WoodLight_M1 : FrameSideScroller
             IsShowingTimeAttackTextBox = true;
         }
 
-        if (IsShowingTimeAttackTextBox && TimeAttackTextBoxTimer > 300 && HasDestroyedAnyTimeFreezeItems())
+        if (IsShowingTimeAttackTextBox && TimeAttackTextBoxTimer > 300 && HasDestroyedAnyTimeDecreaseItems())
         {
             TextBox.MoveInOurOut(false);
             IsShowingTimeAttackTextBox = false;

@@ -227,29 +227,29 @@ public class TimeAttackManager
 
         TimeAttackLevelInfo levelInfo = GetLevelInfo(LevelId.Value);
 
-        // Add the time freeze items
+        // Add the time decrease items
         List<ActorResource> actors = [];
-        foreach (TimeFreezeItemInstance timeFreezeItem in levelInfo.Actors.GetValueOrDefault(CurrentMapId.Value, []))
+        foreach (TimeDecreaseItemInstance timeDecreaseItem in levelInfo.Actors.GetValueOrDefault(CurrentMapId.Value, []))
         {
             actors.Add(new ActorResource()
             {
-                Pos = new BinarySerializer.Ubisoft.GbaEngine.Vector2(timeFreezeItem.X, timeFreezeItem.Y),
+                Pos = new BinarySerializer.Ubisoft.GbaEngine.Vector2(timeDecreaseItem.X, timeDecreaseItem.Y),
                 IsEnabled = true,
                 IsAwake = true,
                 IsAnimatedObjectDynamic = false,
                 IsProjectile = false,
                 ResurrectsImmediately = false,
                 ResurrectsLater = false,
-                Type = (byte)ReadvancedActorType.TimeFreezeItem,
+                Type = (byte)ReadvancedActorType.TimeDecreaseItem,
                 Idx_ActorModel = 0xFF,
-                FirstActionId = (byte)(timeFreezeItem.Time switch
+                FirstActionId = (byte)(timeDecreaseItem.Time switch
                 {
-                    3 => TimeFreezeItem.Action.Init_Decrease3,
-                    5 => TimeFreezeItem.Action.Init_Decrease5,
-                    _ => throw new Exception($"Invalid time value {timeFreezeItem.Time}")
+                    3 => TimeDecreaseItem.Action.Init_Decrease3,
+                    5 => TimeDecreaseItem.Action.Init_Decrease5,
+                    _ => throw new Exception($"Invalid time value {timeDecreaseItem.Time}")
                 }),
                 Links = [0xFF, 0xFF, 0xFF, 0xFF],
-                Model = TimeAttackActorModels.TimeFreezeItemActorModel,
+                Model = TimeAttackActorModels.TimeDecreaseItemActorModel,
             });
         }
 
@@ -273,7 +273,7 @@ public class TimeAttackManager
                 IsProjectile = true,
                 ResurrectsImmediately = false,
                 ResurrectsLater = false,
-                Type = (byte)ReadvancedActorType.TimeFreezeItemSparkles,
+                Type = (byte)ReadvancedActorType.TimeDecreaseItemSparkles,
                 Model = sparklesModel,
             });
 
@@ -287,7 +287,7 @@ public class TimeAttackManager
                 IsProjectile = true,
                 ResurrectsImmediately = false,
                 ResurrectsLater = false,
-                Type = (byte)ReadvancedActorType.TimeDecrease,
+                Type = (byte)ReadvancedActorType.TimeDecreaseProjectile,
                 Model = TimeAttackActorModels.TimeDecreaseActorModel,
             });
         }

@@ -155,6 +155,16 @@ public static class Assets
         public const string SilverStarSmall = $"{BaseName}/TimeAttack/SilverStarSmall";
         public const string TimeDecrease3 = $"{BaseName}/TimeAttack/TimeDecrease3";
         public const string TimeDecrease5 = $"{BaseName}/TimeAttack/TimeDecrease5";
+        public const string TimeDecreaseItem_Blue0 = $"{BaseName}/TimeAttack/TimeDecreaseItem_Blue0";
+        public const string TimeDecreaseItem_Blue1 = $"{BaseName}/TimeAttack/TimeDecreaseItem_Blue1";
+        public const string TimeDecreaseItem_Blue2 = $"{BaseName}/TimeAttack/TimeDecreaseItem_Blue2";
+        public const string TimeDecreaseItem_Blue3 = $"{BaseName}/TimeAttack/TimeDecreaseItem_Blue3";
+        public const string TimeDecreaseItem_Blue4 = $"{BaseName}/TimeAttack/TimeDecreaseItem_Blue4";
+        public const string TimeDecreaseItem_Orange0 = $"{BaseName}/TimeAttack/TimeDecreaseItem_Orange0";
+        public const string TimeDecreaseItem_Orange1 = $"{BaseName}/TimeAttack/TimeDecreaseItem_Orange1";
+        public const string TimeDecreaseItem_Orange2 = $"{BaseName}/TimeAttack/TimeDecreaseItem_Orange2";
+        public const string TimeDecreaseItem_Orange3 = $"{BaseName}/TimeAttack/TimeDecreaseItem_Orange3";
+        public const string TimeDecreaseItem_Orange4 = $"{BaseName}/TimeAttack/TimeDecreaseItem_Orange4";
         public const string TimeDigit_0 = $"{BaseName}/TimeAttack/TimeDigit_0";
         public const string TimeDigit_1 = $"{BaseName}/TimeAttack/TimeDigit_1";
         public const string TimeDigit_2 = $"{BaseName}/TimeAttack/TimeDigit_2";
@@ -167,16 +177,6 @@ public static class Assets
         public const string TimeDigit_9 = $"{BaseName}/TimeAttack/TimeDigit_9";
         public const string TimeDigit_Colon = $"{BaseName}/TimeAttack/TimeDigit_Colon";
         public const string TimeDigit_Dot = $"{BaseName}/TimeAttack/TimeDigit_Dot";
-        public const string TimeFreezeItem_Blue0 = $"{BaseName}/TimeAttack/TimeFreezeItem_Blue0";
-        public const string TimeFreezeItem_Blue1 = $"{BaseName}/TimeAttack/TimeFreezeItem_Blue1";
-        public const string TimeFreezeItem_Blue2 = $"{BaseName}/TimeAttack/TimeFreezeItem_Blue2";
-        public const string TimeFreezeItem_Blue3 = $"{BaseName}/TimeAttack/TimeFreezeItem_Blue3";
-        public const string TimeFreezeItem_Blue4 = $"{BaseName}/TimeAttack/TimeFreezeItem_Blue4";
-        public const string TimeFreezeItem_Orange0 = $"{BaseName}/TimeAttack/TimeFreezeItem_Orange0";
-        public const string TimeFreezeItem_Orange1 = $"{BaseName}/TimeAttack/TimeFreezeItem_Orange1";
-        public const string TimeFreezeItem_Orange2 = $"{BaseName}/TimeAttack/TimeFreezeItem_Orange2";
-        public const string TimeFreezeItem_Orange3 = $"{BaseName}/TimeAttack/TimeFreezeItem_Orange3";
-        public const string TimeFreezeItem_Orange4 = $"{BaseName}/TimeAttack/TimeFreezeItem_Orange4";
     }
     public static class TitleScreen
     {

@@ -8,30 +8,30 @@ namespace GbaMonoGame.Rayman3.Readvanced;
 
 // Popolopoï
 [GenerateFsmFields]
-public sealed partial class TimeFreezeItem : MovableActor
+public sealed partial class TimeDecreaseItem : MovableActor
 {
-    public TimeFreezeItem(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
+    public TimeDecreaseItem(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
         CreateGeneratedStates();
 
         // Load the sprites and set the time decrease value
         if ((Action)actorResource.FirstActionId == Action.Init_Decrease3)
         {
-            AnimatedObject.ReplaceSpriteTexture(0, Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeFreezeItem_Blue0));
-            AnimatedObject.ReplaceSpriteTexture(1, Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeFreezeItem_Blue1));
-            AnimatedObject.ReplaceSpriteTexture(2, Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeFreezeItem_Blue2));
-            AnimatedObject.ReplaceSpriteTexture(3, Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeFreezeItem_Blue3));
-            AnimatedObject.ReplaceSpriteTexture(4, Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeFreezeItem_Blue4));
+            AnimatedObject.ReplaceSpriteTexture(0, Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeDecreaseItem_Blue0));
+            AnimatedObject.ReplaceSpriteTexture(1, Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeDecreaseItem_Blue1));
+            AnimatedObject.ReplaceSpriteTexture(2, Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeDecreaseItem_Blue2));
+            AnimatedObject.ReplaceSpriteTexture(3, Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeDecreaseItem_Blue3));
+            AnimatedObject.ReplaceSpriteTexture(4, Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeDecreaseItem_Blue4));
 
             TimeDecreaseSecondsValue = 3;
         }
         else if ((Action)actorResource.FirstActionId == Action.Init_Decrease5)
         {
-            AnimatedObject.ReplaceSpriteTexture(0, Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeFreezeItem_Orange0));
-            AnimatedObject.ReplaceSpriteTexture(1, Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeFreezeItem_Orange1));
-            AnimatedObject.ReplaceSpriteTexture(2, Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeFreezeItem_Orange2));
-            AnimatedObject.ReplaceSpriteTexture(3, Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeFreezeItem_Orange3));
-            AnimatedObject.ReplaceSpriteTexture(4, Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeFreezeItem_Orange4));
+            AnimatedObject.ReplaceSpriteTexture(0, Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeDecreaseItem_Orange0));
+            AnimatedObject.ReplaceSpriteTexture(1, Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeDecreaseItem_Orange1));
+            AnimatedObject.ReplaceSpriteTexture(2, Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeDecreaseItem_Orange2));
+            AnimatedObject.ReplaceSpriteTexture(3, Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeDecreaseItem_Orange3));
+            AnimatedObject.ReplaceSpriteTexture(4, Engine.Assets.FrameContentManager.Load<Texture2D>(Assets.TimeAttack.TimeDecreaseItem_Orange4));
 
             TimeDecreaseSecondsValue = 5;
         }
@@ -63,7 +63,7 @@ public sealed partial class TimeFreezeItem : MovableActor
     public byte SinValue { get; set; }
     public uint Timer { get; set; }
     public float HitSpeedX { get; set; }
-    public TimeFreezeItemSparkles SparklesProjectile { get; set; }
+    public TimeDecreaseItemSparkles SparklesProjectile { get; set; }
 
     protected override bool ProcessMessageImpl(object sender, Message message, object param)
     {

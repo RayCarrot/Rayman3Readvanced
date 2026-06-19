@@ -284,7 +284,7 @@ public partial class Keg
                         hitObj.ProcessMessage(this, Message.Actor_Hit, this);
                         landed = true;
                     }
-                    else if ((ReadvancedActorType)hitObj.Type == ReadvancedActorType.TimeFreezeItem)
+                    else if ((ReadvancedActorType)hitObj.Type == ReadvancedActorType.TimeDecreaseItem)
                     {
                         hitObj.ReceiveDamage(1);
                         hitObj.ProcessMessage(this, Message.Actor_Hit, this);

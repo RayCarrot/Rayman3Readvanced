@@ -176,7 +176,7 @@ public partial class FrameSideScroller : Frame, IHasScene, IHasPlayfield
             TimeAttackDialog = new TimeAttackDialog(Scene);
             Scene.AddDialog(TimeAttackDialog, false, false);
 
-            // Add actors (time freeze items)
+            // Add actors (time decrease items)
             foreach (ActorResource actorResource in Rayman3.TimeAttack.GetActors())
                 Scene.KnotManager.AddActor(Scene, actorResource, GameObjectType.AlwaysActor);
 

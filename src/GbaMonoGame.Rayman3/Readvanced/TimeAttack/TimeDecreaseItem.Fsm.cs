@@ -3,7 +3,7 @@ using GbaMonoGame.Engine2d;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
-public partial class TimeFreezeItem
+public partial class TimeDecreaseItem
 {
     public bool Fsm_Idle(FsmAction action)
     {
@@ -43,11 +43,11 @@ public partial class TimeFreezeItem
                     Engine.Sem.SetSoundPitch(Rayman3SoundEvent.Play__LumRed_Mix03, Random.GetNumber(192));
 
                     // Create a time decrease projectile to show the time being decreased
-                    TimeDecrease timeDecrease = Scene.CreateProjectile<TimeDecrease>(ReadvancedActorType.TimeDecrease);
-                    if (timeDecrease != null)
+                    TimeDecreaseProjectile timeDecreaseProjectile = Scene.CreateProjectile<TimeDecreaseProjectile>(ReadvancedActorType.TimeDecreaseProjectile);
+                    if (timeDecreaseProjectile != null)
                     {
-                        timeDecrease.Position = Position;
-                        timeDecrease.SetValue(TimeDecreaseSecondsValue);
+                        timeDecreaseProjectile.Position = Position;
+                        timeDecreaseProjectile.SetValue(TimeDecreaseSecondsValue);
                     }
 
                     State.MoveTo(_Fsm_Dying);
@@ -87,7 +87,7 @@ public partial class TimeFreezeItem
                 Timer = 0;
 
                 // Create the sparkles projectile
-                SparklesProjectile = Scene.CreateProjectile<TimeFreezeItemSparkles>(ReadvancedActorType.TimeFreezeItemSparkles);
+                SparklesProjectile = Scene.CreateProjectile<TimeDecreaseItemSparkles>(ReadvancedActorType.TimeDecreaseItemSparkles);
                 SparklesProjectile?.AnimatedObject.SetPosition(Position);
                 break;
 

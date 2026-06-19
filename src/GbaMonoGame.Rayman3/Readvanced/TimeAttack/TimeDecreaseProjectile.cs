@@ -6,9 +6,9 @@ using Microsoft.Xna.Framework.Graphics;
 namespace GbaMonoGame.Rayman3.Readvanced;
 
 [GenerateFsmFields]
-public sealed partial class TimeDecrease : BaseActor
+public sealed partial class TimeDecreaseProjectile : BaseActor
 {
-    public TimeDecrease(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
+    public TimeDecreaseProjectile(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
         CreateGeneratedStates();
 

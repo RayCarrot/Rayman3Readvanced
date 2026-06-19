@@ -14,8 +14,8 @@ public class Rayman3DebugWindow : DebugWindow
 {
     public override string Name => "Rayman 3";
 
-    public bool PlaceTimeFreezeItems { get; set; }
-    public TimeFreezeItem.Action TimeFreezeItemAction { get; set; }
+    public bool PlaceTimeDecreaseItems { get; set; }
+    public TimeDecreaseItem.Action TimeDecreaseItemAction { get; set; }
 
     public override void Draw(DebugLayout debugLayout, DebugLayoutTextureManager textureManager)
     {
@@ -214,17 +214,17 @@ public class Rayman3DebugWindow : DebugWindow
 
                 if (Frame.Current is IHasScene frame)
                 {
-                    ImGui.SeparatorText("Time Freeze Items");
+                    ImGui.SeparatorText("Time Decrease Items");
 
-                    PlaceTimeFreezeItems = ImGuiExt.Checkbox("Place Items", PlaceTimeFreezeItems);
+                    PlaceTimeDecreaseItems = ImGuiExt.Checkbox("Place Items", PlaceTimeDecreaseItems);
 
-                    if (PlaceTimeFreezeItems)
+                    if (PlaceTimeDecreaseItems)
                     {
-                        if (ImGui.RadioButton("Decrease 3", TimeFreezeItemAction == TimeFreezeItem.Action.Init_Decrease3))
-                            TimeFreezeItemAction = TimeFreezeItem.Action.Init_Decrease3;
+                        if (ImGui.RadioButton("Decrease 3", TimeDecreaseItemAction == TimeDecreaseItem.Action.Init_Decrease3))
+                            TimeDecreaseItemAction = TimeDecreaseItem.Action.Init_Decrease3;
 
-                        if (ImGui.RadioButton("Decrease 5", TimeFreezeItemAction == TimeFreezeItem.Action.Init_Decrease5))
-                            TimeFreezeItemAction = TimeFreezeItem.Action.Init_Decrease5;
+                        if (ImGui.RadioButton("Decrease 5", TimeDecreaseItemAction == TimeDecreaseItem.Action.Init_Decrease5))
+                            TimeDecreaseItemAction = TimeDecreaseItem.Action.Init_Decrease5;
 
                         if (Engine.Input.IsMouseOnScreen(frame.Scene.RenderContext) && Engine.Input.IsMouseLeftButtonJustPressed())
                         {
@@ -238,10 +238,10 @@ public class Rayman3DebugWindow : DebugWindow
                                 IsProjectile = false,
                                 ResurrectsImmediately = false,
                                 ResurrectsLater = false,
-                                Type = (byte)ReadvancedActorType.TimeFreezeItem,
-                                FirstActionId = (byte)TimeFreezeItemAction,
+                                Type = (byte)ReadvancedActorType.TimeDecreaseItem,
+                                FirstActionId = (byte)TimeDecreaseItemAction,
                                 Links = [0xFF, 0xFF, 0xFF, 0xFF],
-                                Model = TimeAttackActorModels.TimeFreezeItemActorModel,
+                                Model = TimeAttackActorModels.TimeDecreaseItemActorModel,
                             }, GameObjectType.AlwaysActor);
                         }
                     }
@@ -250,7 +250,7 @@ public class Rayman3DebugWindow : DebugWindow
                     {
                         foreach (BaseActor actor in frame.Scene.Iterate<BaseActor>(IteratorFlags.AlwaysActor | IteratorFlags.Disabled, IteratorKnot.All))
                         {
-                            if ((ReadvancedActorType)actor.Type == ReadvancedActorType.TimeFreezeItem)
+                            if ((ReadvancedActorType)actor.Type == ReadvancedActorType.TimeDecreaseItem)
                             {
                                 ((ActionActor)actor).HitPoints = 1;
                                 actor.ProcessMessage(this, Message.Resurrect);
@@ -265,13 +265,13 @@ public class Rayman3DebugWindow : DebugWindow
                         bool first = true;
                         foreach (BaseActor actor in frame.Scene.Iterate<BaseActor>(IteratorFlags.AlwaysActor, IteratorKnot.All))
                         {
-                            if ((ReadvancedActorType)actor.Type == ReadvancedActorType.TimeFreezeItem)
+                            if ((ReadvancedActorType)actor.Type == ReadvancedActorType.TimeDecreaseItem)
                             {
-                                TimeFreezeItem timeFreezeItem = (TimeFreezeItem)actor;
+                                TimeDecreaseItem timeDecreaseItem = (TimeDecreaseItem)actor;
 
-                                int x = (short)timeFreezeItem.InitialPosition.X;
-                                int y = (short)timeFreezeItem.InitialPosition.Y;
-                                int time = timeFreezeItem.InitialAction == TimeFreezeItem.Action.Init_Decrease3 ? 3 : 5;
+                                int x = (short)timeDecreaseItem.InitialPosition.X;
+                                int y = (short)timeDecreaseItem.InitialPosition.Y;
+                                int time = timeDecreaseItem.InitialAction == TimeDecreaseItem.Action.Init_Decrease3 ? 3 : 5;
 
                                 if (!first)
                                     sb.AppendLine();

@@ -1,6 +1,6 @@
 ﻿namespace GbaMonoGame.Rayman3.Readvanced;
 
-public partial class TimeFreezeItem
+public partial class TimeDecreaseItem
 {
     public new Action ActionId
     {

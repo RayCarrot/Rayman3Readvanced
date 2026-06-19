@@ -2,9 +2,9 @@
 
 public enum ReadvancedActorType
 {
-    TimeFreezeItem = 200,
-    TimeFreezeItemSparkles = 201,
-    TimeDecrease = 202,
+    TimeDecreaseItem = 200,
+    TimeDecreaseItemSparkles = 201,
+    TimeDecreaseProjectile = 202,
     Ghost = 203,
     GhostMode7 = 204,
 }

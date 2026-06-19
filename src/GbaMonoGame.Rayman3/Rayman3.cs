@@ -139,9 +139,9 @@ public static class Rayman3
             { ActorType.CaptureTheFlagRaymanTeams, (instanceId, scene, resource) => new Rayman(instanceId, scene, resource) },
 
             // Readvanced
-            { (ActorType)ReadvancedActorType.TimeFreezeItem, (instanceId, scene, resource) => new TimeFreezeItem(instanceId, scene, resource) },
-            { (ActorType)ReadvancedActorType.TimeFreezeItemSparkles, (instanceId, scene, resource) => new TimeFreezeItemSparkles(instanceId, scene, resource) },
-            { (ActorType)ReadvancedActorType.TimeDecrease, (instanceId, scene, resource) => new TimeDecrease(instanceId, scene, resource) },
+            { (ActorType)ReadvancedActorType.TimeDecreaseItem, (instanceId, scene, resource) => new TimeDecreaseItem(instanceId, scene, resource) },
+            { (ActorType)ReadvancedActorType.TimeDecreaseItemSparkles, (instanceId, scene, resource) => new TimeDecreaseItemSparkles(instanceId, scene, resource) },
+            { (ActorType)ReadvancedActorType.TimeDecreaseProjectile, (instanceId, scene, resource) => new TimeDecreaseProjectile(instanceId, scene, resource) },
             { (ActorType)ReadvancedActorType.Ghost, (instanceId, scene, resource) => new Ghost(instanceId, scene, resource) },
             { (ActorType)ReadvancedActorType.GhostMode7, (instanceId, scene, resource) => new GhostMode7(instanceId, scene, resource) },
         }, x => ((ActorType)x).ToString());
