@@ -20,7 +20,7 @@ public class AchievementsSave : BaseReadvancedSave
 
     protected override void SerializeSave(SerializerObject s, int version)
     {
-        if (Version == 0)
+        if (version == 0)
         {
             UnlockedAchievements = s.SerializeArray<bool>(UnlockedAchievements, 33, name: nameof(UnlockedAchievements));
         }
