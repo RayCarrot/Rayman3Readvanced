@@ -33,6 +33,16 @@ public class GameObjectDebugWindow : DebugWindow
 
             selectedGameObject.DrawDebugLayout(debugLayout, textureManager);
 
+            ImGui.Spacing();
+
+            if (ImGui.CollapsingHeader("All Properties"))
+            {
+                foreach (PropertyInfo propertyInfo in selectedGameObject.GetType().GetProperties())
+                {
+                    ImGui.Text($"{propertyInfo.Name}: {propertyInfo.GetValue(selectedGameObject)}");
+                }
+            }
+
             if (selectedGameObject is BaseActor actor)
             {
                 ImGui.Spacing();
