@@ -105,6 +105,11 @@ See [assets](docs/assets.md) for a comprehensive list of where each asset comes 
 - [XanderNT](https://linktr.ee/XanderNT) (logos and extended backgrounds)
 - [zelenbug](https://gamebanana.com/members/3067029) (textures for new menu, time attack, achievements and various other new UI elements)
 
+**Time Attack**
+- [Marteaufou](https://bsky.app/profile/marteaufou.jardindesreves.fr)
+- [RayCarrot](https://github.com/RayCarrot)
+- [Rorias](https://github.com/Rorias)
+
 **Testing**
 - [Marteaufou](https://bsky.app/profile/marteaufou.jardindesreves.fr)
 - [Raymanroy](https://www.twitch.tv/Raymanroy)
