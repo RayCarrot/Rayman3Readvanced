@@ -579,6 +579,17 @@ public static class GameOptions
                     getData: _ => Engine.Settings.Local.Tweaks.LowerInitialPlumSpeed,
                     setData: data => Engine.Settings.Local.Tweaks.LowerInitialPlumSpeed = data,
                     getCustomName: _ => null),
+                new MultiSelectionOptionsMenuOption<bool>(
+                    text: "PAUSE BLUE LUM TIMER WHEN STOPPED",
+                    infoText: "Pauses the blue lum timer when Rayman is stopped.",
+                    items:
+                    [
+                        new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
+                        new MultiSelectionOptionsMenuOption<bool>.Item("ON", true, TweaksPreset.Readvanced)
+                    ],
+                    getData: _ => Engine.Settings.Local.Tweaks.PauseBlueLumTimerWhenStopped,
+                    setData: data => Engine.Settings.Local.Tweaks.PauseBlueLumTimerWhenStopped = data,
+                    getCustomName: _ => null),
             ]),
             new GameOptionsGroup("DIFFICULTY",
             [

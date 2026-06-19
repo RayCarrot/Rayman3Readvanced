@@ -213,7 +213,10 @@ public class BlueLumBar : Bar
         if (drawScaledFill)
             animationPlayer.PlayFront(ScaledFill);
 
-        Rayman3.GameInfo.BlueLumsTimer--;
+        // Optionally don't decrement the timer if Rayman is stopped
+        if (!Engine.Settings.Active.Tweaks.PauseBlueLumTimerWhenStopped || 
+            ((Rayman)Scene.MainActor).State != ((Rayman)Scene.MainActor)._Fsm_Stop)
+            Rayman3.GameInfo.BlueLumsTimer--;
 
         if (Rayman3.GameInfo.BlueLumsTimer == 78)
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LumTimer_Mix02);

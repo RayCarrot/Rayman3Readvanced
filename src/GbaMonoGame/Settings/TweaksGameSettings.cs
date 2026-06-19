@@ -30,6 +30,7 @@ public record TweaksGameSettings : IniSectionObject
         PauseOnDeactivation = true;
         FixHelicoHitbox = true;
         LowerInitialPlumSpeed = true;
+        PauseBlueLumTimerWhenStopped = true;
     }
 
     public override string SectionKey => "Tweaks";
@@ -58,6 +59,7 @@ public record TweaksGameSettings : IniSectionObject
     public bool PauseOnDeactivation { get; set; }
     public bool FixHelicoHitbox { get; set; }
     public bool LowerInitialPlumSpeed { get; set; }
+    public bool PauseBlueLumTimerWhenStopped { get; set; }
 
     public override void Serialize(BaseIniSerializer serializer)
     {
@@ -85,5 +87,6 @@ public record TweaksGameSettings : IniSectionObject
         PauseOnDeactivation = serializer.Serialize<bool>(PauseOnDeactivation, "PauseOnDeactivation");
         FixHelicoHitbox = serializer.Serialize<bool>(FixHelicoHitbox, "FixHelicoHitbox");
         LowerInitialPlumSpeed = serializer.Serialize<bool>(LowerInitialPlumSpeed, "LowerInitialPlumSpeed");
+        PauseBlueLumTimerWhenStopped = serializer.Serialize<bool>(PauseBlueLumTimerWhenStopped, "PauseBlueLumTimerWhenStopped");
     }
 }
