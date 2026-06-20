@@ -350,7 +350,7 @@ public static class GameOptions
                     getCustomName: _ => null),
                 new MultiSelectionOptionsMenuOption<bool>(
                     text: "FIX TILING ERRORS",
-                    infoText: "Fixes various tiling errors in the level maps. Doesn't go into effect until the level is restarted.",
+                    infoText: "Fixes various tiling errors in the level maps and extends some parts of the maps. Doesn't go into effect until the level is restarted.",
                     items:
                     [
                         new MultiSelectionOptionsMenuOption<bool>.Item("OFF", false, TweaksPreset.Original),
