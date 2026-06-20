@@ -86,6 +86,7 @@ public class BonusMenuPage : MenuPage
             {
                 FadeOut(2, () =>
                 {
+                    Menu.StopMusicOnExit = false;
                     Engine.FrameMngr.SetNextFrame(new MenuAll(InitialMenuPage.GameMode));
                 });
             });

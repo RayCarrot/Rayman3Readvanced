@@ -60,6 +60,8 @@ public class ModernMenuAll : Frame, IHasPlayfield
     public bool FinishedLyChallenge2 { get; set; }
     public bool HasAllCages { get; set; }
 
+    public bool StopMusicOnExit { get; set; } = true;
+
     #endregion
 
     #region Methods
@@ -508,7 +510,8 @@ public class ModernMenuAll : Frame, IHasPlayfield
     {
         GameTime.Resume();
 
-        Engine.Sem?.ProcessEvent(Rayman3SoundEvent.Stop__raytheme);
+        if (StopMusicOnExit)
+            Engine.Sem?.ProcessEvent(Rayman3SoundEvent.Stop__raytheme);
 
         Playfield.UnInit();
     }
