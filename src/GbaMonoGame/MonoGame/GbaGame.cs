@@ -347,7 +347,11 @@ public abstract class GbaGame : Game
             {
                 Vector2 resolution = Engine.ViewPort.InternalGameResolution;
 
-                float screenScale = newRes.X / resolution.X;
+                float screenScale;
+                if (_prevInternalResolution.X < _prevInternalResolution.Y || resolution.X < resolution.Y)
+                    screenScale = newRes.Y / resolution.Y;
+                else
+                    screenScale = newRes.X / resolution.X;  
 
                 newRes = new Vector2(resolution.X * screenScale, resolution.Y * screenScale).ToRoundedPoint();
 
