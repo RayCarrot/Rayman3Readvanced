@@ -270,7 +270,7 @@ public class UserInfoMultiMode7 : Dialog
         Rank.CurrentAnimation = raceManager.GetGridPos(MainActor.InstanceId);
 
         float mapScale = Rayman3.GameInfo.MapId == MapId.GbaMulti_MissileArena ? 16 : 32;
-        for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
+        for (int id = 0; id < Engine.Multiplayer.PlayersCount; id++)
         {
             PlayerMapIcons[id].ScreenPos = new Vector2(
                 x: -67 + MapOffset + ((Scene.GetGameObject(id).Position.X / mapScale) % 64),

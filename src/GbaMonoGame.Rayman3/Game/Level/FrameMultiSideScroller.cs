@@ -68,7 +68,7 @@ public partial class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
         TransitionsFX.FadeInInit(1);
 
         LevelMusicManager.Init();
-        MultiplayerManager.Init();
+        Engine.Multiplayer.Init();
 
         Scene = new Scene2D((int)Rayman3.GameInfo.MapId, x => new CameraSideScroller(x), 3, 1);
 
@@ -137,17 +137,17 @@ public partial class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
 
     public override void Step()
     {
-        bool connected = MultiplayerManager.Step();
+        bool connected = Engine.Multiplayer.Step();
 
         if (connected && (Rom.Platform == Platform.NGage || !EndOfFrame))
         {
             if (Rom.Platform == Platform.GBA)
             {
-                if (MultiplayerManager.HasReadJoyPads())
+                if (Engine.Multiplayer.HasReadJoyPads())
                 {
                     GameTime.Resume();
                     CurrentStepAction();
-                    MultiplayerManager.FrameProcessed();
+                    Engine.Multiplayer.FrameProcessed();
                 }
                 else
                 {
@@ -158,12 +158,12 @@ public partial class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
             }
             else if (Rom.Platform == Platform.NGage)
             {
-                if (!IsShowingPauseSign && MultiplayerManager.SyncTime != 0)
+                if (!IsShowingPauseSign && ((NGageMultiplayerManager)Engine.Multiplayer).SyncTime != 0)
                 {
                     // NOTE: The game loads the PauseSign animated object here
                 }
 
-                if (MultiplayerManager.SyncTime != 0)
+                if (((NGageMultiplayerManager)Engine.Multiplayer).SyncTime != 0)
                 {
                     Scene.AnimationPlayer.PlayFront(PauseSign);
 
@@ -180,7 +180,7 @@ public partial class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
                     IsShowingPauseSign = false;
                 }
 
-                if (MultiplayerManager.HasReadJoyPads())
+                if (Engine.Multiplayer.HasReadJoyPads())
                 {
                     if (EndOfFrame)
                     {
@@ -203,7 +203,7 @@ public partial class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
                     {
                         GameTime.Resume();
 
-                        if (MultiplayerManager.PendingSystemSyncPause && CurrentStepAction == _Step_Normal && !UserInfo.IsGameOver)
+                        if (((NGageMultiplayerManager)Engine.Multiplayer).PendingSystemSyncPause && CurrentStepAction == _Step_Normal && !UserInfo.IsGameOver)
                         {
                             Current.PendingAutoPause = false;
                             PausedMachineId = 0;
@@ -211,13 +211,13 @@ public partial class FrameMultiSideScroller : Frame, IHasScene, IHasPlayfield
                         }
 
                         CurrentStepAction();
-                        MultiplayerManager.FrameProcessed();
+                        Engine.Multiplayer.FrameProcessed();
                         LevelMusicManager.Step();
                     }
                 }
                 else
                 {
-                    if (MultiplayerManager.SyncTime != 0)
+                    if (((NGageMultiplayerManager)Engine.Multiplayer).SyncTime != 0)
                         Scene.AnimationPlayer.Execute();
 
                     GameTime.Pause();

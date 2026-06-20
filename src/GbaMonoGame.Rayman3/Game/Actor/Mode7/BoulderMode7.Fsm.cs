@@ -16,7 +16,7 @@ public partial class BoulderMode7
                 // Handle collision
                 if (RSMultiplayer.IsActive)
                 {
-                    for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
+                    for (int id = 0; id < Engine.Multiplayer.PlayersCount; id++)
                         CheckPlayerCollision(Scene.GetGameObject<MovableActor>(id));
                 }
                 else
@@ -106,7 +106,7 @@ public partial class BoulderMode7
                 {
                     if (RSMultiplayer.IsActive)
                     {
-                        for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
+                        for (int id = 0; id < Engine.Multiplayer.PlayersCount; id++)
                         {
                             MissileMode7 player = Scene.GetGameObject<MissileMode7>(id);
                             
@@ -163,7 +163,7 @@ public partial class BoulderMode7
                 // Handle collision
                 if (RSMultiplayer.IsActive)
                 {
-                    for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
+                    for (int id = 0; id < Engine.Multiplayer.PlayersCount; id++)
                         CheckPlayerCollision(Scene.GetGameObject<MovableActor>(id));
                 }
                 else

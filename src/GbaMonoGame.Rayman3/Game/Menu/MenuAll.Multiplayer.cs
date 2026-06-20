@@ -84,7 +84,7 @@ public partial class MenuAll
                         else if ((packet & 0xf000) == 0xd000)
                         {
                             Rayman3.MultiplayerInfo.InitialGameTime = (uint)(packet & 0x1ff);
-                            MultiplayerManager.CacheData();
+                            ((GbaMultiplayerManager)Engine.Multiplayer).CacheData();
 
                             FinishedLyChallenge1 = (packet & 0x200) != 0;
                             FinishedLyChallenge2 = (packet & 0x400) != 0;
@@ -674,7 +674,7 @@ public partial class MenuAll
         }
 
         SetBackgroundPalette(2);
-        MultiplayerManager.ReInit();
+        Engine.Multiplayer.ReInit();
         GameTime.Resume();
 
         MultiplayerType = 0;
@@ -906,7 +906,7 @@ public partial class MenuAll
 
                     RSMultiplayer.SendPacket([packet]);
                     Rayman3.MultiplayerInfo.InitialGameTime = trimmedGameTime;
-                    MultiplayerManager.CacheData();
+                    ((GbaMultiplayerManager)Engine.Multiplayer).CacheData();
 
                     NextStepAction = _Step_InitializeTransitionToMultiplayerTypeSelection;
                     CurrentStepAction = _Step_TransitionOutOfMultiplayerPlayerSelection;
@@ -1078,7 +1078,7 @@ public partial class MenuAll
         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
         SetBackgroundPalette(2);
 
-        MultiplayerManager.ReInit();
+        Engine.Multiplayer.ReInit();
 
         // NOTE: The game calls some connection functions here
 
@@ -1372,7 +1372,7 @@ public partial class MenuAll
         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store02_Mix02);
         SetBackgroundPalette(2);
 
-        MultiplayerManager.ReInit();
+        Engine.Multiplayer.ReInit();
         GameTime.Resume();
 
         MultiplayerType = 0;
@@ -1628,7 +1628,7 @@ public partial class MenuAll
 
         if (Rom.Platform == Platform.GBA && TransitionValue == 152 && HasProcessedPackets)
         {
-            MultiplayerManager.DiscardPendingPackets();
+            ((GbaMultiplayerManager)Engine.Multiplayer).DiscardPendingPackets();
             HasProcessedPackets = false;
         }
 
@@ -1665,7 +1665,7 @@ public partial class MenuAll
         AnimationPlayer.Play(Anims.ArrowRight);
         AnimationPlayer.Play(Anims.MultiplayerTypeIcon);
 
-        if (Rom.Platform == Platform.NGage && MultiplayerManager.SyncTime != 0)
+        if (Rom.Platform == Platform.NGage && ((NGageMultiplayerManager)Engine.Multiplayer).SyncTime != 0)
         {
             if (!ShouldTextBlink || (GameTime.ElapsedFrames & 0x10) != 0)
                 AnimationPlayer.Play(Anims.Texts[4]);
@@ -1674,11 +1674,11 @@ public partial class MenuAll
 
     private void Step_MultiplayerTypeSelection()
     {
-        bool connected = MultiplayerManager.Step();
+        bool connected = Engine.Multiplayer.Step();
 
         if (connected)
         {
-            if (MultiplayerManager.HasReadJoyPads())
+            if (Engine.Multiplayer.HasReadJoyPads())
             {
                 GameTime.Resume();
 
@@ -1726,7 +1726,7 @@ public partial class MenuAll
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                 }
 
-                MultiplayerManager.FrameProcessed();
+                Engine.Multiplayer.FrameProcessed();
             }
             else
             {
@@ -1766,7 +1766,7 @@ public partial class MenuAll
             AnimationPlayer.Play(Anims.ArrowRight);
             AnimationPlayer.Play(Anims.MultiplayerTypeIcon);
 
-            if (Rom.Platform == Platform.NGage && MultiplayerManager.SyncTime != 0)
+            if (Rom.Platform == Platform.NGage && ((NGageMultiplayerManager)Engine.Multiplayer).SyncTime != 0)
             {
                 if (!ShouldTextBlink || (GameTime.ElapsedTotalFrames & 0x10) != 0)
                     AnimationPlayer.Play(Anims.Texts[4]);
@@ -1873,7 +1873,7 @@ public partial class MenuAll
         AnimationPlayer.Play(Anims.ArrowRight);
         AnimationPlayer.Play(Anims.MultiplayerTypeIcon);
 
-        if (Rom.Platform == Platform.NGage && MultiplayerManager.SyncTime != 0)
+        if (Rom.Platform == Platform.NGage && ((NGageMultiplayerManager)Engine.Multiplayer).SyncTime != 0)
         {
             if (!ShouldTextBlink || (GameTime.ElapsedFrames & 0x10) != 0)
                 AnimationPlayer.Play(Anims.Texts[4]);
@@ -2022,7 +2022,7 @@ public partial class MenuAll
         AnimationPlayer.Play(Anims.MultiplayerMapName1);
         AnimationPlayer.Play(Anims.MultiplayerMapName2);
 
-        if (Rom.Platform == Platform.NGage && MultiplayerManager.SyncTime != 0)
+        if (Rom.Platform == Platform.NGage && ((NGageMultiplayerManager)Engine.Multiplayer).SyncTime != 0)
         {
             if (!ShouldTextBlink || (GameTime.ElapsedFrames & 0x10) != 0)
                 AnimationPlayer.Play(Anims.Texts[4]);
@@ -2031,11 +2031,11 @@ public partial class MenuAll
 
     private void Step_MultiplayerMapSelection()
     {
-        bool connected = MultiplayerManager.Step();
+        bool connected = Engine.Multiplayer.Step();
 
         if (connected)
         {
-            if (MultiplayerManager.HasReadJoyPads())
+            if (Engine.Multiplayer.HasReadJoyPads())
             {
                 GameTime.Resume();
 
@@ -2112,7 +2112,7 @@ public partial class MenuAll
                         IsStartingGame = true;
 
                         if (Rom.Platform == Platform.GBA)
-                            MultiplayerManager.BeginLoad();
+                            ((GbaMultiplayerManager)Engine.Multiplayer).BeginLoad();
 
                         Gfx.FadeControl = new FadeControl(FadeMode.None);
                         TransitionsFX.FadeOutInit(4);
@@ -2138,7 +2138,7 @@ public partial class MenuAll
                     }
                 }
 
-                MultiplayerManager.FrameProcessed();
+                Engine.Multiplayer.FrameProcessed();
             }
             else
             {
@@ -2154,7 +2154,7 @@ public partial class MenuAll
             AnimationPlayer.Play(Anims.MultiplayerMapName1);
             AnimationPlayer.Play(Anims.MultiplayerMapName2);
 
-            if (Rom.Platform == Platform.NGage && MultiplayerManager.SyncTime != 0)
+            if (Rom.Platform == Platform.NGage && ((NGageMultiplayerManager)Engine.Multiplayer).SyncTime != 0)
             {
                 if (!ShouldTextBlink || (GameTime.ElapsedTotalFrames & 0x10) != 0)
                     AnimationPlayer.Play(Anims.Texts[4]);
@@ -2226,7 +2226,7 @@ public partial class MenuAll
         AnimationPlayer.Play(Anims.MultiplayerMapName1);
         AnimationPlayer.Play(Anims.MultiplayerMapName2);
 
-        if (Rom.Platform == Platform.NGage && MultiplayerManager.SyncTime != 0)
+        if (Rom.Platform == Platform.NGage && ((NGageMultiplayerManager)Engine.Multiplayer).SyncTime != 0)
         {
             if (!ShouldTextBlink || (GameTime.ElapsedFrames & 0x10) != 0)
                 AnimationPlayer.Play(Anims.Texts[4]);
@@ -2278,7 +2278,7 @@ public partial class MenuAll
         Anims.MultiplayerCaptureTheFlagOptionsArrowRight.ScreenPos = Anims.MultiplayerCaptureTheFlagOptionsArrowRight.ScreenPos with { Y = y };
 
         CaptureTheFlagMode = 0;
-        CaptureTheFlagSoloMode = MultiplayerManager.PlayersCount > 2 ? 1 : 0;
+        CaptureTheFlagSoloMode = Engine.Multiplayer.PlayersCount > 2 ? 1 : 0;
 
         Anims.MultiplayerCaptureTheFlagOptionsFlagsDigit.CurrentAnimation = 18 + CaptureTheFlagTargetFlagsCount;
         Anims.MultiplayerCaptureTheFlagOptionsTimeDigits[0].CurrentAnimation = 18 + CaptureTheFlagTargetTime / 60;
@@ -2298,11 +2298,11 @@ public partial class MenuAll
 
     private void Step_MultiplayerFlagOptions()
     {
-        bool connected = MultiplayerManager.Step();
+        bool connected = Engine.Multiplayer.Step();
 
         if (connected)
         {
-            if (MultiplayerManager.HasReadJoyPads())
+            if (Engine.Multiplayer.HasReadJoyPads())
             {
                 GameTime.Resume();
 
@@ -2334,7 +2334,7 @@ public partial class MenuAll
 
                     if (option == 0)
                     {
-                        if (CaptureTheFlagMode == CaptureTheFlagMode.Solo && MultiplayerManager.PlayersCount == 4)
+                        if (CaptureTheFlagMode == CaptureTheFlagMode.Solo && Engine.Multiplayer.PlayersCount == 4)
                         {
                             CaptureTheFlagMode = CaptureTheFlagMode.Teams;
                             CaptureTheFlagSoloMode = 0;
@@ -2343,7 +2343,7 @@ public partial class MenuAll
                         else
                         {
                             CaptureTheFlagMode = CaptureTheFlagMode.Solo;
-                            CaptureTheFlagSoloMode = MultiplayerManager.PlayersCount > 2 ? 1 : 0;
+                            CaptureTheFlagSoloMode = Engine.Multiplayer.PlayersCount > 2 ? 1 : 0;
                             Anims.MultiplayerCaptureTheFlagModeName.CurrentAnimation = 5 + Rayman3.Loc.LanguageUiIndex;
                         }
                     }
@@ -2376,7 +2376,7 @@ public partial class MenuAll
 
                     if (option == 0)
                     {
-                        if (CaptureTheFlagMode == CaptureTheFlagMode.Solo && MultiplayerManager.PlayersCount == 4)
+                        if (CaptureTheFlagMode == CaptureTheFlagMode.Solo && Engine.Multiplayer.PlayersCount == 4)
                         {
                             CaptureTheFlagMode = CaptureTheFlagMode.Teams;
                             CaptureTheFlagSoloMode = 0;
@@ -2385,7 +2385,7 @@ public partial class MenuAll
                         else
                         {
                             CaptureTheFlagMode = CaptureTheFlagMode.Solo;
-                            CaptureTheFlagSoloMode = MultiplayerManager.PlayersCount > 2 ? 1 : 0;
+                            CaptureTheFlagSoloMode = Engine.Multiplayer.PlayersCount > 2 ? 1 : 0;
                             Anims.MultiplayerCaptureTheFlagModeName.CurrentAnimation = 5 + Rayman3.Loc.LanguageUiIndex;
                         }
                     }
@@ -2423,7 +2423,7 @@ public partial class MenuAll
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Store01_Mix01);
                 }
 
-                MultiplayerManager.FrameProcessed();
+                Engine.Multiplayer.FrameProcessed();
             }
             else
             {

@@ -68,7 +68,7 @@ public partial class CaptureTheFlagFlag
 
                 Box viewBox = GetViewBox();
 
-                for (int i = 0; i < MultiplayerManager.PlayersCount; i++)
+                for (int i = 0; i < Engine.Multiplayer.PlayersCount; i++)
                 {
                     Rayman player = Scene.GetGameObject<Rayman>(i);
 

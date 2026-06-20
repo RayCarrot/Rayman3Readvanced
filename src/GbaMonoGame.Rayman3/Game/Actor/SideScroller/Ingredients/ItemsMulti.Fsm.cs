@@ -31,8 +31,8 @@ public partial class ItemsMulti
 
             Box viewBox = GetViewBox();
 
-            int currentFramePlayerId = (int)(MultiplayerManager.GetElapsedTime() % RSMultiplayer.MaxPlayersCount);
-            if (currentFramePlayerId < MultiplayerManager.PlayersCount)
+            int currentFramePlayerId = (int)(Engine.Multiplayer.GetElapsedTime() % RSMultiplayer.MaxPlayersCount);
+            if (currentFramePlayerId < Engine.Multiplayer.PlayersCount)
             {
                 // The fist can only be collected by the player with the tag in tag mode or without the tag in burglar mode
                 if (ActionId != Action.Fist || 
@@ -68,7 +68,7 @@ public partial class ItemsMulti
                             SpawnCountdown = 180;
                             
                             // Show +3 animation
-                            if (currentFramePlayerId == MultiplayerManager.MachineId)
+                            if (currentFramePlayerId == Engine.Multiplayer.MachineId)
                             {
                                 AnimatedObject.CurrentAnimation = 7;
                                 AnimatedObject.ObjPriority = 0;

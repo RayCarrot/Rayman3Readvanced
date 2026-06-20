@@ -229,9 +229,9 @@ public partial class Lums
                 if (Timer == 0xFF)
                 {
                     Box viewBox = GetViewBox();
-                    int currentFramePlayerId = (int)(MultiplayerManager.GetElapsedTime() % RSMultiplayer.MaxPlayersCount);
+                    int currentFramePlayerId = (int)(Engine.Multiplayer.GetElapsedTime() % RSMultiplayer.MaxPlayersCount);
 
-                    if (currentFramePlayerId < MultiplayerManager.PlayersCount)
+                    if (currentFramePlayerId < Engine.Multiplayer.PlayersCount)
                     {
                         MovableActor player = Scene.GetGameObject<MovableActor>(currentFramePlayerId);
 
@@ -279,7 +279,7 @@ public partial class Lums
             case FsmAction.Init:
                 if (ActionId == Action.BlueLum)
                 {
-                    if (Timer == MultiplayerManager.MachineId)
+                    if (Timer == Engine.Multiplayer.MachineId)
                     {
                         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LumBleu_Mix02, this);
                     }

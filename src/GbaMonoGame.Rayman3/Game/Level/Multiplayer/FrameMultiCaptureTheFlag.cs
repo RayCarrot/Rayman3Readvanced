@@ -91,7 +91,7 @@ public class FrameMultiCaptureTheFlag : FrameMultiSideScroller
         bool[] playersIsLoosing = new bool[4];
 
         playersIsLoosing[0] = false;
-        for (int i = 1; i < MultiplayerManager.PlayersCount; i++)
+        for (int i = 1; i < Engine.Multiplayer.PlayersCount; i++)
         {
             if (PlayerFlagCounts[i] > PlayerFlagCounts[winnerId])
             {
@@ -119,7 +119,7 @@ public class FrameMultiCaptureTheFlag : FrameMultiSideScroller
             // If it's a tie and a solo match, then the players with a loosing score will spectate the tied players
             if (Rayman3.MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Solo)
             {
-                for (int i = 0; i < MultiplayerManager.PlayersCount; i++)
+                for (int i = 0; i < Engine.Multiplayer.PlayersCount; i++)
                 {
                     if (playersIsLoosing[i])
                     {
@@ -128,7 +128,7 @@ public class FrameMultiCaptureTheFlag : FrameMultiSideScroller
                         int tiedPlayerId;
                         do
                         {
-                            tiedPlayerId = Random.GetNumber(MultiplayerManager.PlayersCount);
+                            tiedPlayerId = Random.GetNumber(Engine.Multiplayer.PlayersCount);
                         } while (playersIsLoosing[tiedPlayerId]);
 
                         player.ProcessMessage(this, Message.Rayman_SpectateTiedPlayer, tiedPlayerId);
@@ -149,9 +149,9 @@ public class FrameMultiCaptureTheFlag : FrameMultiSideScroller
             int[] playerFlagCountsCopy = new int[PlayerFlagCounts.Length];
             Array.Copy(PlayerFlagCounts, playerFlagCountsCopy, PlayerFlagCounts.Length);
 
-            for (int i = 0; i < MultiplayerManager.PlayersCount; i++)
+            for (int i = 0; i < Engine.Multiplayer.PlayersCount; i++)
             {
-                for (int j = 0; j < MultiplayerManager.PlayersCount - 1; j++)
+                for (int j = 0; j < Engine.Multiplayer.PlayersCount - 1; j++)
                 {
                     if (playerFlagCountsCopy[j] < playerFlagCountsCopy[j + 1])
                     {

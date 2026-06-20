@@ -369,7 +369,7 @@ public partial class MissileMode7
                             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02, this);
                         }
 
-                        if (MultiplayerManager.MachineId == InstanceId) 
+                        if (Engine.Multiplayer.MachineId == InstanceId) 
                             Scene.Camera.ProcessMessage(this, Message.CamMode7_Spin, true);
                     }
                     else
@@ -407,7 +407,7 @@ public partial class MissileMode7
                     RaceManagerMulti raceManager = frame.RaceManager;
 
                     bool raceFinished = true;
-                    for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
+                    for (int id = 0; id < Engine.Multiplayer.PlayersCount; id++)
                     {
                         if (raceManager.PlayersCurrentTempLap[id] <= raceManager.LapsCount && 
                             Scene.GetGameObject<MissileMode7>(id).HitPoints != 0)
@@ -501,7 +501,7 @@ public partial class MissileMode7
 
                 if (Rayman3.GameInfo.MapId == MapId.GbaMulti_MissileArena)
                 {
-                    for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
+                    for (int id = 0; id < Engine.Multiplayer.PlayersCount; id++)
                     {
                         if (Scene.GetGameObject<MissileMode7>(id).HitPoints != 0)
                             raceManager.IncDistance(id);
@@ -520,7 +520,7 @@ public partial class MissileMode7
                     MultiplayerDeathTimer++;
 
                 // Change player to spectate
-                if (Engine.MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && InstanceId == MultiplayerManager.MachineId && !MultiplayerDeathFadeFlag) 
+                if (Engine.MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && InstanceId == Engine.Multiplayer.MachineId && !MultiplayerDeathFadeFlag) 
                 {
                     // The code is written as if the fade lasts 16 frames, yet it's set to 2 which lasts 32 frames. This makes the
                     // transition looks broken, so we optionally fix it. Same below for the fade in.
@@ -532,7 +532,7 @@ public partial class MissileMode7
                 if (MultiplayerDeathTimer == 15)
                 {
                     MultiplayerDeathSpectatePlayer++;
-                    MultiplayerDeathSpectatePlayer %= MultiplayerManager.PlayersCount;
+                    MultiplayerDeathSpectatePlayer %= Engine.Multiplayer.PlayersCount;
 
                     if (Scene.GetGameObject<MissileMode7>(MultiplayerDeathSpectatePlayer).HitPoints == 0) 
                     {

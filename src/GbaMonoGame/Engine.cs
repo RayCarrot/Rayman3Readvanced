@@ -22,6 +22,7 @@ public static class Engine
 
     // Game services
     public static SoundEventsManager Sem { get; private set; }
+    public static MultiplayerManager Multiplayer { get; private set; }
     public static FontManager Font { get; private set; }
 
     public static void InitEngine(
@@ -74,10 +75,12 @@ public static class Engine
 
     public static void InitGame(
         SoundEventsManager sem,
+        MultiplayerManager multiplayer,
         FontManager font)
     {
         // Set services
         Sem = sem;
+        Multiplayer = multiplayer;
         Font = font;
 
         // Initialize services
@@ -116,6 +119,7 @@ public static class Engine
 
         // Remove services
         Sem = null;
+        Multiplayer = null;
         Font = null;
     }
 

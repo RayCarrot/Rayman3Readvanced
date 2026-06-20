@@ -35,12 +35,12 @@ public class MultiplayerDebugWindow : DebugWindow
             if (ImGui.RadioButton($"{i}##PlayersCount", RSMultiplayer.PlayersCount == i))
             {
                 RSMultiplayer.PlayersCount = i;
-                MultiplayerManager.CachedPlayersCount = i;
+                (Engine.Multiplayer as GbaMultiplayerManager)?.CachedPlayersCount = i;
 
                 if (RSMultiplayer.MachineId >= i)
                 {
                     RSMultiplayer.MachineId = 0;
-                    MultiplayerManager.CachedMachineId = 0;
+                    (Engine.Multiplayer as GbaMultiplayerManager)?.CachedMachineId = 0;
                 }
             }
         }
@@ -52,7 +52,7 @@ public class MultiplayerDebugWindow : DebugWindow
             if (ImGui.RadioButton($"{i}##MachineId", RSMultiplayer.MachineId == i))
             {
                 RSMultiplayer.MachineId = i;
-                MultiplayerManager.CachedMachineId = i;
+                (Engine.Multiplayer as GbaMultiplayerManager)?.CachedMachineId = i;
             }
         }
 

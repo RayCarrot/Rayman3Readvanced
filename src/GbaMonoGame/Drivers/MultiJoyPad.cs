@@ -117,7 +117,7 @@ public class MultiJoyPad
         if (machineId is < 0 or >= MaxPlayersCount)
             throw new Exception("Invalid machine id");
 
-        return JoyPads[machineId][MultiplayerManager.GetMachineTimer() % BufferedFramesCount];
+        return JoyPads[machineId][Engine.Multiplayer.GetMachineTimer() % BufferedFramesCount];
     }
 
     public bool IsValid(int machineId, uint machineTimer)

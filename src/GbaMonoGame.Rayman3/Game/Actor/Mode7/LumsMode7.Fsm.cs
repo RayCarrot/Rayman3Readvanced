@@ -99,7 +99,7 @@ public partial class LumsMode7
                 
                 Box actionBox = GetActionBox();
 
-                for (int id = (int)(MultiplayerManager.GetElapsedTime() % 2); id < MultiplayerManager.PlayersCount; id += 2)
+                for (int id = (int)(Engine.Multiplayer.GetElapsedTime() % 2); id < Engine.Multiplayer.PlayersCount; id += 2)
                 {
                     Mode7Actor player = Scene.GetGameObject<Mode7Actor>(id);
                     Box playerDetectionBox = player.GetDetectionBox();
@@ -114,7 +114,7 @@ public partial class LumsMode7
                         {
                             player.ProcessMessage(this, Message.Rayman_CollectRedLum);
                          
-                            if (id == MultiplayerManager.MachineId)
+                            if (id == Engine.Multiplayer.MachineId)
                                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LumRed_Mix03, this);
                         }
 

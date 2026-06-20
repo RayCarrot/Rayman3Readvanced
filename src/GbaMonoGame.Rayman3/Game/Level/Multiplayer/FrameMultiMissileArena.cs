@@ -12,7 +12,7 @@ public class FrameMultiMissileArena : FrameMissileMultiMode7
         Gfx.ClearColor = Color.Black;
         base.Init();
 
-        MultiplayerManager.Init();
+        Engine.Multiplayer.Init();
 
         AddWalls(new Point(2, 4), new Point(3, 3));
 
@@ -27,15 +27,15 @@ public class FrameMultiMissileArena : FrameMissileMultiMode7
 
     public override void Step()
     {
-        bool connected = MultiplayerManager.Step();
+        bool connected = Engine.Multiplayer.Step();
 
         if (connected && !EndOfFrame)
         {
-            if (MultiplayerManager.HasReadJoyPads())
+            if (Engine.Multiplayer.HasReadJoyPads())
             {
                 GameTime.Resume();
                 base.Step();
-                MultiplayerManager.FrameProcessed();
+                Engine.Multiplayer.FrameProcessed();
             }
             else
             {

@@ -616,7 +616,7 @@ public partial class MenuAll : Frame, IHasPlayfield
             MultiplayerInititialGameTime = GameTime.ElapsedFrames;
         
         Rayman3.MultiplayerInfo.Init();
-        MultiplayerManager.Init();
+        Engine.Multiplayer.Init();
 
         GameTime.Resume();
 

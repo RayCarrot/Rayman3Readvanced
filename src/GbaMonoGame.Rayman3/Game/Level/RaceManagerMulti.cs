@@ -86,7 +86,7 @@ public class RaceManagerMulti
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__OnoGO_Mix02);
                 IsRacing = true;
 
-                for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
+                for (int id = 0; id < Engine.Multiplayer.PlayersCount; id++)
                     Scene.GetGameObject(id).ProcessMessage(this, Message.MissileMode7_StartRace);
                 break;
 
@@ -103,7 +103,7 @@ public class RaceManagerMulti
         {
             UserInfo.IsGameOver = true;
 
-            for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
+            for (int id = 0; id < Engine.Multiplayer.PlayersCount; id++)
                 Scene.GetGameObject(id).ProcessMessage(this, Message.MissileMode7_EndRace);
 
             IsRacing = false;
@@ -117,12 +117,12 @@ public class RaceManagerMulti
         PlayersOrderTimer[machineId] = PlayersOrder;
         PlayersOrder--;
 
-        for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
+        for (int id = 0; id < Engine.Multiplayer.PlayersCount; id++)
             PlayerRanks[id] = id;
 
-        for (int i = 0; i < MultiplayerManager.PlayersCount - 1; i++)
+        for (int i = 0; i < Engine.Multiplayer.PlayersCount - 1; i++)
         {
-            for (int j = 0; j < MultiplayerManager.PlayersCount - 1 - i; j++)
+            for (int j = 0; j < Engine.Multiplayer.PlayersCount - 1 - i; j++)
             {
                 int current = PlayerRanks[j];
                 int next = PlayerRanks[j + 1];
@@ -143,12 +143,12 @@ public class RaceManagerMulti
         PlayersOrderTimer[machineId] = PlayersOrder;
         PlayersOrder--;
 
-        for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
+        for (int id = 0; id < Engine.Multiplayer.PlayersCount; id++)
             PlayerRanks[id] = id;
 
-        for (int i = 0; i < MultiplayerManager.PlayersCount - 1; i++)
+        for (int i = 0; i < Engine.Multiplayer.PlayersCount - 1; i++)
         {
-            for (int j = 0; j < MultiplayerManager.PlayersCount - 1 - i; j++)
+            for (int j = 0; j < Engine.Multiplayer.PlayersCount - 1 - i; j++)
             {
                 int current = PlayerRanks[j];
                 int next = PlayerRanks[j + 1];
@@ -182,7 +182,7 @@ public class RaceManagerMulti
         int deadPlayers = 0;
         int alivePlayer = 0;
         int prevAlivePlayer = alivePlayer;
-        for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
+        for (int id = 0; id < Engine.Multiplayer.PlayersCount; id++)
         {
             alivePlayer = id;
             if (PlayersIsDead[id])
@@ -193,10 +193,10 @@ public class RaceManagerMulti
             prevAlivePlayer = alivePlayer;
         }
 
-        Debug.Assert(deadPlayers < MultiplayerManager.PlayersCount, "Too many players are out... no winner");
+        Debug.Assert(deadPlayers < Engine.Multiplayer.PlayersCount, "Too many players are out... no winner");
 
         // If only 1 player is left alive
-        if (deadPlayers == MultiplayerManager.PlayersCount - 1)
+        if (deadPlayers == Engine.Multiplayer.PlayersCount - 1)
         {
             PlayerDistances[alivePlayer] = 32000;
             PlayersCurrentTempLap[alivePlayer] = LapsCount + 1;

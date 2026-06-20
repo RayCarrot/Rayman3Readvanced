@@ -166,7 +166,7 @@ public class ScoreBar : Bar
             if (Rom.Platform == Platform.GBA)
                 animationPlayer.PlayFront(Crown1);
 
-            for (int i = 0; i < MultiplayerManager.PlayersCount; i++)
+            for (int i = 0; i < Engine.Multiplayer.PlayersCount; i++)
             {
                 animationPlayer.PlayFront(PlayerIcons[i]);
                 animationPlayer.PlayFront(PlayerRanks[i]);

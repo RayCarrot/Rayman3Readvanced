@@ -139,8 +139,8 @@ public class FlagBar : Bar
                 const VerticalAnchorMode verticalAnchor = VerticalAnchorMode.Top;
 
                 int teamId;
-                if ((i == 0 && MultiplayerManager.MachineId < 2) ||
-                    (i == 1 && MultiplayerManager.MachineId >= 2))
+                if ((i == 0 && Engine.Multiplayer.MachineId < 2) ||
+                    (i == 1 && Engine.Multiplayer.MachineId >= 2))
                 {
                     teamId = 0;
                 }
@@ -285,7 +285,7 @@ public class FlagBar : Bar
 
                 if (frame.TargetFlagsCount == 0)
                 {
-                    for (int i = 0; i < MultiplayerManager.PlayersCount; i++)
+                    for (int i = 0; i < Engine.Multiplayer.PlayersCount; i++)
                     {
                         int playerId = MultiplayerHelpers.HudIndexToMachineId(i);
 
@@ -315,7 +315,7 @@ public class FlagBar : Bar
                 }
                 else
                 {
-                    for (int i = 0; i < MultiplayerManager.PlayersCount; i++)
+                    for (int i = 0; i < Engine.Multiplayer.PlayersCount; i++)
                     {
                         int playerId = MultiplayerHelpers.HudIndexToMachineId(i);
 

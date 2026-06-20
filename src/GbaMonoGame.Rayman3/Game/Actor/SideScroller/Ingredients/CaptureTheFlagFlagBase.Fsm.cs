@@ -50,7 +50,7 @@ public partial class CaptureTheFlagFlagBase
             case FsmAction.Step:
                 if (!IsFlagTaken)
                 {
-                    for (int i = 0; i < MultiplayerManager.PlayersCount; i++)
+                    for (int i = 0; i < Engine.Multiplayer.PlayersCount; i++)
                     {
                         Rayman player = Scene.GetGameObject<Rayman>(i);
 
@@ -91,7 +91,7 @@ public partial class CaptureTheFlagFlagBase
             case FsmAction.Step:
                 if (!HasReceivedFlag)
                 {
-                    for (int i = 0; i < MultiplayerManager.PlayersCount; i++)
+                    for (int i = 0; i < Engine.Multiplayer.PlayersCount; i++)
                     {
                         Rayman player = Scene.GetGameObject<Rayman>(i);
 

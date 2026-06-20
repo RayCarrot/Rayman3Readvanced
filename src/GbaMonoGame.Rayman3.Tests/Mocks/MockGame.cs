@@ -41,6 +41,7 @@ public sealed class MockGame : IDisposable
         Rom.Init(Game.Rayman3, Platform.GBA);
         Engine.InitGame(
             sem: new MockSoundEventsManager(),
+            multiplayer: new MockMultiplayerManager(),
             font: new FontManager());
         Rayman3.InitGame(
             save: new MockSaveGameManager(),

@@ -104,6 +104,12 @@ public class Rayman3GbaGame : GbaGame
     {
         Engine.InitGame(
             sem: CreateSoundEventsManager(),
+            multiplayer: Rom.Platform switch
+            {
+                Platform.GBA => new GbaMultiplayerManager(),
+                Platform.NGage => new NGageMultiplayerManager(),
+                _ => throw new UnsupportedPlatformException()
+            },
             font: new FontManager());
         Rayman3.InitGame(
             save: new SaveGameManager(),

@@ -4836,7 +4836,7 @@ public partial class Rayman
                 break;
 
             case FsmAction.UnInit:
-                if (InvisibilityTimer != 0 && InstanceId == MultiplayerManager.MachineId)
+                if (InvisibilityTimer != 0 && InstanceId == Engine.Multiplayer.MachineId)
                 {
                     InvisibilityTimer = 0;
                     AnimatedObject.BlendMode = BlendMode.None;
@@ -4910,7 +4910,7 @@ public partial class Rayman
                 {
                     ActionId = IsFacingRight ? Action.Victory_Right : Action.Victory_Left;
 
-                    if (InstanceId == MultiplayerManager.MachineId)
+                    if (InstanceId == Engine.Multiplayer.MachineId)
                     {
                         PlaySound(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02);
 

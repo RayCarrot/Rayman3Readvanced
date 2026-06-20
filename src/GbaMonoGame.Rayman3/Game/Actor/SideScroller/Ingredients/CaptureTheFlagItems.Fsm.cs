@@ -21,7 +21,7 @@ public partial class CaptureTheFlagItems
                 {
                     Box viewBox = GetViewBox();
 
-                    for (int id = 0; id < MultiplayerManager.PlayersCount; id++)
+                    for (int id = 0; id < Engine.Multiplayer.PlayersCount; id++)
                     {
                         Rayman player = Scene.GetGameObject<Rayman>(id);
                         Box playerDetectionBox = player.GetDetectionBox();

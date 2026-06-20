@@ -5,8 +5,8 @@ public static class MultiplayerHelpers
     public static int HudIndexToMachineId(int hudIndex)
     {
         if (hudIndex == 0)
-            return MultiplayerManager.MachineId;
-        else if (hudIndex <= MultiplayerManager.MachineId)
+            return Engine.Multiplayer.MachineId;
+        else if (hudIndex <= Engine.Multiplayer.MachineId)
             return hudIndex - 1;
         else
             return hudIndex;
@@ -14,9 +14,9 @@ public static class MultiplayerHelpers
 
     public static int MachineIdToHudIndex(int machineId)
     {
-        if (machineId == MultiplayerManager.MachineId)
+        if (machineId == Engine.Multiplayer.MachineId)
             return 0;
-        else if (machineId <= MultiplayerManager.MachineId)
+        else if (machineId <= Engine.Multiplayer.MachineId)
             return machineId + 1;
         else
             return machineId;

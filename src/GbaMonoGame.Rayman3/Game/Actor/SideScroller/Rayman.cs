@@ -1440,7 +1440,7 @@ public sealed partial class Rayman : MovableActor
     private void DrawPlayerArrows(AnimationPlayer animationPlayer)
     {
         int flagIndex = 0;
-        for (int i = 0; i < MultiplayerManager.PlayersCount; i++)
+        for (int i = 0; i < Engine.Multiplayer.PlayersCount; i++)
         {
             Rayman player = Scene.GetGameObject<Rayman>(i);
             bool isFramed = Scene.Camera.IsActorFramed(player);
@@ -1461,7 +1461,7 @@ public sealed partial class Rayman : MovableActor
                     }
                     else if (screenEdgePos.Y > 170 && 
                              Rayman3.MultiplayerInfo.CaptureTheFlagMode == CaptureTheFlagMode.Solo && 
-                             MultiplayerManager.PlayersCount > 2)
+                             Engine.Multiplayer.PlayersCount > 2)
                     {
                         screenEdgePos.Y = 170;
                     }
@@ -2331,7 +2331,7 @@ public sealed partial class Rayman : MovableActor
         {
             InvisibilityTimer--;
 
-            if (InstanceId == MultiplayerManager.MachineId)
+            if (InstanceId == Engine.Multiplayer.MachineId)
                 AnimatedObject.Alpha = AlphaCoefficient.FromGbaValue(AlphaCoefficient.MaxGbaValue - Math.Abs(InvisibilityTimer % 20 - 10));
             else if (InvisibilityTimer >= 424)
                 AnimatedObject.Alpha = AlphaCoefficient.FromGbaValue(AlphaCoefficient.MaxGbaValue - (480 - InvisibilityTimer / 4f));

@@ -282,7 +282,7 @@ public sealed partial class MissileMode7 : Mode7Actor
                         
                         int v = 0;
 
-                        for (int i = 0; i < MultiplayerManager.PlayersCount; i++)
+                        for (int i = 0; i < Engine.Multiplayer.PlayersCount; i++)
                         {
                             if (raceManager.LapsCount < raceManager.PlayersCurrentTempLap[i])
                                 v += 1;
@@ -290,7 +290,7 @@ public sealed partial class MissileMode7 : Mode7Actor
 
                         raceManager.PlayerDistances[InstanceId] = 2000 - v;
 
-                        if (InstanceId == MultiplayerManager.MachineId)
+                        if (InstanceId == Engine.Multiplayer.MachineId)
                         {
                             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__OnoWin_Mix02__or__OnoWinRM_Mix02, this);
                             raceManager.IsRacing = false;
@@ -304,7 +304,7 @@ public sealed partial class MissileMode7 : Mode7Actor
                         // New lap
                         if (raceManager.PlayersCurrentLap[InstanceId] < raceManager.PlayersCurrentTempLap[InstanceId])
                         {
-                            if (InstanceId == MultiplayerManager.MachineId)
+                            if (InstanceId == Engine.Multiplayer.MachineId)
                             {
                                 if (raceManager.PlayersCurrentTempLap[InstanceId] == 2)
                                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__LineFX01_Mix02_P1_, this);
@@ -506,12 +506,12 @@ public sealed partial class MissileMode7 : Mode7Actor
         // Check for collision with other karts
         if (RSMultiplayer.IsActive && InstanceId == 0)
         {
-            for (int id1 = 0; id1 < MultiplayerManager.PlayersCount; id1++)
+            for (int id1 = 0; id1 < Engine.Multiplayer.PlayersCount; id1++)
             {
                 MissileMode7 actor1 = Scene.GetGameObject<MissileMode7>(id1);
                 Box actor1ViewBox = actor1.GetViewBox();
 
-                for (int id2 = id1; id2 < MultiplayerManager.PlayersCount; id2++)
+                for (int id2 = id1; id2 < Engine.Multiplayer.PlayersCount; id2++)
                 {
                     MissileMode7 actor2 = Scene.GetGameObject<MissileMode7>(id2);
                     Box actor2ViewBox = actor2.GetViewBox();

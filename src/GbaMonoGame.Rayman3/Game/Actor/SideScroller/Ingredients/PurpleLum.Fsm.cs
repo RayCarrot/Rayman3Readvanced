@@ -19,7 +19,7 @@ public partial class PurpleLum
                 // Unused - purple lums don't appear in multiplayer
                 if (RSMultiplayer.IsActive && Rom.Platform == Platform.NGage)
                 {
-                    for (int i = 0; i < MultiplayerManager.PlayersCount; i++)
+                    for (int i = 0; i < Engine.Multiplayer.PlayersCount; i++)
                     {
                         Rayman player = Scene.GetGameObject<Rayman>(i);
 
