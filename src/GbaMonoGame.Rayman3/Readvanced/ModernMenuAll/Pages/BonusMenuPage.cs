@@ -1,6 +1,8 @@
-﻿using BinarySerializer.Ubisoft.GbaEngine;
+﻿using System;
+using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Rayman3.J2me;
+using Game = GbaMonoGame.Rayman3.J2me.Game;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
@@ -11,6 +13,55 @@ public class BonusMenuPage : MenuPage
     public override bool UsesCursor => true;
     public override int BackgroundPalette => 2;
     public override int LineHeight => 18;
+
+    private void GetJ2meProgress(out int lums, out int cages)
+    {
+        try
+        {
+            // Read the record flag
+            bool recordFlag = false;
+            using (RecordStore recordFlagRecordStore = RecordStore.openRecordStore(Game.RECORD_FLAG_SAVE_NAME, true))
+            {
+                byte[] data = recordFlagRecordStore.getRecord(1);
+                if (data != null)
+                    recordFlag = data[9] != 0;
+            }
+
+            // No progress exist, so return empty data
+            if (!recordFlag)
+            {
+                lums = 0;
+                cages = 0;
+                return;
+            }
+
+            // Read the progress
+            using (RecordStore saveRecordStore = RecordStore.openRecordStore(Game.GAME_SAVE_NAME, true))
+            {
+                byte[] data = saveRecordStore.getRecord(10);
+                if (data != null)
+                {
+                    lums = data[0];
+                    cages = data[2];
+                }
+                else
+                {
+                    lums = 0;
+                    cages = 0;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            lums = 0;
+            cages = 0;
+
+            Engine.Messages.EnqueueExceptionMessage(
+                ex: ex,
+                text: "An error occurred when reading the save.",
+                header: "Error reading game save");
+        }
+    }
 
     protected override void Init()
     {
@@ -39,6 +90,9 @@ public class BonusMenuPage : MenuPage
         lumIcon.DeactivateChannel(0);
         cageIcon.DeactivateChannel(0);
 
+        // Get J2ME progress
+        GetJ2meProgress(out int j2meLums, out int j2meCages);
+
         // Add menu options
         AddOption(new BonusActionMenuOption(
             text: "ACHIEVEMENTS", 
@@ -66,9 +120,8 @@ public class BonusMenuPage : MenuPage
             text: "MOBILE (J2ME)", 
             collections:
             [
-                // TODO: Implement showing progress
-                new BonusActionMenuOption.Collection(lumIcon, new Vector2(1, 1), "0/175"),
-                new BonusActionMenuOption.Collection(cageIcon, new Vector2(0, -1), "0/12"),
+                new BonusActionMenuOption.Collection(lumIcon, new Vector2(1, 1), $"{j2meLums}/{Game.TOTAL_LUMS}"),
+                new BonusActionMenuOption.Collection(cageIcon, new Vector2(0, -1), $"{j2meCages}/{Game.TOTAL_CAGES}"),
             ],
             action: () =>
             {

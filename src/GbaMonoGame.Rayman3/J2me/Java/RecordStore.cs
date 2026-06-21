@@ -10,17 +10,41 @@ public class RecordStore : IDisposable
 {
     #region Constructor
 
-    public RecordStore(string recordStoreName, bool createIfNecessary)
+    private RecordStore(string recordStoreName, bool createIfNecessary)
     {
         Name = recordStoreName;
 
-        Context context = J2meRom.Context;
+        // Use the shared context if the rom is loaded, otherwise create a temporary one
+        if (J2meRom.IsLoaded)
+        {
+            Context = J2meRom.Context;
+        }
+        else
+        {
+            // NOTE: Hard-code the game version for now since it's the only one supported
+            // Get the paths
+            J2meRom.GetGamePaths(Rayman3J2meVersion.Rayman3_1_0_3_SonyEricssonS700_240x320, out string gameDirectory, out _, out string logName);
+
+            // Create the serializer settings
+            SerializerSettings settings = new()
+            {
+                // Don't cache on read
+                IgnoreCacheOnRead = true,
+            };
+
+            // Create a serializer logger
+            ISerializerLogger serializerLogger = Engine.Settings.Active.Debug.WriteSerializerLog
+                ? new FileSerializerLogger(Engine.UserData.GetFile(Paths.GetSerializeLogFileName(logName)))
+                : null;
+
+            Context = new Context(gameDirectory, settings: settings, serializerLogger: serializerLogger, systemLogger: BinarySerializerSystemLogger.Create());
+        }
 
         // Add the file
         string filePath = GetBinaryFilePath(Name);
-        if (!context.FileExists(filePath))
+        if (!Context.FileExists(filePath))
         {
-            context.AddFile(new LinearFile(context, filePath)
+            Context.AddFile(new LinearFile(Context, filePath)
             {
                 IgnoreCacheOnRead = true,
                 RecreateOnWrite = true,
@@ -28,11 +52,11 @@ public class RecordStore : IDisposable
         }
 
         // Read the file
-        using (context)
+        using (Context)
         {
-            if (recordStoreExists(recordStoreName))
+            if (((LinearFile)Context.GetRequiredFile(filePath)).SourceFileExists)
             {
-                RecordStoreFile recordStoreFile = FileFactory.Read<RecordStoreFile>(context, filePath);
+                RecordStoreFile recordStoreFile = FileFactory.Read<RecordStoreFile>(Context, filePath);
                 Records = new List<byte[]>(recordStoreFile.Records);
             }
             else if (createIfNecessary)
@@ -57,6 +81,7 @@ public class RecordStore : IDisposable
 
     #region Public Properties
 
+    public Context Context { get; }
     public string Name { get; }
     public List<byte[]> Records { get; }
     public bool IsClosed { get; set; }
@@ -190,7 +215,7 @@ public class RecordStore : IDisposable
             RecordStoreFile recordStoreFile = new() { Records = records };
 
             // Save the file
-            using Context context = J2meRom.Context;
+            using Context context = Context;
             FileFactory.Write<RecordStoreFile>(context, GetBinaryFilePath(Name), recordStoreFile);
         }
     }
