@@ -123,6 +123,7 @@ public class LocalizationManager
             new Text(["2:Hit the butterflies to decrease", "the timer."]),
             new Text(["2:Use L and R to move to the side", "without turning."]),
             new Text(["2:Use your body to hit his head", "when he's vulnerable."]),
+            new Text(["2:You can restart the current map", "from the pause menu."]),
         ]));
 
         _textBanks = textBanks.ToArray();

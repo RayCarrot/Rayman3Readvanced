@@ -1,5 +1,6 @@
 ﻿using System;
 using BinarySerializer.Ubisoft.GbaEngine;
+using GbaMonoGame.Rayman3.Readvanced;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework;
 
@@ -15,17 +16,58 @@ public class WoodLight_M2 : FrameSideScroller
     public int WaterGlowValue { get; set; }
     public PaletteTexture[] WaterPaletteTextures { get; set; }
 
+    // For time attack
+    public TextBoxDialog TextBox { get; set; }
+    public uint TimeAttackTextBoxTimer { get; set; }
+    public bool IsShowingTimeAttackTextBox { get; set; }
+    public bool HasShownTimeAttackTextBox { get; set; }
+
     public override void Init()
     {
         base.Init();
 
-        Scene.AddDialog(new TextBoxDialog(Scene), false, false);
+        TextBox = new TextBoxDialog(Scene);
+        Scene.AddDialog(TextBox, false, false);
+
+        TimeAttackTextBoxTimer = 0;
+        IsShowingTimeAttackTextBox = false;
 
         if (Rom.Platform == Platform.GBA || Engine.Settings.Active.Tweaks.UseGbaEffectsOnNGage)
         {
             TgxTileLayer cloudsLayer = ((TgxPlayfield2D)Scene.Playfield).TileLayers[0];
             TextureScreenRenderer renderer = (TextureScreenRenderer)cloudsLayer.Screen.Renderer;
             cloudsLayer.Screen.Renderer = new LevelCloudsRenderer(renderer.Texture, [15, 71, 227]);
+        }
+    }
+
+    public override void Step()
+    {
+        if (IsShowingTimeAttackTextBox)
+            TimeAttackTextBoxTimer++;
+
+        base.Step();
+
+        if (Rayman3.TimeAttack.IsActive && 
+            Rayman3.TimeAttack.Mode == TimeAttackMode.Play && 
+            !HasShownTimeAttackTextBox &&
+            ((Rayman)Scene.MainActor).State == ((Rayman)Scene.MainActor)._Fsm_RespawnDeath)
+        {
+            IsShowingTimeAttackTextBox = true;
+            HasShownTimeAttackTextBox = true;
+        }
+
+        if (IsShowingTimeAttackTextBox && TimeAttackTextBoxTimer == 60)
+        {
+            TextBox.SetCutsceneCharacter(TextBoxCutsceneCharacter.Murfy);
+            TextBox.TextBankId = TextBankId.Readvanced;
+            TextBox.SetText(3);
+            TextBox.MoveInOurOut(true);
+        }
+
+        if (IsShowingTimeAttackTextBox && TimeAttackTextBoxTimer == 300)
+        {
+            TextBox.MoveInOurOut(false);
+            IsShowingTimeAttackTextBox = false;
         }
     }
 

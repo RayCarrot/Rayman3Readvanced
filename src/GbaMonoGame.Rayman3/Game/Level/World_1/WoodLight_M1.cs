@@ -35,6 +35,7 @@ public class WoodLight_M1 : FrameSideScroller
         Scene.AddDialog(TextBox, false, false);
 
         TimeAttackTextBoxTimer = 0;
+        IsShowingTimeAttackTextBox = false;
 
         TgxTileLayer cloudsLayer = ((TgxPlayfield2D)Scene.Playfield).TileLayers[0];
         TextureScreenRenderer renderer;
