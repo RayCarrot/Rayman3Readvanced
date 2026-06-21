@@ -5,6 +5,7 @@ This document contains a list of planned features for Rayman 3 Readvanced, in no
 - Use Game Jolt API for achievements and time attack leaderboards.
 - If the screen resolution is not 16:9 then there should be an additional resolution option matching that aspect ratio.
 - Add license file with licenses for all libraries used.
+- Improve readme. Make it more user-friendly, showcase new features like J2ME and achievements etc. Also for more technical details include build instructions (specifically for the native library which gets built to a nuget package).
 
 ## 💬 Localization
 - If you change the button mapping then the in-game tutorial texts are wrong, such as when Murfy or Ly explain how to perform a move. Find a way to replace this. Perhaps instead of showing the input as text we show an icon of the key/button?
@@ -67,3 +68,7 @@ It might be fun to include some cheat codes. These can be triggered by holding t
 - When running on integrated graphics in a WindowsDX build it seems to have minor graphics glitches like screen tearing (noticeable in the scrolling clouds background of the first level).
 - Some backgrounds scroll too much, making it rather dizzying for the player. For example `SanctuaryOfStoneAndFire_M3` and `GameCube_Bonus2`.
 - Changing settings on the current audio device causes a bug where sounds don't play. Any new sounds get stuck on 0 and never advance, meaning sound instances keep building up and the game soft-locks when waiting for if a sound has finished. One solution is to call `deinit` and then `init` on the SoLoud instance when this bug occurs (perhaps detect it if a sound stream position has not changed from the previous frame), however this also invalidates all sound instances meaning we have to restart the music. Another option is to switch audio backend from the default `MiniAudio` one to `SDL2` as this does not have the bug. However the WindowsDX builds do not come with the SDL dll file, so we need to include that then.
+
+## 🧪 Testing
+- Make sure audio panning works as intended for all actors.
+- Test Readvanced alongside the original game. Perhaps even creating recording files to play back between both games.
