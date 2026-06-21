@@ -77,17 +77,17 @@ This is where the game-specific code is located, such as the levels, actors, dia
 ## Changes from the original code
 What follows are the most notable code changes which were made in this port.
 
-### Fewer singletons
+### Singleton restructuring
 The original game relies on a lot of global singletons for instances of types such as `Scene2D`, `TgxPlayfield` and `GameInfo`. In the N-Gage version these have been replaced by a factory system where singleton instances have an ID and are retrieved by calling a function.
 
 In this port the way singletons are handled has been changed. The goal has been to reduce the amount of static properties to be able to separate the instance data between the different `Frame` instances. Making the classes static would also not always work due to inheritance (for example, `TgxPlayfield` can be of type `TgxPlayfield2D` or `TgxPlayfieldMode7`).
 
-Because of this instances which were originally singletons have been changed in different ways depending on how the different types are used. `Scene2D` and `TgxPlayfield` are now owned by the current `Frame` and passed in to methods as needed. The `GameInfo` class is made static and `JoyPad` has an underlying singleton instance of `SimpleJoyPad` which is accessed through static methods.
+Because of this instances which were originally singletons have been changed in different ways depending on how the different types are used. `Scene2D` and `TgxPlayfield` are now owned by the current `Frame` and passed in to methods as needed. More global classes like `GameInfo` and `JoyPad` have their instances stored in the `Engine` or `Rayman3` classes, while some other classes have been made static.
 
 ### Floating-point arithmetic
 The GBA has no support for floating-point arithmetic. The way the game works around this is by using 32-bit fixed-point arithmetic instead, with a point position of 16.
 
-This has been changed in this port to instead use the `float` type in C#. This works better with MonoGame and allows for common types such as `Vector2` to be used. Additionally the game often has to cast its fixed-point values to standard integers which is not done in this port. Because of this there might be very slight gameplay changes due to value precision differences.
+This has been changed in this port to instead use the `float` type in C#. This works better with MonoGame and allows for common types such as `Vector2` to be used. Additionally math operations now use the C# math floating-point functions rather than hard-coded data tables or fixed-point math like the original game. Because of this there might be minor changes for these things.
 
 ### Improved smoothness
 Several minor changes have been made to improve the smoothness of animations and movements to make the game look better in a higher resolution.
@@ -101,11 +101,13 @@ Since the original game was developed for the GBA the rendering is handled very 
 
 Additionally, the game takes advantage of several features on the GBA to produce some of its effects. Level transitions are handled using windows, the clouds scrolling at different speeds in the background is done using vsync callbacks which occur after each scanline is drawn etc.
 
-Initially this port was set up to emulate the PPU on the GBA, and thus manually draw each frame pixel by pixel. This however came with major performance costs and would complicate high resolution rendering. Because of this it was later changed into rendering in a more conventional way using textures. Each GBA sprite is now a texture, most of which are created using lazy loading. In order to support changing palettes the textures are rendered in gray-scale with the colors being applied through a shader which gets them from a texture acting as the palette.
+Initially this port was set up to emulate the PPU on the GBA, and thus manually draw each frame pixel by pixel. This however came with major performance costs and would complicate high resolution rendering. Because of this it was later changed into rendering in a more conventional way using textures. Each GBA sprite is now a gray-scale texture with the colors applied using a palette texture through a custom shader.
 
 Certain effects might not be replicated exactly the same as on a GBA, such as affine sprite rendering and alpha blending, but the goal is to have it appear as similar as possible. In some cases, like when rotating sprites, this has the advantage of making them appear much clearer in higher resolutions. The color range is now also higher since everything is rendered in 32-bit as opposed to 15-bit on the GBA. For colors read from the palettes in the game data this doesn't change the colors displayed, however for dynamically set colors it can take advantage of the higher range.
 
 Another example where there is a difference is for animations with palette cycling. Since the original game only has a single global palette in VRAM it means that multiple animations of the same type will share the same palette, and thus also modify the same one. Having multiple animations playing will then result in the palette cycling appear to animate faster since it shifts it multiple times per frame. This is most notable for the blue lum bar where the filled parts consists of several animations. In this port each animation is self-contained and modifies its own palette, resulting in the animations always modifying the palette at a constant rate.
+
+Rendering using textures in a pixel-art game however comes with certain complications. Since we allow the game rendering in any scale it means that there might be floating-point precision issues with different vectors. The most conventional solution is to render the game to a fixed resolution and then upscale that to fit the screen. However this isn't as viable here since textures are allowed to scale, and we want to preserve the scaling in the resolution the game is rendered in. The Mode7 levels are also rendered in 3D now, meaning they don't have a single intended resolution to render at. So instead the solution has mostly been to create separate textures for every sprite rather than using an atlas/sheet. The main exception here is for the fonts and debug collision tilesets which still use sheets. The tilemaps are also pre-rendered to single large textures to allow efficiently rendering without any visible seams.
 
 ### Mode7
 The Mode7 rendering is handled very differently from how the original game does it. On the GBA it gets rendered by changing the rotation/scaling parameters of the map on each scanline using pre-calculated perspective values to correctly scale it. In this port it instead gets rendered in 3D using a perspective and view matrix. It's been attempted to recreate the original camera perspective, however it's not exactly the same due to how differently they work.
@@ -138,6 +140,9 @@ Most types and members have the same name as in the original GBA version, but th
 ### Optional improvements
 Besides the code related changes there are also optional improvements which the player can toggle in the port. Due to these changing how parts of the game works it also means there are added checks for these throughout the game's code.
 
+### Modern features
+Several optional modern features have been added, such as a new main menu. These new features use new graphics, which are .png files compiled as MonoGame assets.
+
 ### Other minor changes
 Various minor changes have been made to the code to modernize it in C# and reduce duplicate code. For example there is now a struct for `PhysicalType` (tile collision) which has helper properties for checking common things like if it's solid. This avoids having to match the value against a constant each time.
 
@@ -156,3 +161,23 @@ In the N-Gage version the sound effects and music are handled differently. The m
 The engine is being recreated thanks to Ghidra allowing the original game's code to be decompiled. Both the GBA and N-Gage versions are being used to recreate the code, so that any differences between them can be correctly handled. The N-Gage version is also easier to decompile due to it having fewer compiler optimizations, such as no function inlining.
 
 There also exists various prototypes of GBA games using this engine which were compiled with assertions in the code. These assertions contain debug strings for if the assertions fail which are incredibly useful as they contain function names, variable names, source file paths and more. Thanks to this information we have a very good idea of how the original engine was structured and how things were named.
+
+## J2ME
+Additionally the mobile J2ME version of Rayman 3 is supported as a bonus feature. The "Sony Ericsson S700 - 240x320 (1.0.3)" was used as a base for decompiling the code since it's both unobfuscated and compiled with some debug flag where it kept all local variable names and leftover debug functions. However the code has been set up to allow other versions to be supported in the future.
+
+### Engine
+The J2ME engine is set up surprisingly similar to the GBA engine, having scenes with actors, where each actor has actions and a mech model, as well as a playfield for the map. It's however much more simplified and with less abstraction.
+
+The game's resources are all packed into archives. For most versions this consists of 3 archives where the filenames consists of 3 random symbols. However some versions retains the original names:
+- Resource_Archive_animation
+- Resource_Archive_image
+- Resource_Archive_map
+
+### Implementation
+The implementation of this engine remains very similar, keeping all of the original names where possible. This makes it appear a bit messy in C# since the names don't follow C#-naming conventions, but it allows it to be easy to look up the same code in the decompiled code.
+
+Some changes were however made to make the code cleaner. The Resource Manager code was split into its own class, and the `Game` class was split into multiple files as it is huge by itself. Several structs where also created for data types where the game uses raw byte arrays.
+
+The graphics are all handled through a reimplemented version of the `javax.microedition.lcdui.Graphics` class. Only yhe functionality which is needed by the game has been implemented, and the way some parts are rendered has been changed. For example sprites are rendered as separate textures rather than clipped from the sheet image, and the background is rendered as a `GfxScreen`. The font would normally use the default font installed on the phone, but here we use the GBA font instead since that's already loaded and has the exact same size we want.
+
+Finally the sounds are all MIDI in this version, which we play back using the `GeneralUser GS` sound font.
