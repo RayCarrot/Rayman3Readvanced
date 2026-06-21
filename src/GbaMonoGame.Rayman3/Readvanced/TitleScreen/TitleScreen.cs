@@ -54,17 +54,42 @@ public class TitleScreen : Frame
             _ => throw new UnsupportedPlatformException()
         };
 
-        if (LoadLastSave && lastSaveSlot != null && Rayman3.Save.SlotExists(lastSaveSlot.Value))
+        if (LoadLastSave && lastSaveSlot != null && (lastSaveSlot == -1 || Rayman3.Save.SlotExists(lastSaveSlot.Value)))
         {
             // The seed normally gets set in the intro, so do it now instead since we're skipping that
             Random.SetSeed(GameTime.ElapsedFrames);
 
+            // Load the menu
+            if (lastSaveSlot == -1)
+            {
+                if (Engine.Settings.Active.Tweaks.UseModernMainMenu)
+                {
+                    Engine.FrameMngr.SetNextFrame(new ModernMenuAll(Rom.Platform switch
+                    {
+                        Platform.GBA => InitialMenuPage.Language,
+                        Platform.NGage => InitialMenuPage.NGage_FirstPage,
+                        _ => throw new UnsupportedPlatformException(),
+                    }));
+                }
+                else
+                {
+                    Engine.FrameMngr.SetNextFrame(new MenuAll(Rom.Platform switch
+                    {
+                        Platform.GBA => InitialMenuPage.Language,
+                        Platform.NGage => InitialMenuPage.NGage_FirstPage,
+                        _ => throw new UnsupportedPlatformException(),
+                    }));
+                }
+            }
             // Load the save slot
-            Rayman3.GameInfo.Init();
-            Rayman3.GameInfo.Load(lastSaveSlot.Value);
-            Rayman3.GameInfo.GotoLastSaveGame();
-            Rayman3.GameInfo.StartPlayTime();
-            Rayman3.GameInfo.CurrentSlot = lastSaveSlot.Value;
+            else
+            {
+                Rayman3.GameInfo.Init();
+                Rayman3.GameInfo.Load(lastSaveSlot.Value);
+                Rayman3.GameInfo.GotoLastSaveGame();
+                Rayman3.GameInfo.StartPlayTime();
+                Rayman3.GameInfo.CurrentSlot = lastSaveSlot.Value;
+            }
         }
         else
         {

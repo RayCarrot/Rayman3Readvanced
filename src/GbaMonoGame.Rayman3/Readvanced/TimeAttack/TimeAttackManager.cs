@@ -112,6 +112,13 @@ public class TimeAttackManager
         MapGhosts = null;
         GhostRecorder = null;
         GhostPlayer = null;
+
+        if (Rom.Platform == Platform.GBA)
+            Engine.Settings.Local.General.LastPlayedGbaSaveSlot = -1;
+        else if (Rom.Platform == Platform.NGage)
+            Engine.Settings.Local.General.LastPlayedNGageSaveSlot = -1;
+        else
+            throw new UnsupportedPlatformException();
     }
 
     public void End()

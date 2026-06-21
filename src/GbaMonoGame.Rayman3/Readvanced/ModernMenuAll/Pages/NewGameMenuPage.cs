@@ -37,6 +37,13 @@ public class NewGameMenuPage : MenuPage
                     Engine.FrameMngr.SetNextFrame(new Act1());
                     Rayman3.GameInfo.ResetPersistentInfo();
 
+                    if (Rom.Platform == Platform.GBA)
+                        Engine.Settings.Local.General.LastPlayedGbaSaveSlot = SelectedOption;
+                    else if (Rom.Platform == Platform.NGage)
+                        Engine.Settings.Local.General.LastPlayedNGageSaveSlot = SelectedOption;
+                    else
+                        throw new UnsupportedPlatformException();
+
                     Rayman3.GameInfo.StartPlayTime();
 
                     Gfx.FadeControl = new FadeControl(FadeMode.BrightnessDecrease);

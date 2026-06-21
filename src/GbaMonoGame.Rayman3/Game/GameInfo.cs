@@ -172,13 +172,6 @@ public class GameInfo
         SavePlayTime();
         Rayman3.Save.SaveSlot(saveSlot, SaveSlot);
         StartPlayTime();
-
-        if (Rom.Platform == Platform.GBA)
-            Engine.Settings.Local.General.LastPlayedGbaSaveSlot = CurrentSlot;
-        else if (Rom.Platform == Platform.NGage)
-            Engine.Settings.Local.General.LastPlayedNGageSaveSlot = CurrentSlot;
-        else
-            throw new UnsupportedPlatformException();
     }
 
     public void EnablePower(Power power)
@@ -685,6 +678,13 @@ public class GameInfo
             default:
                 throw new Exception("Invalid last map id");
         }
+
+        if (Rom.Platform == Platform.GBA)
+            Engine.Settings.Local.General.LastPlayedGbaSaveSlot = CurrentSlot;
+        else if (Rom.Platform == Platform.NGage)
+            Engine.Settings.Local.General.LastPlayedNGageSaveSlot = CurrentSlot;
+        else
+            throw new UnsupportedPlatformException();
     }
 
     public void SetNextMapId(MapId mapId)
