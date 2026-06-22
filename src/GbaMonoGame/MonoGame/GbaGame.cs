@@ -413,6 +413,7 @@ public abstract class GbaGame : Game
 
         IsPaused = true;
         Engine.Sem?.ForcePauseAllSongs();
+        Frame.Current?.Pause();
     }
 
     public void Resume()
@@ -422,6 +423,7 @@ public abstract class GbaGame : Game
 
         IsPaused = false;
         Engine.Sem?.ForceResumeAllSongs();
+        Frame.Current?.Resume();
     }
 
     #endregion

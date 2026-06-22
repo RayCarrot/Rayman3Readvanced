@@ -22,7 +22,7 @@ public partial class Game
     // Custom for Readvanced MIDI playback
     public SoundFont SoundFont { get; set; }
     public MidiFile[] MidiFiles { get; } = new MidiFile[SOUNDS_COUNT];
-    public List<MidiSoundInstance> SoundInstances { get; } = []; // TODO: Pause sounds when pausing game
+    public List<MidiSoundInstance> SoundInstances { get; } = [];
 
     public void InitSound()
     {

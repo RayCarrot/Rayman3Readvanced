@@ -61,6 +61,22 @@ public sealed class MidiSoundInstance : IDisposable
         _sequencer.Stop();
     }
 
+    public void Pause()
+    {
+        if (_dynamicSound.IsDisposed)
+            throw new ObjectDisposedException(nameof(_dynamicSound));
+
+        _dynamicSound.Pause();
+    }
+
+    public void Resume()
+    {
+        if (_dynamicSound.IsDisposed)
+            throw new ObjectDisposedException(nameof(_dynamicSound));
+
+        _dynamicSound.Resume();
+    }
+
     public void SetVolume(float volume)
     {
         if (_dynamicSound.IsDisposed)

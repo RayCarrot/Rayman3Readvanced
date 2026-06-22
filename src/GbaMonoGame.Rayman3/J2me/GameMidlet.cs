@@ -129,4 +129,16 @@ public class GameMidlet : Frame
         if (Instance_Game.m_chGameState == GAME_STATE.EXITING)
             Engine.FrameMngr.SetNextFrame(new ModernMenuAll(InitialMenuPage.Bonus));
     }
+
+    public override void Pause()
+    {
+        foreach (MidiSoundInstance soundInstance in Instance_Game.SoundInstances)
+            soundInstance.Pause();
+    }
+
+    public override void Resume()
+    {
+        foreach (MidiSoundInstance soundInstance in Instance_Game.SoundInstances)
+            soundInstance.Resume();
+    }
 }

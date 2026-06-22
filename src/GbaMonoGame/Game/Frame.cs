@@ -34,4 +34,8 @@ public abstract class Frame
     /// Steps the frame. This is called once every game frame when the frame is active.
     /// </summary>
     public abstract void Step();
+
+    // Custom methods for handling custom pausing logic
+    public virtual void Pause() { }
+    public virtual void Resume() { }
 }
