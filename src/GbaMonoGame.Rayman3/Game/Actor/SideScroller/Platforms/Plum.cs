@@ -53,6 +53,22 @@ public sealed partial class Plum : MovableActor
         if (base.ProcessMessageImpl(sender, message, param))
             return false;
 
+        switch (message)
+        {
+            case Message.Readvanced_ResetOnRespawnDeath:
+                LavaSplash?.LinkedMovementActor = null;
+                LavaSplash?.ProcessMessage(this, Message.Destroy);
+                FloatSpeedX = 0;
+                DisableMessages = false;
+                ShouldSetInitialSpeed = true;
+                Position = Resource.Pos.ToVector2();
+                if ((Action)Resource.FirstActionId == Action.Fall)
+                    State.MoveTo(_Fsm_Fall);
+                else
+                    State.MoveTo(_Fsm_Idle);
+                return false;
+        }
+
         if (DisableMessages)
             return false;
 
