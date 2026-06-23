@@ -209,13 +209,16 @@ public class Graphics
         Vector2 origin = new(0, 0);
         Matrix transformation = FontManager.CreateTextTransformation(originalPos, Vector2.One, origin);
 
-        // TODO: Avoid allocating every frame - same with reading the string as well as getting the width
+        int bytesCount = Engine.Font.GetTextBytesCount(str);
+        byte[] buffer = ArrayPool<byte>.Shared.Rent(bytesCount);
+        Engine.Font.GetTextBytes(str, 0, str.Length, buffer, 0);
+
         // Draw each character
         Vector2 pos = Vector2.Zero;
-        foreach (byte c in Engine.Font.GetTextBytes(str))
+        for (int i = 0; i < bytesCount; i++)
         {
             Sprite sprite = Engine.Font.GetCharacterSprite(
-                c: c,
+                c: buffer[i],
                 fontSize: Font.Size,
                 transformation: transformation,
                 position: ref pos,
@@ -229,6 +232,8 @@ public class Graphics
 
             Sprites.Add(sprite);
         }
+
+        ArrayPool<byte>.Shared.Return(buffer);
     }
 
     // Custom

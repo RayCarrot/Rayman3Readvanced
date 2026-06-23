@@ -140,6 +140,11 @@ public class FontManager : IDisposable
         return transformation;
     }
 
+    public int GetTextBytesCount(string text)
+    {
+        return Encoding.GetByteCount(text);
+    }
+
     public byte[] GetTextBytes(string text)
     {
         return Encoding.GetBytes(text);
@@ -150,6 +155,11 @@ public class FontManager : IDisposable
         return Encoding.GetBytes(text, index, count);
     }
 
+    public void GetTextBytes(string text, int charIndex, int charCount, byte[] bytes, int byteIndex)
+    {
+        Encoding.GetBytes(text, charIndex, charCount, bytes, byteIndex);
+    }
+
     public string GetTextString(byte[] bytes)
     {
         return Encoding.GetString(bytes);
@@ -157,10 +167,18 @@ public class FontManager : IDisposable
 
     public int GetStringWidth(FontSize fontSize, string text)
     {
-        return GetStringWidth(fontSize, GetTextBytes(text));
+        int bytesCount = Engine.Font.GetTextBytesCount(text);
+        byte[] buffer = ArrayPool<byte>.Shared.Rent(bytesCount);
+        Engine.Font.GetTextBytes(text, 0, text.Length, buffer, 0);
+
+        int width = GetStringWidth(fontSize, buffer, bytesCount);
+
+        ArrayPool<byte>.Shared.Return(buffer);
+
+        return width;
     }
 
-    public int GetStringWidth(FontSize fontSize, byte[] textBytes)
+    public int GetStringWidth(FontSize fontSize, byte[] textBytes, int length)
     {
         LoadedFont loadedFont = fontSize switch
         {
@@ -173,8 +191,9 @@ public class FontManager : IDisposable
         int currentWidth = 0;
         int maxWidth = 0;
 
-        foreach (byte c in textBytes)
+        for (int i = 0; i < length; i++)
         {
+            byte c = textBytes[i];
             if (c == '\r' || c == '\n')
             {
                 if (currentWidth > maxWidth)

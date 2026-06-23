@@ -28,7 +28,7 @@ public class SpriteTextObject : AObject
 
     public AlphaCoefficient Alpha { get; set; } = AlphaCoefficient.Max;
 
-    public int GetStringWidth() => Engine.Font.GetStringWidth(FontSize, TextBytes);
+    public int GetStringWidth() => Engine.Font.GetStringWidth(FontSize, TextBytes, TextBytes.Length);
 
     public void WrapText(float width)
     {
