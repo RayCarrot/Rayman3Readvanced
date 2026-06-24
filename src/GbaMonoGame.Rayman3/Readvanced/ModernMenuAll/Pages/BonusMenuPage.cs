@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.Rayman3.J2me;
@@ -127,10 +128,73 @@ public class BonusMenuPage : MenuPage
             {
                 CursorClick(() =>
                 {
-                    FadeOut(2, () =>
+                    Rayman3J2meVersion gameVersion = Rayman3J2meVersion.Rayman3_1_0_3_SonyEricssonS700_240x320;
+                    J2meRom.GetGamePaths(gameVersion, out string gameDirectory, out string gameFileName, out _);
+
+                    string romFilePath = Path.Combine(gameDirectory, gameFileName);
+
+                    if (File.Exists(romFilePath))
                     {
-                        Engine.FrameMngr.SetNextFrame(new GameMidlet());
-                    });
+                        FadeOut(2, () =>
+                        {
+                            Engine.FrameMngr.SetNextFrame(new GameMidlet());
+                        });
+                    }
+                    else
+                    {
+                        string selectedFilePath = Engine.FileDialog.OpenFile("Select the Sony Ericsson S700 - 240x320 (1.0.3) ROM file", 
+                            new FileDialogManager.FileFilter("jar", "Java Archive files"));
+
+                        if (selectedFilePath != null)
+                        {
+                            bool isValid;
+                            try
+                            {
+                                if (J2meRom.ValidateRom(selectedFilePath, gameVersion))
+                                {
+                                    isValid = true;
+                                }
+                                else
+                                {
+                                    isValid = false;
+                                    Engine.Messages.EnqueueMessage(
+                                        text: "The game ROM is not valid. Make sure it's the Sony Ericsson S700 - 240x320 (1.0.3) version.",
+                                        header: "Invalid game ROM");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                isValid = false;
+                                Engine.Messages.EnqueueExceptionMessage(
+                                    ex: ex,
+                                    text: "An error occurred when validating the selected game ROM.",
+                                    header: "Error validating game ROM");
+                            }
+
+                            if (isValid)
+                            {
+                                try
+                                {
+                                    // Copy the file
+                                    Directory.CreateDirectory(gameDirectory);
+                                    File.Copy(selectedFilePath, romFilePath);
+
+                                    // Load the game
+                                    FadeOut(2, () =>
+                                    {
+                                        Engine.FrameMngr.SetNextFrame(new GameMidlet());
+                                    });
+                                }
+                                catch (Exception ex)
+                                {
+                                    Engine.Messages.EnqueueExceptionMessage(
+                                        ex: ex,
+                                        text: "An error occurred when copying the selected game ROM.",
+                                        header: "Error copying game ROM");
+                                }
+                            }
+                        }
+                    }
                 });
             }));
         AddOption(new ActionMenuOption("ORIGINAL MENU", () =>

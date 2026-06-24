@@ -50,7 +50,6 @@ public static class J2meRom
         using JavaArchive javaArchive = new(Path.Combine(GameDirectory, GameFileName), cache: false);
 
         _manifest = javaArchive.ReadManifest();
-        // TODO: Validate the manifest values (version etc.)
 
         // Load the resource archive files from the rom
         _archiveHeaders = new ArchiveHeader[ArchiveDefines.Length];
@@ -83,6 +82,32 @@ public static class J2meRom
 
     #region Public Methods
 
+    public static bool ValidateRom(string filePath, Rayman3J2meVersion version)
+    {
+        // Load the Java archive
+        using JavaArchive javaArchive = new(filePath, cache: false);
+
+        JavaManifest manifest = javaArchive.ReadManifest();
+
+        // Validate the name
+        if (manifest.GetValue("MIDlet-Name") != "Rayman3")
+            return false;
+
+        // Validate the version
+        if (manifest.GetValue("MIDlet-Version") != GetMidletVersion(version))
+            return false;
+
+        // Validate the archive files
+        ArchiveDefine[] archiveDefines = GetArchiveDefines(version);
+        foreach (ArchiveDefine archiveDefine in archiveDefines)
+        {
+            if (!javaArchive.HasFile(archiveDefine.FileName))
+                return false;
+        }
+
+        return true;
+    }
+
     public static void GetGamePaths(Rayman3J2meVersion version, out string gameDirectory, out string gameFileName, out string logName)
     {
         string versionName = version switch
@@ -94,6 +119,15 @@ public static class J2meRom
         gameDirectory = Engine.UserData.GetDirectory(Path.Combine("J2me", versionName));
         gameFileName = "rayman3.jar";
         logName = "j2me";
+    }
+
+    public static string GetMidletVersion(Rayman3J2meVersion version)
+    {
+        return version switch
+        {
+            Rayman3J2meVersion.Rayman3_1_0_3_SonyEricssonS700_240x320 => "1.0.3",
+            _ => throw new ArgumentOutOfRangeException(nameof(version), version, null)
+        };
     }
 
     public static ArchiveDefine[] GetArchiveDefines(Rayman3J2meVersion version)

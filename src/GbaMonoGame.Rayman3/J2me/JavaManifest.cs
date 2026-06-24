@@ -25,6 +25,6 @@ public class JavaManifest
 
     public string GetValue(string name)
     {
-        return Values[name];
+        return Values.GetValueOrDefault(name);
     }
 }

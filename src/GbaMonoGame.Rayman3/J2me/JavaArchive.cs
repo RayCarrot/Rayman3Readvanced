@@ -23,6 +23,11 @@ public sealed class JavaArchive : IDisposable
 
     private ZipArchive ZipArchive { get; }
 
+    public bool HasFile(string filePath)
+    {
+        return ZipArchive.GetEntry(filePath) != null;
+    }
+
     public ZipArchiveEntry GetFile(string filePath)
     {
         return ZipArchive.GetEntry(filePath) ?? 
