@@ -7,6 +7,9 @@ public partial class Boulder
 {
     private bool FsmStep_CheckHitMainActor()
     {
+        // Halve the camera cutscene in time attack
+        int targetTime = Rayman3.TimeAttack.IsActive ? 45 : 90;
+
         // Start, move camera to boulder
         if (Timer == 0)
         {
@@ -17,12 +20,12 @@ public partial class Boulder
             Timer++;
         }
         // Wait
-        else if (Timer < 90)
+        else if (Timer < targetTime)
         {
             Timer++;
         }
         // Continue, move camera back to main actor
-        else if (Timer == 90)
+        else if (Timer == targetTime)
         {
             Scene.Camera.ProcessMessage(this, Message.Cam_MoveToLinkedObject, false);
             Timer++;
