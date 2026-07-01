@@ -858,7 +858,6 @@ public class Actor
                     GameMidlet.Instance_Game.s_iLumsTaken++;
                     GameMidlet.Instance_Game.Status_Show(2);
                     GameMidlet.Instance_Game.PlaySound(SOUND_INDEX.lums, true);
-                    GameMidlet.Instance_Game.CheckProgressionAchievements();
                     break;
                 
                 case ACTOR_TYPE.WHITE_LUM:
@@ -921,7 +920,6 @@ public class Actor
                     GameMidlet.Instance_Game.s_iCageOpened++;
                     anim.newAction = 4;
                     GameMidlet.Instance_Game.Status_Show(1);
-                    GameMidlet.Instance_Game.CheckProgressionAchievements();
                 }
                 break;
 
@@ -956,7 +954,6 @@ public class Actor
                     GameMidlet.Instance_Game.s_iCageOpened++;
                     anim.newAction = 9;
                     GameMidlet.Instance_Game.Status_Show(1);
-                    GameMidlet.Instance_Game.CheckProgressionAchievements();
                 }
                 break;
 

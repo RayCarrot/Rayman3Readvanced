@@ -430,6 +430,8 @@ public partial class Game
                     GameFrame_SaveRecordFlag();
                     m_gameFrame_prevState = GAME_FRAME_STATE.EXITING_LEVEL;
                     m_gameFrame_curState = GAME_FRAME_STATE.EXITED_LEVEL;
+                    if (m_gameFrame_curLevel == LEVEL_WORLD_MAP)
+                        CheckProgressionAchievements();
                 }
                 m_gameStateStep++;
                 return m_gameFrame_curState;
@@ -976,9 +978,9 @@ public partial class Game
     {
         if (m_gameFrame_unlockedLevel >= LEVEL_BONUS)
             Rayman3.Achievements.Unlock(AchievementId.CompleteJ2me);
-        if ((byte)s_iLumsTaken >= BONUS_REQUIRED_LUMS && s_iCageOpened >= BONUS_REQUIRED_CAGES)
+        if ((byte)s_synopsis[LEVEL_WORLD_MAP].LumsTaken >= BONUS_REQUIRED_LUMS && s_synopsis[LEVEL_WORLD_MAP].CageOpened >= BONUS_REQUIRED_CAGES)
             Rayman3.Achievements.Unlock(AchievementId.UnlockBonusLevelJ2me);
-        if ((byte)s_iLumsTaken >= TOTAL_LUMS && s_iCageOpened >= TOTAL_CAGES)
+        if ((byte)s_synopsis[LEVEL_WORLD_MAP].LumsTaken >= TOTAL_LUMS && s_synopsis[LEVEL_WORLD_MAP].CageOpened >= TOTAL_CAGES)
             Rayman3.Achievements.Unlock(AchievementId.CollectAllJ2me);
     }
 }
