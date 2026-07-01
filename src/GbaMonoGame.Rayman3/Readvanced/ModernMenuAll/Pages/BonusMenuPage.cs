@@ -42,8 +42,15 @@ public class BonusMenuPage : MenuPage
                 byte[] data = saveRecordStore.getRecord(10);
                 if (data != null)
                 {
-                    lums = data[0];
-                    cages = data[2];
+                    int currentLevel = data[10 * 4];
+                    lums = data[Game.LEVEL_WORLD_MAP * 4 + 0];
+                    cages = data[Game.LEVEL_WORLD_MAP * 4 + 2];
+
+                    if (currentLevel != Game.LEVEL_WORLD_MAP)
+                    {
+                        lums += data[currentLevel * 4 + 0];
+                        cages += data[currentLevel * 4 + 2];
+                    }
                 }
                 else
                 {
