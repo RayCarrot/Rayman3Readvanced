@@ -3,7 +3,6 @@ using GbaMonoGame.SourceGenerators;
 
 namespace GbaMonoGame.Rayman3;
 
-// TODO: Despawn on Rayman respawn death
 [GenerateFsmFields]
 public sealed partial class EnergyBall : MovableActor
 {
@@ -12,5 +11,22 @@ public sealed partial class EnergyBall : MovableActor
         CreateGeneratedStates();
 
         State.SetTo(_Fsm_Default);
+    }
+
+    protected override bool ProcessMessageImpl(object sender, Message message, object param)
+    {
+        if (base.ProcessMessageImpl(sender, message, param))
+            return false;
+
+        switch (message)
+        {
+            // Despawn on respawn death
+            case Message.Readvanced_ResetOnRespawnDeath:
+                State.MoveTo(_Fsm_Default);
+                return false;
+
+            default:
+                return false;
+        }
     }
 }
