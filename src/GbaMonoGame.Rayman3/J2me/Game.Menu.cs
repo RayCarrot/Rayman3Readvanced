@@ -902,13 +902,13 @@ public partial class Game
     public bool Menu_PressedUp()
     {
         // NOTE: Original game checks NUM_1, NUM_2, NUM_3 and NUM_4
-        return (m_keys & GbaInput.Up) != 0;
+        return (m_keys & (GbaInput.Up | GbaInput.Left)) != 0;
     }
 
     public bool Menu_PressedDown()
     {
         // NOTE: Original game checks NUM_0, NUM_6, NUM_7, NUM_8 and NUM_9
-        return (m_keys & GbaInput.Down) != 0;
+        return (m_keys & (GbaInput.Down | GbaInput.Right)) != 0;
     }
 
     public bool Menu_PressedConfirm()
