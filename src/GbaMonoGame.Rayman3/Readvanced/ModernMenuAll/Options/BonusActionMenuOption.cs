@@ -58,7 +58,7 @@ public class BonusActionMenuOption : ActionMenuOption
         base.SetPosition(position);
 
         const int startX = 110;
-        const int width = 65;
+        const int width = 67;
 
         for (int i = 0; i < CollectionIcons.Length; i++)
             CollectionIcons[i].ScreenPos = position + new Vector2(startX + i * width, 0) + Collections[i].Offset;
