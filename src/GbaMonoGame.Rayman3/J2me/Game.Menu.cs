@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using BinarySerializer.Gameloft.J2me;
+using BinarySerializer.Ubisoft.GbaEngine;
 
 namespace GbaMonoGame.Rayman3.J2me;
 
@@ -423,8 +424,7 @@ public partial class Game
         if (m_byMainLoadingState < 3)
             return;
 
-        // Left
-        if ((m_keys & (KEY.NUM_1 | KEY.NUM_2 | KEY.NUM_3 | KEY.NUM_4)) != 0)
+        if (Menu_PressedUp())
         {
             PlaySound(SOUND_INDEX.menu_move, true);
             if (m_gameMenu_idCurPage == MENU_PAGE.HELP)
@@ -432,8 +432,7 @@ public partial class Game
             else if (--m_gameMenu_idCurSel < 0)
                 m_gameMenu_idCurSel = m_gameMenu_nItem - 1;
         }
-        // Right
-        else if ((m_keys & (KEY.NUM_0 | KEY.NUM_6 | KEY.NUM_7 | KEY.NUM_8 | KEY.NUM_9)) != 0)
+        else if (Menu_PressedDown())
         {
             PlaySound(SOUND_INDEX.menu_move, true);
             if (m_gameMenu_idCurPage == MENU_PAGE.HELP)
@@ -441,8 +440,7 @@ public partial class Game
             else if (++m_gameMenu_idCurSel >= m_gameMenu_nItem)
                 m_gameMenu_idCurSel = 0;
         }
-        // Select
-        else if ((m_keys & (KEY.SOFTKEY1 | KEY.SOFTKEY2 | KEY.SOFTKEY3)) != 0)
+        else if (Menu_PressedConfirm())
         {
             switch (m_gameMenu_idCurPage)
             {
@@ -507,9 +505,9 @@ public partial class Game
                         case MENU_PAUSE_OPTION_ID_RESUME:
                             m_bBackgroundUsed = true;
                             m_gameFrame_paused = false;
-                            if (pRayman != null && (GAME_KEY)pRayman.V[3] == GAME_KEY.MIDDLE)
+                            if (pRayman != null && (GAME_KEY)pRayman.V[3] == GAME_KEY.ACTION)
                             {
-                                releasedKey = GAME_KEY.MIDDLE;
+                                releasedKey = GAME_KEY.ACTION;
                                 GameCore();
                             }
                             if (m_gameFrame_curLevel == LEVEL_WORLD_MAP)
@@ -576,12 +574,12 @@ public partial class Game
                     switch (m_gameMenu_items_id[m_gameMenu_idCurSel])
                     {
                         case MENU_PAUSE_OPTION_ID_RESUME:
-                            m_keys = KEY.NONE;
+                            m_keys = GbaInput.None;
                             break;
 
                         case MENU_PAUSE_OPTION_ID_RESTART:
                         case MENU_PAUSE_OPTION_ID_MAIN_MENU:
-                            m_keys = KEY.NONE;
+                            m_keys = GbaInput.None;
                             m_bClearBackMenu = true;
                             break;
                     }
@@ -600,9 +598,9 @@ public partial class Game
                         case MENU_CHEAT_OPTION_ID_RESUME:
                             m_bBackgroundUsed = true;
                             m_gameFrame_paused = false;
-                            if (pRayman != null && (GAME_KEY)pRayman.V[3] == GAME_KEY.MIDDLE)
+                            if (pRayman != null && (GAME_KEY)pRayman.V[3] == GAME_KEY.ACTION)
                             {
-                                releasedKey = GAME_KEY.MIDDLE;
+                                releasedKey = GAME_KEY.ACTION;
                                 GameCore();
                             }
                             if (m_gameFrame_curLevel == LEVEL_WORLD_MAP)
@@ -611,7 +609,7 @@ public partial class Game
                                 bStillPlay = true;
                             }
 
-                            m_keys = KEY.NONE;
+                            m_keys = GbaInput.None;
                             break;
 
                         case MENU_CHEAT_OPTION_ID_COMPLETE_LEVEL:
@@ -898,5 +896,32 @@ public partial class Game
         // Fill
         g_graBackBuffer.setColor(0xF6F3F0);
         g_graBackBuffer.fillRoundRect(iX + 1, iY + 1, iW - 2, iH - 2, 8, 8);
+    }
+
+    // Custom
+    public bool Menu_PressedUp()
+    {
+        // NOTE: Original game checks NUM_1, NUM_2, NUM_3 and NUM_4
+        return (m_keys & GbaInput.Up) != 0;
+    }
+
+    public bool Menu_PressedDown()
+    {
+        // NOTE: Original game checks NUM_0, NUM_6, NUM_7, NUM_8 and NUM_9
+        return (m_keys & GbaInput.Down) != 0;
+    }
+
+    public bool Menu_PressedConfirm()
+    {
+        // Custom hack to allow un-pausing with the pause key
+        if (m_gameMenu_idCurPage is MENU_PAGE.PAUSE or MENU_PAGE.CHEAT &&
+            (m_keys & (GbaInput.Start | GbaInput.Select)) != 0)
+        {
+            m_gameMenu_idCurSel = 0;
+            return true;
+        }
+
+        // NOTE: Original game checks SOFTKEY1, SOFTKEY2 and SOFTKEY3
+        return (m_keys & GbaInput.A) != 0;
     }
 }

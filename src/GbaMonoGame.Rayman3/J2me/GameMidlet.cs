@@ -1,30 +1,14 @@
 ﻿using System;
-using System.Collections.Frozen;
-using System.Collections.Generic;
 using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3.J2me;
 
-// TODO: Option to use normal controls since Up sucks on analog stick for jump
 public class GameMidlet : Frame
 {
     private const float Framerate = 1 / 0.045f;
 
-    // Map GBA inputs to J2ME key codes
-    private FrozenDictionary<GbaInput, JAVA_KEY_CODE> InputMapping { get; } = new Dictionary<GbaInput, JAVA_KEY_CODE>()
-    {
-        [GbaInput.A] = JAVA_KEY_CODE.SOFTKEY3,
-        [GbaInput.B] = JAVA_KEY_CODE.SOFTKEY3,
-        [GbaInput.Select] = JAVA_KEY_CODE.STAR,
-        [GbaInput.Start] = JAVA_KEY_CODE.SOFTKEY2,
-        [GbaInput.Right] = JAVA_KEY_CODE.RIGHT_ARROW,
-        [GbaInput.Left] = JAVA_KEY_CODE.LEFT_ARROW,
-        [GbaInput.Up] = JAVA_KEY_CODE.UP_ARROW,
-        [GbaInput.Down] = JAVA_KEY_CODE.DOWN_ARROW,
-        [GbaInput.R] = JAVA_KEY_CODE.SOFTKEY2,
-        [GbaInput.L] = JAVA_KEY_CODE.SOFTKEY1,
-    }.ToFrozenDictionary();
+    private static readonly GbaInput[] _allInputs = Enum.GetValues<GbaInput>();
 
     private float _oldFramerate;
     private Vector2 _oldResolution;
@@ -95,12 +79,12 @@ public class GameMidlet : Frame
     public override void Step()
     {
         // Update inputs
-        foreach (KeyValuePair<GbaInput, JAVA_KEY_CODE> keyValuePair in InputMapping)
+        foreach (GbaInput input in _allInputs)
         {
-            if (Engine.JoyPad.IsButtonJustPressed(keyValuePair.Key))
-                Instance_Game.keyPressed(keyValuePair.Value);
-            else if (Engine.JoyPad.IsButtonJustReleased(keyValuePair.Key))
-                Instance_Game.keyReleased(keyValuePair.Value);
+            if (Engine.JoyPad.IsButtonJustPressed(input))
+                Instance_Game.keyPressed(input);
+            else if (Engine.JoyPad.IsButtonJustReleased(input))
+                Instance_Game.keyReleased(input);
         }
 
         // Auto-pause if requested

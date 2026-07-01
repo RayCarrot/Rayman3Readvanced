@@ -1516,7 +1516,7 @@ public class Actor
                     yDirectionConfirmationCounter = 0;
                 }
 
-                if (Rayman_KeyPressed(GAME_KEY.MIDDLE) &&
+                if (Rayman_KeyPressed(GAME_KEY.ACTION) &&
                     (fist_top = getAvailableFist()) != -1 &&
                     (GameMidlet.Instance_Game.pFist[0].stateFlag & ACTOR_STATE.DEAD) != 0)
                 {
@@ -1916,7 +1916,7 @@ public class Actor
                     anim.newAction = 3;
                 }
 
-                if (Rayman_KeyPressed(GAME_KEY.MIDDLE))
+                if (Rayman_KeyPressed(GAME_KEY.ACTION))
                 {
                     if (actorReference is { objType: ACTOR_TYPE.LEVEL_SIGN } &&
                         actorReference.anim.curAction is 2 or 0)
@@ -1983,7 +1983,7 @@ public class Actor
                     anim.newAction = 0;
                 }
 
-                if (Rayman_KeyPressed(GAME_KEY.MIDDLE) && (fist_top = getAvailableFist()) != -1)
+                if (Rayman_KeyPressed(GAME_KEY.ACTION) && (fist_top = getAvailableFist()) != -1)
                 {
                     anim.newAction = 15;
                     fist_time[fist_top] = 0;
@@ -2051,7 +2051,7 @@ public class Actor
                     V[8] = 0;
                 }
 
-                if (Rayman_KeyPressed(GAME_KEY.MIDDLE) && (fist_top = getAvailableFist()) != -1)
+                if (Rayman_KeyPressed(GAME_KEY.ACTION) && (fist_top = getAvailableFist()) != -1)
                 {
                     if (V[7] != 0)
                     {
@@ -2067,7 +2067,7 @@ public class Actor
 
             case 34:
             case 35:
-                if (Rayman_KeyReleased(GAME_KEY.MIDDLE))
+                if (Rayman_KeyReleased(GAME_KEY.ACTION))
                 {
                     GameMidlet.Instance_Game.StopSound(SOUND_INDEX.punch_charge); // Custom for Readvanced since we allow sounds to overlap
                     anim.newAction = 36;
@@ -2162,7 +2162,7 @@ public class Actor
                 {
 
                 }
-                if (Rayman_KeyPressed(GAME_KEY.MIDDLE) && (fist_top = getAvailableFist()) != -1)
+                if (Rayman_KeyPressed(GAME_KEY.ACTION) && (fist_top = getAvailableFist()) != -1)
                 {
                     anim.newAction = 10;
                     GameMidlet.Instance_Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, 0x21C0);
@@ -2238,7 +2238,7 @@ public class Actor
                 {
 
                 }
-                if (Rayman_KeyPressed(GAME_KEY.MIDDLE) && (fist_top = getAvailableFist()) != -1)
+                if (Rayman_KeyPressed(GAME_KEY.ACTION) && (fist_top = getAvailableFist()) != -1)
                 {
                     anim.newAction = 10;
                     GameMidlet.Instance_Game.pFist[fist_top].Fist_launch(stateFlag & ACTOR_STATE.FLIP_X, 0x21C0);
@@ -2289,7 +2289,7 @@ public class Actor
                 break;
 
             case 6:
-                if (Rayman_KeyPressed(GAME_KEY.MIDDLE) && !checkCeilingStandUp())
+                if (Rayman_KeyPressed(GAME_KEY.ACTION) && !checkCeilingStandUp())
                 {
                     anim.newAction = 15;
                     if (fist_top != -1)
@@ -2344,7 +2344,7 @@ public class Actor
                 break;
 
             case 15:
-                if (Rayman_KeyReleased(GAME_KEY.MIDDLE))
+                if (Rayman_KeyReleased(GAME_KEY.ACTION))
                 {
                     anim.newAction = 13;
                     fist_top = getAvailableFist();
@@ -2354,7 +2354,7 @@ public class Actor
                 break;
 
             case 16:
-                if (Rayman_KeyReleased(GAME_KEY.MIDDLE))
+                if (Rayman_KeyReleased(GAME_KEY.ACTION))
                 {
                     GameMidlet.Instance_Game.StopSound(SOUND_INDEX.punch_charge); // Custom for Readvanced since we allow sounds to overlap
                     anim.newAction = 13;
@@ -2366,7 +2366,7 @@ public class Actor
                 break;
 
             case 25:
-                if (Rayman_KeyReleased(GAME_KEY.MIDDLE))
+                if (Rayman_KeyReleased(GAME_KEY.ACTION))
                 {
                     GameMidlet.Instance_Game.StopSound(SOUND_INDEX.punch_charge); // Custom for Readvanced since we allow sounds to overlap
                     anim.newAction = 23;

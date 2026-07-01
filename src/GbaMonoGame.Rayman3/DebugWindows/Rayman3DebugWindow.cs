@@ -409,7 +409,6 @@ public class Rayman3DebugWindow : DebugWindow
                     ImGui.Text($"Pressed key: {game.pressedKey}");
                     ImGui.Text($"Released key: {game.releasedKey}");
                     ImGui.Text($"Check counter: {game.m_iKeyCheckCounter}");
-                    ImGui.Text($"Real keycode: {game.realKeyCode}");
                     ImGui.Text($"Keys: {game.m_keys}");
                 }
 

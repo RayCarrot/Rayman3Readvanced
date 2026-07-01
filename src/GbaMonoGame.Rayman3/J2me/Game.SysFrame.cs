@@ -63,9 +63,9 @@ public partial class Game
                         Menu_DrawString(RM.GetString(STRING_ID_EMPTY), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_EMPTY))) / 2, 144, 0);
                         Menu_DrawString(RM.GetString(STRING_ID_NO), 0, 299, 0);
                         Menu_DrawString(RM.GetString(STRING_ID_YES), Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_YES)), 299, 0);
-                        if ((pressedKey & (GAME_KEY.SOFTKEY_1 | GAME_KEY.SOFTKEY_2)) != 0)
+                        if (SysFrame_PressedConfirmYes() || SysFrame_PressedConfirmNo())
                         {
-                            bEnableSound = (pressedKey & GAME_KEY.SOFTKEY_1) == 0;
+                            bEnableSound = SysFrame_PressedConfirmYes();
                             if (bEnableSound && SoundVolume == 0)
                             {
                                 SoundVolume = VOL_MEDIUM;
@@ -143,16 +143,12 @@ public partial class Game
                     Menu_DrawString(RM.GetString(STRING_ID_EXIT_QUESTION), (Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_EXIT_QUESTION))) / 2, Resolution.Y / 2 - 32, 0);
                     Menu_DrawString(RM.GetString(STRING_ID_NO), 0, Resolution.Y - 21, 0);
                     Menu_DrawString(RM.GetString(STRING_ID_YES), Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_YES)), Resolution.Y - 21, 0);
-                    if ((pressedKey & (GAME_KEY.SOFTKEY_1 | GAME_KEY.SOFTKEY_2)) != 0 && bConfirm)
+                    if ((SysFrame_PressedConfirmYes() || SysFrame_PressedConfirmNo()) && bConfirm)
                     {
-                        if ((pressedKey & GAME_KEY.SOFTKEY_1) != 0)
-                        {
-                            m_gameFrame_curState = m_gameFrame_prevState;
-                        }
-                        else
-                        {
+                        if (SysFrame_PressedConfirmYes())
                             return 1;
-                        }
+
+                        m_gameFrame_curState = m_gameFrame_prevState;
                         bConfirmExit = true;
                     }
                     bConfirm = true;
@@ -170,12 +166,17 @@ public partial class Game
                     }
                     Menu_DrawString(RM.GetString(STRING_ID_NO), 0, Resolution.Y - 21, 0);
                     Menu_DrawString(RM.GetString(STRING_ID_YES), Resolution.X - Menu_GetStringWidth(RM.GetString(STRING_ID_YES)), Resolution.Y - 21, 0);
-                    if ((pressedKey & (GAME_KEY.SOFTKEY_1 | GAME_KEY.SOFTKEY_2)) != 0)
+                    if ((SysFrame_PressedConfirmYes() || SysFrame_PressedConfirmNo()))
                     {
-                        if ((pressedKey & GAME_KEY.SOFTKEY_1) != 0)
+                        if (SysFrame_PressedConfirmYes())
+                        {
+                            if (bConfirmToMainMenu)
+                                GameFrame_PostMessage(MESSAGE_ID.EXIT_TO_MENU, 0);
+                        }
+                        else
+                        {
                             m_gameFrame_curState = m_gameFrame_prevState;
-                        else if (bConfirmToMainMenu)
-                            GameFrame_PostMessage(MESSAGE_ID.EXIT_TO_MENU, 0);
+                        }
 
                         bConfirmExit = true;
                         bConfirmToMainMenu = false;
@@ -274,5 +275,16 @@ public partial class Game
         }
 
         return 0;
+    }
+
+    // Custom
+    public bool SysFrame_PressedConfirmYes()
+    {
+        return (pressedKey & GAME_KEY.CONFIRM_YES) != 0;
+    }
+
+    public bool SysFrame_PressedConfirmNo()
+    {
+        return (pressedKey & GAME_KEY.CONFIRM_NO) != 0;
     }
 }

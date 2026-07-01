@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using BinarySerializer.Ubisoft.GbaEngine;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3.J2me;
@@ -79,7 +80,7 @@ public partial class Game
         currentKey = GAME_KEY.NONE;
         pressedKey = GAME_KEY.NONE;
         releasedKey = GAME_KEY.NONE;
-        m_keys = KEY.NONE;
+        m_keys = GbaInput.None;
     }
 
     // Unused in Readvanced
@@ -90,7 +91,7 @@ public partial class Game
         currentKey = GAME_KEY.NONE;
         pressedKey = GAME_KEY.NONE;
         releasedKey = GAME_KEY.NONE;
-        m_keys = KEY.NONE;
+        m_keys = GbaInput.None;
         
         // Pause if in a level
         if (m_gameFrame_curLevel >= LEVEL_WORLD_MAP && curState == SYS_FRAME_STATE.GAME)
@@ -140,7 +141,7 @@ public partial class Game
         if (SysFrame_doLoop() != 0)
             m_chGameState = GAME_STATE.EXITING;
 
-        if ((pressedKey & GAME_KEY.STAR) != 0)
+        if ((pressedKey & GAME_KEY.DEBUG) != 0)
             showDebug = !showDebug;
 
         if (showDebug)
