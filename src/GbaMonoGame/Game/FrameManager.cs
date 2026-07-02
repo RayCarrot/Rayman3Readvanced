@@ -19,14 +19,6 @@ public class FrameManager : IDisposable
     public Frame CurrentFrame { get; private set; }
     public Frame NextFrame { get; private set; }
 
-    private void DisposeResources()
-    {
-        foreach (IDisposable disposable in _resources)
-            disposable.Dispose();
-
-        _resources.Clear();
-    }
-
     private void InvokeStepActions()
     {
         // NOTE: This has to be kept as a for loop since when we load the game it's done asynchronously, and we might
@@ -34,6 +26,14 @@ public class FrameManager : IDisposable
         //       actions since unloading the game is done synchronously.
         for (int i = 0; i < _stepActions.Count; i++)
             _stepActions[i]();
+    }
+
+    public void DisposeResources()
+    {
+        foreach (IDisposable disposable in _resources)
+            disposable.Dispose();
+
+        _resources.Clear();
     }
 
     /// <summary>

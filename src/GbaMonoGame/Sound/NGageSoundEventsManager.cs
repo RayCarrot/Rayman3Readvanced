@@ -16,8 +16,7 @@ public class NGageSoundEventsManager : SoundEventsManager
 
     public NGageSoundEventsManager(Dictionary<int, string> songResourceFileNames, string songPhysicalBasePath, Dictionary<int, string> songPhysicalFileNames, NGageSoundEvent[] soundEvents)
     {
-        _soloud = new Soloud();
-        _soloud.init();
+        _soloud = Engine.Sound.GetSoloud();
 
         _soundEvents = soundEvents;
 
@@ -558,9 +557,6 @@ public class NGageSoundEventsManager : SoundEventsManager
 
         foreach (SoundEffect soundEffect in _soundEffectsTable.Values)
             soundEffect.WavSound.Dispose();
-
-        _soloud.deinit();
-        _soloud.Dispose();
     }
 
     #endregion

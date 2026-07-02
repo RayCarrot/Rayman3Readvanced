@@ -22,6 +22,7 @@ public sealed class MockGame : IDisposable
         Engine.InitEngine(
             settings: new MockSettingsManager(new LocalGameSettings()),
             app: new MockApplicationManager(),
+            sound: new MockSoundManager(),
             input: new InputManager(),
             joyPad: new BufferedJoyPad(),
             multiJoyPad: new MultiJoyPad(),

@@ -3,8 +3,6 @@ using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
-using BinarySerializer;
 using BinarySerializer.Ubisoft.GbaEngine;
 using ImGuiNET;
 using SoLoud;
@@ -18,8 +16,7 @@ public class GbaSoundEventsManager : SoundEventsManager
 
     public GbaSoundEventsManager(string songPhysicalBasePath, Dictionary<int, string> songPhysicalFileNames, SoundEvent[] soundEvents, SoundResource[] soundResources)
     {
-        _soloud = new Soloud();
-        _soloud.init();
+        _soloud = Engine.Sound.GetSoloud();
 
         _soundEvents = soundEvents;
         _soundResources = soundResources;
@@ -121,7 +118,7 @@ public class GbaSoundEventsManager : SoundEventsManager
 
                 song.WavSound.load(fileName);
 
-                double loopPoint = GetLoopPointInSeconds(fileName);
+                double loopPoint = WavHelpers.GetLoopPointInSeconds(fileName);
                 //sb.AppendLine($"[\"{songTableEntry.Value}\"] = {loopPoint.ToString(CultureInfo.InvariantCulture)}d,");
                 song.WavSound.setLoopPoint(loopPoint);
 
@@ -133,52 +130,6 @@ public class GbaSoundEventsManager : SoundEventsManager
         //File.WriteAllText("LoopPoints.txt", sb.ToString());
 
         return songTable.ToFrozenDictionary();
-    }
-
-    private double GetLoopPointInSeconds(string fileName)
-    {
-        Encoding encoding = Encoding.ASCII;
-
-        using FileStream stream = File.OpenRead(fileName);
-        using Reader reader = new(stream);
-
-        // Verify header
-        if (reader.ReadString(4, encoding) != "RIFF")
-            throw new Exception("Invalid sound file format. Not RIFF type.");
-
-        uint length = reader.ReadUInt32();
-        length += 8; // For the RIFF header
-
-        if (reader.ReadString(4, encoding) != "WAVE")
-            throw new Exception("Invalid sound file format. Not WAVE type.");
-
-        // Enumerate WAVE chunks
-        uint sampleRate = 0;
-        uint loopPoint = 0;
-        while (stream.Position < length)
-        {
-            string chunkId = reader.ReadString(4, encoding);
-            uint chunkSize = reader.ReadUInt32();
-            long pos = stream.Position;
-
-            if (chunkId == "fmt ")
-            {
-                stream.Position += 4;
-                sampleRate = reader.ReadUInt32();
-            }
-            else if (chunkId == "smpl")
-            {
-                stream.Position += 44;
-                loopPoint = reader.ReadUInt32();
-            }
-
-            stream.Position = pos + chunkSize;
-        }
-
-        if (sampleRate == 0)
-            throw new Exception("Invalid sound file format. No sample rate found.");
-
-        return loopPoint / (double)sampleRate;
     }
 
     private SoundEvent GetEventFromId(short soundEventId)
@@ -608,8 +559,7 @@ public class GbaSoundEventsManager : SoundEventsManager
 
         if (ImGui.Button("Restart"))
         {
-            _soloud.deinit();
-            _soloud.init();
+            Engine.Sound.ReInit();
         }
     }
 
@@ -619,9 +569,6 @@ public class GbaSoundEventsManager : SoundEventsManager
 
         foreach (Song song in _songTable.Values)
             song.WavSound.Dispose();
-
-        _soloud.deinit();
-        _soloud.Dispose();
     }
 
     #endregion

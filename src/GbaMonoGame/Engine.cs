@@ -7,6 +7,7 @@ public static class Engine
     // Engine services
     public static ISettingsManager Settings { get; private set; }
     public static IApplicationManager App { get; private set; }
+    public static ISoundManager Sound { get; private set; }
     public static InputManager Input { get; private set; }
     public static BufferedJoyPad JoyPad { get; private set; }
     public static MultiJoyPad MultiJoyPad { get; private set; }
@@ -28,6 +29,7 @@ public static class Engine
     public static void InitEngine(
         ISettingsManager settings,
         IApplicationManager app, 
+        ISoundManager sound,
         InputManager input,
         BufferedJoyPad joyPad,
         MultiJoyPad multiJoyPad,
@@ -46,6 +48,7 @@ public static class Engine
 
         // Set services
         Settings = settings;
+        Sound = sound;
         App = app;
         Input = input;
         JoyPad = joyPad;
@@ -62,6 +65,7 @@ public static class Engine
 
         // Initialize services
         Settings.Load();
+        Sound.Init();
         if (Settings.Active.Tweaks.InternalGameResolution == null)
         {
             // If the internal resolution is null then we default to the original resolution
@@ -90,6 +94,8 @@ public static class Engine
     public static void UnInitEngine()
     {
         // Uninitialize services
+        FrameMngr?.DisposeResources(); // NOTE: This needs to happen before disposing the sound manager
+        Sound?.Dispose();
         Assets?.Dispose();
         RichPresence?.Dispose();
         FrameMngr?.Dispose();
@@ -97,6 +103,7 @@ public static class Engine
         // Remove services
         Settings = null;
         App = null;
+        Sound = null;
         Input = null;
         JoyPad = null;
         MultiJoyPad = null;

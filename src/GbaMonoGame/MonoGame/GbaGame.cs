@@ -191,6 +191,7 @@ public abstract class GbaGame : Game
         Engine.InitEngine(
             settings: new SettingsManager(), 
             app: _applicationManager, 
+            sound: new SoundManager(),
             input: new InputManager(),
             joyPad: new BufferedJoyPad(),
             multiJoyPad: new MultiJoyPad(),
