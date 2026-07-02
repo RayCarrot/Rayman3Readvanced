@@ -386,7 +386,7 @@ public class TitleScreen : Frame
                 throw new Exception("Unknown error when loading the ROM");
         }
         // Loaded
-        else if (LoadRomTask is { IsCompletedSuccessfully: true })
+        else if (LoadRomTask is { IsCompletedSuccessfully: true } && !TransitionsFX.IsFadingOut)
         {
             StartGame();
         }
