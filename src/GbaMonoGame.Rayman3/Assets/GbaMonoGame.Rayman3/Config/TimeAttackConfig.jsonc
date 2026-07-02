@@ -235,7 +235,9 @@
 			"level": 14,
 			"world": 1,
 			"target_times": [
-				// TODO: Implement
+				{ "type": "bronze", "time": "01:50.00" },
+				{ "type": "silver", "time": "01:40.00" },
+				{ "type": "gold",   "time": "01:30.00" }
 			],
 			"actors": {
 				"14": [
@@ -269,10 +271,29 @@
 			"level": 17,
 			"world": 2,
 			"target_times": [
-				// TODO: Implement
+				{ "type": "bronze", "time": "03:15.00" },
+				{ "type": "silver", "time": "03:00.00" },
+				{ "type": "gold",   "time": "02:45.00" }
 			],
 			"actors": {
-				// TODO: Implement
+				"17": [
+					{ "time": 3, "x": 1438, "y": 233 },
+					{ "time": 3, "x": 2816, "y": 62 },
+					{ "time": 3, "x": 3533, "y": 213 },
+					{ "time": 3, "x": 5959, "y": 177 }
+				],
+				"18": [
+					{ "time": 3, "x": 1131, "y": 230 },
+					{ "time": 3, "x": 1463, "y": 125 },
+					{ "time": 3, "x": 1686, "y": 277 },
+					{ "time": 5, "x": 2874, "y": 80 },
+					{ "time": 3, "x": 4109, "y": 114 },
+					{ "time": 5, "x": 6038, "y": 223 }
+				],
+				"19": [
+					{ "time": 3, "x": 1568, "y": 690 },
+					{ "time": 5, "x": 1341, "y": 333 }
+				]
 			}
 		},
 		// The Underlands
@@ -291,10 +312,25 @@
 			"level": 22,
 			"world": 2,
 			"target_times": [
-				// TODO: Implement
+				{ "type": "bronze", "time": "03:30.00" },
+				{ "type": "silver", "time": "03:10.00" },
+				{ "type": "gold",   "time": "03:00.00" }
 			],
 			"actors": {
-				// TODO: Implement
+				"22": [
+					{ "time": 3, "x": 2398, "y": 306 },
+					{ "time": 5, "x": 4556, "y": 374 },
+					{ "time": 5, "x": 4556, "y": 331 },
+					{ "time": 3, "x": 3661, "y": 14 },
+					{ "time": 3, "x": 2028, "y": 90 }
+				],
+				"23": [
+					{ "time": 3, "x": 1059, "y": 115 },
+					{ "time": 5, "x": 4146, "y": 33 },
+					{ "time": 3, "x": 5529, "y": 28 },
+					{ "time": 5, "x": 6102, "y": 22 },
+					{ "time": 3, "x": 7763, "y": 200 }
+				]
 			}
 		},
 		// Den of Rocky
@@ -302,10 +338,12 @@
 			"level": 24,
 			"world": 2,
 			"target_times": [
-				// TODO: Implement
+				{ "type": "bronze", "time": "01:15.00" },
+				{ "type": "silver", "time": "00:30.00" },
+				{ "type": "gold",   "time": "00:24.00" }
 			],
 			"actors": {
-				// TODO: Implement
+				// None
 			}
 		},
 		// Wretched Ruins
@@ -313,10 +351,27 @@
 			"level": 25,
 			"world": 2,
 			"target_times": [
-				// TODO: Implement
+				{ "type": "bronze", "time": "03:33.00" },
+				{ "type": "silver", "time": "03:11.00" },
+				{ "type": "gold",   "time": "02:57.00" }
 			],
 			"actors": {
-				// TODO: Implement
+				"25": [
+					{ "time": 3, "x": 494, "y": 403 },
+					{ "time": 3, "x": 3528, "y": 126 },
+					{ "time": 3, "x": 4844, "y": 118 }
+				],
+				"26": [
+					{ "time": 3, "x": 297, "y": 449 },
+					{ "time": 3, "x": 223, "y": 1049 },
+					{ "time": 3, "x": 225, "y": 1452 },
+					{ "time": 5, "x": 505, "y": 2061 },
+					{ "time": 3, "x": 788, "y": 948 },
+					{ "time": 3, "x": 497, "y": 515 },
+					{ "time": 3, "x": 1282, "y": 577 },
+					{ "time": 3, "x": 1084, "y": 1171 },
+					{ "time": 5, "x": 1231, "y": 1919 }
+				]
 			}
 		},
 		// Wicked Flow
@@ -324,10 +379,33 @@
 			"level": 27,
 			"world": 2,
 			"target_times": [
-				// TODO: Implement
+				{ "type": "bronze", "time": "05:05.00" },
+				{ "type": "silver", "time": "04:50.00" },
+				{ "type": "gold",   "time": "04:40.00" }
 			],
 			"actors": {
-				// TODO: Implement
+				"27": [
+					{ "time": 3, "x": 1213, "y": 150 },
+					{ "time": 3, "x": 1302, "y": 150 },
+					{ "time": 5, "x": 2736, "y": 30 },
+					{ "time": 3, "x": 2692, "y": 30 },
+					{ "time": 3, "x": 2781, "y": 30 },
+					{ "time": 3, "x": 6112, "y": 236 },
+					{ "time": 5, "x": 6516, "y": 105 },
+					{ "time": 3, "x": 8243, "y": 344 }
+				],
+				"28": [
+					{ "time": 5, "x": 73, "y": 121 },
+					{ "time": 3, "x": 73, "y": 84 },
+					{ "time": 3, "x": 1488, "y": 58 },
+					{ "time": 3, "x": 3419, "y": 86 },
+					{ "time": 3, "x": 7732, "y": 13 }
+				],
+				"29": [
+					{ "time": 5, "x": 1408, "y": 173 },
+					{ "time": 3, "x": 2050, "y": 99 },
+					{ "time": 5, "x": 5249, "y": 78 }
+				]
 			}
 		},
 		// Creeping Chaos
@@ -335,10 +413,16 @@
 			"level": 30,
 			"world": 3,
 			"target_times": [
-				// TODO: Implement
+				{ "type": "bronze", "time": "02:52.00" },
+				{ "type": "silver", "time": "02:43.00" },
+				{ "type": "gold",   "time": "02:35.00" }
 			],
 			"actors": {
-				// TODO: Implement
+				"30": [
+					{ "time": 3, "x": 984, "y": 97 },
+					{ "time": 3, "x": 3593, "y": 83 },
+					{ "time": 5, "x": 5923, "y": 123 }
+				]
 			}
 		},
 		// Scaleman's Keep
@@ -346,10 +430,12 @@
 			"level": 32,
 			"world": 3,
 			"target_times": [
-				// TODO: Implement
+				{ "type": "bronze", "time": "01:45.00" },
+				{ "type": "silver", "time": "01:36.00" },
+				{ "type": "gold",   "time": "01:27.00" }
 			],
 			"actors": {
-				// TODO: Implement
+				// None
 			}
 		},
 		// The Mettleworks
@@ -357,10 +443,22 @@
 			"level": 33,
 			"world": 3,
 			"target_times": [
-				// TODO: Implement
+				{ "type": "bronze", "time": "03:31.00" },
+				{ "type": "silver", "time": "03:22.00" },
+				{ "type": "gold",   "time": "03:13.00" }
 			],
 			"actors": {
-				// TODO: Implement
+				"33": [
+					{ "time": 3, "x": 520, "y": 3075 },
+					{ "time": 3, "x": 579, "y": 2739 },
+					{ "time": 3, "x": 454, "y": 1975 },
+					{ "time": 5, "x": 549, "y": 1498 }
+				],
+				"34": [
+					{ "time": 3, "x": 339, "y": 58 },
+					{ "time": 3, "x": 5683, "y": 195 },
+					{ "time": 3, "x": 6144, "y": 202 }
+				]
 			}
 		},
 		// Magma Mayhem 2 (GBA)
@@ -371,7 +469,7 @@
 				// TODO: Implement
 			],
 			"actors": {
-				// TODO: Implement
+				// None
 			},
 			"exclusive_platform": "gba"
 		},
@@ -392,10 +490,21 @@
 			"level": 36,
 			"world": 3,
 			"target_times": [
-				// TODO: Implement
+				{ "type": "bronze", "time": "02:03.00" },
+				{ "type": "silver", "time": "01:51.00" },
+				{ "type": "gold",   "time": "01:42.00" }
 			],
 			"actors": {
-				// TODO: Implement
+				"36": [
+					{ "time": 5, "x": 2244, "y": 67 },
+					{ "time": 3, "x": 918, "y": 553 },
+					{ "time": 3, "x": 1854, "y": 1146 }
+				],
+				"37": [
+					{ "time": 3, "x": 2557, "y": 104 },
+					{ "time": 3, "x": 4642, "y": 33 },
+					{ "time": 3, "x": 5851, "y": 248 }
+				]
 			}
 		},
 		// Heart of the Ancients
@@ -403,10 +512,12 @@
 			"level": 38,
 			"world": 3,
 			"target_times": [
-				// TODO: Implement
+				{ "type": "bronze", "time": "03:41.00" },
+				{ "type": "silver", "time": "03:17.00" },
+				{ "type": "gold",   "time": "02:52.00" }
 			],
 			"actors": {
-				// TODO: Implement
+				// None
 			}
 		},
 		// Mega Havoc 1
@@ -414,10 +525,16 @@
 			"level": 40,
 			"world": 4,
 			"target_times": [
-				// TODO: Implement
+				{ "type": "bronze", "time": "01:14.00" },
+				{ "type": "silver", "time": "01:07.00" },
+				{ "type": "gold",   "time": "01:02.00" }
 			],
 			"actors": {
-				// TODO: Implement
+				"40": [
+					{ "time": 3, "x": 954, "y": 240 },
+					{ "time": 3, "x": 2914, "y": 319 },
+					{ "time": 3, "x": 6572, "y": 225 }
+				]
 			}
 		},
 		// Mega Havoc 2
@@ -425,10 +542,17 @@
 			"level": 41,
 			"world": 4,
 			"target_times": [
-				// TODO: Implement
+				{ "type": "bronze", "time": "01:34.00" },
+				{ "type": "silver", "time": "01:25.00" },
+				{ "type": "gold",   "time": "01:16.00" }
 			],
 			"actors": {
-				// TODO: Implement
+				"41": [
+					{ "time": 5, "x": 376, "y": 30 },
+					{ "time": 5, "x": 1006, "y": 64 },
+					{ "time": 3, "x": 5855, "y": 49 },
+					{ "time": 5, "x": 8763, "y": 214 }
+				]
 			}
 		},
 		// Mega Havoc 3
@@ -436,10 +560,17 @@
 			"level": 42,
 			"world": 4,
 			"target_times": [
-				// TODO: Implement
+				{ "type": "bronze", "time": "01:02.00" },
+				{ "type": "silver", "time": "00:56.00" },
+				{ "type": "gold",   "time": "00:51.00" }
 			],
 			"actors": {
-				// TODO: Implement
+				"42": [
+					{ "time": 3, "x": 1023, "y": 75 },
+					{ "time": 3, "x": 1338, "y": 243 },
+					{ "time": 3, "x": 2687, "y": 167 },
+					{ "time": 5, "x": 4950, "y": 260 }
+				]
 			}
 		},
 		// Mega Havoc 4
@@ -447,10 +578,17 @@
 			"level": 43,
 			"world": 4,
 			"target_times": [
-				// TODO: Implement
+				{ "type": "bronze", "time": "02:02.00" },
+				{ "type": "silver", "time": "01:56.00" },
+				{ "type": "gold",   "time": "01:49.00" }
 			],
 			"actors": {
-				// TODO: Implement
+				"43": [
+					{ "time": 3, "x": 2567, "y": 20 },
+					{ "time": 5, "x": 4038, "y": 181 },
+					{ "time": 3, "x": 6417, "y": 199 },
+					{ "time": 5, "x": 8032, "y": 217 }
+				]
 			}
 		},
 		// Lum Challenge
@@ -458,10 +596,16 @@
 			"level": 44,
 			"world": 4,
 			"target_times": [
-				// TODO: Implement
+				{ "type": "bronze", "time": "01:04.00" },
+				{ "type": "silver", "time": "01:00.00" },
+				{ "type": "gold",   "time": "00:56.00" }
 			],
 			"actors": {
-				// TODO: Implement
+				"44": [
+					{ "time": 3, "x": 548, "y": 48 },
+					{ "time": 5, "x": 4824, "y": 192 },
+					{ "time": 3, "x": 7171, "y": 209 }
+				]
 			}
 		}
 	]
