@@ -344,6 +344,9 @@ public class TitleScreen : Frame
     {
         TransitionsFX.StepAll();
 
+        // Update the time in the clouds shader for the scrolling
+        CloudsShader.Parameters["Time"].SetValue(GameTime.ElapsedFrames);
+
         // Quit game
         if (SelectedGameIndex == -1)
         {
@@ -404,8 +407,5 @@ public class TitleScreen : Frame
         Cursor.Draw(AnimationPlayer);
 
         AnimationPlayer.Execute();
-
-        // Update the time in the clouds shader for the scrolling
-        CloudsShader.Parameters["Time"].SetValue(GameTime.ElapsedFrames);
     }
 }
