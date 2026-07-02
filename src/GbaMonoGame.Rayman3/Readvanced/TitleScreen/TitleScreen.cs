@@ -7,11 +7,11 @@ using BinarySerializer.Ubisoft.GbaEngine;
 using GbaMonoGame.AnimEngine;
 using GbaMonoGame.TgxEngine;
 using Microsoft.Xna.Framework.Graphics;
+using SoLoud;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
-// TODO: Play music?
 public class TitleScreen : Frame
 {
     public TitleScreen(bool fadeIn)
@@ -23,6 +23,11 @@ public class TitleScreen : Frame
 
     public AnimationPlayer AnimationPlayer { get; set; }
 
+    public Soloud Soloud { get; set; }
+    public Wav Music { get; set; }
+    public uint MusicHandle { get; set; }
+    public uint MusicStartTimer { get; set; }
+
     public Task LoadRomTask { get; set; }
     public bool LoadLastSave { get; set; }
 
@@ -33,9 +38,15 @@ public class TitleScreen : Frame
     public TitleScreenOptionsList QuitGameOptionsList { get; set; }
     public int SelectedGameIndex { get; set; }
 
-
     private void LoadRom(Platform platform)
     {
+        // Fade out the music if it's playing
+        if (Soloud.isValidVoiceHandle(MusicHandle))
+        {
+            Soloud.fadeVolume(MusicHandle, 0, 0.5f);
+            Soloud.scheduleStop(MusicHandle, 0.5f);
+        }
+
         // Load the rom asynchronously while fading out
         LoadRomTask = Task.Run(() => Rom.Init(Game.Rayman3, platform));
 
@@ -338,10 +349,34 @@ public class TitleScreen : Frame
 
         SelectedGameIndex = Array.FindIndex(Games, x => x.Platform == Engine.Settings.Local.General.LastPlayedPlatform);
         Games[SelectedGameIndex].SelectedIndex = 0;
+
+        // Load the music
+        Soloud = Engine.Sound.GetSoloud();
+        string musicFileNames = Path.Combine(Paths.AssetsDirectoryName, Assets.BaseName, "NewMusic", "title_screen.wav");
+        Music = new Wav();
+        Engine.FrameMngr.RegisterDisposableResource(Music);
+        Music.load(musicFileNames);
+        Music.setLooping(true);
+        Music.setLoopPoint(WavHelpers.GetLoopPointInSeconds(musicFileNames));
+        MusicStartTimer = 0;
     }
 
     public override void Step()
     {
+        // Play the music after 5 frames
+        if (MusicStartTimer >= 5)
+        {
+            if (MusicHandle == 0)
+            {
+                MusicHandle = Soloud.play(Music, aVolume: 0);
+                Soloud.fadeVolume(MusicHandle, 1, 1); // Fade in for 1 second
+            }
+        }
+        else
+        {
+            MusicStartTimer++;
+        }
+
         TransitionsFX.StepAll();
 
         // Update the time in the clouds shader for the scrolling
@@ -407,5 +442,17 @@ public class TitleScreen : Frame
         Cursor.Draw(AnimationPlayer);
 
         AnimationPlayer.Execute();
+    }
+
+    public override void Pause()
+    {
+        if (Soloud.isValidVoiceHandle(MusicHandle))
+            Soloud.setPause(MusicHandle, true);
+    }
+
+    public override void Resume()
+    {
+        if (Soloud.isValidVoiceHandle(MusicHandle))
+            Soloud.setPause(MusicHandle, false);
     }
 }

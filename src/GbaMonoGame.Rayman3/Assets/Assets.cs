@@ -1,5 +1,6 @@
 ﻿namespace GbaMonoGame.Rayman3;
 
+// TODO: Add wav paths here too
 public static class Assets
 {
     public const string BaseName = "GbaMonoGame.Rayman3";
