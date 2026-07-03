@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 
 namespace GbaMonoGame;
 
+// TODO: Make sure we never set invalid window pos or size
 public class GameWindowManager : IGameWindowManager
 {
     public GameWindowManager(GameWindow window, GraphicsDeviceManager graphics)

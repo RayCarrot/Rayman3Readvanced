@@ -54,9 +54,6 @@ Unlocks once you get all achievements and is inspired by the Insomniac Museum ar
 ### Mods
 Allow you to install mods to the game by creating a folder for each mod which can they contain replaced textures, text, sounds etc. as well as new languages for fan-translations.
 
-### J2ME version
-Potentially include a remade version of the J2ME game as a bonus. It's a simple game to decompile since one of the versions has full debug symbols.
-
 ### Cheat codes
 It might be fun to include some cheat codes. These can be triggered by holding the select button while typing on the keyboard. Ideas:
 - Type "PAL" to change the framerate to 50.
@@ -69,6 +66,26 @@ It might be fun to include some cheat codes. These can be triggered by holding t
 - Some backgrounds scroll too much, making it rather dizzying for the player. For example `SanctuaryOfStoneAndFire_M3` and `GameCube_Bonus2`.
 - Changing settings on the current audio device causes a bug where sounds don't play. Any new sounds get stuck on 0 and never advance, meaning sound instances keep building up and the game soft-locks when waiting for if a sound has finished. One solution is to call `deinit` and then `init` on the SoLoud instance when this bug occurs (perhaps detect it if a sound stream position has not changed from the previous frame), however this also invalidates all sound instances meaning we have to restart the music. Another option is to switch audio backend from the default `MiniAudio` one to `SDL2` as this does not have the bug. However the WindowsDX builds do not come with the SDL dll file, so we need to include that then.
 
+### Level scaling
+Several levels are too small to fit when playing with the modern resolution 384x216, causing various issues and inconsistent scaling. Some of these are taller on N-Gage than GBA.
+
+| Level | GBA Resolution | N-Gage Resolution | Issues |
+|---|---|---|---|
+| BossMachine | 688x168 | 688x216 |  |
+| FreeFalling |  | 184x6600 |  |
+| BossRockAndLava | 248x192 | 248x216 | Camera shaking doesn't work |
+| BossScaleMan | 376x184 | 336x216 |  |
+| FallingDown |  | 320x4480 |  |
+| BossFinal_M1 | 288x168 | 256x216 | Camera shaking doesn't work, black bar at the bottom, you can see more to the right of the level than you can move and projectile timings differ due to being on screen longer |
+| BossFinal_M2 | 472x168 | 440x216 |  |
+| Power2 | 984x200 | 984x216 |  |
+| Power5 | 1080x200 | 1080x216 |  |
+| Power6 | 480x176 | 480x216 |  |
+| WorldMap | 464x168 | 392x208 |  |
+| GameCube_Bonus4 | 312x6400 |  |  |
+| GameCube_Bonus10 | 9600x168 |  |  |
+
 ## 🧪 Testing
 - Make sure audio panning works as intended for all actors.
 - Test Readvanced alongside the original game. Perhaps even creating recording files to play back between both games.
+- Make sure respawn death works everywhere

@@ -60,7 +60,7 @@ public class Playfield2DRenderContext : RenderContext
         }
 
         if (resolution != Engine.ViewPort.InternalGameResolution)
-            Logger.Info($"Playfield resolution {resolution.X}x{resolution.Y} is different from internal resolution {Engine.ViewPort.InternalGameResolution.X}x{Engine.ViewPort.InternalGameResolution.Y}");
+            Logger.Info($"Playfield resolution {resolution.X}x{resolution.Y} is different from internal resolution {Engine.ViewPort.InternalGameResolution.X}x{Engine.ViewPort.InternalGameResolution.Y} (min: {MinResolution?.X}x{MinResolution?.Y} max: {MaxResolution?.X}x{MaxResolution?.Y})");
 
         return resolution;
     }

@@ -7,7 +7,6 @@ using GbaMonoGame.SourceGenerators;
 
 namespace GbaMonoGame.Rayman3;
 
-// TODO: Camera shake doesn't work when in high res
 [GenerateFsmFields]
 public sealed partial class Rocky : MovableActor
 {
