@@ -353,7 +353,7 @@ public class GbaSoundEventsManager : SoundEventsManager
                 song.IsPlaying = false;
 
                 if (song.NextSoundEventId != -1)
-                    ProcessEvent(song.NextSoundEventId, song.ReadvancedObj, song.OriginalObj); // TODO: Throws due to modifying enumeration
+                    ProcessEvent(song.NextSoundEventId, song.ReadvancedObj, song.OriginalObj);
             }
             else if (!song.IsFadingOut)
             {

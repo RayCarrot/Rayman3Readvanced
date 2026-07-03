@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame;
 
-// TODO: Rename to something like GbaViewPort or VirtualViewPort?
 public abstract class RenderContext
 {
     private Box _lastViewPortRenderBox;

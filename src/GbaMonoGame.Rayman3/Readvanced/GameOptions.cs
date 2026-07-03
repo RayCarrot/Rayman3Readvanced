@@ -304,7 +304,6 @@ public static class GameOptions
                               "READVANCED: Tweaks are enabled, making the game use modern enhancements to improve the experience.",
                     presetItems:
                     [
-                        // TODO: Add a third preset to have all cheat options enabled?
                         new PresetSelectionOptionsMenuOption.PresetItem("ORIGINAL", TweaksPreset.Original),
                         new PresetSelectionOptionsMenuOption.PresetItem("READVANCED", TweaksPreset.Readvanced),
                     ]),
