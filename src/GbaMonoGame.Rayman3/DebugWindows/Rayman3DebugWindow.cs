@@ -29,6 +29,25 @@ public class Rayman3DebugWindow : DebugWindow
                 ImGui.Text($"LevelType: {Rayman3.GameInfo.LevelType}");
                 ImGui.Text($"World: {Rayman3.GameInfo.WorldId}");
 
+                if (Rayman3.GameInfo.MapId <= MapId.WoodLight_M1 || Rayman3.GameInfo.MapId > MapId.ChallengeLyGCN)
+                    ImGui.BeginDisabled();
+                if (ImGui.Button("Previous map"))
+                    Rayman3.GameInfo.LoadLevel(Rayman3.GameInfo.MapId - 1);
+                if (Rayman3.GameInfo.MapId <= MapId.WoodLight_M1 || Rayman3.GameInfo.MapId > MapId.ChallengeLyGCN)
+                    ImGui.EndDisabled();
+
+                ImGui.SameLine();
+                if (ImGui.Button("Reload map"))
+                    Engine.FrameMngr.ReloadCurrentFrame();
+
+                ImGui.SameLine();
+                if (Rayman3.GameInfo.MapId >= MapId.ChallengeLyGCN)
+                    ImGui.BeginDisabled();
+                if (ImGui.Button("Next map"))
+                    Rayman3.GameInfo.LoadLevel(Rayman3.GameInfo.MapId + 1);
+                if (Rayman3.GameInfo.MapId >= MapId.ChallengeLyGCN)
+                    ImGui.EndDisabled();
+
                 ImGui.Spacing();
                 ImGui.SeparatorText("Other");
 
