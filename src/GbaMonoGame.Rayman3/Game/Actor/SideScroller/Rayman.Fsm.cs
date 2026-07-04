@@ -3489,7 +3489,7 @@ public partial class Rayman
             case FsmAction.Init:
                 PlaySound(Rayman3SoundEvent.Play__OnoThrow_Mix02);
 
-                if (Engine.MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump))
+                if (Engine.MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump, buffered: true))
                     ActionId = IsFacingRight ? Action.ThrowObjectUp_Right : Action.ThrowObjectUp_Left;
                 else
                     ActionId = IsFacingRight ? Action.ThrowObjectForward_Right : Action.ThrowObjectForward_Left;
