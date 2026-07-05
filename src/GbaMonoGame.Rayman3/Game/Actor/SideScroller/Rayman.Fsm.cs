@@ -4550,8 +4550,7 @@ public partial class Rayman
                     // Resurrect some actors
                     foreach (BaseActor obj in Scene.Iterate<BaseActor>(IteratorFlags.AlwaysActor | IteratorFlags.Actor | IteratorFlags.Disabled, IteratorKnot.All))
                     {
-                        if (!obj.ResurrectsLater)
-                            obj.ProcessMessage(this, Message.Readvanced_ResurrectOnRespawnDeath);
+                        obj.ProcessMessage(this, Message.Readvanced_ResurrectOnRespawnDeath);
                     }
 
                     // Reset some actors
