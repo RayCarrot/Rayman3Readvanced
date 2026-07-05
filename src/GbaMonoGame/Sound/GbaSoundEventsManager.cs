@@ -515,6 +515,11 @@ public class GbaSoundEventsManager : SoundEventsManager
         _volumePerType[(byte)type] = newVolume;
     }
 
+    public override void ForceStopAllSongs()
+    {
+        StopAllSongs();
+    }
+
     public override void ForcePauseAllSongs()
     {
         foreach (SongInstance playingSong in _songInstances)

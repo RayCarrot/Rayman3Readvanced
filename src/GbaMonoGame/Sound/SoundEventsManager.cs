@@ -21,6 +21,7 @@ public abstract class SoundEventsManager : IDisposable
     public abstract void SetVolumeForType(SoundType type, float newVolume);
 
     // Custom
+    public abstract void ForceStopAllSongs();
     public abstract void ForcePauseAllSongs();
     public abstract void ForceResumeAllSongs();
     public abstract void DrawDebugLayout();

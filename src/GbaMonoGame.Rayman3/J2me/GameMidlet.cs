@@ -24,7 +24,7 @@ public class GameMidlet : Frame
         // Reset previous game state
         Gfx.FadeControl = FadeControl.None;
         Gfx.Fade = AlphaCoefficient.None;
-        Engine.Sem.StopAllSongs();
+        Engine.Sem.ForceStopAllSongs();
 
         // Override the resolution
         _oldResolution = Engine.ViewPort.InternalGameResolution;

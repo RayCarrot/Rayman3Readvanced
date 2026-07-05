@@ -330,7 +330,8 @@ public class NGageSoundEventsManager : SoundEventsManager
     {
         if (_soundEffectInstances.TryGetValue(soundResId, out SoundEffectInstance soundEffectInstance))
         {
-            _soloud.stop(soundEffectInstance.VoiceHandle);
+            if (soundEffectInstance.IsValid)
+                _soloud.stop(soundEffectInstance.VoiceHandle);
             _soundEffectInstances.Remove(soundResId);
         }
     }
@@ -493,6 +494,31 @@ public class NGageSoundEventsManager : SoundEventsManager
     public override float GetVolumeForType(SoundType type) => SoundEngineInterface.MaxVolume;
 
     public override void SetVolumeForType(SoundType type, float newVolume) { }
+
+    public override void ForceStopAllSongs()
+    {
+        // Stop music
+        if (_soloud.isValidVoiceHandle(_musicVoiceHandle))
+            _soloud.stop(_musicVoiceHandle);
+        _musicVoiceHandle = 0;
+        _currentMusicVolume = 1;
+        _musicFadeVolume = 0;
+        _doesCurrentMusicLoop = false;
+        _prevMusicSoundResId = -1;
+        _prevMusicInstrumentsResId = -1;
+        _currentMusicSoundResId = 0;
+        _currentMusicInstrumentsResId = 0;
+        _nextMusicSoundResId = 0;
+        _nextMusicInstrumentsResId = 0;
+
+        // Stop sound effects
+        foreach (SoundEffectInstance soundEffectInstance in _soundEffectInstances.Values)
+        {
+            if (soundEffectInstance.IsValid)
+                _soloud.stop(soundEffectInstance.VoiceHandle);
+        }
+        _soundEffectInstances.Clear();
+    }
 
     public override void ForcePauseAllSongs()
     {
