@@ -13,8 +13,8 @@ public sealed partial class BoulderMode7 : Mode7Actor
         CreateGeneratedStates();
 
         Direction = Angle256.Zero;
-        ZPos = 0;
-        RenderHeight = 64;
+        ZPos = POSITION_Z;
+        RenderHeight = RENDER_HEIGHT;
         Rotation = 0;
         Scale = Vector2.One;
 

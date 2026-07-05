@@ -50,7 +50,7 @@ public partial class SamMode7
                 SetMode7DirectionalAction((int)Action.Default, ActionRotationSize);
 
                 // This code looks weird, but it's what the game does and is needed for correct collision detection!
-                Vector2 pos = Position.Truncate() + Vector2.Floor((Direction.ToDirectionalVector() * new Vector2(18.98828125f)).FlipY());
+                Vector2 pos = Position.Truncate() + Vector2.Floor((Direction.ToDirectionalVector() * new Vector2(DETECTION_DISTANCE)).FlipY());
                 PhysicalType type = Scene.GetPhysicalType(pos);
 
                 TargetDirection = type.Value switch
@@ -70,9 +70,9 @@ public partial class SamMode7
                 if (Math.Abs((Direction - TargetDirection).SignedValue) >= 1)
                 {
                     if (Direction - TargetDirection < Angle256.Half)
-                        Direction -= 2;
+                        Direction -= DIRECTION_SPEED;
                     else
-                        Direction += 2;
+                        Direction += DIRECTION_SPEED;
                 }
                 else
                 {
@@ -81,7 +81,7 @@ public partial class SamMode7
 
                 Timer++;
 
-                WaterSplashObj?.Position = Position + Speed * -4;
+                WaterSplashObj?.Position = Position + Speed * WATER_SPLASH_SPEED_FACTOR;
 
                 if (type == PhysicalTypeValue.MovingPlatform_Stop)
                 {
@@ -123,25 +123,25 @@ public partial class SamMode7
 
                 // Slow down
                 if (MechModel.Speed.X > 0)
-                    MechModel.Speed -= new Vector2(1 / 32f, 0);
+                    MechModel.Speed -= FINISHED_DEACCELERATION;
 
                 Timer++;
 
                 FrameMode7 frame = (FrameMode7)Frame.Current;
 
                 // Fade out
-                if (Timer == 140)
+                if (Timer == FINISHED_FADE_OUT_TIME)
                 {
                     TransitionsFX.FadeOutInit(2);
                     frame.CanPause = false;
                 }
                 // Stop music
-                else if (Timer == 216)
+                else if (Timer == FINISHED_STOP_SOUNDS_TIME)
                 {
                     Engine.Sem.StopAllSongs();
                 }
                 // Save and end level
-                else if (Timer == 218)
+                else if (Timer == FINISHED_TIME)
                 {
                     if (Rayman3.GameInfo.IsFirstTimeCompletingLevel())
                         Rayman3.GameInfo.UpdateLastCompletedLevel();

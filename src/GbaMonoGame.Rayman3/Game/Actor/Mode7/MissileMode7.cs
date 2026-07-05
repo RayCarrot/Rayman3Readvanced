@@ -43,7 +43,7 @@ public sealed partial class MissileMode7 : Mode7Actor
         PrevHitPoints = HitPoints;
         CurrentTempLap = 0;
         BoostTimer = 0;
-        Acceleration = 1 / 16f;
+        Acceleration = DEFAULT_ACCELERATION;
         WahooSoundTimer = 0;
         JumpSoundTimer = 0;
         CustomScaleTimer = 0;
@@ -103,8 +103,9 @@ public sealed partial class MissileMode7 : Mode7Actor
 
     private bool IsFacingTheRightDirection(MissileMode7PhysicalTypeDefine.TypeDirection raceDirection)
     {
-        Angle256 v1 = (int)raceDirection * 32 + 80;
-        Angle256 v2 = (int)raceDirection * 32 + (Angle256.Max - 80);
+        float dirFactor = Angle256.Max / 8f; // 8 possible directions
+        Angle256 v1 = (int)raceDirection * dirFactor + DIRECTION_ANGLE_RANGE;
+        Angle256 v2 = (int)raceDirection * dirFactor + (Angle256.Max - DIRECTION_ANGLE_RANGE);
         
         if (v1 < v2)
             return v1 > Direction || Direction > v2;
@@ -133,7 +134,7 @@ public sealed partial class MissileMode7 : Mode7Actor
     {
         // Gradually return to normal scale
         if (1 < Scale.Y)
-            Scale += new Vector2(8, -16) / 256;
+            Scale += RESTORE_SCALE_DELTA;
         else
             Scale = Vector2.One;
     }
@@ -151,9 +152,9 @@ public sealed partial class MissileMode7 : Mode7Actor
 
         bool isMovingTheRightDirection = IsMovingTheRightDirection(RaceDirection);
 
-        float pitch = Speed.Length() * 512;
+        float pitch = Speed.Length() * PITCH_FACTOR;
         if (IsJumping)
-            pitch += 1024;
+            pitch += DEFAULT_JUMP_PITCH_ADD;
         Engine.Sem.SetSoundPitch(Rayman3SoundEvent.Play__Motor01_Mix12, pitch);
 
         // Update if we're facing the right direction
@@ -245,9 +246,9 @@ public sealed partial class MissileMode7 : Mode7Actor
 
         if (IsLinkedCameraObject())
         {
-            float pitch = Speed.Length() * 512;
+            float pitch = Speed.Length() * PITCH_FACTOR;
             if (IsJumping)
-                pitch += 256;
+                pitch += MULTIPLAYER_JUMP_PITCH_ADD;
             Engine.Sem.SetSoundPitch(Rayman3SoundEvent.Play__Motor01_Mix12, pitch);
 
             // Update if we're facing the right direction
@@ -280,15 +281,13 @@ public sealed partial class MissileMode7 : Mode7Actor
                     {
                         raceManager.PlayersCurrentLap[InstanceId] = raceManager.LapsCount;
                         
-                        int v = 0;
-
+                        int finishedPlayersCount = 0;
                         for (int i = 0; i < Engine.Multiplayer.PlayersCount; i++)
                         {
                             if (raceManager.LapsCount < raceManager.PlayersCurrentTempLap[i])
-                                v += 1;
+                                finishedPlayersCount++;
                         }
-
-                        raceManager.PlayerDistances[InstanceId] = 2000 - v;
+                        raceManager.PlayerDistances[InstanceId] = RaceManagerMulti.PLAYER_DISTANCE_FINISHED - finishedPlayersCount;
 
                         if (InstanceId == Engine.Multiplayer.MachineId)
                         {
@@ -343,10 +342,10 @@ public sealed partial class MissileMode7 : Mode7Actor
 
         PrevPhysicalType = physicalType;
 
-        Acceleration = MathHelpers.FromFixedPoint((raceManager.PlayerDistances[raceManager.PlayerRanks[0]] - raceManager.PlayerDistances[InstanceId]) * 0x80 + 0x1000);
-        const float max = 5 / 64f;
-        if (Acceleration > max)
-            Acceleration = max;
+        int distDiff = raceManager.PlayerDistances[raceManager.PlayerRanks[0]] - raceManager.PlayerDistances[InstanceId];
+        Acceleration = DEFAULT_ACCELERATION + MathHelpers.FromFixedPoint(distDiff) * MULTIPLAYER_DIST_ACCELERATION_FACTOR;
+        if (Acceleration > MAX_ACCELERATION)
+            Acceleration = MAX_ACCELERATION;
 
         return true;
     }
@@ -380,6 +379,7 @@ public sealed partial class MissileMode7 : Mode7Actor
             pos += new Vector2(intersectBox.Width, 0);
         }
 
+        // TODO: Maybe we should do this? Check other Mode7 collision checks too maybe.
         // NOTE: The original engine casts the position to an integer here (floor if positive, ceil if negative)
         return pos;
     }
@@ -446,7 +446,7 @@ public sealed partial class MissileMode7 : Mode7Actor
 
                 // 3 blue lums initiate the boost
                 if (CollectedBlueLums == 3)
-                    BoostTimer = 192;
+                    BoostTimer = BOOST_TIME;
                 return true;
 
             case Message.Rayman_CollectRedLum:
@@ -516,19 +516,17 @@ public sealed partial class MissileMode7 : Mode7Actor
                     MissileMode7 actor2 = Scene.GetGameObject<MissileMode7>(id2);
                     Box actor2ViewBox = actor2.GetViewBox();
 
-                    if (actor1ViewBox.Intersects(actor2ViewBox) && Math.Abs(actor1.ZPos - actor2.ZPos) < 16)
+                    if (actor1ViewBox.Intersects(actor2ViewBox) && Math.Abs(actor1.ZPos - actor2.ZPos) < COLLISION_HEIGHT)
                     {
                         Angle256 angle = MathHelpers.Atan2_256((actor2.Position - actor1.Position).FlipY());
                         angle += Angle256.Half;
                         Vector2 directionalVector = angle.ToDirectionalVector().FlipY();
 
                         Vector2 speedDiff = actor1.Speed - actor2.Speed;
-                        
-                        float force;
+
+                        float force = directionalVector.X * speedDiff.X + directionalVector.Y * speedDiff.Y;
                         if (Rayman3.GameInfo.MapId == MapId.GbaMulti_MissileArena)
-                            force = (directionalVector.X * speedDiff.X + directionalVector.Y * speedDiff.Y) * 2;
-                        else
-                            force = directionalVector.X * speedDiff.X + directionalVector.Y * speedDiff.Y;
+                            force *= 2;
 
                         if (force < 0)
                         {
@@ -592,10 +590,10 @@ public sealed partial class MissileMode7 : Mode7Actor
         {
             MechModel.Speed = Speed;
             
-            if (Speed.X > 7)
-                Speed = Speed with { X = 7 };
-            if (Speed.Y > 7)
-                Speed = Speed with { Y = 7 };
+            if (Speed.X > MAX_SPEED)
+                Speed = Speed with { X = MAX_SPEED };
+            if (Speed.Y > MAX_SPEED)
+                Speed = Speed with { Y = MAX_SPEED };
         }
     }
 }

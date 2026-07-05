@@ -46,38 +46,38 @@ public partial class BoulderMode7
                     if (ActionId == Action.Move_Right)
                     {
                         if (CamAngle > Angle256.Half)
-                            Rotation += 3;
+                            Rotation += ROTATION_SPEED;
                         else
-                            Rotation -= 3;
+                            Rotation -= ROTATION_SPEED;
                     }
                     else if (ActionId == Action.Move_Left)
                     {
                         if (CamAngle > Angle256.Half)
-                            Rotation -= 3;
+                            Rotation -= ROTATION_SPEED;
                         else
-                            Rotation += 3;
+                            Rotation += ROTATION_SPEED;
                     }
                     else if (ActionId == Action.Move_Up)
                     {
                         if (CamAngle > Angle256.Quarter && CamAngle < Angle256.Quarter * 3)
-                            Rotation += 3;
+                            Rotation += ROTATION_SPEED;
                         else
-                            Rotation -= 3;
+                            Rotation -= ROTATION_SPEED;
                     }
                     else if (ActionId == Action.Move_Down)
                     {
                         if (CamAngle > Angle256.Quarter && CamAngle < Angle256.Quarter * 3)
-                            Rotation -= 3;
+                            Rotation -= ROTATION_SPEED;
                         else
-                            Rotation += 3;
+                            Rotation += ROTATION_SPEED;
                     }
                 }
                 else
                 {
                     if (ActionId is Action.Move_Right or Action.Move_Up)
-                        Rotation -= 3;
+                        Rotation -= ROTATION_SPEED;
                     else if (ActionId is Action.Move_Left or Action.Move_Down)
-                        Rotation += 3;
+                        Rotation += ROTATION_SPEED;
                 }
                 break;
 
@@ -94,11 +94,11 @@ public partial class BoulderMode7
         switch (action)
         {
             case FsmAction.Init:
-                BounceSpeed = -8;
+                BounceSpeed = -BOUNCE_SPEED;
                 break;
 
             case FsmAction.Step:
-                BounceSpeed += 1 / 4f;
+                BounceSpeed += BOUNCE_ACCELERATION;
                 ZPos -= BounceSpeed;
 
                 // Check player collision when in the air
@@ -116,8 +116,8 @@ public partial class BoulderMode7
                             if (actionBox.Intersects(playerDetectionBox) && !player.IsInvulnerable)
                             {
                                 player.ReceiveDamage(1);
-                                player.Scale = new Vector2(0.5f, 2);
-                                player.CustomScaleTimer = 100;
+                                player.Scale = PLAYER_SQUASH_SCALE;
+                                player.CustomScaleTimer = PLAYER_SQUASH_TIME;
                             }
                         }
                     }
@@ -128,8 +128,8 @@ public partial class BoulderMode7
                             Scene.MainActor.ReceiveDamage(1);
 
                             MissileMode7 mainActor = (MissileMode7)Scene.MainActor;
-                            mainActor.Scale = new Vector2(0.5f, 2);
-                            mainActor.CustomScaleTimer = 100;
+                            mainActor.Scale = PLAYER_SQUASH_SCALE;
+                            mainActor.CustomScaleTimer = PLAYER_SQUASH_TIME;
                         }
                     }
                 }
@@ -173,14 +173,14 @@ public partial class BoulderMode7
 
                 if (IsSquashing)
                 {
-                    Scale += new Vector2(-1 / 32f, 1 / 4f);
+                    Scale += SQUASH_DELTA;
 
-                    if (Scale.Y >= 2.5f)
+                    if (Scale.Y >= SQUASH_TARGET_Y)
                         IsSquashing = false;
                 }
                 else
                 {
-                    Scale -= new Vector2(-1 / 32f, 1 / 4f);
+                    Scale -= SQUASH_DELTA;
                 }
 
                 if (Scale.Y <= 1 && !IsSquashing)

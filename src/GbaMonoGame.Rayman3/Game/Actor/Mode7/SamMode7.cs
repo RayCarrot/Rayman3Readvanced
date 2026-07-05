@@ -15,7 +15,7 @@ public sealed partial class SamMode7 : Mode7Actor
 
         ShouldDraw = false;
         AnimatedObject.BgPriority = 0;
-        RenderHeight = 16;
+        RenderHeight = RENDER_HEIGHT;
         Direction = Angle256.Quarter * 3; // 3/4
         DrawTetherSparkles = true;
         WaterSplashObj = null;
@@ -132,7 +132,7 @@ public sealed partial class SamMode7 : Mode7Actor
                     _ => throw new ArgumentOutOfRangeException()
                 },
                 BgPriority = 0,
-                ObjPriority = 32,
+                ObjPriority = TETHER_SPARKLE_OBJ_PRIORITY,
                 RenderContext = Scene.RenderContext,
             };
         }
@@ -178,8 +178,8 @@ public sealed partial class SamMode7 : Mode7Actor
 
                 for (int i = 0; i < TetherSparkles.Length; i++)
                 {
-                    Vector2 pos = ((i + 1) * ((Position - mainActor.Position) / 8) + mainActor.Position);
-                    float zPos = 24 + mainActor.ZPos / 8 * (8 - i);
+                    Vector2 pos = (i + 1) * ((Position - mainActor.Position) / 8) + mainActor.Position;
+                    float zPos = TETHER_SPARKLE_BASE_Y + mainActor.ZPos / 8 * (8 - i);
                     ((CameraActorMode7)Scene.Camera).IsAnimatedObjectFramed(TetherSparkles[i], pos, zPos, false, Alpha);
                 }
 
@@ -209,7 +209,7 @@ public sealed partial class SamMode7 : Mode7Actor
     {
         base.DrawDebugBoxes(animationPlayer);
 
-        Vector2 pos = Position + Direction.ToDirectionalVector() * new Vector2(MathHelpers.FromFixedPoint(0x12FD00)).FlipY();
+        Vector2 pos = Position.Truncate() + Vector2.Floor((Direction.ToDirectionalVector() * new Vector2(DETECTION_DISTANCE)).FlipY());
 
         if (Scene.Camera.IsDebugBoxFramed(_debugCollisionPositionPointAObject, pos))
             animationPlayer.PlayFront(_debugCollisionPositionPointAObject);

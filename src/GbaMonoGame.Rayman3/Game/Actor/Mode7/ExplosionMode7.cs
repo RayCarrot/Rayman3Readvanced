@@ -13,8 +13,8 @@ public sealed partial class ExplosionMode7 : Mode7Actor
 
         AnimatedObject.BgPriority = 0;
         Direction = Angle256.Half;
-        ZPos = 40;
-        RenderHeight = 32;
+        ZPos = POSITION_Z;
+        RenderHeight = RENDER_HEIGHT;
         IsAffine = false;
 
         State.SetTo(_Fsm_Default);

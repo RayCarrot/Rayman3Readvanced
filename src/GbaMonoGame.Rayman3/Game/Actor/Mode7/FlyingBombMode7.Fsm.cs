@@ -13,7 +13,7 @@ public partial class FlyingBombMode7
                 break;
 
             case FsmAction.Step:
-                if (Scene.IsDetectedMainActor(this) && ((Mode7Actor)Scene.MainActor).ZPos < 24)
+                if (Scene.IsDetectedMainActor(this) && ((Mode7Actor)Scene.MainActor).ZPos < COLLISION_HEIGHT)
                 {
                     State.MoveTo(_Fsm_Destroyed);
                     return false;
@@ -33,14 +33,14 @@ public partial class FlyingBombMode7
         switch (action)
         {
             case FsmAction.Init:
-                ZPosSpeed = 2;
+                ZPosSpeed = MOVE_VERTICAL_SPEED;
                 break;
 
             case FsmAction.Step:
-                if (ZPos >= 180)
-                    ZPosSpeed = -2;
-                else if (ZPos <= 0)
-                    ZPosSpeed = 2;
+                if (ZPos >= MOVE_VERTICAL_MAX_Z)
+                    ZPosSpeed = -MOVE_VERTICAL_SPEED;
+                else if (ZPos <= MOVE_VERTICAL_MIN_Z)
+                    ZPosSpeed = MOVE_VERTICAL_SPEED;
 
                 float zPos = ZPos;
 
@@ -49,8 +49,8 @@ public partial class FlyingBombMode7
                     ZPos += ZPosSpeed;
 
                 if (Scene.IsDetectedMainActor(this) && 
-                    ((Mode7Actor)Scene.MainActor).ZPos > zPos - 24 && 
-                    ((Mode7Actor)Scene.MainActor).ZPos < zPos + 24)
+                    ((Mode7Actor)Scene.MainActor).ZPos > zPos - COLLISION_HEIGHT && 
+                    ((Mode7Actor)Scene.MainActor).ZPos < zPos + COLLISION_HEIGHT)
                 {
                     State.MoveTo(_Fsm_Destroyed);
                     return false;
@@ -89,7 +89,7 @@ public partial class FlyingBombMode7
                 if (Scene.KeepAllObjectsActive && !IsInCurrentKnot)
                     Position -= Speed;
 
-                if (Scene.IsDetectedMainActor(this) && ((Mode7Actor)Scene.MainActor).ZPos < 24)
+                if (Scene.IsDetectedMainActor(this) && ((Mode7Actor)Scene.MainActor).ZPos < COLLISION_HEIGHT)
                 {
                     State.MoveTo(_Fsm_Destroyed);
                     return false;
@@ -113,11 +113,11 @@ public partial class FlyingBombMode7
                 break;
 
             case FsmAction.Step:
-                ZPos -= 16;
+                ZPos -= DROP_VERTICAL_SPEED;
 
-                if (ZPos <= 0)
+                if (ZPos <= DROP_VERTICAL_TARGET_Z)
                 {
-                    ZPos = 0;
+                    ZPos = DROP_VERTICAL_TARGET_Z;
                     State.MoveTo(_Fsm_Stationary);
                     return false;
                 }

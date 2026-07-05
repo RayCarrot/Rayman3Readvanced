@@ -21,8 +21,8 @@ public sealed partial class RaymanMode7 : Mode7Actor
 
         AnimatedObject.BgPriority = 0;
         Direction = Angle256.Zero;
-        ZPos = 0;
-        RenderHeight = 64;
+        ZPos = POSITION_Z;
+        RenderHeight = RENDER_HEIGHT;
         IsAffine = false; // NOTE: The game doesn't set this, but in the custom Draw implementation it doesn't use affine rendering
 
         SlowDown = false;
@@ -56,10 +56,7 @@ public sealed partial class RaymanMode7 : Mode7Actor
         TgxCameraMode7 cam = playfield.Camera;
 
         float x = (PrevCamAngle - cam.Direction.Inverse()).SignedValue;
-
-        // NOTE: The game scrolls by 1 every 4 frames
-        x += 0.25f;
-
+        x += CLOUDS_SCROLL_SPEED;
         playfield.TextLayers[1].ScrolledPosition += new Vector2(x, 0);
 
         PrevCamAngle = cam.Direction.Inverse();
@@ -70,9 +67,11 @@ public sealed partial class RaymanMode7 : Mode7Actor
         TgxPlayfieldMode7 playfield = (TgxPlayfieldMode7)Scene.Playfield;
         TgxCameraMode7 cam = playfield.Camera;
 
-        cam.Horizon = 67 + height / 8;
+        float yOffset = height * JUMP_HORIZON_FACTOR;
 
-        float y = 11 - height / 8;
+        cam.Horizon = DEFAULT_HORIZON + yOffset;
+
+        float y = DEFAULT_TEXT_LAYER_SCROLL_Y - yOffset;
 
         // The game doesn't do this, but because we use floats we don't want it to go below 0
         if (y < 0)

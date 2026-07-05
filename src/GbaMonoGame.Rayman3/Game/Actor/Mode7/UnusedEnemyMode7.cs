@@ -11,9 +11,9 @@ public sealed partial class UnusedEnemyMode7 : Mode7Actor
         CreateGeneratedStates();
 
         AnimatedObject.BgPriority = 0;
-        Direction = 0;
-        ZPos = 0;
-        RenderHeight = 32;
+        Direction = Angle256.Zero;
+        ZPos = POSITION_Z;
+        RenderHeight = RENDER_HEIGHT;
 
         State.SetTo(_Fsm_Default);
     }

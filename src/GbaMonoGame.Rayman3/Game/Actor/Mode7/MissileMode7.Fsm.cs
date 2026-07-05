@@ -17,7 +17,7 @@ public partial class MissileMode7
             if (BoostTimer == 0)
                 CollectedBlueLums = 0;
 
-            if (BoostTimer == 176)
+            if (BoostTimer == BOOST_SOUND_TIME)
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__OnoWoHoo_Mix01, this);
         }
 
@@ -41,7 +41,7 @@ public partial class MissileMode7
         {
             InvulnerabilityTimer++;
 
-            if (IsInvulnerable && InvulnerabilityTimer > 180)
+            if (IsInvulnerable && InvulnerabilityTimer > INVULNERABILITY_TIME)
                 IsInvulnerable = false;
 
             // Why is it checking for hitting itself?
@@ -140,7 +140,7 @@ public partial class MissileMode7
                     if (IsLinkedCameraObject())
                     {
                         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PinBall_Mix02, this);
-                        WahooSoundTimer = 15;
+                        WahooSoundTimer = WAHOO_SOUND_TIME;
                     }
                 }
                 else if (physicalType.BumperRight && !PrevPhysicalType.BumperRight) 
@@ -151,7 +151,7 @@ public partial class MissileMode7
                     if (IsLinkedCameraObject())
                     {
                         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PinBall_Mix02, this);
-                        WahooSoundTimer = 15;
+                        WahooSoundTimer = WAHOO_SOUND_TIME;
                     }
 
                 }
@@ -182,9 +182,8 @@ public partial class MissileMode7
                     }
 
                     // Round speed to 0 if too low
-                    const float minSpeed = 1 / 1024f;
-                    if (MechModel.Speed.X is < minSpeed and > -minSpeed &&
-                        MechModel.Speed.Y is < minSpeed and > -minSpeed)
+                    if (MechModel.Speed.X is < MIN_SPEED and > -MIN_SPEED &&
+                        MechModel.Speed.Y is < MIN_SPEED and > -MIN_SPEED)
                     {
                         MechModel.Speed = Vector2.Zero;
                     }
@@ -192,12 +191,12 @@ public partial class MissileMode7
                     // Brake when holding B or on damage tiles
                     if (Engine.MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorAttack) || physicalType.Damage)
                     {
-                        MechModel.Speed -= MechModel.Speed * (12 / 256f);
+                        MechModel.Speed -= MechModel.Speed * BRAKE_FRICTION;
                     }
                     // Apply friction
                     else
                     {
-                        MechModel.Speed -= MechModel.Speed * (5 / 256f);
+                        MechModel.Speed -= MechModel.Speed * DEFAULT_FRICTION;
                     }
 
                     // Update speed
@@ -206,22 +205,22 @@ public partial class MissileMode7
                     // Move to the side with L and R
                     if (Engine.MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorSpecialLeft) && !Engine.MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorSpecialRight))
                     {
-                        MechModel.Speed = MechModel.Speed with { X = MechModel.Speed.X + MechModel.Speed.Y / 64 };
-                        MechModel.Speed = MechModel.Speed with { Y = MechModel.Speed.Y - MechModel.Speed.X / 64 };
+                        MechModel.Speed = MechModel.Speed with { X = MechModel.Speed.X + MechModel.Speed.Y * STRAFE_SPEED_FACTOR };
+                        MechModel.Speed = MechModel.Speed with { Y = MechModel.Speed.Y - MechModel.Speed.X * STRAFE_SPEED_FACTOR };
                         Rayman3Achievements.MissileRace1_HasStrafed = true;
                     }
                     else if (Engine.MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorSpecialRight) && !Engine.MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorSpecialLeft))
                     {
-                        MechModel.Speed = MechModel.Speed with { X = MechModel.Speed.X - MechModel.Speed.Y / 64 };
-                        MechModel.Speed = MechModel.Speed with { Y = MechModel.Speed.Y + MechModel.Speed.X / 64 };
+                        MechModel.Speed = MechModel.Speed with { X = MechModel.Speed.X - MechModel.Speed.Y * STRAFE_SPEED_FACTOR };
+                        MechModel.Speed = MechModel.Speed with { Y = MechModel.Speed.Y + MechModel.Speed.X * STRAFE_SPEED_FACTOR };
                         Rayman3Achievements.MissileRace1_HasStrafed = true;
                     }
 
                     if (Engine.MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorLeft))
-                        Direction += 2;
+                        Direction += DIRECTION_SPEED;
 
                     if (Engine.MultiJoyPad.IsButtonPressed(InstanceId, Rayman3Input.ActorRight))
-                        Direction -= 2;
+                        Direction -= DIRECTION_SPEED;
 
                     if (CustomScaleTimer == 0)
                         RestoreScale();
@@ -251,13 +250,13 @@ public partial class MissileMode7
             case FsmAction.Init:
                 if (IsLinkedCameraObject()) 
                 {
-                    JumpSoundTimer = 15;
+                    JumpSoundTimer = JUMP_SOUND_TIME;
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__PinBall_Mix02, this);
                 }
 
-                ZPosSpeed = 8;
-                ZPosDeacceleration = 3 / 8f;
-                Scale = new Vector2(288, 224) / 256;
+                ZPosSpeed = JUMP_HEIGHT_SPEED;
+                ZPosDeacceleration = JUMP_HEIGHT_DEACCELERATION;
+                Scale = JUMP_SCALE;
                 IsJumping = true;
                 break;
 
@@ -291,7 +290,7 @@ public partial class MissileMode7
                 break;
 
             case FsmAction.UnInit:
-                Scale = new Vector2(192, 284) / 256;
+                Scale = LAND_SCALE;
                 IsJumping = false;
                 break;
         }
@@ -316,13 +315,13 @@ public partial class MissileMode7
                 SetMode7DirectionalAction((int)Action.Default, ActionRotationSize);
                 InvulnerabilityTimer++;
 
-                if (InvulnerabilityTimer == 90)
+                if (InvulnerabilityTimer == DEATH_FADE_OUT_TIME)
                 {
                     TransitionsFX.FadeOutInit(2);
                     ((FrameMode7)Frame.Current).CanPause = false;
                 }
 
-                if (InvulnerabilityTimer == 120)
+                if (InvulnerabilityTimer == DEATH_TIME)
                     Rayman3.GameInfo.LevelDeath();
 
                 // NOTE: The game doesn't have this >30 check and sets ZPos=InvulnerabilityTimer*8
@@ -381,7 +380,7 @@ public partial class MissileMode7
                 if (RSMultiplayer.IsActive)
                     InvulnerabilityTimer = 0;
                 else
-                    InvulnerabilityTimer = 800;
+                    InvulnerabilityTimer = MULTIPLAYER_FINISHED_INVULNERABILITY_TIME;
 
                 if (Rayman3.TimeAttack.IsActive)
                     Rayman3.TimeAttack.Pause();
@@ -395,7 +394,7 @@ public partial class MissileMode7
             case FsmAction.Step:
                 SetMode7DirectionalAction((int)Action.Default, ActionRotationSize);
 
-                MechModel.Speed -= MechModel.Speed / 64;
+                MechModel.Speed -= MechModel.Speed * FINISHED_FRICTION;
 
                 RestoreScale();
                 UpdateJump();
@@ -432,19 +431,19 @@ public partial class MissileMode7
                 // Custom to transition to time attack score screen
                 if (Rayman3.TimeAttack.IsActive)
                 {
-                    if (InvulnerabilityTimer == 974)
+                    if (InvulnerabilityTimer == FINISHED_FADE_OUT_TIME)
                         Rayman3.TimeAttack.SetMode(TimeAttackMode.Score);
                     
                     return true;
                 }
 
-                if (InvulnerabilityTimer > 974)
+                if (InvulnerabilityTimer > FINISHED_FADE_OUT_TIME)
                 {
-                    if (InvulnerabilityTimer == 998)
+                    if (InvulnerabilityTimer == FINISHED_STOP_SOUNDS_TIME)
                     {
                         Engine.Sem.StopAllSongs();
                     }
-                    else if (InvulnerabilityTimer == 1000)
+                    else if (InvulnerabilityTimer == FINISHED_TIME)
                     {
                         Frame.Current.EndOfFrame = true;
 
@@ -458,16 +457,16 @@ public partial class MissileMode7
                         }
                     }
                 }
-                else if (InvulnerabilityTimer == 974 || 
-                         (Engine.MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && InvulnerabilityTimer > 300))
+                else if (InvulnerabilityTimer == FINISHED_FADE_OUT_TIME || 
+                         (Engine.MultiJoyPad.IsButtonJustPressed(InstanceId, Rayman3Input.ActorJump) && InvulnerabilityTimer > FINISHED_FADE_OUT_MIN_TIME))
                 {
                     FrameMode7 frame = (FrameMode7)Frame.Current;
 
                     TransitionsFX.FadeOutInit(2);
                     frame.CanPause = false;
 
-                    if (InvulnerabilityTimer < 974)
-                        InvulnerabilityTimer = 975;
+                    if (InvulnerabilityTimer < FINISHED_FADE_OUT_TIME)
+                        InvulnerabilityTimer = FINISHED_FADE_OUT_TIME + 1;
                 }
                 break;
 
@@ -512,7 +511,7 @@ public partial class MissileMode7
             case FsmAction.Step:
                 SetMode7DirectionalAction((int)Action.Default, ActionRotationSize);
 
-                MechModel.Speed -= MechModel.Speed / 64;
+                MechModel.Speed -= MechModel.Speed * FINISHED_FRICTION;
 
                 RestoreScale();
 
@@ -529,7 +528,7 @@ public partial class MissileMode7
                 }
 
                 // Update player to spectate
-                if (MultiplayerDeathTimer == 15)
+                if (MultiplayerDeathTimer == MULTIPLAYER_DEATH_NEXT_SPECTATE_TIME)
                 {
                     MultiplayerDeathSpectatePlayer++;
                     MultiplayerDeathSpectatePlayer %= Engine.Multiplayer.PlayersCount;
@@ -548,7 +547,7 @@ public partial class MissileMode7
                     Scene.Camera.ProcessMessage(this, Message.CamMode7_Reset);
                 }
                 // Fade in
-                else if (MultiplayerDeathTimer == 20)
+                else if (MultiplayerDeathTimer == MULTIPLAYER_DEATH_FADE_IN_TIME)
                 {
                     TransitionsFX.FadeInInit(Engine.Settings.Active.Tweaks.FixBugs ? 4 : 2);
                     
@@ -557,7 +556,7 @@ public partial class MissileMode7
                     userInfo.HitPointsChanged = false;
                 }
                 // Reset
-                else if (MultiplayerDeathTimer == 35)
+                else if (MultiplayerDeathTimer == MULTIPLAYER_DEATH_RESET_TIME)
                 {
                     MultiplayerDeathTimer = 0;
                     MultiplayerDeathFadeFlag = false;

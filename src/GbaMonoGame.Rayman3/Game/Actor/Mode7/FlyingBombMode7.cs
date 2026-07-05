@@ -12,8 +12,8 @@ public sealed partial class FlyingBombMode7 : Mode7Actor
 
         AnimatedObject.BgPriority = 0;
         Direction = Angle256.Zero;
-        ZPos = 0;
-        RenderHeight = 32;
+        ZPos = POSITION_Z;
+        RenderHeight = RENDER_HEIGHT;
 
         switch ((Action)actorResource.FirstActionId)
         {
@@ -28,22 +28,22 @@ public sealed partial class FlyingBombMode7 : Mode7Actor
 
             case Action.MoveVertical_32:
                 State.SetTo(_Fsm_MoveVertical);
-                ZPos = 32;
+                ZPos = MOVE_VERTICAL_INITIAL_Z_2;
                 break;
 
             case Action.MoveVertical_64:
                 State.SetTo(_Fsm_MoveVertical);
-                ZPos = 64;
+                ZPos = MOVE_VERTICAL_INITIAL_Z_3;
                 break;
 
             case Action.MoveVertical_96:
                 State.SetTo(_Fsm_MoveVertical);
-                ZPos = 96;
+                ZPos = MOVE_VERTICAL_INITIAL_Z_4;
                 break;
             
             case Action.MoveVertical_128:
                 State.SetTo(_Fsm_MoveVertical);
-                ZPos = 128;
+                ZPos = MOVE_VERTICAL_INITIAL_Z_5;
                 break;
 
             case Action.Move_0:
@@ -52,7 +52,7 @@ public sealed partial class FlyingBombMode7 : Mode7Actor
                 break;
 
             case Action.Drop:
-                ZPos = 1024;
+                ZPos = DROP_VERTICAL_INITIAL_Z;
                 State.SetTo(_Fsm_Drop);
                 break;
         }

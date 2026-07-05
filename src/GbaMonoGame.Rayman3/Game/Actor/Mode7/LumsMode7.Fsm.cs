@@ -14,7 +14,7 @@ public partial class LumsMode7
                 break;
 
             case FsmAction.Step:
-                if (Scene.IsDetectedMainActor(this) && ((Mode7Actor)Scene.MainActor).ZPos < 24)
+                if (Scene.IsDetectedMainActor(this) && ((Mode7Actor)Scene.MainActor).ZPos < COLLISION_HEIGHT)
                 {
                     State.MoveTo(_Fsm_Collected);
                     return false;
@@ -65,13 +65,13 @@ public partial class LumsMode7
             case FsmAction.Step:
                 Timer++;
 
-                if (RSMultiplayer.IsActive && Timer == MaxTimer)
+                if (RSMultiplayer.IsActive && Timer == RESPAWN_TIME)
                 {
                     State.MoveTo(_Fsm_MultiplayerIdle);
                     return false;
                 }
 
-                if (!RSMultiplayer.IsActive && Timer == MaxTimer)
+                if (!RSMultiplayer.IsActive && Timer == RESPAWN_TIME)
                 {
                     State.MoveTo(_Fsm_Idle);
                     return false;
@@ -104,7 +104,7 @@ public partial class LumsMode7
                     Mode7Actor player = Scene.GetGameObject<Mode7Actor>(id);
                     Box playerDetectionBox = player.GetDetectionBox();
 
-                    if (player.HitPoints != 0 && actionBox.Intersects(playerDetectionBox) && player.ZPos < 24)
+                    if (player.HitPoints != 0 && actionBox.Intersects(playerDetectionBox) && player.ZPos < COLLISION_HEIGHT)
                     {
                         if (ActionId == Action.BlueLum)
                         {

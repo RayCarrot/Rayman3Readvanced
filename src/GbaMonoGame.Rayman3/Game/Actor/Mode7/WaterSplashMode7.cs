@@ -11,7 +11,7 @@ public sealed partial class WaterSplashMode7 : Mode7Actor
         CreateGeneratedStates();
 
         AnimatedObject.BgPriority = 0;
-        RenderHeight = 16;
+        RenderHeight = RENDER_HEIGHT;
         Direction = Angle256.Half;
         IsAffine = false;
 

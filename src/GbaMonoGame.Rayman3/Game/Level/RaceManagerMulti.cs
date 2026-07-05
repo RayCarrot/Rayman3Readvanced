@@ -39,6 +39,8 @@ public class RaceManagerMulti
         }
     }
 
+    public const int PLAYER_DISTANCE_FINISHED = 2000;
+
     public Scene2D Scene { get; }
     public UserInfoMultiMode7 UserInfo { get; }
     public uint Timer { get; set; }

@@ -12,8 +12,8 @@ public sealed partial class BrokenFenceMode7 : Mode7Actor
 
         AnimatedObject.BgPriority = 0;
         Direction = Angle256.Zero;
-        ZPos = 0;
-        RenderHeight = 64;
+        ZPos = POSITION_Z;
+        RenderHeight = RENDER_HEIGHT;
 
         State.SetTo(_Fsm_Default);
     }

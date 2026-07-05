@@ -13,9 +13,9 @@ public sealed partial class LumsMode7 : Mode7Actor
 
         AnimatedObject.BgPriority = 0;
         Direction = Angle256.Zero;
-        ZPos = 0;
-        RenderHeight = 32;
-        Timer = MaxTimer;
+        ZPos = POSITION_Z;
+        RenderHeight = RENDER_HEIGHT;
+        Timer = RESPAWN_TIME;
 
         if (RSMultiplayer.IsActive)
         {
@@ -35,14 +35,12 @@ public sealed partial class LumsMode7 : Mode7Actor
         }
     }
 
-    private const int MaxTimer = 250;
-
     public int LumId { get; }
     public int Timer { get; set; }
 
     public override void Draw(AnimationPlayer animationPlayer, bool forceDraw)
     {
-        if ((Scene.Camera.IsActorFramed(this) || forceDraw) && Timer == MaxTimer)
+        if ((Scene.Camera.IsActorFramed(this) || forceDraw) && Timer == RESPAWN_TIME)
         {
             AnimatedObject.IsFramed = true;
             animationPlayer.Play(AnimatedObject);

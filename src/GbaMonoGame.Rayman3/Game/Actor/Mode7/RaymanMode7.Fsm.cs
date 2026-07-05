@@ -16,7 +16,7 @@ public partial class RaymanMode7
         {
             InvulnerabilityTimer++;
 
-            if (IsInvulnerable && InvulnerabilityTimer > 100)
+            if (IsInvulnerable && InvulnerabilityTimer > INVULNERABILITY_TIME)
                 IsInvulnerable = false;
 
             // Why is it checking for hitting itself?
@@ -73,13 +73,13 @@ public partial class RaymanMode7
             {
                 if (Rayman3.GameInfo.MapId == MapId.MarshAwakening1)
                     Rayman3Achievements.MarshAwakening1_HasMoved = true;
-                MoveSpeed = 1.375f;
+                MoveSpeed = MOVE_SPEED;
             }
             else if (Engine.JoyPad.IsButtonPressed(Rayman3Input.ActorRight))
             {
                 if (Rayman3.GameInfo.MapId == MapId.MarshAwakening1)
                     Rayman3Achievements.MarshAwakening1_HasMoved = true;
-                MoveSpeed = -1.375f;
+                MoveSpeed = -MOVE_SPEED;
             }
             else
             {
@@ -102,14 +102,14 @@ public partial class RaymanMode7
         Angle256 angleDiff = Direction - sam.Direction;
         Vector2 angleDiffVector = angleDiff.ToDirectionalVector();
 
-        float speedX = posDist * (sam.MechModel.Speed.X * angleDiffVector.X) / 60;
+        float speedX = posDist * (sam.MechModel.Speed.X * angleDiffVector.X) * SPEED_FACTOR;
         if (SlowDown)
-            speedX /= 4;
+            speedX *= SLOWDOWN_SPEED_FACTOR;
 
-        float speedY = posDist * (sam.MechModel.Speed.X * angleDiffVector.Y) / 60;
+        float speedY = posDist * (sam.MechModel.Speed.X * angleDiffVector.Y) * SPEED_FACTOR;
         speedY += MoveSpeed;
         if (SlowDown)
-            speedY /= 4;
+            speedY *= SLOWDOWN_SPEED_FACTOR;
 
         MechModel.Speed = new Vector2(speedX, speedY);
 
@@ -129,12 +129,12 @@ public partial class RaymanMode7
                 playfield.TextLayers[1].IsStatic = true;
 
                 // Set the initial Y offset, which is later changed when jumping
-                playfield.TextLayers[0].ScrolledPosition = playfield.TextLayers[0].ScrolledPosition with { Y = 11 };
-                playfield.TextLayers[1].ScrolledPosition = playfield.TextLayers[1].ScrolledPosition with { Y = 11 };
-                playfield.TextLayers[2].ScrolledPosition = playfield.TextLayers[2].ScrolledPosition with { Y = 11 };
-                playfield.TextLayers[3].ScrolledPosition = playfield.TextLayers[3].ScrolledPosition with { Y = 11 };
+                playfield.TextLayers[0].ScrolledPosition = playfield.TextLayers[0].ScrolledPosition with { Y = DEFAULT_TEXT_LAYER_SCROLL_Y };
+                playfield.TextLayers[1].ScrolledPosition = playfield.TextLayers[1].ScrolledPosition with { Y = DEFAULT_TEXT_LAYER_SCROLL_Y };
+                playfield.TextLayers[2].ScrolledPosition = playfield.TextLayers[2].ScrolledPosition with { Y = DEFAULT_TEXT_LAYER_SCROLL_Y };
+                playfield.TextLayers[3].ScrolledPosition = playfield.TextLayers[3].ScrolledPosition with { Y = DEFAULT_TEXT_LAYER_SCROLL_Y };
 
-                playfield.Camera.Horizon = 67;
+                playfield.Camera.Horizon = DEFAULT_HORIZON;
                 break;
 
             case FsmAction.Step:
@@ -168,7 +168,7 @@ public partial class RaymanMode7
                     //       the original game the range is usually around +/- 40 while we get +/- 30. We multiply here to adjust this.
                     screenX *= 40 / 30f;
 
-                    Engine.Sem.SetSoundPitch(Rayman3SoundEvent.Play__SkiLoop1, screenX * 16 + 192);
+                    Engine.Sem.SetSoundPitch(Rayman3SoundEvent.Play__SkiLoop1, BASE_PITCH + screenX * SCREEN_PITCH_FACTOR);
                 }
 
                 if (MechModel.Speed.X <= 1)
@@ -212,8 +212,8 @@ public partial class RaymanMode7
             case FsmAction.Init:
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__SkiLoop1, this);
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__OnoJump1__or__OnoJump3_Mix01__or__OnoJump4_Mix01__or__OnoJump5_Mix01__or__OnoJump6_Mix01, this);
-                ZPosSpeed = 8;
-                ZPosDeacceleration = 3 / 8f; 
+                ZPosSpeed = JUMP_HEIGHT_SPEED;
+                ZPosDeacceleration = JUMP_HEIGHT_DEACCELERATION; 
                 break;
 
             case FsmAction.Step:
@@ -312,18 +312,18 @@ public partial class RaymanMode7
                 InvulnerabilityTimer++;
 
                 FrameWaterSkiMode7 frame = (FrameWaterSkiMode7)Frame.Current;
-                if (InvulnerabilityTimer == 90)
+                if (InvulnerabilityTimer == DEATH_FADE_OUT_TIME)
                 {
                     TransitionsFX.FadeOutInit(2);
                     frame.CanPause = false;
                 }
-                else if (InvulnerabilityTimer == 167)
+                else if (InvulnerabilityTimer == DEATH_TIME)
                 {
                     Rayman3.GameInfo.LevelDeath();
                 }
 
-                if (InvulnerabilityTimer > 80)
-                    frame.FadeDecrease = (InvulnerabilityTimer - 80) / 4f;
+                if (InvulnerabilityTimer > DEATH_FOG_FADE_OUT_TIME)
+                    frame.FadeDecrease = (InvulnerabilityTimer - DEATH_FOG_FADE_OUT_TIME) * DEATH_FOG_FADE_OUT_FACTOR;
                 break;
 
             case FsmAction.UnInit:
