@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GbaMonoGame.Rayman3.Readvanced;
 
-// TODO: Indicate if achievement is earned
 public class AchievementsMenuPage : MenuPage
 {
     public AchievementsMenuPage(ModernMenuAll menu) : base(menu) { }
@@ -74,7 +73,10 @@ public class AchievementsMenuPage : MenuPage
         }
 
         // Set the icon
-        SelectedAchievementIcon.Texture = Engine.Assets.FixContentManager.Load<Texture2D>(achievement.BigIconTexturePath);
+        SelectedAchievementIcon.Texture = Engine.Assets.FixContentManager.Load<Texture2D>(
+            Rayman3.Achievements.IsUnlocked(achievement.Id) 
+                ? achievement.BigIconTexturePath
+                : Assets.Achievements.Locked_48px);
 
         // Set the text and wrap
         SelectedAchievementDescription.Text = achievement.Description;

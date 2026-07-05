@@ -38,7 +38,10 @@ public class AchievementMenuOption : MenuOption
                 BgPriority = bgPriority,
                 ObjPriority = 0,
                 RenderContext = renderContext,
-                Texture = Engine.Assets.FixContentManager.Load<Texture2D>(Achievements[i].SmallIconTexturePath),
+                Texture = Engine.Assets.FixContentManager.Load<Texture2D>(
+                    Rayman3.Achievements.IsUnlocked(Achievements[i].Id) 
+                        ? Achievements[i].SmallIconTexturePath
+                        : Assets.Achievements.Locked_32px),
             };
         }
     }
