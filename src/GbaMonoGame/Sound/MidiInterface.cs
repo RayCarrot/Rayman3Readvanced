@@ -1,12 +1,27 @@
-﻿namespace GbaMonoGame;
+﻿using System.Diagnostics;
+using BinarySerializer.Ubisoft.GbaEngine;
+
+namespace GbaMonoGame;
 
 // Only implemented on GBA
-public static class MidiInterface
+public class MidiInterface
 {
-    public static MidiParams MidiParams { get; set; }
-
-    public static void SetMidiParams()
+    public MidiInterface()
     {
-        // Pushes the params into the MP2K sound engine
+        Debug.Assert(Rom.Platform == Platform.GBA);
+    }
+
+    public void SetMidiParams(MidiParams midiParams)
+    {
+        uint newMasterVol = 0x7f;
+        if (midiParams.MasterVolume != 0x80)
+            newMasterVol = midiParams.MasterVolume;
+        newMasterVol >>= 3;
+
+        Debug.Assert(newMasterVol <= 15);
+
+        uint mode = (uint)(midiParams.ReverbValue + 0x80) | (uint)(midiParams.NbOfVoices << 8) | (newMasterVol << 0xc) | midiParams.Freq;
+
+        // NOTE: Game sets the mode in the MP2K engine here
     }
 }

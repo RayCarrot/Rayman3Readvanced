@@ -478,6 +478,7 @@ public class NGageSoundEventsManager : SoundEventsManager
 
     public override void FinishReplacingAllSongs() { }
 
+    // Doesn't exist on N-Gage
     public override void StopAllSongs() { }
 
     public override void PauseAllSongs()
@@ -491,8 +492,10 @@ public class NGageSoundEventsManager : SoundEventsManager
         IsMusicInGamePaused = false;
     }
 
+    // Doesn't exist on N-Gage
     public override float GetVolumeForType(SoundType type) => SoundEngineInterface.MaxVolume;
 
+    // Doesn't exist on N-Gage
     public override void SetVolumeForType(SoundType type, float newVolume) { }
 
     public override void ForceStopAllSongs()

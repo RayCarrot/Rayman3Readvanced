@@ -80,7 +80,7 @@ public class FrameNewPower : Frame, IHasScene, IHasPlayfield
 
         Scene.AddDialog(new TextBoxDialog(Scene), false, false);
 
-        SoundEngineInterface.SetNbVoices(10);
+        Engine.SoundEngineInterface.SetNbVoices(10);
 
         if (Rayman3.GameInfo.MapId == MapId.Power1)
         {
@@ -111,7 +111,7 @@ public class FrameNewPower : Frame, IHasScene, IHasPlayfield
 
         Rayman3.GameInfo.StopLevelMusic();
         Engine.Sem.StopAllSongs();
-        SoundEngineInterface.SetNbVoices(7);
+        Engine.SoundEngineInterface.SetNbVoices(7);
     }
 
     public override void Step()

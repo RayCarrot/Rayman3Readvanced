@@ -604,7 +604,7 @@ public partial class MenuAll : Frame, IHasPlayfield
             !Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__sadslide))
         {
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__raytheme);
-            SoundEngineInterface.SetNbVoices(10);
+            Engine.SoundEngineInterface.SetNbVoices(10);
         }
 
         if (Rom.Platform == Platform.GBA)
@@ -630,7 +630,7 @@ public partial class MenuAll : Frame, IHasPlayfield
 
     public override void UnInit()
     {
-        SoundEngineInterface.SetNbVoices(7);
+        Engine.SoundEngineInterface.SetNbVoices(7);
 
         if (!IsLoadingMultiplayerMap)
         {

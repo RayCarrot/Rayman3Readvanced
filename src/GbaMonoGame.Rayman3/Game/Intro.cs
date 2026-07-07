@@ -291,7 +291,7 @@ public partial class Intro : Frame, IHasPlayfield
 
     public override void Init()
     {
-        SoundEngineInterface.SetNbVoices(10);
+        Engine.SoundEngineInterface.SetNbVoices(10);
 
         // Pre-load the menu
         if (Engine.Settings.Active.Tweaks.UseModernMainMenu)

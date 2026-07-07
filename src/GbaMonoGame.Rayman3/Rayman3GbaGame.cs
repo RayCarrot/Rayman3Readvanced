@@ -103,6 +103,7 @@ public class Rayman3GbaGame : GbaGame
     protected override void InitGame()
     {
         Engine.InitGame(
+            soundEngineInterface: new SoundEngineInterface(),
             sem: CreateSoundEventsManager(),
             multiplayer: Rom.Platform switch
             {

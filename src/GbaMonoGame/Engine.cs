@@ -22,6 +22,7 @@ public static class Engine
     public static FrameManager FrameMngr { get; private set; }
 
     // Game services
+    public static SoundEngineInterface SoundEngineInterface { get; private set; }
     public static SoundEventsManager Sem { get; private set; }
     public static MultiplayerManager Multiplayer { get; private set; }
     public static FontManager Font { get; private set; }
@@ -78,17 +79,16 @@ public static class Engine
     }
 
     public static void InitGame(
+        SoundEngineInterface soundEngineInterface,
         SoundEventsManager sem,
         MultiplayerManager multiplayer,
         FontManager font)
     {
         // Set services
+        SoundEngineInterface = soundEngineInterface;
         Sem = sem;
         Multiplayer = multiplayer;
         Font = font;
-
-        // Initialize services
-        SoundEngineInterface.Load();
     }
 
     public static void UnInitEngine()
@@ -125,6 +125,7 @@ public static class Engine
         Font?.Dispose();
 
         // Remove services
+        SoundEngineInterface = null;
         Sem = null;
         Multiplayer = null;
         Font = null;
