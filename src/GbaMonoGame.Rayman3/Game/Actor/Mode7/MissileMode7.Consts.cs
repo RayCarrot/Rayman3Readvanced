@@ -2,7 +2,7 @@ namespace GbaMonoGame.Rayman3;
 
 public partial class MissileMode7
 {
-    private const float COLLISION_HEIGHT = 16;
+    public const float COLLISION_HEIGHT = 16;
 
     public const float MIN_SPEED = 1 / 1024f;
     public const float MAX_SPEED = 7;
