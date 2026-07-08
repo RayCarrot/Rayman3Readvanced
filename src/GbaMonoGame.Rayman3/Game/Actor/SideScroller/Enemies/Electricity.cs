@@ -17,22 +17,22 @@ public sealed partial class Electricity : InteractableActor
         float left = Position.X;
         if (InitialActionId == Action.DoubleActivated_Left)
         {
-            left += 58;
+            left += ADDITIONAL_ATTACK_BOX_OFFSET_X;
 
             // The hitbox is misaligned in the original game as it doesn't account for the width here
             if (Engine.Settings.Active.Tweaks.FixBugs)
-                left -= 12;
+                left -= ADDITIONAL_ATTACK_BOX_WIDTH;
         }
         else if (InitialActionId == Action.DoubleActivated_Right)
         {
-            left -= 58;
+            left -= ADDITIONAL_ATTACK_BOX_OFFSET_X;
         }
 
         AdditionalAttackBox = new Box(
             left: left, 
-            top: Position.Y - 12, 
-            right: left + 12, 
-            bottom: Position.Y + 20);
+            top: Position.Y + ADDITIONAL_ATTACK_BOX_OFFSET_Y, 
+            right: left + ADDITIONAL_ATTACK_BOX_WIDTH, 
+            bottom: Position.Y + ADDITIONAL_ATTACK_BOX_OFFSET_Y + ADDITIONAL_ATTACK_BOX_HEIGHT);
 
         State.SetTo(_Fsm_Activated);
 

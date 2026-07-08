@@ -49,7 +49,7 @@ public partial class FlyingBomb
                         if (Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__BombFly_Mix03))
                             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__BombFly_Mix03, this);
 
-                        SoundDelay = 60;
+                        SoundDelay = SOUND_DELAY_TIME;
                     }
 
                     if (AnimatedObject.IsFramed)
@@ -74,15 +74,15 @@ public partial class FlyingBomb
                     Rayman rayman = (Rayman)Scene.MainActor;
 
                     if (rayman.State == rayman._Fsm_Cutscene &&
-                        Math.Abs(Position.X - Scene.MainActor.Position.X) < 300)
+                        Math.Abs(Position.X - Scene.MainActor.Position.X) < BOSS_DESTROY_IN_CUTSCENE_DISTANCE)
                     {
                         Destroyed = true;
                     }
 
                     Box vulnerabilityBox = GetVulnerabilityBox();
-                    for (int i = 0; i < 2; i++)
+                    for (int i = 0; i < Rayman.BODY_PARTS_FISTS_COUNT; i++)
                     {
-                        RaymanBody activeFist = rayman.ActiveBodyParts[i];
+                        RaymanBody activeFist = rayman.ActiveBodyParts[Rayman.BODY_PARTS_FISTS_INDEX + i];
 
                         if (activeFist == null) 
                             continue;
@@ -181,7 +181,7 @@ public partial class FlyingBomb
                         if (Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__BombFly_Mix03))
                             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__BombFly_Mix03, this);
 
-                        SoundDelay = 60;
+                        SoundDelay = SOUND_DELAY_TIME;
                     }
 
                     if (AnimatedObject.IsFramed)
@@ -214,8 +214,8 @@ public partial class FlyingBomb
                 Vector2 dist = Scene.MainActor.Position - Position;
 
                 Vector2 speed = Math.Abs(dist.Y) < Math.Abs(dist.X) 
-                    ? new Vector2(2, 1) 
-                    : new Vector2(1, 2);
+                    ? new Vector2(ATTACK_SPEED_HORIZONTAL_X, ATTACK_SPEED_HORIZONTAL_Y) 
+                    : new Vector2(ATTACK_SPEED_VERTICAL_X, ATTACK_SPEED_VERTICAL_Y);
 
                 if (dist.X < 0)
                     speed.X = -speed.X;
@@ -245,7 +245,7 @@ public partial class FlyingBomb
                         if (Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__BombFly_Mix03))
                             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__BombFly_Mix03, this);
 
-                        SoundDelay = 60;
+                        SoundDelay = SOUND_DELAY_TIME;
                     }
 
                     if (AnimatedObject.IsFramed)

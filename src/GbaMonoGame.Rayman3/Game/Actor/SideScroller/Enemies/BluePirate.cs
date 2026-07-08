@@ -30,7 +30,7 @@ public sealed partial class BluePirate : PirateBaseActor
 
     private Box GetChainAttackBox(float offsetX)
     {
-        Box box = new(offsetX, -16, offsetX + 16, 0);
+        Box box = new(offsetX, -CHAIN_ATTACK_BOX_HEIGHT, offsetX + CHAIN_ATTACK_BOX_WIDTH, 0);
 
         if (AnimatedObject.FlipX)
             box = Box.FlipX(box);

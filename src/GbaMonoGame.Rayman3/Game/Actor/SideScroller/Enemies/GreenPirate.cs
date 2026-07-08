@@ -26,16 +26,16 @@ public sealed partial class GreenPirate : PirateBaseActor
 
         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Laser2_Mix02, this);
 
-        float yOffset = highShot ? -32 : -16;
+        float yOffset = highShot ? PROJECTILE_HIGH_OFFSET_Y : PROJECTILE_LOW_OFFSET_Y;
 
         if (IsFacingRight)
         {
-            energyBall.Position = Position + new Vector2(16, yOffset);
+            energyBall.Position = Position + new Vector2(PROJECTILE_OFFSET_X, yOffset);
             energyBall.ActionId = EnergyBall.Action.Shot3_Right;
         }
         else
         {
-            energyBall.Position = Position + new Vector2(-16, yOffset);
+            energyBall.Position = Position + new Vector2(-PROJECTILE_OFFSET_X, yOffset);
             energyBall.ActionId = EnergyBall.Action.Shot3_Left;
         }
 

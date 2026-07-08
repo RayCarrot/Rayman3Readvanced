@@ -16,10 +16,10 @@ public partial class Caterpillar
 
                 MechModel.Speed = Direction switch
                 {
-                    MoveDirection.Up => new Vector2(0, -1),
-                    MoveDirection.Down => new Vector2(0, 1),
-                    MoveDirection.Left => new Vector2(-1, 0),
-                    MoveDirection.Right => new Vector2(1, 0),
+                    MoveDirection.Up => new Vector2(0, -MOVE_DEFAULT_SPEED),
+                    MoveDirection.Down => new Vector2(0, MOVE_DEFAULT_SPEED),
+                    MoveDirection.Left => new Vector2(-MOVE_DEFAULT_SPEED, 0),
+                    MoveDirection.Right => new Vector2(MOVE_DEFAULT_SPEED, 0),
                     _ => throw new Exception("Invalid direction")
                 };
                 break;
@@ -28,14 +28,14 @@ public partial class Caterpillar
                 if (Scene.IsHitMainActor(this))
                     Scene.MainActor.ReceiveDamage(AttackPoints);
 
-                SineWaveValue += 4;
+                SineWaveValue += SINE_WAVE_SPEED;
                 CheckMoveBounds();
 
                 // Sine wave movement
                 Position = Direction switch
                 {
-                    MoveDirection.Up or MoveDirection.Down => Position with { X = LastPosition.X + MathHelpers.Sin256(SineWaveValue) * 16 },
-                    MoveDirection.Left or MoveDirection.Right => Position with { Y = LastPosition.Y + MathHelpers.Sin256(SineWaveValue) * 16 },
+                    MoveDirection.Up or MoveDirection.Down => Position with { X = LastPosition.X + MathHelpers.Sin256(SineWaveValue) * SINE_WAVE_LENGTH },
+                    MoveDirection.Left or MoveDirection.Right => Position with { Y = LastPosition.Y + MathHelpers.Sin256(SineWaveValue) * SINE_WAVE_LENGTH },
                     _ => throw new Exception("Invalid direction")
                 };
 
@@ -70,25 +70,25 @@ public partial class Caterpillar
                     case MoveDirection.Up:
                         LastPosition = LastPosition with { Y = Position.Y };
                         TargetPosition = Scene.MainActor.Position.Y;
-                        MechModel.Speed = MechModel.Speed with { Y = -3 };
+                        MechModel.Speed = MechModel.Speed with { Y = -MOVE_ATTACK_SPEED };
                         break;
 
                     case MoveDirection.Down:
                         LastPosition = LastPosition with { Y = Position.Y };
                         TargetPosition = Scene.MainActor.Position.Y;
-                        MechModel.Speed = MechModel.Speed with { Y = 3 };
+                        MechModel.Speed = MechModel.Speed with { Y = MOVE_ATTACK_SPEED };
                         break;
 
                     case MoveDirection.Left:
                         LastPosition = LastPosition with { X = Position.X };
                         TargetPosition = Scene.MainActor.Position.X;
-                        MechModel.Speed = MechModel.Speed with { X = -3 };
+                        MechModel.Speed = MechModel.Speed with { X = -MOVE_ATTACK_SPEED };
                         break;
 
                     case MoveDirection.Right:
                         LastPosition = LastPosition with { X = Position.X };
                         TargetPosition = Scene.MainActor.Position.X;
-                        MechModel.Speed = MechModel.Speed with { X = 3 };
+                        MechModel.Speed = MechModel.Speed with { X = MOVE_ATTACK_SPEED };
                         break;
 
                     default:
@@ -138,10 +138,10 @@ public partial class Caterpillar
                 // Reverse the direction
                 MechModel.Speed = Direction switch
                 {
-                    MoveDirection.Up => MechModel.Speed with { Y = 3 },
-                    MoveDirection.Down => MechModel.Speed with { Y = -3 },
-                    MoveDirection.Left => MechModel.Speed with { X = 3 },
-                    MoveDirection.Right => MechModel.Speed with { X = -3 },
+                    MoveDirection.Up => MechModel.Speed with { Y = MOVE_ATTACK_SPEED },
+                    MoveDirection.Down => MechModel.Speed with { Y = -MOVE_ATTACK_SPEED },
+                    MoveDirection.Left => MechModel.Speed with { X = MOVE_ATTACK_SPEED },
+                    MoveDirection.Right => MechModel.Speed with { X = -MOVE_ATTACK_SPEED },
                     _ => throw new Exception("Invalid direction")
                 };
                 break;
@@ -216,7 +216,7 @@ public partial class Caterpillar
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_PickUpObject, this);
                 }
 
-                if (Timer >= 240)
+                if (Timer >= PROJECTILE_RETURN_TIME)
                 {
                     State.MoveTo(_Fsm_ProjectileReturn);
                     return false;

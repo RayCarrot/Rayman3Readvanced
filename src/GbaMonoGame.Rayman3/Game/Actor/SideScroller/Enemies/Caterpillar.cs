@@ -17,7 +17,7 @@ public sealed partial class Caterpillar : MovableActor
         Direction = MoveDirection.Left;
         CheckAgainstMapCollision = false;
 
-        AnimatedObject.Init(6, Position, 2, false);
+        AnimatedObject.Init(ANIMATIONS_LINK_COUNT, Position, ANIMATIONS_LINK_BASE, false);
 
         SineWaveValue = 0;
         LastPosition = Position;
@@ -26,22 +26,22 @@ public sealed partial class Caterpillar : MovableActor
         {
             case Action.Move_Right:
                 Direction = MoveDirection.Right;
-                MechModel.Speed = new Vector2(1, 0);
+                MechModel.Speed = new Vector2(MOVE_DEFAULT_SPEED, 0);
                 break;
 
             case Action.Move_Left:
                 Direction = MoveDirection.Left;
-                MechModel.Speed = new Vector2(-1, 0);
+                MechModel.Speed = new Vector2(-MOVE_DEFAULT_SPEED, 0);
                 break;
 
             case Action.Move_Up:
                 Direction = MoveDirection.Up;
-                MechModel.Speed = new Vector2(0, -1);
+                MechModel.Speed = new Vector2(0, -MOVE_DEFAULT_SPEED);
                 break;
             
             case Action.Move_Down:
                 Direction = MoveDirection.Down;
-                MechModel.Speed = new Vector2(0, 1);
+                MechModel.Speed = new Vector2(0, MOVE_DEFAULT_SPEED);
                 break;
 
             default:
@@ -84,7 +84,7 @@ public sealed partial class Caterpillar : MovableActor
         switch (type.Value)
         {
             case PhysicalTypeValue.Enemy_Left:
-                MechModel.Speed = new Vector2(-1, 0);
+                MechModel.Speed = new Vector2(-MOVE_DEFAULT_SPEED, 0);
 
                 if (Direction is MoveDirection.Up or MoveDirection.Down)
                 {
@@ -97,7 +97,7 @@ public sealed partial class Caterpillar : MovableActor
                 break;
 
             case PhysicalTypeValue.Enemy_Right:
-                MechModel.Speed = new Vector2(1, 0);
+                MechModel.Speed = new Vector2(MOVE_DEFAULT_SPEED, 0);
 
                 if (Direction is MoveDirection.Up or MoveDirection.Down)
                 {
@@ -110,7 +110,7 @@ public sealed partial class Caterpillar : MovableActor
                 break;
 
             case PhysicalTypeValue.Enemy_Up:
-                MechModel.Speed = new Vector2(0, -1);
+                MechModel.Speed = new Vector2(0, -MOVE_DEFAULT_SPEED);
 
                 if (Direction is MoveDirection.Left or MoveDirection.Right)
                 {
@@ -123,7 +123,7 @@ public sealed partial class Caterpillar : MovableActor
                 break;
 
             case PhysicalTypeValue.Enemy_Down:
-                MechModel.Speed = new Vector2(0, 1);
+                MechModel.Speed = new Vector2(0, MOVE_DEFAULT_SPEED);
 
                 if (Direction is MoveDirection.Left or MoveDirection.Right)
                 {

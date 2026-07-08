@@ -8,7 +8,7 @@ public partial class GreenPirate
 {
     private bool FsmStep_CheckDeath()
     {
-        if (IsInvulnerable && GameTime.ElapsedFrames - InvulnerabilityTimer > 135)
+        if (IsInvulnerable && GameTime.ElapsedFrames - InvulnerabilityTimer > INVULNERABILITY_TIME)
             IsInvulnerable = false;
 
         // Damage main actor
@@ -107,7 +107,7 @@ public partial class GreenPirate
                 if (!Scene.KeepAllObjectsActive || IsInCurrentKnot)
                     IdleDetectionTimer++;
 
-                if (IdleDetectionTimer > 50)
+                if (IdleDetectionTimer > ATTACK_TIME)
                 {
                     State.MoveTo(_Fsm_Attack);
                     return false;
@@ -196,7 +196,7 @@ public partial class GreenPirate
 
                 IdleDetectionTimer++;
 
-                if (IdleDetectionTimer > 30)
+                if (IdleDetectionTimer > HIT_TIME)
                 {
                     StartInvulnerability();
                     State.MoveTo(_Fsm_Idle);
@@ -236,7 +236,7 @@ public partial class GreenPirate
                         PhysicalTypeValue.Damage or
                         PhysicalTypeValue.Water or
                         PhysicalTypeValue.MoltenLava ||
-                    (type.IsSolid && KnockBackYPosition + 16 < Position.Y))
+                    (type.IsSolid && KnockBackYPosition + KNOCKBACK_DYING_DISTANCE < Position.Y))
                 {
                     if (type.Value == PhysicalTypeValue.MoltenLava && Scene.MainActor is Rayman rayman && rayman.IsLavaInLevel())
                         Rayman3.Achievements.Unlock(AchievementId.DefeatPirateWithLava);
@@ -278,7 +278,7 @@ public partial class GreenPirate
 
                 if (IsActionFinished)
                 {
-                    SpawnRedLum(0);
+                    SpawnRedLum(RED_LUM_OFFSET_X);
                     ProcessMessage(this, Message.Destroy);
                 }
                 break;

@@ -9,7 +9,7 @@ public partial class BluePirate
 {
     private bool FsmStep_CheckDeath()
     {
-        if (IsInvulnerable && GameTime.ElapsedFrames - InvulnerabilityTimer > 120)
+        if (IsInvulnerable && GameTime.ElapsedFrames - InvulnerabilityTimer > INVULNERABILITY_TIME)
             IsInvulnerable = false;
 
         // Damage main actor
@@ -100,7 +100,7 @@ public partial class BluePirate
                 if (!Scene.KeepAllObjectsActive || IsInCurrentKnot)
                     IdleDetectionTimer++;
 
-                if (IdleDetectionTimer > 30)
+                if (IdleDetectionTimer > ATTACK_TIME)
                 {
                     State.MoveTo(_Fsm_AttackExtend);
                     return false;
@@ -134,10 +134,10 @@ public partial class BluePirate
                 {
                     Box chainAttackBox = GetChainAttackBox(AnimatedObject.CurrentFrame switch
                     {
-                        9 => 56, // Impossible condition
-                        10 => 78,
-                        11 => 100,
-                        12 => 124,
+                        9 => CHAIN_ATTACK_BOX_OFFSET_X_1, // Impossible condition
+                        10 => CHAIN_ATTACK_BOX_OFFSET_X_2,
+                        11 => CHAIN_ATTACK_BOX_OFFSET_X_3,
+                        12 => CHAIN_ATTACK_BOX_OFFSET_X_4,
                         _ => throw new Exception("Invalid animation frame"),
                     });
                     Box mainActorDetectionBox = Scene.MainActor.GetDetectionBox();
@@ -178,13 +178,13 @@ public partial class BluePirate
 
                 IdleDetectionTimer++;
 
-                Box chainAttackBox = GetChainAttackBox(140);
+                Box chainAttackBox = GetChainAttackBox(CHAIN_ATTACK_BOX_OFFSET_X_5);
                 Box mainActorDetectionBox = Scene.MainActor.GetDetectionBox();
 
                 if (mainActorDetectionBox.Intersects(chainAttackBox))
                     Scene.MainActor.ReceiveDamage(AttackPoints);
 
-                if (IdleDetectionTimer > 10)
+                if (IdleDetectionTimer > ATTACK_RETRACT_TIME)
                 {
                     State.MoveTo(_Fsm_AttackRetract);
                     return false;
@@ -217,11 +217,11 @@ public partial class BluePirate
                 {
                     Box chainAttackBox = GetChainAttackBox(AnimatedObject.CurrentFrame switch
                     {
-                        0 => 140,
-                        1 => 124,
-                        2 => 100,
-                        3 => 78,
-                        4 => 56,
+                        0 => CHAIN_ATTACK_BOX_OFFSET_X_5,
+                        1 => CHAIN_ATTACK_BOX_OFFSET_X_4,
+                        2 => CHAIN_ATTACK_BOX_OFFSET_X_3,
+                        3 => CHAIN_ATTACK_BOX_OFFSET_X_2,
+                        4 => CHAIN_ATTACK_BOX_OFFSET_X_1,
                         _ => throw new Exception("Invalid animation frame"),
                     });
                     Box mainActorDetectionBox = Scene.MainActor.GetDetectionBox();
@@ -268,7 +268,7 @@ public partial class BluePirate
 
                 IdleDetectionTimer++;
 
-                if (IdleDetectionTimer > 30)
+                if (IdleDetectionTimer > ATTACK_TIME)
                 {
                     State.MoveTo(_Fsm_AttackExtend);
                     return false;
@@ -298,7 +298,7 @@ public partial class BluePirate
             case FsmAction.Step:
                 if (IsActionFinished)
                 {
-                    SpawnRedLum(0);
+                    SpawnRedLum(RED_LUM_OFFSET_X);
                     ProcessMessage(this, Message.Destroy);
                 }
                 break;
