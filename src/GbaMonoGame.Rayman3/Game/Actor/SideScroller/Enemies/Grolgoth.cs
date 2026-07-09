@@ -19,18 +19,13 @@ public sealed partial class Grolgoth : MovableActor
 
         if (Rayman3.GameInfo.MapId == MapId.BossFinal_M1)
         {
-            Position = Rom.Platform switch
-            {
-                Platform.GBA => Position with { X = 200 },
-                Platform.NGage => Position with { X = 151 },
-                _ => throw new UnsupportedPlatformException(),
-            };
+            Position = Position with { X = GROUND_FALL_DOWN_RIGHT_POSITION_X };
             ActionId = Action.Ground_FallDown_Left;
-            AttackCount = 8;
-            BossHealth = 5;
+            AttackCount = GROUND_INITIAL_ATTACK_COUNT;
+            BossHealth = GROUND_INITIAL_HEALTH;
             Timer = 0;
             State.SetTo(_Fsm_GroundFallDown);
-            Position = Position with { Y = -30 };
+            Position = Position with { Y = GROUND_INITIAL_POSITION_Y };
         }
         else if (Rayman3.GameInfo.MapId == MapId.BossFinal_M2)
         {
@@ -42,12 +37,12 @@ public sealed partial class Grolgoth : MovableActor
             else
             {
                 State.SetTo(_Fsm_AirDefault);
-                Timer = 300;
+                Timer = AIR_SHOOT_MISSILE_DEFAULT_TIME;
                 ActionId = Action.Air_Idle_Left;
             }
 
-            BossHealth = 5;
-            AttackCount = 8;
+            BossHealth = AIR_INITIAL_HEALTH;
+            AttackCount = AIR_INITIAL_ATTACK_COUNT;
             Unused = 0;
         }
         else
@@ -76,7 +71,7 @@ public sealed partial class Grolgoth : MovableActor
                 // Laser
                 if (ActionId is Action.Ground_ShootLasers_Right or Action.Ground_ShootLasers_Left)
                 {
-                    projectile.Position = new Vector2(Position.X + 16, InitialYPosition + (Random.GetNumber(3) + 8) * 8);
+                    projectile.Position = new Vector2(Position.X + GROUND_LASER_PROJECTILE_OFFSET_X, InitialYPosition + (Random.GetNumber(3) + 8) * 8);
                     projectile.ActionId = GrolgothProjectile.Action.Laser_Right;
                     projectile.MechModel.Speed = new Vector2(3 + MathHelpers.FromFixedPoint(Random.GetNumber(0x20001)), 0);
 
@@ -88,15 +83,15 @@ public sealed partial class Grolgoth : MovableActor
                 else
                 {
                     if (ActionId is Action.Ground_ShootEnergyShotsHigh_Right or Action.Ground_ShootEnergyShotsHigh_Left)
-                        projectile.Position = new Vector2(Position.X + 64, InitialYPosition + 48);
+                        projectile.Position = new Vector2(Position.X + GROUND_ENERGY_SHOT_HIGH_PROJECTILE_OFFSET_X, InitialYPosition + GROUND_ENERGY_SHOT_HIGH_PROJECTILE_OFFSET_Y);
                     else
-                        projectile.Position = new Vector2(Position.X + 16, InitialYPosition + 72);
+                        projectile.Position = new Vector2(Position.X + GROUND_ENERGY_SHOT_LOW_PROJECTILE_OFFSET_X, InitialYPosition + GROUND_ENERGY_SHOT_LOW_PROJECTILE_OFFSET_Y);
 
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__Laser4_Mix01, this);
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Laser4_Mix01, this);
 
                     projectile.ActionId = GrolgothProjectile.Action.EnergyBall_Right;
-                    projectile.MechModel.Speed = new Vector2(2.5f, 0);
+                    projectile.MechModel.Speed = new Vector2(GROUND_ENERGY_SHOT_SPEED_X, 0);
 
                     projectile.VerticalOscillationAmplitude = (byte)(2 + Random.GetNumber(5));
                     projectile.VerticalOscillationSpeed = MathHelpers.FromFixedPoint(0x6000 + Random.GetNumber(0x4001));
@@ -109,7 +104,7 @@ public sealed partial class Grolgoth : MovableActor
                 // Laser
                 if (ActionId is Action.Ground_ShootLasers_Right or Action.Ground_ShootLasers_Left)
                 {
-                    projectile.Position = new Vector2(Position.X - 16, InitialYPosition + (Random.GetNumber(3) + 8) * 8);
+                    projectile.Position = new Vector2(Position.X - GROUND_LASER_PROJECTILE_OFFSET_X, InitialYPosition + (Random.GetNumber(3) + 8) * 8);
                     projectile.ActionId = GrolgothProjectile.Action.Laser_Left;
                     projectile.MechModel.Speed = new Vector2(-(3 + MathHelpers.FromFixedPoint(Random.GetNumber(0x20001))), 0);
 
@@ -121,15 +116,15 @@ public sealed partial class Grolgoth : MovableActor
                 else
                 {
                     if (ActionId is Action.Ground_ShootEnergyShotsHigh_Right or Action.Ground_ShootEnergyShotsHigh_Left)
-                        projectile.Position = new Vector2(Position.X - 64, InitialYPosition + 48);
+                        projectile.Position = new Vector2(Position.X - GROUND_ENERGY_SHOT_HIGH_PROJECTILE_OFFSET_X, InitialYPosition + GROUND_ENERGY_SHOT_HIGH_PROJECTILE_OFFSET_Y);
                     else
-                        projectile.Position = new Vector2(Position.X - 16, InitialYPosition + 72);
+                        projectile.Position = new Vector2(Position.X - GROUND_ENERGY_SHOT_LOW_PROJECTILE_OFFSET_X, InitialYPosition + GROUND_ENERGY_SHOT_LOW_PROJECTILE_OFFSET_Y);
 
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__Laser4_Mix01, this);
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Laser4_Mix01, this);
 
                     projectile.ActionId = GrolgothProjectile.Action.EnergyBall_Left;
-                    projectile.MechModel.Speed = new Vector2(-2.5f, 0);
+                    projectile.MechModel.Speed = new Vector2(-GROUND_ENERGY_SHOT_SPEED_X, 0);
 
                     projectile.VerticalOscillationAmplitude = (byte)(2 + Random.GetNumber(5));
                     projectile.VerticalOscillationSpeed = MathHelpers.FromFixedPoint(0x6000 + Random.GetNumber(0x4001));
@@ -150,15 +145,17 @@ public sealed partial class Grolgoth : MovableActor
                 if (!Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__Fire02_Laser4_Mix01))
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Fire02_Laser4_Mix01, this);
 
-                if ((AttackCount == 6 && i < 3) || BossHealth == 3)
+                // From the right
+                if ((AttackCount == AIR_SHOOT_DOUBLE_SIDE_ATTACK_COUNT && i < AIR_SHOOT_ONE_SIDE_ATTACK_COUNT) || BossHealth == 3)
                 {
-                    projectile.Position = projectile.Position with { X = 443 };
+                    projectile.Position = projectile.Position with { X = AIR_SHOT_PROJECTILE_RIGHT_POSITION_X };
                     projectile.MechModel.Speed = new Vector2(-(1 + MathHelpers.FromFixedPoint(Random.GetNumber(0x28001))), 0);
                     projectile.ActionId = GrolgothProjectile.Action.EnergyBall_Left;
                 }
-                else if ((AttackCount == 6 && i >= 3) || BossHealth == 4)
+                // From the left
+                else if ((AttackCount == AIR_SHOOT_DOUBLE_SIDE_ATTACK_COUNT && i >= AIR_SHOOT_ONE_SIDE_ATTACK_COUNT) || BossHealth == 4)
                 {
-                    projectile.Position = projectile.Position with { X = 30 };
+                    projectile.Position = projectile.Position with { X = AIR_SHOT_PROJECTILE_LEFT_POSITION_X };
                     projectile.MechModel.Speed = new Vector2(1 + MathHelpers.FromFixedPoint(Random.GetNumber(0x28001)), 0);
                     projectile.ActionId = GrolgothProjectile.Action.EnergyBall_Right;
                 }
@@ -167,24 +164,24 @@ public sealed partial class Grolgoth : MovableActor
 
                 if ((i + 1) % 3 == 0)
                 {
-                    if (i < 3)
-                        projectile.Position = projectile.Position with { Y = 25 };
+                    if (i < AIR_SHOOT_ONE_SIDE_ATTACK_COUNT)
+                        projectile.Position = projectile.Position with { Y = AIR_SHOT_PROJECTILE_1_POSITION_Y };
                     else
-                        projectile.Position = projectile.Position with { Y = 50 };
+                        projectile.Position = projectile.Position with { Y = AIR_SHOT_PROJECTILE_4_POSITION_Y };
                 }
                 else if (((i + 1) & 1) == 0)
                 {
-                    if (i < 3)
-                        projectile.Position = projectile.Position with { Y = 75 };
+                    if (i < AIR_SHOOT_ONE_SIDE_ATTACK_COUNT)
+                        projectile.Position = projectile.Position with { Y = AIR_SHOT_PROJECTILE_2_POSITION_Y };
                     else
-                        projectile.Position = projectile.Position with { Y = 100 };
+                        projectile.Position = projectile.Position with { Y = AIR_SHOT_PROJECTILE_5_POSITION_Y };
                 }
                 else
                 {
-                    if (i < 3)
-                        projectile.Position = projectile.Position with { Y = 125 };
+                    if (i < AIR_SHOOT_ONE_SIDE_ATTACK_COUNT)
+                        projectile.Position = projectile.Position with { Y = AIR_SHOT_PROJECTILE_3_POSITION_Y };
                     else
-                        projectile.Position = projectile.Position with { Y = 150 };
+                        projectile.Position = projectile.Position with { Y = AIR_SHOT_PROJECTILE_6_POSITION_Y };
                 }
             }
         }
@@ -202,15 +199,8 @@ public sealed partial class Grolgoth : MovableActor
         bool[] availableBombPositions = new bool[6];
         Array.Fill(availableBombPositions, true);
 
-        if (Rayman3.GameInfo.MapId == MapId.BossFinal_M1 && AttackCount == Rom.Platform switch 
-            {
-                Platform.GBA => 6,
-                Platform.NGage => 5,
-                _ => throw new UnsupportedPlatformException(),
-            })
-        {
+        if (Rayman3.GameInfo.MapId == MapId.BossFinal_M1 && AttackCount == GROUND_HEALTH_3_FALLING_BOMBS_ATTACK_COUNT)
             availableBombPositions[Random.GetNumber(AttackCount)] = false;
-        }
 
         for (int i = 0; i < AttackCount; i++)
         {
@@ -224,12 +214,7 @@ public sealed partial class Grolgoth : MovableActor
                 {
                     float yPos = -(10 + Random.GetNumber(51));
                     
-                    if (AttackCount == Rom.Platform switch
-                        {
-                            Platform.GBA => 4,
-                            Platform.NGage => 3,
-                            _ => throw new UnsupportedPlatformException(),
-                        })
+                    if (AttackCount == GROUND_HEALTH_4_FALLING_BOMBS_ATTACK_COUNT)
                     {
                         int index;
                         do
@@ -289,12 +274,12 @@ public sealed partial class Grolgoth : MovableActor
 
             if (IsFacingRight)
             {
-                projectile.Position = new Vector2(Position.X + 40, InitialYPosition + 48);
+                projectile.Position = new Vector2(Position.X + GROUND_SMALL_BOMB_PROJECTILE_OFFSET_X, InitialYPosition + GROUND_SMALL_BOMB_PROJECTILE_OFFSET_Y);
                 projectile.ActionId = GrolgothProjectile.Action.SmallGroundBomb_Right;
             }
             else
             {
-                projectile.Position = new Vector2(Position.X - 40, InitialYPosition + 48);
+                projectile.Position = new Vector2(Position.X - GROUND_SMALL_BOMB_PROJECTILE_OFFSET_X, InitialYPosition + GROUND_SMALL_BOMB_PROJECTILE_OFFSET_Y);
                 projectile.ActionId = GrolgothProjectile.Action.SmallGroundBomb_Left;
             }
 
@@ -309,23 +294,16 @@ public sealed partial class Grolgoth : MovableActor
             GrolgothProjectile projectile = Scene.CreateProjectile<GrolgothProjectile>(ActorType.GrolgothProjectile);
             if (projectile != null)
             {
-                float yPos = Rom.Platform switch
-                {
-                    Platform.GBA => 112,
-                    Platform.NGage => 160,
-                    _ => throw new UnsupportedPlatformException()
-                };
-
                 if (ActionId is Action.Ground_BeginDeployBomb_Right or Action.Ground_BeginDeployBomb_Left)
                 {
                     if (IsFacingRight)
                     {
-                        projectile.Position = new Vector2(Position.X + 48, yPos);
+                        projectile.Position = new Vector2(Position.X + GROUND_BIG_BOMB_PROJECTILE_OFFSET_X, GROUND_BIG_BOMB_PROJECTILE_POSITION_Y);
                         projectile.ActionId = GrolgothProjectile.Action.BigGroundBomb_Right;
                     }
                     else
                     {
-                        projectile.Position = new Vector2(Position.X - 48, yPos);
+                        projectile.Position = new Vector2(Position.X - GROUND_BIG_BOMB_PROJECTILE_OFFSET_X, GROUND_BIG_BOMB_PROJECTILE_POSITION_Y);
                         projectile.ActionId = GrolgothProjectile.Action.BigGroundBomb_Left;
                     }
 
@@ -338,12 +316,12 @@ public sealed partial class Grolgoth : MovableActor
                 {
                     if (IsFacingRight && (i != 0 || AttackCount != 2))
                     {
-                        projectile.Position = new Vector2(0, yPos);
+                        projectile.Position = new Vector2(0, GROUND_BIG_BOMB_PROJECTILE_POSITION_Y);
                         projectile.ActionId = GrolgothProjectile.Action.BigGroundBomb_Right;
                     }
                     else
                     {
-                        projectile.Position = new Vector2(Scene.Resolution.X, yPos);
+                        projectile.Position = new Vector2(Scene.Resolution.X, GROUND_BIG_BOMB_PROJECTILE_POSITION_Y);
                         projectile.ActionId = GrolgothProjectile.Action.BigGroundBomb_Left;
                     }
 
@@ -358,12 +336,12 @@ public sealed partial class Grolgoth : MovableActor
         GrolgothProjectile projectile = Scene.CreateProjectile<GrolgothProjectile>(ActorType.GrolgothProjectile);
         if (projectile != null)
         {
-            float yPos = InitialYPosition - 64;
+            float yPos = InitialYPosition + AIR_MISSILE_PROJECTILE_OFFSET_Y;
 
             if (IsFacingRight)
-                projectile.Position = new Vector2(Position.X + 72, yPos);
+                projectile.Position = new Vector2(Position.X + AIR_MISSILE_PROJECTILE_OFFSET_X, yPos);
             else
-                projectile.Position = new Vector2(Position.X - 72, yPos);
+                projectile.Position = new Vector2(Position.X - AIR_MISSILE_PROJECTILE_OFFSET_X, yPos);
 
             projectile.ActionId = GrolgothProjectile.Action.MissileDefault;
             projectile.ChangeAction();

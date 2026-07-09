@@ -33,7 +33,7 @@ public partial class Grolgoth
 
         // Force the camera to the top-left to avoid showing empty row of tiles at the bottom (why are they even there though?)
         if (Rayman3.GameInfo.MapId == MapId.BossFinal_M1)
-            Scene.Camera.ProcessMessage(this, Message.Cam_MoveToTarget, Vector2.Zero);
+            Scene.Camera.ProcessMessage(this, Message.Cam_MoveToTarget, GROUND_CAMERA_TARGET);
 
         return true;
     }
@@ -83,7 +83,7 @@ public partial class Grolgoth
                 if (AttackCount == 0)
                 {
                     // Deploy bomb if the action finished and waited at least 5 frames
-                    if (IsActionFinished && Timer > 5)
+                    if (IsActionFinished && Timer > GROUND_DEPLOY_BOMBS_TIME)
                     {
                         State.MoveTo(_Fsm_GroundDeployBomb);
                         return false;
@@ -114,7 +114,7 @@ public partial class Grolgoth
 
                     // Deploy bomb if the action finished, waited at least 5 frames and:
                     // - Boss health is 5 and it's the last attack
-                    if (IsActionFinished && BossHealth == 5 && Timer > 5 && AttackCount == 1)
+                    if (IsActionFinished && BossHealth == 5 && Timer > GROUND_DEPLOY_BOMBS_TIME && AttackCount == 1)
                     {
                         State.MoveTo(_Fsm_GroundDeployBomb);
                         return false;
@@ -154,7 +154,7 @@ public partial class Grolgoth
                 {
                     Timer++;
 
-                    if (Timer > 20)
+                    if (Timer > GROUND_SHOOT_ENERGY_SHOTS_TIME)
                     {
                         if (ActionId is Action.Ground_BeginShootEnergyShotsHigh_Right or Action.Ground_BeginShootEnergyShotsHigh_Left)
                             ActionId = IsFacingRight ? Action.Ground_ShootEnergyShotsHigh_Right : Action.Ground_ShootEnergyShotsHigh_Left;
@@ -200,7 +200,7 @@ public partial class Grolgoth
         {
             case FsmAction.Init:
                 SavedAttackCount = AttackCount;
-                AttackCount = 4;
+                AttackCount = GROUND_SHOOT_LASERS_ATTACK_COUNT;
                 ActionId = IsFacingRight ? Action.Ground_BeginShootLasers_Right : Action.Ground_BeginShootLasers_Left;
                 break;
 
@@ -210,7 +210,7 @@ public partial class Grolgoth
 
                 Timer++;
 
-                if (ActionId is Action.Ground_ShootLasers_Right or Action.Ground_ShootLasers_Left && Timer > 10 && AttackCount != 0)
+                if (ActionId is Action.Ground_ShootLasers_Right or Action.Ground_ShootLasers_Left && Timer > GROUND_SHOOT_LASERS_TIME && AttackCount != 0)
                 {
                     ShootFromGround();
                     Timer = 0;
@@ -258,7 +258,7 @@ public partial class Grolgoth
                 if (!FsmStep_CheckHitMainActor())
                     return false;
 
-                AttackCount = 1;
+                AttackCount = GROUND_DEPLOY_BOMBS_ATTACK_COUNT;
 
                 if (ActionId is Action.Ground_BeginDeployBomb_Right or Action.Ground_BeginDeployBomb_Left && IsActionFinished)
                 {
@@ -276,11 +276,11 @@ public partial class Grolgoth
             case FsmAction.UnInit:
                 AttackCount = BossHealth switch
                 {
-                    1 => 8,
-                    2 => 7,
-                    3 => 6,
-                    4 => 5,
-                    _ => 4
+                    1 => GROUND_HEALTH_1_ATTACK_COUNT,
+                    2 => GROUND_HEALTH_2_ATTACK_COUNT,
+                    3 => GROUND_HEALTH_3_ATTACK_COUNT,
+                    4 => GROUND_HEALTH_4_ATTACK_COUNT,
+                    _ => GROUND_HEALTH_5_ATTACK_COUNT
                 };
                 break;
         }
@@ -317,7 +317,7 @@ public partial class Grolgoth
                         ActionId = IsFacingRight ? Action.Ground_Hit3_Right : Action.Ground_Hit3_Left;
                         Timer = 0;
                     }
-                    else if (ActionId is Action.Ground_Hit3_Right or Action.Ground_Hit3_Left && Timer > 30)
+                    else if (ActionId is Action.Ground_Hit3_Right or Action.Ground_Hit3_Left && Timer > GROUND_HIT_TIME)
                     {
                         ActionId = IsFacingRight ? Action.Ground_Hit4_Right : Action.Ground_Hit4_Left;
                         ChangeAction();
@@ -366,15 +366,7 @@ public partial class Grolgoth
                     if (!Scene.Camera.IsActorFramed(this))
                     {
                         ActionId = IsFacingRight ? Action.Ground_FallDown_Left : Action.Ground_FallDown_Right;
-                        Position = Position with
-                        {
-                            X = Rom.Platform switch
-                            {
-                                Platform.GBA => IsFacingRight ? 200 : 40,
-                                Platform.NGage => IsFacingRight ? 151 : 25,
-                                _ => throw new UnsupportedPlatformException()
-                            }
-                        };
+                        Position = Position with { X = IsFacingRight ? GROUND_FALL_DOWN_RIGHT_POSITION_X : GROUND_FALL_DOWN_LEFT_POSITION_X };
                         Timer = 0;
                     }
                 }
@@ -410,32 +402,22 @@ public partial class Grolgoth
                 switch (BossHealth)
                 {
                     case 1:
-                        AttackCount = 2;
+                        AttackCount = GROUND_HEALTH_1_BIG_GROUND_BOMBS_ATTACK_COUNT;
                         DeployBigGroundBombs();
                         break;
 
                     case 2:
-                        AttackCount = 1;
+                        AttackCount = GROUND_HEALTH_2_BIG_GROUND_BOMBS_ATTACK_COUNT;
                         DeployBigGroundBombs();
                         break;
 
                     case 3:
-                        AttackCount = Rom.Platform switch
-                        {
-                            Platform.GBA => 6,
-                            Platform.NGage => 5,
-                            _ => throw new UnsupportedPlatformException(),
-                        };
+                        AttackCount = GROUND_HEALTH_3_FALLING_BOMBS_ATTACK_COUNT;
                         DeployFallingBombs();
                         break;
 
                     case 4:
-                        AttackCount = Rom.Platform switch
-                        {
-                            Platform.GBA => 4,
-                            Platform.NGage => 3,
-                            _ => throw new UnsupportedPlatformException(),
-                        };
+                        AttackCount = GROUND_HEALTH_4_FALLING_BOMBS_ATTACK_COUNT;
                         DeployFallingBombs();
                         break;
 
@@ -452,13 +434,13 @@ public partial class Grolgoth
                 // Keep in the air if still attacking
                 if (AttackCount != 0)
                 {
-                    Position -= new Vector2(0, 4);
+                    Position -= new Vector2(0, GROUND_FALL_SPEED);
                 }
                 // Land
                 else if (InitialYPosition < Position.Y)
                 {
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__BigFoot1_Mix02, this);
-                    Scene.Camera.ProcessMessage(this, Message.Cam_Shake, 96);
+                    Scene.Camera.ProcessMessage(this, Message.Cam_Shake, GROUND_LAND_CAMERA_SHAKE_LENGTH);
                     Position = Position with { Y = InitialYPosition };
                     ActionId = IsFacingRight ? Action.Ground_Land_Right : Action.Ground_Land_Left;
                     ChangeAction();
@@ -475,11 +457,11 @@ public partial class Grolgoth
                 Engine.Sem.ProcessEvent(Rayman3SoundEvent.Stop__Propulse_Combust1_Mix02, this);
                 AttackCount = BossHealth switch
                 {
-                    1 => 8,
-                    2 => 7,
-                    3 => 6,
-                    4 => 5,
-                    _ => 4
+                    1 => GROUND_HEALTH_1_ATTACK_COUNT,
+                    2 => GROUND_HEALTH_2_ATTACK_COUNT,
+                    3 => GROUND_HEALTH_3_ATTACK_COUNT,
+                    4 => GROUND_HEALTH_4_ATTACK_COUNT,
+                    _ => GROUND_HEALTH_5_ATTACK_COUNT
                 };
                 break;
         }
@@ -524,13 +506,13 @@ public partial class Grolgoth
 
                 Timer++;
 
-                if (Timer == 60)
+                if (Timer == AIR_INTRO_CAMERA_MOVE_TIME)
                 {
-                    Vector2 camTarget = Position + new Vector2(-60, 20);
-                    Position = Position with { Y = InitialYPosition - 250 };
+                    Vector2 camTarget = Position + new Vector2(AIR_INTRO_CAMERA_MOVE_OFFSET_X, AIR_INTRO_CAMERA_MOVE_OFFSET_Y);
+                    Position = Position with { Y = InitialYPosition + AIR_OFF_SCREEN_OFFSET_Y };
                     Scene.Camera.ProcessMessage(this, Message.Cam_MoveToTarget, camTarget);
                 }
-                else if (Timer == 120)
+                else if (Timer == AIR_INTRO_FALL_DOWN_TIME)
                 {
                     Position = Position with { Y = InitialYPosition };
                     ActionId = Action.Air_FallDown_Left;
@@ -560,7 +542,7 @@ public partial class Grolgoth
             case FsmAction.Init:
                 Timer = 0;
 
-                if (BossHealth == 5)
+                if (BossHealth == AIR_INITIAL_HEALTH)
                     ActionId = IsFacingRight ? Action.Air_Idle_Right : Action.Air_Idle_Left;
                 else
                     ActionId = IsFacingRight ? Action.Air_IdleDamaged_Right : Action.Air_IdleDamaged_Left;
@@ -575,8 +557,8 @@ public partial class Grolgoth
                     return true;
 
                 Timer++;
-                if ((Timer > 300 && BossHealth > 1) ||
-                    (Timer > 75 && BossHealth == 1))
+                if ((Timer > AIR_SHOOT_MISSILE_DEFAULT_TIME && BossHealth > 1) ||
+                    (Timer > AIR_SHOOT_MISSILE_HEALTH_1_TIME && BossHealth == 1))
                 {
                     State.MoveTo(_Fsm_AirShootMissile);
                     return false;
@@ -618,6 +600,7 @@ public partial class Grolgoth
                         Rayman3.GameInfo.GreenLumTouchedByRayman(0, Vector2.Zero);
                     }
                 }
+
                 if (IsActionFinished)
                 {
                     State.MoveTo(_Fsm_AirDefault);
@@ -626,7 +609,7 @@ public partial class Grolgoth
                 break;
 
             case FsmAction.UnInit:
-                AttackCount = 8;
+                AttackCount = AIR_INITIAL_ATTACK_COUNT; // Unused
                 break;
         }
 
@@ -673,19 +656,19 @@ public partial class Grolgoth
                 ((FrameSideScroller)Frame.Current).UserInfo.BossHit();
 
                 Scene.Camera.LinkedObject = this;
-                Scene.Camera.ProcessMessage(this, Message.Cam_FollowPositionY, 80);
+                Scene.Camera.ProcessMessage(this, Message.Cam_FollowPositionY, AIR_HIT_CAMERA_TARGET_Y);
                 Scene.MainActor.ProcessMessage(this, Message.Rayman_Stop);
                 break;
 
             case FsmAction.Step:
                 Timer++;
 
-                if (Timer == 20)
+                if (Timer == AIR_HIT_SOUND_TIME)
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__BossHurt_Mix02, this);
 
                 Box detectionBox = GetDetectionBox();
 
-                PhysicalType type = Scene.GetPhysicalType(new Vector2(Position.X, detectionBox.Bottom - 30));
+                PhysicalType type = Scene.GetPhysicalType(new Vector2(Position.X, detectionBox.Bottom + AIR_HIT_DETECTION_BOX_BOTTOM_OFFSET));
                 
                 if (IsActionFinished && ActionId is Action.Air_Hit1_Right or Action.Air_Hit1_Left)
                     ActionId = IsFacingRight ? Action.Air_Hit2_Right : Action.Air_Hit2_Left;
@@ -773,53 +756,43 @@ public partial class Grolgoth
         {
             case FsmAction.Init:
                 ActionId = IsFacingRight ? Action.Air_FlyUp_Right : Action.Air_FlyUp_Left;
-                AttackCount = 0xFF;
+                AttackCount = AIR_INVALID_ATTACK_COUNT;
                 break;
 
             case FsmAction.Step:
-                if (ActionId is Action.Air_Idle_Right or Action.Air_Idle_Left && AttackCount == 0xff)
+                if (ActionId is Action.Air_Idle_Right or Action.Air_Idle_Left && AttackCount == AIR_INVALID_ATTACK_COUNT)
                 {
                     if (BossHealth < 2)
                     {
-                        if (Scene.MainActor.Position.Y > 75)
+                        if (Scene.MainActor.Position.Y > AIR_DEPLOY_FALLING_BOMBS_MIN_POSITION_Y)
                         {
-                            AttackCount = Rom.Platform switch
-                            {
-                                Platform.GBA => 10,
-                                Platform.NGage => 6,
-                                _ => throw new UnsupportedPlatformException()
-                            };
+                            AttackCount = AIR_FALLING_BOMBS_ATTACK_COUNT;
                             DeployFallingBombs();
                         }
                     }
                     else
                     {
-                        if (Scene.MainActor.Position.X is > 100 and < 380)
+                        if (Scene.MainActor.Position.X is > AIR_SHOOT_MIN_POSITION_X and < AIR_SHOOT_MAX_POSITION_X)
                         {
-                            if (BossHealth == 4)
+                            if (BossHealth is 3 or 4)
                             {
-                                AttackCount = 3;
-                                ShootFromAir();
-                            }
-                            else if (BossHealth == 3)
-                            {
-                                AttackCount = 3;
+                                AttackCount = AIR_SHOOT_ONE_SIDE_ATTACK_COUNT;
                                 ShootFromAir();
                             }
                             else if (BossHealth == 2)
                             {
-                                AttackCount = 6;
+                                AttackCount = AIR_SHOOT_DOUBLE_SIDE_ATTACK_COUNT;
                                 ShootFromAir();
                             }
                         }
                     }
                 }
 
-                if (Position.Y < InitialYPosition - 250 && ActionId is not (Action.Air_Idle_Right or Action.Air_Idle_Left))
+                if (Position.Y < InitialYPosition - AIR_OFF_SCREEN_OFFSET_Y && ActionId is not (Action.Air_Idle_Right or Action.Air_Idle_Left))
                 {
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_Resume);
                     Scene.Camera.LinkedObject = Scene.MainActor;
-                    Scene.Camera.ProcessMessage(this, Message.Cam_FollowPositionY, 80);
+                    Scene.Camera.ProcessMessage(this, Message.Cam_FollowPositionY, AIR_HIT_CAMERA_TARGET_Y);
 
                     ActionId = IsFacingRight ? Action.Air_Idle_Left : Action.Air_Idle_Right;
                 }
@@ -833,12 +806,12 @@ public partial class Grolgoth
                     if ((BossHealth & 1) == 0)
                     {
                         ActionId = Action.Air_FallDown_Right;
-                        Position = Position with { X = 50 };
+                        Position = Position with { X = AIR_FALL_DOWN_LEFT_POSITION_X };
                     }
                     else
                     {
                         ActionId = Action.Air_FallDown_Left;
-                        Position = Position with { X = 423 };
+                        Position = Position with { X = AIR_FALL_DOWN_RIGHT_POSITION_X };
                     }
                 }
 
