@@ -53,9 +53,9 @@ public sealed partial class Jano : MovableActor
 
         for (int i = 0; i < 2; i++)
         {
-            if (rayman.ActiveBodyParts[0] != null)
+            if (rayman.ActiveBodyParts[i] != null)
             {
-                Box fistDetectionBox = rayman.ActiveBodyParts[0].GetDetectionBox();
+                Box fistDetectionBox = rayman.ActiveBodyParts[i].GetDetectionBox();
 
                 if (viewBox.Intersects(fistDetectionBox))
                     return true;
