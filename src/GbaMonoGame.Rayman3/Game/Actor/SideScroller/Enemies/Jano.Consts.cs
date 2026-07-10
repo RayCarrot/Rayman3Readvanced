@@ -41,6 +41,8 @@ public partial class Jano
     public const float CREATE_SKULL_PLATFORM_MIN_DISTANCE_X = 150;
     public const ushort CREATE_SKULL_PLATFORM_TIME = 20;
 
+    public const int MAX_SKULL_PLATFORMS = 3;
+
     public const float SWITCH_SIDE_TARGET_Y = 20;
     public const float SWITCH_SIDE_SPEED_Y = 4;
 

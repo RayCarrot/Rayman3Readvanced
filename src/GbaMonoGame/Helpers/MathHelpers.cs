@@ -5,6 +5,8 @@ namespace GbaMonoGame;
 
 public static class MathHelpers
 {
+    public const float FIXED_POINT_DIVISOR = 0x10000;
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int Mod(int x, int m)
     {
@@ -89,6 +91,6 @@ public static class MathHelpers
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float FromFixedPoint(int x)
     {
-        return (float)x / 0x10000;
+        return x / FIXED_POINT_DIVISOR;
     }
 }

@@ -23,9 +23,9 @@ public partial class JanoSkullPlatform
 
                 Rayman rayman = (Rayman)Scene.MainActor;
 
-                for (int i = 0; i < 2; i++)
+                for (int i = 0; i < Rayman.BODY_PARTS_FISTS_COUNT; i++)
                 {
-                    RaymanBody activeFist = rayman.ActiveBodyParts[i];
+                    RaymanBody activeFist = rayman.ActiveBodyParts[Rayman.BODY_PARTS_FISTS_INDEX + i];
 
                     if (activeFist != null && activeFist.GetDetectionBox().Intersects(detectionBox))
                     {
@@ -43,7 +43,7 @@ public partial class JanoSkullPlatform
                     isStoppedMoving = true;
                 }
 
-                if (ScreenPosition.X < -40)
+                if (ScreenPosition.X < MIN_SCREEN_X)
                 {
                     isOffScreen = true;
                 }
@@ -55,7 +55,7 @@ public partial class JanoSkullPlatform
                 {
                     Timer++;
 
-                    if (Timer > 120)
+                    if (Timer > MOVE_DESPAWN_TIME)
                         ActionId = Action.Despawn;
                 }
                 else if (IsActionFinished)
@@ -139,7 +139,7 @@ public partial class JanoSkullPlatform
                 // Move down to target
                 else if (Position.Y < TargetY)
                 {
-                    MechModel.Speed = MechModel.Speed with { Y = 2 };
+                    MechModel.Speed = MechModel.Speed with { Y = MOVE_SPEED_Y };
 
                     if (IsTouchingMap)
                         isCollided = true;
@@ -157,19 +157,19 @@ public partial class JanoSkullPlatform
                 Rayman rayman = (Rayman)Scene.MainActor;
                 if (Timer > 15)
                 {
-                    for (int i = 0; i < 2; i++)
+                    for (int i = 0; i < Rayman.BODY_PARTS_FISTS_COUNT; i++)
                     {
-                        RaymanBody activeFist = rayman.ActiveBodyParts[i];
+                        RaymanBody activeFist = rayman.ActiveBodyParts[Rayman.BODY_PARTS_FISTS_INDEX + i];
 
                         if (activeFist != null)
                         {
                             Box fistBox = activeFist.GetDetectionBox();
                             
                             // Extend by 5 in all directions
-                            fistBox.Left -= 5;
-                            fistBox.Top -= 5;
-                            fistBox.Right += 5;
-                            fistBox.Bottom += 5;
+                            fistBox.Left -= FIST_BOX_ADD_SIZE;
+                            fistBox.Top -= FIST_BOX_ADD_SIZE;
+                            fistBox.Right += FIST_BOX_ADD_SIZE;
+                            fistBox.Bottom += FIST_BOX_ADD_SIZE;
 
                             if (fistBox.Intersects(detectionBox))
                             {
@@ -190,10 +190,10 @@ public partial class JanoSkullPlatform
                         Box skullBox = skullPlatform.GetDetectionBox();
 
                         // Extend
-                        skullBox.Left -= 15;
-                        skullBox.Top -= 10;
-                        skullBox.Right += 15;
-                        skullBox.Bottom += 10;
+                        skullBox.Left -= SKULL_BOX_ADD_HORIZONTAL_SIZE;
+                        skullBox.Top -= SKULL_BOX_ADD_VERTICAL_SIZE;
+                        skullBox.Right += SKULL_BOX_ADD_HORIZONTAL_SIZE;
+                        skullBox.Bottom += SKULL_BOX_ADD_VERTICAL_SIZE;
 
                         if (skullBox.Intersects(detectionBox))
                         {
@@ -227,7 +227,7 @@ public partial class JanoSkullPlatform
                     }
                 }
 
-                if (Timer > 780)
+                if (Timer > DESPAWN_DOWN_TIME)
                 {
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_UnlinkMovement, this);
                     State.MoveTo(_Fsm_DespawnDown);
@@ -276,7 +276,7 @@ public partial class JanoSkullPlatform
                 }
 
                 if (Position.Y < TargetY)
-                    MechModel.Speed = MechModel.Speed with { Y = 1 };
+                    MechModel.Speed = MechModel.Speed with { Y = SOLID_MOVE_SPEED_Y };
                 else
                     MechModel.Speed = MechModel.Speed with { Y = 0 };
 
@@ -360,7 +360,7 @@ public partial class JanoSkullPlatform
                     isFinished = true;
 
                 if (ActionId != Action.Despawn &&
-                    (ScreenPosition.Y > Scene.Resolution.Y + 1 || ScreenPosition.X < 0 || Timer > 180 || Position.Y > 280))
+                    (ScreenPosition.Y > Scene.Resolution.Y + 1 || ScreenPosition.X < 0 || Timer > DESPAWN_TIME || Position.Y > MAX_POSITION_Y))
                 {
                     ActionId = Action.Despawn;
                 }
@@ -417,7 +417,7 @@ public partial class JanoSkullPlatform
                     isFinished = true;
 
                 if (ActionId != Action.Despawn && 
-                    (ScreenPosition.Y > Scene.Resolution.Y + 1 || ScreenPosition.X < 0 || Timer > 180 || Position.Y > 280))
+                    (ScreenPosition.Y > Scene.Resolution.Y + 1 || ScreenPosition.X < 0 || Timer > DESPAWN_TIME || Position.Y > MAX_POSITION_Y))
                 {
                     ActionId = Action.Despawn;
                 }

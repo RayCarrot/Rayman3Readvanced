@@ -16,13 +16,13 @@ public sealed partial class Machine : MovableActor
         if ((Action)actorResource.FirstActionId == Action.CannonIdle1)
         {
             Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MachMotr_Mix01, this, this);
-            BossHealth = 4;
-            AnimatedObject.ObjPriority = 62;
+            BossHealth = CANNON_MAX_HEALTH + 1;
+            AnimatedObject.ObjPriority = CANNON_OBJ_PRIORITY;
         }
         else
         {
             BossHealth = -1;
-            AnimatedObject.ObjPriority = 63;
+            AnimatedObject.ObjPriority = COG_WHEEL_INITIAL_OBJ_PRIORITY;
         }
 
         CogDestroyed = false;
@@ -89,7 +89,7 @@ public sealed partial class Machine : MovableActor
         FlyingBomb helicopterBomb = Scene.CreateProjectile<FlyingBomb>(ActorType.RotatedHelicopterBomb);
         if (helicopterBomb != null)
         {
-            helicopterBomb.Position = Position + new Vector2(-60, 10);
+            helicopterBomb.Position = Position + new Vector2(HELICOPTER_BOMB_OFFSET_X, HELICOPTER_BOMB_OFFSET_Y);
             helicopterBomb.CurrentDirectionalType = null;
         }
 
@@ -97,7 +97,7 @@ public sealed partial class Machine : MovableActor
         if (explosion != null)
         {
             explosion.AnimatedObject.CurrentAnimation = 1;
-            explosion.Position = Position + new Vector2(-45, 0);
+            explosion.Position = Position + new Vector2(EXPLOSION_OFFSET_X, EXPLOSION_OFFSET_Y);
         }
     }
 

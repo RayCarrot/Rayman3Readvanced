@@ -17,7 +17,7 @@ public sealed partial class Jano : MovableActor
         AlphaBlend = ALPHA_BLEND_MAX;
         FirstTimeMovingAway = true;
         
-        SkullPlatforms = new JanoSkullPlatform[3];
+        SkullPlatforms = new JanoSkullPlatform[MAX_SKULL_PLATFORMS];
         
         IsOnLeftSide = false;
         TargetPosition = Vector2.Zero;

@@ -16,7 +16,7 @@ public partial class Machine
 
             case FsmAction.Step:
                 // Set up cog wheel object parts from parent
-                if (BossHealth == 4)
+                if (BossHealth == CANNON_MAX_HEALTH + 1)
                 {
                     Rotation = 0;
                     AnimatedObject.AffineMatrix = new AffineMatrix(Rotation, 1, 1);
@@ -56,19 +56,19 @@ public partial class Machine
                     return false;
                 }
                 // Parent if in time attack
-                else if (BossHealth == 4 && Rayman3.TimeAttack.IsActive)
+                else if (BossHealth == CANNON_MAX_HEALTH + 1 && Rayman3.TimeAttack.IsActive)
                 {
                     State.MoveTo(_Fsm_TimeAttackIntro);
                     return false;
                 }
                 // Parent if died at least once
-                else if (BossHealth == 4 && Rayman3.GameInfo.LastGreenLumAlive != 0)
+                else if (BossHealth == CANNON_MAX_HEALTH + 1 && Rayman3.GameInfo.LastGreenLumAlive != 0)
                 {
                     State.MoveTo(_Fsm_CannonFire);
                     return false;
                 }
                 // Parent first time
-                else if (BossHealth == 4 && Rayman3.GameInfo.LastGreenLumAlive == 0)
+                else if (BossHealth == CANNON_MAX_HEALTH + 1 && Rayman3.GameInfo.LastGreenLumAlive == 0)
                 {
                     State.MoveTo(_Fsm_CannonIntro);
                     return false;
@@ -93,7 +93,7 @@ public partial class Machine
                 else if (BossHealth == 3)
                     ActionId = Action.CogWheel3;
 
-                AnimatedObject.ObjPriority = 30;
+                AnimatedObject.ObjPriority = COG_WHEEL_OBJ_PRIORITY;
                 break;
 
             case FsmAction.Step:
@@ -102,18 +102,18 @@ public partial class Machine
                     float scale;
                     if (BossHealth == 3)
                     {
-                        Rotation++;
-                        scale = MathHelpers.FromFixedPoint(0x9999);
+                        Rotation += COG_WHEEL_3_ROTATION_SPEED;
+                        scale = COG_WHEEL_3_SCALE;
                     }
                     else if (BossHealth == 2)
                     {
-                        Rotation -= 2;
-                        scale = MathHelpers.FromFixedPoint(0x10000);
+                        Rotation = (byte)(Rotation + COG_WHEEL_2_ROTATION_SPEED);
+                        scale = COG_WHEEL_2_SCALE;
                     }
                     else
                     {
-                        Rotation += 2;
-                        scale = MathHelpers.FromFixedPoint(0x15000);
+                        Rotation += COG_WHEEL_1_ROTATION_SPEED;
+                        scale = COG_WHEEL_1_SCALE;
                     }
                  
                     AnimatedObject.AffineMatrix = new AffineMatrix(Rotation, scale, scale);
@@ -144,17 +144,17 @@ public partial class Machine
 
             case FsmAction.Step:
                 // Fall down
-                Position += new Vector2(0, 4);
+                Position += new Vector2(0, COG_WHEEL_FALL_SPEED_Y);
 
                 float scale;
                 if (BossHealth == 3)
-                    scale = MathHelpers.FromFixedPoint(0x9999);
+                    scale = COG_WHEEL_3_SCALE;
                 else
-                    scale = MathHelpers.FromFixedPoint(0x10000);
+                    scale = COG_WHEEL_2_SCALE;
 
                 // The original game has a bug where it doesn't set the scale for the small cog
                 if (Engine.Settings.Active.Tweaks.FixBugs && BossHealth is not (2 or 3))
-                    scale = MathHelpers.FromFixedPoint(0x15000);
+                    scale = COG_WHEEL_1_SCALE;
 
                 AnimatedObject.AffineMatrix = new AffineMatrix(Rotation, scale, scale);
 
@@ -185,11 +185,12 @@ public partial class Machine
             case FsmAction.Step:
                 Timer++;
 
-                if (Timer == 60)
+                if (Timer == CANNON_INTRO_CAMERA_MOVE_TIME)
                 {
-                    Scene.Camera.ProcessMessage(this, Message.Cam_MoveToTarget, Position + new Vector2(-60, 20));
+                    Vector2 targetPos = Position + new Vector2(CANNON_INTRO_CAMERA_TARGET_OFFSET_X, CANNON_INTRO_CAMERA_TARGET_OFFSET_Y);
+                    Scene.Camera.ProcessMessage(this, Message.Cam_MoveToTarget, targetPos);
                 }
-                else if (Timer > 190 && ActionId == Action.CannonIdle2 && IsActionFinished)
+                else if (Timer > CANNON_INTRO_CAMERA_RETURN_TIME && ActionId == Action.CannonIdle2 && IsActionFinished)
                 {
                     Scene.Camera.ProcessMessage(this, Message.Cam_MoveToLinkedObject, false);
                 }
@@ -211,13 +212,13 @@ public partial class Machine
                     if (IsActionFinished)
                         ActionId = Action.CannonFire;
                 }
-                else if (Timer == 130)
+                else if (Timer == CANNON_INTRO_FIRE_TIME)
                 {
                     ActionId = Action.CannonBeginFire;
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__MachAtk1_Mix01, this);
                 }
 
-                if (Timer > 190 && ActionId == Action.CannonIdle2 && IsActionFinished)
+                if (Timer > CANNON_INTRO_CAMERA_RETURN_TIME && ActionId == Action.CannonIdle2 && IsActionFinished)
                 {
                     State.MoveTo(_Fsm_CannonFire);
                     return false;
@@ -227,7 +228,7 @@ public partial class Machine
             case FsmAction.UnInit:
                 // Create a checkpoint to avoid showing the intro cutscene each time
                 if (Rayman3.GameInfo.LastGreenLumAlive == 0)
-                    Rayman3.GameInfo.GreenLumTouchedByRayman(0, new Vector2(191, 136));
+                    Rayman3.GameInfo.GreenLumTouchedByRayman(0, new Vector2(CHECKPOINT_POSITION_X, CHECKPOINT_POSITION_Y));
                 break;
         }
 
@@ -265,7 +266,7 @@ public partial class Machine
         {
             case FsmAction.Init:
                 ActionId = Action.CannonIdle1;
-                BossHealth = 3;
+                BossHealth = CANNON_MAX_HEALTH;
                 Timer = 0;
                 break;
 
@@ -276,7 +277,7 @@ public partial class Machine
                 {
                     if (Rayman3.GameInfo.CanShowMurfyHelp)
                         ManageTextBox();
-                    else if (Timer > 30)
+                    else if (Timer > CANNON_UNINIT_TEXTBOX_TIME)
                         UnInitTextBox();
                 }
                 else
@@ -305,9 +306,9 @@ public partial class Machine
                             ActionId = Action.CannonFire;
                     }
                     // Fire after certain time
-                    else if ((Timer > 430 && BossHealth == 3) || 
-                             (Timer > 380 && BossHealth == 2) || 
-                             (Timer > 330 && BossHealth == 1))
+                    else if ((Timer > CANNON_HEALTH_3_FIRE_TIME && BossHealth == 3) || 
+                             (Timer > CANNON_HEALTH_2_FIRE_TIME && BossHealth == 2) || 
+                             (Timer > CANNON_HEALTH_1_FIRE_TIME && BossHealth == 1))
                     {
                         Rayman rayman = (Rayman)Scene.MainActor;
                         if (rayman.State != rayman._Fsm_Cutscene)
@@ -359,7 +360,7 @@ public partial class Machine
                 }
 
                 // Fall down
-                Position += new Vector2(0, 2);
+                Position += new Vector2(0, CANNON_FALL_SPEED_Y);
 
                 // Explode
                 if (GameTime.ElapsedFrames % 8 == 0)

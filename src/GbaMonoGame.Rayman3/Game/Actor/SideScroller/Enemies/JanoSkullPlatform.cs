@@ -10,7 +10,7 @@ public sealed partial class JanoSkullPlatform : MovableActor
     {
         CreateGeneratedStates();
 
-        Jano = Scene.GetGameObject<Jano>(1);
+        Jano = Scene.GetGameObject<Jano>(JANO_ACTOR_INSTANCE_ID);
         SkullPlatformIndex = 0;
         State.SetTo(_Fsm_Move);
     }
@@ -28,7 +28,7 @@ public sealed partial class JanoSkullPlatform : MovableActor
         {
             body.ActionId = RaymanBody.Action.HitEffect;
             body.BodyPartType = RaymanBody.RaymanBodyPartType.HitEffect;
-            body.Position = Position + new Vector2(16, 0);
+            body.Position = Position + new Vector2(HIT_EFFECT_OFFSET_X, 0);
         }
     }
 
