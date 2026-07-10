@@ -9,7 +9,7 @@ public partial class RedPirate
     private bool FsmStep_CheckDeath()
     {
         // Invulnerability lasts 2 seconds
-        if (IsInvulnerable && GameTime.ElapsedFrames - InvulnerabilityTimer > 120)
+        if (IsInvulnerable && GameTime.ElapsedFrames - InvulnerabilityTimer > INVULNERABILITY_TIME)
             IsInvulnerable = false;
 
         // Damage main actor
@@ -102,14 +102,14 @@ public partial class RedPirate
                     return false;
 
                 // 180 frames and not detected main actor...
-                if (GameTime.ElapsedFrames - IdleDetectionTimer > 180 && !Scene.IsDetectedMainActor(this))
+                if (GameTime.ElapsedFrames - IdleDetectionTimer > WALK_TIME && !Scene.IsDetectedMainActor(this))
                 {
                     State.MoveTo(_Fsm_Walk);
                     return false;
                 }
 
                 // 75 frames and detected main actor...
-                if (GameTime.ElapsedFrames - AttackTimer > 75 && Scene.IsDetectedMainActor(this))
+                if (GameTime.ElapsedFrames - AttackTimer > ATTACK_TIME && Scene.IsDetectedMainActor(this))
                 {
                     State.MoveTo(_Fsm_Attack);
                     return false;
@@ -223,7 +223,7 @@ public partial class RedPirate
                     return false;
 
                 // Allow 20 frames to be double hit and cause a hit knock-back
-                if (GameTime.ElapsedFrames - DoubleHitTimer > 20)
+                if (GameTime.ElapsedFrames - DoubleHitTimer > DOUBLE_HIT_ALLOWED_TIME)
                 {
                     StartInvulnerability();
                     Ammo = 2;
@@ -339,7 +339,7 @@ public partial class RedPirate
 
                 if (IsActionFinished)
                 {
-                    SpawnRedLum(32);
+                    SpawnRedLum(RED_LUM_OFFSET_X);
                     ProcessMessage(this, Message.Destroy);
                 }
                 break;

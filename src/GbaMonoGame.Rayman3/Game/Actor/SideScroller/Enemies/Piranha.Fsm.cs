@@ -18,7 +18,7 @@ public partial class Piranha
             case FsmAction.Step:
                 Timer++;
                 
-                if (Scene.IsDetectedMainActor(this) && Timer > 120)
+                if (Scene.IsDetectedMainActor(this) && Timer > WAIT_TIME)
                 {
                     State.MoveTo(_Fsm_Move);
                     return false;

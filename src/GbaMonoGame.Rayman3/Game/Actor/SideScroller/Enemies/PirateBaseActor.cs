@@ -4,7 +4,7 @@ using GbaMonoGame.Rayman3.Readvanced;
 
 namespace GbaMonoGame.Rayman3;
 
-public abstract class PirateBaseActor : MovableActor
+public abstract partial class PirateBaseActor : MovableActor
 {
     protected PirateBaseActor(int instanceId, Scene2D scene, ActorResource actorResource) : base(instanceId, scene, actorResource)
     {
@@ -53,7 +53,7 @@ public abstract class PirateBaseActor : MovableActor
         else
             xPos = Position.X + offsetX;
 
-        lum.Position = new Vector2(xPos, Position.Y - 25);
+        lum.Position = new Vector2(xPos, Position.Y + RED_LUM_OFFSET_Y);
     }
 
     protected void StartInvulnerability()

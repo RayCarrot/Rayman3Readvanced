@@ -8,7 +8,7 @@ public partial class MetalShieldedHoodboom
 {
     private bool FsmStep_CheckDeath()
     {
-        IsHoodboomInvulnerable = GameTime.ElapsedFrames - InvulnerabilityTimer is > 20 and < 90;
+        IsHoodboomInvulnerable = GameTime.ElapsedFrames - InvulnerabilityTimer is > INVULNERABILITY_START_TIME and < INVULNERABILITY_TIME;
 
         if (Scene.IsHitMainActor(this))
         {
@@ -19,9 +19,9 @@ public partial class MetalShieldedHoodboom
         Box detectionBox = GetDetectionBox();
         Rayman rayman = (Rayman)Scene.MainActor;
         bool dying = false;
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < Rayman.BODY_PARTS_FISTS_COUNT; i++)
         {
-            RaymanBody activeFist = rayman.ActiveBodyParts[i];
+            RaymanBody activeFist = rayman.ActiveBodyParts[Rayman.BODY_PARTS_FISTS_INDEX + i];
 
             if (activeFist == null)
                 continue;
@@ -30,7 +30,7 @@ public partial class MetalShieldedHoodboom
                 continue;
 
             if (!IsHoodboomInvulnerable &&
-                (LastHitFistType != i || GameTime.ElapsedFrames - InvulnerabilityTimer >= 90))
+                (LastHitFistType != i || GameTime.ElapsedFrames - InvulnerabilityTimer >= INVULNERABILITY_TIME))
             {
                 LastHitFistType = i;
                 dying = HasBeenHitOnce;
@@ -72,27 +72,27 @@ public partial class MetalShieldedHoodboom
                 LevelMusicManager.PlaySpecialMusicIfDetected(this);
 
                 uint time = GameTime.ElapsedFrames - Timer;
-                bool readyToAttack = (EarlyAttack && time > 25) || time > 100;
+                bool readyToAttack = (EarlyAttack && time > EARLY_ATTACK_TIME) || time > ATTACK_TIME;
 
                 float addLeft;
                 float addRight;
                 if (Position.X - Scene.MainActor.Position.X < 0)
                 {
                     addLeft = 0;
-                    addRight = 100;
+                    addRight = ATTACK_DETECTION_ADD_HORIZONTAL_SIZE;
                 }
                 else
                 {
-                    addLeft = -100;
+                    addLeft = -ATTACK_DETECTION_ADD_HORIZONTAL_SIZE;
                     addRight = 0;
                 }
                 bool detectedMainActor = Scene.IsDetectedMainActor(this, 0, 0, addLeft, addRight);
 
                 Rayman rayman = (Rayman)Scene.MainActor;
                 bool isAttacked = false;
-                for (int i = 0; i < 2; i++)
+                for (int i = 0; i < Rayman.BODY_PARTS_FISTS_COUNT; i++)
                 {
-                    RaymanBody activeFist = rayman.ActiveBodyParts[i];
+                    RaymanBody activeFist = rayman.ActiveBodyParts[Rayman.BODY_PARTS_FISTS_INDEX + i];
 
                     if (activeFist != null && activeFist != ActiveFists[i])
                         isAttacked = true;
@@ -104,7 +104,7 @@ public partial class MetalShieldedHoodboom
                 bool isAttackedFromBelow = false;
                 if (isAttacked)
                 {
-                    if (Position.Y - Scene.MainActor.Position.Y > 16)
+                    if (Position.Y - Scene.MainActor.Position.Y > ATTACKED_FROM_ABOVE_DISTANCE)
                         isAttackedFromAbove = true;
                     else
                         isAttackedFromBelow = true;
@@ -182,26 +182,26 @@ public partial class MetalShieldedHoodboom
                     {
                         if (Scene.IsDetectedMainActor(this))
                             grenade.ActionId = Grenade.Action.ShortThrow_Right;
-                        else if (Scene.IsDetectedMainActor(this, 0, 0, 0, 20))
+                        else if (Scene.IsDetectedMainActor(this, 0, 0, 0, ATTACK_DISTANCE_DETECTION_ADD_HORIZONTAL_SIZE))
                             grenade.ActionId = Grenade.Action.NormalThrow_Right;
                         else
                             grenade.ActionId = Grenade.Action.LongThrow_Right;
 
-                        xPos = 45;
+                        xPos = GRENADE_OFFSET_X;
                     }
                     else
                     {
                         if (Scene.IsDetectedMainActor(this))
                             grenade.ActionId = Grenade.Action.ShortThrow_Left;
-                        else if (Scene.IsDetectedMainActor(this, 0, 0, -20, 0))
+                        else if (Scene.IsDetectedMainActor(this, 0, 0, -ATTACK_DISTANCE_DETECTION_ADD_HORIZONTAL_SIZE, 0))
                             grenade.ActionId = Grenade.Action.NormalThrow_Left;
                         else
                             grenade.ActionId = Grenade.Action.LongThrow_Left;
 
-                        xPos = -45;
+                        xPos = -GRENADE_OFFSET_X;
                     }
 
-                    grenade.Position = Position + new Vector2(xPos, -85);
+                    grenade.Position = Position + new Vector2(xPos, GRENADE_OFFSET_Y);
                     grenade.ChangeAction();
                 }
                 break;

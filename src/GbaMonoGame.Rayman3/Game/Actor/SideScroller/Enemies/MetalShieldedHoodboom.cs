@@ -17,7 +17,7 @@ public sealed partial class MetalShieldedHoodboom : InteractableActor
         IsHoodboomInvulnerable = false;
         EarlyAttack = false;
         HasBeenHitOnce = false;
-        ActiveFists = new RaymanBody[2];
+        ActiveFists = new RaymanBody[Rayman.BODY_PARTS_FISTS_COUNT];
         InvulnerabilityTimer = 0;
         LastHitFistType = -1;
 
@@ -62,7 +62,7 @@ public sealed partial class MetalShieldedHoodboom : InteractableActor
         // Conditionally don't draw every second frame during invulnerability
         if (draw)
         {
-            if (GameTime.ElapsedFrames - InvulnerabilityTimer < 90 &&
+            if (GameTime.ElapsedFrames - InvulnerabilityTimer < INVULNERABILITY_TIME &&
                 HitPoints != 0 &&
                 (GameTime.ElapsedFrames & 1) == 0)
             {

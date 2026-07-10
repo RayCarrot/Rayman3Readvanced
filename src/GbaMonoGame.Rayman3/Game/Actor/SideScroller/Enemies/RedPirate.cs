@@ -49,12 +49,12 @@ public sealed partial class RedPirate : PirateBaseActor
 
         if (IsFacingRight)
         {
-            energyBall.Position = Position + new Vector2(28, -32);
+            energyBall.Position = Position + new Vector2(PROJECTILE_OFFSET_X, PROJECTILE_OFFSET_Y);
             energyBall.ActionId = EnergyBall.Action.Shot1_Right;
         }
         else
         {
-            energyBall.Position = Position + new Vector2(-28, -32);
+            energyBall.Position = Position + new Vector2(-PROJECTILE_OFFSET_X, PROJECTILE_OFFSET_Y);
             energyBall.ActionId = EnergyBall.Action.Shot1_Left;
         }
 
