@@ -25,9 +25,9 @@ public sealed partial class Hoodstormer : MovableActor
         if (energyBall != null)
         {
             if (IsFacingRight)
-                energyBall.Position = Position + new Vector2(58, -8);
+                energyBall.Position = Position + new Vector2(MISSILE_PROJECTILE_OFFSET_X, MISSILE_PROJECTILE_OFFSET_Y);
             else
-                energyBall.Position = Position + new Vector2(-58, -8);
+                energyBall.Position = Position + new Vector2(-MISSILE_PROJECTILE_OFFSET_X, MISSILE_PROJECTILE_OFFSET_Y);
 
             energyBall.ActionId = IsFacingRight ? EnergyBall.Action.DownShot_Right : EnergyBall.Action.DownShot_Left;
             energyBall.ChangeAction();

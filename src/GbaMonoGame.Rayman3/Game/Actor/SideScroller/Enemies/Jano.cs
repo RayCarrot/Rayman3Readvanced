@@ -13,8 +13,8 @@ public sealed partial class Jano : MovableActor
     {
         CreateGeneratedStates();
 
-        Ammo = 2;
-        AlphaBlend = 0x10;
+        Ammo = AMMO_PHASE_1;
+        AlphaBlend = ALPHA_BLEND_MAX;
         FirstTimeMovingAway = true;
         
         SkullPlatforms = new JanoSkullPlatform[3];
@@ -23,7 +23,7 @@ public sealed partial class Jano : MovableActor
         TargetPosition = Vector2.Zero;
         OffsetY = 0;
 
-        Position = Position with { Y = OffsetY + 150 };
+        Position = Position with { Y = OffsetY + BASE_OFFSET_Y };
 
         // Special intro state for time attack to skip the grimace sequence
         if (Rayman3.TimeAttack.IsActive)
@@ -51,11 +51,11 @@ public sealed partial class Jano : MovableActor
         Box viewBox = GetViewBox();
         Rayman rayman = (Rayman)Scene.MainActor;
 
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < Rayman.BODY_PARTS_FISTS_COUNT; i++)
         {
-            if (rayman.ActiveBodyParts[i] != null)
+            if (rayman.ActiveBodyParts[Rayman.BODY_PARTS_FISTS_INDEX + i] != null)
             {
-                Box fistDetectionBox = rayman.ActiveBodyParts[i].GetDetectionBox();
+                Box fistDetectionBox = rayman.ActiveBodyParts[Rayman.BODY_PARTS_FISTS_INDEX + i].GetDetectionBox();
 
                 if (viewBox.Intersects(fistDetectionBox))
                     return true;
@@ -87,14 +87,17 @@ public sealed partial class Jano : MovableActor
                 dir = -1;
             }
 
-            shot.Position = new Vector2(Position.X + dir * 64, Position.Y + 32);
+            shot.Position = new Vector2(Position.X + dir * SHOT_PROJECTILE_OFFSET_X, Position.Y + SHOT_PROJECTILE_OFFSET_Y);
 
-            if (Position.Y == OffsetY + 110)
-                shot.MechModel.Speed = new Vector2(dir * 2.5f, 0.625f);
-            else if (Position.Y == OffsetY + 200)
-                shot.MechModel.Speed = new Vector2(dir * 2, -0.75f);
+            // From above
+            if (Position.Y == OffsetY + HIGH_OFFSET_Y)
+                shot.MechModel.Speed = new Vector2(dir * SHOT_PROJECTILE_HIGH_SPEED_X, SHOT_PROJECTILE_HIGH_SPEED_Y);
+            // From below
+            else if (Position.Y == OffsetY + LOW_OFFSET_Y)
+                shot.MechModel.Speed = new Vector2(dir * SHOT_PROJECTILE_LOW_SPEED_X, SHOT_PROJECTILE_LOW_SPEED_Y);
+            // Default
             else
-                shot.MechModel.Speed = new Vector2(dir * 2, 0);
+                shot.MechModel.Speed = new Vector2(dir * SHOT_PROJECTILE_BASE_SPEED_X, SHOT_PROJECTILE_BASE_SPEED_Y);
         }
     }
 
@@ -102,7 +105,7 @@ public sealed partial class Jano : MovableActor
     {
         Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__JanoShot_Mix01, this);
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < AMMO_SHOOT_MULTIPLE; i++)
         {
             JanoShot shot = Scene.CreateProjectile<JanoShot>(ActorType.JanoShot);
 
@@ -124,7 +127,7 @@ public sealed partial class Jano : MovableActor
         {
             SkullPlatforms[index] = skullPlatform;
             skullPlatform.SkullPlatformIndex = index;
-            skullPlatform.Position = Position + new Vector2(-32, 60);
+            skullPlatform.Position = Position + new Vector2(SKULL_PLATFORM_PROJECTILE_OFFSET_X, SKULL_PLATFORM_PROJECTILE_OFFSET_Y);
 
             switch (CheckCurrentPhase())
             {
@@ -151,7 +154,7 @@ public sealed partial class Jano : MovableActor
             }
 
             skullPlatform.ChangeAction();
-            skullPlatform.Speed = skullPlatform.Speed with { X = -1 };
+            skullPlatform.Speed = skullPlatform.Speed with { X = SKULL_PLATFORM_SPEED_X };
         }
     }
 
@@ -172,24 +175,24 @@ public sealed partial class Jano : MovableActor
 
     public int CheckCurrentPhase()
     {
-        if (Scene.MainActor.Position.X < 800)
+        if (Scene.MainActor.Position.X < PHASE_2_POSITION_X)
         {
-            OffsetY = 0;
+            OffsetY = PHASE_1_OFFSET_Y;
             return 1;
         }
-        else if (Scene.MainActor.Position.X is > 800 and < 1320)
+        else if (Scene.MainActor.Position.X is > PHASE_2_POSITION_X and < PHASE_3_POSITION_X)
         {
-            OffsetY = -32;
+            OffsetY = PHASE_2_OFFSET_Y;
             return 2;
         }
-        else if (Scene.MainActor.Position.X is > 1320 and < 1750)
+        else if (Scene.MainActor.Position.X is > PHASE_3_POSITION_X and < PHASE_4_POSITION_X)
         {
-            OffsetY = -64;
+            OffsetY = PHASE_3_OFFSET_Y;
             return 3;
         }
         else
         {
-            OffsetY = -64;
+            OffsetY = PHASE_4_OFFSET_Y;
             return 4;
         }
     }
@@ -199,11 +202,11 @@ public sealed partial class Jano : MovableActor
         int phase = CheckCurrentPhase();
 
         if (phase == 1)
-            Ammo = 2;
+            Ammo = AMMO_PHASE_1;
         else if (phase == 2)
-            Ammo = 3;
+            Ammo = AMMO_PHASE_2;
         else if (phase == 3)
-            Ammo = 4;
+            Ammo = AMMO_PHASE_3;
     }
 
     protected override bool ProcessMessageImpl(object sender, Message message, object param)

@@ -13,18 +13,18 @@ public partial class Jano
         //       uses direct equality checks rather than less than or greater than
         if (IsBeingAttacked())
         {
-            if (AlphaBlend > 4)
+            if (AlphaBlend > ALPHA_BLEND_MIN)
             {
-                AlphaBlend -= 0.5f;
+                AlphaBlend -= ALPHA_BLEND_DELTA;
 
-                if (AlphaBlend <= 4 && !Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__JanoRire_Mix01))
+                if (AlphaBlend <= ALPHA_BLEND_MIN && !Engine.Sem.IsSongPlaying(Rayman3SoundEvent.Play__JanoRire_Mix01))
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__JanoRire_Mix01, this);
             }
         }
         else
         {
-            if (AlphaBlend < 0x10)
-                AlphaBlend += 0.5f;
+            if (AlphaBlend < ALPHA_BLEND_MAX)
+                AlphaBlend += ALPHA_BLEND_DELTA;
         }
 
         AnimatedObject.Alpha = AlphaCoefficient.FromGbaValue(AlphaBlend);
@@ -46,7 +46,7 @@ public partial class Jano
                     return false;
 
                 // Wait for Rayman to reach the position
-                if (Scene.MainActor.Position.X > 375)
+                if (Scene.MainActor.Position.X > INTRO_START_POSITION_X)
                 {
                     State.MoveTo(_Fsm_Default);
                     return false;
@@ -75,7 +75,7 @@ public partial class Jano
                     return false;
 
                 // Begin intro sequence when Rayman reaches its position
-                if (Scene.MainActor.Position.X > 375 && Timer == 0)
+                if (Scene.MainActor.Position.X > INTRO_START_POSITION_X && Timer == 0)
                 {
                     Scene.MainActor.ProcessMessage(this, Message.Rayman_Stop);
 
@@ -87,31 +87,31 @@ public partial class Jano
                 // Move on screen
                 else if (Timer == 1)
                 {
-                    if (Position.X <= 480)
+                    if (Position.X <= INTRO_TARGET_X)
                         Timer = 2;
                     else
-                        Position -= new Vector2(2, 0);
+                        Position += new Vector2(INTRO_SPEED_X, 0);
                 }
                 // Wait
-                else if (Timer is >= 2 and < 30)
+                else if (Timer is >= 2 and < INTRO_GRIMACE_TIME)
                 {
                     Timer++;
                 }
                 // Grimace
-                else if (Timer == 30)
+                else if (Timer == INTRO_GRIMACE_TIME)
                 {
                     ((Rayman)Scene.MainActor).ActionId = Rayman.Action.Idle_Grimace_Right;
                     Engine.Sem.ProcessEvent(Rayman3SoundEvent.Play__Grimace1_Mix04, this);
-                    Timer = 31;
+                    Timer = INTRO_GRIMACE_TIME + 1;
                     ActionId = Action.Grimace_Left;
                 }
                 // Wait
-                else if (Timer > 30)
+                else if (Timer > INTRO_GRIMACE_TIME)
                 {
                     Timer++;
                 }
 
-                if (IsActionFinished && ActionId is Action.Grimace_Right or Action.Grimace_Left && Timer > 60)
+                if (IsActionFinished && ActionId is Action.Grimace_Right or Action.Grimace_Left && Timer > INTRO_END_TIME)
                 {
                     State.MoveTo(_Fsm_MoveAway);
                     return false;
@@ -143,52 +143,52 @@ public partial class Jano
 
                 Timer++;
 
-                // Move back
-                if (!IsOnLeftSide && Position.X - Scene.MainActor.Position.X > 170)
+                // Move closer
+                if (!IsOnLeftSide && Position.X - Scene.MainActor.Position.X > MAX_RAYMAN_DISTANCE_X)
                 {
-                    Position -= new Vector2(2, 0);
+                    Position -= new Vector2(MOVE_CLOSER_SPEED_X, 0);
                     return true;
                 }
-                else if (IsOnLeftSide && Scene.MainActor.Position.X - Position.X > 170)
+                else if (IsOnLeftSide && Scene.MainActor.Position.X - Position.X > MAX_RAYMAN_DISTANCE_X)
                 {
-                    Position += new Vector2(2, 0);
+                    Position += new Vector2(MOVE_CLOSER_SPEED_X, 0);
                     return true;
                 }
 
                 // Move away if Rayman gets too close
-                if (!IsOnLeftSide && Position.X - Scene.MainActor.Position.X < 50)
+                if (!IsOnLeftSide && Position.X - Scene.MainActor.Position.X < MIN_RAYMAN_DISTANCE_X)
                 {
                     State.MoveTo(_Fsm_BeginMoveAway);
                     return false;
                 }
 
-                if (!IsOnLeftSide && Position.X - Scene.MainActor.Position.X < 120 && Scene.MainActor.Speed.Y == 0)
+                if (!IsOnLeftSide && Position.X - Scene.MainActor.Position.X < MIN_NOT_JUMPING_RAYMAN_DISTANCE_X && Scene.MainActor.Speed.Y == 0)
                 {
                     State.MoveTo(_Fsm_BeginMoveAway);
                     return false;
                 }
 
-                if (IsOnLeftSide && Scene.MainActor.Position.X - Position.X < 50)
+                if (IsOnLeftSide && Scene.MainActor.Position.X - Position.X < MIN_RAYMAN_DISTANCE_X)
                 {
                     State.MoveTo(_Fsm_BeginMoveAway);
                     return false;
                 }
 
-                if (IsOnLeftSide && Scene.MainActor.Position.X - Position.X < 120 && Scene.MainActor.Speed.Y == 0)
+                if (IsOnLeftSide && Scene.MainActor.Position.X - Position.X < MIN_NOT_JUMPING_RAYMAN_DISTANCE_X && Scene.MainActor.Speed.Y == 0)
                 {
                     State.MoveTo(_Fsm_BeginMoveAway);
                     return false;
                 }
 
                 // Attack if there is remaining ammo
-                if (Timer > 60 && Ammo != 0)
+                if (Timer > ATTACK_TIME && Ammo != 0)
                 {
                     State.MoveTo(_Fsm_Attack);
                     return false;
                 }
 
                 // If no ammo then create skull platform
-                if (Timer > 60)
+                if (Timer > ATTACK_TIME)
                 {
                     RefillAmmo();
                     State.MoveTo(_Fsm_CreateSkullPlatform);
@@ -217,12 +217,12 @@ public partial class Jano
                     return false;
 
                 float distX = Math.Abs(Position.X - Scene.MainActor.Position.X);
-                if (distX < 50 && Position.X < 1850)
+                if (distX < MIN_RAYMAN_DISTANCE_X && Position.X < MOVE_AWAY_MAX_POSITION_X)
                 {
                     if (IsOnLeftSide)
-                        Position -= new Vector2(3, 0);
+                        Position -= new Vector2(MOVE_AWAY_SPEED_X, 0);
                     else
-                        Position += new Vector2(3, 0);
+                        Position += new Vector2(MOVE_AWAY_SPEED_X, 0);
                 }
 
                 if (IsActionFinished && ActionId is Action.Grimace_Right or Action.Grimace_Left)
@@ -263,12 +263,12 @@ public partial class Jano
                 Timer++;
 
                 float distX = Math.Abs(Position.X - Scene.MainActor.Position.X);
-                if (distX < 50 && Position.X < 1850)
+                if (distX < MIN_RAYMAN_DISTANCE_X && Position.X < MOVE_AWAY_MAX_POSITION_X)
                 {
                     if (IsOnLeftSide)
-                        Position -= new Vector2(3, 0);
+                        Position -= new Vector2(MOVE_AWAY_SPEED_X, 0);
                     else
-                        Position += new Vector2(3, 0);
+                        Position += new Vector2(MOVE_AWAY_SPEED_X, 0);
                 }
 
                 // Finish initial turning around
@@ -290,18 +290,18 @@ public partial class Jano
                         if (phase == 1)
                         {
                             if (Timer < 376)
-                                Position = Position with { Y = OffsetY + 110 };
+                                Position = Position with { Y = OffsetY + HIGH_OFFSET_Y };
                             else
-                                Position = Position with { Y = OffsetY + 150 };
+                                Position = Position with { Y = OffsetY + BASE_OFFSET_Y };
                         }
                         else if (phase is 2 or 3)
                         {
                             if (Timer < 250)
-                                Position = Position with { Y = OffsetY + 150 };
+                                Position = Position with { Y = OffsetY + BASE_OFFSET_Y };
                             else if (Timer < 500)
-                                Position = Position with { Y = OffsetY + 110 };
+                                Position = Position with { Y = OffsetY + HIGH_OFFSET_Y };
                             else
-                                Position = Position with { Y = OffsetY + 200 };
+                                Position = Position with { Y = OffsetY + LOW_OFFSET_Y };
                         }
                     }
 
@@ -309,7 +309,7 @@ public partial class Jano
                     ChangeAction();
                 }
 
-                if (Position.X > 2050)
+                if (Position.X > CHECK_END_MIN_POSITION_X)
                 {
                     State.MoveTo(_Fsm_CheckComplete);
                     return false;
@@ -317,7 +317,7 @@ public partial class Jano
 
                 if (IsActionFinished && 
                     ActionId is Action.TurnAroundFast_Right or Action.TurnAroundFast_Left && 
-                    Scene.MainActor.Position.X > 1400 &&
+                    Scene.MainActor.Position.X > CHECK_END_RAYMAN_MIN_POSITION_X &&
                     Scene.MainActor.Speed.Y == 0)
                 {
                     State.MoveTo(_Fsm_CheckComplete);
@@ -357,12 +357,12 @@ public partial class Jano
                 Timer++;
 
                 // Move back
-                if (!IsOnLeftSide && Position.X - Scene.MainActor.Position.X > 170)
-                    Position -= new Vector2(2, 0);
-                else if (IsOnLeftSide && Scene.MainActor.Position.X - Position.X > 170)
-                    Position += new Vector2(2, 0);
+                if (!IsOnLeftSide && Position.X - Scene.MainActor.Position.X > MOVE_CLOSER_MIN_POSITION_X)
+                    Position -= new Vector2(MOVE_CLOSER_SPEED_X, 0);
+                else if (IsOnLeftSide && Scene.MainActor.Position.X - Position.X > MOVE_CLOSER_MIN_POSITION_X)
+                    Position += new Vector2(MOVE_CLOSER_SPEED_X, 0);
 
-                if (Timer > 45 && Scene.MainActor.Speed.Y == 0)
+                if (Timer > MOVE_CLOSER_TIME && Scene.MainActor.Speed.Y == 0)
                 {
                     State.MoveTo(_Fsm_Default);
                     return false;
@@ -397,45 +397,45 @@ public partial class Jano
                 switch (CheckCurrentPhase())
                 {
                     case 1:
-                        if (Position.Y > OffsetY + 152)
+                        if (Position.Y > OffsetY + BASE_OFFSET_Y + CREATE_SKULL_PLATFORM_SPEED_Y)
                         {
-                            Position -= new Vector2(0, 2);
+                            Position -= new Vector2(0, CREATE_SKULL_PLATFORM_SPEED_Y);
                         }
-                        else if (Position.Y < OffsetY + 148)
+                        else if (Position.Y < OffsetY + BASE_OFFSET_Y - CREATE_SKULL_PLATFORM_SPEED_Y)
                         {
-                            Position += new Vector2(0, 2);
+                            Position += new Vector2(0, CREATE_SKULL_PLATFORM_SPEED_Y);
                         }
                         else
                         {
-                            Position = Position with { Y = OffsetY + 150 };
+                            Position = Position with { Y = OffsetY + BASE_OFFSET_Y };
                             reachedTarget = true;
                         }
                         break;
 
                     case 2:
-                        if (Position.Y > OffsetY + 110)
+                        if (Position.Y > OffsetY + HIGH_OFFSET_Y)
                         {
-                            Position -= new Vector2(0, 2);
+                            Position -= new Vector2(0, CREATE_SKULL_PLATFORM_SPEED_Y);
                         }
-                        else if (Position.Y >= 20 && Position.Y < OffsetY + 110)
+                        else if (Position.Y >= 20 && Position.Y < OffsetY + HIGH_OFFSET_Y)
                         {
-                            Position += new Vector2(0, 2);
+                            Position += new Vector2(0, CREATE_SKULL_PLATFORM_SPEED_Y);
                         }
                         else
                         {
-                            Position = Position with { Y = OffsetY + 110 };
+                            Position = Position with { Y = OffsetY + HIGH_OFFSET_Y };
                             reachedTarget = true;
                         }
                         break;
 
                     case 3:
-                        if (Position.Y < OffsetY + 150)
+                        if (Position.Y < OffsetY + BASE_OFFSET_Y)
                         {
-                            Position += new Vector2(0, 2);
+                            Position += new Vector2(0, CREATE_SKULL_PLATFORM_SPEED_Y);
                         }
                         else
                         {
-                            Position = Position with { Y = OffsetY + 150 };
+                            Position = Position with { Y = OffsetY + BASE_OFFSET_Y };
                             reachedTarget = true;
                         }
                         break;
@@ -443,8 +443,8 @@ public partial class Jano
 
                 int skullPlatformIndex = Array.IndexOf(SkullPlatforms, null);
 
-                if (Position.X - Scene.MainActor.Position.X < 150)
-                    Position += new Vector2(4, 0);
+                if (Position.X - Scene.MainActor.Position.X < CREATE_SKULL_PLATFORM_MIN_DISTANCE_X)
+                    Position += new Vector2(CREATE_SKULL_PLATFORM_SPEED_X, 0);
 
                 if (ActionId == Action.CreateSkullPlatform4 && AnimatedObject.CurrentFrame == 7 && !HasFinishedCurrentCycle) 
                 {
@@ -458,7 +458,7 @@ public partial class Jano
                     {
                         ActionId = Action.CreateSkullPlatform2;
                     }
-                    else if (Timer > 20 && 
+                    else if (Timer > CREATE_SKULL_PLATFORM_TIME && 
                              reachedTarget && 
                              ActionId == Action.CreateSkullPlatform2 && 
                              skullPlatformIndex != 3)
@@ -515,13 +515,13 @@ public partial class Jano
                 // Move to target pos
                 if (ActionId is Action.Idle_Right or Action.Idle_Left && !Single.IsNaN(TargetPosition.Y))
                 {
-                    if (TargetPosition.Y + 4 < Position.Y)
+                    if (TargetPosition.Y + ATTACK_SPEED_X < Position.Y)
                     {
-                        Position -= new Vector2(0, 4);
+                        Position -= new Vector2(0, ATTACK_SPEED_X);
                     }
-                    else if (Position.Y < TargetPosition.Y - 4)
+                    else if (Position.Y < TargetPosition.Y - ATTACK_SPEED_X)
                     {
-                        Position += new Vector2(0, 4);
+                        Position += new Vector2(0, ATTACK_SPEED_X);
                     }
                     else
                     {
@@ -541,20 +541,20 @@ public partial class Jano
                     int phase = CheckCurrentPhase();
                     if (phase == 1)
                     {
-                        int offset = rand switch
+                        float offset = rand switch
                         {
-                            < 376 => 110,
-                            _ => 150
+                            < 376 => HIGH_OFFSET_Y,
+                            _ => BASE_OFFSET_Y
                         };
                         TargetPosition = TargetPosition with { Y = OffsetY + offset };
                     }
                     else if (phase is 2 or 3)
                     {
-                        int offset = rand switch
+                        float offset = rand switch
                         {
-                            < 250 => 150,
-                            < 500 => 110,
-                            _ => 200
+                            < 250 => BASE_OFFSET_Y,
+                            < 500 => HIGH_OFFSET_Y,
+                            _ => LOW_OFFSET_Y
                         };
                         TargetPosition = TargetPosition with { Y = OffsetY + offset };
                     }
@@ -566,25 +566,25 @@ public partial class Jano
                     ActionId = ActionId == Action.Attack_Right ? Action.Idle_Right : Action.Idle_Left;
 
                 // Move away if Rayman gets too close
-                if (!IsOnLeftSide && Position.X - Scene.MainActor.Position.X < 50)
+                if (!IsOnLeftSide && Position.X - Scene.MainActor.Position.X < MIN_RAYMAN_DISTANCE_X)
                 {
                     State.MoveTo(_Fsm_BeginMoveAway);
                     return false;
                 }
 
-                if (!IsOnLeftSide && Position.X - Scene.MainActor.Position.X < 120 && Scene.MainActor.Speed.Y == 0)
+                if (!IsOnLeftSide && Position.X - Scene.MainActor.Position.X < MIN_NOT_JUMPING_RAYMAN_DISTANCE_X && Scene.MainActor.Speed.Y == 0)
                 {
                     State.MoveTo(_Fsm_BeginMoveAway);
                     return false;
                 }
 
-                if (IsOnLeftSide && Scene.MainActor.Position.X - Position.X < 50)
+                if (IsOnLeftSide && Scene.MainActor.Position.X - Position.X < MIN_RAYMAN_DISTANCE_X)
                 {
                     State.MoveTo(_Fsm_BeginMoveAway);
                     return false;
                 }
 
-                if (IsOnLeftSide && Scene.MainActor.Position.X - Position.X < 120 && Scene.MainActor.Speed.Y == 0)
+                if (IsOnLeftSide && Scene.MainActor.Position.X - Position.X < MIN_NOT_JUMPING_RAYMAN_DISTANCE_X && Scene.MainActor.Speed.Y == 0)
                 {
                     State.MoveTo(_Fsm_BeginMoveAway);
                     return false;
@@ -605,32 +605,32 @@ public partial class Jano
                 }
 
                 // Why does the game check these again??
-                if (!IsOnLeftSide && Position.X - Scene.MainActor.Position.X < 50)
+                if (!IsOnLeftSide && Position.X - Scene.MainActor.Position.X < MIN_RAYMAN_DISTANCE_X)
                 {
                     State.MoveTo(_Fsm_BeginMoveAway);
                     return false;
                 }
 
-                if (!IsOnLeftSide && Position.X - Scene.MainActor.Position.X < 120 && Scene.MainActor.Speed.Y == 0)
+                if (!IsOnLeftSide && Position.X - Scene.MainActor.Position.X < MIN_NOT_JUMPING_RAYMAN_DISTANCE_X && Scene.MainActor.Speed.Y == 0)
                 {
                     State.MoveTo(_Fsm_BeginMoveAway);
                     return false;
                 }
 
-                if (IsOnLeftSide && Scene.MainActor.Position.X - Position.X < 50)
+                if (IsOnLeftSide && Scene.MainActor.Position.X - Position.X < MIN_RAYMAN_DISTANCE_X)
                 {
                     State.MoveTo(_Fsm_BeginMoveAway);
                     return false;
                 }
 
-                if (IsOnLeftSide && Scene.MainActor.Position.X - Position.X < 120 && Scene.MainActor.Speed.Y == 0)
+                if (IsOnLeftSide && Scene.MainActor.Position.X - Position.X < MIN_NOT_JUMPING_RAYMAN_DISTANCE_X && Scene.MainActor.Speed.Y == 0)
                 {
                     State.MoveTo(_Fsm_BeginMoveAway);
                     return false;
                 }
 
                 // Attack again if reached target and waited half a second
-                if (Single.IsNaN(TargetPosition.Y) && Timer > 30)
+                if (Single.IsNaN(TargetPosition.Y) && Timer > ATTACK_AGAIN_TIME)
                 {
                     State.MoveTo(_Fsm_Attack);
                     return false;
@@ -659,10 +659,10 @@ public partial class Jano
                 if (!FsmStep_CheckHit())
                     return false;
 
-                if (Position.Y > 20)
-                    Position -= new Vector2(0, 4);
+                if (Position.Y > SWITCH_SIDE_TARGET_Y)
+                    Position -= new Vector2(0, SWITCH_SIDE_SPEED_Y);
                 else
-                    Position = Position with { Y = 20 };
+                    Position = Position with { Y = SWITCH_SIDE_TARGET_Y };
 
                 if (!IsOnLeftSide)
                 {
@@ -674,15 +674,15 @@ public partial class Jano
                         Timer = (ushort)Random.GetNumber(751);
                         Position = Timer switch
                         {
-                            < 250 => Position with { Y = OffsetY + 150 },
-                            < 500 => Position with { Y = OffsetY + 110 },
-                            _ => Position with { Y = OffsetY + 200 }
+                            < 250 => Position with { Y = OffsetY + BASE_OFFSET_Y },
+                            < 500 => Position with { Y = OffsetY + HIGH_OFFSET_Y },
+                            _ => Position with { Y = OffsetY + LOW_OFFSET_Y }
                         };
                     }
                 }
                 else
                 {
-                    if (Position.X - Scene.MainActor.Position.X > 170)
+                    if (Position.X - Scene.MainActor.Position.X > MAX_RAYMAN_DISTANCE_X)
                     {
                         IsOnLeftSide = false;
                         isFinished = true;
@@ -771,12 +771,12 @@ public partial class Jano
                 if (!FsmStep_CheckHit())
                     return false;
 
-                if (Position.X < 1900)
-                    Position += new Vector2(2, 0);
+                if (Position.X < CHECK_END_TARGET_X)
+                    Position += new Vector2(CHECK_END_SPEED_X, 0);
 
                 Rayman rayman = (Rayman)Scene.MainActor;
                 if (CheckCurrentPhase() == 4 && 
-                    Position.X > 1750 && 
+                    Position.X > PHASE_4_POSITION_X && 
                     Scene.MainActor.Speed.Y == 0 &&
                     rayman.State != rayman._Fsm_HangOnEdge)
                 {
@@ -784,7 +784,7 @@ public partial class Jano
                     return false;
                 }
 
-                if (Scene.MainActor.Position.X < 1400 && Scene.MainActor.Speed.Y == 0)
+                if (Scene.MainActor.Position.X < CHECK_END_RAYMAN_MIN_POSITION_X && Scene.MainActor.Speed.Y == 0)
                 {
                     State.MoveTo(_Fsm_Default);
                     return false;
@@ -810,7 +810,7 @@ public partial class Jano
                     Rayman3.Achievements.Unlock(AchievementId.DefeatBossBadDreams);
                 Scene.MainActor.ProcessMessage(this, Message.Rayman_FinishLevel);
                 Timer = 0;
-                Position = Position with { Y = OffsetY + 150 };
+                Position = Position with { Y = OffsetY + BASE_OFFSET_Y };
                 break;
 
             case FsmAction.Step:
@@ -819,7 +819,7 @@ public partial class Jano
 
                 Timer++;
 
-                if (Timer > 90)
+                if (Timer > COMPLETE_TIME)
                 {
                     State.MoveTo(_Fsm_Default);
                     return false;
