@@ -9,9 +9,11 @@ public partial class BoulderMode7
     public const float BOUNCE_SPEED = 8;
     public const float BOUNCE_ACCELERATION = 1 / 4f;
 
-    public readonly Vector2 SQUASH_DELTA = new(-1 / 32f, 1 / 4f);
+    public const float SQUASH_DELTA_X = -1 / 32f;
+    public const float SQUASH_DELTA_Y = 1 / 4f;
     public const float SQUASH_TARGET_Y = 2.5f;
 
-    public readonly Vector2 PLAYER_SQUASH_SCALE = new(0.5f, 2);
+    public const float PLAYER_SQUASH_SCALE_X = 0.5f;
+    public const float PLAYER_SQUASH_SCALE_Y = 2;
     public const byte PLAYER_SQUASH_TIME = 100;
 }

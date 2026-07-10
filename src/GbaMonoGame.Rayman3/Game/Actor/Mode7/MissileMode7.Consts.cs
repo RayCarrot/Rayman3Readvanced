@@ -22,10 +22,13 @@ public partial class MissileMode7
 
     public const float JUMP_HEIGHT_SPEED = 8;
     public const float JUMP_HEIGHT_DEACCELERATION = 3 / 8f;
-    public readonly Vector2 JUMP_SCALE = new Vector2(288, 224) / 256;
-    public readonly Vector2 LAND_SCALE = new Vector2(192, 284) / 256;
+    public const float JUMP_SCALE_X = 288 / 256f;
+    public const float JUMP_SCALE_Y = 224 / 256f;
+    public const float LAND_SCALE_X = 192 / 256f;
+    public const float LAND_SCALE_Y = 284 / 256f;
 
-    public readonly Vector2 RESTORE_SCALE_DELTA = new Vector2(8, -16) / 256;
+    public const float RESTORE_SCALE_DELTA_X = 8 / 256f;
+    public const float RESTORE_SCALE_DELTA_Y = -16 / 256f;
 
     public const float PITCH_FACTOR = 512;
     public const float DEFAULT_JUMP_PITCH_ADD = 1024;

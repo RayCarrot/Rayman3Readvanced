@@ -123,7 +123,7 @@ public partial class SamMode7
 
                 // Slow down
                 if (MechModel.Speed.X > 0)
-                    MechModel.Speed -= FINISHED_DEACCELERATION;
+                    MechModel.Speed -= new Vector2(FINISHED_DEACCELERATION_X, 0);
 
                 Timer++;
 

@@ -256,7 +256,7 @@ public partial class MissileMode7
 
                 ZPosSpeed = JUMP_HEIGHT_SPEED;
                 ZPosDeacceleration = JUMP_HEIGHT_DEACCELERATION;
-                Scale = JUMP_SCALE;
+                Scale = new Vector2(JUMP_SCALE_X, JUMP_SCALE_Y);
                 IsJumping = true;
                 break;
 
@@ -290,7 +290,7 @@ public partial class MissileMode7
                 break;
 
             case FsmAction.UnInit:
-                Scale = LAND_SCALE;
+                Scale = new Vector2(LAND_SCALE_X, LAND_SCALE_Y);
                 IsJumping = false;
                 break;
         }

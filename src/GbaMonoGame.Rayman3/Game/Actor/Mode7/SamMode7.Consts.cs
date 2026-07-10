@@ -13,7 +13,7 @@ public partial class SamMode7
 
     public const float DIRECTION_SPEED = 2;
 
-    public readonly Vector2 FINISHED_DEACCELERATION = new(1 / 32f, 0);
+    public const float FINISHED_DEACCELERATION_X = 1 / 32f;
 
     public const ushort FINISHED_FADE_OUT_TIME = 140;
     public const ushort FINISHED_STOP_SOUNDS_TIME = 216;

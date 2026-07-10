@@ -134,7 +134,7 @@ public sealed partial class MissileMode7 : Mode7Actor
     {
         // Gradually return to normal scale
         if (1 < Scale.Y)
-            Scale += RESTORE_SCALE_DELTA;
+            Scale += new Vector2(RESTORE_SCALE_DELTA_X, RESTORE_SCALE_DELTA_Y);
         else
             Scale = Vector2.One;
     }

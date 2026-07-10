@@ -116,7 +116,7 @@ public partial class BoulderMode7
                             if (actionBox.Intersects(playerDetectionBox) && !player.IsInvulnerable)
                             {
                                 player.ReceiveDamage(1);
-                                player.Scale = PLAYER_SQUASH_SCALE;
+                                player.Scale = new Vector2(PLAYER_SQUASH_SCALE_X, PLAYER_SQUASH_SCALE_Y);
                                 player.CustomScaleTimer = PLAYER_SQUASH_TIME;
                             }
                         }
@@ -128,7 +128,7 @@ public partial class BoulderMode7
                             Scene.MainActor.ReceiveDamage(1);
 
                             MissileMode7 mainActor = (MissileMode7)Scene.MainActor;
-                            mainActor.Scale = PLAYER_SQUASH_SCALE;
+                            mainActor.Scale = new Vector2(PLAYER_SQUASH_SCALE_X, PLAYER_SQUASH_SCALE_Y);
                             mainActor.CustomScaleTimer = PLAYER_SQUASH_TIME;
                         }
                     }
@@ -173,14 +173,14 @@ public partial class BoulderMode7
 
                 if (IsSquashing)
                 {
-                    Scale += SQUASH_DELTA;
+                    Scale += new Vector2(SQUASH_DELTA_X, SQUASH_DELTA_Y);
 
                     if (Scale.Y >= SQUASH_TARGET_Y)
                         IsSquashing = false;
                 }
                 else
                 {
-                    Scale -= SQUASH_DELTA;
+                    Scale -= new Vector2(SQUASH_DELTA_X, SQUASH_DELTA_Y);
                 }
 
                 if (Scale.Y <= 1 && !IsSquashing)
